@@ -711,6 +711,7 @@
 		B54866CA1A0D7042004AC79D /* NSAttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54866C91A0D7042004AC79D /* NSAttributedString+Helpers.swift */; };
 		B549BA681CF7447E0086C608 /* InvitePersonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B549BA671CF7447E0086C608 /* InvitePersonViewController.swift */; };
 		B54A6BD02045F375001D2A37 /* SafariCredentialsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A6BCF2045F375001D2A37 /* SafariCredentialsService.swift */; };
+		B54A6BD22045F8F4001D2A37 /* LoginFields+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A6BD12045F8F4001D2A37 /* LoginFields+Validation.swift */; };
 		B54C02241F38F50100574572 /* String+RegEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54C02231F38F50100574572 /* String+RegEx.swift */; };
 		B54E1DF01A0A7BAA00807537 /* ReplyBezierView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54E1DED1A0A7BAA00807537 /* ReplyBezierView.swift */; };
 		B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54E1DEE1A0A7BAA00807537 /* ReplyTextView.swift */; };
@@ -2196,6 +2197,7 @@
 		B54866C91A0D7042004AC79D /* NSAttributedString+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "NSAttributedString+Helpers.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		B549BA671CF7447E0086C608 /* InvitePersonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvitePersonViewController.swift; sourceTree = "<group>"; };
 		B54A6BCF2045F375001D2A37 /* SafariCredentialsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariCredentialsService.swift; sourceTree = "<group>"; };
+		B54A6BD12045F8F4001D2A37 /* LoginFields+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginFields+Validation.swift"; sourceTree = "<group>"; };
 		B54C02231F38F50100574572 /* String+RegEx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+RegEx.swift"; sourceTree = "<group>"; };
 		B54E1DED1A0A7BAA00807537 /* ReplyBezierView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyBezierView.swift; sourceTree = "<group>"; };
 		B54E1DEE1A0A7BAA00807537 /* ReplyTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyTextView.swift; sourceTree = "<group>"; };
@@ -5939,15 +5941,16 @@
 			children = (
 				E6158AC91ECDF518005FA441 /* LoginEpilogueUserInfo.swift */,
 				E68191481F856B910055E197 /* LoginFields.swift */,
+				B54A6BD12045F8F4001D2A37 /* LoginFields+Validation.swift */,
+				B54A6BCF2045F375001D2A37 /* SafariCredentialsService.swift */,
+				E606467F1CB3133000A3073F /* SigninEditingState.swift */,
 				9827B3B0201FF30700530AF5 /* SiteCreationFields.swift */,
 				E6417BAB1CA07F7F0084050A /* WordPressAuthenticator.swift */,
 				B5BEA052202E0B6100903044 /* WordPressAuthenticator+Events.swift */,
 				B5E51B7D203494B800151ECD /* WordPressSupportSourceTag.swift */,
-				E606467F1CB3133000A3073F /* SigninEditingState.swift */,
 				B5BEA054202E109300903044 /* WordPressAuthenticationTracker.swift */,
 				B5E51B7A203477DF00151ECD /* WordPressAuthenticationManager.swift */,
 				B5326E6E203F554C007392C3 /* WordPressSupportSourceTag+Helpers.swift */,
-				B54A6BCF2045F375001D2A37 /* SafariCredentialsService.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -7664,6 +7667,7 @@
 				E1718EA01CAD0800006F9E2D /* HockeyManager.m in Sources */,
 				FF619DD51C75246900903B65 /* CLPlacemark+Formatting.swift in Sources */,
 				E11450DF1C4E47E600A6BD0F /* NoticeAnimator.swift in Sources */,
+				B54A6BD22045F8F4001D2A37 /* LoginFields+Validation.swift in Sources */,
 				087EBFA81F02313E001F7ACE /* MediaThumbnailService.swift in Sources */,
 				08F8CD2A1EBD22EF0049D0C0 /* MediaExporter.swift in Sources */,
 				E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */,
