@@ -533,10 +533,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
     // Customize the appearance of the text elements
     [self customizeAppearanceForTextElements];
-    
-    // Eventually move towards app skinning
-    Skin *skin = [[Skin alloc] init];
-    [Skin setActive:WordPressSkin];
 }
 
 - (void)customizeAppearanceForTextElements
