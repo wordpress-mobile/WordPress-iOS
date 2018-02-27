@@ -7,6 +7,14 @@ import WordPressShared
 ///
 final class PersonViewController: UITableViewController {
 
+    /// The sections of the table
+    ///
+    private enum TableSection: Int {
+        case header
+        case userDetails
+        case action
+    }
+
     /// PersonViewController operation modes
     ///
     enum ScreenMode: String {
@@ -59,77 +67,6 @@ final class PersonViewController: UITableViewController {
     ///
     var screenMode: ScreenMode = .User
 
-    /// Gravatar Image
-    ///
-    @IBOutlet var gravatarImageView: UIImageView! {
-        didSet {
-            refreshGravatarImage()
-        }
-    }
-
-    /// Person's Full Name
-    ///
-    @IBOutlet var fullNameLabel: UILabel! {
-        didSet {
-            setupFullNameLabel()
-            refreshFullNameLabel()
-        }
-    }
-
-    /// Person's User Name
-    ///
-    @IBOutlet var usernameLabel: UILabel! {
-        didSet {
-            setupUsernameLabel()
-            refreshUsernameLabel()
-        }
-    }
-
-    /// Person's Role
-    ///
-    @IBOutlet var roleCell: UITableViewCell! {
-        didSet {
-            setupRoleCell()
-            refreshRoleCell()
-        }
-    }
-
-    /// Person's First Name
-    ///
-    @IBOutlet var firstNameCell: UITableViewCell! {
-        didSet {
-            setupFirstNameCell()
-            refreshFirstNameCell()
-        }
-    }
-
-    /// Person's Last Name
-    ///
-    @IBOutlet var lastNameCell: UITableViewCell! {
-        didSet {
-            setupLastNameCell()
-            refreshLastNameCell()
-        }
-    }
-
-    /// Person's Display Name
-    ///
-    @IBOutlet var displayNameCell: UITableViewCell! {
-        didSet {
-            setupDisplayNameCell()
-            refreshDisplayNameCell()
-        }
-    }
-
-    /// Nuking the User
-    ///
-    @IBOutlet var removeCell: UITableViewCell! {
-        didSet {
-            setupRemoveCell()
-            refreshRemoveCell()
-        }
-    }
-
 
     // MARK: - View Lifecyle Methods
 
@@ -154,18 +91,26 @@ final class PersonViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectSelectedRowWithAnimation(true)
 
-        guard let cell = tableView.cellForRow(at: indexPath) else {
-            return
-        }
-
-        switch cell {
-        case roleCell:
+        switch indexPath {
+        case roleIndexPath:
             roleWasPressed()
-        case removeCell:
+        case removeIndexPath:
             removeWasPressed()
         default:
             break
         }
+    }
+
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel.count
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel[section].count
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return sectionHeaderHeight
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -179,13 +124,33 @@ final class PersonViewController: UITableViewController {
         // not being timely initialized.
         //
         //
-        if isFullnamePrivate == true && fullnameSection == indexPath.section && fullnameRows.contains(indexPath.row) {
+        if isFullnamePrivate == true && (indexPath == firstNameIndexPath || indexPath == lastNameIndexPath) {
             return CGFloat.leastNormalMagnitude
         }
-        return super.tableView(tableView, heightForRowAt: indexPath)
+        return UITableViewAutomaticDimension
     }
 
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
+        guard let section = TableSection(rawValue: indexPath.section) else {
+            assertionFailure("Unhandled table section")
+            return UITableViewCell()
+        }
+
+        let cell: UITableViewCell
+        switch section {
+        case .header:
+            cell = tableView.dequeueReusableCell(withIdentifier: PersonHeaderCell.identifier, for: indexPath)
+            configureHeaderCell(cell)
+        case .userDetails:
+            cell = dequeueCell(withIdentifier: userInfoCellIdentifier, style: .value1)
+            configureUserCells(cell, at: indexPath.row)
+        case .action:
+            cell = dequeueCell(withIdentifier: actionCellIdentifier, style: .default)
+            configureRemoveCell(cell)
+        }
+        return cell
+    }
 
     // MARK: - Storyboard Methods
 
@@ -204,10 +169,37 @@ final class PersonViewController: UITableViewController {
 
 
     // MARK: - Constants
-    fileprivate let roleSegueIdentifier = "editRole"
-    fileprivate let gravatarPlaceholderImage = UIImage(named: "gravatar.png")
-    fileprivate let fullnameSection = 1
-    fileprivate let fullnameRows = [1, 2]
+    private let sectionHeaderHeight      = CGFloat(20)
+    private let gravatarPlaceholderImage = UIImage(named: "gravatar.png")
+    private let roleSegueIdentifier      = "editRole"
+    private let userInfoCellIdentifier   = "userInfoCellIdentifier"
+    private let actionCellIdentifier     = "actionCellIdentifier"
+
+    private let headerIndexPath      = IndexPath(row: 0, section: TableSection.header.rawValue)
+    private let roleIndexPath        = IndexPath(row: 0, section: TableSection.userDetails.rawValue)
+    private let firstNameIndexPath   = IndexPath(row: 1, section: TableSection.userDetails.rawValue)
+    private let lastNameIndexPath    = IndexPath(row: 2, section: TableSection.userDetails.rawValue)
+    private let displayNameIndexPath = IndexPath(row: 3, section: TableSection.userDetails.rawValue)
+    private let removeIndexPath      = IndexPath(row: 0, section: TableSection.action.rawValue)
+
+    /// The structure in sections and cells of the table
+    ///
+    private lazy var viewModel: [[IndexPath]] = {
+        var model = [[IndexPath]]()
+        model.append([
+            headerIndexPath
+        ])
+        model.append([
+            roleIndexPath,
+            firstNameIndexPath,
+            lastNameIndexPath,
+            displayNameIndexPath
+        ])
+        model.append([
+            removeIndexPath
+        ])
+        return model
+    }()
 }
 
 
@@ -398,45 +390,84 @@ private extension PersonViewController {
 
 
 
-// MARK: - Private Helpers: Initializing Interface
+// MARK: - Private Helpers: Configuring table cells
 //
 private extension PersonViewController {
 
-    func setupFullNameLabel() {
-        fullNameLabel.font = WPStyleGuide.tableviewTextFont()
-        fullNameLabel.textColor = WPStyleGuide.darkGrey()
+    func dequeueCell(withIdentifier id: String, style: UITableViewCellStyle) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: id) {
+            return cell
+        } else {
+            return WPTableViewCell(style: style, reuseIdentifier: id)
+        }
     }
 
-    func setupUsernameLabel() {
-        usernameLabel.font = WPStyleGuide.tableviewSectionHeaderFont()
-        usernameLabel.textColor = WPStyleGuide.wordPressBlue()
+    func configureHeaderCell(_ cell: UITableViewCell) {
+        guard let headerCell = cell as? PersonHeaderCell else {
+            assertionFailure("Cell should be of class PersonHeaderCell, but it is \(type(of: cell))")
+            return
+        }
+        headerCell.fullNameLabel.font = WPStyleGuide.tableviewTextFont()
+        headerCell.fullNameLabel.textColor = WPStyleGuide.darkGrey()
+        headerCell.fullNameLabel.text = person.fullName
+
+        headerCell.userNameLabel.font = WPStyleGuide.tableviewSectionHeaderFont()
+        headerCell.userNameLabel.textColor = WPStyleGuide.wordPressBlue()
+        headerCell.userNameLabel.text = "@" + person.username
+
+        refreshGravatarImage(in: headerCell.gravatarImageView)
     }
 
-    func setupFirstNameCell() {
-        firstNameCell.textLabel?.text = NSLocalizedString("First Name", comment: "User's First Name")
-        WPStyleGuide.configureTableViewCell(firstNameCell)
+    func configureUserCells(_ cell: UITableViewCell, at index: Int) {
+        WPStyleGuide.configureTableViewCell(cell)
+
+        switch index {
+        case roleIndexPath.row:
+            configureRoleCell(cell)
+        case firstNameIndexPath.row:
+            configureFirstNameCell(cell)
+        case lastNameIndexPath.row:
+            configureLastNameCell(cell)
+        case displayNameIndexPath.row:
+            configureDisplayNameCell(cell)
+        default:
+            break
+        }
     }
 
-    func setupLastNameCell() {
-        lastNameCell.textLabel?.text = NSLocalizedString("Last Name", comment: "User's Last Name")
-        WPStyleGuide.configureTableViewCell(lastNameCell)
+    func configureRemoveCell(_ cell: UITableViewCell) {
+        WPStyleGuide.configureTableViewDestructiveActionCell(cell)
+        let removeFormat     = NSLocalizedString("Remove @%@", comment: "Remove User. Verb")
+        let removeText       = String(format: removeFormat, person.username)
+        cell.textLabel?.text = removeText as String
+        cell.isHidden        = !isRemoveEnabled
     }
 
-    func setupDisplayNameCell() {
-        displayNameCell.textLabel?.text = NSLocalizedString("Display Name", comment: "User's Display Name")
-        WPStyleGuide.configureTableViewCell(displayNameCell)
+    func configureFirstNameCell(_ cell: UITableViewCell) {
+        cell.textLabel?.text       = NSLocalizedString("First Name", comment: "User's First Name")
+        cell.detailTextLabel?.text = person.firstName
+        cell.isHidden              = isFullnamePrivate
     }
 
-    func setupRoleCell() {
-        roleCell.textLabel?.text = NSLocalizedString("Role", comment: "User's Role")
-        WPStyleGuide.configureTableViewCell(roleCell)
+    func configureLastNameCell(_ cell: UITableViewCell) {
+        cell.textLabel?.text       = NSLocalizedString("Last Name", comment: "User's Last Name")
+        cell.detailTextLabel?.text = person.lastName
+        cell.isHidden              = isFullnamePrivate
     }
 
-    func setupRemoveCell() {
-        let removeFormat = NSLocalizedString("Remove @%@", comment: "Remove User. Verb")
-        let removeText = String(format: removeFormat, person.username)
-        removeCell.textLabel?.text = removeText as String
-        WPStyleGuide.configureTableViewDestructiveActionCell(removeCell)
+    func configureDisplayNameCell(_ cell: UITableViewCell) {
+        cell.textLabel?.text       = NSLocalizedString("Display Name", comment: "User's Display Name")
+        cell.detailTextLabel?.text = person.displayName
+    }
+
+    func configureRoleCell(_ cell: UITableViewCell) {
+        cell.textLabel?.text          = NSLocalizedString("Role", comment: "User's Role")
+        cell.detailTextLabel?.text    = role?.name
+
+        let enabled                   = isPromoteEnabled
+        cell.accessoryType            = enabled ? .disclosureIndicator : .none
+        cell.selectionStyle           = enabled ? .gray : .none
+        cell.isUserInteractionEnabled = enabled
     }
 }
 
@@ -450,55 +481,13 @@ private extension PersonViewController {
         guard isViewLoaded else {
             return
         }
-
-        refreshGravatarImage()
-        refreshFullNameLabel()
-        refreshUsernameLabel()
-        refreshRoleCell()
-        refreshFirstNameCell()
-        refreshLastNameCell()
-        refreshDisplayNameCell()
-        refreshRemoveCell()
+        tableView.reloadData()
     }
 
-    func refreshGravatarImage() {
+    func refreshGravatarImage(in imageView: UIImageView) {
         let gravatar = person.avatarURL.flatMap { Gravatar($0) }
         let placeholder = UIImage(named: "gravatar")!
-        gravatarImageView.downloadGravatar(gravatar, placeholder: placeholder, animate: false)
-    }
-
-    func refreshFullNameLabel() {
-        fullNameLabel.text = person.fullName
-    }
-
-    func refreshUsernameLabel() {
-        usernameLabel.text = "@" + person.username
-    }
-
-    func refreshFirstNameCell() {
-        firstNameCell.detailTextLabel?.text = person.firstName
-        firstNameCell.isHidden = isFullnamePrivate
-    }
-
-    func refreshLastNameCell() {
-        lastNameCell.detailTextLabel?.text = person.lastName
-        lastNameCell.isHidden = isFullnamePrivate
-    }
-
-    func refreshDisplayNameCell() {
-        displayNameCell.detailTextLabel?.text = person.displayName
-    }
-
-    func refreshRoleCell() {
-        let enabled = isPromoteEnabled
-        roleCell.accessoryType = enabled ? .disclosureIndicator : .none
-        roleCell.selectionStyle = enabled ? .gray : .none
-        roleCell.isUserInteractionEnabled = enabled
-        roleCell.detailTextLabel?.text = role?.name
-    }
-
-    func refreshRemoveCell() {
-        removeCell.isHidden = !isRemoveEnabled
+        imageView.downloadGravatar(gravatar, placeholder: placeholder, animate: false)
     }
 }
 
