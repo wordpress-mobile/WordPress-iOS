@@ -463,7 +463,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     required init(post: AbstractPost) {
         precondition(post.managedObjectContext != nil)
-        
+
         self.post = post
 
         super.init(nibName: nil, bundle: nil)
