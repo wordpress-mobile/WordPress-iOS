@@ -353,17 +353,7 @@ extension LoginSelfHostedViewController {
     func finishedLogin(withUsername username: String, password: String, xmlrpc: String, options: [AnyHashable: Any]) {
         displayLoginMessage("")
 
-        BlogSyncFacade().syncBlog(withUsername: username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] in
-            let context = ContextManager.sharedInstance().mainContext
-            let service = BlogService(managedObjectContext: context)
-            guard let blog = service.findBlog(withXmlrpc: xmlrpc, andUsername: username) else {
-                assertionFailure("A blog was just added but was not found in core data.")
-                // Skip showing the epilogue in this situation. Since there will
-                // be no blog to present to the user the screen is likly to be
-                // confusing. Instead just dismiss.
-                self?.dismiss()
-                return
-            }
+        BlogSyncFacade().syncBlog(withUsername: username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] blog in
 
             RecentSitesService().touch(blog: blog)
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
