@@ -15,6 +15,7 @@ struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, 
     let title: String
     let secondaryTitle: String?
     let action: ImmuTableAction?
+    let noResultsView: WPNoResultsView?
 
     private let helper: CollectionViewHandler
 
@@ -28,6 +29,7 @@ struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, 
         self.title = title
         self.secondaryTitle = secondaryTitle
         self.action = action
+        self.noResultsView = nil
 
         let configurationBlock = { (cell: UICollectionViewCell, item: Any) in
             configureCollectionCell(cell as! CollectionViewCellType, item as! Item)
@@ -42,9 +44,33 @@ struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, 
                                                   collectionCellSeletectedBlock: selectionBlock)
     }
 
+    init(title: String,
+         secondaryTitle: String?,
+         action: ImmuTableAction?,
+         noResultsView: WPNoResultsView) {
+        self.title = title
+        self.secondaryTitle = secondaryTitle
+        self.action = action
+        self.noResultsView = noResultsView
+
+        let configurationBlock = { (_: UICollectionViewCell, _: Any) in return }
+        let selectionBlock = { (_: Any) in return }
+
+        helper = CollectionViewHandler(dataSourceItems: [],
+                                       configureCollectionCellBlock: configurationBlock,
+                                       collectionCellSeletectedBlock: selectionBlock)
+    }
+
 
     func configureCell(_ cell: UITableViewCell) {
         let cell = cell as! CellType
+
+        cell.titleLabel.text = title
+
+        cell.actionButton.setTitle(secondaryTitle, for: .normal)
+        cell.buttonTappedAction = { self.action?(self) }
+
+        cell.noResultsView = noResultsView
 
         if nil != Bundle.main.path(forResource: String(describing: CollectionViewCellType.self), ofType: "nib") {
             cell.collectionView.register(UINib(nibName: String(describing: CollectionViewCellType.self), bundle: nil),
@@ -52,11 +78,6 @@ struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, 
         } else {
             cell.collectionView.register(CollectionViewCellType.self, forCellWithReuseIdentifier: CollectionViewHandler.CellReuseIdentifier)
         }
-
-        cell.titleLabel.text = title
-
-        cell.actionButton.setTitle(secondaryTitle, for: .normal)
-        cell.buttonTappedAction = { self.action?(self) }
 
         cell.collectionView.delegate = helper
         cell.collectionView.dataSource = helper
@@ -111,6 +132,31 @@ class CollectionViewContainerCell: UITableViewCell {
     private(set) var collectionView: UICollectionView!
     private(set) var titleLabel: UILabel!
     private(set) var actionButton: UIButton!
+    fileprivate var noResultsView: WPNoResultsView? {
+        didSet {
+            oldValue?.superview?.removeFromSuperview()
+
+            guard let noResults = noResultsView else {
+                return
+            }
+
+            let containerView = UIView(frame: .zero)
+
+            containerView.translatesAutoresizingMaskIntoConstraints = false
+            noResultsView?.translatesAutoresizingMaskIntoConstraints = false
+
+            containerView.addSubview(noResults)
+            containerView.pinSubviewAtCenter(noResults)
+            addSubview(containerView)
+
+            containerView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.spacing).isActive = true
+            containerView.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor).isActive = true
+            containerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+            containerView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+
+            noResultsView?.centerInSuperview()
+        }
+    }
 
     var buttonTappedAction: (() -> Void)?
 
@@ -180,6 +226,11 @@ class CollectionViewContainerCell: UITableViewCell {
         collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+    }
+
+    override func prepareForReuse() {
+        noResultsView?.superview?.removeFromSuperview()
+        noResultsView = nil
     }
 
     @objc private func actionButtonTapped() {

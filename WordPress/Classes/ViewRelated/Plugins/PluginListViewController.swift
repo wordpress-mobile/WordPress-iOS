@@ -58,7 +58,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     }
 
     @objc func refresh() {
-        ActionDispatcher.dispatch(PluginAction.refreshPlugins(site: site))
+        viewModel.refresh()
     }
 
     func updateNoResults() {
