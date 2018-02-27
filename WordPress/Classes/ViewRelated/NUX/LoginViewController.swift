@@ -183,6 +183,6 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     // Update safari stored credentials. Call after a successful sign in.
     ///
     func updateSafariCredentialsIfNeeded() {
-        WordPressAuthenticator.updateSafariCredentialsIfNeeded(loginFields)
+        SafariCredentialsService.updateSafariCredentialsIfNeeded(with: loginFields)
     }
 }

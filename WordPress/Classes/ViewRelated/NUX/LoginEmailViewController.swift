@@ -233,7 +233,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     ///
     func fetchSharedWebCredentialsIfAvailable() {
         didRequestSafariSharedCredentials = true
-        WordPressAuthenticator.requestSharedWebCredentials { [weak self] (found, username, password) in
+        SafariCredentialsService.requestSharedWebCredentials { [weak self] (found, username, password) in
             self?.handleFetchedWebCredentials(found, username: username, password: password)
         }
     }
