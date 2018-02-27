@@ -17,10 +17,6 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
     private var isSearching: Bool = false
     private var selectedCell: UITableViewCell?
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-
     override func awakeFromNib() {
         super.awakeFromNib()
         tableView.register(UINib(nibName: "SiteCreationDomainSearchTableViewCell", bundle: nil), forCellReuseIdentifier: SiteCreationDomainSearchTableViewCell.cellIdentifier)
@@ -86,14 +82,13 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
 
     /// Sets up a gesture recognizer to detect taps on the view, but not its content.
     ///
-    @objc func setupBackgroundTapGestureRecognizer() {
-        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SiteCreationDomainsTableViewController.handleBackgroundTapGesture(_:)))
+    func setupBackgroundTapGestureRecognizer() {
+        let gestureRecognizer = UITapGestureRecognizer()
+        gestureRecognizer.on { [weak self](gesture) in
+            self?.view.endEditing(true)
+        }
         gestureRecognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(gestureRecognizer)
-    }
-
-    @objc func handleBackgroundTapGesture(_ gestureRecognizer: UITapGestureRecognizer) {
-        view.endEditing(true)
     }
 }
 

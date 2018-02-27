@@ -48,8 +48,6 @@
 #import "NSAttributedString+Util.h"
 #import "NSObject+Helpers.h"
 
-#import "OnePasswordFacade.h"
-
 #import "PageListSectionHeaderView.h"
 #import "PageListTableViewCell.h"
 #import "PageSettingsViewController.h"

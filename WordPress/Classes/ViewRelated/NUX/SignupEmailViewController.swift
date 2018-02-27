@@ -48,6 +48,10 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureViewForEditingIfNeeded()
+
+        // If email address already exists, pre-populate it.
+        emailField.text = loginFields.emailAddress
+
         configureSubmitButton(animating: false)
     }
 
@@ -180,6 +184,7 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
 
     private func didRequestSignupLink() {
         WPAppAnalytics.track(.signupMagicLinkRequested)
+        WordPressAuthenticator.storeLoginInfoForTokenAuth(loginFields)
         performSegue(withIdentifier: "showLinkMailView", sender: nil)
     }
 
