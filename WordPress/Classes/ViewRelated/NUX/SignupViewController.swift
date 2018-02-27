@@ -1,6 +1,7 @@
 import UIKit
 import CocoaLumberjack
 import WordPressShared
+import SafariServices
 
 
 /// Create a new WordPress.com account and blog.
@@ -436,43 +437,40 @@ import WordPressShared
     @objc func handleOnePasswordButtonTapped(_ sender: UIButton) {
         view.endEditing(true)
 
-        OnePasswordFacade().createLogin(forURLString: WPOnePasswordWordPressComURL,
-                                                    username: loginFields.username,
-                                                    password: loginFields.password,
-                                                    for: self,
-                                                    sender: sender,
-                                                    completion: { (username, password, error: Error?) in
-                                                        if let error = error as NSError? {
-                                                            if error.code != WPOnePasswordErrorCodeCancelledByUser {
-                                                                DDLogError("Failed to use 1Password App Extension to save a new Login: \(error)")
-                                                                WPAnalytics.track(.onePasswordFailed)
-                                                            }
-                                                            return
-                                                        }
-                                                        if let username = username {
-                                                            self.loginFields.username = username
-                                                            self.usernameField.text = username
-                                                        }
-                                                        if let password = password {
-                                                            self.loginFields.password = password
-                                                            self.passwordField.text = password
-                                                        }
+        let username = loginFields.username
+        let password = loginFields.password
+        OnePasswordFacade().createLogin(username: username, password: password, for: self, sender: sender, success: { (username, password) in
 
-                                                        WPAnalytics.track(.onePasswordSignup)
+            self.loginFields.username = username
+            self.loginFields.password = password
 
-                                                        // Note: Since the Site field is right below the 1Password field, let's continue with the edition flow
-                                                        // and make the SiteAddress Field the first responder.
-                                                        self.siteURLField.becomeFirstResponder()
+            self.usernameField.text = username
+            self.passwordField.text = password
 
+            WPAnalytics.track(.onePasswordSignup)
+
+            // Note: Since the Site field is right below the 1Password field, let's continue with the edition flow
+            // and make the SiteAddress Field the first responder.
+            self.siteURLField.becomeFirstResponder()
+        }, failure: { error in
+            guard error != .cancelledByUser else {
+                return
+            }
+
+            DDLogError("Failed to use 1Password App Extension to save a new Login: \(error)")
+            WPAnalytics.track(.onePasswordFailed)
         })
     }
 
 
     @IBAction func handleTermsOfServiceButtonTapped(_ sender: UIButton) {
-        let url = URL(string: WPAutomatticTermsOfServiceURL)!
-        let controller = WebViewControllerFactory.controller(url: url)
-        let navController = RotationAwareNavigationViewController(rootViewController: controller)
-        present(navController, animated: true, completion: nil)
+        guard let url = URL(string: WPAutomatticTermsOfServiceURL) else {
+            return
+        }
+
+        let safariViewController = SFSafariViewController(url: url)
+        safariViewController.modalPresentationStyle = .pageSheet
+        present(safariViewController, animated: true, completion: nil)
     }
 
 
