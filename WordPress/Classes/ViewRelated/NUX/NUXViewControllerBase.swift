@@ -152,7 +152,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
 
     /// Adds the Help Button to the nav controller
     ///
-    private func addHelpButtonToNavController() {
+    func addHelpButtonToNavController() {
         let helpButtonMarginSpacerWidth = CGFloat(-8)
         let helpBadgeSize = CGSize(width: 12, height: 12)
         let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
