@@ -10,7 +10,7 @@ class SignupUsernameViewController: NUXViewController {
     @IBOutlet weak var buttonContainerViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerHeightConstraint: NSLayoutConstraint!
 
-    override var sourceTag: SupportSourceTag {
+    override var sourceTag: WordPressSupportSourceTag {
         get {
             return .wpComCreateSiteUsername
         }
