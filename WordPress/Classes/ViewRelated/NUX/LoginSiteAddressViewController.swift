@@ -132,7 +132,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
     @objc func validateForm() {
         view.endEditing(true)
         displayError(message: "")
-        guard WordPressAuthenticator.validateSiteForSignin(loginFields) else {
+        guard loginFields.validateSiteForSignin() else {
             assertionFailure("Form should not be submitted unless there is a valid looking URL entered.")
             return
         }
@@ -222,7 +222,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
     /// Whether the form can be submitted.
     ///
     @objc func canSubmit() -> Bool {
-        return WordPressAuthenticator.validateSiteForSignin(loginFields)
+        return loginFields.validateSiteForSignin()
     }
 
 
