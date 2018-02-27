@@ -38,4 +38,14 @@ extension UIViewController {
         }
         return false
     }
+
+    /// Returns the view controller at the top of the view hierarchy (AKA leaf).
+    ///
+    @objc public var leafViewController: UIViewController? {
+        var controller = self
+        while let presented = controller.presentedViewController {
+            controller = presented
+        }
+        return controller
+    }
 }
