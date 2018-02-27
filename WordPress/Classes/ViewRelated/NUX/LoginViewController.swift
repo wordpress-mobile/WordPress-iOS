@@ -21,8 +21,18 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
         if let error = errorToPresent {
             displayRemoteError(error)
         }
+
+        registerDynamicTypeOberver()
     }
 
+    private func registerDynamicTypeOberver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangePreferredContentSize), name: .UIContentSizeCategoryDidChange, object: nil)
+    }
+
+    @objc
+    private func didChangePreferredContentSize() {
+        styleInstructions()
+    }
 
     // MARK: - Setup and Configuration
 
@@ -36,6 +46,7 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     ///
     @objc func styleInstructions() {
         instructionLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+        instructionLabel?.adjustsFontForContentSizeCategory = true
     }
 
     func configureViewLoading(_ loading: Bool) {
