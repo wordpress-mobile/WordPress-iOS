@@ -1,7 +1,7 @@
 import WordPressKit.RemotePostCategory
 
-class CategoryTree {
-    var tree: CategoryTreeNode
+public class CategoryTree {
+    public var tree: CategoryTreeNode
 
     init(categories: [RemotePostCategory]) {
         let rootCategory = RemotePostCategory()
@@ -14,26 +14,26 @@ class CategoryTree {
     }
 }
 
-class CategoryTreeNode {
-    var value: RemotePostCategory
-
-    weak var parent: CategoryTreeNode?
-    var children = [CategoryTreeNode]()
+public class CategoryTreeNode {
+    public var value: RemotePostCategory
+    public weak var parent: CategoryTreeNode?
+    public var children = [CategoryTreeNode]()
+    public var depth: Int = 0
 
     init(value: RemotePostCategory) {
         self.value = value
     }
 
     func addChild(_ node: CategoryTreeNode) {
-        children.append(node)
         node.parent = self
+        node.depth = self.depth + 1
+        children.append(node)
     }
 
     func addChildren(_ values: [RemotePostCategory]) {
         guard !values.isEmpty else {
             return
         }
-
         values.forEach { category in
             if category.safeParentValue.isEqual(to: self.value.categoryID) {
                 let child = CategoryTreeNode(value: category)
@@ -45,7 +45,7 @@ class CategoryTreeNode {
 }
 
 extension CategoryTreeNode: CustomStringConvertible {
-    var description: String {
+    public var description: String {
         var s = "\(value)"
         if !children.isEmpty {
             s += " {" + children.map { $0.description }.joined(separator: ", ") + "}"
@@ -55,7 +55,7 @@ extension CategoryTreeNode: CustomStringConvertible {
 }
 
 extension CategoryTreeNode: Equatable {
-    static func ==(lhs: CategoryTreeNode, rhs: CategoryTreeNode) -> Bool {
+    public static func ==(lhs: CategoryTreeNode, rhs: CategoryTreeNode) -> Bool {
         if lhs.value.categoryID.isEqual(to: rhs.value.categoryID) {
             return true
         } else {
@@ -65,7 +65,7 @@ extension CategoryTreeNode: Equatable {
 }
 
 extension CategoryTreeNode {
-    func search(_ value: CategoryTreeNode) -> CategoryTreeNode? {
+    public func search(_ value: CategoryTreeNode) -> CategoryTreeNode? {
         if value == self {
             return self
         }
