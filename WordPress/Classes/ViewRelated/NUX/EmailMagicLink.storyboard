@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -15,15 +19,15 @@
                         <viewControllerLayoutGuide type="bottom" id="ftd-m3-Cpd"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="r0Z-0G-9xo">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="9Sq-F3-Spn">
-                                <rect key="frame" x="290" y="290" width="20" height="20"/>
+                                <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
                                 <color key="color" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                             </activityIndicatorView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bnl-db-peA">
-                                <rect key="frame" x="283" y="326" width="33" height="16"/>
+                                <rect key="frame" x="170.5" y="359.5" width="33" height="16"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -40,6 +44,7 @@
                     <connections>
                         <outlet property="errorLabel" destination="Bnl-db-peA" id="vfV-dr-NBR"/>
                         <segue destination="rzX-Pq-aBb" kind="custom" identifier="showEpilogue" customClass="EpilogueSegue" customModule="WordPress" customModuleProvider="target" id="7ky-IR-Xbv"/>
+                        <segue destination="AcL-51-J0J" kind="custom" identifier="showSignupEpilogue" customClass="EpilogueSegue" customModule="WordPress" customModuleProvider="target" id="hUe-mm-JfS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N85-VU-x1x" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -55,21 +60,21 @@
                         <viewControllerLayoutGuide type="bottom" id="vKK-Mm-0yR"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Xyo-MA-Ddd">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="L3o-Cy-vXw">
-                                <rect key="frame" x="40" y="142.5" width="520" height="275"/>
+                                <rect key="frame" x="36" y="176" width="303" height="275"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login-magic-link" translatesAutoresizingMaskIntoConstraints="NO" id="upR-OL-iQF">
-                                        <rect key="frame" x="180" y="0.0" width="160" height="160"/>
+                                        <rect key="frame" x="71.5" y="0.0" width="160" height="160"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="160" id="CtE-yp-T3g"/>
                                             <constraint firstAttribute="width" constant="160" id="LVD-7T-c7k"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your magic link is on its way! Check your email on this device, and tap the link in the email you receive from WordPress.com" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pkM-xx-821">
-                                        <rect key="frame" x="-40" y="190" width="0.0" height="21"/>
+                                        <rect key="frame" x="-36" y="190" width="0.0" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="0nV-Yg-je4"/>
                                             <constraint firstAttribute="width" constant="320" id="2JY-7V-RVK"/>
@@ -89,7 +94,7 @@
                                         </variation>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Iy-9H-ykD" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="222.5" y="241" width="75" height="34"/>
+                                        <rect key="frame" x="114" y="241" width="75" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="tyz-kt-Arb"/>
                                         </constraints>
@@ -120,7 +125,7 @@
                                 </variation>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b0O-LO-6ax">
-                                <rect key="frame" x="202.5" y="550" width="195" height="30"/>
+                                <rect key="frame" x="90" y="617" width="195" height="30"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <state key="normal" title="Enter your password instead">
                                     <color key="titleColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -163,7 +168,15 @@
                 <viewControllerPlaceholder storyboardIdentifier="LoginEpilogue" storyboardName="Login" referencedIdentifier="LoginEpilogue" id="rzX-Pq-aBb" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LHN-kW-0Sj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3384" y="649"/>
+            <point key="canvasLocation" x="3179" y="599"/>
+        </scene>
+        <!--SignupEpilogue-->
+        <scene sceneID="TvG-Qq-5K2">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Signup" referencedIdentifier="SignupEpilogue" id="AcL-51-J0J" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0yK-Tv-7lv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3636" y="598"/>
         </scene>
         <!--LoginWPcomPassword-->
         <scene sceneID="mn2-Hn-7VV">

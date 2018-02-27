@@ -24,7 +24,7 @@ extension WPStyleGuide {
     /// Adds a 1password button to a WPWalkthroughTextField, if available
     ///
     class func configureOnePasswordButtonForTextfield(_ textField: WPWalkthroughTextField, target: NSObject, selector: Selector) {
-        if !OnePasswordFacade().isOnePasswordEnabled() {
+        guard OnePasswordFacade.isOnePasswordEnabled else {
             return
         }
 
@@ -41,7 +41,7 @@ extension WPStyleGuide {
     /// Adds a 1password button to a stack view, if available
     ///
     class func configureOnePasswordButtonForStackView(_ stack: UIStackView, target: NSObject, selector: Selector) {
-        if !OnePasswordFacade().isOnePasswordEnabled() {
+        guard OnePasswordFacade.isOnePasswordEnabled else {
             return
         }
 
