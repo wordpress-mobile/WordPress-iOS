@@ -94,7 +94,7 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
         displayError(message: "")
 
         // Is everything filled out?
-        if !WordPressAuthenticator.validateFieldsPopulatedForSignin(loginFields) {
+        if !loginFields.validateFieldsPopulatedForSignin() {
             let errorMsg = NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields.")
             displayError(message: errorMsg)
 

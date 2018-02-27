@@ -299,15 +299,6 @@ public protocol WordPressAuthenticatorDelegate: class {
     // MARK: - Validation Helpers
 
 
-    /// Checks if the passed string matches a reserved username.
-    ///
-    /// - Parameter username: The username to test.
-    ///
-    @objc class func isUsernameReserved(_ username: String) -> Bool {
-        let name = username.lowercased().trim()
-        return ["admin", "administrator", "invite", "main", "root", "web", "www"].contains(name) || name.contains("wordpress")
-    }
-
     /// Checks if the provided username is a wordpress.com domain
     ///
     /// - Parameter username: the username to test
@@ -323,80 +314,6 @@ public protocol WordPressAuthenticatorDelegate: class {
             host = hostParsed
         }
         return host.components(separatedBy: WPComSuffix).first ?? host
-    }
-
-    /// Checks whether credentials have been populated.
-    /// Note: that loginFields.emailAddress is not checked. Use loginFields.username instead.
-    ///
-    /// - Parameter loginFields: An instance of LoginFields to check
-    ///
-    /// - Returns: True if credentails have been provided. False otherwise.
-    ///
-    @objc class func validateFieldsPopulatedForSignin(_ loginFields: LoginFields) -> Bool {
-        return !loginFields.username.isEmpty &&
-            !loginFields.password.isEmpty &&
-            ( loginFields.meta.userIsDotCom || !loginFields.siteAddress.isEmpty )
-    }
-
-
-    /// Simple validation check to confirm LoginFields has a valid site URL.
-    ///
-    /// - Parameter loginFields: An instance of LoginFields to check
-    ///
-    /// - Returns: True if the siteUrl contains a valid URL. False otherwise.
-    ///
-    @objc class func validateSiteForSignin(_ loginFields: LoginFields) -> Bool {
-        guard let url = URL(string: NSURL.idnEncodedURL(loginFields.siteAddress)) else {
-            return false
-        }
-
-        if url.absoluteString.isEmpty {
-            return false
-        }
-
-        return true
-    }
-
-
-    /// Checks whether necessary info for account creation has been provided.
-    ///
-    /// - Parameters:
-    ///     - loginFields: An instance of LoginFields to check
-    ///
-    /// - Returns: True if credentails have been provided. False otherwise.
-    ///
-    @objc class func validateFieldsPopulatedForCreateAccount(_ loginFields: LoginFields) -> Bool {
-        return !loginFields.emailAddress.isEmpty &&
-            !loginFields.username.isEmpty &&
-            !loginFields.password.isEmpty &&
-            !loginFields.siteAddress.isEmpty
-    }
-
-
-    /// Ensures there are no spaces in fields used for signin, (except the password field).
-    ///
-    /// - Parameters:
-    ///     - loginFields: An instance of LoginFields to check
-    ///
-    /// - Returns: True if no spaces were found. False if spaces were found.
-    ///
-    @objc class func validateFieldsForSigninContainNoSpaces(_ loginFields: LoginFields) -> Bool {
-        let space = " "
-        return !loginFields.emailAddress.contains(space) &&
-            !loginFields.username.contains(space) &&
-            !loginFields.siteAddress.contains(space)
-    }
-
-
-    /// Verify a username is 50 characters or less.
-    ///
-    /// - Parameters:
-    ///     - username: The username to check
-    ///
-    /// - Returns: True if the username is 50 characters or less.
-    ///
-    @objc class func validateUsernameMaxLength(_ username: String) -> Bool {
-        return username.count <= 50
     }
 
 
