@@ -732,8 +732,11 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatOpenedPlansComparison:
             eventName = @"plans_compare";
             break;
-        case WPAnalyticsStatOpenedPlugins:
-            eventName = @"plugins_opened";
+        case WPAnalyticsStatOpenedPluginDirectory:
+            eventName = @"plugin_directory_opened";
+            break;
+        case WPAnalyticsStatOpenedPluginList:
+            eventName = @"plugin_list_opened";
             break;
         case WPAnalyticsStatOpenedPosts:
             eventName = @"site_menu_opened";
@@ -770,6 +773,24 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatPluginRemoved:
             eventName = @"plugin_removed";
+            break;
+        case WPAnalyticsStatPluginInstalled:
+            eventName = @"plugin_installed";
+            break;
+        case WPAnalyticsStatPluginActivated:
+            eventName = @"plugin_activated";
+            break;
+        case WPAnalyticsStatPluginDeactivated:
+            eventName = @"plugin_deactivated";
+            break;
+        case WPAnalyticsStatPluginAutoupdateEnabled:
+            eventName = @"plugin_autoupdate_enabled";
+            break;
+        case WPAnalyticsStatPluginAutoupdateDisabled:
+            eventName = @"plugin_autoupdate_disabled";
+            break;
+        case WPAnalyticsStatPluginSearchPerformed:
+            eventName = @"plugin_search_performed";
             break;
         case WPAnalyticsStatPostEpilogueDisplayed:
             eventName = @"post_epilogue_displayed";
