@@ -52,10 +52,6 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     public static let shared = WordPressAuthenticator()
 
-    /// WordPress.com domain.
-    ///
-    fileprivate static let WPComSuffix = ".wordpress.com"
-
     /// Notification to be posted whenever the signing flow completes.
     ///
     @objc static let WPSigninDidFinishNotification = "WPSigninDidFinishNotification"
@@ -293,27 +289,6 @@ public protocol WordPressAuthenticatorDelegate: class {
         path.removeSuffix("/")
 
         return NSURL.idnDecodedURL(path)
-    }
-
-
-    // MARK: - Validation Helpers
-
-
-    /// Checks if the provided username is a wordpress.com domain
-    ///
-    /// - Parameter username: the username to test
-    /// - Returns: true if the username is a wordpress.com domain
-    @objc class func isWPComDomain(_ username: String) -> Bool {
-        return username.contains(WPComSuffix)
-    }
-
-    /// Extracts the username from a wordpress.com domain
-    @objc class func extractUsername(from hostname: String) -> String {
-        var host = hostname
-        if let hostParsed = URL(string: hostname)?.host {
-            host = hostParsed
-        }
-        return host.components(separatedBy: WPComSuffix).first ?? host
     }
 
 
