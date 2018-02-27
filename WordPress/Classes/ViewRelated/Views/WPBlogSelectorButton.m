@@ -15,14 +15,7 @@
     [button setImage:[UIImage imageNamed:@"icon-nav-chevron"] forState:UIControlStateNormal];
     [button setAccessibilityHint:NSLocalizedString(@"Tap to select which blog to post to", @"This is the blog picker in the editor")];
 
-    // Show image always in the opposite direction than a normal UIButton
     BOOL isLayoutLeftToRight = [button userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight;
-    if (isLayoutLeftToRight) {
-        button.semanticContentAttribute = UISemanticContentAttributeForceRightToLeft;
-    } else {
-        button.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
-    }
-
     switch (button.buttonStyle) {
         case WPBlogSelectorButtonTypeSingleLine:
             button.titleLabel.numberOfLines = 1;
@@ -50,6 +43,25 @@
     }
     
     return button;
+}
+
+- (void)didMoveToSuperview
+{
+    [super didMoveToSuperview];
+    [self invertLayout];
+}
+
+/// Inverts the layout to show the image on the trailing side
+///
+- (void)invertLayout
+{
+    BOOL isLayoutLeftToRight = [self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight;
+
+    if (isLayoutLeftToRight) {
+        self.semanticContentAttribute = UISemanticContentAttributeForceRightToLeft;
+    } else {
+        self.semanticContentAttribute = UISemanticContentAttributeForceLeftToRight;
+    }
 }
 
 - (void)setButtonMode:(WPBlogSelectorButtonMode)value

@@ -76,7 +76,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
 
     fileprivate typealias Styles = WPStyleGuide.Themes
 
-   // MARK: - Outlets
+    // MARK: - Outlets
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var infoBar: UIView!
@@ -101,7 +101,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
     fileprivate var activeEllipsisImage = UIImage(named: "icon-menu-ellipsis-white")
     fileprivate var inactiveEllipsisImage = UIImage(named: "icon-menu-ellipsis")
 
-   // MARK: - GUI
+    // MARK: - GUI
 
     override open var isHighlighted: Bool {
         didSet {
@@ -133,7 +133,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
 
     fileprivate func refreshGUI() {
         if let theme = theme {
-           if let imageUrl = theme.screenshotUrl, !imageUrl.isEmpty {
+            if let imageUrl = theme.screenshotUrl, !imageUrl.isEmpty {
                 refreshScreenshotImage(imageUrl)
             } else {
                 showPlaceholder()
@@ -171,6 +171,8 @@ open class ThemeBrowserCell: UICollectionViewCell {
             infoLabel.text = nil
             activityView.stopAnimating()
         }
+
+        prepareForVoiceOver()
     }
 
     fileprivate func showPlaceholder() {
@@ -189,16 +191,16 @@ open class ThemeBrowserCell: UICollectionViewCell {
     fileprivate func refreshScreenshotImage(_ imageUrl: String) {
         // Themes not hosted on WP.com have an incorrect screenshotUrl and do not correctly support the w param
         let imageUrlForWidth = imageUrl.hasPrefix("http") ? imageUrl + "?w=\(presenter!.screenshotWidth)" :
-                                                            String(format: "http:%@", imageUrl)
+            String(format: "http:%@", imageUrl)
         let screenshotUrl = URL(string: imageUrlForWidth)
 
         imageView.backgroundColor = Styles.placeholderColor
         activityView.startAnimating()
         imageView.downloadImage(screenshotUrl,
-            placeholderImage: nil,
-            success: { [weak self] (image: UIImage) in
-                self?.showScreenshot()
-        }, failure: { [weak self] (error: Error?) in
+                                placeholderImage: nil,
+                                success: { [weak self] (image: UIImage) in
+                                    self?.showScreenshot()
+            }, failure: { [weak self] (error: Error?) in
                 if let error = error as NSError?, error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
                     return
                 }
@@ -219,10 +221,10 @@ open class ThemeBrowserCell: UICollectionViewCell {
         let themeActions = theme.isCurrentTheme() ? ThemeAction.activeActionsForTheme(theme) : ThemeAction.inactiveActionsForTheme(theme)
         themeActions.forEach { themeAction in
             alertController.addActionWithTitle(themeAction.title,
-                style: .default,
-                handler: { (action: UIAlertAction) in
-                    themeAction.present(theme, presenter)
-                })
+                                               style: .default,
+                                               handler: { (action: UIAlertAction) in
+                                                themeAction.present(theme, presenter)
+            })
         }
 
         alertController.modalPresentationStyle = .popover
@@ -238,4 +240,34 @@ open class ThemeBrowserCell: UICollectionViewCell {
         alertController.presentFromRootViewController()
     }
 
+}
+
+extension ThemeBrowserCell: Accessible {
+    func prepareForVoiceOver() {
+        prepareCellForVoiceOver()
+        prepareActionButtonForVoiceOver()
+        prepareNameLabelForVoiceOver()
+    }
+
+    private func prepareCellForVoiceOver() {
+        imageView.isAccessibilityElement = true
+        if let name = theme?.name {
+            imageView.accessibilityLabel = name
+            imageView.accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitSummaryElement
+        }
+
+        if let details = theme?.details {
+            imageView.accessibilityHint = details
+        }
+    }
+
+    private func prepareActionButtonForVoiceOver() {
+        actionButton.isAccessibilityElement = true
+        actionButton.accessibilityLabel = NSLocalizedString("More", comment: "Action button to display more available options")
+        actionButton.accessibilityTraits = UIAccessibilityTraitButton
+    }
+
+    private func prepareNameLabelForVoiceOver() {
+        nameLabel.isAccessibilityElement = false
+    }
 }

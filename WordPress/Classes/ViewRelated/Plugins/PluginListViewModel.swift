@@ -118,14 +118,36 @@ class PluginListViewModel: Observable {
             self?.refreshState()
         }
         actionReceipt = ActionDispatcher.global.subscribe { [weak self] (action) in
-            guard case PluginAction.receivePluginsFailed(let receivedSite, let error) = action,
-                case receivedSite = site else {
-                    return
+            guard let error = self?.receiveError(from: action) else {
+                return
             }
             self?.state = .error(error.localizedDescription)
         }
         queryReceipt = store.query(query)
         refreshState()
+    }
+
+    func receiveError(from action: Action) -> Error? {
+        switch (query, action) {
+        case (.all, PluginAction.receivePluginsFailed(let failedSite, let error)):
+            guard site == failedSite else {
+                return nil
+            }
+            return error
+        case (.featured, PluginAction.receiveFeaturedPluginsFailed(let failedSite, let error)):
+            guard site == failedSite else {
+                return nil
+            }
+            return error
+        case (.feed(let feed), PluginAction.receivePluginDirectoryFeedFailed(let failedFeed, let error)):
+            guard feed == failedFeed else {
+                return nil
+            }
+            return error
+        default:
+            return nil
+        }
+
     }
 
     func onStateChange(_ handler: @escaping (StateChange) -> Void) -> Receipt {
@@ -135,11 +157,37 @@ class PluginListViewModel: Observable {
     var noResultsViewModel: WPNoResultsView.Model? {
         switch state {
         case .loading:
+
+            let accessoryView: UIView?
+            if case .feed(let feedType) = query,
+                case .search = feedType {
+                let activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                activityView.startAnimating()
+
+                accessoryView = activityView
+            } else {
+                accessoryView = nil
+            }
+
+            // pull-to-refresh doesn't make sense as a interface in search, so there's no `UIRefreshcControl`
+            // for search queries, but we still want to show nice animated spinner.
+            // other feeds animate the UIRefreshControl
+
             return WPNoResultsView.Model(
-                title: NSLocalizedString("Loading Plugins...", comment: "Text displayed while loading plugins for a site")
+                title: NSLocalizedString("Loading Plugins...", comment: "Text displayed while loading plugins for a site"),
+                accessoryView: accessoryView)
+
+        case .ready(let plugins):
+            guard case .feed(let feedType) = query,
+                case .search = feedType,
+                case .directory(let result) = plugins,
+                result.count == 0 else {
+                return nil
+            }
+
+            return WPNoResultsView.Model(
+                title: NSLocalizedString("No plugins found", comment: "Text displayed when search for plugins returns no results")
             )
-        case .ready:
-            return nil
         case .error:
             let appDelegate = WordPressAppDelegate.sharedInstance()
             if (appDelegate?.connectionAvailable)! {
@@ -212,6 +260,12 @@ class PluginListViewModel: Observable {
 
     private func refreshState() {
         refreshing = isFetching(for: query)
+
+        guard !refreshing else {
+            state = .loading
+            return
+        }
+
         guard let plugins = results(for: query) else {
             return
         }
@@ -250,9 +304,9 @@ class PluginListViewModel: Observable {
         case .all(let site):
             return store.getPlugins(site: site).flatMap { PluginResults($0) }
         case .featured(let site):
-            return PluginResults(store.getFeaturedPlugins(site: site))
+            return store.getFeaturedPlugins(site: site).flatMap { PluginResults($0)}
         case .feed(let feed):
-            return PluginResults(store.getPluginDirectoryFeedPlugins(from: feed))
+            return store.getPluginDirectoryFeedPlugins(from: feed).flatMap { PluginResults($0) }
         case .directoryEntry:
             return nil
         }

@@ -31,8 +31,7 @@ public class Activity {
         guard let publishedString = dictionary["published"] as? String else {
             throw Error.missingPublishedDate
         }
-        let dateFormatter = ISO8601DateFormatter()
-        guard let publishedDate = dateFormatter.date(from: publishedString) else {
+        guard let publishedDate = Date.dateWithISO8601WithMillisecondsString(publishedString) else {
             throw Error.incorrectPusblishedDateFormat
         }
         activityID = id
