@@ -31,6 +31,8 @@ extension WordPressSupportSourceTag {
             return .wpComCreateSiteDomain
         case .wpComCreateSiteDetails:
             return .wpComCreateSiteDetails
+        case .wpComCreateSiteUsername:
+            return .wpComCreateSiteUsername
         case .wpComSignupEmail:
             return .wpComSignupEmail
         case .wpComSignup:
