@@ -455,7 +455,15 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     // MARK: - Initializers
 
+    /// Initializer
+    ///
+    /// - Parameters:
+    ///     - post: the post to edit in this VC.  Must be already assigned to a `ManagedObjectContext`
+    ///             since that's necessary for the edits to be saved.
+    ///
     required init(post: AbstractPost) {
+        precondition(post.managedObjectContext != nil)
+
         self.post = post
 
         super.init(nibName: nil, bundle: nil)
