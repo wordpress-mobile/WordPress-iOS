@@ -56,6 +56,8 @@ class ShareCategoriesPickerViewController: UITableViewController {
         return button
     }()
 
+    /// Sorted category list
+    ///
     fileprivate var categoryTree: CategoryTree? {
         guard let allCategories = self.allCategories else {
             return nil

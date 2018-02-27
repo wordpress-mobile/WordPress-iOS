@@ -1,59 +1,51 @@
 import WordPressKit.RemotePostCategory
 
-public class CategoryTree {
-    var tree: CategoryTreeNode<RemotePostCategory>
+class CategoryTree {
+    var tree: CategoryTreeNode
 
-    public init(categories: [RemotePostCategory]) {
+    init(categories: [RemotePostCategory]) {
         let rootCategory = RemotePostCategory()
-        rootCategory.categoryID = -1
-        self.tree = CategoryTreeNode<RemotePostCategory>(value: rootCategory)
-
-        let rootCategories = categories.filter { postCategory -> Bool in
-            guard let parentID = postCategory.parentID, parentID.intValue == 0 else {
-                return false
-            }
-            return true
-        }
-        rootCategories.forEach { topCategory in
-            tree.addChild(CategoryTreeNode<RemotePostCategory>(value: topCategory))
-        }
-
-        let childCategories = categories.filter { postCategory -> Bool in
-            guard let parentID = postCategory.parentID, parentID.intValue == 0 else {
-                return true
-            }
-            return false
-        }
-        childCategories.forEach { childCategory in
-            guard childCategory.parentID != nil else {
-                return
-            }
-            if let rootCategory = rootCategories.filter({ $0.categoryID == childCategory.parentID }).first {
-                let treeNode = tree.search(rootCategory)
-                treeNode?.addChild(CategoryTreeNode<RemotePostCategory>(value: childCategory))
-            }
-        }
+        rootCategory.categoryID = NSNumber(value: 0)
+        rootCategory.name = "root"
+        rootCategory.parentID = nil
+        self.tree = CategoryTreeNode(value: rootCategory)
+        let sortedCategories = categories.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == ComparisonResult.orderedAscending }
+        self.tree.addChildren(sortedCategories)
     }
 }
 
-public class CategoryTreeNode<T> {
-    public var value: T
+class CategoryTreeNode {
+    var value: RemotePostCategory
 
-    public weak var parent: CategoryTreeNode?
-    public var children = [CategoryTreeNode<T>]()
+    weak var parent: CategoryTreeNode?
+    var children = [CategoryTreeNode]()
 
-    public init(value: T) {
+    init(value: RemotePostCategory) {
         self.value = value
     }
 
-    public func addChild(_ node: CategoryTreeNode<T>) {
+    func addChild(_ node: CategoryTreeNode) {
         children.append(node)
         node.parent = self
+    }
+
+    func addChildren(_ values: [RemotePostCategory]) {
+        guard !values.isEmpty else {
+            return
+        }
+
+        values.forEach { category in
+            if category.safeParentValue.isEqual(to: self.value.categoryID) {
+                let child = CategoryTreeNode(value: category)
+                self.addChild(child)
+                child.addChildren(values)
+            }
+        }
     }
 }
 
 extension CategoryTreeNode: CustomStringConvertible {
-    public var description: String {
+    var description: String {
         var s = "\(value)"
         if !children.isEmpty {
             s += " {" + children.map { $0.description }.joined(separator: ", ") + "}"
@@ -62,9 +54,19 @@ extension CategoryTreeNode: CustomStringConvertible {
     }
 }
 
-extension CategoryTreeNode where T: Equatable {
-    public func search(_ value: T) -> CategoryTreeNode? {
-        if value == self.value {
+extension CategoryTreeNode: Equatable {
+    static func ==(lhs: CategoryTreeNode, rhs: CategoryTreeNode) -> Bool {
+        if lhs.value.categoryID.isEqual(to: rhs.value.categoryID) {
+            return true
+        } else {
+            return false
+        }
+    }
+}
+
+extension CategoryTreeNode {
+    func search(_ value: CategoryTreeNode) -> CategoryTreeNode? {
+        if value == self {
             return self
         }
         for child in children {
@@ -73,5 +75,26 @@ extension CategoryTreeNode where T: Equatable {
             }
         }
         return nil
+    }
+
+    func search(_ value: RemotePostCategory) -> CategoryTreeNode? {
+        if value.categoryID.isEqual(to: self.value.categoryID) {
+            return self
+        }
+        for child in children {
+            if let found = child.search(value) {
+                return found
+            }
+        }
+        return nil
+    }
+}
+
+extension RemotePostCategory {
+    var safeParentValue: NSNumber {
+        guard let parentID = parentID else {
+            return NSNumber(value: 0)
+        }
+        return parentID
     }
 }
