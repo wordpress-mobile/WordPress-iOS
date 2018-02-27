@@ -15,6 +15,7 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
     @IBOutlet weak var currentThemeBar: UIView!
     @IBOutlet weak var currentThemeLabel: UILabel!
     @IBOutlet weak var currentThemeDivider: UIView!
+    @IBOutlet weak var currentThemeContainer: UIView!
     @IBOutlet weak var currentThemeName: UILabel!
     @IBOutlet weak var customizeButton: UIButton!
     @IBOutlet weak var detailsButton: UIButton!
@@ -42,6 +43,8 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
             supportIcon.isHidden = customTheme
             detailsButton.isHidden = customTheme && !hasDetailsURL
             detailsIcon.isHidden = customTheme && !hasDetailsURL
+
+            prepareForVoiceOver()
         }
     }
     fileprivate var filterType: ThemeType = .all {
@@ -148,5 +151,18 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
             popover.canOverlapSourceViewRect = true
         }
         alertController.presentFromRootViewController()
+    }
+}
+
+extension ThemeBrowserHeaderView: Accessible {
+    func prepareForVoiceOver() {
+        prepareThemeBarForVoiceOver()
+    }
+
+    private func prepareThemeBarForVoiceOver() {
+        currentThemeContainer.isAccessibilityElement = true
+        if let currentThemeLabel = currentThemeLabel.text, let currentThemeName = currentThemeName.text {
+            currentThemeContainer.accessibilityLabel = currentThemeLabel + ", " + currentThemeName + "."
+        }
     }
 }
