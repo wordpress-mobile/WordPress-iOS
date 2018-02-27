@@ -397,12 +397,3 @@ public protocol WordPressAuthenticatorDelegate: class {
         })
     }
 }
-
-
-
-extension NSNotification.Name {
-    static let wordpressLoginCancelled = Foundation.Notification.Name(rawValue: "WordPressLoginCancelled")
-    static let wordpressLoginFinishedJetpackLogin = Foundation.Notification.Name(rawValue: "WordPressLoginFinishedJetpackLogin")
-    static let wordpressAuthenticationFlowEvent = NSNotification.Name(rawValue: "WordPressAuthenticationFlowEvent")
-    static let wordpressSupportBadgeUpdated = NSNotification.Name(rawValue: "WordPressSupportBadgeUpdated")
-}
