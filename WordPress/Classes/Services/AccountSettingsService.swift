@@ -8,6 +8,9 @@ let AccountSettingsServiceChangeSaveFailedNotification = "AccountSettingsService
 protocol AccountSettingsRemoteInterface {
     func getSettings(success: @escaping (AccountSettings) -> Void, failure: @escaping (Error) -> Void)
     func updateSetting(_ change: AccountSettingsChange, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
+    func changeUsername(to username: String, success: @escaping () -> Void, failure: @escaping () -> Void)
+    func suggestUsernames(base: String, finished: @escaping ([String]) -> Void)
+    func updatePassword(_ password: String, success: @escaping () -> Void, failure: @escaping (Error) -> Void)
 }
 
 extension AccountSettingsRemote: AccountSettingsRemoteInterface {}
@@ -98,11 +101,13 @@ class AccountSettingsService {
         status = .stalled
     }
 
-    func saveChange(_ change: AccountSettingsChange) {
+    func saveChange(_ change: AccountSettingsChange, finished: (() -> ())? = nil) {
         guard let reverse = try? applyChange(change) else {
             return
         }
-        remote.updateSetting(change, success: { }) { (error) -> Void in
+        remote.updateSetting(change, success: {
+            finished?()
+        }) { (error) -> Void in
             do {
                 // revert change
                 try self.applyChange(reverse)
@@ -113,6 +118,19 @@ class AccountSettingsService {
             // TODO: show/return error to the user (@koke 2015-11-24)
             // What should be showing the error? Let's post a notification for now so something else can handle it
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: AccountSettingsServiceChangeSaveFailedNotification), object: error as NSError)
+
+            finished?()
+        }
+    }
+
+    func updatePassword(_ password: String, finished: (() -> ())? = nil) {
+        remote.updatePassword(password, success: {
+            finished?()
+        }) { (error) -> Void in
+            DDLogError("Error saving account settings change \(error)")
+            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: AccountSettingsServiceChangeSaveFailedNotification), object: error as NSError)
+
+            finished?()
         }
     }
 
@@ -121,6 +139,20 @@ class AccountSettingsService {
         let blog = service.blog(byBlogId: NSNumber(value: settings.primarySiteID))
 
         return blog?.settings?.name
+    }
+
+    /// Change the current user's username
+    ///
+    /// - Parameters:
+    ///   - username: the new username
+    ///   - success: block for success
+    ///   - failure: block for failure
+    public func changeUsername(to username: String, success: @escaping () -> Void, failure: @escaping () -> Void) {
+        remote.changeUsername(to: username, success: success, failure: success)
+    }
+
+    public func suggestUsernames(base: String, finished: @escaping ([String]) -> Void) {
+        remote.suggestUsernames(base: base, finished: finished)
     }
 
     fileprivate func loadSettings() {
