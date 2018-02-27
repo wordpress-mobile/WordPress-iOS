@@ -712,6 +712,7 @@
 		B549BA681CF7447E0086C608 /* InvitePersonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B549BA671CF7447E0086C608 /* InvitePersonViewController.swift */; };
 		B54A6BD02045F375001D2A37 /* SafariCredentialsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A6BCF2045F375001D2A37 /* SafariCredentialsService.swift */; };
 		B54A6BD22045F8F4001D2A37 /* LoginFields+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A6BD12045F8F4001D2A37 /* LoginFields+Validation.swift */; };
+		B54A6BD42045FCA0001D2A37 /* LoginFieldsValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A6BD32045FCA0001D2A37 /* LoginFieldsValidationTests.swift */; };
 		B54C02241F38F50100574572 /* String+RegEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54C02231F38F50100574572 /* String+RegEx.swift */; };
 		B54E1DF01A0A7BAA00807537 /* ReplyBezierView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54E1DED1A0A7BAA00807537 /* ReplyBezierView.swift */; };
 		B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54E1DEE1A0A7BAA00807537 /* ReplyTextView.swift */; };
@@ -2198,6 +2199,7 @@
 		B549BA671CF7447E0086C608 /* InvitePersonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvitePersonViewController.swift; sourceTree = "<group>"; };
 		B54A6BCF2045F375001D2A37 /* SafariCredentialsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariCredentialsService.swift; sourceTree = "<group>"; };
 		B54A6BD12045F8F4001D2A37 /* LoginFields+Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginFields+Validation.swift"; sourceTree = "<group>"; };
+		B54A6BD32045FCA0001D2A37 /* LoginFieldsValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFieldsValidationTests.swift; sourceTree = "<group>"; };
 		B54C02231F38F50100574572 /* String+RegEx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+RegEx.swift"; sourceTree = "<group>"; };
 		B54E1DED1A0A7BAA00807537 /* ReplyBezierView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyBezierView.swift; sourceTree = "<group>"; };
 		B54E1DEE1A0A7BAA00807537 /* ReplyTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyTextView.swift; sourceTree = "<group>"; };
@@ -4274,6 +4276,7 @@
 			children = (
 				85D239BE1AE5A7020074768D /* LoginFacadeTests.m */,
 				E63C89731CB99A8500649C8F /* WordPressAuthenticatorTests.swift */,
+				B54A6BD32045FCA0001D2A37 /* LoginFieldsValidationTests.swift */,
 			);
 			name = NUX;
 			sourceTree = "<group>";
@@ -7965,6 +7968,7 @@
 				E124CE721C86D27100F7BA99 /* StoreTests.swift in Sources */,
 				B5EFB1C91B333C5A007608A3 /* NotificationSettingsServiceTests.swift in Sources */,
 				E6A216931DCE857100E7DF73 /* WPRichTextFormatterTests.swift in Sources */,
+				B54A6BD42045FCA0001D2A37 /* LoginFieldsValidationTests.swift in Sources */,
 				BE1071FF1BC75FFA00906AFF /* WPStyleGuide+BlogTests.swift in Sources */,
 				932645A41E7C206600134988 /* EditorSettingsTests.swift in Sources */,
 				933D1F471EA64108009FB462 /* TestingAppDelegate.m in Sources */,
