@@ -1,1 +1,2 @@
-I denna version har du tillgång till en helt ny, härlig utökning för Delning.
+Förbättringar i utökningen för delning.
+Ny Jetpack-inställning: Snabba upp din webbplats.
