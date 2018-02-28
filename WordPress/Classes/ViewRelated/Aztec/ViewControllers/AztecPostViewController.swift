@@ -413,9 +413,9 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate var currentKeyboardFrame: CGRect = .zero
 
 
-    /// Origin of selected media, used for analytics
+    /// Method of selecting media for upload, used for analytics
     ///
-    fileprivate var selectedMediaOrigin: WPAppAnalytics.SelectedMediaOrigin = .none
+    fileprivate var mediaSelectionMethod: MediaSelectionMethod = .none
 
 
     /// Options
@@ -2630,45 +2630,8 @@ extension AztecPostViewController {
         refreshNavigationBar()
     }
 
-    enum MediaSource {
-        case localLibrary
-        case otherApps
-        case wpMediaLibrary
 
-        func statType(for exportableAsset: ExportableAsset) -> WPAnalyticsStat? {
-            switch self {
-            case .localLibrary:
-                switch exportableAsset.assetMediaType {
-                case .image:
-                    return .editorAddedPhotoViaLocalLibrary
-                case .video:
-                    return .editorAddedVideoViaLocalLibrary
-                default:
-                    return nil
-                }
-            case .otherApps:
-                switch exportableAsset.assetMediaType {
-                case .image:
-                    return .editorAddedPhotoViaOtherApps
-                case .video:
-                    return .editorAddedVideoViaOtherApps
-                default:
-                    return nil
-                }
-            case .wpMediaLibrary:
-                switch exportableAsset.assetMediaType {
-                case .image:
-                    return .editorAddedPhotoViaWPMediaLibrary
-                case .video:
-                    return .editorAddedVideoViaWPMediaLibrary
-                default:
-                    return nil
-                }
-            }
-        }
-    }
-
-    fileprivate func observe(media: Media, statType: WPAnalyticsStat?) {
+    fileprivate func observe(media: Media) {
         let _ = mediaCoordinator.addObserver({ [weak self](media, state) in
             guard let strongSelf = self else {
                 return
@@ -2683,9 +2646,7 @@ extension AztecPostViewController {
             case .thumbnailReady(let url):
                 strongSelf.handleThumbnailURL(url, attachment: attachment)
             case .uploading:
-                if let statType = statType {
-                    WPAppAnalytics.track(statType, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
-                }
+                break
             case .ended:
                 strongSelf.handleUploaded(media: media, mediaUploadID: media.uploadID)
             case .failed(let error):
@@ -2717,9 +2678,10 @@ extension AztecPostViewController {
             }
         }
 
-        let media = mediaCoordinator.addMedia(from: exportableAsset, to: self.post)
+        let info = MediaAnalyticsInfo(origin: .editor(source), selectionMethod: mediaSelectionMethod)
+        let media = mediaCoordinator.addMedia(from: exportableAsset, to: self.post, analyticsInfo: info)
         attachment?.uploadID = media.uploadID
-        observe(media: media, statType: source.statType(for: exportableAsset))
+        observe(media: media)
     }
 
     fileprivate func insertExternalMediaWithURL(_ url: URL) {
@@ -2727,13 +2689,13 @@ extension AztecPostViewController {
     }
 
     fileprivate func insertDeviceMedia(phAsset: PHAsset) {
-        insert(exportableAsset: phAsset, source: .localLibrary)
+        insert(exportableAsset: phAsset, source: .deviceLibrary)
     }
 
     /// Insert media to the post from the site's media library.
     ///
     func prepopulateMediaItems(_ media: [Media]) {
-        selectedMediaOrigin = .mediaUploadWritePost
+        mediaSelectionMethod = .mediaUploadWritePost
 
         media.forEach({ insertSiteMediaLibrary(media: $0) })
     }
@@ -2778,7 +2740,7 @@ extension AztecPostViewController {
         case .image:
             let attachment = insertImageAttachment(with: remoteURL)
             attachment.alt = media.alt
-            WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
+            WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, selectionMethod: mediaSelectionMethod), with: post)
         case .video:
             var posterURL: URL?
             if let posterURLString = media.remoteThumbnailURL {
@@ -2789,12 +2751,12 @@ extension AztecPostViewController {
                 attachment.videoPressID = videoPressGUID
                 richTextView.refresh(attachment)
             }
-            WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
+            WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, selectionMethod: mediaSelectionMethod), with: post)
         default:
             // If we drop in here, let's just insert a link the the remote media
             let linkTitle = media.title?.nonEmptyString() ?? remoteURLStr
             richTextView.setLink(remoteURL, title: linkTitle, inRange: richTextView.selectedRange)
-            WPAppAnalytics.track(.editorAddedOtherMediaViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
+            WPAppAnalytics.track(.editorAddedOtherMediaViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, selectionMethod: mediaSelectionMethod), with: post)
         }
     }
 
@@ -2805,20 +2767,18 @@ extension AztecPostViewController {
             tempMediaURL = absoluteURL
         }
         var attachment: MediaAttachment?
-        var statType: WPAnalyticsStat?
         if media.mediaType == .image {
             attachment = insertImageAttachment(with: tempMediaURL)
-            statType = .editorAddedPhotoViaWPMediaLibrary
         } else if media.mediaType == .video,
             let remoteURLStr = media.remoteURL,
             let remoteURL = URL(string: remoteURLStr) {
             attachment = richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: remoteURL, posterURL: media.absoluteThumbnailLocalURL, placeHolderImage: Assets.defaultMissingImage)
-            statType = .editorAddedVideoViaWPMediaLibrary
         }
         if let attachment = attachment {
             attachment.uploadID = media.uploadID
-            mediaCoordinator.addMedia(media)
-            observe(media: media, statType: statType)
+            let info = MediaAnalyticsInfo(origin: .editor(.wpMediaLibrary), selectionMethod: mediaSelectionMethod)
+            mediaCoordinator.addMedia(media, analyticsInfo: info)
+            observe(media: media)
         }
     }
 
@@ -2945,7 +2905,7 @@ extension AztecPostViewController {
         attachment.progress = 0
         richTextView.refresh(attachment)
         mediaCoordinator.retryMedia(media)
-        WPAppAnalytics.track(.editorUploadMediaRetried, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: self.selectedMediaOrigin), with: self.post.blog)
+        WPAppAnalytics.track(.editorUploadMediaRetried, withProperties: WPAppAnalytics.properties(for: media, selectionMethod: mediaSelectionMethod), with: self.post.blog)
     }
 
     fileprivate func processMediaAttachments() {
@@ -3399,9 +3359,9 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             unregisterChangeObserver()
             mediaLibraryDataSource.searchCancelled()
             dismiss(animated: true, completion: nil)
-            selectedMediaOrigin = .fullScreenPicker
+            mediaSelectionMethod = .fullScreenPicker
         } else {
-            selectedMediaOrigin = .inlinePicker
+            mediaSelectionMethod = .inlinePicker
         }
 
         closeMediaPickerInputViewController()
@@ -3501,7 +3461,7 @@ extension AztecPostViewController: UIViewControllerRestoration {
 extension AztecPostViewController: UIDocumentPickerDelegate {
 
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        selectedMediaOrigin = .documentPicker
+        mediaSelectionMethod = .documentPicker
         for documentURL in urls {
             insertExternalMediaWithURL(documentURL)
         }

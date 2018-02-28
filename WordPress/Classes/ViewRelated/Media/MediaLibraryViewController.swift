@@ -464,7 +464,8 @@ class MediaLibraryViewController: WPMediaPickerViewController {
                 return
             }
 
-            MediaCoordinator.shared.addMedia(from: media, to: blog, origin: .mediaLibrary)
+            let info = MediaAnalyticsInfo(origin: .mediaLibrary, selectionMethod: .fullScreenPicker)
+            MediaCoordinator.shared.addMedia(from: media, to: blog, analyticsInfo: info)
         }
 
         guard let mediaType = mediaInfo[UIImagePickerControllerMediaType] as? String else { return }
@@ -490,7 +491,8 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 extension MediaLibraryViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         for documentURL in urls as [NSURL] {
-            MediaCoordinator.shared.addMedia(from: documentURL, to: blog, origin: .mediaLibrary)
+            let info = MediaAnalyticsInfo(origin: .mediaLibrary, selectionMethod: .documentPicker)
+            MediaCoordinator.shared.addMedia(from: documentURL, to: blog, analyticsInfo: info)
         }
     }
 
@@ -535,7 +537,8 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
             assets.count > 0 else { return }
 
         for asset in assets {
-            MediaCoordinator.shared.addMedia(from: asset, to: blog, origin: .mediaLibrary)
+            let info = MediaAnalyticsInfo(origin: .mediaLibrary, selectionMethod: .fullScreenPicker)
+            MediaCoordinator.shared.addMedia(from: asset, to: blog, analyticsInfo: info)
         }
     }
 
