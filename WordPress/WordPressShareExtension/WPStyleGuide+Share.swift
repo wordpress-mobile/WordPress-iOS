@@ -21,6 +21,17 @@ extension WPStyleGuide {
             cell.separatorInset = UIEdgeInsets.zero
         }
 
+        static func configureCategoryCell(_ cell: UITableViewCell) {
+            cell.textLabel?.font = tableviewTextFont()
+            cell.textLabel?.sizeToFit()
+            cell.textLabel?.textColor = darkGrey()
+            cell.textLabel?.numberOfLines = 0
+
+            cell.backgroundColor = UIColor.white
+            cell.separatorInset = UIEdgeInsets.zero
+            cell.tintColor = wordPressBlue()
+        }
+
         static func configureTagCell(_ cell: UITableViewCell) {
             cell.textLabel?.font = tableviewTextFont()
             cell.textLabel?.sizeToFit()
