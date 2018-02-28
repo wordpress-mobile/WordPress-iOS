@@ -58,29 +58,21 @@ class ShareCategoriesPickerViewController: UITableViewController {
 
     /// Category Tree
     ///
-    fileprivate var categoryTree: CategoryTree? {
+    fileprivate lazy var categoryTree: CategoryTree? = {
         guard let allCategories = self.allCategories, !allCategories.isEmpty else {
             return nil
         }
         return CategoryTree(categories: allCategories)
-    }
+    }()
 
     /// Sorted Categories
     ///
-    fileprivate var sortedCategories: [RemotePostCategory]? {
+    fileprivate lazy var sortedCategories: [RemotePostCategory]? = {
         guard let categoryTree = self.categoryTree else {
             return nil
         }
-        let rootNodes = categoryTree.tree.children
-        var returnValue: [RemotePostCategory] = []
-        rootNodes.forEach { node in
-            returnValue.append(node.value)
-            if let decendents = categoryTree.tree.search(node)?.allDescendants() {
-                returnValue += decendents.flatMap({$0}).map({ $0.value })
-            }
-        }
-        return returnValue
-    }
+        return categoryTree.tree.sortedTreeAsArray
+    }()
 
     // MARK: - Initializers
 
@@ -199,7 +191,7 @@ fileprivate extension ShareCategoriesPickerViewController {
         guard let node = categoryTree?.tree.search(category) else {
             return 0
         }
-        return node.depth-1
+        return (node.depth-1) * Constants.indentationMultiplier
     }
 
     var rowCountForCategories: Int {
@@ -256,5 +248,6 @@ fileprivate extension ShareCategoriesPickerViewController {
         static let cellReuseIdentifier  = String(describing: ShareCategoriesPickerViewController.self)
         static let defaultRowHeight     = CGFloat(44.0)
         static let flashAnimationLength = 0.2
+        static let indentationMultiplier = 3
     }
 }
