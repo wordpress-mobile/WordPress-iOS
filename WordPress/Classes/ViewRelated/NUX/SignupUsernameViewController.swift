@@ -34,13 +34,13 @@ class SignupUsernameViewController: NUXViewController {
 
     private func configureView() {
         _ = addHelpButtonToNavController()
-        navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
+        navigationItem.title = NSLocalizedString("Change Username", comment: "Change Username title.")
         WPStyleGuide.configureColors(for: view, andTableView: nil)
     }
 
     private func addConfirmationWarning() {
         let warningLabel = UILabel()
-        warningLabel.text = NSLocalizedString("Once changed, your old username will no longer be avilable for use.", comment: "Warning shown before user changes their username.")
+        warningLabel.text = NSLocalizedString("Once you change your username, it will no longer be available for future use.", comment: "Warning shown before a user changes their username.")
         warningLabel.numberOfLines = 0
         warningLabel.textAlignment = .center
         warningLabel.textColor = WPStyleGuide.darkGrey()
