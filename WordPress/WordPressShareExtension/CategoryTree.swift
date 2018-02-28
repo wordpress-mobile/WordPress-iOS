@@ -3,12 +3,16 @@ import WordPressKit.RemotePostCategory
 public class CategoryTree {
     public var tree: CategoryTreeNode
 
+    public var rootCategory: RemotePostCategory = {
+        let root = RemotePostCategory()
+        root.categoryID = TreeConstants.rootNodeID
+        root.name = TreeConstants.rootNodeName
+        root.parentID = nil
+        return root
+    }()
+
     init(categories: [RemotePostCategory]) {
-        let rootCategory = RemotePostCategory()
-        rootCategory.categoryID = NSNumber(value: 0)
-        rootCategory.name = "root"
-        rootCategory.parentID = nil
-        self.tree = CategoryTreeNode(value: rootCategory)
+        self.tree = CategoryTreeNode(value: self.rootCategory)
         let sortedCategories = categories.sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == ComparisonResult.orderedAscending }
         self.tree.addChildren(sortedCategories)
     }
@@ -65,7 +69,21 @@ extension CategoryTreeNode: Equatable {
 }
 
 extension CategoryTreeNode {
-    public func search(_ value: CategoryTreeNode) -> CategoryTreeNode? {
+    var sortedTreeAsArray: [RemotePostCategory] {
+        var returnValue: [RemotePostCategory] = []
+        if value.categoryID != TreeConstants.rootNodeID {
+            returnValue.append(value)
+        }
+
+        if !children.isEmpty {
+            for child in children {
+                returnValue += child.sortedTreeAsArray
+            }
+        }
+        return returnValue
+    }
+
+    func search(_ value: CategoryTreeNode) -> CategoryTreeNode? {
         if value == self {
             return self
         }
@@ -88,21 +106,9 @@ extension CategoryTreeNode {
         }
         return nil
     }
-
-    func allDescendants() -> [CategoryTreeNode]? {
-        guard !children.isEmpty else {
-            return nil
-        }
-        var descendants: [CategoryTreeNode] = []
-        descendants += children.flatMap({ $0 })
-        for child in children {
-            if let found = child.allDescendants() {
-                descendants += found.flatMap({ $0 })
-            }
-        }
-        return descendants
-    }
 }
+
+// MARK: - RemotePostCategory Helper
 
 extension RemotePostCategory {
     var safeParentValue: NSNumber {
@@ -111,4 +117,11 @@ extension RemotePostCategory {
         }
         return parentID
     }
+}
+
+// MARK: - Constants
+
+fileprivate struct TreeConstants {
+    static let rootNodeID   = NSNumber(value: 0)
+    static let rootNodeName = "root"
 }
