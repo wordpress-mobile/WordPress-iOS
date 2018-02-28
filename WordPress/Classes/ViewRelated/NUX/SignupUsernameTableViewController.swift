@@ -167,7 +167,7 @@ extension SignupUsernameTableViewController {
             return NSAttributedString(string: "")
         }
 
-        let baseDescription = String(format: NSLocalizedString("Your current username is \"%@\". With few exceptions, others will only ever see your display name, \"%@\".", comment: "Instructional text that displays the current username and display name."), currentUsername, displayName)
+        let baseDescription = String(format: NSLocalizedString("Your current username is %@. With few exceptions, others will only ever see your display name, %@.", comment: "Instructional text that displays the current username and display name."), currentUsername, displayName)
         guard let rangeOfUsername = baseDescription.range(of: currentUsername),
             let rangeOfDisplayName = baseDescription.range(of: displayName) else {
                 return NSAttributedString(string: baseDescription)
