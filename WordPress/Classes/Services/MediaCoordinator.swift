@@ -150,11 +150,13 @@ class MediaCoordinator: NSObject {
     ///
     /// - Parameter media: the media object to retry the upload
     ///
-    func retryMedia(_ media: Media) {
+    func retryMedia(_ media: Media, analyticsInfo: MediaAnalyticsInfo? = nil) {
         guard media.remoteStatus == .failed else {
             DDLogError("Can't retry Media upload that hasn't failed. \(String(describing: media))")
             return
         }
+
+        trackRetryUploadOf(media, analyticsInfo: analyticsInfo)
 
         let coordinator = self.coordinator(for: media)
         coordinator.track(numberOfItems: 1)
@@ -261,6 +263,18 @@ class MediaCoordinator: NSObject {
         guard let info = analyticsInfo,
             let event = info.eventForMediaType(media.mediaType) else {
             return
+        }
+
+        let properties = info.properties(for: media)
+        WPAppAnalytics.track(event,
+                             withProperties: properties,
+                             with: media.blog)
+    }
+
+    private func trackRetryUploadOf(_ media: Media, analyticsInfo: MediaAnalyticsInfo?) {
+        guard let info = analyticsInfo,
+            let event = info.retryEvent else {
+                return
         }
 
         let properties = info.properties(for: media)

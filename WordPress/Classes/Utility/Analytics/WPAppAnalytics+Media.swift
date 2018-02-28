@@ -58,6 +58,15 @@ public struct MediaAnalyticsInfo {
         return origin.eventForMediaType(mediaType)
     }
 
+    var retryEvent: WPAnalyticsStat? {
+        switch origin {
+        case .mediaLibrary:
+            return nil
+        case .editor(_):
+            return .editorUploadMediaRetried
+        }
+    }
+
     func properties(for media: Media) -> [String: Any] {
         guard let selectionMethod = selectionMethod else {
             return WPAppAnalytics.properties(for: media)
@@ -119,6 +128,7 @@ enum MediaUploadOrigin {
 /// Used for analytics to track the source of a media item
 ///
 enum MediaSource {
+    case none
     case deviceLibrary
     case otherApps
     case wpMediaLibrary

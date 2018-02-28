@@ -2904,8 +2904,9 @@ extension AztecPostViewController {
         resetMediaAttachmentOverlay(attachment)
         attachment.progress = 0
         richTextView.refresh(attachment)
-        mediaCoordinator.retryMedia(media)
-        WPAppAnalytics.track(.editorUploadMediaRetried, withProperties: WPAppAnalytics.properties(for: media, selectionMethod: mediaSelectionMethod), with: self.post.blog)
+
+        let info = MediaAnalyticsInfo(origin: .editor(.none), selectionMethod: mediaSelectionMethod)
+        mediaCoordinator.retryMedia(media, analyticsInfo: info)
     }
 
     fileprivate func processMediaAttachments() {
