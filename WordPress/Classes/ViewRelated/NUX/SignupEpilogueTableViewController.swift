@@ -90,7 +90,7 @@ class SignupEpilogueTableViewController: NUXTableViewController {
                 fatalError("Failed to get a section footer cell")
             }
             cell.titleLabel?.numberOfLines = 0
-            cell.titleLabel?.text = NSLocalizedString("Log in will be possible by getting a new email like the one you just used, but you can setup a password if you prefer.", comment: "Information shown below the optional password field after new account creation.")
+            cell.titleLabel?.text = NSLocalizedString("You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer.", comment: "Information shown below the optional password field after new account creation.")
 
             return cell
         }
