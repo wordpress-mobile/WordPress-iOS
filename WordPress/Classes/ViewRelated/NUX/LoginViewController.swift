@@ -30,7 +30,7 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     }
 
     @objc
-    private func didChangePreferredContentSize() {
+    func didChangePreferredContentSize() {
         styleInstructions()
     }
 
