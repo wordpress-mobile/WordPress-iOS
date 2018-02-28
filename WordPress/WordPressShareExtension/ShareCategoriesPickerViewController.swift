@@ -192,7 +192,7 @@ fileprivate extension ShareCategoriesPickerViewController {
         } else {
             cell.accessoryType = .none
         }
-        WPStyleGuide.Share.configureTableViewSiteCell(cell)
+        WPStyleGuide.Share.configureCategoryCell(cell)
     }
 
     func indentationLevelForCategory(_ category: RemotePostCategory) -> Int {
