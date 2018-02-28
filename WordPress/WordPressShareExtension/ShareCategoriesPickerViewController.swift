@@ -56,13 +56,30 @@ class ShareCategoriesPickerViewController: UITableViewController {
         return button
     }()
 
-    /// Sorted category list
+    /// Category Tree
     ///
     fileprivate var categoryTree: CategoryTree? {
-        guard let allCategories = self.allCategories else {
+        guard let allCategories = self.allCategories, !allCategories.isEmpty else {
             return nil
         }
         return CategoryTree(categories: allCategories)
+    }
+
+    /// Sorted Categories
+    ///
+    fileprivate var sortedCategories: [RemotePostCategory]? {
+        guard let categoryTree = self.categoryTree else {
+            return nil
+        }
+        let rootNodes = categoryTree.tree.children
+        var returnValue: [RemotePostCategory] = []
+        rootNodes.forEach { node in
+            returnValue.append(node.value)
+            if let decendents = categoryTree.tree.search(node)?.allDescendants() {
+                returnValue += decendents.flatMap({$0}).map({ $0.value })
+            }
+        }
+        return returnValue
     }
 
     // MARK: - Initializers
@@ -165,7 +182,7 @@ fileprivate extension ShareCategoriesPickerViewController {
         guard let category = categoryForRowAtIndexPath(indexPath) else {
             return
         }
-
+        cell.indentationLevel = indentationLevelForCategory(category)
         cell.textLabel?.text = category.name.nonEmptyString()
         cell.detailTextLabel?.isEnabled = false
         cell.detailTextLabel?.text = nil
@@ -176,6 +193,13 @@ fileprivate extension ShareCategoriesPickerViewController {
             cell.accessoryType = .none
         }
         WPStyleGuide.Share.configureTableViewSiteCell(cell)
+    }
+
+    func indentationLevelForCategory(_ category: RemotePostCategory) -> Int {
+        guard let node = categoryTree?.tree.search(category) else {
+            return 0
+        }
+        return node.depth-1
     }
 
     var rowCountForCategories: Int {
@@ -202,15 +226,10 @@ fileprivate extension ShareCategoriesPickerViewController {
     }
 
     func categoryForRowAtIndexPath(_ indexPath: IndexPath) -> RemotePostCategory? {
-        guard let allCategories = allCategories else {
+        guard let sortedCategories = sortedCategories else {
             return nil
         }
-        return allCategories[indexPath.row]
-    }
-
-    func clearCategoryDataAndRefreshSitesTable() {
-        allCategories = nil
-        tableView.reloadData()
+        return sortedCategories[indexPath.row]
     }
 }
 
