@@ -120,7 +120,7 @@ extension WPStyleGuide {
     /// - Returns: A properly styled UIButton
     ///
     class func termsButton() -> UIButton {
-        let baseString =  NSLocalizedString("By choosing \"Sign up\" you agree to our _Terms of Service_", comment: "Legal disclaimer for signup buttons. Sign Up must match button phrasing, two underscores _..._ denote underline")
+        let baseString =  NSLocalizedString("By signing up, you agree to our _Terms of Service_.", comment: "Legal disclaimer for signup buttons, the underscores _..._ denote underline")
 
         let labelParts = baseString.components(separatedBy: "_")
         let firstPart = labelParts[0]
