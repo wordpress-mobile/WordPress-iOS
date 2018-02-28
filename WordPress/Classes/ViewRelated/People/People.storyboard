@@ -33,93 +33,92 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="PeopleCell" rowHeight="86" id="kMD-3K-Yok" customClass="PeopleCell" customModule="WordPress" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="PeopleCell" rowHeight="86" id="Wdc-br-fiq" customClass="PeopleCell" customModule="WordPress" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="55.5" width="375" height="86"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="kMD-3K-Yok" id="HXS-gQ-WaR">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="Wdc-br-fiq" id="enq-cQ-RBD">
                                     <rect key="frame" x="0.0" y="0.0" width="341" height="85.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar" translatesAutoresizingMaskIntoConstraints="NO" id="fUp-Sh-uv5" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar" translatesAutoresizingMaskIntoConstraints="NO" id="8zx-wm-uHU" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
                                             <rect key="frame" x="16" y="15" width="56" height="56"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="56" id="WNH-Z0-dbK"/>
-                                                <constraint firstAttribute="height" constant="56" id="ihL-Zj-j50"/>
+                                                <constraint firstAttribute="height" constant="56" id="PkG-l6-jIy"/>
+                                                <constraint firstAttribute="width" constant="56" id="W04-cD-T1Y"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jorge Bernal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SRh-jK-Qmd">
-                                            <rect key="frame" x="87" y="20" width="246" height="18"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="18" id="1up-XI-AiZ"/>
-                                            </constraints>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jorge Bernal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Vt-sK-TAK">
+                                            <rect key="frame" x="87" y="20" width="246" height="17"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                             <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@koke" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ake-ZW-wkV">
-                                            <rect key="frame" x="87" y="38" width="246" height="13.5"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@koke" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1F5-Qy-cZx">
+                                            <rect key="frame" x="87" y="35.5" width="246" height="13.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                             <color key="textColor" red="0.0" green="0.66666666669999997" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <view contentMode="left" horizontalCompressionResistancePriority="1000" placeholderIntrinsicWidth="39.5" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="FCF-E3-KhT" customClass="PeopleRoleBadgeLabel" customModule="WordPress" customModuleProvider="target">
-                                            <rect key="frame" x="87" y="54" width="39.5" height="16"/>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="16" id="H5Y-Fw-e4K"/>
-                                            </constraints>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="string" keyPath="text" value="Editor"/>
-                                                <userDefinedRuntimeAttribute type="color" keyPath="textColor">
-                                                    <color key="value" red="0.97037827968597412" green="0.97034931182861328" blue="0.97036576271057129" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </userDefinedRuntimeAttribute>
-                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                    <color key="value" red="0.027369353920221329" green="0.24052277207374573" blue="0.43405210971832275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </userDefinedRuntimeAttribute>
-                                                <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                                    <color key="value" red="0.027369353920221329" green="0.24052277207374573" blue="0.43405210971832275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
-                                        </view>
-                                        <view contentMode="left" horizontalCompressionResistancePriority="1000" placeholderIntrinsicWidth="71" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="ecj-mn-SNZ" customClass="PeopleRoleBadgeLabel" customModule="WordPress" customModuleProvider="target">
-                                            <rect key="frame" x="134" y="54" width="71" height="16"/>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="string" keyPath="text" value="Superadmin"/>
-                                                <userDefinedRuntimeAttribute type="color" keyPath="textColor">
-                                                    <color key="value" red="0.97037827968597412" green="0.97034931182861328" blue="0.97036576271057129" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </userDefinedRuntimeAttribute>
-                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                    <color key="value" red="0.027369353920221329" green="0.24052277207374573" blue="0.43405210971832275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </userDefinedRuntimeAttribute>
-                                                <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
-                                                    <color key="value" red="0.027369353920221329" green="0.24052277207374573" blue="0.43405210971832275" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
-                                        </view>
+                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Obq-4m-pnw">
+                                            <rect key="frame" x="87" y="51.5" width="118.5" height="16"/>
+                                            <subviews>
+                                                <view contentMode="left" horizontalCompressionResistancePriority="1000" placeholderIntrinsicWidth="39.5" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="5Qj-Ek-EUq" customClass="PeopleRoleBadgeLabel" customModule="WordPress" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="39.5" height="16"/>
+                                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="text" value="Editor"/>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                                            <color key="value" red="0.97037827970000001" green="0.97034931179999995" blue="0.97036576269999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                            <color key="value" red="0.027369353919999999" green="0.2405227721" blue="0.43405210970000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                                            <color key="value" red="0.027369353919999999" green="0.2405227721" blue="0.43405210970000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                                <view contentMode="left" horizontalCompressionResistancePriority="1000" placeholderIntrinsicWidth="71" placeholderIntrinsicHeight="16" translatesAutoresizingMaskIntoConstraints="NO" id="MH9-O4-5bD" customClass="PeopleRoleBadgeLabel" customModule="WordPress" customModuleProvider="target">
+                                                    <rect key="frame" x="47.5" y="0.0" width="71" height="16"/>
+                                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="string" keyPath="text" value="Superadmin"/>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                                            <color key="value" red="0.97037827970000001" green="0.97034931179999995" blue="0.97036576269999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                            <color key="value" red="0.027369353919999999" green="0.2405227721" blue="0.43405210970000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                                            <color key="value" red="0.027369353919999999" green="0.2405227721" blue="0.43405210970000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                        </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="fUp-Sh-uv5" firstAttribute="centerY" secondItem="HXS-gQ-WaR" secondAttribute="centerY" id="3SD-YC-w0g"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="Ake-ZW-wkV" secondAttribute="trailing" id="JHb-F8-9I3"/>
-                                        <constraint firstItem="OYa-bW-ydS" firstAttribute="leading" secondItem="fUp-Sh-uv5" secondAttribute="trailing" constant="15" id="NTJ-Sa-GBI"/>
-                                        <constraint firstItem="Ake-ZW-wkV" firstAttribute="top" secondItem="SRh-jK-Qmd" secondAttribute="baseline" constant="2" id="TnJ-il-F2r"/>
-                                        <constraint firstItem="SRh-jK-Qmd" firstAttribute="leading" secondItem="Ake-ZW-wkV" secondAttribute="leading" id="Wm0-WC-uBC"/>
-                                        <constraint firstItem="fUp-Sh-uv5" firstAttribute="leading" secondItem="HXS-gQ-WaR" secondAttribute="leadingMargin" id="aLY-Pv-M2Y"/>
-                                        <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="OYa-bW-ydS" secondAttribute="trailing" id="d4S-lu-9qc"/>
-                                        <constraint firstItem="SRh-jK-Qmd" firstAttribute="top" secondItem="HXS-gQ-WaR" secondAttribute="topMargin" constant="9" id="dCD-Nj-Mju"/>
-                                        <constraint firstItem="SRh-jK-Qmd" firstAttribute="leading" secondItem="fUp-Sh-uv5" secondAttribute="trailing" constant="15" id="jCI-Ib-bvd"/>
-                                        <constraint firstItem="OYa-bW-ydS" firstAttribute="top" secondItem="Ake-ZW-wkV" secondAttribute="bottom" constant="2.5" id="mph-af-JeV"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="SRh-jK-Qmd" secondAttribute="trailing" id="p9j-4O-zkj"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="OYa-bW-ydS" secondAttribute="bottom" constant="7.5" id="zWN-C6-adO"/>
+                                        <constraint firstItem="8zx-wm-uHU" firstAttribute="leading" secondItem="enq-cQ-RBD" secondAttribute="leadingMargin" id="1v8-wR-Ev4"/>
+                                        <constraint firstItem="Obq-4m-pnw" firstAttribute="top" secondItem="1F5-Qy-cZx" secondAttribute="bottom" constant="2.5" id="4GJ-w3-eLn"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Obq-4m-pnw" secondAttribute="bottom" constant="7.5" id="BTe-0Y-DDV"/>
+                                        <constraint firstItem="8zx-wm-uHU" firstAttribute="centerY" secondItem="enq-cQ-RBD" secondAttribute="centerY" id="KB9-ag-uwt"/>
+                                        <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="Obq-4m-pnw" secondAttribute="trailing" id="Nre-5n-77P"/>
+                                        <constraint firstItem="8Vt-sK-TAK" firstAttribute="leading" secondItem="8zx-wm-uHU" secondAttribute="trailing" constant="15" id="c8g-6f-yIm"/>
+                                        <constraint firstItem="8Vt-sK-TAK" firstAttribute="leading" secondItem="1F5-Qy-cZx" secondAttribute="leading" id="fRh-sS-rQC"/>
+                                        <constraint firstItem="1F5-Qy-cZx" firstAttribute="top" secondItem="8Vt-sK-TAK" secondAttribute="baseline" constant="2" id="fd0-7w-Ggb"/>
+                                        <constraint firstItem="8Vt-sK-TAK" firstAttribute="top" secondItem="enq-cQ-RBD" secondAttribute="topMargin" constant="9" id="ncq-6e-LBk"/>
+                                        <constraint firstItem="Obq-4m-pnw" firstAttribute="leading" secondItem="8zx-wm-uHU" secondAttribute="trailing" constant="15" id="wD2-uX-fiy"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="8Vt-sK-TAK" secondAttribute="trailing" id="wbZ-Ob-JZD"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="1F5-Qy-cZx" secondAttribute="trailing" id="xf5-aw-0r1"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="avatarImageView" destination="fUp-Sh-uv5" id="KNy-Ip-YOk"/>
-                                    <outlet property="displayNameLabel" destination="SRh-jK-Qmd" id="DlS-J6-zBc"/>
-                                    <outlet property="roleBadge" destination="FCF-E3-KhT" id="HyX-QU-LDg"/>
-                                    <outlet property="superAdminRoleBadge" destination="ecj-mn-SNZ" id="r54-06-TJX"/>
-                                    <outlet property="usernameLabel" destination="Ake-ZW-wkV" id="RwJ-ag-HVR"/>
-                                    <segue destination="IBP-CG-w3b" kind="show" identifier="person" id="mTH-Uk-wY0"/>
+                                    <outlet property="avatarImageView" destination="8zx-wm-uHU" id="ODg-qJ-CjU"/>
+                                    <outlet property="displayNameLabel" destination="8Vt-sK-TAK" id="O18-P1-Bcr"/>
+                                    <outlet property="roleBadge" destination="5Qj-Ek-EUq" id="uWz-UU-nAn"/>
+                                    <outlet property="superAdminRoleBadge" destination="MH9-O4-5bD" id="iAa-YF-4Oi"/>
+                                    <outlet property="usernameLabel" destination="1F5-Qy-cZx" id="UcH-Xr-wm1"/>
+                                    <segue destination="IBP-CG-w3b" kind="show" identifier="person" id="EfS-w6-Nga"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
