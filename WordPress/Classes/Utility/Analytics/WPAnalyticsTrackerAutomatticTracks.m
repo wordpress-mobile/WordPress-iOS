@@ -477,10 +477,10 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"me_gravatar_uploaded";
             break;
         case WPAnalyticsStatInstallJetpackCanceled:
-            eventName = @"stats_install_jetpack_canceled";
+            eventName = @"install_jetpack_canceled";
             break;
         case WPAnalyticsStatInstallJetpackCompleted:
-            eventName = @"stats_install_jetpack_completed";
+            eventName = @"install_jetpack_completed";
             break;
         case WPAnalyticsStatLogSpecialCondition:
             eventName = @"log_special_condition";
@@ -759,9 +759,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatOpenedViewSite:
             eventName = @"site_menu_view_site_opened";
             break;
-        case WPAnalyticsStatPerformedJetpackSignIn:
-            eventName = @"signed_into_jetpack";
-            break;
         case WPAnalyticsStatPersonRemoved:
             eventName = @"people_management_person_removed";
             break;
@@ -949,7 +946,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"reader_reader_tag_unfollowed";
             break;
         case WPAnalyticsStatSelectedInstallJetpack:
-            eventName = @"stats_install_jetpack_selected";
+            eventName = @"install_jetpack_selected";
             break;
         case WPAnalyticsStatSentItemToGooglePlus:
             eventName = @"sent_item_to_google_plus";
