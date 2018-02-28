@@ -114,17 +114,7 @@ final class PersonViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        // Forgive Me:
-        // ===========
-        // Why do we check the indexPath's values, instead of grabbing the cellForRowAtIndexPath, and check if
-        // it's hidden or not?
-        //
-        // Because:
-        // UITableView is crashing if we do so, in this method. Probably due to an internal structure
-        // not being timely initialized.
-        //
-        //
-        if isFullnamePrivate == true && (indexPath == firstNameIndexPath || indexPath == lastNameIndexPath) {
+        if shouldHideCell(at: indexPath) {
             return CGFloat.leastNormalMagnitude
         }
         return UITableViewAutomaticDimension
@@ -468,6 +458,22 @@ private extension PersonViewController {
         cell.accessoryType            = enabled ? .disclosureIndicator : .none
         cell.selectionStyle           = enabled ? .gray : .none
         cell.isUserInteractionEnabled = enabled
+    }
+
+    /// Returns true if the cell at the given index path should be hidden from the table
+    ///
+    func shouldHideCell(at indexPath: IndexPath) -> Bool {
+        // Forgive Me:
+        // ===========
+        // Why do we check the indexPath's values, instead of grabbing the cellForRowAtIndexPath, and check if
+        // it's hidden or not?
+        //
+        // Because:
+        // UITableView is crashing if we do so, in this method. Probably due to an internal structure
+        // not being timely initialized.
+        //
+        //
+        return isFullnamePrivate == true && (indexPath == firstNameIndexPath || indexPath == lastNameIndexPath)
     }
 }
 
