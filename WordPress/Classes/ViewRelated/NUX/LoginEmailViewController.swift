@@ -207,6 +207,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     func configureEmailField() {
         emailTextField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         emailTextField.text = loginFields.username
+        emailTextField.adjustsFontForContentSizeCategory = true
     }
 
 

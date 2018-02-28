@@ -21,12 +21,6 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
         if let error = errorToPresent {
             displayRemoteError(error)
         }
-
-        registerDynamicTypeOberver()
-    }
-
-    private func registerDynamicTypeOberver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(didChangePreferredContentSize), name: .UIContentSizeCategoryDidChange, object: nil)
     }
 
     @objc
@@ -195,5 +189,14 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     ///
     func updateSafariCredentialsIfNeeded() {
         WordPressAuthenticator.updateSafariCredentialsIfNeeded(loginFields)
+    }
+}
+
+// MARK: - Handle changes in traitCollections. In particular, changes in Dynamic Type
+extension LoginViewController {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            didChangePreferredContentSize()
+        }
     }
 }
