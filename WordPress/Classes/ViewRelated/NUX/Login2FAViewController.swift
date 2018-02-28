@@ -65,6 +65,16 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
     }
 
 
+    /// MARK: Dynamic Type
+    override func didChangePreferredContentSize() {
+        super.didChangePreferredContentSize()
+        styleSendCodeButton()
+    }
+
+    private func styleSendCodeButton() {
+        sendCodeButton.titleLabel?.adjustsFontForContentSizeCategory = true
+    }
+
     // MARK: Configuration Methods
 
 
