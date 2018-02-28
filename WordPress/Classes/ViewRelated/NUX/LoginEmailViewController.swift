@@ -53,6 +53,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         super.didChangePreferredContentSize()
 
         configureEmailField()
+        configureAlternativeLabel()
         configureGoogleButton()
         configureSelfHostedLoginButton()
     }
@@ -210,6 +211,9 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         emailTextField.adjustsFontForContentSizeCategory = true
     }
 
+    private func configureAlternativeLabel() {
+        alternativeLoginLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
+    }
 
     /// Configures whether appearance of the submit button.
     ///
