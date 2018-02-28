@@ -28,7 +28,6 @@ extension NotificationsViewController {
             if AccountHelper.isDotcomAvailable() {
                 self?.activityIndicator.stopAnimating()
                 WPAppAnalytics.track(.signedInToJetpack, withProperties: ["source": "notifications"], with: blog)
-                WPAppAnalytics.track(.performedJetpackSignIn, withProperties: ["source": "notifications"], with: blog)
                 controller?.view.removeFromSuperview()
                 controller?.removeFromParentViewController()
                 self?.jetpackLoginViewController = nil
