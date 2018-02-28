@@ -88,6 +88,20 @@ extension CategoryTreeNode {
         }
         return nil
     }
+
+    func allDescendants() -> [CategoryTreeNode]? {
+        guard !children.isEmpty else {
+            return nil
+        }
+        var descendants: [CategoryTreeNode] = []
+        descendants += children.flatMap({ $0 })
+        for child in children {
+            if let found = child.allDescendants() {
+                descendants += found.flatMap({ $0 })
+            }
+        }
+        return descendants
+    }
 }
 
 extension RemotePostCategory {
