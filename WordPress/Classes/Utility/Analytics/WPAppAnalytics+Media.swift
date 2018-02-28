@@ -1,36 +1,16 @@
 /// Utility extension to track specific data for passing to on to WPAppAnalytics.
 public extension WPAppAnalytics {
 
-    /// Used to identify where the selected media came from
-    ///
-    public enum SelectedMediaOrigin: CustomStringConvertible {
-        case inlinePicker
-        case fullScreenPicker
-        case documentPicker
-        case mediaUploadWritePost
-        case none
-
-        public var description: String {
-            switch self {
-            case .inlinePicker: return "inline_picker"
-            case .fullScreenPicker: return "full_screen_picker"
-            case .documentPicker: return "document_picker"
-            case .mediaUploadWritePost: return "media_write_post"
-            case .none: return "not_identified"
-            }
-        }
-    }
-
-    /// Get a dictionary of tracking properties for a Media object with the selected media origin.
+    /// Get a dictionary of tracking properties for a Media object with the media selection method.
     ///
     /// - Parameters:
     ///     - media: The Media object.
-    ///     - mediaOrigin: The Media's origin.
+    ///     - selectionMethod: The Media's method of selection.
     /// - Returns: Dictionary
     ///
-    public class func properties(for media: Media, mediaOrigin: SelectedMediaOrigin) -> Dictionary<String, Any> {
+    public class func properties(for media: Media, selectionMethod: MediaSelectionMethod) -> [String: Any] {
         var properties = WPAppAnalytics.properties(for: media)
-        properties[MediaOriginKey] = String(describing: mediaOrigin)
+        properties[MediaOriginKey] = String(describing: selectionMethod)
         return properties
     }
 
@@ -68,4 +48,78 @@ public extension WPAppAnalytics {
     }
 
     fileprivate static let MediaOriginKey = "media_origin"
+}
+
+public struct MediaAnalyticsInfo {
+    let origin: MediaUploadOrigin
+    let selectionMethod: MediaSelectionMethod?
+
+    func eventForMediaType(_ mediaType: MediaType) -> WPAnalyticsStat? {
+        return origin.eventForMediaType(mediaType)
+    }
+
+    func properties(for media: Media) -> [String: Any] {
+        guard let selectionMethod = selectionMethod else {
+            return WPAppAnalytics.properties(for: media)
+        }
+
+        return WPAppAnalytics.properties(for: media, selectionMethod: selectionMethod)
+    }
+}
+
+/// Used for analytics to identify how the media was selected by the user.
+///
+public enum MediaSelectionMethod: CustomStringConvertible {
+    case inlinePicker
+    case fullScreenPicker
+    case documentPicker
+    case mediaUploadWritePost
+    case none
+
+    public var description: String {
+        switch self {
+        case .inlinePicker: return "inline_picker"
+        case .fullScreenPicker: return "full_screen_picker"
+        case .documentPicker: return "document_picker"
+        case .mediaUploadWritePost: return "media_write_post"
+        case .none: return "not_identified"
+        }
+    }
+}
+
+/// Used for analytics to track where an upload was started within the app.
+///
+enum MediaUploadOrigin {
+    case mediaLibrary
+    case editor(MediaSource)
+
+    func eventForMediaType(_ mediaType: MediaType) -> WPAnalyticsStat? {
+        switch (self, mediaType) {
+        case (.mediaLibrary, .image):
+            return .mediaLibraryAddedPhoto
+        case (.mediaLibrary, .video):
+            return .mediaLibraryAddedVideo
+        case (.editor(let source), .image) where source == .deviceLibrary:
+            return .editorAddedPhotoViaLocalLibrary
+        case (.editor(let source), .image) where source == .wpMediaLibrary:
+            return .editorAddedPhotoViaWPMediaLibrary
+        case (.editor(let source), .image) where source == .otherApps:
+            return .editorAddedPhotoViaOtherApps
+        case (.editor(let source), .video) where source == .deviceLibrary:
+            return .editorAddedVideoViaLocalLibrary
+        case (.editor(let source), .video) where source == .wpMediaLibrary:
+            return .editorAddedVideoViaWPMediaLibrary
+        case (.editor(let source), .video) where source == .otherApps:
+            return .editorAddedVideoViaOtherApps
+        default: return nil
+        }
+    }
+}
+
+/// Used for analytics to track the source of a media item
+///
+enum MediaSource {
+    case deviceLibrary
+    case otherApps
+    case wpMediaLibrary
 }
