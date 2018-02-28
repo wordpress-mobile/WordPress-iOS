@@ -159,7 +159,7 @@ extension AppExtensionsService {
     ///   - title: Post title
     ///   - body: Post content body
     ///   - tags: Post tags
-    ///   - categories: Post Categories
+    ///   - categories: Post categories
     ///   - status: Post status
     ///   - siteID: Site ID the post will be uploaded to
     ///   - onComplete: Completion handler executed after a post is uploaded to the server
@@ -212,7 +212,7 @@ extension AppExtensionsService {
     ///   - title: Post title
     ///   - body: Post content body
     ///   - tags: Post tags
-    ///   - tags: Post categories
+    ///   - categories: Post categories
     ///   - status: Post status
     ///   - siteID: Site ID the post will be uploaded to
     ///   - localMediaFileURLs: An array of local URLs containing the media files to upload
