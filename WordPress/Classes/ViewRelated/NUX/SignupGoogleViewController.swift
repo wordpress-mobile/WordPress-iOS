@@ -85,6 +85,8 @@ extension SignupGoogleViewController: GIDSignInDelegate {
                 self?.navigationController?.popViewController(animated: true)
                 return
             }
+            self?.titleLabel?.text = NSLocalizedString("Google sign up failed.",
+                                                       comment: "Message shown on screen after the Google sign up process failed.")
             self?.displayError(error as NSError, sourceTag: .wpComSignup)
         }
     }
