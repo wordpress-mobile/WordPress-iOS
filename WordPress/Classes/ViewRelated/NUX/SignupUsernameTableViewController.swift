@@ -109,7 +109,7 @@ extension SignupUsernameTableViewController {
         case Sections.titleAndDescription.rawValue:
             return 1
         case Sections.searchField.rawValue:
-            return suggestions.count > 0 ? 1 : 0
+            return 1
         case Sections.suggestions.rawValue:
             return suggestions.count + 1
         default:
