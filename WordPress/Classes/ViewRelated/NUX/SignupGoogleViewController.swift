@@ -69,10 +69,15 @@ extension SignupGoogleViewController: GIDSignInDelegate {
 
         let context = ContextManager.sharedInstance().mainContext
         let service = SignupService(managedObjectContext: context)
-        service.createWPComeUserWithGoogle(token: token, success: { [weak self] in
+        service.createWPComeUserWithGoogle(token: token, success: { [weak self] (accountCreated) in
             SVProgressHUD.dismiss()
-            self?.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
-            WPAnalytics.track(.signupSocialSuccess)
+            if accountCreated {
+                self?.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
+                WPAnalytics.track(.signupSocialSuccess)
+            } else {
+                self?.navigationController?.dismiss(animated: true, completion: nil)
+                WPAnalytics.track(.loginSocialSuccess)
+            }
         }) { [weak self] (error) in
             SVProgressHUD.dismiss()
             WPAnalytics.track(.signupSocialFailure)
