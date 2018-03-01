@@ -146,7 +146,7 @@ class SignupEpilogueTableViewController: NUXTableViewController {
         if section == TableSections.password {
             return UITableViewAutomaticDimension
         }
-        return 0
+        return CGFloat.leastNormalMagnitude
     }
 
 }
