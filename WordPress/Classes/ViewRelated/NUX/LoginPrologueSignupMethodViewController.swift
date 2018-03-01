@@ -1,7 +1,6 @@
 class LoginPrologueSignupMethodViewController: UIViewController {
     /// Buttons at bottom of screen
     private var buttonViewController: NUXButtonViewController?
-    private var headerFont: UIFont?
 
     /// Gesture recognizer for taps on the dialog if no buttons are present
     fileprivate var dismissGestureRecognizer: UITapGestureRecognizer?
@@ -43,7 +42,6 @@ class LoginPrologueSignupMethodViewController: UIViewController {
             self?.googleTapped?()
         }
         let termsButton = WPStyleGuide.termsButton()
-        headerFont = termsButton.titleLabel?.font
         termsButton.on(.touchUpInside) { [weak self] button in
             guard let url = URL(string: WPAutomatticTermsOfServiceURL) else {
                 return
@@ -62,9 +60,18 @@ class LoginPrologueSignupMethodViewController: UIViewController {
 
     // MARK: - Dynamic type
     func didChangePreferredContentSize() {
-        if let headerFont = headerFont {
-            buttonViewController?.setHeaderFont(headerFont)
+        if let button = headerButton() {
+            // Retaining the font from the button at the moment it is created and assigning it here does not work.
+            // That's why we get the font back from the theme.
+            button.titleLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .caption2)
         }
+    }
+
+    /*
+    *   This class is the one that knows what's in the buttonViewController's stackviews, because it is the one that creates and inserts that content. This is ugly, but it is the only way I see to grab a reference to the topmost text in the NUXButtonViewController
+    */
+    private func headerButton() -> UIButton? {
+        return buttonViewController?.stackView?.arrangedSubviews.first as? UIButton
     }
 }
 
