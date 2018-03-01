@@ -51,13 +51,11 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
     override func didChangePreferredContentSize() {
         super.didChangePreferredContentSize()
-
         configureEmailField()
         configureAlternativeLabel()
         configureGoogleButton()
         configureSelfHostedLoginButton()
     }
-
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -72,7 +70,6 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         configureSubmitButton()
         configureViewForEditingIfNeeded()
     }
-
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
