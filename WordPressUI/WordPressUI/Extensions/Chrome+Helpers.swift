@@ -1,10 +1,6 @@
 import Foundation
 
-extension Style {
-    static var wordPress: Skin {
-        return WordPressSkin()
-    }
-    
+extension Chrome {
     /// Creates a UIFont for the user current text size settings.
     ///
     /// - Parameters:

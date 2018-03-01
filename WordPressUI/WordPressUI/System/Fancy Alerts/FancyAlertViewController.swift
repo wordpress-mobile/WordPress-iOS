@@ -68,12 +68,27 @@ open class FancyAlertViewController: UIViewController {
             self.dismissAction = dismissAction
         }
     }
+    
+    @objc dynamic var headlineFont: UIFont? {
+        set {
+            cancelButton.titleLabel?.font = newValue
+            defaultButton.titleLabel?.font = newValue
+        }
+        
+        get {
+            guard let label = cancelButton.titleLabel
+                else {
+                    return Chrome.fontForTextStyle(.headline)
+                }
+                return label.font
+        }
+    }
 
     // MARK: - Constants
 
     private struct Constants {
         static let cornerRadius: CGFloat = 15.0
-//        static let buttonFont = WPStyleGuide.fontForTextStyle(.headline)
+//        static let buttonFont = WordPressStyle().setStyleHeadlineFont()
 //        static let moreInfoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
 //        static let bodyFont = WPStyleGuide.fontForTextStyle(.body)
         static let headerImageVerticalConstraintCompact: CGFloat = 0.0
@@ -192,8 +207,6 @@ open class FancyAlertViewController: UIViewController {
 
 //        moreInfoButton.titleLabel?.font = Constants.moreInfoFont
 //        moreInfoButton.tintColor = WPStyleGuide.wordPressBlue()
-        
-        WordPressSkin().configureFancyAlertCancelButton(cancelButton)
 
         updateViewConfiguration()
     }
