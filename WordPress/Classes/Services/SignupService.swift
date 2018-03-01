@@ -15,6 +15,7 @@ enum SignupStatus: Int {
 
 typealias SignupStatusBlock = (_ status: SignupStatus) -> Void
 typealias SignupSuccessBlock = () -> Void
+typealias SignupSocialSuccessBlock = (_ newAccount: Bool) -> Void
 typealias SignupFailureBlock = (_ error: Error?) -> Void
 
 
@@ -149,7 +150,7 @@ open class SignupService: LocalCoreDataService {
     ///   - success: block called when account is created successfully
     ///   - failure: block called when account creation fails
     func createWPComeUserWithGoogle(token: String,
-                                   success: @escaping SignupSuccessBlock,
+                                   success: @escaping SignupSocialSuccessBlock,
                                    failure: @escaping SignupFailureBlock) {
         let remote = WordPressComServiceRemote(wordPressComRestApi: self.anonymousApi())
 
@@ -171,7 +172,9 @@ open class SignupService: LocalCoreDataService {
                                             service.setDefaultWordPressComAccount(account)
                                         }
 
-                                        success()
+                                        let createdAccount = (responseDictionary?[ResponseKeys.createdAccount] as? Int ?? 0) == 1
+                                        success(createdAccount)
+
                                     },
                                     failure: failure)
     }
@@ -322,5 +325,6 @@ open class SignupService: LocalCoreDataService {
     private struct ResponseKeys {
         static let bearerToken = "bearer_token"
         static let username = "username"
+        static let createdAccount = "created_account"
     }
 }
