@@ -73,6 +73,7 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
 
     private func styleSendCodeButton() {
         sendCodeButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        sendCodeButton.titleLabel?.adjustsFontSizeToFitWidth = true
     }
 
     // MARK: Configuration Methods
