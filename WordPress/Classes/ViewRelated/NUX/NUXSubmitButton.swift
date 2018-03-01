@@ -136,4 +136,16 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
         configureBorderColor()
         setNeedsLayout()
     }
+
+    func didChangePreferredContentSize() {
+        titleLabel?.adjustsFontForContentSizeCategory = true
+    }
+}
+
+extension NUXSubmitButton {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            didChangePreferredContentSize()
+        }
+    }
 }
