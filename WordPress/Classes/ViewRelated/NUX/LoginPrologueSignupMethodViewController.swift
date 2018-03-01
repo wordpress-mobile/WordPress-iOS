@@ -1,6 +1,7 @@
 class LoginPrologueSignupMethodViewController: UIViewController {
     /// Buttons at bottom of screen
     private var buttonViewController: NUXButtonViewController?
+    private var headerFont: UIFont?
 
     /// Gesture recognizer for taps on the dialog if no buttons are present
     fileprivate var dismissGestureRecognizer: UITapGestureRecognizer?
@@ -42,6 +43,7 @@ class LoginPrologueSignupMethodViewController: UIViewController {
             self?.googleTapped?()
         }
         let termsButton = WPStyleGuide.termsButton()
+        headerFont = termsButton.titleLabel?.font
         termsButton.on(.touchUpInside) { [weak self] button in
             guard let url = URL(string: WPAutomatticTermsOfServiceURL) else {
                 return
@@ -56,5 +58,20 @@ class LoginPrologueSignupMethodViewController: UIViewController {
 
     @IBAction func dismissTapped() {
         dismiss(animated: true)
+    }
+
+    // MARK: - Dynamic type
+    func didChangePreferredContentSize() {
+        if let headerFont = headerFont {
+            buttonViewController?.setHeaderFont(headerFont)
+        }
+    }
+}
+
+extension LoginPrologueSignupMethodViewController {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            didChangePreferredContentSize()
+        }
     }
 }
