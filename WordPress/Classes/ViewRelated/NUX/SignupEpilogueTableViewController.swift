@@ -87,6 +87,7 @@ class SignupEpilogueTableViewController: NUXTableViewController {
             fatalError("Failed to get a section header cell")
         }
         cell.titleLabel?.text = sectionTitle
+        cell.contentView.backgroundColor = WPStyleGuide.greyLighten30()
 
         return cell
     }
