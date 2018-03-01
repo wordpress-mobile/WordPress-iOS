@@ -133,12 +133,6 @@ class NUXButtonViewController: UIViewController {
         configure(button: topButton, withConfig: topButtonConfig)
         configure(button: tertiaryButton, withConfig: tertiaryButtonConfig)
     }
-
-    func setHeaderFont(_ font: UIFont) {
-        if let button = stackView?.arrangedSubviews.first as? UIButton {
-            button.titleLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .caption2)
-        }
-    }
 }
 
 extension NUXButtonViewController {
