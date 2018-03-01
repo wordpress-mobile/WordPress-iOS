@@ -14,7 +14,7 @@ open class FancyAlertViewController: UIViewController {
     }
 
     public static func controller() -> FancyAlertViewController {
-        return UIStoryboard(name: "FancyAlerts", bundle: Bundle.main)
+        return UIStoryboard(name: "FancyAlerts", bundle: Bundle(for: self))
             .instantiateInitialViewController() as! FancyAlertViewController
     }
 
