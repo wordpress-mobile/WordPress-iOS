@@ -103,6 +103,16 @@
                ReferencedContainer = "container:../WordPressFlux/WordPressFlux.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B59DCB64202B146D00BEBD8A"
+               BuildableName = "WordPressUIKitTests.xctest"
+               BlueprintName = "WordPressUIKitTests"
+               ReferencedContainer = "container:../WordPressUIKit/WordPressUIKit.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

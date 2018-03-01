@@ -33,6 +33,8 @@ SupportSourceTag const SupportSourceTagWPComCreateSiteCategory = @"origin:wpcom-
 SupportSourceTag const SupportSourceTagWPComCreateSiteTheme = @"origin:wpcom-create-site-theme";
 SupportSourceTag const SupportSourceTagWPComCreateSiteDetails = @"origin:wpcom-create-site-details";
 SupportSourceTag const SupportSourceTagWPComCreateSiteDomain = @"origin:wpcom-create-site-domain";
+SupportSourceTag const SupportSourceTagWPComCreateSiteUsername = @"origin:wpcom-create-site-username";
+SupportSourceTag const SupportSourceTagWPComCreateSiteCreation = @"origin:wpcom-create-site-creation";
 SupportSourceTag const SupportSourceTagWPComSignupEmail = @"origin:wpcom-signup-email-entry";
 
 static NSString *const WPSupportRestorationID = @"WPSupportRestorationID";
@@ -108,8 +110,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
 {
     [super viewDidLoad];
     
-    [self.tableView setRowHeight:WPTableViewDefaultRowHeight];
-
+    [WPStyleGuide configureAutomaticHeightRowsFor:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
     [self.navigationController setNavigationBarHidden:NO animated:YES];

@@ -1,6 +1,7 @@
 import UIKit
 import CocoaLumberjack
 import WordPressShared
+import SafariServices
 
 
 /// Create a new WordPress.com account and blog.
@@ -15,10 +16,13 @@ import WordPressShared
     @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var termsButton: UIButton!
+    @IBOutlet weak var wpcomLabel: UILabel!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     @IBOutlet var topLayoutGuideAdjustmentConstraint: NSLayoutConstraint!
     @IBOutlet var formTopMarginConstraint: NSLayoutConstraint!
+    @IBOutlet weak var wpcomLabelTrailingConstraint: NSLayoutConstraint!
+
     @objc var onePasswordButton: UIButton!
     @objc var didCorrectEmailOnce: Bool = false
     @objc var userDefinedSiteAddress: Bool = false
@@ -54,7 +58,7 @@ import WordPressShared
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 
-        WPAppAnalytics.track(.createAccountInitiated)
+        WordPressAuthenticator.post(event: .createAccountInitiated)
     }
 
 
@@ -128,6 +132,17 @@ import WordPressShared
         let submitButtonTitle = NSLocalizedString("Create Account", comment: "Title of a button. The text should be uppercase.").localizedUppercase
         submitButton.setTitle(submitButtonTitle, for: UIControlState())
         submitButton.setTitle(submitButtonTitle, for: .highlighted)
+
+        //The wpcom label is always at the left of the screen, independently of the user layout direction.
+        if view.userInterfaceLayoutDirection() == .rightToLeft {
+            let siteFieldLeftViewWidth = siteURLField.leftView?.frame.width ?? 0
+            let wpcomRightInset = -(siteFieldLeftViewWidth + siteURLField.contentInsets.left + siteURLField.textInsets.left)
+            let textfieldLeftEdgeInset = wpcomLabel.bounds.width + WPStyleGuide.textInsetsForLoginTextFieldWithLeftView().left
+            wpcomLabelTrailingConstraint.constant = wpcomRightInset
+            siteURLField.textInsets = UIEdgeInsets(top: 0, left: textfieldLeftEdgeInset, bottom: 0, right: 0)
+        } else {
+            siteURLField.textInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: wpcomLabel.bounds.width)
+        }
     }
 
 
@@ -220,6 +235,11 @@ import WordPressShared
     /// Sets up the view's colors and style
     @objc open func setupStyles() {
         WPStyleGuide.configureColorsForSigninView(view)
+
+        emailField.contentInsets    = WPStyleGuide.edgeInsetForLoginTextFields()
+        usernameField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        passwordField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        siteURLField.contentInsets  = WPStyleGuide.edgeInsetForLoginTextFields()
     }
 
     /// Whether the view layout should be adjusted for smaller screens
@@ -280,17 +300,17 @@ import WordPressShared
         view.endEditing(true)
 
         // Is everything filled out?
-        if !SigninHelpers.validateFieldsPopulatedForCreateAccount(loginFields) {
+        if !WordPressAuthenticator.validateFieldsPopulatedForCreateAccount(loginFields) {
             displayErrorAlert(NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields."), sourceTag: sourceTag)
             return
         }
 
-        if !SigninHelpers.validateFieldsForSigninContainNoSpaces(loginFields) {
+        if !WordPressAuthenticator.validateFieldsForSigninContainNoSpaces(loginFields) {
             displayErrorAlert(NSLocalizedString("Email, Username, and Site Address cannot contain spaces.", comment: "No spaces error message."), sourceTag: sourceTag)
             return
         }
 
-        if !SigninHelpers.validateUsernameMaxLength(loginFields.username) {
+        if !WordPressAuthenticator.validateUsernameMaxLength(loginFields.username) {
             displayErrorAlert(NSLocalizedString("Username must be less than fifty characters.", comment: "Prompts that the username entered was too long."), sourceTag: sourceTag)
             usernameField.becomeFirstResponder()
             return
@@ -417,43 +437,40 @@ import WordPressShared
     @objc func handleOnePasswordButtonTapped(_ sender: UIButton) {
         view.endEditing(true)
 
-        OnePasswordFacade().createLogin(forURLString: WPOnePasswordWordPressComURL,
-                                                    username: loginFields.username,
-                                                    password: loginFields.password,
-                                                    for: self,
-                                                    sender: sender,
-                                                    completion: { (username, password, error: Error?) in
-                                                        if let error = error as NSError? {
-                                                            if error.code != WPOnePasswordErrorCodeCancelledByUser {
-                                                                DDLogError("Failed to use 1Password App Extension to save a new Login: \(error)")
-                                                                WPAnalytics.track(.onePasswordFailed)
-                                                            }
-                                                            return
-                                                        }
-                                                        if let username = username {
-                                                            self.loginFields.username = username
-                                                            self.usernameField.text = username
-                                                        }
-                                                        if let password = password {
-                                                            self.loginFields.password = password
-                                                            self.passwordField.text = password
-                                                        }
+        let username = loginFields.username
+        let password = loginFields.password
+        OnePasswordFacade().createLogin(username: username, password: password, for: self, sender: sender, success: { (username, password) in
 
-                                                        WPAnalytics.track(.onePasswordSignup)
+            self.loginFields.username = username
+            self.loginFields.password = password
 
-                                                        // Note: Since the Site field is right below the 1Password field, let's continue with the edition flow
-                                                        // and make the SiteAddress Field the first responder.
-                                                        self.siteURLField.becomeFirstResponder()
+            self.usernameField.text = username
+            self.passwordField.text = password
 
+            WPAnalytics.track(.onePasswordSignup)
+
+            // Note: Since the Site field is right below the 1Password field, let's continue with the edition flow
+            // and make the SiteAddress Field the first responder.
+            self.siteURLField.becomeFirstResponder()
+        }, failure: { error in
+            guard error != .cancelledByUser else {
+                return
+            }
+
+            DDLogError("Failed to use 1Password App Extension to save a new Login: \(error)")
+            WPAnalytics.track(.onePasswordFailed)
         })
     }
 
 
     @IBAction func handleTermsOfServiceButtonTapped(_ sender: UIButton) {
-        let url = URL(string: WPAutomatticTermsOfServiceURL)!
-        let controller = WebViewControllerFactory.controller(url: url)
-        let navController = RotationAwareNavigationViewController(rootViewController: controller)
-        present(navController, animated: true, completion: nil)
+        guard let url = URL(string: WPAutomatticTermsOfServiceURL) else {
+            return
+        }
+
+        let safariViewController = SFSafariViewController(url: url)
+        safariViewController.modalPresentationStyle = .pageSheet
+        present(safariViewController, animated: true, completion: nil)
     }
 
 

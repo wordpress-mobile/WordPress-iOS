@@ -54,7 +54,7 @@ class LoginWPComViewController: LoginViewController, NUXKeyboardResponder {
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
 
         passwordField?.becomeFirstResponder()
-        WPAppAnalytics.track(.loginPasswordFormViewed)
+        WordPressAuthenticator.post(event: .loginPasswordFormViewed)
     }
 
 
@@ -113,7 +113,7 @@ class LoginWPComViewController: LoginViewController, NUXKeyboardResponder {
 
     @objc func configureTextFields() {
         passwordField?.text = loginFields.password
-        passwordField?.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        passwordField?.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         emailLabel?.text = loginFields.username
     }
 
@@ -165,14 +165,14 @@ class LoginWPComViewController: LoginViewController, NUXKeyboardResponder {
     }
 
     @IBAction func handleForgotPasswordButtonTapped(_ sender: UIButton) {
-        SigninHelpers.openForgotPasswordURL(loginFields)
-        WPAppAnalytics.track(.loginForgotPasswordClicked)
+        WordPressAuthenticator.openForgotPasswordURL(loginFields)
+        WordPressAuthenticator.post(event: .loginForgotPasswordClicked)
     }
 
     @objc func handleOnePasswordButtonTapped(_ sender: UIButton) {
         view.endEditing(true)
 
-        SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [weak self] (loginFields) in
+        WordPressAuthenticator.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [weak self] (loginFields) in
             self?.emailLabel?.text = loginFields.username
             self?.passwordField?.text = loginFields.password
             self?.validateForm()

@@ -9,16 +9,71 @@ class MediaCoordinator: NSObject {
 
     @objc static let shared = MediaCoordinator()
 
-    private(set) var backgroundContext = ContextManager.sharedInstance().newDerivedContext()
+    private(set) var backgroundContext: NSManagedObjectContext = {
+        let context = ContextManager.sharedInstance().newDerivedContext()
+        context.automaticallyMergesChangesFromParent = true
+        return context
+    }()
     private let mainContext = ContextManager.sharedInstance().mainContext
 
     private let queue = DispatchQueue(label: "org.wordpress.mediauploadcoordinator")
 
-    private lazy var mediaProgressCoordinator: MediaProgressCoordinator = {
+    // MARK: - Progress Coordinators
+
+    private let progressCoordinatorQueue = DispatchQueue(label: "org.wordpress.mediaprogresscoordinator", attributes: .concurrent)
+
+    /// Tracks uploads that don't belong to a specific post
+    private lazy var mediaLibraryProgressCoordinator: MediaProgressCoordinator = {
         let coordinator = MediaProgressCoordinator()
         coordinator.delegate = self
         return coordinator
     }()
+
+    /// Tracks uploads of media for specific posts
+    private var postMediaProgressCoordinators = [AbstractPost: MediaProgressCoordinator]()
+
+    /// - returns: The progress coordinator for the specified post. If a coordinator
+    ///            does not exist, one will be created.
+    private func coordinator(for post: AbstractPost) -> MediaProgressCoordinator {
+        var cachedCoordinator: MediaProgressCoordinator?
+
+        progressCoordinatorQueue.sync {
+            cachedCoordinator = postMediaProgressCoordinators[post]
+        }
+
+        if let cachedCoordinator = cachedCoordinator {
+            return cachedCoordinator
+        }
+
+        let coordinator = MediaProgressCoordinator()
+        coordinator.delegate = self
+
+        progressCoordinatorQueue.async(flags: .barrier) {
+            self.postMediaProgressCoordinators[post] = coordinator
+        }
+
+        return coordinator
+    }
+
+    /// - returns: The progress coordinator for the specified media item. Either
+    ///            returns a post coordinator if the media item has a post, otherwise
+    ///            returns the general media library coordinator.
+    private func coordinator(for media: Media) -> MediaProgressCoordinator {
+        // Media which is just being uploaded should only belong to at most one post
+        if let post = media.posts?.first as? AbstractPost {
+            return coordinator(for: post)
+        }
+
+        return mediaLibraryProgressCoordinator
+    }
+
+    private func removeCoordinator(_ progressCoordinator: MediaProgressCoordinator) {
+        if let index = postMediaProgressCoordinators.index(where: { $0.value == progressCoordinator }) {
+            progressCoordinatorQueue.async(flags: .barrier) {
+                self.postMediaProgressCoordinators.remove(at: index)
+            }
+        }
+    }
 
     // MARK: - Adding Media
 
@@ -27,10 +82,12 @@ class MediaCoordinator: NSObject {
     ///
     /// - parameter asset: The asset to add.
     /// - parameter blog: The blog that the asset should be added to.
+    /// - parameter origin: The location in the app where the upload was initiated (optional).
     ///
     @discardableResult
-    func addMedia(from asset: ExportableAsset, to blog: Blog) -> Media {
-        return self.addMedia(from: asset, to: blog.objectID)
+    func addMedia(from asset: ExportableAsset, to blog: Blog, origin: MediaUploadOrigin? = nil) -> Media {
+        let coordinator = mediaLibraryProgressCoordinator
+        return self.addMedia(from: asset, to: blog.objectID, coordinator: coordinator, origin: origin)
     }
 
     /// Adds the specified media asset to the specified post. The upload process
@@ -38,15 +95,17 @@ class MediaCoordinator: NSObject {
     ///
     /// - parameter asset: The asset to add.
     /// - parameter post: The post that the asset should be added to.
+    /// - parameter origin: The location in the app where the upload was initiated (optional).
     ///
     @discardableResult
-    func addMedia(from asset: ExportableAsset, to post: AbstractPost) -> Media {
-        return self.addMedia(from: asset, to: post.objectID)
+    func addMedia(from asset: ExportableAsset, to post: AbstractPost, origin: MediaUploadOrigin? = nil) -> Media {
+        let coordinator = self.coordinator(for: post)
+        return self.addMedia(from: asset, to: post.objectID, coordinator: coordinator, origin: origin)
     }
 
     @discardableResult
-    private func addMedia(from asset: ExportableAsset, to objectID: NSManagedObjectID) -> Media {
-        mediaProgressCoordinator.track(numberOfItems: 1)
+    private func addMedia(from asset: ExportableAsset, to objectID: NSManagedObjectID, coordinator: MediaProgressCoordinator, origin: MediaUploadOrigin? = nil) -> Media {
+        coordinator.track(numberOfItems: 1)
         let service = MediaService(managedObjectContext: mainContext)
         let totalProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         var creationProgress: Progress? = nil
@@ -62,11 +121,11 @@ class MediaCoordinator: NSObject {
                                 }
                                 if let error = error as NSError? {
                                     if let media = media {
-                                        strongSelf.mediaProgressCoordinator.attach(error: error as NSError, toMediaID: media.uploadID)
+                                        coordinator.attach(error: error as NSError, toMediaID: media.uploadID)
                                         strongSelf.fail(error as NSError, media: media)
                                     } else {
                                         // If there was an error and we don't have a media object we just say to the coordinator that one item was finished
-                                        strongSelf.mediaProgressCoordinator.finishOneItem()
+                                        coordinator.finishOneItem()
                                     }
                                     return
                                 }
@@ -74,13 +133,13 @@ class MediaCoordinator: NSObject {
                                     return
                                 }
 
-                                let uploadProgress = strongSelf.uploadMedia(media)
+                                let uploadProgress = strongSelf.uploadMedia(media, origin: origin)
                                 totalProgress.addChild(uploadProgress, withPendingUnitCount: MediaExportProgressUnits.threeQuartersDone)
         })
         processing(media)
         if let creationProgress = creationProgress {
             totalProgress.addChild(creationProgress, withPendingUnitCount: MediaExportProgressUnits.quarterDone)
-            mediaProgressCoordinator.track(progress: totalProgress, of: media, withIdentifier: media.uploadID)
+            coordinator.track(progress: totalProgress, of: media, withIdentifier: media.uploadID)
         }
         return media
     }
@@ -94,9 +153,11 @@ class MediaCoordinator: NSObject {
             DDLogError("Can't retry Media upload that hasn't failed. \(String(describing: media))")
             return
         }
-        mediaProgressCoordinator.track(numberOfItems: 1)
+
+        let coordinator = self.coordinator(for: media)
+        coordinator.track(numberOfItems: 1)
         let uploadProgress = uploadMedia(media)
-        mediaProgressCoordinator.track(progress: uploadProgress, of: media, withIdentifier: media.uploadID)
+        coordinator.track(progress: uploadProgress, of: media, withIdentifier: media.uploadID)
     }
 
     /// Starts the upload of an already existing local media object
@@ -108,9 +169,11 @@ class MediaCoordinator: NSObject {
             DDLogError("Can't try to upload Media that isn't local only. \(String(describing: media))")
             return
         }
-        mediaProgressCoordinator.track(numberOfItems: 1)
+
+        let coordinator = self.coordinator(for: media)
+        coordinator.track(numberOfItems: 1)
         let uploadProgress = uploadMedia(media)
-        mediaProgressCoordinator.track(progress: uploadProgress, of: media, withIdentifier: media.uploadID)
+        coordinator.track(progress: uploadProgress, of: media, withIdentifier: media.uploadID)
     }
 
     /// Cancels any ongoing upload of the Media and deletes it.
@@ -119,7 +182,7 @@ class MediaCoordinator: NSObject {
     ///
     func cancelUploadAndDeleteMedia(_ media: Media) {
         cancelUpload(of: media)
-        delete(media: media)
+        delete(media: [media])
     }
 
     /// Cancels any ongoing upload for the media object
@@ -127,25 +190,48 @@ class MediaCoordinator: NSObject {
     /// - Parameter media: the media object to cancel the upload
     ///
     func cancelUpload(of media: Media) {
-        mediaProgressCoordinator.cancelAndStopTrack(of: media.uploadID)
+        coordinator(for: media).cancelAndStopTrack(of: media.uploadID)
     }
 
     /// Cancels all ongoing uploads
     ///
-    func cancelUploadOfAllMedia() {
-        mediaProgressCoordinator.cancelAndStopAllInProgressMedia()
+    func cancelUploadOfAllMedia(for post: AbstractPost) {
+        coordinator(for: post).cancelAndStopAllInProgressMedia()
     }
 
-    /// Deletes a media object from the storage
+    /// Deletes a single Media object. If the object is currently being uploaded,
+    /// the upload will be cancelled.
     ///
-    /// - Parameter media: the media object to delete
+    /// - Parameter media: The media object to delete
+    /// - Parameter onProgress: Optional progress block, called after each media item is deleted
+    /// - Parameter success: Optional block called after all media items are deleted successfully
+    /// - Parameter failure: Optional block called if deletion failed for any media items,
+    ///                      after attempted deletion of all media items
     ///
-    func delete(media: Media) {
+    func delete(_ media: Media, onProgress: ((Progress?) -> Void)? = nil, success: (() -> Void)? = nil, failure: (() -> Void)? = nil) {
+        delete(media: [media], onProgress: onProgress, success: success, failure: failure)
+    }
+
+    /// Deletes media objects. If the objects are currently being uploaded,
+    /// the uploads will be cancelled.
+    ///
+    /// - Parameter media: The media objects to delete
+    /// - Parameter onProgress: Optional progress block, called after each media item is deleted
+    /// - Parameter success: Optional block called after all media items are deleted successfully
+    /// - Parameter failure: Optional block called if deletion failed for any media items,
+    ///                      after attempted deletion of all media items
+    ///
+    func delete(media: [Media], onProgress: ((Progress?) -> Void)? = nil, success: (() -> Void)? = nil, failure: (() -> Void)? = nil) {
+        media.forEach({ self.cancelUpload(of: $0) })
+
         let service = MediaService(managedObjectContext: backgroundContext)
-        service.delete(media, success: nil, failure: nil)
+        service.deleteMedia(media,
+                            progress: { onProgress?($0) },
+                            success: success,
+                            failure: failure)
     }
 
-    @discardableResult private func uploadMedia(_ media: Media) -> Progress {
+    @discardableResult private func uploadMedia(_ media: Media, origin: MediaUploadOrigin? = nil) -> Progress {
         let service = MediaService(managedObjectContext: backgroundContext)
 
         var progress: Progress? = nil
@@ -153,12 +239,13 @@ class MediaCoordinator: NSObject {
         service.uploadMedia(media,
                             progress: &progress,
                             success: {
+                                self.trackUploadOf(media, origin: origin)
                                 self.end(media)
         }, failure: { error in
             guard let nserror = error as NSError? else {
                 return
             }
-            self.mediaProgressCoordinator.attach(error: nserror, toMediaID: media.uploadID)
+            self.coordinator(for: media).attach(error: nserror, toMediaID: media.uploadID)
             self.fail(nserror, media: media)
         })
         if let taskProgress = progress {
@@ -168,18 +255,30 @@ class MediaCoordinator: NSObject {
         }
     }
 
+    private func trackUploadOf(_ media: Media, origin: MediaUploadOrigin?) {
+        guard let origin = origin,
+            let event = origin.eventForMediaType(media.mediaType) else {
+            return
+        }
+
+        let properties = WPAppAnalytics.properties(for: media)
+        WPAppAnalytics.track(event,
+                             withProperties: properties,
+                             with: media.blog)
+    }
+
     // MARK: - Progress
 
     /// - returns: The current progress for the specified media object.
     ///
     func progress(for media: Media) -> Progress? {
-        return mediaProgressCoordinator.progress(forMediaID: media.uploadID)
+        return coordinator(for: media).progress(forMediaID: media.uploadID)
     }
 
-    /// The global value of progress for all tasks running on the coordinator.
+    /// The global value of progress for all tasks running on the coordinator for the specified post.
     ///
-    var totalProgress: Double {
-        return mediaProgressCoordinator.totalProgress
+    func totalProgress(for post: AbstractPost) -> Double {
+        return coordinator(for: post).totalProgress
     }
 
     /// Returns the error associated to media if any
@@ -188,7 +287,7 @@ class MediaCoordinator: NSObject {
     /// - Returns: the error associated to media if any
     ///
     func error(for media: Media) -> NSError? {
-        return mediaProgressCoordinator.error(forMediaID: media.uploadID)
+        return coordinator(for: media).error(forMediaID: media.uploadID)
     }
 
     /// Returns the media object for the specified uploadID.
@@ -196,8 +295,8 @@ class MediaCoordinator: NSObject {
     /// - Parameter uploadID: the identifier for an ongoing upload
     /// - Returns: The media object for the specified uploadID.
     ///
-    func media(withIdentifier uploadID: String) -> Media? {
-        return mediaProgressCoordinator.media(withIdentifier: uploadID)
+    func media(withIdentifier uploadID: String, for post: AbstractPost) -> Media? {
+        return coordinator(for: post).media(withIdentifier: uploadID)
     }
 
     /// Returns an existing media objcect with the specificed objectID
@@ -217,20 +316,20 @@ class MediaCoordinator: NSObject {
 
     /// Returns true if any media is being processed or uploading
     ///
-    var isUploading: Bool {
-        return mediaProgressCoordinator.isRunning
+    func isUploadingMedia(for post: AbstractPost) -> Bool {
+        return coordinator(for: post).isRunning
     }
 
     /// Returns true if there is any media with a fail state
     ///
-    var hasFailedMedia: Bool {
-        return mediaProgressCoordinator.hasFailedMedia
+    func hasFailedMedia(for post: AbstractPost) -> Bool {
+        return coordinator(for: post).hasFailedMedia
     }
 
     /// Return an array with all failed media IDs
     ///
-    var failedMediaIDs: [String] {
-        return mediaProgressCoordinator.failedMediaIDs
+    func failedMediaIDs(for post: AbstractPost) -> [String] {
+        return coordinator(for: post).failedMediaIDs
     }
 
     // MARK: - Observing
@@ -254,6 +353,28 @@ class MediaCoordinator: NSObject {
         let uuid = UUID()
 
         let observer = MediaObserver(media: media, onUpdate: onUpdate)
+
+        queue.async {
+            self.mediaObservers[uuid] = observer
+        }
+
+        return uuid
+    }
+
+    /// Add an observer to receive updates when media items for a post are updated.
+    ///
+    /// - parameter onUpdate: A block that will be called whenever media items
+    ///                       associated with the specified post are updated.
+    ///                       The update block will always be called on the main queue.
+    /// - parameter post: The post to receive updates for. The `onUpdate` block
+    ///                   for any upload progress changes for any media associated
+    ///                   with this post via its media relationship.
+    /// - returns: A UUID that can be used to unregister the observer block at a later time.
+    ///
+    func addObserver(_ onUpdate: @escaping ObserverBlock, forMediaFor post: AbstractPost) -> UUID {
+        let uuid = UUID()
+
+        let observer = MediaObserver(post: post, onUpdate: onUpdate)
 
         queue.async {
             self.mediaObservers[uuid] = observer
@@ -300,25 +421,52 @@ class MediaCoordinator: NSObject {
         }
     }
 
-    /// Encapsulates an observer block and an optional observed media item.
+    /// Encapsulates an observer block and an optional observed media item or post.
     struct MediaObserver {
         let media: Media?
+        let post: AbstractPost?
         let onUpdate: ObserverBlock
+
+        init(onUpdate: @escaping ObserverBlock) {
+            self.media = nil
+            self.post = nil
+            self.onUpdate = onUpdate
+        }
+
+        init(media: Media?, onUpdate: @escaping ObserverBlock) {
+            self.media = media
+            self.post = nil
+            self.onUpdate = onUpdate
+        }
+
+        init(post: AbstractPost, onUpdate: @escaping ObserverBlock) {
+            self.media = nil
+            self.post = post
+            self.onUpdate = onUpdate
+        }
     }
 
     /// Utility method to return all observers for a specific media item,
     /// including any 'wildcard' observers that are observing _all_ media items.
     ///
     private func observersForMedia(_ media: Media) -> [MediaObserver] {
-        let values = mediaObservers.values.filter({ $0.media?.mediaID == media.mediaID })
-        return values + wildcardObservers
+        let mediaObservers = self.mediaObservers.values.filter({ $0.media?.mediaID == media.mediaID })
+
+        let postObservers = self.mediaObservers.values.filter({
+            guard let posts = media.posts,
+                let post = $0.post else { return false }
+
+            return posts.contains(post)
+        })
+
+        return mediaObservers + postObservers + wildcardObservers
     }
 
     /// Utility method to return all 'wildcard' observers that are
     /// observing _all_ media items.
     ///
     private var wildcardObservers: [MediaObserver] {
-        return mediaObservers.values.filter({ $0.media == nil })
+        return mediaObservers.values.filter({ $0.media == nil && $0.post == nil })
     }
 
     // MARK: - Notifying observers
@@ -407,17 +555,43 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
     }
 
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
-        let model = MediaProgressCoordinatorNoticeViewModel(mediaProgressCoordinator: mediaProgressCoordinator)
-        if let notice = model?.notice {
-            ActionDispatcher.dispatch(NoticeAction.post(notice))
+        // Currently, we only want to show a successful upload notice for uploads
+        // initiated within the media library.
+        if mediaProgressCoordinator == mediaLibraryProgressCoordinator {
+            let model = MediaProgressCoordinatorNoticeViewModel(mediaProgressCoordinator: mediaProgressCoordinator)
+            if let notice = model?.notice {
+                ActionDispatcher.dispatch(NoticeAction.post(notice))
+            }
         }
 
         mediaProgressCoordinator.stopTrackingOfAllMedia()
+
+        if mediaProgressCoordinator != mediaLibraryProgressCoordinator {
+            removeCoordinator(mediaProgressCoordinator)
+        }
     }
 }
 
 extension Media {
     var uploadID: String {
         return objectID.uriRepresentation().absoluteString
+    }
+}
+
+/// Used for analytics to track where an upload was started within the app.
+/// Currently only supports media library, but we'll add editor support
+/// when we bring async there.
+///
+enum MediaUploadOrigin {
+    case mediaLibrary
+
+    func eventForMediaType(_ mediaType: MediaType) -> WPAnalyticsStat? {
+        switch (self, mediaType) {
+        case (.mediaLibrary, .image):
+            return .mediaLibraryAddedPhoto
+        case (.mediaLibrary, .video):
+            return .mediaLibraryAddedVideo
+        default: return nil
+        }
     }
 }

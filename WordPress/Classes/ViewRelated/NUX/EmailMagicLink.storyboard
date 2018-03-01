@@ -44,6 +44,7 @@
                     <connections>
                         <outlet property="errorLabel" destination="Bnl-db-peA" id="vfV-dr-NBR"/>
                         <segue destination="rzX-Pq-aBb" kind="custom" identifier="showEpilogue" customClass="EpilogueSegue" customModule="WordPress" customModuleProvider="target" id="7ky-IR-Xbv"/>
+                        <segue destination="AcL-51-J0J" kind="custom" identifier="showSignupEpilogue" customClass="EpilogueSegue" customModule="WordPress" customModuleProvider="target" id="hUe-mm-JfS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N85-VU-x1x" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -92,7 +93,7 @@
                                             </mask>
                                         </variation>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Iy-9H-ykD" customClass="LoginButton" customModule="WordPress" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Iy-9H-ykD" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
                                         <rect key="frame" x="114" y="241" width="75" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="tyz-kt-Arb"/>
@@ -167,7 +168,15 @@
                 <viewControllerPlaceholder storyboardIdentifier="LoginEpilogue" storyboardName="Login" referencedIdentifier="LoginEpilogue" id="rzX-Pq-aBb" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LHN-kW-0Sj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3384" y="649"/>
+            <point key="canvasLocation" x="3179" y="599"/>
+        </scene>
+        <!--SignupEpilogue-->
+        <scene sceneID="TvG-Qq-5K2">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Signup" referencedIdentifier="SignupEpilogue" id="AcL-51-J0J" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0yK-Tv-7lv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3636" y="598"/>
         </scene>
         <!--LoginWPcomPassword-->
         <scene sceneID="mn2-Hn-7VV">

@@ -16,7 +16,7 @@
     BOOL isFixingAuthTokenIssue = NO;
     
     if ([self hasAuthTokenIssues]) {
-        UIViewController *controller = [SigninHelpers signinForWPComFixingAuthToken:^(BOOL cancelled) {
+        UIViewController *controller = [WordPressAuthenticator signinForWPComFixingAuthToken:^(BOOL cancelled) {
             if (cancelled) {
                 [self showCancelReAuthenticationAlertAndOnOK:^{
                     NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];

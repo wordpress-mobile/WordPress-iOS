@@ -1,10 +1,10 @@
 import Foundation
 
-public struct PluginDirectoryEntry: Equatable {
+public struct PluginDirectoryEntry {
     public let name: String
     public let slug: String
-    public let version: String
-    public let lastUpdated: Date
+    public let version: String?
+    public let lastUpdated: Date?
 
     public let icon: URL?
     public let banner: URL?
@@ -17,6 +17,27 @@ public struct PluginDirectoryEntry: Equatable {
     private let faqHTML: String?
     private let changelogHTML: String?
 
+    public var descriptionText: NSAttributedString? {
+        return extractHTMLText(self.descriptionHTML)
+    }
+    public var installationText: NSAttributedString? {
+        return extractHTMLText(self.installationHTML)
+    }
+    public var faqText: NSAttributedString? {
+        return extractHTMLText(self.faqHTML)
+    }
+    public var changelogText: NSAttributedString? {
+        return extractHTMLText(self.changelogHTML)
+    }
+
+    private let rating: Int
+    public var starRating: Double {
+        return (Double(rating) / 10).rounded() / 2
+        // rounded to nearest half.
+    }
+}
+
+extension PluginDirectoryEntry: Equatable {
     public static func ==(lhs: PluginDirectoryEntry, rhs: PluginDirectoryEntry) -> Bool {
         return lhs.name == rhs.name
             && lhs.slug == rhs.slug
@@ -24,12 +45,6 @@ public struct PluginDirectoryEntry: Equatable {
             && lhs.lastUpdated == rhs.lastUpdated
             && lhs.icon == rhs.icon
     }
-
-    public var descriptionText: NSAttributedString? { return extractHTMLText(self.descriptionHTML) }
-    public var installationText: NSAttributedString? { return extractHTMLText(self.installationHTML) }
-    public var faqText: NSAttributedString?  { return extractHTMLText(self.faqHTML) }
-    public var changelogText: NSAttributedString? { return extractHTMLText(self.changelogHTML) }
-
 }
 
 extension PluginDirectoryEntry: Decodable {
@@ -40,6 +55,7 @@ extension PluginDirectoryEntry: Decodable {
         case lastUpdated = "last_updated"
         case icons
         case author
+        case rating
 
         case banners
 
@@ -60,10 +76,12 @@ extension PluginDirectoryEntry: Decodable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        name = try container.decode(String.self, forKey: .name)
+        let decodedName = try container.decode(String.self, forKey: .name)
+        name = decodedName.stringByDecodingXMLCharacters()
         slug = try container.decode(String.self, forKey: .slug)
-        version = try container.decode(String.self, forKey: .version)
-        lastUpdated = try container.decode(Date.self, forKey: .lastUpdated)
+        version = try? container.decode(String.self, forKey: .version)
+        lastUpdated = try? container.decode(Date.self, forKey: .lastUpdated)
+        rating = try container.decode(Int.self, forKey: .rating)
 
         let icons = try? container.decodeIfPresent([String: String].self, forKey: .icons)
         icon = icons??["2x"].flatMap(URL.init(string:))
@@ -80,10 +98,7 @@ extension PluginDirectoryEntry: Decodable {
             banner = nil
         }
 
-        let extractedAuthor = extractAuthor(try container.decode(String.self, forKey: .author))
-
-        author = extractedAuthor.name
-        authorURL = extractedAuthor.link
+        (author, authorURL) = try extractAuthor(container.decode(String.self, forKey: .author))
 
         let sections = try? container.nestedContainer(keyedBy: SectionKeys.self, forKey: .sections)
 
@@ -94,18 +109,79 @@ extension PluginDirectoryEntry: Decodable {
         let changelog = try sections?.decodeIfPresent(String.self, forKey: .changelog)
         changelogHTML = trimTags(trimChangelog(changelog))
     }
+
+    internal init(responseObject: [String: AnyObject]) throws {
+        // Data returned by the featured plugins API endpoint is almost exactly in the same format
+        // as the data from the Plugin Directory, with few fields missing (updateDate, version, etc).
+        // In order to avoid duplicating almost identical entites, we provide a special initializer
+        // that `nil`s out those fields.
+
+        guard let name = responseObject["name"] as? String,
+            let slug = responseObject["slug"] as? String,
+            let authorString = responseObject["author"] as? String,
+            let rating = responseObject["rating"] as? Int else {
+                throw PluginServiceRemote.ResponseError.decodingFailure
+        }
+
+        self.name = name
+        self.slug = slug
+        self.rating = rating
+        self.author = extractAuthor(authorString).name
+
+        if let icon = (responseObject["icons"]?["2x"] as? String).flatMap({ URL(string: $0) }) {
+            self.icon = icon
+        } else {
+            self.icon = (responseObject["icons"]?["1x"] as? String).flatMap { URL(string: $0) }
+        }
+
+        self.authorURL = nil
+        self.version = nil
+        self.lastUpdated = nil
+        self.banner = nil
+        self.descriptionHTML = nil
+        self.installationHTML = nil
+        self.faqHTML = nil
+        self.changelogHTML = nil
+    }
 }
 
 // Since the WPOrg API returns `author` as a HTML string (or freeform text), we need to get ugly and parse out the important bits out of it ourselves.
+// Using the built-in NSAttributedString API for it is too slow — it's required to run on main thread and it calls out to WebKit APIs,
+// making the context switches excessively expensive when trying to display a list of plugins.
 typealias Author = (name: String, link: URL?)
-private func extractAuthor(_ string: String) -> Author {
-    guard let attributedString = extractHTMLText(string) else {
-        return (name: string, link: nil)
+
+private func extractAuthor(_ author: String) -> Author {
+    // Because the `author` field is so free-form, there's cases of it being
+    // * regular string ("Gutenberg")
+    // * URL ("https://wordpress.org/plugins/gutenberg/#reviews&arg=1")
+    // * HTML link ("<a href="https://wordpress.org/plugins/gutenberg/#reviews">Gutenberg</a>"
+    // but also fun things like
+    // * malformed HTML: "<a href="">Gutenberg</a>".
+    // To save ourselves a headache of trying to support all those edge-cases when parsing out the
+    // user-facing name, let's just employ honest to god XMLParser and be done with it.
+    // (h/t @koke for suggesting and writing the XMLParser approach)
+
+    guard let data = author
+        .replacingOccurrences(of: "&", with: "&amp;") // can't have naked "&" in XML, but they're valid in URLs.
+        .data(using: .utf8) else {
+        return (author, nil)
     }
 
-    let authorName = attributedString.string
-    let authorURL = attributedString.attributes(at: 0, effectiveRange: nil)[.link] as? URL
-    return (authorName, authorURL)
+    let parser = XMLParser(data: data)
+    let delegate = AuthorParser()
+
+    parser.delegate = delegate
+
+    guard parser.parse() else {
+        if let url = URL(string: author),
+            url.scheme != nil {
+            return (author, url)
+        } else {
+            return (author, nil)
+        }
+    }
+
+    return (delegate.author, delegate.url)
 }
 
 private func extractHTMLText(_ text: String?) -> NSAttributedString? {
@@ -159,4 +235,21 @@ private func trimChangelog(_ changelog: String?) -> String? {
     }
 
     return String(log[log.startIndex ..< secondOccurence.lowerBound])
+}
+
+private final class AuthorParser: NSObject, XMLParserDelegate {
+    var author = ""
+    var url: URL?
+
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+        guard elementName == "a",
+            let href = attributeDict["href"] else {
+                return
+        }
+        url = URL(string: href)
+    }
+
+    func parser(_ parser: XMLParser, foundCharacters string: String) {
+        author.append(string)
+    }
 }

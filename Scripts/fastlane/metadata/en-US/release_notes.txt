@@ -1,1 +1,2 @@
-A completely new and delightful Share Extension is available in this version.
+Improvements to the new Share Extension.
+New Jetpack setting: Speed up your site.

@@ -1,5 +1,5 @@
 #import "WPTabBarController.h"
-#import <WordPressShared/UIImage+Util.h>
+#import <WordPressUI/UIImage+Util.h>
 
 #import "WordPressAppDelegate.h"
 #import "AccountService.h"
@@ -128,7 +128,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(signinDidFinish:)
-                                                     name:SigninHelpers.WPSigninDidFinishNotification
+                                                     name:WordPressAuthenticator.WPSigninDidFinishNotification
                                                    object:nil];
 
         // Watch for application badge number changes

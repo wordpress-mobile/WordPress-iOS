@@ -1,1 +1,2 @@
-Une nouvelle et merveilleuse extension de partage est disponible dans cette version.
+Améliorations de la nouvelle extension de partage. 
+Nouveaux réglages de Jetpack : accélérez votre site.

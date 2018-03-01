@@ -13,7 +13,7 @@ class TextWithAccessoryButtonCell: WPReusableTableViewCell {
 
     @IBOutlet private var mainLabel: UILabel?
     @IBOutlet private var secondaryLabel: UILabel?
-    @IBOutlet public private(set) var button: LoginButton?
+    @IBOutlet public private(set) var button: NUXButton?
 
     var onButtonTap: (() -> Void)?
 
@@ -59,7 +59,7 @@ private extension TextWithAccessoryButtonCell {
         button?.isPrimary = true
     }
 
-    @IBAction func buttonTapped(_ button: LoginButton) {
+    @IBAction func buttonTapped(_ button: NUXButton) {
         onButtonTap?()
     }
 }
