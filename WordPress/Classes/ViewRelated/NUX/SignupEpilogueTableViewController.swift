@@ -6,7 +6,7 @@ protocol SignupEpilogueTableViewControllerDelegate {
     func usernameTapped(userInfo: LoginEpilogueUserInfo?)
 }
 
-/// Data source to get updated temporary user info, not yet saved in the user account.
+/// Data source to get the temporary user info, not yet saved in the user account.
 ///
 protocol SignupEpilogueTableViewControllerDataSource {
     var customDisplayName: String? { get }
