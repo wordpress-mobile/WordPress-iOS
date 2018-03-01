@@ -62,7 +62,7 @@ public struct MediaAnalyticsInfo {
         switch origin {
         case .mediaLibrary:
             return nil
-        case .editor(_):
+        case .editor:
             return .editorUploadMediaRetried
         }
     }
