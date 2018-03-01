@@ -133,6 +133,7 @@
                         <outlet property="instructionLabel" destination="CPF-7g-0y5" id="Urr-Xa-YNp"/>
                         <outlet property="submitButton" destination="4Su-Zc-Omp" id="amJ-9P-tcO"/>
                         <segue destination="Je3-5O-NYu" kind="show" identifier="showLinkMailView" id="Yop-RV-xJa"/>
+                        <segue destination="J8B-jx-UJD" kind="show" identifier="showEmailLogin" id="1cg-nu-IEn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OAN-7g-PQl" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -334,6 +335,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XrP-NU-nZR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-147" y="-315"/>
+        </scene>
+        <!--emailEntry-->
+        <scene sceneID="JU2-CA-QR6">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Login" referencedIdentifier="emailEntry" id="J8B-jx-UJD" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Y5k-uW-muf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-346" y="-127"/>
         </scene>
     </scenes>
     <resources>
