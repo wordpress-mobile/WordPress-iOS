@@ -54,6 +54,11 @@ public struct MediaAnalyticsInfo {
     let origin: MediaUploadOrigin
     let selectionMethod: MediaSelectionMethod?
 
+    init(origin: MediaUploadOrigin, selectionMethod: MediaSelectionMethod? = nil) {
+        self.origin = origin
+        self.selectionMethod = selectionMethod
+    }
+
     func eventForMediaType(_ mediaType: MediaType) -> WPAnalyticsStat? {
         return origin.eventForMediaType(mediaType)
     }
@@ -61,7 +66,7 @@ public struct MediaAnalyticsInfo {
     var retryEvent: WPAnalyticsStat? {
         switch origin {
         case .mediaLibrary:
-            return nil
+            return .mediaLibraryUploadMediaRetried
         case .editor:
             return .editorUploadMediaRetried
         }
