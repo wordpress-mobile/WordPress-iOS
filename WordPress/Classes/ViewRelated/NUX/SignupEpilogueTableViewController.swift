@@ -6,10 +6,18 @@ protocol SignupEpilogueTableViewControllerDelegate {
     func usernameTapped(userInfo: LoginEpilogueUserInfo?)
 }
 
+/// Data source to get updated temporary user info, not yet saved in the user account.
+///
+protocol SignupEpilogueTableViewControllerDataSource {
+    var customDisplayName: String? { get }
+    var password: String? { get }
+}
+
 class SignupEpilogueTableViewController: NUXTableViewController {
 
     // MARK: - Properties
 
+    open var dataSource: SignupEpilogueTableViewControllerDataSource?
     open var delegate: SignupEpilogueTableViewControllerDelegate?
 
     private var epilogueUserInfo: LoginEpilogueUserInfo?
@@ -214,7 +222,7 @@ private extension SignupEpilogueTableViewController {
         case .displayName:
             cell.configureCell(forType: .displayName,
                                labelText: NSLocalizedString("Display Name", comment: "Display Name label text."),
-                               fieldValue: epilogueUserInfo?.fullName)
+                               fieldValue: dataSource?.customDisplayName ?? epilogueUserInfo?.fullName)
         case .username:
             cell.configureCell(forType: .username,
                                labelText: NSLocalizedString("Username", comment: "Username label text."),
@@ -222,7 +230,7 @@ private extension SignupEpilogueTableViewController {
         case .password:
             cell.configureCell(forType: .password,
                                labelText: NSLocalizedString("Password", comment: "Password label text."),
-                               fieldValue: nil,
+                               fieldValue: dataSource?.password,
                                fieldPlaceholder: NSLocalizedString("Optional", comment: "Password field placeholder text"))
         }
 
