@@ -29,6 +29,7 @@ class SignupEpilogueViewController: NUXViewController {
 
         if let vc = segue.destination as? SignupEpilogueTableViewController {
             vc.loginFields = loginFields
+            vc.dataSource = self
             vc.delegate = self
         }
 
@@ -54,6 +55,18 @@ extension SignupEpilogueViewController: NUXButtonViewControllerDelegate {
         } else {
             navigationController?.dismiss(animated: true, completion: nil)
         }
+    }
+}
+
+// MARK: - SignupEpilogueTableViewControllerDataSource
+
+extension SignupEpilogueViewController: SignupEpilogueTableViewControllerDataSource {
+    var customDisplayName: String? {
+        return updatedDisplayName
+    }
+
+    var password: String? {
+        return updatedPassword
     }
 }
 
