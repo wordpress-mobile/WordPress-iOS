@@ -42,12 +42,7 @@ extension PostUploadOperation {
         remotePost.status = postStatus
         remotePost.siteID = NSNumber(value: siteID)
         remotePost.tags = postTags?.arrayOfTags() ?? []
-
-        remotePost.categories = postCategories?.arrayOfTags().flatMap({Int($0)}).map({
-            let remoteCat = RemotePostCategory()
-            remoteCat.categoryID = NSNumber(value: $0)
-            return remoteCat
-        }) ?? []
+        remotePost.categories = RemotePostCategory.remotePostCategoriesFromString(postCategories) ?? []
 
         return remotePost
     }
