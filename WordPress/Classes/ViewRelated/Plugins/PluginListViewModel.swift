@@ -134,11 +134,6 @@ class PluginListViewModel: Observable {
                 return nil
             }
             return error
-        case (.featured, PluginAction.receiveFeaturedPluginsFailed(let failedSite, let error)):
-            guard site == failedSite else {
-                return nil
-            }
-            return error
         case (.feed(let feed), PluginAction.receivePluginDirectoryFeedFailed(let failedFeed, let error)):
             guard feed == failedFeed else {
                 return nil
@@ -152,6 +147,24 @@ class PluginListViewModel: Observable {
 
     func onStateChange(_ handler: @escaping (StateChange) -> Void) -> Receipt {
         return stateChangeDispatcher.subscribe(handler)
+    }
+
+    func refresh() {
+        let action: PluginAction?
+
+        switch query {
+        case .all(let site):
+            action = PluginAction.refreshPlugins(site: site)
+        case .feed(let feedType):
+            action = PluginAction.refreshFeed(feed: feedType)
+        default:
+            // We don't show this view for `featured` and `search`.
+            action = nil
+        }
+
+        if let action = action {
+            ActionDispatcher.dispatch(action)
+        }
     }
 
     var noResultsViewModel: WPNoResultsView.Model? {
@@ -262,13 +275,16 @@ class PluginListViewModel: Observable {
         refreshing = isFetching(for: query)
 
         guard !refreshing else {
-            state = .loading
+            if results(for: query) == nil {
+                state = .loading
+            }
             return
         }
 
         guard let plugins = results(for: query) else {
             return
         }
+
         state = .ready(plugins)
     }
 
@@ -289,8 +305,8 @@ class PluginListViewModel: Observable {
 
         case .all(let site):
             return store.isFetchingPlugins(site: site)
-        case .featured(let site):
-            return store.isFetchingFeatured(site: site)
+        case .featured:
+            return store.isFetchingFeatured()
         case .feed(let feed):
             return store.isFetchingFeed(feed: feed)
         case .directoryEntry:
@@ -303,8 +319,8 @@ class PluginListViewModel: Observable {
 
         case .all(let site):
             return store.getPlugins(site: site).flatMap { PluginResults($0) }
-        case .featured(let site):
-            return store.getFeaturedPlugins(site: site).flatMap { PluginResults($0)}
+        case .featured:
+            return store.getFeaturedPlugins().flatMap { PluginResults($0)}
         case .feed(let feed):
             return store.getPluginDirectoryFeedPlugins(from: feed).flatMap { PluginResults($0) }
         case .directoryEntry:
