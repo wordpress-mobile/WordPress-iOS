@@ -435,19 +435,24 @@ fileprivate extension ShareModularViewController {
             WPStyleGuide.Share.configureModuleCell(cell)
             cell.textLabel?.text = NSLocalizedString("Category", comment: "Category menu item in share extension.")
             cell.accessibilityLabel = "Category"
-            switch shareData.categoryCountForSelectedSite {
-            case 0:
-                categoryActivityIndicator.startAnimating()
-                cell.accessoryView = categoryActivityIndicator
+            if isFetchingCategories {
                 cell.isUserInteractionEnabled = false
-            case 1:
-                categoryActivityIndicator.stopAnimating()
                 cell.accessoryType = .none
-                cell.isUserInteractionEnabled = false
-            default:
-                categoryActivityIndicator.stopAnimating()
-                cell.accessoryType = .disclosureIndicator
-                cell.isUserInteractionEnabled = true
+                cell.accessoryView = categoryActivityIndicator
+                categoryActivityIndicator.startAnimating()
+            } else {
+                switch shareData.categoryCountForSelectedSite {
+                case 0, 1:
+                    categoryActivityIndicator.stopAnimating()
+                    cell.accessoryView = nil
+                    cell.accessoryType = .none
+                    cell.isUserInteractionEnabled = false
+                default:
+                    categoryActivityIndicator.stopAnimating()
+                    cell.accessoryView = nil
+                    cell.accessoryType = .disclosureIndicator
+                    cell.isUserInteractionEnabled = true
+                }
             }
 
             cell.detailTextLabel?.text = shareData.selectedCategoriesNameString
@@ -768,6 +773,7 @@ fileprivate extension ShareModularViewController {
                 self.sites = [RemoteBlog]()
                 self.sitesTableView.reloadData()
                 self.showEmptySitesIfNeeded()
+                self.refreshModulesTable(categoriesLoaded: true)
             }
         }
 
