@@ -77,8 +77,6 @@ class LoginProloguePromoViewController: UIViewController {
         setupBackground()
         setupHeadingLabel()
         setupLayout()
-
-        registerDynamicTypeOberver()
     }
 
     private func setupBackground() {
@@ -95,11 +93,6 @@ class LoginProloguePromoViewController: UIViewController {
         headingLabel.sizeToFit()
     }
 
-    private func registerDynamicTypeOberver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(didChangePreferredContentSize), name: .UIContentSizeCategoryDidChange, object: nil)
-    }
-
-    @objc
     private func didChangePreferredContentSize() {
         setupHeadingLabel()
     }
@@ -159,5 +152,13 @@ class LoginProloguePromoViewController: UIViewController {
             animationView.topAnchor.constraint(equalTo: animationHolder.topAnchor),
             animationView.bottomAnchor.constraint(equalTo: animationHolder.bottomAnchor)
         ])
+    }
+}
+
+extension LoginProloguePromoViewController {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            didChangePreferredContentSize()
+        }
     }
 }
