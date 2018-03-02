@@ -6,16 +6,16 @@ import WordPressShared
     // MARK: - Configuration
     fileprivate let horizontalInset: CGFloat = 20
     fileprivate let verticalInset: CGFloat = 12
+    fileprivate let maxFontSize: CGFloat = 20
 
     /// Configure the appearance of the button.
     ///
     override func configureButton() {
         contentEdgeInsets = UIEdgeInsets(top: verticalInset, left: horizontalInset, bottom: verticalInset, right: horizontalInset)
 
-        titleLabel?.font = WPStyleGuide.fontForTextStyle(.headline)
+        titleLabel?.font = WPStyleGuide.fontForTextStyle(.headline, maximumPointSize: maxFontSize)
         titleLabel?.adjustsFontForContentSizeCategory = true
         titleLabel?.textAlignment = .center
-        titleLabel?.adjustsFontSizeToFitWidth = true
 
         let normalImage: UIImage?
         let highlightImage: UIImage?
