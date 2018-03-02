@@ -18,7 +18,7 @@ class ShareCategoriesPickerViewController: UITableViewController {
 
     // MARK: - Private Properties
 
-    /// All availible categories for selected site
+    /// All available categories for selected site
     ///
     fileprivate var allCategories: [RemotePostCategory]?
 

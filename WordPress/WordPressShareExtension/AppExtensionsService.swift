@@ -1,6 +1,21 @@
 import CoreData
 import WordPressKit
 
+extension RemotePostCategory {
+    static func remotePostCategoriesFromString(_ categories: String?) -> [RemotePostCategory]? {
+        guard let categories = categories, !categories.isEmpty else {
+            return nil
+        }
+
+        let remotePostcategories: [RemotePostCategory] = categories.arrayOfTags().flatMap({Int($0)}).map({
+            let remoteCat = RemotePostCategory()
+            remoteCat.categoryID = NSNumber(value: $0)
+            return remoteCat
+        })
+        return remotePostcategories
+    }
+}
+
 /// Provides site fetching and post/media uploading functionality to app extensions.
 ///
 class AppExtensionsService {
@@ -96,14 +111,20 @@ extension AppExtensionsService {
 // MARK: - Blog Settings
 
 extension AppExtensionsService {
+    /// Retrieves the site settings for a site — the default CategoryID is contained within.
+    ///
+    /// - Parameters:
+    ///   - siteID: Site ID to fetch settings for
+    ///   - onSuccess: Completion handler executed after a successful fetch
+    ///   - onFailure: The failure handler
     func fetchSettingsForSite(_ siteID: Int, onSuccess: @escaping (RemoteBlogSettings?) -> (), onFailure: @escaping FailureWithErrorBlock) {
         let remote = BlogServiceRemoteREST(wordPressComRestApi: simpleRestAPI, siteID: NSNumber(value: siteID))
         remote.syncBlogSettings(success: { settings in
             onSuccess(settings)
-        }) { error in
+        }, failure: { error in
             DDLogError("Error retrieving settings for site ID \(siteID): \(String(describing: error))")
             onFailure(error)
-        }
+        })
     }
 }
 
@@ -176,12 +197,8 @@ extension AppExtensionsService {
             remotePost.tags = tags.arrayOfTags()
         }
 
-        if let categories = categories {
-            remotePost.categories = categories.arrayOfTags().flatMap({Int($0)}).map({
-                let remoteCat = RemotePostCategory()
-                remoteCat.categoryID = NSNumber(value: $0)
-                return remoteCat
-            })
+        if let remoteCategories = RemotePostCategory.remotePostCategoriesFromString(categories) {
+            remotePost.categories = remoteCategories
         }
 
         let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .pending)
@@ -243,12 +260,8 @@ extension AppExtensionsService {
             remotePost.tags = tags.arrayOfTags()
         }
 
-        if let categories = categories {
-            remotePost.categories = categories.arrayOfTags().flatMap({Int($0)}).map({
-                let remoteCat = RemotePostCategory()
-                remoteCat.categoryID = NSNumber(value: $0)
-                return remoteCat
-            })
+        if let remoteCategories = RemotePostCategory.remotePostCategoriesFromString(categories) {
+            remotePost.categories = remoteCategories
         }
 
         // Create the post & media upload ops

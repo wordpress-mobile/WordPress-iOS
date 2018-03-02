@@ -63,7 +63,7 @@ class ShareData: NSObject {
         return allCategoriesForSelectedSite?.count ?? 0
     }
 
-    /// Computed (read-only) var that returns a comma-delimted string of selected category names. If
+    /// Computed (read-only) var that returns a comma-delimited string of selected category names. If
     /// selected categories is empty then return the default category name. Otherwise return "".
     ///
     var selectedCategoriesNameString: String {
@@ -74,7 +74,7 @@ class ShareData: NSObject {
         return selectedCategories.map({ $0.name }).joined(separator: ", ")
     }
 
-    /// Computed (read-only) var that returns a comma-delimted string of selected category IDs
+    /// Computed (read-only) var that returns a comma-delimited string of selected category IDs
     ///
     var selectedCategoriesIDString: String? {
         guard let selectedCategories = userSelectedCategories, !selectedCategories.isEmpty else {
