@@ -439,38 +439,24 @@ import WordPressShared
     ///
     @objc class func fetchOnePasswordCredentials(_ controller: UIViewController, sourceView: UIView, loginFields: LoginFields, success: @escaping ((_ loginFields: LoginFields) -> Void)) {
 
-        let loginURL = loginFields.meta.userIsDotCom ? "wordpress.com" : loginFields.siteAddress
+        let loginURL = loginFields.meta.userIsDotCom ? OnePasswordDefaults.dotcomURL : loginFields.siteAddress
 
-
-        let completion: OnePasswordFacadeCallback = { (username, password, oneTimePassword, error) in
-            if let error = error {
-                DDLogError("OnePassword Error: \(error.localizedDescription)")
-                WordPressAuthenticator.post(event: .onePasswordFailed)
-                return
-            }
-
-            guard let username = username, let password = password else {
-                return
-            }
-
-            if username.isEmpty || password.isEmpty {
-                return
-            }
-
+        OnePasswordFacade().findLogin(for: loginURL, viewController: controller, sender: sourceView, success: { (username, password, otp) in
             loginFields.username = username
             loginFields.password = password
-
-            if let oneTimePassword = oneTimePassword {
-                loginFields.multifactorCode = oneTimePassword
-            }
+            loginFields.multifactorCode = otp ?? String()
 
             WordPressAuthenticator.post(event: .onePasswordLogin)
-
             success(loginFields)
-        }
 
-        let onePasswordFacade = OnePasswordFacade()
-        onePasswordFacade.findLogin(forURLString: loginURL, viewController: controller, sender: sourceView, completion: completion)
+        }, failure: { error in
+            guard error != .cancelledByUser else {
+                return
+            }
+
+            DDLogError("OnePassword Error: \(error.localizedDescription)")
+            WordPressAuthenticator.post(event: .onePasswordFailed)
+        })
     }
 
 
