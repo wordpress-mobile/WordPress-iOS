@@ -7,7 +7,10 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     // MARK: - Private Properties
 
     fileprivate var isPublishingPost: Bool = false
-    fileprivate var isFetchingCategories: Bool = false
+
+    // Defaulting this to `true` so, on first load, the publish button is not enabled until the
+    // catagories for the selected site are fully loaded
+    fileprivate var isFetchingCategories: Bool = true
 
     /// StackView container for the tables
     ///
