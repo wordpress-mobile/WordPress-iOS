@@ -4,6 +4,8 @@ import Gridicons
 
 extension WPStyleGuide {
 
+    static let maxFontSizeForLogin: CGFloat = 40.0
+
     private struct Constants {
         static let buttonMinHeight: CGFloat = 40.0
         static let googleIconOffset: CGFloat = -1.0
@@ -81,6 +83,12 @@ extension WPStyleGuide {
     class func mediumWeightFont(forStyle style: UIFontTextStyle) -> UIFont {
         let fontToGetSize = WPStyleGuide.fontForTextStyle(style)
         return UIFont.systemFont(ofSize: fontToGetSize.pointSize, weight: .medium)
+    }
+
+    class func mediumWeightFont(forStyle style: UIFontTextStyle, maximumPointSize: CGFloat) -> UIFont {
+        let fontToGetSize = WPStyleGuide.fontForTextStyle(style)
+        let maxAllowedFontSize = CGFloat.minimum(fontToGetSize.pointSize, maximumPointSize)
+        return UIFont.systemFont(ofSize: maxAllowedFontSize, weight: .medium)
     }
 
     // MARK: - Google Signin Button Methods
