@@ -24,17 +24,25 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
     static func clearCache() {
         cache.removeAllObjects()
     }
+
     internal static func storeCategories(_ categories: [RemotePostCategory], for siteID: NSNumber) {
-        cache.setObject(categories as AnyObject, forKey: "\(siteID)-categories" as AnyObject)
+        cache.setObject(categories as AnyObject, forKey: cacheKeyForSiteID(siteID, keyName: "categories"))
     }
+
     internal static func cachedCategoriesForSite(_ siteID: NSNumber) -> [RemotePostCategory]? {
-        return cache.object(forKey: "\(siteID)-categories" as AnyObject) as? [RemotePostCategory]
+        return cache.object(forKey: cacheKeyForSiteID(siteID, keyName: "categories")) as? [RemotePostCategory]
     }
+
     internal static func storeDefaultCategoryID(_ defaultCategoryID: NSNumber, for siteID: NSNumber) {
-        cache.setObject(defaultCategoryID as AnyObject, forKey: "\(siteID)-default-category" as AnyObject)
+        cache.setObject(defaultCategoryID as AnyObject, forKey: cacheKeyForSiteID(siteID, keyName: "default-category"))
     }
+
     internal static func cachedDefaultCategoryIDForSite(_ siteID: NSNumber) -> NSNumber? {
-        return cache.object(forKey: "\(siteID)-default-category" as AnyObject) as? NSNumber
+        return cache.object(forKey: cacheKeyForSiteID(siteID, keyName: "default-category")) as? NSNumber
+    }
+
+    internal static func cacheKeyForSiteID(_ siteID: NSNumber, keyName: String) -> AnyObject {
+        return "\(siteID)-\(keyName)" as AnyObject
     }
 
     // MARK: - Public Properties
