@@ -537,11 +537,12 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (void)customizeAppearanceForTextElements
 {
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline symbolicTraits:UIFontDescriptorTraitBold]} ];
+    CGFloat maximumPointSize = [WPStyleGuide maxFontSize];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline symbolicTraits:UIFontDescriptorTraitBold maximumPointSize:maximumPointSize]} ];
     // Search
     [WPStyleGuide configureSearchBarTextAppearance];
     // SVProgressHUD styles
-    [SVProgressHUD setFont:[WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline]];
+    [SVProgressHUD setFont:[WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline maximumPointSize:maximumPointSize]];
 }
 
 - (void)trackLogoutIfNeeded
