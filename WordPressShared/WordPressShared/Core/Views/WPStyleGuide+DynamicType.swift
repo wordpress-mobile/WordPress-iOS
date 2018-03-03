@@ -5,6 +5,8 @@ import Foundation
 extension WPStyleGuide {
     @objc static let defaultTableViewRowHeight: CGFloat = 44.0
 
+    @objc public static let maxFontSize: CGFloat = 40.0
+
     /// Configures a table to automatically resize its rows according to their content.
     ///
     /// - Parameters:
@@ -63,18 +65,6 @@ extension WPStyleGuide {
         label.adjustsFontForContentSizeCategory = true
     }
 
-    /// Creates a UIFont for the user current text size settings.
-    ///
-    /// - Parameters:
-    ///     - style: The desired UIFontTextStyle.
-    ///
-    /// - Returns: The created font.
-    ///
-    @objc public class func fontForTextStyle(_ style: UIFontTextStyle) -> UIFont {
-        let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
-        return UIFont(descriptor: fontDescriptor, size: CGFloat(0.0))
-    }
-
     /// Creates a UIFont for the user current text size settings and a maximum font size
     ///
     /// - Parameters:
@@ -83,17 +73,14 @@ extension WPStyleGuide {
     ///
     /// - Returns: The created font.
     ///
-    @objc public class func fontForTextStyle(_ style: UIFontTextStyle, maximumPointSize: CGFloat) -> UIFont {
-        let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
-        let fontToGetSize = UIFont(descriptor: fontDescriptor, size: CGFloat(0.0))
-
+    @objc public class func fontForTextStyle(_ style: UIFontTextStyle, maximumPointSize: CGFloat = maxFontSize) -> UIFont {
         if #available(iOS 11, *) {
+            let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
+            let fontToGetSize = UIFont(descriptor: fontDescriptor, size: CGFloat(0.0))
             return UIFontMetrics(forTextStyle: style).scaledFont(for: fontToGetSize, maximumPointSize: maximumPointSize)
         }
 
-        let scaledFontSize = CGFloat.minimum(fontToGetSize.pointSize, maximumPointSize)
-        let scaledFontDescriptor = fontDescriptor.withSize(scaledFontSize)
-
+        let scaledFontDescriptor = fontDescriptor(style, maximumPointSize: maximumPointSize)
         return UIFont(descriptor: scaledFontDescriptor, size: CGFloat(0.0))
     }
 
@@ -105,10 +92,17 @@ extension WPStyleGuide {
     ///
     /// - Returns: The created font.
     ///
-    @objc public class func fontForTextStyle(_ style: UIFontTextStyle, symbolicTraits traits: UIFontDescriptorSymbolicTraits) -> UIFont {
-        var fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
-        fontDescriptor = fontDescriptor.withSymbolicTraits(traits) ?? fontDescriptor
-        return UIFont(descriptor: fontDescriptor, size: CGFloat(0.0))
+    @objc public class func fontForTextStyle(_ style: UIFontTextStyle, symbolicTraits traits: UIFontDescriptorSymbolicTraits, maximumPointSize: CGFloat = maxFontSize) -> UIFont {
+        var descriptor = fontDescriptor(style, maximumPointSize: maximumPointSize)
+        descriptor = descriptor.withSymbolicTraits(traits) ?? descriptor
+        return UIFont(descriptor: descriptor, size: CGFloat(0.0))
+    }
+
+    private class func fontDescriptor(_ style: UIFontTextStyle, maximumPointSize: CGFloat = maxFontSize) -> UIFontDescriptor {
+        let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
+        let fontToGetSize = UIFont(descriptor: fontDescriptor, size: CGFloat(0.0))
+        let scaledFontSize = CGFloat.minimum(fontToGetSize.pointSize, maximumPointSize)
+        return fontDescriptor.withSize(scaledFontSize)
     }
 
     /// Creates a UIFont for the user current text size settings.

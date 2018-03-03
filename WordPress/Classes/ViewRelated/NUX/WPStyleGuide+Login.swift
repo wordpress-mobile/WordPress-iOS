@@ -4,8 +4,6 @@ import Gridicons
 
 extension WPStyleGuide {
 
-    static let maxFontSizeForLogin: CGFloat = 40.0
-
     private struct Constants {
         static let buttonMinHeight: CGFloat = 40.0
         static let googleIconOffset: CGFloat = -1.0
@@ -80,12 +78,7 @@ extension WPStyleGuide {
     /// - note: iOS won't return UIFontWeightMedium for dynamic system font :(
     /// So instead get the dynamic font size, then ask for the non-dynamic font at that size
     ///
-    class func mediumWeightFont(forStyle style: UIFontTextStyle) -> UIFont {
-        let fontToGetSize = WPStyleGuide.fontForTextStyle(style)
-        return UIFont.systemFont(ofSize: fontToGetSize.pointSize, weight: .medium)
-    }
-
-    class func mediumWeightFont(forStyle style: UIFontTextStyle, maximumPointSize: CGFloat) -> UIFont {
+    class func mediumWeightFont(forStyle style: UIFontTextStyle, maximumPointSize: CGFloat = WPStyleGuide.maxFontSize) -> UIFont {
         let fontToGetSize = WPStyleGuide.fontForTextStyle(style)
         let maxAllowedFontSize = CGFloat.minimum(fontToGetSize.pointSize, maximumPointSize)
         return UIFont.systemFont(ofSize: maxAllowedFontSize, weight: .medium)
