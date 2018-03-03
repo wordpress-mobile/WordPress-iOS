@@ -6,7 +6,7 @@ import WordPressShared
     // MARK: - Configuration
     fileprivate let horizontalInset: CGFloat = 20
     fileprivate let verticalInset: CGFloat = 12
-    fileprivate let maxFontSize: CGFloat = 20
+    fileprivate let maxFontSize: CGFloat = 24
 
     /// Configure the appearance of the button.
     ///
