@@ -8,4 +8,6 @@
 
 + (void)showAlertNoInternetConnectionWithRetryBlock:(void (^)(void))retryBlock;
 
++ (NSString *)noConnectionMessage;
+
 @end
