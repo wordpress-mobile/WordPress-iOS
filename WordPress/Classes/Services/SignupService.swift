@@ -173,8 +173,17 @@ open class SignupService: LocalCoreDataService {
                                         }
 
                                         let createdAccount = (responseDictionary?[ResponseKeys.createdAccount] as? Int ?? 0) == 1
-                                        success(createdAccount)
-
+                                        if createdAccount {
+                                            success(createdAccount)
+                                        } else {
+                                            // we need to sync the blogs for existing accounts to be able to display the Login Epilogue
+                                            BlogSyncFacade().syncBlogs(for: account, success: {
+                                                success(createdAccount)
+                                            }, failure: { (_) in
+                                                // the blog sync failed but the user is already logged in
+                                                success(createdAccount)
+                                            })
+                                        }
                                     },
                                     failure: failure)
     }

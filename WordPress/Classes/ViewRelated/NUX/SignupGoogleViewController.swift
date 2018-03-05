@@ -75,7 +75,7 @@ extension SignupGoogleViewController: GIDSignInDelegate {
                 self?.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
                 WPAnalytics.track(.signupSocialSuccess)
             } else {
-                self?.navigationController?.dismiss(animated: true, completion: nil)
+                self?.performSegue(withIdentifier: .showLoginEpilogue, sender: self)
                 WPAnalytics.track(.loginSocialSuccess)
             }
         }) { [weak self] (error) in
