@@ -61,6 +61,10 @@ extension SignupEpilogueViewController: SignupEpilogueTableViewControllerDataSou
     var password: String? {
         return updatedPassword
     }
+
+    var username: String? {
+        return updatedUsername
+    }
 }
 
 // MARK: - SignupEpilogueTableViewControllerDelegate
@@ -125,15 +129,9 @@ private extension SignupEpilogueViewController {
         }
 
         let settingsService = AccountSettingsService(userID: account.userID.intValue, api: api)
-        settingsService.changeUsername(to: newUsername, success: { [weak self] in
-            // now we refresh the account to get the new username
-//            accountService.updateUserDetails(for: account, success: { [weak self] in
-//                    finished()
-//                }, failure: { [weak self] (error) in
-//                    finished()
-//            })
+        settingsService.changeUsername(to: newUsername, success: {
             finished()
-        }) { [weak self] in
+        }) {
             finished()
         }
     }
@@ -153,13 +151,6 @@ private extension SignupEpilogueViewController {
 
         accountSettingService.saveChange(accountSettingsChange) {
             finished()
-            // If the password needs updating, do that.
-            // If not, refresh the account so 'Me' tab info is correct.
-//            if let _ = self.updatedPassword {
-//                self.updatePassword()
-//            } else {
-//                self.refreshAccountDetails()
-//            }
         }
     }
 
@@ -200,8 +191,6 @@ extension SignupEpilogueViewController: SignupUsernameViewControllerDelegate {
     func usernameSelected(_ username: String) {
         if !username.isEmpty {
             updatedUsername = username
-        } else {
-            updatedUsername = nil
         }
     }
 }
