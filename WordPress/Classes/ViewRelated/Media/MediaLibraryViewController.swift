@@ -255,15 +255,9 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     private func showOptionsMenu() {
         let menuAlert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
 
-        if let quotaSpaceAllowed = blog.quotaSpaceAllowed?.int64Value, let quotaSpaceUsed = blog.quotaSpaceUsed?.int64Value {
-            let quotaSpaceAllowedDescription = ByteCountFormatter.string(fromByteCount: quotaSpaceAllowed, countStyle: ByteCountFormatter.CountStyle.file)
-            let quotaPercentageUsed = Double(quotaSpaceUsed) / Double(quotaSpaceAllowed)
-            let percentageFormatter = NumberFormatter()
-            percentageFormatter.numberStyle = .percent
-            if let quotaPercentageUsedDescription = percentageFormatter.string(from: NSNumber(value: quotaPercentageUsed)) {
-                let formatString = NSLocalizedString("%@ of %@ used.", comment: "Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used.")
-                menuAlert.title = String(format: formatString, quotaPercentageUsedDescription, quotaSpaceAllowedDescription)
-            }
+        if blog.isQuotaAvailable, let quotaPercentageUsedDescription = blog.quotaPercentageUsedDescription, let quotaSpaceAllowedDescription = blog.quotaSpaceAllowedDescription {
+            let formatString = NSLocalizedString("%@ of %@ used.", comment: "Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used.")
+            menuAlert.title = String(format: formatString, quotaPercentageUsedDescription, quotaSpaceAllowedDescription)
         }
 
         if WPMediaCapturePresenter.isCaptureAvailable() {
