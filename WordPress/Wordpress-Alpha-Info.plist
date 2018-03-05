@@ -95,6 +95,8 @@
 	<string>For your videos to have sound on them.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To add photos or videos to your posts.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>To add photos or videos to your posts.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Noticons.ttf</string>
