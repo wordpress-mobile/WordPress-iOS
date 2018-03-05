@@ -315,9 +315,8 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
                                    highlightedImage:nil];
     } else {
         item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"More", @"")
-                                              image:[UIImage imageNamed:@"icon-post-actionbar-more"]
+                                              image:[[UIImage imageNamed:@"icon-post-actionbar-more"] imageFlippedForRightToLeftLayoutDirection]
                                    highlightedImage:nil];
-        item.imageInsets = [InsetsHelper flipForRightToLeftLayoutDirection:MoreButtonImageInsets];
     }
     return item;
 }
