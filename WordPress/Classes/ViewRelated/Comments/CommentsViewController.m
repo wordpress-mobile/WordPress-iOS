@@ -120,10 +120,15 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 - (void)configureNoResultsView
 {
     WPNoResultsView *noResultsView          = [WPNoResultsView new];
-    noResultsView.titleText                 = NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
+    noResultsView.titleText                 = [self noResultsViewTitle];
     self.noResultsView                      = noResultsView;
     
     [self.view addSubview:noResultsView];
+}
+
+- (NSString *)noResultsViewTitle
+{
+    return [ReachabilityUtils isInternetReachable] ? NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments"): [ReachabilityUtils noConnectionMessage];
 }
 
 - (void)configureRefreshControl
@@ -419,10 +424,10 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
                                                         failure(error);
                                                     });
                                                 }
-                                            if (userInteraction) {
+//                                            if (userInteraction) {
                                                 NSString *title = NSLocalizedString(@"Unable to Sync", @"Title of error prompt shown when a sync the user initiated fails.");
                                                 [WPError showNetworkingAlertWithError:error title:title];
-                                            }
+//                                            }
                                     }];
     }];
 }
