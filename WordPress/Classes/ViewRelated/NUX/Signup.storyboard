@@ -191,49 +191,32 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="inn-oe-jvt">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="583"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <connections>
                                     <segue destination="zr7-F4-cJb" kind="embed" id="FSB-2z-SdS"/>
-                                </connections>
-                            </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rjJ-Oz-vCa">
-                                <rect key="frame" x="0.0" y="583" width="375" height="84"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="84" placeholder="YES" id="LPh-li-yRa"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="84" id="gSs-ae-WjU"/>
-                                </constraints>
-                                <connections>
-                                    <segue destination="1ez-ur-Wce" kind="embed" id="4Xr-qK-MYW"/>
                                 </connections>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="inn-oe-jvt" firstAttribute="top" secondItem="IqI-1c-b2S" secondAttribute="topMargin" constant="-20" id="4Qy-07-V8Y"/>
-                            <constraint firstItem="rjJ-Oz-vCa" firstAttribute="bottom" secondItem="IqI-1c-b2S" secondAttribute="bottom" id="gXB-2t-wqt"/>
                             <constraint firstItem="inn-oe-jvt" firstAttribute="leading" secondItem="nKx-sI-ahu" secondAttribute="leading" id="jez-ad-Ryr"/>
                             <constraint firstItem="inn-oe-jvt" firstAttribute="trailing" secondItem="nKx-sI-ahu" secondAttribute="trailing" id="kam-4m-1ir"/>
-                            <constraint firstItem="rjJ-Oz-vCa" firstAttribute="trailing" secondItem="nKx-sI-ahu" secondAttribute="trailing" id="lQI-xx-833"/>
-                            <constraint firstItem="rjJ-Oz-vCa" firstAttribute="leading" secondItem="nKx-sI-ahu" secondAttribute="leading" id="oow-zG-Ij0"/>
-                            <constraint firstItem="rjJ-Oz-vCa" firstAttribute="top" secondItem="inn-oe-jvt" secondAttribute="bottom" id="uOC-yy-qEc"/>
+                            <constraint firstItem="inn-oe-jvt" firstAttribute="bottom" secondItem="nKx-sI-ahu" secondAttribute="bottom" id="wM0-jM-BSi"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="nKx-sI-ahu"/>
                     </view>
-                    <connections>
-                        <outlet property="buttonContainerHeightConstraint" destination="gSs-ae-WjU" id="Ljd-MJ-p8V"/>
-                        <outlet property="buttonContainerViewBottomConstraint" destination="gXB-2t-wqt" id="Bk0-BR-GCA"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gP7-8o-YtF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-145" y="-739"/>
+            <point key="canvasLocation" x="-146.40000000000001" y="-739.88005997001505"/>
         </scene>
         <!--Signup Username Table View Controller-->
         <scene sceneID="6JI-EP-aNd">
             <objects>
                 <tableViewController id="zr7-F4-cJb" customClass="SignupUsernameTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="cfa-qK-cgc">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="583"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -285,7 +268,7 @@
                             <constraint firstItem="Ae9-4j-PcF" firstAttribute="trailing" secondItem="Pfn-Ox-xPa" secondAttribute="trailing" id="9lO-lg-WIO"/>
                             <constraint firstItem="P1I-3a-oLv" firstAttribute="trailing" secondItem="Ae9-4j-PcF" secondAttribute="trailing" id="DBe-AY-pLB"/>
                             <constraint firstItem="Ae9-4j-PcF" firstAttribute="top" secondItem="Pfn-Ox-xPa" secondAttribute="top" id="fxp-bT-e4a"/>
-                            <constraint firstItem="P1I-3a-oLv" firstAttribute="bottom" secondItem="Ae9-4j-PcF" secondAttribute="bottom" id="maZ-1x-gSB"/>
+                            <constraint firstItem="P1I-3a-oLv" firstAttribute="bottom" secondItem="5jy-Z9-HSJ" secondAttribute="bottom" id="maZ-1x-gSB"/>
                             <constraint firstItem="Pfn-Ox-xPa" firstAttribute="leading" secondItem="Ae9-4j-PcF" secondAttribute="leading" id="qMk-VK-ZUv"/>
                             <constraint firstItem="P1I-3a-oLv" firstAttribute="leading" secondItem="Ae9-4j-PcF" secondAttribute="leading" id="yGX-fn-rqf"/>
                             <constraint firstItem="P1I-3a-oLv" firstAttribute="top" secondItem="Pfn-Ox-xPa" secondAttribute="bottom" id="yMT-vg-j6M"/>
@@ -326,14 +309,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GCN-8K-LcG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="165" y="784"/>
-        </scene>
-        <!--ButtonView-->
-        <scene sceneID="S07-eQ-m0X">
-            <objects>
-                <viewControllerPlaceholder storyboardName="NUXButtonView" referencedIdentifier="ButtonView" id="1ez-ur-Wce" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="XrP-NU-nZR" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-147" y="-315"/>
         </scene>
     </scenes>
     <resources>
