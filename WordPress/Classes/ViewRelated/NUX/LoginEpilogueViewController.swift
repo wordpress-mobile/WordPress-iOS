@@ -41,7 +41,7 @@ class LoginEpilogueViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
-
+        
         if #available(iOS 11.0, *) {
             // iPhone X - fill the bottom safe area with the button panel
             if UIDevice().userInterfaceIdiom == .phone  && UIScreen.main.nativeBounds.height == 2436 {
