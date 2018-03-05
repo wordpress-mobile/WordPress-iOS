@@ -3166,13 +3166,17 @@ extension AztecPostViewController {
         return icon
     }
 
-    // [2017-08-30] We need to auto-close the input media picker when multitasking panes are resized - iOS
-    // is dropping the input picker's view from the view hierarchy. Not an ideal solution, but prevents
-    // the user from seeing an empty grey rect as a keyboard. Issue affects the 7.9", 9.7", and 10.5"
-    // iPads only...not the 12.9"
-    // See http://www.openradar.me/radar?id=4972612522344448 for more details.
-    //
     @objc func applicationWillResignActive(_ notification: Foundation.Notification) {
+
+        // [2018-03-05] Need to close the options VC on backgrounding to prevent view hierarchy inconsistency crasher.
+        dismissOptionsViewControllerIfNecessary()
+
+        // [2017-08-30] We need to auto-close the input media picker when multitasking panes are resized - iOS
+        // is dropping the input picker's view from the view hierarchy. Not an ideal solution, but prevents
+        // the user from seeing an empty grey rect as a keyboard. Issue affects the 7.9", 9.7", and 10.5"
+        // iPads only...not the 12.9"
+        // See http://www.openradar.me/radar?id=4972612522344448 for more details.
+        //
         if UIDevice.isPad() {
             closeMediaPickerInputViewController()
         }
