@@ -71,4 +71,3 @@ class NotificationReplyStoreTests: XCTestCase {
         XCTAssertNil(nowadays.loadReply(for: Testing.key2))
     }
 }
-
