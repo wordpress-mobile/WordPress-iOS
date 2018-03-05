@@ -1268,7 +1268,7 @@ private extension AztecPostViewController {
             self.displayPostOptions()
         }
 
-        alert.addCancelActionWithTitle(MoreSheetAlert.cancelTitle)
+        alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
         alert.popoverPresentationController?.barButtonItem = moreBarButtonItem
 
         present(alert, animated: true, completion: nil)
@@ -3565,11 +3565,11 @@ extension AztecPostViewController {
     }
 
     struct MoreSheetAlert {
-        static let htmlTitle                = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
-        static let richTitle                = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
-        static let previewTitle             = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
-        static let optionsTitle             = NSLocalizedString("Options", comment: "Displays the Post's Options")
-        static let cancelTitle              = NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen")
+        static let htmlTitle = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
+        static let richTitle = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
+        static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
+        static let optionsTitle = NSLocalizedString("Options", comment: "Displays the Post's Options")
+        static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
     }
 
     struct MediaAttachmentActionSheet {
