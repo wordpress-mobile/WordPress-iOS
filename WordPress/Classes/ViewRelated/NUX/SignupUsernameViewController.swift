@@ -134,15 +134,5 @@ extension SignupUsernameViewController: SignupUsernameViewControllerDelegate {
         newUsername = username
 
         delegate?.usernameSelected(username)
-
-//        if username == "" {
-//            showButtonView(show: false, withAnimation: true)
-//        } else {
-//            showButtonView(show: true, withAnimation: true)
-//        }
-    }
-
-    func newSearchStarted() {
-        //showButtonView(show: false, withAnimation: true)
     }
 }

@@ -246,8 +246,6 @@ extension SignupUsernameTableViewController {
 extension SignupUsernameTableViewController: SiteCreationDomainSearchTableViewCellDelegate {
     func startSearch(for searchTerm: String) {
 
-//        delegate?.newSearchStarted()
-
         guard searchTerm.count > 0 else {
             return
         }

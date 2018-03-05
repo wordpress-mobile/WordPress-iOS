@@ -11,6 +11,7 @@ protocol SignupEpilogueTableViewControllerDelegate {
 protocol SignupEpilogueTableViewControllerDataSource {
     var customDisplayName: String? { get }
     var password: String? { get }
+    var username: String? { get }
 }
 
 class SignupEpilogueTableViewController: NUXTableViewController {
@@ -231,7 +232,7 @@ private extension SignupEpilogueTableViewController {
         case .username:
             cell.configureCell(forType: .username,
                                labelText: NSLocalizedString("Username", comment: "Username label text."),
-                               fieldValue: epilogueUserInfo?.username)
+                               fieldValue: dataSource?.username ?? epilogueUserInfo?.username)
         case .password:
             cell.configureCell(forType: .password,
                                labelText: NSLocalizedString("Password", comment: "Password label text."),
