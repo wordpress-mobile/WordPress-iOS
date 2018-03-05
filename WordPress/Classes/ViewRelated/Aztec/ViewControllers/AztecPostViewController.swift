@@ -2892,7 +2892,7 @@ extension AztecPostViewController {
             if let attachment = self.findAttachment(withUploadID: mediaID) {
                 richTextView.remove(attachmentID: attachment.identifier)
             }
-            if let media = mediaCoordinator.media(withIdentifier: mediaID, for: post) {
+            if let media = mediaCoordinator.media(withObjectID: mediaID) {
                 mediaCoordinator.delete(media)
             }
         }
