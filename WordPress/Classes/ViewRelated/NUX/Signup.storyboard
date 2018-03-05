@@ -177,6 +177,7 @@
                     <connections>
                         <outlet property="titleLabel" destination="fiA-2f-xfj" id="gJJ-nI-Zmw"/>
                         <segue destination="xt0-gh-hzg" kind="show" identifier="showSignupEpilogue" id="LGz-VK-bVX"/>
+                        <segue destination="CN5-i0-0hC" kind="show" identifier="showLoginEpilogue" id="zgv-9q-Usa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5UK-0h-9ZC" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -327,6 +328,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GCN-8K-LcG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="165" y="784"/>
+        </scene>
+        <!--LoginEpilogue-->
+        <scene sceneID="t07-8v-Z85">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Login" referencedIdentifier="LoginEpilogue" id="CN5-i0-0hC" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2cP-Rt-jfP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-286" y="1097"/>
         </scene>
         <!--ButtonView-->
         <scene sceneID="S07-eQ-m0X">
