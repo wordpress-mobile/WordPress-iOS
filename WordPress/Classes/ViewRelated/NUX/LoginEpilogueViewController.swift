@@ -5,8 +5,6 @@ class LoginEpilogueViewController: UIViewController {
     @objc var originalPresentingVC: UIViewController?
     @objc var dismissBlock: ((_ cancelled: Bool) -> Void)?
     @IBOutlet var buttonPanel: UIView?
-    @IBOutlet var buttonPanelHeight: NSLayoutConstraint?
-    @IBOutlet var bottomButtonBottom: NSLayoutConstraint?
     @IBOutlet var shadowView: UIView?
     @IBOutlet var connectButton: UIButton?
     @IBOutlet var continueButton: UIButton?
@@ -41,19 +39,6 @@ class LoginEpilogueViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
-        
-        if #available(iOS 11.0, *) {
-            // iPhone X - fill the bottom safe area with the button panel
-            if UIDevice().userInterfaceIdiom == .phone  && UIScreen.main.nativeBounds.height == 2436 {
-                // bottom safe area height
-                let bottomPadding: CGFloat = 24.0
-                // add extra height to the button panel to fill safe area
-                buttonPanelHeight?.constant += bottomPadding
-                // adjust stackview > last button > bottom constraint
-                bottomButtonBottom?.constant += bottomPadding
-                buttonPanel?.layoutIfNeeded()
-            }
-        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
