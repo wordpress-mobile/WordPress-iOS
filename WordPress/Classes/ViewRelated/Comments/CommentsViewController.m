@@ -128,7 +128,10 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (NSString *)noResultsViewTitle
 {
-    return [ReachabilityUtils isInternetReachable] ? NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments"): [ReachabilityUtils noConnectionMessage];
+    NSString *noCommentsMessage = NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
+    NSString *noConnectionMessage = [ReachabilityUtils noConnectionMessage];
+
+    return [ReachabilityUtils isInternetReachable] ? noCommentsMessage : noConnectionMessage;
 }
 
 - (void)configureRefreshControl
@@ -404,6 +407,9 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
     NSManagedObjectID *blogObjectID = self.blog.objectID;
+
+    __typeof(self) __weak weakSelf = self;
+
     [context performBlock:^{
         Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
         if (!blogInContext) {
@@ -412,22 +418,29 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
         
         [commentService syncCommentsForBlog:blogInContext
                                     success:^(BOOL hasMore) {
-                                                if (success) {
-                                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                                        success(hasMore);
-                                                    });
-                                                }
+                                        if (success) {
+                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                success(hasMore);
+                                            });
+                                        }
                                     }
                                     failure:^(NSError *error) {
-                                                if (failure) {
-                                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                                        failure(error);
-                                                    });
-                                                }
-//                                            if (userInteraction) {
-                                                NSString *title = NSLocalizedString(@"Unable to Sync", @"Title of error prompt shown when a sync the user initiated fails.");
-                                                [WPError showNetworkingAlertWithError:error title:title];
-//                                            }
+                                        if (failure) {
+                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                failure(error);
+                                            });
+                                        }
+
+                                        NSString *title = NSLocalizedString(@"Unable to Sync", @"Title of error prompt shown when a sync the user initiated fails.");
+                                        [WPError showNetworkingAlertWithError:error title:title];
+
+                                        if (userInteraction) {
+                                            double delayInSeconds = 0.2;
+                                            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                                            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                                                [weakSelf refreshPullToRefresh];
+                                            });
+                                        }
                                     }];
     }];
 }
