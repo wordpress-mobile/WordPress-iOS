@@ -779,6 +779,7 @@ import WordPressShared
                                             success: { [weak self] in
                                                 SVProgressHUD.showDismissibleSuccess(withStatus: successMessage)
                                                 self?.syncHelper.syncContent()
+                                                self?.updateStreamHeaderIfNeeded()
                                             },
                                             failure: { (error: Error?) in
                                                 SVProgressHUD.dismiss()
