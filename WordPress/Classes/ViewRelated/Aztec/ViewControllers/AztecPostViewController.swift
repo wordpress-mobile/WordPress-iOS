@@ -1341,7 +1341,8 @@ private extension AztecPostViewController {
         let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
         let publishTitle = NSLocalizedString("Publish", comment: "Button shown when the author is asked for publishing confirmation.")
 
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        let style: UIAlertControllerStyle = UIDevice.isPad() ? .alert : .actionSheet
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
 
         alertController.addCancelActionWithTitle(keepEditingTitle)
         alertController.addDefaultActionWithTitle(publishTitle) { [unowned self] _ in
@@ -2578,7 +2579,7 @@ private extension AztecPostViewController {
         }
     }
 
-    /// Published the post
+    /// Publish the post
     ///
     /// - Parameters:
     ///     - completion: the closure to execute when the publish operation completes.
