@@ -333,7 +333,8 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     }
 
     fileprivate func presentRetryOptions(for media: Media) {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let style: UIAlertControllerStyle = UIDevice.isPad() ? .alert : .actionSheet
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: style)
         alertController.addDestructiveActionWithTitle(NSLocalizedString("Cancel Upload", comment: "Media Library option to cancel an in-progress or failed upload.")) { _ in
             MediaCoordinator.shared.delete(media: [media])
         }
