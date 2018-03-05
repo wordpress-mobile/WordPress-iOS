@@ -146,8 +146,8 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
 
         remote.isEmailAvailable(loginFields.emailAddress, success: { available in
             if !available {
-                // If email address is unavailable, display appropriate message.
-                self.displayError(message: ErrorMessage.emailUnavailable.description())
+                // If the user has already signed up redirect to the Login flow
+                self.performSegue(withIdentifier: .showEmailLogin, sender: self)
             }
             completion(available)
         }, failure: { error in
@@ -158,6 +158,15 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
             self.displayError(message: ErrorMessage.availabilityCheckFail.description())
             completion(false)
         })
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        // Configure login flow to allow only .com login and prefill the email
+        if let destination = segue.destination as? LoginEmailViewController {
+            destination.restrictToWPCom = true
+            destination.loginFields.username = loginFields.emailAddress
+        }
     }
 
     // MARK: - Send email
