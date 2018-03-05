@@ -1149,8 +1149,11 @@ extension AztecPostViewController {
             return
         }
         
-        // Confirmation
-        displayPublishConfirmationAlert(dismissWhenDone: dismissWhenDone)
+        if postEditorStateContext.action == .publish {
+            displayPublishConfirmationAlert(dismissWhenDone: dismissWhenDone)
+        } else {
+            publishPost(dismissWhenDone: dismissWhenDone)
+        }
     }
 
     @IBAction func closeWasPressed() {
