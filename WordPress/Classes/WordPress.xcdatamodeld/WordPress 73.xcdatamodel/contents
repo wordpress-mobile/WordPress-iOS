@@ -121,8 +121,8 @@
         <attribute name="postFormats" optional="YES" attributeType="Transformable">
             <userInfo/>
         </attribute>
-        <attribute name="quotaSpaceAllowed" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="quotaSpaceUsed" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="quotaSpaceAllowed" optional="YES" attributeType="Integer 64" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="quotaSpaceUsed" optional="YES" attributeType="Integer 64" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="url" attributeType="String">
             <userInfo/>
         </attribute>
