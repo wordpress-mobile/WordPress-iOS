@@ -148,10 +148,10 @@ extension AppExtensionsService {
         let remote = TaxonomyServiceRemoteREST(wordPressComRestApi: simpleRestAPI, siteID: NSNumber(value: siteID))
         remote.getCategoriesWithSuccess({ categories in
             onSuccess(categories)
-        }) { error in
+        }, failure: { error in
             DDLogError("Error retrieving categories for site ID \(siteID): \(String(describing: error))")
             onFailure(error)
-        }
+        })
     }
 }
 
