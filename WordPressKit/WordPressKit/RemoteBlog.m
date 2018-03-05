@@ -21,6 +21,8 @@
         _planID = [json numberForKeyPath:@"plan.product_id"];
         _planTitle = [json stringForKeyPath:@"plan.product_name_short"];
         _hasPaidPlan = ![json numberForKeyPath:@"plan.is_free"].boolValue;
+        _quotaSpaceAllowed = [json numberForKeyPath:@"quota.space_allowed"];
+        _quotaSpaceUsed = [json numberForKeyPath:@"quota.space_used"];
     }
 
     return self;

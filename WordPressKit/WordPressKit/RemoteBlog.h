@@ -79,6 +79,17 @@
 @property (nonatomic, strong) NSDictionary *capabilities;
 
 /**
+ * @Blog's total diske quota space.
+ */
+@property (nonatomic, strong) NSNumber *quotaSpaceAllowed;
+
+/**
+* @Blog's total diske quota space used.
+*/
+@property (nonatomic, strong) NSNumber *quotaSpaceUsed;
+
+
+/**
  * @details Parses details from a JSON dictionary, as returned by the WordPress.com REST API.
  */
 - (instancetype)initWithJSONDictionary:(NSDictionary *)json;
