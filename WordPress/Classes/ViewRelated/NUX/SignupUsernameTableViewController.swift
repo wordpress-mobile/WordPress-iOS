@@ -1,14 +1,9 @@
 import SVProgressHUD
 
-protocol SignupUsernameTableViewControllerDelegate {
-    func usernameSelected(_ username: String)
-    func newSearchStarted()
-}
-
 class SignupUsernameTableViewController: NUXTableViewController {
     open var currentUsername: String?
     open var displayName: String?
-    open var delegate: SignupUsernameTableViewControllerDelegate?
+    open var delegate: SignupUsernameViewControllerDelegate?
     private var service: AccountSettingsService?
     private var suggestions: [String] = []
     private var isSearching: Bool = false
@@ -251,7 +246,7 @@ extension SignupUsernameTableViewController {
 extension SignupUsernameTableViewController: SiteCreationDomainSearchTableViewCellDelegate {
     func startSearch(for searchTerm: String) {
 
-        delegate?.newSearchStarted()
+//        delegate?.newSearchStarted()
 
         guard searchTerm.count > 0 else {
             return

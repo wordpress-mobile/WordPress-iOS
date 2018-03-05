@@ -1,10 +1,14 @@
 import SVProgressHUD
 
+protocol SignupUsernameViewControllerDelegate {
+    func usernameSelected(_ username: String)
+}
 class SignupUsernameViewController: NUXViewController {
     // MARK: - Properties
     open var currentUsername: String?
     private var newUsername: String?
     open var displayName: String?
+    open var delegate: SignupUsernameViewControllerDelegate?
 
     // Used to hide/show the Buttom View
     @IBOutlet weak var buttonContainerViewBottomConstraint: NSLayoutConstraint!
@@ -118,22 +122,27 @@ class SignupUsernameViewController: NUXViewController {
             }
             showButtonView(show: false, withAnimation: false)
         }
+
+
     }
 }
 
 // MARK: - SignupUsernameTableViewControllerDelegate
 
-extension SignupUsernameViewController: SignupUsernameTableViewControllerDelegate {
+extension SignupUsernameViewController: SignupUsernameViewControllerDelegate {
     func usernameSelected(_ username: String) {
         newUsername = username
-        if username == "" {
-            showButtonView(show: false, withAnimation: true)
-        } else {
-            showButtonView(show: true, withAnimation: true)
-        }
+
+        delegate?.usernameSelected(username)
+
+//        if username == "" {
+//            showButtonView(show: false, withAnimation: true)
+//        } else {
+//            showButtonView(show: true, withAnimation: true)
+//        }
     }
 
     func newSearchStarted() {
-        showButtonView(show: false, withAnimation: true)
+        //showButtonView(show: false, withAnimation: true)
     }
 }
