@@ -149,7 +149,7 @@ open class SignupService: LocalCoreDataService {
     ///   - token: the token from a successful Google login
     ///   - success: block called when account is created successfully
     ///   - failure: block called when account creation fails
-    func createWPComeUserWithGoogle(token: String,
+    func createWPComUserWithGoogle(token: String,
                                    success: @escaping SignupSocialSuccessBlock,
                                    failure: @escaping SignupFailureBlock) {
         let remote = WordPressComServiceRemote(wordPressComRestApi: self.anonymousApi())

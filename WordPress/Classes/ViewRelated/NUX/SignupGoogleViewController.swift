@@ -69,7 +69,7 @@ extension SignupGoogleViewController: GIDSignInDelegate {
 
         let context = ContextManager.sharedInstance().mainContext
         let service = SignupService(managedObjectContext: context)
-        service.createWPComeUserWithGoogle(token: token, success: { [weak self] (accountCreated) in
+        service.createWPComUserWithGoogle(token: token, success: { [weak self] (accountCreated) in
             SVProgressHUD.dismiss()
             if accountCreated {
                 self?.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
