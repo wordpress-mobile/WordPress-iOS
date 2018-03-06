@@ -739,7 +739,7 @@ private extension NotificationsViewController {
         }
     }
 
-    fileprivate func isTableViewEmpty() -> Bool {
+    func isTableViewEmpty() -> Bool {
         return tableViewHandler.resultsController.isEmpty()
     }
 }
@@ -765,17 +765,30 @@ extension NotificationsViewController {
                 self?.clearUnreadNotifications()
             }
 
-            if let error = error {
-                self?.presentNetworkError(error)
+            if let _ = error {
+                self?.handleConnectionError()
             }
         }
     }
 
-    fileprivate func presentNetworkError(_ forError: Error) {
-        if !isTableViewEmpty() {
-            let alertTitle = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-            WPError.showNetworkingAlertWithError(forError, title: alertTitle)
+    fileprivate func handleConnectionError() {
+        if shouldPresentAlert() {
+            presentNoNetworkAlert()
         }
+    }
+
+    private func shouldPresentAlert() -> Bool {
+        return connectionAvailable() == false && isTableViewEmpty() == false
+    }
+
+    func connectionAvailable() -> Bool {
+        return ReachabilityUtils.isInternetReachable()
+    }
+
+    fileprivate func presentNoNetworkAlert() {
+        let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+        let message = NSLocalizedString("The Internet connection appears to be offline.", comment: "Message of error prompt shown when a sync the user initiated fails.")
+        WPError.showAlert(withTitle: title, message: message)
     }
 }
 
@@ -1194,6 +1207,10 @@ private extension NotificationsViewController {
 //
 private extension NotificationsViewController {
     func syncNewNotifications() {
+        guard connectionAvailable() else {
+            handleConnectionError()
+            return
+        }
         let mediator = NotificationSyncMediator()
         mediator?.sync()
     }
