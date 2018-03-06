@@ -1005,9 +1005,7 @@ import WordPressShared
 
     private func handleConnectionError() {
         if shouldPresentAlert() {
-            _ = DispatchDelayedAction(delay: .milliseconds(500)) {[weak self] in
-                self?.presentNoNetworkAlert()
-            }
+            presentNoNetworkAlert()
         }
     }
 
