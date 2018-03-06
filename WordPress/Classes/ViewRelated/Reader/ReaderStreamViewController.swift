@@ -460,7 +460,7 @@ import WordPressShared
     }
 
     private func displayNoConnectionView(_ topic: ReaderAbstractTopic) {
-        resultsStatusView.titleText = ReaderStreamViewController.responseForNoResults(topic).title
+        resultsStatusView.titleText = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
         resultsStatusView.messageText = ReachabilityUtils.noConnectionMessage()
         resultsStatusView.accessoryView = nil
         displayResultsStatus()
@@ -1005,9 +1005,7 @@ import WordPressShared
 
     private func handleConnectionError() {
         if shouldPresentAlert() {
-            _ = DispatchDelayedAction(delay: .milliseconds(500)) {[weak self] in
-                self?.presentNoNetworkAlert()
-            }
+            presentNoNetworkAlert()
         }
     }
 
