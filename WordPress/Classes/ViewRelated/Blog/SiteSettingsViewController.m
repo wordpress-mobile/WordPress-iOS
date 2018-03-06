@@ -507,7 +507,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     if (self.blog.isQuotaAvailable) {
         NSString *formatString = NSLocalizedString(@"%@ of %@", @"Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB.");
         self.mediaQuotaCell.value = [[NSString alloc] initWithFormat:formatString, self.blog.quotaPercentageUsedDescription, self.blog.quotaSpaceAllowedDescription];
-        self.mediaQuotaCell.percentage = self.blog.quotaPercentangeUsed;
+        self.mediaQuotaCell.percentage = self.blog.quotaPercentageUsed;
     }
 
     return self.mediaQuotaCell;
@@ -730,7 +730,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     NSInteger settingsSection = [self.tableSections[indexPath.section] integerValue];
     switch (settingsSection) {
         case SiteSettingsSectionMedia:
-            return WPTableViewDefaultRowHeight * 1.5;
+            return MediaQuotaCell.height;
         default:
             return WPTableViewDefaultRowHeight;
     }
