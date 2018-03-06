@@ -516,22 +516,27 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     func cell(_ cell: UITableViewCell, handleTrashPost post: AbstractPost) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
+            let cancelText: String
+            let deleteText: String
+            let messageText: String
+            
             if post.status == .trash {
-
-                let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
-                let deleteText = NSLocalizedString("Delete", comment: "Deletes post permanently")
-                let messageText = NSLocalizedString("Delete this post permanently?", comment: "Deletes post permanently")
-                let alertController = UIAlertController(title: nil, message: messageText, preferredStyle: .alert)
-
-                alertController.addCancelActionWithTitle(cancelText)
-                alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
-                    self?.deletePost(post)
-                }
-                alertController.presentFromRootViewController()
-
+                cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
+                deleteText = NSLocalizedString("Delete", comment: "Deletes post permanently")
+                messageText = NSLocalizedString("Delete this post permanently?", comment: "Deletes post permanently")
             } else {
-                deletePost(post)
+                cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
+                deleteText = NSLocalizedString("Delete", comment: "Deletes post")
+                messageText = NSLocalizedString("Delete this post?", comment: "Deletes post")
             }
+            
+            let alertController = UIAlertController(title: nil, message: messageText, preferredStyle: .alert)
+            
+            alertController.addCancelActionWithTitle(cancelText)
+            alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
+                self?.deletePost(post)
+            }
+            alertController.presentFromRootViewController()
         }
     }
 
