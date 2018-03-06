@@ -1,8 +1,8 @@
 import Foundation
 
-let ProfileHeaderViewHeight = 114;
+let ProfileHeaderViewHeight = 126;
 let ProfileHeaderViewGravatarSize = 64.0;
-let ProfileHeaderViewButtonHeight = 20.0;
+let ProfileHeaderViewButtonHeight = 32.0;
 let ProfileHeaderViewVerticalMargin = 20.0;
 let ProfileHeaderViewVerticalSpacing = 10.0;
 
@@ -56,7 +56,7 @@ class MyProfileHeaderView: UIView {
     }
     
     func configureConstraints() {
-        let views = ["gravatarImageView": gravatarImageView, "gravatarButton": gravatarButton] as [String : Any]
+        let views: [String: Any] = ["gravatarImageView": gravatarImageView, "gravatarButton": gravatarButton]
         let metrics = ["gravatarSize": ProfileHeaderViewGravatarSize, "buttonHeight": ProfileHeaderViewButtonHeight, "verticalSpacing": ProfileHeaderViewVerticalSpacing, "verticalMargin": ProfileHeaderViewVerticalMargin]
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-verticalMargin-[gravatarImageView(gravatarSize)]-verticalSpacing-[gravatarButton(buttonHeight)]-|", options: [], metrics: metrics, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "[gravatarImageView(gravatarSize)]", options: [], metrics: metrics, views: views))
