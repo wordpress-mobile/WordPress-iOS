@@ -584,7 +584,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         var titleWidth = titleTextField.bounds.width
         if titleWidth <= 0 {
             // Use the title text field's width if available, otherwise calculate it.
-            // View's frame minus left and right margins as well as margin between title and beta button
             titleWidth = view.frame.width - (insets.left + insets.right + layoutMargins.left + layoutMargins.right)
         }
 
