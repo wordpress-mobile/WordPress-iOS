@@ -360,7 +360,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             }
         }
 
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: ""))
+        alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: ""))
 
         present(alertController, animated: true, completion: nil)
     }
