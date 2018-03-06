@@ -458,11 +458,11 @@ extension NotificationDetailsViewController {
     }
 
     func storeNotificationReplyIfNeeded() {
-        guard let reply = replyTextView.text, !reply.isEmpty else {
+        guard let reply = replyTextView?.text, let notificationId = note?.notificationId, !reply.isEmpty else {
             return
         }
 
-        NotificationReplyStore.shared.store(reply: reply, for: note.notificationId)
+        NotificationReplyStore.shared.store(reply: reply, for: notificationId)
     }
 }
 
