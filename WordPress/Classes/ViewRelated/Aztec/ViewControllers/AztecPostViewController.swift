@@ -635,8 +635,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         let layoutGuide = view.layoutMarginsGuide
 
         NSLayoutConstraint.activate([
-            titleTextField.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
-            titleTextField.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
+            titleTextField.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
+            titleTextField.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
             titleTopConstraint,
             titleHeightConstraint
             ])
@@ -651,15 +651,15 @@ class AztecPostViewController: UIViewController, PostEditor {
             ])
 
         NSLayoutConstraint.activate([
-            separatorView.leftAnchor.constraint(equalTo: layoutGuide.leftAnchor),
-            separatorView.rightAnchor.constraint(equalTo: layoutGuide.rightAnchor),
+            separatorView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
             separatorView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor),
             separatorView.heightAnchor.constraint(equalToConstant: separatorView.frame.height)
             ])
 
         NSLayoutConstraint.activate([
-            richTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            richTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            richTextView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
+            richTextView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
             richTextView.topAnchor.constraint(equalTo: view.topAnchor),
             richTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
