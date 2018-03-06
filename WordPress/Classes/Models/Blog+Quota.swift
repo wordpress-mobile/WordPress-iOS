@@ -36,6 +36,14 @@ extension Blog {
         return quotaPercentageUsedDescription
     }
 
+    @objc var quotaUsageDescription: String? {
+        guard isQuotaAvailable, let quotaPercentageUsedDescription = self.quotaPercentageUsedDescription, let quotaSpaceAllowedDescription = self.quotaSpaceAllowedDescription else {
+            return nil
+        }
+        let formatString = NSLocalizedString("%@ of %@ used", comment: "Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used.")
+        return String(format: formatString, quotaPercentageUsedDescription, quotaSpaceAllowedDescription)
+    }
+
     @objc var quotaSpaceAvailable: NSNumber? {
         guard let quotaSpaceAllowed = quotaSpaceAllowed?.doubleValue, let quotaSpaceUsed = quotaSpaceUsed?.doubleValue else {
             return nil
