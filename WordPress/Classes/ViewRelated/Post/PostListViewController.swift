@@ -567,6 +567,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     private func showNoConnectionView() {
         noResultsView.titleText = ReachabilityUtils.noConnectionMessage()
         noResultsView.messageText = ""
+        noResultsView.accessoryView = nil
     }
 
     // MARK: - NoResultsView Customizer helpers
