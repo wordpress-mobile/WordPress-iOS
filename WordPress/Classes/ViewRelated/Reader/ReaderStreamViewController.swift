@@ -997,34 +997,16 @@ import WordPressShared
     @objc func handleRefresh(_ sender: UIRefreshControl) {
         if !canSync() {
             cleanupAfterSync()
-            handleConnectionError()
+
+            /// Delay presenting the alert, so that the refreshControl can end its own dismissal animation, and the table view scroll back to its original offset
+            let _ = DispatchDelayedAction(delay: .milliseconds(200)) { [weak self] in
+                self?.handleConnectionError()
+            }
+
             return
         }
         syncHelper.syncContentWithUserInteraction(true)
     }
-
-    private func handleConnectionError() {
-        if shouldPresentAlert() {
-            _ = DispatchDelayedAction(delay: .milliseconds(500)) {[weak self] in
-                self?.presentNoNetworkAlert()
-            }
-        }
-    }
-
-    private func shouldPresentAlert() -> Bool {
-        return !connectionAvailable() && !isTableViewEmpty()
-    }
-
-    private func presentNoNetworkAlert() {
-        let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-        let message = NSLocalizedString("The Internet connection appears to be offline.", comment: "Message of error prompt shown when a sync the user initiated fails.")
-        WPError.showAlert(withTitle: title, message: message)
-    }
-
-    private func isTableViewEmpty() -> Bool {
-        return self.tableViewHandler.resultsController.isEmpty()
-    }
-
 
     /// Handle's the user tapping the search button.  Displays the search controller
     ///
