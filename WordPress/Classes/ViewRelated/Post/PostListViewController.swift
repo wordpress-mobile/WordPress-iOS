@@ -627,18 +627,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
     }
 
-    private func shouldPresentAlert() -> Bool {
-        return connectionAvailable() == false && isTableViewEmpty() == false
-    }
-
-    func connectionAvailable() -> Bool {
-        return ReachabilityUtils.isInternetReachable()
-    }
-
-    func isTableViewEmpty() -> Bool {
-        return tableViewHandler.resultsController.isEmpty()
-    }
-
     // MARK: - UISearchControllerDelegate
 
     func didPresentSearchController(_ searchController: UISearchController) {
