@@ -14,8 +14,12 @@ struct LoginEpilogueUserInfo {
         if let name = account.username {
             username = name
         }
-        email = account.email
-        fullName = account.displayName
+        if let accountEmail = account.email {
+            email = accountEmail
+        }
+        if let displayName = account.displayName {
+            fullName = displayName
+        }
     }
 
     init(account: WPAccount, loginFields: LoginFields) {
