@@ -158,18 +158,30 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 
     if (![blog hasSpaceAvailableFor:media.absoluteLocalURL]) {
         if (error) {
+            NSString *errorReason = NSLocalizedString(@"Not enough space to upload", @"Error message to show to users when trying to upload a media object wich file size is larger than the available site disk quota");
+            NSString *quotaInfo = blog.quotaUsageDescription;
+            NSString *errorMessage = errorReason;
+            if (quotaInfo != nil) {
+                errorMessage = [NSString stringWithFormat:@"%@\n%@", errorReason, quotaInfo];
+            }
             *error = [NSError errorWithDomain:MediaServiceErrorDomain
                                          code:MediaServiceErrorFileLargerThanDiskQuotaAvailable
-                                     userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Not enought space to upload", @"Error message to show to users when trying to upload a media object wich file size is larger than the available site disk quota")}];
+                                     userInfo:@{NSLocalizedDescriptionKey: errorMessage}];
         }
         return NO;
     }
 
     if (![blog isAbleToHandleFileSizeOfUrl:media.absoluteLocalURL]) {
         if (error) {
+            NSNumber *fileSize = media.absoluteLocalURL.fileSize;
+            NSString *fileSizeDescription = [NSByteCountFormatter stringFromByteCount:fileSize.longLongValue countStyle:NSByteCountFormatterCountStyleBinary];
+            NSNumber *maxFileSize = blog.maxUploadSize;
+            NSString *maxFileSizeDescription = [NSByteCountFormatter stringFromByteCount:maxFileSize.longLongValue countStyle:NSByteCountFormatterCountStyleBinary];
+            NSString *errorLocalized = NSLocalizedString(@"Media filesize (%@) is too large to upload. Maximum allowed is %@", @"Error message to show to users when trying to upload a media object with file size ir larger than the max file size allowed in the site");
+            NSString *errorMessage = [NSString stringWithFormat:errorLocalized, fileSizeDescription, maxFileSizeDescription];
             *error = [NSError errorWithDomain:MediaServiceErrorDomain
                                          code:MediaServiceErrorFileLargerThanMaxFileSize
-                                     userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"File too large to upload", @"Error message to show to users when trying to upload a media object with file size ir larger than the max file size allowed in the site")}];
+                                     userInfo:@{NSLocalizedDescriptionKey: errorMessage}];
         }
         return NO;
     }
