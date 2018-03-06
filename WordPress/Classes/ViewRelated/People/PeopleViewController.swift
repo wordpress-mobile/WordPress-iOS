@@ -364,6 +364,15 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         let _ = DispatchDelayedAction(delay: .milliseconds(500)) { [weak self] in
             self?.refreshControl?.endRefreshing()
         }
+
+        if !isTableViewEmpty() {
+            let alertTitle = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+            WPError.showNetworkingAlertWithError(forError, title: alertTitle)
+        }        
+    }
+
+    private func isTableViewEmpty() -> Bool {
+        return resultsController.fetchedObjects?.count == 0
     }
 
     // MARK: - Private Helpers
