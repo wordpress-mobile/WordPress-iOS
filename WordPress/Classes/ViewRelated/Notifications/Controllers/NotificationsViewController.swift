@@ -1092,10 +1092,20 @@ private extension NotificationsViewController {
             noResultsView.layoutIfNeeded()
         }
 
+        guard connectionAvailable() else {
+            showNoConnectionView()
+            return
+        }
+
         // Refresh its properties: The user may have signed into WordPress.com
         noResultsView.titleText     = noResultsTitleText
         noResultsView.messageText   = noResultsMessageText
         noResultsView.buttonTitle   = noResultsButtonText
+    }
+
+    private func showNoConnectionView() {
+        noResultsView.titleText     = NSLocalizedString("No notifications yet.", comment: "Displayed in the Notifications Tab as a title, when there are no notifications")
+        noResultsView.messageText   = ReachabilityUtils.noConnectionMessage()
     }
 
     func updateSplitViewAppearanceForNoResultsView() {
