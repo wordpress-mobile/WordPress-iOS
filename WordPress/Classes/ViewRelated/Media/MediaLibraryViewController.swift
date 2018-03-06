@@ -217,6 +217,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         visibleCells(for: media).forEach { cell in
             if let overlayView = cell.overlayView as? MediaCellProgressView {
                 overlayView.state = .retry
+                configureAppearance(for: overlayView, with: media)
             }
         }
     }
@@ -416,7 +417,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         uploadObserverUUID = MediaCoordinator.shared.addObserver({ [weak self] (media, state) in
             switch state {
             case .progress(let progress) :
-                self?.updateCellProgress(progress, for: media)
+	                self?.updateCellProgress(progress, for: media)
                 break
             case .processing, .uploading:
                 self?.showUploadingStateForCell(for: media)
@@ -425,7 +426,11 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             case .failed:
                 self?.showFailedStateForCell(for: media)
             case .thumbnailReady:
-                self?.showUploadingStateForCell(for: media)
+                if media.remoteStatus == .failed {
+                    self?.showFailedStateForCell(for: media)
+                } else {
+                    self?.showUploadingStateForCell(for: media)
+                }
             }
             }, for: nil)
     }
