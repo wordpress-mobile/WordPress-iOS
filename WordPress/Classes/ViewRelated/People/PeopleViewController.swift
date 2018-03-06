@@ -315,7 +315,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
 
         group.notify(queue: DispatchQueue.main) { [weak self] in
             if let error = loadError {
-                self?.presentAlert(error)
+                self?.handleLoadError(error)
             }
 
             if let result = result {
@@ -350,18 +350,17 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
     }
 
     private func noResultsTitle() -> String {
-        let noPeople = NSLocalizedString("No \(filter.title) Yet",
-            comment: "Empty state message (People Management). Please, do not translate the \\(filter.title) part!")
+        let noPeopleFormat = NSLocalizedString("No %@ Yet",
+            comment: "Empty state message (People Management). %@ can be Users or Followers")
+
+        let noPeople = String(format: noPeopleFormat, filter.title)
 
         let noNetwork = ReachabilityUtils.noConnectionMessage()
 
         return ReachabilityUtils.isInternetReachable() ? noPeople : noNetwork
     }
 
-    private func presentAlert(_ forError: Error) {
-        let alertTitle = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-        WPError.showNetworkingAlertWithError(forError, title: alertTitle)
-
+    private func handleLoadError(_ forError: Error) {
         let _ = DispatchDelayedAction(delay: .milliseconds(500)) { [weak self] in
             self?.refreshControl?.endRefreshing()
         }
