@@ -676,6 +676,14 @@ static const NSUInteger ReaderPostTitleLength = 30;
         featuredImage = [dict stringForKey:PostRESTKeyFeaturedImage];
     }
 
+    // If there's no featured image look for a suitable one in the post featured media
+    if ([featuredImage length] == 0) {
+        NSDictionary *featuredMedia = [dict dictionaryForKey:PostRESTKeyFeaturedMedia];
+        if ([[featuredMedia stringForKey:@"type"] isEqualToString:@"image"]) {
+            featuredImage = [featuredMedia stringForKey:@"uri"];
+        }
+    }
+
     // If there's no featured image look for a suitable one in the post content
     NSString *content = [dict stringForKey:PostRESTKeyContent];
     if ([featuredImage length] == 0) {
