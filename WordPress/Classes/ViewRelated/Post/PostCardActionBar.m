@@ -2,7 +2,7 @@
 #import "PostCardActionBarItem.h"
 #import <WordPressShared/UIDevice+Helpers.h>
 #import <WordPressShared/WPStyleGuide.h>
-#import <WordPressUI/UIImage+Util.h>
+#import <WordPressUI/WordPressUI.h>
 #import "WordPress-Swift.h"
 
 static NSInteger ActionBarMoreButtonIndex = 999;
@@ -317,7 +317,13 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
         item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"More", @"")
                                               image:[UIImage imageNamed:@"icon-post-actionbar-more"]
                                    highlightedImage:nil];
-        item.imageInsets = [InsetsHelper flipForRightToLeftLayoutDirection:MoreButtonImageInsets];
+
+        UIEdgeInsets imageInsets = MoreButtonImageInsets;
+        if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionRightToLeft) {
+            imageInsets = [InsetsHelper flipForRightToLeftLayoutDirection:imageInsets];
+        }
+
+        item.imageInsets = imageInsets;
     }
     return item;
 }
