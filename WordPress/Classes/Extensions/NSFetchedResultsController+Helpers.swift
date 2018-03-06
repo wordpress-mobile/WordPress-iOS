@@ -35,7 +35,11 @@ extension NSFetchedResultsController {
         return object(at: indexPath) as? NSManagedObject
     }
 
+    /// Returns whether an NSFetchedResultsController is empty
+    ///
     @objc func isEmpty() -> Bool {
+        // We can not return fetchedObjects.count == 0 because of a Swift compiler error:
+        // Extension of a generic Objective-C class cannot access the class's generic parameters at runtime
         guard let sections = sections else {
             return false
         }
