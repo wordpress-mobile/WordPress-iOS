@@ -40,14 +40,6 @@ extension NSFetchedResultsController {
     @objc func isEmpty() -> Bool {
         // We can not return fetchedObjects.count == 0 because of a Swift compiler error:
         // Extension of a generic Objective-C class cannot access the class's generic parameters at runtime
-        guard let sections = sections else {
-            return false
-        }
-
-        let initialCount = 0
-
-        return sections.reduce(initialCount, { result, section in
-            return result + section.numberOfObjects
-        }) == initialCount
+        return sections?.first(where: { $0.numberOfObjects > 0 }) == nil
     }
 }
