@@ -1104,7 +1104,7 @@ private extension NotificationsViewController {
     }
 
     private func showNoConnectionView() {
-        noResultsView.titleText     = NSLocalizedString("No notifications yet.", comment: "Displayed in the Notifications Tab as a title, when there are no notifications")
+        noResultsView.titleText     = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
         noResultsView.messageText   = ReachabilityUtils.noConnectionMessage()
     }
 
