@@ -94,7 +94,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 @property (nonatomic, strong) SettingTableViewCell *postsPerPageCell;
 @property (nonatomic, strong) SettingTableViewCell *speedUpYourSiteCell;
 #pragma mark - Media Section
-@property (nonatomic, strong) SettingTableViewCell *mediaQuotaCell;
+@property (nonatomic, strong) MediaQuotaCell *mediaQuotaCell;
 #pragma mark - Discussion Section
 @property (nonatomic, strong) SettingTableViewCell *discussionSettingsCell;
 #pragma mark - Traffic Section
@@ -139,6 +139,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 {
     DDLogMethod();
     [super viewDidLoad];
+    [self.tableView registerNib:MediaQuotaCell.nib forCellReuseIdentifier:@"MediaQuotaCell"];
+
     self.navigationItem.title = NSLocalizedString(@"Settings", @"Title for screen that allows configuration of your blog/site settings.");
 
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -387,14 +389,15 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     return _speedUpYourSiteCell;
 }
 
-- (SettingTableViewCell *)mediaQuotaCell
+- (MediaQuotaCell *)mediaQuotaCell
 {
     if (_mediaQuotaCell){
         return _mediaQuotaCell;
     }
-    _mediaQuotaCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Space used", @"Label for showing the available disk space quota available for media")
-                                                              editable:YES
-                                                       reuseIdentifier:nil];
+    _mediaQuotaCell = (MediaQuotaCell *)[self.tableView dequeueReusableCellWithIdentifier:@"MediaQuotaCell"];
+
+    _mediaQuotaCell.title = NSLocalizedString(@"Space used", @"Label for showing the available disk space quota available for media");
+
     return _mediaQuotaCell;
 }
 
@@ -503,7 +506,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 {
     if (self.blog.isQuotaAvailable) {
         NSString *formatString = NSLocalizedString(@"%@ of %@", @"Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB.");
-        self.mediaQuotaCell.detailTextLabel.text = [[NSString alloc] initWithFormat:formatString, self.blog.quotaPercentageUsedDescription, self.blog.quotaSpaceAllowedDescription];
+        self.mediaQuotaCell.value = [[NSString alloc] initWithFormat:formatString, self.blog.quotaPercentageUsedDescription, self.blog.quotaSpaceAllowedDescription];
+        self.mediaQuotaCell.percentage = self.blog.quotaPercentangeUsed;
     }
 
     return self.mediaQuotaCell;
@@ -720,6 +724,16 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 
     NSAssert(false, @"Missing section handler");
     return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger settingsSection = [self.tableSections[indexPath.section] integerValue];
+    switch (settingsSection) {
+        case SiteSettingsSectionMedia:
+            return WPTableViewDefaultRowHeight * 1.5;
+        default:
+            return WPTableViewDefaultRowHeight;
+    }
 }
 
 #pragma mark - UITableViewDelegate
