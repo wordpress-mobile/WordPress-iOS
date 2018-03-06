@@ -531,15 +531,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         rememberFirstResponder()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        var safeInsets = self.view.layoutMargins
-        safeInsets.top = richTextView.textContainerInset.top
-        richTextView.textContainerInset = safeInsets
-        htmlTextView.textContainerInset = safeInsets
-    }
-
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
@@ -670,10 +661,10 @@ class AztecPostViewController: UIViewController, PostEditor {
             htmlTextView.topAnchor.constraint(equalTo: richTextView.topAnchor),
             htmlTextView.bottomAnchor.constraint(equalTo: richTextView.bottomAnchor)
             ])
-
+        
         NSLayoutConstraint.activate([
-            placeholderLabel.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: Constants.placeholderPadding.left),
-            placeholderLabel.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -(Constants.placeholderPadding.right + richTextView.textContainer.lineFragmentPadding)),
+            placeholderLabel.leftAnchor.constraint(equalTo: richTextView.leftAnchor, constant: insets.left + richTextView.textContainer.lineFragmentPadding),
+            placeholderLabel.rightAnchor.constraint(equalTo: richTextView.rightAnchor, constant: -insets.right - richTextView.textContainer.lineFragmentPadding),
             textPlaceholderTopConstraint,
             placeholderLabel.bottomAnchor.constraint(lessThanOrEqualTo: richTextView.bottomAnchor, constant: Constants.placeholderPadding.bottom)
             ])
