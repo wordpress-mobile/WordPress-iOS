@@ -1832,9 +1832,14 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
 }
 
-
 extension ReaderStreamViewController: WPNoResultsViewDelegate {
     public func didTap(_ noResultsView: WPNoResultsView!) {
         showManageSites()
+    }
+}
+
+extension ReaderStreamViewController: NetworkAwareUI {
+    func contentIsEmpty() -> Bool {
+        return tableViewHandler.resultsController.isEmpty()
     }
 }
