@@ -352,27 +352,19 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
     private func noResultsTitle() -> String {
         let noPeopleFormat = NSLocalizedString("No %@ Yet",
             comment: "Empty state message (People Management). %@ can be Users or Followers")
-
         let noPeople = String(format: noPeopleFormat, filter.title)
 
-        let noNetwork = ReachabilityUtils.noConnectionMessage()
+        let noNetwork = noConnectionMessage()
 
-        return ReachabilityUtils.isInternetReachable() ? noPeople : noNetwork
+        return connectionAvailable() ? noPeople : noNetwork
     }
 
     private func handleLoadError(_ forError: Error) {
-        let _ = DispatchDelayedAction(delay: .milliseconds(500)) { [weak self] in
+        let _ = DispatchDelayedAction(delay: .milliseconds(250)) { [weak self] in
             self?.refreshControl?.endRefreshing()
         }
 
-        if !isTableViewEmpty() {
-            let alertTitle = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-            WPError.showNetworkingAlertWithError(forError, title: alertTitle)
-        }
-    }
-
-    private func isTableViewEmpty() -> Bool {
-        return resultsController.isEmpty()
+        handleConnectionError()
     }
 
     // MARK: - Private Helpers
@@ -507,4 +499,10 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
     }
 
     fileprivate let refreshRowPadding = 4
+}
+
+extension PeopleViewController: NetworkAwareUI {
+    func contentIsEmpty() -> Bool {
+        return resultsController.isEmpty()
+    }
 }
