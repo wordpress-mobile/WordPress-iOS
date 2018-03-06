@@ -34,4 +34,16 @@ extension NSFetchedResultsController {
 
         return object(at: indexPath) as? NSManagedObject
     }
+
+    @objc func isEmpty() -> Bool {
+        guard let sections = sections else {
+            return false
+        }
+
+        let initialCount = 0
+
+        return sections.reduce(initialCount, { result, section in
+            return result + section.numberOfObjects
+        }) == initialCount
+    }
 }
