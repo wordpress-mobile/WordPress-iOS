@@ -778,7 +778,7 @@ extension NotificationsViewController {
     }
 
     private func shouldPresentAlert() -> Bool {
-        return connectionAvailable() == false && isTableViewEmpty() == false
+        return !connectionAvailable() && !isTableViewEmpty()
     }
 
     func connectionAvailable() -> Bool {
