@@ -372,7 +372,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
     }
 
     private func isTableViewEmpty() -> Bool {
-        return resultsController.fetchedObjects?.count == 0
+        return resultsController.isEmpty()
     }
 
     // MARK: - Private Helpers
