@@ -32,6 +32,7 @@ class WebKitViewController: UIViewController {
         navigationDelegate = configuration.navigationDelegate
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
+        startObservingWebView()
     }
 
     fileprivate init(url: URL, parent: WebKitViewController) {
@@ -45,6 +46,7 @@ class WebKitViewController: UIViewController {
         navigationDelegate = parent.navigationDelegate
         super.init(nibName: nil, bundle: nil)
         hidesBottomBarWhenPushed = true
+        startObservingWebView()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -56,6 +58,13 @@ class WebKitViewController: UIViewController {
         webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.url))
         webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress))
         webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.isLoading))
+    }
+
+    private func startObservingWebView() {
+        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.title), options: [.new], context: nil)
+        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.url), options: [.new], context: nil)
+        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: [.new], context: nil)
+        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.isLoading), options: [], context: nil)
     }
 
     override func loadView() {
@@ -72,10 +81,6 @@ class WebKitViewController: UIViewController {
 
         configureNavigation()
         configureToolbar()
-        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.title), options: [.new], context: nil)
-        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.url), options: [.new], context: nil)
-        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: [.new], context: nil)
-        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.isLoading), options: [], context: nil)
         webView.customUserAgent = WPUserAgent.wordPress()
         webView.navigationDelegate = self
         webView.uiDelegate = self
