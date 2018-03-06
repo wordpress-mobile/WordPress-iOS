@@ -3,6 +3,11 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 73
+
+- @sergioestevao 2018-03-05
+- ``Blog` added `quotaSpaceAllowed` and 'quotaSpaceUsed' that stores a Int64, long number with quota information for the site.
+
 ## WordPress 72
 
 - @sergioestevao 2018-02-07
