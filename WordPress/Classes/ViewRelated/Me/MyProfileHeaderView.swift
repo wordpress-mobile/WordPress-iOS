@@ -1,6 +1,6 @@
 import Foundation
 
-let ProfileHeaderViewHeight = 154;
+let ProfileHeaderViewHeight = 114;
 let ProfileHeaderViewGravatarSize = 64.0;
 let ProfileHeaderViewButtonHeight = 20.0;
 let ProfileHeaderViewVerticalMargin = 20.0;
@@ -47,15 +47,18 @@ class MyProfileHeaderView: UIView {
     
     func newButtonForGravatar() -> UIButton? {
         let button = UIButton(frame: CGRect.zero)
-        button.titleLabel?.textColor = WPStyleGuide.buttonActionColor()
+        button.setTitleColor(WPStyleGuide.wordPressBlue(), for: .normal)
+        button.titleLabel?.font = WPStyleGuide.tableviewTextFont()
         button.titleLabel?.textAlignment = .center
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isUserInteractionEnabled = true
         return button
     }
     
     func configureConstraints() {
         let views = ["gravatarImageView": gravatarImageView, "gravatarButton": gravatarButton] as [String : Any]
         let metrics = ["gravatarSize": ProfileHeaderViewGravatarSize, "buttonHeight": ProfileHeaderViewButtonHeight, "verticalSpacing": ProfileHeaderViewVerticalSpacing, "verticalMargin": ProfileHeaderViewVerticalMargin]
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-verticalMargin-[gravatarImageView(gravatarSize)]-verticalSpacing-[gravatarButton(buttonHeight)]-verticalMargin-|", options: [], metrics: metrics, views: views))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-verticalMargin-[gravatarImageView(gravatarSize)]-verticalSpacing-[gravatarButton(buttonHeight)]-|", options: [], metrics: metrics, views: views))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "[gravatarImageView(gravatarSize)]", options: [], metrics: metrics, views: views))
         addConstraint(NSLayoutConstraint(item: gravatarImageView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0))
         addConstraint(NSLayoutConstraint(item: gravatarButton, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0))
