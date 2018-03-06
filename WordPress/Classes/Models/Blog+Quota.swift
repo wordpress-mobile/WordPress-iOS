@@ -35,4 +35,39 @@ extension Blog {
         }
         return quotaPercentageUsedDescription
     }
+
+    @objc var quotaSpaceAvailable: NSNumber? {
+        guard let quotaSpaceAllowed = quotaSpaceAllowed?.doubleValue, let quotaSpaceUsed = quotaSpaceUsed?.doubleValue else {
+            return nil
+        }
+        let quotaSpaceAvailable = quotaSpaceAllowed - quotaSpaceUsed
+        return NSNumber(value: quotaSpaceAvailable)
+    }
+
+    @objc var maxUploadSize: NSNumber? {
+        guard let maxUploadSize = options?["max_upload_size"] as? NSNumber else {
+            return nil
+        }
+        return maxUploadSize
+    }
+
+    @objc func hasSpaceAvailable(for url: URL) -> Bool {
+        guard let fileSize = url.fileSize,
+              let spaceAvailable = quotaSpaceAvailable?.intValue
+        else {
+            // let's assume the site can handle it if we don't know any of quota or fileSize information.
+            return true
+        }
+        return fileSize < spaceAvailable
+    }
+
+    @objc func isAbleToHandleFileSizeOf(url: URL) -> Bool {
+        guard let fileSize = url.fileSize,
+            let maxUploadSize = maxUploadSize?.intValue
+            else {
+                // let's assume the site can handle it.
+                return true
+        }
+        return fileSize < maxUploadSize
+    }
 }
