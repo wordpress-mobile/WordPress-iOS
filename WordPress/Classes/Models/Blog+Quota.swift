@@ -45,7 +45,7 @@ extension Blog {
     }
 
     @objc var maxUploadSize: NSNumber? {
-        guard let maxUploadSize = options?["max_upload_size"] as? NSNumber else {
+        guard let maxUploadSize = getOptionValue("max_upload_size") as? NSNumber else {
             return nil
         }
         return maxUploadSize
