@@ -661,7 +661,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             htmlTextView.topAnchor.constraint(equalTo: richTextView.topAnchor),
             htmlTextView.bottomAnchor.constraint(equalTo: richTextView.bottomAnchor)
             ])
-        
+
         NSLayoutConstraint.activate([
             placeholderLabel.leftAnchor.constraint(equalTo: richTextView.leftAnchor, constant: insets.left + richTextView.textContainer.lineFragmentPadding),
             placeholderLabel.rightAnchor.constraint(equalTo: richTextView.rightAnchor, constant: -insets.right - richTextView.textContainer.lineFragmentPadding),
