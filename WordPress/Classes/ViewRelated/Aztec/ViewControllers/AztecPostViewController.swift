@@ -1149,34 +1149,10 @@ extension AztecPostViewController {
             return
         }
 
-        SVProgressHUD.setDefaultMaskType(.clear)
-        SVProgressHUD.show(withStatus: postEditorStateContext.publishVerbText)
-        postEditorStateContext.updated(isBeingPublished: true)
-
-        // Finally, publish the post.
-        publishPost() { uploadedPost, error in
-            self.postEditorStateContext.updated(isBeingPublished: false)
-            SVProgressHUD.dismiss()
-
-            let generator = UINotificationFeedbackGenerator()
-            generator.prepare()
-
-            if let error = error {
-                DDLogError("Error publishing post: \(error.localizedDescription)")
-
-                SVProgressHUD.showDismissibleError(withStatus: self.postEditorStateContext.publishErrorText)
-                generator.notificationOccurred(.error)
-            } else if let uploadedPost = uploadedPost {
-                self.post = uploadedPost
-
-                generator.notificationOccurred(.success)
-            }
-
-            if dismissWhenDone {
-                self.dismissOrPopView(didSave: true)
-            } else {
-                self.createRevisionOfPost()
-            }
+        if postEditorStateContext.action == .publish {
+            displayPublishConfirmationAlert(dismissWhenDone: dismissWhenDone)
+        } else {
+            publishPost(dismissWhenDone: dismissWhenDone)
         }
     }
 
@@ -1292,7 +1268,7 @@ private extension AztecPostViewController {
             self.displayPostOptions()
         }
 
-        alert.addCancelActionWithTitle(MoreSheetAlert.cancelTitle)
+        alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
         alert.popoverPresentationController?.barButtonItem = moreBarButtonItem
 
         present(alert, animated: true, completion: nil)
@@ -1354,6 +1330,27 @@ private extension AztecPostViewController {
         return
     }
 
+    /// Displays a publish confirmation alert with two options: "Keep Editing" and "Publish".
+    ///
+    /// - Parameters:
+    ///     - dismissWhenDone: if `true`, the VC will be dismissed if the user picks "Publish".
+    ///
+    func displayPublishConfirmationAlert(dismissWhenDone: Bool) {
+        let title = NSLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing.")
+
+        let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
+        let publishTitle = NSLocalizedString("Publish", comment: "Button shown when the author is asked for publishing confirmation.")
+
+        let style: UIAlertControllerStyle = UIDevice.isPad() ? .alert : .actionSheet
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
+
+        alertController.addCancelActionWithTitle(keepEditingTitle)
+        alertController.addDefaultActionWithTitle(publishTitle) { [unowned self] _ in
+            self.publishPost(dismissWhenDone: dismissWhenDone)
+        }
+
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
 
@@ -2542,8 +2539,52 @@ private extension AztecPostViewController {
 
         ContextManager.sharedInstance().save(post.managedObjectContext!)
     }
+}
 
-    func publishPost(completion: ((_ post: AbstractPost?, _ error: Error?) -> Void)? = nil) {
+// MARK: - Publishing
+
+private extension AztecPostViewController {
+
+    /// Shows the publishing overlay and starts the publishing process.
+    ///
+    func publishPost(dismissWhenDone: Bool) {
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.show(withStatus: postEditorStateContext.publishVerbText)
+        postEditorStateContext.updated(isBeingPublished: true)
+
+        // Finally, publish the post.
+        publishPost() { uploadedPost, error in
+            self.postEditorStateContext.updated(isBeingPublished: false)
+            SVProgressHUD.dismiss()
+
+            let generator = UINotificationFeedbackGenerator()
+            generator.prepare()
+
+            if let error = error {
+                DDLogError("Error publishing post: \(error.localizedDescription)")
+
+                SVProgressHUD.showDismissibleError(withStatus: self.postEditorStateContext.publishErrorText)
+                generator.notificationOccurred(.error)
+            } else if let uploadedPost = uploadedPost {
+                self.post = uploadedPost
+
+                generator.notificationOccurred(.success)
+            }
+
+            if dismissWhenDone {
+                self.dismissOrPopView(didSave: true)
+            } else {
+                self.createRevisionOfPost()
+            }
+        }
+    }
+
+    /// Publish the post
+    ///
+    /// - Parameters:
+    ///     - completion: the closure to execute when the publish operation completes.
+    ///
+    private func publishPost(completion: ((_ post: AbstractPost?, _ error: Error?) -> Void)?) {
         mapUIContentToPostAndSave()
 
         let managedObjectContext = ContextManager.sharedInstance().mainContext
@@ -2556,9 +2597,8 @@ private extension AztecPostViewController {
     }
 }
 
-
 // MARK: - Computed Properties
-//
+
 private extension AztecPostViewController {
     var mainContext: NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
@@ -3530,11 +3570,11 @@ extension AztecPostViewController {
     }
 
     struct MoreSheetAlert {
-        static let htmlTitle                = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
-        static let richTitle                = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
-        static let previewTitle             = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
-        static let optionsTitle             = NSLocalizedString("Options", comment: "Displays the Post's Options")
-        static let cancelTitle              = NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen")
+        static let htmlTitle = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
+        static let richTitle = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
+        static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
+        static let optionsTitle = NSLocalizedString("Options", comment: "Displays the Post's Options")
+        static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
     }
 
     struct MediaAttachmentActionSheet {
