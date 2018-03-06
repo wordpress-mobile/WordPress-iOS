@@ -8,6 +8,8 @@ import WordPressShared
 
     @objc static let height: Float = 66.0
 
+    @objc static let defaultReuseIdentifier = "MediaQuotaCell"
+
     @objc static let nib: UINib = {
         let nib = UINib(nibName: "MediaQuotaCell", bundle: Bundle(for: MediaQuotaCell.self))
         return nib

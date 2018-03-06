@@ -139,7 +139,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
 {
     DDLogMethod();
     [super viewDidLoad];
-    [self.tableView registerNib:MediaQuotaCell.nib forCellReuseIdentifier:@"MediaQuotaCell"];
+    [self.tableView registerNib:MediaQuotaCell.nib forCellReuseIdentifier:MediaQuotaCell.defaultReuseIdentifier];
 
     self.navigationItem.title = NSLocalizedString(@"Settings", @"Title for screen that allows configuration of your blog/site settings.");
 
@@ -394,7 +394,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     if (_mediaQuotaCell){
         return _mediaQuotaCell;
     }
-    _mediaQuotaCell = (MediaQuotaCell *)[self.tableView dequeueReusableCellWithIdentifier:@"MediaQuotaCell"];
+    _mediaQuotaCell = (MediaQuotaCell *)[self.tableView dequeueReusableCellWithIdentifier:MediaQuotaCell.defaultReuseIdentifier];
 
     _mediaQuotaCell.title = NSLocalizedString(@"Space used", @"Label for showing the available disk space quota available for media");
 
