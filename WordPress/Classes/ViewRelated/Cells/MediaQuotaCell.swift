@@ -6,7 +6,7 @@ import WordPressShared
 
 @objc class MediaQuotaCell: WPTableViewCell {
 
-    @objc static let height: Float = 44.0
+    @objc static let height: Float = 66.0
 
     @objc static let nib: UINib = {
         let nib = UINib(nibName: "MediaQuotaCell", bundle: Bundle(for: MediaQuotaCell.self))
