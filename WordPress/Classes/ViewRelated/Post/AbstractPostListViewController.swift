@@ -272,6 +272,10 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             return
         }
 
+        let _ = DispatchDelayedAction(delay: .milliseconds(500)) { [weak self] in
+            self?.refreshControl?.endRefreshing()
+        }
+
         if tableViewHandler.resultsController.fetchedObjects?.count > 0 {
             hideNoResultsView()
             presentNoNetworkAlert()
