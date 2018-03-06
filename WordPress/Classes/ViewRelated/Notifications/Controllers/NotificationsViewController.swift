@@ -1085,7 +1085,7 @@ private extension NotificationsViewController {
 
     private func showNoConnectionView() {
         noResultsView.titleText     = NSLocalizedString("No notifications yet.", comment: "Displayed in the Notifications Tab as a title, when there are no notifications")
-        noResultsView.messageText   = ReachabilityUtils.noConnectionMessage()
+        noResultsView.messageText   = noConnectionMessage()
     }
 
     func updateSplitViewAppearanceForNoResultsView() {

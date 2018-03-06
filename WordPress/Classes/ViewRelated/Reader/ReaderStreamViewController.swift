@@ -461,7 +461,7 @@ import WordPressShared
 
     private func displayNoConnectionView(_ topic: ReaderAbstractTopic) {
         resultsStatusView.titleText = ReaderStreamViewController.responseForNoResults(topic).title
-        resultsStatusView.messageText = ReachabilityUtils.noConnectionMessage()
+        resultsStatusView.messageText = noConnectionMessage()
         resultsStatusView.accessoryView = nil
         displayResultsStatus()
     }
