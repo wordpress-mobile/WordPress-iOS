@@ -738,6 +738,10 @@ private extension NotificationsViewController {
             selectRowForNotification(selectedNotification, animated: false, scrollPosition: .none)
         }
     }
+
+    fileprivate func isTableViewEmpty() -> Bool {
+        return tableViewHandler.resultsController.isEmpty()
+    }
 }
 
 // MARK: - UIRefreshControl Methods
@@ -751,19 +755,26 @@ extension NotificationsViewController {
 
         let start = Date()
 
-        mediator.sync { (error, _) in
+        mediator.sync { [weak self] (error, _) in
 
             let delta = max(Syncing.minimumPullToRefreshDelay + start.timeIntervalSinceNow, 0)
             let delay = DispatchTime.now() + Double(Int64(delta * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
 
             DispatchQueue.main.asyncAfter(deadline: delay) {
-                self.refreshControl?.endRefreshing()
-                self.clearUnreadNotifications()
+                self?.refreshControl?.endRefreshing()
+                self?.clearUnreadNotifications()
             }
 
             if let error = error {
-                WPError.showNetworkingAlertWithError(error, title: NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails."))
+                self?.presentNetworkError(error)
             }
+        }
+    }
+
+    fileprivate func presentNetworkError(_ forError: Error) {
+        if !isTableViewEmpty() {
+            let alertTitle = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+            WPError.showNetworkingAlertWithError(forError, title: alertTitle)
         }
     }
 }
