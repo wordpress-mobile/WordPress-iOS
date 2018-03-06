@@ -431,9 +431,10 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
                                             });
                                         }
 
-                                        NSString *title = NSLocalizedString(@"Unable to Sync", @"Title of error prompt shown when a sync the user initiated fails.");
-                                        [WPError showNetworkingAlertWithError:error title:title];
-
+                                        if (![self isTableViewEmpty]) {
+                                            NSString *title = NSLocalizedString(@"Unable to Sync", @"Title of error prompt shown when a sync the user initiated fails.");
+                                            [WPError showNetworkingAlertWithError:error title:title];
+                                        }
                                         if (userInteraction) {
                                             double delayInSeconds = 0.2;
                                             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
@@ -482,6 +483,11 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     [self refreshPullToRefresh];
 }
 
+- (BOOL)isTableViewEmpty
+{
+    return [self.tableViewHandler.resultsController isEmpty];
+}
+
 
 #pragma mark - View Refresh Helpers
 
@@ -519,7 +525,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (void)refreshNoResultsView
 {
-    BOOL isTableViewEmpty = (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
+    BOOL isTableViewEmpty = [self isTableViewEmpty];
     BOOL shouldPerformAnimation = self.noResultsView.hidden;
     
     self.noResultsView.hidden = !isTableViewEmpty;
