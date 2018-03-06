@@ -439,6 +439,12 @@ import WordPressShared
         }
 
         tableView.tableHeaderView?.isHidden = true
+
+        guard connectionAvailable() else {
+            displayNoConnectionView(topic)
+            return
+        }
+
         let response: NoResultsResponse = ReaderStreamViewController.responseForNoResults(topic)
         resultsStatusView.titleText = response.title
         resultsStatusView.messageText = response.message
@@ -450,6 +456,13 @@ import WordPressShared
             resultsStatusView.buttonTitle = nil
             resultsStatusView.delegate = nil
         }
+        displayResultsStatus()
+    }
+
+    private func displayNoConnectionView(_ topic: ReaderAbstractTopic) {
+        resultsStatusView.titleText = ReaderStreamViewController.responseForNoResults(topic).title
+        resultsStatusView.messageText = ReachabilityUtils.noConnectionMessage()
+        resultsStatusView.accessoryView = nil
         displayResultsStatus()
     }
 
