@@ -79,14 +79,14 @@
 @property (nonatomic, strong) NSDictionary *capabilities;
 
 /**
- * @Blog's total diske quota space.
+ * @Blog's total disk quota space.
  */
-@property (nonatomic, strong) NSNumber *quotaSpaceAllowed;
+@property (nonatomic, copy) NSNumber *quotaSpaceAllowed;
 
 /**
-* @Blog's total diske quota space used.
+* @Blog's total disk quota space used.
 */
-@property (nonatomic, strong) NSNumber *quotaSpaceUsed;
+@property (nonatomic, copy) NSNumber *quotaSpaceUsed;
 
 
 /**
