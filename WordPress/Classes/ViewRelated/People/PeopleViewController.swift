@@ -368,7 +368,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         if !isTableViewEmpty() {
             let alertTitle = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
             WPError.showNetworkingAlertWithError(forError, title: alertTitle)
-        }        
+        }
     }
 
     private func isTableViewEmpty() -> Bool {
