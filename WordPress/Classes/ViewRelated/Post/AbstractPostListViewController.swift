@@ -585,18 +585,6 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         }
     }
 
-    private func shouldPresentAlert() -> Bool {
-        return !connectionAvailable() && !isTableViewEmpty()
-    }
-
-    private func isTableViewEmpty() -> Bool {
-        return self.tableViewHandler.resultsController.isEmpty()
-    }
-
-    func connectionAvailable() -> Bool {
-        return ReachabilityUtils.isInternetReachable()
-    }
-
     @objc func syncItemsWithUserInteraction(_ userInteraction: Bool) {
         syncHelper.syncContentWithUserInteraction(userInteraction)
         refreshResults()
@@ -1100,5 +1088,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     func updateSearchResults(for searchController: UISearchController) {
         resetTableViewContentOffset()
         searchHelper.searchUpdated(searchController.searchBar.text)
+    }
+}
+
+extension AbstractPostListViewController: NetworkAwareUI {
+    func contentIsEmpty() -> Bool {
+        return tableViewHandler.resultsController.isEmpty()
     }
 }
