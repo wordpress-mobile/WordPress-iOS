@@ -1,12 +1,13 @@
 import Foundation
 
+/// This extension add methods to make the manipulation of disk quota values for a blog easier
 extension Blog {
 
     @objc var isQuotaAvailable: Bool {
         return quotaSpaceAllowed != nil && quotaSpaceUsed != nil
     }
 
-    @objc var quotaPercentangeUsed: NSNumber? {
+    @objc var quotaPercentageUsed: NSNumber? {
         guard let quotaSpaceAllowed = quotaSpaceAllowed?.int64Value, let quotaSpaceUsed = quotaSpaceUsed?.int64Value else {
             return nil
         }
@@ -18,13 +19,13 @@ extension Blog {
         guard let quotaSpaceAllowed = quotaSpaceAllowed?.int64Value else {
             return nil
         }
-        return ByteCountFormatter.string(fromByteCount: quotaSpaceAllowed, countStyle: ByteCountFormatter.CountStyle.file)
+        return ByteCountFormatter.string(fromByteCount: quotaSpaceAllowed, countStyle: .binary)
     }
 
     @objc var quotaPercentageUsedDescription: String? {
         let percentageFormatter = NumberFormatter()
         percentageFormatter.numberStyle = .percent
-        guard let percentage = quotaPercentangeUsed,
+        guard let percentage = quotaPercentageUsed,
               let quotaPercentageUsedDescription = percentageFormatter.string(from: percentage) else {
             return nil
         }
