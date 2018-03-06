@@ -2537,10 +2537,14 @@ private extension AztecPostViewController {
     }
 
     func mapUIContentToPostAndSave() {
+        guard let context = post.managedObjectContext else {
+            return
+        }
+
         post.postTitle = titleTextField.text
         post.content = getHTML()
 
-        ContextManager.sharedInstance().save(post.managedObjectContext!)
+        ContextManager.sharedInstance().save(context)
     }
 
     func publishPost(completion: ((_ post: AbstractPost?, _ error: Error?) -> Void)? = nil) {
