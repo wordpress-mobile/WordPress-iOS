@@ -300,21 +300,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         return button
     }()
 
-
-    /// Beta Tag Button
-    ///
-    fileprivate lazy var betaButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        WPStyleGuide.configureBetaButton(button)
-
-        button.setContentHuggingPriority(.required, for: .horizontal)
-        button.isEnabled = true
-        button.addTarget(self, action: #selector(betaButtonTapped), for: .touchUpInside)
-
-        return button
-    }()
-
     /// Active Editor's Mode
     ///
     fileprivate(set) var mode = EditMode.richText {
@@ -599,8 +584,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         var titleWidth = titleTextField.bounds.width
         if titleWidth <= 0 {
             // Use the title text field's width if available, otherwise calculate it.
-            // View's frame minus left and right margins as well as margin between title and beta button
-            titleWidth = view.frame.width - (insets.left + insets.right + layoutMargins.left + layoutMargins.right) - betaButton.frame.width
+            titleWidth = view.frame.width - (insets.left + insets.right + layoutMargins.left + layoutMargins.right)
         }
 
         let sizeThatShouldFitTheContent = titleTextField.sizeThatFits(CGSize(width: titleWidth, height: CGFloat.greatestFiniteMagnitude))
@@ -652,14 +636,9 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         NSLayoutConstraint.activate([
             titleTextField.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+            titleTextField.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
             titleTopConstraint,
             titleHeightConstraint
-            ])
-
-        NSLayoutConstraint.activate([
-            betaButton.centerYAnchor.constraint(equalTo: titlePlaceholderLabel.centerYAnchor),
-            betaButton.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
-            titleTextField.trailingAnchor.constraint(equalTo: betaButton.leadingAnchor, constant: -titleTextField.textContainerInset.right)
             ])
 
         let insets = titleTextField.textContainerInset
@@ -739,7 +718,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         view.addSubview(titlePlaceholderLabel)
         view.addSubview(separatorView)
         view.addSubview(placeholderLabel)
-        view.addSubview(betaButton)
     }
 
     func configureMediaProgressView(in navigationBar: UINavigationBar) {
@@ -1149,34 +1127,10 @@ extension AztecPostViewController {
             return
         }
 
-        SVProgressHUD.setDefaultMaskType(.clear)
-        SVProgressHUD.show(withStatus: postEditorStateContext.publishVerbText)
-        postEditorStateContext.updated(isBeingPublished: true)
-
-        // Finally, publish the post.
-        publishPost() { uploadedPost, error in
-            self.postEditorStateContext.updated(isBeingPublished: false)
-            SVProgressHUD.dismiss()
-
-            let generator = UINotificationFeedbackGenerator()
-            generator.prepare()
-
-            if let error = error {
-                DDLogError("Error publishing post: \(error.localizedDescription)")
-
-                SVProgressHUD.showDismissibleError(withStatus: self.postEditorStateContext.publishErrorText)
-                generator.notificationOccurred(.error)
-            } else if let uploadedPost = uploadedPost {
-                self.post = uploadedPost
-
-                generator.notificationOccurred(.success)
-            }
-
-            if dismissWhenDone {
-                self.dismissOrPopView(didSave: true)
-            } else {
-                self.createRevisionOfPost()
-            }
+        if postEditorStateContext.action == .publish {
+            displayPublishConfirmationAlert(dismissWhenDone: dismissWhenDone)
+        } else {
+            publishPost(dismissWhenDone: dismissWhenDone)
         }
     }
 
@@ -1196,12 +1150,6 @@ extension AztecPostViewController {
 
     @IBAction func moreWasPressed() {
         displayMoreSheet()
-    }
-
-    @IBAction func betaButtonTapped() {
-        WPAppAnalytics.track(.editorAztecBetaLink)
-
-        FancyAlertViewController.presentWhatsNewWebView(from: self)
     }
 
     private func trackPostSave(stat: WPAnalyticsStat) {
@@ -1292,7 +1240,7 @@ private extension AztecPostViewController {
             self.displayPostOptions()
         }
 
-        alert.addCancelActionWithTitle(MoreSheetAlert.cancelTitle)
+        alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
         alert.popoverPresentationController?.barButtonItem = moreBarButtonItem
 
         present(alert, animated: true, completion: nil)
@@ -1354,6 +1302,27 @@ private extension AztecPostViewController {
         return
     }
 
+    /// Displays a publish confirmation alert with two options: "Keep Editing" and "Publish".
+    ///
+    /// - Parameters:
+    ///     - dismissWhenDone: if `true`, the VC will be dismissed if the user picks "Publish".
+    ///
+    func displayPublishConfirmationAlert(dismissWhenDone: Bool) {
+        let title = NSLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing.")
+
+        let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
+        let publishTitle = NSLocalizedString("Publish", comment: "Button shown when the author is asked for publishing confirmation.")
+
+        let style: UIAlertControllerStyle = UIDevice.isPad() ? .alert : .actionSheet
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
+
+        alertController.addCancelActionWithTitle(keepEditingTitle)
+        alertController.addDefaultActionWithTitle(publishTitle) { [unowned self] _ in
+            self.publishPost(dismissWhenDone: dismissWhenDone)
+        }
+
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
 
@@ -2542,8 +2511,52 @@ private extension AztecPostViewController {
 
         ContextManager.sharedInstance().save(post.managedObjectContext!)
     }
+}
 
-    func publishPost(completion: ((_ post: AbstractPost?, _ error: Error?) -> Void)? = nil) {
+// MARK: - Publishing
+
+private extension AztecPostViewController {
+
+    /// Shows the publishing overlay and starts the publishing process.
+    ///
+    func publishPost(dismissWhenDone: Bool) {
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.show(withStatus: postEditorStateContext.publishVerbText)
+        postEditorStateContext.updated(isBeingPublished: true)
+
+        // Finally, publish the post.
+        publishPost() { uploadedPost, error in
+            self.postEditorStateContext.updated(isBeingPublished: false)
+            SVProgressHUD.dismiss()
+
+            let generator = UINotificationFeedbackGenerator()
+            generator.prepare()
+
+            if let error = error {
+                DDLogError("Error publishing post: \(error.localizedDescription)")
+
+                SVProgressHUD.showDismissibleError(withStatus: self.postEditorStateContext.publishErrorText)
+                generator.notificationOccurred(.error)
+            } else if let uploadedPost = uploadedPost {
+                self.post = uploadedPost
+
+                generator.notificationOccurred(.success)
+            }
+
+            if dismissWhenDone {
+                self.dismissOrPopView(didSave: true)
+            } else {
+                self.createRevisionOfPost()
+            }
+        }
+    }
+
+    /// Publish the post
+    ///
+    /// - Parameters:
+    ///     - completion: the closure to execute when the publish operation completes.
+    ///
+    private func publishPost(completion: ((_ post: AbstractPost?, _ error: Error?) -> Void)?) {
         mapUIContentToPostAndSave()
 
         let managedObjectContext = ContextManager.sharedInstance().mainContext
@@ -2556,9 +2569,8 @@ private extension AztecPostViewController {
     }
 }
 
-
 // MARK: - Computed Properties
-//
+
 private extension AztecPostViewController {
     var mainContext: NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
@@ -3166,13 +3178,17 @@ extension AztecPostViewController {
         return icon
     }
 
-    // [2017-08-30] We need to auto-close the input media picker when multitasking panes are resized - iOS
-    // is dropping the input picker's view from the view hierarchy. Not an ideal solution, but prevents
-    // the user from seeing an empty grey rect as a keyboard. Issue affects the 7.9", 9.7", and 10.5"
-    // iPads only...not the 12.9"
-    // See http://www.openradar.me/radar?id=4972612522344448 for more details.
-    //
     @objc func applicationWillResignActive(_ notification: Foundation.Notification) {
+
+        // [2018-03-05] Need to close the options VC on backgrounding to prevent view hierarchy inconsistency crasher.
+        dismissOptionsViewControllerIfNecessary()
+
+        // [2017-08-30] We need to auto-close the input media picker when multitasking panes are resized - iOS
+        // is dropping the input picker's view from the view hierarchy. Not an ideal solution, but prevents
+        // the user from seeing an empty grey rect as a keyboard. Issue affects the 7.9", 9.7", and 10.5"
+        // iPads only...not the 12.9"
+        // See http://www.openradar.me/radar?id=4972612522344448 for more details.
+        //
         if UIDevice.isPad() {
             closeMediaPickerInputViewController()
         }
@@ -3526,11 +3542,11 @@ extension AztecPostViewController {
     }
 
     struct MoreSheetAlert {
-        static let htmlTitle                = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
-        static let richTitle                = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
-        static let previewTitle             = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
-        static let optionsTitle             = NSLocalizedString("Options", comment: "Displays the Post's Options")
-        static let cancelTitle              = NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen")
+        static let htmlTitle = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
+        static let richTitle = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
+        static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
+        static let optionsTitle = NSLocalizedString("Options", comment: "Displays the Post's Options")
+        static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
     }
 
     struct MediaAttachmentActionSheet {
