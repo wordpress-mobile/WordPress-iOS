@@ -214,7 +214,12 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
             if (mediaInContext) {
                 mediaInContext.remoteStatus = MediaRemoteStatusFailed;
                 mediaInContext.error = customError;
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                    if (failure) {
+                        failure(customError);
+                    }
+                }];
+                return;
             }
             if (failure) {
                 failure(customError);
