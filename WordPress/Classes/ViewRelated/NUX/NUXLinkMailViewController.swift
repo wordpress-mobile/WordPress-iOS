@@ -73,7 +73,7 @@ class NUXLinkMailViewController: LoginViewController {
             case .login:
                 return NSLocalizedString("Your magic link is on its way! Check your email on this device, and tap the link in the email you receive from WordPress.com", comment: "Instructional text on how to open the email containing a magic link.")
             case .signup:
-                return NSLocalizedString("We sent an email with a link, open it to proceed with your new WordPress.com account.", comment: "Instructional text on how to open the email containing a magic link.")
+                return NSLocalizedString("We sent you a magic signup link! Check your email on this device, and tap the link in the email to finish signing up.", comment: "Instructional text on how to open the email containing a magic link.")
             }
         }()
     }
