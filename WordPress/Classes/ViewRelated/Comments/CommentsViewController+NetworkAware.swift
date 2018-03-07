@@ -14,4 +14,11 @@ extension CommentsViewController: NetworkAwareUI {
     func connectionAvailable() -> Bool {
         return ReachabilityUtils.isInternetReachable()
     }
+
+    @objc
+    func handleConnectionError() {
+        if shouldPresentAlert() {
+            presentNoNetworkAlert()
+        }
+    }
 }
