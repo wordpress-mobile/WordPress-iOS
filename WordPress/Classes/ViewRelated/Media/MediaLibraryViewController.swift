@@ -416,7 +416,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         uploadObserverUUID = MediaCoordinator.shared.addObserver({ [weak self] (media, state) in
             switch state {
             case .progress(let progress) :
-	                self?.updateCellProgress(progress, for: media)
+                self?.updateCellProgress(progress, for: media)
                 break
             case .processing, .uploading:
                 self?.showUploadingStateForCell(for: media)

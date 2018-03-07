@@ -158,7 +158,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 
     if (![blog hasSpaceAvailableFor:media.absoluteLocalURL]) {
         if (error) {
-            NSString *errorReason = NSLocalizedString(@"Not enough space to upload", @"Error message to show to users when trying to upload a media object wich file size is larger than the available site disk quota");
+            NSString *errorReason = NSLocalizedString(@"Not enough space to upload", @"Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota");
             NSString *quotaInfo = blog.quotaUsageDescription;
             NSString *errorMessage = errorReason;
             if (quotaInfo != nil) {
@@ -177,7 +177,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
             NSString *fileSizeDescription = [NSByteCountFormatter stringFromByteCount:fileSize.longLongValue countStyle:NSByteCountFormatterCountStyleBinary];
             NSNumber *maxFileSize = blog.maxUploadSize;
             NSString *maxFileSizeDescription = [NSByteCountFormatter stringFromByteCount:maxFileSize.longLongValue countStyle:NSByteCountFormatterCountStyleBinary];
-            NSString *errorLocalized = NSLocalizedString(@"Media filesize (%@) is too large to upload. Maximum allowed is %@", @"Error message to show to users when trying to upload a media object with file size ir larger than the max file size allowed in the site");
+            NSString *errorLocalized = NSLocalizedString(@"Media filesize (%@) is too large to upload. Maximum allowed is %@", @"Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site");
             NSString *errorMessage = [NSString stringWithFormat:errorLocalized, fileSizeDescription, maxFileSizeDescription];
             *error = [NSError errorWithDomain:MediaServiceErrorDomain
                                          code:MediaServiceErrorFileLargerThanMaxFileSize

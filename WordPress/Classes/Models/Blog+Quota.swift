@@ -64,7 +64,7 @@ extension Blog {
 
     /// Returns true if the site has disk quota available to for the file size of the URL provided.
     ///
-    /// If not quota information is available for the site this method returns true.
+    /// If no quota information is available for the site this method returns true.
     /// - Parameter url: the file URL to check the filesize
     /// - Returns: true if there is space available
     @objc func hasSpaceAvailable(for url: URL) -> Bool {
