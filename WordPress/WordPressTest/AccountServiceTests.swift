@@ -5,12 +5,13 @@ import XCTest
 class AccountServiceTests: XCTestCase {
     var contextManager: TestContextManager!
     var accountService: AccountService!
+    let userDefaults = UserDefaults(suiteName: "AccountServiceTests")!
 
     override func setUp() {
         super.setUp()
 
         contextManager = TestContextManager()
-        accountService = AccountService(managedObjectContext: contextManager.mainContext)
+        accountService = AccountService(managedObjectContext: contextManager.mainContext, userDefaults: userDefaults)
     }
 
     override func tearDown() {
@@ -32,9 +33,9 @@ class AccountServiceTests: XCTestCase {
 
         accountService.setDefaultWordPressComAccount(account)
 
-        let uuid = UserDefaults.standard.string(forKey: "AccountDefaultDotcomUUID")
+        let uuid = userDefaults.string(forKey: "AccountDefaultDotcomUUID")
         XCTAssertNotNil(uuid, "Default UUID should be set")
-        XCTAssertEqual(uuid!, account.uuid, "UUID should be set as default")
+        XCTAssertEqual(uuid, account.uuid, "UUID should be set as default")
     }
 
     func testGetDefaultWordPressComAccountNoneSet() {

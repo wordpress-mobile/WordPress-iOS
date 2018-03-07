@@ -10,6 +10,8 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
 
 @interface AccountService : LocalCoreDataService
 
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context userDefaults:(NSUserDefaults*)userDefaults;
+
 ///------------------------------------
 /// @name Default WordPress.com account
 ///------------------------------------

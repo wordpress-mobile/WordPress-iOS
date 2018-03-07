@@ -16,7 +16,37 @@ static NSString * const WordPressDotcomXMLRPCKey = @"https://wordpress.com/xmlrp
 NSNotificationName const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAccountDefaultWordPressComAccountChangedNotification";
 NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEmailAndDefaultBlogUpdatedNotification";
 
+@interface AccountService ()
+@property (nonatomic, retain, readonly) NSUserDefaults *userDefaults;
+@end
+
 @implementation AccountService
+
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context {
+    NSParameterAssert([context isKindOfClass:[NSManagedObjectContext class]]);
+    
+    self = [super initWithManagedObjectContext:context];
+    
+    if (self) {
+        _userDefaults = [NSUserDefaults standardUserDefaults];
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context userDefaults:(NSUserDefaults*)userDefaults
+{
+    NSParameterAssert([context isKindOfClass:[NSManagedObjectContext class]]);
+    NSParameterAssert([userDefaults isKindOfClass:[NSUserDefaults class]]);
+
+    self = [super initWithManagedObjectContext:context];
+    
+    if (self) {
+        _userDefaults = userDefaults;
+    }
+    
+    return self;
+}
 
 ///------------------------------------
 /// @name Default WordPress.com account
@@ -33,7 +63,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
  */
 - (WPAccount *)defaultWordPressComAccount
 {
-    NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:DefaultDotcomAccountUUIDDefaultsKey];
+    NSString *uuid = [self.userDefaults stringForKey:DefaultDotcomAccountUUIDDefaultsKey];
     if (uuid.length == 0) {
         return nil;
     }
@@ -48,8 +78,8 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     if (fetchedObjects.count > 0) {
         defaultAccount = fetchedObjects.firstObject;
     } else {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        [self.userDefaults removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
+        [self.userDefaults synchronize];
     }
     
     return defaultAccount;
@@ -67,8 +97,8 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     NSParameterAssert(account != nil);
     NSAssert(account.authToken.length > 0, @"Account should have an authToken for WP.com");
 
-    [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self.userDefaults setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
+    [self.userDefaults synchronize];
 
     NSManagedObjectID *accountID = account.objectID;
     void (^notifyAccountChange)(void) = ^{
@@ -128,15 +158,15 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
 
     // Remove defaults
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self.userDefaults removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
+    [self.userDefaults synchronize];
     
     [WPAnalytics refreshMetadata];
     [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 }
 
 - (BOOL)isDefaultWordPressComAccount:(WPAccount *)account {
-    NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:DefaultDotcomAccountUUIDDefaultsKey];
+    NSString *uuid = [self.userDefaults stringForKey:DefaultDotcomAccountUUIDDefaultsKey];
     if (uuid.length == 0) {
         return false;
     }
