@@ -669,31 +669,48 @@ static const NSUInteger ReaderPostTitleLength = 30;
 - (NSString *)featuredImageFromPostDictionary:(NSDictionary *)dict
 {
     // Editorial trumps all
-    NSString *featuredImage = [dict stringForKeyPath:@"editorial.image"];
+    NSString *featuredImage = [self editorialImageFromPostDictionary:dict];
 
-    // User specified featured image.
+    // Second option is the user specified featured image
     if ([featuredImage length] == 0) {
-        featuredImage = [dict stringForKey:PostRESTKeyFeaturedImage];
+        featuredImage = [self userSpecifiedFeaturedImageFromPostDictionary:dict];
     }
 
-    // If there's no featured image look for a suitable one in the post featured media
+    // If that's not present look for an image in featured media
     if ([featuredImage length] == 0) {
-        NSDictionary *featuredMedia = [dict dictionaryForKey:PostRESTKeyFeaturedMedia];
-        if ([[featuredMedia stringForKey:@"type"] isEqualToString:@"image"]) {
-            featuredImage = [featuredMedia stringForKey:@"uri"];
-        }
+        featuredImage = [self featuredMediaImageFromPostDictionary:dict];
     }
 
-    // If there's no featured image look for a suitable one in the post content
-    NSString *content = [dict stringForKey:PostRESTKeyContent];
+    // As a last resource lets look for a suitable image in the post content
     if ([featuredImage length] == 0) {
-        NSString *imageToDisplay = [DisplayableImageHelper searchPostContentForImageToDisplay:content];
-        featuredImage = [self stringOrEmptyString:imageToDisplay];
+        featuredImage = [self suitableImageFromPostContent:dict];
     }
 
     featuredImage = [self sanitizeFeaturedImageString:featuredImage];
 
     return featuredImage;
+}
+
+- (NSString *)editorialImageFromPostDictionary:(NSDictionary *)dict {
+    return [dict stringForKeyPath:@"editorial.image"];
+}
+
+- (NSString *)userSpecifiedFeaturedImageFromPostDictionary:(NSDictionary *)dict {
+    return [dict stringForKey:PostRESTKeyFeaturedImage];
+}
+
+- (NSString *)featuredMediaImageFromPostDictionary:(NSDictionary *)dict {
+    NSDictionary *featuredMedia = [dict dictionaryForKey:PostRESTKeyFeaturedMedia];
+    if ([[featuredMedia stringForKey:@"type"] isEqualToString:@"image"]) {
+        return [featuredMedia stringForKey:@"uri"];
+    }
+    return nil;
+}
+
+- (NSString *)suitableImageFromPostContent:(NSDictionary *)dict {
+    NSString *content = [dict stringForKey:PostRESTKeyContent];
+    NSString *imageToDisplay = [DisplayableImageHelper searchPostContentForImageToDisplay:content];
+    return [self stringOrEmptyString:imageToDisplay];
 }
 
 /**
