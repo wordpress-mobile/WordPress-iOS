@@ -7,10 +7,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     // MARK: - Private Properties
 
     fileprivate var isPublishingPost: Bool = false
-
-    // Defaulting this to `true` so, on first load, the publish button is not enabled until the
-    // catagories for the selected site are fully loaded
-    fileprivate var isFetchingCategories: Bool = true
+    fileprivate var isFetchingCategories: Bool = false
 
     /// StackView container for the tables
     ///
@@ -136,6 +133,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
         // Load Data
         loadContentIfNeeded()
         setupPrimarySiteIfNeeded()
+        setupCategoriesIfNeeded()
         reloadSitesIfNeeded()
     }
 
@@ -186,6 +184,15 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
         shareData.selectedSiteID = primarySiteID
         shareData.selectedSiteName = primarySiteName
+    }
+
+    fileprivate func setupCategoriesIfNeeded() {
+        if shareData.allCategoriesForSelectedSite == nil {
+            // Set to `true` so, on first load, the publish button is not enabled until the
+            // catagories for the selected site are fully loaded
+            isFetchingCategories = true
+        }
+        refreshModulesTable()
     }
 
     fileprivate func setupNavigationBar() {
@@ -276,6 +283,7 @@ extension ShareModularViewController {
 
     @objc func pullToRefresh(sender: UIRefreshControl) {
         ShareExtensionAbstractViewController.clearCache()
+        isFetchingCategories = true
         clearCategoriesAndRefreshModulesTable()
         clearSiteDataAndRefreshSitesTable()
         reloadSitesIfNeeded()
@@ -673,11 +681,11 @@ fileprivate extension ShareModularViewController {
     }
 
     func updatePublishButtonStatus() {
-        guard hasSites, shareData.selectedSiteID != nil, isFetchingCategories == false, isPublishingPost == false else {
+        guard hasSites, shareData.selectedSiteID != nil, shareData.allCategoriesForSelectedSite != nil,
+            isFetchingCategories == false, isPublishingPost == false else {
             publishButton.isEnabled = false
             return
         }
-
         publishButton.isEnabled = true
     }
 }
