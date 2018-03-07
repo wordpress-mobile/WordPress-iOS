@@ -379,10 +379,11 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     if ([remote isKindOfClass:[MediaServiceRemoteXMLRPC class]]) {
         // For self-hosted sites we should generally pass on the raw system/network error message.
         // Which should help debug issues with a self-hosted site.
-        if ([error.domain isEqualToString:WPXMLRPCFaultErrorDomain]) {
-            switch (error.code) {
+        if ([error.domain isEqualToString:WordPressOrgXMLRPCApiErrorDomain] && [error.userInfo objectForKey:WordPressOrgXMLRPCApi.WordPressOrgXMLRPCApiErrorKeyStatusCode] != nil) {
+            NSNumber *errorCode = (NSNumber *)[error.userInfo objectForKey:WordPressOrgXMLRPCApi.WordPressOrgXMLRPCApiErrorKeyStatusCode];
+            switch (errorCode.intValue) {
                 case 500:{
-                    customErrorMessage = NSLocalizedString(@"Your site does not support this media file format.", @"Message to show to user when media upload failed because server doesn't support media type");
+                    customErrorMessage = NSLocalizedString(@"This file is too large to upload to your site or it does not support this media format.", @"Message to show to user when media upload failed because server doesn't support media type");
                 } break;
                 case 401:{
                     customErrorMessage = NSLocalizedString(@"Your site is out of storage space for media uploads.", @"Message to show to user when media upload failed because user doesn't have enough space on quota/disk");
