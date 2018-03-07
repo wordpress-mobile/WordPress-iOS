@@ -248,6 +248,10 @@ open class WordPressOrgXMLRPCApi: NSObject {
                 }
         }
 
+        if (400..<600).contains(httpResponse.statusCode) {
+            throw convertError(WordPressOrgXMLRPCApiError.httpErrorStatusCode as NSError, data: originalData, statusCode: httpResponse.statusCode)
+        }
+        
         if ["application/xml", "text/xml"].filter({ (type) -> Bool in return contentType.hasPrefix(type)}).count == 0 {
             throw convertError(WordPressOrgXMLRPCApiError.responseSerializationFailed as NSError, data: originalData)
         }
@@ -266,14 +270,16 @@ open class WordPressOrgXMLRPCApi: NSObject {
         return responseXML as AnyObject
     }
 
-    @objc open static let WordPressOrgXMLRPCApiErrorKeyData = "WordPressOrgXMLRPCApiErrorKeyData"
-    @objc open static let WordPressOrgXMLRPCApiErrorKeyDataString = "WordPressOrgXMLRPCApiErrorKeyDataString"
+    @objc open static let WordPressOrgXMLRPCApiErrorKeyData: NSError.UserInfoKey = "WordPressOrgXMLRPCApiErrorKeyData"
+    @objc open static let WordPressOrgXMLRPCApiErrorKeyDataString: NSError.UserInfoKey = "WordPressOrgXMLRPCApiErrorKeyDataString"
+    @objc open static let WordPressOrgXMLRPCApiErrorKeyStatusCode: NSError.UserInfoKey = "WordPressOrgXMLRPCApiErrorKeyStatusCode"
 
-    fileprivate func convertError(_ error: NSError, data: Data?) -> NSError {
+    fileprivate func convertError(_ error: NSError, data: Data?, statusCode: Int? = nil) -> NSError {
         if let data = data {
             var userInfo: [AnyHashable: Any] = error.userInfo
             userInfo[type(of: self).WordPressOrgXMLRPCApiErrorKeyData] = data
             userInfo[type(of: self).WordPressOrgXMLRPCApiErrorKeyDataString] = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+            userInfo[type(of: self).WordPressOrgXMLRPCApiErrorKeyStatusCode] = statusCode
             return NSError(domain: error.domain, code: error.code, userInfo: userInfo as? [String : Any])
         }
         return error
@@ -335,6 +341,7 @@ extension WordPressOrgXMLRPCApi {
  - Unknown:                        Unknow error happen
  */
 @objc public enum WordPressOrgXMLRPCApiError: Int, Error {
+    case httpErrorStatusCode
     case requestSerializationFailed
     case responseSerializationFailed
     case unknown
