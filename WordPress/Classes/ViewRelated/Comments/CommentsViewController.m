@@ -478,7 +478,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (BOOL)isTableViewEmpty
 {
-    return (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
+    return [self.tableViewHandler.resultsController isEmpty];
 }
 
 
