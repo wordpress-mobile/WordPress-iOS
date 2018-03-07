@@ -11,13 +11,9 @@ class NUXLinkMailViewController: LoginViewController {
     var emailMagicLinkSource: EmailMagicLinkSource?
     override var sourceTag: SupportSourceTag {
         get {
-            if let emailMagicLinkSource = emailMagicLinkSource {
-                switch emailMagicLinkSource {
-                case .login:
-                    return .loginMagicLink
-                case .signup:
-                    return .signupMagicLink
-                }
+            if let emailMagicLinkSource = emailMagicLinkSource,
+                emailMagicLinkSource == .signup {
+                return .signupMagicLink
             }
             return .loginMagicLink
         }
