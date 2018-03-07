@@ -189,10 +189,9 @@ open class WordPressOrgXMLRPCApi: NSObject {
                         DispatchQueue.main.async {
                             success(responseObject, response.response)
                         }
-                    } catch let error as NSError {
-                        progress.completedUnitCount = 0
+                    } catch let error as NSError {                        
                         DispatchQueue.main.async {
-                            failure(error, response.response)
+                            failure(error, response.response)                            
                         }
                         return
                     }
