@@ -43,7 +43,7 @@ extension NetworkAwareUI {
 
 protocol NetworkStatusDelegate: class {
     func observeNetworkStatus()
-    func networdStatusDidChange()
+    func networdStatusDidChange(active: Bool)
 }
 
 extension NetworkStatusDelegate where Self: UIViewController {
@@ -71,8 +71,8 @@ final fileprivate class ReachabilityObserver: NSObject {
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == #keyPath(WordPressAppDelegate.connectionAvailable), let newValue = change?[.newKey] as? Bool {
-            //
             print("======= rechability changed in my observer====")
+            delegate?.networdStatusDidChange(active: newValue)
         }
     }
 
