@@ -429,11 +429,9 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
                                                 failure(error);
                                             });
                                         }
-
-                                        if (![self connectionAvailable]) {
-                                            NSString *title = NSLocalizedString(@"Unable to Sync", @"Title of error prompt shown when a sync the user initiated fails.");
-                                            [WPError showNetworkingAlertWithError:error title:title];
-                                        }
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            [weakSelf handleConnectionError];
+                                        });
                                     }];
     }];
 }
