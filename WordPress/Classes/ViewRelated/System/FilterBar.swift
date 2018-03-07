@@ -8,6 +8,8 @@ class FilterTabBar: UIControl {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.showsHorizontalScrollIndicator = false
+        scrollView.showsVerticalScrollIndicator = false
+
         return scrollView
     }()
 
@@ -103,7 +105,7 @@ class FilterTabBar: UIControl {
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -AppearanceMetrics.horizontalPadding),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -AppearanceMetrics.bottomDividerHeight),
             stackView.topAnchor.constraint(equalTo: topAnchor)
             ])
 
