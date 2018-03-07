@@ -125,4 +125,25 @@ private class MyProfileController: SettingsController {
             ])
     }
 
+    // MARK: Actions
+
+    fileprivate func presentGravatarPicker() {
+        WPAppAnalytics.track(.gravatarTapped)
+
+        let pickerViewController = GravatarPickerViewController()
+        pickerViewController.onCompletion = { [weak self] image in
+            if let updatedGravatarImage = image {
+                self?.uploadGravatarImage(updatedGravatarImage)
+            }
+            self?.dismiss(animated: true, completion: nil)
+        }
+        pickerViewController.modalPresentationStyle = .formSheet
+        self.present(pickerViewController, animated: true, completion: nil)
+    }
+
+    // MARK: - Gravatar Helpers
+
+    fileprivate func uploadGravatarImage(_ newGravatar: UIImage) {
+        // do stuff
+    }
 }
