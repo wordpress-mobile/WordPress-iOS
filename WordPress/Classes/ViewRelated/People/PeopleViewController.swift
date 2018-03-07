@@ -293,24 +293,31 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         }
 
         var result: (retrieved: Int, shouldLoadMore: Bool)?
+        var loadError: Error?
 
         let group = DispatchGroup()
         group.enter()
         peopleService.loadUsersPage(offset, success: { (retrieved, shouldLoadMore) in
             result = (retrieved, shouldLoadMore)
             group.leave()
-        }, failure: { (error) in
+        }, failure: { error in
+            loadError = error
             group.leave()
         })
 
         group.enter()
         roleService.fetchRoles(success: {_ in
             group.leave()
-        }, failure: { _ in
+        }, failure: { error in
+            loadError = error
             group.leave()
         })
 
-        group.notify(queue: DispatchQueue.main) {
+        group.notify(queue: DispatchQueue.main) { [weak self] in
+            if let error = loadError {
+                self?.handleLoadError(error)
+            }
+
             if let result = result {
                 success(result.retrieved, result.shouldLoadMore)
             }
@@ -335,14 +342,38 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
             return
         }
 
-        noResultsView.titleText = NSLocalizedString("No \(filter.title) Yet",
-            comment: "Empty state message (People Management). Please, do not translate the \\(filter.title) part!")
+        noResultsView.titleText = noResultsTitle()
 
         if noResultsView.superview == nil {
             tableView.addSubview(withFadeAnimation: noResultsView)
         }
     }
 
+    private func noResultsTitle() -> String {
+        let noPeopleFormat = NSLocalizedString("No %@ Yet",
+            comment: "Empty state message (People Management). %@ can be Users or Followers")
+
+        let noPeople = String(format: noPeopleFormat, filter.title)
+
+        let noNetwork = ReachabilityUtils.noConnectionMessage()
+
+        return ReachabilityUtils.isInternetReachable() ? noPeople : noNetwork
+    }
+
+    private func handleLoadError(_ forError: Error) {
+        let _ = DispatchDelayedAction(delay: .milliseconds(500)) { [weak self] in
+            self?.refreshControl?.endRefreshing()
+        }
+
+        if !isTableViewEmpty() {
+            let alertTitle = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+            WPError.showNetworkingAlertWithError(forError, title: alertTitle)
+        }
+    }
+
+    private func isTableViewEmpty() -> Bool {
+        return resultsController.isEmpty()
+    }
 
     // MARK: - Private Helpers
 
