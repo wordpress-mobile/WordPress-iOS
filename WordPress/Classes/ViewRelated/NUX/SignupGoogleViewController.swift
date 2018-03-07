@@ -4,8 +4,18 @@ import SVProgressHUD
 /// View controller that handles the google signup code
 class SignupGoogleViewController: LoginViewController {
 
+    // MARK: - Properties
+
     private var hasShownGoogle = false
     @IBOutlet var titleLabel: UILabel?
+
+    override var sourceTag: SupportSourceTag {
+        get {
+            return .signupWaitingForGoogle
+        }
+    }
+
+    // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +58,8 @@ class SignupGoogleViewController: LoginViewController {
 
 }
 
+// MARK: - GIDSignInDelegate
+
 extension SignupGoogleViewController: GIDSignInDelegate {
     func sign(_ signIn: GIDSignIn?, didSignInFor user: GIDGoogleUser?, withError error: Error?) {
         GIDSignIn.sharedInstance().disconnect()
@@ -69,10 +81,15 @@ extension SignupGoogleViewController: GIDSignInDelegate {
 
         let context = ContextManager.sharedInstance().mainContext
         let service = SignupService(managedObjectContext: context)
-        service.createWPComeUserWithGoogle(token: token, success: { [weak self] in
+        service.createWPComUserWithGoogle(token: token, success: { [weak self] (accountCreated) in
             SVProgressHUD.dismiss()
-            self?.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
-            WPAnalytics.track(.signupSocialSuccess)
+            if accountCreated {
+                self?.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
+                WPAnalytics.track(.signupSocialSuccess)
+            } else {
+                self?.performSegue(withIdentifier: .showLoginEpilogue, sender: self)
+                WPAnalytics.track(.loginSocialSuccess)
+            }
         }) { [weak self] (error) in
             SVProgressHUD.dismiss()
             WPAnalytics.track(.signupSocialFailure)
@@ -80,10 +97,15 @@ extension SignupGoogleViewController: GIDSignInDelegate {
                 self?.navigationController?.popViewController(animated: true)
                 return
             }
+            self?.titleLabel?.textColor = WPStyleGuide.errorRed()
+            self?.titleLabel?.text = NSLocalizedString("Google sign up failed.",
+                                                       comment: "Message shown on screen after the Google sign up process failed.")
             self?.displayError(error as NSError, sourceTag: .wpComSignup)
         }
     }
 }
+
+// MARK: - GIDSignInUIDelegate
 
 /// This is needed to set self as uiDelegate, even though none of the methods are called
 extension SignupGoogleViewController: GIDSignInUIDelegate {
