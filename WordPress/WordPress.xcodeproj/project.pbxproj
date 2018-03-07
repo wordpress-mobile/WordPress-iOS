@@ -8812,7 +8812,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				WPCOM_CONFIG = $HOME/.wpcom_alpha_app_credentials;
+				WPCOM_CONFIG = "$HOME/.wpcom_alpha_app_credentials";
 			};
 			name = "Release-Alpha";
 		};
