@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="32" id="7mS-Jn-IfN" customClass="MediaQuotaCell" customModule="WordPress" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="382" height="60"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" layoutMarginsFollowReadableWidth="YES" tableViewCell="7mS-Jn-IfN" id="twB-EW-2j3">
+                <rect key="frame" x="0.0" y="0.0" width="382" height="59.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="qML-tI-bDd">
+                        <rect key="frame" x="16" y="16" width="350" height="20.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IZE-tn-T3b">
+                                <rect key="frame" x="0.0" y="0.0" width="175" height="20.5"/>
+                                <accessibility key="accessibilityConfiguration" identifier=""/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Value" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nJy-zL-REu" userLabel="Value Label">
+                                <rect key="frame" x="175" y="0.0" width="175" height="20.5"/>
+                                <accessibility key="accessibilityConfiguration" identifier=""/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
+                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ebM-I9-bnL">
+                        <rect key="frame" x="16" y="46.5" width="350" height="2"/>
+                    </progressView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="qML-tI-bDd" firstAttribute="leading" secondItem="twB-EW-2j3" secondAttribute="leadingMargin" id="BSX-Dn-WXf"/>
+                    <constraint firstItem="ebM-I9-bnL" firstAttribute="trailing" secondItem="twB-EW-2j3" secondAttribute="trailingMargin" id="Sva-SU-oNm"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="qML-tI-bDd" secondAttribute="trailing" id="VvD-0C-8nF"/>
+                    <constraint firstItem="qML-tI-bDd" firstAttribute="bottom" secondItem="ebM-I9-bnL" secondAttribute="top" constant="-10" id="WtX-Y6-cWV"/>
+                    <constraint firstItem="qML-tI-bDd" firstAttribute="top" secondItem="twB-EW-2j3" secondAttribute="topMargin" constant="5" id="fjx-Er-kGl"/>
+                    <constraint firstItem="ebM-I9-bnL" firstAttribute="leading" secondItem="twB-EW-2j3" secondAttribute="leadingMargin" id="iWb-oY-10N"/>
+                </constraints>
+                <edgeInsets key="layoutMargins" top="8" left="16" bottom="8" right="16"/>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="progressView" destination="ebM-I9-bnL" id="kJU-eG-eqR"/>
+                <outlet property="titleLabel" destination="IZE-tn-T3b" id="gkS-hK-st1"/>
+                <outlet property="valueLabel" destination="nJy-zL-REu" id="fdK-ox-UL7"/>
+            </connections>
+            <point key="canvasLocation" x="748" y="567"/>
+        </tableViewCell>
+    </objects>
+</document>
