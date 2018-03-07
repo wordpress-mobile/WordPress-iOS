@@ -1,10 +1,11 @@
 
-/// Abstracts UI elements that need to be aware of the network connection status.
+/// Abstracts elements that need to be aware of the network connection status.
 protocol NetworkAware {
     func connectionAvailable() -> Bool
     func handleConnectionError()
 }
 
+/// Abstracts UI elements that need to be aware of the network connection status, and present user facing alerts.
 protocol NetworkAwareUI: NetworkAware {
     func shouldPresentAlert() -> Bool
     func contentIsEmpty() -> Bool
