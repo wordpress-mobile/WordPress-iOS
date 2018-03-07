@@ -41,20 +41,37 @@ extension NetworkAwareUI {
     }
 }
 
+fileprivate struct NetworkStatusAssociatedKeys {
+    static var observer: UInt8 = 0
+}
+
 protocol NetworkStatusDelegate: class {
     func observeNetworkStatus()
+
     func networdStatusDidChange(active: Bool)
 }
 
 extension NetworkStatusDelegate where Self: UIViewController {
+    private(set) var reachabilityObserver: ReachabilityObserver {
+        get {
+            guard let value = objc_getAssociatedObject(self, &NetworkStatusAssociatedKeys.observer) as? ReachabilityObserver else {
+                return ReachabilityObserver(delegate: self)
+            }
+            return value
+        }
+        set(newValue) {
+            objc_setAssociatedObject(self, &NetworkStatusAssociatedKeys.observer, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+
     func observeNetworkStatus() {
-        let _ = ReachabilityObserver(delegate: self)
+        reachabilityObserver = ReachabilityObserver(delegate: self)
     }
 }
 
-final fileprivate class ReachabilityObserver: NSObject {
+@objc final class ReachabilityObserver: NSObject {
     private static var observerContext = 0
-    private weak var delegate: NetworkStatusDelegate?
+    weak var delegate: NetworkStatusDelegate?
 
     init(delegate: NetworkStatusDelegate) {
         self.delegate = delegate
@@ -65,14 +82,17 @@ final fileprivate class ReachabilityObserver: NSObject {
 
     private func configureObserver() {
         if let appDelegate = UIApplication.shared.delegate as? WordPressAppDelegate {
-            appDelegate.addObserver(self, forKeyPath: #keyPath(WordPressAppDelegate.connectionAvailable), options: [.new], context: &type(of: self).observerContext)
+            appDelegate.addObserver(self, forKeyPath: #keyPath(WordPressAppDelegate.connectionAvailable), options: [.old, .new], context: &type(of: self).observerContext)
         }
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == #keyPath(WordPressAppDelegate.connectionAvailable), let newValue = change?[.newKey] as? Bool {
-            print("======= rechability changed in my observer====")
-            delegate?.networdStatusDidChange(active: newValue)
+        if keyPath == #keyPath(WordPressAppDelegate.connectionAvailable),
+            let oldValue = change?[.oldKey] as? Bool,
+            let newValue = change?[.newKey] as? Bool {
+            if oldValue != newValue {
+                delegate?.networdStatusDidChange(active: newValue)
+            }
         }
     }
 
