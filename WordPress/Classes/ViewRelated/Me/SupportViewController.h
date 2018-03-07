@@ -7,7 +7,6 @@ extern SupportSourceTag const SupportSourceTagWPOrgLogin;
 extern SupportSourceTag const SupportSourceTagJetpackLogin;
 extern SupportSourceTag const SupportSourceTagGeneralLogin;
 extern SupportSourceTag const SupportSourceTagInAppFeedback;
-extern SupportSourceTag const SupportSourceTagAztecFeedback;
 extern SupportSourceTag const SupportSourceTagLoginEmail;
 extern SupportSourceTag const SupportSourceTagLoginMagicLink;
 extern SupportSourceTag const SupportSourceTagLoginWPComPassword;
