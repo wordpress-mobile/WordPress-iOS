@@ -7,12 +7,21 @@ func MyProfileViewController(account: WPAccount) -> ImmuTableViewController? {
     }
 
     let service = AccountSettingsService(userID: account.userID.intValue, api: api)
-    return MyProfileViewController(service: service)
+    return MyProfileViewController(account: account, service: service)
 }
 
-func MyProfileViewController(service: AccountSettingsService) -> ImmuTableViewController {
+func MyProfileViewController(account: WPAccount, service: AccountSettingsService) -> ImmuTableViewController {
     let controller = MyProfileController(service: service)
     let viewController = ImmuTableViewController(controller: controller)
+    let defaultImage = UIImage(named: "gravatar")
+    let headerView = MyProfileHeaderView.makeFromNib()
+    headerView.gravatarImageView.downloadGravatarWithEmail(account.email, placeholderImage: defaultImage!)
+    if headerView.gravatarImageView.image == defaultImage {
+        headerView.gravatarButton.setTitle(NSLocalizedString("Add a Profile Photo", comment: "Add a profile photo to Me > My Profile"), for: .normal)
+    } else {
+        headerView.gravatarButton.setTitle("Update Profile Photo", for: .normal)
+    }
+    viewController.tableView.tableHeaderView = headerView
     return viewController
 }
 
