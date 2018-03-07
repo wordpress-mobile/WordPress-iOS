@@ -5,6 +5,8 @@ class MyProfileHeaderView: UIView {
     @IBOutlet var gravatarImageView: UIImageView!
     @IBOutlet var gravatarButton: UIButton!
 
+    var onAddUpdatePhoto: (() -> Void)?
+
     class func makeFromNib() -> MyProfileHeaderView {
         return Bundle.main.loadNibNamed("MyProfileHeaderView", owner: self, options: nil)?.first as! MyProfileHeaderView
     }
@@ -18,5 +20,9 @@ class MyProfileHeaderView: UIView {
         assert(gravatarButton != nil)
 
         gravatarImageView.layer.cornerRadius = CGFloat(gravatarImageView.frame.size.width * 0.5)
+    }
+
+    @IBAction func onProfileWasPressed(_ sender: UIButton) {
+        onAddUpdatePhoto?()
     }
 }

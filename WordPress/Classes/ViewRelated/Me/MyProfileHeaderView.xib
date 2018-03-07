@@ -35,6 +35,9 @@
                             <state key="normal" title="Button text">
                                 <color key="titleColor" red="0.0" green="0.52941176470588236" blue="0.74509803921568629" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
+                            <connections>
+                                <action selector="onProfileWasPressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="HcL-ZO-4NF"/>
+                            </connections>
                         </button>
                     </subviews>
                 </stackView>
