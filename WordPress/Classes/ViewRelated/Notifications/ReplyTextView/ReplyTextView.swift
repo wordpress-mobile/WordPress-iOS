@@ -315,10 +315,12 @@ import WordPressShared.WPStyleGuide
     fileprivate var bundle: NSArray?
 
     // MARK: - IBOutlets
-    @IBOutlet fileprivate var textView: UITextView!
-    @IBOutlet fileprivate var placeholderLabel: UILabel!
-    @IBOutlet fileprivate var replyButton: UIButton!
-    @IBOutlet fileprivate var bezierContainerView: ReplyBezierView!
-    @IBOutlet fileprivate var separatorsView: SeparatorsView!
-    @IBOutlet fileprivate var contentView: UIView!
+    @IBOutlet private var textView: UITextView!
+    @IBOutlet private var placeholderLabel: UILabel!
+    @IBOutlet private var replyButton: UIButton!
+    @IBOutlet private var bezierContainerView: ReplyBezierView!
+    @IBOutlet private var separatorsView: SeparatorsView!
+    @IBOutlet private var contentView: UIView!
+    @IBOutlet private var bezierTopConstraint: NSLayoutConstraint!
+    @IBOutlet private var bezierBottomConstraint: NSLayoutConstraint!
 }
