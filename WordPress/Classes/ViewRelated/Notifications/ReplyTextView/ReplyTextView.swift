@@ -364,7 +364,7 @@ private extension ReplyTextView {
 // MARK: - Settings
 //
 private extension ReplyTextView {
-    
+
     enum Settings {
 
         /// Maximum number of *visible* lines
