@@ -1315,7 +1315,7 @@ private extension AztecPostViewController {
 
         let style: UIAlertControllerStyle = UIDevice.isPad() ? .alert : .actionSheet
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
-        
+
         alertController.addCancelActionWithTitle(keepEditingTitle)
         alertController.addDefaultActionWithTitle(publishTitle) { [unowned self] _ in
             self.publishPost(dismissWhenDone: dismissWhenDone)
