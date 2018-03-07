@@ -207,6 +207,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         [self.managedObjectContext performBlock:^{
             if (error) {
                 [self trackUploadError:error];
+                DDLogError(@"Error uploading media: %@", error);
             }
             NSError *customError = [self customMediaUploadError:error remote:remote];
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
