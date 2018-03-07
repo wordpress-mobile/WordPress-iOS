@@ -57,7 +57,6 @@
                         <outlet property="addButton" destination="9Az-zB-Hwe" id="r4s-oX-gyT"/>
                         <outlet property="authorFilterSegmentedControl" destination="2zZ-72-iKA" id="A6u-P2-Z7M"/>
                         <outlet property="authorsFilterView" destination="9at-tM-m4A" id="Iue-Ql-B4V"/>
-                        <outlet property="filterButton" destination="qr8-Nf-Mwl" id="u7d-J1-vsa"/>
                         <outlet property="filterTabBar" destination="Nmf-Iz-jkG" id="Ydz-ff-EUy"/>
                         <outlet property="headerStackView" destination="PF5-eU-KAv" id="7PN-bA-mdX"/>
                         <outlet property="rightBarButtonView" destination="8Ph-e4-iOe" id="V4F-lw-glT"/>
@@ -65,18 +64,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mrN-zD-yTr" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="qr8-Nf-Mwl" customClass="NavBarTitleDropdownButton">
-                    <rect key="frame" x="0.0" y="0.0" width="77" height="25"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <inset key="imageEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
-                    <state key="normal" title="Button" image="icon-nav-chevron">
-                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </state>
-                    <connections>
-                        <action selector="didTapFilterButton:" destination="VTO-0U-HpP" eventType="touchUpInside" id="B6R-YT-dc3"/>
-                    </connections>
-                </button>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Ph-e4-iOe">
                     <rect key="frame" x="0.0" y="0.0" width="80" height="44"/>
                     <subviews>
@@ -171,7 +158,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="icon-nav-chevron" width="14" height="8"/>
         <image name="icon-post-add" width="22" height="22"/>
         <image name="icon-post-add-highlight" width="22" height="22"/>
     </resources>

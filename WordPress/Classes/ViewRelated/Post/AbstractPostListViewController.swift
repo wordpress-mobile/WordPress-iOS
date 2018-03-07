@@ -106,7 +106,6 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     @objc var postListFooterView: PostListFooterView!
 
     @IBOutlet var filterTabBar: FilterTabBar!
-    @IBOutlet var filterButton: NavBarTitleDropdownButton!
     @IBOutlet var rightBarButtonView: UIView!
     @IBOutlet var addButton: UIButton!
 
@@ -239,8 +238,6 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         let rightBarButtonItem = UIBarButtonItem(customView: rightBarButtonView)
         rightBarButtonItem.width = rightBarButtonView.frame.size.width
         WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(rightBarButtonItem, for: navigationItem)
-        navigationItem.titleView = filterButton
-        updateFilterTitle()
     }
 
     func configureFilterBar() {
@@ -249,6 +246,10 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         filterTabBar.dividerColor = WPStyleGuide.greyLighten20()
 
         filterTabBar.items = filterSettings.availablePostListFilters().map({ $0.title })
+
+        updateSelectedFilter()
+
+        filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 
     func configureTableView() {
@@ -553,10 +554,6 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         WPAnalytics.track(.postListNoResultsButtonPressed, withProperties: propertiesForAnalytics())
 
         createPost()
-    }
-
-    @IBAction func didTapFilterButton(_ sender: AnyObject) {
-        displayFilters()
     }
 
     // MARK: - Synching
@@ -1007,7 +1004,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     @objc func refreshAndReload() {
         recentlyTrashedPostObjectIDs.removeAll()
-        updateFilterTitle()
+        updateSelectedFilter()
         resetTableViewContentOffset()
         updateAndPerformFetchRequestRefreshingResults()
     }
@@ -1018,58 +1015,22 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         WPAnalytics.track(.postListStatusFilterChanged, withProperties: propertiesForAnalytics())
     }
 
-    @objc func updateFilter(index: Int) {
+    func updateFilter(index: Int) {
         filterSettings.setCurrentFilterIndex(index)
         refreshAndReload()
     }
 
-    @objc func updateFilterTitle() {
-        filterButton.setAttributedTitleForTitle(filterSettings.currentPostListFilter().title)
+    func updateSelectedFilter() {
+        filterTabBar.setSelectedIndex(filterSettings.currentFilterIndex(), animated: false)
     }
 
-    @objc func displayFilters() {
-        let availableFilters = filterSettings.availablePostListFilters()
+    @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
+        filterSettings.setCurrentFilterIndex(filterBar.selectedIndex)
 
-        let titles = availableFilters.map { (filter: PostListFilter) -> String in
-            return filter.title
-        }
+        refreshAndReload()
+        syncItemsWithUserInteraction(false)
 
-        let dict = [SettingsSelectionDefaultValueKey: availableFilters[0],
-                    SettingsSelectionTitleKey: NSLocalizedString("Filters", comment: "Title of the list of post status filters."),
-                    SettingsSelectionTitlesKey: titles,
-                    SettingsSelectionValuesKey: availableFilters,
-                    SettingsSelectionCurrentValueKey: filterSettings.currentPostListFilter()] as [String: Any]
-
-        let controller = SettingsSelectionViewController(style: .plain, andDictionary: dict as [AnyHashable: Any])
-        controller?.onItemSelected = { [weak self] (selectedValue: Any!) -> () in
-            if let strongSelf = self,
-                let index = strongSelf.filterSettings.availablePostListFilters().index(of: selectedValue as! PostListFilter) {
-
-                strongSelf.filterSettings.setCurrentFilterIndex(index)
-                strongSelf.dismiss(animated: true, completion: nil)
-
-                strongSelf.refreshAndReload()
-                strongSelf.syncItemsWithUserInteraction(false)
-
-                WPAnalytics.track(.postListStatusFilterChanged, withProperties: strongSelf.propertiesForAnalytics())
-            }
-        }
-
-        controller?.tableView.isScrollEnabled = false
-
-        displayFilterPopover(controller!)
-    }
-
-    @objc func displayFilterPopover(_ controller: UIViewController) {
-        controller.preferredContentSize = type(of: self).preferredFiltersPopoverContentSize
-
-        guard let titleView = navigationItem.titleView else {
-            return
-        }
-
-        ForcePopoverPresenter.configurePresentationControllerForViewController(controller, presentingFromView: titleView)
-
-        present(controller, animated: true, completion: nil)
+        WPAnalytics.track(.postListStatusFilterChanged, withProperties: propertiesForAnalytics())
     }
 
     // MARK: - Search Controller Delegate Methods
