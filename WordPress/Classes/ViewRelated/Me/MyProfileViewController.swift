@@ -13,6 +13,11 @@ func MyProfileViewController(account: WPAccount) -> ImmuTableViewController? {
 func MyProfileViewController(account: WPAccount, service: AccountSettingsService) -> ImmuTableViewController {
     let controller = MyProfileController(service: service)
     let viewController = ImmuTableViewController(controller: controller)
+    viewController.tableView.tableHeaderView = MakeHeaderView(account: account)
+    return viewController
+}
+
+func MakeHeaderView(account: WPAccount) -> UIView {
     let defaultImage = UIImage(named: "gravatar")
     let headerView = MyProfileHeaderView.makeFromNib()
     headerView.gravatarImageView.downloadGravatarWithEmail(account.email, placeholderImage: defaultImage!)
@@ -21,8 +26,7 @@ func MyProfileViewController(account: WPAccount, service: AccountSettingsService
     } else {
         headerView.gravatarButton.setTitle("Update Profile Photo", for: .normal)
     }
-    viewController.tableView.tableHeaderView = headerView
-    return viewController
+    return headerView
 }
 
 /// MyProfileController requires the `presenter` to be set before using.
