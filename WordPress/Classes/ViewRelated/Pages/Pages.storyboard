@@ -55,24 +55,11 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="addButton" destination="AUi-GI-97s" id="D1f-jZ-iVb"/>
-                        <outlet property="filterButton" destination="hOV-1Y-S1G" id="TIn-Cr-wGh"/>
                         <outlet property="filterTabBar" destination="kb7-5Y-cyY" id="yfM-1V-Kgn"/>
                         <outlet property="rightBarButtonView" destination="eMR-fX-0uB" id="tkm-aq-s67"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qQg-Lr-ANj" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hOV-1Y-S1G" customClass="NavBarTitleDropdownButton">
-                    <rect key="frame" x="0.0" y="0.0" width="77" height="25"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <inset key="imageEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
-                    <state key="normal" title="Button" image="icon-nav-chevron">
-                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </state>
-                    <connections>
-                        <action selector="didTapFilterButton:" destination="RgW-to-XfM" eventType="touchUpInside" id="YoR-fu-Crp"/>
-                    </connections>
-                </button>
                 <view clipsSubviews="YES" contentMode="scaleToFill" id="eMR-fX-0uB">
                     <rect key="frame" x="0.0" y="0.0" width="80" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -126,7 +113,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="icon-nav-chevron" width="14" height="8"/>
         <image name="icon-post-add" width="22" height="22"/>
         <image name="icon-post-add-highlight" width="22" height="22"/>
     </resources>
