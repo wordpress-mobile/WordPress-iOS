@@ -544,10 +544,21 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Refreshing noResultsView
 
     fileprivate func handleRefreshNoResultsView(_ noResultsView: WPNoResultsView) {
+        guard connectionAvailable() else {
+            showNoConnectionView()
+            return
+        }
+
         noResultsView.titleText = noResultsTitle()
         noResultsView.messageText = noResultsMessage()
         noResultsView.accessoryView = noResultsAccessoryView()
         noResultsView.buttonTitle = noResultsButtonTitle()
+    }
+
+    private func showNoConnectionView() {
+        noResultsView.titleText = ReachabilityUtils.noConnectionMessage()
+        noResultsView.messageText = ""
+        noResultsView.accessoryView = nil
     }
 
     // MARK: - NoResultsView Customizer helpers
