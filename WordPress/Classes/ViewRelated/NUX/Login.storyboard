@@ -1329,23 +1329,23 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="Mq6-n0-6iO">
-                                <rect key="frame" x="0.0" y="216.5" width="0.0" height="194"/>
+                                <rect key="frame" x="36" y="184.5" width="303" height="258.5"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ukv-qo-ql4" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                        <rect key="frame" x="101.5" y="0.0" width="100" height="100"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="100" id="3wv-b7-gzu"/>
                                             <constraint firstAttribute="height" constant="100" id="aMT-Sa-KA3"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CmN-ir-1YK">
-                                        <rect key="frame" x="0.0" y="130" width="0.0" height="0.0"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="303" translatesAutoresizingMaskIntoConstraints="NO" id="CmN-ir-1YK">
+                                        <rect key="frame" x="0.0" y="130" width="303" height="64.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                         <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iIy-Sm-1r0" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="160" width="72" height="34"/>
+                                        <rect key="frame" x="115.5" y="224.5" width="72" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="GRI-y6-q3i"/>
                                         </constraints>
@@ -1377,7 +1377,7 @@
                                 </variation>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B6x-b7-hU9">
-                                <rect key="frame" x="-97.5" y="617" width="195" height="30"/>
+                                <rect key="frame" x="90" y="617" width="195" height="30"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <state key="normal" title="Enter your password instead">
                                     <color key="titleColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1590,7 +1590,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="fA5-mb-vrv"/>
         <segue reference="kRR-qz-Hu2"/>
-        <segue reference="ySQ-EM-6JI"/>
+        <segue reference="0ao-yi-yZI"/>
         <segue reference="ttc-1d-dkK"/>
         <segue reference="iD4-VS-n3M"/>
     </inferredMetricsTieBreakers>
