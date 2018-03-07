@@ -22,7 +22,6 @@ SupportSourceTag const SupportSourceTagWPOrgLogin = @"origin:wporg-login-screen"
 SupportSourceTag const SupportSourceTagJetpackLogin = @"origin:jetpack-login-screen";
 SupportSourceTag const SupportSourceTagGeneralLogin = @"origin:login-screen";
 SupportSourceTag const SupportSourceTagInAppFeedback = @"origin:in-app-feedback";
-SupportSourceTag const SupportSourceTagAztecFeedback = @"origin:aztec-feedback";
 SupportSourceTag const SupportSourceTagLoginEmail = @"origin:login-email";
 SupportSourceTag const SupportSourceTagLoginMagicLink = @"origin:login-magic-link";
 SupportSourceTag const SupportSourceTagLoginWPComPassword = @"origin:login-wpcom-password";
