@@ -131,6 +131,8 @@ class FilterTabBar: UIControl {
         tabs.forEach({ $0.removeFromSuperview() })
         tabs = items.map(makeTab(_:))
         tabs.forEach(stackView.addArrangedSubview(_:))
+
+        setSelectedIndex(selectedIndex, animated: false)
     }
 
     private func makeTab(_ title: String) -> UIButton {
@@ -152,36 +154,46 @@ class FilterTabBar: UIControl {
 
     // MARK: - Tab Selection
 
+    @objc
+    private func tabTapped(_ tab: UIButton) {
+        guard let index = tabs.index(of: tab) else {
+            return
+        }
+
+        setSelectedIndex(index)
+        sendActions(for: .valueChanged)
+    }
+
     /// The index of the currently selected tab.
     ///
-    var selectedIndex: Int = 0
+    private(set) var selectedIndex: Int = 0 {
+        didSet {
+            if selectedIndex != oldValue && oldValue < tabs.count {
+                let oldTab = tabs[oldValue]
+                oldTab.isSelected = false
+            }
+        }
+    }
+
+    func setSelectedIndex(_ index: Int, animated: Bool = true) {
+        selectedIndex = index
+
+        guard selectedIndex < tabs.count else {
+            return
+        }
+
+        let tab = tabs[selectedIndex]
+        tab.isSelected = true
+        moveSelectionIndicator(to: selectedIndex, animated: animated)
+        scroll(to: tab, animated: animated)
+    }
 
     // Used to adjust the position of the selection indicator to track the
     // currently selected tab.
     private var selectionIndicatorLeadingConstraint: NSLayoutConstraint? = nil
     private var selectionIndicatorTrailingConstraint: NSLayoutConstraint? = nil
 
-    @objc
-    private func tabTapped(_ tab: UIButton) {
-        if selectedIndex < tabs.count {
-            let selectedTab = tabs[selectedIndex]
-            if selectedTab != tab {
-                selectedTab.isSelected = false
-            }
-        }
-
-        guard let index = tabs.index(of: tab) else {
-            return
-        }
-
-        selectedIndex = index
-        tab.isSelected = true
-        moveSelectionIndicator(to: index)
-        scroll(to: tab)
-        sendActions(for: .valueChanged)
-    }
-
-    private func moveSelectionIndicator(to index: Int) {
+    private func moveSelectionIndicator(to index: Int, animated: Bool = true) {
         guard index < tabs.count else {
             return
         }
@@ -190,7 +202,7 @@ class FilterTabBar: UIControl {
 
         updateSelectionIndicatorConstraints(for: tab)
 
-        if selectionIndicator.isHidden {
+        if selectionIndicator.isHidden || animated == false {
             selectionIndicator.isHidden = false
             selectionIndicator.layoutIfNeeded()
         } else {
