@@ -1021,7 +1021,9 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     func updateSelectedFilter() {
-        filterTabBar.setSelectedIndex(filterSettings.currentFilterIndex(), animated: false)
+        if filterTabBar.selectedIndex != filterSettings.currentFilterIndex() {
+            filterTabBar.setSelectedIndex(filterSettings.currentFilterIndex(), animated: false)
+        }
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
