@@ -69,10 +69,15 @@ extension SignupGoogleViewController: GIDSignInDelegate {
 
         let context = ContextManager.sharedInstance().mainContext
         let service = SignupService(managedObjectContext: context)
-        service.createWPComeUserWithGoogle(token: token, success: { [weak self] in
+        service.createWPComUserWithGoogle(token: token, success: { [weak self] (accountCreated) in
             SVProgressHUD.dismiss()
-            self?.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
-            WPAnalytics.track(.signupSocialSuccess)
+            if accountCreated {
+                self?.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
+                WPAnalytics.track(.signupSocialSuccess)
+            } else {
+                self?.performSegue(withIdentifier: .showLoginEpilogue, sender: self)
+                WPAnalytics.track(.loginSocialSuccess)
+            }
         }) { [weak self] (error) in
             SVProgressHUD.dismiss()
             WPAnalytics.track(.signupSocialFailure)
@@ -80,6 +85,9 @@ extension SignupGoogleViewController: GIDSignInDelegate {
                 self?.navigationController?.popViewController(animated: true)
                 return
             }
+            self?.titleLabel?.textColor = WPStyleGuide.errorRed()
+            self?.titleLabel?.text = NSLocalizedString("Google sign up failed.",
+                                                       comment: "Message shown on screen after the Google sign up process failed.")
             self?.displayError(error as NSError, sourceTag: .wpComSignup)
         }
     }
