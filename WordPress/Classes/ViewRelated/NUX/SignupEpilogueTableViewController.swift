@@ -264,6 +264,9 @@ extension SignupEpilogueTableViewController: SignupEpilogueCellDelegate {
     func changed(value: String, forType: EpilogueCellType) {
         if forType == .displayName {
             userInfoCell?.fullNameLabel?.text = value
+            delegate?.displayNameUpdated(newDisplayName: value)
+        } else if forType == .password {
+            delegate?.passwordUpdated(newPassword: value)
         }
     }
 
