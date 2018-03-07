@@ -33,14 +33,13 @@ class SignupEpilogueCell: UITableViewCell {
         cellField.text = fieldValue
         cellField.placeholder = fieldPlaceholder
         cellField.delegate = self
+        cellField.isSecureTextEntry = (cellType == .password)
         selectionStyle = .none
-
-        if cellType == .password {
-            cellField.isSecureTextEntry = true
-        }
 
         if cellType == .username {
             accessoryType = .disclosureIndicator
+        } else {
+            accessoryType = .none
         }
     }
 
