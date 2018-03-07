@@ -105,6 +105,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     @objc var postListFooterView: PostListFooterView!
 
+    @IBOutlet var filterTabBar: FilterTabBar!
     @IBOutlet var filterButton: NavBarTitleDropdownButton!
     @IBOutlet var rightBarButtonView: UIView!
     @IBOutlet var addButton: UIButton!
@@ -121,6 +122,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         refreshControl?.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
 
+        configureFilterBar()
         configureTableView()
         configureFooterView()
         configureWindowlessCell()
@@ -219,7 +221,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     // MARK: - Configuration
 
-    @objc func heightForFooterView() -> CGFloat {
+    func heightForFooterView() -> CGFloat {
         return type(of: self).defaultHeightForFooterView
     }
 
@@ -227,7 +229,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         return .lightContent
     }
 
-    @objc func configureNavbar() {
+    func configureNavbar() {
         // IMPORTANT: this code makes sure that the back button in WPPostViewController doesn't show
         // this VC's title.
         //
@@ -241,11 +243,17 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         updateFilterTitle()
     }
 
-    @objc func configureTableView() {
+    func configureFilterBar() {
+        filterTabBar.tintColor = WPStyleGuide.wordPressBlue()
+        filterTabBar.deselectedTabColor = WPStyleGuide.greyDarken10()
+        filterTabBar.items = filterSettings.availablePostListFilters().map({ $0.title })
+    }
+
+    func configureTableView() {
         assert(false, "You should implement this method in the subclass")
     }
 
-    @objc func configureFooterView() {
+    func configureFooterView() {
 
         let mainBundle = Bundle.main
 
