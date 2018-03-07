@@ -519,18 +519,21 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             let cancelText: String
             let deleteText: String
             let messageText: String
+            let titleText: String
 
             if post.status == .trash {
                 cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
                 deleteText = NSLocalizedString("Delete", comment: "Deletes post permanently")
-                messageText = NSLocalizedString("Delete this post permanently?", comment: "Deletes post permanently")
+                titleText = NSLocalizedString("Delete this post permanently?", comment: "Deletes post permanently")
+                messageText = NSLocalizedString("Once deleted you won't be able to restore this post.", comment: "Details about what would happen if the user decided to permanently delete a post.")
             } else {
                 cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
                 deleteText = NSLocalizedString("Delete", comment: "Deletes post")
-                messageText = NSLocalizedString("Delete this post?", comment: "Deletes post")
+                titleText = NSLocalizedString("Delete this post?", comment: "Deletes post")
+                messageText = NSLocalizedString("This post will be deleted and sent to the Trash", comment: "Details about what would happen if the user decided to delete a post.")
             }
 
-            let alertController = UIAlertController(title: nil, message: messageText, preferredStyle: .alert)
+            let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
 
             alertController.addCancelActionWithTitle(cancelText)
             alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
