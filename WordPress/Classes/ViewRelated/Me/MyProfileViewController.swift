@@ -11,13 +11,17 @@ func MyProfileViewController(account: WPAccount) -> ImmuTableViewController? {
 }
 
 func MyProfileViewController(account: WPAccount, service: AccountSettingsService) -> ImmuTableViewController {
-    let controller = MyProfileController(service: service)
+    let controller = MyProfileController(account: account, service: service)
     let viewController = ImmuTableViewController(controller: controller)
-    viewController.tableView.tableHeaderView = MakeHeaderView(account: account)
+    let headerView = MakeHeaderView(account: account)
+    headerView.onAddUpdatePhoto = {
+        controller.presentGravatarPicker()
+    }
+    viewController.tableView.tableHeaderView = headerView
     return viewController
 }
 
-func MakeHeaderView(account: WPAccount) -> UIView {
+func MakeHeaderView(account: WPAccount) -> MyProfileHeaderView {
     let defaultImage = UIImage(named: "gravatar")
     let headerView = MyProfileHeaderView.makeFromNib()
     headerView.gravatarImageView.downloadGravatarWithEmail(account.email, placeholderImage: defaultImage!)
@@ -43,6 +47,7 @@ private class MyProfileController: SettingsController {
 
     // MARK: - Initialization
 
+    let account: WPAccount
     let service: AccountSettingsService
     var settings: AccountSettings? {
         didSet {
@@ -55,7 +60,8 @@ private class MyProfileController: SettingsController {
         }
     }
 
-    init(service: AccountSettingsService) {
+    init(account: WPAccount, service: AccountSettingsService) {
+        self.account = account
         self.service = service
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(MyProfileController.loadStatus), name: NSNotification.Name(rawValue: AccountSettingsService.Notifications.refreshStatusChanged), object: nil)
