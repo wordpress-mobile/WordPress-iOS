@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,17 +23,27 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="cnu-9z-5GZ">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="108" width="375" height="559"/>
                                 <connections>
                                     <segue destination="zOz-bT-2ph" kind="embed" id="m8J-kl-Bnz"/>
                                 </connections>
                             </containerView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nmf-Iz-jkG" customClass="FilterTabBar" customModule="WordPress" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="64" width="375" height="44"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="fBi-N5-bzO"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="cnu-9z-5GZ" firstAttribute="top" secondItem="Zhd-4n-wcm" secondAttribute="topMargin" id="142-xs-2mp"/>
                             <constraint firstAttribute="bottomMargin" secondItem="cnu-9z-5GZ" secondAttribute="bottom" id="CxD-qt-v2d"/>
+                            <constraint firstItem="cnu-9z-5GZ" firstAttribute="top" secondItem="Nmf-Iz-jkG" secondAttribute="bottom" id="Hb8-6N-iSm"/>
+                            <constraint firstAttribute="trailing" secondItem="Nmf-Iz-jkG" secondAttribute="trailing" id="KGt-NK-T3O"/>
+                            <constraint firstItem="Nmf-Iz-jkG" firstAttribute="top" secondItem="Zhd-4n-wcm" secondAttribute="topMargin" id="fGy-cf-WIB"/>
                             <constraint firstAttribute="trailing" secondItem="cnu-9z-5GZ" secondAttribute="trailing" id="hEd-mB-ZfB"/>
+                            <constraint firstItem="Nmf-Iz-jkG" firstAttribute="leading" secondItem="Zhd-4n-wcm" secondAttribute="leading" id="npO-qQ-WgT"/>
                             <constraint firstItem="cnu-9z-5GZ" firstAttribute="leading" secondItem="Zhd-4n-wcm" secondAttribute="leading" id="phA-Qk-kzl"/>
                         </constraints>
                     </view>
@@ -47,6 +58,7 @@
                         <outlet property="authorFilterSegmentedControl" destination="2zZ-72-iKA" id="A6u-P2-Z7M"/>
                         <outlet property="authorsFilterView" destination="9at-tM-m4A" id="Iue-Ql-B4V"/>
                         <outlet property="filterButton" destination="qr8-Nf-Mwl" id="u7d-J1-vsa"/>
+                        <outlet property="filterTabBar" destination="Nmf-Iz-jkG" id="Ydz-ff-EUy"/>
                         <outlet property="headerStackView" destination="PF5-eU-KAv" id="7PN-bA-mdX"/>
                         <outlet property="rightBarButtonView" destination="8Ph-e4-iOe" id="V4F-lw-glT"/>
                         <outlet property="searchWrapperView" destination="sFK-WP-z2Z" id="CJ1-ul-bLt"/>
@@ -132,14 +144,14 @@
                     </subviews>
                 </stackView>
             </objects>
-            <point key="canvasLocation" x="519" y="318"/>
+            <point key="canvasLocation" x="517.60000000000002" y="317.99100449775113"/>
         </scene>
         <!--Table View Controller-->
         <scene sceneID="2RX-OH-EPn">
             <objects>
                 <tableViewController id="zOz-bT-2ph" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="300" sectionHeaderHeight="22" sectionFooterHeight="22" id="srU-rF-GC6">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <connections>
