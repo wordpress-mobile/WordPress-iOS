@@ -738,6 +738,10 @@ private extension NotificationsViewController {
             selectRowForNotification(selectedNotification, animated: false, scrollPosition: .none)
         }
     }
+
+    func isTableViewEmpty() -> Bool {
+        return tableViewHandler.resultsController.isEmpty()
+    }
 }
 
 // MARK: - UIRefreshControl Methods
@@ -751,20 +755,40 @@ extension NotificationsViewController {
 
         let start = Date()
 
-        mediator.sync { (error, _) in
+        mediator.sync { [weak self] (error, _) in
 
             let delta = max(Syncing.minimumPullToRefreshDelay + start.timeIntervalSinceNow, 0)
             let delay = DispatchTime.now() + Double(Int64(delta * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
 
             DispatchQueue.main.asyncAfter(deadline: delay) {
-                self.refreshControl?.endRefreshing()
-                self.clearUnreadNotifications()
+                self?.refreshControl?.endRefreshing()
+                self?.clearUnreadNotifications()
             }
 
-            if let error = error {
-                WPError.showNetworkingAlertWithError(error, title: NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails."))
+            if let _ = error {
+                self?.handleConnectionError()
             }
         }
+    }
+
+    fileprivate func handleConnectionError() {
+        if shouldPresentAlert() {
+            presentNoNetworkAlert()
+        }
+    }
+
+    private func shouldPresentAlert() -> Bool {
+        return !connectionAvailable() && !isTableViewEmpty()
+    }
+
+    func connectionAvailable() -> Bool {
+        return ReachabilityUtils.isInternetReachable()
+    }
+
+    fileprivate func presentNoNetworkAlert() {
+        let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+        let message = NSLocalizedString("The Internet connection appears to be offline.", comment: "Message of error prompt shown when a sync the user initiated fails.")
+        WPError.showAlert(withTitle: title, message: message)
     }
 }
 
@@ -1068,10 +1092,20 @@ private extension NotificationsViewController {
             noResultsView.layoutIfNeeded()
         }
 
+        guard connectionAvailable() else {
+            showNoConnectionView()
+            return
+        }
+
         // Refresh its properties: The user may have signed into WordPress.com
         noResultsView.titleText     = noResultsTitleText
         noResultsView.messageText   = noResultsMessageText
         noResultsView.buttonTitle   = noResultsButtonText
+    }
+
+    private func showNoConnectionView() {
+        noResultsView.titleText     = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+        noResultsView.messageText   = ReachabilityUtils.noConnectionMessage()
     }
 
     func updateSplitViewAppearanceForNoResultsView() {
@@ -1183,6 +1217,10 @@ private extension NotificationsViewController {
 //
 private extension NotificationsViewController {
     func syncNewNotifications() {
+        guard connectionAvailable() else {
+            handleConnectionError()
+            return
+        }
         let mediator = NotificationSyncMediator()
         mediator?.sync()
     }

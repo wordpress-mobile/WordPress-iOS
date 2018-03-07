@@ -120,10 +120,18 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 - (void)configureNoResultsView
 {
     WPNoResultsView *noResultsView          = [WPNoResultsView new];
-    noResultsView.titleText                 = NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
+    noResultsView.titleText                 = [self noResultsViewTitle];
     self.noResultsView                      = noResultsView;
     
     [self.view addSubview:noResultsView];
+}
+
+- (NSString *)noResultsViewTitle
+{
+    NSString *noCommentsMessage = NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
+    NSString *noConnectionMessage = [ReachabilityUtils noConnectionMessage];
+
+    return [ReachabilityUtils isInternetReachable] ? noCommentsMessage : noConnectionMessage;
 }
 
 - (void)configureRefreshControl
@@ -399,6 +407,9 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
     NSManagedObjectID *blogObjectID = self.blog.objectID;
+
+    __typeof(self) __weak weakSelf = self;
+
     [context performBlock:^{
         Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
         if (!blogInContext) {
@@ -407,22 +418,23 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
         
         [commentService syncCommentsForBlog:blogInContext
                                     success:^(BOOL hasMore) {
-                                                if (success) {
-                                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                                        success(hasMore);
-                                                    });
-                                                }
+                                        if (success) {
+                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                success(hasMore);
+                                            });
+                                        }
                                     }
                                     failure:^(NSError *error) {
-                                                if (failure) {
-                                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                                        failure(error);
-                                                    });
-                                                }
-                                            if (userInteraction) {
-                                                NSString *title = NSLocalizedString(@"Unable to Sync", @"Title of error prompt shown when a sync the user initiated fails.");
-                                                [WPError showNetworkingAlertWithError:error title:title];
-                                            }
+                                        if (failure) {
+                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                failure(error);
+                                            });
+                                        }
+
+                                        if (![self isTableViewEmpty]) {
+                                            NSString *title = NSLocalizedString(@"Unable to Sync", @"Title of error prompt shown when a sync the user initiated fails.");
+                                            [WPError showNetworkingAlertWithError:error title:title];
+                                        }
                                     }];
     }];
 }
@@ -464,6 +476,11 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     [self refreshPullToRefresh];
 }
 
+- (BOOL)isTableViewEmpty
+{
+    return [self.tableViewHandler.resultsController isEmpty];
+}
+
 
 #pragma mark - View Refresh Helpers
 
@@ -501,7 +518,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (void)refreshNoResultsView
 {
-    BOOL isTableViewEmpty = (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
+    BOOL isTableViewEmpty = [self isTableViewEmpty];
     BOOL shouldPerformAnimation = self.noResultsView.hidden;
     
     self.noResultsView.hidden = !isTableViewEmpty;
@@ -511,6 +528,8 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     }
     
     // Display NoResultsView
+    self.noResultsView.titleText = [self noResultsViewTitle];
+    
     self.noResultsView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.tableView pinSubviewAtCenter:self.noResultsView];
 
