@@ -35,4 +35,59 @@ extension Blog {
         }
         return quotaPercentageUsedDescription
     }
+
+    /// Returns an human readable message indicating the percentage of disk quota space available in regard to the maximum allowed.Ex: 10% of 15 GB used
+    @objc var quotaUsageDescription: String? {
+        guard isQuotaAvailable, let quotaPercentageUsedDescription = self.quotaPercentageUsedDescription, let quotaSpaceAllowedDescription = self.quotaSpaceAllowedDescription else {
+            return nil
+        }
+        let formatString = NSLocalizedString("%@ of %@ used", comment: "Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used.")
+        return String(format: formatString, quotaPercentageUsedDescription, quotaSpaceAllowedDescription)
+    }
+
+    /// Returns the disk space quota still available to use in the site.
+    @objc var quotaSpaceAvailable: NSNumber? {
+        guard let quotaSpaceAllowed = quotaSpaceAllowed?.doubleValue, let quotaSpaceUsed = quotaSpaceUsed?.doubleValue else {
+            return nil
+        }
+        let quotaSpaceAvailable = quotaSpaceAllowed - quotaSpaceUsed
+        return NSNumber(value: quotaSpaceAvailable)
+    }
+
+    /// Returns the maximum upload byte size supported for a media file on the site.
+    @objc var maxUploadSize: NSNumber? {
+        guard let maxUploadSize = getOptionValue("max_upload_size") as? NSNumber else {
+            return nil
+        }
+        return maxUploadSize
+    }
+
+    /// Returns true if the site has disk quota available to for the file size of the URL provided.
+    ///
+    /// If no quota information is available for the site this method returns true.
+    /// - Parameter url: the file URL to check the filesize
+    /// - Returns: true if there is space available
+    @objc func hasSpaceAvailable(for url: URL) -> Bool {
+        guard let fileSize = url.fileSize,
+              let spaceAvailable = quotaSpaceAvailable?.intValue
+        else {
+            // let's assume the site can handle it if we don't know any of quota or fileSize information.
+            return true
+        }
+        return fileSize < spaceAvailable
+    }
+
+    /// Returns true if the site is able to support the file size of an upload made with the specified URL.
+    ///
+    /// - Parameter url: the file URL to check the filesize.
+    /// - Returns: true if the site is able to support the URL file size.
+    @objc func isAbleToHandleFileSizeOf(url: URL) -> Bool {
+        guard let fileSize = url.fileSize,
+            let maxUploadSize = maxUploadSize?.intValue
+            else {
+                // let's assume the site can handle it.
+                return true
+        }
+        return fileSize < maxUploadSize
+    }
 }
