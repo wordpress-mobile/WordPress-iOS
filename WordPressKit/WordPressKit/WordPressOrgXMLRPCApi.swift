@@ -248,6 +248,11 @@ open class WordPressOrgXMLRPCApi: NSObject {
                 }
         }
 
+        if httpResponse.statusCode == 403 || httpResponse.statusCode == 405 {
+            let error = NSError(domain: String(describing: WordPressOrgXMLRPCApiError.self), code: httpResponse.statusCode, userInfo: nil)
+            throw convertError(error, data: originalData)
+        }
+
         if ["application/xml", "text/xml"].filter({ (type) -> Bool in return contentType.hasPrefix(type)}).count == 0 {
             throw convertError(WordPressOrgXMLRPCApiError.responseSerializationFailed as NSError, data: originalData)
         }
