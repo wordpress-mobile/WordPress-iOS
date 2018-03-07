@@ -40,16 +40,16 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="19Z-ie-Qfz">
-                                        <rect key="frame" x="0.0" y="223.5" width="375" height="100"/>
+                                        <rect key="frame" x="0.0" y="221.5" width="375" height="102"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" text="Log in to WordPress.com using an email address to manage all your WordPress sites." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CPF-7g-0y5">
-                                                <rect key="frame" x="20" y="0.0" width="335" height="36"/>
+                                                <rect key="frame" x="20" y="0.0" width="335" height="38"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email address" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HTy-KJ-his" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="56" width="375" height="44"/>
+                                                <rect key="frame" x="0.0" y="58" width="375" height="44"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="usernameField"/>
                                                 <constraints>
@@ -68,7 +68,7 @@
                                                 </connections>
                                             </textField>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EYw-oM-W1K">
-                                                <rect key="frame" x="20" y="100" width="335" height="40"/>
+                                                <rect key="frame" x="20" y="102" width="335" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" placeholder="YES" id="li2-jI-jeL"/>
                                                 </constraints>
@@ -319,14 +319,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2cP-Rt-jfP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-286" y="1097"/>
-        </scene>
-        <!--ButtonView-->
-        <scene sceneID="S07-eQ-m0X">
-            <objects>
-                <viewControllerPlaceholder storyboardName="NUXButtonView" referencedIdentifier="ButtonView" id="1ez-ur-Wce" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="XrP-NU-nZR" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-147" y="-315"/>
         </scene>
         <!--emailEntry-->
         <scene sceneID="JU2-CA-QR6">

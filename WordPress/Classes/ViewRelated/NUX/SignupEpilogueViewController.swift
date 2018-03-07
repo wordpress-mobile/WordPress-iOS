@@ -114,7 +114,7 @@ private extension SignupEpilogueViewController {
         }
     }
 
-    private func changeUsername(to newUsername: String, finished: @escaping (() -> Void)) {
+    func changeUsername(to newUsername: String, finished: @escaping (() -> Void)) {
         guard newUsername != "" else {
             finished()
             return
