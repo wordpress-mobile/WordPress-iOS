@@ -439,6 +439,12 @@ import WordPressShared
         }
 
         tableView.tableHeaderView?.isHidden = true
+
+        guard connectionAvailable() else {
+            displayNoConnectionView(topic)
+            return
+        }
+
         let response: NoResultsResponse = ReaderStreamViewController.responseForNoResults(topic)
         resultsStatusView.titleText = response.title
         resultsStatusView.messageText = response.message
@@ -450,6 +456,13 @@ import WordPressShared
             resultsStatusView.buttonTitle = nil
             resultsStatusView.delegate = nil
         }
+        displayResultsStatus()
+    }
+
+    private func displayNoConnectionView(_ topic: ReaderAbstractTopic) {
+        resultsStatusView.titleText = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+        resultsStatusView.messageText = ReachabilityUtils.noConnectionMessage()
+        resultsStatusView.accessoryView = nil
         displayResultsStatus()
     }
 
@@ -984,16 +997,30 @@ import WordPressShared
     @objc func handleRefresh(_ sender: UIRefreshControl) {
         if !canSync() {
             cleanupAfterSync()
-            if !connectionAvailable() {
-                _ = DispatchDelayedAction(delay: .seconds(1)) {
-                    let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-                    let message = NSLocalizedString("The Internet connection appears to be offline.", comment: "Message of error prompt shown when a sync the user initiated fails.")
-                    WPError.showAlert(withTitle: title, message: message)
-                }
-            }
+            handleConnectionError()
             return
         }
         syncHelper.syncContentWithUserInteraction(true)
+    }
+
+    private func handleConnectionError() {
+        if shouldPresentAlert() {
+            presentNoNetworkAlert()
+        }
+    }
+
+    private func shouldPresentAlert() -> Bool {
+        return !connectionAvailable() && !isTableViewEmpty()
+    }
+
+    private func presentNoNetworkAlert() {
+        let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+        let message = NSLocalizedString("The Internet connection appears to be offline.", comment: "Message of error prompt shown when a sync the user initiated fails.")
+        WPError.showAlert(withTitle: title, message: message)
+    }
+
+    private func isTableViewEmpty() -> Bool {
+        return self.tableViewHandler.resultsController.isEmpty()
     }
 
 
@@ -1096,6 +1123,8 @@ import WordPressShared
         let interval = Int( Date().timeIntervalSince(lastSynced))
         if canSync() && (interval >= refreshInterval || topic.posts.count == 0) {
             syncHelper.syncContentWithUserInteraction(false)
+        } else {
+            handleConnectionError()
         }
     }
 
