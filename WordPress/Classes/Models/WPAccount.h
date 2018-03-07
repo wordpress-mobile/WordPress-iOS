@@ -39,11 +39,6 @@
  */
 @property (nonatomic, readonly) WordPressComRestApi *wordPressComRestApi;
 
-/**
- A string with the email verification status. Can be "verified", "unverified", or "unknown".
- */
-- (NSString *)verificationStatus;
-
 @end
 
 @interface WPAccount (CoreDataGeneratedAccessors)
