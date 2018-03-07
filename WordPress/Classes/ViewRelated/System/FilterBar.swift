@@ -27,6 +27,13 @@ class FilterTabBar: UIControl {
         return selectionIndicator
     }()
 
+    private let divider: UIView = {
+        let divider = UIView()
+        divider.translatesAutoresizingMaskIntoConstraints = false
+
+        return divider
+    }()
+
     /// Titles of tabs to display.
     ///
     @IBInspectable var items: [String] = [] {
@@ -34,6 +41,8 @@ class FilterTabBar: UIControl {
             refreshTabs()
         }
     }
+
+    // MARK: - Appearance
 
     /// Tint color will be applied to titles of selected tabs, and the floating
     /// selection indicator.
@@ -52,6 +61,12 @@ class FilterTabBar: UIControl {
     var deselectedTabColor: UIColor = .lightGray {
         didSet {
             tabs.forEach({ $0.setTitleColor(deselectedTabColor, for: .normal) })
+        }
+    }
+
+    var dividerColor: UIColor = .lightGray {
+        didSet {
+            divider.backgroundColor = dividerColor
         }
     }
 
@@ -78,7 +93,7 @@ class FilterTabBar: UIControl {
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -AppearanceMetrics.bottomDividerHeight),
             scrollView.topAnchor.constraint(equalTo: topAnchor)
             ])
 
@@ -94,9 +109,18 @@ class FilterTabBar: UIControl {
 
         addSubview(selectionIndicator)
         NSLayoutConstraint.activate([
-            selectionIndicator.bottomAnchor.constraint(equalTo: bottomAnchor),
+            selectionIndicator.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             selectionIndicator.heightAnchor.constraint(equalToConstant: AppearanceMetrics.selectionIndicatorHeight)
         ])
+
+        divider.backgroundColor = dividerColor
+        addSubview(divider)
+        NSLayoutConstraint.activate([
+            divider.leadingAnchor.constraint(equalTo: leadingAnchor),
+            divider.trailingAnchor.constraint(equalTo: trailingAnchor),
+            divider.bottomAnchor.constraint(equalTo: bottomAnchor),
+            divider.heightAnchor.constraint(equalToConstant: AppearanceMetrics.bottomDividerHeight)
+            ])
     }
 
     // MARK: - Tabs
@@ -225,7 +249,7 @@ class FilterTabBar: UIControl {
 
     private enum AppearanceMetrics {
         static let height: CGFloat = 45.0
-        static let bottomBorderHeight: CGFloat = 1.0
+        static let bottomDividerHeight: CGFloat = 1.0
         static let selectionIndicatorHeight: CGFloat = 2.0
         static let horizontalPadding: CGFloat = 4.0
         static let buttonInsets = UIEdgeInsets(top: 14.0, left: 12.0, bottom: 14.0, right: 12.0)
