@@ -528,6 +528,8 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     }
     
     // Display NoResultsView
+    self.noResultsView.titleText = [self noResultsViewTitle];
+    
     self.noResultsView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.tableView pinSubviewAtCenter:self.noResultsView];
 
