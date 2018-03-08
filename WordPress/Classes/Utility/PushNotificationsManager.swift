@@ -145,8 +145,9 @@ final public class PushNotificationsManager: NSObject {
     /// Unregister the device from WordPress.com notifications
     ///
     @objc func unregisterDeviceToken() {
-        guard let knownDeviceId = deviceId else {
-            return
+        guard let knownDeviceId = deviceId,
+            knownDeviceId.length > 0 else {
+                return
         }
 
         let noteService = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
