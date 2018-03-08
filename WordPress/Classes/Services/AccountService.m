@@ -110,7 +110,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         NSManagedObject *accountInContext = [mainContext existingObjectWithID:accountID error:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:accountInContext];
 
-        [[PushNotificationsManager shared] registerForRemoteNotifications];
+        [self.pushNotificationsManager registerForRemoteNotifications];
         [[InteractiveNotificationsManager shared] requestAuthorization];
     };
     if ([NSThread isMainThread]) {
@@ -133,7 +133,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 {
     NSAssert([NSThread isMainThread], @"This method should only be called from the main thread");
 
-    [[PushNotificationsManager shared] unregisterDeviceToken];
+    [self.pushNotificationsManager unregisterDeviceToken];
 
     WPAccount *account = [self defaultWordPressComAccount];
     if (account == nil) {
