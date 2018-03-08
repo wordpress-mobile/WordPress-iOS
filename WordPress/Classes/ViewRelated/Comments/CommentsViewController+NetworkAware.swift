@@ -19,3 +19,9 @@ extension CommentsViewController: NetworkAwareUI {
         }
     }
 }
+
+extension CommentsViewController: NetworkStatusDelegate {
+    func networdStatusDidChange(active: Bool) {
+        refreshAndSyncIfNeeded()
+    }
+}
