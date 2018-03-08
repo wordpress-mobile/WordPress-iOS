@@ -7,13 +7,13 @@ func MyProfileViewController(account: WPAccount) -> ImmuTableViewController? {
     }
 
     let service = AccountSettingsService(userID: account.userID.intValue, api: api)
-    return MyProfileViewController(account: account, service: service)
+    let headerView = MakeHeaderView(account: account)
+    return MyProfileViewController(account: account, service: service, headerView: headerView)
 }
 
-func MyProfileViewController(account: WPAccount, service: AccountSettingsService) -> ImmuTableViewController {
-    let controller = MyProfileController(account: account, service: service)
+func MyProfileViewController(account: WPAccount, service: AccountSettingsService, headerView: MyProfileHeaderView) -> ImmuTableViewController {
+    let controller = MyProfileController(account: account, service: service, headerView: headerView)
     let viewController = ImmuTableViewController(controller: controller)
-    let headerView = MakeHeaderView(account: account)
     headerView.onAddUpdatePhoto = {
         controller.presentGravatarPicker(viewController)
     }
@@ -25,7 +25,7 @@ func MakeHeaderView(account: WPAccount) -> MyProfileHeaderView {
     let defaultImage = UIImage(named: "gravatar")
     let headerView = MyProfileHeaderView.makeFromNib()
     if let email = account.email {
-        headerView.gravatarImageView.downloadGravatarWithEmail(email, placeholderImage: defaultImage!)
+        headerView.gravatarEmail = email
     } else {
         headerView.gravatarImageView.image = defaultImage
     }
@@ -42,6 +42,17 @@ func MakeHeaderView(account: WPAccount) -> MyProfileHeaderView {
 /// To avoid problems, it's marked private and should only be initialized using the
 /// `MyProfileViewController` factory functions.
 private class MyProfileController: SettingsController {
+
+    // MARK: - Private Properties
+
+    fileprivate var headerView: MyProfileHeaderView
+    fileprivate var gravatarUploadInProgress = false {
+        didSet {
+            headerView.showsActivityIndicator = gravatarUploadInProgress
+            headerView.isUserInteractionEnabled = !gravatarUploadInProgress
+        }
+    }
+
     // MARK: - ImmuTableController
 
     let title = NSLocalizedString("My Profile", comment: "My Profile view title")
@@ -65,9 +76,10 @@ private class MyProfileController: SettingsController {
         }
     }
 
-    init(account: WPAccount, service: AccountSettingsService) {
+    init(account: WPAccount, service: AccountSettingsService, headerView: MyProfileHeaderView) {
         self.account = account
         self.service = service
+        self.headerView = headerView
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(MyProfileController.loadStatus), name: NSNotification.Name(rawValue: AccountSettingsService.Notifications.refreshStatusChanged), object: nil)
         notificationCenter.addObserver(self, selector: #selector(MyProfileController.loadSettings), name: NSNotification.Name(rawValue: AccountSettingsService.Notifications.accountSettingsChanged), object: nil)
@@ -138,7 +150,7 @@ private class MyProfileController: SettingsController {
         let pickerViewController = GravatarPickerViewController()
         pickerViewController.onCompletion = { [weak self] image in
             if let updatedGravatarImage = image {
-                self?.uploadGravatarImage(updatedGravatarImage)
+                self?.uploadGravatarImage(updatedGravatarImage, presenter: viewController)
             }
             viewController.dismiss(animated: true, completion: nil)
         }
@@ -146,9 +158,35 @@ private class MyProfileController: SettingsController {
         viewController.present(pickerViewController, animated: true, completion: nil)
     }
 
-    // MARK: - Gravatar Helpers
+    // MARK: - Helpers
 
-    fileprivate func uploadGravatarImage(_ newGravatar: UIImage) {
-        // do stuff
+    fileprivate func uploadGravatarImage(_ newGravatar: UIImage, presenter: ImmuTableViewController) {
+        guard let account = defaultAccount() else {
+            return
+        }
+
+        WPAppAnalytics.track(.gravatarUploaded)
+
+        gravatarUploadInProgress = true
+        headerView.overrideGravatarImage(newGravatar)
+
+        let service = GravatarService()
+        service.uploadImage(newGravatar, forAccount: account) { [weak self] error in
+            DispatchQueue.main.async(execute: {
+                self?.gravatarUploadInProgress = false
+                self?.refreshModel()
+            })
+        }
+    }
+
+    // FIXME: (@koke 2015-12-17) Not cool. Let's stop passing managed objects
+    // and initializing stuff with safer values like userID
+    fileprivate func defaultAccount() -> WPAccount? {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        let account = service.defaultWordPressComAccount()
+        // Again, ! isn't cool, but let's keep it for now until we refactor the VC
+        // initialization parameters.
+        return account
     }
 }
