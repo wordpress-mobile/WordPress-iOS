@@ -48,8 +48,9 @@ class MyProfileHeaderView: WPTableViewCell {
         assert(gravatarButton != nil)
 
         gravatarImageView.shouldRoundCorners = true
-        contentView.insertSubview(activityIndicator, aboveSubview: gravatarImageView)
-        gravatarImageView.pinSubviewToAllEdges(activityIndicator)
+        gravatarImageView.addSubview(activityIndicator)
+        gravatarImageView.pinSubviewAtCenter(activityIndicator)
+        setNeedsUpdateConstraints()
     }
 
     @IBAction func onProfileWasPressed(_ sender: UIButton) {
