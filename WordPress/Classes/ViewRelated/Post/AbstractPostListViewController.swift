@@ -1100,3 +1100,9 @@ extension AbstractPostListViewController: NetworkAwareUI {
         return tableViewHandler.resultsController.isEmpty()
     }
 }
+
+extension AbstractPostListViewController: NetworkStatusDelegate {
+    func networdStatusDidChange(active: Bool) {
+        refreshResults()
+    }
+}
