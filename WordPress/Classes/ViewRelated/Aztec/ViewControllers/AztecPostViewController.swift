@@ -68,6 +68,9 @@ class AztecPostViewController: UIViewController, PostEditor {
             textView.smartQuotesType = .no
         }
 
+        // We need this false to be able to set negative `scrollInset` values.
+        textView.clipsToBounds = false
+
         return textView
     }()
 
@@ -112,6 +115,9 @@ class AztecPostViewController: UIViewController, PostEditor {
             textView.smartDashesType = .no
             textView.smartQuotesType = .no
         }
+
+        // We need this false to be able to set negative `scrollInset` values.
+        textView.clipsToBounds = false
 
         return textView
 
@@ -531,15 +537,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         rememberFirstResponder()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        var safeInsets = self.view.layoutMargins
-        safeInsets.top = richTextView.textContainerInset.top
-        richTextView.textContainerInset = safeInsets
-        htmlTextView.textContainerInset = safeInsets
-    }
-
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
@@ -635,8 +632,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         let layoutGuide = view.layoutMarginsGuide
 
         NSLayoutConstraint.activate([
-            titleTextField.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
-            titleTextField.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
+            titleTextField.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
+            titleTextField.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
             titleTopConstraint,
             titleHeightConstraint
             ])
@@ -651,15 +648,15 @@ class AztecPostViewController: UIViewController, PostEditor {
             ])
 
         NSLayoutConstraint.activate([
-            separatorView.leftAnchor.constraint(equalTo: layoutGuide.leftAnchor),
-            separatorView.rightAnchor.constraint(equalTo: layoutGuide.rightAnchor),
+            separatorView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
             separatorView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor),
             separatorView.heightAnchor.constraint(equalToConstant: separatorView.frame.height)
             ])
 
         NSLayoutConstraint.activate([
-            richTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            richTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            richTextView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
+            richTextView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
             richTextView.topAnchor.constraint(equalTo: view.topAnchor),
             richTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
@@ -672,8 +669,8 @@ class AztecPostViewController: UIViewController, PostEditor {
             ])
 
         NSLayoutConstraint.activate([
-            placeholderLabel.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: Constants.placeholderPadding.left),
-            placeholderLabel.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -(Constants.placeholderPadding.right + richTextView.textContainer.lineFragmentPadding)),
+            placeholderLabel.leftAnchor.constraint(equalTo: richTextView.leftAnchor, constant: insets.left + richTextView.textContainer.lineFragmentPadding),
+            placeholderLabel.rightAnchor.constraint(equalTo: richTextView.rightAnchor, constant: -insets.right - richTextView.textContainer.lineFragmentPadding),
             textPlaceholderTopConstraint,
             placeholderLabel.bottomAnchor.constraint(lessThanOrEqualTo: richTextView.bottomAnchor, constant: Constants.placeholderPadding.bottom)
             ])
@@ -946,7 +943,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
         let referenceView: UIScrollView = mode == .richText ? richTextView : htmlTextView
 
-        let scrollInsets = UIEdgeInsets(top: referenceView.scrollIndicatorInsets.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
+        let scrollInsets = UIEdgeInsets(top: referenceView.scrollIndicatorInsets.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: referenceView.frame.maxX - view.frame.maxX)
         let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
 
         htmlTextView.scrollIndicatorInsets = scrollInsets
