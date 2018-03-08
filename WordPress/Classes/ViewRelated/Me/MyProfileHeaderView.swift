@@ -1,7 +1,7 @@
 import Foundation
 
-class MyProfileHeaderView: UIView {
-    // MARK: - Outlets
+class MyProfileHeaderView: WPTableViewCell {
+    // MARK: - Public Properties and Outlets
     @IBOutlet var gravatarImageView: CircularImageView!
     @IBOutlet var gravatarButton: UIButton!
 

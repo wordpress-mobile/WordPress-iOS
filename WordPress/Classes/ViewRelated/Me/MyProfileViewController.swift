@@ -15,7 +15,7 @@ func MyProfileViewController(account: WPAccount, service: AccountSettingsService
     let viewController = ImmuTableViewController(controller: controller)
     let headerView = MakeHeaderView(account: account)
     headerView.onAddUpdatePhoto = {
-        controller.presentGravatarPicker()
+        controller.presentGravatarPicker(viewController)
     }
     viewController.tableView.tableHeaderView = headerView
     return viewController
@@ -127,7 +127,7 @@ private class MyProfileController: SettingsController {
 
     // MARK: Actions
 
-    fileprivate func presentGravatarPicker() {
+    fileprivate func presentGravatarPicker(_ viewController: ImmuTableViewController) {
         WPAppAnalytics.track(.gravatarTapped)
 
         let pickerViewController = GravatarPickerViewController()
@@ -135,10 +135,10 @@ private class MyProfileController: SettingsController {
             if let updatedGravatarImage = image {
                 self?.uploadGravatarImage(updatedGravatarImage)
             }
-            self?.dismiss(animated: true, completion: nil)
+            viewController.dismiss(animated: true, completion: nil)
         }
         pickerViewController.modalPresentationStyle = .formSheet
-        self.present(pickerViewController, animated: true, completion: nil)
+        viewController.present(pickerViewController, animated: true, completion: nil)
     }
 
     // MARK: - Gravatar Helpers
