@@ -119,6 +119,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         setupFiltersSegmentedControl()
 
         reloadTableViewPreservingSelection()
+
+        observeNetworkStatus()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -771,6 +773,12 @@ extension NotificationsViewController {
 extension NotificationsViewController: NetworkAwareUI {
     func contentIsEmpty() -> Bool {
         return tableViewHandler.resultsController.isEmpty()
+    }
+}
+
+extension NotificationsViewController: NetworkStatusDelegate {
+    func networdStatusDidChange(active: Bool) {
+        reloadResultsControllerIfNeeded()
     }
 }
 
