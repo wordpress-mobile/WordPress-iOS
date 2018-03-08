@@ -1,14 +1,14 @@
 import SVProgressHUD
 
+protocol SignupUsernameViewControllerDelegate {
+    func usernameSelected(_ username: String)
+}
 class SignupUsernameViewController: NUXViewController {
     // MARK: - Properties
     open var currentUsername: String?
     private var newUsername: String?
     open var displayName: String?
-
-    // Used to hide/show the Buttom View
-    @IBOutlet weak var buttonContainerViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var buttonContainerHeightConstraint: NSLayoutConstraint!
+    open var delegate: SignupUsernameViewControllerDelegate?
 
     override var sourceTag: SupportSourceTag {
         get {
@@ -17,7 +17,6 @@ class SignupUsernameViewController: NUXViewController {
     }
 
     private var usernamesTableViewController: SignupUsernameTableViewController?
-    private var buttonViewController: NUXButtonViewController?
 
     // MARK: - View
 
@@ -27,44 +26,10 @@ class SignupUsernameViewController: NUXViewController {
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        addConfirmationWarning()
-    }
-
     private func configureView() {
         _ = addHelpButtonToNavController()
         navigationItem.title = NSLocalizedString("Change Username", comment: "Change Username title.")
         WPStyleGuide.configureColors(for: view, andTableView: nil)
-    }
-
-    private func addConfirmationWarning() {
-        let warningLabel = UILabel()
-        warningLabel.text = NSLocalizedString("Once you change your username, it will no longer be available for future use.", comment: "Warning shown before a user changes their username.")
-        warningLabel.numberOfLines = 0
-        warningLabel.textAlignment = .center
-        warningLabel.textColor = WPStyleGuide.darkGrey()
-        buttonViewController?.stackView?.insertArrangedSubview(warningLabel, at: 0)
-    }
-
-    private func showButtonView(show: Bool, withAnimation: Bool) {
-
-        let duration = withAnimation ? WPAnimationDurationDefault : 0
-
-        UIView.animate(withDuration: duration, animations: {
-            if show {
-                self.buttonContainerViewBottomConstraint.constant = 0
-            }
-            else {
-                // Move the view down double the height to ensure it's off the screen.
-                // i.e. to defy iPhone X bottom gap.
-                self.buttonContainerViewBottomConstraint.constant +=
-                    self.buttonContainerHeightConstraint.constant * 2
-            }
-
-            // Since the Button View uses auto layout, need to call this so the animation works properly.
-            self.view.layoutIfNeeded()
-        }, completion: nil)
     }
 
     private func changeUsername() {
@@ -110,30 +75,15 @@ class SignupUsernameViewController: NUXViewController {
             vc.displayName = displayName
             vc.currentUsername = currentUsername
         }
-
-        if let vc = segue.destination as? NUXButtonViewController {
-            buttonViewController = vc
-            vc.setupButtomButton(title: NSLocalizedString("Change Username", comment: "Button text for changing the user's username."), isPrimary: true) { [weak self] in
-                self?.changeUsername()
-            }
-            showButtonView(show: false, withAnimation: false)
-        }
     }
 }
 
 // MARK: - SignupUsernameTableViewControllerDelegate
 
-extension SignupUsernameViewController: SignupUsernameTableViewControllerDelegate {
+extension SignupUsernameViewController: SignupUsernameViewControllerDelegate {
     func usernameSelected(_ username: String) {
         newUsername = username
-        if username == "" {
-            showButtonView(show: false, withAnimation: true)
-        } else {
-            showButtonView(show: true, withAnimation: true)
-        }
-    }
 
-    func newSearchStarted() {
-        showButtonView(show: false, withAnimation: true)
+        delegate?.usernameSelected(username)
     }
 }
