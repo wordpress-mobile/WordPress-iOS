@@ -8,4 +8,6 @@
  */
 @interface CommentsViewController (Network)
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
+
+- (void)refreshAndSyncIfNeeded;
 @end

@@ -132,6 +132,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         tableView.reloadData()
+
+        observeNetworkStatus()
     }
 
     override func viewWillAppear(_ animated: Bool) {
