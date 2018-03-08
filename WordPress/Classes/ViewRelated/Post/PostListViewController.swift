@@ -523,14 +523,14 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
             if post.status == .trash {
                 cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
-                deleteText = NSLocalizedString("Delete", comment: "Deletes post permanently")
-                titleText = NSLocalizedString("Delete this post permanently?", comment: "Deletes post permanently")
-                messageText = NSLocalizedString("Once deleted you won't be able to restore this post.", comment: "Details about what would happen if the user decided to permanently delete a post.")
+                deleteText = NSLocalizedString("Delete Permanently", comment: "Delete option in the confirmation alert when deleting a post from the trash.")
+                titleText = NSLocalizedString("Delete Permanently?", comment: "Title of the confirmation alert when deleting a post from the trash.")
+                messageText = NSLocalizedString("Are you sure you want to permanently delete this post?", comment: "Message of the confirmation alert when deleting a post from the trash.")
             } else {
                 cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
-                deleteText = NSLocalizedString("Delete", comment: "Deletes post")
-                titleText = NSLocalizedString("Delete this post?", comment: "Deletes post")
-                messageText = NSLocalizedString("This post will be deleted and sent to the Trash", comment: "Details about what would happen if the user decided to delete a post.")
+                deleteText = NSLocalizedString("Move to Trash", comment: "Trash option in the trash confirmation alert.")
+                titleText = NSLocalizedString("Trash this post?", comment: "Title of the trash confirmation alert.")
+                messageText = NSLocalizedString("Are you sure you want to trash this post?", comment: "Message of the trash confirmation alert.")
             }
 
             let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
