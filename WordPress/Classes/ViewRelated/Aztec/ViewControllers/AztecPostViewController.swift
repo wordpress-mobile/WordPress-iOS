@@ -1224,12 +1224,12 @@ private extension AztecPostViewController {
         if postEditorStateContext.isSecondaryPublishButtonShown,
             let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
             let dismissWhenDone = postEditorStateContext.secondaryPublishButtonAction == .publish
-            
+
             alert.addDefaultActionWithTitle(buttonTitle) { _ in
                 self.secondaryPublishButtonTapped(dismissWhenDone: dismissWhenDone)
             }
         }
-        
+
         let toggleModeTitle: String = {
             if mode == .richText {
                 return MoreSheetAlert.htmlTitle
@@ -1237,7 +1237,7 @@ private extension AztecPostViewController {
                 return MoreSheetAlert.richTitle
             }
         }()
-        
+
         alert.addDefaultActionWithTitle(toggleModeTitle) { [unowned self] _ in
             self.toggleEditingMode()
         }
