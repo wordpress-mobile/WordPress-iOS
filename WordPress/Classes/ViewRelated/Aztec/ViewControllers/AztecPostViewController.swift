@@ -629,7 +629,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         titleTopConstraint = titleTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: -richTextView.contentOffset.y)
         textPlaceholderTopConstraint = placeholderLabel.topAnchor.constraint(equalTo: richTextView.topAnchor, constant: richTextView.textContainerInset.top + richTextView.contentInset.top)
         updateTitleHeight()
-        let layoutGuide = view.layoutMarginsGuide
 
         NSLayoutConstraint.activate([
             titleTextField.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
