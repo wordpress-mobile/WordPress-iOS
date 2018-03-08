@@ -224,6 +224,8 @@ import WordPressShared
         setupSyncHelper()
         setupResultsStatusView()
 
+        observeNetworkStatus()
+
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
         didSetupView = true
