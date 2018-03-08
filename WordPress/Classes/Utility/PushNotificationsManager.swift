@@ -146,7 +146,7 @@ final public class PushNotificationsManager: NSObject {
     ///
     @objc func unregisterDeviceToken() {
         guard let knownDeviceId = deviceId,
-            knownDeviceId.length > 0 else {
+            knownDeviceId.characters.count > 0 else {
                 return
         }
 
