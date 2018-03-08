@@ -1,4 +1,4 @@
-import UIKit
+import SVProgressHUD
 
 class SignupEpilogueViewController: NUXViewController {
 
@@ -7,6 +7,7 @@ class SignupEpilogueViewController: NUXViewController {
     private var buttonViewController: NUXButtonViewController?
     private var updatedDisplayName: String?
     private var updatedPassword: String?
+    private var updatedUsername: String?
     private var epilogueUserInfo: LoginEpilogueUserInfo?
 
     // MARK: - View
@@ -36,6 +37,7 @@ class SignupEpilogueViewController: NUXViewController {
         if let vc = segue.destination as? SignupUsernameViewController {
             vc.currentUsername = epilogueUserInfo?.username
             vc.displayName = updatedDisplayName ?? epilogueUserInfo?.fullName
+            vc.delegate = self
         }
     }
 
@@ -45,16 +47,7 @@ class SignupEpilogueViewController: NUXViewController {
 
 extension SignupEpilogueViewController: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
-        // If the Display Name needs updating, start the update process there.
-        // If not, if the Password needs updating, start there.
-        // If nothing needs updating, just dismiss.
-        if updatedDisplayName != nil {
-            updateUserInfo()
-        } else if updatedPassword != nil {
-            updatePassword()
-        } else {
-            navigationController?.dismiss(animated: true, completion: nil)
-        }
+        saveChanges()
     }
 }
 
@@ -67,6 +60,10 @@ extension SignupEpilogueViewController: SignupEpilogueTableViewControllerDataSou
 
     var password: String? {
         return updatedPassword
+    }
+
+    var username: String? {
+        return updatedUsername
     }
 }
 
@@ -90,56 +87,91 @@ extension SignupEpilogueViewController: SignupEpilogueTableViewControllerDelegat
 // MARK: - Private Extension
 
 private extension SignupEpilogueViewController {
+    func saveChanges() {
+        if let newUsername = updatedUsername {
+            SVProgressHUD.show(withStatus: NSLocalizedString("Changing username", comment: "Shown while the app waits for the username changing web service to return."))
+            changeUsername(to: newUsername) {
+                self.updatedUsername = nil
+                self.saveChanges()
+            }
+        } else if let newDisplayName = updatedDisplayName {
+            SVProgressHUD.show(withStatus: NSLocalizedString("Changing display name", comment: "Shown while the app waits for the display name changing web service to return."))
+            changeDisplayName(to: newDisplayName) {
+                self.updatedDisplayName = nil
+                self.saveChanges()
+            }
+        } else if let newPassword = updatedPassword {
+            SVProgressHUD.show(withStatus: NSLocalizedString("Changing password", comment: "Shown while the app waits for the password changing web service to return."))
+            changePassword(to: newPassword) {
+                self.updatedPassword = nil
+                self.saveChanges()
+            }
+        } else {
+            self.refreshAccountDetails() {
+                SVProgressHUD.dismiss()
+                self.navigationController?.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
 
-    func updateUserInfo() {
-
-        guard let updatedDisplayName = updatedDisplayName else {
+    func changeUsername(to newUsername: String, finished: @escaping (() -> Void)) {
+        guard newUsername != "" else {
+            finished()
             return
         }
+
+        let context = ContextManager.sharedInstance().mainContext
+        let accountService = AccountService(managedObjectContext: context)
+        guard let account = accountService.defaultWordPressComAccount(),
+            let api = account.wordPressComRestApi else {
+                navigationController?.popViewController(animated: true)
+                return
+        }
+
+        let settingsService = AccountSettingsService(userID: account.userID.intValue, api: api)
+        settingsService.changeUsername(to: newUsername, success: {
+            finished()
+        }) {
+            finished()
+        }
+    }
+
+    func changeDisplayName(to newDisplayName: String, finished: @escaping (() -> Void)) {
 
         let context = ContextManager.sharedInstance().mainContext
 
         guard let defaultAccount = AccountService(managedObjectContext: context).defaultWordPressComAccount(),
         let restApi = defaultAccount.wordPressComRestApi else {
+            finished()
             return
         }
 
         let accountSettingService = AccountSettingsService(userID: defaultAccount.userID.intValue, api: restApi)
-        let accountSettingsChange = AccountSettingsChange.displayName(updatedDisplayName)
+        let accountSettingsChange = AccountSettingsChange.displayName(newDisplayName)
 
         accountSettingService.saveChange(accountSettingsChange) {
-            // If the password needs updating, do that.
-            // If not, refresh the account so 'Me' tab info is correct.
-            if let _ = self.updatedPassword {
-                self.updatePassword()
-            } else {
-                self.refreshAccountDetails()
-            }
+            finished()
         }
     }
 
-    func updatePassword() {
-
-        guard let updatedPassword = updatedPassword else {
-            return
-        }
+    func changePassword(to newPassword: String, finished: @escaping () -> Void) {
 
         let context = ContextManager.sharedInstance().mainContext
 
         guard let defaultAccount = AccountService(managedObjectContext: context).defaultWordPressComAccount(),
             let restApi = defaultAccount.wordPressComRestApi else {
+                finished()
                 return
         }
 
         let accountSettingService = AccountSettingsService(userID: defaultAccount.userID.intValue, api: restApi)
 
-        accountSettingService.updatePassword(updatedPassword) {
-            // Refresh the account so 'Me' tab info is correct.
-            self.refreshAccountDetails()
+        accountSettingService.updatePassword(newPassword) {
+            finished()
         }
     }
 
-    func refreshAccountDetails() {
+    func refreshAccountDetails(finished: @escaping () -> Void) {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         guard let account = service.defaultWordPressComAccount() else {
@@ -147,10 +179,18 @@ private extension SignupEpilogueViewController {
             return
         }
         service.updateUserDetails(for: account, success: { () in
-            self.navigationController?.dismiss(animated: true, completion: nil)
+            finished()
         }, failure: { _ in
-            self.navigationController?.dismiss(animated: true, completion: nil)
+            finished()
         })
     }
 
+}
+
+extension SignupEpilogueViewController: SignupUsernameViewControllerDelegate {
+    func usernameSelected(_ username: String) {
+        if !username.isEmpty {
+            updatedUsername = username
+        }
+    }
 }
