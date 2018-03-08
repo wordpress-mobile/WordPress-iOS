@@ -1228,12 +1228,24 @@ private extension AztecPostViewController {
                 self.secondaryPublishButtonTapped(dismissWhenDone: dismissWhenDone)
             }
         }
+        
+        let toggleModeTitle: String = {
+            if mode == .richText {
+                return MoreSheetAlert.htmlTitle
+            } else {
+                return MoreSheetAlert.richTitle
+            }
+        }()
+        
+        alert.addDefaultActionWithTitle(toggleModeTitle) { [unowned self] _ in
+            self.toggleEditingMode()
+        }
 
-        alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { _ in
+        alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { [unowned self]  _ in
             self.displayPreview()
         }
 
-        alert.addDefaultActionWithTitle(MoreSheetAlert.optionsTitle) { _ in
+        alert.addDefaultActionWithTitle(MoreSheetAlert.optionsTitle) { [unowned self]  _ in
             self.displayPostOptions()
         }
 
@@ -3539,8 +3551,8 @@ extension AztecPostViewController {
     }
 
     struct MoreSheetAlert {
-        static let htmlTitle = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
-        static let richTitle = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
+        static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
+        static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
         static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
         static let optionsTitle = NSLocalizedString("Options", comment: "Displays the Post's Options")
         static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
