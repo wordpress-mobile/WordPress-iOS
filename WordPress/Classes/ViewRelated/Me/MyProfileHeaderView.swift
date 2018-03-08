@@ -2,7 +2,7 @@ import Foundation
 
 class MyProfileHeaderView: UIView {
     // MARK: - Outlets
-    @IBOutlet var gravatarImageView: UIImageView!
+    @IBOutlet var gravatarImageView: CircularImageView!
     @IBOutlet var gravatarButton: UIButton!
 
     var onAddUpdatePhoto: (() -> Void)?
@@ -19,7 +19,7 @@ class MyProfileHeaderView: UIView {
         assert(gravatarImageView != nil)
         assert(gravatarButton != nil)
 
-        gravatarImageView.layer.cornerRadius = CGFloat(gravatarImageView.frame.size.width * 0.5)
+        gravatarImageView.shouldRoundCorners = true
     }
 
     @IBAction func onProfileWasPressed(_ sender: UIButton) {
