@@ -161,6 +161,8 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
 
         // By default, let's display the Blog's Users
         filter = .Users
+
+        observeNetworkStatus()
     }
 
     open override func viewWillAppear(_ animated: Bool) {
@@ -504,5 +506,11 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
 extension PeopleViewController: NetworkAwareUI {
     func contentIsEmpty() -> Bool {
         return resultsController.isEmpty()
+    }
+}
+
+extension PeopleViewController: NetworkStatusDelegate {
+    func networdStatusDidChange(active: Bool) {
+        refresh()
     }
 }
