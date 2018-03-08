@@ -1245,8 +1245,8 @@ private extension AztecPostViewController {
             self.displayPreview()
         }
 
-        alert.addDefaultActionWithTitle(MoreSheetAlert.optionsTitle) { [unowned self]  _ in
-            self.displayPostOptions()
+        alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [unowned self]  _ in
+            self.displayPostSettings()
         }
 
         alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
@@ -1267,7 +1267,7 @@ private extension AztecPostViewController {
         present(alert, animated: true, completion: nil)
     }
 
-    func displayPostOptions() {
+    func displayPostSettings() {
         let settingsViewController: PostSettingsViewController
         if post is Page {
             settingsViewController = PageSettingsViewController(post: post)
@@ -3554,7 +3554,7 @@ extension AztecPostViewController {
         static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
         static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
         static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
-        static let optionsTitle = NSLocalizedString("Options", comment: "Displays the Post's Options")
+        static let postSettingsTitle = NSLocalizedString("Post Settings", comment: "Name of the button to open the post settings")
         static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
     }
 
