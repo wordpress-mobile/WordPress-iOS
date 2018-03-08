@@ -344,8 +344,6 @@ open class WordPressComRestApi: NSObject {
         return WordPressComRestApi.pathByAppendingPreferredLanguageLocale(path)
     }
 
-    @objc open static let WordPressComRestCApiErrorKeyData = "WordPressOrgXMLRPCApiErrorKeyData"
-
     @objc public func temporaryFileURL(withExtension fileExtension: String) -> URL {
         assert(!fileExtension.isEmpty, "file Extension cannot be empty")
         let fileName = "\(ProcessInfo.processInfo.globallyUniqueString)_file.\(fileExtension)"
