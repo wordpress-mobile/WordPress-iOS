@@ -9,7 +9,7 @@ class AccountServiceTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        
+
         contextManager = TestContextManager()
         accountService = AccountService(
             managedObjectContext: contextManager.mainContext,

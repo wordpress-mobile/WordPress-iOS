@@ -39,7 +39,7 @@ final public class PushNotificationsManager: NSObject {
             userDefaults.synchronize()
         }
     }
-    
+
     private var userDefaults: UserDefaults
 
     /// Returns the SharedApplication instance. This is meant for Unit Testing purposes.
@@ -56,19 +56,19 @@ final public class PushNotificationsManager: NSObject {
     }
 
     // MARK: - Initializers
-    
+
     override init() {
         self.userDefaults = UserDefaults.standard
-        
+
         super.init()
     }
-    
+
     @objc init(with userDefaults: UserDefaults) {
         self.userDefaults = userDefaults
-        
+
         super.init()
     }
-    
+
     // MARK: - Misc
 
     /// Registers the device for Remote Notifications: Badge + Sounds + Alerts
