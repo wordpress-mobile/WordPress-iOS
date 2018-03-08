@@ -47,6 +47,9 @@ class MyProfileHeaderView: WPTableViewCell {
         assert(gravatarImageView != nil)
         assert(gravatarButton != nil)
 
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+
         gravatarImageView.shouldRoundCorners = true
         gravatarImageView.addSubview(activityIndicator)
         gravatarImageView.pinSubviewAtCenter(activityIndicator)
