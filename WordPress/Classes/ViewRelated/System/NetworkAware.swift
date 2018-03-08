@@ -116,7 +116,7 @@ extension NetworkStatusDelegate where Self: UIViewController {
 //}
 
 
-final class ReachabilityNotificationReceiver: NSObject {
+fileprivate final class ReachabilityNotificationReceiver: NSObject {
     private weak var delegate: NetworkStatusDelegate?
 
     init(delegate: NetworkStatusDelegate) {
