@@ -3,6 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class PushNotificationsManager;
 @class WPAccount;
 
 extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
@@ -10,7 +11,8 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
 
 @interface AccountService : LocalCoreDataService
 
-- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context userDefaults:(NSUserDefaults*)userDefaults;
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
+                                userDefaults:(NSUserDefaults*)userDefaults;
 
 ///------------------------------------
 /// @name Default WordPress.com account

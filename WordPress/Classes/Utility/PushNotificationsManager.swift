@@ -19,11 +19,11 @@ final public class PushNotificationsManager: NSObject {
     ///
     @objc var deviceToken: String? {
         get {
-            return UserDefaults.standard.string(forKey: Device.tokenKey) ?? String()
+            return userDefaults.string(forKey: Device.tokenKey) ?? String()
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: Device.tokenKey)
-            UserDefaults.standard.synchronize()
+            userDefaults.set(newValue, forKey: Device.tokenKey)
+            userDefaults.synchronize()
         }
     }
 
@@ -32,14 +32,15 @@ final public class PushNotificationsManager: NSObject {
     ///
     @objc var deviceId: String? {
         get {
-            return UserDefaults.standard.string(forKey: Device.idKey) ?? String()
+            return userDefaults.string(forKey: Device.idKey) ?? String()
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: Device.idKey)
-            UserDefaults.standard.synchronize()
+            userDefaults.set(newValue, forKey: Device.idKey)
+            userDefaults.synchronize()
         }
     }
-
+    
+    private var userDefaults: UserDefaults
 
     /// Returns the SharedApplication instance. This is meant for Unit Testing purposes.
     ///
@@ -54,6 +55,21 @@ final public class PushNotificationsManager: NSObject {
         return sharedApplication.applicationState
     }
 
+    // MARK: - Initializers
+    
+    override init() {
+        self.userDefaults = UserDefaults.standard
+        
+        super.init()
+    }
+    
+    @objc init(with userDefaults: UserDefaults) {
+        self.userDefaults = userDefaults
+        
+        super.init()
+    }
+    
+    // MARK: - Misc
 
     /// Registers the device for Remote Notifications: Badge + Sounds + Alerts
     ///

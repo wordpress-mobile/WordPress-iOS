@@ -9,9 +9,11 @@ class AccountServiceTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-
+        
         contextManager = TestContextManager()
-        accountService = AccountService(managedObjectContext: contextManager.mainContext, userDefaults: userDefaults)
+        accountService = AccountService(
+            managedObjectContext: contextManager.mainContext,
+            userDefaults: userDefaults)
     }
 
     override func tearDown() {

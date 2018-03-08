@@ -17,6 +17,7 @@ NSNotificationName const WPAccountDefaultWordPressComAccountChangedNotification 
 NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEmailAndDefaultBlogUpdatedNotification";
 
 @interface AccountService ()
+@property (nonatomic, retain, readonly) PushNotificationsManager *pushNotificationsManager;
 @property (nonatomic, retain, readonly) NSUserDefaults *userDefaults;
 @end
 
@@ -28,13 +29,15 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     self = [super initWithManagedObjectContext:context];
     
     if (self) {
+        _pushNotificationsManager = [PushNotificationsManager shared];
         _userDefaults = [NSUserDefaults standardUserDefaults];
     }
     
     return self;
 }
 
-- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context userDefaults:(NSUserDefaults*)userDefaults
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
+                                userDefaults:(NSUserDefaults*)userDefaults
 {
     NSParameterAssert([context isKindOfClass:[NSManagedObjectContext class]]);
     NSParameterAssert([userDefaults isKindOfClass:[NSUserDefaults class]]);
@@ -42,6 +45,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     self = [super initWithManagedObjectContext:context];
     
     if (self) {
+        _pushNotificationsManager = [[PushNotificationsManager alloc] initWith: userDefaults];
         _userDefaults = userDefaults;
     }
     
