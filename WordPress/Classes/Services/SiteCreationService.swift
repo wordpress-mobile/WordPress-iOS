@@ -206,7 +206,11 @@ open class SiteCreationService: LocalCoreDataService {
         let currentLanguage = WordPressComLanguageDatabase().deviceLanguageIdNumber()
         let languageId = currentLanguage.stringValue
 
-        let remote = WordPressComServiceRemote(wordPressComRestApi: self.anonymousApi())
+        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let api = accountService.defaultWordPressComAccount()?.wordPressComRestApi ??
+                  WordPressComRestApi(userAgent: WPUserAgent.wordPress())
+
+        let remote = WordPressComServiceRemote(wordPressComRestApi: api)
         remote?.validateWPComBlog(withUrl: params.siteUrl,
                                   andBlogTitle: params.siteTitle,
                                   andLanguageId: languageId,
@@ -443,12 +447,6 @@ open class SiteCreationService: LocalCoreDataService {
         if let syncBlock = syncBlock {
             syncBlock()
         }
-    }
-
-    // MARK: - WP API
-
-    private func anonymousApi() -> WordPressComRestApi {
-        return WordPressComRestApi(userAgent: WPUserAgent.wordPress())
     }
 
     /// A convenience enum for creating meaningful NSError objects.
