@@ -53,12 +53,12 @@ protocol NetworkStatusDelegate: class {
 
 extension NetworkStatusDelegate where Self: UIViewController {
     func observeNetworkStatus() {
-        receiver = ReachabilityNotificationReceiver(delegate: self)
+        receiver = ReachabilityNotificationObserver(delegate: self)
     }
 
-    fileprivate var receiver: ReachabilityNotificationReceiver? {
+    fileprivate var receiver: ReachabilityNotificationObserver? {
         get {
-            return objc_getAssociatedObject(self, &NetworkStatusAssociatedKeys.associatedObjectKey) as? ReachabilityNotificationReceiver
+            return objc_getAssociatedObject(self, &NetworkStatusAssociatedKeys.associatedObjectKey) as? ReachabilityNotificationObserver
         }
 
         set {
@@ -116,7 +116,7 @@ extension NetworkStatusDelegate where Self: UIViewController {
 //}
 
 
-fileprivate final class ReachabilityNotificationReceiver: NSObject {
+fileprivate final class ReachabilityNotificationOberver: NSObject {
     private weak var delegate: NetworkStatusDelegate?
 
     init(delegate: NetworkStatusDelegate) {
