@@ -24,7 +24,12 @@ func MyProfileViewController(account: WPAccount, service: AccountSettingsService
 func MakeHeaderView(account: WPAccount) -> MyProfileHeaderView {
     let defaultImage = UIImage(named: "gravatar")
     let headerView = MyProfileHeaderView.makeFromNib()
-    headerView.gravatarImageView.downloadGravatarWithEmail(account.email, placeholderImage: defaultImage!)
+    if let email = account.email {
+        headerView.gravatarImageView.downloadGravatarWithEmail(email, placeholderImage: defaultImage!)
+    } else {
+        headerView.gravatarImageView.image = defaultImage
+    }
+
     if headerView.gravatarImageView.image == defaultImage {
         headerView.gravatarButton.setTitle(NSLocalizedString("Add a Profile Photo", comment: "Add a profile photo to Me > My Profile"), for: .normal)
     } else {
