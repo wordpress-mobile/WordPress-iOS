@@ -1221,6 +1221,15 @@ private extension AztecPostViewController {
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
+        if postEditorStateContext.isSecondaryPublishButtonShown,
+            let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
+            let dismissWhenDone = postEditorStateContext.secondaryPublishButtonAction == .publish
+            
+            alert.addDefaultActionWithTitle(buttonTitle) { _ in
+                self.secondaryPublishButtonTapped(dismissWhenDone: dismissWhenDone)
+            }
+        }
+        
         let toggleModeTitle: String = {
             if mode == .richText {
                 return MoreSheetAlert.htmlTitle
