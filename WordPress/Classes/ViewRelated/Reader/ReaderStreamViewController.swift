@@ -1825,3 +1825,9 @@ extension ReaderStreamViewController: NetworkAwareUI {
         return tableViewHandler.resultsController.isEmpty()
     }
 }
+
+extension ReaderStreamViewController: NetworkStatusDelegate {
+    func networdStatusDidChange(active: Bool) {
+        syncIfAppropriate()
+    }
+}
