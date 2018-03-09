@@ -2,6 +2,7 @@ import Foundation
 import CocoaLumberjack
 import WordPressComStatsiOS
 import WordPressShared
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -118,12 +119,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         return type(of: self).postListHeightForFooterView
     }
 
-    override func configureFilterBar() {
-        super.configureFilterBar()
-
-        filterTabBar.accessoryView = AuthorFilterButton()
-    }
-
     override func configureTableView() {
 
         tableView.accessibilityIdentifier = "PostsTable"
@@ -143,6 +138,18 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let postCardRestoreCellNib = UINib(nibName: type(of: self).postCardRestoreCellNibName, bundle: bundle)
         tableView.register(postCardRestoreCellNib, forCellReuseIdentifier: type(of: self).postCardRestoreCellIdentifier)
+    }
+
+    override func configureAuthorFilter() {
+        guard filterSettings.canFilterByAuthor() else {
+            return
+        }
+
+        let authorFilter = AuthorFilterButton()
+        authorFilter.addTarget(self, action: #selector(showAuthorSelectionPopover(_:)), for: .touchUpInside)
+        filterTabBar.accessoryView = authorFilter
+
+        updateAuthorFilter()
     }
 
     override func configureSearchController() {
@@ -203,33 +210,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
                 .published: published]
     }
 
-    override func configureAuthorFilter() {
-        let onlyMe = NSLocalizedString("Only Me", comment: "Label for the post author filter. This fliter shows posts only authored by the current user.")
-        let everyone = NSLocalizedString("Everyone", comment: "Label for the post author filter. This filter shows posts for all users on the blog.")
-
-        WPStyleGuide.applyPostAuthorFilterStyle(authorFilterSegmentedControl)
-
-        authorFilterSegmentedControl.setTitle(onlyMe, forSegmentAt: 0)
-        authorFilterSegmentedControl.setTitle(everyone, forSegmentAt: 1)
-
-        authorsFilterView?.backgroundColor = WPStyleGuide.lightGrey()
-
-        if !filterSettings.canFilterByAuthor() {
-            authorsFilterView.removeFromSuperview()
-
-            headerStackView.frame.size.height = searchController.searchBar.frame.height
-
-            // Required to update the size of the table header view
-            tableView.tableHeaderView = headerStackView
-        }
-
-        if filterSettings.currentPostAuthorFilter() == .mine {
-            authorFilterSegmentedControl.selectedSegmentIndex = 0
-        } else {
-            authorFilterSegmentedControl.selectedSegmentIndex = 1
-        }
-    }
-
     // Mark - Layout Methods
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -256,14 +236,33 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - Actions
 
-    @IBAction func handleAuthorFilterChanged(_ sender: AnyObject) {
-        var authorFilter = PostListFilterSettings.AuthorFilter.everyone
-        if authorFilterSegmentedControl.selectedSegmentIndex == 0 {
-            authorFilter = .mine
+    @objc
+    private func showAuthorSelectionPopover(_ sender: UIView) {
+        let filterController = AuthorFilterViewController(initialSelection: filterSettings.currentPostAuthorFilter(),
+                                                          gravatarEmail: blog.account?.email) { [weak self] filter in
+                                                            self?.filterSettings.setCurrentPostAuthorFilter(filter)
+                                                            self?.updateAuthorFilter()
+                                                            self?.refreshAndReload()
+                                                            self?.syncItemsWithUserInteraction(false)
+                                                            self?.dismiss(animated: true, completion: nil)
         }
-        filterSettings.setCurrentPostAuthorFilter(authorFilter)
-        refreshAndReload()
-        syncItemsWithUserInteraction(false)
+
+        ForcePopoverPresenter.configurePresentationControllerForViewController(filterController, presentingFromView: sender)
+        filterController.popoverPresentationController?.permittedArrowDirections = .up
+
+        present(filterController, animated: true)
+    }
+
+    private func updateAuthorFilter() {
+        guard let accessoryView = filterTabBar.accessoryView as? AuthorFilterButton else {
+            return
+        }
+
+        if filterSettings.currentPostAuthorFilter() == .mine {
+            accessoryView.gravatarEmail = blog.account?.email
+        } else {
+            accessoryView.gravatarEmail = nil
+        }
     }
 
     // MARK: - Data Model Interaction
