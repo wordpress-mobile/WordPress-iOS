@@ -60,7 +60,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let storyBoard = UIStoryboard(name: "Posts", bundle: Bundle.main)
         let controller = storyBoard.instantiateViewController(withIdentifier: "PostListViewController") as! PostListViewController
-
         controller.blog = blog
         controller.restorationClass = self
 
@@ -117,6 +116,12 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     override func heightForFooterView() -> CGFloat {
         return type(of: self).postListHeightForFooterView
+    }
+
+    override func configureFilterBar() {
+        super.configureFilterBar()
+
+        filterTabBar.accessoryView = AuthorFilterButton()
     }
 
     override func configureTableView() {
