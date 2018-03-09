@@ -148,6 +148,7 @@ class FilterTabBar: UIControl {
         tabs.forEach({ $0.removeFromSuperview() })
         tabs = items.map(makeTab(_:))
         tabs.forEach(stackView.addArrangedSubview(_:))
+        layoutIfNeeded()
 
         setSelectedIndex(selectedIndex, animated: false)
     }
@@ -195,14 +196,21 @@ class FilterTabBar: UIControl {
     func setSelectedIndex(_ index: Int, animated: Bool = true) {
         selectedIndex = index
 
-        guard selectedIndex < tabs.count else {
+        guard let tab = selectedTab else {
             return
         }
 
-        let tab = tabs[selectedIndex]
         tab.isSelected = true
         moveSelectionIndicator(to: selectedIndex, animated: animated)
         scroll(to: tab, animated: animated)
+    }
+
+    private var selectedTab: UIButton? {
+        guard selectedIndex < tabs.count else {
+            return nil
+        }
+
+        return tabs[selectedIndex]
     }
 
     // Used to adjust the position of the selection indicator to track the
