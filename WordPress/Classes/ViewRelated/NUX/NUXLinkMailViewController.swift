@@ -13,7 +13,7 @@ class NUXLinkMailViewController: LoginViewController {
         get {
             if let emailMagicLinkSource = emailMagicLinkSource,
                 emailMagicLinkSource == .signup {
-                return .signupMagicLink
+                return .wpComSignupMagicLink
             }
             return .loginMagicLink
         }
