@@ -11,7 +11,7 @@ class LoginWPComViewController: LoginViewController, NUXKeyboardResponder {
     @objc var onePasswordButton: UIButton!
     @IBOutlet var emailLabel: UILabel?
     @IBOutlet var emailStackView: UIStackView?
-    override var sourceTag: SupportSourceTag {
+    override var sourceTag: WordPressSupportSourceTag {
         get {
             return .loginWPComPassword
         }
