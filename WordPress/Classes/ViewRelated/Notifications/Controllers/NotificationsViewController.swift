@@ -544,14 +544,50 @@ extension NotificationsViewController {
         }
     }
 
+    /// This method will take care of all of the preconditions that need to be met:
+    ///
+    ///     1. Tracking the Event.
+    ///     2. Making sure NotificationsViewController is onscreen.
+    ///     3. Making sure the notification to be displayed is not filtered.
+    ///
     fileprivate func prepareToShowDetailsForNotification(_ note: Notification) {
-        // Track
+        trackWillPushDetails(for: note)
+        ensureNotificationsListIsOnscreen()
+        ensureNoteIsNotBeingFiltered(note)
+    }
+
+    /// Tracks: Details Event!
+    ///
+    private func trackWillPushDetails(for note: Notification) {
         let properties = [Stats.noteTypeKey: note.type ?? Stats.noteTypeUnknown]
         WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
+    }
 
-        // Failsafe: Don't push nested!
-        if navigationController?.visibleViewController != self {
-            _ = navigationController?.popViewController(animated: false)
+    /// Failsafe: Make sure the Notifications List is onscreen!
+    ///
+    private func ensureNotificationsListIsOnscreen() {
+        guard navigationController?.visibleViewController != self else {
+            return
+        }
+
+        _ = navigationController?.popViewController(animated: false)
+    }
+
+    /// This method will make sure the Notification that's about to be displayed is not currently being filtered.
+    ///
+    private func ensureNoteIsNotBeingFiltered(_ note: Notification) {
+        guard filter != .none else {
+            return
+        }
+
+        let notifications = tableViewHandler.resultsController.fetchedObjects as? [Notification]
+        guard notifications?.contains(note) == false else {
+            return
+        }
+
+        filter = .none
+        if let indexPath = tableViewHandler.resultsController.indexPath(forObject: note) {
+            tableView.scrollToRow(at: indexPath, at: .top, animated: false)
         }
     }
 
