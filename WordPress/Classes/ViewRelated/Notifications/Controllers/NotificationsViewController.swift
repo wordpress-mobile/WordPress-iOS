@@ -515,8 +515,8 @@ extension NotificationsViewController {
     private func showDetails(for note: Notification) {
         DDLogInfo("Pushing Notification Details for: [\(note.notificationId)]")
 
-        prepareToShowDetailsForNotification(note)
-
+        ensureNotificationsListIsOnscreen()
+        trackWillPushDetails(for: note)
         markAsRead(note: note)
 
         // Display Details
@@ -540,18 +540,6 @@ extension NotificationsViewController {
             self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
             self.view.isUserInteractionEnabled = true
         }
-    }
-
-    /// This method will take care of all of the preconditions that need to be met:
-    ///
-    ///     1. Tracking the Event.
-    ///     2. Making sure NotificationsViewController is onscreen.
-    ///     3. Making sure the notification to be displayed is not filtered.
-    ///
-    fileprivate func prepareToShowDetailsForNotification(_ note: Notification) {
-        trackWillPushDetails(for: note)
-        ensureNotificationsListIsOnscreen()
-        ensureNoteIsNotBeingFiltered(note)
     }
 
     /// Tracks: Details Event!
@@ -578,15 +566,15 @@ extension NotificationsViewController {
             return
         }
 
-        let notifications = tableViewHandler.resultsController.fetchedObjects as? [Notification]
-        guard notifications?.contains(note) == false else {
+        let visibleNotes = tableView.indexPathsForVisibleRows?.flatMap { indexPath in
+            return tableViewHandler.resultsController.object(at: indexPath) as? Notification
+        }
+
+        guard visibleNotes?.contains(note) == false else {
             return
         }
 
         filter = .none
-        if let indexPath = tableViewHandler.resultsController.indexPath(forObject: note) {
-            tableView.scrollToRow(at: indexPath, at: .top, animated: false)
-        }
     }
 
     /// Will display an Undelete button on top of a given notification.
@@ -597,7 +585,7 @@ extension NotificationsViewController {
     ///     -   noteObjectID: The Core Data ObjectID associated to a given notification.
     ///     -   request: A DeletionRequest Struct
     ///
-    fileprivate func showUndeleteForNoteWithID(_ noteObjectID: NSManagedObjectID, request: NotificationDeletionRequest) {
+    private func showUndeleteForNoteWithID(_ noteObjectID: NSManagedObjectID, request: NotificationDeletionRequest) {
         // Mark this note as Pending Deletion and Reload
         notificationDeletionRequests[noteObjectID] = request
         reloadRowForNotificationWithID(noteObjectID)
@@ -1319,7 +1307,8 @@ extension NotificationsViewController: WPSplitViewControllerDetailProvider {
 
         selectedNotification = note
 
-        prepareToShowDetailsForNotification(note)
+        trackWillPushDetails(for: note)
+        ensureNotificationsListIsOnscreen()
 
         if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher {
             return ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
