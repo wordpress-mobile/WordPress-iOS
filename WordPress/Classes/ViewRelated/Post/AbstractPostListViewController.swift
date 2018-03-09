@@ -143,6 +143,9 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             tableView.reloadData()
         }
 
+        filterTabBar.layoutIfNeeded()
+        updateSelectedFilter()
+
         refreshResults()
         registerForKeyboardNotifications()
     }
@@ -247,8 +250,6 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         filterTabBar.items = filterSettings.availablePostListFilters().map({ $0.title })
 
-        updateSelectedFilter()
-
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 
@@ -290,7 +291,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         }
     }
 
-    @objc func configureAuthorFilter() {
+    func configureAuthorFilter() {
         fatalError("You should implement this method in the subclass")
     }
 
