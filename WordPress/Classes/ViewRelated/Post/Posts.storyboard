@@ -55,10 +55,7 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="addButton" destination="9Az-zB-Hwe" id="r4s-oX-gyT"/>
-                        <outlet property="authorFilterSegmentedControl" destination="2zZ-72-iKA" id="A6u-P2-Z7M"/>
-                        <outlet property="authorsFilterView" destination="9at-tM-m4A" id="Iue-Ql-B4V"/>
                         <outlet property="filterTabBar" destination="Nmf-Iz-jkG" id="Ydz-ff-EUy"/>
-                        <outlet property="headerStackView" destination="PF5-eU-KAv" id="7PN-bA-mdX"/>
                         <outlet property="rightBarButtonView" destination="8Ph-e4-iOe" id="V4F-lw-glT"/>
                         <outlet property="searchWrapperView" destination="sFK-WP-z2Z" id="CJ1-ul-bLt"/>
                     </connections>
@@ -87,49 +84,11 @@
                         <constraint firstAttribute="bottom" secondItem="9Az-zB-Hwe" secondAttribute="bottom" id="Usu-ZA-zoK"/>
                     </constraints>
                 </view>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" id="PF5-eU-KAv">
+                <view contentMode="scaleToFill" id="sFK-WP-z2Z" customClass="SearchWrapperView" customModule="WordPress" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="88"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sFK-WP-z2Z" customClass="SearchWrapperView" customModule="WordPress" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                        </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9at-tM-m4A">
-                            <rect key="frame" x="0.0" y="44" width="600" height="44"/>
-                            <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ESQ-oX-ZqN">
-                                    <rect key="frame" x="0.0" y="43" width="600" height="1"/>
-                                    <color key="backgroundColor" red="0.82352941176470584" green="0.87058823529411766" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="1" id="4Sy-We-JMj"/>
-                                    </constraints>
-                                </view>
-                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="2zZ-72-iKA">
-                                    <rect key="frame" x="160" y="8" width="280" height="29"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="280" id="4I1-mY-hd0"/>
-                                    </constraints>
-                                    <segments>
-                                        <segment title="Only Me"/>
-                                        <segment title="Everyone"/>
-                                    </segments>
-                                    <connections>
-                                        <action selector="handleAuthorFilterChanged:" destination="VTO-0U-HpP" eventType="valueChanged" id="q2z-tP-54k"/>
-                                    </connections>
-                                </segmentedControl>
-                            </subviews>
-                            <constraints>
-                                <constraint firstAttribute="centerX" secondItem="2zZ-72-iKA" secondAttribute="centerX" constant="-0.5" id="3PO-xC-h2M"/>
-                                <constraint firstItem="ESQ-oX-ZqN" firstAttribute="leading" secondItem="9at-tM-m4A" secondAttribute="leading" id="EkC-Du-0w6"/>
-                                <constraint firstAttribute="height" constant="44" id="KUd-OB-pfW"/>
-                                <constraint firstAttribute="bottom" secondItem="ESQ-oX-ZqN" secondAttribute="bottom" id="LQ5-GJ-0XZ"/>
-                                <constraint firstAttribute="centerY" secondItem="2zZ-72-iKA" secondAttribute="centerY" id="uve-eW-3Xv"/>
-                                <constraint firstAttribute="trailing" secondItem="ESQ-oX-ZqN" secondAttribute="trailing" id="zJx-BR-zvI"/>
-                            </constraints>
-                        </view>
-                    </subviews>
-                </stackView>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                </view>
             </objects>
             <point key="canvasLocation" x="517.60000000000002" y="317.99100449775113"/>
         </scene>
