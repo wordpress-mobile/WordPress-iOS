@@ -137,6 +137,7 @@ open class SignupService: LocalCoreDataService {
                                             andClientSecret: ApiCredentials.secret(),
                                             success: { (responseDictionary) in
                                                 // Note: User creation is deferred until we have a WPCom auth token.
+                                                WPAppAnalytics.track(.createdAccount)
                                                 success()
                                             },
                                             failure: failure)
@@ -165,6 +166,7 @@ open class SignupService: LocalCoreDataService {
                                                 return
                                         }
 
+                                        WPAppAnalytics.track(.createdAccount)
                                         // create the local account
                                         let service = AccountService(managedObjectContext: self.managedObjectContext)
                                         let account = service.createOrUpdateAccount(withUsername: username, authToken: bearer_token)
