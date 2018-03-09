@@ -563,7 +563,7 @@ extension NotificationsViewController {
     ///     -   noteObjectID: The Core Data ObjectID associated to a given notification.
     ///     -   request: A DeletionRequest Struct
     ///
-    func showUndeleteForNoteWithID(_ noteObjectID: NSManagedObjectID, request: NotificationDeletionRequest) {
+    fileprivate func showUndeleteForNoteWithID(_ noteObjectID: NSManagedObjectID, request: NotificationDeletionRequest) {
         // Mark this note as Pending Deletion and Reload
         notificationDeletionRequests[noteObjectID] = request
         reloadRowForNotificationWithID(noteObjectID)
