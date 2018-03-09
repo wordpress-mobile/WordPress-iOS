@@ -50,7 +50,7 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="gravatarButton" destination="hfE-Wp-Ea1" id="Kld-Tp-PVI"/>
-                <outlet property="gravatarImageView" destination="Sgx-sT-G82" id="xVG-bi-oa8"/>
+                <outlet property="gravatarImageView" destination="Sgx-sT-G82" id="bYR-Zw-IG4"/>
             </connections>
             <point key="canvasLocation" x="-141" y="73"/>
         </tableViewCell>

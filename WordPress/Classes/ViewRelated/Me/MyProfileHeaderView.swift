@@ -47,13 +47,8 @@ class MyProfileHeaderView: WPTableViewCell {
         assert(gravatarImageView != nil)
         assert(gravatarButton != nil)
 
-        activityIndicator.hidesWhenStopped = true
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-
-        gravatarImageView.shouldRoundCorners = true
-        gravatarImageView.addSubview(activityIndicator)
-        gravatarImageView.pinSubviewAtCenter(activityIndicator)
-        setNeedsUpdateConstraints()
+        configureActivityIndicator()
+        configureGravatarImageView()
     }
 
     @IBAction func onProfileWasPressed(_ sender: UIButton) {
@@ -73,5 +68,20 @@ class MyProfileHeaderView: WPTableViewCell {
         if let email = gravatarEmail {
             gravatarImageView.overrideGravatarImageCache(image, rating: UIImageView.GravatarRatings.x, email: email)
         }
+    }
+
+    func configureActivityIndicator() {
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    func configureGravatarImageView() {
+        gravatarImageView.shouldRoundCorners = true
+        gravatarImageView.addSubview(activityIndicator)
+        gravatarImageView.pinSubviewAtCenter(activityIndicator)
+        setNeedsUpdateConstraints()
+
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(onProfileWasPressed(_:)))
+        gravatarImageView.addGestureRecognizer(recognizer)
     }
 }
