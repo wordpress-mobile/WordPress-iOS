@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 
 /// Displays an author gravatar image with a dropdown arrow.
 ///
@@ -7,6 +8,8 @@ class AuthorFilterButton: UIControl {
         let imageView = CircularImageView(image: UIImage.gravatarPlaceholderImage)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.setContentHuggingPriority(.required, for: .horizontal)
+        imageView.backgroundColor = WPStyleGuide.greyLighten20()
+        imageView.tintColor = .white
 
         return imageView
     }()
@@ -26,12 +29,23 @@ class AuthorFilterButton: UIControl {
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.spacing = Metrics.stackViewSpacing
+        stackView.isUserInteractionEnabled = false
 
         return stackView
     }()
 
     override var intrinsicContentSize: CGSize {
         return Metrics.contentSize
+    }
+
+    var gravatarEmail: String? = nil {
+        didSet {
+            if let gravatarEmail = gravatarEmail {
+                authorImageView.downloadGravatarWithEmail(gravatarEmail, placeholderImage: gravatarPlaceholder)
+            } else {
+                authorImageView.image = gravatarPlaceholder
+            }
+        }
     }
 
     init() {
@@ -58,9 +72,13 @@ class AuthorFilterButton: UIControl {
             widthAnchor.constraint(equalToConstant: intrinsicContentSize.width),
             chevronImageView.heightAnchor.constraint(equalToConstant: Metrics.chevronSize.height + Metrics.chevronVerticalPadding)
             ])
+
+        authorImageView.image = gravatarPlaceholder
     }
 
-    enum Metrics {
+    private let gravatarPlaceholder: UIImage = Gridicon.iconOfType(.user, withSize: Metrics.gravatarSize)
+
+    private enum Metrics {
         static let chevronSize = CGSize(width: 10.0, height: 5.0)
         static let contentSize = CGSize(width: 72.0, height: 44.0)
         static let gravatarSize = CGSize(width: 28.0, height: 28.0)
