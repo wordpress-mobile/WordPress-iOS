@@ -40,7 +40,7 @@ extension WordPressSupportSourceTag {
         case .wpComSignupWaitingForGoogle:
             return .signupWaitingForGoogle
         case .wpComSignupMagicLink:
-            return signupMagicLink
+            return .signupMagicLink
         }
     }
 }
