@@ -6,7 +6,7 @@ protocol LoginWithLogoAndHelpViewController {
     func addWordPressLogoToNavController()
     func handleHelpButtonTapped(_ sender: AnyObject)
     func displaySupportViewController(from source: WordPressSupportSourceTag)
-    func refreshBadgeCount(_ notification: Foundation.Notification)
+    func refreshBadgeCount()
 }
 
 extension LoginWithLogoAndHelpViewController where Self: UIViewController {
@@ -137,6 +137,7 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
         }
 
         setupHelpButtonAndBadge()
+        refreshBadgeCount()
     }
 
     /// Sets up the help button and the helpshift conversation badge.
@@ -144,7 +145,7 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
     /// - Note: this is only used in the old single-page signup screen and can be removed once that screen is gone.
     ///
     private func setupHelpButtonAndBadge() {
-        NotificationCenter.default.addObserver(self, selector: #selector(NUXAbstractViewController.refreshBadgeCount(_:)), name: .wordpressSupportBadgeUpdated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshBadgeCount), name: .wordpressSupportBadgeUpdated, object: nil)
 
         let customView = UIView(frame: helpButtonContainerFrame)
 
@@ -256,7 +257,7 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
 
     /// Updates the badge count and its visibility.
     ///
-    @objc func refreshBadgeCount(_ notification: Foundation.Notification) {
+    @objc func refreshBadgeCount() {
         let count = WordPressAuthenticator.shared.delegate?.supportBadgeCount ?? 0
         helpBadge.text = "\(count)"
         helpBadge.isHidden = (count == 0)
