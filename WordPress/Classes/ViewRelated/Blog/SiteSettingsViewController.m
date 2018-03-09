@@ -397,7 +397,8 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     _mediaQuotaCell = (MediaQuotaCell *)[self.tableView dequeueReusableCellWithIdentifier:MediaQuotaCell.defaultReuseIdentifier];
 
     _mediaQuotaCell.title = NSLocalizedString(@"Space used", @"Label for showing the available disk space quota available for media");
-
+    _mediaQuotaCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     return _mediaQuotaCell;
 }
 
