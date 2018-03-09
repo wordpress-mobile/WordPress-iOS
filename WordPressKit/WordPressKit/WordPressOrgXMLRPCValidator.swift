@@ -1,6 +1,7 @@
 import Foundation
 import CocoaLumberjack
 
+
 @objc public enum WordPressOrgXMLRPCValidatorError: Int, Error {
     case emptyURL // The URL provided was nil, empty or just whitespaces
     case invalidURL // The URL provided was an invalid URL
@@ -61,54 +62,95 @@ open class WordPressOrgXMLRPCValidator: NSObject {
                                     userAgent: String,
                                       success: @escaping (_ xmlrpcURL: URL) -> (),
                                       failure: @escaping (_ error: NSError) -> ()) {
+
+        var sitesToTry = [String]()
+
+        if site.hasPrefix("http://") {
+            sitesToTry.append(site)
+            sitesToTry.append(site.replacingOccurrences(of: "http://", with: "https://"))
+        } else if site.hasPrefix("https://") {
+            sitesToTry.append(site)
+            sitesToTry.append(site.replacingOccurrences(of: "https://", with: "http://"))
+        } else {
+            failure(WordPressOrgXMLRPCValidatorError.invalidScheme as NSError)
+        }
+
+        tryGuessXMLRPCURLForSites(sitesToTry, userAgent: userAgent, success: success, failure: failure)
+    }
+
+    /// Helper for `guessXMLRPCURLForSite(_:userAgent:success:failure)`
+    /// Tries to guess the XMLRPC url for all the sites string given in the sites array
+    /// If all of them fail, it will call `failure` with the error in the last url string.
+    ///
+    private func tryGuessXMLRPCURLForSites(_ sites: [String],
+                                          userAgent: String,
+                                          success: @escaping (_ xmlrpcURL: URL) -> (),
+                                          failure: @escaping (_ error: NSError) -> ()) {
+
+        guard sites.isEmpty == false else {
+            failure(WordPressOrgXMLRPCValidatorError.invalid as NSError)
+            return
+        }
+
+        var mutableSites = sites
+        let nextSite = mutableSites.removeFirst()
+
+        func errorHandler(_ error: NSError) {
+            if mutableSites.isEmpty {
+                failure(error)
+            } else {
+                tryGuessXMLRPCURLForSites(mutableSites, userAgent: userAgent, success: success, failure: failure)
+            }
+        }
+
         let originalXMLRPCURL: URL
         let xmlrpcURL: URL
         do {
-            xmlrpcURL = try urlForXMLRPCFromURLString(site, addXMLRPC: true)
-            originalXMLRPCURL = try urlForXMLRPCFromURLString(site, addXMLRPC: false)
+            xmlrpcURL = try urlForXMLRPCFromURLString(nextSite, addXMLRPC: true)
+            originalXMLRPCURL = try urlForXMLRPCFromURLString(nextSite, addXMLRPC: false)
         } catch let error as NSError {
             DDLogError(error.localizedDescription)
-            failure(error)
+            errorHandler(error)
             return
         }
 
         validateXMLRPCURL(xmlrpcURL, success: success, failure: { (error) in
+            DDLogError(error.localizedDescription)
+            if (error.domain == NSURLErrorDomain && error.code == NSURLErrorUserCancelledAuthentication) ||
+                (error.domain == NSURLErrorDomain && error.code == NSURLErrorCannotFindHost) ||
+                (error.domain == NSURLErrorDomain && error.code == NSURLErrorNetworkConnectionLost) ||
+                (error.domain == String(reflecting: WordPressOrgXMLRPCValidatorError.self) && error.code == WordPressOrgXMLRPCValidatorError.mobilePluginRedirectedError.rawValue) {
+                errorHandler(error)
+                return
+            }
+            // Try the original given url as an XML-RPC endpoint
+            DDLogError("Try the original given url as an XML-RPC endpoint: \(originalXMLRPCURL)")
+            self.validateXMLRPCURL(originalXMLRPCURL , success: success, failure: { (error) in
                 DDLogError(error.localizedDescription)
-                if (error.domain == NSURLErrorDomain && error.code == NSURLErrorUserCancelledAuthentication) ||
-                    (error.domain == NSURLErrorDomain && error.code == NSURLErrorCannotFindHost) ||
-                    (error.domain == NSURLErrorDomain && error.code == NSURLErrorNetworkConnectionLost) ||
-                    (error.domain == String(reflecting: WordPressOrgXMLRPCValidatorError.self) && error.code == WordPressOrgXMLRPCValidatorError.mobilePluginRedirectedError.rawValue) {
-                    failure(error)
-                    return
-                }
-                // Try the original given url as an XML-RPC endpoint
-                DDLogError("Try the original given url as an XML-RPC endpoint: \(originalXMLRPCURL)")
-                self.validateXMLRPCURL(originalXMLRPCURL , success: success, failure: { (error) in
+                // Fetch the original url and look for the RSD link
+                self.guessXMLRPCURLFromHTMLURL(originalXMLRPCURL, success: success, failure: { (error) in
                     DDLogError(error.localizedDescription)
-                    // Fetch the original url and look for the RSD link
-                    self.guessXMLRPCURLFromHTMLURL(originalXMLRPCURL, success: success, failure: { (error) in
-                        DDLogError(error.localizedDescription)
-                        // See if this is a Jetpack site that's having problems.
-                        if let service = JetpackServiceRemote(wordPressComRestApi: WordPressComRestApi.anonymousApi(userAgent: userAgent)) {
-                            service.checkSiteHasJetpack(originalXMLRPCURL, success: { (hasJetpack) in
-                                var err = error
-                                if hasJetpack {
-                                    var userInfo = err.userInfo
-                                    userInfo[WordPressOrgXMLRPCValidator.UserInfoHasJetpackKey] = true
-                                    err = NSError(domain: err.domain, code: err.code, userInfo: userInfo)
-                                }
-                                failure(err)
-                            }, failure: { (_) in
-                                // Return the previous error, not an error when checking for jp.
-                                failure(error)
-                            })
-                        } else {
-                            // JetpackServiceRemote didn't init properly, just call failure with the existing error
-                            failure(error)
-                        }
-                    })
+                    // See if this is a Jetpack site that's having problems.
+                    if let service = JetpackServiceRemote(wordPressComRestApi: WordPressComRestApi.anonymousApi(userAgent: userAgent)) {
+                        service.checkSiteHasJetpack(originalXMLRPCURL, success: { (hasJetpack) in
+                            var err = error
+                            if hasJetpack {
+                                var userInfo = err.userInfo
+                                userInfo[WordPressOrgXMLRPCValidator.UserInfoHasJetpackKey] = true
+                                err = NSError(domain: err.domain, code: err.code, userInfo: userInfo)
+                            }
+                            errorHandler(err)
+                        }, failure: { (_) in
+                            // Return the previous error, not an error when checking for jp.
+                            errorHandler(error)
+                        })
+                    } else {
+                        // JetpackServiceRemote didn't init properly, just call failure with the existing error
+                         errorHandler(error)
+                    }
                 })
             })
+        })
     }
 
     fileprivate func urlForXMLRPCFromURLString(_ urlString: String, addXMLRPC: Bool) throws -> URL {
