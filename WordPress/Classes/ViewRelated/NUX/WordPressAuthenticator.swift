@@ -160,7 +160,7 @@ import WordPressShared
             }
         }
 
-        let navController = NUXNavigationController(rootViewController: controller)
+        let navController = LoginNavigationController(rootViewController: controller)
 
         // The way the magic link flow works some view controller might
         // still be presented when the app is resumed by tapping on the auth link.
