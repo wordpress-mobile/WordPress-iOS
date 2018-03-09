@@ -31,7 +31,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     }()
 
     private let errorDomain = "AztecPostViewController.errorDomain"
-    
+
     private enum ErrorCode: Int {
         case expectedSecondaryAction = 1
     }
@@ -1043,9 +1043,9 @@ extension AztecPostViewController {
             Crashlytics.sharedInstance().recordError(error)
             return
         }
-        
+
         let secondaryStat = self.postEditorStateContext.secondaryPublishActionAnalyticsStat
-        
+
         let publishPostClosure = { [unowned self] in
             self.publishPost(
                 action: secondaryPublishAction,
@@ -1081,7 +1081,7 @@ extension AztecPostViewController {
                     return updateTitle
                 }
             }()
-            
+
             // The post is a local or remote draft
             alertController.addDefaultActionWithTitle(title) { _ in
                 self.publishPost(action: .save, dismissWhenDone: true, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
@@ -1127,7 +1127,7 @@ extension AztecPostViewController {
             }
             return
         }
-        
+
         let publishBlock = { [unowned self] in
             if action == .save {
                 self.post.status = .draft
@@ -1135,11 +1135,11 @@ extension AztecPostViewController {
                 self.post.date_created_gmt = Date()
                 self.post.status = .publish
             }
-            
+
             if let analyticsStat = analyticsStat {
                 self.trackPostSave(stat: analyticsStat)
             }
-            
+
             self.uploadPost(dismissWhenDone: dismissWhenDone)
         }
 
