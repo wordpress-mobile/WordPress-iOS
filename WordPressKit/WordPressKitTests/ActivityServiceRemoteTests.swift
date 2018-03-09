@@ -180,6 +180,7 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
         remote.getRewindStatus(siteID,
                                success: { (rewindStatus) in
                                    XCTAssertEqual(rewindStatus.state, .active)
+                                   XCTAssertNotNil(rewindStatus.lastUpdated)
                                    XCTAssertNil(rewindStatus.restore)
                                    expect.fulfill()
                                }, failure: { error in

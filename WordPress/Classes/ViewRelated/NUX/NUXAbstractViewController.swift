@@ -131,7 +131,7 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
 
     /// Attaches the Help Button, when the WordPressAuthenticationDelegate says we should!
     ///
-    @objc func setupHelpButtonAndBadgeIfNeeded() {
+    func setupHelpButtonAndBadgeIfNeeded() {
         guard shouldDisplayHelpButton else {
             return
         }
