@@ -72,6 +72,21 @@ class FilterTabBar: UIControl {
         }
     }
 
+    /// Accessory view displayed on the leading end of the tab bar.
+    ///
+    var accessoryView: UIView? = nil {
+        didSet {
+            if let oldValue = oldValue {
+                oldValue.removeFromSuperview()
+            }
+
+            if let accessoryView = accessoryView {
+                accessoryView.setContentCompressionResistancePriority(.required, for: .horizontal)
+                stackView.insertArrangedSubview(accessoryView, at: 0)
+            }
+        }
+    }
+
     // MARK: - Initialization
 
     init(items: [String]) {
@@ -262,7 +277,7 @@ class FilterTabBar: UIControl {
     }
 
     private enum AppearanceMetrics {
-        static let height: CGFloat = 45.0
+        static let height: CGFloat = 46.0
         static let bottomDividerHeight: CGFloat = 1.0
         static let selectionIndicatorHeight: CGFloat = 2.0
         static let horizontalPadding: CGFloat = 4.0
