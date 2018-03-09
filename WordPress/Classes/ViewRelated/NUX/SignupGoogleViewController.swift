@@ -9,9 +9,9 @@ class SignupGoogleViewController: LoginViewController {
     private var hasShownGoogle = false
     @IBOutlet var titleLabel: UILabel?
 
-    override var sourceTag: SupportSourceTag {
+    override var sourceTag: WordPressSupportSourceTag {
         get {
-            return .signupWaitingForGoogle
+            return .wpComSignupWaitingForGoogle
         }
     }
 

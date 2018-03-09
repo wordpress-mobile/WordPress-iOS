@@ -18,4 +18,5 @@ public enum WordPressSupportSourceTag {
     case wpComCreateSiteUsername
     case wpComSignupEmail
     case wpComSignup
+    case wpComSignupWaitingForGoogle
 }
