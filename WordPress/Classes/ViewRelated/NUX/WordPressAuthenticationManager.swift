@@ -28,6 +28,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         navController.navigationBar.isTranslucent = false
         navController.modalPresentationStyle = .formSheet
 
-        return supportViewController
+        return navController
     }
 }
