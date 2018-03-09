@@ -1411,6 +1411,17 @@ private extension NotificationsViewController {
         }
     }
 
+    var filter: Filter {
+        get {
+            let selectedIndex = filtersSegmentedControl?.selectedSegmentIndex ?? Filter.none.rawValue
+            return Filter(rawValue: selectedIndex) ?? .none
+        }
+        set {
+            filtersSegmentedControl?.selectedSegmentIndex = newValue.rawValue
+            reloadResultsController()
+        }
+    }
+
     static let contactURL = "https://support.wordpress.com/contact/"
 
     enum Filter: Int {
