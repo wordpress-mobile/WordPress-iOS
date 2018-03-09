@@ -385,6 +385,8 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     if (aSwitch.tag == SettingsSectionSettingsRowExtraDebug) {
         [[NSUserDefaults standardUserDefaults] setBool:aSwitch.on forKey:kExtraDebugDefaultsKey];
         [[NSUserDefaults standardUserDefaults] synchronize];
+
+        [WPLogger configureLoggerLevelWithExtraDebug];
     }
 }
 
