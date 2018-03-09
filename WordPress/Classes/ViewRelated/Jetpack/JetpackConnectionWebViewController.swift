@@ -209,8 +209,7 @@ private extension JetpackConnectionWebViewController {
         return URLComponents(url: url, resolvingAgainstBaseURL: false)?
             .queryItems?
             .first(where: { $0.name == "redirect_to" })?
-            .value?
-            .removingPercentEncoding
+            .value
             .flatMap(URL.init(string:))
     }
 

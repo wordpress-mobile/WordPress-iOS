@@ -115,6 +115,7 @@ class InvitePersonViewController: UITableViewController {
         setupNavigationBar()
         setupDefaultRole()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -134,6 +135,16 @@ class InvitePersonViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionFooter(view)
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // Workaround for UIKit issue where labels text are set to nil
+        // when user changes system font size in static tables (dynamic type)
+        setupRoleCell()
+        refreshRoleCell()
+        refreshUsernameCell()
+        refreshMessageTextView()
+        return super.tableView(tableView, cellForRowAt: indexPath)
     }
 
 
