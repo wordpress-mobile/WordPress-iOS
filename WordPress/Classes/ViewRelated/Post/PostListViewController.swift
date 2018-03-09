@@ -45,11 +45,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     static fileprivate let postCardEstimatedRowHeight = CGFloat(300.0)
     static fileprivate let postListHeightForFooterView = CGFloat(34.0)
 
-    @IBOutlet fileprivate weak var authorFilterSegmentedControl: UISegmentedControl!
-
-    @IBOutlet var authorsFilterView: UIView!
     @IBOutlet var searchWrapperView: UIView!
-    @IBOutlet var headerStackView: UIStackView!
 
     // MARK: - GUI
 
@@ -170,10 +166,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             searchWrapperView.frame.size.height = searchController.searchBar.bounds.height
         }
 
-        headerStackView.frame.size.height = headerStackView.subviews.reduce(0, { $0 + $1.frame.size.height })
-
         // Resetting the tableHeaderView is necessary to get the new height to take effect
-        tableView.tableHeaderView = headerStackView
+        tableView.tableHeaderView = searchWrapperView
     }
 
 
