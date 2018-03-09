@@ -499,14 +499,15 @@ extension NotificationsViewController {
     ///
     /// - Parameter notificationID: The ID of the Notification that should be rendered onscreen.
     ///
-    @objc func showDetailsForNotificationWithID(_ noteId: String) {
-        if let note = loadNotificationWithID(noteId) {
-            showDetailsForNotification(note)
+    @objc
+    func showDetailsForNotificationWithID(_ noteId: String) {
+        if let note = loadNotification(with: noteId) {
+            showDetails(for: note)
             return
         }
 
-        syncNotificationWithID(noteId, timeout: Syncing.pushMaxWait) { note in
-            self.showDetailsForNotification(note)
+        syncNotification(with: noteId, timeout: Syncing.pushMaxWait) { note in
+            self.showDetails(for: note)
         }
     }
 
@@ -515,8 +516,9 @@ extension NotificationsViewController {
     private func showDetails(for note: Notification) {
         DDLogInfo("Pushing Notification Details for: [\(note.notificationId)]")
 
-        ensureNotificationsListIsOnscreen()
         trackWillPushDetails(for: note)
+        ensureNotificationsListIsOnscreen()
+        selectRow(for: note)
         markAsRead(note: note)
 
         // Display Details
