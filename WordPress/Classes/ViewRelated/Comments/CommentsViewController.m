@@ -76,6 +76,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     
     // Refresh the UI
     [self refreshNoResultsView];
+    [self handleConnectionError];
 
     [self refreshAndSyncIfNeeded];
 }
