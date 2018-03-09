@@ -7,29 +7,29 @@ import CocoaLumberjack
     case invalidScheme // The URL provided was an invalid scheme, only HTTP and HTTPS supported
     case notWordPressError // That's a XML-RPC endpoint but doesn't look like WordPress
     case mobilePluginRedirectedError // There's some "mobile" plugin redirecting everything to their site
+    case forbidden = 403 // Server returned a 403 error while reading xmlrpc file
+    case blocked = 405 // Server returned a 405 error while reading xmlrpc file
     case invalid // Doesn't look to be valid XMLRPC Endpoint.
 
-    func convertToNSError() -> NSError {
-        let castedError = self as NSError
-        let message: String
+    public var localizedDescription: String {
         switch (self) {
         case .emptyURL:
-            message = NSLocalizedString("Empty URL", comment: "Message to show to user when he tries to add a self-hosted site that is an empty URL.")
+            return NSLocalizedString("Empty URL", comment: "Message to show to user when he tries to add a self-hosted site that is an empty URL.")
         case .invalidURL:
-            message = NSLocalizedString("Invalid URL, please check if you wrote a valid site address.", comment: "Message to show to user when he tries to add a self-hosted site that isn't a valid URL.")
+            return NSLocalizedString("Invalid URL, please check if you wrote a valid site address.", comment: "Message to show to user when he tries to add a self-hosted site that isn't a valid URL.")
         case .invalidScheme:
-            message = NSLocalizedString("Invalid URL scheme inserted, only HTTP and HTTPS are supported.", comment: "Message to show to user when he tries to add a self-hosted site that isn't HTTP or HTTPS.")
+            return NSLocalizedString("Invalid URL scheme inserted, only HTTP and HTTPS are supported.", comment: "Message to show to user when he tries to add a self-hosted site that isn't HTTP or HTTPS.")
         case .notWordPressError:
-            message = NSLocalizedString("That doesn't look like a WordPress site.", comment: "Message to show to user when he tries to add a self-hosted site that isn't a WordPress site.")
+            return NSLocalizedString("That doesn't look like a WordPress site.", comment: "Message to show to user when he tries to add a self-hosted site that isn't a WordPress site.")
         case .mobilePluginRedirectedError:
-            message = NSLocalizedString("You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog", comment: "")
+            return NSLocalizedString("You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog", comment: "")
         case .invalid:
-            message = NSLocalizedString("That doesn't look like a WordPress site.", comment: "Message to show to user when he tries to add a self-hosted site that isn't a WordPress site.")
+            return NSLocalizedString("We're sure this is a great site - but it's not a WordPress site, so you can't connect to it with this app.", comment: "Error message shown a URL points to a valid site but not a WordPress site.")
+        case .blocked:
+            return NSLocalizedString("Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Contact your host to solve this problem.", comment: "Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file.")
+        case .forbidden:
+            return NSLocalizedString("Couldn't connect. We received a 403 error when trying to access your site XMLRPC endpoint. The app needs that in order to communicate with your site. Contact your host to solve this problem.", comment: "Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden.")
         }
-        let finalError = NSError(domain: castedError.domain,
-                                 code: castedError.code,
-                                 userInfo: [NSLocalizedDescriptionKey: message])
-        return finalError
     }
 }
 
@@ -116,14 +116,14 @@ open class WordPressOrgXMLRPCValidator: NSObject {
         // Is an empty url? Sorry, no psychic powers yet
         resultURLString = urlString.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
         if resultURLString.isEmpty {
-            throw WordPressOrgXMLRPCValidatorError.emptyURL.convertToNSError()
+            throw WordPressOrgXMLRPCValidatorError.emptyURL
         }
 
         // Check if it's a valid URL
         // Not a valid URL. Could be a bad protocol (htpp://), syntax error (http//), ...
         // See https://github.com/koke/NSURL-Guess for extra help cleaning user typed URLs
         guard let baseURL = URL(string: resultURLString) else {
-            throw WordPressOrgXMLRPCValidatorError.invalidURL.convertToNSError()
+            throw WordPressOrgXMLRPCValidatorError.invalidURL
         }
 
         // Let's see if a scheme is provided and it's HTTP or HTTPS
@@ -134,7 +134,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
         }
 
         guard scheme == "http" || scheme == "https" else {
-            throw WordPressOrgXMLRPCValidatorError.invalidScheme.convertToNSError()
+            throw WordPressOrgXMLRPCValidatorError.invalidScheme
         }
 
         if baseURL.lastPathComponent != "xmlrpc.php" && addXMLRPC {
@@ -144,7 +144,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
         }
 
         guard let url = URL(string: resultURLString) else {
-            throw WordPressOrgXMLRPCValidatorError.invalid.convertToNSError()
+            throw WordPressOrgXMLRPCValidatorError.invalid
         }
 
         return url
@@ -164,13 +164,13 @@ open class WordPressOrgXMLRPCValidator: NSObject {
         let api = WordPressOrgXMLRPCApi(endpoint: url)
         api.callMethod("system.listMethods", parameters: nil, success: { (responseObject, httpResponse) in
                 guard let methods = responseObject as? [String], methods.contains("wp.getUsersBlogs") else {
-                        failure(WordPressOrgXMLRPCValidatorError.notWordPressError.convertToNSError())
+                    failure(WordPressOrgXMLRPCValidatorError.notWordPressError as NSError)
                         return
                 }
                 if let finalURL = httpResponse?.url {
                     success(finalURL)
                 } else {
-                    failure(WordPressOrgXMLRPCValidatorError.invalid.convertToNSError())
+                    failure(WordPressOrgXMLRPCValidatorError.invalid as NSError)
                 }
             }, failure: { (error, httpResponse) in
                 if httpResponse?.url != url {
@@ -178,7 +178,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
                     if let data = error.userInfo[WordPressOrgXMLRPCApi.WordPressOrgXMLRPCApiErrorKeyData] as? Data,
                         let responseString = String(data: data, encoding: String.Encoding.utf8), responseString.range(of: "<meta name=\"GENERATOR\" content=\"www.dudamobile.com\">") != nil
                             || responseString.range(of: "dm404Container") != nil {
-                        failure(WordPressOrgXMLRPCValidatorError.mobilePluginRedirectedError.convertToNSError())
+                        failure(WordPressOrgXMLRPCValidatorError.mobilePluginRedirectedError as NSError)
                         return
                     }
                     // If it's a redirect to the same host
@@ -193,7 +193,15 @@ open class WordPressOrgXMLRPCValidator: NSObject {
                         return
                     }
                 }
-                failure(error)
+                
+                switch httpResponse?.statusCode {
+                case .some(WordPressOrgXMLRPCValidatorError.forbidden.rawValue):
+                    failure(WordPressOrgXMLRPCValidatorError.forbidden as NSError)
+                case .some(WordPressOrgXMLRPCValidatorError.blocked.rawValue):
+                    failure(WordPressOrgXMLRPCValidatorError.blocked as NSError)
+                default:
+                    failure(error)
+                }
             })
     }
 
@@ -211,7 +219,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
                   let responseString = String(data: data, encoding: String.Encoding.utf8),
                   let rsdURL = self.extractRSDURLFromHTML(responseString)
             else {
-                    failure(WordPressOrgXMLRPCValidatorError.invalid.convertToNSError())
+                    failure(WordPressOrgXMLRPCValidatorError.invalid as NSError)
                 return
             }
 
@@ -219,12 +227,16 @@ open class WordPressOrgXMLRPCValidator: NSObject {
             let xmlrpc = rsdURL.replacingOccurrences(of: "?rsd", with: "")
             if xmlrpc != rsdURL {
                 guard let newURL = URL(string: xmlrpc) else {
-                    failure(WordPressOrgXMLRPCValidatorError.invalid.convertToNSError())
+                    failure(WordPressOrgXMLRPCValidatorError.invalid as NSError)
                     return
                 }
                 self.validateXMLRPCURL(newURL, success: success, failure: { (error) in
                     //Try to validate by using the RSD file directly
-                    failure(WordPressOrgXMLRPCValidatorError.invalid.convertToNSError())
+                    if error.code == 403 || error.code == 405, let xmlrpcValidatorError = error as? WordPressOrgXMLRPCValidatorError {
+                        failure(xmlrpcValidatorError as NSError)
+                    } else {
+                        failure(WordPressOrgXMLRPCValidatorError.invalid as NSError)
+                    }
                 })
             } else {
                 //Try to validate by using the RSD file directly
@@ -266,7 +278,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
                                        failure: @escaping (_ error: NSError) -> ()) {
         DDLogInfo("Parse the RSD document at the following URL: \(rsd)")
         guard let rsdURL = URL(string: rsd) else {
-            failure(WordPressOrgXMLRPCValidatorError.invalid.convertToNSError())
+            failure(WordPressOrgXMLRPCValidatorError.invalid as NSError)
             return
         }
         let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
@@ -282,7 +294,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
                 let xmlrpc = endpoint,
                 let xmlrpcURL = URL(string: xmlrpc)
                 else {
-                    failure(WordPressOrgXMLRPCValidatorError.invalid.convertToNSError())
+                    failure(WordPressOrgXMLRPCValidatorError.invalid as NSError)
                     return
             }
             DDLogInfo("Bingo! We found the WordPress XML-RPC element: \(xmlrpcURL)")
