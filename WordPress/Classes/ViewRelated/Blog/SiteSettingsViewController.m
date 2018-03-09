@@ -73,11 +73,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
 static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/empty-site/";
 
-@interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, JetpackConnectionDelegate, PostCategoriesViewControllerDelegate>
-
-#pragma mark - Blavatar Header
-@property (nonatomic, strong) SiteIconCell *siteIconHeaderView;
-@property (nonatomic, strong) SiteIconPickerPresenter *siteIconPickerPresenter;
+@interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, JetpackConnectionDelegate, PostCategoriesViewControllerDelegate>
 
 #pragma mark - General Section
 @property (nonatomic, strong) SettingTableViewCell *siteTitleCell;
@@ -144,8 +140,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     DDLogMethod();
     [super viewDidLoad];
     [self.tableView registerNib:MediaQuotaCell.nib forCellReuseIdentifier:MediaQuotaCell.defaultReuseIdentifier];
-    [self.tableView registerNib:SiteIconCell.nib forCellReuseIdentifier:SiteIconCell.defaultReuseIdentifier];
-    [self configureSiteIconHeaderView];
 
     self.navigationItem.title = NSLocalizedString(@"Settings", @"Title for screen that allows configuration of your blog/site settings.");
 
@@ -203,23 +197,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     return sections;
 }
 
-#pragma mark - Table Header
-- (void)configureSiteIconHeaderView
-{
-    self.siteIconHeaderView = [[SiteIconCell alloc] init];
-    __weak __typeof(self)weakSelf = self;
-    [self.siteIconHeaderView setOnAddUpdateIcon:^{
-        [weakSelf siteIconTapped];
-    }];
-    [self.siteIconHeaderView setOnRefreshIconImage:^{
-        if (weakSelf.blog.hasIcon) {
-            [weakSelf.siteIconHeaderView.imageView downloadSiteIconFor:weakSelf.blog placeholderImage:nil];
-        } else {
-            weakSelf.siteIconHeaderView.imageView.image = [UIImage siteIconPlaceholderImage];
-        }
-    }];
-    self.tableView.tableHeaderView = self.siteIconHeaderView;
-}
 
 #pragma mark - UITableViewDataSource
 
@@ -1146,11 +1123,6 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
     } failure:^(NSError *error) {
         [weakSelf.refreshControl endRefreshing];
     }];
-    
-}
-
-- (void)siteIconTapped
-{
     
 }
 
