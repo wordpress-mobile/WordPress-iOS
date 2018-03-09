@@ -195,9 +195,9 @@ open class WordPressOrgXMLRPCValidator: NSObject {
                 }
                 
                 switch httpResponse?.statusCode {
-                case .some(403):
+                case .some(WordPressOrgXMLRPCValidatorError.forbidden.rawValue):
                     failure(WordPressOrgXMLRPCValidatorError.forbidden as NSError)
-                case .some(405):
+                case .some(WordPressOrgXMLRPCValidatorError.blocked.rawValue):
                     failure(WordPressOrgXMLRPCValidatorError.blocked as NSError)
                 default:
                     failure(error)
