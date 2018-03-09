@@ -1040,8 +1040,6 @@ private extension NotificationDetailsViewController {
     }
 
     func likeCommentWithBlock(_ block: NotificationBlock) {
-        UINotificationFeedbackGenerator().notificationOccurred(.success)
-
         actionsService.likeCommentWithBlock(block)
         WPAppAnalytics.track(.notificationsCommentLiked, withBlogID: block.metaSiteID)
     }
@@ -1052,8 +1050,6 @@ private extension NotificationDetailsViewController {
     }
 
     func approveCommentWithBlock(_ block: NotificationBlock) {
-        UINotificationFeedbackGenerator().notificationOccurred(.success)
-
         actionsService.approveCommentWithBlock(block)
         WPAppAnalytics.track(.notificationsCommentApproved, withBlogID: block.metaSiteID)
     }
