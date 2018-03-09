@@ -296,7 +296,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         }
 
         selectedNotification = note
-        showDetailsForNotification(note)
+        showDetails(for: note)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -512,9 +512,7 @@ extension NotificationsViewController {
 
     /// Pushes the details for a given Notification Instance.
     ///
-    /// - Parameter note: The Notification that should be rendered.
-    ///
-    @objc func showDetailsForNotification(_ note: Notification) {
+    private func showDetails(for note: Notification) {
         DDLogInfo("Pushing Notification Details for: [\(note.notificationId)]")
 
         prepareToShowDetailsForNotification(note)
@@ -531,7 +529,7 @@ extension NotificationsViewController {
 
         // This dispatch avoids a bug that was occurring occasionally where navigation (nav bar and tab bar)
         // would be missing entirely when launching the app from the background and presenting a notification.
-        // The issue seems tied to performing a `pop` in `prepareToShowDetailsForNotification` and presenting
+        // The issue seems tied to performing a `pop` in `prepareToShowDetails` and presenting
         // the new detail view controller at the same time. More info: https://github.com/wordpress-mobile/WordPress-iOS/issues/6976
         //
         // Plus: Avoid pushing multiple DetailsViewController's, upon quick & repeated touch events.
@@ -1214,7 +1212,7 @@ private extension NotificationsViewController {
         mediator?.sync()
     }
 
-    func syncNotificationWithID(_ noteId: String, timeout: TimeInterval, success: @escaping (_ note: Notification) -> Void) {
+    func syncNotification(with noteId: String, timeout: TimeInterval, success: @escaping (_ note: Notification) -> Void) {
         let mediator = NotificationSyncMediator()
         let startDate = Date()
 
@@ -1255,7 +1253,7 @@ private extension NotificationsViewController {
         }
     }
 
-    func loadNotificationWithID(_ noteId: String) -> Notification? {
+    func loadNotification(with noteId: String) -> Notification? {
         let predicate = NSPredicate(format: "(notificationId == %@)", noteId)
 
         return mainContext.firstObject(ofType: Notification.self, matching: predicate)
