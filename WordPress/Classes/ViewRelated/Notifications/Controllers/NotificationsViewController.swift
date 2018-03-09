@@ -518,7 +518,8 @@ extension NotificationsViewController {
 
         trackWillPushDetails(for: note)
         ensureNotificationsListIsOnscreen()
-        selectRow(for: note)
+        ensureNoteIsNotBeingFiltered(note)
+        selectRow(for: note, animated: false, scrollPosition: .top)
         markAsRead(note: note)
 
         // Display Details
@@ -568,11 +569,11 @@ extension NotificationsViewController {
             return
         }
 
-        let visibleNotes = tableView.indexPathsForVisibleRows?.flatMap { indexPath in
-            return tableViewHandler.resultsController.object(at: indexPath) as? Notification
+        let noteIndexPath = tableView.indexPathsForVisibleRows?.first { indexPath in
+            return note == tableViewHandler.resultsController.object(at: indexPath) as? Notification
         }
 
-        guard visibleNotes?.contains(note) == false else {
+        guard noteIndexPath == nil else {
             return
         }
 
@@ -747,7 +748,7 @@ private extension NotificationsViewController {
 
         selectedNotification = notification
 
-        if let indexPath = tableViewHandler.resultsController.indexPath(forObject: notification) {
+        if let indexPath = tableViewHandler.resultsController.indexPath(forObject: notification), indexPath != tableView.indexPathForSelectedRow {
             tableView.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
         }
     }
