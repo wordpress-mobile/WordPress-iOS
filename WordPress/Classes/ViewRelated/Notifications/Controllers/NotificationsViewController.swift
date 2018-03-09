@@ -179,7 +179,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             tableView.deselectSelectedRowWithAnimation(true)
         } else {
             if let selectedNotification = selectedNotification {
-                selectRowForNotification(selectedNotification, animated: true, scrollPosition: .middle)
+                selectRow(for: selectedNotification, animated: true, scrollPosition: .middle)
             } else {
                 selectFirstNotificationIfAppropriate()
             }
@@ -318,7 +318,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             self.showUndeleteForNoteWithID(note.objectID, request: request)
         }
         detailsViewController.onSelectedNoteChange = { note in
-            self.selectRowForNotification(note)
+            self.selectRow(for: note)
         }
     }
 }
@@ -752,7 +752,7 @@ private extension NotificationsViewController {
         }
     }
 
-    func selectRowForNotification(_ notification: Notification?, animated: Bool = true, scrollPosition: UITableViewScrollPosition = .none) {
+    func selectRow(for notification: Notification?, animated: Bool = true, scrollPosition: UITableViewScrollPosition = .none) {
         guard let notification = notification else { return }
 
         selectedNotification = notification
@@ -767,7 +767,7 @@ private extension NotificationsViewController {
 
         // Show the current selection if our split view isn't collapsed
         if !splitViewControllerIsHorizontallyCompact {
-            selectRowForNotification(selectedNotification, animated: false, scrollPosition: .none)
+            selectRow(for: selectedNotification, animated: false, scrollPosition: .none)
         }
     }
 }
@@ -824,7 +824,7 @@ extension NotificationsViewController {
         if !splitViewControllerIsHorizontallyCompact && selectedNotification == nil {
             if let firstNotification = tableViewHandler.resultsController.fetchedObjects?.first as? Notification,
                 let indexPath = tableViewHandler.resultsController.indexPath(forObject: firstNotification) {
-                selectRowForNotification(firstNotification, animated: false, scrollPosition: .none)
+                selectRow(for: firstNotification, animated: false, scrollPosition: .none)
                 self.tableView(tableView, didSelectRowAt: indexPath)
             } else {
                 // If there's no notification to select, we should wipe out
@@ -957,7 +957,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         showNoResultsViewIfNeeded()
 
         if let selectedNotification = selectedNotification {
-            selectRowForNotification(selectedNotification, animated: false, scrollPosition: .none)
+            selectRow(for: selectedNotification, animated: false, scrollPosition: .none)
         } else {
             selectFirstNotificationIfAppropriate()
         }
