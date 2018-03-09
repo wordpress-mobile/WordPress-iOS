@@ -197,12 +197,10 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             coder.encode(uriRepresentation, forKey: type(of: self).selectedNotificationRestorationIdentifier)
         }
 
-        if let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) {
-            // If the filter's 'Unread', we won't save it because the notification
-            // that's selected won't be unread any more once we come back to it.
-            let index = (filter != .unread) ? filter.rawValue : Filter.none.rawValue
-            coder.encode(index, forKey: type(of: self).selectedSegmentIndexRestorationIdentifier)
-        }
+        // If the filter's 'Unread', we won't save it because the notification
+        // that's selected won't be unread any more once we come back to it.
+        let index: Filter = (filter != .unread) ? filter : .none
+        coder.encode(index.rawValue, forKey: type(of: self).selectedSegmentIndexRestorationIdentifier)
 
         super.encodeRestorableState(with: coder)
     }
@@ -776,8 +774,7 @@ extension NotificationsViewController {
     @objc func segmentedControlDidChange(_ sender: UISegmentedControl) {
         selectedNotification = nil
 
-        let filterTitle = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex)?.title ?? ""
-        let properties = [Stats.selectedFilter: filterTitle]
+        let properties = [Stats.selectedFilter: filter.title]
         WPAnalytics.track(.notificationsTappedSegmentedControl, withProperties: properties)
 
         updateUnreadNotificationsForSegmentedControlChange()
@@ -804,7 +801,7 @@ extension NotificationsViewController {
     }
 
     @objc func updateUnreadNotificationsForSegmentedControlChange() {
-        if Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) == .unread {
+        if filter == .unread {
             refreshUnreadNotifications(reloadingResultsController: false)
         } else {
             clearUnreadNotifications()
@@ -836,9 +833,8 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     @objc func predicateForSelectedFilters() -> NSPredicate {
-        guard let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex),
-            let condition = filter.condition else {
-                return NSPredicate(value: true)
+        guard let condition = filter.condition else {
+            return NSPredicate(value: true)
         }
 
         var subpredicates: [NSPredicate] = [NSPredicate(format: condition)]
@@ -1088,15 +1084,15 @@ private extension NotificationsViewController {
     }
 
     var noResultsTitleText: String {
-        return Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex)?.noResultsTitle ?? ""
+        return filter.noResultsTitle
     }
 
     var noResultsMessageText: String {
-        return Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex)?.noResultsMessage ?? ""
+        return filter.noResultsMessage
     }
 
     var noResultsButtonText: String {
-        return Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex)?.noResultsButtonTitle ?? ""
+        return filter.noResultsButtonTitle
     }
 
     var shouldDisplayJetpackPrompt: Bool {
@@ -1108,14 +1104,11 @@ private extension NotificationsViewController {
     }
 
     var shouldDisplayFullscreenNoResultsView: Bool {
-        let currentFilter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none
-        return shouldDisplayNoResultsView && currentFilter == .none
+        return shouldDisplayNoResultsView && filter == .none
     }
 
     var shouldDimDetailViewController: Bool {
-        let currentFilter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none
-
-        return shouldDisplayNoResultsView && currentFilter != .none
+        return shouldDisplayNoResultsView && filter != .none
     }
 }
 
@@ -1124,19 +1117,17 @@ private extension NotificationsViewController {
 //
 extension NotificationsViewController: WPNoResultsViewDelegate {
     func didTap(_ noResultsView: WPNoResultsView) {
-        if let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) {
-            let properties = [Stats.sourceKey: Stats.sourceValue]
-            switch filter {
-            case .none,
-                 .comment,
-                 .follow,
-                 .like:
-                WPAnalytics.track(.notificationsTappedViewReader, withProperties: properties)
-                WPTabBarController.sharedInstance().showReaderTab()
-            case .unread:
-                WPAnalytics.track(.notificationsTappedNewPost, withProperties: properties)
-                WPTabBarController.sharedInstance().showPostTab()
-            }
+        let properties = [Stats.sourceKey: Stats.sourceValue]
+        switch filter {
+        case .none,
+             .comment,
+             .follow,
+             .like:
+            WPAnalytics.track(.notificationsTappedViewReader, withProperties: properties)
+            WPTabBarController.sharedInstance().showReaderTab()
+        case .unread:
+            WPAnalytics.track(.notificationsTappedNewPost, withProperties: properties)
+            WPTabBarController.sharedInstance().showPostTab()
         }
     }
 }
