@@ -76,6 +76,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     
     // Refresh the UI
     [self refreshNoResultsView];
+    [self handleConnectionError];
 
     [self refreshAndSyncIfNeeded];
 }
@@ -520,7 +521,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (void)refreshNoResultsView
 {
-    BOOL isTableViewEmpty = [self connectionAvailable];
+    BOOL isTableViewEmpty = [self contentIsEmpty];
     BOOL shouldPerformAnimation = self.noResultsView.hidden;
     
     self.noResultsView.hidden = !isTableViewEmpty;
