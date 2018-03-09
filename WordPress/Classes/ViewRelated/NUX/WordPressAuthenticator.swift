@@ -215,7 +215,7 @@ public protocol WordPressAuthenticatorDelegate: class {
             }
         }
 
-        let navController = UINavigationController(rootViewController: controller)
+        let navController = NUXNavigationController(rootViewController: controller)
 
         // The way the magic link flow works some view controller might
         // still be presented when the app is resumed by tapping on the auth link.
