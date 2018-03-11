@@ -6,10 +6,19 @@ protocol SignupEpilogueTableViewControllerDelegate {
     func usernameTapped(userInfo: LoginEpilogueUserInfo?)
 }
 
+/// Data source to get the temporary user info, not yet saved in the user account.
+///
+protocol SignupEpilogueTableViewControllerDataSource {
+    var customDisplayName: String? { get }
+    var password: String? { get }
+    var username: String? { get }
+}
+
 class SignupEpilogueTableViewController: NUXTableViewController {
 
     // MARK: - Properties
 
+    open var dataSource: SignupEpilogueTableViewControllerDataSource?
     open var delegate: SignupEpilogueTableViewControllerDelegate?
 
     private var epilogueUserInfo: LoginEpilogueUserInfo?
@@ -79,6 +88,7 @@ class SignupEpilogueTableViewController: NUXTableViewController {
             fatalError("Failed to get a section header cell")
         }
         cell.titleLabel?.text = sectionTitle
+        cell.contentView.backgroundColor = WPStyleGuide.greyLighten30()
 
         return cell
     }
@@ -90,7 +100,7 @@ class SignupEpilogueTableViewController: NUXTableViewController {
                 fatalError("Failed to get a section footer cell")
             }
             cell.titleLabel?.numberOfLines = 0
-            cell.titleLabel?.text = NSLocalizedString("Log in will be possible by getting a new email like the one you just used, but you can setup a password if you prefer.", comment: "Information shown below the optional password field after new account creation.")
+            cell.titleLabel?.text = NSLocalizedString("You can always log in with a magic link like the one you just used, but you can also set up a password if you prefer.", comment: "Information shown below the optional password field after new account creation.")
 
             return cell
         }
@@ -145,7 +155,7 @@ class SignupEpilogueTableViewController: NUXTableViewController {
         if section == TableSections.password {
             return UITableViewAutomaticDimension
         }
-        return 0
+        return CGFloat.leastNormalMagnitude
     }
 
 }
@@ -183,9 +193,13 @@ private extension SignupEpilogueTableViewController {
             userInfo = LoginEpilogueUserInfo(account: account, loginFields: loginFields)
         } else {
             userInfo = LoginEpilogueUserInfo(account: account)
-            let autoDisplayName = generateDisplayName(from: userInfo.email)
-            userInfo.fullName = autoDisplayName
-            delegate?.displayNameUpdated(newDisplayName: autoDisplayName)
+            if let customDisplayName = dataSource?.customDisplayName {
+                userInfo.fullName = customDisplayName
+            } else {
+                let autoDisplayName = generateDisplayName(from: userInfo.email)
+                userInfo.fullName = autoDisplayName
+                delegate?.displayNameUpdated(newDisplayName: autoDisplayName)
+            }
         }
         epilogueUserInfo = userInfo
     }
@@ -214,15 +228,15 @@ private extension SignupEpilogueTableViewController {
         case .displayName:
             cell.configureCell(forType: .displayName,
                                labelText: NSLocalizedString("Display Name", comment: "Display Name label text."),
-                               fieldValue: epilogueUserInfo?.fullName)
+                               fieldValue: dataSource?.customDisplayName ?? epilogueUserInfo?.fullName)
         case .username:
             cell.configureCell(forType: .username,
                                labelText: NSLocalizedString("Username", comment: "Username label text."),
-                               fieldValue: epilogueUserInfo?.username)
+                               fieldValue: dataSource?.username ?? epilogueUserInfo?.username)
         case .password:
             cell.configureCell(forType: .password,
                                labelText: NSLocalizedString("Password", comment: "Password label text."),
-                               fieldValue: nil,
+                               fieldValue: dataSource?.password,
                                fieldPlaceholder: NSLocalizedString("Optional", comment: "Password field placeholder text"))
         }
 
@@ -250,6 +264,9 @@ extension SignupEpilogueTableViewController: SignupEpilogueCellDelegate {
     func changed(value: String, forType: EpilogueCellType) {
         if forType == .displayName {
             userInfoCell?.fullNameLabel?.text = value
+            delegate?.displayNameUpdated(newDisplayName: value)
+        } else if forType == .password {
+            delegate?.passwordUpdated(newPassword: value)
         }
     }
 

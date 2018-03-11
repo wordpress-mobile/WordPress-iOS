@@ -24,7 +24,7 @@ extension WPStyleGuide {
     /// Adds a 1password button to a WPWalkthroughTextField, if available
     ///
     class func configureOnePasswordButtonForTextfield(_ textField: WPWalkthroughTextField, target: NSObject, selector: Selector) {
-        if !OnePasswordFacade().isOnePasswordEnabled() {
+        guard OnePasswordFacade.isOnePasswordEnabled else {
             return
         }
 
@@ -41,7 +41,7 @@ extension WPStyleGuide {
     /// Adds a 1password button to a stack view, if available
     ///
     class func configureOnePasswordButtonForStackView(_ stack: UIStackView, target: NSObject, selector: Selector) {
-        if !OnePasswordFacade().isOnePasswordEnabled() {
+        guard OnePasswordFacade.isOnePasswordEnabled else {
             return
         }
 
@@ -78,9 +78,10 @@ extension WPStyleGuide {
     /// - note: iOS won't return UIFontWeightMedium for dynamic system font :(
     /// So instead get the dynamic font size, then ask for the non-dynamic font at that size
     ///
-    class func mediumWeightFont(forStyle style: UIFontTextStyle) -> UIFont {
+    class func mediumWeightFont(forStyle style: UIFontTextStyle, maximumPointSize: CGFloat = WPStyleGuide.maxFontSize) -> UIFont {
         let fontToGetSize = WPStyleGuide.fontForTextStyle(style)
-        return UIFont.systemFont(ofSize: fontToGetSize.pointSize, weight: .medium)
+        let maxAllowedFontSize = CGFloat.minimum(fontToGetSize.pointSize, maximumPointSize)
+        return UIFont.systemFont(ofSize: maxAllowedFontSize, weight: .medium)
     }
 
     // MARK: - Google Signin Button Methods
@@ -120,7 +121,7 @@ extension WPStyleGuide {
     /// - Returns: A properly styled UIButton
     ///
     class func termsButton() -> UIButton {
-        let baseString =  NSLocalizedString("By choosing \"Sign up\" you agree to our _Terms of Service_", comment: "Legal disclaimer for signup buttons. Sign Up must match button phrasing, two underscores _..._ denote underline")
+        let baseString =  NSLocalizedString("By signing up, you agree to our _Terms of Service_.", comment: "Legal disclaimer for signup buttons, the underscores _..._ denote underline")
 
         let labelParts = baseString.components(separatedBy: "_")
         let firstPart = labelParts[0]
