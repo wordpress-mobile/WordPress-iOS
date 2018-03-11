@@ -41,17 +41,6 @@
     }
 }
 
-- (void)loginWithLoginFields:(LoginFields *)loginFields
-{
-    NSAssert(self.delegate != nil, @"Must set delegate to use service");
-
-    if (loginFields.meta.userIsDotCom || loginFields.siteAddress.isWordPressComPath) {
-        [self signInToWordpressDotCom:loginFields];
-    } else {
-        [self loginToSelfHosted:loginFields];
-    }
-}
-
 - (void)requestOneTimeCodeWithLoginFields:(LoginFields *)loginFields
 {
     [self.wordpressComOAuthClientFacade requestOneTimeCodeWithUsername:loginFields.username password:loginFields.password success:^{
@@ -158,15 +147,15 @@
         loginFields.meta.xmlrpcURL = xmlRPCURL;
         [self loginToSelfHosted:loginFields];
     };
-    
-    void (^guessXMLRPCURLFailure)(NSError *) = ^(NSError *error){        
+
+    void (^guessXMLRPCURLFailure)(NSError *) = ^(NSError *error){
         [WPAppAnalytics track:WPAnalyticsStatLoginFailedToGuessXMLRPC error:error];
         [WPAppAnalytics track:WPAnalyticsStatLoginFailed error:error];
         [self.delegate displayRemoteError:error];
     };
-    
+
     [self.delegate displayLoginMessage:NSLocalizedString(@"Authenticating", nil)];
-    
+
     NSString *siteUrl = [NSURL IDNEncodedURL:loginFields.siteAddress];
     [self.wordpressXMLRPCAPIFacade guessXMLRPCURLForSite:siteUrl success:guessXMLRPCURLSuccess failure:guessXMLRPCURLFailure];
 }

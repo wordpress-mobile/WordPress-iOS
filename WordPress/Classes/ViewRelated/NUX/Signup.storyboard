@@ -40,16 +40,16 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="19Z-ie-Qfz">
-                                        <rect key="frame" x="0.0" y="223.5" width="375" height="100"/>
+                                        <rect key="frame" x="0.0" y="221.5" width="375" height="102"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" text="Log in to WordPress.com using an email address to manage all your WordPress sites." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CPF-7g-0y5">
-                                                <rect key="frame" x="20" y="0.0" width="335" height="36"/>
+                                                <rect key="frame" x="20" y="0.0" width="335" height="38"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email address" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HTy-KJ-his" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="56" width="375" height="44"/>
+                                                <rect key="frame" x="0.0" y="58" width="375" height="44"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="usernameField"/>
                                                 <constraints>
@@ -68,7 +68,7 @@
                                                 </connections>
                                             </textField>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="750" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EYw-oM-W1K">
-                                                <rect key="frame" x="20" y="100" width="335" height="40"/>
+                                                <rect key="frame" x="20" y="102" width="335" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" placeholder="YES" id="li2-jI-jeL"/>
                                                 </constraints>
@@ -133,6 +133,7 @@
                         <outlet property="instructionLabel" destination="CPF-7g-0y5" id="Urr-Xa-YNp"/>
                         <outlet property="submitButton" destination="4Su-Zc-Omp" id="amJ-9P-tcO"/>
                         <segue destination="Je3-5O-NYu" kind="show" identifier="showLinkMailView" id="Yop-RV-xJa"/>
+                        <segue destination="J8B-jx-UJD" kind="show" identifier="showEmailLogin" id="1cg-nu-IEn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OAN-7g-PQl" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -176,6 +177,7 @@
                     <connections>
                         <outlet property="titleLabel" destination="fiA-2f-xfj" id="gJJ-nI-Zmw"/>
                         <segue destination="xt0-gh-hzg" kind="show" identifier="showSignupEpilogue" id="LGz-VK-bVX"/>
+                        <segue destination="CN5-i0-0hC" kind="show" identifier="showLoginEpilogue" id="zgv-9q-Usa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5UK-0h-9ZC" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -191,49 +193,32 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="inn-oe-jvt">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="583"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <connections>
                                     <segue destination="zr7-F4-cJb" kind="embed" id="FSB-2z-SdS"/>
-                                </connections>
-                            </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rjJ-Oz-vCa">
-                                <rect key="frame" x="0.0" y="583" width="375" height="84"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="84" placeholder="YES" id="LPh-li-yRa"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="84" id="gSs-ae-WjU"/>
-                                </constraints>
-                                <connections>
-                                    <segue destination="1ez-ur-Wce" kind="embed" id="4Xr-qK-MYW"/>
                                 </connections>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="inn-oe-jvt" firstAttribute="top" secondItem="IqI-1c-b2S" secondAttribute="topMargin" constant="-20" id="4Qy-07-V8Y"/>
-                            <constraint firstItem="rjJ-Oz-vCa" firstAttribute="bottom" secondItem="IqI-1c-b2S" secondAttribute="bottom" id="gXB-2t-wqt"/>
                             <constraint firstItem="inn-oe-jvt" firstAttribute="leading" secondItem="nKx-sI-ahu" secondAttribute="leading" id="jez-ad-Ryr"/>
                             <constraint firstItem="inn-oe-jvt" firstAttribute="trailing" secondItem="nKx-sI-ahu" secondAttribute="trailing" id="kam-4m-1ir"/>
-                            <constraint firstItem="rjJ-Oz-vCa" firstAttribute="trailing" secondItem="nKx-sI-ahu" secondAttribute="trailing" id="lQI-xx-833"/>
-                            <constraint firstItem="rjJ-Oz-vCa" firstAttribute="leading" secondItem="nKx-sI-ahu" secondAttribute="leading" id="oow-zG-Ij0"/>
-                            <constraint firstItem="rjJ-Oz-vCa" firstAttribute="top" secondItem="inn-oe-jvt" secondAttribute="bottom" id="uOC-yy-qEc"/>
+                            <constraint firstItem="inn-oe-jvt" firstAttribute="bottom" secondItem="nKx-sI-ahu" secondAttribute="bottom" id="wM0-jM-BSi"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="nKx-sI-ahu"/>
                     </view>
-                    <connections>
-                        <outlet property="buttonContainerHeightConstraint" destination="gSs-ae-WjU" id="Ljd-MJ-p8V"/>
-                        <outlet property="buttonContainerViewBottomConstraint" destination="gXB-2t-wqt" id="Bk0-BR-GCA"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gP7-8o-YtF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-145" y="-739"/>
+            <point key="canvasLocation" x="-146.40000000000001" y="-739.88005997001505"/>
         </scene>
         <!--Signup Username Table View Controller-->
         <scene sceneID="6JI-EP-aNd">
             <objects>
                 <tableViewController id="zr7-F4-cJb" customClass="SignupUsernameTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="cfa-qK-cgc">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="583"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -264,7 +249,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pfn-Ox-xPa" userLabel="Table Container View">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="583"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="563"/>
                                 <connections>
                                     <segue destination="hib-Bt-yge" kind="embed" identifier="showEpilogueTable" id="x5e-CD-ygB"/>
                                 </connections>
@@ -280,12 +265,12 @@
                                 </connections>
                             </containerView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.91372549020000005" green="0.93725490199999995" blue="0.95294117649999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstItem="Pfn-Ox-xPa" firstAttribute="top" secondItem="5jy-Z9-HSJ" secondAttribute="top" id="9Uz-0Q-XbQ"/>
                             <constraint firstItem="Ae9-4j-PcF" firstAttribute="trailing" secondItem="Pfn-Ox-xPa" secondAttribute="trailing" id="9lO-lg-WIO"/>
                             <constraint firstItem="P1I-3a-oLv" firstAttribute="trailing" secondItem="Ae9-4j-PcF" secondAttribute="trailing" id="DBe-AY-pLB"/>
-                            <constraint firstItem="P1I-3a-oLv" firstAttribute="bottom" secondItem="Ae9-4j-PcF" secondAttribute="bottom" id="maZ-1x-gSB"/>
+                            <constraint firstItem="Ae9-4j-PcF" firstAttribute="top" secondItem="Pfn-Ox-xPa" secondAttribute="top" id="fxp-bT-e4a"/>
+                            <constraint firstItem="P1I-3a-oLv" firstAttribute="bottom" secondItem="5jy-Z9-HSJ" secondAttribute="bottom" id="maZ-1x-gSB"/>
                             <constraint firstItem="Pfn-Ox-xPa" firstAttribute="leading" secondItem="Ae9-4j-PcF" secondAttribute="leading" id="qMk-VK-ZUv"/>
                             <constraint firstItem="P1I-3a-oLv" firstAttribute="leading" secondItem="Ae9-4j-PcF" secondAttribute="leading" id="yGX-fn-rqf"/>
                             <constraint firstItem="P1I-3a-oLv" firstAttribute="top" secondItem="Pfn-Ox-xPa" secondAttribute="bottom" id="yMT-vg-j6M"/>
@@ -304,10 +289,10 @@
         <scene sceneID="Ymn-3i-TIR">
             <objects>
                 <tableViewController id="hib-Bt-yge" customClass="SignupEpilogueTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="AHY-lt-KSU">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="583"/>
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="AHY-lt-KSU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="563"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <connections>
                             <outlet property="dataSource" destination="hib-Bt-yge" id="uK1-re-C0b"/>
@@ -327,13 +312,21 @@
             </objects>
             <point key="canvasLocation" x="165" y="784"/>
         </scene>
-        <!--ButtonView-->
-        <scene sceneID="S07-eQ-m0X">
+        <!--LoginEpilogue-->
+        <scene sceneID="t07-8v-Z85">
             <objects>
-                <viewControllerPlaceholder storyboardName="NUXButtonView" referencedIdentifier="ButtonView" id="1ez-ur-Wce" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="XrP-NU-nZR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewControllerPlaceholder storyboardName="Login" referencedIdentifier="LoginEpilogue" id="CN5-i0-0hC" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2cP-Rt-jfP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-147" y="-315"/>
+            <point key="canvasLocation" x="-286" y="1097"/>
+        </scene>
+        <!--emailEntry-->
+        <scene sceneID="JU2-CA-QR6">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Login" referencedIdentifier="emailEntry" id="J8B-jx-UJD" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Y5k-uW-muf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-346" y="-127"/>
         </scene>
     </scenes>
     <resources>
