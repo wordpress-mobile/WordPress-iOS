@@ -45,7 +45,7 @@ extension NetworkAwareUI {
 protocol NetworkStatusDelegate: class {
     func observeNetworkStatus()
 
-    func networdStatusDidChange(active: Bool)
+    func networkStatusDidChange(active: Bool)
 }
 
 extension NetworkStatusDelegate where Self: UIViewController {
@@ -83,7 +83,7 @@ fileprivate final class ReachabilityNotificationObserver: NSObject {
 
     @objc func receive(notification: Foundation.Notification) {
         if let newValue = notification.userInfo?[Foundation.Notification.reachabilityKey] as? Bool {
-            delegate?.networdStatusDidChange(active: newValue)
+            delegate?.networkStatusDidChange(active: newValue)
         }
     }
 }

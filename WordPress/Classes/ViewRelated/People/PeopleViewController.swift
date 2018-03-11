@@ -510,7 +510,7 @@ extension PeopleViewController: NetworkAwareUI {
 }
 
 extension PeopleViewController: NetworkStatusDelegate {
-    func networdStatusDidChange(active: Bool) {
+    func networkStatusDidChange(active: Bool) {
         refresh()
     }
 }
