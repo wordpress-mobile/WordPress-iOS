@@ -45,6 +45,9 @@ extension NetworkAwareUI {
 protocol NetworkStatusDelegate: class {
     func observeNetworkStatus()
 
+    /// This method will be called, on the main thread, when the network connection changes status.
+    ///
+    /// - Parameter active: the new status of the network connection
     func networkStatusDidChange(active: Bool)
 }
 
@@ -83,7 +86,9 @@ fileprivate final class ReachabilityNotificationObserver: NSObject {
 
     @objc func receive(notification: Foundation.Notification) {
         if let newValue = notification.userInfo?[Foundation.Notification.reachabilityKey] as? Bool {
-            delegate?.networkStatusDidChange(active: newValue)
+            DispatchQueue.main.async {
+                self.delegate?.networkStatusDidChange(active: newValue)
+            }
         }
     }
 }
