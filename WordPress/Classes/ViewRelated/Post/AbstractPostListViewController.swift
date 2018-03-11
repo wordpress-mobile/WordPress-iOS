@@ -1104,7 +1104,7 @@ extension AbstractPostListViewController: NetworkAwareUI {
 }
 
 extension AbstractPostListViewController: NetworkStatusDelegate {
-    func networdStatusDidChange(active: Bool) {
+    func networkStatusDidChange(active: Bool) {
         // The network status is received from a background thread, only in this view controller
         DispatchQueue.main.async {
             self.automaticallySyncIfAppropriate()
