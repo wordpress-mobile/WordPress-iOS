@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ReplyTextView" customModule="WordPress">
             <connections>
+                <outlet property="bezierBottomConstraint" destination="Ocu-Gu-5Xw" id="PCv-Aq-cAs"/>
                 <outlet property="bezierContainerView" destination="t6q-rh-Bzh" id="eED-vb-5Ix"/>
+                <outlet property="bezierTopConstraint" destination="7Fj-lO-ua1" id="oJu-iL-iS9"/>
                 <outlet property="contentView" destination="iN0-l3-epB" id="4IS-I7-JV9"/>
                 <outlet property="placeholderLabel" destination="6Lf-XI-exE" id="vNK-7w-Wk1"/>
                 <outlet property="replyButton" destination="8sg-79-AsR" id="z4S-0x-kJt"/>
@@ -29,10 +32,10 @@
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
                 <view multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="240" horizontalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="t6q-rh-Bzh" customClass="ReplyBezierView" customModule="WordPress">
-                    <rect key="frame" x="7" y="1" width="231" height="73"/>
+                    <rect key="frame" x="15" y="1" width="215" height="73"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Lf-XI-exE" userLabel="Placeholder">
-                            <rect key="frame" x="8" y="14" width="219" height="45"/>
+                            <rect key="frame" x="8" y="33" width="203" height="26"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -40,7 +43,7 @@
                             <size key="shadowOffset" width="-1" height="-1"/>
                         </label>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="gfH-NN-dph">
-                            <rect key="frame" x="8" y="14" width="219" height="45"/>
+                            <rect key="frame" x="8" y="33" width="203" height="26"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -60,7 +63,7 @@
                     <edgeInsets key="layoutMargins" top="14" left="8" bottom="14" right="4"/>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="VGi-tL-gUc">
-                    <rect key="frame" x="238" y="1" width="74" height="73"/>
+                    <rect key="frame" x="230" y="1" width="74" height="73"/>
                     <subviews>
                         <view contentMode="scaleToFill" horizontalHuggingPriority="1" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="Chg-FI-dzN" userLabel="Spacer View">
                             <rect key="frame" x="0.0" y="0.0" width="74" height="21"/>

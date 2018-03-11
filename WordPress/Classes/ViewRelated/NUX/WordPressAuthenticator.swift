@@ -4,18 +4,50 @@ import NSURL_IDN
 import WordPressShared
 
 
-/// A collection of helper methods for NUX.
-///
+
+// MARK: - WordPressAuthenticator Delegate Protocol
+//
+public protocol WordPressAuthenticatorDelegate: class {
+
+    /// Indicates if the Support button should be rendered, or not.
+    ///
+    var supportActionEnabled: Bool { get }
+
+    /// Returns a Support UIViewController instance, to be displayed from a given source.
+    ///
+    func supportViewController(from source: WordPressSupportSourceTag) -> UIViewController
+}
+
+
+// MARK: - A collection of helper methods for NUX.
+//
 @objc public class WordPressAuthenticator: NSObject {
+
+    /// Authenticator's Delegate.
+    ///
+    public weak var delegate: WordPressAuthenticatorDelegate?
+
+    /// Shared Instance.
+    ///
+    public static let shared = WordPressAuthenticator()
+
+    /// WordPress.com domain.
+    ///
     fileprivate static let WPComSuffix = ".wordpress.com"
+
+    /// Notification to be posted whenever the signing flow completes.
+    ///
     @objc static let WPSigninDidFinishNotification = "WPSigninDidFinishNotification"
 
+    /// Internal Constants.
+    ///
     fileprivate enum Constants {
         static let authenticationInfoKey = "authenticationInfoKey"
         static let jetpackBlogIDURL = "jetpackBlogIDURL"
         static let username = "username"
         static let emailMagicLinkSource = "emailMagicLinkSource"
     }
+
 
     // MARK: - Helpers for presenting the login flow
 
@@ -160,7 +192,7 @@ import WordPressShared
             }
         }
 
-        let navController = UINavigationController(rootViewController: controller)
+        let navController = LoginNavigationController(rootViewController: controller)
 
         // The way the magic link flow works some view controller might
         // still be presented when the app is resumed by tapping on the auth link.

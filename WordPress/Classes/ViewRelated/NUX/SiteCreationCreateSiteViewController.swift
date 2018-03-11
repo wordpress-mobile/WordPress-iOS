@@ -20,7 +20,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
     private let completedLabelFont = WPStyleGuide.fontForTextStyle(.headline)
     private let completedLabelTextColor = WPStyleGuide.darkGrey()
 
-    override var sourceTag: SupportSourceTag {
+    override var sourceTag: WordPressSupportSourceTag {
         get {
             return .wpComCreateSiteCreation
         }
@@ -223,7 +223,7 @@ private extension SiteCreationCreateSiteViewController {
         switch validationError {
         case .missingTitle:
             setReturnViewController(for: .details)
-            errorMessage = NSLocalizedString("The site sitle is missing.", comment: "Error shown during site creation process when the site title is missing.")
+            errorMessage = NSLocalizedString("The site title is missing.", comment: "Error shown during site creation process when the site title is missing.")
         case .missingDomain:
             setReturnViewController(for: .domainSuggestion)
             errorMessage = NSLocalizedString("The site domain is missing.", comment: "Error shown during site creation process when the site domain is missing.")
