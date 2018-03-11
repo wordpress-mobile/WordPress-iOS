@@ -272,6 +272,10 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             return
         }
 
+        let _ = DispatchDelayedAction(delay: .milliseconds(500)) { [weak self] in
+            self?.refreshControl?.endRefreshing()
+        }
+
         if tableViewHandler.resultsController.fetchedObjects?.count > 0 {
             hideNoResultsView()
             presentNoNetworkAlert()
@@ -583,18 +587,6 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             let message = NSLocalizedString("The Internet connection appears to be offline.", comment: "Message of error prompt shown when a sync the user initiated fails.")
             WPError.showAlert(withTitle: title, message: message)
         }
-    }
-
-    private func shouldPresentAlert() -> Bool {
-        return !connectionAvailable() && !isTableViewEmpty()
-    }
-
-    private func isTableViewEmpty() -> Bool {
-        return self.tableViewHandler.resultsController.isEmpty()
-    }
-
-    func connectionAvailable() -> Bool {
-        return ReachabilityUtils.isInternetReachable()
     }
 
     @objc func syncItemsWithUserInteraction(_ userInteraction: Bool) {
@@ -1100,5 +1092,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     func updateSearchResults(for searchController: UISearchController) {
         resetTableViewContentOffset()
         searchHelper.searchUpdated(searchController.searchBar.text)
+    }
+}
+
+extension AbstractPostListViewController: NetworkAwareUI {
+    func contentIsEmpty() -> Bool {
+        return tableViewHandler.resultsController.isEmpty()
     }
 }

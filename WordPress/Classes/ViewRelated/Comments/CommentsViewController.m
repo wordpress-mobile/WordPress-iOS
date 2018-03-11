@@ -33,7 +33,6 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 @property (nonatomic, strong) NSCache                   *estimatedRowHeights;
 @end
 
-
 @implementation CommentsViewController
 
 - (void)dealloc
@@ -77,6 +76,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     
     // Refresh the UI
     [self refreshNoResultsView];
+    [self handleConnectionError];
 
     [self refreshAndSyncIfNeeded];
 }
@@ -129,7 +129,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 - (NSString *)noResultsViewTitle
 {
     NSString *noCommentsMessage = NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
-    NSString *noConnectionMessage = [ReachabilityUtils noConnectionMessage];
+    NSString *noConnectionMessage = [self noConnectionMessage];
 
     return [ReachabilityUtils isInternetReachable] ? noCommentsMessage : noConnectionMessage;
 }
@@ -431,10 +431,13 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
                                             });
                                         }
 
-                                        if (![self isTableViewEmpty]) {
-                                            NSString *title = NSLocalizedString(@"Unable to Sync", @"Title of error prompt shown when a sync the user initiated fails.");
-                                            [WPError showNetworkingAlertWithError:error title:title];
-                                        }
+                                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                            [weakSelf refreshPullToRefresh];
+                                        });
+                                        
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            [weakSelf handleConnectionError];
+                                        });
                                     }];
     }];
 }
@@ -476,7 +479,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     [self refreshPullToRefresh];
 }
 
-- (BOOL)isTableViewEmpty
+- (BOOL)contentIsEmpty
 {
     return [self.tableViewHandler.resultsController isEmpty];
 }
@@ -518,7 +521,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (void)refreshNoResultsView
 {
-    BOOL isTableViewEmpty = [self isTableViewEmpty];
+    BOOL isTableViewEmpty = [self contentIsEmpty];
     BOOL shouldPerformAnimation = self.noResultsView.hidden;
     
     self.noResultsView.hidden = !isTableViewEmpty;
