@@ -10,6 +10,7 @@ class PeopleCell: WPTableViewCell {
 
     override func awakeFromNib() {
         WPStyleGuide.configureLabel(displayNameLabel, textStyle: .callout)
+        WPStyleGuide.configureLabel(usernameLabel, textStyle: .caption2)
     }
 
     func bindViewModel(_ viewModel: PeopleCellViewModel) {

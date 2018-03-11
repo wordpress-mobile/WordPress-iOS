@@ -10,7 +10,7 @@ class LoginLinkRequestViewController: LoginViewController {
     @IBOutlet var label: UILabel?
     @IBOutlet var sendLinkButton: NUXSubmitButton?
     @IBOutlet var usePasswordButton: UIButton?
-    override var sourceTag: SupportSourceTag {
+    override var sourceTag: WordPressSupportSourceTag {
         get {
             return .loginMagicLink
         }
