@@ -5,7 +5,7 @@ import Gridicons
 protocol LoginWithLogoAndHelpViewController {
     func addWordPressLogoToNavController()
     func handleHelpButtonTapped(_ sender: AnyObject)
-    func displaySupportViewController(sourceTag: SupportSourceTag)
+    func displaySupportViewController(from source: WordPressSupportSourceTag)
     func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification)
 }
 
@@ -18,17 +18,15 @@ extension LoginWithLogoAndHelpViewController where Self: UIViewController {
 
     /// Displays the support vc.
     ///
-    func displaySupportViewController(sourceTag: SupportSourceTag) {
-        let controller = SupportViewController()
-        controller.sourceTag = sourceTag
+    func displaySupportViewController(from source: WordPressSupportSourceTag) {
+        guard let supportViewController = WordPressAuthenticator.shared.delegate?.supportViewController(from: source) else {
+            fatalError()
+        }
 
-        let navController = UINavigationController(rootViewController: controller)
-        navController.navigationBar.isTranslucent = false
-        navController.modalPresentationStyle = .formSheet
-
-        navigationController?.present(navController, animated: true, completion: nil)
+        navigationController?.present(supportViewController, animated: true, completion: nil)
     }
 }
+
 
 /// A base class for the various NUX related related view controllers.
 /// The base class sets up and configures common functionality, such as the help
@@ -47,6 +45,14 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
 
     @objc var dismissBlock: ((_ cancelled: Bool) -> Void)?
 
+    /// Indicates if the Help Button should be displayed, or not.
+    ///
+    var shouldDisplayHelpButton: Bool {
+        return WordPressAuthenticator.shared.delegate?.supportActionEnabled ?? false
+    }
+
+    /// SegueIdentifier
+    ///
     enum SegueIdentifier: String {
         case showURLUsernamePassword
         case showSelfHostedLogin
@@ -62,7 +68,7 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
 
     /// The Helpshift tag to track the origin of user conversations
     ///
-    @objc var sourceTag: SupportSourceTag {
+    var sourceTag: WordPressSupportSourceTag {
         get {
             return .generalLogin
         }
@@ -80,7 +86,7 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
 
         setupBackgroundTapGestureRecognizer()
         setupCancelButtonIfNeeded()
-        setupHelpButtonAndBadge()
+        setupHelpButtonAndBadgeIfNeeded()
     }
 
 
@@ -123,11 +129,21 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
         navigationItem.leftBarButtonItem = cancelButton
     }
 
+    /// Attaches the Help Button, when the WordPressAuthenticationDelegate says we should!
+    ///
+    func setupHelpButtonAndBadgeIfNeeded() {
+        guard shouldDisplayHelpButton else {
+            return
+        }
+
+        setupHelpButtonAndBadge()
+    }
 
     /// Sets up the help button and the helpshift conversation badge.
     ///
     /// - Note: this is only used in the old single-page signup screen and can be removed once that screen is gone.
-    @objc func setupHelpButtonAndBadge() {
+    ///
+    private func setupHelpButtonAndBadge() {
         NotificationCenter.default.addObserver(self, selector: #selector(NUXAbstractViewController.handleHelpshiftUnreadCountUpdated(_:)), name: NSNotification.Name.HelpshiftUnreadCountUpdated, object: nil)
 
         let customView = UIView(frame: helpButtonContainerFrame)
@@ -198,7 +214,7 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
 
     /// Displays a login error in an attractive dialog
     ///
-    @objc func displayError(_ error: NSError, sourceTag: SupportSourceTag) {
+    func displayError(_ error: NSError, sourceTag: WordPressSupportSourceTag) {
         let presentingController = navigationController ?? self
         let controller = FancyAlertViewController.alertForError(error as NSError, loginFields: loginFields, sourceTag: sourceTag)
         controller.modalPresentationStyle = .custom
@@ -208,7 +224,7 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
 
     /// Displays a login error message in an attractive dialog
     ///
-    @objc func displayErrorAlert(_ message: String, sourceTag: SupportSourceTag) {
+    func displayErrorAlert(_ message: String, sourceTag: WordPressSupportSourceTag) {
         let presentingController = navigationController ?? self
         let controller = FancyAlertViewController.alertForGenericErrorMessageWithHelpshiftButton(message, loginFields: loginFields, sourceTag: sourceTag)
         controller.modalPresentationStyle = .custom
@@ -263,7 +279,7 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
     // Handle the help button being tapped
     //
     func handleHelpButtonTapped(_ sender: AnyObject) {
-        displaySupportViewController(sourceTag: sourceTag)
+        displaySupportViewController(from: sourceTag)
     }
 }
 
