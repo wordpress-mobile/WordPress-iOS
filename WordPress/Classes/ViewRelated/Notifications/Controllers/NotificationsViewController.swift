@@ -738,10 +738,6 @@ private extension NotificationsViewController {
             selectRowForNotification(selectedNotification, animated: false, scrollPosition: .none)
         }
     }
-
-    func isTableViewEmpty() -> Bool {
-        return tableViewHandler.resultsController.isEmpty()
-    }
 }
 
 // MARK: - UIRefreshControl Methods
@@ -770,29 +766,13 @@ extension NotificationsViewController {
             }
         }
     }
-
-    fileprivate func handleConnectionError() {
-        if shouldPresentAlert() {
-            presentNoNetworkAlert()
-        }
-    }
-
-    private func shouldPresentAlert() -> Bool {
-        return !connectionAvailable() && !isTableViewEmpty()
-    }
-
-    func connectionAvailable() -> Bool {
-        return ReachabilityUtils.isInternetReachable()
-    }
-
-    fileprivate func presentNoNetworkAlert() {
-        let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-        let message = NSLocalizedString("The Internet connection appears to be offline.", comment: "Message of error prompt shown when a sync the user initiated fails.")
-        WPError.showAlert(withTitle: title, message: message)
-    }
 }
 
-
+extension NotificationsViewController: NetworkAwareUI {
+    func contentIsEmpty() -> Bool {
+        return tableViewHandler.resultsController.isEmpty()
+    }
+}
 
 // MARK: - UISegmentedControl Methods
 //
@@ -1105,7 +1085,7 @@ private extension NotificationsViewController {
 
     private func showNoConnectionView() {
         noResultsView.titleText     = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-        noResultsView.messageText   = ReachabilityUtils.noConnectionMessage()
+        noResultsView.messageText   = noConnectionMessage()
     }
 
     func updateSplitViewAppearanceForNoResultsView() {
