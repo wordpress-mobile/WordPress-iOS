@@ -1829,7 +1829,7 @@ extension ReaderStreamViewController: NetworkAwareUI {
 }
 
 extension ReaderStreamViewController: NetworkStatusDelegate {
-    func networdStatusDidChange(active: Bool) {
+    func networkStatusDidChange(active: Bool) {
         syncIfAppropriate()
     }
 }

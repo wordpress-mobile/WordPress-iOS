@@ -777,7 +777,7 @@ extension NotificationsViewController: NetworkAwareUI {
 }
 
 extension NotificationsViewController: NetworkStatusDelegate {
-    func networdStatusDidChange(active: Bool) {
+    func networkStatusDidChange(active: Bool) {
         reloadResultsControllerIfNeeded()
     }
 }
