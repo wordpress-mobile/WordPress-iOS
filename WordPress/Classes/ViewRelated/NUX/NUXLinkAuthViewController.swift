@@ -25,7 +25,7 @@ class NUXLinkAuthViewController: LoginViewController {
         }
 
         didSync = true // Make sure we don't call this twice by accident
-        syncWPCom(email, authToken: token, requiredMultifactor: false)
+        syncWPCom(username: email, authToken: token, requiredMultifactor: false)
 
         // Count this as success since we're authed. Even if there is a glitch
         // while syncing the user has valid credentials.
