@@ -1097,7 +1097,11 @@ extension AztecPostViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    private func publishPost(action: PostEditorAction, dismissWhenDone: Bool, analyticsStat: WPAnalyticsStat?) {
+    private func publishPost(
+        action: PostEditorAction,
+        dismissWhenDone: Bool,
+        analyticsStat: WPAnalyticsStat?) {
+
         // Cancel publishing if media is currently being uploaded
         if mediaCoordinator.isUploadingMedia(for: post) {
             displayMediaIsUploadingAlert()
@@ -1115,7 +1119,7 @@ extension AztecPostViewController {
         }
 
         // If the user is trying to publish to WP.com and they haven't verified their account, prompt them to do so.
-        if let verificationHelper = verificationPromptHelper, verificationHelper.neeedsVerification(before: postEditorStateContext.action) {
+        if let verificationHelper = verificationPromptHelper, verificationHelper.needsVerification(before: postEditorStateContext.action) {
             verificationHelper.displayVerificationPrompt(from: self) { [unowned self] verifiedInBackground in
                 // User could've been plausibly silently verified in the background.
                 // If so, proceed to publishing the post as normal, otherwise save it as a draft.
@@ -1132,6 +1136,8 @@ extension AztecPostViewController {
             if action == .save {
                 self.post.status = .draft
             } else if action == .publish {
+                self.post.status = .publish
+            } else if action == .publishNow {
                 self.post.date_created_gmt = Date()
                 self.post.status = .publish
             }
