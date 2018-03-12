@@ -192,3 +192,49 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
         SafariCredentialsService.updateSafariCredentialsIfNeeded(with: loginFields)
     }
 }
+
+
+
+
+// MARK: - Sync Helpers
+//
+extension LoginViewController {
+
+    /// Signals the main app to signal the specified WordPress.com account.
+    ///
+    func syncWPCom(username: String, authToken: String, requiredMultifactor: Bool) {
+        guard let delegate = WordPressAuthenticator.shared.delegate else {
+            fatalError()
+        }
+
+        SafariCredentialsService.updateSafariCredentialsIfNeeded(with: loginFields)
+
+        configureStatusLabel(NSLocalizedString("Getting account information", comment: "Alerts the user that wpcom account information is being retrieved."))
+
+        delegate.syncWPCom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin, onSuccess: { [weak self] userInfo in
+
+            /// HACK: An alternative notification to LoginFinished. Observe this instead of `WPSigninDidFinishNotification` for Jetpack logins.
+            /// When WPTabViewController no longer destroy's and rebuilds the view hierarchy this alternate notification can be removed.
+            ///
+            let notification = self?.isJetpackLogin == true ? .wordpressLoginFinishedJetpackLogin : Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification)
+            NotificationCenter.default.post(name: notification, object: userInfo)
+
+            /// Tracker
+            ///
+            let properties = [
+                "multifactor": requiredMultifactor.description,
+                "dotcom_user": true.description
+            ]
+
+            WordPressAuthenticator.post(event: .signedIn(properties: properties))
+
+            /// All good!
+            ///
+            self?.dismiss()
+
+        }, onFailure: { [weak self] error in
+
+            self?.dismiss()
+        })
+    }
+}
