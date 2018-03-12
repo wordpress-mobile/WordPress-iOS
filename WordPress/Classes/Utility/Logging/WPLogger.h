@@ -21,4 +21,6 @@
  */
 - (NSString *)getLogFilesContentWithMaxSize:(NSInteger)maxSize;
 
++ (void)configureLoggerLevelWithExtraDebug;
+
 @end
