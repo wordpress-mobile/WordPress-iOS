@@ -151,9 +151,9 @@
     itemView.item = item;
     itemView.delegate = self;
 
-    NSLayoutConstraint *heightContrainst = [itemView.heightAnchor constraintEqualToConstant:44];
-    heightContrainst.priority = UILayoutPriorityDefaultHigh;
-    heightContrainst.active = YES;
+//    NSLayoutConstraint *heightContrainst = [itemView.heightAnchor constraintEqualToConstant:44];
+//    heightContrainst.priority = UILayoutPriorityDefaultHigh;
+//    heightContrainst.active = YES;
     itemView.hidden = YES;
 
     [self.itemViews addObject:itemView];
