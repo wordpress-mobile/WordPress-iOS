@@ -6,15 +6,14 @@ class PluginDirectoryViewController: UITableViewController {
 
     private let viewModel: PluginDirectoryViewModel
     private var viewModelReceipt: Receipt?
-    private var immuHandler: ImmuTableViewHandler?
-
+    private var tableViewModel: ImmuTable!
     private var searchWrapperView: SearchWrapperView!
 
     init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         viewModel = PluginDirectoryViewModel(site: site, store: store)
 
-        super.init(style: .plain)
-
+        super.init(style: .grouped)
+        tableViewModel = viewModel.tableViewModel(presenter: self)
         title = NSLocalizedString("Plugins", comment: "Title for the plugin directory")
     }
 
@@ -34,6 +33,8 @@ class PluginDirectoryViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        WPStyleGuide.configureColors(for: nil, andTableView: tableView)
+
         definesPresentationContext = true
         extendedLayoutIncludesOpaqueBars = true
 
@@ -41,38 +42,33 @@ class PluginDirectoryViewController: UITableViewController {
             self?.reloadTable()
         }
 
+        viewModel.noResultsDelegate = self
+
         tableView.rowHeight = Constants.rowHeight
+        tableView.estimatedRowHeight = Constants.rowHeight
         tableView.separatorInset = Constants.separatorInset
+
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
+        tableView.tableFooterView = footerView
+        // We want the tableView to be in `.grouped` style, but we don't want the additional
+        // padding that comes with it, so we need to have this tiny useless footer.
 
         ImmuTable.registerRows([CollectionViewContainerRow<PluginDirectoryCollectionViewCell, PluginDirectoryEntry>.self,
                                 TextRow.self],
                                tableView: tableView)
 
-
-        let handler = ImmuTableViewHandler(takeOver: self)
-        handler.automaticallyDeselectCells = true
-        handler.viewModel = viewModel.tableViewModel(presenter: self)
-
-        immuHandler = handler
-
-
+        tableViewModel = viewModel.tableViewModel(presenter: self)
         setupSearchBar()
     }
 
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat.leastNonzeroMagnitude
-    }
-
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return CGFloat.leastNonzeroMagnitude
-    }
-
     private func reloadTable() {
-        immuHandler?.viewModel = viewModel.tableViewModel(presenter: self)
-    }
+        tableViewModel = viewModel.tableViewModel(presenter: self)
 
-    @objc private func searchButtonTapped() {
-        searchController.isActive = true
+        if tableView.numberOfRows(inSection: 0) != tableViewModel.sections.first?.rows.count {
+            tableView.reloadData()
+        } else {
+            tableView.reloadSections([0], with: .none)
+        }
     }
 
     private func setupSearchBar() {
@@ -105,15 +101,6 @@ class PluginDirectoryViewController: UITableViewController {
         return controller
     }()
 
-    lazy var searchBarButton: UIBarButtonItem = {
-        let icon = Gridicon.iconOfType(.search)
-
-        let buttonItem = UIBarButtonItem(image: icon, style: .plain, target: self, action: #selector(searchButtonTapped))
-        buttonItem.tintColor = .white
-
-        return buttonItem
-    }()
-
     private enum Constants {
         static var rowHeight: CGFloat = 256
         static var separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -129,6 +116,39 @@ class PluginDirectoryViewController: UITableViewController {
 
         // Resetting the tableHeaderView is necessary to get the new height to take effect
         tableView.tableHeaderView = searchWrapperView
+    }
+}
+
+
+extension PluginDirectoryViewController {
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return tableViewModel.sections.count
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tableViewModel.sections[section].rows.count
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let row = tableViewModel.rowAtIndexPath(indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: row.reusableIdentifier, for: indexPath)
+
+        row.configureCell(cell)
+
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let row = tableViewModel.rowAtIndexPath(indexPath)
+        row.action?(row)
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
+    }
+
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0
     }
 }
 
@@ -163,7 +183,12 @@ extension PluginDirectoryViewController: UISearchResultsUpdating {
         pluginListViewController.query = .feed(type: .search(term: searchedText))
         pluginListViewController.tableView.contentInset.top = searchWrapperView.bounds.height
     }
+}
 
+extension PluginDirectoryViewController: WPNoResultsViewDelegate {
+    func didTap(_ noResultsView: WPNoResultsView!) {
+        viewModel.reloadFailed()
+    }
 }
 
 extension PluginDirectoryViewController: PluginPresenter {
