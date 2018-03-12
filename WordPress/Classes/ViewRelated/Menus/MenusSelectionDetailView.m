@@ -3,7 +3,7 @@
 #import "MenusSelectionView.h"
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
-
+#import "WordPress-Swift.h"
 
 @import Gridicons;
 
@@ -76,7 +76,8 @@
 {
     UILabel *label = [[UILabel alloc] init];
     label.numberOfLines = 0;
-    label.font = [WPFontManager systemRegularFontOfSize:13.0];
+    label.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleFootnote];
+    label.adjustsFontForContentSizeCategory = YES;
     label.textColor = [WPStyleGuide grey];
     _subTitleLabel = label;
 
@@ -89,7 +90,8 @@
 {
     UILabel *label = [[UILabel alloc] init];
     label.numberOfLines = 1;
-    label.font = [WPFontManager systemRegularFontOfSize:17.0];
+    label.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleBody];
+    label.adjustsFontForContentSizeCategory = YES;
     label.textColor = [WPStyleGuide darkGrey];
     label.adjustsFontSizeToFitWidth = YES;
     label.minimumScaleFactor = 0.70;
