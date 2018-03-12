@@ -29,7 +29,8 @@
                                           @"frame_nonce",
                                           @"jetpack_version",
                                           @"is_automated_transfer",
-                                          @"blog_public"
+                                          @"blog_public",
+                                          @"max_upload_size"
                                           ];
 
         for (NSString *key in optionsDirectMapKeys) {

@@ -8,6 +8,10 @@ struct PluginDirectoryAccessoryItem {
     }
 
     static func accessoryView(pluginState: PluginState) -> UIView {
+        guard !pluginState.automanaged else {
+            return PluginDirectoryAccessoryItem.automanaged()
+        }
+
         guard pluginState.active else {
             return PluginDirectoryAccessoryItem.inactive()
         }
@@ -20,6 +24,14 @@ struct PluginDirectoryAccessoryItem {
         case .updated:
             return PluginDirectoryAccessoryItem.active()
         }
+    }
+
+    private static func automanaged() -> UIView {
+        let icon = Gridicon.iconOfType(.domains, withSize: Constants.imageSize)
+        let color = WPStyleGuide.validGreen()
+        let text = NSLocalizedString("Auto-managed", comment: "Describes a status of a plugin")
+
+        return PluginDirectoryAccessoryItem.label(with: icon, tintColor: color, text: text)
     }
 
     private static func active() -> UIView {
