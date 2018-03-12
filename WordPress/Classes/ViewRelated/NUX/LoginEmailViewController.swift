@@ -53,7 +53,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         super.didChangePreferredContentSize()
         configureEmailField()
         configureAlternativeLabel()
-        configureGoogleButton()
+        //configureGoogleButton()
         configureSelfHostedLoginButton()
     }
 
@@ -151,9 +151,9 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         googleLoginButton = button
     }
 
-    func configureGoogleButton() {
-        googleLoginButton?.titleLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
-    }
+//    func configureGoogleButton() {
+//        googleLoginButton?.titleLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+//    }
 
     @objc func googleLoginTapped() {
         awaitingGoogle = true
