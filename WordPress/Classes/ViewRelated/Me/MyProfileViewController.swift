@@ -7,7 +7,7 @@ func MyProfileViewController(account: WPAccount) -> ImmuTableViewController? {
     }
 
     let service = AccountSettingsService(userID: account.userID.intValue, api: api)
-    let headerView = MakeHeaderView(account: account)
+    let headerView = makeHeaderView(account: account)
     return MyProfileViewController(account: account, service: service, headerView: headerView)
 }
 
@@ -21,7 +21,7 @@ func MyProfileViewController(account: WPAccount, service: AccountSettingsService
     return viewController
 }
 
-func MakeHeaderView(account: WPAccount) -> MyProfileHeaderView {
+private func makeHeaderView(account: WPAccount) -> MyProfileHeaderView {
     let defaultImage = UIImage(named: "gravatar")
     let headerView = MyProfileHeaderView.makeFromNib()
     if let email = account.email {
