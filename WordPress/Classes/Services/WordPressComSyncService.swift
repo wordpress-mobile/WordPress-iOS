@@ -1,10 +1,10 @@
 import Foundation
 
 
-/// SigninWordPressComService encapsulates all of the logic related to Logging into a WordPress.com account, and sync'ing the
+/// WordPressComSyncService encapsulates all of the logic related to Logging into a WordPress.com account, and sync'ing the
 /// User's blogs.
 ///
-class SigninWordPressComService {
+class WordPressComSyncService {
 
     /// Syncs account and blog information for the authenticated wpcom user.
     ///
@@ -20,16 +20,23 @@ class SigninWordPressComService {
         let accountService = AccountService(managedObjectContext: context)
         let newAccount = accountService.createOrUpdateAccount(withUsername: username, authToken: authToken)
 
-        // Reusable success closure to share between service calls.
+        let onFailureInternal = { (error: Error) in
+            /// At this point the user is authed and there is a valid account in core data. Make a note of the error and just dismiss
+            /// the vc. There might be some wonkiness due to missing data (blogs, account info) but this will eventually resync.
+            ///
+            DDLogError("Error while syncing wpcom account and/or blog details after authenticating. \(String(describing: error))")
+            onFailure(error)
+        }
+
         let onSuccessInternal = {
             accountService.updateUserDetails(for: newAccount, success: {
                 onSuccess(newAccount)
-            }, failure: onFailure)
+            }, failure: onFailureInternal)
         }
 
         if isJetpackLogin && !accountService.isDefaultWordPressComAccount(newAccount) {
             let blogService = BlogService(managedObjectContext: context)
-            blogService.associateSyncedBlogs(toJetpackAccount: newAccount, success: onSuccessInternal, failure: onFailure)
+            blogService.associateSyncedBlogs(toJetpackAccount: newAccount, success: onSuccessInternal, failure: onFailureInternal)
 
         } else {
             if accountService.defaultWordPressComAccount()?.isEqual(newAccount) == false {
@@ -38,7 +45,7 @@ class SigninWordPressComService {
 
             accountService.setDefaultWordPressComAccount(newAccount)
 
-            BlogSyncFacade().syncBlogs(for: newAccount, success: onSuccessInternal, failure: onFailure)
+            BlogSyncFacade().syncBlogs(for: newAccount, success: onSuccessInternal, failure: onFailureInternal)
         }
     }
 }
