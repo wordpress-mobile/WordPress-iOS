@@ -19,7 +19,7 @@ public protocol WordPressAuthenticatorDelegate: class {
 
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
-    func presentLoginEpilogue(in navigationController: UINavigationController, epilogueInfo: LoginEpilogueUserInfo?, isJetpackLogin: Bool)
+    func presentLoginEpilogue(in navigationController: UINavigationController, epilogueInfo: LoginEpilogueUserInfo?, isJetpackLogin: Bool, onDismiss: @escaping () -> Void)
 }
 
 
