@@ -122,6 +122,10 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSDictionary *capabilities;
 /// The blog's user ID for the current user
 @property (nonatomic, strong, readwrite, nullable) NSNumber *userID;
+/// Disk quota for site, this is only available for WP.com sites
+@property (nonatomic, strong, readwrite, nullable) NSNumber *quotaSpaceAllowed;
+@property (nonatomic, strong, readwrite, nullable) NSNumber *quotaSpaceUsed;
+
 
 
 /**
