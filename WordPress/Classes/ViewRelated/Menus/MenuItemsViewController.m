@@ -184,7 +184,7 @@ static CGFloat const ItemOrderingTouchesDetectionInset = 10.0;
             break;
     }
 
-    NSLayoutConstraint *heightConstraint = [insertionView.heightAnchor constraintEqualToConstant:MenuItemsStackableViewDefaultHeight];
+    NSLayoutConstraint *heightConstraint = [insertionView.heightAnchor constraintGreaterThanOrEqualToConstant:MenuItemsStackableViewDefaultHeight];
     heightConstraint.priority = UILayoutPriorityDefaultHigh;
     heightConstraint.active = YES;
 

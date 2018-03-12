@@ -6,6 +6,7 @@
 #import <WordPressUI/UIColor+Helpers.h>
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
+#import "WordPress-Swift.h"
 
 @import Gridicons;
 
@@ -43,8 +44,28 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
     [self setupTextFieldDesignViews];
     [self setupDoneButton];
     [self setupTrashButton];
+    [self setupObservers];
 
     [self updateTextFieldDesignIconPositioning];
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)contentSizeCategoryDidChange
+{
+    [self updateTextFieldFont];
+    [self updateTextFieldDesignIconPositioning];
+}
+
+- (void)setupObservers
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(contentSizeCategoryDidChange)
+                                                 name:UIContentSizeCategoryDidChangeNotification
+                                               object:nil];
 }
 
 - (void)setupTextField
@@ -52,6 +73,8 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
     UITextField *textField = self.textField;
     textField.placeholder = NSLocalizedString(@"Menu Name", @"Menus placeholder text for the name field of a menu with no name.");
     textField.textColor = [WPStyleGuide darkGrey];
+    textField.adjustsFontForContentSizeCategory = YES;
+    [self updateTextFieldFont];
     [textField addTarget:self action:@selector(hideTextFieldKeyboard) forControlEvents:UIControlEventEditingDidEndOnExit];
     [textField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
 }
@@ -61,6 +84,7 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
     UIButton *doneButton = self.doneButton;
     [doneButton setTitle:NSLocalizedString(@"Done", @"Menu button title for finishing editing the Menu name.") forState:UIControlStateNormal];
     [doneButton setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateNormal];
+    doneButton.titleLabel.adjustsFontForContentSizeCategory = YES;
     doneButton.alpha = 0.0;
     [doneButton addTarget:self action:@selector(doneButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 }
@@ -138,6 +162,12 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
 
     self.textFieldDesignIconLeadingConstraint.constant = ceilf(leadingConstant);
     [self.textFieldDesignIcon setNeedsLayout];
+}
+
+- (void)updateTextFieldFont
+{
+    self.textField.font = [UIFont systemFontOfSize:[WPStyleGuide fontSizeForTextStyle:UIFontTextStyleTitle2]
+                                            weight:UIFontWeightLight];
 }
 
 - (void)showTextFieldEditingState
