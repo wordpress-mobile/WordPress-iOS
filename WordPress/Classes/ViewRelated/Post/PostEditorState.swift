@@ -71,7 +71,7 @@ public enum PostEditorAction {
     fileprivate var secondaryPublishAction: PostEditorAction? {
         switch self {
         case .publish:
-            return .save
+            return .saveAsDraft
         case .update:
             return .publishNow
         default:
