@@ -1,0 +1,2 @@
+A new share extension that adds support to save drafts and handles tags.
+Plugin management taken to the next level: you can now browse and install plugins.
