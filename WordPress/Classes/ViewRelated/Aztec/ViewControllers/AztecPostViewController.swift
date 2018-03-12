@@ -1144,7 +1144,7 @@ extension AztecPostViewController {
                 self.trackPostSave(stat: analyticsStat)
             }
 
-            self.uploadPost(dismissWhenDone: dismissWhenDone)
+            self.uploadPost(action: action, dismissWhenDone: dismissWhenDone)
         }
 
         if action == .publish {
@@ -2552,9 +2552,9 @@ private extension AztecPostViewController {
 
     /// Shows the publishing overlay and starts the publishing process.
     ///
-    func uploadPost(dismissWhenDone: Bool) {
+    func uploadPost(action: PostEditorAction, dismissWhenDone: Bool) {
         SVProgressHUD.setDefaultMaskType(.clear)
-        SVProgressHUD.show(withStatus: postEditorStateContext.publishVerbText)
+        SVProgressHUD.show(withStatus: action.publishingActionLabel)
         postEditorStateContext.updated(isBeingPublished: true)
 
         uploadPost() { uploadedPost, error in
@@ -2567,7 +2567,7 @@ private extension AztecPostViewController {
             if let error = error {
                 DDLogError("Error publishing post: \(error.localizedDescription)")
 
-                SVProgressHUD.showDismissibleError(withStatus: self.postEditorStateContext.publishErrorText)
+                SVProgressHUD.showDismissibleError(withStatus: action.publishingErrorLabel)
                 generator.notificationOccurred(.error)
             } else if let uploadedPost = uploadedPost {
                 self.post = uploadedPost
