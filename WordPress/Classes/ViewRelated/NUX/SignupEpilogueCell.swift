@@ -33,14 +33,13 @@ class SignupEpilogueCell: UITableViewCell {
         cellField.text = fieldValue
         cellField.placeholder = fieldPlaceholder
         cellField.delegate = self
+        cellField.isSecureTextEntry = (cellType == .password)
         selectionStyle = .none
-
-        if cellType == .password {
-            cellField.isSecureTextEntry = true
-        }
 
         if cellType == .username {
             accessoryType = .disclosureIndicator
+        } else {
+            accessoryType = .none
         }
     }
 
@@ -50,8 +49,7 @@ class SignupEpilogueCell: UITableViewCell {
 extension SignupEpilogueCell: UITextFieldDelegate {
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if let cellType = cellType,
-            cellType == .displayName {
+        if let cellType = cellType, cellType == .displayName || cellType == .password {
             let updatedText = NSString(string: textField.text!).replacingCharacters(in: range, with: string)
             delegate?.changed(value: updatedText, forType: cellType)
         }
