@@ -66,6 +66,8 @@
     stackView.alignment = UIStackViewAlignmentFill;
     stackView.distribution = UIStackViewDistributionFill;
     stackView.axis = UILayoutConstraintAxisVertical;
+    stackView.layoutMargins = UIEdgeInsetsMake(12, 0, 12, 0);
+    stackView.layoutMarginsRelativeArrangement = YES;
     [stackView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     _labelsStackView = stackView;
 
