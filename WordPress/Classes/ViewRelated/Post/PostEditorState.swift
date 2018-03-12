@@ -33,7 +33,7 @@ public enum PostEditorAction {
         }
     }
 
-    fileprivate var publishingActionLabel: String {
+    var publishingActionLabel: String {
         switch self {
         case .publish, .publishNow:
             return NSLocalizedString("Publishing...", comment: "Text displayed in HUD while a post is being published.")
@@ -48,7 +48,7 @@ public enum PostEditorAction {
         }
     }
 
-    fileprivate var publishingErrorLabel: String {
+    var publishingErrorLabel: String {
         switch self {
         case .publish, .publishNow:
             return NSLocalizedString("Error occurred\nduring publishing", comment: "Text displayed in HUD while a post is being published.")
@@ -255,19 +255,6 @@ public class PostEditorStateContext {
     ///
     var publishButtonText: String {
         return editorState.action.publishActionLabel
-    }
-
-    /// Returns appropriate publishing UI text text for the current action
-    /// e.g. Publishing...
-    ///
-    var publishVerbText: String {
-        return editorState.action.publishingActionLabel
-    }
-
-    /// Returns the Error Text for the current active action
-    ///
-    var publishErrorText: String {
-        return editorState.action.publishingErrorLabel
     }
 
     /// Returns the WPAnalyticsStat enum to be tracked when this post is published
