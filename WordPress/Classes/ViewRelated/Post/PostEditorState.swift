@@ -14,6 +14,15 @@ public enum PostEditorAction {
     case update
     case submitForReview
 
+    var dismissesEditor: Bool {
+        switch self {
+        case .publish, .publishNow, .schedule:
+            return true
+        default:
+            return false
+        }
+    }
+
     fileprivate var publishActionLabel: String {
         switch self {
         case .publish:
