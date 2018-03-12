@@ -133,11 +133,6 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
     // MARK: - Instance Methods
 
 
-    @objc func showEpilogue() {
-        performSegue(withIdentifier: .showEpilogue, sender: self)
-    }
-
-
     /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with the submit action.
     ///
