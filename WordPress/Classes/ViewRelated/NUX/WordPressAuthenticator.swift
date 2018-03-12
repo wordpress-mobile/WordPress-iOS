@@ -38,6 +38,10 @@ public protocol WordPressAuthenticatorDelegate: class {
     /// such as all of the User's Login details.
     ///
     func presentLivechat(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
+
+    /// Presents the Login Epilogue, in the specified NavigationController.
+    ///
+    func presentLoginEpilogue(in navigationController: UINavigationController, epilogueInfo: LoginEpilogueUserInfo?, isJetpackLogin: Bool, onDismiss: @escaping () -> Void)
 }
 
 

@@ -61,7 +61,6 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
         case showMagicLink
         case showLinkMailView
         case show2FA
-        case showEpilogue
         case showDomains
         case showCreateSite
     }
