@@ -355,8 +355,6 @@ import SafariServices
         }
 
         let successBlock = {
-            self.displayLoginMessage("")
-            self.configureLoading(false)
             self.dismiss()
         }
 
