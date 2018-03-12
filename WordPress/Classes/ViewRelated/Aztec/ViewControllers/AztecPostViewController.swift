@@ -1147,7 +1147,7 @@ extension AztecPostViewController {
             self.uploadPost(action: action, dismissWhenDone: dismissWhenDone)
         }
 
-        if action == .publish {
+        if action == .publish || action == .publishNow {
             displayPublishConfirmationAlert(onPublish: publishBlock)
         } else {
             publishBlock()
