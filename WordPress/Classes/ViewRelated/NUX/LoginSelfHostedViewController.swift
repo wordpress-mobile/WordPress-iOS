@@ -232,6 +232,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
             fatalError()
         }
 
+        configureViewLoading(false)
         delegate.presentLoginEpilogue(in: navigationController, epilogueInfo: epilogueUserInfo(), isJetpackLogin: isJetpackLogin)
     }
 
