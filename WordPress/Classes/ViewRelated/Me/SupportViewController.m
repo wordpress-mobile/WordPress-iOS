@@ -22,9 +22,9 @@ SupportSourceTag const SupportSourceTagWPOrgLogin = @"origin:wporg-login-screen"
 SupportSourceTag const SupportSourceTagJetpackLogin = @"origin:jetpack-login-screen";
 SupportSourceTag const SupportSourceTagGeneralLogin = @"origin:login-screen";
 SupportSourceTag const SupportSourceTagInAppFeedback = @"origin:in-app-feedback";
-SupportSourceTag const SupportSourceTagAztecFeedback = @"origin:aztec-feedback";
 SupportSourceTag const SupportSourceTagLoginEmail = @"origin:login-email";
 SupportSourceTag const SupportSourceTagLoginMagicLink = @"origin:login-magic-link";
+SupportSourceTag const SupportSourceTagSignupMagicLink = @"origin:signup-magic-link";
 SupportSourceTag const SupportSourceTagLoginWPComPassword = @"origin:login-wpcom-password";
 SupportSourceTag const SupportSourceTagLogin2FA = @"origin:login-2fa";
 SupportSourceTag const SupportSourceTagLoginSiteAddress = @"origin:login-site-address";
@@ -36,6 +36,7 @@ SupportSourceTag const SupportSourceTagWPComCreateSiteDomain = @"origin:wpcom-cr
 SupportSourceTag const SupportSourceTagWPComCreateSiteUsername = @"origin:wpcom-create-site-username";
 SupportSourceTag const SupportSourceTagWPComCreateSiteCreation = @"origin:wpcom-create-site-creation";
 SupportSourceTag const SupportSourceTagWPComSignupEmail = @"origin:wpcom-signup-email-entry";
+SupportSourceTag const SupportSourceTagSignupWaitingForGoogle = @"origin:signup-waiting-for-google";
 
 static NSString *const WPSupportRestorationID = @"WPSupportRestorationID";
 

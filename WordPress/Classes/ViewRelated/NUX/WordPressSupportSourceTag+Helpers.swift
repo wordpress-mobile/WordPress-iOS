@@ -37,6 +37,10 @@ extension WordPressSupportSourceTag {
             return .wpComSignupEmail
         case .wpComSignup:
             return .wpComSignup
+        case .wpComSignupWaitingForGoogle:
+            return .signupWaitingForGoogle
+        case .wpComSignupMagicLink:
+            return .signupMagicLink
         }
     }
 }
