@@ -453,8 +453,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 // LoginFacadeDelegate methods for Google Google Sign In
 extension LoginEmailViewController {
     func finishedLogin(withGoogleIDToken googleIDToken: String, authToken: String) {
-        let username = loginFields.username
-        syncWPCom(username, authToken: authToken, requiredMultifactor: false)
+        syncWPCom(username: loginFields.username, authToken: authToken, requiredMultifactor: false)
         // Disconnect now that we're done with Google.
         GIDSignIn.sharedInstance().disconnect()
         WordPressAuthenticator.post(event: .loginSocialSuccess)
