@@ -70,6 +70,7 @@
 
 // API v1 POST /users/social/new
 - (void)createWPComAccountWithGoogle:(NSString *)token
+                           andLocale:(NSString *)locale
                          andClientID:(NSString *)clientID
                      andClientSecret:(NSString *)clientSecret
                              success:(WordPressComServiceSuccessBlock)success
@@ -88,6 +89,7 @@
                              @"client_id": clientID,
                              @"client_secret": clientSecret,
                              @"id_token": token,
+                             @"locale": locale,
                              @"service": @"google",
                              @"signup_flow_name": @"social",
                              };
