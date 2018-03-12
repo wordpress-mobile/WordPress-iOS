@@ -53,13 +53,18 @@ import WordPressShared.WPStyleGuide
             return placeholderLabel.text
         }
     }
-
     @objc open var replyText: String! {
         set {
             replyButton.setTitle(newValue, for: UIControlState())
         }
         get {
             return replyButton.title(for: UIControlState())
+        }
+    }
+
+    open var maximumNumberOfVisibleLines = Settings.maximumNumberOfVisibleLines {
+        didSet {
+            invalidateIntrinsicContentSize()
         }
     }
 
@@ -202,15 +207,8 @@ import WordPressShared.WPStyleGuide
         textView.layoutIfNeeded()
 
         // Calculate the entire control's size
-        let topMargin = bezierContainerView.layoutMargins.top
-        let bottomMargin = bezierContainerView.layoutMargins.bottom
-
-        let contentHeight = textView.contentSize.height
-        let fullWidth = frame.width
-        let textHeight = floor(contentHeight + topMargin + bottomMargin)
-
-        let newHeight = min(max(textHeight, textViewMinHeight), textViewMaxHeight)
-        let intrinsicSize = CGSize(width: fullWidth, height: newHeight)
+        let newHeight = min(max(contentHeight, minimumHeight), maximumHeight)
+        let intrinsicSize = CGSize(width: frame.width, height: newHeight)
 
         return intrinsicSize
     }
@@ -218,22 +216,20 @@ import WordPressShared.WPStyleGuide
 
     // MARK: - Setup Helpers
     fileprivate func setupView() {
-        self.frame.size.height = textViewMinHeight
-
         // Load the nib + add its container view
         bundle = Bundle.main.loadNibNamed("ReplyTextView", owner: self, options: nil) as NSArray?
         addSubview(contentView)
 
         // Setup Layout
-        self.translatesAutoresizingMaskIntoConstraints = false
+        translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
         pinSubviewToAllEdges(contentView)
 
         // Setup the TextView
         textView.delegate = self
         textView.scrollsToTop = false
-        textView.contentInset = UIEdgeInsets.zero
-        textView.textContainerInset = UIEdgeInsets.zero
+        textView.contentInset = .zero
+        textView.textContainerInset = .zero
         textView.font = WPStyleGuide.Reply.textFont
         textView.textColor = WPStyleGuide.Reply.textColor
         textView.textContainer.lineFragmentPadding = 0
@@ -260,6 +256,7 @@ import WordPressShared.WPStyleGuide
 
         // Bezier
         bezierContainerView.bezierColor = WPStyleGuide.Reply.separatorColor
+        bezierContainerView.translatesAutoresizingMaskIntoConstraints = false
 
         // Separators
         separatorsView.topColor = WPStyleGuide.Reply.separatorColor
@@ -268,6 +265,10 @@ import WordPressShared.WPStyleGuide
         // Recognizers
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(ReplyTextView.backgroundWasTapped))
         gestureRecognizers = [recognizer]
+
+        /// Initial Sizing: Final step, since this depends on other control(s) initialization
+        ///
+        frame.size.height = minimumHeight
     }
 
 
@@ -307,18 +308,71 @@ import WordPressShared.WPStyleGuide
     }
 
 
-    // MARK: - Constants
-    fileprivate let textViewMaxHeight = CGFloat(86)   // Fits 3 lines onscreen
-    fileprivate let textViewMinHeight = CGFloat(50)
-
     // MARK: - Private Properties
     fileprivate var bundle: NSArray?
 
     // MARK: - IBOutlets
-    @IBOutlet fileprivate var textView: UITextView!
-    @IBOutlet fileprivate var placeholderLabel: UILabel!
-    @IBOutlet fileprivate var replyButton: UIButton!
-    @IBOutlet fileprivate var bezierContainerView: ReplyBezierView!
-    @IBOutlet fileprivate var separatorsView: SeparatorsView!
-    @IBOutlet fileprivate var contentView: UIView!
+    @IBOutlet private var textView: UITextView!
+    @IBOutlet private var placeholderLabel: UILabel!
+    @IBOutlet private var replyButton: UIButton!
+    @IBOutlet private var bezierContainerView: ReplyBezierView!
+    @IBOutlet private var separatorsView: SeparatorsView!
+    @IBOutlet private var contentView: UIView!
+    @IBOutlet private var bezierTopConstraint: NSLayoutConstraint!
+    @IBOutlet private var bezierBottomConstraint: NSLayoutConstraint!
+}
+
+
+// MARK: - Layout Calculated Properties
+//
+private extension ReplyTextView {
+
+    /// Padding: Bezier Margins (Top / Bottom) + Bezier Constraints (Top / Bottom)
+    ///
+    var contentPadding: CGFloat {
+        return bezierContainerView.layoutMargins.top + bezierContainerView.layoutMargins.bottom
+                + bezierTopConstraint.constant + bezierBottomConstraint.constant
+    }
+
+    /// Returns the Content Height (non capped).
+    ///
+    var contentHeight: CGFloat {
+        return ceil(textView.contentSize.height) + contentPadding
+    }
+
+    /// Returns the current Font's LineHeight.
+    ///
+    var lineHeight: CGFloat {
+        let lineHeight = textView.font?.lineHeight ?? Settings.defaultLineHeight
+        return ceil(lineHeight)
+    }
+
+    /// Returns the Minimum component Height.
+    ///
+    var minimumHeight: CGFloat {
+        return lineHeight + contentPadding
+    }
+
+    /// Returns the Maximum component Height.
+    ///
+    var maximumHeight: CGFloat {
+        return lineHeight * CGFloat(maximumNumberOfVisibleLines) + contentPadding
+    }
+}
+
+
+// MARK: - Settings
+//
+private extension ReplyTextView {
+
+    enum Settings {
+
+        /// Maximum number of *visible* lines
+        ///
+        static let maximumNumberOfVisibleLines = 3
+
+        /// Default Line Height. Used as a safety measure, in case the actual font is not yet loaded.
+        ///
+        static let defaultLineHeight = CGFloat(21)
+    }
 }

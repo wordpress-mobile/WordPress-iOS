@@ -68,7 +68,7 @@ class LoginPrologueViewController: UIViewController, UIViewControllerTransitioni
         }
 
         let loginTitle = NSLocalizedString("Log In", comment: "Button title.  Tapping takes the user to the login form.")
-        let createTitle = NSLocalizedString("Signup to WordPress.com", comment: "Button title. Tapping begins the process of creating a WordPress.com account.")
+        let createTitle = NSLocalizedString("Sign up for WordPress.com", comment: "Button title. Tapping begins the process of creating a WordPress.com account.")
         buttonViewController.setupTopButton(title: loginTitle, isPrimary: true) { [weak self] in
             self?.performSegue(withIdentifier: NUXViewController.SegueIdentifier.showEmailLogin.rawValue, sender: self)
         }
