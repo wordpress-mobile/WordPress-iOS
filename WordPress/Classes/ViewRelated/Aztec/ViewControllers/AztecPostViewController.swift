@@ -1030,14 +1030,17 @@ extension AztecPostViewController {
 //
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
+
+        let action = self.postEditorStateContext.action
+
         publishPost(
-            action: self.postEditorStateContext.action,
-            dismissWhenDone: postEditorStateContext.publishActionDismissesEditor,
+            action: action,
+            dismissWhenDone: action.dismissesEditor,
             analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
     }
 
-    @IBAction func secondaryPublishButtonTapped(dismissWhenDone: Bool = true) {
-        guard let secondaryPublishAction = self.postEditorStateContext.secondaryPublishButtonAction else {
+    @IBAction func secondaryPublishButtonTapped() {
+        guard let action = self.postEditorStateContext.secondaryPublishButtonAction else {
             // If the user tapped on the secondary publish action button, it means we should have a secondary publish action.
             let error = NSError(domain: errorDomain, code: ErrorCode.expectedSecondaryAction.rawValue, userInfo: nil)
             Crashlytics.sharedInstance().recordError(error)
@@ -1048,8 +1051,8 @@ extension AztecPostViewController {
 
         let publishPostClosure = { [unowned self] in
             self.publishPost(
-                action: secondaryPublishAction,
-                dismissWhenDone: dismissWhenDone,
+                action: action,
+                dismissWhenDone: action.dismissesEditor,
                 analyticsStat: secondaryStat)
         }
 
@@ -1246,10 +1249,9 @@ private extension AztecPostViewController {
 
         if postEditorStateContext.isSecondaryPublishButtonShown,
             let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
-            let dismissWhenDone = postEditorStateContext.secondaryPublishButtonAction == .publish
 
             alert.addDefaultActionWithTitle(buttonTitle) { _ in
-                self.secondaryPublishButtonTapped(dismissWhenDone: dismissWhenDone)
+                self.secondaryPublishButtonTapped()
             }
         }
 
