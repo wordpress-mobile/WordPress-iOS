@@ -33,7 +33,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
-    func presentLoginEpilogue(in navigationController: UINavigationController, epilogueInfo: LoginEpilogueUserInfo? = nil, isJetpackLogin: Bool) {
+    func presentLoginEpilogue(in navigationController: UINavigationController, epilogueInfo: LoginEpilogueUserInfo? = nil, isJetpackLogin: Bool, onDismiss: @escaping () -> Void) {
         let storyboard = UIStoryboard(name: "LoginEpilogue", bundle: .main)
         guard let epilogueViewController = storyboard.instantiateInitialViewController() as? LoginEpilogueViewController else {
             fatalError()
@@ -41,6 +41,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         epilogueViewController.epilogueUserInfo = epilogueInfo
         epilogueViewController.jetpackLogin = isJetpackLogin
+        epilogueViewController.onDismiss = onDismiss
 
         navigationController.pushViewController(epilogueViewController, animated: true)
     }
