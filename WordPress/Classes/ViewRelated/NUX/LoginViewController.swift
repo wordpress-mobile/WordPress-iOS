@@ -85,6 +85,9 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
     }
 
     func dismiss() {
+        configureStatusLabel("")
+        configureViewLoading(false)
+
         if shouldShowEpilogue() {
 
             if let linkSource = loginFields.meta.emailMagicLinkSource,
