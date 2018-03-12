@@ -26,10 +26,6 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     var supportBadgeCount: Int { get }
 
-    /// Refreshes Support's Badge Count.
-    ///
-    func refreshSupportBadgeCount()
-
     /// Presents the Support Interface from a given ViewController, with a specified SourceTag.
     ///
     func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
@@ -42,6 +38,24 @@ public protocol WordPressAuthenticatorDelegate: class {
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, epilogueInfo: LoginEpilogueUserInfo?, isJetpackLogin: Bool, onDismiss: @escaping () -> Void)
+
+    /// Refreshes Support's Badge Count.
+    ///
+    func refreshSupportBadgeCount()
+
+    /// Signals the Host App that a WordPress.com account is available, with the specified credentials.
+    ///
+    /// - Parameters:
+    ///     - username: WordPress.com account username.
+    ///     - authToken: WordPress.com account token.
+    ///     - isJetpackLogin: Boolean indicating if the account is a Jetpack Auth.
+    ///     - onSuccess: Closure to be executed on success. Aditional userInfo may be passed over.
+    ///     - onFailure: Closure to be executed upon failure.
+    ///
+    /// - Note:
+    ///     - onSuccess's *userInfo* will be relayed back via the `wordpressLoginFinishedJetpackLogin` notification, to the host app.
+    ///
+    func syncWPCom(username: String, authToken: String, isJetpackLogin: Bool, onSuccess: @escaping (_ userInfo: Any) -> (), onFailure: @escaping (Error) -> ())
 }
 
 

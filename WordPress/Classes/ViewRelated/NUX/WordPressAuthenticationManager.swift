@@ -106,4 +106,16 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         navigationController.pushViewController(epilogueViewController, animated: true)
     }
+
+    /// Synchronizes a WordPress.com account with the specified credentials.
+    ///
+    func syncWPCom(username: String, authToken: String, isJetpackLogin: Bool, onSuccess: @escaping (_ userInfo: Any) -> (), onFailure: @escaping (Error) -> ()) {
+        let service = WordPressComSyncService()
+
+        service.syncWPCom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin, onSuccess: { account in
+            onSuccess(account)
+        }, onFailure: { error in
+            onFailure(error)
+        })
+    }
 }
