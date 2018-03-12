@@ -9,7 +9,7 @@ import MobileCoreServices
     ///
     var searchIdentifier: String {get}
 
-    /// The value that what class of items this searchable belongs to
+    /// The value that identifies what class this searchable item belongs to (e.g. SiteID, etc)
     ///
     var searchDomain: String {get}
 
@@ -23,11 +23,11 @@ import MobileCoreServices
 
     // MARK: Optional Vars
 
-    /// An array of keywords associated with the item
+    /// An optional array of keywords associated with the item
     ///
     @objc optional var searchKeywords: [String]? {get}
 
-    /// Item thumbnail to be displayed in spotlight search
+    /// Optional item thumbnail to be displayed in spotlight search
     ///
     @objc optional var searchImage: UIImage? {get}
 }
