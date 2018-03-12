@@ -140,7 +140,7 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
         refreshBadgeCount()
     }
 
-    /// Sets up the help button and the helpshift conversation badge.
+    /// Sets up the help button and the Help conversation badge.
     ///
     /// - Note: this is only used in the old single-page signup screen and can be removed once that screen is gone.
     ///
