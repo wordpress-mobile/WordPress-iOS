@@ -238,13 +238,13 @@
                                         <rect key="frame" x="0.0" y="0.0" width="367" height="45"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="D5M-Tv-O2r">
-                                                <rect key="frame" x="0.0" y="12" width="367" height="21"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="367" height="45"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Glt-4z-Ehn" customClass="MenusSelectionDetailView">
-                                                        <rect key="frame" x="0.0" y="0.0" width="367" height="21"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="367" height="45"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="2dT-vV-4hP">
-                                                                <rect key="frame" x="0.0" y="0.0" width="366.5" height="21"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="366.5" height="45"/>
                                                             </stackView>
                                                         </subviews>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -270,8 +270,8 @@
                                         <constraints>
                                             <constraint firstItem="D5M-Tv-O2r" firstAttribute="leading" secondItem="Fyw-BZ-Tlx" secondAttribute="leading" id="Glh-0r-BAL"/>
                                             <constraint firstAttribute="trailing" secondItem="D5M-Tv-O2r" secondAttribute="trailing" id="Oae-vK-35g"/>
-                                            <constraint firstItem="D5M-Tv-O2r" firstAttribute="top" secondItem="Fyw-BZ-Tlx" secondAttribute="top" constant="12" id="az4-ly-cMD"/>
-                                            <constraint firstAttribute="bottom" secondItem="D5M-Tv-O2r" secondAttribute="bottom" constant="12" id="mRk-cA-0za"/>
+                                            <constraint firstItem="D5M-Tv-O2r" firstAttribute="top" secondItem="Fyw-BZ-Tlx" secondAttribute="top" id="az4-ly-cMD"/>
+                                            <constraint firstAttribute="bottom" secondItem="D5M-Tv-O2r" secondAttribute="bottom" id="mRk-cA-0za"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="detailView" destination="Glt-4z-Ehn" id="dCZ-oc-yVU"/>
@@ -288,22 +288,20 @@
                                         <rect key="frame" x="401.5" y="0.0" width="366.5" height="45"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="flg-cx-nu7">
-                                                <rect key="frame" x="0.0" y="12" width="366.5" height="21"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="366.5" height="45"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xgb-Ci-5mG" customClass="MenusSelectionDetailView">
-                                                        <rect key="frame" x="0.0" y="0.0" width="366.5" height="21"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="366.5" height="45"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="gZZ-lD-ySJ">
-                                                                <rect key="frame" x="0.0" y="0.0" width="366" height="21"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="366" height="45"/>
                                                             </stackView>
                                                         </subviews>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
-                                                            <constraint firstItem="gZZ-lD-ySJ" firstAttribute="height" secondItem="xgb-Ci-5mG" secondAttribute="height" id="Hmg-e3-yRV"/>
                                                             <constraint firstItem="gZZ-lD-ySJ" firstAttribute="leading" secondItem="xgb-Ci-5mG" secondAttribute="leading" id="J5e-3T-uZB"/>
                                                             <constraint firstItem="gZZ-lD-ySJ" firstAttribute="top" secondItem="xgb-Ci-5mG" secondAttribute="top" id="Myf-CJ-KTW"/>
                                                             <constraint firstAttribute="bottom" secondItem="gZZ-lD-ySJ" secondAttribute="bottom" id="TLh-J0-QF0"/>
-                                                            <constraint firstItem="gZZ-lD-ySJ" firstAttribute="width" secondItem="xgb-Ci-5mG" secondAttribute="width" id="r28-nw-PqW"/>
                                                             <constraint firstAttribute="trailing" secondItem="gZZ-lD-ySJ" secondAttribute="trailing" id="xNS-RV-aad"/>
                                                         </constraints>
                                                         <connections>
@@ -318,9 +316,9 @@
                                         </subviews>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstItem="flg-cx-nu7" firstAttribute="top" secondItem="k6Q-Ut-cV3" secondAttribute="top" constant="12" id="ETf-9G-4zn"/>
+                                            <constraint firstItem="flg-cx-nu7" firstAttribute="top" secondItem="k6Q-Ut-cV3" secondAttribute="top" id="ETf-9G-4zn"/>
                                             <constraint firstItem="flg-cx-nu7" firstAttribute="leading" secondItem="k6Q-Ut-cV3" secondAttribute="leading" id="QFW-SV-2pK"/>
-                                            <constraint firstAttribute="bottom" secondItem="flg-cx-nu7" secondAttribute="bottom" constant="12" id="lNI-J0-brL"/>
+                                            <constraint firstAttribute="bottom" secondItem="flg-cx-nu7" secondAttribute="bottom" id="lNI-J0-brL"/>
                                             <constraint firstAttribute="trailing" secondItem="flg-cx-nu7" secondAttribute="trailing" id="mNn-oL-5DS"/>
                                         </constraints>
                                         <connections>
