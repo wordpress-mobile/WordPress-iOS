@@ -4,18 +4,50 @@ import NSURL_IDN
 import WordPressShared
 
 
-/// A collection of helper methods for NUX.
-///
+
+// MARK: - WordPressAuthenticator Delegate Protocol
+//
+public protocol WordPressAuthenticatorDelegate: class {
+
+    /// Indicates if the Support button should be rendered, or not.
+    ///
+    var supportActionEnabled: Bool { get }
+
+    /// Returns a Support UIViewController instance, to be displayed from a given source.
+    ///
+    func supportViewController(from source: WordPressSupportSourceTag) -> UIViewController
+}
+
+
+// MARK: - A collection of helper methods for NUX.
+//
 @objc public class WordPressAuthenticator: NSObject {
+
+    /// Authenticator's Delegate.
+    ///
+    public weak var delegate: WordPressAuthenticatorDelegate?
+
+    /// Shared Instance.
+    ///
+    public static let shared = WordPressAuthenticator()
+
+    /// WordPress.com domain.
+    ///
     fileprivate static let WPComSuffix = ".wordpress.com"
+
+    /// Notification to be posted whenever the signing flow completes.
+    ///
     @objc static let WPSigninDidFinishNotification = "WPSigninDidFinishNotification"
 
+    /// Internal Constants.
+    ///
     fileprivate enum Constants {
         static let authenticationInfoKey = "authenticationInfoKey"
         static let jetpackBlogIDURL = "jetpackBlogIDURL"
         static let username = "username"
         static let emailMagicLinkSource = "emailMagicLinkSource"
     }
+
 
     // MARK: - Helpers for presenting the login flow
 
@@ -160,7 +192,7 @@ import WordPressShared
             }
         }
 
-        let navController = UINavigationController(rootViewController: controller)
+        let navController = LoginNavigationController(rootViewController: controller)
 
         // The way the magic link flow works some view controller might
         // still be presented when the app is resumed by tapping on the auth link.
@@ -439,38 +471,24 @@ import WordPressShared
     ///
     @objc class func fetchOnePasswordCredentials(_ controller: UIViewController, sourceView: UIView, loginFields: LoginFields, success: @escaping ((_ loginFields: LoginFields) -> Void)) {
 
-        let loginURL = loginFields.meta.userIsDotCom ? "wordpress.com" : loginFields.siteAddress
+        let loginURL = loginFields.meta.userIsDotCom ? OnePasswordDefaults.dotcomURL : loginFields.siteAddress
 
-
-        let completion: OnePasswordFacadeCallback = { (username, password, oneTimePassword, error) in
-            if let error = error {
-                DDLogError("OnePassword Error: \(error.localizedDescription)")
-                WordPressAuthenticator.post(event: .onePasswordFailed)
-                return
-            }
-
-            guard let username = username, let password = password else {
-                return
-            }
-
-            if username.isEmpty || password.isEmpty {
-                return
-            }
-
+        OnePasswordFacade().findLogin(for: loginURL, viewController: controller, sender: sourceView, success: { (username, password, otp) in
             loginFields.username = username
             loginFields.password = password
-
-            if let oneTimePassword = oneTimePassword {
-                loginFields.multifactorCode = oneTimePassword
-            }
+            loginFields.multifactorCode = otp ?? String()
 
             WordPressAuthenticator.post(event: .onePasswordLogin)
-
             success(loginFields)
-        }
 
-        let onePasswordFacade = OnePasswordFacade()
-        onePasswordFacade.findLogin(forURLString: loginURL, viewController: controller, sender: sourceView, completion: completion)
+        }, failure: { error in
+            guard error != .cancelledByUser else {
+                return
+            }
+
+            DDLogError("OnePassword Error: \(error.localizedDescription)")
+            WordPressAuthenticator.post(event: .onePasswordFailed)
+        })
     }
 
 
