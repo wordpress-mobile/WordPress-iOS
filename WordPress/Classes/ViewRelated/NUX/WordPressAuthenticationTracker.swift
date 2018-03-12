@@ -1,11 +1,14 @@
+import Foundation
+
+
 // MARK: - Relays WordPressAutentication Flow Events over to WPAppAnalytics
 //
 class WordPressAuthenticationTracker {
 
-    /// Shared Instance
-    ///
-    static let shared = WordPressAuthenticationTracker()
-
+    // MARK: - Deinitializers
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 
     /// Starts Listening for Authentication Flow Events
     ///
@@ -19,7 +22,10 @@ class WordPressAuthenticationTracker {
 //
 extension WordPressAuthenticationTracker {
 
-    @objc func didReceive(note: NSNotification) {
+    /// Relays WordPressAuthenticator.Event Notifications into Automattic Tracks.
+    ///
+    @objc
+    func didReceive(note: NSNotification) {
         guard let event = note.object as? WordPressAuthenticator.Event else {
             return
         }

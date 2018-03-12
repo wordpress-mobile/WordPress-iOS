@@ -11,7 +11,7 @@ class SignupUsernameViewController: NUXViewController {
     open var displayName: String?
     open var delegate: SignupUsernameViewControllerDelegate?
 
-    override var sourceTag: SupportSourceTag {
+    override var sourceTag: WordPressSupportSourceTag {
         get {
             return .wpComCreateSiteUsername
         }
