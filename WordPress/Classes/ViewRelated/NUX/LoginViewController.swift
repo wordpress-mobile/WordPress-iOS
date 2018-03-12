@@ -10,6 +10,11 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
         return facade
     }()
 
+    var isJetpackLogin: Bool {
+        return loginFields.meta.jetpackLogin
+    }
+
+
     // MARK: Lifecycle Methods
 
     override func viewDidLoad() {
@@ -54,7 +59,7 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     }
 
     fileprivate func shouldShowEpilogue() -> Bool {
-        if !isJetpackLogin() {
+        if !isJetpackLogin {
             return true
         }
         let context = ContextManager.sharedInstance().mainContext
@@ -148,10 +153,6 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
             // If/when we add support for manually connecting/disconnecting services
             // we can revisit.
         })
-    }
-
-    func isJetpackLogin() -> Bool {
-        return loginFields.meta.jetpackLogin
     }
 
     func configureStatusLabel(_ message: String) {
