@@ -224,6 +224,8 @@ import WordPressShared
         setupSyncHelper()
         setupResultsStatusView()
 
+        observeNetworkStatus()
+
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
         didSetupView = true
@@ -1823,5 +1825,11 @@ extension ReaderStreamViewController: WPNoResultsViewDelegate {
 extension ReaderStreamViewController: NetworkAwareUI {
     func contentIsEmpty() -> Bool {
         return tableViewHandler.resultsController.isEmpty()
+    }
+}
+
+extension ReaderStreamViewController: NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        syncIfAppropriate()
     }
 }
