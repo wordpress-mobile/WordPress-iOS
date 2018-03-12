@@ -79,7 +79,9 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
             fatalError()
         }
 
-        delegate.presentLoginEpilogue(in: navigationController, epilogueInfo: nil, isJetpackLogin: isJetpackLogin)
+        delegate.presentLoginEpilogue(in: navigationController, epilogueInfo: nil, isJetpackLogin: isJetpackLogin) {
+            self.dismissBlock?(false)
+        }
     }
 
     func dismiss() {
@@ -122,19 +124,14 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     /// Manages data transfer when seguing to a new VC
     ///
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let source = segue.source as? LoginViewController else {
+        guard let source = segue.source as? LoginViewController, let destination = segue.destination as? LoginViewController else {
             return
         }
 
-        if let destination = segue.destination as? LoginEpilogueViewController {
-            destination.dismissBlock = source.dismissBlock
-            destination.jetpackLogin = source.loginFields.meta.jetpackLogin
-        } else if let destination = segue.destination as? LoginViewController {
-            destination.loginFields = source.loginFields
-            destination.restrictToWPCom = source.restrictToWPCom
-            destination.dismissBlock = source.dismissBlock
-            destination.errorToPresent = source.errorToPresent
-        }
+        destination.loginFields = source.loginFields
+        destination.restrictToWPCom = source.restrictToWPCom
+        destination.dismissBlock = source.dismissBlock
+        destination.errorToPresent = source.errorToPresent
     }
 
     // MARK: SigninWPComSyncHandler methods

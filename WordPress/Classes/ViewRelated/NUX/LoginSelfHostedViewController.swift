@@ -233,7 +233,9 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
         }
 
         configureViewLoading(false)
-        delegate.presentLoginEpilogue(in: navigationController, epilogueInfo: epilogueUserInfo(), isJetpackLogin: isJetpackLogin)
+        delegate.presentLoginEpilogue(in: navigationController, epilogueInfo: epilogueUserInfo(), isJetpackLogin: isJetpackLogin) { [weak self] in
+            self?.dismissBlock?(false)
+        }
     }
 
 
