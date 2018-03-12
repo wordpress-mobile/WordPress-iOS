@@ -2,7 +2,6 @@ import UIKit
 import WordPressShared
 
 class LoginEpilogueViewController: UIViewController {
-    @objc var originalPresentingVC: UIViewController?
     @objc var dismissBlock: ((_ cancelled: Bool) -> Void)?
     @IBOutlet var buttonPanel: UIView?
     @IBOutlet var shadowView: UIView?
