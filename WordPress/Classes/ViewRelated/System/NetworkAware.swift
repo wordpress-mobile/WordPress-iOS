@@ -40,3 +40,55 @@ extension NetworkAwareUI {
         return ReachabilityUtils.noConnectionMessage()
     }
 }
+
+/// Implementations of this protocol will be notified when the network connection status changes. Implementations of this protocol must call the observeNetworkStatus method.
+protocol NetworkStatusDelegate: class {
+    func observeNetworkStatus()
+
+    /// This method will be called, on the main thread, when the network connection changes status.
+    ///
+    /// - Parameter active: the new status of the network connection
+    func networkStatusDidChange(active: Bool)
+}
+
+extension NetworkStatusDelegate where Self: UIViewController {
+    func observeNetworkStatus() {
+        receiver = ReachabilityNotificationObserver(delegate: self)
+    }
+
+    fileprivate var receiver: ReachabilityNotificationObserver? {
+        get {
+            return objc_getAssociatedObject(self, &NetworkStatusAssociatedKeys.associatedObjectKey) as? ReachabilityNotificationObserver
+        }
+
+        set {
+            objc_setAssociatedObject(self, &NetworkStatusAssociatedKeys.associatedObjectKey, newValue, .OBJC_ASSOCIATION_RETAIN)
+        }
+    }
+}
+
+fileprivate struct NetworkStatusAssociatedKeys {
+    static var associatedObjectKey = "org.wordpress.networkstatus.notificationreceiver"
+}
+
+fileprivate final class ReachabilityNotificationObserver: NSObject {
+    private weak var delegate: NetworkStatusDelegate?
+
+    init(delegate: NetworkStatusDelegate) {
+        self.delegate = delegate
+        super.init()
+        observeErrors()
+    }
+
+    private func observeErrors() {
+        NotificationCenter.default.addObserver(self, selector: #selector(receive), name: .reachabilityChanged, object: nil)
+    }
+
+    @objc func receive(notification: Foundation.Notification) {
+        if let newValue = notification.userInfo?[Foundation.Notification.reachabilityKey] as? Bool {
+            DispatchQueue.main.async {
+                self.delegate?.networkStatusDidChange(active: newValue)
+            }
+        }
+    }
+}
