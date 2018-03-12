@@ -66,7 +66,7 @@ public protocol WordPressAuthenticatorDelegate: class {
     }
 
 
-    // MARK: - Public MethodsauthenticationInfoKey
+    // MARK: - Public Methods
 
     func supportBadgeCountWasUpdated() {
         NotificationCenter.default.post(name: .wordpressSupportBadgeUpdated, object: nil)
