@@ -16,6 +16,10 @@ public protocol WordPressAuthenticatorDelegate: class {
     /// Returns a Support UIViewController instance, to be displayed from a given source.
     ///
     func supportViewController(from source: WordPressSupportSourceTag) -> UIViewController
+
+    /// Presents the Login Epilogue, in the specified NavigationController.
+    ///
+    func presentLoginEpilogue(in navigationController: UINavigationController, epilogueInfo: LoginEpilogueUserInfo?, isJetpackLogin: Bool)
 }
 
 
