@@ -74,6 +74,14 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
         return accountService.isDefaultWordPressComAccount(account)
     }
 
+    func showLoginEpilogue() {
+        guard let delegate = WordPressAuthenticator.shared.delegate, let navigationController = navigationController else {
+            fatalError()
+        }
+
+        delegate.presentLoginEpilogue(in: navigationController, epilogueInfo: nil, isJetpackLogin: isJetpackLogin)
+    }
+
     func dismiss() {
         if shouldShowEpilogue() {
 
@@ -81,7 +89,7 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
                 linkSource == .signup {
                     performSegue(withIdentifier: .showSignupEpilogue, sender: self)
             } else {
-                performSegue(withIdentifier: .showEpilogue, sender: self)
+                showLoginEpilogue()
             }
 
             return
