@@ -20,7 +20,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
     private let completedLabelFont = WPStyleGuide.fontForTextStyle(.headline)
     private let completedLabelTextColor = WPStyleGuide.darkGrey()
 
-    override var sourceTag: SupportSourceTag {
+    override var sourceTag: WordPressSupportSourceTag {
         get {
             return .wpComCreateSiteCreation
         }
