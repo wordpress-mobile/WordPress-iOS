@@ -132,6 +132,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         tableView.reloadData()
+
+        observeNetworkStatus()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -1098,5 +1100,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 extension AbstractPostListViewController: NetworkAwareUI {
     func contentIsEmpty() -> Bool {
         return tableViewHandler.resultsController.isEmpty()
+    }
+}
+
+extension AbstractPostListViewController: NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        automaticallySyncIfAppropriate()
     }
 }
