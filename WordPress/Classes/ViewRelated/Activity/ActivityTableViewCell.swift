@@ -34,7 +34,7 @@ open class ActivityTableViewCell: WPTableViewCell {
             rewindIcon.isHidden = true
         } else {
             contentView.backgroundColor = Style.backgroundColor()
-            rewindIcon.isHidden = !activity.rewindable
+            rewindIconContainer.isHidden  = !activity.rewindable
         }
     }
 
@@ -51,5 +51,6 @@ open class ActivityTableViewCell: WPTableViewCell {
     @IBOutlet fileprivate var iconImageView: UIImageView!
     @IBOutlet fileprivate var contentLabel: UILabel!
     @IBOutlet fileprivate var summaryLabel: UILabel!
+    @IBOutlet fileprivate var rewindIconContainer: UIView!
     @IBOutlet fileprivate var rewindIcon: UIImageView!
 }
