@@ -14,15 +14,17 @@ func MyProfileViewController(account: WPAccount) -> ImmuTableViewController? {
 func MyProfileViewController(account: WPAccount, service: AccountSettingsService, headerView: MyProfileHeaderView) -> ImmuTableViewController {
     let controller = MyProfileController(account: account, service: service, headerView: headerView)
     let viewController = ImmuTableViewController(controller: controller)
-    headerView.onAddUpdatePhoto = {
-        controller.presentGravatarPicker(viewController)
+    headerView.onAddUpdatePhoto = { [weak controller, weak viewController] in
+        if let viewController = viewController {
+            controller?.presentGravatarPicker(viewController)
+        }
     }
     viewController.tableView.tableHeaderView = headerView
     return viewController
 }
 
 private func makeHeaderView(account: WPAccount) -> MyProfileHeaderView {
-    let defaultImage = UIImage(named: "gravatar")
+    let defaultImage = UIImage.gravatarPlaceholderImage
     let headerView = MyProfileHeaderView.makeFromNib()
     if let email = account.email {
         headerView.gravatarEmail = email
@@ -33,7 +35,7 @@ private func makeHeaderView(account: WPAccount) -> MyProfileHeaderView {
     if headerView.gravatarImageView.image == defaultImage {
         headerView.gravatarButton.setTitle(NSLocalizedString("Add a Profile Photo", comment: "Add a profile photo to Me > My Profile"), for: .normal)
     } else {
-        headerView.gravatarButton.setTitle("Update Profile Photo", for: .normal)
+        headerView.gravatarButton.setTitle(NSLocalizedString("Update Profile Photo", comment: "Update profile photo in Me > My Profile"), for: .normal)
     }
     return headerView
 }

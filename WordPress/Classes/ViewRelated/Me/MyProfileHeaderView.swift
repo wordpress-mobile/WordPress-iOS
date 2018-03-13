@@ -6,7 +6,7 @@ class MyProfileHeaderView: WPTableViewCell {
     @IBOutlet var gravatarButton: UIButton!
 
     var onAddUpdatePhoto: (() -> Void)?
-    var activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
     var showsActivityIndicator: Bool {
         get {
             return activityIndicator.isAnimating
@@ -79,7 +79,7 @@ class MyProfileHeaderView: WPTableViewCell {
         gravatarImageView.shouldRoundCorners = true
         gravatarImageView.addSubview(activityIndicator)
         gravatarImageView.pinSubviewAtCenter(activityIndicator)
-        setNeedsUpdateConstraints()
+        layoutIfNeeded()
 
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(onProfileWasPressed(_:)))
         gravatarImageView.addGestureRecognizer(recognizer)
