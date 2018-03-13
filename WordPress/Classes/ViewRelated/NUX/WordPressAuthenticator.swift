@@ -26,14 +26,6 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     var supportBadgeCount: Int { get }
 
-    /// Presents the Login Epilogue, in the specified NavigationController.
-    ///
-    func presentLoginEpilogue(in navigationController: UINavigationController, epilogueInfo: LoginEpilogueUserInfo?, isJetpackLogin: Bool, onDismiss: @escaping () -> Void)
-
-    /// Presents the Support Interface from a given ViewController, with a specified SourceTag.
-    ///
-    func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
-
     /// Presents the Livechat Interface, from a given ViewController, with a specified SourceTag, and additional metadata,
     /// such as all of the User's Login details.
     ///
@@ -42,6 +34,10 @@ public protocol WordPressAuthenticatorDelegate: class {
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, epilogueInfo: LoginEpilogueUserInfo?, isJetpackLogin: Bool, onDismiss: @escaping () -> Void)
+
+    /// Presents the Support Interface from a given ViewController, with a specified SourceTag.
+    ///
+    func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
 
     /// Refreshes Support's Badge Count.
     ///
