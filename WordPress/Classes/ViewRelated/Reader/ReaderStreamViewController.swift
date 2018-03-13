@@ -791,8 +791,10 @@ import WordPressShared
         SVProgressHUD.show()
         let postService = ReaderPostService(managedObjectContext: managedObjectContext())
         postService.toggleFollowing(for: post,
-                                            success: {
+                                            success: { [weak self] in
                                                 SVProgressHUD.showDismissibleSuccess(withStatus: successMessage)
+                                                self?.syncHelper.syncContent()
+                                                self?.updateStreamHeaderIfNeeded()
                                             },
                                             failure: { (error: Error?) in
                                                 SVProgressHUD.dismiss()
@@ -1454,9 +1456,11 @@ import WordPressShared
         }
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
-        service.toggleFollowing(forTag: topic, success: nil, failure: { (error: Error?) in
+        service.toggleFollowing(forTag: topic, success: { [weak self] in
+            self?.syncHelper.syncContent()
+        }, failure: { [weak self] (error: Error?) in
             generator.notificationOccurred(.error)
-            self.updateStreamHeaderIfNeeded()
+            self?.updateStreamHeaderIfNeeded()
         })
 
         updateStreamHeaderIfNeeded()
@@ -1472,9 +1476,11 @@ import WordPressShared
         }
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
-        service.toggleFollowing(forSite: topic, success: nil, failure: { (error: Error?) in
+        service.toggleFollowing(forSite: topic, success: { [weak self] in
+            self?.syncHelper.syncContent()
+        }, failure: { [weak self] (error: Error?) in
             generator.notificationOccurred(.error)
-            self.updateStreamHeaderIfNeeded()
+            self?.updateStreamHeaderIfNeeded()
         })
 
         updateStreamHeaderIfNeeded()

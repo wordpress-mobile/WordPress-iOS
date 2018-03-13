@@ -1,2 +1,1 @@
-Melhorias na nova extensão de compartilhamento.
-Nova configuração do Jetpack: Aumente a velocidade do seu site.
+Uma nova extensão de compartilhando que adiciona suporte a salvar rascunhos e  controla tags. Gerenciamento de plugins levado a um próximo nível: agora você pode procurar e instalar plugins.
