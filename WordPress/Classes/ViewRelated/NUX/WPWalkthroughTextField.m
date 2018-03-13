@@ -1,7 +1,9 @@
 #import "WPWalkthroughTextField.h"
 #import "Constants.h"
 #import <WordPressShared/WPNUXUtility.h>
-#import "WordPress-Swift.h"
+#import <WordPressUI/WordPressUI.h>
+
+
 
 NSInteger const LeftImageSpacing = 8;
 

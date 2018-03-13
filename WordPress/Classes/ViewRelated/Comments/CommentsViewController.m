@@ -11,6 +11,8 @@
 #import "ContextManager.h"
 #import <WordPressShared/WPNoResultsView.h>
 #import <WordPressShared/WPStyleGuide.h>
+#import <WordPressUI/WordPressUI.h>
+
 
 
 static CGRect const CommentsActivityFooterFrame                 = {0.0, 0.0, 30.0, 30.0};

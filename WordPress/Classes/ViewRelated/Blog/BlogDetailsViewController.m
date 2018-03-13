@@ -1007,8 +1007,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showPlugins
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedPlugins withBlog:self.blog];
-    PluginListViewController *controller = [[PluginListViewController alloc] initWithBlog:self.blog];
+    [WPAppAnalytics track:WPAnalyticsStatOpenedPluginDirectory withBlog:self.blog];
+    PluginDirectoryViewController *controller = [[PluginDirectoryViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 }
 

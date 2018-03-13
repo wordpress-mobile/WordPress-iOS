@@ -48,7 +48,7 @@ struct ShareNoticeText {
     /// Helper method to provide the singular or plural (formatted) version of a
     /// string based on a count.
     ///
-    private static func pluralize(_ count: Int, singular: String, plural: String) -> String {
+    static func pluralize(_ count: Int, singular: String, plural: String) -> String {
         if count == 1 {
             return singular
         } else {

@@ -7,6 +7,7 @@ class AppExtensionsService {
 
     typealias CompletionBlock = () -> Void
     typealias FailureBlock = () -> Void
+    typealias FailureWithErrorBlock = (_ error: Error?) -> Void
 
     // MARK: - Private Properties
 
@@ -92,6 +93,31 @@ extension AppExtensionsService {
     }
 }
 
+// MARK: - Taxonomy
+
+extension AppExtensionsService {
+    /// Retrieves the most used tags for a site.
+    ///
+    /// - Parameters:
+    ///   - siteID: Site ID to fetch tags for
+    ///   - onSuccess: Completion handler executed after a successful fetch
+    ///   - onFailure: The failure handler
+    ///
+    func fetchTopTagsForSite(_ siteID: Int, onSuccess: @escaping ([RemotePostTag]) -> (), onFailure: @escaping FailureWithErrorBlock) {
+        let remote = TaxonomyServiceRemoteREST(wordPressComRestApi: simpleRestAPI, siteID: NSNumber(value: siteID))
+        let paging = RemoteTaxonomyPaging()
+        paging.orderBy = .byCount
+        paging.order = .orderDescending
+
+        remote.getTagsWith(paging, success: { tags in
+            onSuccess(tags)
+        }, failure: { error in
+            DDLogError("Error retrieving tags for site ID \(siteID): \(String(describing: error))")
+            onFailure(error)
+        })
+    }
+}
+
 // MARK: - Uploading Posts
 
 extension AppExtensionsService {
@@ -101,16 +127,21 @@ extension AppExtensionsService {
     /// - Parameters:
     ///   - title: Post title
     ///   - body: Post content body
+    ///   - tags: Post tags
     ///   - status: Post status
     ///   - siteID: Site ID the post will be uploaded to
     ///   - onComplete: Completion handler executed after a post is uploaded to the server
     ///   - onFailure: The (optional) failure handler.
     ///
-    func saveAndUploadPost(title: String, body: String, status: String, siteID: Int, onComplete: CompletionBlock?, onFailure: FailureBlock?) {
+    func saveAndUploadPost(title: String, body: String, tags: String?, status: String, siteID: Int, onComplete: CompletionBlock?, onFailure: FailureBlock?) {
         guard let remotePost = RemotePost(siteID: NSNumber(value: siteID), status: status, title: title, content: body) else {
             DDLogError("Unable to create the post object required for uploading.")
             onFailure?()
             return
+        }
+
+        if let tags = tags {
+            remotePost.tags = tags.arrayOfTags()
         }
 
         let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .pending)
@@ -140,6 +171,7 @@ extension AppExtensionsService {
     /// - Parameters:
     ///   - title: Post title
     ///   - body: Post content body
+    ///   - tags: Post tags
     ///   - status: Post status
     ///   - siteID: Site ID the post will be uploaded to
     ///   - localMediaFileURLs: An array of local URLs containing the media files to upload
@@ -148,6 +180,7 @@ extension AppExtensionsService {
     ///
     func uploadPostWithMedia(title: String,
                              body: String,
+                             tags: String?,
                              status: String,
                              siteID: Int,
                              localMediaFileURLs: [URL],
@@ -162,6 +195,10 @@ extension AppExtensionsService {
             DDLogError("Unable to create the post object required for uploading.")
             onFailure()
             return
+        }
+
+        if let tags = tags {
+            remotePost.tags = tags.arrayOfTags()
         }
 
         // Create the post & media upload ops

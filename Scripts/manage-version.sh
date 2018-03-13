@@ -19,10 +19,13 @@ OUTPUT_BOLD="\033[1m"
 
 # PList files
 buildPLists=("Info.plist" 
-    "WordPressShareExtension/Info.plist" 
+    "WordPressDraftActionExtension/Info.plist"
+    "WordPressShareExtension/Info.plist"
     "WordPressTodayWidget/Info.plist")
 
 intPLists=("WordPress-Internal-Info.plist" \
+    "WordPressDraftActionExtension/Info-Alpha.plist" \
+    "WordPressDraftActionExtension/Info-Internal.plist" \
     "WordPressShareExtension/Info-Alpha.plist" \
     "WordPressShareExtension/Info-Internal.plist" \
     "WordPressTodayWidget/Info-Alpha.plist" \

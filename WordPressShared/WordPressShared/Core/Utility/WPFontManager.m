@@ -1,6 +1,6 @@
 #import "WPFontManager.h"
-#import "WPSharedLoggingPrivate.h"
 #import <CoreText/CoreText.h>
+
 
 @implementation WPFontManager
 
@@ -115,7 +115,7 @@ static NSString* const NotoRegularFileName = @"NotoSerif-Regular";
     CFErrorRef error;
     if (!CTFontManagerRegisterFontsForURL((CFURLRef)url, kCTFontManagerScopeProcess, &error)) {
         CFStringRef errorDescription = CFErrorCopyDescription(error);
-        DDLogError(@"Failed to load font: %@", errorDescription);
+        NSLog(@"Failed to load font: %@", errorDescription);
         CFRelease(errorDescription);
     }
 

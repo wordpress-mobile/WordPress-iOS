@@ -1,3 +1,5 @@
+import Foundation
+
 /// Extension on WPStyleGuide to use Dynamic Type fonts.
 ///
 extension WPStyleGuide {

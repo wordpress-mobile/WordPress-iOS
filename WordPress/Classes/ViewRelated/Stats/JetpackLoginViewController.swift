@@ -70,7 +70,7 @@ class JetpackLoginViewController: UIViewController {
         case .stats:
             jetpackImage.image = UIImage(named: "wp-illustration-stats")
         case .notifications:
-            jetpackImage.image = UIImage(named: "icon-jetpack-gray")
+            jetpackImage.image = UIImage(named: "wp-illustration-notifications")
         }
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
         descriptionLabel.textColor = WPStyleGuide.darkGrey()
@@ -84,13 +84,13 @@ class JetpackLoginViewController: UIViewController {
             // Switch back to `WPSigninDidFinishNotification` when the WPTabViewController
             // no longer destroys and recreates its view hierarchy in response to that
             // notification.
-            NotificationCenter.default.addObserver(self, selector: #selector(self.handleFinishedJetpackLogin), name: .WPLoginFinishedJetpackLogin, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(self.handleLoginCancelled), name: .WPLoginCancelled, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(self.handleFinishedJetpackLogin), name: .wordpressLoginFinishedJetpackLogin, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(self.handleLoginCancelled), name: .wordpressLoginCancelled, object: nil)
             return
         }
 
-        NotificationCenter.default.removeObserver(self, name: .WPLoginFinishedJetpackLogin, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .WPLoginCancelled, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .wordpressLoginFinishedJetpackLogin, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .wordpressLoginCancelled, object: nil)
     }
 
     @objc fileprivate func handleLoginCancelled() {
@@ -157,7 +157,7 @@ class JetpackLoginViewController: UIViewController {
     // MARK: - Browser
 
     fileprivate func openInstallJetpackURL() {
-        WPAppAnalytics.track(.selectedInstallJetpack)
+        trackStat(.selectedInstallJetpack)
         let controller = JetpackConnectionWebViewController(blog: blog)
         controller.delegate = self
         let navController = UINavigationController(rootViewController: controller)
@@ -166,7 +166,18 @@ class JetpackLoginViewController: UIViewController {
 
     fileprivate func signIn() {
         observeLoginNotifications(true)
-        SigninHelpers.showLoginForJustWPComFromPresenter(self, forJetpackBlog: blog)
+        WordPressAuthenticator.showLoginForJustWPComFromPresenter(self, forJetpackBlog: blog)
+    }
+
+    fileprivate func trackStat(_ stat: WPAnalyticsStat) {
+        var properties = [String: String]()
+        switch promptType {
+        case .stats:
+            properties["source"] = "stats"
+        case .notifications:
+            properties["source"] = "notifications"
+        }
+        WPAnalytics.track(stat, withProperties: properties)
     }
 
     // MARK: - Actions
@@ -182,12 +193,12 @@ class JetpackLoginViewController: UIViewController {
 
 extension JetpackLoginViewController: JetpackConnectionWebDelegate {
     func jetpackConnectionCompleted() {
-        WPAppAnalytics.track(.installJetpackCompleted)
+        trackStat(.installJetpackCompleted)
         dismiss(animated: true, completion: completionBlock)
     }
 
     func jetpackConnectionCanceled() {
-        WPAppAnalytics.track(.installJetpackCanceled)
+        trackStat(.installJetpackCanceled)
         dismiss(animated: true, completion: completionBlock)
     }
 }
