@@ -1200,7 +1200,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="tnB-lr-Pvr">
                                         <rect key="frame" x="20" y="20" width="343" height="108"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XTC-PV-ffk">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XTC-PV-ffk" customClass="SubheadlineButton" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="connectSite"/>
                                                 <constraints>
@@ -1214,7 +1214,7 @@
                                                     <action selector="handleConnectAnotherButton" destination="Mwz-tq-5A8" eventType="touchUpInside" id="HJD-RL-8hX"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jiQ-IN-bzh">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jiQ-IN-bzh" customClass="SubheadlineButton" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="64" width="343" height="44"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
                                                 <constraints>
