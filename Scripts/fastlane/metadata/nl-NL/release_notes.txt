@@ -1,2 +1,0 @@
-Verbeteringen aan de nieuwe Deel extensie.
-Nieuwe Jetpack instelling: Versnel jouw site.
