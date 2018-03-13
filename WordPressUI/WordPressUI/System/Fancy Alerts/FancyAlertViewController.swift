@@ -3,31 +3,31 @@ import UIKit
 /// A small card-like view displaying helpful information or prompts to the user.
 /// Initialize using the `controllerWithConfiguration` static method.
 ///
-class FancyAlertViewController: UIViewController {
+open class FancyAlertViewController: UIViewController {
 
     /// Intended method of initialization
-    static func controllerWithConfiguration(configuration: Config) -> FancyAlertViewController {
+    public static func controllerWithConfiguration(configuration: Config) -> FancyAlertViewController {
         let infoController = controller()
         infoController.configuration = configuration
-
+        
         return infoController
     }
 
-    private static func controller() -> FancyAlertViewController {
-        return UIStoryboard(name: "FancyAlerts", bundle: Bundle.main)
+    public static func controller() -> FancyAlertViewController {
+        return UIStoryboard(name: "FancyAlerts", bundle: Bundle(for: self))
             .instantiateInitialViewController() as! FancyAlertViewController
     }
 
-    enum DividerPosition {
+    public enum DividerPosition {
         case top
         case bottom
     }
 
     /// Enapsulates values for all UI components of the info dialog.
     ///
-    struct Config {
+    public struct Config {
         /// Convenience alias for a title and a handler for a UIButton
-        typealias ButtonConfig = (title: String, handler: FancyAlertButtonHandler?)
+        public typealias ButtonConfig = (title: String, handler: FancyAlertButtonHandler?)
 
         /// The title of the dialog
         let titleText: String?
@@ -55,18 +55,45 @@ class FancyAlertViewController: UIViewController {
 
         /// A block to execute after this view controller has been dismissed
         let dismissAction: (() -> Void)?
+        
+        public init(titleText: String?, bodyText: String?, headerImage: UIImage?, dividerPosition: DividerPosition?, defaultButton: ButtonConfig?, cancelButton: ButtonConfig?, moreInfoButton: ButtonConfig?, titleAccessoryButton: ButtonConfig?, dismissAction: (() -> Void)?) {
+            self.titleText = titleText
+            self.bodyText = bodyText
+            self.headerImage = headerImage
+            self.dividerPosition = dividerPosition
+            self.defaultButton = defaultButton
+            self.cancelButton = cancelButton
+            self.moreInfoButton = moreInfoButton
+            self.titleAccessoryButton = titleAccessoryButton
+            self.dismissAction = dismissAction
+        }
+    }
+    
+    @objc dynamic var headlineFont: UIFont? {
+        set {
+            cancelButton.titleLabel?.font = newValue
+            defaultButton.titleLabel?.font = newValue
+        }
+        
+        get {
+            guard let label = cancelButton.titleLabel
+                else {
+                    return Chrome.fontForTextStyle(.headline)
+                }
+                return label.font
+        }
     }
 
     // MARK: - Constants
 
     private struct Constants {
         static let cornerRadius: CGFloat = 15.0
-        static let buttonFont = WPStyleGuide.fontForTextStyle(.headline)
-        static let moreInfoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
-        static let bodyFont = WPStyleGuide.fontForTextStyle(.body)
+//        static let buttonFont = WordPressStyle().setStyleHeadlineFont()
+//        static let moreInfoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
+//        static let bodyFont = WPStyleGuide.fontForTextStyle(.body)
         static let headerImageVerticalConstraintCompact: CGFloat = 0.0
         static let headerImageVerticalConstraintRegular: CGFloat = 20.0
-        static let headerBackgroundColor = WPStyleGuide.lightGrey()
+//        static let headerBackgroundColor = WPStyleGuide.lightGrey()
 
         static let fadeAnimationDuration: TimeInterval = 0.3
         static let resizeAnimationDuration: TimeInterval = 0.3
@@ -115,7 +142,7 @@ class FancyAlertViewController: UIViewController {
     ///
     private var buttonHandlers = [UIButton: FancyAlertButtonHandler]()
 
-    typealias FancyAlertButtonHandler = (FancyAlertViewController, UIButton) -> Void
+    public typealias FancyAlertButtonHandler = (FancyAlertViewController, UIButton) -> Void
 
     private(set) var configuration: Config?
 
@@ -130,7 +157,7 @@ class FancyAlertViewController: UIViewController {
     ///   - alongside: An optional animation block which will be animated 
     ///                alongside the new configuration's fade in animation.
     ///
-    func setViewConfiguration(_ configuration: Config,
+    public func setViewConfiguration(_ configuration: Config,
                               animated: Bool,
                               alongside animation: ((FancyAlertViewController) -> Void)? = nil) {
         self.configuration = configuration
@@ -151,7 +178,7 @@ class FancyAlertViewController: UIViewController {
         }
     }
 
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
 
         accessibilityViewIsModal = true
@@ -164,33 +191,33 @@ class FancyAlertViewController: UIViewController {
         wrapperView.layer.masksToBounds = true
         wrapperView.layer.cornerRadius = Constants.cornerRadius
 
-        headerImageWrapperView.backgroundColor = Constants.headerBackgroundColor
-        topDividerView.backgroundColor = WPStyleGuide.greyLighten30()
-        bottomDividerView.backgroundColor = WPStyleGuide.lightGrey()
+//        headerImageWrapperView.backgroundColor = Constants.headerBackgroundColor
+//        topDividerView.backgroundColor = WPStyleGuide.greyLighten30()
+//        bottomDividerView.backgroundColor = WPStyleGuide.lightGrey()
 
-        WPStyleGuide.configureLabel(titleLabel, textStyle: .title2, fontWeight: .semibold)
-        titleLabel.textColor = WPStyleGuide.darkGrey()
-        WPStyleGuide.configureLabel(bodyLabel, textStyle: .body)
-        bodyLabel.textColor = WPStyleGuide.darkGrey()
+//        WPStyleGuide.configureLabel(titleLabel, textStyle: .title2, fontWeight: .semibold)
+//        titleLabel.textColor = WPStyleGuide.darkGrey()
+//        WPStyleGuide.configureLabel(bodyLabel, textStyle: .body)
+//        bodyLabel.textColor = WPStyleGuide.darkGrey()
 
-        WPStyleGuide.configureBetaButton(titleAccessoryButton)
+//        WPStyleGuide.configureBetaButton(titleAccessoryButton)
 
-        defaultButton.titleLabel?.font = Constants.buttonFont
-        cancelButton.titleLabel?.font = Constants.buttonFont
+//        defaultButton.titleLabel?.font = Constants.buttonFont
+//        cancelButton.titleLabel?.font = Constants.buttonFont
 
-        moreInfoButton.titleLabel?.font = Constants.moreInfoFont
-        moreInfoButton.tintColor = WPStyleGuide.wordPressBlue()
+//        moreInfoButton.titleLabel?.font = Constants.moreInfoFont
+//        moreInfoButton.tintColor = WPStyleGuide.wordPressBlue()
 
         updateViewConfiguration()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
+    override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         updateFlingableViewHandler()
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         if traitCollection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact)) {
@@ -311,7 +338,7 @@ class FancyAlertViewController: UIViewController {
 
     @objc func fadeAllViews(visible: Bool, alongside animation: ((FancyAlertViewController) -> Void)? = nil, completion: ((Bool) -> Void)? = nil) {
         UIView.animate(withDuration: Constants.fadeAnimationDuration, animations: {
-            self.contentViews.forEach({ $0.alpha = (visible) ? WPAlphaFull : WPAlphaZero })
+            self.contentViews.forEach({ $0.alpha = (visible) ? UIKitConstants.alphaFull : UIKitConstants.alphaZero })
             animation?(self)
         }, completion: completion)
     }
@@ -331,7 +358,7 @@ class FancyAlertViewController: UIViewController {
         }
     }
 
-    override func accessibilityPerformEscape() -> Bool {
+    override open func accessibilityPerformEscape() -> Bool {
         dismissTapped()
         return true
     }
@@ -340,15 +367,15 @@ class FancyAlertViewController: UIViewController {
 // MARK: - FlingableViewHandlerDelegate
 
 extension FancyAlertViewController: FlingableViewHandlerDelegate {
-    func flingableViewHandlerDidBeginRecognizingGesture(_ handler: FlingableViewHandler) {
+    public func flingableViewHandlerDidBeginRecognizingGesture(_ handler: FlingableViewHandler) {
         dismissGestureRecognizer.isEnabled = false
     }
 
-    func flingableViewHandlerWasCancelled(_ handler: FlingableViewHandler) {
+    public func flingableViewHandlerWasCancelled(_ handler: FlingableViewHandler) {
         dismissGestureRecognizer.isEnabled = true
     }
 
-    func flingableViewHandlerDidEndRecognizingGesture(_ handler: FlingableViewHandler) {
+    public func flingableViewHandlerDidEndRecognizingGesture(_ handler: FlingableViewHandler) {
         dismissTapped()
     }
 }
