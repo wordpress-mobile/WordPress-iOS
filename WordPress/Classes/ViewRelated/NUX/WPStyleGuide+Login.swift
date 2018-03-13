@@ -2,7 +2,7 @@ import WordPressShared
 import WordPressUI
 import Gridicons
 
-private class LoginEmailButton: UIButton {
+final class SubheadlineButton: UIButton {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
             titleLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
@@ -145,7 +145,7 @@ extension WPStyleGuide {
     }
 
     private class func textButton(normal normalString: NSAttributedString, highlighted highlightString: NSAttributedString, font: UIFont, alignment: UIControl.NaturalContentHorizontalAlignment = .leading) -> UIButton {
-        let button = LoginEmailButton()
+        let button = SubheadlineButton()
         button.clipsToBounds = true
 
         button.naturalContentHorizontalAlignment = alignment
