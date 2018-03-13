@@ -70,7 +70,7 @@ public protocol WordPressAuthenticatorDelegate: class {
     }
 
 
-    // MARK: - Public MethodsauthenticationInfoKey
+    // MARK: - Public Methods
 
     func supportBadgeCountWasUpdated() {
         NotificationCenter.default.post(name: .wordpressSupportBadgeUpdated, object: nil)
@@ -285,7 +285,7 @@ public protocol WordPressAuthenticatorDelegate: class {
                 path = path.replacingOccurrences(of: "http://", with: "https://")
             }
         } else if isSiteURLSchemeEmpty {
-            path = "http://\(path)"
+            path = "https://\(path)"
         }
 
         path.removeSuffix("/wp-login.php")
