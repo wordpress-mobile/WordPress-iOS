@@ -141,8 +141,8 @@ private class AuthorFilterCell: UITableViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.setContentHuggingPriority(.required, for: .horizontal)
         imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
-        imageView.backgroundColor = WPStyleGuide.greyLighten20()
-        imageView.tintColor = .white
+        imageView.backgroundColor = Appearance.placeholderBackgroundColor
+        imageView.tintColor = Appearance.placeholderTintColor
         return imageView
     }()
 
@@ -150,6 +150,7 @@ private class AuthorFilterCell: UITableViewCell {
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = Fonts.titleFont
+        titleLabel.textColor = Appearance.textColor
         return titleLabel
     }()
 
@@ -214,6 +215,12 @@ private class AuthorFilterCell: UITableViewCell {
 
     private enum Fonts {
         static let titleFont = UIFont.systemFont(ofSize: 16.0)
+    }
+
+    private enum Appearance {
+        static let textColor = WPStyleGuide.darkGrey()
+        static let placeholderTintColor = WPStyleGuide.darkGrey()
+        static let placeholderBackgroundColor = WPStyleGuide.greyLighten20()
     }
 
     private enum Metrics {
