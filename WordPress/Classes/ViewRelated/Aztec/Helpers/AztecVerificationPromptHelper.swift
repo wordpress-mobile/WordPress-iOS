@@ -39,7 +39,7 @@ class AztecVerificationPromptHelper: NSObject {
         NotificationCenter.default.removeObserver(self)
     }
 
-    func neeedsVerification(before action: PostEditorAction) -> Bool {
+    func needsVerification(before action: PostEditorAction) -> Bool {
         guard action == .publish else {
             return false
         }
