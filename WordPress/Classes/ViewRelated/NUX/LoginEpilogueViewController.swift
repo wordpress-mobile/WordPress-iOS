@@ -74,14 +74,7 @@ class LoginEpilogueViewController: UIViewController {
         continueButton?.setTitle(NSLocalizedString("Continue", comment: "A button title"),
                                  for: .normal)
         continueButton?.accessibilityIdentifier = "Continue"
-        continueButton?.titleLabel?.adjustsFontForContentSizeCategory = true
-        continueButton?.titleLabel?.textAlignment = .center
-        continueButton?.titleLabel?.adjustsFontSizeToFitWidth = true
-
         connectButton?.setTitle(connectTitle, for: .normal)
-        connectButton?.titleLabel?.adjustsFontForContentSizeCategory = true
-        connectButton?.titleLabel?.textAlignment = .center
-        connectButton?.titleLabel?.adjustsFontSizeToFitWidth = true
 
         if jetpackLogin {
             connectButton?.isHidden = true
