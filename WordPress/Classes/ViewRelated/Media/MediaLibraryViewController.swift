@@ -217,6 +217,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         visibleCells(for: media).forEach { cell in
             if let overlayView = cell.overlayView as? MediaCellProgressView {
                 overlayView.state = .retry
+                configureAppearance(for: overlayView, with: media)
             }
         }
     }
@@ -254,6 +255,10 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     private func showOptionsMenu() {
         let menuAlert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+
+        if let quotaUsageDescription = blog.quotaUsageDescription {
+            menuAlert.title = quotaUsageDescription
+        }
 
         if WPMediaCapturePresenter.isCaptureAvailable() {
             menuAlert.addDefaultActionWithTitle(NSLocalizedString("Take Photo or Video", comment: "Menu option for taking an image or video with the device's camera.")) { _ in
@@ -333,7 +338,8 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     }
 
     fileprivate func presentRetryOptions(for media: Media) {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let style: UIAlertControllerStyle = UIDevice.isPad() ? .alert : .actionSheet
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: style)
         alertController.addDestructiveActionWithTitle(NSLocalizedString("Cancel Upload", comment: "Media Library option to cancel an in-progress or failed upload.")) { _ in
             MediaCoordinator.shared.delete(media: [media])
         }
@@ -354,7 +360,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             }
         }
 
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: ""))
+        alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: ""))
 
         present(alertController, animated: true, completion: nil)
     }
@@ -419,7 +425,11 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             case .failed:
                 self?.showFailedStateForCell(for: media)
             case .thumbnailReady:
-                self?.showUploadingStateForCell(for: media)
+                if media.remoteStatus == .failed {
+                    self?.showFailedStateForCell(for: media)
+                } else {
+                    self?.showUploadingStateForCell(for: media)
+                }
             }
             }, for: nil)
     }

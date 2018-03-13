@@ -15,6 +15,7 @@ enum SignupStatus: Int {
 
 typealias SignupStatusBlock = (_ status: SignupStatus) -> Void
 typealias SignupSuccessBlock = () -> Void
+typealias SignupSocialSuccessBlock = (_ newAccount: Bool) -> Void
 typealias SignupFailureBlock = (_ error: Error?) -> Void
 
 
@@ -136,6 +137,7 @@ open class SignupService: LocalCoreDataService {
                                             andClientSecret: ApiCredentials.secret(),
                                             success: { (responseDictionary) in
                                                 // Note: User creation is deferred until we have a WPCom auth token.
+                                                WPAppAnalytics.track(.createdAccount)
                                                 success()
                                             },
                                             failure: failure)
@@ -148,15 +150,18 @@ open class SignupService: LocalCoreDataService {
     ///   - token: the token from a successful Google login
     ///   - success: block called when account is created successfully
     ///   - failure: block called when account creation fails
-    func createWPComeUserWithGoogle(token: String,
-                                   success: @escaping SignupSuccessBlock,
+    func createWPComUserWithGoogle(token: String,
+                                   success: @escaping SignupSocialSuccessBlock,
                                    failure: @escaping SignupFailureBlock) {
+
         let remote = WordPressComServiceRemote(wordPressComRestApi: self.anonymousApi())
+        let locale = WordPressComLanguageDatabase().deviceLanguage.slug
 
         remote?.createWPComAccount(withGoogle: token,
-                                    andClientID: ApiCredentials.client(),
-                                    andClientSecret: ApiCredentials.secret(),
-                                    success: { (responseDictionary) in
+                                   andLocale: locale,
+                                   andClientID: ApiCredentials.client(),
+                                   andClientSecret: ApiCredentials.secret(),
+                                   success: { (responseDictionary) in
                                         guard let username = responseDictionary?[ResponseKeys.username] as? String,
                                             let bearer_token = responseDictionary?[ResponseKeys.bearerToken] as? String else {
                                                 // without these we can't proceed.
@@ -164,6 +169,7 @@ open class SignupService: LocalCoreDataService {
                                                 return
                                         }
 
+                                        WPAppAnalytics.track(.createdAccount)
                                         // create the local account
                                         let service = AccountService(managedObjectContext: self.managedObjectContext)
                                         let account = service.createOrUpdateAccount(withUsername: username, authToken: bearer_token)
@@ -171,7 +177,18 @@ open class SignupService: LocalCoreDataService {
                                             service.setDefaultWordPressComAccount(account)
                                         }
 
-                                        success()
+                                        let createdAccount = (responseDictionary?[ResponseKeys.createdAccount] as? Int ?? 0) == 1
+                                        if createdAccount {
+                                            success(createdAccount)
+                                        } else {
+                                            // we need to sync the blogs for existing accounts to be able to display the Login Epilogue
+                                            BlogSyncFacade().syncBlogs(for: account, success: {
+                                                success(createdAccount)
+                                            }, failure: { (_) in
+                                                // the blog sync failed but the user is already logged in
+                                                success(createdAccount)
+                                            })
+                                        }
                                     },
                                     failure: failure)
     }
@@ -322,5 +339,6 @@ open class SignupService: LocalCoreDataService {
     private struct ResponseKeys {
         static let bearerToken = "bearer_token"
         static let username = "username"
+        static let createdAccount = "created_account"
     }
 }
