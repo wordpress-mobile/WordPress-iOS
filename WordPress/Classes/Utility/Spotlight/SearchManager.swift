@@ -126,18 +126,26 @@ import MobileCoreServices
                 return false
         }
 
-        let (domain, identifier) = SearchIdentifierGenerator.decomposeFromUniqueIdentifier(compositeIdentifier)
-        guard let siteID = NumberFormatter().number(from: domain),
-            let postID = NumberFormatter().number(from: identifier) else {
-            DDLogError("Search manager unable to open post - postID:\(identifier) siteID:\(domain).")
+        let (domainString, identifier) = SearchIdentifierGenerator.decomposeFromUniqueIdentifier(compositeIdentifier)
+        let siteID = NumberFormatter().number(from: domainString)
+        guard let postID = NumberFormatter().number(from: identifier) else {
+            DDLogError("Search manager unable to open post - postID:\(identifier) siteID:\(domainString)")
                 return false
         }
 
-        fetchPost(postID, blogID: siteID, onSuccess: { post in
-             WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
-        }, onFailure: {
-            DDLogError("Search manager unable to open post - postID:\(postID) siteID:\(siteID).")
-        })
+        if let siteID = siteID {
+            fetchPost(postID, blogID: siteID, onSuccess: { post in
+                WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
+            }, onFailure: {
+                DDLogError("Search manager unable to open post - postID:\(postID) siteID:\(siteID)")
+            })
+        } else {
+            fetchSelfHostedPost(postID, blogXMLRpcString: domainString, onSuccess: { post in
+                WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
+            }, onFailure: {
+                DDLogError("Search manager unable to open self hosted post - postID:\(postID) xmlrpc:\(domainString)")
+            })
+        }
         return true
     }
 
@@ -148,6 +156,30 @@ import MobileCoreServices
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
         guard let blog = blogService.blog(byBlogId: blogID) else {
+                onFailure()
+                return
+        }
+
+        let postService = PostService(managedObjectContext: context)
+        postService.getPostWithID(postID, for: blog, success: { apost in
+            guard let post = apost as? Post else {
+                onFailure()
+                return
+            }
+            onSuccess(post)
+        }, failure: { error in
+            onFailure()
+        })
+    }
+
+    private static func fetchSelfHostedPost(_ postID: NSNumber,
+                                            blogXMLRpcString: String,
+                                            onSuccess: @escaping (_ post: Post?) -> Void,
+                                            onFailure: @escaping () -> Void) {
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+        guard let selfHostedBlogs = blogService.blogsWithNoAccount() as? [Blog],
+            let blog = selfHostedBlogs.filter({ $0.xmlrpc == blogXMLRpcString }).first else {
                 onFailure()
                 return
         }
