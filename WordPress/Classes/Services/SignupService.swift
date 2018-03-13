@@ -153,12 +153,15 @@ open class SignupService: LocalCoreDataService {
     func createWPComUserWithGoogle(token: String,
                                    success: @escaping SignupSocialSuccessBlock,
                                    failure: @escaping SignupFailureBlock) {
+
         let remote = WordPressComServiceRemote(wordPressComRestApi: self.anonymousApi())
+        let locale = WordPressComLanguageDatabase().deviceLanguage.slug
 
         remote?.createWPComAccount(withGoogle: token,
-                                    andClientID: ApiCredentials.client(),
-                                    andClientSecret: ApiCredentials.secret(),
-                                    success: { (responseDictionary) in
+                                   andLocale: locale,
+                                   andClientID: ApiCredentials.client(),
+                                   andClientSecret: ApiCredentials.secret(),
+                                   success: { (responseDictionary) in
                                         guard let username = responseDictionary?[ResponseKeys.username] as? String,
                                             let bearer_token = responseDictionary?[ResponseKeys.bearerToken] as? String else {
                                                 // without these we can't proceed.

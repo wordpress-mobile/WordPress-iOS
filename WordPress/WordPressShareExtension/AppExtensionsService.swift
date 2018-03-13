@@ -93,6 +93,26 @@ extension AppExtensionsService {
     }
 }
 
+// MARK: - Blog Settings
+
+extension AppExtensionsService {
+    /// Retrieves the site settings for a site — the default CategoryID is contained within.
+    ///
+    /// - Parameters:
+    ///   - siteID: Site ID to fetch settings for
+    ///   - onSuccess: Completion handler executed after a successful fetch
+    ///   - onFailure: The failure handler
+    func fetchSettingsForSite(_ siteID: Int, onSuccess: @escaping (RemoteBlogSettings?) -> (), onFailure: @escaping FailureWithErrorBlock) {
+        let remote = BlogServiceRemoteREST(wordPressComRestApi: simpleRestAPI, siteID: NSNumber(value: siteID))
+        remote.syncBlogSettings(success: { settings in
+            onSuccess(settings)
+        }, failure: { error in
+            DDLogError("Error retrieving settings for site ID \(siteID): \(String(describing: error))")
+            onFailure(error)
+        })
+    }
+}
+
 // MARK: - Taxonomy
 
 extension AppExtensionsService {
@@ -116,6 +136,23 @@ extension AppExtensionsService {
             onFailure(error)
         })
     }
+
+    /// Retrieves the all categories for a site.
+    ///
+    /// - Parameters:
+    ///   - siteID: Site ID to fetch tags for
+    ///   - onSuccess: Completion handler executed after a successful fetch
+    ///   - onFailure: The failure handler
+    ///
+    func fetchCategoriesForSite(_ siteID: Int, onSuccess: @escaping ([RemotePostCategory]) -> (), onFailure: @escaping FailureWithErrorBlock) {
+        let remote = TaxonomyServiceRemoteREST(wordPressComRestApi: simpleRestAPI, siteID: NSNumber(value: siteID))
+        remote.getCategoriesWithSuccess({ categories in
+            onSuccess(categories)
+        }, failure: { error in
+            DDLogError("Error retrieving categories for site ID \(siteID): \(String(describing: error))")
+            onFailure(error)
+        })
+    }
 }
 
 // MARK: - Uploading Posts
@@ -128,12 +165,13 @@ extension AppExtensionsService {
     ///   - title: Post title
     ///   - body: Post content body
     ///   - tags: Post tags
+    ///   - categories: Post categories
     ///   - status: Post status
     ///   - siteID: Site ID the post will be uploaded to
     ///   - onComplete: Completion handler executed after a post is uploaded to the server
     ///   - onFailure: The (optional) failure handler.
     ///
-    func saveAndUploadPost(title: String, body: String, tags: String?, status: String, siteID: Int, onComplete: CompletionBlock?, onFailure: FailureBlock?) {
+    func saveAndUploadPost(title: String, body: String, tags: String?, categories: String?, status: String, siteID: Int, onComplete: CompletionBlock?, onFailure: FailureBlock?) {
         guard let remotePost = RemotePost(siteID: NSNumber(value: siteID), status: status, title: title, content: body) else {
             DDLogError("Unable to create the post object required for uploading.")
             onFailure?()
@@ -142,6 +180,10 @@ extension AppExtensionsService {
 
         if let tags = tags {
             remotePost.tags = tags.arrayOfTags()
+        }
+
+        if let remoteCategories = RemotePostCategory.remotePostCategoriesFromString(categories) {
+            remotePost.categories = remoteCategories
         }
 
         let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .pending)
@@ -172,6 +214,7 @@ extension AppExtensionsService {
     ///   - title: Post title
     ///   - body: Post content body
     ///   - tags: Post tags
+    ///   - categories: Post categories
     ///   - status: Post status
     ///   - siteID: Site ID the post will be uploaded to
     ///   - localMediaFileURLs: An array of local URLs containing the media files to upload
@@ -181,6 +224,7 @@ extension AppExtensionsService {
     func uploadPostWithMedia(title: String,
                              body: String,
                              tags: String?,
+                             categories: String?,
                              status: String,
                              siteID: Int,
                              localMediaFileURLs: [URL],
@@ -199,6 +243,10 @@ extension AppExtensionsService {
 
         if let tags = tags {
             remotePost.tags = tags.arrayOfTags()
+        }
+
+        if let remoteCategories = RemotePostCategory.remotePostCategoriesFromString(categories) {
+            remotePost.categories = remoteCategories
         }
 
         // Create the post & media upload ops
