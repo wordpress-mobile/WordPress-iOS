@@ -45,7 +45,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>9.5.0.0</string>
+	<string>9.5.0.3</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -88,6 +88,8 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>For your videos to have sound on them.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To add photos or videos to your posts.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>To add photos or videos to your posts.</string>
 	<key>UIAppFonts</key>
 	<array>
