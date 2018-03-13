@@ -217,6 +217,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         visibleCells(for: media).forEach { cell in
             if let overlayView = cell.overlayView as? MediaCellProgressView {
                 overlayView.state = .retry
+                configureAppearance(for: overlayView, with: media)
             }
         }
     }
@@ -255,9 +256,8 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     private func showOptionsMenu() {
         let menuAlert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
 
-        if blog.isQuotaAvailable, let quotaPercentageUsedDescription = blog.quotaPercentageUsedDescription, let quotaSpaceAllowedDescription = blog.quotaSpaceAllowedDescription {
-            let formatString = NSLocalizedString("%@ of %@ used", comment: "Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used.")
-            menuAlert.title = String(format: formatString, quotaPercentageUsedDescription, quotaSpaceAllowedDescription)
+        if let quotaUsageDescription = blog.quotaUsageDescription {
+            menuAlert.title = quotaUsageDescription
         }
 
         if WPMediaCapturePresenter.isCaptureAvailable() {
@@ -360,7 +360,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             }
         }
 
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: ""))
+        alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: ""))
 
         present(alertController, animated: true, completion: nil)
     }
@@ -425,7 +425,11 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             case .failed:
                 self?.showFailedStateForCell(for: media)
             case .thumbnailReady:
-                self?.showUploadingStateForCell(for: media)
+                if media.remoteStatus == .failed {
+                    self?.showFailedStateForCell(for: media)
+                } else {
+                    self?.showUploadingStateForCell(for: media)
+                }
             }
             }, for: nil)
     }
