@@ -1510,7 +1510,7 @@
                                     <stackView contentMode="scaleToFill" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="mlx-XY-MGX">
                                         <rect key="frame" x="20" y="592" width="351" height="44"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="roL-ID-k8n">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="roL-ID-k8n" customClass="SubheadlineButton" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="7" width="250" height="30"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="addSelfHostedButton"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
@@ -1617,7 +1617,7 @@
         <image name="icon-wp" width="50" height="52"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="lIb-sw-yM7"/>
+        <segue reference="gAE-di-Wyf"/>
         <segue reference="kRR-qz-Hu2"/>
         <segue reference="ySQ-EM-6JI"/>
         <segue reference="1xT-tL-sp6"/>
