@@ -242,6 +242,10 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
             let onClick = isLikeOn ? onUnlikeClick : onLikeClick
             isLikeOn = !isLikeOn
 
+            if isLikeOn {
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
+            }
+
             animateLikeButton(btnLike) {
                 onClick?(sender)
             }
@@ -252,6 +256,10 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
         ReachabilityUtils.onAvailableInternetConnectionDo {
             let onClick = isApproveOn ? onUnapproveClick : onApproveClick
             isApproveOn = !isApproveOn
+
+            if isApproveOn {
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
+            }
 
             animateApproveButton(btnApprove) {
                 onClick?(sender)

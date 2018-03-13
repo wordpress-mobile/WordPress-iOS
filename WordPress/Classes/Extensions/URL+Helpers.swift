@@ -110,4 +110,11 @@ extension NSURL {
     @objc var isVideo: Bool {
         return (self as URL).isVideo
     }
+
+    @objc var fileSize: NSNumber? {
+        guard let fileSize = (self as URL).fileSize else {
+            return nil
+        }
+        return NSNumber(value: fileSize)
+    }
 }
