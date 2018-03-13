@@ -135,23 +135,27 @@ import MobileCoreServices
 
         if let siteID = siteID {
             fetchPost(postID, blogID: siteID, onSuccess: { post in
-                WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
+                switchToPostListAndOpenEditorForPost(post)
             }, onFailure: {
                 DDLogError("Search manager unable to open post - postID:\(postID) siteID:\(siteID)")
             })
         } else {
             fetchSelfHostedPost(postID, blogXMLRpcString: domainString, onSuccess: { post in
-                WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
+                switchToPostListAndOpenEditorForPost(post)
             }, onFailure: {
                 DDLogError("Search manager unable to open self hosted post - postID:\(postID) xmlrpc:\(domainString)")
             })
         }
         return true
     }
+}
 
-    private static func fetchPost(_ postID: NSNumber,
+// MARK: - Private Helpers
+
+fileprivate extension SearchManager {
+    static func fetchPost(_ postID: NSNumber,
                                   blogID: NSNumber,
-                                  onSuccess: @escaping (_ post: Post?) -> Void,
+                                  onSuccess: @escaping (_ post: Post) -> Void,
                                   onFailure: @escaping () -> Void) {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
@@ -172,9 +176,9 @@ import MobileCoreServices
         })
     }
 
-    private static func fetchSelfHostedPost(_ postID: NSNumber,
+    static func fetchSelfHostedPost(_ postID: NSNumber,
                                             blogXMLRpcString: String,
-                                            onSuccess: @escaping (_ post: Post?) -> Void,
+                                            onSuccess: @escaping (_ post: Post) -> Void,
                                             onFailure: @escaping () -> Void) {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
@@ -194,5 +198,12 @@ import MobileCoreServices
         }, failure: { error in
             onFailure()
         })
+    }
+
+    static func switchToPostListAndOpenEditorForPost(_ post: Post) {
+        WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
+        let editor = EditPostViewController.init(post: post)
+        editor.modalPresentationStyle = .fullScreen
+        WPTabBarController.sharedInstance().present(editor, animated: false, completion: nil)
     }
 }
