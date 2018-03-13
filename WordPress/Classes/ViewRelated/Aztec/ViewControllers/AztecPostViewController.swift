@@ -30,6 +30,11 @@ class AztecPostViewController: UIViewController, PostEditor {
         return self.createToolbar()
     }()
 
+    private let errorDomain = "AztecPostViewController.errorDomain"
+
+    private enum ErrorCode: Int {
+        case expectedSecondaryAction = 1
+    }
 
     /// Aztec's Awesomeness
     ///
@@ -1025,25 +1030,30 @@ extension AztecPostViewController {
 //
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
-        trackPostSave(stat: postEditorStateContext.publishActionAnalyticsStat)
 
-        publishTapped(dismissWhenDone: postEditorStateContext.publishActionDismissesEditor)
+        let action = self.postEditorStateContext.action
+
+        publishPost(
+            action: action,
+            dismissWhenDone: action.dismissesEditor,
+            analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
     }
 
-    @IBAction func secondaryPublishButtonTapped(dismissWhenDone: Bool = true) {
-        let publishPostClosure = {
-            if self.postEditorStateContext.secondaryPublishButtonAction == .save {
-                self.post.status = .draft
-            } else if self.postEditorStateContext.secondaryPublishButtonAction == .publish {
-                self.post.date_created_gmt = Date()
-                self.post.status = .publish
-            }
+    @IBAction func secondaryPublishButtonTapped() {
+        guard let action = self.postEditorStateContext.secondaryPublishButtonAction else {
+            // If the user tapped on the secondary publish action button, it means we should have a secondary publish action.
+            let error = NSError(domain: errorDomain, code: ErrorCode.expectedSecondaryAction.rawValue, userInfo: nil)
+            Crashlytics.sharedInstance().recordError(error)
+            return
+        }
 
-            if let stat = self.postEditorStateContext.secondaryPublishActionAnalyticsStat {
-                self.trackPostSave(stat: stat)
-            }
+        let secondaryStat = self.postEditorStateContext.secondaryPublishActionAnalyticsStat
 
-            self.publishTapped(dismissWhenDone: dismissWhenDone)
+        let publishPostClosure = { [unowned self] in
+            self.publishPost(
+                action: action,
+                dismissWhenDone: action.dismissesEditor,
+                analyticsStat: secondaryStat)
         }
 
         if presentedViewController != nil {
@@ -1067,19 +1077,17 @@ extension AztecPostViewController {
 
         // Button: Save Draft/Update Draft
         if post.hasLocalChanges() {
-            if !post.hasRemote() {
-                // The post is a local draft or an autosaved draft: Discard or Save
-                alertController.addDefaultActionWithTitle(saveTitle) { _ in
-                    self.post.status = .draft
-                    self.trackPostSave(stat: self.postEditorStateContext.publishActionAnalyticsStat)
-                    self.publishTapped(dismissWhenDone: true)
+            let title: String = {
+                if !post.hasRemote() || post.status == .draft {
+                    return saveTitle
+                } else {
+                    return updateTitle
                 }
-            } else if post.status == .draft {
-                // The post was already a draft
-                alertController.addDefaultActionWithTitle(updateTitle) { _ in
-                    self.trackPostSave(stat: self.postEditorStateContext.publishActionAnalyticsStat)
-                    self.publishTapped(dismissWhenDone: true)
-                }
+            }()
+
+            // The post is a local or remote draft
+            alertController.addDefaultActionWithTitle(title) { _ in
+                self.publishPost(action: .save, dismissWhenDone: true, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
             }
         }
 
@@ -1092,7 +1100,11 @@ extension AztecPostViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    private func publishTapped(dismissWhenDone: Bool) {
+    private func publishPost(
+        action: PostEditorAction,
+        dismissWhenDone: Bool,
+        analyticsStat: WPAnalyticsStat?) {
+
         // Cancel publishing if media is currently being uploaded
         if mediaCoordinator.isUploadingMedia(for: post) {
             displayMediaIsUploadingAlert()
@@ -1104,29 +1116,44 @@ extension AztecPostViewController {
             displayHasFailedMediaAlert(then: {
                 // Failed media is removed, try again.
                 // Note: Intentionally not tracking another analytics stat here (no appropriate one exists yet)
-                self.publishTapped(dismissWhenDone: dismissWhenDone)
+                self.publishPost(action: action, dismissWhenDone: dismissWhenDone, analyticsStat: analyticsStat)
             })
             return
         }
 
         // If the user is trying to publish to WP.com and they haven't verified their account, prompt them to do so.
-        if let verificationHelper = verificationPromptHelper, verificationHelper.neeedsVerification(before: postEditorStateContext.action) {
-            verificationHelper.displayVerificationPrompt(from: self) { [weak self] verifiedInBackground in
+        if let verificationHelper = verificationPromptHelper, verificationHelper.needsVerification(before: postEditorStateContext.action) {
+            verificationHelper.displayVerificationPrompt(from: self) { [unowned self] verifiedInBackground in
                 // User could've been plausibly silently verified in the background.
                 // If so, proceed to publishing the post as normal, otherwise save it as a draft.
                 if !verifiedInBackground {
-                    self?.post.status = .draft
+                    self.post.status = .draft
                 }
 
-                self?.publishTapped(dismissWhenDone: dismissWhenDone)
+                self.publishPost(action: action, dismissWhenDone: dismissWhenDone, analyticsStat: analyticsStat)
             }
             return
         }
 
-        if postEditorStateContext.action == .publish {
-            displayPublishConfirmationAlert(dismissWhenDone: dismissWhenDone)
+        let publishBlock = { [unowned self] in
+            if action == .saveAsDraft {
+                self.post.status = .draft
+            } else if action == .publishNow {
+                self.post.date_created_gmt = Date()
+                self.post.status = .publish
+            }
+
+            if let analyticsStat = analyticsStat {
+                self.trackPostSave(stat: analyticsStat)
+            }
+
+            self.uploadPost(action: action, dismissWhenDone: dismissWhenDone)
+        }
+
+        if action == .publish || action == .publishNow {
+            displayPublishConfirmationAlert(onPublish: publishBlock)
         } else {
-            publishPost(dismissWhenDone: dismissWhenDone)
+            publishBlock()
         }
     }
 
@@ -1222,18 +1249,30 @@ private extension AztecPostViewController {
 
         if postEditorStateContext.isSecondaryPublishButtonShown,
             let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
-            let dismissWhenDone = postEditorStateContext.secondaryPublishButtonAction == .publish
-            alert.addActionWithTitle(buttonTitle, style: dismissWhenDone ? .destructive : .default ) { _ in
-                self.secondaryPublishButtonTapped(dismissWhenDone: dismissWhenDone)
+
+            alert.addDefaultActionWithTitle(buttonTitle) { _ in
+                self.secondaryPublishButtonTapped()
             }
         }
 
-        alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { _ in
+        let toggleModeTitle: String = {
+            if mode == .richText {
+                return MoreSheetAlert.htmlTitle
+            } else {
+                return MoreSheetAlert.richTitle
+            }
+        }()
+
+        alert.addDefaultActionWithTitle(toggleModeTitle) { [unowned self] _ in
+            self.toggleEditingMode()
+        }
+
+        alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { [unowned self]  _ in
             self.displayPreview()
         }
 
-        alert.addDefaultActionWithTitle(MoreSheetAlert.optionsTitle) { _ in
-            self.displayPostOptions()
+        alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [unowned self]  _ in
+            self.displayPostSettings()
         }
 
         alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
@@ -1254,7 +1293,7 @@ private extension AztecPostViewController {
         present(alert, animated: true, completion: nil)
     }
 
-    func displayPostOptions() {
+    func displayPostSettings() {
         let settingsViewController: PostSettingsViewController
         if post is Page {
             settingsViewController = PageSettingsViewController(post: post)
@@ -1303,7 +1342,7 @@ private extension AztecPostViewController {
     /// - Parameters:
     ///     - dismissWhenDone: if `true`, the VC will be dismissed if the user picks "Publish".
     ///
-    func displayPublishConfirmationAlert(dismissWhenDone: Bool) {
+    func displayPublishConfirmationAlert(onPublish publishAction: @escaping () -> ()) {
         let title = NSLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing.")
 
         let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
@@ -1313,8 +1352,8 @@ private extension AztecPostViewController {
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
 
         alertController.addCancelActionWithTitle(keepEditingTitle)
-        alertController.addDefaultActionWithTitle(publishTitle) { [unowned self] _ in
-            self.publishPost(dismissWhenDone: dismissWhenDone)
+        alertController.addDefaultActionWithTitle(publishTitle) { _ in
+            publishAction()
         }
 
         present(alertController, animated: true, completion: nil)
@@ -2515,13 +2554,12 @@ private extension AztecPostViewController {
 
     /// Shows the publishing overlay and starts the publishing process.
     ///
-    func publishPost(dismissWhenDone: Bool) {
+    func uploadPost(action: PostEditorAction, dismissWhenDone: Bool) {
         SVProgressHUD.setDefaultMaskType(.clear)
-        SVProgressHUD.show(withStatus: postEditorStateContext.publishVerbText)
+        SVProgressHUD.show(withStatus: action.publishingActionLabel)
         postEditorStateContext.updated(isBeingPublished: true)
 
-        // Finally, publish the post.
-        publishPost() { uploadedPost, error in
+        uploadPost() { uploadedPost, error in
             self.postEditorStateContext.updated(isBeingPublished: false)
             SVProgressHUD.dismiss()
 
@@ -2531,7 +2569,7 @@ private extension AztecPostViewController {
             if let error = error {
                 DDLogError("Error publishing post: \(error.localizedDescription)")
 
-                SVProgressHUD.showDismissibleError(withStatus: self.postEditorStateContext.publishErrorText)
+                SVProgressHUD.showDismissibleError(withStatus: action.publishingErrorLabel)
                 generator.notificationOccurred(.error)
             } else if let uploadedPost = uploadedPost {
                 self.post = uploadedPost
@@ -2547,12 +2585,12 @@ private extension AztecPostViewController {
         }
     }
 
-    /// Publish the post
+    /// Uploads the post
     ///
     /// - Parameters:
     ///     - completion: the closure to execute when the publish operation completes.
     ///
-    private func publishPost(completion: ((_ post: AbstractPost?, _ error: Error?) -> Void)?) {
+    private func uploadPost(completion: ((_ post: AbstractPost?, _ error: Error?) -> Void)?) {
         mapUIContentToPostAndSave()
 
         let managedObjectContext = ContextManager.sharedInstance().mainContext
@@ -3538,10 +3576,10 @@ extension AztecPostViewController {
     }
 
     struct MoreSheetAlert {
-        static let htmlTitle = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
-        static let richTitle = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
+        static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
+        static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
         static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
-        static let optionsTitle = NSLocalizedString("Options", comment: "Displays the Post's Options")
+        static let postSettingsTitle = NSLocalizedString("Post Settings", comment: "Name of the button to open the post settings")
         static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
     }
 
