@@ -49,6 +49,7 @@ class MyProfileHeaderView: WPTableViewCell {
 
         configureActivityIndicator()
         configureGravatarImageView()
+        configureGravatarButton()
     }
 
     @IBAction func onProfileWasPressed(_ sender: UIButton) {
@@ -83,5 +84,9 @@ class MyProfileHeaderView: WPTableViewCell {
 
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(onProfileWasPressed(_:)))
         gravatarImageView.addGestureRecognizer(recognizer)
+    }
+
+    func configureGravatarButton() {
+        gravatarButton.tintColor = WPStyleGuide.wordPressBlue()
     }
 }
