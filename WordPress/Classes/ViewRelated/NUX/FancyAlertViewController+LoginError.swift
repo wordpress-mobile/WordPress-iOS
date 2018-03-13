@@ -1,5 +1,7 @@
 import UIKit
 import wpxmlrpc
+import SafariServices
+
 
 extension FancyAlertViewController {
     private struct Strings {
@@ -17,7 +19,7 @@ extension FancyAlertViewController {
         }
     }
 
-    @objc static func siteAddressHelpController(loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
+    static func siteAddressHelpController(loginFields: LoginFields, sourceTag: WordPressSupportSourceTag) -> FancyAlertViewController {
         let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
@@ -27,8 +29,9 @@ extension FancyAlertViewController {
 
                 guard HelpshiftUtils.isHelpshiftEnabled() else { return }
 
+                // TODO: Move this method to the WordPress Client App (since this extension will live within the Authentication Framework).
                 let presenter = HelpshiftPresenter()
-                presenter.sourceTag = sourceTag
+                presenter.sourceTag = sourceTag.toSupportSourceTag()
                 presenter.optionsDictionary = loginFields.helpshiftLoginOptions()
                 presenter.presentHelpshiftConversationWindowFromViewController(viewController,
                                                                                refreshUserDetails: true,
@@ -66,7 +69,7 @@ extension FancyAlertViewController {
     ///
     /// - Returns: A FancyAlertViewController instance.
     ///
-    @objc static func alertForError(_ error: NSError, loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
+    static func alertForError(_ error: NSError, loginFields: LoginFields, sourceTag: WordPressSupportSourceTag) -> FancyAlertViewController {
         var message = error.localizedDescription
 
         DDLogError(message)
@@ -96,7 +99,7 @@ extension FancyAlertViewController {
         }
 
         if error.code == NSURLErrorBadURL {
-            return alertForBadURLMessage(message)
+            return alertForBadURL(with: message)
         }
 
         return alertForGenericErrorMessage(message, loginFields: loginFields, sourceTag: sourceTag)
@@ -107,7 +110,7 @@ extension FancyAlertViewController {
     ///
     /// - Parameter message: The error message to show.
     ///
-    private static func alertForGenericErrorMessage(_ message: String, loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
+    private static func alertForGenericErrorMessage(_ message: String, loginFields: LoginFields, sourceTag: WordPressSupportSourceTag) -> FancyAlertViewController {
         let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
@@ -115,8 +118,9 @@ extension FancyAlertViewController {
                     let window = appDelegate.window,
                     let viewController = window?.topmostPresentedViewController else { return }
 
+                // TODO: Move this method to the WordPress Client App (since this extension will live within the Authentication Framework).
                 let supportController = SupportViewController()
-                supportController.sourceTag = sourceTag
+                supportController.sourceTag = sourceTag.toSupportSourceTag()
                 supportController.helpshiftOptions = loginFields.helpshiftLoginOptions()
 
                 let navController = UINavigationController(rootViewController: supportController)
@@ -146,7 +150,7 @@ extension FancyAlertViewController {
     /// - Parameter message: The error message to show.
     /// - Parameter sourceTag: tag of the source of the error
     ///
-    @objc static func alertForGenericErrorMessageWithHelpshiftButton(_ message: String, loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
+    static func alertForGenericErrorMessageWithHelpshiftButton(_ message: String, loginFields: LoginFields, sourceTag: WordPressSupportSourceTag) -> FancyAlertViewController {
         let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
@@ -156,8 +160,9 @@ extension FancyAlertViewController {
 
                 guard HelpshiftUtils.isHelpshiftEnabled() else { return }
 
+                // TODO: Move this method to the WordPress Client App (since this extension will live within the Authentication Framework).
                 let presenter = HelpshiftPresenter()
-                presenter.sourceTag = sourceTag
+                presenter.sourceTag = sourceTag.toSupportSourceTag()
                 presenter.optionsDictionary = loginFields.helpshiftLoginOptions()
                 presenter.presentHelpshiftConversationWindowFromViewController(viewController,
                                                                                refreshUserDetails: true,
@@ -182,19 +187,19 @@ extension FancyAlertViewController {
     ///
     /// - Parameter message: The error message to show.
     ///
-    private static func alertForBadURLMessage(_ message: String) -> FancyAlertViewController {
+    private static func alertForBadURL(with message: String) -> FancyAlertViewController {
         let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
-                guard let appDelegate = UIApplication.shared.delegate,
-                    let window = appDelegate.window,
-                    let viewController = window?.topmostPresentedViewController,
+                guard let viewController = UIApplication.shared.delegate?.window??.topmostPresentedViewController,
                     let url = URL(string: "https://apps.wordpress.org/support/#faq-ios-3")
-                    else { return }
+                    else {
+                        return
+                }
 
-                let webController = WebViewControllerFactory.controller(url: url)
-                let navController = UINavigationController(rootViewController: webController)
-                viewController.present(navController, animated: true, completion: nil)
+                let safariViewController = SFSafariViewController(url: url)
+                safariViewController.modalPresentationStyle = .pageSheet
+                viewController.present(safariViewController, animated: true, completion: nil)
             }
         }
 

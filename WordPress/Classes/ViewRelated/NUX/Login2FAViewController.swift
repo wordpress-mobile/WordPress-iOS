@@ -13,7 +13,7 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     @objc var pasteboardBeforeBackground: String? = nil
-    override var sourceTag: SupportSourceTag {
+    override var sourceTag: WordPressSupportSourceTag {
         get {
             return .login2FA
         }
@@ -64,6 +64,17 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
         verificationCodeField.text = ""
     }
 
+
+    /// MARK: Dynamic Type
+    override func didChangePreferredContentSize() {
+        super.didChangePreferredContentSize()
+        styleSendCodeButton()
+    }
+
+    private func styleSendCodeButton() {
+        sendCodeButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        sendCodeButton.titleLabel?.adjustsFontSizeToFitWidth = true
+    }
 
     // MARK: Configuration Methods
 

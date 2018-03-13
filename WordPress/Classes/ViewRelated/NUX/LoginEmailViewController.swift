@@ -13,7 +13,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     var onePasswordButton: UIButton!
     var googleLoginButton: UIButton?
     var selfHostedLoginButton: UIButton?
-    override var sourceTag: SupportSourceTag {
+    override var sourceTag: WordPressSupportSourceTag {
         get {
             return .loginEmail
         }
@@ -51,13 +51,9 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
     override func didChangePreferredContentSize() {
         super.didChangePreferredContentSize()
-
         configureEmailField()
         configureAlternativeLabel()
-        configureGoogleButton()
-        configureSelfHostedLoginButton()
     }
-
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -72,7 +68,6 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         configureSubmitButton()
         configureViewForEditingIfNeeded()
     }
-
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -154,10 +149,6 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         googleLoginButton = button
     }
 
-    func configureGoogleButton() {
-        googleLoginButton?.titleLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
-    }
-
     @objc func googleLoginTapped() {
         awaitingGoogle = true
         configureViewLoading(true)
@@ -196,10 +187,6 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
             ])
 
         selfHostedLoginButton = button
-    }
-
-    func configureSelfHostedLoginButton() {
-        selfHostedLoginButton?.titleLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
     }
 
     /// Configures the email text field, updating its text based on what's stored
