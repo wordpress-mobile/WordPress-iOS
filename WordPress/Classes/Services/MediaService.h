@@ -8,6 +8,13 @@
 @class Blog;
 @protocol ExportableAsset;
 
+extern NSErrorDomain _Nonnull const MediaServiceErrorDomain;
+typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
+    MediaServiceErrorFileDoesNotExist = 0,
+    MediaServiceErrorFileLargerThanDiskQuotaAvailable = 1,
+    MediaServiceErrorFileLargerThanMaxFileSize = 2
+};
+
 @interface MediaService : LocalCoreDataService
 
 /**

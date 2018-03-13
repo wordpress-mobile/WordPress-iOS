@@ -1,0 +1,2 @@
+En ny delingsutvidelse som legger til støtte for å lagre utkast og som håndterer stikkord.
+Behandling av utvidelser er tatt til neste nivå: du kan bla gjennom og installere utvidelser.
