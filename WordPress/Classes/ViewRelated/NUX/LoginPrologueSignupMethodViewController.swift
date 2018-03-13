@@ -57,28 +57,4 @@ class LoginPrologueSignupMethodViewController: NUXViewController {
     @IBAction func dismissTapped() {
         dismiss(animated: true)
     }
-
-    // MARK: - Dynamic type
-    func didChangePreferredContentSize() {
-        if let button = headerButton() {
-            // Retaining the font from the button at the moment it is created and assigning it here does not work.
-            // That's why we get the font back from the theme.
-            button.titleLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .caption2)
-        }
-    }
-
-    /*
-    *   This class is the one that knows what's in the buttonViewController's stackviews, because it is the one that creates and inserts that content. This is ugly, but it is the only way I see to grab a reference to the topmost text in the NUXButtonViewController
-    */
-    private func headerButton() -> UIButton? {
-        return buttonViewController?.stackView?.arrangedSubviews.first as? UIButton
-    }
-}
-
-extension LoginPrologueSignupMethodViewController {
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            didChangePreferredContentSize()
-        }
-    }
 }
