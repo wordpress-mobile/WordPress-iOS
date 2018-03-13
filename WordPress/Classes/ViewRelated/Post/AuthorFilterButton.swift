@@ -101,7 +101,7 @@ class AuthorFilterButton: UIControl {
     }
 }
 
-fileprivate extension UIImage {
+private extension UIImage {
     // Draws a small down facing arrow
     static func makeChevronDownImage(with color: UIColor, size: CGSize) -> UIImage {
         let renderer = UIGraphicsImageRenderer(size: size)
