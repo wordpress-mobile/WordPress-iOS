@@ -377,10 +377,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     fileprivate lazy var devicePhotoLibraryDataSource = WPPHAssetDataSource()
 
-    fileprivate lazy var mediaCoordinator: MediaCoordinator = {
-        let coordinator = MediaCoordinator()
-        return coordinator
-    }()
+    fileprivate let mediaCoordinator = MediaCoordinator.shared
 
     /// Media Progress View
     ///
@@ -458,7 +455,15 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     // MARK: - Initializers
 
+    /// Initializer
+    ///
+    /// - Parameters:
+    ///     - post: the post to edit in this VC.  Must be already assigned to a `ManagedObjectContext`
+    ///             since that's necessary for the edits to be saved.
+    ///
     required init(post: AbstractPost) {
+        precondition(post.managedObjectContext != nil)
+
         self.post = post
 
         super.init(nibName: nil, bundle: nil)
@@ -1115,7 +1120,7 @@ extension AztecPostViewController {
 
     private func publishTapped(dismissWhenDone: Bool) {
         // Cancel publishing if media is currently being uploaded
-        if mediaCoordinator.isUploading {
+        if mediaCoordinator.isUploadingMedia(for: post) {
             displayMediaIsUploadingAlert()
             return
         }
@@ -1342,7 +1347,7 @@ private extension AztecPostViewController {
     @IBAction func displayCancelMediaUploads() {
         let alertController = UIAlertController(title: MediaUploadingCancelAlert.title, message: MediaUploadingCancelAlert.message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(MediaUploadingCancelAlert.acceptTitle) { alertAction in
-            self.mediaCoordinator.cancelUploadOfAllMedia()
+            self.mediaCoordinator.cancelUploadOfAllMedia(for: self.post)
         }
         alertController.addCancelActionWithTitle(MediaUploadingCancelAlert.cancelTitle)
         present(alertController, animated: true, completion: nil)
@@ -2492,7 +2497,7 @@ private extension AztecPostViewController {
             post.remove()
         }
 
-        mediaCoordinator.cancelUploadOfAllMedia()
+        mediaCoordinator.cancelUploadOfAllMedia(for: post)
         ContextManager.sharedInstance().save(context)
     }
 
@@ -2627,9 +2632,9 @@ extension AztecPostViewController {
     }
 
     func refreshGlobalProgress() {
-        mediaProgressView.isHidden = !mediaCoordinator.isUploading
-        mediaProgressView.progress = Float(mediaCoordinator.totalProgress)
-        postEditorStateContext.update(isUploadingMedia: mediaCoordinator.isUploading)
+        mediaProgressView.isHidden = !mediaCoordinator.isUploadingMedia(for: post)
+        mediaProgressView.progress = Float(mediaCoordinator.totalProgress(for: post))
+        postEditorStateContext.update(isUploadingMedia: mediaCoordinator.isUploadingMedia(for: post))
         refreshNavigationBar()
     }
 
@@ -2927,8 +2932,8 @@ extension AztecPostViewController {
             if let attachment = self.findAttachment(withUploadID: mediaID) {
                 richTextView.remove(attachmentID: attachment.identifier)
             }
-            if let media = mediaCoordinator.media(withIdentifier: mediaID) {
-                mediaCoordinator.cancelUploadAndDeleteMedia(media)
+            if let media = mediaCoordinator.media(withObjectID: mediaID) {
+                mediaCoordinator.delete(media)
             }
         }
     }
@@ -3023,14 +3028,14 @@ extension AztecPostViewController {
         })
         var showDefaultActions = true
         if let mediaUploadID = attachment.uploadID,
-           let media = mediaCoordinator.media(withIdentifier: mediaUploadID) {
+            let media = mediaCoordinator.media(withIdentifier: mediaUploadID, for: post) {
             // Is upload still going?
             if media.remoteStatus == .pushing || media.remoteStatus == .processing {
                 showDefaultActions = false
                 alertController.addActionWithTitle(MediaAttachmentActionSheet.stopUploadActionTitle,
                                                    style: .destructive,
                                                    handler: { (action) in
-                                                    self.mediaCoordinator.cancelUploadAndDeleteMedia(media)
+                                                    self.mediaCoordinator.delete(media)
                 })
             }
         } else {
@@ -3348,12 +3353,12 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
 
     func textView(_ textView: TextView, deletedAttachment attachment: MediaAttachment) {
         guard let uploadID = attachment.uploadID,
-            let media = mediaCoordinator.media(withIdentifier: uploadID),
+            let media = mediaCoordinator.media(withIdentifier: uploadID, for: post),
             (media.remoteStatus == .pushing || media.remoteStatus == .processing)
         else {
             return
         }
-        mediaCoordinator.cancelUploadAndDeleteMedia(media)
+        mediaCoordinator.delete(media)
     }
 
     func textView(_ textView: TextView, placeholderFor attachment: NSTextAttachment) -> UIImage {

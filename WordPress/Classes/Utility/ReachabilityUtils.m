@@ -2,6 +2,9 @@
 #import "WordPressAppDelegate.h"
 #import "WordPress-Swift.h"
 
+@import WordPressUI;
+
+
 @interface ReachabilityAlert : NSObject
 @property (nonatomic, copy) void (^retryBlock)(void);
 

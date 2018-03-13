@@ -4,6 +4,11 @@ import WordPressFlux
 
 class PluginListViewController: UITableViewController, ImmuTablePresenter {
     let site: JetpackSiteRef
+    var query: PluginQuery {
+        didSet {
+            viewModel.query = query
+        }
+    }
 
     fileprivate var viewModel: PluginListViewModel
     fileprivate var tableViewModel = ImmuTable.Empty
@@ -12,13 +17,14 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     var viewModelStateChangeReceipt: Receipt?
     var viewModelChangeReceipt: Receipt?
 
-    init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
+    init(site: JetpackSiteRef, query: PluginQuery, store: PluginStore = StoreContainer.shared.plugin) {
         self.site = site
-        viewModel = PluginListViewModel(site: site, store: store)
+        self.query = query
+        viewModel = PluginListViewModel(site: site, query: query, store: store)
 
         super.init(style: .grouped)
 
-        title = NSLocalizedString("Plugins", comment: "Title for the plugin manager")
+        title = viewModel.title
         noResultsView.delegate = self
     }
 
@@ -26,19 +32,8 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc convenience init?(blog: Blog) {
-        guard let site = JetpackSiteRef(blog: blog) else {
-            return nil
-        }
-
-        self.init(site: site)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        refreshControl = UIRefreshControl()
-        refreshControl?.addTarget(self, action: #selector(PluginListViewController.refresh), for: .valueChanged)
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows(PluginListViewModel.immutableRows, tableView: tableView)
@@ -48,7 +43,12 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         viewModelChangeReceipt = viewModel.onChange { [weak self] in
             self?.updateRefreshControl()
         }
+
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 72
+
         refreshModel(change: .replace)
+        setupRefreshControl()
         updateRefreshControl()
     }
 
@@ -58,7 +58,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     }
 
     @objc func refresh() {
-        ActionDispatcher.dispatch(PluginAction.refreshPlugins(site: site))
+        viewModel.refresh()
     }
 
     func updateNoResults() {
@@ -83,6 +83,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     }
 
     func refreshModel(change: PluginListViewModel.StateChange) {
+        title = viewModel.title
         tableViewModel = viewModel.tableViewModel(presenter: self)
         switch change {
         case .replace:
@@ -94,7 +95,16 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         updateNoResults()
     }
 
-    func updateRefreshControl() {
+    private func setupRefreshControl() {
+        if case .feed(let feedType) = query, case .search = feedType {
+            return
+        }
+
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(PluginListViewController.refresh), for: .valueChanged)
+    }
+
+    private func updateRefreshControl() {
         guard let refreshControl = refreshControl else {
                 return
         }
@@ -150,6 +160,17 @@ extension PluginListViewController: WPNoResultsViewDelegate {
 // MARK: - PluginPresenter
 
 extension PluginListViewController: PluginPresenter {
+    func present(directoryEntry: PluginDirectoryEntry) {
+        let controller = PluginViewController(directoryEntry: directoryEntry, site: site)
+
+        if let presenting = presentingViewController as? PluginDirectoryViewController, let presentingNavVC = presenting.navigationController {
+            // If we're presenting results of a search query, we don't have a navVC, need to push on the presenting one.
+            presentingNavVC.pushViewController(controller, animated: true)
+        } else {
+            navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+
     func present(plugin: Plugin, capabilities: SitePluginCapabilities) {
         let controller = PluginViewController(plugin: plugin, capabilities: capabilities, site: site)
         navigationController?.pushViewController(controller, animated: true)

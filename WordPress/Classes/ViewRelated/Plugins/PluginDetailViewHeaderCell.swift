@@ -13,6 +13,7 @@ class PluginDetailViewHeaderCell: UITableViewCell {
 
     open func configureCell(_ directoryEntry: PluginDirectoryEntry) {
         if let banner = directoryEntry.banner {
+            headerImageView?.isHidden = false
             headerImageView?.downloadImage(banner, placeholderImage: nil)
         } else {
             headerImageView?.isHidden = true

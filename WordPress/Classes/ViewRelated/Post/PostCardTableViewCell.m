@@ -2,11 +2,14 @@
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import "PostCardActionBar.h"
 #import "PostCardActionBarItem.h"
-#import <WordPressShared/WPStyleGuide.h>
+#import <WordPressShared/WordPressShared.h>
+#import <WordPressUI/WordPressUI.h>
 #import "WPStyleGuide+Posts.h"
 #import "WordPress-Swift.h"
 #import "FLAnimatedImage.h"
-@import WordPressShared;
+
+@import Gridicons;
+
 
 static const UIEdgeInsets ActionbarButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 
@@ -39,6 +42,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet UIView *metaView;
 @property (nonatomic, strong) IBOutlet UIButton *metaButtonRight;
 @property (nonatomic, strong) IBOutlet UIButton *metaButtonLeft;
+@property (nonatomic, strong) IBOutlet UIProgressView *progressView;
 @property (nonatomic, strong) IBOutlet PostCardActionBar *actionBar;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewLeftConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewHeightConstraint;
@@ -48,7 +52,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *dateViewLowerConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *statusHeightConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *statusViewLowerConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *postContentBottomConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewBottomConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewHeightConstraint;
 
@@ -185,6 +188,9 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [WPStyleGuide applyPostStatusStyle:self.statusLabel];
     [WPStyleGuide applyPostMetaButtonStyle:self.metaButtonRight];
     [WPStyleGuide applyPostMetaButtonStyle:self.metaButtonLeft];
+    [WPStyleGuide applyPostProgressViewStyle:self.progressView];
+
+    self.dateImageView.tintColor = self.dateLabel.textColor;
     self.actionBar.backgroundColor = [WPStyleGuide lightGrey];
     self.postContentView.layer.borderColor = [[WPStyleGuide postCardBorderColor] CGColor];
     self.postContentView.layer.borderWidth = 1.0;
@@ -207,6 +213,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [self configureDate];
     [self configureStatusView];
     [self configureMetaButtons];
+    [self configureProgressView];
     [self configureActionBar];
 
     [self setNeedsUpdateConstraints];
@@ -313,12 +320,14 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 {
     AbstractPost *post = [self.post latest];
     self.dateLabel.text = [post dateStringForDisplay];
+    self.dateImageView.image = [Gridicon iconOfType:GridiconTypeTime];
 }
 
 - (void)configureStatusView
 {
-    NSString *str = [self.post statusForDisplay];
-    self.statusView.hidden = ([str length] == 0);
+    PostCardStatusViewModel *model = [[PostCardStatusViewModel alloc] initWithPost:self.post];
+
+    self.statusView.hidden = model.shouldHideStatusView;
     if (self.statusView.hidden) {
         self.dateViewLowerConstraint.constant = 0.0;
         self.statusHeightConstraint.constant = 0.0;
@@ -327,25 +336,10 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
         self.statusHeightConstraint.constant = self.statusViewHeight;
     }
 
-    self.statusLabel.text = str;
-    // Set the correct icon and text color
-    if ([[self.post status] isEqualToString:PostStatusPending]) {
-        self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-pending"];
-        self.statusLabel.textColor = [WPStyleGuide jazzyOrange];
-    } else if ([[self.post status] isEqualToString:PostStatusScheduled]) {
-        self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-scheduled"];
-        self.statusLabel.textColor = [WPStyleGuide wordPressBlue];
-    } else if ([[self.post status] isEqualToString:PostStatusTrash]) {
-        self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-trashed"];
-        self.statusLabel.textColor = [WPStyleGuide errorRed];
-    } else if (!self.statusView.hidden) {
-        self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-pending"];
-        self.statusLabel.textColor = [WPStyleGuide jazzyOrange];
-    } else {
-        self.statusLabel.text = nil;
-        self.statusImageView.image = nil;
-        self.statusLabel.textColor = [WPStyleGuide grey];
-    }
+    self.statusLabel.text = model.status;
+    self.statusImageView.image = model.statusImage;
+    self.statusImageView.tintColor = model.statusColor;
+    self.statusLabel.textColor = model.statusColor;
 
     [self.statusView setNeedsUpdateConstraints];
 }
@@ -392,6 +386,17 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     metaButton.hidden = NO;
 }
 
+#pragma mark - Configure Progress View
+
+- (void)configureProgressView
+{
+    PostCardStatusViewModel *model = [[PostCardStatusViewModel alloc] initWithPost:self.post];
+    BOOL shouldHide = model.shouldHideProgressView;
+
+    if (self.progressView.isHidden != shouldHide) {
+        self.progressView.hidden = shouldHide;
+    }
+}
 
 #pragma mark - Configure Actionbar
 

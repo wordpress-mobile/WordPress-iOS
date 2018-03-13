@@ -36,6 +36,21 @@ typedef void(^WordPressComServiceFailureBlock)(NSError *error);
                             failure:(WordPressComServiceFailureBlock)failure;
 
 /**
+ Create a new account using Google
+
+ @param token token provided by Google
+ @param clientID wpcom client id
+ @param clientSecret wpcom secret
+ @param success success block
+ @param failure failure block
+ */
+- (void)createWPComAccountWithGoogle:(NSString *)token
+                         andClientID:(NSString *)clientID
+                     andClientSecret:(NSString *)clientSecret
+                             success:(WordPressComServiceSuccessBlock)success
+                             failure:(WordPressComServiceFailureBlock)failure;
+
+/**
  *  @brief      Validates a WordPress.com blog with the specified parameters.
  *
  *  @param      blogUrl     The url of the blog to validate.  Cannot be nil.

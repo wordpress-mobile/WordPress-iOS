@@ -1,7 +1,10 @@
 #import "WPStyleGuide+Posts.h"
 #import <WordPressShared/WPFontManager.h>
-#import "WordPress-Swift.h"
 #import <QuartzCore/QuartzCore.h>
+#import <WordPressUI/WordPressUI.h>
+#import "WordPress-Swift.h"
+
+
 
 @implementation WPStyleGuide (Posts)
 
@@ -74,6 +77,13 @@
 {
     [self configureLabelForDeviceDependantStyle:button.titleLabel];
     [button setTitleColor:[self grey] forState:UIControlStateNormal];
+}
+
++ (void)applyPostProgressViewStyle:(UIProgressView *)progressView
+{
+    progressView.trackTintColor = [WPStyleGuide greyLighten20];
+    progressView.progressTintColor = [WPStyleGuide mediumBlue];
+    progressView.tintColor = [WPStyleGuide mediumBlue];
 }
 
 + (void)applyRestorePostLabelStyle:(UILabel *)label

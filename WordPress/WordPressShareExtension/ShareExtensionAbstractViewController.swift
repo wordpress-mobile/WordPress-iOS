@@ -2,6 +2,11 @@ import CoreData
 import UIKit
 import WordPressKit
 
+enum OriginatingExtension: String {
+    case share
+    case saveToDraft
+}
+
 /// A base class for the various Share Extension view controllers.
 /// It is assumed that Share Extension controllers will always be presented modally.
 ///
@@ -13,9 +18,27 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
 
     typealias CompletionBlock = () -> Void
 
+    // MARK: - Public Properties
+
+    /// Identifies which app extension launched this VC
+    ///
+    var originatingExtension: OriginatingExtension = .share {
+        didSet {
+            if originatingExtension == .share {
+                shareData.postStatus = .publish
+            } else {
+                shareData.postStatus = .draft
+            }
+        }
+    }
+
     /// This completion handler closure is executed when this VC is dismissed
     ///
     @objc var dismissalCompletionBlock: CompletionBlock?
+
+    /// The extension context data provided from the host app
+    ///
+    open var context: NSExtensionContext?
 
     // MARK: - Internal Properties
 
@@ -86,6 +109,26 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
 // MARK: - Misc Helpers
 
 extension ShareExtensionAbstractViewController {
+    func verifyAuthCredentials(onSuccess: (() -> Void)?) {
+        guard oauth2Token == nil else {
+            onSuccess?()
+            return
+        }
+
+        let title = NSLocalizedString("Sharing error", comment: "Share extension dialog title - displayed when user is missing a login token.")
+        let message = NSLocalizedString("Please launch the WordPress app, log in to WordPress.com and make sure you have at least one site, then try again.", comment: "Share extension dialog text  - displayed when user is missing a login token.")
+        let accept = NSLocalizedString("Cancel sharing", comment: "Share extension dialog dismiss button label - displayed when user is missing a login token.")
+
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: accept, style: .default) { (action) in
+            self.cleanUpSharedContainer()
+            self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
+        }
+
+        alertController.addAction(alertAction)
+        present(alertController, animated: true, completion: nil)
+    }
+
     func saveImageToSharedContainer(_ image: UIImage) -> URL? {
         guard let encodedMedia = image.resizeWithMaximumSize(maximumImageSize).JPEGEncoded(),
             let mediaDirectory = ShareMediaFileManager.shared.mediaUploadDirectoryURL else {
