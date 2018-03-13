@@ -34,6 +34,7 @@ class AuthorFilterViewController: UITableViewController {
     init(initialSelection: PostListFilterSettings.AuthorFilter,
          gravatarEmail: String? = nil,
          onSelectionChanged: ((PostListFilterSettings.AuthorFilter) -> Void)? = nil) {
+
         self.gravatarEmail = gravatarEmail
         self.onSelectionChanged = onSelectionChanged
         self.currentSelection = initialSelection
@@ -159,7 +160,7 @@ private class AuthorFilterCell: UITableViewCell {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.spacing = 10.0
+        stackView.spacing = Metrics.stackViewSpacing
         return stackView
     }()
 
@@ -224,6 +225,7 @@ private class AuthorFilterCell: UITableViewCell {
     }
 
     private enum Metrics {
+        static let stackViewSpacing: CGFloat = 10.0
         static let horizontalPadding: CGFloat = 16.0
         static let gravatarSize = CGSize(width: 28.0, height: 28.0)
         static let multipleGravatarSize = CGSize(width: 20.0, height: 20.0)
