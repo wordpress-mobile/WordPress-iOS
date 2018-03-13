@@ -14,7 +14,7 @@ class AuthorFilterButton: UIControl {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.setContentHuggingPriority(.required, for: .horizontal)
         imageView.backgroundColor = WPStyleGuide.greyLighten20()
-        imageView.tintColor = .white
+        imageView.tintColor = WPStyleGuide.darkGrey()
 
         return imageView
     }()
