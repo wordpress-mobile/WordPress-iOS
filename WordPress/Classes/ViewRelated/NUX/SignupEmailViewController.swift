@@ -11,7 +11,7 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
 
     @IBOutlet weak var emailField: LoginTextField!
 
-    override var sourceTag: SupportSourceTag {
+    override var sourceTag: WordPressSupportSourceTag {
         get {
             return .wpComSignupEmail
         }

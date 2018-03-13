@@ -2,6 +2,8 @@
 @class Blog;
 @class BlogListViewController;
 @class NotificationsViewController;
+@class WordPressAuthenticationManager;
+@class WordPressAuthenticationTracker;
 @class HockeyManager;
 @class Reachability;
 @class ReaderPostsViewController;
@@ -23,7 +25,9 @@
 @property (nonatomic, strong, readwrite) WPCrashlytics                  *crashlytics;
 @property (nonatomic, strong, readwrite) HockeyManager                  *hockey;
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
-@property (nonatomic, assign, readwrite) BOOL connectionAvailable;
+@property (nonatomic, strong, readwrite) WordPressAuthenticationManager *authManager;
+@property (nonatomic, strong, readwrite) WordPressAuthenticationTracker *authTracker;
+@property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 
 + (WordPressAppDelegate *)sharedInstance;
 
