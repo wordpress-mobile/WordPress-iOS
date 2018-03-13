@@ -1276,6 +1276,13 @@ private extension AztecPostViewController {
         }
 
         alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
+
+        if FeatureFlag.asyncPosting.enabled {
+            alert.addDefaultActionWithTitle("Async Upload") { [unowned self]  _ in
+                PostCoordinator.shared.save(post: self.post)
+                self.dismissOrPopView(didSave: true)
+            }
+        }
         alert.popoverPresentationController?.barButtonItem = moreBarButtonItem
 
         present(alert, animated: true, completion: nil)
