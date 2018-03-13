@@ -104,8 +104,8 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
 
     /// Updates the badge count and its visibility.
     ///
-    func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) {
-        let count = HelpshiftUtils.unreadNotificationCount()
+    func refreshSupportBadge() {
+        let count = WordPressAuthenticator.shared.delegate?.supportBadgeCount ?? 0
         helpBadge.text = "\(count)"
         helpBadge.isHidden = (count == 0)
     }
@@ -156,6 +156,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         }
 
         addHelpButtonToNavController()
+        refreshSupportBadge()
     }
 
     /// Adds the Help Button to the nav controller
@@ -165,8 +166,8 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         let helpBadgeSize = CGSize(width: 12, height: 12)
         let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
 
-        NotificationCenter.default.addObserver(forName: .HelpshiftUnreadCountUpdated, object: nil, queue: nil) { [weak self](notification) in
-            self?.handleHelpshiftUnreadCountUpdated(notification)
+        NotificationCenter.default.addObserver(forName: .wordpressSupportBadgeUpdated, object: nil, queue: nil) { [weak self] _ in
+            self?.refreshSupportBadge()
         }
 
         let customView = UIView(frame: helpButtonContainerFrame)
@@ -208,10 +209,10 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
     /// Displays the support vc.
     ///
     func displaySupportViewController(from source: WordPressSupportSourceTag) {
-        guard let supporViewController = WordPressAuthenticator.shared.delegate?.supportViewController(from: source) else {
+        guard let navigationController = navigationController else {
             fatalError()
         }
 
-        navigationController?.present(supporViewController, animated: true, completion: nil)
+        WordPressAuthenticator.shared.delegate?.presentSupport(from: navigationController, sourceTag: source, options: [:])
     }
 }
