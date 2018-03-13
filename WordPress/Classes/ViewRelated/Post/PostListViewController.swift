@@ -46,6 +46,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     static fileprivate let postListHeightForFooterView = CGFloat(34.0)
 
     @IBOutlet var searchWrapperView: UIView!
+    @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
 
     // MARK: - GUI
 
@@ -615,6 +617,14 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - UISearchControllerDelegate
 
+    override func willPresentSearchController(_ searchController: UISearchController) {
+        super.willPresentSearchController(searchController)
+
+        self.filterTabBar.alpha = WPAlphaZero
+        filterTabBarBottomConstraint.isActive = false
+        tableViewTopConstraint.isActive = true
+    }
+
     func didPresentSearchController(_ searchController: UISearchController) {
         if #available(iOS 11.0, *) {
             updateTableHeaderSize()
@@ -626,5 +636,16 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     func didDismissSearchController(_ searchController: UISearchController) {
         updateTableHeaderSize()
+
+        tableViewTopConstraint.isActive = false
+        filterTabBarBottomConstraint.isActive = true
+
+        UIView.animate(withDuration: Animations.searchDismissDuration) {
+            self.filterTabBar.alpha = WPAlphaFull
+        }
+    }
+
+    enum Animations {
+        static let searchDismissDuration: TimeInterval = 0.3
     }
 }
