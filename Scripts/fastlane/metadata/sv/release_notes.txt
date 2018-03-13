@@ -1,2 +1,2 @@
-Förbättringar i utökningen för delning.
-Ny Jetpack-inställning: Snabba upp din webbplats.
+En ny utökningsmodul för delning lägger till stöd för att spara utkast och hantera etiketter.
+Hantering av tillägg har blivit ett snäpp bättre: nu kan du söka och installera tillägg.

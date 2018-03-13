@@ -267,7 +267,7 @@ public protocol WordPressAuthenticatorDelegate: class {
                 path = path.replacingOccurrences(of: "http://", with: "https://")
             }
         } else if isSiteURLSchemeEmpty {
-            path = "http://\(path)"
+            path = "https://\(path)"
         }
 
         path.removeSuffix("/wp-login.php")

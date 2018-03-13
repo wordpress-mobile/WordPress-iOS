@@ -1,2 +1,2 @@
-Mejoras en la nueva extensión de compartir.
-Nuevo ajuste de Jetpack: Acelera tu sitio.
+Una nueva extensión de compartir que añade compatibilidad con guardar borradores y gestionar etiquetas.
+Gestión de plugins llevada al siguiente nivel: ahora puedes revisar e instalar plugins.
