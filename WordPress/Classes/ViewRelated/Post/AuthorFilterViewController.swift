@@ -77,8 +77,11 @@ class AuthorFilterViewController: UITableViewController {
 
         if let cell = cell as? AuthorFilterCell,
             let filter = PostListFilterSettings.AuthorFilter(rawValue: UInt(indexPath.row)) {
-            if filter == .mine {
-                cell.gravatarEmail = gravatarEmail
+            switch filter {
+            case .everyone:
+                cell.filterType = .everyone
+            case .mine:
+                cell.filterType = .user(gravatarEmail: gravatarEmail)
             }
 
             cell.accessoryType = (filter == currentSelection) ? .checkmark : .none
@@ -178,6 +181,7 @@ private class AuthorFilterCell: UITableViewCell {
             gravatarImageView.heightAnchor.constraint(equalToConstant: Metrics.gravatarSize.height),
             ])
 
+        stackView.addArrangedSubview(gravatarImageView)
         stackView.addArrangedSubview(titleLabel)
 
         tintColor = WPStyleGuide.mediumBlue()
@@ -187,14 +191,21 @@ private class AuthorFilterCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    var gravatarEmail: String? = nil {
+    var filterType: AuthorFilterType = .everyone {
         didSet {
-            if let gravatarEmail = gravatarEmail {
-                stackView.insertArrangedSubview(gravatarImageView, at: 0)
-                gravatarImageView.downloadGravatarWithEmail(gravatarEmail,
-                                                            placeholderImage: Gridicon.iconOfType(.user, withSize: Metrics.gravatarSize))
-            } else {
-                gravatarImageView.removeFromSuperview()
+            switch filterType {
+            case .everyone:
+                gravatarImageView.image = Gridicon.iconOfType(.multipleUsers, withSize: Metrics.multipleGravatarSize)
+                gravatarImageView.contentMode = .center
+            case .user(let email):
+                gravatarImageView.contentMode = .scaleAspectFill
+
+                let placeholder = Gridicon.iconOfType(.user, withSize: Metrics.gravatarSize)
+                if let email = email {
+                    gravatarImageView.downloadGravatarWithEmail(email, placeholderImage: placeholder)
+                } else {
+                    gravatarImageView.image = placeholder
+                }
             }
         }
     }
@@ -208,5 +219,6 @@ private class AuthorFilterCell: UITableViewCell {
     private enum Metrics {
         static let horizontalPadding: CGFloat = 16.0
         static let gravatarSize = CGSize(width: 28.0, height: 28.0)
+        static let multipleGravatarSize = CGSize(width: 20.0, height: 20.0)
     }
 }

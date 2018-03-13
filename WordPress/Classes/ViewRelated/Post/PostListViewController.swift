@@ -252,10 +252,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             return
         }
 
-        if filterSettings.currentPostAuthorFilter() == .mine {
-            accessoryView.gravatarEmail = blog.account?.email
+        if filterSettings.currentPostAuthorFilter() == .everyone {
+            accessoryView.filterType = .everyone
         } else {
-            accessoryView.gravatarEmail = nil
+            accessoryView.filterType = .user(gravatarEmail: blog.account?.email)
         }
     }
 
