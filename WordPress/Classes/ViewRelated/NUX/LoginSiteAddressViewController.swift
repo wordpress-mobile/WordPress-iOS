@@ -57,17 +57,6 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
         unregisterForKeyboardEvents()
     }
 
-
-    /// MARK: - Support for Dynamic Type
-    override func didChangePreferredContentSize() {
-        super.didChangePreferredContentSize()
-        styleSiteHelpButton()
-    }
-
-    private func styleSiteHelpButton() {
-        siteAddressHelpButton.titleLabel?.adjustsFontForContentSizeCategory = true
-    }
-
     // MARK: Setup and Configuration
 
 
