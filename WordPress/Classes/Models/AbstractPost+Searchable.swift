@@ -9,10 +9,12 @@ extension Post: SearchableItemConvertable {
     }
 
     var searchDomain: String? {
-        guard let dotComID = blog.dotComID, dotComID.intValue > 0 else {
-            return nil
+        if let dotComID = blog.dotComID, dotComID.intValue > 0 {
+            return dotComID.stringValue
+        } else {
+            // This is a self-hosted site, set domain to the xmlrpc string
+            return blog.xmlrpc
         }
-        return dotComID.stringValue
     }
 
     var searchTitle: String? {
