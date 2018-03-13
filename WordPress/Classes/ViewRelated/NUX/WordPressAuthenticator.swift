@@ -26,6 +26,10 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     var supportBadgeCount: Int { get }
 
+    /// Presents the Login Epilogue, in the specified NavigationController.
+    ///
+    func presentLoginEpilogue(in navigationController: UINavigationController, epilogueInfo: LoginEpilogueUserInfo?, isJetpackLogin: Bool, onDismiss: @escaping () -> Void)
+
     /// Presents the Support Interface from a given ViewController, with a specified SourceTag.
     ///
     func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
@@ -285,7 +289,7 @@ public protocol WordPressAuthenticatorDelegate: class {
                 path = path.replacingOccurrences(of: "http://", with: "https://")
             }
         } else if isSiteURLSchemeEmpty {
-            path = "http://\(path)"
+            path = "https://\(path)"
         }
 
         path.removeSuffix("/wp-login.php")
