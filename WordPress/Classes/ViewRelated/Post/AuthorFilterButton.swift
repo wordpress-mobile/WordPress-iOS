@@ -1,6 +1,11 @@
 import UIKit
 import Gridicons
 
+enum AuthorFilterType {
+    case everyone
+    case user(gravatarEmail: String?)
+}
+
 /// Displays an author gravatar image with a dropdown arrow.
 ///
 class AuthorFilterButton: UIControl {
@@ -38,12 +43,19 @@ class AuthorFilterButton: UIControl {
         return Metrics.contentSize
     }
 
-    var gravatarEmail: String? = nil {
+    var filterType: AuthorFilterType = .everyone {
         didSet {
-            if let gravatarEmail = gravatarEmail {
-                authorImageView.downloadGravatarWithEmail(gravatarEmail, placeholderImage: gravatarPlaceholder)
-            } else {
-                authorImageView.image = gravatarPlaceholder
+            switch filterType {
+            case .everyone:
+                authorImageView.image = Gridicon.iconOfType(.multipleUsers, withSize: Metrics.multipleUsersGravatarSize)
+                authorImageView.contentMode = .center
+            case .user(let email):
+                authorImageView.contentMode = .scaleAspectFill
+                if let email = email {
+                    authorImageView.downloadGravatarWithEmail(email, placeholderImage: gravatarPlaceholder)
+                } else {
+                    authorImageView.image = gravatarPlaceholder
+                }
             }
         }
     }
@@ -82,6 +94,7 @@ class AuthorFilterButton: UIControl {
         static let chevronSize = CGSize(width: 10.0, height: 5.0)
         static let contentSize = CGSize(width: 72.0, height: 44.0)
         static let gravatarSize = CGSize(width: 28.0, height: 28.0)
+        static let multipleUsersGravatarSize = CGSize(width: 20.0, height: 20.0)
         static let stackViewSpacing: CGFloat = 7.0
         static let chevronVerticalPadding: CGFloat = 2.0
         static let leadingPadding: CGFloat = 12.0
