@@ -33,10 +33,26 @@ extension Post: SearchableItemConvertable {
     }
 
     var searchKeywords: [String]? {
-        guard hasTags() else {
-            return nil
-        }
+        return generateKeywords()
+    }
 
+    private func generateKeywords() -> [String]? {
+        // Keywords defaults to tags
+        guard hasTags() else {
+           return generateKeywordsFromContent()
+        }
         return tags?.arrayOfTags()
+    }
+
+    private func generateKeywordsFromContent() -> [String]? {
+        var keywords: [String]? = nil
+        if let postTitle = postTitle {
+            // Try to generate some keywords from the title...
+            keywords = postTitle.components(separatedBy: " ").map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
+        } else if !contentPreviewForDisplay().isEmpty {
+            // ...otherwise try to generate some keywords from the content preview
+            keywords = contentPreviewForDisplay().components(separatedBy: " ").map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
+        }
+        return keywords
     }
 }
