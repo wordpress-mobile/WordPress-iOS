@@ -494,7 +494,7 @@ private extension PluginStore {
                     state.updatesInProgress[site]?.remove(installedPlugin.slug)
                 }
 
-                let message = String(format: NSLocalizedString("Succesfully installed %@.", comment: "Notice displayed after installing a plug-in."), installedPlugin.name)
+                let message = String(format: NSLocalizedString("Successfully installed %@.", comment: "Notice displayed after installing a plug-in."), installedPlugin.name)
                 ActionDispatcher.dispatch(NoticeAction.post(Notice(title: message)))
                 ActionDispatcher.dispatch(PluginAction.activateAndEnableAutoupdates(id: installedPlugin.id, site: site))
             },

@@ -16,19 +16,19 @@ class WordPressAuthenticatorTests: XCTestCase {
 
         baseURL = "www.selfhostedsite.com"
         url = WordPressAuthenticator.baseSiteURL(string: baseURL)
-        XCTAssert((url == "http://\(baseURL)"), "Should add http:\\ for a non wpcom site missing a scheme.")
+        XCTAssert((url == "https://\(baseURL)"), "Should add https:\\ for a non wpcom site missing a scheme.")
 
         url = WordPressAuthenticator.baseSiteURL(string: "\(baseURL)/wp-login.php")
-        XCTAssert((url == "http://\(baseURL)"), "Should remove wp-login.php from the path.")
+        XCTAssert((url == "https://\(baseURL)"), "Should remove wp-login.php from the path.")
 
         url = WordPressAuthenticator.baseSiteURL(string: "\(baseURL)/wp-admin")
-        XCTAssert((url == "http://\(baseURL)"), "Should remove /wp-admin from the path.")
+        XCTAssert((url == "https://\(baseURL)"), "Should remove /wp-admin from the path.")
 
         url = WordPressAuthenticator.baseSiteURL(string: "\(baseURL)/wp-admin/")
-        XCTAssert((url == "http://\(baseURL)"), "Should remove /wp-admin/ from the path.")
+        XCTAssert((url == "https://\(baseURL)"), "Should remove /wp-admin/ from the path.")
 
         url = WordPressAuthenticator.baseSiteURL(string: "\(baseURL)/")
-        XCTAssert((url == "http://\(baseURL)"), "Should remove a trailing slash from the url.")
+        XCTAssert((url == "https://\(baseURL)"), "Should remove a trailing slash from the url.")
 
         // Check non-latin characters and puny code
         baseURL = "http://例.例"

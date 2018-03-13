@@ -96,7 +96,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
 
     /// Updates the badge count and its visibility.
     ///
-    func refreshSupportBadge(_ notification: Foundation.Notification) {
+    func refreshSupportBadge() {
         let count = WordPressAuthenticator.shared.delegate?.supportBadgeCount ?? 0
         helpBadge.text = "\(count)"
         helpBadge.isHidden = (count == 0)
@@ -148,6 +148,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         }
 
         addHelpButtonToNavController()
+        refreshSupportBadge()
     }
 
     /// Adds the Help Button to the nav controller
@@ -157,8 +158,8 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         let helpBadgeSize = CGSize(width: 12, height: 12)
         let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
 
-        NotificationCenter.default.addObserver(forName: .wordpressSupportBadgeUpdated, object: nil, queue: nil) { [weak self] notification in
-            self?.refreshSupportBadge(notification)
+        NotificationCenter.default.addObserver(forName: .wordpressSupportBadgeUpdated, object: nil, queue: nil) { [weak self] _ in
+            self?.refreshSupportBadge()
         }
 
         let customView = UIView(frame: helpButtonContainerFrame)
