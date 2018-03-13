@@ -19,21 +19,26 @@ public typealias SearchManagerCompletion = ((Error?) -> Void)?
     ///
     /// - Parameters:
     ///   - item: the item to be indexed
-    ///   - completion: called when indexing completes
     ///
-    func index(_ item: SearchableItemConvertable, completion: SearchManagerCompletion = nil) {
-        index([item], completion: completion)
+    func index(_ item: SearchableItemConvertable) {
+        index([item])
     }
 
     /// Index items to the on-device index
     ///
     /// - Parameters:
     ///   - items: the items to be indexed
-    ///   - completion: called when indexing completes
     ///
-    func index(_ items: [SearchableItemConvertable], completion: SearchManagerCompletion = nil) {
+    func index(_ items: [SearchableItemConvertable]) {
         let items = items.map { $0.indexableItem() }
-        CSSearchableIndex.default().indexSearchableItems(items, completionHandler: completion)
+        CSSearchableIndex.default().indexSearchableItems(items, completionHandler: { (error: Error?) -> Void in
+            guard let error = error else {
+                DDLogDebug("Successfully indexed post.")
+                return
+            }
+            DDLogError("Could not index post. Error \(error)")
+        })
+
     }
 
     // MARK: - Removal
@@ -98,7 +103,7 @@ public typealias SearchManagerCompletion = ((Error?) -> Void)?
     /// - Returns: true if it was handled correctly and activitytype was `CSSearchableItemActionType`, otherwise false
     ///
     @discardableResult
-    public static func handle(activity: NSUserActivity?) -> Bool {
+    @objc static func handle(activity: NSUserActivity?) -> Bool {
         guard activity?.activityType == CSSearchableItemActionType else {
             return false
         }

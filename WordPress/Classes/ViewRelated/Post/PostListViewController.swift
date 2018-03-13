@@ -432,6 +432,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         editor.modalPresentationStyle = .fullScreen
         present(editor, animated: false, completion: nil)
         WPAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics())
+
+        // Index this post if it is published
+        if !post.isDraft() && !post.isScheduled() {
+            SearchManager.shared.index(post)
+        }
     }
 
     override func promptThatPostRestoredToFilter(_ filter: PostListFilter) {
