@@ -44,28 +44,8 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
     [self setupTextFieldDesignViews];
     [self setupDoneButton];
     [self setupTrashButton];
-    [self setupObservers];
 
     [self updateTextFieldDesignIconPositioning];
-}
-
--(void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)contentSizeCategoryDidChange
-{
-    [self updateTextFieldFont];
-    [self updateTextFieldDesignIconPositioning];
-}
-
-- (void)setupObservers
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(contentSizeCategoryDidChange)
-                                                 name:UIContentSizeCategoryDidChangeNotification
-                                               object:nil];
 }
 
 - (void)setupTextField
@@ -195,6 +175,7 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
 {
     [super traitCollectionDidChange:previousTraitCollection];
 
+    [self updateTextFieldFont];
     [self updateTextFieldDesignIconPositioning];
 }
 
