@@ -178,6 +178,13 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)statsViewController:(WPStatsViewController *)controller openURL:(NSURL *)url
 {
+    NSParameterAssert(url != nil);
+    NSParameterAssert([url isKindOfClass:[NSURL class]]);
+    // Make sure the passed url is a real NSURL, or Swift will crash on it
+    if (![url isKindOfClass:[NSURL class]]) {
+        DDLogError(@"Stats tried to open an invalid URL: %@", url);
+        return;
+    }
     UIViewController *webViewController = [WebViewControllerFactory controllerAuthenticatedWithDefaultAccountWithUrl:url];
     [self.navigationController pushViewController:webViewController animated:YES];
 }
