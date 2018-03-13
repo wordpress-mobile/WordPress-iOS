@@ -2,8 +2,6 @@ import UIKit
 import CoreSpotlight
 import MobileCoreServices
 
-public typealias SearchManagerCompletion = ((Error?) -> Void)?
-
 /// Encapsulates CoreSpotlight operations for WPiOS
 ///
 @objc class SearchManager: NSObject {
@@ -30,13 +28,16 @@ public typealias SearchManagerCompletion = ((Error?) -> Void)?
     ///   - items: the items to be indexed
     ///
     func index(_ items: [SearchableItemConvertable]) {
-        let items = items.map { $0.indexableItem() }
+        let items = items.map({ $0.indexableItem() }).flatMap({ $0 })
+        guard !items.isEmpty else {
+            return
+        }
+
         CSSearchableIndex.default().indexSearchableItems(items, completionHandler: { (error: Error?) -> Void in
             guard let error = error else {
-                DDLogDebug("Successfully indexed post.")
                 return
             }
-            DDLogError("Could not index post. Error \(error)")
+            DDLogError("Could not index post. Error: \(error.localizedDescription)")
         })
 
     }
@@ -47,30 +48,36 @@ public typealias SearchManagerCompletion = ((Error?) -> Void)?
     ///
     /// - Parameters:
     ///   - item: item to remove
-    ///   - completion: called when the item is deleted from the index
     ///
-    func deleteSearchableItem(_ item: SearchableItemConvertable, completion: SearchManagerCompletion = nil) {
-        deleteSearchableItems([item], completion: completion)
+    func deleteSearchableItem(_ item: SearchableItemConvertable) {
+        deleteSearchableItems([item])
     }
 
     /// Remove items from the on-device index
     ///
     /// - Parameters:
     ///   - items: items to remove
-    ///   - completion: called when the items are deleted from the index
     ///
-    func deleteSearchableItems(_ items: [SearchableItemConvertable], completion: SearchManagerCompletion = nil) {
-        let ids = items.map { $0.uniqueIdentifier }
-        CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: ids, completionHandler: completion)
+    func deleteSearchableItems(_ items: [SearchableItemConvertable]) {
+        let ids = items.map({ $0.uniqueIdentifier }).flatMap({ $0 })
+        guard !ids.isEmpty else {
+            return
+        }
+
+        CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: ids, completionHandler: { (error: Error?) -> Void in
+            guard let error = error else {
+                return
+            }
+            DDLogError("Could not delete CSSearchableItem item. Error: \(error.localizedDescription)")
+        })
     }
 
     /// Removes all items with the given domain identifier from the on-device index
     ///
     /// - Parameters:
     ///   - domain: the domain identifier
-    ///   - completion: called when removal of the domain items is complete
     ///
-    func deleteAllSearchableItemsFromDomain(_ domain: String, completion: SearchManagerCompletion = nil) {
+    func deleteAllSearchableItemsFromDomain(_ domain: String) {
         deleteAllSearchableItemsFromDomains([domain])
     }
 
@@ -78,21 +85,31 @@ public typealias SearchManagerCompletion = ((Error?) -> Void)?
     ///
     /// - Parameters:
     ///   - domains: the domain identifiers
-    ///   - completion: called when removal of the domain items is complete
     ///
-    func deleteAllSearchableItemsFromDomains(_ domains: [String], completion: SearchManagerCompletion = nil) {
-        CSSearchableIndex.default().deleteSearchableItems(withDomainIdentifiers: domains, completionHandler: completion)
+    func deleteAllSearchableItemsFromDomains(_ domains: [String]) {
+        guard !domains.isEmpty else {
+            return
+        }
+
+        CSSearchableIndex.default().deleteSearchableItems(withDomainIdentifiers: domains, completionHandler: { (error: Error?) -> Void in
+            guard let error = error else {
+                return
+            }
+            DDLogError("Could not delete CSSearchableItem items for domains: \(domains.joined(separator: ", ")). Error: \(error.localizedDescription)")
+        })
     }
 
     /// Removes *all* items from the on-device index.
     ///
     /// Note: Be careful, this clears the entire index!
     ///
-    /// - Parameters:
-    ///   - completion: called when removal of all indexed items is complete
-    ///
-    func deleteAllSearchableItems(completion: SearchManagerCompletion = nil) {
-        CSSearchableIndex.default().deleteAllSearchableItems(completionHandler: completion)
+    @objc func deleteAllSearchableItems() {
+        CSSearchableIndex.default().deleteAllSearchableItems(completionHandler: { (error: Error?) -> Void in
+            guard let error = error else {
+                return
+            }
+            DDLogError("Could not delete all CSSearchableItem items. Error: \(error.localizedDescription)")
+        })
     }
 
     // MARK: - NSUserActivity Handling
@@ -104,17 +121,46 @@ public typealias SearchManagerCompletion = ((Error?) -> Void)?
     ///
     @discardableResult
     @objc static func handle(activity: NSUserActivity?) -> Bool {
-        guard activity?.activityType == CSSearchableItemActionType else {
-            return false
-        }
-
-        guard let compositeIdentifier = activity?.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
-            return false
+        guard activity?.activityType == CSSearchableItemActionType,
+            let compositeIdentifier = activity?.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
+                return false
         }
 
         let (domain, identifier) = SearchIdentifierGenerator.decomposeFromUniqueIdentifier(compositeIdentifier)
-        // FIXME: Do something here!
+        guard let siteID = NumberFormatter().number(from: domain),
+            let postID = NumberFormatter().number(from: identifier) else {
+            DDLogError("Search manager unable to open post - postID:\(identifier) siteID:\(domain).")
+                return false
+        }
 
+        fetchPost(postID, blogID: siteID, onSuccess: { post in
+             WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
+        }, onFailure: {
+            DDLogError("Search manager unable to open post - postID:\(postID) siteID:\(siteID).")
+        })
         return true
+    }
+
+    private static func fetchPost(_ postID: NSNumber,
+                                  blogID: NSNumber,
+                                  onSuccess: @escaping (_ post: Post?) -> Void,
+                                  onFailure: @escaping () -> Void) {
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+        guard let blog = blogService.blog(byBlogId: blogID) else {
+                onFailure()
+                return
+        }
+
+        let postService = PostService(managedObjectContext: context)
+        postService.getPostWithID(postID, for: blog, success: { apost in
+            guard let post = apost as? Post else {
+                onFailure()
+                return
+            }
+            onSuccess(post)
+        }, failure: { error in
+            onFailure()
+        })
     }
 }

@@ -7,11 +7,11 @@ import MobileCoreServices
 
     /// The value that uniquely identifies the searchable item
     ///
-    var searchIdentifier: String {get}
+    var searchIdentifier: String? {get}
 
     /// The value that identifies what class this searchable item belongs to (e.g. SiteID, etc)
     ///
-    var searchDomain: String {get}
+    var searchDomain: String? {get}
 
     /// Item title to be displayed in spotlight search
     ///
@@ -35,11 +35,20 @@ import MobileCoreServices
 extension SearchableItemConvertable {
     var thumbnailImage: UIImage? { return nil }
 
-    internal var uniqueIdentifier: String {
+    internal var uniqueIdentifier: String? {
+        guard let searchDomain = searchDomain, let searchIdentifier = searchIdentifier else {
+            return nil
+        }
         return SearchIdentifierGenerator.composeUniqueIdentifier(domain: searchDomain, identifier: searchIdentifier)
     }
 
-    internal func indexableItem() -> CSSearchableItem {
+    internal func indexableItem() -> CSSearchableItem? {
+        guard let uniqueIdentifier = uniqueIdentifier,
+            let searchTitle = searchTitle,
+            let searchDescription = searchDescription else {
+            return nil
+        }
+
         let searchableItemAttributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeText as String)
         searchableItemAttributeSet.title = searchTitle
         searchableItemAttributeSet.contentDescription = searchDescription

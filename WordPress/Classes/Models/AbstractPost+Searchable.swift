@@ -1,18 +1,18 @@
 import Foundation
 
 extension Post: SearchableItemConvertable {
-    var searchIdentifier: String {
-        if let postID = postID, postID.intValue > 0 {
-            return postID.stringValue
-        } else if let postTitle = postTitle {
-            return postTitle.components(separatedBy: .whitespacesAndNewlines).joined()
-        } else {
-            return slugForDisplay()
+    var searchIdentifier: String? {
+        guard let postID = postID, postID.intValue > 0 else {
+            return nil
         }
+        return postID.stringValue
     }
 
-    var searchDomain: String {
-        return blog.displayURL as String? ?? String()
+    var searchDomain: String? {
+        guard let dotComID = blog.dotComID, dotComID.intValue > 0 else {
+            return nil
+        }
+        return dotComID.stringValue
     }
 
     var searchTitle: String? {
@@ -35,6 +35,8 @@ extension Post: SearchableItemConvertable {
     var searchKeywords: [String]? {
         return generateKeywords()
     }
+
+    // MARK: - Helper Functions
 
     private func generateKeywords() -> [String]? {
         // Keywords defaults to tags
