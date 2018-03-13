@@ -25,6 +25,10 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     func refreshSupportBadgeCount()
 
+    /// Presents the Login Epilogue, in the specified NavigationController.
+    ///
+    func presentLoginEpilogue(in navigationController: UINavigationController, epilogueInfo: LoginEpilogueUserInfo?, isJetpackLogin: Bool, onDismiss: @escaping () -> Void)
+
     /// Presents the Support Interface from a given ViewController, with a specified SourceTag.
     ///
     func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
