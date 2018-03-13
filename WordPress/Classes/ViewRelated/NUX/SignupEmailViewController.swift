@@ -48,6 +48,10 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureViewForEditingIfNeeded()
+
+        // If email address already exists, pre-populate it.
+        emailField.text = loginFields.emailAddress
+
         configureSubmitButton(animating: false)
     }
 
@@ -142,8 +146,8 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
 
         remote.isEmailAvailable(loginFields.emailAddress, success: { available in
             if !available {
-                // If email address is unavailable, display appropriate message.
-                self.displayError(message: ErrorMessage.emailUnavailable.description())
+                // If the user has already signed up redirect to the Login flow
+                self.performSegue(withIdentifier: .showEmailLogin, sender: self)
             }
             completion(available)
         }, failure: { error in
@@ -154,6 +158,15 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
             self.displayError(message: ErrorMessage.availabilityCheckFail.description())
             completion(false)
         })
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        // Configure login flow to allow only .com login and prefill the email
+        if let destination = segue.destination as? LoginEmailViewController {
+            destination.restrictToWPCom = true
+            destination.loginFields.username = loginFields.emailAddress
+        }
     }
 
     // MARK: - Send email
@@ -180,6 +193,7 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
 
     private func didRequestSignupLink() {
         WPAppAnalytics.track(.signupMagicLinkRequested)
+        WordPressAuthenticator.storeLoginInfoForTokenAuth(loginFields)
         performSegue(withIdentifier: "showLinkMailView", sender: nil)
     }
 

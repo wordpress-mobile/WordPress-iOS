@@ -151,27 +151,37 @@ extension PluginDirectoryEntry: Decodable {
 typealias Author = (name: String, link: URL?)
 
 private func extractAuthor(_ author: String) -> Author {
-    guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue),
-        let match = detector.firstMatch(in: author, options: [], range: NSRange(location: 0, length: author.count)),
-        let url = match.url else {
-            // If there's no URL, it's just a simple string and we can return it verbatim.
-            return Author(name: author, link: nil)
+    // Because the `author` field is so free-form, there's cases of it being
+    // * regular string ("Gutenberg")
+    // * URL ("https://wordpress.org/plugins/gutenberg/#reviews&arg=1")
+    // * HTML link ("<a href="https://wordpress.org/plugins/gutenberg/#reviews">Gutenberg</a>"
+    // but also fun things like
+    // * malformed HTML: "<a href="">Gutenberg</a>".
+    // To save ourselves a headache of trying to support all those edge-cases when parsing out the
+    // user-facing name, let's just employ honest to god XMLParser and be done with it.
+    // (h/t @koke for suggesting and writing the XMLParser approach)
+
+    guard let data = author
+        .replacingOccurrences(of: "&", with: "&amp;") // can't have naked "&" in XML, but they're valid in URLs.
+        .data(using: .utf8) else {
+        return (author, nil)
     }
 
-    let endLinkIndex = author.index(author.startIndex, offsetBy: match.range.upperBound)
-    let subStringAfterLink = author[endLinkIndex...]
-    // After we found our link, we now need to extract the link title. It's _definitely_ after the link itself, so:
+    let parser = XMLParser(data: data)
+    let delegate = AuthorParser()
 
-    let closingTag = subStringAfterLink.index(after: subStringAfterLink.index(of: ">")!)
-    // Let's find first closing tag after the link...
+    parser.delegate = delegate
 
-    let linkTitle = String(subStringAfterLink[closingTag...])
-    // And create a substring from that place until the end....
+    guard parser.parse() else {
+        if let url = URL(string: author),
+            url.scheme != nil {
+            return (author, url)
+        } else {
+            return (author, nil)
+        }
+    }
 
-    let author = linkTitle.removingSuffix("</a>")
-    // and remove the closing tag. Voila!
-
-    return Author(name: author, link: url)
+    return (delegate.author, delegate.url)
 }
 
 private func extractHTMLText(_ text: String?) -> NSAttributedString? {
@@ -225,4 +235,21 @@ private func trimChangelog(_ changelog: String?) -> String? {
     }
 
     return String(log[log.startIndex ..< secondOccurence.lowerBound])
+}
+
+private final class AuthorParser: NSObject, XMLParserDelegate {
+    var author = ""
+    var url: URL?
+
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+        guard elementName == "a",
+            let href = attributeDict["href"] else {
+                return
+        }
+        url = URL(string: href)
+    }
+
+    func parser(_ parser: XMLParser, foundCharacters string: String) {
+        author.append(string)
+    }
 }

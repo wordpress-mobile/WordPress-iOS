@@ -33,11 +33,12 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
         case showMagicLink
         case showLinkMailView
         case show2FA
-        case showEpilogue
         case showDomains
         case showCreateSite
         case showSiteCreationEpilogue
         case showSiteCreationError
+        case showSignupEpilogue
+        case showUsernames
     }
 
     override func viewDidLoad() {

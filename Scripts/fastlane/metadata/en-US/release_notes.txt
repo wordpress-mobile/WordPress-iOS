@@ -1,2 +1,0 @@
-Improvements to the new Share Extension.
-New Jetpack setting: Speed up your site.

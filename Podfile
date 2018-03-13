@@ -8,7 +8,7 @@ workspace 'WordPress.xcworkspace'
 
 ## Pods shared between all the targets
 def shared_with_all_pods
-  pod 'CocoaLumberjack', '3.2.1'
+  pod 'CocoaLumberjack', '3.4.1'
   pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
   pod 'NSObject-SafeExpectations', '0.0.2'
   pod 'UIDeviceIdentifier', '~> 0.4'
@@ -51,10 +51,10 @@ target 'WordPress' do
   # --------------------
   # WordPress components
   # --------------------
-  pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.1'
+  pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.2'
   pod 'Gridicons', '0.14'
   pod 'NSURL+IDN', '0.3'
-  pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'a57ed6de4d5f8cec7c20712c5dae879e273ceed5'
+  pod 'WPMediaPicker', '0.27'
   pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'1b9e6398f054f8726cf40de9e9a2ace753804502'
 
   target 'WordPressTest' do

@@ -1,5 +1,7 @@
 import UIKit
 import wpxmlrpc
+import SafariServices
+
 
 extension FancyAlertViewController {
     private struct Strings {
@@ -91,7 +93,7 @@ extension FancyAlertViewController {
         }
 
         if error.code == NSURLErrorBadURL {
-            return alertForBadURLMessage(message)
+            return alertForBadURL(with: message)
         }
 
         return alertForGenericErrorMessage(message, loginFields: loginFields, sourceTag: sourceTag)
@@ -168,19 +170,19 @@ extension FancyAlertViewController {
     ///
     /// - Parameter message: The error message to show.
     ///
-    private static func alertForBadURLMessage(_ message: String) -> FancyAlertViewController {
+    private static func alertForBadURL(with message: String) -> FancyAlertViewController {
         let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
-                guard let appDelegate = UIApplication.shared.delegate,
-                    let window = appDelegate.window,
-                    let viewController = window?.topmostPresentedViewController,
+                guard let viewController = UIApplication.shared.delegate?.window??.topmostPresentedViewController,
                     let url = URL(string: "https://apps.wordpress.org/support/#faq-ios-3")
-                    else { return }
+                    else {
+                        return
+                }
 
-                let webController = WebViewControllerFactory.controller(url: url)
-                let navController = UINavigationController(rootViewController: webController)
-                viewController.present(navController, animated: true, completion: nil)
+                let safariViewController = SFSafariViewController(url: url)
+                safariViewController.modalPresentationStyle = .pageSheet
+                viewController.present(safariViewController, animated: true, completion: nil)
             }
         }
 

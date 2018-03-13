@@ -15,6 +15,9 @@ public enum WordPressSupportSourceTag {
     case wpComCreateSiteCreation
     case wpComCreateSiteDomain
     case wpComCreateSiteDetails
+    case wpComCreateSiteUsername
     case wpComSignupEmail
     case wpComSignup
+    case wpComSignupWaitingForGoogle
+    case wpComSignupMagicLink
 }

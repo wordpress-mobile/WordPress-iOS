@@ -212,29 +212,37 @@ extension NotificationBlock {
     // MARK: - Constants
     //
     fileprivate struct Constants {
-        static let subjectRangeStylesMap: [NotificationRange.Kind: [NSAttributedStringKey: Any]] = [
-            .User: Styles.subjectBoldStyle,
-            .Post: Styles.subjectItalicsStyle,
-            .Comment: Styles.subjectItalicsStyle,
-            .Blockquote: Styles.subjectQuotedStyle,
-            .Noticon: Styles.subjectNoticonStyle
-        ]
+        static var subjectRangeStylesMap: [NotificationRange.Kind: [NSAttributedStringKey: Any]] {
+            return [
+                .User: Styles.subjectBoldStyle,
+                .Post: Styles.subjectItalicsStyle,
+                .Comment: Styles.subjectItalicsStyle,
+                .Blockquote: Styles.subjectQuotedStyle,
+                .Noticon: Styles.subjectNoticonStyle
+            ]
+        }
 
-        static let headerTitleRangeStylesMap: [NotificationRange.Kind: [NSAttributedStringKey: Any]] = [
-            .User: Styles.headerTitleBoldStyle,
-            .Post: Styles.headerTitleContextStyle,
-            .Comment: Styles.headerTitleContextStyle
-        ]
+        static var headerTitleRangeStylesMap: [NotificationRange.Kind: [NSAttributedStringKey: Any]] {
+            return [
+                .User: Styles.headerTitleBoldStyle,
+                .Post: Styles.headerTitleContextStyle,
+                .Comment: Styles.headerTitleContextStyle
+            ]
+        }
 
-        static let footerStylesMap: [NotificationRange.Kind: [NSAttributedStringKey: Any]] = [
-            .Noticon: Styles.blockNoticonStyle
-        ]
+        static var footerStylesMap: [NotificationRange.Kind: [NSAttributedStringKey: Any]] {
+            return [
+                .Noticon: Styles.blockNoticonStyle
+            ]
+        }
 
-        static let richRangeStylesMap: [NotificationRange.Kind: [NSAttributedStringKey: Any]] = [
-            .Blockquote: Styles.contentBlockQuotedStyle,
-            .Noticon: Styles.blockNoticonStyle,
-            .Match: Styles.contentBlockMatchStyle
-        ]
+        static var richRangeStylesMap: [NotificationRange.Kind: [NSAttributedStringKey: Any]] {
+            return [
+                .Blockquote: Styles.contentBlockQuotedStyle,
+                .Noticon: Styles.blockNoticonStyle,
+                .Match: Styles.contentBlockMatchStyle
+            ]
+        }
 
         static let badgeRangeStylesMap: [NotificationRange.Kind: [NSAttributedStringKey: Any]] = [
             .User: Styles.badgeBoldStyle,

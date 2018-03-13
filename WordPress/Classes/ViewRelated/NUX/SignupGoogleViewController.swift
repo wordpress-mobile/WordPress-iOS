@@ -3,8 +3,19 @@ import SVProgressHUD
 
 /// View controller that handles the google signup code
 class SignupGoogleViewController: LoginViewController {
+
+    // MARK: - Properties
+
     private var hasShownGoogle = false
     @IBOutlet var titleLabel: UILabel?
+
+    override var sourceTag: WordPressSupportSourceTag {
+        get {
+            return .wpComSignupWaitingForGoogle
+        }
+    }
+
+    // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +46,19 @@ class SignupGoogleViewController: LoginViewController {
 
         WPAppAnalytics.track(.loginSocialButtonClick)
     }
+
+    // MARK: - Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        if let vc = segue.destination as? SignupEpilogueViewController {
+            vc.loginFields = loginFields
+        }
+    }
+
 }
+
+// MARK: - GIDSignInDelegate
 
 extension SignupGoogleViewController: GIDSignInDelegate {
     func sign(_ signIn: GIDSignIn?, didSignInFor user: GIDGoogleUser?, withError error: Error?) {
@@ -47,21 +70,26 @@ extension SignupGoogleViewController: GIDSignInDelegate {
                 self.navigationController?.popViewController(animated: true)
                 return
         }
-        NSLog(token)
 
         // Store the email address and token.
         loginFields.emailAddress = email
         loginFields.username = email
         loginFields.meta.socialServiceIDToken = token
+        loginFields.meta.googleUser = user
 
         SVProgressHUD.show(withStatus: NSLocalizedString("Completing Signup", comment: "Shown while the app waits for the site creation process to complete."))
 
         let context = ContextManager.sharedInstance().mainContext
         let service = SignupService(managedObjectContext: context)
-        service.createWPComeUserWithGoogle(token: token, success: { [weak self] in
+        service.createWPComUserWithGoogle(token: token, success: { [weak self] (accountCreated) in
             SVProgressHUD.dismiss()
-            self?.performSegue(withIdentifier: .showEpilogue, sender: self)
-            WPAnalytics.track(.signupSocialSuccess)
+            if accountCreated {
+                self?.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
+                WPAnalytics.track(.signupSocialSuccess)
+            } else {
+                self?.showLoginEpilogue()
+                WPAnalytics.track(.loginSocialSuccess)
+            }
         }) { [weak self] (error) in
             SVProgressHUD.dismiss()
             WPAnalytics.track(.signupSocialFailure)
@@ -69,10 +97,15 @@ extension SignupGoogleViewController: GIDSignInDelegate {
                 self?.navigationController?.popViewController(animated: true)
                 return
             }
+            self?.titleLabel?.textColor = WPStyleGuide.errorRed()
+            self?.titleLabel?.text = NSLocalizedString("Google sign up failed.",
+                                                       comment: "Message shown on screen after the Google sign up process failed.")
             self?.displayError(error as NSError, sourceTag: .wpComSignup)
         }
     }
 }
+
+// MARK: - GIDSignInUIDelegate
 
 /// This is needed to set self as uiDelegate, even though none of the methods are called
 extension SignupGoogleViewController: GIDSignInUIDelegate {
