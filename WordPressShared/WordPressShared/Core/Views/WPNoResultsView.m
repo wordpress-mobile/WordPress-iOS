@@ -68,10 +68,11 @@
 
     // Message Label
     _messageLabel               = [[UILabel alloc] init];
-    _messageLabel.font          = [WPFontManager systemRegularFontOfSize:14.0];
+    _messageLabel.font          = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
     _messageLabel.textColor     = [WPStyleGuide allTAllShadeGrey];
     _messageLabel.numberOfLines = 0;
     _messageLabel.textAlignment = NSTextAlignmentCenter;
+    _messageLabel.adjustsFontForContentSizeCategory = YES;
 
     // Button
     _button                     = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -104,7 +105,11 @@
     // Layout views
     _accessoryView.frame = CGRectMake((width - CGRectGetWidth(_accessoryView.frame)) / 2, 0, CGRectGetWidth(_accessoryView.frame), CGRectGetHeight(_accessoryView.frame));
     
-    CGSize titleSize = [_titleLabel.text boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: _titleLabel.font} context:nil].size;
+    CGSize titleSize = [_titleLabel.text boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+                                                      options:NSStringDrawingUsesLineFragmentOrigin
+                                                   attributes:@{NSFontAttributeName: _titleLabel.font}
+                                                      context:nil].size;
+
     _titleLabel.frame = CGRectMake(0.0f, (CGRectGetMaxY(_accessoryView.frame) > 0 && _accessoryView.hidden != YES ? CGRectGetMaxY(_accessoryView.frame) + 10.0 : 0) , width, titleSize.height);
     
     CGSize messageSize = [_messageLabel.text boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: _messageLabel.font} context:nil].size;
@@ -134,6 +139,19 @@
     if (self.superview) {
         [self centerInSuperview];
     }
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    [self resetFonts];
+    [self setNeedsLayout];
+}
+
+- (void)resetFonts
+{
+    [self setTitleText: self.titleLabel.text];
+    self.button.titleLabel.font = [WPStyleGuide subtitleFontBold];
 }
 
 #pragma mark - Accessory View
