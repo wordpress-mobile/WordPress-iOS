@@ -56,6 +56,17 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///     - onSuccess's *userInfo* will be relayed back via the `wordpressLoginFinishedJetpackLogin` notification, to the host app.
     ///
     func syncWPCom(username: String, authToken: String, isJetpackLogin: Bool, onSuccess: @escaping (_ userInfo: Any) -> (), onFailure: @escaping (Error) -> ())
+
+    /// Signals the Host App that a WordPress Self-Hosted Site is available, with the specified credentials.
+    ///
+    /// - Parameters:
+    ///     - username: WordPress.org account username.
+    ///     - password: WordPress.org account password.
+    ///     - xmlrpc: WordPress.org endpoint.
+    ///     - options: Self Hosted Options colleciton.
+    ///     - onCompletion: Closure to be executed upon completion.
+    ///
+    func syncWPOrg(username: String, password: String, xmlrpc: String, options: [AnyHashable: Any], onCompletion: () -> ())
 }
 
 
