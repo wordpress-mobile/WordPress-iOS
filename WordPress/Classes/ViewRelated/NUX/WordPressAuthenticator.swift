@@ -9,13 +9,34 @@ import WordPressShared
 //
 public protocol WordPressAuthenticatorDelegate: class {
 
-    /// Indicates if the Support button should be rendered, or not.
+    /// Indicates if the Support button action should be enabled, or not.
     ///
     var supportActionEnabled: Bool { get }
 
-    /// Returns a Support UIViewController instance, to be displayed from a given source.
+    /// Indicates if the Livechat Action should be enabled, or not.
     ///
-    func supportViewController(from source: WordPressSupportSourceTag) -> UIViewController
+    var livechatActionEnabled: Bool { get }
+
+    /// Returns the Support's Badge Count.
+    ///
+    var supportBadgeCount: Int { get }
+
+    /// Refreshes Support's Badge Count.
+    ///
+    func refreshSupportBadgeCount()
+
+    /// Presents the Login Epilogue, in the specified NavigationController.
+    ///
+    func presentLoginEpilogue(in navigationController: UINavigationController, epilogueInfo: LoginEpilogueUserInfo?, isJetpackLogin: Bool, onDismiss: @escaping () -> Void)
+
+    /// Presents the Support Interface from a given ViewController, with a specified SourceTag.
+    ///
+    func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
+
+    /// Presents the Livechat Interface, from a given ViewController, with a specified SourceTag, and additional metadata,
+    /// such as all of the User's Login details.
+    ///
+    func presentLivechat(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
 }
 
 
@@ -48,6 +69,12 @@ public protocol WordPressAuthenticatorDelegate: class {
         static let emailMagicLinkSource = "emailMagicLinkSource"
     }
 
+
+    // MARK: - Public Methods
+
+    func supportBadgeCountWasUpdated() {
+        NotificationCenter.default.post(name: .wordpressSupportBadgeUpdated, object: nil)
+    }
 
     // MARK: - Helpers for presenting the login flow
 
@@ -589,4 +616,5 @@ extension NSNotification.Name {
     static let wordpressLoginCancelled = Foundation.Notification.Name(rawValue: "WordPressLoginCancelled")
     static let wordpressLoginFinishedJetpackLogin = Foundation.Notification.Name(rawValue: "WordPressLoginFinishedJetpackLogin")
     static let wordpressAuthenticationFlowEvent = NSNotification.Name(rawValue: "WordPressAuthenticationFlowEvent")
+    static let wordpressSupportBadgeUpdated = NSNotification.Name(rawValue: "WordPressSupportBadgeUpdated")
 }
