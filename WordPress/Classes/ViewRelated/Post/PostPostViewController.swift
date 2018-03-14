@@ -46,6 +46,12 @@ class PostPostViewController: UIViewController {
         return .lightContent
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        WPAnalytics.track(.postEpilogueDisplayed)
+    }
+
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -70,11 +76,6 @@ class PostPostViewController: UIViewController {
             view.alpha = WPAlphaFull
             animatePostPost()
         }
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        WPAnalytics.track(.postEpilogueDisplayed)
     }
 
     @objc func animatePostPost() {
