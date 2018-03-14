@@ -1,6 +1,13 @@
 import Foundation
 
 extension AbstractPost: SearchableItemConvertable {
+    var isSearchable: Bool {
+        guard status != .trash else {
+            return false
+        }
+        return true
+    }
+
     var searchIdentifier: String? {
         guard let postID = postID, postID.intValue > 0 else {
             return nil

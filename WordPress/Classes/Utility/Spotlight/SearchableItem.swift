@@ -5,6 +5,10 @@ import MobileCoreServices
 
 @objc protocol SearchableItemConvertable {
 
+    /// Identifies if this item should be indexed
+    ///
+    var isSearchable: Bool {get}
+
     /// The value that uniquely identifies the searchable item
     ///
     var searchIdentifier: String? {get}
@@ -43,7 +47,8 @@ extension SearchableItemConvertable {
     }
 
     internal func indexableItem() -> CSSearchableItem? {
-        guard let uniqueIdentifier = uniqueIdentifier,
+        guard isSearchable == true,
+            let uniqueIdentifier = uniqueIdentifier,
             let searchTitle = searchTitle,
             let searchDescription = searchDescription else {
             return nil
