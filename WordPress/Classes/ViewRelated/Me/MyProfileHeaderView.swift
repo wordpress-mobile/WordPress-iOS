@@ -71,12 +71,12 @@ class MyProfileHeaderView: WPTableViewCell {
         }
     }
 
-    func configureActivityIndicator() {
+    private func configureActivityIndicator() {
         activityIndicator.hidesWhenStopped = true
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    func configureGravatarImageView() {
+    private func configureGravatarImageView() {
         gravatarImageView.shouldRoundCorners = true
         gravatarImageView.addSubview(activityIndicator)
         gravatarImageView.pinSubviewAtCenter(activityIndicator)
@@ -86,7 +86,7 @@ class MyProfileHeaderView: WPTableViewCell {
         gravatarImageView.addGestureRecognizer(recognizer)
     }
 
-    func configureGravatarButton() {
+    private func configureGravatarButton() {
         gravatarButton.tintColor = WPStyleGuide.wordPressBlue()
     }
 }
