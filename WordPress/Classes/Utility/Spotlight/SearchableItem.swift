@@ -71,9 +71,3 @@ extension SearchableItemConvertable {
                                 attributeSet: searchableItemAttributeSet)
     }
 }
-
-// MARK: - SearchableItemRetrievable
-
-protocol SearchableItemRetrievable: SearchableItemConvertable {
-    func retrieveItem(with identifier: String) throws -> Self?
-}
