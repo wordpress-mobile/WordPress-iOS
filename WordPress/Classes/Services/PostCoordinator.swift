@@ -44,9 +44,9 @@ class PostCoordinator: NSObject {
         let postService = PostService(managedObjectContext: mainContext)
         postService.uploadPost(post, success: { uploadedPost in
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
-        }) { error in
+        }, failure: { error in
             print("Post Coordinator -> upload error: \(String(describing: error))")
-        }
+        })
     }
 
     private func updateReferences(to media: Media, in post: AbstractPost) {
