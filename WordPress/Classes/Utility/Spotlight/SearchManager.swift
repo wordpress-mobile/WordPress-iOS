@@ -197,9 +197,11 @@ fileprivate extension SearchManager {
 
     func switchToListViewAndOpenEditor(_ apost: AbstractPost) {
         if let post = apost as? Post {
+            WPAppAnalytics.track(.spotlightSearchOpenedPost, with: post)
             WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
             openEditorForPost(post)
         } else if let page = apost as? Page {
+            WPAppAnalytics.track(.spotlightSearchOpenedPost, with: page)
             WPTabBarController.sharedInstance().switchTabToPagesList(for: page)
             openEditorForPage(page)
         }
