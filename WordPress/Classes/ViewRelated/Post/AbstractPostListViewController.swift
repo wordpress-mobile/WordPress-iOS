@@ -690,8 +690,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
                 }
 
                 if posts.count > 0 {
-                    SearchManager.shared.indexItems(posts)
                     strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
+                    SearchManager.shared.indexItems(posts)
                 }
 
                 success?(filter.hasMore)
