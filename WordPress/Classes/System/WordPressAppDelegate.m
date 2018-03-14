@@ -22,6 +22,8 @@
 
 // Logging
 #import "WPLogger.h"
+#import <AutomatticTracks/TracksLogging.h>
+#import <WordPressComStatsiOS/WPStatsLogging.h>
 
 // Misc managers, helpers, utilities
 #import "ContextManager.h"
@@ -610,6 +612,11 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 + (void)setLogLevel:(DDLogLevel)logLevel
 {
     ddLogLevel = logLevel;
+
+    int logLevelInt = (int)logLevel;
+    WPSharedSetLoggingLevel(logLevelInt);
+    TracksSetLoggingLevel(logLevelInt);
+    WPStatsSetLoggingLevel(logLevelInt);
 }
 
 @end
