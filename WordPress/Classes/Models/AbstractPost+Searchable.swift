@@ -26,18 +26,14 @@ extension AbstractPost: SearchableItemConvertable {
     }
 
     var searchDescription: String? {
-        guard let postPreview = contentPreviewForDisplay() else {
-            return String()
+        guard let postPreview = contentPreviewForDisplay(), !postPreview.isEmpty else {
+            return contentForDisplay()
         }
         return postPreview
     }
 
     var searchKeywords: [String]? {
         return generateKeywords()
-    }
-
-    var searchLocalImageURL: URL? {
-        return featuredImageURLForDisplay()
     }
 
     // MARK: - Helper Functions
