@@ -10,4 +10,5 @@
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
 
 - (void)refreshAndSyncIfNeeded;
+
 @end
