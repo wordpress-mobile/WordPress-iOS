@@ -32,7 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)syncBlogWithUsername:(NSString *)username
                     password:(NSString *)password
-                      xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
+                      xmlrpc:(NSString *)xmlrpc
+                     options:(NSDictionary *)options
                 finishedSync:(void(^)(Blog * _Nonnull))finishedSync;
 
 @end
