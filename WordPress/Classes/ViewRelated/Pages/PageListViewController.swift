@@ -23,6 +23,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     fileprivate let animatedBox = WPAnimatedBox()
 
+    @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
 
     // MARK: - Convenience constructors
 
@@ -533,10 +535,21 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Refreshing noResultsView
 
     @objc func handleRefreshNoResultsView(_ noResultsView: WPNoResultsView) {
+        guard connectionAvailable() else {
+            showNoConnectionView()
+            return
+        }
+
         noResultsView.titleText = noResultsTitle()
         noResultsView.messageText = noResultsMessage()
         noResultsView.accessoryView = noResultsAccessoryView()
         noResultsView.buttonTitle = noResultsButtonTitle()
+    }
+
+    private func showNoConnectionView() {
+        noResultsView.titleText = noConnectionMessage()
+        noResultsView.messageText = ""
+        noResultsView.accessoryView = nil
     }
 
     // MARK: - NoResultsView Customizer helpers
@@ -597,10 +610,31 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - UISearchControllerDelegate
 
+    override func willPresentSearchController(_ searchController: UISearchController) {
+        super.willPresentSearchController(searchController)
+
+        self.filterTabBar.alpha = WPAlphaZero
+        filterTabBarBottomConstraint.isActive = false
+        tableViewTopConstraint.isActive = true
+    }
+
     func didPresentSearchController(_ searchController: UISearchController) {
         if #available(iOS 11.0, *) {
             tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y - topLayoutGuide.length
             tableView.contentInset.top = 0
         }
+    }
+
+    func didDismissSearchController(_ searchController: UISearchController) {
+        tableViewTopConstraint.isActive = false
+        filterTabBarBottomConstraint.isActive = true
+
+        UIView.animate(withDuration: Animations.searchDismissDuration) {
+            self.filterTabBar.alpha = WPAlphaFull
+        }
+    }
+
+    enum Animations {
+        static let searchDismissDuration: TimeInterval = 0.3
     }
 }
