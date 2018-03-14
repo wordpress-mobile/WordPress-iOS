@@ -27,7 +27,7 @@ extension AbstractPost: SearchableItemConvertable {
 
     var searchDescription: String? {
         guard let postPreview = contentPreviewForDisplay(), !postPreview.isEmpty else {
-            return contentForDisplay()
+            return blog.displayURL as String? ?? contentForDisplay()
         }
         return postPreview
     }
