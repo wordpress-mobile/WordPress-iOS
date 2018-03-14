@@ -2,6 +2,7 @@
 #import "MenusSelectionView.h"
 #import "Menu+ViewDesign.h"
 #import <WordPressShared/WPStyleGuide.h>
+#import "WordPress-Swift.h"
 
 @import Gridicons;
 
@@ -63,9 +64,9 @@
     [self addSubview:stackView];
     [NSLayoutConstraint activateConstraints:@[
                                               [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-                                              [stackView.topAnchor constraintEqualToAnchor:self.topAnchor],
+                                              [stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:12],
                                               [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-                                              [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
+                                              [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-12]
                                               ]];
     _stackView = stackView;
 }
@@ -74,7 +75,8 @@
 {
     UILabel *label = [[UILabel alloc] init];
     label.backgroundColor = [UIColor clearColor];
-    label.font = [[WPStyleGuide regularTextFont] fontWithSize:14];
+    label.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleSubheadline];
+    label.adjustsFontForContentSizeCategory = YES;
     label.textColor = [WPStyleGuide darkGrey];
     [self addSubview:label];
     _label = label;
