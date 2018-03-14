@@ -526,6 +526,26 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 }
 
+- (void)switchTabToPagesListForPost:(AbstractPost *)post
+{
+    UIViewController *topVC = [self.blogListSplitViewController topDetailViewController];
+    if ([topVC isKindOfClass:[PostListViewController class]]) {
+        Blog *blog = ((PostListViewController *)topVC).blog;
+        if ([post.blog.objectID isEqual:blog.objectID]) {
+            // The desired post view controller is already the top viewController for the tab.
+            // Nothing to see here.  Move along.
+            return;
+        }
+    }
+
+    [self switchMySitesTabToBlogDetailsForBlog:post.blog];
+
+    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
+    if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
+        [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionPages];
+    }
+}
+
 - (void)switchMySitesTabToAddNewSite
 {
     [self showTabForIndex:WPTabMySites];

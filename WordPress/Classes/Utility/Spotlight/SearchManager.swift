@@ -155,7 +155,7 @@ import MobileCoreServices
 fileprivate extension SearchManager {
     static func fetchPost(_ postID: NSNumber,
                                   blogID: NSNumber,
-                                  onSuccess: @escaping (_ post: Post) -> Void,
+                                  onSuccess: @escaping (_ post: AbstractPost) -> Void,
                                   onFailure: @escaping () -> Void) {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
@@ -166,11 +166,7 @@ fileprivate extension SearchManager {
 
         let postService = PostService(managedObjectContext: context)
         postService.getPostWithID(postID, for: blog, success: { apost in
-            guard let post = apost as? Post else {
-                onFailure()
-                return
-            }
-            onSuccess(post)
+            onSuccess(apost)
         }, failure: { error in
             onFailure()
         })
@@ -178,7 +174,7 @@ fileprivate extension SearchManager {
 
     static func fetchSelfHostedPost(_ postID: NSNumber,
                                             blogXMLRpcString: String,
-                                            onSuccess: @escaping (_ post: Post) -> Void,
+                                            onSuccess: @escaping (_ post: AbstractPost) -> Void,
                                             onFailure: @escaping () -> Void) {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
@@ -190,20 +186,21 @@ fileprivate extension SearchManager {
 
         let postService = PostService(managedObjectContext: context)
         postService.getPostWithID(postID, for: blog, success: { apost in
-            guard let post = apost as? Post else {
-                onFailure()
-                return
-            }
-            onSuccess(post)
+            onSuccess(apost)
         }, failure: { error in
             onFailure()
         })
     }
 
-    static func switchToPostListAndOpenEditorForPost(_ post: Post) {
-        WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
-        let editor = EditPostViewController.init(post: post)
-        editor.modalPresentationStyle = .fullScreen
-        WPTabBarController.sharedInstance().present(editor, animated: false, completion: nil)
+    static func switchToPostListAndOpenEditorForPost(_ apost: AbstractPost) {
+
+        if let post = apost as? Post {
+            WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
+            let editor = EditPostViewController.init(post: post)
+            editor.modalPresentationStyle = .fullScreen
+            WPTabBarController.sharedInstance().present(editor, animated: false, completion: nil)
+        } else if let page = apost as? Page {
+            WPTabBarController.sharedInstance().switchTabToPagesList(for: page)
+        }
     }
 }
