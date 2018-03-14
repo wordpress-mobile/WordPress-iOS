@@ -27,9 +27,9 @@ import MobileCoreServices
     ///
     @objc optional var searchKeywords: [String]? {get}
 
-    /// Optional item thumbnail to be displayed in spotlight search
+    /// *Local* URL to image that should be displayed in spotlight search
     ///
-    @objc optional var searchImage: UIImage? {get}
+    @objc optional var searchLocalImageURL: URL? {get}
 }
 
 extension SearchableItemConvertable {
@@ -57,8 +57,8 @@ extension SearchableItemConvertable {
             searchableItemAttributeSet.keywords = keywords
         }
 
-        if let img = searchImage {
-            searchableItemAttributeSet.thumbnailData = UIImageJPEGRepresentation(img!, 0.1)
+        if let imgURL = searchLocalImageURL {
+            searchableItemAttributeSet.thumbnailURL = imgURL
         }
 
         return CSSearchableItem(uniqueIdentifier: uniqueIdentifier,

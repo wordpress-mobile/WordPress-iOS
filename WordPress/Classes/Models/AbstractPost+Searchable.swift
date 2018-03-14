@@ -28,14 +28,17 @@ extension Post: SearchableItemConvertable {
     var searchDescription: String? {
         let postPreview = contentPreviewForDisplay()
         guard !postPreview.isEmpty else {
-            return nil
+            return String()
         }
-
         return postPreview
     }
 
     var searchKeywords: [String]? {
         return generateKeywords()
+    }
+
+    var searchLocalImageURL: URL? {
+        return featuredImageURLForDisplay()
     }
 
     // MARK: - Helper Functions
