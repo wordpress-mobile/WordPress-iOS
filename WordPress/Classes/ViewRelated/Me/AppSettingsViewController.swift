@@ -105,7 +105,7 @@ class AppSettingsViewController: UITableViewController {
 
         let otherHeader = NSLocalizedString("Other", comment: "Link to About section (contains info about the app)")
         let spotlightClearCacheRow = DestructiveButtonRow(
-            title: NSLocalizedString("Clear Spotlight Cache", comment: "Label for button that clears the spotlight cache on device."),
+            title: NSLocalizedString("Clear Spotlight Index", comment: "Label for button that clears the spotlight index on device."),
             action: clearSpotlightCache(),
             accessibilityIdentifier: "spotlightClearCacheButton")
 
