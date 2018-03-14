@@ -120,7 +120,7 @@ import MobileCoreServices
     /// - Returns: true if it was handled correctly and activitytype was `CSSearchableItemActionType`, otherwise false
     ///
     @discardableResult
-    @objc static func handle(activity: NSUserActivity?) -> Bool {
+    @objc func handle(activity: NSUserActivity?) -> Bool {
         guard activity?.activityType == CSSearchableItemActionType,
             let compositeIdentifier = activity?.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
                 return false
@@ -134,14 +134,14 @@ import MobileCoreServices
         }
 
         if let siteID = siteID {
-            fetchPost(postID, blogID: siteID, onSuccess: { post in
-                switchToPostListAndOpenEditorForPost(post)
+            fetchPost(postID, blogID: siteID, onSuccess: { [weak self] post in
+                self?.switchToListViewAndOpenEditor(post)
             }, onFailure: {
                 DDLogError("Search manager unable to open post - postID:\(postID) siteID:\(siteID)")
             })
         } else {
-            fetchSelfHostedPost(postID, blogXMLRpcString: domainString, onSuccess: { post in
-                switchToPostListAndOpenEditorForPost(post)
+            fetchSelfHostedPost(postID, blogXMLRpcString: domainString, onSuccess: { [weak self] post in
+                self?.switchToListViewAndOpenEditor(post)
             }, onFailure: {
                 DDLogError("Search manager unable to open self hosted post - postID:\(postID) xmlrpc:\(domainString)")
             })
@@ -153,7 +153,7 @@ import MobileCoreServices
 // MARK: - Private Helpers
 
 fileprivate extension SearchManager {
-    static func fetchPost(_ postID: NSNumber,
+    func fetchPost(_ postID: NSNumber,
                                   blogID: NSNumber,
                                   onSuccess: @escaping (_ post: AbstractPost) -> Void,
                                   onFailure: @escaping () -> Void) {
@@ -172,7 +172,7 @@ fileprivate extension SearchManager {
         })
     }
 
-    static func fetchSelfHostedPost(_ postID: NSNumber,
+    func fetchSelfHostedPost(_ postID: NSNumber,
                                             blogXMLRpcString: String,
                                             onSuccess: @escaping (_ post: AbstractPost) -> Void,
                                             onFailure: @escaping () -> Void) {
@@ -192,15 +192,33 @@ fileprivate extension SearchManager {
         })
     }
 
-    static func switchToPostListAndOpenEditorForPost(_ apost: AbstractPost) {
-
+    func switchToListViewAndOpenEditor(_ apost: AbstractPost) {
         if let post = apost as? Post {
             WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
-            let editor = EditPostViewController.init(post: post)
-            editor.modalPresentationStyle = .fullScreen
-            WPTabBarController.sharedInstance().present(editor, animated: false, completion: nil)
+            openEditorForPost(post)
         } else if let page = apost as? Page {
             WPTabBarController.sharedInstance().switchTabToPagesList(for: page)
+            openEditorForPage(page)
         }
+    }
+
+    func openEditorForPost(_ post: Post) {
+        let editor = EditPostViewController.init(post: post)
+        editor.modalPresentationStyle = .fullScreen
+        WPTabBarController.sharedInstance().present(editor, animated: true, completion: nil)
+    }
+
+    func openEditorForPage(_ page: Page) {
+        let editorSettings = EditorSettings()
+        let postViewController = editorSettings.instantiatePageEditor(page: page) { (editor, vc) in
+            editor.onClose = { changesSaved in
+                vc.dismiss(animated: true, completion: nil)
+            }
+        }
+        let navController = UINavigationController(rootViewController: postViewController)
+
+        navController.restorationIdentifier = Restorer.Identifier.navigationController.rawValue
+        navController.modalPresentationStyle = .fullScreen
+        WPTabBarController.sharedInstance().present(navController, animated: true, completion: nil)
     }
 }
