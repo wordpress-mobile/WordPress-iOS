@@ -133,6 +133,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         tableView.reloadData()
+
+        observeNetworkStatus()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -284,8 +286,13 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             return
         }
 
+        let _ = DispatchDelayedAction(delay: .milliseconds(500)) { [weak self] in
+            self?.refreshControl?.endRefreshing()
+        }
+
         if tableViewHandler.resultsController.fetchedObjects?.count > 0 {
             hideNoResultsView()
+            presentNoNetworkAlert()
         } else {
             showNoResultsView()
         }
@@ -571,6 +578,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         if appDelegate?.connectionAvailable == false {
             refreshResults()
+            presentNoNetworkAlert()
             return
         }
 
@@ -580,6 +588,14 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         } else {
             // Update in the background
             syncItemsWithUserInteraction(false)
+        }
+    }
+
+    func presentNoNetworkAlert() {
+        if shouldPresentAlert() {
+            let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+            let message = NSLocalizedString("The Internet connection appears to be offline.", comment: "Message of error prompt shown when a sync the user initiated fails.")
+            WPError.showAlert(withTitle: title, message: message)
         }
     }
 
@@ -1065,5 +1081,17 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     func updateSearchResults(for searchController: UISearchController) {
         resetTableViewContentOffset()
         searchHelper.searchUpdated(searchController.searchBar.text)
+    }
+}
+
+extension AbstractPostListViewController: NetworkAwareUI {
+    func contentIsEmpty() -> Bool {
+        return tableViewHandler.resultsController.isEmpty()
+    }
+}
+
+extension AbstractPostListViewController: NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        automaticallySyncIfAppropriate()
     }
 }
