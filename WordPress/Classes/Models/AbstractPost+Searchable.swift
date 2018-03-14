@@ -1,6 +1,10 @@
 import Foundation
 
 extension AbstractPost: SearchableItemConvertable {
+    var searchItemType: SearchItemType {
+        return .abstractPost
+    }
+
     var isSearchable: Bool {
         guard status != .trash else {
             return false

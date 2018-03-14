@@ -1,9 +1,40 @@
 import CoreSpotlight
 import MobileCoreServices
 
+@objc enum SearchItemType: Int {
+    case abstractPost
+    case readerPost
+    case none
+
+    init(index: String) {
+        switch index.lowercased().trim() {
+        case "abstractpost":
+            self = .abstractPost
+        case "readerpost":
+            self = .readerPost
+        default:
+            self = .none
+        }
+    }
+
+    func stringValue() -> String {
+        switch self {
+        case .abstractPost:
+            return "abstractPost"
+        case .readerPost:
+            return "readerPost"
+        case .none:
+            return "none"
+        }
+    }
+}
+
 // MARK: - SearchableItemConvertable
 
 @objc protocol SearchableItemConvertable {
+    /// Identifies the item type this is
+    ///
+    var searchItemType: SearchItemType {get}
 
     /// Identifies if this item should be indexed
     ///
@@ -37,13 +68,11 @@ import MobileCoreServices
 }
 
 extension SearchableItemConvertable {
-    var thumbnailImage: UIImage? { return nil }
-
     internal var uniqueIdentifier: String? {
         guard let searchDomain = searchDomain, let searchIdentifier = searchIdentifier else {
             return nil
         }
-        return SearchIdentifierGenerator.composeUniqueIdentifier(domain: searchDomain, identifier: searchIdentifier)
+        return SearchIdentifierGenerator.composeUniqueIdentifier(itemType: searchItemType, domain: searchDomain, identifier: searchIdentifier)
     }
 
     internal func indexableItem() -> CSSearchableItem? {
