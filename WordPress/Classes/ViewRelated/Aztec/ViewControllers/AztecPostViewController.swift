@@ -387,6 +387,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         return progressView
     }()
 
+    fileprivate var mediaObserverReceipt: UUID?
 
     /// Selected Text Attachment
     ///
@@ -478,7 +479,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     deinit {
         NotificationCenter.default.removeObserver(self)
         removeObservers(fromPost: post)
-
+        unregisterMediaObserver()
         cancelAllPendingMediaRequests()
     }
 
@@ -502,8 +503,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         configureView()
         configureSubviews()
 
-        // Register HTML Processors for WordPress shortcodes
-
         // UI elements might get their properties reset when the view is effectively loaded. Refresh it all!
         refreshInterface()
 
@@ -513,6 +512,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         if isOpenedDirectlyForPhotoPost {
             presentMediaPickerFullScreen(animated: false)
         }
+
+        registerMediaObserver()
     }
 
 
@@ -2666,6 +2667,47 @@ private extension AztecPostViewController {
 //
 extension AztecPostViewController {
 
+    func registerMediaObserver() {
+        mediaObserverReceipt =  mediaCoordinator.addObserver({ [weak self](media, state) in
+            self?.mediaObserver(media: media, state: state)
+            }, forMediaFor: post)
+    }
+
+    func unregisterMediaObserver() {
+        if let receipt = mediaObserverReceipt {
+            mediaCoordinator.removeObserver(withUUID: receipt)
+        }
+    }
+
+    func mediaObserver(media: Media, state: MediaCoordinator.MediaState) {
+        refreshGlobalProgress()
+        guard let attachment = findAttachment(withUploadID: media.uploadID) else {
+            return
+        }
+        switch state {
+        case .processing:
+            DDLogInfo("Creating media")
+        case .thumbnailReady(let url):
+            handleThumbnailURL(url, attachment: attachment)
+        case .uploading:
+            break
+        case .ended:
+            handleUploaded(media: media, mediaUploadID: media.uploadID)
+        case .failed(let error):
+            handleError(error, onAttachment: attachment)
+        case .progress(let value):
+            guard media.remoteStatus == .processing || media.remoteStatus == .pushing else {
+                return
+            }
+            if value >= 1 {
+                attachment.progress = nil
+            } else {
+                attachment.progress = value
+            }
+            richTextView.refresh(attachment, overlayUpdateOnly: true)
+        }
+    }
+
     func configureMediaAppearance() {
         MediaAttachment.defaultAppearance.progressBackgroundColor = Colors.mediaProgressBarBackground
         MediaAttachment.defaultAppearance.progressColor = Colors.mediaProgressBarTrack
@@ -2691,38 +2733,9 @@ extension AztecPostViewController {
         refreshNavigationBar()
     }
 
-
     fileprivate func observe(media: Media) {
         let _ = mediaCoordinator.addObserver({ [weak self](media, state) in
-            guard let strongSelf = self else {
-                return
-            }
-            strongSelf.refreshGlobalProgress()
-            guard let attachment = strongSelf.findAttachment(withUploadID: media.uploadID) else {
-                return
-            }
-            switch state {
-            case .processing:
-                DDLogInfo("Creating media")
-            case .thumbnailReady(let url):
-                strongSelf.handleThumbnailURL(url, attachment: attachment)
-            case .uploading:
-                break
-            case .ended:
-                strongSelf.handleUploaded(media: media, mediaUploadID: media.uploadID)
-            case .failed(let error):
-                strongSelf.handleError(error, onAttachment: attachment)
-            case .progress(let value):
-                guard media.remoteStatus == .processing || media.remoteStatus == .pushing else {
-                    return
-                }
-                if value >= 1 {
-                    attachment.progress = nil
-                } else {
-                    attachment.progress = value
-                }
-                strongSelf.richTextView.refresh(attachment, overlayUpdateOnly: true)
-            }
+                self?.mediaObserver(media: media, state: state)
             }, for: media)
     }
 
