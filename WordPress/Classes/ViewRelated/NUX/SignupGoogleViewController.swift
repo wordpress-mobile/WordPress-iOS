@@ -20,6 +20,7 @@ class SignupGoogleViewController: LoginViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         titleLabel?.text = NSLocalizedString("Waiting for Google to complete…", comment: "Message shown on screen while waiting for Google to finish its signup process.")
+        WordPressAuthenticator.post(event: .createAccountInitiated)
     }
 
     override func viewDidAppear(_ animated: Bool) {
