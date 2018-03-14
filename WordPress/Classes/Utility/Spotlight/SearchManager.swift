@@ -126,20 +126,23 @@ import MobileCoreServices
                 return false
         }
 
-        let (domainString, identifier) = SearchIdentifierGenerator.decomposeFromUniqueIdentifier(compositeIdentifier)
+        let (itemType, domainString, identifier) = SearchIdentifierGenerator.decomposeFromUniqueIdentifier(compositeIdentifier)
         let siteID = NumberFormatter().number(from: domainString)
-        guard let postID = NumberFormatter().number(from: identifier) else {
+        guard itemType == .abstractPost, let postID = NumberFormatter().number(from: identifier) else {
+            // We are only handling posts for now.
             DDLogError("Search manager unable to open post - postID:\(identifier) siteID:\(domainString)")
-                return false
+            return false
         }
 
         if let siteID = siteID {
+            // dotCom site — siteID is a valid NSNumber
             fetchPost(postID, blogID: siteID, onSuccess: { [weak self] post in
                 self?.switchToListViewAndOpenEditor(post)
             }, onFailure: {
                 DDLogError("Search manager unable to open post - postID:\(postID) siteID:\(siteID)")
             })
         } else {
+            // .Org site — siteID is nil which means the domainString wasn't a dotComID but instead a xmlRpc string
             fetchSelfHostedPost(postID, blogXMLRpcString: domainString, onSuccess: { [weak self] post in
                 self?.switchToListViewAndOpenEditor(post)
             }, onFailure: {
