@@ -921,6 +921,9 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         recentlyTrashedPostObjectIDs.append(postObjectID)
 
+        // Remove the trashed post from spotlight
+        SearchManager.shared.deleteSearchableItem(apost)
+
         // Update the fetch request *before* making the service call.
         updateAndPerformFetchRequest()
 
@@ -994,6 +997,9 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
                 }
 
                 strongSelf.promptThatPostRestoredToFilter(filter)
+
+                // Reindex the restored post in spotlight
+                SearchManager.shared.indexItem(apost)
             }
         }) { [weak self] (error) in
 
