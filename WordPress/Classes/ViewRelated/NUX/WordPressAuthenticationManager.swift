@@ -118,4 +118,15 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             onFailure(error)
         })
     }
+
+    /// Synchronizes a WordPress.org account with the specified credentials.
+    ///
+    func syncWPOrg(username: String, password: String, xmlrpc: String, options: [AnyHashable: Any], onCompletion: @escaping () -> ()) {
+        let service = BlogSyncFacade()
+
+        service.syncBlog(withUsername: username, password: password, xmlrpc: xmlrpc, options: options) { blog in
+            RecentSitesService().touch(blog: blog)
+            onCompletion()
+        }
+    }
 }
