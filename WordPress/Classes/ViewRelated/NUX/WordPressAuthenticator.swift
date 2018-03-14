@@ -66,7 +66,7 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///     - options: Self Hosted Options colleciton.
     ///     - onCompletion: Closure to be executed upon completion.
     ///
-    func syncWPOrg(username: String, password: String, xmlrpc: String, options: [AnyHashable: Any], onCompletion: () -> ())
+    func syncWPOrg(username: String, password: String, xmlrpc: String, options: [AnyHashable: Any], onCompletion: @escaping () -> ())
 }
 
 
