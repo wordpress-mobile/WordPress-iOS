@@ -353,15 +353,18 @@ extension LoginSelfHostedViewController {
     func finishedLogin(withUsername username: String, password: String, xmlrpc: String, options: [AnyHashable: Any]) {
         displayLoginMessage("")
 
-        BlogSyncFacade().syncBlog(withUsername: username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] blog in
+        guard let delegate = WordPressAuthenticator.shared.delegate else {
+            fatalError()
+        }
 
-            RecentSitesService().touch(blog: blog)
+        delegate.syncWPOrg(username: username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] in
+
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
 
             self?.blog = blog
-            self?.fetchUserProfileInfo(blog: blog, completion: {
+            self?.fetchUserProfileInfo(username: username, password: password, xmlrpc: xmlrpc) {
                 self?.showLoginEpilogue()
-            })
+            }
         }
     }
 
