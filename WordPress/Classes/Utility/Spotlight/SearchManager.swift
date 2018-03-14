@@ -18,8 +18,8 @@ import MobileCoreServices
     /// - Parameters:
     ///   - item: the item to be indexed
     ///
-    func index(_ item: SearchableItemConvertable) {
-        index([item])
+    func indexItem(_ item: SearchableItemConvertable) {
+        indexItems([item])
     }
 
     /// Index items to the on-device index
@@ -27,7 +27,7 @@ import MobileCoreServices
     /// - Parameters:
     ///   - items: the items to be indexed
     ///
-    func index(_ items: [SearchableItemConvertable]) {
+    func indexItems(_ items: [SearchableItemConvertable]) {
         let items = items.map({ $0.indexableItem() }).flatMap({ $0 })
         guard !items.isEmpty else {
             return
