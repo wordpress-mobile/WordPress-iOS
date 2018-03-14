@@ -387,7 +387,7 @@ class MediaCoordinator: NSObject {
     ///                   with this post via its media relationship.
     /// - returns: A UUID that can be used to unregister the observer block at a later time.
     ///
-    func addObserver(_ onUpdate: @escaping ObserverBlock, forMediaFor post: AbstractPost) -> UUID {
+    @discardableResult func addObserver(_ onUpdate: @escaping ObserverBlock, forMediaFor post: AbstractPost) -> UUID {
         let uuid = UUID()
 
         let observer = MediaObserver(post: post, onUpdate: onUpdate)

@@ -10,6 +10,11 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
         return facade
     }()
 
+    var isJetpackLogin: Bool {
+        return loginFields.meta.jetpackLogin
+    }
+
+
     // MARK: Lifecycle Methods
 
     override func viewDidLoad() {
@@ -54,7 +59,7 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     }
 
     fileprivate func shouldShowEpilogue() -> Bool {
-        if !isJetpackLogin() {
+        if !isJetpackLogin {
             return true
         }
         let context = ContextManager.sharedInstance().mainContext
@@ -69,6 +74,16 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
         return accountService.isDefaultWordPressComAccount(account)
     }
 
+    func showLoginEpilogue() {
+        guard let delegate = WordPressAuthenticator.shared.delegate, let navigationController = navigationController else {
+            fatalError()
+        }
+
+        delegate.presentLoginEpilogue(in: navigationController, epilogueInfo: nil, isJetpackLogin: isJetpackLogin) {
+            self.dismissBlock?(false)
+        }
+    }
+
     func dismiss() {
         if shouldShowEpilogue() {
 
@@ -76,7 +91,7 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
                 linkSource == .signup {
                     performSegue(withIdentifier: .showSignupEpilogue, sender: self)
             } else {
-                performSegue(withIdentifier: .showEpilogue, sender: self)
+                showLoginEpilogue()
             }
 
             return
@@ -109,19 +124,14 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     /// Manages data transfer when seguing to a new VC
     ///
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let source = segue.source as? LoginViewController else {
+        guard let source = segue.source as? LoginViewController, let destination = segue.destination as? LoginViewController else {
             return
         }
 
-        if let destination = segue.destination as? LoginEpilogueViewController {
-            destination.dismissBlock = source.dismissBlock
-            destination.jetpackLogin = source.loginFields.meta.jetpackLogin
-        } else if let destination = segue.destination as? LoginViewController {
-            destination.loginFields = source.loginFields
-            destination.restrictToWPCom = source.restrictToWPCom
-            destination.dismissBlock = source.dismissBlock
-            destination.errorToPresent = source.errorToPresent
-        }
+        destination.loginFields = source.loginFields
+        destination.restrictToWPCom = source.restrictToWPCom
+        destination.dismissBlock = source.dismissBlock
+        destination.errorToPresent = source.errorToPresent
     }
 
     // MARK: SigninWPComSyncHandler methods
@@ -148,10 +158,6 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
             // If/when we add support for manually connecting/disconnecting services
             // we can revisit.
         })
-    }
-
-    func isJetpackLogin() -> Bool {
-        return loginFields.meta.jetpackLogin
     }
 
     func configureStatusLabel(_ message: String) {
