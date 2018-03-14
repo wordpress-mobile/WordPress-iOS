@@ -8,6 +8,7 @@ enum FeatureFlag: Int {
     case activity
     case siteCreation
     case usernameChanging
+    case asyncPosting
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -24,7 +25,11 @@ enum FeatureFlag: Int {
             return true
         case .usernameChanging:
             return BuildConfiguration.current == .localDeveloper
+        case .asyncPosting:
+            return BuildConfiguration.current == .localDeveloper
         }
+
+
     }
 }
 

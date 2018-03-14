@@ -18,6 +18,7 @@
 
 #import "Comment.h"
 #import "CommentService.h"
+#import "CommentsViewController+Network.h"
 #import "ConfigurablePostView.h"
 #import "Confirmable.h"
 #import "Constants.h"
