@@ -6,6 +6,7 @@
 #import "MenuLocation.h"
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
+#import "WordPress-Swift.h"
 
 static CGFloat ViewExpansionAnimationDelay = 0.15;
 
@@ -32,10 +33,7 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
     self.locationsView.delegate = self;
     self.menusView.delegate = self;
 
-    self.textLabel.font = [WPFontManager systemRegularFontOfSize:13];
-    self.textLabel.backgroundColor = [UIColor clearColor];
-    self.textLabel.textColor = [WPStyleGuide greyDarken20];
-    self.textLabel.text = NSLocalizedString(@"USES", @"Menus label for describing which menu the location uses in the header.");
+    [self configureTextLabel];
 }
 
 - (void)setBlog:(Blog *)blog
@@ -102,6 +100,15 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
         [self.locationsView setSelectionItemsExpanded:NO animated:YES];
         [self.menusView setSelectionItemsExpanded:NO animated:YES];
     });
+}
+
+- (void)configureTextLabel
+{
+    self.textLabel.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleFootnote];
+    self.textLabel.adjustsFontForContentSizeCategory = YES;
+    self.textLabel.backgroundColor = [UIColor clearColor];
+    self.textLabel.textColor = [WPStyleGuide greyDarken20];
+    self.textLabel.text = NSLocalizedString(@"USES", @"Menus label for describing which menu the location uses in the header.");
 }
 
 #pragma mark - MenusSelectionViewDelegate
