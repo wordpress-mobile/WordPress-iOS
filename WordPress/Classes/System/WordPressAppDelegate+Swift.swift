@@ -73,6 +73,7 @@ extension WordPressAppDelegate {
         authTracker = WordPressAuthenticationTracker()
 
         authTracker.startListeningToAuthenticationEvents()
+        authManager.startRelayingHelpshiftNotifications()
 
         WordPressAuthenticator.shared.delegate = authManager
     }
