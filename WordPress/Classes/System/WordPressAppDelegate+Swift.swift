@@ -54,7 +54,10 @@ extension WordPressAppDelegate {
             let wwan = reachability.isReachableViaWWAN() ? "Y" : "N"
 
             DDLogInfo("Reachability - Internet - WiFi: \(wifi) WWAN: \(wwan)")
-            self?.connectionAvailable = reachability.isReachable()
+            let newValue = reachability.isReachable()
+            self?.connectionAvailable = newValue
+
+            NotificationCenter.default.post(name: .reachabilityChanged, object: self, userInfo: [Foundation.Notification.reachabilityKey: newValue])
         }
 
         internetReachability.reachableBlock = reachabilityBlock
