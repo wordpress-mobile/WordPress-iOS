@@ -265,26 +265,32 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
     /// Fetches the user's profile data from their blog. If success, it next queries
     /// the user's gravatar profile data passing the completion block.
     ///
-    @objc func fetchUserProfileInfo(blog: Blog, completion: @escaping (() -> Void )) {
-        let service = UsersService()
-        service.fetchProfile(blog: blog, success: { [weak self] (profile) in
+    private func fetchUserProfileInfo(username: String, password: String, xmlrpc: String, completion: @escaping (() -> Void )) {
+        guard let service = UsersService(username: username, password: password, xmlrpc: xmlrpc) else {
+            completion()
+            return
+        }
+
+        service.fetchProfile(success: { [weak self] profile in
             self?.userProfile = profile
             self?.fetchGravatarProfileInfo(email: profile.email, completion: completion)
-            }, failure: { [weak self] _ in
-                self?.showLoginEpilogue()
+
+        }, failure: { [weak self] _ in
+            self?.showLoginEpilogue()
         })
     }
 
 
     /// Queries the user's gravatar profile data. On success calls completion.
     ///
-    @objc func fetchGravatarProfileInfo(email: String, completion: @escaping (() -> Void )) {
+    private func fetchGravatarProfileInfo(email: String, completion: @escaping (() -> Void )) {
         let service = GravatarService()
-        service.fetchProfile(email, success: { [weak self] (profile) in
+
+        service.fetchProfile(email, success: { [weak self] profile in
             self?.gravatarProfile = profile
             completion()
-            }, failure: { [weak self] _ in
-                self?.showLoginEpilogue()
+        }, failure: { [weak self] _ in
+            self?.showLoginEpilogue()
         })
     }
 
