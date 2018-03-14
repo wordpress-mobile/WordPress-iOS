@@ -57,7 +57,6 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
         unregisterForKeyboardEvents()
     }
 
-
     // MARK: Setup and Configuration
 
 
