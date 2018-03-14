@@ -388,6 +388,14 @@ static NSInteger HideSearchMinSites = 3;
     }];
 }
 
+- (void)removeBlogItemsFromSpotlight:(Blog *)blog {
+    if (blog && blog.dotComID && blog.dotComID > 0) {
+        [SearchManager.shared deleteAllSearchableItemsFromDomain: blog.dotComID.stringValue];
+    } else {
+        [SearchManager.shared deleteAllSearchableItemsFromDomain: blog.xmlrpc];
+    }
+}
+
 #pragma mark - Header methods
 
 - (UIView *)headerView
@@ -718,6 +726,7 @@ static NSInteger HideSearchMinSites = 3;
 - (void)confirmRemoveSiteForIndexPath:(NSIndexPath *)indexPath
 {
     Blog *blog = [self.dataSource blogAtIndexPath:indexPath];
+    [self removeBlogItemsFromSpotlight:blog];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService removeBlog:blog];
@@ -729,6 +738,7 @@ static NSInteger HideSearchMinSites = 3;
     Blog *blog = [self.dataSource blogAtIndexPath:indexPath];
     [self setVisible:NO forBlog:blog];
     [self.tableView setEditing:NO animated:YES];
+    [self removeBlogItemsFromSpotlight:blog];
 }
 
 - (void)unhideBlogAtIndexPath:(NSIndexPath *)indexPath
