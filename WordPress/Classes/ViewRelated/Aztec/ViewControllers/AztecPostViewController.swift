@@ -2582,6 +2582,7 @@ private extension AztecPostViewController {
                 self.post = uploadedPost
 
                 generator.notificationOccurred(.success)
+                SearchManager.shared.indexItem(uploadedPost)
             }
 
             if dismissWhenDone {
