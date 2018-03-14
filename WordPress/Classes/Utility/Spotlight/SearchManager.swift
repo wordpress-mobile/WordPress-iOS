@@ -18,7 +18,7 @@ import MobileCoreServices
     /// - Parameters:
     ///   - item: the item to be indexed
     ///
-    func indexItem(_ item: SearchableItemConvertable) {
+    @objc func indexItem(_ item: SearchableItemConvertable) {
         indexItems([item])
     }
 
@@ -27,7 +27,7 @@ import MobileCoreServices
     /// - Parameters:
     ///   - items: the items to be indexed
     ///
-    func indexItems(_ items: [SearchableItemConvertable]) {
+    @objc func indexItems(_ items: [SearchableItemConvertable]) {
         let items = items.map({ $0.indexableItem() }).flatMap({ $0 })
         guard !items.isEmpty else {
             return
@@ -49,7 +49,7 @@ import MobileCoreServices
     /// - Parameters:
     ///   - item: item to remove
     ///
-    func deleteSearchableItem(_ item: SearchableItemConvertable) {
+    @objc func deleteSearchableItem(_ item: SearchableItemConvertable) {
         deleteSearchableItems([item])
     }
 
@@ -58,7 +58,7 @@ import MobileCoreServices
     /// - Parameters:
     ///   - items: items to remove
     ///
-    func deleteSearchableItems(_ items: [SearchableItemConvertable]) {
+    @objc func deleteSearchableItems(_ items: [SearchableItemConvertable]) {
         let ids = items.map({ $0.uniqueIdentifier }).flatMap({ $0 })
         guard !ids.isEmpty else {
             return
@@ -77,7 +77,7 @@ import MobileCoreServices
     /// - Parameters:
     ///   - domain: the domain identifier
     ///
-    func deleteAllSearchableItemsFromDomain(_ domain: String) {
+    @objc func deleteAllSearchableItemsFromDomain(_ domain: String) {
         deleteAllSearchableItemsFromDomains([domain])
     }
 
@@ -86,7 +86,7 @@ import MobileCoreServices
     /// - Parameters:
     ///   - domains: the domain identifiers
     ///
-    func deleteAllSearchableItemsFromDomains(_ domains: [String]) {
+    @objc func deleteAllSearchableItemsFromDomains(_ domains: [String]) {
         guard !domains.isEmpty else {
             return
         }
@@ -154,9 +154,9 @@ import MobileCoreServices
 
 fileprivate extension SearchManager {
     func fetchPost(_ postID: NSNumber,
-                                  blogID: NSNumber,
-                                  onSuccess: @escaping (_ post: AbstractPost) -> Void,
-                                  onFailure: @escaping () -> Void) {
+                   blogID: NSNumber,
+                   onSuccess: @escaping (_ post: AbstractPost) -> Void,
+                   onFailure: @escaping () -> Void) {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
         guard let blog = blogService.blog(byBlogId: blogID) else {
@@ -173,9 +173,9 @@ fileprivate extension SearchManager {
     }
 
     func fetchSelfHostedPost(_ postID: NSNumber,
-                                            blogXMLRpcString: String,
-                                            onSuccess: @escaping (_ post: AbstractPost) -> Void,
-                                            onFailure: @escaping () -> Void) {
+                             blogXMLRpcString: String,
+                             onSuccess: @escaping (_ post: AbstractPost) -> Void,
+                             onFailure: @escaping () -> Void) {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
         guard let selfHostedBlogs = blogService.blogsWithNoAccount() as? [Blog],
