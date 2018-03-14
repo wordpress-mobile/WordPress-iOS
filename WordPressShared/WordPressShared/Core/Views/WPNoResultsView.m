@@ -62,32 +62,43 @@
 
 - (void)commonInit
 {
-    // Title Label
+    [self configureTitleLabel];
+    [self configureMessageLabel];
+    [self configureButton];
+    [self configureObservers];
+}
+
+- (void)configureTitleLabel
+{
     _titleLabel                 = [[UILabel alloc] init];
     _titleLabel.numberOfLines   = 0;
+    [self addSubview:_titleLabel];
+}
 
-    // Message Label
+- (void)configureMessageLabel
+{
     _messageLabel               = [[UILabel alloc] init];
     _messageLabel.font          = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
     _messageLabel.textColor     = [WPStyleGuide allTAllShadeGrey];
     _messageLabel.numberOfLines = 0;
     _messageLabel.textAlignment = NSTextAlignmentCenter;
     _messageLabel.adjustsFontForContentSizeCategory = YES;
+    [self addSubview:_messageLabel];
+}
 
-    // Button
+- (void)configureButton
+{
     _button                     = [UIButton buttonWithType:UIButtonTypeCustom];
     _button.titleLabel.font     = [WPStyleGuide subtitleFontBold];
     _button.hidden              = YES;
     [_button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     [_button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
     [_button setBackgroundImage:[self newButtonBackgroundImage] forState:UIControlStateNormal];
-
-    // Insert Subviews
-    [self addSubview:_titleLabel];
-    [self addSubview:_messageLabel];
     [self addSubview:_button];
+}
 
-    // Listen for orientation changes
+- (void)configureObservers
+{
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
@@ -112,7 +123,11 @@
 
     _titleLabel.frame = CGRectMake(0.0f, (CGRectGetMaxY(_accessoryView.frame) > 0 && _accessoryView.hidden != YES ? CGRectGetMaxY(_accessoryView.frame) + 10.0 : 0) , width, titleSize.height);
     
-    CGSize messageSize = [_messageLabel.text boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: _messageLabel.font} context:nil].size;
+    CGSize messageSize = [_messageLabel.text boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+                                                          options:NSStringDrawingUsesLineFragmentOrigin
+                                                       attributes:@{NSFontAttributeName: _messageLabel.font}
+                                                          context:nil].size;
+
     _messageLabel.frame = CGRectMake(0.0f, CGRectGetMaxY(_titleLabel.frame) + 8.0, width, messageSize.height);
     
     [_button sizeToFit];
@@ -150,7 +165,7 @@
 
 - (void)resetFonts
 {
-    [self setTitleText: self.titleLabel.text];
+    self.titleText = self.titleLabel.text;
     self.button.titleLabel.font = [WPStyleGuide subtitleFontBold];
 }
 
