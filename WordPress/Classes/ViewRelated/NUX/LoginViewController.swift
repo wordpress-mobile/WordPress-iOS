@@ -23,6 +23,9 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
         }
     }
 
+    func didChangePreferredContentSize() {
+        styleInstructions()
+    }
 
     // MARK: - Setup and Configuration
 
@@ -36,6 +39,7 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     ///
     @objc func styleInstructions() {
         instructionLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+        instructionLabel?.adjustsFontForContentSizeCategory = true
     }
 
     func configureViewLoading(_ loading: Bool) {
@@ -184,5 +188,14 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     ///
     func updateSafariCredentialsIfNeeded() {
         WordPressAuthenticator.updateSafariCredentialsIfNeeded(loginFields)
+    }
+}
+
+// MARK: - Handle changes in traitCollections. In particular, changes in Dynamic Type
+extension LoginViewController {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            didChangePreferredContentSize()
+        }
     }
 }

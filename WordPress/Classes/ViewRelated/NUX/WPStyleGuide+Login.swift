@@ -2,6 +2,14 @@ import WordPressShared
 import WordPressUI
 import Gridicons
 
+private class LoginEmailButton: UIButton {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            titleLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+        }
+    }
+}
+
 extension WPStyleGuide {
 
     private struct Constants {
@@ -137,7 +145,7 @@ extension WPStyleGuide {
     }
 
     private class func textButton(normal normalString: NSAttributedString, highlighted highlightString: NSAttributedString, font: UIFont, alignment: UIControl.NaturalContentHorizontalAlignment = .leading) -> UIButton {
-        let button = UIButton()
+        let button = LoginEmailButton()
         button.clipsToBounds = true
 
         button.naturalContentHorizontalAlignment = alignment
