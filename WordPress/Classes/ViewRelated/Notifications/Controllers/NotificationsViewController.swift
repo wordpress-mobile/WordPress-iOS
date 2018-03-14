@@ -1209,6 +1209,7 @@ private extension NotificationsViewController {
             handleConnectionError()
             return
         }
+
         let mediator = NotificationSyncMediator()
         mediator?.sync()
     }
