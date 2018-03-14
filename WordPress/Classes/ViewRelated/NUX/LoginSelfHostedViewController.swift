@@ -76,15 +76,6 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
     }
 
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        // Ensure that the user info is set on the epilogue vc.
-        if let vc = segue.destination as? LoginEpilogueViewController {
-            vc.epilogueUserInfo = epilogueUserInfo()
-            vc.jetpackLogin = loginFields.meta.jetpackLogin
-        }
-    }
-
 
     // MARK: - Setup and Configuration
 
@@ -234,15 +225,18 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
     }
 
 
-    /// Advances to the epilogue view controller once the self-hosted site has been added.
-    ///
-    @objc func showEpilogue() {
-        configureViewLoading(false)
-        performSegue(withIdentifier: .showEpilogue, sender: self)
-    }
-
-
     // MARK: - Epilogue: Gravatar and User Profile Acquisition
+
+    override func showLoginEpilogue() {
+        guard let delegate = WordPressAuthenticator.shared.delegate, let navigationController = navigationController else {
+            fatalError()
+        }
+
+        configureViewLoading(false)
+        delegate.presentLoginEpilogue(in: navigationController, epilogueInfo: epilogueUserInfo(), isJetpackLogin: isJetpackLogin) { [weak self] in
+            self?.dismissBlock?(false)
+        }
+    }
 
 
     /// Returns an instance of LoginEpilogueUserInfo composed from
@@ -276,8 +270,8 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
         service.fetchProfile(blog: blog, success: { [weak self] (profile) in
             self?.userProfile = profile
             self?.fetchGravatarProfileInfo(email: profile.email, completion: completion)
-            }, failure: { [weak self] (_) in
-                self?.showEpilogue()
+            }, failure: { [weak self] _ in
+                self?.showLoginEpilogue()
         })
     }
 
@@ -289,8 +283,8 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
         service.fetchProfile(email, success: { [weak self] (profile) in
             self?.gravatarProfile = profile
             completion()
-            }, failure: { [weak self] (_) in
-                self?.showEpilogue()
+            }, failure: { [weak self] _ in
+                self?.showLoginEpilogue()
         })
     }
 
@@ -360,7 +354,7 @@ extension LoginSelfHostedViewController {
 
             self?.blog = blog
             self?.fetchUserProfileInfo(blog: blog, completion: {
-                self?.showEpilogue()
+                self?.showLoginEpilogue()
             })
         }
     }
