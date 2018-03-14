@@ -5,7 +5,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
     @IBOutlet var siteAddressHelpButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
-    override var sourceTag: SupportSourceTag {
+    override var sourceTag: WordPressSupportSourceTag {
         get {
             return .loginSiteAddress
         }
@@ -156,7 +156,11 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
             strongSelf.configureViewLoading(false)
 
             let err = strongSelf.originalErrorOrError(error: error as NSError)
-            if strongSelf.errorDiscoveringJetpackSite(error: err) {
+
+            if let xmlrpcValidatorError = err as? WordPressOrgXMLRPCValidatorError {
+                strongSelf.displayError(message: xmlrpcValidatorError.localizedDescription)
+
+            } else if strongSelf.errorDiscoveringJetpackSite(error: err) {
                 strongSelf.displayError(error as NSError, sourceTag: .jetpackLogin)
 
             } else if (err.domain == NSURLErrorDomain && err.code == NSURLErrorCannotFindHost) ||
@@ -164,11 +168,6 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
                 // NSURLErrorNetworkConnectionLost can be returned when an invalid URL is entered.
                 let msg = NSLocalizedString("Hmm, it doesn't look like there's a WordPress site at this URL. Double-check the spelling and try again.",
                                             comment: "Error message shown a URL does not point to an existing site.")
-                strongSelf.displayError(message: msg)
-
-            } else if err.domain == "WordPressKit.WordPressOrgXMLRPCValidatorError" && err.code == WordPressOrgXMLRPCValidatorError.invalid.rawValue {
-                let msg = NSLocalizedString("We're sure this is a great site - but it's not a WordPress site, so you can't connect to it with this app.",
-                                            comment: "Error message shown a URL points to a valid site but not a WordPress site.")
                 strongSelf.displayError(message: msg)
 
             } else {

@@ -16,16 +16,16 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - Alamofire (4.6.0)
-  - Automattic-Tracks-iOS (0.2.0):
-    - CocoaLumberjack (~> 3.2.0)
+  - Automattic-Tracks-iOS (0.2.2):
+    - CocoaLumberjack (~> 3.4.1)
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 0.4)
   - BuddyBuildSDK (1.0.17)
-  - CocoaLumberjack (3.2.1):
-    - CocoaLumberjack/Default (= 3.2.1)
-    - CocoaLumberjack/Extensions (= 3.2.1)
-  - CocoaLumberjack/Default (3.2.1)
-  - CocoaLumberjack/Extensions (3.2.1):
+  - CocoaLumberjack (3.4.1):
+    - CocoaLumberjack/Default (= 3.4.1)
+    - CocoaLumberjack/Extensions (= 3.4.1)
+  - CocoaLumberjack/Default (3.4.1)
+  - CocoaLumberjack/Extensions (3.4.1):
     - CocoaLumberjack/Default
   - Crashlytics (3.9.3):
     - Fabric (~> 1.7.2)
@@ -121,9 +121,9 @@ DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
   - AFNetworking (= 3.1.0)
   - Alamofire (= 4.6.0)
-  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.2.1`)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.2.2`)
   - BuddyBuildSDK (= 1.0.17)
-  - CocoaLumberjack (= 3.2.1)
+  - CocoaLumberjack (= 3.4.1)
   - Crashlytics (= 3.9.3)
   - Expecta (= 1.0.6)
   - FLAnimatedImage (= 1.0.12)
@@ -152,7 +152,7 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.2.1
+    :tag: 0.2.2
   WordPress-Aztec-iOS:
     :commit: 1b9e6398f054f8726cf40de9e9a2ace753804502
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
@@ -160,7 +160,7 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.2.1
+    :tag: 0.2.2
   WordPress-Aztec-iOS:
     :commit: 1b9e6398f054f8726cf40de9e9a2ace753804502
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
@@ -169,9 +169,9 @@ SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
-  Automattic-Tracks-iOS: edc4365d31602490af88dbed181b0b666cbdcf75
+  Automattic-Tracks-iOS: 878edd82f3e535bd94da52facd94fc0bf5542797
   BuddyBuildSDK: 8ae12ee721098b356a961ea7dce70ae55f93a7d2
-  CocoaLumberjack: 2800c03334042fe80589423c8d80e582dcaec482
+  CocoaLumberjack: 2e258a064cacc8eb9a2aca318e24d02a0a7fd56d
   Crashlytics: dbb07d01876c171c5ccbdf7826410380189e452c
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Fabric: 9cd6a848efcf1b8b07497e0b6a2e7d336353ba15
@@ -200,6 +200,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 1fe532b4ff215a9dd259f08439376fc0dbab1039
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: e332228a2ce171e91ef3322c378b68d83239df4d
+PODFILE CHECKSUM: 5667931d6024a338d49feed1338fc681e938b4d5
 
 COCOAPODS: 1.3.1

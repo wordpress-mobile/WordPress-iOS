@@ -137,6 +137,7 @@ open class SignupService: LocalCoreDataService {
                                             andClientSecret: ApiCredentials.secret(),
                                             success: { (responseDictionary) in
                                                 // Note: User creation is deferred until we have a WPCom auth token.
+                                                WPAppAnalytics.track(.createdAccount)
                                                 success()
                                             },
                                             failure: failure)
@@ -152,12 +153,15 @@ open class SignupService: LocalCoreDataService {
     func createWPComUserWithGoogle(token: String,
                                    success: @escaping SignupSocialSuccessBlock,
                                    failure: @escaping SignupFailureBlock) {
+
         let remote = WordPressComServiceRemote(wordPressComRestApi: self.anonymousApi())
+        let locale = WordPressComLanguageDatabase().deviceLanguage.slug
 
         remote?.createWPComAccount(withGoogle: token,
-                                    andClientID: ApiCredentials.client(),
-                                    andClientSecret: ApiCredentials.secret(),
-                                    success: { (responseDictionary) in
+                                   andLocale: locale,
+                                   andClientID: ApiCredentials.client(),
+                                   andClientSecret: ApiCredentials.secret(),
+                                   success: { (responseDictionary) in
                                         guard let username = responseDictionary?[ResponseKeys.username] as? String,
                                             let bearer_token = responseDictionary?[ResponseKeys.bearerToken] as? String else {
                                                 // without these we can't proceed.
@@ -165,6 +169,7 @@ open class SignupService: LocalCoreDataService {
                                                 return
                                         }
 
+                                        WPAppAnalytics.track(.createdAccount)
                                         // create the local account
                                         let service = AccountService(managedObjectContext: self.managedObjectContext)
                                         let account = service.createOrUpdateAccount(withUsername: username, authToken: bearer_token)
