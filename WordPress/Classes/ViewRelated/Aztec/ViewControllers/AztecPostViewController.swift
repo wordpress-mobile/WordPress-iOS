@@ -2984,58 +2984,57 @@ extension AztecPostViewController {
     }
 
     fileprivate func processMediaAttachments() {
-        processMediaWithErrorAttachments()
-        processVideoPressAttachments()
-    }
-
-    fileprivate func processMediaWithErrorAttachments() {
         richTextView.textStorage.enumerateAttachments { (attachment, range) in
-            guard let mediaAttachment = attachment as? MediaAttachment,
-                let mediaUploadID = mediaAttachment.uploadID,
-                let media = self.mediaCoordinator.media(withObjectID: mediaUploadID),
-                let error = media.error
-                else {
+            guard let mediaAttachment = attachment as? MediaAttachment else {
                 return
             }
-            self.handleError(error, onAttachment: mediaAttachment)
+            // Check if media is uploading and we have a media object for it
+            if let mediaUploadID = mediaAttachment.uploadID,
+               let media = self.mediaCoordinator.media(withObjectID: mediaUploadID) {
+                if let thumbnailURL = media.absoluteThumbnailLocalURL {
+                    self.handleThumbnailURL(thumbnailURL, attachment: mediaAttachment)
+                }
+                if let error = media.error {
+                    self.handleError(error, onAttachment: mediaAttachment)
+                }
+            } else {
+                if let videoAttachment = mediaAttachment as? VideoAttachment {
+                    self.process(videoAttachment: videoAttachment)
+                }
+            }
         }
     }
 
-    fileprivate func processVideoPressAttachments() {
-        richTextView.textStorage.enumerateAttachments { (attachment, range) in
-            guard let videoAttachment = attachment as? VideoAttachment else {
-                return
-            }
-            // Use a placeholder for video while trying to generate a thumbnail
-            DispatchQueue.main.async {
-                videoAttachment.image = Gridicon.iconOfType(.video, withSize: Constants.mediaPlaceholderImageSize)
+    fileprivate func process(videoAttachment: VideoAttachment) {
+        // Use a placeholder for video while trying to generate a thumbnail
+        DispatchQueue.main.async {
+            videoAttachment.image = Gridicon.iconOfType(.video, withSize: Constants.mediaPlaceholderImageSize)
+            self.richTextView.refresh(videoAttachment)
+        }
+        if let videoSrcURL = videoAttachment.srcURL,
+           videoSrcURL.scheme == VideoShortcodeProcessor.videoPressScheme,
+           let videoPressID = videoSrcURL.host {
+            // It's videoPress video so let's fetch the information for the video
+            let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
+                videoAttachment.srcURL = URL(string: videoURLString)
+                if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
+                    videoAttachment.posterURL = posterURL
+                }
                 self.richTextView.refresh(videoAttachment)
-            }
-            if let videoSrcURL = videoAttachment.srcURL,
-               videoSrcURL.scheme == VideoShortcodeProcessor.videoPressScheme,
-               let videoPressID = videoSrcURL.host {
-                // It's videoPress video so let's fetch the information for the video
-                let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-                mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
-                    videoAttachment.srcURL = URL(string: videoURLString)
-                    if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
-                        videoAttachment.posterURL = posterURL
-                    }
+            }, failure: { (error) in
+                DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
+            })
+        } else if let videoSrcURL = videoAttachment.srcURL, videoSrcURL != Constants.placeholderMediaLink, videoAttachment.posterURL == nil {
+            let thumbnailGenerator = MediaVideoExporter(url: videoSrcURL)
+            thumbnailGenerator.exportPreviewImageForVideo(atURL: videoSrcURL, imageOptions: nil, onCompletion: { (exportResult) in
+                DispatchQueue.main.async {
+                    videoAttachment.posterURL = exportResult.url
                     self.richTextView.refresh(videoAttachment)
-                }, failure: { (error) in
-                    DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
-                })
-            } else if let videoSrcURL = videoAttachment.srcURL, videoAttachment.posterURL == nil {
-                let thumbnailGenerator = MediaVideoExporter(url: videoSrcURL)
-                thumbnailGenerator.exportPreviewImageForVideo(atURL: videoSrcURL, imageOptions: nil, onCompletion: { (exportResult) in
-                    DispatchQueue.main.async {
-                        videoAttachment.posterURL = exportResult.url
-                        self.richTextView.refresh(videoAttachment)
-                    }
-                }, onError: { (error) in
-                    DDLogError("Unable to grab frame from video = \(videoSrcURL). Details: \(error.localizedDescription)")
-                })
-            }
+                }
+            }, onError: { (error) in
+                DDLogError("Unable to grab frame from video = \(videoSrcURL). Details: \(error.localizedDescription)")
+            })
         }
     }
 
