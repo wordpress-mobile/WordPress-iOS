@@ -161,6 +161,8 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
 
         // By default, let's display the Blog's Users
         filter = .Users
+
+        observeNetworkStatus()
     }
 
     open override func viewWillAppear(_ animated: Bool) {
@@ -293,24 +295,31 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         }
 
         var result: (retrieved: Int, shouldLoadMore: Bool)?
+        var loadError: Error?
 
         let group = DispatchGroup()
         group.enter()
         peopleService.loadUsersPage(offset, success: { (retrieved, shouldLoadMore) in
             result = (retrieved, shouldLoadMore)
             group.leave()
-        }, failure: { (error) in
+        }, failure: { error in
+            loadError = error
             group.leave()
         })
 
         group.enter()
         roleService.fetchRoles(success: {_ in
             group.leave()
-        }, failure: { _ in
+        }, failure: { error in
+            loadError = error
             group.leave()
         })
 
-        group.notify(queue: DispatchQueue.main) {
+        group.notify(queue: DispatchQueue.main) { [weak self] in
+            if let error = loadError {
+                self?.handleLoadError(error)
+            }
+
             if let result = result {
                 success(result.retrieved, result.shouldLoadMore)
             }
@@ -335,14 +344,30 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
             return
         }
 
-        noResultsView.titleText = NSLocalizedString("No \(filter.title) Yet",
-            comment: "Empty state message (People Management). Please, do not translate the \\(filter.title) part!")
+        noResultsView.titleText = noResultsTitle()
 
         if noResultsView.superview == nil {
             tableView.addSubview(withFadeAnimation: noResultsView)
         }
     }
 
+    private func noResultsTitle() -> String {
+        let noPeopleFormat = NSLocalizedString("No %@ Yet",
+            comment: "Empty state message (People Management). %@ can be Users or Followers")
+        let noPeople = String(format: noPeopleFormat, filter.title)
+
+        let noNetwork = noConnectionMessage()
+
+        return connectionAvailable() ? noPeople : noNetwork
+    }
+
+    private func handleLoadError(_ forError: Error) {
+        let _ = DispatchDelayedAction(delay: .milliseconds(250)) { [weak self] in
+            self?.refreshControl?.endRefreshing()
+        }
+
+        handleConnectionError()
+    }
 
     // MARK: - Private Helpers
 
@@ -476,4 +501,16 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
     }
 
     fileprivate let refreshRowPadding = 4
+}
+
+extension PeopleViewController: NetworkAwareUI {
+    func contentIsEmpty() -> Bool {
+        return resultsController.isEmpty()
+    }
+}
+
+extension PeopleViewController: NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        refresh()
+    }
 }

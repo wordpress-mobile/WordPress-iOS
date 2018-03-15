@@ -43,7 +43,6 @@
                     </view>
                     <connections>
                         <outlet property="errorLabel" destination="Bnl-db-peA" id="vfV-dr-NBR"/>
-                        <segue destination="rzX-Pq-aBb" kind="custom" identifier="showEpilogue" customClass="EpilogueSegue" customModule="WordPress" customModuleProvider="target" id="7ky-IR-Xbv"/>
                         <segue destination="AcL-51-J0J" kind="custom" identifier="showSignupEpilogue" customClass="EpilogueSegue" customModule="WordPress" customModuleProvider="target" id="hUe-mm-JfS"/>
                     </connections>
                 </viewController>
@@ -162,21 +161,13 @@
             </objects>
             <point key="canvasLocation" x="2671" y="147"/>
         </scene>
-        <!--LoginEpilogue-->
-        <scene sceneID="nvd-zB-fTe">
-            <objects>
-                <viewControllerPlaceholder storyboardIdentifier="LoginEpilogue" storyboardName="Login" referencedIdentifier="LoginEpilogue" id="rzX-Pq-aBb" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="LHN-kW-0Sj" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3179" y="599"/>
-        </scene>
         <!--SignupEpilogue-->
         <scene sceneID="TvG-Qq-5K2">
             <objects>
                 <viewControllerPlaceholder storyboardName="Signup" referencedIdentifier="SignupEpilogue" id="AcL-51-J0J" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0yK-Tv-7lv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3636" y="598"/>
+            <point key="canvasLocation" x="3385" y="616"/>
         </scene>
         <!--LoginWPcomPassword-->
         <scene sceneID="mn2-Hn-7VV">
@@ -184,7 +175,7 @@
                 <viewControllerPlaceholder storyboardIdentifier="LoginWPcomPassword" storyboardName="Login" referencedIdentifier="LoginWPcomPassword" id="x7Q-Q4-j7h" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ODH-aE-Rej" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2669" y="649"/>
+            <point key="canvasLocation" x="2670" y="616"/>
         </scene>
     </scenes>
     <resources>

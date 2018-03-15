@@ -2,6 +2,7 @@ import Foundation
 import CocoaLumberjack
 import WordPressComStatsiOS
 import WordPressShared
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -44,11 +45,9 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     static fileprivate let postCardEstimatedRowHeight = CGFloat(300.0)
     static fileprivate let postListHeightForFooterView = CGFloat(34.0)
 
-    @IBOutlet fileprivate weak var authorFilterSegmentedControl: UISegmentedControl!
-
-    @IBOutlet var authorsFilterView: UIView!
     @IBOutlet var searchWrapperView: UIView!
-    @IBOutlet var headerStackView: UIStackView!
+    @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
 
     // MARK: - GUI
 
@@ -60,7 +59,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let storyBoard = UIStoryboard(name: "Posts", bundle: Bundle.main)
         let controller = storyBoard.instantiateViewController(withIdentifier: "PostListViewController") as! PostListViewController
-
         controller.blog = blog
         controller.restorationClass = self
 
@@ -140,6 +138,18 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.register(postCardRestoreCellNib, forCellReuseIdentifier: type(of: self).postCardRestoreCellIdentifier)
     }
 
+    override func configureAuthorFilter() {
+        guard filterSettings.canFilterByAuthor() else {
+            return
+        }
+
+        let authorFilter = AuthorFilterButton()
+        authorFilter.addTarget(self, action: #selector(showAuthorSelectionPopover(_:)), for: .touchUpInside)
+        filterTabBar.accessoryView = authorFilter
+
+        updateAuthorFilter()
+    }
+
     override func configureSearchController() {
         super.configureSearchController()
 
@@ -158,10 +168,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
             searchWrapperView.frame.size.height = searchController.searchBar.bounds.height
         }
 
-        headerStackView.frame.size.height = headerStackView.subviews.reduce(0, { $0 + $1.frame.size.height })
-
         // Resetting the tableHeaderView is necessary to get the new height to take effect
-        tableView.tableHeaderView = headerStackView
+        tableView.tableHeaderView = searchWrapperView
     }
 
 
@@ -198,33 +206,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
                 .published: published]
     }
 
-    override func configureAuthorFilter() {
-        let onlyMe = NSLocalizedString("Only Me", comment: "Label for the post author filter. This fliter shows posts only authored by the current user.")
-        let everyone = NSLocalizedString("Everyone", comment: "Label for the post author filter. This filter shows posts for all users on the blog.")
-
-        WPStyleGuide.applyPostAuthorFilterStyle(authorFilterSegmentedControl)
-
-        authorFilterSegmentedControl.setTitle(onlyMe, forSegmentAt: 0)
-        authorFilterSegmentedControl.setTitle(everyone, forSegmentAt: 1)
-
-        authorsFilterView?.backgroundColor = WPStyleGuide.lightGrey()
-
-        if !filterSettings.canFilterByAuthor() {
-            authorsFilterView.removeFromSuperview()
-
-            headerStackView.frame.size.height = searchController.searchBar.frame.height
-
-            // Required to update the size of the table header view
-            tableView.tableHeaderView = headerStackView
-        }
-
-        if filterSettings.currentPostAuthorFilter() == .mine {
-            authorFilterSegmentedControl.selectedSegmentIndex = 0
-        } else {
-            authorFilterSegmentedControl.selectedSegmentIndex = 1
-        }
-    }
-
     // Mark - Layout Methods
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -251,14 +232,33 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - Actions
 
-    @IBAction func handleAuthorFilterChanged(_ sender: AnyObject) {
-        var authorFilter = PostListFilterSettings.AuthorFilter.everyone
-        if authorFilterSegmentedControl.selectedSegmentIndex == 0 {
-            authorFilter = .mine
+    @objc
+    private func showAuthorSelectionPopover(_ sender: UIView) {
+        let filterController = AuthorFilterViewController(initialSelection: filterSettings.currentPostAuthorFilter(),
+                                                          gravatarEmail: blog.account?.email) { [weak self] filter in
+                                                            self?.filterSettings.setCurrentPostAuthorFilter(filter)
+                                                            self?.updateAuthorFilter()
+                                                            self?.refreshAndReload()
+                                                            self?.syncItemsWithUserInteraction(false)
+                                                            self?.dismiss(animated: true, completion: nil)
         }
-        filterSettings.setCurrentPostAuthorFilter(authorFilter)
-        refreshAndReload()
-        syncItemsWithUserInteraction(false)
+
+        ForcePopoverPresenter.configurePresentationControllerForViewController(filterController, presentingFromView: sender)
+        filterController.popoverPresentationController?.permittedArrowDirections = .up
+
+        present(filterController, animated: true)
+    }
+
+    private func updateAuthorFilter() {
+        guard let accessoryView = filterTabBar.accessoryView as? AuthorFilterButton else {
+            return
+        }
+
+        if filterSettings.currentPostAuthorFilter() == .everyone {
+            accessoryView.filterType = .everyone
+        } else {
+            accessoryView.filterType = .user(gravatarEmail: blog.account?.email)
+        }
     }
 
     // MARK: - Data Model Interaction
@@ -516,22 +516,30 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     func cell(_ cell: UITableViewCell, handleTrashPost post: AbstractPost) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
+            let cancelText: String
+            let deleteText: String
+            let messageText: String
+            let titleText: String
+
             if post.status == .trash {
-
-                let cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
-                let deleteText = NSLocalizedString("Delete", comment: "Deletes post permanently")
-                let messageText = NSLocalizedString("Delete this post permanently?", comment: "Deletes post permanently")
-                let alertController = UIAlertController(title: nil, message: messageText, preferredStyle: .alert)
-
-                alertController.addCancelActionWithTitle(cancelText)
-                alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
-                    self?.deletePost(post)
-                }
-                alertController.presentFromRootViewController()
-
+                cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
+                deleteText = NSLocalizedString("Delete Permanently", comment: "Delete option in the confirmation alert when deleting a post from the trash.")
+                titleText = NSLocalizedString("Delete Permanently?", comment: "Title of the confirmation alert when deleting a post from the trash.")
+                messageText = NSLocalizedString("Are you sure you want to permanently delete this post?", comment: "Message of the confirmation alert when deleting a post from the trash.")
             } else {
-                deletePost(post)
+                cancelText = NSLocalizedString("Cancel", comment: "Cancels an Action")
+                deleteText = NSLocalizedString("Move to Trash", comment: "Trash option in the trash confirmation alert.")
+                titleText = NSLocalizedString("Trash this post?", comment: "Title of the trash confirmation alert.")
+                messageText = NSLocalizedString("Are you sure you want to trash this post?", comment: "Message of the trash confirmation alert.")
             }
+
+            let alertController = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
+
+            alertController.addCancelActionWithTitle(cancelText)
+            alertController.addDestructiveActionWithTitle(deleteText) { [weak self] action in
+                self?.deletePost(post)
+            }
+            alertController.presentFromRootViewController()
         }
     }
 
@@ -544,10 +552,21 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Refreshing noResultsView
 
     fileprivate func handleRefreshNoResultsView(_ noResultsView: WPNoResultsView) {
+        guard connectionAvailable() else {
+            showNoConnectionView()
+            return
+        }
+
         noResultsView.titleText = noResultsTitle()
         noResultsView.messageText = noResultsMessage()
         noResultsView.accessoryView = noResultsAccessoryView()
         noResultsView.buttonTitle = noResultsButtonTitle()
+    }
+
+    private func showNoConnectionView() {
+        noResultsView.titleText = noConnectionMessage()
+        noResultsView.messageText = ""
+        noResultsView.accessoryView = nil
     }
 
     // MARK: - NoResultsView Customizer helpers
@@ -609,6 +628,14 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - UISearchControllerDelegate
 
+    override func willPresentSearchController(_ searchController: UISearchController) {
+        super.willPresentSearchController(searchController)
+
+        self.filterTabBar.alpha = WPAlphaZero
+        filterTabBarBottomConstraint.isActive = false
+        tableViewTopConstraint.isActive = true
+    }
+
     func didPresentSearchController(_ searchController: UISearchController) {
         if #available(iOS 11.0, *) {
             updateTableHeaderSize()
@@ -620,5 +647,16 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     func didDismissSearchController(_ searchController: UISearchController) {
         updateTableHeaderSize()
+
+        tableViewTopConstraint.isActive = false
+        filterTabBarBottomConstraint.isActive = true
+
+        UIView.animate(withDuration: Animations.searchDismissDuration) {
+            self.filterTabBar.alpha = WPAlphaFull
+        }
+    }
+
+    enum Animations {
+        static let searchDismissDuration: TimeInterval = 0.3
     }
 }
