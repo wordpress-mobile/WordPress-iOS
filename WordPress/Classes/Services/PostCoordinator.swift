@@ -1,4 +1,5 @@
 import Foundation
+import WordPressFlux
 
 class PostCoordinator: NSObject {
 
@@ -44,6 +45,8 @@ class PostCoordinator: NSObject {
         let postService = PostService(managedObjectContext: mainContext)
         postService.uploadPost(post, success: { uploadedPost in
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
+            let model = PostNoticeViewModel(post: post)
+            ActionDispatcher.dispatch(NoticeAction.post(model.notice))
         }, failure: { error in
             print("Post Coordinator -> upload error: \(String(describing: error))")
         })
