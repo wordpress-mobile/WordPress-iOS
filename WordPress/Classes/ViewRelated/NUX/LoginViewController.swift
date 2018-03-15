@@ -217,12 +217,6 @@ extension LoginViewController {
         let site = WordPressSite.wpcom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin)
         delegate.sync(site: site) { [weak self] _ in
 
-            /// HACK: An alternative notification to LoginFinished. Observe this instead of `WPSigninDidFinishNotification` for Jetpack logins.
-            /// When WPTabViewController no longer destroy's and rebuilds the view hierarchy this alternate notification can be removed.
-            ///
-            let notification = self?.isJetpackLogin == true ? .wordpressLoginFinishedJetpackLogin : Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification)
-            NotificationCenter.default.post(name: notification, object: nil)
-
             /// Tracker
             ///
             let properties = [
