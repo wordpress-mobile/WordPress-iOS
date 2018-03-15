@@ -17,7 +17,7 @@
 #pragma mark Lifecycle Methods
 
 + (instancetype)noResultsViewWithTitle:(NSString *)titleText message:(NSString *)messageText accessoryView:(UIView *)accessoryView buttonTitle:(NSString *)buttonTitle {
-    
+
     WPNoResultsView *noResultsView  = [WPNoResultsView new];
     
     noResultsView.accessoryView     = accessoryView;
@@ -47,7 +47,6 @@
 }
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.delegate = nil;
 }
 
@@ -65,7 +64,6 @@
     [self configureTitleLabel];
     [self configureMessageLabel];
     [self configureButton];
-    [self configureObservers];
 }
 
 - (void)configureTitleLabel
@@ -97,18 +95,13 @@
     [self addSubview:_button];
 }
 
-- (void)configureObservers
+- (void)didMoveToSuperview
 {
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
-}
-
-- (void)didMoveToSuperview {
     [self centerInSuperview];
 }
 
 - (void)layoutSubviews {
-    
+
     CGFloat width = 280.0f;
     
     [self hideAccessoryViewIfNecessary];
@@ -154,13 +147,6 @@
     if (self.superview) {
         [self centerInSuperview];
     }
-}
-
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
-{
-    [super traitCollectionDidChange:previousTraitCollection];
-    [self resetFonts];
-    [self setNeedsLayout];
 }
 
 - (void)resetFonts
@@ -307,7 +293,10 @@
 
 #pragma mark - Notification Hanlders
 
-- (void)orientationDidChange:(NSNotification *)notification {
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    [self resetFonts];
     [self setNeedsLayout];
 }
 
