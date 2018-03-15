@@ -14,9 +14,11 @@ import AVKit
 //
 class AztecPostViewController: UIViewController, PostEditor {
 
-    /// Closure to be executed when the editor gets closed
+    /// Closure to be executed when the editor gets closed.
+    /// Pass `false` for `showPostEpilogue` to prevent the post epilogue
+    /// (PostPost) flow being displayed after the editor is closed.
     ///
-    var onClose: ((_ changesSaved: Bool) -> ())?
+    var onClose: ((_ changesSaved: Bool, _ showPostEpilogue: Bool) -> ())?
 
 
     /// Indicates if Aztec was launched for Photo Posting
@@ -1248,6 +1250,13 @@ private extension AztecPostViewController {
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
+        if FeatureFlag.asyncPosting.enabled {
+            alert.addDefaultActionWithTitle("Async Publish (Debug)") { [unowned self]  _ in
+                PostCoordinator.shared.save(post: self.post)
+                self.dismissOrPopView(didSave: true, shouldShowPostEpilogue: false)
+            }
+        }
+
         if postEditorStateContext.isSecondaryPublishButtonShown,
             let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
 
@@ -1278,12 +1287,6 @@ private extension AztecPostViewController {
 
         alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
 
-        if FeatureFlag.asyncPosting.enabled {
-            alert.addDefaultActionWithTitle("Async Upload (Debug)") { [unowned self]  _ in
-                PostCoordinator.shared.save(post: self.post)
-                self.dismissOrPopView(didSave: true)
-            }
-        }
         alert.popoverPresentationController?.barButtonItem = moreBarButtonItem
 
         present(alert, animated: true, completion: nil)
@@ -2519,13 +2522,13 @@ private extension AztecPostViewController {
         dismissOrPopView(didSave: false)
     }
 
-    func dismissOrPopView(didSave: Bool) {
+    func dismissOrPopView(didSave: Bool, shouldShowPostEpilogue: Bool = true) {
         stopEditing()
 
         WPAppAnalytics.track(.editorClosed, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
 
         if let onClose = onClose {
-            onClose(didSave)
+            onClose(didSave, shouldShowPostEpilogue)
         } else if isModal() {
             presentingViewController?.dismiss(animated: true, completion: nil)
         } else {

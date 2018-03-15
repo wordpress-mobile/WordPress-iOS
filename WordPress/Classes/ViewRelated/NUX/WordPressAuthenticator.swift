@@ -9,6 +9,10 @@ import WordPressShared
 //
 public protocol WordPressAuthenticatorDelegate: class {
 
+    /// Indicates if the active Authenticator can be dismissed, or not.
+    ///
+    var dismissActionEnabled: Bool { get }
+
     /// Indicates if the Support button action should be enabled, or not.
     ///
     var supportActionEnabled: Bool { get }
@@ -24,6 +28,10 @@ public protocol WordPressAuthenticatorDelegate: class {
     /// Refreshes Support's Badge Count.
     ///
     func refreshSupportBadgeCount()
+
+    /// Presents the Login Epilogue, in the specified NavigationController.
+    ///
+    func presentLoginEpilogue(in navigationController: UINavigationController, epilogueInfo: LoginEpilogueUserInfo?, isJetpackLogin: Bool, onDismiss: @escaping () -> Void)
 
     /// Presents the Support Interface from a given ViewController, with a specified SourceTag.
     ///

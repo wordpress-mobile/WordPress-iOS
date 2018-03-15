@@ -33,6 +33,16 @@ extension WordPressAuthenticationManager {
 //
 extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
+    /// Indicates if the active Authenticator can be dismissed, or not. Authentication is Dismissable when there is a
+    /// default wpcom account, or at least one self-hosted blog.
+    ///
+    var dismissActionEnabled: Bool {
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+
+        return AccountHelper.isDotcomAvailable() || blogService.blogCountForAllAccounts() > 0
+    }
+
     /// Indicates whether if the Support Action should be enabled, or not.
     ///
     var supportActionEnabled: Bool {
@@ -80,5 +90,20 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         presenter.presentHelpshiftConversationWindowFromViewController(sourceViewController,
                                                                        refreshUserDetails: true,
                                                                        completion: nil)
+    }
+
+    /// Presents the Login Epilogue, in the specified NavigationController.
+    ///
+    func presentLoginEpilogue(in navigationController: UINavigationController, epilogueInfo: LoginEpilogueUserInfo? = nil, isJetpackLogin: Bool, onDismiss: @escaping () -> Void) {
+        let storyboard = UIStoryboard(name: "LoginEpilogue", bundle: .main)
+        guard let epilogueViewController = storyboard.instantiateInitialViewController() as? LoginEpilogueViewController else {
+            fatalError()
+        }
+
+        epilogueViewController.epilogueUserInfo = epilogueInfo
+        epilogueViewController.jetpackLogin = isJetpackLogin
+        epilogueViewController.onDismiss = onDismiss
+
+        navigationController.pushViewController(epilogueViewController, animated: true)
     }
 }

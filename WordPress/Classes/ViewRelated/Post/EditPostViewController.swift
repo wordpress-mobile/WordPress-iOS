@@ -112,7 +112,7 @@ class EditPostViewController: UIViewController {
         let editorSettings = EditorSettings()
         let editor = editorSettings.instantiatePostEditor(post: postToEdit()) { (editor, vc) in
             editor.isOpenedDirectlyForPhotoPost = openWithMediaPicker
-            editor.onClose = { [weak self, weak vc, weak editor] changesSaved in
+            editor.onClose = { [weak self, weak vc, weak editor] changesSaved, showPostEpilogue in
                 guard let strongSelf = self else {
                     vc?.dismiss(animated: true) {}
                     return
@@ -124,7 +124,7 @@ class EditPostViewController: UIViewController {
                 if changesSaved {
                     strongSelf.post = editor?.post as? Post
                 }
-                strongSelf.closeEditor(changesSaved)
+                strongSelf.closeEditor(changesSaved, showPostEpilogue: showPostEpilogue)
             }
         }
         // Neutralize iOS's Restoration:
@@ -150,11 +150,11 @@ class EditPostViewController: UIViewController {
         }
     }
 
-    @objc func closeEditor(_ changesSaved: Bool = true, from presentingViewController: UIViewController? = nil) {
+    @objc func closeEditor(_ changesSaved: Bool = true, showPostEpilogue: Bool, from presentingViewController: UIViewController? = nil) {
         onClose?(changesSaved)
 
         var dismissPostPostImmediately = true
-        if shouldShowPostPost(hasChanges: changesSaved), let post = post {
+        if showPostEpilogue && shouldShowPostPost(hasChanges: changesSaved), let post = post {
             postPost.setup(post: post)
             postPost.onClose = {
                 self.closePostPost(animated: true)

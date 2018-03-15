@@ -77,7 +77,7 @@ import Foundation
         let statuses: [BasePost.Status] = [.draft, .pending]
         let statusesExcluded: [BasePost.Status] = [.publish, .publishPrivate, .scheduled, .trash]
         let predicate = NSPredicate(format: "NOT status IN %@ OR remoteStatusNumber = %d", statusesExcluded.strings, AbstractPostRemoteStatus.local.rawValue)
-        let title = NSLocalizedString("Draft", comment: "Title of the draft filter.  This filter shows a list of draft posts.")
+        let title = NSLocalizedString("Drafts", comment: "Title of the drafts filter.  This filter shows a list of draft posts.")
 
         return PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
     }

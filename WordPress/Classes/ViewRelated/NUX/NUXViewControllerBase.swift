@@ -49,18 +49,10 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         navigationItem.leftBarButtonItem = cancelButton
     }
 
-    /// Checks if the signin vc modal should be cancellable. The controller is
-    /// cancellable when there is a default wpcom account, or at least one
-    /// self-hosted blog.
-    ///
-    /// - Returns: True if cancellable. False otherwise.
+    /// Returns true whenever the current ViewController can be dismissed.
     ///
     func isCancellable() -> Bool {
-        // if there is an existing blog, or an existing account return true.
-        let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-
-        return AccountHelper.isDotcomAvailable() || blogService.blogCountForAllAccounts() > 0
+        return WordPressAuthenticator.shared.delegate?.dismissActionEnabled ?? true
     }
 
     /// Displays a login error in an attractive dialog
