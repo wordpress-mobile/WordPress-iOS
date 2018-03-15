@@ -3,6 +3,7 @@ import UIKit
 import Gridicons
 import WordPressShared
 import SVProgressHUD
+import WordPressFlux
 
 class AppSettingsViewController: UITableViewController {
     enum Sections: Int {
@@ -294,8 +295,11 @@ class AppSettingsViewController: UITableViewController {
 
     func clearSpotlightCache() -> ImmuTableAction {
         return { [weak self] row in
-            SearchManager.shared.deleteAllSearchableItems()
             self?.tableView.deselectSelectedRowWithAnimation(true)
+            SearchManager.shared.deleteAllSearchableItems()
+            let notice = Notice(title: NSLocalizedString("Successfully cleared spotlight index", comment: "Notice displayed to the user after clearing the spotlight index in app settings."),
+                                feedbackType: .success)
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
         }
     }
 }
