@@ -572,7 +572,7 @@
                                             </mask>
                                         </variation>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h3S-D6-ec5">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h3S-D6-ec5" customClass="SubheadlineButton" customModule="WordPress" customModuleProvider="target">
                                         <rect key="frame" x="136.5" y="579" width="102" height="28"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <state key="normal" title="Terms of Service">
@@ -1403,7 +1403,7 @@
                                     </mask>
                                 </variation>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B6x-b7-hU9">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B6x-b7-hU9" customClass="SubheadlineButton" customModule="WordPress" customModuleProvider="target">
                                 <rect key="frame" x="90" y="617" width="195" height="30"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <state key="normal" title="Enter your password instead">
@@ -1617,9 +1617,9 @@
         <image name="icon-wp" width="50" height="52"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="fA5-mb-vrv"/>
-        <segue reference="fWM-mD-lXg"/>
-        <segue reference="ySQ-EM-6JI"/>
+        <segue reference="7lv-19-h36"/>
+        <segue reference="qLI-qX-rkG"/>
+        <segue reference="0ao-yi-yZI"/>
         <segue reference="1xT-tL-sp6"/>
         <segue reference="swV-lc-6gI"/>
     </inferredMetricsTieBreakers>
