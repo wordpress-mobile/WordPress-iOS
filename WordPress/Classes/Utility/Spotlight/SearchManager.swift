@@ -127,22 +127,19 @@ import MobileCoreServices
         }
 
         let (itemType, domainString, identifier) = SearchIdentifierGenerator.decomposeFromUniqueIdentifier(compositeIdentifier)
-        let siteID = NumberFormatter().number(from: domainString)
         guard itemType == .abstractPost, let postID = NumberFormatter().number(from: identifier) else {
             // We are only handling posts for now.
             DDLogError("Search manager unable to open post - postID:\(identifier) siteID:\(domainString)")
             return false
         }
 
-        if let siteID = siteID {
-            // dotCom site — siteID is a valid NSNumber
+        if let siteID = validWPComSiteID(with: domainString) {
             fetchPost(postID, blogID: siteID, onSuccess: { [weak self] post in
                 self?.switchToListViewAndOpenEditor(post)
             }, onFailure: {
                 DDLogError("Search manager unable to open post - postID:\(postID) siteID:\(siteID)")
             })
         } else {
-            // .Org site — siteID is nil which means the domainString wasn't a dotComID but instead a xmlRpc string
             fetchSelfHostedPost(postID, blogXMLRpcString: domainString, onSuccess: { [weak self] post in
                 self?.switchToListViewAndOpenEditor(post)
             }, onFailure: {
@@ -156,6 +153,10 @@ import MobileCoreServices
 // MARK: - Private Helpers
 
 fileprivate extension SearchManager {
+    func validWPComSiteID(with domainString: String) -> NSNumber? {
+        return NumberFormatter().number(from: domainString)
+    }
+
     func fetchPost(_ postID: NSNumber,
                    blogID: NSNumber,
                    onSuccess: @escaping (_ post: AbstractPost) -> Void,
@@ -199,21 +200,21 @@ fileprivate extension SearchManager {
         if let post = apost as? Post {
             WPAppAnalytics.track(.spotlightSearchOpenedPost, with: post)
             WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
-            openEditorForPost(post)
+            openEditor(for: post)
         } else if let page = apost as? Page {
-            WPAppAnalytics.track(.spotlightSearchOpenedPost, with: page)
+            WPAppAnalytics.track(.spotlightSearchOpenedPage, with: page)
             WPTabBarController.sharedInstance().switchTabToPagesList(for: page)
-            openEditorForPage(page)
+            openEditor(for: page)
         }
     }
 
-    func openEditorForPost(_ post: Post) {
+    func openEditor(for post: Post) {
         let editor = EditPostViewController.init(post: post)
         editor.modalPresentationStyle = .fullScreen
         WPTabBarController.sharedInstance().present(editor, animated: true, completion: nil)
     }
 
-    func openEditorForPage(_ page: Page) {
+    func openEditor(for page: Page) {
         let editorSettings = EditorSettings()
         let postViewController = editorSettings.instantiatePageEditor(page: page) { (editor, vc) in
             editor.onClose = { changesSaved in

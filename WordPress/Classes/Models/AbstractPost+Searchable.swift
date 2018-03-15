@@ -44,15 +44,13 @@ extension AbstractPost: SearchableItemConvertable {
     }
 
     var searchKeywords: [String]? {
-        return generateKeywords()
+        return generateKeywordsFromContent()
     }
+}
 
-    // MARK: - Helper Functions
+// MARK: - Private Helper Functions
 
-    func generateKeywords() -> [String]? {
-       return generateKeywordsFromContent()
-    }
-
+fileprivate extension AbstractPost {
     func generateKeywordsFromContent() -> [String]? {
         var keywords: [String]? = nil
         if let postTitle = postTitle {
