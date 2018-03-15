@@ -15,7 +15,7 @@ class WordPressComSyncService {
     ///     - onSuccess: Closure to be executed upon success.
     ///     - onFailure: Closure to be executed upon failure.
     ///
-    func syncWPCom(username: String, authToken: String, isJetpackLogin: Bool, onSuccess: @escaping (_ account: WPAccount) -> (), onFailure: @escaping (Error) -> ()) {
+    func syncWPCom(username: String, authToken: String, isJetpackLogin: Bool, onCompletion: @escaping (Error?) -> ()) {
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
         let newAccount = accountService.createOrUpdateAccount(withUsername: username, authToken: authToken)
@@ -25,12 +25,12 @@ class WordPressComSyncService {
             /// the vc. There might be some wonkiness due to missing data (blogs, account info) but this will eventually resync.
             ///
             DDLogError("Error while syncing wpcom account and/or blog details after authenticating. \(String(describing: error))")
-            onFailure(error)
+            onCompletion(error)
         }
 
         let onSuccessInternal = {
             accountService.updateUserDetails(for: newAccount, success: {
-                onSuccess(newAccount)
+                onCompletion(nil)
             }, failure: onFailureInternal)
         }
 
