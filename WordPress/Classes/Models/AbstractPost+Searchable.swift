@@ -34,11 +34,7 @@ extension AbstractPost: SearchableItemConvertable {
     }
 
     var searchTitle: String? {
-        guard let postTitle = postTitle else {
-            return nil
-        }
-
-        return postTitle
+        return generateTitle(from: postTitle)
     }
 
     var searchDescription: String? {
@@ -66,5 +62,18 @@ fileprivate extension AbstractPost {
             keywords = contentPreviewForDisplay().components(separatedBy: " ").map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
         }
         return keywords
+    }
+
+    func generateTitle(from postTitle: String?) -> String {
+        let noTitleText = NSLocalizedString("No Title", comment: "Label used for posts without a title in spotlight search.")
+        var title = "(\(noTitleText))"
+        if let postTitle = postTitle, !postTitle.isEmpty {
+            title = postTitle
+        }
+
+        guard status != .publish, let statusTitle = statusTitle else {
+            return title
+        }
+        return "[\(statusTitle)] \(title)"
     }
 }
