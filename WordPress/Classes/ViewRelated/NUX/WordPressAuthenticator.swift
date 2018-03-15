@@ -6,6 +6,20 @@ import WordPressUI
 
 
 
+// MARK: - WordPress Site
+//
+public enum WordPressSite {
+
+    /// WordPress.org Site Credentials.
+    ///
+    case wporg(username: String, password: String, xmlrpc: String, options: [AnyHashable: Any])
+
+    /// WordPress.com Site Credentials.
+    ///
+    case wpcom(username: String, authToken: String, isJetpackLogin: Bool)
+}
+
+
 // MARK: - WordPressAuthenticator Delegate Protocol
 //
 public protocol WordPressAuthenticatorDelegate: class {
@@ -43,30 +57,13 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     func refreshSupportBadgeCount()
 
-    /// Signals the Host App that a WordPress.com account is available, with the specified credentials.
+    /// Signals the Host App that a WordPress Site (wpcom or wporg) is available with the specified credentials.
     ///
     /// - Parameters:
-    ///     - username: WordPress.com account username.
-    ///     - authToken: WordPress.com account token.
-    ///     - isJetpackLogin: Boolean indicating if the account is a Jetpack Auth.
-    ///     - onSuccess: Closure to be executed on success. Aditional userInfo may be passed over.
-    ///     - onFailure: Closure to be executed upon failure.
+    ///     - site: WordPress Site Credentials.
+    ///     - onCompletion: Closure to be executed on completion.
     ///
-    /// - Note:
-    ///     - onSuccess's *userInfo* will be relayed back via the `wordpressLoginFinishedJetpackLogin` notification, to the host app.
-    ///
-    func syncWPCom(username: String, authToken: String, isJetpackLogin: Bool, onSuccess: @escaping (_ userInfo: Any) -> (), onFailure: @escaping (Error) -> ())
-
-    /// Signals the Host App that a WordPress Self-Hosted Site is available, with the specified credentials.
-    ///
-    /// - Parameters:
-    ///     - username: WordPress.org account username.
-    ///     - password: WordPress.org account password.
-    ///     - xmlrpc: WordPress.org endpoint.
-    ///     - options: Self Hosted Options colleciton.
-    ///     - onCompletion: Closure to be executed upon completion.
-    ///
-    func syncWPOrg(username: String, password: String, xmlrpc: String, options: [AnyHashable: Any], onCompletion: @escaping () -> ())
+    func sync(site: WordPressSite, onCompletion: @escaping (Error?) -> ())
 }
 
 

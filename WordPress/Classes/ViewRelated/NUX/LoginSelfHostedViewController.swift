@@ -357,7 +357,8 @@ extension LoginSelfHostedViewController {
             fatalError()
         }
 
-        delegate.syncWPOrg(username: username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] in
+        let site = WordPressSite.wporg(username: username, password: password, xmlrpc: xmlrpc, options: options)
+        delegate.sync(site: site) { [weak self] _ in
 
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
 

@@ -107,26 +107,33 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         navigationController.pushViewController(epilogueViewController, animated: true)
     }
 
+    /// Synchronizes the specified WordPress Account.
+    ///
+    func sync(site: WordPressSite, onCompletion: @escaping (Error?) -> ()) {
+        switch site {
+        case .wpcom(let username, let authToken, let isJetpackLogin):
+            syncWPCom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin, onCompletion: onCompletion)
+        case .wporg(let username, let password, let xmlrpc, let options):
+            syncWPOrg(username: username, password: password, xmlrpc: xmlrpc, options: options, onCompletion: onCompletion)
+        }
+    }
+
     /// Synchronizes a WordPress.com account with the specified credentials.
     ///
-    func syncWPCom(username: String, authToken: String, isJetpackLogin: Bool, onSuccess: @escaping (_ userInfo: Any) -> (), onFailure: @escaping (Error) -> ()) {
+    private func syncWPCom(username: String, authToken: String, isJetpackLogin: Bool, onCompletion: @escaping (Error?) -> ()) {
         let service = WordPressComSyncService()
 
-        service.syncWPCom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin, onSuccess: { account in
-            onSuccess(account)
-        }, onFailure: { error in
-            onFailure(error)
-        })
+        service.syncWPCom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin, onCompletion: onCompletion)
     }
 
     /// Synchronizes a WordPress.org account with the specified credentials.
     ///
-    func syncWPOrg(username: String, password: String, xmlrpc: String, options: [AnyHashable: Any], onCompletion: @escaping () -> ()) {
+    private func syncWPOrg(username: String, password: String, xmlrpc: String, options: [AnyHashable: Any], onCompletion: @escaping (Error?) -> ()) {
         let service = BlogSyncFacade()
 
         service.syncBlog(withUsername: username, password: password, xmlrpc: xmlrpc, options: options) { blog in
             RecentSitesService().touch(blog: blog)
-            onCompletion()
+            onCompletion(nil)
         }
     }
 }
