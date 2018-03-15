@@ -7,6 +7,11 @@ extension AbstractPost: SearchableItemConvertable {
 
     var isSearchable: Bool {
         guard status != .trash else {
+            // Don't index trashed posts
+            return false
+        }
+        guard blog.visible else {
+            // Don't index posts for non-visible sites (not visible in the My Sites list)
             return false
         }
         return true
