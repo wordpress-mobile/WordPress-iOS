@@ -120,7 +120,7 @@ open class SignupService: LocalCoreDataService {
     ///     - status: The status callback
     ///     - success: A success calback
     ///     - failure: A failure callback
-    /// - Note: this is only used from the deprecated SignupViewController
+    ///
     func createWPComUserWithParams(_ params: SignupParams,
                                    status: SignupStatusBlock,
                                    success: @escaping SignupSuccessBlock,
