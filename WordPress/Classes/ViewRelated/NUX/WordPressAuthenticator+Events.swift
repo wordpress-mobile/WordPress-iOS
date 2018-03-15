@@ -6,7 +6,6 @@ import Foundation
 public extension WordPressAuthenticator {
     public enum Event {
         case createAccountInitiated
-        case createdAccount
         case loginAutoFillCredentialsFilled
         case loginAutoFillCredentialsUpdated
         case loginEmailFormViewed

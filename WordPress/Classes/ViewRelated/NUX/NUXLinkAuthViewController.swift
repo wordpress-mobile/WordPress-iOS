@@ -32,7 +32,6 @@ class NUXLinkAuthViewController: LoginViewController {
         if let linkSource = loginFields.meta.emailMagicLinkSource {
             switch linkSource {
             case .signup:
-                WordPressAuthenticator.post(event: .createdAccount)
                 WordPressAuthenticator.post(event: .signupMagicLinkSucceeded)
             case .login:
                 WordPressAuthenticator.post(event: .loginMagicLinkSucceeded)
