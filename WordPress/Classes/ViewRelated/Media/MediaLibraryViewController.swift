@@ -415,9 +415,12 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     private func registerUploadCoordinatorObserver() {
         uploadObserverUUID = MediaCoordinator.shared.addObserver({ [weak self] (media, state) in
             switch state {
-            case .progress(let progress) :
-                self?.updateCellProgress(progress, for: media)
-                break
+            case .progress(let progress):
+                if media.remoteStatus == .failed {
+                    self?.showFailedStateForCell(for: media)
+                } else {
+                    self?.updateCellProgress(progress, for: media)
+                }
             case .processing, .uploading:
                 self?.showUploadingStateForCell(for: media)
             case .ended:
