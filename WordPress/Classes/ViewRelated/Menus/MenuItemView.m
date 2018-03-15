@@ -54,7 +54,7 @@
 {
     UIButton *button = [[UIButton alloc] init];
     [button addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    button.titleLabel.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleBody];
+    button.titleLabel.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleBody maximumPointSize:[WPStyleGuide maxFontSize]];
     button.titleLabel.adjustsFontForContentSizeCategory = YES;
     [button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
 
