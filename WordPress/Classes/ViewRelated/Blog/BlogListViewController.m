@@ -389,10 +389,16 @@ static NSInteger HideSearchMinSites = 3;
 }
 
 - (void)removeBlogItemsFromSpotlight:(Blog *)blog {
-    if (blog && blog.dotComID && blog.dotComID > 0) {
+    if (!blog) {
+        return;
+    }
+
+    if (blog.dotComID && blog.dotComID > 0) {
         [SearchManager.shared deleteAllSearchableItemsFromDomain: blog.dotComID.stringValue];
-    } else {
+    } else if (blog.xmlrpc && !blog.xmlrpc.isEmpty) {
         [SearchManager.shared deleteAllSearchableItemsFromDomain: blog.xmlrpc];
+    } else {
+        DDLogWarn(@"Unable to delete all indexed spotlight items for blog: %@", blog.logDescription);
     }
 }
 
