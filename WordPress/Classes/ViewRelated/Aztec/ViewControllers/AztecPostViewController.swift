@@ -1249,6 +1249,13 @@ private extension AztecPostViewController {
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
+        if FeatureFlag.asyncPosting.enabled {
+            alert.addDefaultActionWithTitle("Async Publish (Debug)") { [unowned self]  _ in
+                PostCoordinator.shared.save(post: self.post)
+                self.dismissOrPopView(didSave: true, shouldShowPostEpilogue: false)
+            }
+        }
+
         if postEditorStateContext.isSecondaryPublishButtonShown,
             let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
 
@@ -1279,12 +1286,6 @@ private extension AztecPostViewController {
 
         alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
 
-        if FeatureFlag.asyncPosting.enabled {
-            alert.addDefaultActionWithTitle("Async Upload (Debug)") { [unowned self]  _ in
-                PostCoordinator.shared.save(post: self.post)
-                self.dismissOrPopView(didSave: true, shouldShowPostEpilogue: false)
-            }
-        }
         alert.popoverPresentationController?.barButtonItem = moreBarButtonItem
 
         present(alert, animated: true, completion: nil)
