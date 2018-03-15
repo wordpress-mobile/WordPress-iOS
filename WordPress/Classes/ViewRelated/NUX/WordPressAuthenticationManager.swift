@@ -123,7 +123,19 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     private func syncWPCom(username: String, authToken: String, isJetpackLogin: Bool, onCompletion: @escaping (Error?) -> ()) {
         let service = WordPressComSyncService()
 
-        service.syncWPCom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin, onCompletion: onCompletion)
+        service.syncWPCom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin, onSuccess: { account in
+
+            /// HACK: An alternative notification to LoginFinished. Observe this instead of `WPSigninDidFinishNotification` for Jetpack logins.
+            /// When WPTabViewController no longer destroy's and rebuilds the view hierarchy this alternate notification can be removed.
+            ///
+            let notification = isJetpackLogin == true ? .wordpressLoginFinishedJetpackLogin : Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification)
+            NotificationCenter.default.post(name: notification, object: account)
+
+            onCompletion(nil)
+
+        }, onFailure: { error in
+            onCompletion(error)
+        })
     }
 
     /// Synchronizes a WordPress.org account with the specified credentials.
