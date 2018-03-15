@@ -30,7 +30,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
 
     var gravatarProfile: GravatarProfile?
     var userProfile: UserProfile?
-    @objc var blog: Blog?
+    var site: WordPressSite?
 
 
     // MARK: - Lifecycle Methods
@@ -256,7 +256,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
             info.email = profile.email
         }
 
-        info.blog = blog
+        info.site = site
 
         return info
     }
@@ -362,7 +362,7 @@ extension LoginSelfHostedViewController {
 
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
 
-            self?.blog = blog
+            self?.site = site
             self?.fetchUserProfileInfo(username: username, password: password, xmlrpc: xmlrpc) {
                 self?.showLoginEpilogue()
             }
