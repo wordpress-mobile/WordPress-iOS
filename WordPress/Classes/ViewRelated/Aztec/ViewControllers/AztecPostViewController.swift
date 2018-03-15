@@ -14,9 +14,11 @@ import AVKit
 //
 class AztecPostViewController: UIViewController, PostEditor {
 
-    /// Closure to be executed when the editor gets closed
+    /// Closure to be executed when the editor gets closed.
+    /// Pass `false` for `showPostEpilogue` to prevent the post epilogue
+    /// (PostPost) flow being displayed after the editor is closed.
     ///
-    var onClose: ((_ changesSaved: Bool) -> ())?
+    var onClose: ((_ changesSaved: Bool, _ showPostEpilogue: Bool) -> ())?
 
 
     /// Indicates if Aztec was launched for Photo Posting
@@ -1280,7 +1282,7 @@ private extension AztecPostViewController {
         if FeatureFlag.asyncPosting.enabled {
             alert.addDefaultActionWithTitle("Async Upload (Debug)") { [unowned self]  _ in
                 PostCoordinator.shared.save(post: self.post)
-                self.dismissOrPopView(didSave: true)
+                self.dismissOrPopView(didSave: true, shouldShowPostEpilogue: false)
             }
         }
         alert.popoverPresentationController?.barButtonItem = moreBarButtonItem
@@ -2518,13 +2520,13 @@ private extension AztecPostViewController {
         dismissOrPopView(didSave: false)
     }
 
-    func dismissOrPopView(didSave: Bool) {
+    func dismissOrPopView(didSave: Bool, shouldShowPostEpilogue: Bool = true) {
         stopEditing()
 
         WPAppAnalytics.track(.editorClosed, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
 
         if let onClose = onClose {
-            onClose(didSave)
+            onClose(didSave, shouldShowPostEpilogue)
         } else if isModal() {
             presentingViewController?.dismiss(animated: true, completion: nil)
         } else {
