@@ -1404,7 +1404,7 @@
                                 </variation>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B6x-b7-hU9" customClass="SubheadlineButton" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="90" y="617" width="195" height="30"/>
+                                <rect key="frame" x="0.0" y="617" width="375" height="30"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <state key="normal" title="Enter your password instead">
                                     <color key="titleColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1417,6 +1417,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="B6x-b7-hU9" firstAttribute="width" secondItem="HnR-5a-suO" secondAttribute="width" id="AAB-N8-Iyv"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Mq6-n0-6iO" secondAttribute="trailing" constant="20" id="CoO-Ax-hqg"/>
                             <constraint firstItem="Mq6-n0-6iO" firstAttribute="centerX" secondItem="HnR-5a-suO" secondAttribute="centerX" id="H21-tP-R9E"/>
                             <constraint firstItem="h4a-j8-84P" firstAttribute="top" secondItem="B6x-b7-hU9" secondAttribute="bottom" priority="900" constant="20" id="asJ-6Y-anx"/>
