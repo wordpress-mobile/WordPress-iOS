@@ -65,6 +65,18 @@ extension WPStyleGuide {
         label.adjustsFontForContentSizeCategory = true
     }
 
+
+    /// Creates a UIFont for the user current text size settings. The maximum font size is declared in WPStyleGuide.maximumFontSize
+    ///
+    /// - Parameters:
+    ///     - style: The desired UIFontTextStyle.
+    ///
+    /// - Returns: The created font.
+    ///
+    @objc public class func fontForTextStyle(_ style: UIFontTextStyle) -> UIFont {
+        return fontForTextStyle(style, maximumPointSize: maxFontSize)
+    }
+
     /// Creates a UIFont for the user current text size settings and a maximum font size
     ///
     /// - Parameters:
