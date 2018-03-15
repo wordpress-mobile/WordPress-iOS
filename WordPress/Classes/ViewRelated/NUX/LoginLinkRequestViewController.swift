@@ -53,6 +53,8 @@ class LoginLinkRequestViewController: LoginViewController {
     @objc func localizeControls() {
         let format = NSLocalizedString("We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!", comment: "Instructional text for the magic link login flow.")
         label?.text = NSString(format: format as NSString, loginFields.username) as String
+        label?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+        label?.adjustsFontForContentSizeCategory = true
 
         let sendLinkButtonTitle = NSLocalizedString("Send Link", comment: "Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user.")
         sendLinkButton?.setTitle(sendLinkButtonTitle, for: UIControlState())
@@ -62,6 +64,7 @@ class LoginLinkRequestViewController: LoginViewController {
         usePasswordButton?.setTitle(usePasswordTitle, for: UIControlState())
         usePasswordButton?.setTitle(usePasswordTitle, for: .highlighted)
         usePasswordButton?.titleLabel?.numberOfLines = 0
+        usePasswordButton?.titleLabel?.textAlignment = .center
         usePasswordButton?.accessibilityIdentifier = "Use Password"
     }
 
@@ -109,6 +112,11 @@ class LoginLinkRequestViewController: LoginViewController {
                 strongSelf.configureLoading(false)
         })
     }
+
+//    overide func didChangePreferredContentSize() {
+//        super.didChangePreferredContentSize()
+//
+//    }
 
     // MARK: - Actions
 
