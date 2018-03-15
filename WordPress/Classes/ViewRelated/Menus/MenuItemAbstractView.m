@@ -2,6 +2,7 @@
 #import "MenuItem+ViewDesign.h"
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
+#import "WordPress-Swift.h"
 
 @interface MenuItemDrawingView ()
 
@@ -121,7 +122,8 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     label.translatesAutoresizingMaskIntoConstraints = NO;
     label.numberOfLines = 2;
     label.textColor = [self textLabelColor];
-    label.font = [WPFontManager systemRegularFontOfSize:17.0];
+    label.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleBody maximumPointSize:[WPStyleGuide maxFontSize]];
+    label.adjustsFontForContentSizeCategory = YES;
     label.backgroundColor = [UIColor clearColor];
 
     NSAssert(_stackView != nil, @"stackView is nil");
