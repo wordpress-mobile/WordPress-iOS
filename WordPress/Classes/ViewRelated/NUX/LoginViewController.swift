@@ -33,13 +33,13 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
 
     /// Places the WordPress logo in the navbar
     ///
-    @objc func setupNavBarIcon() {
+    func setupNavBarIcon() {
         addWordPressLogoToNavController()
     }
 
     /// Configures instruction label font
     ///
-    @objc func styleInstructions() {
+    func styleInstructions() {
         instructionLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
     }
 
