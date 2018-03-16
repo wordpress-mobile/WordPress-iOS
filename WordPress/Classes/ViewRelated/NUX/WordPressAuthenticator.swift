@@ -232,7 +232,7 @@ public protocol WordPressAuthenticatorDelegate: class {
         // NUX vc then present the auth controller.
         // - If the rootViewController is presenting *any* other vc, present the
         // auth controller from the presented vc.
-        let presenter = rootViewController.leafViewController
+        let presenter = rootViewController.topmostPresentedViewController
         if presenter.isKind(of: NUXNavigationController.self) || presenter.isKind(of: LoginNavigationController.self),
             let parent = presenter.presentingViewController {
             parent.dismiss(animated: false, completion: {
