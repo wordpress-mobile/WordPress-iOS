@@ -278,6 +278,7 @@ extension ShareModularViewController {
     }
 
     @objc func publishWasPressed() {
+        tracks.trackExtensionPosted(shareData.postStatus.rawValue)
         savePostToRemoteSite()
     }
 
@@ -819,7 +820,6 @@ fileprivate extension ShareModularViewController {
                                                siteID: siteID,
                                                localMediaFileURLs: localImageURLs,
                                                requestEnqueued: {
-                                                self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
                                                 self.dismiss()
             }, onFailure: {
                 let error = self.createErrorWithDescription("Failed to save and upload post with media.")
@@ -835,7 +835,6 @@ fileprivate extension ShareModularViewController {
                                              status: shareData.postStatus.rawValue,
                                              siteID: siteID,
                                              onComplete: {
-                                                self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
                                                 self.dismiss()
             }, onFailure: {
                 let error = self.createErrorWithDescription("Failed to save and upload post with no media.")
