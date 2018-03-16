@@ -41,7 +41,7 @@ extension UIViewController {
 
     /// Returns the view controller at the top of the view hierarchy (AKA leaf).
     ///
-    @objc public var leafViewController: UIViewController {
+    @objc public var topmostPresentedViewController: UIViewController {
         var controller = self
         while let presented = controller.presentedViewController {
             controller = presented
