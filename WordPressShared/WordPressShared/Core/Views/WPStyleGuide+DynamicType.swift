@@ -194,10 +194,11 @@ extension WPStyleGuide {
     ///
     /// - Returns: The created font point size.
     ///
-    private class func customNotoFontNamed(_ fontName: String, forTextStyle style: UIFontTextStyle) -> UIFont {
+    private class func customNotoFontNamed(_ fontName: String, forTextStyle style: UIFontTextStyle, maximumPointSize: CGFloat = maxFontSize) -> UIFont {
         WPFontManager.loadNotoFontFamily()
-        let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
-        guard let font = UIFont(name: fontName, size: fontDescriptor.pointSize) else {
+        let descriptor = fontDescriptor(style, maximumPointSize: maximumPointSize)
+
+        guard let font = UIFont(name: fontName, size: descriptor.pointSize) else {
             // If we can't get the Noto font for some reason we will default to the system font
             return fontForTextStyle(style)
         }
