@@ -134,14 +134,14 @@ import MobileCoreServices
         }
 
         if let siteID = validWPComSiteID(with: domainString) {
-            fetchPost(postID, blogID: siteID, onSuccess: { [weak self] post in
-                self?.switchToListViewAndOpenEditor(post)
+            fetchPost(postID, blogID: siteID, onSuccess: { [weak self] apost in
+                self?.navigateToScreen(for: apost)
             }, onFailure: {
                 DDLogError("Search manager unable to open post - postID:\(postID) siteID:\(siteID)")
             })
         } else {
-            fetchSelfHostedPost(postID, blogXMLRpcString: domainString, onSuccess: { [weak self] post in
-                self?.switchToListViewAndOpenEditor(post)
+            fetchSelfHostedPost(postID, blogXMLRpcString: domainString, onSuccess: { [weak self] apost in
+                self?.navigateToScreen(for: apost, isDotCom: false)
             }, onFailure: {
                 DDLogError("Search manager unable to open self hosted post - postID:\(postID) xmlrpc:\(domainString)")
             })
@@ -156,6 +156,8 @@ fileprivate extension SearchManager {
     func validWPComSiteID(with domainString: String) -> NSNumber? {
         return NumberFormatter().number(from: domainString)
     }
+
+    // MARK: Fetching
 
     func fetchPost(_ postID: NSNumber,
                    blogID: NSNumber,
@@ -196,35 +198,97 @@ fileprivate extension SearchManager {
         })
     }
 
-    func switchToListViewAndOpenEditor(_ apost: AbstractPost) {
+    // MARK: Navigation
+
+    func navigateToScreen(for apost: AbstractPost, isDotCom: Bool = true) {
         if let post = apost as? Post {
-            WPAppAnalytics.track(.spotlightSearchOpenedPost, with: post)
-            WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
-            openEditor(for: post)
+            self.navigateToScreen(for: post, isDotCom: isDotCom)
         } else if let page = apost as? Page {
-            WPAppAnalytics.track(.spotlightSearchOpenedPage, with: page)
-            WPTabBarController.sharedInstance().switchTabToPagesList(for: page)
+            self.navigateToScreen(for: page, isDotCom: isDotCom)
+        }
+    }
+
+    func navigateToScreen(for post: Post, isDotCom: Bool) {
+        WPAppAnalytics.track(.spotlightSearchOpenedPost, with: post)
+        let postIsPublishedOrScheduled = (post.status == .publish || post.status == .scheduled)
+        if postIsPublishedOrScheduled && isDotCom {
+            openReader(for: post, onFailure: {
+                // If opening the reader fails, just open preview.
+                openPreview(for: post)
+            })
+        } else if postIsPublishedOrScheduled {
+            openPreview(for: post)
+        } else {
+            openEditor(for: post)
+        }
+    }
+
+    func navigateToScreen(for page: Page, isDotCom: Bool) {
+        WPAppAnalytics.track(.spotlightSearchOpenedPage, with: page)
+        let pageIsPublishedOrScheduled = (page.status == .publish || page.status == .scheduled)
+        if pageIsPublishedOrScheduled && isDotCom {
+            openReader(for: page, onFailure: {
+                // If opening the reader fails, just open preview.
+                openPreview(for: page)
+            })
+        } else if pageIsPublishedOrScheduled {
+            openPreview(for: page)
+        } else {
             openEditor(for: page)
         }
     }
 
+    func openListView(for apost: AbstractPost) {
+        if let post = apost as? Post {
+            WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
+        } else if let page = apost as? Page {
+            WPTabBarController.sharedInstance().switchTabToPagesList(for: page)
+        }
+    }
+
+    func openReader(for apost: AbstractPost, onFailure: () -> Void) {
+        guard let postID = apost.postID,
+            postID.intValue > 0,
+            let blogID = apost.blog.dotComID else {
+                onFailure()
+                return
+        }
+        WPTabBarController.sharedInstance().showReaderTab(forPost: postID, onBlog: blogID)
+    }
+
     func openEditor(for post: Post) {
+        openListView(for: post)
         let editor = EditPostViewController.init(post: post)
         editor.modalPresentationStyle = .fullScreen
         WPTabBarController.sharedInstance().present(editor, animated: true, completion: nil)
     }
 
     func openEditor(for page: Page) {
+        openListView(for: page)
         let editorSettings = EditorSettings()
         let postViewController = editorSettings.instantiatePageEditor(page: page) { (editor, vc) in
-            editor.onClose = { changesSaved in
+            editor.onClose = { changesSaved, _ in
                 vc.dismiss(animated: true, completion: nil)
             }
         }
-        let navController = UINavigationController(rootViewController: postViewController)
 
+        let navController = UINavigationController(rootViewController: postViewController)
         navController.restorationIdentifier = Restorer.Identifier.navigationController.rawValue
         navController.modalPresentationStyle = .fullScreen
+        WPTabBarController.sharedInstance().present(navController, animated: true, completion: nil)
+    }
+
+    func openPreview(for apost: AbstractPost) {
+        openListView(for: apost)
+        let previewController = PostPreviewViewController(post: apost)
+        previewController.hidesBottomBarWhenPushed = true
+
+        let navController = UINavigationController(rootViewController: previewController)
+        navController.restorationIdentifier = Restorer.Identifier.navigationController.rawValue
+        navController.modalPresentationStyle = .fullScreen
+        previewController.onClose = {
+            navController.dismiss(animated: true) {}
+        }
         WPTabBarController.sharedInstance().present(navController, animated: true, completion: nil)
     }
 }
