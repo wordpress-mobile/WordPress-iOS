@@ -2737,12 +2737,6 @@ extension AztecPostViewController {
         refreshNavigationBar()
     }
 
-    fileprivate func observe(media: Media) {
-        let _ = mediaCoordinator.addObserver({ [weak self](media, state) in
-                self?.mediaObserver(media: media, state: state)
-            }, for: media)
-    }
-
     fileprivate func insert(exportableAsset: ExportableAsset, source: MediaSource, attachment: MediaAttachment? = nil) {
         var attachment = attachment
         if attachment == nil {
@@ -2759,7 +2753,6 @@ extension AztecPostViewController {
         let info = MediaAnalyticsInfo(origin: .editor(source), selectionMethod: mediaSelectionMethod)
         let media = mediaCoordinator.addMedia(from: exportableAsset, to: self.post, analyticsInfo: info)
         attachment?.uploadID = media.uploadID
-        observe(media: media)
     }
 
     fileprivate func insertExternalMediaWithURL(_ url: URL) {
@@ -2856,7 +2849,7 @@ extension AztecPostViewController {
             attachment.uploadID = media.uploadID
             let info = MediaAnalyticsInfo(origin: .editor(.wpMediaLibrary), selectionMethod: mediaSelectionMethod)
             mediaCoordinator.addMedia(media, analyticsInfo: info)
-            observe(media: media)
+            media.addPostsObject(post)
         }
     }
 
