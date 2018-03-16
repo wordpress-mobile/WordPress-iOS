@@ -2700,15 +2700,7 @@ extension AztecPostViewController {
         case .failed(let error):
             handleError(error, onAttachment: attachment)
         case .progress(let value):
-            guard media.remoteStatus == .processing || media.remoteStatus == .pushing else {
-                return
-            }
-            if value >= 1 {
-                attachment.progress = nil
-            } else {
-                attachment.progress = value
-            }
-            richTextView.refresh(attachment, overlayUpdateOnly: true)
+            handleProgress(value, forMedia: media, onAttachment: attachment)
         }
     }
 
@@ -2930,6 +2922,18 @@ extension AztecPostViewController {
         richTextView.refresh(attachment, overlayUpdateOnly: true)
     }
 
+    private func handleProgress(_ value: Double, forMedia media: Media, onAttachment attachment: Aztec.MediaAttachment) {
+        guard media.remoteStatus == .processing || media.remoteStatus == .pushing else {
+            return
+        }
+        if value >= 1 {
+            attachment.progress = nil
+        } else {
+            attachment.progress = value
+        }
+        richTextView.refresh(attachment, overlayUpdateOnly: true)
+    }
+
     fileprivate var failedMediaIDs: [String] {
         var failedIDs = [String]()
         richTextView.textStorage.enumerateAttachments { (attachment, range) in
@@ -2980,6 +2984,7 @@ extension AztecPostViewController {
     }
 
     fileprivate func processMediaAttachments() {
+        refreshGlobalProgress()
         richTextView.textStorage.enumerateAttachments { (attachment, range) in
             guard let mediaAttachment = attachment as? MediaAttachment else {
                 return
@@ -2990,8 +2995,13 @@ extension AztecPostViewController {
                 if let thumbnailURL = media.absoluteThumbnailLocalURL {
                     self.handleThumbnailURL(thumbnailURL, attachment: mediaAttachment)
                 }
+
                 if let error = media.error {
                     self.handleError(error, onAttachment: mediaAttachment)
+                }
+
+                if let progress = self.mediaCoordinator.progress(for: media) {
+                    self.handleProgress(progress.fractionCompleted, forMedia: media, onAttachment: mediaAttachment)
                 }
             } else {
                 if let videoAttachment = mediaAttachment as? VideoAttachment {
