@@ -120,7 +120,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"Options", nil);
+    self.title = NSLocalizedString(@"Post Settings", @"The title of the Post Settings screen.");
 
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
