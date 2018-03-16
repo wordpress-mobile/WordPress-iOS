@@ -302,3 +302,10 @@ class FilterTabBar: UIControl {
         static let size: CGFloat = 14.0
     }
 }
+
+extension FilterTabBar: Accessible {
+    func prepareForVoiceOver() {
+        isAccessibilityElement = false
+        accessibilityTraits = super.accessibilityTraits | UIAccessibilityTraitTabBar
+    }
+}
