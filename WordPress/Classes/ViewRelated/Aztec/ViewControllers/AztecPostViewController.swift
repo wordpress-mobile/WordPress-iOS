@@ -2848,8 +2848,7 @@ extension AztecPostViewController {
         if let attachment = attachment {
             attachment.uploadID = media.uploadID
             let info = MediaAnalyticsInfo(origin: .editor(.wpMediaLibrary), selectionMethod: mediaSelectionMethod)
-            mediaCoordinator.addMedia(media, analyticsInfo: info)
-            media.addPostsObject(post)
+            mediaCoordinator.addMedia(media, to: post, analyticsInfo: info)
         }
     }
 
