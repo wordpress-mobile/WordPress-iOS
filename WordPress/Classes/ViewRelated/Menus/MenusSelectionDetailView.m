@@ -78,7 +78,7 @@
 {
     UILabel *label = [[UILabel alloc] init];
     label.numberOfLines = 0;
-    label.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleFootnote];
+    label.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleFootnote maximumPointSize:[WPStyleGuide maxFontSize]];
     label.adjustsFontForContentSizeCategory = YES;
     label.textColor = [WPStyleGuide grey];
     _subTitleLabel = label;
@@ -92,7 +92,7 @@
 {
     UILabel *label = [[UILabel alloc] init];
     label.numberOfLines = 1;
-    label.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleBody];
+    label.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleBody maximumPointSize:[WPStyleGuide maxFontSize]];
     label.adjustsFontForContentSizeCategory = YES;
     label.textColor = [WPStyleGuide darkGrey];
     label.adjustsFontSizeToFitWidth = YES;
