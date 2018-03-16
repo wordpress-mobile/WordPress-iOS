@@ -6,6 +6,8 @@ class EditPostViewController: UIViewController {
     @objc var showImmediately: Bool = false
     /// appear with the media picker open
     @objc var openWithMediaPicker: Bool = false
+    /// appear with the post epilogue visible
+    @objc var openWithPostPost: Bool = false
     /// appear with media pre-inserted into the post
     var insertedMedia: [Media]? = nil
 
@@ -81,10 +83,14 @@ class EditPostViewController: UIViewController {
         // show postpost, which will be transparent
         view.isOpaque = false
         view.backgroundColor = .clear
+
+        if openWithPostPost {
+            showPostPost()
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        if !hasShownEditor {
+        if !openWithPostPost && !hasShownEditor {
             showEditor()
             hasShownEditor = true
         }
@@ -154,17 +160,8 @@ class EditPostViewController: UIViewController {
         onClose?(changesSaved)
 
         var dismissPostPostImmediately = true
-        if showPostEpilogue && shouldShowPostPost(hasChanges: changesSaved), let post = post {
-            postPost.setup(post: post)
-            postPost.onClose = {
-                self.closePostPost(animated: true)
-            }
-            postPost.reshowEditor = {
-                self.showEditor()
-            }
-            postPost.preview = {
-                self.previewPost()
-            }
+        if showPostEpilogue && shouldShowPostPost(hasChanges: changesSaved) {
+            showPostPost()
             dismissPostPostImmediately = false
         }
 
@@ -175,9 +172,29 @@ class EditPostViewController: UIViewController {
         }
     }
 
+    private func showPostPost() {
+        guard let post = post else {
+            return
+        }
+
+        postPost.setup(post: post)
+        postPost.onClose = {
+            self.closePostPost(animated: true)
+        }
+        postPost.reshowEditor = {
+            self.showEditor()
+        }
+        postPost.preview = {
+            self.previewPost()
+        }
+    }
+
     @objc func shouldShowPostPost(hasChanges: Bool) -> Bool {
         guard let post = post else {
             return false
+        }
+        if openWithPostPost {
+            return true
         }
         if editingExistingPost {
             return false
