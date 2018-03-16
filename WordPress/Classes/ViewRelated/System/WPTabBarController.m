@@ -500,7 +500,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
 {
     ReaderMenuViewController *readerMenuViewController = (ReaderMenuViewController *)[self.readerNavigationController.viewControllers firstObject];
-    if ([ReaderMenuViewController isKindOfClass:[ReaderMenuViewController class]]) {
+    if ([readerMenuViewController isKindOfClass:[ReaderMenuViewController class]]) {
         [self showReaderTab];
         [readerMenuViewController openPost:postId onBlog:blogId];
     }
