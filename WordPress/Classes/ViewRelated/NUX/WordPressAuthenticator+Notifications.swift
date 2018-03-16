@@ -1,7 +1,3 @@
-import Foundation
-
-
-
 // MARK: - WordPressAuthenticator-Y Notifications
 //
 extension NSNotification.Name {
