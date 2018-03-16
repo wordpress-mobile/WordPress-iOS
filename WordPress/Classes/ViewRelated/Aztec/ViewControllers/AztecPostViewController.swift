@@ -1252,6 +1252,7 @@ private extension AztecPostViewController {
 
         if FeatureFlag.asyncPosting.enabled {
             alert.addDefaultActionWithTitle("Async Publish (Debug)") { [unowned self]  _ in
+                self.mapUIContentToPostAndSave()
                 PostCoordinator.shared.save(post: self.post)
                 self.dismissOrPopView(didSave: true, shouldShowPostEpilogue: false)
             }
