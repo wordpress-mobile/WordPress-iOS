@@ -499,9 +499,25 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
 {
+    [self showReaderTab];
+    
+    if (self.selectedIndex == WPTabReader) {
+        UIViewController *topViewController = (ReaderDetailViewController *)self.readerNavigationController.topViewController;
+        if ([topViewController isKindOfClass:[ReaderDetailViewController class]]) {
+            ReaderDetailViewController *readerDetailVC = (ReaderDetailViewController *)topViewController;
+            ReaderPost *readerPost = readerDetailVC.post;
+            if ([readerPost.postID isEqual:postId] && [readerPost.siteID isEqual: blogId]) {
+                 // The desired reader detail VC is already the top VC for the tab. Move along.
+                return;
+            } else {
+                // Close the existing detail tab before opening another one.
+                [self.readerSplitViewController popToRootViewControllersAnimated:YES];
+            }
+        }
+    }
+
     ReaderMenuViewController *readerMenuViewController = (ReaderMenuViewController *)[self.readerNavigationController.viewControllers firstObject];
     if ([readerMenuViewController isKindOfClass:[ReaderMenuViewController class]]) {
-        [self showReaderTab];
         [readerMenuViewController openPost:postId onBlog:blogId];
     }
 }
