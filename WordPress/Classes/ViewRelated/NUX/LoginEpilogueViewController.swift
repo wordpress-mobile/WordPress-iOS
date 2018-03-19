@@ -43,6 +43,9 @@ class LoginEpilogueViewController: UIViewController {
         }
     }
 
+
+    // MARK: - Lifecycle Methods
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
@@ -68,9 +71,12 @@ class LoginEpilogueViewController: UIViewController {
         super.viewDidLayoutSubviews()
         colorPanelBasedOnTableViewContents()
     }
+}
 
 
-    // MARK: - Configuration
+// MARK: - Configuration
+//
+private extension LoginEpilogueViewController {
 
     private func configureButtons(numberOfBlogs: Int) {
         let connectTitle: String
@@ -108,9 +114,12 @@ class LoginEpilogueViewController: UIViewController {
             shadowView.isHidden = true
         }
     }
+}
 
 
-    // MARK: - Actions
+// MARK: - Actions
+//
+extension LoginEpilogueViewController {
 
     @IBAction func dismissEpilogue() {
         onDismiss?()
