@@ -6,7 +6,7 @@ class LoginEpilogueViewController: UIViewController {
     @IBOutlet var shadowView: UIView?
     @IBOutlet var connectButton: UIButton?
     @IBOutlet var continueButton: UIButton?
-    @objc var tableViewController: LoginEpilogueTableView?
+    @objc var tableViewController: LoginEpilogueTableViewController?
     var onDismiss: (() -> Void)?
     var epilogueUserInfo: LoginEpilogueUserInfo?
     var jetpackLogin = false
@@ -47,7 +47,7 @@ class LoginEpilogueViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        if let vc = segue.destination as? LoginEpilogueTableView {
+        if let vc = segue.destination as? LoginEpilogueTableViewController {
             tableViewController = vc
         }
     }
