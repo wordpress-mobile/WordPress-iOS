@@ -3,7 +3,7 @@ import WordPressShared
 
 // wrap BlogListDataSource calls to add a section for the user's info cell
 class LoginEpilogueTableViewController: UITableViewController {
-    @objc var blogDataSource: BlogListDataSource
+    private let blogDataSource = BlogListDataSource()
     var blogCount: Int?
     var epilogueUserInfo: LoginEpilogueUserInfo? {
         didSet {
@@ -13,7 +13,6 @@ class LoginEpilogueTableViewController: UITableViewController {
     }
 
     required init?(coder aDecoder: NSCoder) {
-        blogDataSource = BlogListDataSource()
         super.init(coder: aDecoder)
     }
 
