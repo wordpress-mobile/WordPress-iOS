@@ -78,7 +78,7 @@ class LoginEpilogueViewController: UIViewController {
 //
 private extension LoginEpilogueViewController {
 
-    private func configureButtons(numberOfBlogs: Int) {
+    func configureButtons(numberOfBlogs: Int) {
         let connectTitle: String
         if numberOfBlogs == 0 {
             connectTitle = NSLocalizedString("Connect a site", comment: "Button title")
@@ -91,12 +91,12 @@ private extension LoginEpilogueViewController {
         continueButton.accessibilityIdentifier = "Continue"
         connectButton.setTitle(connectTitle, for: .normal)
 
-        if jetpackLogin {
-            connectButton?.isHidden = true
+        if let site = site, case let .wpcom(_, _, isJetpackLogin, _) = site {
+            connectButton.isHidden = isJetpackLogin
         }
     }
 
-    private func colorPanelBasedOnTableViewContents() {
+    func colorPanelBasedOnTableViewContents() {
         guard let tableView = tableViewController?.tableView,
             let buttonPanel = buttonPanel else {
                 return
@@ -133,5 +133,106 @@ extension LoginEpilogueViewController {
             return
         }
         navigationController?.setViewControllers([controller], animated: true)
+    }
+}
+
+
+// MARK: - Interface Private Methods
+//
+private extension LoginEpilogueViewController {
+
+    ///
+    ///
+    func refreshInterface(with site: WordPressSite) {
+        switch site {
+        case .wporg(let username, let password, let xmlrpc, _):
+            refreshInterfaceForSelfHosted(username: username, password: password, xmlrpc: xmlrpc)
+        case .wpcom:
+            refreshInterfaceForDotcom()
+        }
+    }
+}
+
+
+// MARK: - Dotcom-Y Methods
+//
+private extension LoginEpilogueViewController {
+
+    /// Refreshes the interface so that the main WordPress.com account is onscreen.
+    ///
+    func refreshInterfaceForDotcom() {
+        /// The self-hosted flow sets user info,  If no user info is set, assume a wpcom flow and try the default wp account.
+        ///
+        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        guard let account = service.defaultWordPressComAccount() else {
+            return
+        }
+
+        tableViewController?.epilogueUserInfo = LoginEpilogueUserInfo(account: account)
+        configureButtons(numberOfBlogs: account.blogs.count)
+    }
+}
+
+
+// MARK: - SelfHosted-Y Methods
+//
+private extension LoginEpilogueViewController {
+
+    /// Refreshes the Interface, to display a newly connected SelfHosted site, with the specified endpoint / credentials.
+    ///
+    func refreshInterfaceForSelfHosted(username: String, password: String, xmlrpc: String) {
+
+        loadEpilogueInfo(username: username, password: password, xmlrpc: xmlrpc) { [weak self] epilogueInfo in
+            guard let `self` = self else {
+                return
+            }
+
+            self.tableViewController?.epilogueUserInfo = epilogueInfo
+            self.tableViewController?.blog = self.loadBlog(with: username, and: xmlrpc)
+            self.configureButtons(numberOfBlogs: 1)
+        }
+    }
+
+    /// Loads the EpilogueInfo for a SelfHosted site, with the specified credentials, at the given endpoint.
+    ///
+    func loadEpilogueInfo(username: String, password: String, xmlrpc: String, completion: @escaping (LoginEpilogueUserInfo?) -> ()) {
+
+        guard let usersService = UsersService(username: username, password: password, xmlrpc: xmlrpc) else {
+            completion(nil)
+            return
+        }
+
+        /// Load: User's Profile
+        ///
+        usersService.fetchProfile { userProfile in
+
+            guard let userProfile = userProfile else {
+                completion(nil)
+                return
+            }
+
+            var epilogueInfo = LoginEpilogueUserInfo()
+            epilogueInfo.update(with: userProfile)
+
+            /// Load: Gravatar's Metadata
+            ///
+            let gravatarService = GravatarService()
+            gravatarService.fetchProfile(email: userProfile.email) { gravatarProfile in
+                if let gravatarProfile = gravatarProfile {
+                    epilogueInfo.update(with: gravatarProfile)
+                }
+
+                completion(epilogueInfo)
+            }
+        }
+    }
+
+    /// Loads the Blog for a given Username / XMLRPC, if any.
+    ///
+    private func loadBlog(with username: String, and xmlrpc: String) -> Blog? {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = BlogService(managedObjectContext: context)
+
+        return service.findBlog(withXmlrpc: xmlrpc, andUsername: username)
     }
 }
