@@ -200,6 +200,7 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
 // MARK: - Handle changes in traitCollections. In particular, changes in Dynamic Type
 extension LoginViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
             didChangePreferredContentSize()
         }

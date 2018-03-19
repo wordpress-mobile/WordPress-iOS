@@ -144,6 +144,7 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
 
 extension NUXSubmitButton {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
             didChangePreferredContentSize()
         }
