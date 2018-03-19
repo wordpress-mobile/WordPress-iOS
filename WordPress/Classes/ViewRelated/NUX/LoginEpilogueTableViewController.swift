@@ -87,6 +87,7 @@ class LoginEpilogueTableViewController: UITableViewController {
         guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SectionHeader") as? EpilogueSectionHeaderFooter else {
             fatalError("Failed to get a section header cell")
         }
+
         cell.titleLabel?.text = sectionTitle
 
         return cell
@@ -94,14 +95,14 @@ class LoginEpilogueTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return 140.0
-        } else {
-            return 52.0
+            return Settings.firstSectionRowHeight
         }
+
+        return Settings.otherSectionRowHeight
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return 50.0
+        return Settings.headerHeight
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -117,14 +118,29 @@ class LoginEpilogueTableViewController: UITableViewController {
     }
 }
 
-/// UITableViewDelegate methods
+
+// MARK: - UITableViewDelegate methods
+//
 extension LoginEpilogueTableViewController {
+
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let headerView = view as? UITableViewHeaderFooterView else {
             return
         }
+
         headerView.textLabel?.font = UIFont.preferredFont(forTextStyle: .footnote)
         headerView.textLabel?.textColor = WPStyleGuide.greyDarken20()
         headerView.contentView.backgroundColor = WPStyleGuide.lightGrey()
+    }
+}
+
+
+// MARK: - UITableViewDelegate methods
+//
+private extension LoginEpilogueTableViewController {
+    struct Settings {
+        static let firstSectionRowHeight = CGFloat(140)
+        static let otherSectionRowHeight = CGFloat(52)
+        static let headerHeight = CGFloat(50)
     }
 }
