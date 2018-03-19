@@ -24,7 +24,7 @@ extension WPStyleGuide {
     ///     - style: The desired UIFontTextStyle.
     ///
     @objc public class func configureLabel(_ label: UILabel, textStyle style: UIFontTextStyle) {
-        label.font = UIFont.preferredFont(forTextStyle: style)
+        label.font = fontForTextStyle(style)
         label.adjustsFontForContentSizeCategory = true
     }
 
