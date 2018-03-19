@@ -94,7 +94,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
-    func presentLoginEpilogue(in navigationController: UINavigationController, epilogueInfo: LoginEpilogueUserInfo? = nil, isJetpackLogin: Bool, onDismiss: @escaping () -> Void) {
+    func presentLoginEpilogue(in navigationController: UINavigationController, for site: WordPressSite, isJetpackLogin: Bool, onDismiss: @escaping () -> Void) {
         let storyboard = UIStoryboard(name: "LoginEpilogue", bundle: .main)
         guard let epilogueViewController = storyboard.instantiateInitialViewController() as? LoginEpilogueViewController else {
             fatalError()
@@ -117,6 +117,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             syncWPOrg(username: username, password: password, xmlrpc: xmlrpc, options: options, onCompletion: onCompletion)
         }
     }
+}
+
+
+// MARK: - WordPressAuthenticatorManager
+//
+private extension WordPressAuthenticationManager {
 
     /// Synchronizes a WordPress.com account with the specified credentials.
     ///
