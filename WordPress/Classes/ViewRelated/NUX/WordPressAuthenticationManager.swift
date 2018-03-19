@@ -100,8 +100,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             fatalError()
         }
 
-        epilogueViewController.epilogueUserInfo = epilogueInfo
-        epilogueViewController.jetpackLogin = isJetpackLogin
+        epilogueViewController.site = site
         epilogueViewController.onDismiss = onDismiss
 
         navigationController.pushViewController(epilogueViewController, animated: true)
