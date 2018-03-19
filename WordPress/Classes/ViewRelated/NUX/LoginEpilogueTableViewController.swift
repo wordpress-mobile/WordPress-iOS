@@ -2,7 +2,7 @@ import UIKit
 import WordPressShared
 
 // wrap BlogListDataSource calls to add a section for the user's info cell
-class LoginEpilogueTableView: UITableViewController {
+class LoginEpilogueTableViewController: UITableViewController {
     @objc var blogDataSource: BlogListDataSource
     var blogCount: Int?
     var epilogueUserInfo: LoginEpilogueUserInfo? {
@@ -118,7 +118,7 @@ class LoginEpilogueTableView: UITableViewController {
 }
 
 /// UITableViewDelegate methods
-extension LoginEpilogueTableView {
+extension LoginEpilogueTableViewController {
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let headerView = view as? UITableViewHeaderFooterView else {
             return
