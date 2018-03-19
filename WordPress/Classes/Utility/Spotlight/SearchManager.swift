@@ -239,6 +239,7 @@ fileprivate extension SearchManager {
     }
 
     func openListView(for apost: AbstractPost) {
+        closePreviewIfNeeded(for: apost)
         if let post = apost as? Post {
             WPTabBarController.sharedInstance().switchTabToPostsList(for: post)
         } else if let page = apost as? Page {
@@ -247,6 +248,7 @@ fileprivate extension SearchManager {
     }
 
     func openReader(for apost: AbstractPost, onFailure: () -> Void) {
+        closePreviewIfNeeded(for: apost)
         guard let postID = apost.postID,
             postID.intValue > 0,
             let blogID = apost.blog.dotComID else {
@@ -257,6 +259,7 @@ fileprivate extension SearchManager {
     }
 
     func openEditor(for post: Post) {
+        closePreviewIfNeeded(for: post)
         openListView(for: post)
         let editor = EditPostViewController.init(post: post)
         editor.modalPresentationStyle = .fullScreen
@@ -264,6 +267,7 @@ fileprivate extension SearchManager {
     }
 
     func openEditor(for page: Page) {
+        closePreviewIfNeeded(for: page)
         openListView(for: page)
         let editorSettings = EditorSettings()
         let postViewController = editorSettings.instantiatePageEditor(page: page) { (editor, vc) in
@@ -279,16 +283,27 @@ fileprivate extension SearchManager {
     }
 
     func openPreview(for apost: AbstractPost) {
-        openListView(for: apost)
-        let previewController = PostPreviewViewController(post: apost)
-        previewController.hidesBottomBarWhenPushed = true
-
-        let navController = UINavigationController(rootViewController: previewController)
-        navController.restorationIdentifier = Restorer.Identifier.navigationController.rawValue
-        navController.modalPresentationStyle = .fullScreen
-        previewController.onClose = {
-            navController.dismiss(animated: true) {}
+        WPTabBarController.sharedInstance().showMySitesTab()
+        closePreviewIfNeeded(for: apost)
+        let controller = PostPreviewViewController(post: apost)
+        controller.hidesBottomBarWhenPushed = true
+        let navWrapper = UINavigationController(rootViewController: controller)
+        controller.onClose = {
+            navWrapper.dismiss(animated: true) {}
         }
-        WPTabBarController.sharedInstance().present(navController, animated: true, completion: nil)
+        WPTabBarController.sharedInstance().present(navWrapper, animated: true, completion: nil)
+        openListView(for: apost)
+    }
+
+    func closePreviewIfNeeded(for apost: AbstractPost) {
+        guard let navController = WPTabBarController.sharedInstance().presentedViewController as? UINavigationController,
+            let previewVC = navController.topViewController as? PostPreviewViewController,
+            previewVC.apost != apost else {
+                // Do nothing — post is already loaded or PostPreviewViewController isn't visible
+                return
+        }
+
+        // Close the current nav controller containing the post preview
+        navController.dismiss(animated: true, completion: nil)
     }
 }
