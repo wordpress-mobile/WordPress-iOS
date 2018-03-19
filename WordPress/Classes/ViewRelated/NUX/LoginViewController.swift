@@ -92,7 +92,7 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
             fatalError()
         }
 
-        delegate.presentLoginEpilogue(in: navigationController, for: site, isJetpackLogin: isJetpackLogin) { [weak self] in
+        delegate.presentLoginEpilogue(in: navigationController, for: site) { [weak self] in
             self?.dismissBlock?(false)
         }
     }

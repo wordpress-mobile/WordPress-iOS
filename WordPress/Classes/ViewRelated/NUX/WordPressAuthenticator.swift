@@ -47,7 +47,7 @@ public protocol WordPressAuthenticatorDelegate: class {
 
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
-    func presentLoginEpilogue(in navigationController: UINavigationController, for site: WordPressSite, isJetpackLogin: Bool, onDismiss: @escaping () -> Void)
+    func presentLoginEpilogue(in navigationController: UINavigationController, for site: WordPressSite, onDismiss: @escaping () -> Void)
 
     /// Presents the Support Interface from a given ViewController, with a specified SourceTag.
     ///

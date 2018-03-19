@@ -94,7 +94,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
-    func presentLoginEpilogue(in navigationController: UINavigationController, for site: WordPressSite, isJetpackLogin: Bool, onDismiss: @escaping () -> Void) {
+    func presentLoginEpilogue(in navigationController: UINavigationController, for site: WordPressSite, onDismiss: @escaping () -> Void) {
         let storyboard = UIStoryboard(name: "LoginEpilogue", bundle: .main)
         guard let epilogueViewController = storyboard.instantiateInitialViewController() as? LoginEpilogueViewController else {
             fatalError()
