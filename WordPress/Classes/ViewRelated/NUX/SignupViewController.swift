@@ -123,6 +123,7 @@ import SafariServices
     /// Assigns localized strings to various UIControl defined in the storyboard.
     ///
     @objc func localizeControls() {
+
         titleLabel.text = NSLocalizedString("Create an account on WordPress.com", comment: "Title of a screen")
         emailField.placeholder = NSLocalizedString("Email Address", comment: "Email address placeholder")
         usernameField.placeholder = NSLocalizedString("Username", comment: "Username placeholder")
@@ -274,7 +275,7 @@ import SafariServices
     /// - Parameters:
     ///     - message: The message to display
     ///
-    @objc func displayLoginMessage(_ message: String!) {
+    @objc func displayLoginMessage(_ message: String) {
         statusLabel.text = message
     }
 
@@ -300,17 +301,17 @@ import SafariServices
         view.endEditing(true)
 
         // Is everything filled out?
-        if !WordPressAuthenticator.validateFieldsPopulatedForCreateAccount(loginFields) {
+        if !loginFields.validateFieldsPopulatedForCreateAccount() {
             displayErrorAlert(NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields."), sourceTag: sourceTag)
             return
         }
 
-        if !WordPressAuthenticator.validateFieldsForSigninContainNoSpaces(loginFields) {
+        if !loginFields.validateFieldsForSigninContainNoSpaces() {
             displayErrorAlert(NSLocalizedString("Email, Username, and Site Address cannot contain spaces.", comment: "No spaces error message."), sourceTag: sourceTag)
             return
         }
 
-        if !WordPressAuthenticator.validateUsernameMaxLength(loginFields.username) {
+        if !loginFields.validateUsernameMaxLength() {
             displayErrorAlert(NSLocalizedString("Username must be less than fifty characters.", comment: "Prompts that the username entered was too long."), sourceTag: sourceTag)
             usernameField.becomeFirstResponder()
             return
