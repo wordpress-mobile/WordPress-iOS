@@ -5,37 +5,42 @@ import WordPressShared
 // MARK: - LoginEpilogueViewController
 //
 class LoginEpilogueViewController: UIViewController {
+
+    /// Button's Container View.
+    ///
     @IBOutlet var buttonPanel: UIView!
+
+    /// Separator: to be displayed above the actual buttons.
+    ///
     @IBOutlet var shadowView: UIView!
+
+    /// Connect Button!
+    ///
     @IBOutlet var connectButton: UIButton!
+
+    /// Continue Button.
+    ///
     @IBOutlet var continueButton: UIButton!
+
+    /// Links to the Epilogue TableViewController
+    ///
     @objc var tableViewController: LoginEpilogueTableViewController?
+
+    /// Closure to be executed upon dismissal.
+    ///
     var onDismiss: (() -> Void)?
-    var epilogueUserInfo: LoginEpilogueUserInfo?
-    var jetpackLogin = false
 
-    // MARK: - Lifecycle Methods
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        var numberOfBlogs = 0
-        if let info = epilogueUserInfo {
-            tableViewController?.epilogueUserInfo = info
-            if info.site != nil {
-                numberOfBlogs = 1
+    /// Site that was just connected to our awesome app.
+    ///
+    var site: WordPressSite? {
+        didSet {
+            guard let site = site else {
+                return
             }
-        } else {
-            // The self-hosted flow sets user info,  If no user info is set, assume
-            // a wpcom flow and try the default wp account.
-            let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            if let account = service.defaultWordPressComAccount() {
-                tableViewController?.epilogueUserInfo = LoginEpilogueUserInfo(account: account)
-                numberOfBlogs = account.blogs.count
-            }
+
+            loadViewIfNeeded()
+            refreshInterface(with: site)
         }
-
-        configureButtons(numberOfBlogs: numberOfBlogs)
     }
 
     override func viewWillAppear(_ animated: Bool) {
