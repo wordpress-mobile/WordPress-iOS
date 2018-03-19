@@ -141,7 +141,7 @@ extension LoginEpilogueViewController {
 //
 private extension LoginEpilogueViewController {
 
-    ///
+    /// Refreshes the UI so that the specified WordPressSite is displayed.
     ///
     func refreshInterface(with site: WordPressSite) {
         switch site {
@@ -163,7 +163,8 @@ private extension LoginEpilogueViewController {
     func refreshInterfaceForDotcom() {
         /// The self-hosted flow sets user info,  If no user info is set, assume a wpcom flow and try the default wp account.
         ///
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
         guard let account = service.defaultWordPressComAccount() else {
             return
         }
