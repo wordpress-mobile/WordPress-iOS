@@ -142,6 +142,20 @@ extension WPStyleGuide {
         return font.pointSize
     }
 
+    /// Creates a UIFont with fixed size, equal to the size of the given text style, assuming a default content size category.
+    /// This font will never change its size.
+    ///
+    /// - Parameters:
+    ///   - for: The base UIFontTextStyle to take the size from.
+    ///   - weight: The desired font weight
+    /// - Returns: The created font.
+    ///
+    @objc public class func fixedFont(for style: UIFontTextStyle, weight: UIFont.Weight = .regular) -> UIFont {
+        let defaultContentSizeCategory = UITraitCollection(preferredContentSizeCategory: .large) // .large is the default
+        let fontSize = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style, compatibleWith: defaultContentSizeCategory).pointSize
+        return UIFont.systemFont(ofSize: fontSize, weight: weight)
+    }
+
     /// Creates a NotoSerif UIFont for the user current text size settings.
     ///
     /// - Parameters:
