@@ -81,13 +81,15 @@ extension SignupGoogleViewController: GIDSignInDelegate {
 
         let context = ContextManager.sharedInstance().mainContext
         let service = SignupService(managedObjectContext: context)
+        let site = WordPressSite.wpcom(username: email, authToken: token, isJetpackLogin: isJetpackLogin)
+
         service.createWPComUserWithGoogle(token: token, success: { [weak self] (accountCreated) in
             SVProgressHUD.dismiss()
             if accountCreated {
                 self?.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
                 WPAnalytics.track(.signupSocialSuccess)
             } else {
-                self?.showLoginEpilogue()
+                self?.showLoginEpilogue(for: site)
                 WPAnalytics.track(.loginSocialSuccess)
             }
         }) { [weak self] (error) in
