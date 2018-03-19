@@ -11,7 +11,7 @@ extension WPStyleGuide {
     class func defaultSearchBarTextAttributesSwifted(_ color: UIColor) -> [NSAttributedStringKey: Any] {
         return [
             .foregroundColor: color,
-            .font: WPStyleGuide.fontForTextStyle(.footnote)
+            .font: WPStyleGuide.fixedFont(for: .footnote)
         ]
     }
 }
