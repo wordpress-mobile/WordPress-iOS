@@ -151,7 +151,9 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
     }
 
     func finishedLogin(withNonceAuthToken authToken: String) {
-        syncWPCom(username: loginFields.username, authToken: authToken, requiredMultifactor: true)
+        let site = WordPressSite.wpcom(username: loginFields.username, authToken: authToken, isJetpackLogin: isJetpackLogin, multifactor: true)
+        syncWPCom(site: site)
+
         // Disconnect now that we're done with Google.
         GIDSignIn.sharedInstance().disconnect()
         WordPressAuthenticator.post(event: .loginSocialSuccess)

@@ -81,7 +81,7 @@ extension SignupGoogleViewController: GIDSignInDelegate {
 
         let context = ContextManager.sharedInstance().mainContext
         let service = SignupService(managedObjectContext: context)
-        let site = WordPressSite.wpcom(username: email, authToken: token, isJetpackLogin: isJetpackLogin)
+        let site = WordPressSite.wpcom(username: email, authToken: token, isJetpackLogin: isJetpackLogin, multifactor: false)
 
         service.createWPComUserWithGoogle(token: token, success: { [weak self] (accountCreated) in
             SVProgressHUD.dismiss()

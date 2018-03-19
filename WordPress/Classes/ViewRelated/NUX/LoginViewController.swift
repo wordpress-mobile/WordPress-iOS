@@ -139,8 +139,6 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
                 return
             }
 
-            self.trackSignIn(dotcom: true, multifactor: multifactor)
-
             if self.shouldShowEpilogue() {
                 self.showLoginEpilogue(for: site)
             } else {
@@ -208,6 +206,7 @@ extension LoginViewController {
 
             self?.configureStatusLabel("")
             self?.configureViewLoading(false)
+            self?.trackSignIn(site: site)
 
             completion?()
         }
@@ -215,11 +214,15 @@ extension LoginViewController {
 
     /// Tracks the SignIn Event
     ///
-    func trackSignIn(dotcom: Bool, requiredMultifactor: Bool) {
-        let properties = [
-            "multifactor": requiredMultifactor.description,
-            "dotcom_user": dotcom.description
-        ]
+    func trackSignIn(site: WordPressSite) {
+        var properties = [String: String]()
+
+        if case let .wpcom(_, _, _, multifactor) = site {
+            properties = [
+                "multifactor": multifactor.description,
+                "dotcom_user": true.description
+            ]
+        }
 
         WordPressAuthenticator.post(event: .signedIn(properties: properties))
     }

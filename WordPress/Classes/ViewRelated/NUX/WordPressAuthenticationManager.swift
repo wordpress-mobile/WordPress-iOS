@@ -111,7 +111,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func sync(site: WordPressSite, onCompletion: @escaping (Error?) -> ()) {
         switch site {
-        case .wpcom(let username, let authToken, let isJetpackLogin):
+        case .wpcom(let username, let authToken, let isJetpackLogin, _):
             syncWPCom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin, onCompletion: onCompletion)
         case .wporg(let username, let password, let xmlrpc, let options):
             syncWPOrg(username: username, password: password, xmlrpc: xmlrpc, options: options, onCompletion: onCompletion)

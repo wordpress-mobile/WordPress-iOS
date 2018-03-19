@@ -16,7 +16,7 @@ public enum WordPressSite {
 
     /// WordPress.com Site Credentials.
     ///
-    case wpcom(username: String, authToken: String, isJetpackLogin: Bool)
+    case wpcom(username: String, authToken: String, isJetpackLogin: Bool, multifactor: Bool)
 }
 
 
