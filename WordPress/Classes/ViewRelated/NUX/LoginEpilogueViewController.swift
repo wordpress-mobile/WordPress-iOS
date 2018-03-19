@@ -1,11 +1,14 @@
 import UIKit
 import WordPressShared
 
+
+// MARK: - LoginEpilogueViewController
+//
 class LoginEpilogueViewController: UIViewController {
-    @IBOutlet var buttonPanel: UIView?
-    @IBOutlet var shadowView: UIView?
-    @IBOutlet var connectButton: UIButton?
-    @IBOutlet var continueButton: UIButton?
+    @IBOutlet var buttonPanel: UIView!
+    @IBOutlet var shadowView: UIView!
+    @IBOutlet var connectButton: UIButton!
+    @IBOutlet var continueButton: UIButton!
     @objc var tableViewController: LoginEpilogueTableViewController?
     var onDismiss: (() -> Void)?
     var epilogueUserInfo: LoginEpilogueUserInfo?
