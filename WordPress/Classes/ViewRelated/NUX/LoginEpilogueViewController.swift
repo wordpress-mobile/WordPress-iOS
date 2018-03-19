@@ -74,10 +74,11 @@ class LoginEpilogueViewController: UIViewController {
         } else {
             connectTitle = NSLocalizedString("Connect another site", comment: "Button title")
         }
-        continueButton?.setTitle(NSLocalizedString("Continue", comment: "A button title"),
+
+        continueButton.setTitle(NSLocalizedString("Continue", comment: "A button title"),
                                  for: .normal)
-        continueButton?.accessibilityIdentifier = "Continue"
-        connectButton?.setTitle(connectTitle, for: .normal)
+        continueButton.accessibilityIdentifier = "Continue"
+        connectButton.setTitle(connectTitle, for: .normal)
 
         if jetpackLogin {
             connectButton?.isHidden = true
@@ -96,10 +97,10 @@ class LoginEpilogueViewController: UIViewController {
 
         if contentSize.height > (screenHeight - panelHeight) {
             buttonPanel.backgroundColor = UIColor.white
-            shadowView?.isHidden = false
+            shadowView.isHidden = false
         } else {
             buttonPanel.backgroundColor = WPStyleGuide.lightGrey()
-            shadowView?.isHidden = true
+            shadowView.isHidden = true
         }
     }
 
