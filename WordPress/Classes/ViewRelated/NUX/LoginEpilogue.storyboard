@@ -112,7 +112,7 @@
         <!--Login Epilogue Table View Controller-->
         <scene sceneID="sgW-0t-bH0">
             <objects>
-                <tableViewController id="UFO-Sm-cpW" customClass="LoginEpilogueTableViewController" sceneMemberID="viewController">
+                <tableViewController id="UFO-Sm-cpW" customClass="LoginEpilogueTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="154" sectionHeaderHeight="28" sectionFooterHeight="28" id="bES-Rc-GFi">
                         <rect key="frame" x="0.0" y="0.0" width="383" height="519"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
