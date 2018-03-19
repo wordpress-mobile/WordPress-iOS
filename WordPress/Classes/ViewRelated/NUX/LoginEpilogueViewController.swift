@@ -64,10 +64,11 @@ class LoginEpilogueViewController: UIViewController {
         colorPanelBasedOnTableViewContents()
     }
 
+
     // MARK: - Configuration
 
-    @objc func configureButtons(numberOfBlogs: Int) {
-        var connectTitle: String
+    private func configureButtons(numberOfBlogs: Int) {
+        let connectTitle: String
         if numberOfBlogs == 0 {
             connectTitle = NSLocalizedString("Connect a site", comment: "Button title")
         } else {
@@ -83,7 +84,7 @@ class LoginEpilogueViewController: UIViewController {
         }
     }
 
-    @objc func colorPanelBasedOnTableViewContents() {
+    private func colorPanelBasedOnTableViewContents() {
         guard let tableView = tableViewController?.tableView,
             let buttonPanel = buttonPanel else {
                 return
