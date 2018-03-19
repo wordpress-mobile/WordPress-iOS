@@ -298,9 +298,15 @@ class FilterTabBar: UIControl {
 }
 
 private class TabBarButton: UIButton {
+    private enum TabFont {
+        static let maxSize: CGFloat = 28.0
+    }
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote)
+            titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote, maximumPointSize: TabFont.maxSize)
         }
     }
 }
