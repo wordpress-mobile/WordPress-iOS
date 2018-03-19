@@ -345,11 +345,6 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
 
 extension LoginSelfHostedViewController {
 
-    override func finishedLogin(withUsername username: String, authToken: String, requiredMultifactorCode: Bool) {
-        syncWPCom(username: username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
-    }
-
-
     func finishedLogin(withUsername username: String, password: String, xmlrpc: String, options: [AnyHashable: Any]) {
         displayLoginMessage("")
 
