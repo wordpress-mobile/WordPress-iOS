@@ -540,7 +540,10 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 - (void)customizeAppearanceForTextElements
 {
     CGFloat maximumPointSize = [WPStyleGuide maxFontSize];
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline symbolicTraits:UIFontDescriptorTraitBold maximumPointSize:maximumPointSize]} ];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{
+                                                           NSForegroundColorAttributeName: [UIColor whiteColor],
+                                                           NSFontAttributeName: [WPStyleGuide fixedFontFor:UIFontTextStyleHeadline weight:UIFontWeightBold]
+                                                           }];
     // Search
     [WPStyleGuide configureSearchBarTextAppearance];
     // SVProgressHUD styles
