@@ -113,11 +113,6 @@ class LoginLinkRequestViewController: LoginViewController {
         })
     }
 
-//    overide func didChangePreferredContentSize() {
-//        super.didChangePreferredContentSize()
-//
-//    }
-
     // MARK: - Actions
 
     @IBAction func handleSendLinkTapped(_ sender: UIButton) {
