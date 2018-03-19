@@ -336,7 +336,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let filterIndex = filterSettings.currentFilterIndex()
         let editorSettings = EditorSettings()
         let postViewController = editorSettings.instantiatePageEditor(page: post) { (editor, vc) in
-            editor.onClose = { [weak self] changesSaved in
+            editor.onClose = { [weak self] changesSaved, _ in
                 if changesSaved {
                     if let postStatus = editor.post.status {
                         self?.updateFilterWithPostStatus(postStatus)
