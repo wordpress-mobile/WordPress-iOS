@@ -693,12 +693,4 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     }
 }
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
-{
-    [super traitCollectionDidChange:previousTraitCollection];
-
-    if (previousTraitCollection.preferredContentSizeCategory != self.traitCollection.preferredContentSizeCategory) {
-        [self applyStyles];
-    }
-}
 @end
