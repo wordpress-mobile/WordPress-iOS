@@ -91,8 +91,8 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
             self?.isSearching = false
             SVProgressHUD.dismiss()
             self?.tableView.separatorStyle = .none
-            // reload to display the no results view.
-            self?.tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
+            // Add no suggestions to display the no results view.
+            addSuggestions([])
         }
     }
 
