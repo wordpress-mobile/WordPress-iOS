@@ -2,6 +2,7 @@ import UIKit
 import CocoaLumberjack
 import NSURL_IDN
 import WordPressShared
+import WordPressUI
 
 
 
@@ -55,10 +56,6 @@ public protocol WordPressAuthenticatorDelegate: class {
     /// Shared Instance.
     ///
     public static let shared = WordPressAuthenticator()
-
-    /// WordPress.com domain.
-    ///
-    fileprivate static let WPComSuffix = ".wordpress.com"
 
     /// Notification to be posted whenever the signing flow completes.
     ///
@@ -235,7 +232,7 @@ public protocol WordPressAuthenticatorDelegate: class {
         // NUX vc then present the auth controller.
         // - If the rootViewController is presenting *any* other vc, present the
         // auth controller from the presented vc.
-        let presenter = controllerForAuthControllerPresenter(rootViewController)
+        let presenter = rootViewController.topmostPresentedViewController
         if presenter.isKind(of: NUXNavigationController.self) || presenter.isKind(of: LoginNavigationController.self),
             let parent = presenter.presentingViewController {
             parent.dismiss(animated: false, completion: {
@@ -250,21 +247,6 @@ public protocol WordPressAuthenticatorDelegate: class {
     }
 
 
-    /// Determine the proper UIViewController to use as a presenter for the auth controller.
-    ///
-    /// - Parameter controller: A UIViewController. By convention this should be the app's rootViewController
-    ///
-    /// - Return: The view controller to use as the presenter.
-    ///
-    @objc class func controllerForAuthControllerPresenter(_ controller: UIViewController) -> UIViewController {
-        var presenter = controller
-        while let presented = presenter.presentedViewController {
-            presenter = presented
-        }
-        return presenter
-    }
-
-
     // MARK: - Site URL helper
 
 
@@ -274,7 +256,7 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     /// - Returns: The base URL or an empty string.
     ///
-    @objc class func baseSiteURL(string: String) -> String {
+    class func baseSiteURL(string: String) -> String {
         guard let siteURL = NSURL(string: NSURL.idnEncodedURL(string)), string.count > 0 else {
             return ""
         }
@@ -297,123 +279,6 @@ public protocol WordPressAuthenticatorDelegate: class {
         path.removeSuffix("/")
 
         return NSURL.idnDecodedURL(path)
-    }
-
-
-    // MARK: - Validation Helpers
-
-
-    /// Checks if the passed string matches a reserved username.
-    ///
-    /// - Parameter username: The username to test.
-    ///
-    @objc class func isUsernameReserved(_ username: String) -> Bool {
-        let name = username.lowercased().trim()
-        return ["admin", "administrator", "invite", "main", "root", "web", "www"].contains(name) || name.contains("wordpress")
-    }
-
-    /// Checks if the provided username is a wordpress.com domain
-    ///
-    /// - Parameter username: the username to test
-    /// - Returns: true if the username is a wordpress.com domain
-    @objc class func isWPComDomain(_ username: String) -> Bool {
-        return username.contains(WPComSuffix)
-    }
-
-    /// Extracts the username from a wordpress.com domain
-    @objc class func extractUsername(from hostname: String) -> String {
-        var host = hostname
-        if let hostParsed = URL(string: hostname)?.host {
-            host = hostParsed
-        }
-        return host.components(separatedBy: WPComSuffix).first ?? host
-    }
-
-    /// Checks whether credentials have been populated.
-    /// Note: that loginFields.emailAddress is not checked. Use loginFields.username instead.
-    ///
-    /// - Parameter loginFields: An instance of LoginFields to check
-    ///
-    /// - Returns: True if credentails have been provided. False otherwise.
-    ///
-    @objc class func validateFieldsPopulatedForSignin(_ loginFields: LoginFields) -> Bool {
-        return !loginFields.username.isEmpty &&
-            !loginFields.password.isEmpty &&
-            ( loginFields.meta.userIsDotCom || !loginFields.siteAddress.isEmpty )
-    }
-
-
-    /// Simple validation check to confirm LoginFields has a valid site URL.
-    ///
-    /// - Parameter loginFields: An instance of LoginFields to check
-    ///
-    /// - Returns: True if the siteUrl contains a valid URL. False otherwise.
-    ///
-    @objc class func validateSiteForSignin(_ loginFields: LoginFields) -> Bool {
-        guard let url = URL(string: NSURL.idnEncodedURL(loginFields.siteAddress)) else {
-            return false
-        }
-
-        if url.absoluteString.isEmpty {
-            return false
-        }
-
-        return true
-    }
-
-
-    @objc class func promptForWPComReservedUsername(_ username: String, callback: @escaping () -> Void) {
-        let title = NSLocalizedString("Reserved Username", comment: "The title of a prompt")
-        let format = NSLocalizedString("'%@' is a reserved username on WordPress.com.",
-                                        comment: "Error message letting the user know the username they entered is reserved. The %@ is a placeholder for the username.")
-        let message = NSString(format: format as NSString, username) as String
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(NSLocalizedString("OK", comment: "OK Button Title"), handler: {(action) in
-            callback()
-        })
-        alertController.presentFromRootViewController()
-    }
-
-
-    /// Checks whether necessary info for account creation has been provided.
-    ///
-    /// - Parameters:
-    ///     - loginFields: An instance of LoginFields to check
-    ///
-    /// - Returns: True if credentails have been provided. False otherwise.
-    ///
-    @objc class func validateFieldsPopulatedForCreateAccount(_ loginFields: LoginFields) -> Bool {
-        return !loginFields.emailAddress.isEmpty &&
-            !loginFields.username.isEmpty &&
-            !loginFields.password.isEmpty &&
-            !loginFields.siteAddress.isEmpty
-    }
-
-
-    /// Ensures there are no spaces in fields used for signin, (except the password field).
-    ///
-    /// - Parameters:
-    ///     - loginFields: An instance of LoginFields to check
-    ///
-    /// - Returns: True if no spaces were found. False if spaces were found.
-    ///
-    @objc class func validateFieldsForSigninContainNoSpaces(_ loginFields: LoginFields) -> Bool {
-        let space = " "
-        return !loginFields.emailAddress.contains(space) &&
-            !loginFields.username.contains(space) &&
-            !loginFields.siteAddress.contains(space)
-    }
-
-
-    /// Verify a username is 50 characters or less.
-    ///
-    /// - Parameters:
-    ///     - username: The username to check
-    ///
-    /// - Returns: True if the username is 50 characters or less.
-    ///
-    @objc class func validateUsernameMaxLength(_ username: String) -> Bool {
-        return username.count <= 50
     }
 
 
@@ -485,7 +350,7 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     /// - Parameter loginFields: A LoginFields instance.
     ///
-    @objc class func openForgotPasswordURL(_ loginFields: LoginFields) {
+    class func openForgotPasswordURL(_ loginFields: LoginFields) {
         let baseURL = loginFields.meta.userIsDotCom ? "https://wordpress.com" : WordPressAuthenticator.baseSiteURL(string: loginFields.siteAddress)
         let forgotPasswordURL = URL(string: baseURL + "/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F")!
         UIApplication.shared.open(forgotPasswordURL)
@@ -500,7 +365,7 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     /// - Parameter sender: A UIView. Typically the button the user tapped on.
     ///
-    @objc class func fetchOnePasswordCredentials(_ controller: UIViewController, sourceView: UIView, loginFields: LoginFields, success: @escaping ((_ loginFields: LoginFields) -> Void)) {
+    class func fetchOnePasswordCredentials(_ controller: UIViewController, sourceView: UIView, loginFields: LoginFields, success: @escaping ((_ loginFields: LoginFields) -> Void)) {
 
         let loginURL = loginFields.meta.userIsDotCom ? OnePasswordDefaults.dotcomURL : loginFields.siteAddress
 
@@ -521,104 +386,4 @@ public protocol WordPressAuthenticatorDelegate: class {
             WordPressAuthenticator.post(event: .onePasswordFailed)
         })
     }
-
-
-    // MARK: - Safari Stored Credentials Helpers
-
-
-    @objc static let LoginSharedWebCredentialFQDN: CFString = "wordpress.com" as CFString
-    typealias SharedWebCredentialsCallback = ((_ credentialsFound: Bool, _ username: String?, _ password: String?) -> Void)
-
-
-    /// Update safari stored credentials.
-    ///
-    /// - Parameter loginFields: An instance of LoginFields
-    ///
-    @objc class func updateSafariCredentialsIfNeeded(_ loginFields: LoginFields) {
-        // Paranioa. Don't try and update credentials for self-hosted.
-        if !loginFields.meta.userIsDotCom {
-            return
-        }
-
-        // If the user changed screen names, don't try and update/create a new shared web credential.
-        // We'll let Safari handle creating newly saved usernames/passwords.
-        if loginFields.storedCredentials?.storedUserameHash != loginFields.username.hash {
-            return
-        }
-
-        // If the user didn't change the password from previousl filled password no update is needed.
-        if loginFields.storedCredentials?.storedPasswordHash == loginFields.password.hash {
-            return
-        }
-
-        // Update the shared credential
-        let username: CFString = loginFields.username as CFString
-        let password: CFString = loginFields.password as CFString
-
-        SecAddSharedWebCredential(LoginSharedWebCredentialFQDN, username, password, { (error: CFError?) in
-            guard error == nil else {
-                let err = error
-                DDLogError("Error occurred updating shared web credential: \(String(describing: err?.localizedDescription))")
-                return
-            }
-            DispatchQueue.main.async(execute: {
-                WordPressAuthenticator.post(event: .loginAutoFillCredentialsUpdated)
-            })
-        })
-    }
-
-
-    /// Request shared safari credentials if they exist.
-    ///
-    /// - Parameter completion: A completion block.
-    ///
-    @objc class func requestSharedWebCredentials(_ completion: @escaping SharedWebCredentialsCallback) {
-        SecRequestSharedWebCredential(LoginSharedWebCredentialFQDN, nil, { (credentials: CFArray?, error: CFError?) in
-            DDLogInfo("Completed requesting shared web credentials")
-            guard error == nil else {
-                let err = error as Error?
-                if let error = err as NSError?, error.code == -25300 {
-                    // An OSStatus of -25300 is expected when no saved credentails are found.
-                    DDLogInfo("No shared web credenitals found.")
-                } else {
-                    DDLogError("Error requesting shared web credentials: \(String(describing: err?.localizedDescription))")
-                }
-                DispatchQueue.main.async(execute: {
-                    completion(false, nil, nil)
-                })
-                return
-            }
-
-            guard let credentials = credentials, CFArrayGetCount(credentials) > 0 else {
-                // Saved credentials exist but were not selected.
-                DispatchQueue.main.async(execute: {
-                    completion(true, nil, nil)
-                })
-                return
-            }
-
-            // What a chore!
-            let unsafeCredentials = CFArrayGetValueAtIndex(credentials, 0)
-            let credentialsDict = unsafeBitCast(unsafeCredentials, to: CFDictionary.self)
-
-            let unsafeUsername = CFDictionaryGetValue(credentialsDict, Unmanaged.passUnretained(kSecAttrAccount).toOpaque())
-            let usernameStr = unsafeBitCast(unsafeUsername, to: CFString.self) as String
-
-            let unsafePassword = CFDictionaryGetValue(credentialsDict, Unmanaged.passUnretained(kSecSharedPassword).toOpaque())
-            let passwordStr = unsafeBitCast(unsafePassword, to: CFString.self) as String
-
-            DispatchQueue.main.async(execute: {
-                completion(true, usernameStr, passwordStr)
-            })
-        })
-    }
-}
-
-
-
-extension NSNotification.Name {
-    static let wordpressLoginCancelled = Foundation.Notification.Name(rawValue: "WordPressLoginCancelled")
-    static let wordpressLoginFinishedJetpackLogin = Foundation.Notification.Name(rawValue: "WordPressLoginFinishedJetpackLogin")
-    static let wordpressAuthenticationFlowEvent = NSNotification.Name(rawValue: "WordPressAuthenticationFlowEvent")
-    static let wordpressSupportBadgeUpdated = NSNotification.Name(rawValue: "WordPressSupportBadgeUpdated")
 }

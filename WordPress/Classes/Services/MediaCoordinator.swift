@@ -167,16 +167,18 @@ class MediaCoordinator: NSObject {
     /// Starts the upload of an already existing local media object
     ///
     /// - Parameter media: the media to upload
+    /// - Parameter post: the post where media is being inserted
     /// - parameter origin: The location in the app where the upload was initiated (optional).
     ///
-    func addMedia(_ media: Media, analyticsInfo: MediaAnalyticsInfo? = nil) {
+    func addMedia(_ media: Media, to post: AbstractPost, analyticsInfo: MediaAnalyticsInfo? = nil) {
         guard media.remoteStatus == .local else {
             DDLogError("Can't try to upload Media that isn't local only. \(String(describing: media))")
             return
         }
-
-        let coordinator = self.coordinator(for: media)
+        media.addPostsObject(post)
+        let coordinator = self.coordinator(for: post)
         coordinator.track(numberOfItems: 1)
+        trackUploadOf(media, analyticsInfo: analyticsInfo)
         let uploadProgress = uploadMedia(media)
         coordinator.track(progress: uploadProgress, of: media, withIdentifier: media.uploadID)
     }
