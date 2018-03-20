@@ -380,6 +380,21 @@
     return NO;
 }
 
+- (BOOL)hasFailedMedia
+{
+    if ([self.media count] == 0) {
+        return NO;
+    }
+
+    for (Media *media in self.media) {
+        if (media.remoteStatus ==  MediaRemoteStatusFailed) {
+            return YES;
+        }
+    }
+
+    return NO;
+}
+
 - (BOOL)hasCategories
 {
     return NO;
