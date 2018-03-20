@@ -23,6 +23,7 @@ public struct PluginState: Equatable {
     public let slug: String
     public var active: Bool
     public let name: String
+    public let author: String
     public let version: String?
     public var updateState: UpdateState
     public var autoupdate: Bool

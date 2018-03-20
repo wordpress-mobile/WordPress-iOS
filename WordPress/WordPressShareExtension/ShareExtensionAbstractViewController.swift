@@ -18,6 +18,33 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
 
     typealias CompletionBlock = () -> Void
 
+    // MARK: - Cache
+
+    internal static let cache = NSCache<AnyObject, AnyObject>()
+    static func clearCache() {
+        cache.removeAllObjects()
+    }
+
+    internal static func storeCategories(_ categories: [RemotePostCategory], for siteID: NSNumber) {
+        cache.setObject(categories as AnyObject, forKey: cacheKeyForSiteID(siteID, keyName: "categories"))
+    }
+
+    internal static func cachedCategoriesForSite(_ siteID: NSNumber) -> [RemotePostCategory]? {
+        return cache.object(forKey: cacheKeyForSiteID(siteID, keyName: "categories")) as? [RemotePostCategory]
+    }
+
+    internal static func storeDefaultCategoryID(_ defaultCategoryID: NSNumber, for siteID: NSNumber) {
+        cache.setObject(defaultCategoryID as AnyObject, forKey: cacheKeyForSiteID(siteID, keyName: "default-category"))
+    }
+
+    internal static func cachedDefaultCategoryIDForSite(_ siteID: NSNumber) -> NSNumber? {
+        return cache.object(forKey: cacheKeyForSiteID(siteID, keyName: "default-category")) as? NSNumber
+    }
+
+    internal static func cacheKeyForSiteID(_ siteID: NSNumber, keyName: String) -> AnyObject {
+        return "\(siteID)-\(keyName)" as AnyObject
+    }
+
     // MARK: - Public Properties
 
     /// Identifies which app extension launched this VC
@@ -109,6 +136,26 @@ class ShareExtensionAbstractViewController: UIViewController, ShareSegueHandler 
 // MARK: - Misc Helpers
 
 extension ShareExtensionAbstractViewController {
+    func verifyAuthCredentials(onSuccess: (() -> Void)?) {
+        guard oauth2Token == nil else {
+            onSuccess?()
+            return
+        }
+
+        let title = NSLocalizedString("Sharing error", comment: "Share extension dialog title - displayed when user is missing a login token.")
+        let message = NSLocalizedString("Please launch the WordPress app, log in to WordPress.com and make sure you have at least one site, then try again.", comment: "Share extension dialog text  - displayed when user is missing a login token.")
+        let accept = NSLocalizedString("Cancel sharing", comment: "Share extension dialog dismiss button label - displayed when user is missing a login token.")
+
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: accept, style: .default) { (action) in
+            self.cleanUpSharedContainerAndCache()
+            self.dismiss(animated: true, completion: self.dismissalCompletionBlock)
+        }
+
+        alertController.addAction(alertAction)
+        present(alertController, animated: true, completion: nil)
+    }
+
     func saveImageToSharedContainer(_ image: UIImage) -> URL? {
         guard let encodedMedia = image.resizeWithMaximumSize(maximumImageSize).JPEGEncoded(),
             let mediaDirectory = ShareMediaFileManager.shared.mediaUploadDirectoryURL else {
@@ -127,7 +174,9 @@ extension ShareExtensionAbstractViewController {
         return fullPath
     }
 
-    func cleanUpSharedContainer() {
+    func cleanUpSharedContainerAndCache() {
+        ShareExtensionAbstractViewController.clearCache()
+
         // Remove the temp media files if needed
         for tempMediaFileURL in shareData.sharedImageDict.keys {
             if !tempMediaFileURL.pathExtension.isEmpty {

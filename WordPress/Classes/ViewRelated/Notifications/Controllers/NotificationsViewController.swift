@@ -119,6 +119,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         setupFiltersSegmentedControl()
 
         reloadTableViewPreservingSelection()
+
+        observeNetworkStatus()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -237,14 +239,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     // MARK: - UITableView Methods
 
-    override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return NoteTableHeaderView.estimatedHeight
-    }
-
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
-
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let sectionInfo = tableViewHandler.resultsController.sections?[section] else {
             return nil
@@ -359,6 +353,8 @@ private extension NotificationsViewController {
         // UITableView
         tableView.accessibilityIdentifier  = "Notifications Table"
         tableView.cellLayoutMarginsFollowReadableWidth = false
+        tableView.estimatedSectionHeaderHeight = UITableViewAutomaticDimension
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
@@ -430,6 +426,9 @@ private extension NotificationsViewController {
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(applicationDidBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         nc.addObserver(self, selector: #selector(notificationsWereUpdated), name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
+        if #available(iOS 11.0, *) {
+            nc.addObserver(self, selector: #selector(dynamicTypeDidChange), name: .UIContentSizeCategoryDidChange, object: nil)
+        }
     }
 
     func startListeningToAccountNotifications() {
@@ -483,6 +482,12 @@ private extension NotificationsViewController {
             && isViewLoaded == true
             && view.window != nil {
             reloadResultsControllerIfNeeded()
+        }
+    }
+
+    @objc func dynamicTypeDidChange() {
+        tableViewHandler.resultsController.fetchedObjects?.forEach {
+            ($0 as? Notification)?.resetCachedAttributes()
         }
     }
 }
@@ -748,30 +753,44 @@ extension NotificationsViewController {
 
         let start = Date()
 
-        mediator.sync { (error, _) in
+        mediator.sync { [weak self] (error, _) in
 
             let delta = max(Syncing.minimumPullToRefreshDelay + start.timeIntervalSinceNow, 0)
             let delay = DispatchTime.now() + Double(Int64(delta * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
 
             DispatchQueue.main.asyncAfter(deadline: delay) {
-                self.refreshControl?.endRefreshing()
-                self.clearUnreadNotifications()
+                self?.refreshControl?.endRefreshing()
+                self?.clearUnreadNotifications()
             }
 
-            if let error = error {
-                WPError.showNetworkingAlertWithError(error, title: NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails."))
+            if let _ = error {
+                self?.handleConnectionError()
             }
         }
     }
 }
 
+extension NotificationsViewController: NetworkAwareUI {
+    func contentIsEmpty() -> Bool {
+        return tableViewHandler.resultsController.isEmpty()
+    }
+}
 
+extension NotificationsViewController: NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        reloadResultsControllerIfNeeded()
+    }
+}
 
 // MARK: - UISegmentedControl Methods
 //
 extension NotificationsViewController {
     @objc func segmentedControlDidChange(_ sender: UISegmentedControl) {
         selectedNotification = nil
+
+        let filterTitle = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex)?.title ?? ""
+        let properties = [Stats.selectedFilter: filterTitle]
+        WPAnalytics.track(.notificationsTappedSegmentedControl, withProperties: properties)
 
         updateUnreadNotificationsForSegmentedControlChange()
 
@@ -1061,10 +1080,20 @@ private extension NotificationsViewController {
             noResultsView.layoutIfNeeded()
         }
 
+        guard connectionAvailable() else {
+            showNoConnectionView()
+            return
+        }
+
         // Refresh its properties: The user may have signed into WordPress.com
         noResultsView.titleText     = noResultsTitleText
         noResultsView.messageText   = noResultsMessageText
         noResultsView.buttonTitle   = noResultsButtonText
+    }
+
+    private func showNoConnectionView() {
+        noResultsView.titleText     = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+        noResultsView.messageText   = noConnectionMessage()
     }
 
     func updateSplitViewAppearanceForNoResultsView() {
@@ -1176,6 +1205,11 @@ private extension NotificationsViewController {
 //
 private extension NotificationsViewController {
     func syncNewNotifications() {
+        guard connectionAvailable() else {
+            handleConnectionError()
+            return
+        }
+
         let mediator = NotificationSyncMediator()
         mediator?.sync()
     }
@@ -1493,6 +1527,7 @@ private extension NotificationsViewController {
         static let noteTypeUnknown = "unknown"
         static let sourceKey = "source"
         static let sourceValue = "notifications"
+        static let selectedFilter = "selected_filter"
     }
 
     enum Syncing {

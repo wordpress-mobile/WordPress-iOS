@@ -4,6 +4,14 @@ import Social
 /// Encapsulates String Helper Methods.
 ///
 extension String {
+    func arrayOfTags() -> [String] {
+        guard !self.isEmpty else {
+            return [String()]
+        }
+
+        return self.components(separatedBy: ",").map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
+    }
+
     /// Returns a String with <A>nchored links
     ///
     func stringWithAnchoredLinks() -> String {

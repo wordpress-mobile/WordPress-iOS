@@ -308,6 +308,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                   scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
             [self showMediaLibrary];
             break;
+        case BlogDetailsSubsectionPages:
+            self.restorableSelectedIndexPath = indexPath;
+            [self.tableView selectRowAtIndexPath:indexPath
+                                        animated:NO
+                                  scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+            [self showPageList];
+            break;
     }
 }
 
@@ -323,6 +330,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             return [NSIndexPath indexPathForRow:0 inSection:2];
         case BlogDetailsSubsectionMedia:
             return [NSIndexPath indexPathForRow:2 inSection:1];
+        case BlogDetailsSubsectionPages:
+            return [NSIndexPath indexPathForRow:0 inSection:0];
     }
 }
 
@@ -1007,8 +1016,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showPlugins
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedPlugins withBlog:self.blog];
-    PluginListViewController *controller = [[PluginListViewController alloc] initWithBlog:self.blog];
+    [WPAppAnalytics track:WPAnalyticsStatOpenedPluginDirectory withBlog:self.blog];
+    PluginDirectoryViewController *controller = [[PluginDirectoryViewController alloc] initWithBlog:self.blog];
     [self showDetailViewController:controller sender:self];
 }
 

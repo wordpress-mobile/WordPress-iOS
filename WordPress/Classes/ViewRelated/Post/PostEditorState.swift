@@ -7,17 +7,32 @@ import WordPressShared
 ///
 public enum PostEditorAction {
     case save
+    case saveAsDraft
     case schedule
     case publish
+    case publishNow
     case update
     case submitForReview
+
+    var dismissesEditor: Bool {
+        switch self {
+        case .publish, .publishNow, .schedule:
+            return true
+        default:
+            return false
+        }
+    }
 
     fileprivate var publishActionLabel: String {
         switch self {
         case .publish:
             return NSLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post.")
+        case .publishNow:
+            return NSLocalizedString("Publish Now", comment: "Title of button allowing the user to immediately publish the post they are editing.")
         case .save:
             return NSLocalizedString("Save", comment: "Save button label (saving content, ex: Post, Page, Comment).")
+        case .saveAsDraft:
+            return NSLocalizedString("Save as Draft", comment: "Title of button allowing users to change the status of the post they are currently editing to Draft.")
         case .schedule:
             return NSLocalizedString("Schedule", comment: "Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.")
         case .submitForReview:
@@ -27,11 +42,11 @@ public enum PostEditorAction {
         }
     }
 
-    fileprivate var publishingActionLabel: String {
+    var publishingActionLabel: String {
         switch self {
-        case .publish:
+        case .publish, .publishNow:
             return NSLocalizedString("Publishing...", comment: "Text displayed in HUD while a post is being published.")
-        case .save:
+        case .save, .saveAsDraft:
             return NSLocalizedString("Saving...", comment: "Text displayed in HUD while a post is being saved as a draft.")
         case .schedule:
             return NSLocalizedString("Scheduling...", comment: "Text displayed in HUD while a post is being scheduled to be published.")
@@ -42,25 +57,14 @@ public enum PostEditorAction {
         }
     }
 
-    fileprivate var publishingErrorLabel: String {
+    var publishingErrorLabel: String {
         switch self {
-        case .publish:
+        case .publish, .publishNow:
             return NSLocalizedString("Error occurred\nduring publishing", comment: "Text displayed in HUD while a post is being published.")
         case .schedule:
             return NSLocalizedString("Error occurred\nduring scheduling", comment: "Text displayed in HUD while a post is being scheduled to be published.")
-        case .save, .submitForReview, .update:
+        case .save, .saveAsDraft, .submitForReview, .update:
             return NSLocalizedString("Error occurred\nduring saving", comment: "Text displayed in HUD after attempting to save a draft post and an error occurred.")
-        }
-    }
-
-    fileprivate var secondaryPublishActionLabel: String? {
-        switch self {
-        case .publish:
-            return NSLocalizedString("Publish Now", comment: "Title of button allowing the user to immediately publish the post they are editing.")
-        case .save:
-            return NSLocalizedString("Save as Draft", comment: "Title of button allowing users to change the status of the post they are currently editing to Draft.")
-        default:
-            return nil
         }
     }
 
@@ -76,9 +80,9 @@ public enum PostEditorAction {
     fileprivate var secondaryPublishAction: PostEditorAction? {
         switch self {
         case .publish:
-            return .save
+            return .saveAsDraft
         case .update:
-            return .publish
+            return .publishNow
         default:
             return nil
         }
@@ -88,26 +92,19 @@ public enum PostEditorAction {
         switch self {
         case .save:
             return .editorSavedDraft
+        case .saveAsDraft:
+            return .editorQuickSavedDraft
         case .schedule:
             return .editorScheduledPost
         case .publish:
             return .editorPublishedPost
+        case .publishNow:
+            return .editorQuickPublishedPost
         case .update:
             return .editorUpdatedPost
         case .submitForReview:
             // TODO: When support is added for submit for review, add a new stat to support it
             return .editorPublishedPost
-        }
-    }
-
-    fileprivate var secondaryPublishActionAnalyticsStat: WPAnalyticsStat? {
-        switch self {
-        case .save:
-            return .editorQuickSavedDraft
-        case .publish:
-            return .editorQuickPublishedPost
-        default:
-            return nil
         }
     }
 }
@@ -269,19 +266,6 @@ public class PostEditorStateContext {
         return editorState.action.publishActionLabel
     }
 
-    /// Returns appropriate publishing UI text text for the current action
-    /// e.g. Publishing...
-    ///
-    var publishVerbText: String {
-        return editorState.action.publishingActionLabel
-    }
-
-    /// Returns the Error Text for the current active action
-    ///
-    var publishErrorText: String {
-        return editorState.action.publishingErrorLabel
-    }
-
     /// Returns the WPAnalyticsStat enum to be tracked when this post is published
     ///
     var publishActionAnalyticsStat: WPAnalyticsStat {
@@ -337,7 +321,7 @@ public class PostEditorStateContext {
             return nil
         }
 
-        return editorState.action.secondaryPublishAction?.secondaryPublishActionLabel
+        return editorState.action.secondaryPublishAction?.publishActionLabel
     }
 
     /// Returns the WPAnalyticsStat enum to be tracked when this post is published with the secondary action
@@ -346,7 +330,7 @@ public class PostEditorStateContext {
             return nil
         }
 
-        return editorState.action.secondaryPublishAction?.secondaryPublishActionAnalyticsStat
+        return editorState.action.secondaryPublishAction?.publishActionAnalyticsStat
     }
 
 

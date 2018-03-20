@@ -3,6 +3,15 @@ import UIKit
 @objc protocol NUXButtonViewControllerDelegate {
     func primaryButtonPressed()
     @objc optional func secondaryButtonPressed()
+    @objc optional func tertiaryButtonPressed()
+}
+
+private struct NUXButtonConfig {
+    typealias CallBackType = () -> Void
+
+    let title: String
+    let isPrimary: Bool
+    let callback: CallBackType?
 }
 
 class NUXButtonViewController: UIViewController {
@@ -14,13 +23,15 @@ class NUXButtonViewController: UIViewController {
     @IBOutlet var stackView: UIStackView?
     @IBOutlet var bottomButton: NUXButton?
     @IBOutlet var topButton: NUXButton?
+    @IBOutlet var tertiaryButton: NUXButton?
+    @IBOutlet var buttonHolder: UIView?
 
     open var delegate: NUXButtonViewControllerDelegate?
+    open var backgroundColor: UIColor?
 
-    private var bottomButtonTitle: String?
-    private var topButtonTitle: String?
-    private var topCallback: CallBackType?
-    private var bottomCallback: CallBackType?
+    private var topButtonConfig: NUXButtonConfig?
+    private var bottomButtonConfig: NUXButtonConfig?
+    private var tertiaryButtonConfig: NUXButtonConfig?
 
     // MARK: - View
 
@@ -32,15 +43,23 @@ class NUXButtonViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        bottomButton?.setTitle(bottomButtonTitle, for: UIControlState())
-        bottomButton?.accessibilityIdentifier = accessibilityIdentifier(for: bottomButtonTitle)
+        configure(button: bottomButton, withConfig: bottomButtonConfig)
+        configure(button: topButton, withConfig: topButtonConfig)
+        configure(button: tertiaryButton, withConfig: tertiaryButtonConfig)
+        if let bgColor = backgroundColor, let holder = buttonHolder {
+            holder.backgroundColor = bgColor
+        }
+    }
 
-        topButton?.setTitle(topButtonTitle, for: UIControlState())
-        topButton?.accessibilityIdentifier = accessibilityIdentifier(for: topButtonTitle)
-
-        // Hide secondary button if title is not provided.
-        topButton?.isHidden = (topButtonTitle ?? "").isEmpty
-        bottomButton?.isHidden = (bottomButtonTitle ?? "").isEmpty
+    private func configure(button: NUXButton?, withConfig buttonConfig: NUXButtonConfig?) {
+        if let buttonConfig = buttonConfig, let button = button {
+            button.setTitle(buttonConfig.title, for: UIControlState())
+            button.accessibilityIdentifier = accessibilityIdentifier(for: buttonConfig.title)
+            button.isPrimary = buttonConfig.isPrimary
+            button.isHidden = false
+        } else {
+            button?.isHidden = true
+        }
     }
 
     // MARK: public API
@@ -50,23 +69,29 @@ class NUXButtonViewController: UIViewController {
     /// - Parameters:
     ///   - primary: Title string for primary button. Required.
     ///   - secondary: Title string for secondary button. Optional.
-    func setButtonTitles(primary: String, secondary: String? = nil) {
-        bottomButtonTitle = primary
-        topButtonTitle = secondary
+    ///   - tertiary: Title string for the tertiary button. Optional.
+    ///
+    func setButtonTitles(primary: String, secondary: String? = nil, tertiary: String? = nil) {
+        bottomButtonConfig = NUXButtonConfig(title: primary, isPrimary: true, callback: nil)
+        if let secondaryTitle = secondary {
+            topButtonConfig = NUXButtonConfig(title: secondaryTitle, isPrimary: false, callback: nil)
+        }
+        if let tertiaryTitle = tertiary {
+            tertiaryButtonConfig = NUXButtonConfig(title: tertiaryTitle, isPrimary: false, callback: nil)
+        }
     }
 
     func setupTopButton(title: String, isPrimary: Bool = false, onTap callback: @escaping CallBackType) {
-        topButtonTitle = title
-        topButton?.isPrimary = isPrimary
-        topButton?.isHidden = false
-        topCallback = callback
+        topButtonConfig = NUXButtonConfig(title: title, isPrimary: isPrimary, callback: callback)
     }
 
     func setupButtomButton(title: String, isPrimary: Bool = false, onTap callback: @escaping CallBackType) {
-        bottomButtonTitle = title
-        bottomButton?.isPrimary = isPrimary
-        bottomButton?.isHidden = false
-        bottomCallback = callback
+        bottomButtonConfig = NUXButtonConfig(title: title, isPrimary: isPrimary, callback: callback)
+    }
+
+    func setupTertiaryButton(title: String, isPrimary: Bool = false, onTap callback: @escaping CallBackType) {
+        tertiaryButton?.isHidden = false
+        tertiaryButtonConfig = NUXButtonConfig(title: title, isPrimary: isPrimary, callback: callback)
     }
 
     // MARK: - Helpers
@@ -79,7 +104,7 @@ class NUXButtonViewController: UIViewController {
     // MARK: - Button Handling
 
     @IBAction func primaryButtonPressed(_ sender: Any) {
-        guard let callback = bottomCallback else {
+        guard let callback = bottomButtonConfig?.callback else {
             delegate?.primaryButtonPressed()
             return
         }
@@ -87,11 +112,33 @@ class NUXButtonViewController: UIViewController {
     }
 
     @IBAction func secondaryButtonPressed(_ sender: Any) {
-        guard let callback = topCallback else {
+        guard let callback = topButtonConfig?.callback else {
             delegate?.secondaryButtonPressed?()
             return
         }
         callback()
     }
 
+    @IBAction func tertiaryButtonPressed(_ sender: Any) {
+        guard let callback = tertiaryButtonConfig?.callback else {
+            delegate?.tertiaryButtonPressed?()
+            return
+        }
+        callback()
+    }
+
+    // MARK: - Dynamic type
+    func didChangePreferredContentSize() {
+        configure(button: bottomButton, withConfig: bottomButtonConfig)
+        configure(button: topButton, withConfig: topButtonConfig)
+        configure(button: tertiaryButton, withConfig: tertiaryButtonConfig)
+    }
+}
+
+extension NUXButtonViewController {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            didChangePreferredContentSize()
+        }
+    }
 }
