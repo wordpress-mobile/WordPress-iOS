@@ -8,6 +8,8 @@ protocol SiteCreationDomainsTableViewControllerDelegate {
 
 class SiteCreationDomainsTableViewController: NUXTableViewController {
 
+    // MARK: - Properties
+
     open var siteName: String?
     open var delegate: SiteCreationDomainsTableViewControllerDelegate?
 
@@ -23,6 +25,12 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
         return siteTitleSuggestions.count == 0 && searchSuggestions.count == 0
     }
 
+    fileprivate enum ViewPadding: CGFloat {
+        case noResultsView = 60
+    }
+
+    // MARK: - Init
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -32,6 +40,8 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
         tableView.register(UINib(nibName: "SiteCreationDomainSearchTableViewCell", bundle: nil), forCellReuseIdentifier: SiteCreationDomainSearchTableViewCell.cellIdentifier)
         setupBackgroundTapGestureRecognizer()
     }
+
+    // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -110,7 +120,7 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
     }
 }
 
-// MARK: UITableViewDataSource
+// MARK: - UITableViewDataSource
 
 extension SiteCreationDomainsTableViewController {
     fileprivate enum Sections: Int {
@@ -176,7 +186,7 @@ extension SiteCreationDomainsTableViewController {
             let searchFieldRect = tableView.rect(forSection: Sections.searchField.rawValue)
             let searchFieldBottom = searchFieldRect.origin.y + searchFieldRect.height
             let screenBottom = UIScreen.main.bounds.height
-            return screenBottom - searchFieldBottom - 60
+            return screenBottom - searchFieldBottom - ViewPadding.noResultsView.rawValue
         }
 
         return super.tableView(tableView, heightForRowAt: indexPath)
@@ -244,7 +254,7 @@ extension SiteCreationDomainsTableViewController {
     }
 }
 
-// MARK: NoResultsViewController Extension
+// MARK: - NoResultsViewController Extension
 
 private extension SiteCreationDomainsTableViewController {
 
@@ -282,7 +292,7 @@ private extension SiteCreationDomainsTableViewController {
 
 }
 
-// MARK: UITableViewDelegate
+// MARK: - UITableViewDelegate
 
 extension SiteCreationDomainsTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -317,7 +327,7 @@ extension SiteCreationDomainsTableViewController {
     }
 }
 
-// MARK: SiteCreationDomainSearchTableViewCellDelegate
+// MARK: - SiteCreationDomainSearchTableViewCellDelegate
 
 extension SiteCreationDomainsTableViewController: SiteCreationDomainSearchTableViewCellDelegate {
     func startSearch(for searchTerm: String) {
