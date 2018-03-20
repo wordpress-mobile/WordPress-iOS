@@ -43,7 +43,7 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
 
         suggestDomains(for: nameToSearch) { [weak self] (suggestions) in
             self?.siteTitleSuggestions = suggestions
-            self?.tableView.reloadSections(IndexSet(integersIn: Sections.searchField.rawValue...Sections.suggestions.rawValue), with: .automatic)
+            self?.tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
         }
     }
 
@@ -113,14 +113,9 @@ extension SiteCreationDomainsTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case Sections.titleAndDescription.rawValue:
+        case Sections.titleAndDescription.rawValue,
+             Sections.searchField.rawValue:
             return 1
-        case Sections.searchField.rawValue:
-            if siteTitleSuggestions.count == 0 {
-                return 0
-            } else {
-                return 1
-            }
         case Sections.suggestions.rawValue:
             return searchSuggestions.count > 0 ? searchSuggestions.count : siteTitleSuggestions.count
         default:
