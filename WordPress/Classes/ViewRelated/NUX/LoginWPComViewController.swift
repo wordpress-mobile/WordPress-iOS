@@ -179,7 +179,7 @@ class LoginWPComViewController: LoginViewController, NUXKeyboardResponder {
         }
     }
 
-    override func displayRemoteError(_ error: Error!) {
+    override func displayRemoteError(_ error: Error) {
         configureViewLoading(false)
 
         let errorCode = (error as NSError).code

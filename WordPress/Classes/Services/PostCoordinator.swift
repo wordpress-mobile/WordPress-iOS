@@ -1,4 +1,5 @@
 import Foundation
+import WordPressFlux
 
 class PostCoordinator: NSObject {
 
@@ -27,7 +28,7 @@ class PostCoordinator: NSObject {
                 case .ended:
                     self.updateReferences(to: media, in: post)
                     // Let's check if media uploading is still going, if all finished with success then we can upload the post
-                    if !mediaCoordinator.isUploadingMedia(for: post) {
+                    if !mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
                         self.upload(post: post)
                     }
                 default:
@@ -44,6 +45,8 @@ class PostCoordinator: NSObject {
         let postService = PostService(managedObjectContext: mainContext)
         postService.uploadPost(post, success: { uploadedPost in
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
+            let model = PostNoticeViewModel(post: uploadedPost)
+            ActionDispatcher.dispatch(NoticeAction.post(model.notice))
         }, failure: { error in
             print("Post Coordinator -> upload error: \(String(describing: error))")
         })
@@ -56,7 +59,9 @@ class PostCoordinator: NSObject {
         }
 
         let mediaUploadID = media.uploadID
-
+        if media.remoteStatus == .failed {
+            return
+        }
         if media.mediaType == .image {
             let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, width: media.width?.intValue, height: media.height?.intValue)
             postContent = imgPostUploadProcessor.process(postContent)
