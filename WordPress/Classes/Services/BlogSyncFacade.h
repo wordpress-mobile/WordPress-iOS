@@ -3,6 +3,8 @@
 @class WPAccount;
 @class Blog;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  This protocol is for a class that will allow us to synchronize the details for a blog.
  */
@@ -31,7 +33,7 @@
 - (void)syncBlogWithUsername:(NSString *)username
                     password:(NSString *)password
                       xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
-                finishedSync:(void(^)(void))finishedSync;
+                finishedSync:(void(^)(Blog * _Nonnull))finishedSync;
 
 @end
 
@@ -41,3 +43,5 @@
 @interface BlogSyncFacade : NSObject<BlogSyncFacade>
 
 @end
+
+NS_ASSUME_NONNULL_END
