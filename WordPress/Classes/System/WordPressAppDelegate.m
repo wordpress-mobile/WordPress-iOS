@@ -358,6 +358,12 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     }
 }
 
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *))restorationHandler {
+    // Spotlight search
+    [SearchManager.shared handleWithActivity: userActivity];
+    return YES;
+}
+
 #pragma mark - Application startup
 
 - (void)runStartupSequenceWithLaunchOptions:(NSDictionary *)launchOptions
@@ -367,7 +373,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self configureHockeySDK];
     [self configureCrashlytics];
     [self configureAppRatingUtility];
-    
+
     // Analytics
     [self configureAnalytics];
 
@@ -379,7 +385,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 #endif
 
     [HelpshiftUtils setup];
-    
+
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [WPUserAgent useWordPressUserAgentInUIWebViews];
@@ -539,11 +545,15 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (void)customizeAppearanceForTextElements
 {
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline symbolicTraits:UIFontDescriptorTraitBold]} ];
+    CGFloat maximumPointSize = [WPStyleGuide maxFontSize];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{
+                                                           NSForegroundColorAttributeName: [UIColor whiteColor],
+                                                           NSFontAttributeName: [WPStyleGuide fixedFontFor:UIFontTextStyleHeadline weight:UIFontWeightBold]
+                                                           }];
     // Search
     [WPStyleGuide configureSearchBarTextAppearance];
     // SVProgressHUD styles
-    [SVProgressHUD setFont:[WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline]];
+    [SVProgressHUD setFont:[WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline maximumPointSize:maximumPointSize]];
 }
 
 - (void)trackLogoutIfNeeded
