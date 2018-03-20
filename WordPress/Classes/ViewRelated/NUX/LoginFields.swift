@@ -1,4 +1,5 @@
 import Foundation
+import GoogleSignIn
 
 /// LoginFields is a state container for user textfield input on the login screens
 /// as well as other meta data regarding the nature of a login attempt.
@@ -66,8 +67,8 @@ class SafariStoredCredentials {
 /// An enum to indicate where the Magic Link Email was sent from.
 ///
 enum EmailMagicLinkSource: Int {
-    case login
-    case signup
+    case login = 1
+    case signup = 2
 }
 
 @objc
@@ -108,4 +109,6 @@ class LoginFieldsMeta: NSObject {
     var socialService: SocialServiceName?
 
     @objc var socialServiceIDToken: String?
+
+    var googleUser: GIDGoogleUser?
 }

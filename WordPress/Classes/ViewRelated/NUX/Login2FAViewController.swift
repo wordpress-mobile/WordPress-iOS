@@ -13,7 +13,7 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     @objc var pasteboardBeforeBackground: String? = nil
-    override var sourceTag: SupportSourceTag {
+    override var sourceTag: WordPressSupportSourceTag {
         get {
             return .login2FA
         }
@@ -133,11 +133,6 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
     // MARK: - Instance Methods
 
 
-    @objc func showEpilogue() {
-        performSegue(withIdentifier: .showEpilogue, sender: self)
-    }
-
-
     /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with the submit action.
     ///
@@ -155,7 +150,7 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
         loginFacade.loginToWordPressDotCom(withUser: loginFields.nonceUserID, authType: authType, twoStepCode: code, twoStepNonce: nonce)
     }
 
-    func finishedLogin(withNonceAuthToken authToken: String!) {
+    func finishedLogin(withNonceAuthToken authToken: String) {
         let username = loginFields.username
         syncWPCom(username, authToken: authToken, requiredMultifactor: true)
         // Disconnect now that we're done with Google.
@@ -264,7 +259,7 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
 
 extension Login2FAViewController {
 
-    override func displayRemoteError(_ error: Error!) {
+    override func displayRemoteError(_ error: Error) {
         displayError(message: "")
 
         configureViewLoading(false)

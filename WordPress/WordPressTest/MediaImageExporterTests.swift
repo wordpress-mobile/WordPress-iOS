@@ -164,17 +164,18 @@ class MediaImageExporterTests: XCTestCase {
 
     // MARK: - Image export orientation testing
 
-    func testExportingAPortraitImageAndCorrectingTheOrientationWorks() {
+    func testExportingAPortraitImageWithoutResizeKeepsTheOrientationWorks() {
         let image = MediaImageExporterTests.imageForFileNamed(testImageNameInPortrait)
         if image.imageOrientation != .leftMirrored {
             XCTFail("Error: the test portrait image was not in the expected orientation, expected: \(UIImageOrientation.leftMirrored.rawValue) but read: \(image.imageOrientation.rawValue)")
             return
         }
-        let expect = self.expectation(description: "image export by UIImage and correcting the orientation")
+        let expect = self.expectation(description: "image export by UIImage and keeping the orientation")
         let exporter = MediaImageExporter(image: image, filename: nil)
         exporter.mediaDirectoryType = .temporary
         exporter.export(onCompletion: { (imageExport) in
-            MediaImageExporterTests.validateImageExportedWithExpectedOrientation(export: imageExport, expected: .up)
+            // If not resising the image the orientation stays the same has the original
+            MediaImageExporterTests.validateImageExportedWithExpectedOrientation(export: imageExport, expected: .leftMirrored)
             MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
             expect.fulfill()
         }) { (error) in

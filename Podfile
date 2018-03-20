@@ -8,7 +8,7 @@ workspace 'WordPress.xcworkspace'
 
 ## Pods shared between all the targets
 def shared_with_all_pods
-  pod 'CocoaLumberjack', '3.2.1'
+  pod 'CocoaLumberjack', '3.4.1'
   pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
   pod 'NSObject-SafeExpectations', '0.0.2'
   pod 'UIDeviceIdentifier', '~> 0.4'
@@ -17,7 +17,7 @@ end
 def shared_with_networking_pods
   pod 'AFNetworking', '3.1.0'
   pod 'wpxmlrpc', '0.8.3'
-  pod 'Alamofire', '4.6.0'
+  pod 'Alamofire', '4.7.0'
 end
 
 def shared_test_pods
@@ -36,26 +36,25 @@ target 'WordPress' do
   # Third party libraries
   # ---------------------
   pod '1PasswordExtension', '1.8.5'
-  pod 'HockeySDK', '5.1.1', :configurations => ['Release-Internal', 'Release-Alpha']
+  pod 'HockeySDK', '5.1.2', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'MRProgress', '0.8.3'
   pod 'Reachability',	'3.2'
-  pod 'SVProgressHUD', '2.2.2'
-  pod 'Crashlytics', '3.9.3'
+  pod 'SVProgressHUD', '2.2.5'
+  pod 'Crashlytics', '3.10.1'
   pod 'BuddyBuildSDK', '1.0.17', :configurations => ['Release-Alpha']
   pod 'FLAnimatedImage', '1.0.12'
   pod 'MGSwipeTableCell', '1.6.6'
   pod 'lottie-ios', '1.5.1'
-  pod 'Starscream', '3.0.3'
-  pod 'GoogleSignIn', '4.1.1'
-  pod 'TTTAttributedLabel', '2.0'
+  pod 'Starscream', '3.0.4'
+  pod 'GoogleSignIn', '4.1.2'
 
   # --------------------
   # WordPress components
   # --------------------
-  pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.1'
-  pod 'Gridicons', '0.14'
+  pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.2'
+  pod 'Gridicons', '0.15'
   pod 'NSURL+IDN', '0.3'
-  pod 'WPMediaPicker', '0.26'
+  pod 'WPMediaPicker', '0.27'
   pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'1b9e6398f054f8726cf40de9e9a2ace753804502'
 
   target 'WordPressTest' do
@@ -74,6 +73,7 @@ target 'WordPress' do
     shared_with_networking_pods
 
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'1b9e6398f054f8726cf40de9e9a2ace753804502'
+    pod 'Gridicons', '0.15'
   end
 
   target 'WordPressDraftActionExtension' do
@@ -83,6 +83,7 @@ target 'WordPress' do
     shared_with_networking_pods
 
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'1b9e6398f054f8726cf40de9e9a2ace753804502'
+    pod 'Gridicons', '0.15'
   end
 
   target 'WordPressTodayWidget' do

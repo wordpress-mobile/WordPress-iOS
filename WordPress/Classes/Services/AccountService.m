@@ -206,6 +206,25 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
                                  }];
 }
 
+- (void)requestSignupLink:(NSString *)email success:(void (^)(void))success failure:(void (^)(NSError *error))failure
+{
+    id<AccountServiceRemote> remote = [self remoteForAnonymous];
+    
+    [remote requestWPComSignupLinkForEmail:email
+                                  clientID:ApiCredentials.client
+                              clientSecret:ApiCredentials.secret
+                               wpcomScheme:WPComScheme
+                                   success:^{
+                                       if (success) {
+                                           success();
+                                       }
+                                   } failure:^(NSError *error) {
+                                       if (failure) {
+                                           failure(error);
+                                       }
+                                   }];
+}
+
 - (void)requestVerificationEmail:(void (^)(void))success failure:(void (^)(NSError * _Nonnull))failure
 {
     id<AccountServiceRemote> remote = [self remoteForAccount:[self defaultWordPressComAccount]];

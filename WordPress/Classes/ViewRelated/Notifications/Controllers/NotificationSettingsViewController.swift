@@ -151,13 +151,6 @@ open class NotificationSettingsViewController: UIViewController {
         return cell
     }
 
-    @objc open func tableView(_ tableView: UITableView, heightForRowAtIndexPath indexPath: IndexPath) -> CGFloat {
-        let isBlogSection   = indexPath.section == Section.blog.rawValue
-        let isNotPagination = !isPaginationRow(indexPath)
-
-        return isBlogSection && isNotPagination ? blogRowHeight : WPTableViewDefaultRowHeight
-    }
-
     @objc open func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         // Hide when the section is empty!
         if isSectionEmpty(section) {

@@ -73,7 +73,9 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
 
         isSearching = true
 
-        let api = WordPressComRestApi(oAuthToken: "")
+        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let api = accountService.defaultWordPressComAccount()?.wordPressComRestApi ?? WordPressComRestApi(oAuthToken: "")
+
         let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
         SVProgressHUD.show(withStatus: NSLocalizedString("Loading domains", comment: "Shown while the app waits for the domain suggestions web service to return during the site creation process."))
 
@@ -98,14 +100,13 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
 
     /// Sets up a gesture recognizer to detect taps on the view, but not its content.
     ///
-    @objc func setupBackgroundTapGestureRecognizer() {
-        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(SiteCreationDomainsTableViewController.handleBackgroundTapGesture(_:)))
+    func setupBackgroundTapGestureRecognizer() {
+        let gestureRecognizer = UITapGestureRecognizer()
+        gestureRecognizer.on { [weak self](gesture) in
+            self?.view.endEditing(true)
+        }
         gestureRecognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(gestureRecognizer)
-    }
-
-    @objc func handleBackgroundTapGesture(_ gestureRecognizer: UITapGestureRecognizer) {
-        view.endEditing(true)
     }
 }
 
