@@ -75,7 +75,7 @@
 {
     UILabel *label = [[UILabel alloc] init];
     label.backgroundColor = [UIColor clearColor];
-    label.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleSubheadline];
+    label.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleSubheadline maximumPointSize:[WPStyleGuide maxFontSize]];
     label.adjustsFontForContentSizeCategory = YES;
     label.textColor = [WPStyleGuide darkGrey];
     [self addSubview:label];

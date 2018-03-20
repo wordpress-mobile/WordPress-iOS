@@ -5,6 +5,8 @@ import Foundation
 extension WPStyleGuide {
     @objc static let defaultTableViewRowHeight: CGFloat = 44.0
 
+    @objc public static let maxFontSize: CGFloat = 40.0
+
     /// Configures a table to automatically resize its rows according to their content.
     ///
     /// - Parameters:
@@ -63,16 +65,23 @@ extension WPStyleGuide {
         label.adjustsFontForContentSizeCategory = true
     }
 
-    /// Creates a UIFont for the user current text size settings.
+    /// Creates a UIFont for the user current text size settings and a maximum font size
     ///
     /// - Parameters:
     ///     - style: The desired UIFontTextStyle.
+    ///     - maximumPointSize: The biggest font size allowed.
     ///
     /// - Returns: The created font.
     ///
-    @objc public class func fontForTextStyle(_ style: UIFontTextStyle) -> UIFont {
-        let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
-        return UIFont(descriptor: fontDescriptor, size: CGFloat(0.0))
+    @objc public class func fontForTextStyle(_ style: UIFontTextStyle, maximumPointSize: CGFloat = maxFontSize) -> UIFont {
+        if #available(iOS 11, *) {
+            let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
+            let fontToGetSize = UIFont(descriptor: fontDescriptor, size: CGFloat(0.0))
+            return UIFontMetrics(forTextStyle: style).scaledFont(for: fontToGetSize, maximumPointSize: maximumPointSize)
+        }
+
+        let scaledFontDescriptor = fontDescriptor(style, maximumPointSize: maximumPointSize)
+        return UIFont(descriptor: scaledFontDescriptor, size: CGFloat(0.0))
     }
 
     /// Creates a UIFont for the user current text size settings.
@@ -83,10 +92,17 @@ extension WPStyleGuide {
     ///
     /// - Returns: The created font.
     ///
-    @objc public class func fontForTextStyle(_ style: UIFontTextStyle, symbolicTraits traits: UIFontDescriptorSymbolicTraits) -> UIFont {
-        var fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
-        fontDescriptor = fontDescriptor.withSymbolicTraits(traits) ?? fontDescriptor
-        return UIFont(descriptor: fontDescriptor, size: CGFloat(0.0))
+    @objc public class func fontForTextStyle(_ style: UIFontTextStyle, symbolicTraits traits: UIFontDescriptorSymbolicTraits, maximumPointSize: CGFloat = maxFontSize) -> UIFont {
+        var descriptor = fontDescriptor(style, maximumPointSize: maximumPointSize)
+        descriptor = descriptor.withSymbolicTraits(traits) ?? descriptor
+        return UIFont(descriptor: descriptor, size: CGFloat(0.0))
+    }
+
+    private class func fontDescriptor(_ style: UIFontTextStyle, maximumPointSize: CGFloat = maxFontSize) -> UIFontDescriptor {
+        let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
+        let fontToGetSize = UIFont(descriptor: fontDescriptor, size: CGFloat(0.0))
+        let scaledFontSize = CGFloat.minimum(fontToGetSize.pointSize, maximumPointSize)
+        return fontDescriptor.withSize(scaledFontSize)
     }
 
     /// Creates a UIFont for the user current text size settings.
@@ -124,6 +140,20 @@ extension WPStyleGuide {
         let fontDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style)
         let font = UIFont(descriptor: fontDescriptor, size: CGFloat(0.0))
         return font.pointSize
+    }
+
+    /// Creates a UIFont with fixed size, equal to the size of the given text style, assuming a default content size category.
+    /// This font will never change its size.
+    ///
+    /// - Parameters:
+    ///   - for: The base UIFontTextStyle to take the size from.
+    ///   - weight: The desired font weight
+    /// - Returns: The created font.
+    ///
+    @objc public class func fixedFont(for style: UIFontTextStyle, weight: UIFont.Weight = .regular) -> UIFont {
+        let defaultContentSizeCategory = UITraitCollection(preferredContentSizeCategory: .large) // .large is the default
+        let fontSize = UIFontDescriptor.preferredFontDescriptor(withTextStyle: style, compatibleWith: defaultContentSizeCategory).pointSize
+        return UIFont.systemFont(ofSize: fontSize, weight: weight)
     }
 
     /// Creates a NotoSerif UIFont for the user current text size settings.

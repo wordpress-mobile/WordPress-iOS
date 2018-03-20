@@ -122,7 +122,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     label.translatesAutoresizingMaskIntoConstraints = NO;
     label.numberOfLines = 2;
     label.textColor = [self textLabelColor];
-    label.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleBody];
+    label.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleBody maximumPointSize:[WPStyleGuide maxFontSize]];
     label.adjustsFontForContentSizeCategory = YES;
     label.backgroundColor = [UIColor clearColor];
 

@@ -6,6 +6,17 @@ enum AuthorFilterType {
     case user(gravatarEmail: String?)
 }
 
+private extension AuthorFilterType {
+    var accessibilityValue: String {
+        switch self {
+        case .everyone:
+            return NSLocalizedString("Showing everyone's posts", comment: "Voiceover description for the post list filter which shows posts for all users on a site.")
+        case .user:
+            return NSLocalizedString("Showing just my posts", comment: "Voiceover description for the post list filter which shows posts for just the current user on a site.")
+        }
+    }
+}
+
 /// Displays an author gravatar image with a dropdown arrow.
 ///
 class AuthorFilterButton: UIControl {
@@ -57,6 +68,8 @@ class AuthorFilterButton: UIControl {
                     authorImageView.image = gravatarPlaceholder
                 }
             }
+
+            prepareForVoiceOver()
         }
     }
 
@@ -86,6 +99,8 @@ class AuthorFilterButton: UIControl {
             ])
 
         authorImageView.image = gravatarPlaceholder
+
+        prepareForVoiceOver()
     }
 
     private let gravatarPlaceholder: UIImage = Gridicon.iconOfType(.user, withSize: Metrics.gravatarSize)
@@ -98,6 +113,16 @@ class AuthorFilterButton: UIControl {
         static let stackViewSpacing: CGFloat = 7.0
         static let chevronVerticalPadding: CGFloat = 2.0
         static let leadingPadding: CGFloat = 12.0
+    }
+}
+
+extension AuthorFilterButton: Accessible {
+    func prepareForVoiceOver() {
+        isAccessibilityElement = true
+        accessibilityTraits = UIAccessibilityTraitButton
+        accessibilityLabel = NSLocalizedString("Author Filter", comment: "Voiceover description of a button that allows the user to filter posts by author.")
+        accessibilityHint = NSLocalizedString("Select to change the current author filter.", comment: "Voiceover hint for a button that allows the user to filter posts by author.")
+        accessibilityValue = filterType.accessibilityValue
     }
 }
 

@@ -236,6 +236,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     private func showAuthorSelectionPopover(_ sender: UIView) {
         let filterController = AuthorFilterViewController(initialSelection: filterSettings.currentPostAuthorFilter(),
                                                           gravatarEmail: blog.account?.email) { [weak self] filter in
+                                                            if filter != self?.filterSettings.currentPostAuthorFilter() {
+                                                                UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, sender)
+                                                            }
+
                                                             self?.filterSettings.setCurrentPostAuthorFilter(filter)
                                                             self?.updateAuthorFilter()
                                                             self?.refreshAndReload()
