@@ -76,7 +76,7 @@ class AppExtensionsService {
 // MARK: - Sites
 
 extension AppExtensionsService {
-    /// Fetches only visible blogs for the current account.
+    /// Fetches the primary blog + visible blogs for the current account.
     ///
     /// - Parameters:
     ///   - onSuccess: Completion handler executed after a successful fetch.
@@ -84,11 +84,18 @@ extension AppExtensionsService {
     ///
     func fetchSites(onSuccess: @escaping ([RemoteBlog]?) -> (), onFailure: @escaping FailureBlock) {
         let remote = AccountServiceRemoteREST(wordPressComRestApi: simpleRestAPI)
-        remote?.getVisibleBlogs(success: { blogs in
-            onSuccess(blogs as? [RemoteBlog])
-            }, failure: { error in
-                DDLogError("Error retrieving blogs: \(String(describing: error))")
+        remote?.getBlogsWithSuccess({ blogs in
+            guard let blogs = blogs as? [RemoteBlog] else {
+                DDLogError("Error parsing returned sites.")
                 onFailure()
+                return
+            }
+            let primaryBlogID = ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteID ?? 0
+            let filteredBlogs = blogs.filter({ ($0.blogID.intValue == primaryBlogID || $0.visible == true) })
+            onSuccess(filteredBlogs)
+        }, failure: { error in
+            DDLogError("Error retrieving sites: \(String(describing: error))")
+            onFailure()
         })
     }
 }
