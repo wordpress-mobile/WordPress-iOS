@@ -275,6 +275,7 @@ private extension SiteCreationDomainsTableViewController {
     }
 
     func removeNoResultsFromView() {
+        tableView.separatorStyle = .singleLine
         tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
         noResultsViewController?.view.removeFromSuperview()
         noResultsViewController?.removeFromParentViewController()
