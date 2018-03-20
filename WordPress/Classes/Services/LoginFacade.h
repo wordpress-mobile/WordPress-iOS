@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
 
 @class LoginFields;
 @class SocialLogin2FANonceInfo;
@@ -19,15 +20,6 @@
  *  @param loginFields the fields representing the site we are attempting to login to.
  */
 - (void)signInWithLoginFields:(LoginFields *)loginFields;
-
-
-/**
- *  This method will attempt to sign in to a self hosted/.com site.
- *  XMLRPC endpoint discover is NOT performed.
- *
- *  @param loginFields the fields representing the site we are attempting to login to.
- */
-- (void)loginWithLoginFields:(LoginFields *)loginFields;
 
 /**
  *  This method will attempt to sign in to a self hosted/.com site.
@@ -175,4 +167,6 @@
 - (void)existingUserNeedsConnection:(NSString *)email;
 
 @end
+
+NS_ASSUME_NONNULL_END
 

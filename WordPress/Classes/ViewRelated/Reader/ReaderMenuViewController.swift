@@ -264,10 +264,12 @@ import WordPressShared
     ///     - blogID: The ID of the blog.
     ///
     @objc func openPost(_ postID: NSNumber, onBlog blogID: NSNumber) {
-        let controller = ReaderDetailViewController.controllerWithPostID(postID, siteID: blogID)
-        navigationController?.pushFullscreenViewController(controller, animated: true)
+        showDetailViewController(viewControllerForPost(postID, siteID: blogID), sender: self)
     }
 
+    fileprivate func viewControllerForPost(_ postID: NSNumber, siteID: NSNumber) -> ReaderDetailViewController {
+        return ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
+    }
 
     /// Presents the post list for the specified topic.
     ///

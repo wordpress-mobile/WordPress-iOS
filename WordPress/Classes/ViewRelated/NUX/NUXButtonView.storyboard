@@ -59,6 +59,24 @@
                                             <action selector="primaryButtonPressed:" destination="aOG-7h-6d9" eventType="touchUpInside" id="W8M-wW-PhN"/>
                                         </connections>
                                     </button>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uAF-kU-f7P" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="103" width="335" height="50"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="wCg-rE-NtX"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                        <state key="normal" title="Cancel Button">
+                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        </state>
+                                        <state key="selected" backgroundImage="beveled-blue-button-down"/>
+                                        <state key="highlighted" backgroundImage="beveled-blue-button-down">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tertiaryButtonPressed:" destination="aOG-7h-6d9" eventType="touchUpInside" id="RwH-F2-dDX"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                             </stackView>
                         </subviews>
@@ -77,8 +95,10 @@
                     <size key="freeformSize" width="375" height="148"/>
                     <connections>
                         <outlet property="bottomButton" destination="M7J-a3-klP" id="cpl-TM-lX1"/>
+                        <outlet property="buttonHolder" destination="d2l-kB-WtE" id="LGA-3V-qgh"/>
                         <outlet property="shadowView" destination="RrB-Aa-ADd" id="LZa-Jn-ghb"/>
                         <outlet property="stackView" destination="xzf-f5-7zQ" id="frG-Oo-nB4"/>
+                        <outlet property="tertiaryButton" destination="uAF-kU-f7P" id="B6D-lx-GhC"/>
                         <outlet property="topButton" destination="knN-O6-M86" id="3fN-Bh-Z8O"/>
                     </connections>
                 </viewController>

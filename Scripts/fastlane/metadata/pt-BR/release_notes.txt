@@ -1,1 +1,1 @@
-Uma nova e deliciosa experiência de compartilhamento está disponível nessa versão.
+Uma nova extensão de compartilhando que adiciona suporte a salvar rascunhos e  controla tags. Gerenciamento de plugins levado a um próximo nível: agora você pode procurar e instalar plugins.

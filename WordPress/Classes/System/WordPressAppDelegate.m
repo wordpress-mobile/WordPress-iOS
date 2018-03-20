@@ -22,6 +22,8 @@
 
 // Logging
 #import "WPLogger.h"
+#import <AutomatticTracks/TracksLogging.h>
+#import <WordPressComStatsiOS/WPStatsLogging.h>
 
 // Misc managers, helpers, utilities
 #import "ContextManager.h"
@@ -187,7 +189,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
     if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:WPComScheme]) {
         NSString *URLString = [url absoluteString];
-            
+
         if ([URLString rangeOfString:@"magic-login"].length) {
             DDLogInfo(@"App launched with authentication link");
             returnValue = [WordPressAuthenticator openAuthenticationURL:url fromRootViewController:self.window.rootViewController];
@@ -356,6 +358,12 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     }
 }
 
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *))restorationHandler {
+    // Spotlight search
+    [SearchManager.shared handleWithActivity: userActivity];
+    return YES;
+}
+
 #pragma mark - Application startup
 
 - (void)runStartupSequenceWithLaunchOptions:(NSDictionary *)launchOptions
@@ -365,7 +373,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self configureHockeySDK];
     [self configureCrashlytics];
     [self configureAppRatingUtility];
-    
+
     // Analytics
     [self configureAnalytics];
 
@@ -377,7 +385,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 #endif
 
     [HelpshiftUtils setup];
-    
+
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [WPUserAgent useWordPressUserAgentInUIWebViews];
@@ -537,11 +545,15 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (void)customizeAppearanceForTextElements
 {
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline symbolicTraits:UIFontDescriptorTraitBold]} ];
+    CGFloat maximumPointSize = [WPStyleGuide maxFontSize];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{
+                                                           NSForegroundColorAttributeName: [UIColor whiteColor],
+                                                           NSFontAttributeName: [WPStyleGuide fixedFontFor:UIFontTextStyleHeadline weight:UIFontWeightBold]
+                                                           }];
     // Search
     [WPStyleGuide configureSearchBarTextAppearance];
     // SVProgressHUD styles
-    [SVProgressHUD setFont:[WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline]];
+    [SVProgressHUD setFont:[WPStyleGuide fontForTextStyle:UIFontTextStyleHeadline maximumPointSize:maximumPointSize]];
 }
 
 - (void)trackLogoutIfNeeded
@@ -610,6 +622,11 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 + (void)setLogLevel:(DDLogLevel)logLevel
 {
     ddLogLevel = logLevel;
+
+    int logLevelInt = (int)logLevel;
+    WPSharedSetLoggingLevel(logLevelInt);
+    TracksSetLoggingLevel(logLevelInt);
+    WPStatsSetLoggingLevel(logLevelInt);
 }
 
 @end

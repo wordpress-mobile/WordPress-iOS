@@ -14,7 +14,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     @objc var onePasswordButton: UIButton!
-    override  var sourceTag: SupportSourceTag {
+    override var sourceTag: WordPressSupportSourceTag {
         get {
             return .loginUsernamePassword
         }
@@ -75,15 +75,6 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
         unregisterForKeyboardEvents()
     }
 
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        // Ensure that the user info is set on the epilogue vc.
-        if let vc = segue.destination as? LoginEpilogueViewController {
-            vc.epilogueUserInfo = epilogueUserInfo()
-            vc.jetpackLogin = loginFields.meta.jetpackLogin
-        }
-    }
 
 
     // MARK: - Setup and Configuration
@@ -234,15 +225,18 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
     }
 
 
-    /// Advances to the epilogue view controller once the self-hosted site has been added.
-    ///
-    @objc func showEpilogue() {
-        configureViewLoading(false)
-        performSegue(withIdentifier: .showEpilogue, sender: self)
-    }
-
-
     // MARK: - Epilogue: Gravatar and User Profile Acquisition
+
+    override func showLoginEpilogue() {
+        guard let delegate = WordPressAuthenticator.shared.delegate, let navigationController = navigationController else {
+            fatalError()
+        }
+
+        configureViewLoading(false)
+        delegate.presentLoginEpilogue(in: navigationController, epilogueInfo: epilogueUserInfo(), isJetpackLogin: isJetpackLogin) { [weak self] in
+            self?.dismissBlock?(false)
+        }
+    }
 
 
     /// Returns an instance of LoginEpilogueUserInfo composed from
@@ -276,8 +270,8 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
         service.fetchProfile(blog: blog, success: { [weak self] (profile) in
             self?.userProfile = profile
             self?.fetchGravatarProfileInfo(email: profile.email, completion: completion)
-            }, failure: { [weak self] (_) in
-                self?.showEpilogue()
+            }, failure: { [weak self] _ in
+                self?.showLoginEpilogue()
         })
     }
 
@@ -289,8 +283,8 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
         service.fetchProfile(email, success: { [weak self] (profile) in
             self?.gravatarProfile = profile
             completion()
-            }, failure: { [weak self] (_) in
-                self?.showEpilogue()
+            }, failure: { [weak self] _ in
+                self?.showLoginEpilogue()
         })
     }
 
@@ -345,43 +339,33 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
 
 extension LoginSelfHostedViewController {
 
-    override func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
+    override func finishedLogin(withUsername username: String, authToken: String, requiredMultifactorCode: Bool) {
         syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
     }
 
 
-    func finishedLogin(withUsername username: String!, password: String!, xmlrpc: String!, options: [AnyHashable: Any]!) {
+    func finishedLogin(withUsername username: String, password: String, xmlrpc: String, options: [AnyHashable: Any]) {
         displayLoginMessage("")
 
-        BlogSyncFacade().syncBlog(withUsername: username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] in
-            let context = ContextManager.sharedInstance().mainContext
-            let service = BlogService(managedObjectContext: context)
-            guard let blog = service.findBlog(withXmlrpc: xmlrpc, andUsername: username) else {
-                assertionFailure("A blog was just added but was not found in core data.")
-                // Skip showing the epilogue in this situation. Since there will
-                // be no blog to present to the user the screen is likly to be
-                // confusing. Instead just dismiss.
-                self?.dismiss()
-                return
-            }
+        BlogSyncFacade().syncBlog(withUsername: username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] blog in
 
             RecentSitesService().touch(blog: blog)
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
 
             self?.blog = blog
             self?.fetchUserProfileInfo(blog: blog, completion: {
-                self?.showEpilogue()
+                self?.showLoginEpilogue()
             })
         }
     }
 
 
-    func displayLoginMessage(_ message: String!) {
+    func displayLoginMessage(_ message: String) {
         configureForgotPasswordButton()
     }
 
 
-    override func displayRemoteError(_ error: Error!) {
+    override func displayRemoteError(_ error: Error) {
         displayLoginMessage("")
         configureViewLoading(false)
         let err = error as NSError

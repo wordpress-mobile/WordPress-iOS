@@ -7,6 +7,7 @@ class LoginPrologueViewController: UIViewController, UIViewControllerTransitioni
 
     @IBOutlet var loginButton: UIButton!
     @IBOutlet var signupButton: UIButton!
+    var showCancel = false
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -54,6 +55,9 @@ class LoginPrologueViewController: UIViewController, UIViewControllerTransitioni
             vc.emailTapped = { [weak self] in
                 self?.performSegue(withIdentifier: NUXViewController.SegueIdentifier.showSigninV2.rawValue, sender: self)
             }
+            vc.googleTapped = { [weak self] in
+                self?.performSegue(withIdentifier: NUXViewController.SegueIdentifier.showGoogle.rawValue, sender: self)
+            }
             vc.modalPresentationStyle = .custom
         }
     }
@@ -64,13 +68,20 @@ class LoginPrologueViewController: UIViewController, UIViewControllerTransitioni
         }
 
         let loginTitle = NSLocalizedString("Log In", comment: "Button title.  Tapping takes the user to the login form.")
-        let createTitle = NSLocalizedString("Signup to WordPress.com", comment: "Button title. Tapping begins the process of creating a WordPress.com account.")
+        let createTitle = NSLocalizedString("Sign up for WordPress.com", comment: "Button title. Tapping begins the process of creating a WordPress.com account.")
         buttonViewController.setupTopButton(title: loginTitle, isPrimary: true) { [weak self] in
             self?.performSegue(withIdentifier: NUXViewController.SegueIdentifier.showEmailLogin.rawValue, sender: self)
         }
         buttonViewController.setupButtomButton(title: createTitle, isPrimary: false) { [weak self] in
             self?.signupTapped()
         }
+        if showCancel {
+            let cancelTitle = NSLocalizedString("Cancel", comment: "Button title. Tapping it cancels the login flow.")
+            buttonViewController.setupTertiaryButton(title: cancelTitle, isPrimary: false) { [weak self] in
+                self?.dismiss(animated: true, completion: nil)
+            }
+        }
+        buttonViewController.backgroundColor = WPStyleGuide.lightGrey()
     }
 
     // MARK: - Setup and Config

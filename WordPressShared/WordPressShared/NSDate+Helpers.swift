@@ -13,6 +13,14 @@ extension Date {
             return formatter
         }()
 
+        static let iso8601WithMilliseconds: DateFormatter = {
+            let formatter           = DateFormatter()
+            formatter.locale        = Locale(identifier: "en_US_POSIX")
+            formatter.dateFormat    = "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
+            formatter.timeZone      = TimeZone(secondsFromGMT: 0)
+            return formatter
+        }()
+
         static let rfc1123: DateFormatter = {
             let formatter           = DateFormatter()
             formatter.locale        = Locale(identifier: "en_US_POSIX")
@@ -75,6 +83,12 @@ extension Date {
     ///
     public static func dateWithISO8601String(_ string: String) -> Date? {
         return DateFormatters.iso8601.date(from: string)
+    }
+
+    /// Returns a NSDate Instance, given it's ISO8601 String Representation with milliseconds
+    ///
+    public static func dateWithISO8601WithMillisecondsString(_ string: String) -> Date? {
+        return DateFormatters.iso8601WithMilliseconds.date(from: string)
     }
 
     /// Returns a NSDate instance with only its Year / Month / Weekday / Day set. Removes the time!

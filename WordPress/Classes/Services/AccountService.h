@@ -92,6 +92,16 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
  */
 - (void)requestAuthenticationLink:(NSString *)email success:(void (^)(void))success failure:(void (^)(NSError *error))failure;
 
+
+/**
+ Requests a one-time signup link sent to the specified email address.
+ 
+ @param email
+ @param success
+ @param failure
+ */
+- (void)requestSignupLink:(NSString *)email success:(void (^)(void))success failure:(void (^)(NSError *error))failure;
+
 /**
  Requests a verification email to be sent to the email address associated with the current account.
 
