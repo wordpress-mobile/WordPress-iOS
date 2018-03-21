@@ -78,7 +78,7 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
     // MARK: - Epilogue: Gravatar and User Profile Acquisition
 
     func showLoginEpilogue(for site: WordPressSite) {
-        /// Epilogue: Singup
+        /// Epilogue: Signup
         /// TODO: @jlp Mar.19.2018. Move this to the WordPressAuthenticatorDelegate's API!
         ///
         if let linkSource = loginFields.meta.emailMagicLinkSource, linkSource == .signup {
