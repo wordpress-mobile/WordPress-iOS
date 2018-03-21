@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 typedef void (^PostPreviewViewCompletionHandler)(void);
 @property (nonatomic, copy, readwrite, nullable) PostPreviewViewCompletionHandler onClose;
+@property (nonatomic, strong, readonly) AbstractPost *apost;
 
 - (instancetype)initWithPost:(AbstractPost *)aPost;
 
