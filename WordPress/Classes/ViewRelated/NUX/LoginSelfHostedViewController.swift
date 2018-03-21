@@ -193,6 +193,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
         siteHeaderView.isHidden = true
 
         siteAddressLabel.text = sanitizedSiteAddress(siteAddress: loginFields.siteAddress)
+        siteAddressLabel.adjustsFontForContentSizeCategory = true
     }
 
 
@@ -321,13 +322,6 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
         WordPressAuthenticator.post(event: .loginForgotPasswordClicked)
     }
 
-    // MARK: - Dynamic type
-
-    override func didChangePreferredContentSize() {
-        super.didChangePreferredContentSize()
-        siteAddressLabel?.font = WPStyleGuide.fontForTextStyle(.body)
-    }
-
     // MARK: - Keyboard Notifications
 
 
@@ -391,14 +385,5 @@ extension LoginSelfHostedViewController: UITextFieldDelegate {
             validateForm()
         }
         return true
-    }
-}
-
-extension LoginSelfHostedViewController {
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            didChangePreferredContentSize()
-        }
     }
 }
