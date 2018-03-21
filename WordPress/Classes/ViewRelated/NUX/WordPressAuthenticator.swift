@@ -6,9 +6,9 @@ import WordPressUI
 
 
 
-// MARK: - WordPress Site
+// MARK: - WordPress Endpoint
 //
-public enum WordPressSite {
+public enum WordPressEndpoint {
 
     /// WordPress.org Site Credentials.
     ///
@@ -63,7 +63,7 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///     - site: WordPress Site Credentials.
     ///     - onCompletion: Closure to be executed on completion.
     ///
-    func sync(site: WordPressSite, onCompletion: @escaping (Error?) -> ())
+    func sync(endpoint: WordPressEndpoint, onCompletion: @escaping (Error?) -> ())
 }
 
 

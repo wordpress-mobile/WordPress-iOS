@@ -19,7 +19,7 @@ class LoginEpilogueViewController: UIViewController {
         var numberOfBlogs = 0
         if let info = epilogueUserInfo {
             tableViewController?.epilogueUserInfo = info
-            if info.site != nil {
+            if info.endpoint != nil {
                 numberOfBlogs = 1
             }
         } else {
