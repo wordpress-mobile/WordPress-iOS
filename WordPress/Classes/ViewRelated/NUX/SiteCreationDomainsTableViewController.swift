@@ -21,9 +21,7 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
     private var selectedCell: UITableViewCell?
 
     // API returned no domain suggestions.
-    private var noSuggestions: Bool {
-        return siteTitleSuggestions.count == 0 && searchSuggestions.count == 0
-    }
+    private var noSuggestions: Bool = false
 
     fileprivate enum ViewPadding: CGFloat {
         case noResultsView = 60
@@ -93,12 +91,14 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
 
         service.getDomainSuggestions(base: searchTerm, success: { [weak self] (suggestions) in
             self?.isSearching = false
+            self?.noSuggestions = false
             SVProgressHUD.dismiss()
             self?.tableView.separatorStyle = .singleLine
             addSuggestions(suggestions)
         }) { [weak self] (error) in
             DDLogError("Error getting Domain Suggestions: \(error.localizedDescription)")
             self?.isSearching = false
+            self?.noSuggestions = true
             SVProgressHUD.dismiss()
             self?.tableView.separatorStyle = .none
             // Add no suggestions to display the no results view.
@@ -154,7 +154,6 @@ extension SiteCreationDomainsTableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell
-
         switch indexPath.section {
         case Sections.titleAndDescription.rawValue:
             cell = titleAndDescriptionCell()
@@ -275,6 +274,7 @@ private extension SiteCreationDomainsTableViewController {
     }
 
     func removeNoResultsFromView() {
+        noSuggestions = false
         tableView.separatorStyle = .singleLine
         tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
         noResultsViewController?.view.removeFromSuperview()
