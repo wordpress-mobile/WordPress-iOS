@@ -220,7 +220,7 @@ extension LoginViewController {
         switch endpoint {
         case .wporg:
             break
-        case .wpcom(_, _, _, multifactor):
+        case .wpcom(_, _, _, let multifactor):
             properties = [
                 "multifactor": multifactor.description,
                 "dotcom_user": true.description
