@@ -94,6 +94,8 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
             self?.noSuggestions = false
             SVProgressHUD.dismiss()
             self?.tableView.separatorStyle = .singleLine
+            // Dismiss the keyboard so the full results list can be seen.
+            self?.view.endEditing(true)
             addSuggestions(suggestions)
         }) { [weak self] (error) in
             DDLogError("Error getting Domain Suggestions: \(error.localizedDescription)")
@@ -101,6 +103,8 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
             self?.noSuggestions = true
             SVProgressHUD.dismiss()
             self?.tableView.separatorStyle = .none
+            // Dismiss the keyboard so the full no results view can be seen.
+            self?.view.endEditing(true)
             // Add no suggestions to display the no results view.
             addSuggestions([])
         }
