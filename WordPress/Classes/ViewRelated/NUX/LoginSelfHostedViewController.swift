@@ -277,11 +277,11 @@ extension LoginSelfHostedViewController {
             fatalError()
         }
 
-        let site = WordPressSite.wporg(username: username, password: password, xmlrpc: xmlrpc, options: options)
-        delegate.sync(site: site) { [weak self] _ in
+        let endpoint = WordPressEndpoint.wporg(username: username, password: password, xmlrpc: xmlrpc, options: options)
+        delegate.sync(endpoint: endpoint) { [weak self] _ in
 
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
-            self?.showLoginEpilogue(for: site)
+            self?.showLoginEpilogue(for: endpoint)
         }
     }
 

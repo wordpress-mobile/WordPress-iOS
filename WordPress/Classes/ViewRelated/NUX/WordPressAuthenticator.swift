@@ -6,9 +6,9 @@ import WordPressUI
 
 
 
-// MARK: - WordPress Site
+// MARK: - WordPress Endpoint
 //
-public enum WordPressSite {
+public enum WordPressEndpoint {
 
     /// WordPress.org Site Credentials.
     ///
@@ -47,7 +47,7 @@ public protocol WordPressAuthenticatorDelegate: class {
 
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
-    func presentLoginEpilogue(in navigationController: UINavigationController, for site: WordPressSite, onDismiss: @escaping () -> Void)
+    func presentLoginEpilogue(in navigationController: UINavigationController, for endpoint: WordPressEndpoint, onDismiss: @escaping () -> Void)
 
     /// Presents the Support Interface from a given ViewController, with a specified SourceTag.
     ///
@@ -63,7 +63,7 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///     - site: WordPress Site Credentials.
     ///     - onCompletion: Closure to be executed on completion.
     ///
-    func sync(site: WordPressSite, onCompletion: @escaping (Error?) -> ())
+    func sync(endpoint: WordPressEndpoint, onCompletion: @escaping (Error?) -> ())
 }
 
 

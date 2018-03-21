@@ -32,13 +32,13 @@ class LoginEpilogueViewController: UIViewController {
 
     /// Site that was just connected to our awesome app.
     ///
-    var site: WordPressSite? {
+    var endpoint: WordPressEndpoint? {
         didSet {
-            guard isViewLoaded, let site = site else {
+            guard isViewLoaded, let endpoint = endpoint else {
                 return
             }
 
-            refreshInterface(with: site)
+            refreshInterface(with: endpoint)
         }
     }
 
@@ -48,11 +48,11 @@ class LoginEpilogueViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        guard let site = site else {
+        guard let endpoint = endpoint else {
             fatalError()
         }
 
-        refreshInterface(with: site)
+        refreshInterface(with: endpoint)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -72,7 +72,7 @@ class LoginEpilogueViewController: UIViewController {
             return
         }
 
-        epilogueTableViewController.site = site
+        epilogueTableViewController.endpoint = endpoint
         tableViewController = epilogueTableViewController
     }
 
@@ -93,8 +93,8 @@ private extension LoginEpilogueViewController {
 
     /// Refreshes the UI so that the specified WordPressSite is displayed.
     ///
-    func refreshInterface(with site: WordPressSite) {
-        switch site {
+    func refreshInterface(with endpoint: WordPressEndpoint) {
+        switch endpoint {
         case .wporg:
             configureButtons()
         case .wpcom(_, _, let isJetpackLogin, _):
