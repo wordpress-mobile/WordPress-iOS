@@ -1,15 +1,25 @@
 import UIKit
 import WordPressShared
 
-// wrap BlogListDataSource calls to add a section for the user's info cell
+
+// MARK: - LoginEpilogueTableViewController
+//
 class LoginEpilogueTableViewController: UITableViewController {
+
+    ///
+    ///
     private let blogDataSource = BlogListDataSource()
-    var blogCount: Int?
+
+    ///
+    ///
     var epilogueUserInfo: LoginEpilogueUserInfo? {
         didSet {
             blogDataSource.loggedIn = true
         }
     }
+
+    ///
+    ///
     var blog: Blog? {
         get {
             return blogDataSource.blog
@@ -41,11 +51,9 @@ class LoginEpilogueTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 1
-        } else {
-            let count = blogDataSource.tableView(tableView, numberOfRowsInSection: section-1)
-            blogCount = count
-            return count
         }
+
+        return blogDataSource.tableView(tableView, numberOfRowsInSection: section-1)
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -59,42 +67,28 @@ class LoginEpilogueTableViewController: UITableViewController {
             }
 
             return cell
-        } else {
-            let wrappedPath = IndexPath(row: indexPath.row, section: indexPath.section-1)
-            return blogDataSource.tableView(tableView, cellForRowAt: wrappedPath)
         }
+
+        let wrappedPath = IndexPath(row: indexPath.row, section: indexPath.section-1)
+        return blogDataSource.tableView(tableView, cellForRowAt: wrappedPath)
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let sectionTitle: String
-        if section == 0 {
-            sectionTitle = NSLocalizedString("Logged In As", comment: "Header for user info, shown after loggin in").localizedUppercase
-        } else {
-            switch blogCount {
-            case .some(let count) where count > 1:
-                sectionTitle = NSLocalizedString("My Sites", comment: "Header for list of multiple sites, shown after loggin in").localizedUppercase
-            case .some(let count) where count == 1:
-                sectionTitle = NSLocalizedString("My Site", comment: "Header for a single site, shown after loggin in").localizedUppercase
-            default:
-                sectionTitle = ""
-            }
-        }
-
         guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SectionHeader") as? EpilogueSectionHeaderFooter else {
             fatalError("Failed to get a section header cell")
         }
 
-        cell.titleLabel?.text = sectionTitle
+        cell.titleLabel?.text = title(for: section)
 
         return cell
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return Settings.firstSectionRowHeight
+            return Settings.profileRowHeight
         }
 
-        return Settings.otherSectionRowHeight
+        return Settings.blogRowHeight
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
@@ -131,12 +125,31 @@ extension LoginEpilogueTableViewController {
 }
 
 
+// MARK: - Private Methods
+//
+private extension LoginEpilogueTableViewController {
+
+    func title(for section: Int) -> String {
+        if section == 0 {
+            return NSLocalizedString("Logged In As", comment: "Header for user info, shown after loggin in").localizedUppercase
+        }
+
+        let rowCount = blogDataSource.tableView(tableView, numberOfRowsInSection: section-1)
+        if rowCount > 1 {
+            return NSLocalizedString("My Sites", comment: "Header for list of multiple sites, shown after loggin in").localizedUppercase
+        }
+
+        return NSLocalizedString("My Site", comment: "Header for a single site, shown after loggin in").localizedUppercase
+    }
+}
+
+
 // MARK: - UITableViewDelegate methods
 //
 private extension LoginEpilogueTableViewController {
     struct Settings {
-        static let firstSectionRowHeight = CGFloat(140)
-        static let otherSectionRowHeight = CGFloat(52)
+        static let profileRowHeight = CGFloat(140)
+        static let blogRowHeight = CGFloat(52)
         static let headerHeight = CGFloat(50)
     }
 }
