@@ -24,7 +24,7 @@ class LoginEpilogueViewController: UIViewController {
 
     /// Links to the Epilogue TableViewController
     ///
-    @objc var tableViewController: LoginEpilogueTableViewController?
+    private var tableViewController: LoginEpilogueTableViewController?
 
     /// Closure to be executed upon dismissal.
     ///
@@ -34,17 +34,26 @@ class LoginEpilogueViewController: UIViewController {
     ///
     var site: WordPressSite? {
         didSet {
-            guard let site = site else {
+            guard isViewLoaded, let site = site else {
                 return
             }
 
-            loadViewIfNeeded()
             refreshInterface(with: site)
         }
     }
 
 
     // MARK: - Lifecycle Methods
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        guard let site = site else {
+            fatalError()
+        }
+
+        refreshInterface(with: site)
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -58,6 +67,7 @@ class LoginEpilogueViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
+
         if let vc = segue.destination as? LoginEpilogueTableViewController {
             tableViewController = vc
         }
@@ -69,7 +79,7 @@ class LoginEpilogueViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        colorPanelBasedOnTableViewContents()
+        configurePanelBasedOnTableViewContents()
     }
 }
 
@@ -78,7 +88,29 @@ class LoginEpilogueViewController: UIViewController {
 //
 private extension LoginEpilogueViewController {
 
-    func configureButtons(numberOfBlogs: Int) {
+    /// Refreshes the UI so that the specified WordPressSite is displayed.
+    ///
+    func refreshInterface(with site: WordPressSite) {
+        switch site {
+        case .wporg:
+            configureButtons()
+        case .wpcom(_, _, let isJetpackLogin, _):
+            configureButtons(numberOfBlogs: numberOfWordPressComBlogs, hidesConnectButton: isJetpackLogin)
+        }
+    }
+
+    /// Returns the number of WordPress.com sites.
+    ///
+    var numberOfWordPressComBlogs: Int {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+
+        return service.defaultWordPressComAccount()?.blogs.count ?? 0
+    }
+
+    /// Setup: Buttons
+    ///
+    func configureButtons(numberOfBlogs: Int = 1, hidesConnectButton: Bool = false) {
         let connectTitle: String
         if numberOfBlogs == 0 {
             connectTitle = NSLocalizedString("Connect a site", comment: "Button title")
@@ -86,28 +118,25 @@ private extension LoginEpilogueViewController {
             connectTitle = NSLocalizedString("Connect another site", comment: "Button title")
         }
 
-        continueButton.setTitle(NSLocalizedString("Continue", comment: "A button title"),
-                                 for: .normal)
+        continueButton.setTitle(NSLocalizedString("Continue", comment: "A button title"), for: .normal)
         continueButton.accessibilityIdentifier = "Continue"
         connectButton.setTitle(connectTitle, for: .normal)
-
-        if let site = site, case let .wpcom(_, _, isJetpackLogin, _) = site {
-            connectButton.isHidden = isJetpackLogin
-        }
+        connectButton.isHidden = hidesConnectButton
     }
 
-    func colorPanelBasedOnTableViewContents() {
-        guard let tableView = tableViewController?.tableView,
-            let buttonPanel = buttonPanel else {
-                return
+    /// Setup: Button Panel
+    ///
+    func configurePanelBasedOnTableViewContents() {
+        guard let tableView = tableViewController?.tableView else {
+            return
         }
 
         let contentSize = tableView.contentSize
-        let screenHeight = UIScreen.main.bounds.size.height
-        let panelHeight = buttonPanel.frame.size.height
+        let screenHeight = UIScreen.main.bounds.height
+        let panelHeight = buttonPanel.frame.height
 
         if contentSize.height > (screenHeight - panelHeight) {
-            buttonPanel.backgroundColor = UIColor.white
+            buttonPanel.backgroundColor = .white
             shadowView.isHidden = false
         } else {
             buttonPanel.backgroundColor = WPStyleGuide.lightGrey()
@@ -133,107 +162,5 @@ extension LoginEpilogueViewController {
             return
         }
         navigationController?.setViewControllers([controller], animated: true)
-    }
-}
-
-
-// MARK: - Interface Private Methods
-//
-private extension LoginEpilogueViewController {
-
-    /// Refreshes the UI so that the specified WordPressSite is displayed.
-    ///
-    func refreshInterface(with site: WordPressSite) {
-        switch site {
-        case .wporg(let username, let password, let xmlrpc, _):
-            refreshInterfaceForSelfHosted(username: username, password: password, xmlrpc: xmlrpc)
-        case .wpcom:
-            refreshInterfaceForDotcom()
-        }
-    }
-}
-
-
-// MARK: - Dotcom-Y Methods
-//
-private extension LoginEpilogueViewController {
-
-    /// Refreshes the interface so that the main WordPress.com account is onscreen.
-    ///
-    func refreshInterfaceForDotcom() {
-        /// The self-hosted flow sets user info,  If no user info is set, assume a wpcom flow and try the default wp account.
-        ///
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        guard let account = service.defaultWordPressComAccount() else {
-            return
-        }
-
-        tableViewController?.epilogueUserInfo = LoginEpilogueUserInfo(account: account)
-        configureButtons(numberOfBlogs: account.blogs.count)
-    }
-}
-
-
-// MARK: - SelfHosted-Y Methods
-//
-private extension LoginEpilogueViewController {
-
-    /// Refreshes the Interface, to display a newly connected SelfHosted site, with the specified endpoint / credentials.
-    ///
-    func refreshInterfaceForSelfHosted(username: String, password: String, xmlrpc: String) {
-
-        loadEpilogueInfo(username: username, password: password, xmlrpc: xmlrpc) { [weak self] epilogueInfo in
-            guard let `self` = self else {
-                return
-            }
-
-            self.tableViewController?.epilogueUserInfo = epilogueInfo
-            self.tableViewController?.blog = self.loadBlog(with: username, and: xmlrpc)
-            self.configureButtons(numberOfBlogs: 1)
-        }
-    }
-
-    /// Loads the EpilogueInfo for a SelfHosted site, with the specified credentials, at the given endpoint.
-    ///
-    func loadEpilogueInfo(username: String, password: String, xmlrpc: String, completion: @escaping (LoginEpilogueUserInfo?) -> ()) {
-
-        guard let usersService = UsersService(username: username, password: password, xmlrpc: xmlrpc) else {
-            completion(nil)
-            return
-        }
-
-        /// Load: User's Profile
-        ///
-        usersService.fetchProfile { userProfile in
-
-            guard let userProfile = userProfile else {
-                completion(nil)
-                return
-            }
-
-            var epilogueInfo = LoginEpilogueUserInfo()
-            epilogueInfo.update(with: userProfile)
-
-            /// Load: Gravatar's Metadata
-            ///
-            let gravatarService = GravatarService()
-            gravatarService.fetchProfile(email: userProfile.email) { gravatarProfile in
-                if let gravatarProfile = gravatarProfile {
-                    epilogueInfo.update(with: gravatarProfile)
-                }
-
-                completion(epilogueInfo)
-            }
-        }
-    }
-
-    /// Loads the Blog for a given Username / XMLRPC, if any.
-    ///
-    private func loadBlog(with username: String, and xmlrpc: String) -> Blog? {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = BlogService(managedObjectContext: context)
-
-        return service.findBlog(withXmlrpc: xmlrpc, andUsername: username)
     }
 }
