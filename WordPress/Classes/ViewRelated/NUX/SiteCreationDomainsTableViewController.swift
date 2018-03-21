@@ -62,7 +62,7 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
 
         suggestDomains(for: nameToSearch) { [weak self] (suggestions) in
             self?.siteTitleSuggestions = suggestions
-            self?.tableView.reloadSections(IndexSet(integersIn: Sections.searchField.rawValue...Sections.suggestions.rawValue), with: .automatic)
+            self?.tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
         }
     }
 
