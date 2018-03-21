@@ -1,6 +1,3 @@
-import Foundation
-
-
 // MARK: - SafariCredentialsService
 //
 class SafariCredentialsService {

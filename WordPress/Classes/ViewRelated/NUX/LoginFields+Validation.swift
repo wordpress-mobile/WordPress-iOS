@@ -1,6 +1,3 @@
-import Foundation
-
-
 // MARK: - LoginFields Validation Methods
 //
 extension LoginFields {

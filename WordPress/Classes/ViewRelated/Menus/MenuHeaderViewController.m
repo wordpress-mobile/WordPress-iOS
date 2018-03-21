@@ -104,7 +104,7 @@ static CGFloat ViewExpansionAnimationDelay = 0.15;
 
 - (void)configureTextLabel
 {
-    self.textLabel.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleFootnote];
+    self.textLabel.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleFootnote maximumPointSize:[WPStyleGuide maxFontSize]];
     self.textLabel.adjustsFontForContentSizeCategory = YES;
     self.textLabel.backgroundColor = [UIColor clearColor];
     self.textLabel.textColor = [WPStyleGuide greyDarken20];

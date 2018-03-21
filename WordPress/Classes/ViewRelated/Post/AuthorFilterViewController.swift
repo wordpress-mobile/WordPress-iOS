@@ -199,6 +199,7 @@ private class AuthorFilterCell: UITableViewCell {
             case .everyone:
                 gravatarImageView.image = Gridicon.iconOfType(.multipleUsers, withSize: Metrics.multipleGravatarSize)
                 gravatarImageView.contentMode = .center
+                accessibilityHint = NSLocalizedString("Select to show everyone's posts.", comment: "Voiceover accessibility hint, informing the user they can select an item to show posts written by all users on the site")
             case .user(let email):
                 gravatarImageView.contentMode = .scaleAspectFill
 
@@ -208,6 +209,8 @@ private class AuthorFilterCell: UITableViewCell {
                 } else {
                     gravatarImageView.image = placeholder
                 }
+
+                accessibilityHint = NSLocalizedString("Select to just show my posts.", comment: "Voiceover accessibility hint, informing the user they can select an item to filter a list of posts to show only their own posts.")
             }
         }
     }
