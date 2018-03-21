@@ -3,6 +3,7 @@ import UIKit
 import Gridicons
 import WordPressShared
 import SVProgressHUD
+import WordPressFlux
 
 class AppSettingsViewController: UITableViewController {
     enum Sections: Int {
@@ -104,6 +105,11 @@ class AppSettingsViewController: UITableViewController {
         let usageTrackingFooter = NSLocalizedString("Automatically send usage statistics to help us improve WordPress for iOS", comment: "App usage data settings section footer describing what the setting does.")
 
         let otherHeader = NSLocalizedString("Other", comment: "Link to About section (contains info about the app)")
+        let spotlightClearCacheRow = DestructiveButtonRow(
+            title: NSLocalizedString("Clear Spotlight Index", comment: "Label for button that clears the spotlight index on device."),
+            action: clearSpotlightCache(),
+            accessibilityIdentifier: "spotlightClearCacheButton")
+
         let settingsRow = NavigationItemRow(
             title: NSLocalizedString("Open Device Settings", comment: "Opens iOS's Device Settings for WordPress App"),
             action: openApplicationSettings()
@@ -133,6 +139,7 @@ class AppSettingsViewController: UITableViewController {
             ImmuTableSection(
                 headerText: otherHeader,
                 rows: [
+                    spotlightClearCacheRow,
                     settingsRow,
                     aboutRow
                 ],
@@ -283,6 +290,16 @@ class AppSettingsViewController: UITableViewController {
             }
 
             self?.tableView.deselectSelectedRowWithAnimation(true)
+        }
+    }
+
+    func clearSpotlightCache() -> ImmuTableAction {
+        return { [weak self] row in
+            self?.tableView.deselectSelectedRowWithAnimation(true)
+            SearchManager.shared.deleteAllSearchableItems()
+            let notice = Notice(title: NSLocalizedString("Successfully cleared spotlight index", comment: "Notice displayed to the user after clearing the spotlight index in app settings."),
+                                feedbackType: .success)
+            ActionDispatcher.dispatch(NoticeAction.post(notice))
         }
     }
 }
