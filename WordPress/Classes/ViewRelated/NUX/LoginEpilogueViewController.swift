@@ -68,9 +68,12 @@ class LoginEpilogueViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        if let vc = segue.destination as? LoginEpilogueTableViewController {
-            tableViewController = vc
+        guard let epilogueTableViewController = segue.destination as? LoginEpilogueTableViewController else {
+            return
         }
+
+        epilogueTableViewController.site = site
+        tableViewController = epilogueTableViewController
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
