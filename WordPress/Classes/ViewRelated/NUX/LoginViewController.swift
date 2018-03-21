@@ -214,8 +214,8 @@ extension LoginViewController {
 
         configureStatusLabel(NSLocalizedString("Getting account information", comment: "Alerts the user that wpcom account information is being retrieved."))
 
-        let site = WordPressSite.wpcom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin)
-        delegate.sync(site: site) { [weak self] _ in
+        let endpoint = WordPressEndpoint.wpcom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin)
+        delegate.sync(endpoint: endpoint) { [weak self] _ in
 
             /// Tracker
             ///

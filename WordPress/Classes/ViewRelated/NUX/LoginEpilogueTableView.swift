@@ -7,7 +7,7 @@ class LoginEpilogueTableView: UITableViewController {
     var blogCount: Int?
     var epilogueUserInfo: LoginEpilogueUserInfo? {
         didSet {
-            blogDataSource.blog = loadBlog(for: epilogueUserInfo?.site)
+            blogDataSource.blog = loadBlog(for: epilogueUserInfo?.endpoint)
             blogDataSource.loggedIn = true
         }
     }
@@ -27,8 +27,8 @@ class LoginEpilogueTableView: UITableViewController {
         tableView.register(userInfoNib, forCellReuseIdentifier: "userInfo")
     }
 
-    private func loadBlog(for site: WordPressSite?) -> Blog? {
-        guard let site = site, case let WordPressSite.wporg(username, _, xmlrpc, _) = site else {
+    private func loadBlog(for endpoint: WordPressEndpoint?) -> Blog? {
+        guard let endpoint = endpoint, case let WordPressEndpoint.wporg(username, _, xmlrpc, _) = endpoint else {
             return nil
         }
 
