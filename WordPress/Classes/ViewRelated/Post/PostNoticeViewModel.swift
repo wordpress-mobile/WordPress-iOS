@@ -6,6 +6,14 @@ struct PostNoticeViewModel {
     /// Returns the Notice represented by this view model.
     ///
     var notice: Notice {
+        if uploadSuccessful {
+            return successNotice
+        } else {
+            return failureNotice
+        }
+    }
+
+    private var successNotice: Notice {
         let action = self.action
 
         return Notice(title: title,
@@ -20,6 +28,20 @@ struct PostNoticeViewModel {
                             self.viewPost()
                         }
         })
+    }
+
+    private var failureNotice: Notice {
+        return Notice(title: failureTitle,
+                      message: message,
+                      feedbackType: .error,
+                      actionTitle: failureActionTitle,
+                      actionHandler: {
+                        self.retryUpload()
+        })
+    }
+
+    private var uploadSuccessful: Bool {
+        return post.remoteStatus == .sync
     }
 
     // MARK: - Display values for Notice
@@ -62,6 +84,14 @@ struct PostNoticeViewModel {
         }
     }
 
+    private var failureTitle: String {
+        if post is Page {
+            return NSLocalizedString("Page failed to upload", comment: "Title of notification displayed when a page has failed to upload.")
+        } else {
+            return NSLocalizedString("Post failed to upload", comment: "Title of notification displayed when a post has failed to upload.")
+        }
+    }
+
     private var message: String {
         let title = post.postTitle ?? ""
         if title.count > 0 {
@@ -87,6 +117,10 @@ struct PostNoticeViewModel {
 
     private var action: Action {
         return (post.status == .draft) ? .publish : .view
+    }
+
+    private var failureActionTitle: String {
+        return NSLocalizedString("Retry", comment: "Button title. Retries uploading a post.")
     }
 
     // MARK: - Actions
@@ -134,6 +168,14 @@ struct PostNoticeViewModel {
         }
 
         post.status = .publish
+        PostCoordinator.shared.save(post: post)
+    }
+
+    private func retryUpload() {
+        guard let post = postInContext else {
+            return
+        }
+
         PostCoordinator.shared.save(post: post)
     }
 
