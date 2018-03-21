@@ -73,6 +73,7 @@ target 'WordPress' do
     shared_with_networking_pods
 
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'1b9e6398f054f8726cf40de9e9a2ace753804502'
+    pod 'Gridicons', '0.15'
   end
 
   target 'WordPressDraftActionExtension' do
@@ -82,6 +83,7 @@ target 'WordPress' do
     shared_with_networking_pods
 
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'1b9e6398f054f8726cf40de9e9a2ace753804502'
+    pod 'Gridicons', '0.15'
   end
 
   target 'WordPressTodayWidget' do
