@@ -59,6 +59,9 @@ class PostCoordinator: NSObject {
             let model = PostNoticeViewModel(post: uploadedPost)
             ActionDispatcher.dispatch(NoticeAction.post(model.notice))
         }, failure: { error in
+            let model = PostNoticeViewModel(post: post)
+            ActionDispatcher.dispatch(NoticeAction.post(model.notice))
+
             print("Post Coordinator -> upload error: \(String(describing: error))")
         })
     }
