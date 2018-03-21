@@ -15,6 +15,8 @@ class PostCoordinator: NSObject {
 
     private let queue = DispatchQueue(label: "org.wordpress.postcoordinator")
 
+    private var observerUUIDs: [AbstractPost: UUID] = [:]
+
     /// Saves the post to both the local database and the server if available.
     /// If media is still uploading it keeps track of the ongoing media operations and updates the post content when they finish
     ///
@@ -23,18 +25,27 @@ class PostCoordinator: NSObject {
         let mediaCoordinator = MediaCoordinator.shared
 
         if mediaCoordinator.isUploadingMedia(for: post) {
-            mediaCoordinator.addObserver({ (media, state) in
+            // Only observe if we're not already
+            guard observerUUIDs[post] == nil else {
+                return
+            }
+
+            let uuid = mediaCoordinator.addObserver({ (media, state) in
                 switch state {
                 case .ended:
                     self.updateReferences(to: media, in: post)
+
                     // Let's check if media uploading is still going, if all finished with success then we can upload the post
                     if !mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
+                        self.removeObserver(for: post)
                         self.upload(post: post)
                     }
                 default:
                     print("Post Coordinator -> Media state: \(state)")
                 }
             }, forMediaFor: post)
+
+            observerUUIDs[post] = uuid
             return
         }
 
@@ -71,5 +82,9 @@ class PostCoordinator: NSObject {
         }
 
         post.content = postContent
+    }
+
+    private func removeObserver(for post: AbstractPost) {
+        observerUUIDs.removeValue(forKey: post)
     }
 }
