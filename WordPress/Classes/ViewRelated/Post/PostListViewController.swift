@@ -342,11 +342,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let post = postAtIndexPath(indexPath)
 
-        if post.remoteStatus == .pushing {
-            // Don't allow editing while pushing changes
-            return
-        }
-
         if post.status == .trash {
             // No editing posts that are trashed.
             return
