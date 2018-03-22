@@ -154,15 +154,13 @@ class FilterTabBar: UIControl {
     }
 
     private func makeTab(_ title: String) -> UIButton {
-        let tab = UIButton(type: .custom)
+        let tab = TabBarButton(type: .custom)
         tab.setTitle(title, for: .normal)
         tab.setTitleColor(tintColor, for: .selected)
         tab.setTitleColor(deselectedTabColor, for: .normal)
         tab.tintColor = tintColor
 
         tab.contentEdgeInsets = AppearanceMetrics.buttonInsets
-        tab.titleLabel?.font = UIFont.systemFont(ofSize: TabFont.size)
-
         tab.sizeToFit()
 
         tab.addTarget(self, action: #selector(tabTapped(_:)), for: .touchUpInside)
@@ -297,9 +295,19 @@ class FilterTabBar: UIControl {
         static let springDamping: CGFloat = 0.9
         static let initialVelocity: CGFloat = -0.5
     }
+}
 
+private class TabBarButton: UIButton {
     private enum TabFont {
-        static let size: CGFloat = 14.0
+        static let maxSize: CGFloat = 28.0
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote, maximumPointSize: TabFont.maxSize)
+        }
     }
 }
 
