@@ -11,6 +11,20 @@ static NSInteger const ActionBarMaxNumButtonsHorizontallyRegular = 4;
 
 static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 
+@interface PostCardActionButton: UIButton
+@end
+
+@implementation PostCardActionButton
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    if (previousTraitCollection.preferredContentSizeCategory != self.traitCollection.preferredContentSizeCategory) {
+        self.titleLabel.font = [WPStyleGuide subtitleFont];
+    }
+}
+@end
+
 @interface PostCardActionBar()
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) NSArray *buttons;
@@ -169,7 +183,7 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 
 - (UIButton *)newButton
 {
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *button = [PostCardActionButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.exclusiveTouch = YES;
     button.backgroundColor = [WPStyleGuide lightGrey];
