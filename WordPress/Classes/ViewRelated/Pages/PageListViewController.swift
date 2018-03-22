@@ -328,6 +328,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     fileprivate func editPage(_ apost: AbstractPost) {
+        guard !PostCoordinator.shared.isUploading(post: apost) else {
+            presentAlertForPageBeingUploaded()
+            return
+        }
         WPAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics())
         showEditor(post: apost)
     }
@@ -354,6 +358,16 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         present(navController, animated: true, completion: { [weak self] in
             self?.updateFilterWithPostStatus(.draft)
         })
+    }
+
+    func presentAlertForPageBeingUploaded() {
+        let message = NSLocalizedString("Page is being uploaded, please wait until this is done", comment: "Prompts the user that the post is being uploaded and cannot be restored post was moved to the drafts list.")
+
+        let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
+
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        alertController.addCancelActionWithTitle(alertCancel, handler: nil)
+        alertController.presentFromRootViewController()
     }
 
     fileprivate func draftPage(_ apost: AbstractPost) {
