@@ -26,7 +26,7 @@ class PostCoordinator: NSObject {
 
         if mediaCoordinator.isUploadingMedia(for: post) {
             // Only observe if we're not already
-            guard !areWeObserving(post: post) else {
+            guard !isObserving(post: post) else {
                 return
             }
 
@@ -112,7 +112,7 @@ class PostCoordinator: NSObject {
         }
     }
 
-    private func areWeObserving(post: AbstractPost) -> Bool {
+    private func isObserving(post: AbstractPost) -> Bool {
         var result = false
         queue.sync {
             result = observerUUIDs[post] != nil
