@@ -19,7 +19,7 @@ open class GravatarService {
     ///
     open func fetchProfile(email: String, onCompletion: @escaping ((_ profile: GravatarProfile?) -> Void)) {
         let remote = gravatarServiceRemote()
-        remote.fetchProfile(email, success: { (remoteProfile) in
+        remote.fetchProfile(email, success: { remoteProfile in
             var profile = GravatarProfile()
             profile.profileID = remoteProfile.profileID
             profile.hash = remoteProfile.hash
@@ -31,7 +31,7 @@ open class GravatarService {
             profile.displayName = remoteProfile.displayName
             onCompletion(profile)
 
-        }, failure: { (error) in
+        }, failure: { error in
             DDLogError(error.debugDescription)
             onCompletion(nil)
         })

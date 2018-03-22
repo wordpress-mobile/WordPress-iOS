@@ -52,7 +52,8 @@ open class UsersService {
 
             onCompletion(profile)
 
-        }, failure: { _ in
+        }, failure: { error in
+            DDLogError(error.debugDescription)
             onCompletion(nil)
         })
     }

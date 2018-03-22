@@ -12,24 +12,14 @@ class LoginEpilogueTableViewController: UITableViewController {
 
     ///
     ///
-    var epilogueUserInfo: LoginEpilogueUserInfo? {
-        didSet {
-            blogDataSource.blog = loadBlog(for: epilogueUserInfo?.endpoint)
-            blogDataSource.loggedIn = true
-        }
-    }
+    private var epilogueUserInfo: LoginEpilogueUserInfo?
 
+    /// Site that was just connected to our awesome app.
     ///
-    ///
-    var blog: Blog? {
-        get {
-            return blogDataSource.blog
-        }
-        set {
-            blogDataSource.blog = newValue
-        }
-    }
+    private var endpoint: WordPressEndpoint?
 
+
+    // MARK: - Initializers
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -39,22 +29,24 @@ class LoginEpilogueTableViewController: UITableViewController {
         super.viewDidLoad()
 
         let headerNib = UINib(nibName: "EpilogueSectionHeaderFooter", bundle: nil)
-        tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: "SectionHeader")
+        tableView.register(headerNib, forHeaderFooterViewReuseIdentifier: Settings.headerReuseIdentifier)
 
         let userInfoNib = UINib(nibName: "EpilogueUserInfoCell", bundle: nil)
-        tableView.register(userInfoNib, forCellReuseIdentifier: "userInfo")
+        tableView.register(userInfoNib, forCellReuseIdentifier: Settings.userCellReuseIdentifier)
     }
 
-    private func loadBlog(for endpoint: WordPressEndpoint?) -> Blog? {
-        guard let endpoint = endpoint, case let WordPressEndpoint.wporg(username, _, xmlrpc, _) = endpoint else {
-            return nil
-        }
-
-        let context = ContextManager.sharedInstance().mainContext
-        let service = BlogService(managedObjectContext: context)
-
-        return service.findBlog(withXmlrpc: xmlrpc, andUsername: username)
+    ///
+    ///
+    func setup(with endpoint: WordPressEndpoint) {
+        self.endpoint = endpoint
+        refreshInterface(for: endpoint)
     }
+}
+
+
+// MARK: - UITableViewDataSource methods
+//
+extension LoginEpilogueTableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return blogDataSource.numberOfSections(in: tableView) + 1
@@ -65,12 +57,13 @@ class LoginEpilogueTableViewController: UITableViewController {
             return 1
         }
 
-        return blogDataSource.tableView(tableView, numberOfRowsInSection: section-1)
+        let correctedSection = section - 1
+        return blogDataSource.tableView(tableView, numberOfRowsInSection: correctedSection)
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "userInfo") as? EpilogueUserInfoCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Settings.userCellReuseIdentifier) as? EpilogueUserInfoCell else {
                 fatalError("Failed to get a user info cell")
             }
 
@@ -86,7 +79,7 @@ class LoginEpilogueTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SectionHeader") as? EpilogueSectionHeaderFooter else {
+        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: Settings.headerReuseIdentifier) as? EpilogueSectionHeaderFooter else {
             fatalError("Failed to get a section header cell")
         }
 
@@ -141,6 +134,8 @@ extension LoginEpilogueTableViewController {
 //
 private extension LoginEpilogueTableViewController {
 
+    /// Returns the title for the current section!.
+    ///
     func title(for section: Int) -> String {
         if section == 0 {
             return NSLocalizedString("Logged In As", comment: "Header for user info, shown after loggin in").localizedUppercase
@@ -156,10 +151,92 @@ private extension LoginEpilogueTableViewController {
 }
 
 
+// MARK: - Loading!
+//
+private extension LoginEpilogueTableViewController {
+
+    ///
+    ///
+    func refreshInterface(for endpoint: WordPressEndpoint) {
+        switch endpoint {
+        case .wpcom:
+            epilogueUserInfo = loadEpilogueForDotcom()
+            blogDataSource.loggedIn = true
+
+            tableView.reloadData()
+
+        case .wporg(let username, let password, let xmlrpc, _):
+            blogDataSource.blog = loadBlog(username: username, xmlrpc: xmlrpc)
+
+            loadEpilogueForSelfhosted(username: username, password: password, xmlrpc: xmlrpc) { [weak self] epilogueInfo in
+                self?.epilogueUserInfo = epilogueInfo
+                self?.tableView.reloadData()
+            }
+        }
+    }
+
+    /// Loads the Blog for a given Username / XMLRPC, if any.
+    ///
+    private func loadBlog(username: String, xmlrpc: String) -> Blog? {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = BlogService(managedObjectContext: context)
+
+        return service.findBlog(withXmlrpc: xmlrpc, andUsername: username)
+    }
+
+    /// The self-hosted flow sets user info, if no user info is set, assume a wpcom flow and try the default wp account.
+    ///
+    private func loadEpilogueForDotcom() -> LoginEpilogueUserInfo {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        guard let account = service.defaultWordPressComAccount() else {
+            fatalError()
+        }
+
+        return LoginEpilogueUserInfo(account: account)
+    }
+
+    /// Loads the EpilogueInfo for a SelfHosted site, with the specified credentials, at the given endpoint.
+    ///
+    private func loadEpilogueForSelfhosted(username: String, password: String, xmlrpc: String, completion: @escaping (LoginEpilogueUserInfo?) -> ()) {
+        guard let service = UsersService(username: username, password: password, xmlrpc: xmlrpc) else {
+            completion(nil)
+            return
+        }
+
+        /// Load: User's Profile
+        ///
+        service.fetchProfile { userProfile in
+            guard let userProfile = userProfile else {
+                completion(nil)
+                return
+            }
+
+            var epilogueInfo = LoginEpilogueUserInfo()
+            epilogueInfo.update(with: userProfile)
+
+            /// Load: Gravatar's Metadata
+            ///
+            let service = GravatarService()
+            service.fetchProfile(email: userProfile.email) { gravatarProfile in
+                if let gravatarProfile = gravatarProfile {
+                    epilogueInfo.update(with: gravatarProfile)
+                }
+
+                completion(epilogueInfo)
+            }
+        }
+    }
+}
+
+
 // MARK: - UITableViewDelegate methods
 //
 private extension LoginEpilogueTableViewController {
+
     struct Settings {
+        static let headerReuseIdentifier = "SectionHeader"
+        static let userCellReuseIdentifier = "UserCell"
         static let profileRowHeight = CGFloat(140)
         static let blogRowHeight = CGFloat(52)
         static let headerHeight = CGFloat(50)

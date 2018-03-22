@@ -68,11 +68,11 @@ class LoginEpilogueViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        guard let epilogueTableViewController = segue.destination as? LoginEpilogueTableViewController else {
+        guard let epilogueTableViewController = segue.destination as? LoginEpilogueTableViewController, let endpoint = endpoint else {
             return
         }
 
-        epilogueTableViewController.endpoint = endpoint
+        epilogueTableViewController.setup(with: endpoint)
         tableViewController = epilogueTableViewController
     }
 
