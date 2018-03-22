@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ZA1-84-qnC">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -9,20 +13,20 @@
         <!--Fancy Alert View Controller-->
         <scene sceneID="C2X-eO-sRb">
             <objects>
-                <viewController id="ZA1-84-qnC" customClass="FancyAlertViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ZA1-84-qnC" customClass="FancyAlertViewController" customModule="WordPressUI" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bm6-pI-Hpq"/>
                         <viewControllerLayoutGuide type="bottom" id="mtg-gw-blh"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="9Vm-yf-6NT">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <view key="view" contentMode="scaleToFill" id="9Vm-yf-6NT" customClass="FancyAlertView" customModule="WordPressUI" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p02-zc-mb5">
-                                <rect key="frame" x="0.0" y="107.5" width="600" height="385"/>
+                                <rect key="frame" x="0.0" y="141" width="375" height="385"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HFL-PH-DaB" userLabel="Padding">
-                                        <rect key="frame" x="0.0" y="0.0" width="133" height="385"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="20.5" height="385"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="5oK-qi-G6x"/>
@@ -30,7 +34,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zfy-Hg-zeP">
-                                        <rect key="frame" x="133" y="0.0" width="334" height="385"/>
+                                        <rect key="frame" x="20.5" y="0.0" width="334" height="385"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="hxn-lJ-Q8T">
                                                 <rect key="frame" x="0.0" y="0.0" width="334" height="385"/>
@@ -77,7 +81,7 @@
                                                         <rect key="frame" x="0.0" y="211" width="334" height="87"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="999" verticalHuggingPriority="999" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rH2-Nt-ZNa">
-                                                                <rect key="frame" x="-133" y="16" width="0.0" height="30"/>
+                                                                <rect key="frame" x="-20.5" y="16" width="0.0" height="30"/>
                                                                 <inset key="titleEdgeInsets" minX="0.0" minY="4" maxX="0.0" maxY="4"/>
                                                                 <state key="normal" title="Button"/>
                                                                 <connections>
@@ -85,7 +89,7 @@
                                                                 </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="999" verticalCompressionResistancePriority="1000" text=" " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="75Q-Jn-AFH" userLabel="Alignment Placeholder">
-                                                                <rect key="frame" x="-133" y="20" width="4.5" height="20.5"/>
+                                                                <rect key="frame" x="-20.5" y="20" width="4.5" height="20.5"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -141,7 +145,7 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Ut8-yb-neA" userLabel="Button Stack View">
                                                                 <rect key="frame" x="20" y="20" width="294" height="46"/>
                                                                 <subviews>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qlO-59-AKI" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qlO-59-AKI" customClass="NUXButton" customModule="WordPressUI" customModuleProvider="target">
                                                                         <rect key="frame" x="0.0" y="0.0" width="137" height="46"/>
                                                                         <state key="normal" title="Not Now"/>
                                                                         <userDefinedRuntimeAttributes>
@@ -151,7 +155,7 @@
                                                                             <action selector="buttonTapped:" destination="ZA1-84-qnC" eventType="touchUpInside" id="Sze-Qf-vhW"/>
                                                                         </connections>
                                                                     </button>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bju-kg-VqX" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bju-kg-VqX" customClass="NUXButton" customModule="WordPressUI" customModuleProvider="target">
                                                                         <rect key="frame" x="157" y="0.0" width="137" height="46"/>
                                                                         <state key="normal" title="Try It"/>
                                                                         <userDefinedRuntimeAttributes>
@@ -188,7 +192,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GWg-BX-CHE" userLabel="Padding">
-                                        <rect key="frame" x="467" y="0.0" width="133" height="385"/>
+                                        <rect key="frame" x="354.5" y="0.0" width="20.5" height="385"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>
@@ -203,34 +207,37 @@
                             <constraint firstItem="p02-zc-mb5" firstAttribute="leading" secondItem="9Vm-yf-6NT" secondAttribute="leading" id="YDA-4p-5F4"/>
                             <constraint firstItem="p02-zc-mb5" firstAttribute="centerY" secondItem="9Vm-yf-6NT" secondAttribute="centerY" id="lHg-wu-JGs"/>
                         </constraints>
+                        <connections>
+                            <outlet property="bodyLabel" destination="OPz-wQ-LdM" id="rri-jS-Dkc"/>
+                            <outlet property="bottomDividerView" destination="SLm-WS-1GK" id="aag-9a-Hrd"/>
+                            <outlet property="buttonStackView" destination="Ut8-yb-neA" id="CLq-fZ-TMD"/>
+                            <outlet property="buttonWrapperView" destination="fve-0t-icO" id="8Yl-iO-nbf"/>
+                            <outlet property="buttonWrapperViewTopConstraint" destination="dmr-Er-FDx" id="aSA-Gt-jnw"/>
+                            <outlet property="cancelButton" destination="qlO-59-AKI" id="on1-2I-DU7"/>
+                            <outlet property="defaultButton" destination="Bju-kg-VqX" id="XP5-mS-X78"/>
+                            <outlet property="headerImageView" destination="Krq-uR-e1t" id="Gr4-RF-m4D"/>
+                            <outlet property="headerImageViewBottomConstraint" destination="ZWi-7r-zDG" id="yAS-zo-6nQ"/>
+                            <outlet property="headerImageViewTopConstraint" destination="DQh-Mz-Xe8" id="2lF-3H-olA"/>
+                            <outlet property="headerImageViewWrapperBottomConstraint" destination="H7l-cv-jTE" id="Ngi-WU-EAx"/>
+                            <outlet property="headerImageWrapperView" destination="zUD-7D-1OQ" id="VWO-PN-oRv"/>
+                            <outlet property="moreInfoButton" destination="bwf-Ap-GLo" id="icj-gN-96T"/>
+                            <outlet property="titleAccessoryButton" destination="rH2-Nt-ZNa" id="PfB-No-P1Y"/>
+                            <outlet property="titleAccessoryButtonTrailingConstraint" destination="A7y-8k-dtG" id="pB9-68-Zb9"/>
+                            <outlet property="titleLabel" destination="cUO-4N-FhV" id="4Rs-Xi-BfZ"/>
+                            <outlet property="topDividerView" destination="JVE-OD-Ia7" id="DJY-BV-kSX"/>
+                            <outlet property="wrapperView" destination="Zfy-Hg-zeP" id="b4s-Ja-oly"/>
+                            <outletCollection property="contentViews" destination="Krq-uR-e1t" collectionClass="NSMutableArray" id="DrD-RV-Zpi"/>
+                            <outletCollection property="contentViews" destination="qlO-59-AKI" collectionClass="NSMutableArray" id="ugh-RN-wps"/>
+                            <outletCollection property="contentViews" destination="Bju-kg-VqX" collectionClass="NSMutableArray" id="rHH-aw-doB"/>
+                            <outletCollection property="contentViews" destination="rH2-Nt-ZNa" collectionClass="NSMutableArray" id="UV9-5A-UFh"/>
+                            <outletCollection property="contentViews" destination="cUO-4N-FhV" collectionClass="NSMutableArray" id="yh6-4c-8nZ"/>
+                            <outletCollection property="contentViews" destination="OPz-wQ-LdM" collectionClass="NSMutableArray" id="6gr-u3-iVb"/>
+                            <outletCollection property="contentViews" destination="bwf-Ap-GLo" collectionClass="NSMutableArray" id="kKZ-Ub-YIj"/>
+                            <outletCollection property="contentViews" destination="SLm-WS-1GK" collectionClass="NSMutableArray" id="pfM-zC-ZQe"/>
+                        </connections>
                     </view>
                     <connections>
-                        <outlet property="bodyLabel" destination="OPz-wQ-LdM" id="M3i-po-2pj"/>
-                        <outlet property="bottomDividerView" destination="SLm-WS-1GK" id="FXi-bh-FYg"/>
-                        <outlet property="buttonStackView" destination="Ut8-yb-neA" id="ygw-2G-apU"/>
-                        <outlet property="buttonWrapperView" destination="fve-0t-icO" id="ipX-hg-ogi"/>
-                        <outlet property="buttonWrapperViewTopConstraint" destination="dmr-Er-FDx" id="AFJ-AL-48z"/>
-                        <outlet property="cancelButton" destination="qlO-59-AKI" id="GPn-BG-nXe"/>
-                        <outlet property="defaultButton" destination="Bju-kg-VqX" id="OIb-0p-xT5"/>
-                        <outlet property="headerImageView" destination="Krq-uR-e1t" id="aMF-HZ-ZBp"/>
-                        <outlet property="headerImageViewBottomConstraint" destination="ZWi-7r-zDG" id="k9M-hP-HEa"/>
-                        <outlet property="headerImageViewTopConstraint" destination="DQh-Mz-Xe8" id="5FM-bg-fQa"/>
-                        <outlet property="headerImageViewWrapperBottomConstraint" destination="H7l-cv-jTE" id="mcx-pJ-HER"/>
-                        <outlet property="headerImageWrapperView" destination="zUD-7D-1OQ" id="oXI-vd-cPX"/>
-                        <outlet property="moreInfoButton" destination="bwf-Ap-GLo" id="Z0W-pQ-eVj"/>
-                        <outlet property="titleAccessoryButton" destination="rH2-Nt-ZNa" id="iCK-Op-GF7"/>
-                        <outlet property="titleAccessoryButtonTrailingConstraint" destination="A7y-8k-dtG" id="WVS-5E-dUP"/>
-                        <outlet property="titleLabel" destination="cUO-4N-FhV" id="kjQ-N0-LhA"/>
-                        <outlet property="topDividerView" destination="JVE-OD-Ia7" id="hhk-Ox-h6f"/>
-                        <outlet property="wrapperView" destination="Zfy-Hg-zeP" id="g4f-8K-r32"/>
-                        <outletCollection property="contentViews" destination="Krq-uR-e1t" collectionClass="NSMutableArray" id="hm4-hY-tCX"/>
-                        <outletCollection property="contentViews" destination="bwf-Ap-GLo" collectionClass="NSMutableArray" id="cBb-bT-aqY"/>
-                        <outletCollection property="contentViews" destination="OPz-wQ-LdM" collectionClass="NSMutableArray" id="0zK-gs-3AW"/>
-                        <outletCollection property="contentViews" destination="qlO-59-AKI" collectionClass="NSMutableArray" id="ozm-xc-dyp"/>
-                        <outletCollection property="contentViews" destination="Bju-kg-VqX" collectionClass="NSMutableArray" id="99z-dA-G0J"/>
-                        <outletCollection property="contentViews" destination="SLm-WS-1GK" collectionClass="NSMutableArray" id="dan-Gt-bHk"/>
-                        <outletCollection property="contentViews" destination="cUO-4N-FhV" collectionClass="NSMutableArray" id="lxF-hF-DT2"/>
-                        <outletCollection property="contentViews" destination="rH2-Nt-ZNa" collectionClass="NSMutableArray" id="25P-UC-ydS"/>
+                        <outlet property="alertView" destination="9Vm-yf-6NT" id="mn5-0v-xg1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KAC-em-Hbz" userLabel="First Responder" sceneMemberID="firstResponder"/>
