@@ -473,7 +473,7 @@ class PluginViewModel: Observable {
                 if index + 1 < paragraphAttributes.endIndex,
                     paragraphAttributes[index + 1].paragraph.tabStops.isEmpty {
                     // this means that the next paragraph is _not_ a list.
-                    // we need to add paragraphSpacing, so that there's a nice gap between the list and next paragraph.
+                    // we need to add paragraphSpacingBefore, so that there's a nice gap between the list and next paragraph.
 
                     let nextItem = paragraphAttributes[index + 1]
 
