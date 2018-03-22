@@ -479,7 +479,7 @@ class PluginViewModel: Observable {
     }
 
     var title: String {
-        return plugin?.name ?? directoryEntry?.name ?? "foo"
+        return plugin?.name ?? directoryEntry?.name ?? ""
     }
 
     private var descriptionExpandedStatus: Bool = true
