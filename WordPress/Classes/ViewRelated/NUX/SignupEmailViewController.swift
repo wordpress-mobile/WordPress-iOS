@@ -43,6 +43,7 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
         super.viewDidLoad()
         WPStyleGuide.configureColors(for: view, andTableView: nil)
         localizeControls()
+        WordPressAuthenticator.post(event: .createAccountInitiated)
     }
 
     override func viewWillAppear(_ animated: Bool) {
