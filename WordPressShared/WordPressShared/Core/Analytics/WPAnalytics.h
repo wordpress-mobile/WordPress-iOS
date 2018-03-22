@@ -290,6 +290,8 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatSiteSettingsExportSiteResponseOK,
     WPAnalyticsStatSiteSettingsStartOverAccessed,
     WPAnalyticsStatSiteSettingsStartOverContactSupportClicked,
+    WPAnalyticsStatSpotlightSearchOpenedPost,
+    WPAnalyticsStatSpotlightSearchOpenedPage,
     WPAnalyticsStatSkippedConnectingToJetpack,
     WPAnalyticsStatStatsAccessed,
     WPAnalyticsStatStatsInsightsAccessed,
