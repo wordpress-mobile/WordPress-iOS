@@ -573,9 +573,9 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
     }
 
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
-        // Currently, we only want to show a successful upload notice for uploads
-        // initiated within the media library.
-        if mediaProgressCoordinator == mediaLibraryProgressCoordinator {
+        // We only want to show an upload notice for uploads initiated within
+        // the media library, or if there's been a failure.
+        if mediaProgressCoordinator == mediaLibraryProgressCoordinator || mediaProgressCoordinator.hasFailedMedia {
             let model = MediaProgressCoordinatorNoticeViewModel(mediaProgressCoordinator: mediaProgressCoordinator)
             if let notice = model?.notice {
                 ActionDispatcher.dispatch(NoticeAction.post(notice))
