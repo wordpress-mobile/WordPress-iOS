@@ -468,7 +468,7 @@ class MediaCoordinator: NSObject {
     /// including any 'wildcard' observers that are observing _all_ media items.
     ///
     private func observersForMedia(_ media: Media) -> [MediaObserver] {
-        let mediaObservers = self.mediaObservers.values.filter({ $0.media?.mediaID == media.mediaID })
+        let mediaObservers = self.mediaObservers.values.filter({ $0.media?.uploadID == media.uploadID })
 
         let postObservers = self.mediaObservers.values.filter({
             guard let posts = media.posts,
