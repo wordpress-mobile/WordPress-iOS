@@ -3,10 +3,10 @@ import UIKit
 /// A small card-like view displaying helpful information or prompts to the user.
 /// Initialize using the `controllerWithConfiguration` static method.
 ///
-class FancyAlertViewController: UIViewController {
+open class FancyAlertViewController: UIViewController {
 
     /// Intended method of initialization
-    static func controllerWithConfiguration(configuration: Config) -> FancyAlertViewController {
+    public static func controllerWithConfiguration(configuration: Config) -> FancyAlertViewController {
         let infoController = controller()
         infoController.configuration = configuration
 
@@ -14,20 +14,20 @@ class FancyAlertViewController: UIViewController {
     }
 
     private static func controller() -> FancyAlertViewController {
-        return UIStoryboard(name: "FancyAlerts", bundle: Bundle.main)
-            .instantiateInitialViewController() as! FancyAlertViewController
+        let bundle = Bundle(for: self)
+        return UIStoryboard(name: "FancyAlerts", bundle: bundle).instantiateInitialViewController() as! FancyAlertViewController
     }
 
-    enum DividerPosition {
+    public enum DividerPosition {
         case top
         case bottom
     }
 
     /// Enapsulates values for all UI components of the info dialog.
     ///
-    struct Config {
+    public struct Config {
         /// Convenience alias for a title and a handler for a UIButton
-        typealias ButtonConfig = (title: String, handler: FancyAlertButtonHandler?)
+        public typealias ButtonConfig = (title: String, handler: FancyAlertButtonHandler?)
 
         /// The title of the dialog
         let titleText: String?
@@ -55,7 +55,31 @@ class FancyAlertViewController: UIViewController {
 
         /// A block to execute after this view controller has been dismissed
         let dismissAction: (() -> Void)?
+
+        /// Config Initializer. Required since the default one cannot be set as public.
+        ///
+        public init(titleText: String?,
+                    bodyText: String?,
+                    headerImage: UIImage?,
+                    dividerPosition: DividerPosition?,
+                    defaultButton: ButtonConfig?,
+                    cancelButton: ButtonConfig?,
+                    moreInfoButton: ButtonConfig?,
+                    titleAccessoryButton: ButtonConfig?,
+                    dismissAction: (() ->  Void)?) {
+
+            self.titleText = titleText
+            self.bodyText = bodyText
+            self.headerImage = headerImage
+            self.dividerPosition = dividerPosition
+            self.defaultButton = defaultButton
+            self.cancelButton = cancelButton
+            self.moreInfoButton = moreInfoButton
+            self.titleAccessoryButton = titleAccessoryButton
+            self.dismissAction = dismissAction
+        }
     }
+
 
     // MARK: - Constants
 
@@ -115,7 +139,7 @@ class FancyAlertViewController: UIViewController {
     ///
     private var buttonHandlers = [UIButton: FancyAlertButtonHandler]()
 
-    typealias FancyAlertButtonHandler = (FancyAlertViewController, UIButton) -> Void
+    public typealias FancyAlertButtonHandler = (FancyAlertViewController, UIButton) -> Void
 
     private(set) var configuration: Config?
 
@@ -130,9 +154,9 @@ class FancyAlertViewController: UIViewController {
     ///   - alongside: An optional animation block which will be animated 
     ///                alongside the new configuration's fade in animation.
     ///
-    func setViewConfiguration(_ configuration: Config,
-                              animated: Bool,
-                              alongside animation: ((FancyAlertViewController) -> Void)? = nil) {
+    open func setViewConfiguration(_ configuration: Config,
+                                   animated: Bool,
+                                   alongside animation: ((FancyAlertViewController) -> Void)? = nil) {
         self.configuration = configuration
 
         if animated {
@@ -151,7 +175,7 @@ class FancyAlertViewController: UIViewController {
         }
     }
 
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
 
         accessibilityViewIsModal = true
@@ -184,13 +208,13 @@ class FancyAlertViewController: UIViewController {
         updateViewConfiguration()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
+    override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         updateFlingableViewHandler()
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         if traitCollection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact)) {
@@ -331,7 +355,7 @@ class FancyAlertViewController: UIViewController {
         }
     }
 
-    override func accessibilityPerformEscape() -> Bool {
+    override open func accessibilityPerformEscape() -> Bool {
         dismissTapped()
         return true
     }
@@ -340,15 +364,15 @@ class FancyAlertViewController: UIViewController {
 // MARK: - FlingableViewHandlerDelegate
 
 extension FancyAlertViewController: FlingableViewHandlerDelegate {
-    func flingableViewHandlerDidBeginRecognizingGesture(_ handler: FlingableViewHandler) {
+    public func flingableViewHandlerDidBeginRecognizingGesture(_ handler: FlingableViewHandler) {
         dismissGestureRecognizer.isEnabled = false
     }
 
-    func flingableViewHandlerWasCancelled(_ handler: FlingableViewHandler) {
+    public func flingableViewHandlerWasCancelled(_ handler: FlingableViewHandler) {
         dismissGestureRecognizer.isEnabled = true
     }
 
-    func flingableViewHandlerDidEndRecognizingGesture(_ handler: FlingableViewHandler) {
+    public func flingableViewHandlerDidEndRecognizingGesture(_ handler: FlingableViewHandler) {
         dismissTapped()
     }
 }
