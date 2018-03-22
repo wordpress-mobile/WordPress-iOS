@@ -425,6 +425,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         guard let post = apost as? Post else {
             return
         }
+        guard !PostCoordinator.shared.isUploading(post: post) else {
+            presentAlertForPostBeingUploaded()
+            return
+        }
         let editor = EditPostViewController(post: post)
         editor.onClose = { [weak self] changesSaved in
             if changesSaved {
@@ -436,6 +440,16 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         editor.modalPresentationStyle = .fullScreen
         present(editor, animated: false, completion: nil)
         WPAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics())
+    }
+
+    func presentAlertForPostBeingUploaded() {
+        let message = NSLocalizedString("Post is being uploaded, please wait until this is done", comment: "Prompts the user that the post is being uploaded and cannot be restored post was moved to the drafts list.")
+
+        let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
+
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        alertController.addCancelActionWithTitle(alertCancel, handler: nil)
+        alertController.presentFromRootViewController()
     }
 
     override func promptThatPostRestoredToFilter(_ filter: PostListFilter) {

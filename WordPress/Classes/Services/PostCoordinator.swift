@@ -52,6 +52,10 @@ class PostCoordinator: NSObject {
         upload(post: post)
     }
 
+    func isUploading(post: AbstractPost) -> Bool {
+        return post.remoteStatus == .pushing
+    }
+
     private func upload(post: AbstractPost) {
         let postService = PostService(managedObjectContext: mainContext)
         postService.uploadPost(post, success: { uploadedPost in
