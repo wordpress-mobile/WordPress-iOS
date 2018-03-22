@@ -361,7 +361,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func presentAlertForPageBeingUploaded() {
-        let message = NSLocalizedString("Page is being uploaded, please wait until this is done", comment: "Prompts the user that the post is being uploaded and cannot be restored post was moved to the drafts list.")
+        let message = NSLocalizedString("Page is being uploaded, please wait until this is done", comment: "Prompts the user that the page is being uploaded and cannot be edited while that process is ongoing.")
 
         let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
 
