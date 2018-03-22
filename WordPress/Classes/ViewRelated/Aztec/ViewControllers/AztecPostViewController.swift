@@ -471,6 +471,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         self.restorationClass = type(of: self)
         self.shouldRemovePostOnDismiss = post.shouldRemoveOnDismiss
 
+        PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         addObservers(toPost: post)
     }
 
