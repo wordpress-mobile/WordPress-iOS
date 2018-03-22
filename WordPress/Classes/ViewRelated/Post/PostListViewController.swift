@@ -342,11 +342,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let post = postAtIndexPath(indexPath)
 
-        if post.remoteStatus == .pushing {
-            // Don't allow editing while pushing changes
-            return
-        }
-
         if post.status == .trash {
             // No editing posts that are trashed.
             return
@@ -425,6 +420,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         guard let post = apost as? Post else {
             return
         }
+        guard !PostCoordinator.shared.isUploading(post: post) else {
+            presentAlertForPostBeingUploaded()
+            return
+        }
         let editor = EditPostViewController(post: post)
         editor.onClose = { [weak self] changesSaved in
             if changesSaved {
@@ -436,6 +435,16 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         editor.modalPresentationStyle = .fullScreen
         present(editor, animated: false, completion: nil)
         WPAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics())
+    }
+
+    func presentAlertForPostBeingUploaded() {
+        let message = NSLocalizedString("This post is currently uploading. It won't take long -- try again soon and you'll be able to edit it.", comment: "Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing.")
+
+        let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
+
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        alertController.addCancelActionWithTitle(alertCancel, handler: nil)
+        alertController.presentFromRootViewController()
     }
 
     override func promptThatPostRestoredToFilter(_ filter: PostListFilter) {
