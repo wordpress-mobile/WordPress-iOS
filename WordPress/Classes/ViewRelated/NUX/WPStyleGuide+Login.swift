@@ -2,6 +2,15 @@ import WordPressShared
 import WordPressUI
 import Gridicons
 
+final class SubheadlineButton: UIButton {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            titleLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+        }
+    }
+}
+
 extension WPStyleGuide {
 
     private struct Constants {
@@ -137,7 +146,7 @@ extension WPStyleGuide {
     }
 
     private class func textButton(normal normalString: NSAttributedString, highlighted highlightString: NSAttributedString, font: UIFont, alignment: UIControl.NaturalContentHorizontalAlignment = .leading) -> UIButton {
-        let button = UIButton()
+        let button = SubheadlineButton()
         button.clipsToBounds = true
 
         button.naturalContentHorizontalAlignment = alignment
