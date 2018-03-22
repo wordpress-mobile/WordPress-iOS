@@ -28,6 +28,9 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
         }
     }
 
+    func didChangePreferredContentSize() {
+        styleInstructions()
+    }
 
     // MARK: - Setup and Configuration
 
@@ -41,6 +44,7 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
     ///
     func styleInstructions() {
         instructionLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+        instructionLabel?.adjustsFontForContentSizeCategory = true
     }
 
     func configureViewLoading(_ loading: Bool) {
@@ -183,8 +187,6 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
 }
 
 
-
-
 // MARK: - Sync Helpers
 //
 extension LoginViewController {
@@ -255,5 +257,18 @@ extension LoginViewController {
             // If/when we add support for manually connecting/disconnecting services
             // we can revisit.
         })
+    }
+}
+
+
+// MARK: - Handle changes in traitCollections. In particular, changes in Dynamic Type
+//
+extension LoginViewController {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            didChangePreferredContentSize()
+        }
     }
 }

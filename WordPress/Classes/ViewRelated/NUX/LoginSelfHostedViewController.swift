@@ -189,6 +189,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
         siteHeaderView.isHidden = true
 
         siteAddressLabel.text = sanitizedSiteAddress(siteAddress: loginFields.siteAddress)
+        siteAddressLabel.adjustsFontForContentSizeCategory = true
     }
 
 
@@ -247,12 +248,10 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
         }
     }
 
-
     @IBAction func handleForgotPasswordButtonTapped(_ sender: UIButton) {
         WordPressAuthenticator.openForgotPasswordURL(loginFields)
         WordPressAuthenticator.post(event: .loginForgotPasswordClicked)
     }
-
 
     // MARK: - Keyboard Notifications
 

@@ -192,6 +192,12 @@ class LoginWPComViewController: LoginViewController, NUXKeyboardResponder {
         }
     }
 
+    // MARK: - Dynamic type
+
+    override func didChangePreferredContentSize() {
+        super.didChangePreferredContentSize()
+        emailLabel?.font = WPStyleGuide.fontForTextStyle(.body)
+    }
 
     // MARK: - Keyboard Notifications
 
@@ -218,5 +224,14 @@ extension LoginWPComViewController: UITextFieldDelegate {
             validateForm()
         }
         return true
+    }
+}
+
+extension LoginWPComViewController {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            didChangePreferredContentSize()
+        }
     }
 }

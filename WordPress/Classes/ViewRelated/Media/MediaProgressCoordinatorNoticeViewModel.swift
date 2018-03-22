@@ -9,12 +9,18 @@ struct MediaProgressCoordinatorNoticeViewModel {
     private let successfulMedia: [Media]
     private let failedMedia: [Media]
 
-    init?(mediaProgressCoordinator: MediaProgressCoordinator) {
+    // Is the media progress related to a post?
+    // Only failed post media should be reported through this view model.
+    // Successful post media uploads should be reported via a PostNoticeViewModel.
+    private let isPostMedia: Bool
+
+    init?(mediaProgressCoordinator: MediaProgressCoordinator, isPostMedia: Bool = false) {
         guard !mediaProgressCoordinator.isRunning else {
                 return nil
         }
 
         self.mediaProgressCoordinator = mediaProgressCoordinator
+        self.isPostMedia = isPostMedia
 
         successfulMedia = mediaProgressCoordinator.successfulMedia
         failedMedia = mediaProgressCoordinator.failedMedia
@@ -128,9 +134,15 @@ struct MediaProgressCoordinatorNoticeViewModel {
     }
 
     private var failedMediaDescription: String {
-        return pluralize(mediaProgressCoordinator.failedMediaIDs.count,
-                         singular: NSLocalizedString("1 file not uploaded", comment: "Alert displayed to the user when a single media item has failed to upload."),
-                         plural: NSLocalizedString("%ld files not uploaded", comment: "Alert displayed to the user when multiple media items have failed to upload."))
+        if isPostMedia {
+            return pluralize(mediaProgressCoordinator.failedMediaIDs.count,
+                             singular: NSLocalizedString("1 file not uploaded", comment: "Alert displayed to the user when a single media item has failed to upload."),
+                             plural: NSLocalizedString("%ld files not uploaded", comment: "Alert displayed to the user when multiple media items have failed to upload."))
+        } else {
+            return pluralize(mediaProgressCoordinator.failedMediaIDs.count,
+                             singular: NSLocalizedString("1 post, 1 file not uploaded", comment: "Alert displayed to the user when a single media item attached to a post has failed to upload."),
+                             plural: NSLocalizedString("1 post, %ld files not uploaded", comment: "Alert displayed to the user when multiple media items attached to a post have failed to upload."))
+        }
     }
 
     var actionTitle: String {
