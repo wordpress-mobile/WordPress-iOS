@@ -12,7 +12,11 @@ class LoginEpilogueTableViewController: UITableViewController {
 
     ///
     ///
-    private var epilogueUserInfo: LoginEpilogueUserInfo?
+    private var epilogueUserInfo: LoginEpilogueUserInfo? {
+        didSet {
+            tableView.reloadData()
+        }
+    }
 
     /// Site that was just connected to our awesome app.
     ///
@@ -161,18 +165,17 @@ private extension LoginEpilogueTableViewController {
         switch endpoint {
         case .wpcom:
             epilogueUserInfo = loadEpilogueForDotcom()
-            blogDataSource.loggedIn = true
-
-            tableView.reloadData()
 
         case .wporg(let username, let password, let xmlrpc, _):
             blogDataSource.blog = loadBlog(username: username, xmlrpc: xmlrpc)
 
             loadEpilogueForSelfhosted(username: username, password: password, xmlrpc: xmlrpc) { [weak self] epilogueInfo in
                 self?.epilogueUserInfo = epilogueInfo
-                self?.tableView.reloadData()
             }
         }
+
+        // Note: We do this at this point, since it causes the datasource to update it's internal model.
+        blogDataSource.loggedIn = true
     }
 
     /// Loads the Blog for a given Username / XMLRPC, if any.
@@ -236,7 +239,7 @@ private extension LoginEpilogueTableViewController {
 
     struct Settings {
         static let headerReuseIdentifier = "SectionHeader"
-        static let userCellReuseIdentifier = "UserCell"
+        static let userCellReuseIdentifier = "userInfo"
         static let profileRowHeight = CGFloat(140)
         static let blogRowHeight = CGFloat(52)
         static let headerHeight = CGFloat(50)
