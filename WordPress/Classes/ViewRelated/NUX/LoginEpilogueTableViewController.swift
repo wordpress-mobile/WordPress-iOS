@@ -6,11 +6,11 @@ import WordPressShared
 //
 class LoginEpilogueTableViewController: UITableViewController {
 
-    ///
+    /// TableView's Datasource
     ///
     private let blogDataSource = BlogListDataSource()
 
-    ///
+    /// Epilogue Metadata
     ///
     private var epilogueUserInfo: LoginEpilogueUserInfo? {
         didSet {
@@ -39,7 +39,7 @@ class LoginEpilogueTableViewController: UITableViewController {
         tableView.register(userInfoNib, forCellReuseIdentifier: Settings.userCellReuseIdentifier)
     }
 
-    ///
+    /// Initializes the EpilogueTableView so that data associated with the specified Endpoint is displayed.
     ///
     func setup(with endpoint: WordPressEndpoint) {
         self.endpoint = endpoint
@@ -159,7 +159,7 @@ private extension LoginEpilogueTableViewController {
 //
 private extension LoginEpilogueTableViewController {
 
-    ///
+    /// Refreshes the interface, so that the specified Endpoint's sites are displayed.
     ///
     func refreshInterface(for endpoint: WordPressEndpoint) {
         switch endpoint {
