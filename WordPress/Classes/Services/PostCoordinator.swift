@@ -52,6 +52,10 @@ class PostCoordinator: NSObject {
         upload(post: post)
     }
 
+    func cancelAnyPendingSaveOf(post: AbstractPost) {
+        removeObserver(for: post)
+    }
+
     func isUploading(post: AbstractPost) -> Bool {
         return post.remoteStatus == .pushing
     }
