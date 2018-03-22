@@ -88,6 +88,12 @@ class PostCoordinator: NSObject {
     }
 
     private func removeObserver(for post: AbstractPost) {
+        let uuid = observerUUIDs[post]
+
         observerUUIDs.removeValue(forKey: post)
+
+        if let uuid = uuid {
+            MediaCoordinator.shared.removeObserver(withUUID: uuid)
+        }
     }
 }
