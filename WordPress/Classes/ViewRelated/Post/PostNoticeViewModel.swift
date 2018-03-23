@@ -1,5 +1,9 @@
 import UIKit
 
+enum PostNoticeUserInfoKey {
+    static let postID = "post_id"
+}
+
 struct PostNoticeViewModel {
     let post: AbstractPost
 
@@ -19,6 +23,7 @@ struct PostNoticeViewModel {
         return Notice(title: title,
                       message: message,
                       feedbackType: .success,
+                      notificationInfo: notificationInfo,
                       actionTitle: action.title,
                       actionHandler: {
                         switch action {
@@ -34,6 +39,7 @@ struct PostNoticeViewModel {
         return Notice(title: failureTitle,
                       message: message,
                       feedbackType: .error,
+                      notificationInfo: notificationInfo,
                       actionTitle: failureActionTitle,
                       actionHandler: {
                         self.retryUpload()
@@ -101,6 +107,49 @@ struct PostNoticeViewModel {
         return post.blog.displayURL as String? ?? ""
     }
 
+    // MARK: - Notifications
+
+    private var notificationInfo: NoticeNotificationInfo {
+        var userInfo = [String: Any]()
+
+        if let post = postInContext {
+            userInfo[PostNoticeUserInfoKey.postID] = post.objectID.uriRepresentation().absoluteString
+        }
+
+        return NoticeNotificationInfo(identifier: UUID().uuidString,
+                                      categoryIdentifier: notificationCategoryIdentifier,
+                                      title: notificationTitle,
+                                      body: notificationBody,
+                                      userInfo: userInfo)
+    }
+
+    private var notificationCategoryIdentifier: String {
+        return uploadSuccessful ? "post-upload-success" : "post-upload-failure"
+    }
+
+    var notificationTitle: String {
+        if uploadSuccessful {
+            let title = post.postTitle ?? ""
+            if title.count > 0 {
+                return "“\(title)” \(self.title)"
+            } else {
+                return self.title
+            }
+        } else {
+            return failureTitle
+        }
+    }
+
+    private var notificationBody: String {
+        if uploadSuccessful {
+            return post.blog.displayURL as String? ?? ""
+        } else {
+            return message
+        }
+    }
+
+    // MARK: - Actions
+
     private enum Action {
         case publish
         case view
@@ -123,44 +172,10 @@ struct PostNoticeViewModel {
         return NSLocalizedString("Retry", comment: "Button title. Retries uploading a post.")
     }
 
-    // MARK: - Actions
-
     private func viewPost() {
-        if post is Page {
-            presentViewPage()
-        } else {
-            presentPostPost()
-        }
+        PostNoticeNavigationCoordinator.presentPostEpilogue(for: post)
     }
 
-    private func presentViewPage() {
-        guard let presenter = UIApplication.shared.delegate?.window??.topmostPresentedViewController,
-            let post = postInContext else {
-                return
-        }
-
-        let controller = PostPreviewViewController(post: post)
-        controller.navigationItem.title = NSLocalizedString("View", comment: "Verb. The screen title shown when viewing a post inside the app.")
-        controller.hidesBottomBarWhenPushed = true
-
-        let navigationController = UINavigationController(rootViewController: controller)
-        navigationController.modalPresentationStyle = .formSheet
-        presenter.present(navigationController, animated: true, completion: nil)
-    }
-
-    private func presentPostPost() {
-        guard let presenter = UIApplication.shared.delegate?.window??.topmostPresentedViewController,
-            let post = postInContext else {
-                return
-        }
-
-        let editor = EditPostViewController(post: post as! Post)
-        editor.modalPresentationStyle = .fullScreen
-        editor.openWithPostPost = true
-        editor.onClose = { _ in
-        }
-        presenter.present(editor, animated: true, completion: nil)
-    }
 
     private func publishPost() {
         guard let post = postInContext else {
