@@ -8,14 +8,17 @@
 
 - (WPMediaRequestID)imageWithSize:(CGSize)size completionHandler:(WPMediaImageBlock)completionHandler
 {
-    [MediaCoordinator.shared.mediaThumbnailService thumbnailURLForMedia:self preferredSize:size onCompletion:^(NSURL *url) {
-        UIImage *image = [UIImage imageWithContentsOfFile:url.path];
+    [MediaThumbnailCoordinator.shared thumbnailFor:self with:size onCompletion:^(UIImage *image, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler(image, nil);
-        });
-    } onError:^(NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler(nil, error);
+            if (error) {
+                if (completionHandler) {
+                    completionHandler(nil, error);
+                }
+                return;
+            }
+            if (completionHandler) {
+                completionHandler(image, nil);
+            }
         });
     }];
 
