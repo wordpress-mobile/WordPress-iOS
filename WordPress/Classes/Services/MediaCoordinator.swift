@@ -332,6 +332,12 @@ class MediaCoordinator: NSObject {
         return media
     }
 
+    @objc lazy var mediaThumbnailService: MediaThumbnailService = {
+        let mediaThumbnailService = MediaThumbnailService(managedObjectContext: backgroundContext)
+        mediaThumbnailService.exportQueue = DispatchQueue.global(qos: .userInitiated)
+        return mediaThumbnailService
+    }()
+
     /// Returns true if any media is being processed or uploading
     ///
     func isUploadingMedia(for post: AbstractPost) -> Bool {
