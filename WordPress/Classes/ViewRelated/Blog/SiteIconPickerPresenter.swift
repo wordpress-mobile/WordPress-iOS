@@ -215,15 +215,12 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
         case let media as Media:
             showLoadingMessage()
             originalMedia = media
-            let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            mediaService.thumbnailImage(for: media,
-                                        preferredSize: CGSize.zero,
-                                        completion: { [weak self] (image, error) in
-                                            guard let image = image else {
-                                                self?.showErrorLoadingImageMessage()
-                                                return
-                                            }
-                                            self?.showImageCropViewController(image)
+            MediaThumbnailCoordinator.shared.thumbnail(for: media, with: CGSize.zero, onCompletion: { [weak self] (image, error) in
+                guard let image = image else {
+                    self?.showErrorLoadingImageMessage()
+                    return
+                }
+                self?.showImageCropViewController(image)
             })
         default:
             break
