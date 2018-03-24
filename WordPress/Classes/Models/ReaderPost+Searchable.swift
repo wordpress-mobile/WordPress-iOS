@@ -21,7 +21,10 @@ extension ReaderPost: SearchableItemConvertable {
     }
 
     var searchDomain: String? {
-        return SearchItemType.readerPost.stringValue()
+        guard let siteID = siteID, siteID.intValue > 0 else {
+            return nil
+        }
+        return siteID.stringValue
     }
 
     var searchTitle: String? {
