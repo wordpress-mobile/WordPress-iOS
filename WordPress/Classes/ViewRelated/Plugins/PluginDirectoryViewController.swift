@@ -64,11 +64,7 @@ class PluginDirectoryViewController: UITableViewController {
     private func reloadTable() {
         tableViewModel = viewModel.tableViewModel(presenter: self)
 
-        if tableView.numberOfRows(inSection: 0) != tableViewModel.sections.first?.rows.count {
-            tableView.reloadData()
-        } else {
-            tableView.reloadSections([0], with: .none)
-        }
+        tableView.reloadData()
     }
 
     private func setupSearchBar() {
