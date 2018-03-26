@@ -314,7 +314,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     }
 
     // Setup the cell
-    cell.headerTitle = self.comment.post.author;
+    cell.headerTitle = self.comment.post.authorForDisplay;
     cell.headerDetails = postTitle;
     
     // Setup the Separator
@@ -334,7 +334,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     cell.dataDetectors = UIDataDetectorTypeAll;
 
     // Setup the Fields
-    cell.name = self.comment.author;
+    cell.name = self.comment.authorForDisplay;
     cell.timestamp = [self.comment.dateCreated mediumString];
     cell.site = self.comment.authorUrlForDisplay;
     cell.commentText = [self.comment contentForDisplay];
