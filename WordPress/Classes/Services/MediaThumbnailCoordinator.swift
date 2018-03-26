@@ -15,7 +15,7 @@ class MediaThumbnailCoordinator: NSObject {
         return context
     }()
 
-    private let queue = DispatchQueue(label: "org.wordpress.media_thumbnail_coordinator", attributes: .concurrent)
+    private let queue = DispatchQueue(label: "org.wordpress.media_thumbnail_coordinator", qos: .default)
 
     typealias ThumbnailBlock = (UIImage?, Error?) -> Void
 
