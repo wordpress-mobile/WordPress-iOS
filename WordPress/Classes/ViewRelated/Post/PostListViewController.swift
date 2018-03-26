@@ -46,6 +46,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     static fileprivate let postListHeightForFooterView = CGFloat(34.0)
 
     @IBOutlet var searchWrapperView: UIView!
+    @IBOutlet weak var filterTabBarTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var filterTabBariOS10TopConstraint: NSLayoutConstraint!
     @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
 
@@ -109,6 +111,19 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         super.viewDidLoad()
 
         title = NSLocalizedString("Blog Posts", comment: "Title of the screen showing the list of posts for a blog.")
+
+        // Not an ideal solution, but fixes an issue where the filter bar
+        // wasn't showing up on iOS 10: https://github.com/wordpress-mobile/WordPress-iOS/issues/8937
+        if #available(iOS 11.0, *) {
+            filterTabBariOS10TopConstraint.isActive = false
+        } else {
+            extendedLayoutIncludesOpaqueBars = false
+            edgesForExtendedLayout = []
+
+            filterTabBarTopConstraint.isActive = false
+
+            view.layoutIfNeeded()
+        }
     }
 
     // MARK: - Configuration
@@ -163,7 +178,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     fileprivate func updateTableHeaderSize() {
         if searchController.isActive {
             // Account for the search bar being moved to the top of the screen.
-            searchWrapperView.frame.size.height = (searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y) - topLayoutGuide.length
+            if #available(iOS 11.0, *) {
+                searchWrapperView.frame.size.height = (searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y) - topLayoutGuide.length
+            } else {
+                searchWrapperView.frame.size.height = (searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y)
+            }
         } else {
             searchWrapperView.frame.size.height = searchController.searchBar.bounds.height
         }
