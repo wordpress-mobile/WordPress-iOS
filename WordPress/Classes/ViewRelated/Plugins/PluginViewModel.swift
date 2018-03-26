@@ -446,8 +446,18 @@ class PluginViewModel: Observable {
             copy.addAttribute(.foregroundColor, value: WPStyleGuide.darkGrey(), range: range)
         }
 
-        copy.enumerateAttribute(NSAttributedStringKey.paragraphStyle, in: NSMakeRange(0, copy.length), options: NSAttributedString.EnumerationOptions(rawValue: 0)) { (value, range, stop) in
+
+        var paragraphAttributes: [(paragraph: NSParagraphStyle, range: NSRange)] = []
+
+        copy.enumerateAttribute(NSAttributedStringKey.paragraphStyle, in: NSMakeRange(0, copy.length), options: [.longestEffectiveRangeNotRequired]) { (value, range, stop) in
             guard let paragraphStyle = value as? NSParagraphStyle else { return }
+
+            paragraphAttributes.append((paragraphStyle, range))
+        }
+
+        for (index, item) in paragraphAttributes.enumerated() {
+            let paragraphStyle = item.paragraph
+            let range = item.range
 
             var mutableParagraphStyle: NSMutableParagraphStyle?
 
@@ -459,6 +469,19 @@ class PluginViewModel: Observable {
                 mutableParagraphStyle?.defaultTabInterval = 5
                 mutableParagraphStyle?.firstLineHeadIndent = 0
                 mutableParagraphStyle?.headIndent = 15
+
+                if index + 1 < paragraphAttributes.endIndex,
+                    paragraphAttributes[index + 1].paragraph.tabStops.isEmpty {
+                    // this means that the next paragraph is _not_ a list.
+                    // we need to add paragraphSpacingBefore, so that there's a nice gap between the list and next paragraph.
+
+                    let nextItem = paragraphAttributes[index + 1]
+
+                    let nextMutableParagraph = nextItem.paragraph.mutableCopy() as! NSMutableParagraphStyle
+                    nextMutableParagraph.paragraphSpacingBefore = 12
+
+                    copy.addAttribute(.paragraphStyle, value: nextMutableParagraph, range: nextItem.range)
+                }
             }
 
             if ceil(paragraphStyle.paragraphSpacing) == 16 {
@@ -479,7 +502,7 @@ class PluginViewModel: Observable {
     }
 
     var title: String {
-        return plugin?.name ?? directoryEntry?.name ?? "foo"
+        return plugin?.name ?? directoryEntry?.name ?? ""
     }
 
     private var descriptionExpandedStatus: Bool = true
