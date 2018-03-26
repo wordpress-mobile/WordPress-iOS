@@ -112,6 +112,16 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         title = NSLocalizedString("Blog Posts", comment: "Title of the screen showing the list of posts for a blog.")
 
+        configureFilterBarTopConstraint()
+    }
+
+    // MARK: - Configuration
+
+    override func heightForFooterView() -> CGFloat {
+        return type(of: self).postListHeightForFooterView
+    }
+
+    private func configureFilterBarTopConstraint() {
         // Not an ideal solution, but fixes an issue where the filter bar
         // wasn't showing up on iOS 10: https://github.com/wordpress-mobile/WordPress-iOS/issues/8937
         if #available(iOS 11.0, *) {
@@ -124,12 +134,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
             view.layoutIfNeeded()
         }
-    }
-
-    // MARK: - Configuration
-
-    override func heightForFooterView() -> CGFloat {
-        return type(of: self).postListHeightForFooterView
     }
 
     override func configureTableView() {
