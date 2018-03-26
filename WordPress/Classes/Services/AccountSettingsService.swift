@@ -196,7 +196,16 @@ class AccountSettingsService {
         guard let results = (try? context.fetch(request)) as? [ManagedAccountSettings] else {
             return nil
         }
-        return results.first
+
+        guard let account = results.first else {
+            return nil
+        }
+
+        account.displayName = account.displayName.stringByDecodingXMLCharacters()
+        account.firstName = account.firstName.stringByDecodingXMLCharacters()
+        account.lastName = account.lastName.stringByDecodingXMLCharacters()
+
+        return account
     }
 
     fileprivate func createAccountSettings(_ userID: Int, settings: AccountSettings) {
