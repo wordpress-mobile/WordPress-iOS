@@ -6,10 +6,6 @@ extension ReaderPost: SearchableItemConvertable {
     }
 
     var isSearchable: Bool {
-        guard let title = searchTitle, !title.isEmpty else {
-            // If the title is empty or nil, don't index it
-            return false
-        }
         return true
     }
 
@@ -28,7 +24,12 @@ extension ReaderPost: SearchableItemConvertable {
     }
 
     var searchTitle: String? {
-        return titleForDisplay()
+        var title = titleForDisplay() ?? ""
+        if title.isEmpty {
+            // If titleForDisplay() happens to be empty, try using the content preview instead...
+            title = contentPreviewForDisplay()
+        }
+        return title
     }
 
     var searchDescription: String? {
@@ -43,8 +44,8 @@ extension ReaderPost: SearchableItemConvertable {
     }
 
     var searchExpirationDate: Date? {
-        let sevenDaysFromNow = Calendar.current.date(byAdding: .day, value: 7, to: Date())
-        return sevenDaysFromNow
+        let oneWeekFromNow = Calendar.current.date(byAdding: .weekOfYear, value: 1, to: Date())
+        return oneWeekFromNow
     }
 }
 
