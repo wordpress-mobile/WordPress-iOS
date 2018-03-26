@@ -166,7 +166,10 @@ import MobileCoreServices
                 DDLogError("Search manager unable to parse postID/siteID for identifier:\(identifier) domain:\(domainString)")
                 return false
         }
-
+        var properties = [AnyHashable: Any]()
+        properties[WPAppAnalyticsKeyBlogID] = siteID
+        properties[WPAppAnalyticsKeyPostID] = readerPostID
+        WPAppAnalytics.track(.spotlightSearchOpenedReaderPost, withProperties: properties)
         openReader(for: readerPostID, siteID: siteID, onFailure: {
             DDLogError("Search manager unable to open reader for readerPostID:\(readerPostID) siteID:\(siteID)")
         })
