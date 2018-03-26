@@ -331,21 +331,25 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     fileprivate func configureSearchBackingView() {
         // This mask view is required to cover the area between the top of the search
-        // bar and the top of the screen on an iPhone X.
+        // bar and the top of the screen on an iPhone X and on iOS 10.
+        var topAnchor = topLayoutGuide.bottomAnchor
+
         if #available(iOS 11.0, *) {
-            let backingView = UIView()
-            view.addSubview(backingView)
-
-            backingView.backgroundColor = searchController.searchBar.barTintColor
-            backingView.translatesAutoresizingMaskIntoConstraints = false
-
-            NSLayoutConstraint.activate([
-                backingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                backingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                backingView.topAnchor.constraint(equalTo: view.topAnchor),
-                backingView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-                ])
+            topAnchor = view.safeAreaLayoutGuide.topAnchor
         }
+
+        let backingView = UIView()
+        view.addSubview(backingView)
+
+        backingView.backgroundColor = searchController.searchBar.barTintColor
+        backingView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            backingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backingView.topAnchor.constraint(equalTo: view.topAnchor),
+            backingView.bottomAnchor.constraint(equalTo: topAnchor)
+            ])
     }
 
     @objc func configureSearchHelper() {
