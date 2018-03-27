@@ -38,10 +38,15 @@ msgctxt "app_store_keywords"
 msgid "social networking, blogging, blogs, photos, writing, geotagging, media, blog, wordpress\n"
 msgstr ""
 
-msgctxt "v9.5-whats-new"
+msgctxt "v9.7-whats-new"
 msgid ""
-"A new share extension that adds support to save drafts and handles tags.\n"
-"Plugin management taken to the next level: you can now browse and install plugins.\n"
+"List of Posts, Accessibility: The list of post now handles Dynamic Type fonts better.\n"
+"List of Posts: New post status and author filter bar!\n"
+"List of Posts, Accessibility: The new post status and author filter bar offers Voiceover support.\n"
+"Login, Accessibility: The login flow now handles Dynamic Type better.\n"
+"Menus, Accessibility: The Menu section of your sites now supports Dynamic Type.\n"
+"My Profile: You now have a more explicit option for editing your Gravatar icon.\n"
+"Spotlight: Now indexes posts and pages!\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
