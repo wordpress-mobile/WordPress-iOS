@@ -12,6 +12,7 @@
 
 
 static const UIEdgeInsets ActionbarButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
+static const CGFloat ActionbarButtonImageSize = 18.0;
 
 typedef NS_ENUM(NSUInteger, ActionBarMode) {
     ActionBarModePublish = 1,
@@ -57,6 +58,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 @property (nonatomic, weak) id<InteractivePostViewDelegate> delegate;
 @property (nonatomic, strong) Post *post;
+@property (nonatomic, strong) PostCardStatusViewModel *viewModel;
 @property (nonatomic) CGFloat headerViewHeight;
 @property (nonatomic) CGFloat headerViewLowerMargin;
 @property (nonatomic) CGFloat titleViewLowerMargin;
@@ -200,6 +202,10 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureWithPost:(Post *)post
 {
+    if (post != self.post) {
+        self.viewModel = [[PostCardStatusViewModel alloc] initWithPost:post];
+    }
+
     self.post = post;
 
     if (!self.didPreserveStartingConstraintConstants) {
@@ -325,9 +331,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureStatusView
 {
-    PostCardStatusViewModel *model = [[PostCardStatusViewModel alloc] initWithPost:self.post];
-
-    self.statusView.hidden = model.shouldHideStatusView;
+    self.statusView.hidden = self.viewModel.shouldHideStatusView;
     if (self.statusView.hidden) {
         self.dateViewLowerConstraint.constant = 0.0;
         self.statusHeightConstraint.constant = 0.0;
@@ -336,10 +340,10 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
         self.statusHeightConstraint.constant = self.statusViewHeight;
     }
 
-    self.statusLabel.text = model.status;
-    self.statusImageView.image = model.statusImage;
-    self.statusImageView.tintColor = model.statusColor;
-    self.statusLabel.textColor = model.statusColor;
+    self.statusLabel.text = self.viewModel.status;
+    self.statusImageView.image = self.viewModel.statusImage;
+    self.statusImageView.tintColor = self.viewModel.statusColor;
+    self.statusLabel.textColor = self.viewModel.statusColor;
 
     [self.statusView setNeedsUpdateConstraints];
 }
@@ -390,11 +394,20 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureProgressView
 {
-    PostCardStatusViewModel *model = [[PostCardStatusViewModel alloc] initWithPost:self.post];
-    BOOL shouldHide = model.shouldHideProgressView;
+    BOOL shouldHide = self.viewModel.shouldHideProgressView;
 
     if (self.progressView.isHidden != shouldHide) {
         self.progressView.hidden = shouldHide;
+    }
+
+    if (!shouldHide && !self.viewModel.progressBlock) {
+        __weak __typeof(self) weakSelf = self;
+        self.viewModel.progressBlock = ^(double progress){
+            weakSelf.progressView.progress = progress;
+            if (progress >= 1.0) {
+                weakSelf.statusLabel.text = weakSelf.viewModel.status;
+            }
+        };
     }
 }
 
@@ -436,7 +449,11 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
     NSMutableArray *items = [NSMutableArray array];
     [items addObject:[self editActionBarItemWithInsets:imageInsets]];
-    [items addObject:[self viewActionBarItemWithInsets:imageInsets]];
+    if (self.viewModel.postIsFailed) {
+        [items addObject:[self retryActionBarItemWithInsets:imageInsets]];
+    } else {
+        [items addObject:[self viewActionBarItemWithInsets:imageInsets]];
+    }
     if ([self.post supportsStats]) {
         [items addObject:[self statsActionBarItemWithInsets:imageInsets]];
     }
@@ -458,7 +475,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
     NSMutableArray *items = [NSMutableArray array];
     [items addObject:[self editActionBarItemWithInsets:imageInsets]];
-    [items addObject:[self previewActionBarItemWithInsets:imageInsets]];
+    [items addObject:[self retryOrPreviewActionBarItemWithInsets:imageInsets]];
     [items addObject:[self trashActionBarItemWithInsets:imageInsets]];
     [self.actionBar setItems:items];
 }
@@ -477,7 +494,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
     NSMutableArray *items = [NSMutableArray array];
     [items addObject:[self editActionBarItemWithInsets:imageInsets]];
-    [items addObject:[self previewActionBarItemWithInsets:imageInsets]];
+    [items addObject:[self retryOrPreviewActionBarItemWithInsets:imageInsets]];
     [items addObject:[self scheduleActionBarItemWithInsets:imageInsets]];
     [items addObject:[self trashActionBarItemWithInsets:imageInsets]];
     [self.actionBar setItems:items];
@@ -497,7 +514,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
     NSMutableArray *items = [NSMutableArray array];
     [items addObject:[self editActionBarItemWithInsets:imageInsets]];
-    [items addObject:[self previewActionBarItemWithInsets:imageInsets]];
+    [items addObject:[self retryOrPreviewActionBarItemWithInsets:imageInsets]];
     [items addObject:[self publishActionBarItemWithInsets:imageInsets]];
     [items addObject:[self trashActionBarItemWithInsets:imageInsets]];
     [self.actionBar setItems:items];
@@ -521,6 +538,15 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [self.actionBar setItems:items];
 }
 
+- (PostCardActionBarItem *)retryOrPreviewActionBarItemWithInsets:(UIEdgeInsets)imageInsets
+{
+    if ([Feature enabled:FeatureFlagAsyncPosting] && self.viewModel.postIsFailed) {
+        return [self retryActionBarItemWithInsets:imageInsets];
+    } else {
+        return [self previewActionBarItemWithInsets:imageInsets];
+    }
+}
+
 - (PostCardActionBarItem *)editActionBarItemWithInsets:(UIEdgeInsets)imageInsets
 {
     __weak __typeof(self) weakSelf = self;
@@ -542,6 +568,17 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
                                                    andCallback:^{
                                                        [weakSelf viewPostAction];
                                                    }];
+    return item;
+}
+
+- (PostCardActionBarItem *)retryActionBarItemWithInsets:(UIEdgeInsets)imageInsets
+{
+    PostCardActionBarItem *item = [self actionBarItemWithTitle:NSLocalizedString(@"Retry", @"Label for the retry post upload button. Tapping attempts to upload the post again.")
+                                                         image:[Gridicon iconOfType:GridiconTypeRefresh withSize:CGSizeMake(ActionbarButtonImageSize, ActionbarButtonImageSize)]
+                                                   imageInsets:imageInsets
+                                                   andCallback:^{
+                                                   }];
+    item.tintColor = self.viewModel.statusColor;
     return item;
 }
 
