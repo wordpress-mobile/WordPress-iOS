@@ -47,7 +47,7 @@ extension PluginDirectoryEntry: Equatable {
     }
 }
 
-extension PluginDirectoryEntry: Codable{
+extension PluginDirectoryEntry: Codable {
     private enum CodingKeys: String, CodingKey {
         case name
         case slug
