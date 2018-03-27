@@ -9,7 +9,7 @@ extension String {
         return NSLocalizedString("Files", comment: "")
     }
 
-    static var cancel: String {
+    static var cancelMoreOptions: String {
         return NSLocalizedString("Cancel", comment: "")
     }
 }
