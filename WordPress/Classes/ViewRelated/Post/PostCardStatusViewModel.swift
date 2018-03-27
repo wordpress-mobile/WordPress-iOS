@@ -32,6 +32,10 @@ class PostCardStatusViewModel: NSObject {
     var status: String? {
         if MediaCoordinator.shared.isUploadingMedia(for: post) {
             return NSLocalizedString("Uploading media...", comment: "Message displayed on a post's card while the post is uploading media")
+        } else if postIsFailed {
+            return NSLocalizedString("Upload failed", comment: "Message displayed on a post's card when the post has failed to upload")
+        } else if post.remoteStatus == .pushing {
+            return NSLocalizedString("Uploading post...", comment: "Message displayed on a post's card when the post has failed to upload")
         } else {
             return post.statusForDisplay()
         }
@@ -57,12 +61,11 @@ class PostCardStatusViewModel: NSObject {
         }
 
         // In progress uploads
-        if MediaCoordinator.shared.isUploadingMedia(for: post) {
+        if MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing {
             return Gridicon.iconOfType(.cloudUpload)
         }
 
-        // Failed uploads
-        if post.remoteStatus == .failed || MediaCoordinator.shared.hasFailedMedia(for: post) {
+        if postIsFailed {
             return Gridicon.iconOfType(.cloudUpload)
         }
 
@@ -84,11 +87,11 @@ class PostCardStatusViewModel: NSObject {
             return WPStyleGuide.darkGrey()
         }
 
-        if MediaCoordinator.shared.isUploadingMedia(for: post) {
+        if MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing {
             return WPStyleGuide.grey()
         }
 
-        if post.remoteStatus == .failed || MediaCoordinator.shared.hasFailedMedia(for: post) {
+        if postIsFailed {
             return WPStyleGuide.errorRed()
         }
 
@@ -106,10 +109,15 @@ class PostCardStatusViewModel: NSObject {
 
     @objc
     var shouldHideProgressView: Bool {
-        return !MediaCoordinator.shared.isUploadingMedia(for: post)
+        return !(MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing)
     }
 
     var progress: Double {
         return MediaCoordinator.shared.totalProgress(for: post)
+    }
+
+    @objc
+    var postIsFailed: Bool {
+        return post.remoteStatus == .failed || MediaCoordinator.shared.hasFailedMedia(for: post)
     }
 }
