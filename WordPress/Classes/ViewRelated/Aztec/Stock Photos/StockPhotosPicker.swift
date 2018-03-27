@@ -1,6 +1,6 @@
 import WPMediaPicker
 
-final class StockPhotosPickerPresenter: NSObject {
+final class StockPhotosPicker: NSObject {
     func presentPicker(origin: UIViewController) {
         let stockDataSource = StockPhotosDataSource()
 
@@ -19,7 +19,7 @@ final class StockPhotosPickerPresenter: NSObject {
     }
 }
 
-extension StockPhotosPickerPresenter: WPMediaPickerViewControllerDelegate {
+extension StockPhotosPicker: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
         //
     }

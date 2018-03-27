@@ -35,7 +35,7 @@ final class AztecMoreCoordinator {
     }
 
     private func showStockPhotos(origin: UIViewController) {
-        let stockPhotos = StockPhotosPickerPresenter()
+        let stockPhotos = StockPhotosPicker()
         stockPhotos.presentPicker(origin: origin)
     }
 
