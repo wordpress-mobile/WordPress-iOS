@@ -1675,7 +1675,6 @@ extension AztecPostViewController {
                 presentMediaPickerFullScreen(animated: true, dataSourceType: .mediaLibrary)
             case .otherApplications:
                 trackFormatBarAnalytics(stat: .editorMediaPickerTappedOtherApps)
-                //showDocumentPicker()
                 showMore(from: barItem)
             }
         }
