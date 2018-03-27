@@ -35,13 +35,7 @@ class MediaCoordinator: NSObject {
     /// - returns: The progress coordinator for the specified post. If a coordinator
     ///            does not exist, one will be created.
     private func coordinator(for post: AbstractPost) -> MediaProgressCoordinator {
-        var cachedCoordinator: MediaProgressCoordinator?
-
-        progressCoordinatorQueue.sync {
-            cachedCoordinator = postMediaProgressCoordinators[post]
-        }
-
-        if let cachedCoordinator = cachedCoordinator {
+        if let cachedCoordinator = cachedCoordinator(for: post) {
             return cachedCoordinator
         }
 
@@ -53,6 +47,14 @@ class MediaCoordinator: NSObject {
         }
 
         return coordinator
+    }
+
+    /// - returns: The progress coordinator for the specified post, or nil
+    ///            if one does not exist.
+    private func cachedCoordinator(for post: AbstractPost) -> MediaProgressCoordinator? {
+        return progressCoordinatorQueue.sync {
+            return postMediaProgressCoordinators[post]
+        }
     }
 
     /// - returns: The progress coordinator for the specified media item. Either
@@ -296,7 +298,7 @@ class MediaCoordinator: NSObject {
     /// The global value of progress for all tasks running on the coordinator for the specified post.
     ///
     func totalProgress(for post: AbstractPost) -> Double {
-        return coordinator(for: post).totalProgress
+        return cachedCoordinator(for: post)?.totalProgress ?? 0
     }
 
     /// Returns the error associated to media if any
@@ -335,19 +337,19 @@ class MediaCoordinator: NSObject {
     /// Returns true if any media is being processed or uploading
     ///
     func isUploadingMedia(for post: AbstractPost) -> Bool {
-        return coordinator(for: post).isRunning
+        return cachedCoordinator(for: post)?.isRunning ?? false
     }
 
     /// Returns true if there is any media with a fail state
     ///
     func hasFailedMedia(for post: AbstractPost) -> Bool {
-        return coordinator(for: post).hasFailedMedia
+        return cachedCoordinator(for: post)?.hasFailedMedia ?? false
     }
 
     /// Return an array with all failed media IDs
     ///
     func failedMediaIDs(for post: AbstractPost) -> [String] {
-        return coordinator(for: post).failedMediaIDs
+        return cachedCoordinator(for: post)?.failedMediaIDs ?? []
     }
 
     // MARK: - Observing
@@ -405,6 +407,7 @@ class MediaCoordinator: NSObject {
     ///
     /// - parameter uuid: The UUID that matches the observer to be removed.
     ///
+    @objc
     func removeObserver(withUUID uuid: UUID) {
         queue.async {
             self.mediaObservers[uuid] = nil
