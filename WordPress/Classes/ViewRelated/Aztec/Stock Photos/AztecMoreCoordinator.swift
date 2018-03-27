@@ -1,6 +1,5 @@
 import MobileCoreServices
 
-
 /// Prepares the alert controller that will be presented when tapping the "more" button in Aztec's Format Bar
 final class AztecMoreCoordinator {
     func present(origin: UIViewController & UIDocumentPickerDelegate, view: UIView) {
@@ -35,6 +34,7 @@ final class AztecMoreCoordinator {
     }
 
     private func showStockPhotos() {
+        //This would be the starting point of the next PR
         print("Nothing to see here yet")
     }
 
