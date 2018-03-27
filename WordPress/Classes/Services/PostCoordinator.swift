@@ -68,7 +68,7 @@ class PostCoordinator: NSObject {
     ///
     /// - Parameter post: the post to retry the upload
     ///
-    func retrySave(of post: AbstractPost) {
+    @objc func retrySave(of post: AbstractPost) {
         for media in post.media {
             guard media.remoteStatus == .failed else {
                 continue
