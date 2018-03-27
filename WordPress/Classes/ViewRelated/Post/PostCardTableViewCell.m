@@ -57,6 +57,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 @property (nonatomic, weak) id<InteractivePostViewDelegate> delegate;
 @property (nonatomic, strong) Post *post;
+@property (nonatomic, strong) PostCardStatusViewModel *viewModel;
 @property (nonatomic) CGFloat headerViewHeight;
 @property (nonatomic) CGFloat headerViewLowerMargin;
 @property (nonatomic) CGFloat titleViewLowerMargin;
@@ -200,6 +201,10 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureWithPost:(Post *)post
 {
+    if (post != self.post) {
+        self.viewModel = [[PostCardStatusViewModel alloc] initWithPost:post];
+    }
+
     self.post = post;
 
     if (!self.didPreserveStartingConstraintConstants) {
@@ -325,9 +330,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureStatusView
 {
-    PostCardStatusViewModel *model = [[PostCardStatusViewModel alloc] initWithPost:self.post];
-
-    self.statusView.hidden = model.shouldHideStatusView;
+    self.statusView.hidden = self.viewModel.shouldHideStatusView;
     if (self.statusView.hidden) {
         self.dateViewLowerConstraint.constant = 0.0;
         self.statusHeightConstraint.constant = 0.0;
@@ -336,10 +339,10 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
         self.statusHeightConstraint.constant = self.statusViewHeight;
     }
 
-    self.statusLabel.text = model.status;
-    self.statusImageView.image = model.statusImage;
-    self.statusImageView.tintColor = model.statusColor;
-    self.statusLabel.textColor = model.statusColor;
+    self.statusLabel.text = self.viewModel.status;
+    self.statusImageView.image = self.viewModel.statusImage;
+    self.statusImageView.tintColor = self.viewModel.statusColor;
+    self.statusLabel.textColor = self.viewModel.statusColor;
 
     [self.statusView setNeedsUpdateConstraints];
 }
@@ -390,11 +393,17 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureProgressView
 {
-    PostCardStatusViewModel *model = [[PostCardStatusViewModel alloc] initWithPost:self.post];
-    BOOL shouldHide = model.shouldHideProgressView;
+    BOOL shouldHide = self.viewModel.shouldHideProgressView;
 
     if (self.progressView.isHidden != shouldHide) {
         self.progressView.hidden = shouldHide;
+    }
+
+    if (!shouldHide && !self.viewModel.progressBlock) {
+        __weak __typeof(self) weakSelf = self;
+        self.viewModel.progressBlock = ^(double progress){
+            weakSelf.progressView.progress = progress;
+        };
     }
 }
 
