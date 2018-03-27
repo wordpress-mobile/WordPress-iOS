@@ -145,7 +145,7 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Ut8-yb-neA" userLabel="Button Stack View">
                                                                 <rect key="frame" x="20" y="20" width="294" height="46"/>
                                                                 <subviews>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qlO-59-AKI" customClass="NUXButton" customModule="WordPressUI" customModuleProvider="target">
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qlO-59-AKI" customClass="FancyButton" customModule="WordPressUI" customModuleProvider="target">
                                                                         <rect key="frame" x="0.0" y="0.0" width="137" height="46"/>
                                                                         <state key="normal" title="Not Now"/>
                                                                         <userDefinedRuntimeAttributes>
@@ -155,7 +155,7 @@
                                                                             <action selector="buttonTapped:" destination="ZA1-84-qnC" eventType="touchUpInside" id="Sze-Qf-vhW"/>
                                                                         </connections>
                                                                     </button>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bju-kg-VqX" customClass="NUXButton" customModule="WordPressUI" customModuleProvider="target">
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bju-kg-VqX" customClass="FancyButton" customModule="WordPressUI" customModuleProvider="target">
                                                                         <rect key="frame" x="157" y="0.0" width="137" height="46"/>
                                                                         <state key="normal" title="Try It"/>
                                                                         <userDefinedRuntimeAttributes>

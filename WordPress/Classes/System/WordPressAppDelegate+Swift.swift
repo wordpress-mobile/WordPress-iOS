@@ -87,6 +87,7 @@ extension WordPressAppDelegate {
     ///
     @objc func setupComponentsAppearance() {
         setupFancyAlertAppearance()
+        setupFancyButtonAppearance()
     }
 
 
@@ -108,6 +109,13 @@ extension WordPressAppDelegate {
         appearance.topDividerColor = WPStyleGuide.greyLighten30()
         appearance.bottomDividerColor = WPStyleGuide.lightGrey()
         appearance.headerBackgroundColor = WPStyleGuide.lightGrey()
+    }
+
+    /// Setup: FancyButton's Appearance
+    ///
+    private func setupFancyButtonAppearance() {
+        let appearance = FancyButton.appearance()
+        appearance.titleFont = WPStyleGuide.fontForTextStyle(.headline)
     }
 }
 
