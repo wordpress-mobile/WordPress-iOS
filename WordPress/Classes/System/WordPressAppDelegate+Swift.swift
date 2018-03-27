@@ -213,9 +213,8 @@ extension WordPressAppDelegate {
 
         if let account = account,
             let username = account.username,
-            let userID = account.userID,
-            let verificationStatus = account.verificationStatus() {
-            DDLogInfo("wp.com account: \(username) (ID: \(userID)) (\(verificationStatus))")
+            let userID = account.userID {
+            DDLogInfo("wp.com account: \(username) (ID: \(userID)) (\(account.verificationStatus.rawValue))")
         }
 
         if let blogs = blogs as? [Blog], blogs.count > 0 {
