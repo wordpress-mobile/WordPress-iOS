@@ -1,6 +1,6 @@
 import MobileCoreServices
 
-final class AztecMoreOptionsSheet {
+final class AztecMoreCoordinator {
     func present(origin: UIViewController, view: UIView) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
