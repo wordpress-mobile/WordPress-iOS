@@ -451,7 +451,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
 
-    fileprivate lazy var moreOptionsCoordinator: AztecMoreCoordinator = {
+    fileprivate lazy var moreCoordinator: AztecMoreCoordinator = {
         return AztecMoreCoordinator()
     }()
 
@@ -2115,22 +2115,8 @@ extension AztecPostViewController {
         return .none
     }
 
-//    private func showDocumentPicker() {
-//        let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
-//        let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
-//        docPicker.delegate = self
-//        WPStyleGuide.configureDocumentPickerNavBarAppearance()
-//        present(docPicker, animated: true, completion: nil)
-//    }
-
     private func showMore(from: FormatBarItem) {
-//        let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
-//        let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
-//        docPicker.delegate = self
-//        WPStyleGuide.configureDocumentPickerNavBarAppearance()
-//        present(docPicker, animated: true, completion: nil)
-
-        moreOptionsCoordinator.present(origin: self, view: from)
+        moreCoordinator.present(origin: self, view: from)
     }
 
     // MARK: - Present Toolbar related VC
