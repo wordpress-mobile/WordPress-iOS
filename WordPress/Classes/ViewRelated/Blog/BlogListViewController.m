@@ -1023,7 +1023,6 @@ static NSInteger HideSearchMinSites = 3;
     [self updateEditButton];
     [[WordPressAppDelegate sharedInstance] trackLogoutIfNeeded];
     [self maybeShowNUX];
-    [self updateSearchVisibility];
     [self updateViewsForCurrentSiteCount];
     [self validateBlogDetailsViewController];
 }
