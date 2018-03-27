@@ -8,7 +8,7 @@ class SiteCreationDomainsViewController: NUXViewController {
     @IBOutlet weak var buttonContainerViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerHeightConstraint: NSLayoutConstraint!
 
-    override var sourceTag: SupportSourceTag {
+    override var sourceTag: WordPressSupportSourceTag {
         get {
             return .wpComCreateSiteDomain
         }
@@ -25,7 +25,7 @@ class SiteCreationDomainsViewController: NUXViewController {
     }
 
     private func configureView() {
-        _ = addHelpButtonToNavController()
+        setupHelpButtonIfNeeded()
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
         WPStyleGuide.configureColors(for: view, andTableView: nil)
     }

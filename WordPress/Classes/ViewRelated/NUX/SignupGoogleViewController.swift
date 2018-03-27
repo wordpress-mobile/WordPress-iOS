@@ -4,12 +4,23 @@ import SVProgressHUD
 /// View controller that handles the google signup code
 class SignupGoogleViewController: LoginViewController {
 
+    // MARK: - Properties
+
     private var hasShownGoogle = false
     @IBOutlet var titleLabel: UILabel?
+
+    override var sourceTag: WordPressSupportSourceTag {
+        get {
+            return .wpComSignupWaitingForGoogle
+        }
+    }
+
+    // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
         titleLabel?.text = NSLocalizedString("Waiting for Google to complete…", comment: "Message shown on screen while waiting for Google to finish its signup process.")
+        WordPressAuthenticator.post(event: .createAccountInitiated)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -47,6 +58,8 @@ class SignupGoogleViewController: LoginViewController {
     }
 
 }
+
+// MARK: - GIDSignInDelegate
 
 extension SignupGoogleViewController: GIDSignInDelegate {
     func sign(_ signIn: GIDSignIn?, didSignInFor user: GIDGoogleUser?, withError error: Error?) {
@@ -92,6 +105,8 @@ extension SignupGoogleViewController: GIDSignInDelegate {
         }
     }
 }
+
+// MARK: - GIDSignInUIDelegate
 
 /// This is needed to set self as uiDelegate, even though none of the methods are called
 extension SignupGoogleViewController: GIDSignInUIDelegate {
