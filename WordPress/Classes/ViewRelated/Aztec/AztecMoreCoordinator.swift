@@ -1,7 +1,7 @@
 import MobileCoreServices
 
 final class AztecMoreCoordinator {
-    func present(origin: UIViewController, view: UIView) {
+    func present(origin: UIViewController & UIDocumentPickerDelegate, view: UIView) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         alertController.addAction(freePhoto())
@@ -21,7 +21,7 @@ final class AztecMoreCoordinator {
         })
     }
 
-    private func files(origin: UIViewController) -> UIAlertAction {
+    private func files(origin: UIViewController & UIDocumentPickerDelegate) -> UIAlertAction {
         return UIAlertAction(title: .files, style: .default, handler: { [weak self] action in
             self?.showDocumentPicker(origin: origin)
         })
@@ -31,12 +31,10 @@ final class AztecMoreCoordinator {
         return UIAlertAction(title: .cancel, style: .cancel, handler: nil)
     }
 
-    private func showDocumentPicker(origin: UIViewController) {
+    private func showDocumentPicker(origin: UIViewController & UIDocumentPickerDelegate) {
         let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
         let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
-        if let delegate = origin as? UIDocumentPickerDelegate {
-            docPicker.delegate = delegate
-        }
+        docPicker.delegate = origin
         WPStyleGuide.configureDocumentPickerNavBarAppearance()
         origin.present(docPicker, animated: true, completion: nil)
     }
