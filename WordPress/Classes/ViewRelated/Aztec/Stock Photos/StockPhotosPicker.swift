@@ -24,6 +24,12 @@ extension StockPhotosPicker: WPMediaPickerViewControllerDelegate {
         //
     }
 
+    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
+        let searchHint = MediaNoResultsView()
+
+        return searchHint
+    }
+
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
         print("cancel")
     }
