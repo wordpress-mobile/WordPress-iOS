@@ -451,6 +451,8 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
 
+
+    /// Presents whatever happens when FormatBar's more button is selected
     fileprivate lazy var moreCoordinator: AztecMoreCoordinator = {
         return AztecMoreCoordinator()
     }()
