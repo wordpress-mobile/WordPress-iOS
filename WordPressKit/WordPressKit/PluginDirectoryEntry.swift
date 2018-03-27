@@ -47,7 +47,7 @@ extension PluginDirectoryEntry: Equatable {
     }
 }
 
-extension PluginDirectoryEntry: Decodable {
+extension PluginDirectoryEntry: Codable{
     private enum CodingKeys: String, CodingKey {
         case name
         case slug
@@ -108,6 +108,43 @@ extension PluginDirectoryEntry: Decodable {
 
         let changelog = try sections?.decodeIfPresent(String.self, forKey: .changelog)
         changelogHTML = trimTags(trimChangelog(changelog))
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(name.stringByEncodingXMLCharacters(), forKey: .name)
+        try container.encode(slug, forKey: .slug)
+        try container.encodeIfPresent(version, forKey: .version)
+        try container.encodeIfPresent(lastUpdated, forKey: .lastUpdated)
+        try container.encode(rating, forKey: .rating)
+
+        if icon != nil {
+            try container.encode(["2x": icon], forKey: .icons)
+        }
+
+        if banner != nil {
+            try container.encode([BannersKeys.high.rawValue: banner], forKey: .banners)
+        }
+
+        if let url = authorURL {
+            try container.encode("<a href=\"\(url)\">\(author)</a>", forKey: .author)
+        } else {
+            try container.encode(author, forKey: .author)
+        }
+
+        let sections: [String: String] = [SectionKeys.changelog: changelogHTML,
+                                          SectionKeys.description: descriptionHTML,
+                                          SectionKeys.faq: faqHTML,
+                                          SectionKeys.installation: installationHTML].reduce([:]) {
+                                            var newValue = $0
+                                            if let value = $1.value {
+                                                newValue[$1.key.rawValue] = value
+                                            }
+                                            return newValue
+        }
+
+        try container.encode(sections, forKey: .sections)
     }
 
     internal init(responseObject: [String: AnyObject]) throws {
