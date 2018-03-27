@@ -1,6 +1,7 @@
 import Foundation
 import CocoaLumberjack
 import UserNotifications
+import WordPressFlux
 
 
 /// In this class, we'll encapsulate all of the code related to UNNotificationCategory and
@@ -60,7 +61,12 @@ final class InteractiveNotificationsManager: NSObject {
     /// - Returns: True on success
     ///
     @objc @discardableResult
-    func handleAction(with identifier: String, userInfo: NSDictionary, responseText: String?) -> Bool {
+    func handleAction(with identifier: String, category: String, userInfo: NSDictionary, responseText: String?) -> Bool {
+        if let noteCategory = NoteCategoryDefinition(rawValue: category),
+            noteCategory.isLocalNotification {
+            return handleLocalNotificationAction(with: identifier, category: category, userInfo: userInfo, responseText: responseText)
+        }
+
         guard AccountHelper.isDotcomAvailable(),
             let noteID = userInfo.object(forKey: "note_id") as? NSNumber,
             let siteID = userInfo.object(forKey: "blog_id") as? NSNumber,
@@ -87,6 +93,68 @@ final class InteractiveNotificationsManager: NSObject {
                 replyToCommentWithCommentID(commentID, noteID: noteID, siteID: siteID, content: responseText)
             } else {
                 DDLogError("Tried to reply to a comment notification with no text")
+            }
+        default: break
+        }
+
+        return true
+    }
+
+    func handleLocalNotificationAction(with identifier: String, category: String, userInfo: NSDictionary, responseText: String?) -> Bool {
+        if let noteCategory = NoteCategoryDefinition(rawValue: category) {
+            switch noteCategory {
+            case .mediaUploadSuccess, .mediaUploadFailure:
+                if identifier == UNNotificationDefaultActionIdentifier {
+                    MediaNoticeNavigationCoordinator.navigateToMediaLibrary(with: userInfo)
+                    return true
+                }
+
+                if let action = NoteActionDefinition(rawValue: identifier) {
+                    switch action {
+                    case .mediaWritePost:
+                        MediaNoticeNavigationCoordinator.presentEditor(with: userInfo)
+                    case .mediaRetry:
+                        MediaNoticeNavigationCoordinator.retryMediaUploads(with: userInfo)
+                    default:
+                        break
+                    }
+                }
+            case .postUploadSuccess, .postUploadFailure:
+                if identifier == UNNotificationDefaultActionIdentifier {
+                    ShareNoticeNavigationCoordinator.navigateToPostList(with: userInfo)
+                    return true
+                }
+
+                if let action = NoteActionDefinition(rawValue: identifier) {
+                    switch action {
+                    case .postRetry:
+                        PostNoticeNavigationCoordinator.retryPostUpload(with: userInfo)
+                    case .postView:
+                        PostNoticeNavigationCoordinator.presentPostEpilogue(with: userInfo)
+                    default:
+                        break
+                    }
+                }
+            case .shareUploadSuccess:
+                if identifier == UNNotificationDefaultActionIdentifier {
+                    ShareNoticeNavigationCoordinator.navigateToPostList(with: userInfo)
+                    return true
+                }
+
+                if let action = NoteActionDefinition(rawValue: identifier) {
+                    switch action {
+                    case .shareEditPost:
+                        ShareNoticeNavigationCoordinator.presentEditor(with: userInfo)
+                    default:
+                        break
+                    }
+                }
+            case .shareUploadFailure:
+                if identifier == UNNotificationDefaultActionIdentifier {
+                    ShareNoticeNavigationCoordinator.navigateToBlogDetails(with: userInfo)
+                    return true
+                }
+            default: break
             }
         }
 
@@ -182,6 +250,12 @@ private extension InteractiveNotificationsManager {
         case commentLike            = "like-comment"
         case commentReply           = "replyto-comment"
         case commentReplyWithLike   = "replyto-like-comment"
+        case mediaUploadSuccess     = "media-upload-success"
+        case mediaUploadFailure     = "media-upload-failure"
+        case postUploadSuccess      = "post-upload-success"
+        case postUploadFailure      = "post-upload-failure"
+        case shareUploadSuccess     = "share-upload-success"
+        case shareUploadFailure     = "share-upload-failure"
 
         var actions: [NoteActionDefinition] {
             switch self {
@@ -193,11 +267,27 @@ private extension InteractiveNotificationsManager {
                 return [.commentReply]
             case .commentReplyWithLike:
                 return [.commentReply, .commentLike]
+            case .mediaUploadSuccess:
+                return [.mediaWritePost]
+            case .mediaUploadFailure:
+                return [.mediaRetry]
+            case .postUploadSuccess:
+                return [.postView]
+            case .postUploadFailure:
+                return [.postRetry]
+            case .shareUploadSuccess:
+                return [.shareEditPost]
+            case .shareUploadFailure:
+                return []
             }
         }
 
         var identifier: String {
             return rawValue
+        }
+
+        var isLocalNotification: Bool {
+            return NoteCategoryDefinition.localDefinitions.contains(self)
         }
 
         func notificationCategory() -> UNNotificationCategory {
@@ -208,7 +298,8 @@ private extension InteractiveNotificationsManager {
                 options: [])
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, commentReplyWithLike, mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure]
+        static var localDefinitions = [mediaUploadSuccess, mediaUploadFailure, postUploadSuccess, postUploadFailure, shareUploadSuccess, shareUploadFailure]
     }
 
 
@@ -216,9 +307,14 @@ private extension InteractiveNotificationsManager {
     /// Describes the custom actions that WPiOS can perform in response to a Push notification.
     ///
     enum NoteActionDefinition: String {
-        case commentApprove = "COMMENT_MODERATE_APPROVE"
-        case commentLike    = "COMMENT_LIKE"
-        case commentReply   = "COMMENT_REPLY"
+        case commentApprove   = "COMMENT_MODERATE_APPROVE"
+        case commentLike      = "COMMENT_LIKE"
+        case commentReply     = "COMMENT_REPLY"
+        case mediaWritePost   = "MEDIA_WRITE_POST"
+        case mediaRetry       = "MEDIA_RETRY"
+        case postRetry        = "POST_RETRY"
+        case postView         = "POST_VIEW"
+        case shareEditPost    = "SHARE_EDIT_POST"
 
         var description: String {
             switch self {
@@ -228,6 +324,16 @@ private extension InteractiveNotificationsManager {
                 return NSLocalizedString("Like", comment: "Like (verb)")
             case .commentReply:
                 return NSLocalizedString("Reply", comment: "Reply to a comment (verb)")
+            case .mediaWritePost:
+                return NSLocalizedString("Write Post", comment: "Opens the editor to write a new post.")
+            case .mediaRetry:
+                return NSLocalizedString("Retry", comment: "Opens the media library .")
+            case .postRetry:
+                return NSLocalizedString("Retry", comment: "Retries the upload of a user's post.")
+            case .postView:
+                return NSLocalizedString("View", comment: "Opens the post epilogue screen to allow sharing / viewing of a post.")
+            case .shareEditPost:
+                return NSLocalizedString("Edit Post", comment: "Opens the editor to edit an existing post.")
             }
         }
 
@@ -244,7 +350,11 @@ private extension InteractiveNotificationsManager {
         }
 
         var requiresForeground: Bool {
-            return false
+            switch self {
+            case .mediaWritePost, .mediaRetry, .postView, .shareEditPost:
+                return true
+            default: return false
+            }
         }
 
         var notificationActionOptions: UNNotificationActionOptions {
@@ -274,7 +384,7 @@ private extension InteractiveNotificationsManager {
             }
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, mediaWritePost, mediaRetry, postRetry, postView, shareEditPost]
     }
 }
 
@@ -282,6 +392,22 @@ private extension InteractiveNotificationsManager {
 // MARK: - UNUserNotificationCenterDelegate Conformance
 //
 extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Swift.Void) {
+        let userInfo = notification.request.content.userInfo as NSDictionary
+        let category = notification.request.content.categoryIdentifier
+
+        guard (category == ShareNoticeConstants.categorySuccessIdentifier || category == ShareNoticeConstants.categoryFailureIdentifier),
+            (userInfo.object(forKey: ShareNoticeUserInfoKey.originatedFromAppExtension) as? Bool) == true,
+            let postUploadOpID = userInfo.object(forKey: ShareNoticeUserInfoKey.postUploadOpID) as? String  else {
+                return
+        }
+
+        // If the notification orginated from the share extension, disregard this current notification and resend a new one.
+        ShareExtensionSessionManager.fireUserNotificationIfNeeded(postUploadOpID)
+        completionHandler([])
+    }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                        didReceive response: UNNotificationResponse,
@@ -289,7 +415,10 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
         let userInfo = response.notification.request.content.userInfo as NSDictionary
         let textInputResponse = response as? UNTextInputNotificationResponse
 
-        if handleAction(with: response.actionIdentifier, userInfo: userInfo, responseText: textInputResponse?.userText) {
+        if handleAction(with: response.actionIdentifier,
+                        category: response.notification.request.content.categoryIdentifier,
+                        userInfo: userInfo,
+                        responseText: textInputResponse?.userText) {
             completionHandler()
             return
         }

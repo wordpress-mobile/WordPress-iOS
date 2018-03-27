@@ -22,14 +22,14 @@
         if (success) {
             success();
         }
-    }  failure:failure];
+    } failure:failure];
 }
 
 - (void)syncBlogWithUsername:(NSString *)username
                     password:(NSString *)password
                       xmlrpc:(NSString *)xmlrpc
                      options:(NSDictionary *)options
-                finishedSync:(void(^)(void))finishedSync
+                finishedSync:(void(^)(Blog *))finishedSync
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -57,7 +57,8 @@
      */
     blog.password = password;
     blog.options = options;
-    //HACK:Sergio Estevao (2015-08-31): Because there is no direct way to
+
+    // HACK:Sergio Estevao (2015-08-31): Because there is no direct way to
     // know if a user has permissions to change the options we check if the blog title property is read only or not.
     if ([blog.options numberForKeyPath:@"blog_title.readonly"]) {
         blog.isAdmin = ![[blog.options numberForKeyPath:@"blog_title.readonly"] boolValue];
@@ -82,7 +83,7 @@
     }
 
     if (finishedSync != nil) {
-        finishedSync();
+        finishedSync(blog);
     }
 
     WP3DTouchShortcutCreator *shortcutCreator = [WP3DTouchShortcutCreator new];

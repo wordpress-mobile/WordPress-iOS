@@ -114,6 +114,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     userProperties[@"jetpack_user"] = @(jetpackBlogsPresent);
     userProperties[@"number_of_blogs"] = @(blogCount);
     userProperties[@"accessibility_voice_over_enabled"] = @(UIAccessibilityIsVoiceOverRunning());
+    userProperties[@"is_rtl_language"] = @(UIApplication.sharedApplication.userInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft);
 
     [self.tracksService.userProperties removeAllObjects];
     [self.tracksService.userProperties addEntriesFromDictionary:userProperties];
@@ -278,6 +279,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatCreatedSite:
             eventName = @"site_created";
+            break;
+        case WPAnalyticsStatCreateSiteValidationFailed:
+            eventName = @"create_site_validation_failed";
+            break;
+        case WPAnalyticsStatCreateSiteCreationFailed:
+            eventName = @"create_site_creation_failed";
+            break;
+        case WPAnalyticsStatCreateSiteSetTaglineFailed:
+            eventName = @"create_site_set_tagline_failed";
+            break;
+        case WPAnalyticsStatCreateSiteSetThemeFailed:
+            eventName = @"create_site_set_theme_failed";
             break;
         case WPAnalyticsStatEditorAddedPhotoViaLocalLibrary:
             eventName = @"editor_photo_added";
@@ -463,6 +476,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatGravatarUploaded:
             eventName = @"me_gravatar_uploaded";
             break;
+        case WPAnalyticsStatInstallJetpackCanceled:
+            eventName = @"install_jetpack_canceled";
+            break;
+        case WPAnalyticsStatInstallJetpackCompleted:
+            eventName = @"install_jetpack_completed";
+            break;
         case WPAnalyticsStatLogSpecialCondition:
             eventName = @"log_special_condition";
             break;
@@ -565,6 +584,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatMediaLibraryAddedVideo:
             eventName = @"media_library_video_added";
             break;
+        case WPAnalyticsStatMediaLibraryUploadMediaRetried:
+            eventName = @"media_library_upload_media_retried";
+            break;
         case WPAnalyticsStatMediaServiceUploadStarted:
             eventName = @"media_service_upload_started";
             break;
@@ -652,6 +674,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatNotificationsTappedViewReader:
             eventName = @"notification_tapped_view_reader";
             break;
+        case WPAnalyticsStatNotificationsTappedSegmentedControl:
+            eventName = @"notification_tapped_segmented_control";
+            break;
+        case WPAnalyticsStatNotificationsUploadMediaSuccessWritePost:
+            eventName = @"notifications_upload_media_success_write_post";
+            break;
+        case WPAnalyticsStatNotificationsShareSuccessEditPost:
+            eventName = @"notifications_share_success_edit_post";
+            break;
         case WPAnalyticsStatOnePasswordFailed:
             eventName = @"one_password_failed";
             break;
@@ -704,8 +735,11 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatOpenedPlansComparison:
             eventName = @"plans_compare";
             break;
-        case WPAnalyticsStatOpenedPlugins:
-            eventName = @"plugins_opened";
+        case WPAnalyticsStatOpenedPluginDirectory:
+            eventName = @"plugin_directory_opened";
+            break;
+        case WPAnalyticsStatOpenedPluginList:
+            eventName = @"plugin_list_opened";
             break;
         case WPAnalyticsStatOpenedPosts:
             eventName = @"site_menu_opened";
@@ -728,9 +762,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatOpenedViewSite:
             eventName = @"site_menu_view_site_opened";
             break;
-        case WPAnalyticsStatPerformedJetpackSignInFromStatsScreen:
-            eventName = @"stats_screen_signed_into_jetpack";
-            break;
         case WPAnalyticsStatPersonRemoved:
             eventName = @"people_management_person_removed";
             break;
@@ -742,6 +773,36 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatPluginRemoved:
             eventName = @"plugin_removed";
+            break;
+        case WPAnalyticsStatPluginInstalled:
+            eventName = @"plugin_installed";
+            break;
+        case WPAnalyticsStatPluginActivated:
+            eventName = @"plugin_activated";
+            break;
+        case WPAnalyticsStatPluginDeactivated:
+            eventName = @"plugin_deactivated";
+            break;
+        case WPAnalyticsStatPluginAutoupdateEnabled:
+            eventName = @"plugin_autoupdate_enabled";
+            break;
+        case WPAnalyticsStatPluginAutoupdateDisabled:
+            eventName = @"plugin_autoupdate_disabled";
+            break;
+        case WPAnalyticsStatPluginSearchPerformed:
+            eventName = @"plugin_search_performed";
+            break;
+        case WPAnalyticsStatPostEpilogueDisplayed:
+            eventName = @"post_epilogue_displayed";
+            break;
+        case WPAnalyticsStatPostEpilogueEdit:
+            eventName = @"post_epilogue_edit";
+            break;
+        case WPAnalyticsStatPostEpilogueShare:
+            eventName = @"post_epilogue_share";
+            break;
+        case WPAnalyticsStatPostEpilogueView:
+            eventName = @"post_epilogue_view";
             break;
         case WPAnalyticsStatPostListAuthorFilterChanged:
             eventName = @"post_list_author_filter_changed";
@@ -888,7 +949,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"reader_reader_tag_unfollowed";
             break;
         case WPAnalyticsStatSelectedInstallJetpack:
-            eventName = @"stats_install_jetpack_selected";
+            eventName = @"install_jetpack_selected";
             break;
         case WPAnalyticsStatSentItemToGooglePlus:
             eventName = @"sent_item_to_google_plus";
@@ -941,8 +1002,25 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatSignedInToJetpack:
             eventName = @"signed_into_jetpack";
             break;
+        case WPAnalyticsStatSignupMagicLinkFailed:
+            eventName = @"signup_magic_link_failed";
+            break;
         case WPAnalyticsStatSignupMagicLinkOpenEmailClientViewed:
             eventName = @"signup_magic_link_open_email_client_viewed";
+            break;
+        case WPAnalyticsStatSignupMagicLinkOpened:
+            eventName = @"signup_magic_link_opened";
+            break;
+        case WPAnalyticsStatSignupMagicLinkSucceeded:
+            eventName = @"signup_magic_link_succeeded";
+            break;
+        case WPAnalyticsStatSignupSocialSuccess:
+            eventName = @"signup_social_success";
+            break;
+        case WPAnalyticsStatSignupSocialFailure:
+            eventName = @"signup_social_failure";
+        case WPAnalyticsStatSignupMagicLinkRequested:
+            eventName = @"signup_magic_link_requested";
             break;
         case WPAnalyticsStatSiteSettingsDeleteSiteAccessed:
             eventName = @"site_settings_delete_site_accessed";
@@ -983,6 +1061,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatSiteSettingsStartOverContactSupportClicked:
             eventName = @"site_settings_start_over_contact_support_clicked";
             break;
+        case WPAnalyticsStatSpotlightSearchOpenedPost:
+            eventName = @"spotlight_search_opened_post";
+            break;
+        case WPAnalyticsStatSpotlightSearchOpenedPage:
+            eventName = @"spotlight_search_opened_page";
+            break;
         case WPAnalyticsStatSkippedConnectingToJetpack:
             eventName = @"skipped_connecting_to_jetpack";
             break;
@@ -1010,9 +1094,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatStatsScrolledToBottom:
             eventName = @"stats_scrolled_to_bottom";
-            break;
-        case WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen:
-            eventName = @"selected_learn_more_in_connect_to_jetpack";
             break;
         case WPAnalyticsStatStatsSinglePostAccessed:
             eventName = @"stats_single_post_accessed";
@@ -1130,6 +1211,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatShareExtensionError:
             eventName = @"share_extension_error";
+            break;
+        case WPAnalyticsStatSearchAdsAttribution:
+            eventName = @"searchads_attribution_detail_received";
             break;
 
             // to be implemented

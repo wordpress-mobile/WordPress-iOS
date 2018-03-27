@@ -2,13 +2,12 @@ import UIKit
 import WordPressShared
 
 class LoginEpilogueViewController: UIViewController {
-    @objc var originalPresentingVC: UIViewController?
-    @objc var dismissBlock: ((_ cancelled: Bool) -> Void)?
     @IBOutlet var buttonPanel: UIView?
     @IBOutlet var shadowView: UIView?
     @IBOutlet var connectButton: UIButton?
     @IBOutlet var continueButton: UIButton?
     @objc var tableViewController: LoginEpilogueTableView?
+    var onDismiss: (() -> Void)?
     var epilogueUserInfo: LoginEpilogueUserInfo?
     var jetpackLogin = false
 
@@ -43,7 +42,7 @@ class LoginEpilogueViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        WPAppAnalytics.track(.loginEpilogueViewed)
+        WordPressAuthenticator.post(event: .loginEpilogueViewed)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -104,14 +103,14 @@ class LoginEpilogueViewController: UIViewController {
     // MARK: - Actions
 
     @IBAction func dismissEpilogue() {
-        dismissBlock?(false)
+        onDismiss?()
         navigationController?.dismiss(animated: true, completion: nil)
     }
 
     @IBAction func handleConnectAnotherButton() {
-        dismissBlock?(false)
+        onDismiss?()
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        guard let controller = storyboard.instantiateViewController(withIdentifier: "siteAddress") as? NUXAbstractViewController else {
+        guard let controller = storyboard.instantiateViewController(withIdentifier: "siteAddress") as? LoginSiteAddressViewController else {
             return
         }
         navigationController?.setViewControllers([controller], animated: true)

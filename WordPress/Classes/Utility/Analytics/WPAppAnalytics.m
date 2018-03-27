@@ -121,6 +121,7 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 {
     [self incrementSessionCount];
     [self trackApplicationOpened];
+    [SearchAdsAttribution.instance requestDetails];
 }
 
 - (void)applicationDidEnterBackground:(NSNotification*)notification

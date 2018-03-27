@@ -11,6 +11,8 @@
 #import "ContextManager.h"
 #import <WordPressShared/WPNoResultsView.h>
 #import <WordPressShared/WPStyleGuide.h>
+#import <WordPressUI/WordPressUI.h>
+
 
 
 static CGRect const CommentsActivityFooterFrame                 = {0.0, 0.0, 30.0, 30.0};
@@ -30,7 +32,6 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 @property (nonatomic, strong) UIView                    *footerView;
 @property (nonatomic, strong) NSCache                   *estimatedRowHeights;
 @end
-
 
 @implementation CommentsViewController
 
@@ -75,6 +76,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     
     // Refresh the UI
     [self refreshNoResultsView];
+    [self handleConnectionError];
 
     [self refreshAndSyncIfNeeded];
 }
@@ -118,10 +120,18 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 - (void)configureNoResultsView
 {
     WPNoResultsView *noResultsView          = [WPNoResultsView new];
-    noResultsView.titleText                 = NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
+    noResultsView.titleText                 = [self noResultsViewTitle];
     self.noResultsView                      = noResultsView;
     
     [self.view addSubview:noResultsView];
+}
+
+- (NSString *)noResultsViewTitle
+{
+    NSString *noCommentsMessage = NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
+    NSString *noConnectionMessage = [self noConnectionMessage];
+
+    return [ReachabilityUtils isInternetReachable] ? noCommentsMessage : noConnectionMessage;
 }
 
 - (void)configureRefreshControl
@@ -397,6 +407,9 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
     NSManagedObjectID *blogObjectID = self.blog.objectID;
+
+    __typeof(self) __weak weakSelf = self;
+
     [context performBlock:^{
         Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
         if (!blogInContext) {
@@ -405,22 +418,26 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
         
         [commentService syncCommentsForBlog:blogInContext
                                     success:^(BOOL hasMore) {
-                                                if (success) {
-                                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                                        success(hasMore);
-                                                    });
-                                                }
+                                        if (success) {
+                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                success(hasMore);
+                                            });
+                                        }
                                     }
                                     failure:^(NSError *error) {
-                                                if (failure) {
-                                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                                        failure(error);
-                                                    });
-                                                }
-                                            if (userInteraction) {
-                                                NSString *title = NSLocalizedString(@"Unable to Sync", @"Title of error prompt shown when a sync the user initiated fails.");
-                                                [WPError showNetworkingAlertWithError:error title:title];
-                                            }
+                                        if (failure) {
+                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                failure(error);
+                                            });
+                                        }
+
+                                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                            [weakSelf refreshPullToRefresh];
+                                        });
+                                        
+                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                            [weakSelf handleConnectionError];
+                                        });
                                     }];
     }];
 }
@@ -462,6 +479,11 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     [self refreshPullToRefresh];
 }
 
+- (BOOL)contentIsEmpty
+{
+    return [self.tableViewHandler.resultsController isEmpty];
+}
+
 
 #pragma mark - View Refresh Helpers
 
@@ -499,7 +521,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (void)refreshNoResultsView
 {
-    BOOL isTableViewEmpty = (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
+    BOOL isTableViewEmpty = [self contentIsEmpty];
     BOOL shouldPerformAnimation = self.noResultsView.hidden;
     
     self.noResultsView.hidden = !isTableViewEmpty;
@@ -509,6 +531,8 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     }
     
     // Display NoResultsView
+    self.noResultsView.titleText = [self noResultsViewTitle];
+    
     self.noResultsView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.tableView pinSubviewAtCenter:self.noResultsView];
 

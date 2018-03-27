@@ -19,7 +19,7 @@ class AztecVerificationPromptHelper: NSObject {
         accountService = AccountService(managedObjectContext: managedObjectContext)
 
         guard accountService.isDefaultWordPressComAccount(passedAccount),
-              !passedAccount.emailVerified.boolValue else {
+              passedAccount.needsEmailVerification else {
                 // if the post the user is trying to compose isn't on a WP.com account,
                 // or they're already verified, then the verification prompt is irrelevant.
                 return nil
@@ -39,12 +39,12 @@ class AztecVerificationPromptHelper: NSObject {
         NotificationCenter.default.removeObserver(self)
     }
 
-    func neeedsVerification(before action: PostEditorAction) -> Bool {
+    func needsVerification(before action: PostEditorAction) -> Bool {
         guard action == .publish else {
             return false
         }
 
-        return !wpComAccount.emailVerified.boolValue
+        return wpComAccount.needsEmailVerification
     }
 
     /// - parameter presentingViewController: UIViewController that the prompt should be presented from.
@@ -54,7 +54,8 @@ class AztecVerificationPromptHelper: NSObject {
                                    then: AztecVerificationPromptCompletion?) {
 
         let fancyAlert = FancyAlertViewController.verificationPromptController { [weak self] in
-            then?(self?.wpComAccount.emailVerified.boolValue ?? false)
+            let needsVerification = self?.wpComAccount.needsEmailVerification ?? true
+            then?(!needsVerification)
         }
 
         fancyAlert.modalPresentationStyle = .custom
@@ -78,12 +79,12 @@ class AztecVerificationPromptHelper: NSObject {
                                             // the verification status has changed, before we call the callback.
                                             guard let displayedAlert = self?.displayedAlert,
                                                   let updatedAccount = self?.accountService.defaultWordPressComAccount(),
-                                                  updatedAccount.emailVerified.boolValue else {
+                                                  !updatedAccount.needsEmailVerification else {
                                                         return
                                             }
 
                                             displayedAlert.dismiss(animated: true, completion: nil)
-                                            self?.completionBlock?(updatedAccount.emailVerified.boolValue)
+                                            self?.completionBlock?(!updatedAccount.needsEmailVerification)
             }, failure: nil)
     }
 

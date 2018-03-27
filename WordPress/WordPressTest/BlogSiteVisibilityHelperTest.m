@@ -3,7 +3,6 @@
 
 #import "Blog.h"
 #import "BlogSiteVisibilityHelper.h"
-#import "JetpackState.h"
 #import "ContextManager-Internals.h"
 #import "TestContextManager.h"
 

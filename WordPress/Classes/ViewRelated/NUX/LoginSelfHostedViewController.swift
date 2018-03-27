@@ -4,7 +4,7 @@ import WordPressShared
 /// Part two of the self-hosted sign in flow. A valid site address should be acquired
 /// before presenting this view controller.
 ///
-class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponder {
+class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
     @IBOutlet var siteHeaderView: SiteInfoHeaderView!
     @IBOutlet var siteAddressStackView: UIStackView!
     @IBOutlet var siteAddressLabel: UILabel!
@@ -14,8 +14,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     @objc var onePasswordButton: UIButton!
-
-    override var sourceTag: SupportSourceTag {
+    override var sourceTag: WordPressSupportSourceTag {
         get {
             return .loginUsernamePassword
         }
@@ -67,7 +66,7 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
 
-        WPAppAnalytics.track(.loginUsernamePasswordFormViewed)
+        WordPressAuthenticator.post(event: .loginUsernamePasswordFormViewed)
     }
 
 
@@ -76,15 +75,6 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
         unregisterForKeyboardEvents()
     }
 
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        // Ensure that the user info is set on the epilogue vc.
-        if let vc = segue.destination as? LoginEpilogueViewController {
-            vc.epilogueUserInfo = epilogueUserInfo()
-            vc.jetpackLogin = loginFields.meta.jetpackLogin
-        }
-    }
 
 
     // MARK: - Setup and Configuration
@@ -119,10 +109,10 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
     /// Configures the content of the text fields based on what is saved in `loginFields`.
     ///
     @objc func configureTextFields() {
-        usernameField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
-        passwordField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         usernameField.text = loginFields.username
         passwordField.text = loginFields.password
+        passwordField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        usernameField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
     }
 
 
@@ -203,13 +193,14 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
         siteHeaderView.isHidden = true
 
         siteAddressLabel.text = sanitizedSiteAddress(siteAddress: loginFields.siteAddress)
+        siteAddressLabel.adjustsFontForContentSizeCategory = true
     }
 
 
     /// Sanitize and format the site address we show to users.
     ///
     @objc func sanitizedSiteAddress(siteAddress: String) -> String {
-        let baseSiteUrl = SigninHelpers.baseSiteURL(string: siteAddress) as NSString
+        let baseSiteUrl = WordPressAuthenticator.baseSiteURL(string: siteAddress) as NSString
         if let str = baseSiteUrl.components(separatedBy: "://").last {
             return str
         }
@@ -235,15 +226,18 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
     }
 
 
-    /// Advances to the epilogue view controller once the self-hosted site has been added.
-    ///
-    @objc func showEpilogue() {
-        configureViewLoading(false)
-        performSegue(withIdentifier: .showEpilogue, sender: self)
-    }
-
-
     // MARK: - Epilogue: Gravatar and User Profile Acquisition
+
+    override func showLoginEpilogue() {
+        guard let delegate = WordPressAuthenticator.shared.delegate, let navigationController = navigationController else {
+            fatalError()
+        }
+
+        configureViewLoading(false)
+        delegate.presentLoginEpilogue(in: navigationController, epilogueInfo: epilogueUserInfo(), isJetpackLogin: isJetpackLogin) { [weak self] in
+            self?.dismissBlock?(false)
+        }
+    }
 
 
     /// Returns an instance of LoginEpilogueUserInfo composed from
@@ -277,8 +271,8 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
         service.fetchProfile(blog: blog, success: { [weak self] (profile) in
             self?.userProfile = profile
             self?.fetchGravatarProfileInfo(email: profile.email, completion: completion)
-            }, failure: { [weak self] (_) in
-                self?.showEpilogue()
+            }, failure: { [weak self] _ in
+                self?.showLoginEpilogue()
         })
     }
 
@@ -290,8 +284,8 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
         service.fetchProfile(email, success: { [weak self] (profile) in
             self?.gravatarProfile = profile
             completion()
-            }, failure: { [weak self] (_) in
-                self?.showEpilogue()
+            }, failure: { [weak self] _ in
+                self?.showLoginEpilogue()
         })
     }
 
@@ -316,19 +310,17 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
     @objc func handleOnePasswordButtonTapped(_ sender: UIButton) {
         view.endEditing(true)
 
-        SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [unowned self] (loginFields) in
+        WordPressAuthenticator.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [unowned self] (loginFields) in
             self.usernameField.text = loginFields.username
             self.passwordField.text = loginFields.password
             self.validateForm()
         }
     }
 
-
     @IBAction func handleForgotPasswordButtonTapped(_ sender: UIButton) {
-        SigninHelpers.openForgotPasswordURL(loginFields)
-        WPAppAnalytics.track(.loginForgotPasswordClicked)
+        WordPressAuthenticator.openForgotPasswordURL(loginFields)
+        WordPressAuthenticator.post(event: .loginForgotPasswordClicked)
     }
-
 
     // MARK: - Keyboard Notifications
 
@@ -346,43 +338,33 @@ class LoginSelfHostedViewController: LoginViewController, SigninKeyboardResponde
 
 extension LoginSelfHostedViewController {
 
-    override func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
+    override func finishedLogin(withUsername username: String, authToken: String, requiredMultifactorCode: Bool) {
         syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
     }
 
 
-    func finishedLogin(withUsername username: String!, password: String!, xmlrpc: String!, options: [AnyHashable: Any]!) {
+    func finishedLogin(withUsername username: String, password: String, xmlrpc: String, options: [AnyHashable: Any]) {
         displayLoginMessage("")
 
-        BlogSyncFacade().syncBlog(withUsername: username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] in
-            let context = ContextManager.sharedInstance().mainContext
-            let service = BlogService(managedObjectContext: context)
-            guard let blog = service.findBlog(withXmlrpc: xmlrpc, andUsername: username) else {
-                assertionFailure("A blog was just added but was not found in core data.")
-                // Skip showing the epilogue in this situation. Since there will
-                // be no blog to present to the user the screen is likly to be
-                // confusing. Instead just dismiss.
-                self?.dismiss()
-                return
-            }
+        BlogSyncFacade().syncBlog(withUsername: username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] blog in
 
             RecentSitesService().touch(blog: blog)
-            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: SigninHelpers.WPSigninDidFinishNotification), object: nil)
+            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
 
             self?.blog = blog
             self?.fetchUserProfileInfo(blog: blog, completion: {
-                self?.showEpilogue()
+                self?.showLoginEpilogue()
             })
         }
     }
 
 
-    func displayLoginMessage(_ message: String!) {
+    func displayLoginMessage(_ message: String) {
         configureForgotPasswordButton()
     }
 
 
-    override func displayRemoteError(_ error: Error!) {
+    override func displayRemoteError(_ error: Error) {
         displayLoginMessage("")
         configureViewLoading(false)
         let err = error as NSError

@@ -132,6 +132,21 @@ open class ShareExtensionService: NSObject {
         return oauth2Token
     }
 
+    /// Retrieves the Primary Site Details (ID + Name), if any.
+    ///
+    class func retrieveShareExtensionPrimarySite() -> (siteID: Int, siteName: String)? {
+        guard let userDefaults = UserDefaults(suiteName: WPAppGroupName) else {
+            return nil
+        }
+
+        if let siteID = userDefaults.object(forKey: WPShareExtensionUserDefaultsPrimarySiteID) as? Int,
+            let siteName = userDefaults.object(forKey: WPShareExtensionUserDefaultsPrimarySiteName) as? String {
+            return (siteID, siteName)
+        }
+
+        return nil
+    }
+
     /// Retrieves the Last Used Site Details (ID + Name) or, when that one is not present, the
     /// Primary Site Details, if any.
     ///

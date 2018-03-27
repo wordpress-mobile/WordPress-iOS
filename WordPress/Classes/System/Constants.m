@@ -10,7 +10,6 @@ NSString *const WPComDefaultAccountUrlKey                           = @"AccountD
 ///
 NSString *const WPMobileReaderURL                                   = @"https://en.wordpress.com/reader/mobile/v2/?chrome=no";
 NSString *const WPMobileReaderDetailURL                             = @"https://en.wordpress.com/reader/mobile/v2/?template=details";
-NSString *const WPJetpackInformationURL                             = @"https://jetpack.me/about/";
 NSString *const WPAutomatticMainURL                                 = @"https://automattic.com/";
 NSString *const WPAutomatticTermsOfServiceURL                       = @"https://wordpress.com/tos/";
 NSString *const WPAutomatticPrivacyURL                              = @"https://automattic.com/privacy/";
@@ -69,13 +68,6 @@ NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey       = @"TodayVis
 /// iTunes Constants
 ///
 NSString *const WPiTunesAppId                                       = @"335703880";
-
-/// 1Password Constants
-///
-NSString *const WPOnePasswordWordPressTitle                         = @"WordPress";
-NSString *const WPOnePasswordWordPressComURL                        = @"wordpress.com";
-NSInteger const WPOnePasswordGeneratedMinLength                     = 7;
-NSInteger const WPOnePasswordGeneratedMaxLength                     = 50;
 
 /// Scheme Constants
 ///

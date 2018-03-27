@@ -633,7 +633,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
     if ([toDelete count] > 0) {
         for (Blog *blog in account.blogs) {
-            if ([toDelete containsObject:blog.xmlrpc]) {
+            if ([toDelete containsObject:blog.dotComID]) {
                 [self.managedObjectContext deleteObject:blog];
             }
         }
@@ -686,6 +686,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     blog.planID = remoteBlog.planID;
     blog.planTitle = remoteBlog.planTitle;
     blog.hasPaidPlan = remoteBlog.hasPaidPlan;
+    blog.quotaSpaceAllowed = remoteBlog.quotaSpaceAllowed;
+    blog.quotaSpaceUsed = remoteBlog.quotaSpaceUsed;
 
     // Update 'Top Level' Settings
     BlogSettings *settings = blog.settings;
@@ -1001,6 +1003,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     settings.privacy = remoteSettings.privacy ?: settings.privacy;
     settings.languageID = remoteSettings.languageID ?: settings.languageID;
     settings.iconMediaID = remoteSettings.iconMediaID;
+    settings.gmtOffset = remoteSettings.gmtOffset;
+    settings.timezoneString = remoteSettings.timezoneString;
     
     // Writing
     settings.defaultCategoryID = remoteSettings.defaultCategoryID ?: settings.defaultCategoryID;
@@ -1069,6 +1073,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     remoteSettings.privacy = settings.privacy;
     remoteSettings.languageID = settings.languageID;
     remoteSettings.iconMediaID = settings.iconMediaID;
+    remoteSettings.gmtOffset = settings.gmtOffset;
+    remoteSettings.timezoneString = settings.timezoneString;
     
     // Writing
     remoteSettings.defaultCategoryID = settings.defaultCategoryID;

@@ -10,8 +10,7 @@ class LoginLinkRequestViewController: LoginViewController {
     @IBOutlet var label: UILabel?
     @IBOutlet var sendLinkButton: NUXSubmitButton?
     @IBOutlet var usePasswordButton: UIButton?
-
-    override var sourceTag: SupportSourceTag {
+    override var sourceTag: WordPressSupportSourceTag {
         get {
             return .loginMagicLink
         }
@@ -44,7 +43,7 @@ class LoginLinkRequestViewController: LoginViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        WPAppAnalytics.track(.loginMagicLinkRequestFormViewed)
+        WordPressAuthenticator.post(event: .loginMagicLinkRequestFormViewed)
     }
 
     // MARK: - Configuration
@@ -54,6 +53,8 @@ class LoginLinkRequestViewController: LoginViewController {
     @objc func localizeControls() {
         let format = NSLocalizedString("We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!", comment: "Instructional text for the magic link login flow.")
         label?.text = NSString(format: format as NSString, loginFields.username) as String
+        label?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+        label?.adjustsFontForContentSizeCategory = true
 
         let sendLinkButtonTitle = NSLocalizedString("Send Link", comment: "Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user.")
         sendLinkButton?.setTitle(sendLinkButtonTitle, for: UIControlState())
@@ -63,6 +64,7 @@ class LoginLinkRequestViewController: LoginViewController {
         usePasswordButton?.setTitle(usePasswordTitle, for: UIControlState())
         usePasswordButton?.setTitle(usePasswordTitle, for: .highlighted)
         usePasswordButton?.titleLabel?.numberOfLines = 0
+        usePasswordButton?.titleLabel?.textAlignment = .center
         usePasswordButton?.accessibilityIdentifier = "Use Password"
     }
 
@@ -83,11 +85,13 @@ class LoginLinkRequestViewController: LoginViewController {
 
         let email = loginFields.username
         guard email.isValidEmail() else {
-            // This is a bit of paranioa as in practice it should never happen.
+            // This is a bit of paranoia as in practice it should never happen.
             // However, let's make sure we give the user some useful feedback just in case.
             DDLogError("Attempted to request authentication link, but the email address did not appear valid.")
-            WPError.showAlert(withTitle: NSLocalizedString("Can Not Request Link", comment: "Title of an alert letting the user know"),
-                              message: NSLocalizedString("A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address.", comment: "An error message."))
+            let alert = UIAlertController(title: NSLocalizedString("Can Not Request Link", comment: "Title of an alert letting the user know"), message: NSLocalizedString("A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address.", comment: "An error message."), preferredStyle: .alert)
+            alert.addActionWithTitle(NSLocalizedString("Need help?", comment: "Takes the user to get help"), style: .cancel, handler: { _ in WordPressAuthenticator.shared.delegate?.presentLivechat(from: self, sourceTag: .loginEmail, options: [:]) })
+            alert.addActionWithTitle(NSLocalizedString("OK", comment: "Dismisses the alert"), style: .default, handler: nil)
+            self.present(alert, animated: true, completion: nil)
             return
         }
 
@@ -99,14 +103,19 @@ class LoginLinkRequestViewController: LoginViewController {
                                             self?.configureLoading(false)
 
             }, failure: { [weak self] (error: Error) in
-                WPAppAnalytics.track(.loginMagicLinkFailed)
-                WPAppAnalytics.track(.loginFailed, error: error)
+                WordPressAuthenticator.post(event: .loginMagicLinkFailed)
+                WordPressAuthenticator.post(event: .loginFailed(error: error))
                 guard let strongSelf = self else {
                     return
                 }
                 strongSelf.displayError(error as NSError, sourceTag: strongSelf.sourceTag)
                 strongSelf.configureLoading(false)
         })
+    }
+
+    // MARK: - Dynamic type
+    override func didChangePreferredContentSize() {
+        label?.font = WPStyleGuide.fontForTextStyle(.headline)
     }
 
     // MARK: - Actions
@@ -116,12 +125,22 @@ class LoginLinkRequestViewController: LoginViewController {
     }
 
     @objc func didRequestAuthenticationLink() {
-        WPAppAnalytics.track(.loginMagicLinkRequested)
-        SigninHelpers.storeLoginInfoForTokenAuth(loginFields)
+        WordPressAuthenticator.post(event: .loginMagicLinkRequested)
+        WordPressAuthenticator.storeLoginInfoForTokenAuth(loginFields)
         performSegue(withIdentifier: .showLinkMailView, sender: self)
     }
 
     @IBAction func handleUsePasswordTapped(_ sender: UIButton) {
-        WPAppAnalytics.track(.loginMagicLinkExited)
+        WordPressAuthenticator.post(event: .loginMagicLinkExited)
+    }
+}
+
+extension LoginLinkRequestViewController {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            didChangePreferredContentSize()
+        }
     }
 }

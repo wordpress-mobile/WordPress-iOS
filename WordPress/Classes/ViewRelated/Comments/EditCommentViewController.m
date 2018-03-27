@@ -3,6 +3,8 @@
 #import "CommentService.h"
 #import "ContextManager.h"
 #import "IOS7CorrectedTextView.h"
+
+#import <WordPressUI/WordPressUI.h>
 #import "WordPress-Swift.h"
 
 
@@ -85,11 +87,9 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
     [super viewWillDisappear:animated];
     
     // FIX FIX:
-    // iOS 8 is resigning first responder when the presentedViewController is effectively removed from screen.
+    // iOS 8+ is resigning first responder when the presentedViewController is effectively removed from screen.
     // This creates a UX glitch, as a side effect (two animations!!)
-    if ([UIDevice isOS8]) {
-        [self.textView resignFirstResponder];
-    }
+    [self.textView resignFirstResponder];
 }
 
 

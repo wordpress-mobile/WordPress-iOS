@@ -68,17 +68,17 @@ class MediaAssetExporter: MediaExporter {
             onError(exporterErrorWith(error: AssetExportError.expectedPHAssetImageType))
             return Progress.discreteCompletedProgress()
         }
-
+        var filename = UUID().uuidString + ".jpg"
+        var resourceAvailableLocally = false
         // Get the resource matching the type, to export.
         let resources = PHAssetResource.assetResources(for: asset).filter({ $0.type == .photo })
-        guard let resource = resources.first else {
-            onError(exporterErrorWith(error: AssetExportError.unavailablePHAssetImageResource))
-            return Progress.discreteCompletedProgress()
-        }
-
-        if UTTypeEqual(resource.uniformTypeIdentifier as CFString, kUTTypeGIF) {
-            // Since this is a GIF, handle the export in it's own way.
-            return exportGIF(forAsset: asset, resource: resource, onCompletion: onCompletion, onError: onError)
+        if let resource = resources.first {
+            resourceAvailableLocally = true
+            filename = resource.originalFilename
+            if UTTypeEqual(resource.uniformTypeIdentifier as CFString, kUTTypeGIF) {
+                // Since this is a GIF, handle the export in it's own way.
+                return exportGIF(forAsset: asset, resource: resource, onCompletion: onCompletion, onError: onError)
+            }
         }
 
         // Configure the options for requesting the image.
@@ -87,7 +87,8 @@ class MediaAssetExporter: MediaExporter {
         options.deliveryMode = .highQualityFormat
         options.resizeMode = .exact
         options.isNetworkAccessAllowed = true
-        options.isSynchronous = true
+        // If we have a resource object that means we have a local copy of the asset so we can request the image in sync mode.
+        options.isSynchronous = resourceAvailableLocally
         let progress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         progress.isCancellable = true
         options.progressHandler = { (progressValue, error, stop, info) in
@@ -126,7 +127,7 @@ class MediaAssetExporter: MediaExporter {
                                     return
                                 }
                                 // Hand off the image export to a shared image writer.
-                                let exporter = MediaImageExporter(image: image, filename: resource.originalFilename)
+                                let exporter = MediaImageExporter(image: image, filename: filename)
                                 exporter.mediaDirectoryType = self.mediaDirectoryType
                                 if let options = self.imageOptions {
                                     exporter.options = options

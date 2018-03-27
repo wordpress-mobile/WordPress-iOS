@@ -1,6 +1,8 @@
 #import "BlogDetailHeaderView.h"
 #import "Blog.h"
+#import <WordPressUI/WordPressUI.h>
 #import "WordPress-Swift.h"
+
 
 
 const CGFloat BlogDetailHeaderViewBlavatarSize = 40.0;

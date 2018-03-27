@@ -4,6 +4,14 @@ import Social
 /// Encapsulates String Helper Methods.
 ///
 extension String {
+    func arrayOfTags() -> [String] {
+        guard !self.isEmpty else {
+            return [String()]
+        }
+
+        return self.components(separatedBy: ",").map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
+    }
+
     /// Returns a String with <A>nchored links
     ///
     func stringWithAnchoredLinks() -> String {
@@ -21,8 +29,16 @@ extension String {
             }
 
             let rangeWithOffset = NSMakeRange(range.location + offset, range.length)
-            let rawURL          = output.substring(with: rangeWithOffset)
-            let anchoredURL     = "<a href=\"\(rawURL)\">\(rawURL)</a>"
+            let rawURL = output.substring(with: rangeWithOffset)
+
+            var niceURL: String
+            if let urlComps = URLComponents(string: rawURL), let host = urlComps.host {
+                niceURL = "\(host)\(urlComps.path)"
+            } else {
+                niceURL = rawURL
+            }
+
+            let anchoredURL     = "<a href=\"\(rawURL)\">\(niceURL)</a>"
 
             output.replaceCharacters(in: rangeWithOffset, with: anchoredURL)
             offset += anchoredURL.count - rawURL.count
@@ -31,49 +47,37 @@ extension String {
         return output as String
     }
 
-    /// Returns a tuple containing the First Line + Body of the text
-    ///
-    func splitContentTextIntoSubjectAndBody() -> (subject: String, body: String) {
-        let indexOfFirstNewline = rangeOfCharacter(from: CharacterSet.newlines)
-
-#if swift(>=4.0)
-        var firstLineOfText = self
-        var restOfText = String()
-
-        if let indexOfFirstNewline = indexOfFirstNewline {
-            firstLineOfText = String(prefix(upTo: indexOfFirstNewline.lowerBound))
-            restOfText = String(self[indexOfFirstNewline.upperBound...])
-        }
-#else
-        let firstLineOfText = indexOfFirstNewline != nil ? substring(to: indexOfFirstNewline!.lowerBound) : self
-        let restOfText = indexOfFirstNewline != nil ? substring(from: indexOfFirstNewline!.upperBound) : ""
-#endif
-
-        return (firstLineOfText, restOfText)
-    }
-
     /// Creates a WP friendly <img> string based on the provided parameters
     ///
     /// NOTE: Height and width must both be provided in order for them to be inserted into the returned string.
     ///
     /// - Parameters:
-    ///   - remoteURL: Complete URL string to the remote image
+    ///   - mediaURL: Complete URL string to the remote image
+    ///   - uploadID: Upload ID for the image
     ///   - remoteID: Remote image ID
     ///   - height: Height of image. Can be nil unless width is provided
     ///   - width: Width of image. Can be nil unless height is provided
-    /// - Returns: <img> element appended to the current string otherwise the current string if the remoteURL param is nil or empty
+    /// - Returns: <img> element appended to the current string otherwise the current string if the mediaURL param is nil or empty
     ///
-    func stringByAppendingMediaURL(remoteURL: String?, remoteID: Int64?, height: Int32?, width: Int32?) -> String {
-        guard let remoteURL = remoteURL, !remoteURL.isEmpty else {
+    func stringByAppendingMediaURL(mediaURL: String?,
+                                   uploadID: String? = nil,
+                                   remoteID: Int64? = nil,
+                                   height: Int32? = nil,
+                                   width: Int32? = nil) -> String {
+        guard let mediaURL = mediaURL, !mediaURL.isEmpty else {
             return self
         }
 
-        var returnURLString = "<img class='alignnone size-full"
+        var returnURLString = "<img"
 
         if let remoteID = remoteID, remoteID > 0 {
             returnURLString.append(contentsOf: " wp-image-\(remoteID)")
         }
-        returnURLString.append(contentsOf: "' src='\(remoteURL)'")
+        returnURLString.append(contentsOf: " src='\(mediaURL)' class='size-full'")
+
+        if let uploadID = uploadID {
+            returnURLString.append(contentsOf: " data-wp_upload_id='\(uploadID)'")
+        }
 
         if let height = height, height > 0,
             let width = width, width > 0 {
@@ -81,6 +85,6 @@ extension String {
         }
         returnURLString.append(contentsOf: " />")
 
-        return self + returnURLString + "<br/><br/>"
+        return self + returnURLString
     }
 }

@@ -77,6 +77,18 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     ///
     fileprivate var selectedNotification: Notification? = nil
 
+    /// JetpackLoginVC being presented.
+    ///
+    internal var jetpackLoginViewController: JetpackLoginViewController? = nil
+
+    /// Activity Indicator to be shown when refreshing a Jetpack site status.
+    ///
+    let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
+
     // MARK: - View Lifecycle
 
     deinit {
@@ -107,6 +119,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         setupFiltersSegmentedControl()
 
         reloadTableViewPreservingSelection()
+
+        observeNetworkStatus()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -146,6 +160,10 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         showRatingViewIfApplicable()
         syncNewNotifications()
         markSelectedNotificationAsRead()
+
+        if !AccountHelper.isDotcomAvailable() {
+            promptForJetpackCredentials()
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -220,14 +238,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     }
 
     // MARK: - UITableView Methods
-
-    override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return NoteTableHeaderView.estimatedHeight
-    }
-
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let sectionInfo = tableViewHandler.resultsController.sections?[section] else {
@@ -343,6 +353,8 @@ private extension NotificationsViewController {
         // UITableView
         tableView.accessibilityIdentifier  = "Notifications Table"
         tableView.cellLayoutMarginsFollowReadableWidth = false
+        tableView.estimatedSectionHeaderHeight = UITableViewAutomaticDimension
+        WPStyleGuide.configureAutomaticHeightRows(for: tableView)
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
@@ -414,6 +426,9 @@ private extension NotificationsViewController {
         let nc = NotificationCenter.default
         nc.addObserver(self, selector: #selector(applicationDidBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         nc.addObserver(self, selector: #selector(notificationsWereUpdated), name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
+        if #available(iOS 11.0, *) {
+            nc.addObserver(self, selector: #selector(dynamicTypeDidChange), name: .UIContentSizeCategoryDidChange, object: nil)
+        }
     }
 
     func startListeningToAccountNotifications() {
@@ -467,6 +482,12 @@ private extension NotificationsViewController {
             && isViewLoaded == true
             && view.window != nil {
             reloadResultsControllerIfNeeded()
+        }
+    }
+
+    @objc func dynamicTypeDidChange() {
+        tableViewHandler.resultsController.fetchedObjects?.forEach {
+            ($0 as? Notification)?.resetCachedAttributes()
         }
     }
 }
@@ -732,30 +753,44 @@ extension NotificationsViewController {
 
         let start = Date()
 
-        mediator.sync { (error, _) in
+        mediator.sync { [weak self] (error, _) in
 
             let delta = max(Syncing.minimumPullToRefreshDelay + start.timeIntervalSinceNow, 0)
             let delay = DispatchTime.now() + Double(Int64(delta * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
 
             DispatchQueue.main.asyncAfter(deadline: delay) {
-                self.refreshControl?.endRefreshing()
-                self.clearUnreadNotifications()
+                self?.refreshControl?.endRefreshing()
+                self?.clearUnreadNotifications()
             }
 
-            if let error = error {
-                WPError.showNetworkingAlertWithError(error, title: NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails."))
+            if let _ = error {
+                self?.handleConnectionError()
             }
         }
     }
 }
 
+extension NotificationsViewController: NetworkAwareUI {
+    func contentIsEmpty() -> Bool {
+        return tableViewHandler.resultsController.isEmpty()
+    }
+}
 
+extension NotificationsViewController: NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        reloadResultsControllerIfNeeded()
+    }
+}
 
 // MARK: - UISegmentedControl Methods
 //
 extension NotificationsViewController {
     @objc func segmentedControlDidChange(_ sender: UISegmentedControl) {
         selectedNotification = nil
+
+        let filterTitle = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex)?.title ?? ""
+        let properties = [Stats.selectedFilter: filterTitle]
+        WPAnalytics.track(.notificationsTappedSegmentedControl, withProperties: properties)
 
         updateUnreadNotificationsForSegmentedControlChange()
 
@@ -1015,7 +1050,7 @@ private extension NotificationsViewController {
         // Filters should only be hidden whenever there are no Notifications in the bucket (contrary to the FRC's
         // results, which are filtered by the active predicate!).
         //
-        return mainContext.countObjects(ofType: Notification.self) > 0
+        return mainContext.countObjects(ofType: Notification.self) > 0 && !shouldDisplayJetpackPrompt
     }
 }
 
@@ -1026,6 +1061,8 @@ private extension NotificationsViewController {
 private extension NotificationsViewController {
     func showNoResultsViewIfNeeded() {
         updateSplitViewAppearanceForNoResultsView()
+        // Hide the filter header if we're showing the Jetpack prompt
+        hideFiltersSegmentedControlIfApplicable()
 
         // Remove + Show Filters, if needed
         guard shouldDisplayNoResultsView == true else {
@@ -1043,19 +1080,25 @@ private extension NotificationsViewController {
             noResultsView.layoutIfNeeded()
         }
 
+        guard connectionAvailable() else {
+            showNoConnectionView()
+            return
+        }
+
         // Refresh its properties: The user may have signed into WordPress.com
         noResultsView.titleText     = noResultsTitleText
         noResultsView.messageText   = noResultsMessageText
-        noResultsView.accessoryView = noResultsAccessoryView
         noResultsView.buttonTitle   = noResultsButtonText
+    }
 
-        // Hide the filter header if we're showing the Jetpack prompt
-        hideFiltersSegmentedControlIfApplicable()
+    private func showNoConnectionView() {
+        noResultsView.titleText     = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+        noResultsView.messageText   = noConnectionMessage()
     }
 
     func updateSplitViewAppearanceForNoResultsView() {
         if let splitViewController = splitViewController as? WPSplitViewController {
-            let columnWidth: WPSplitViewControllerPrimaryColumnWidth = shouldDisplayFullscreenNoResultsView ? .full : .default
+            let columnWidth: WPSplitViewControllerPrimaryColumnWidth = (shouldDisplayFullscreenNoResultsView || shouldDisplayJetpackPrompt) ? .full : .default
             if splitViewController.wpPrimaryColumnWidth != columnWidth {
                 splitViewController.wpPrimaryColumnWidth = columnWidth
             }
@@ -1067,50 +1110,34 @@ private extension NotificationsViewController {
     }
 
     var noResultsTitleText: String {
-        guard shouldDisplayJetpackMessage == false else {
-            return NSLocalizedString("Connect to Jetpack",
-                                     comment: "Notifications title displayed when a self-hosted user is not connected to Jetpack")
-        }
         return Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex)?.noResultsTitle ?? ""
     }
 
     var noResultsMessageText: String {
-        guard shouldDisplayJetpackMessage == false else {
-            return NSLocalizedString("Jetpack supercharges your self-hosted WordPress site.",
-                                     comment: "Notifications message displayed when a self-hosted user is not connected to Jetpack")
-        }
         return Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex)?.noResultsMessage ?? ""
     }
 
-    var noResultsAccessoryView: UIView? {
-        return shouldDisplayJetpackMessage ? UIImageView(image: UIImage(named: "icon-jetpack-gray")) : nil
-    }
-
     var noResultsButtonText: String {
-        guard shouldDisplayJetpackMessage == false else {
-            return NSLocalizedString("Learn more", comment: "")
-        }
         return Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex)?.noResultsButtonTitle ?? ""
     }
 
-    var shouldDisplayJetpackMessage: Bool {
+    var shouldDisplayJetpackPrompt: Bool {
         return AccountHelper.isDotcomAvailable() == false
     }
 
     var shouldDisplayNoResultsView: Bool {
-        return tableViewHandler.resultsController.fetchedObjects?.count == 0
+        return tableViewHandler.resultsController.fetchedObjects?.count == 0 && !shouldDisplayJetpackPrompt
     }
 
     var shouldDisplayFullscreenNoResultsView: Bool {
         let currentFilter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none
-
-        return shouldDisplayNoResultsView && (shouldDisplayJetpackMessage || currentFilter == .none)
+        return shouldDisplayNoResultsView && currentFilter == .none
     }
 
     var shouldDimDetailViewController: Bool {
         let currentFilter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none
 
-        return shouldDisplayNoResultsView && !shouldDisplayJetpackMessage && currentFilter != .none
+        return shouldDisplayNoResultsView && currentFilter != .none
     }
 }
 
@@ -1119,19 +1146,6 @@ private extension NotificationsViewController {
 //
 extension NotificationsViewController: WPNoResultsViewDelegate {
     func didTap(_ noResultsView: WPNoResultsView) {
-        guard shouldDisplayJetpackMessage == false else {
-            guard let targetURL = URL(string: WPJetpackInformationURL) else {
-                fatalError()
-            }
-
-            let webViewController = WebViewControllerFactory.controller(url: targetURL)
-            let navController = UINavigationController(rootViewController: webViewController)
-            present(navController, animated: true, completion: nil)
-
-            let properties = [Stats.sourceKey: Stats.sourceValue]
-            WPAnalytics.track(.selectedLearnMoreInConnectToJetpackScreen, withProperties: properties)
-            return
-        }
         if let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) {
             let properties = [Stats.sourceKey: Stats.sourceValue]
             switch filter {
@@ -1191,6 +1205,11 @@ private extension NotificationsViewController {
 //
 private extension NotificationsViewController {
     func syncNewNotifications() {
+        guard connectionAvailable() else {
+            handleConnectionError()
+            return
+        }
+
         let mediator = NotificationSyncMediator()
         mediator?.sync()
     }
@@ -1508,6 +1527,7 @@ private extension NotificationsViewController {
         static let noteTypeUnknown = "unknown"
         static let sourceKey = "source"
         static let sourceValue = "notifications"
+        static let selectedFilter = "selected_filter"
     }
 
     enum Syncing {

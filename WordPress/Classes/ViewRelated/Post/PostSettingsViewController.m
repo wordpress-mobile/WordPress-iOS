@@ -29,6 +29,7 @@
 @import Gridicons;
 @import WordPressShared;
 @import WordPressKit;
+@import WordPressUI;
 
 typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowCategories = 0,
@@ -119,7 +120,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"Options", nil);
+    self.title = NSLocalizedString(@"Post Settings", @"The title of the Post Settings screen.");
 
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
@@ -1288,7 +1289,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         width = width - (PostFeaturedImageCellMargin * 2); // left and right cell margins
         CGFloat height = ceilf(width * 0.66);
         CGSize imageSize = CGSizeMake(width, height);
-        [mediaService thumbnailImageForMedia:featuredMedia preferredSize:imageSize completion:^(UIImage *image, NSError *error) {
+        [MediaThumbnailCoordinator.shared thumbnailFor:media with:imageSize onCompletion:^(UIImage * image, NSError * error) {
             self.featuredImage = image;
             [self.tableView reloadData];
         }];

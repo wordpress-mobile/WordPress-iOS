@@ -26,6 +26,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 @property (nonatomic, strong) UINavigationController *statsNavVC;
 @property (nonatomic, strong) WPStatsViewController *statsVC;
 @property (nonatomic, weak) WPNoResultsView *noResultsView;
+@property (nonatomic, strong) UIActivityIndicatorView *loadingIndicator;
 
 @end
 
@@ -55,7 +56,14 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     self.statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStats" bundle:statsBundle] instantiateInitialViewController];
     self.statsVC = self.statsNavVC.viewControllers.firstObject;
     self.statsVC.statsDelegate = self;
-    
+    self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.loadingIndicator.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.loadingIndicator];
+    [NSLayoutConstraint activateConstraints:@[
+                                              [self.loadingIndicator.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+                                              [self.loadingIndicator.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]
+                                              ]];
+
     self.navigationItem.title = NSLocalizedString(@"Stats", @"Stats window title");
 
     // Being shown in a modal window
@@ -115,7 +123,23 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         return;
     }
 
-    [self promptForJetpackCredentials];
+    [self refreshStatus];
+}
+
+- (void)refreshStatus
+{
+    [self.loadingIndicator startAnimating];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    __weak __typeof(self) weakSelf = self;
+    [blogService syncBlog:self.blog success:^{
+        [self.loadingIndicator stopAnimating];
+        [weakSelf promptForJetpackCredentials];
+    } failure:^(NSError * _Nonnull error) {
+        DDLogError(@"Error refreshing blog status when loading stats: %@", error);
+        [self.loadingIndicator stopAnimating];
+        [weakSelf promptForJetpackCredentials];
+    }];
 }
 
 
@@ -138,8 +162,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     JetpackLoginViewController *controller = [[JetpackLoginViewController alloc] initWithBlog:self.blog];
     __weak JetpackLoginViewController *safeController = controller;
     [controller setCompletionBlock:^(){
-            [WPAppAnalytics track:WPAnalyticsStatSignedInToJetpack withBlog:self.blog];
-            [WPAppAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen withBlog:self.blog];
+            [WPAppAnalytics track:WPAnalyticsStatSignedInToJetpack withProperties: @{@"source": @"stats"} withBlog:self.blog];
             [safeController.view removeFromSuperview];
             [safeController removeFromParentViewController];
             self.showingJetpackLogin = NO;
@@ -155,6 +178,13 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)statsViewController:(WPStatsViewController *)controller openURL:(NSURL *)url
 {
+    NSParameterAssert(url != nil);
+    NSParameterAssert([url isKindOfClass:[NSURL class]]);
+    // Make sure the passed url is a real NSURL, or Swift will crash on it
+    if (![url isKindOfClass:[NSURL class]]) {
+        DDLogError(@"Stats tried to open an invalid URL: %@", url);
+        return;
+    }
     UIViewController *webViewController = [WebViewControllerFactory controllerAuthenticatedWithDefaultAccountWithUrl:url];
     [self.navigationController pushViewController:webViewController animated:YES];
 }

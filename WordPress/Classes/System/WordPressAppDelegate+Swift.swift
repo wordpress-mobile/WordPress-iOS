@@ -54,7 +54,10 @@ extension WordPressAppDelegate {
             let wwan = reachability.isReachableViaWWAN() ? "Y" : "N"
 
             DDLogInfo("Reachability - Internet - WiFi: \(wifi) WWAN: \(wwan)")
-            self?.connectionAvailable = reachability.isReachable()
+            let newValue = reachability.isReachable()
+            self?.connectionAvailable = newValue
+
+            NotificationCenter.default.post(name: .reachabilityChanged, object: self, userInfo: [Foundation.Notification.reachabilityKey: newValue])
         }
 
         internetReachability.reachableBlock = reachabilityBlock
@@ -63,6 +66,16 @@ extension WordPressAppDelegate {
         internetReachability.startNotifier()
 
         connectionAvailable = internetReachability.isReachable()
+    }
+
+    @objc func configureWordPressAuthenticator() {
+        authManager = WordPressAuthenticationManager()
+        authTracker = WordPressAuthenticationTracker()
+
+        authTracker.startListeningToAuthenticationEvents()
+        authManager.startRelayingHelpshiftNotifications()
+
+        WordPressAuthenticator.shared.delegate = authManager
     }
 }
 
@@ -92,6 +105,22 @@ extension WordPressAppDelegate {
         }
 
         return WPTabBarController.sharedInstance().currentlySelectedScreen()
+    }
+
+    @objc var isWelcomeScreenVisible: Bool {
+        get {
+            guard let presentedViewController = window.rootViewController?.presentedViewController as? UINavigationController else {
+                return false
+            }
+
+            guard let visibleViewController = presentedViewController.visibleViewController else {
+                return false
+            }
+
+            return visibleViewController is NUXAbstractViewController
+                || visibleViewController is LoginPrologueViewController
+                || visibleViewController is NUXViewControllerBase
+        }
     }
 }
 
@@ -142,9 +171,8 @@ extension WordPressAppDelegate {
 
         if let account = account,
             let username = account.username,
-            let userID = account.userID,
-            let verificationStatus = account.verificationStatus() {
-            DDLogInfo("wp.com account: \(username) (ID: \(userID)) (\(verificationStatus))")
+            let userID = account.userID {
+            DDLogInfo("wp.com account: \(username) (ID: \(userID)) (\(account.verificationStatus.rawValue))")
         }
 
         if let blogs = blogs as? [Blog], blogs.count > 0 {
@@ -170,7 +198,7 @@ extension WordPressAppDelegate {
             UserDefaults.standard.set(origExtraDebug, forKey: "orig_extra_debug")
             UserDefaults.standard.set(true, forKey: "extra_debug")
             WordPressAppDelegate.setLogLevel(.verbose)
-            UserDefaults.resetStandardUserDefaults()
+            UserDefaults.standard.synchronize()
         } else {
             guard let origExtraDebug = UserDefaults.standard.string(forKey: "orig_extra_debug") else {
                 return
@@ -181,7 +209,7 @@ extension WordPressAppDelegate {
             // Restore the original setting and remove orig_extra_debug
             UserDefaults.standard.set(origExtraDebugValue, forKey: "extra_debug")
             UserDefaults.standard.removeObject(forKey: "orig_extra_debug")
-            UserDefaults.resetStandardUserDefaults()
+            UserDefaults.standard.synchronize()
 
             if origExtraDebugValue {
                 WordPressAppDelegate.setLogLevel(.verbose)
