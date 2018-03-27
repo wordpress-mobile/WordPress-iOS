@@ -516,11 +516,17 @@ extension NotificationsViewController {
     private func showDetails(for note: Notification) {
         DDLogInfo("Pushing Notification Details for: [\(note.notificationId)]")
 
+        /// Note: markAsRead should be the *first* thing we do. This triggers a context save, and may have many side effects that
+        /// could affect the OP's that go below!!!.
+        ///
+        /// YES figuring that out took me +90 minutes of debugger time!!!
+        ///
+        markAsRead(note: note)
         trackWillPushDetails(for: note)
+
         ensureNotificationsListIsOnscreen()
         ensureNoteIsNotBeingFiltered(note)
         selectRow(for: note, animated: false, scrollPosition: .top)
-        markAsRead(note: note)
 
         // Display Details
         //
