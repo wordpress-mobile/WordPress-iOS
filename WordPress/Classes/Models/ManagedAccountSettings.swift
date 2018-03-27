@@ -89,9 +89,9 @@ class ManagedAccountSettings: NSManagedObject {
 
 extension AccountSettings {
     init(managed: ManagedAccountSettings) {
-        firstName = managed.firstName
-        lastName = managed.lastName
-        displayName = managed.displayName
+        firstName = managed.firstName.stringByDecodingXMLCharacters()
+        lastName = managed.lastName.stringByDecodingXMLCharacters()
+        displayName = managed.displayName.stringByDecodingXMLCharacters()
         aboutMe = managed.aboutMe
 
         username = managed.username
