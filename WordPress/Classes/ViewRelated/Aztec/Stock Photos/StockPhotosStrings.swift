@@ -1,5 +1,4 @@
-
-// MARK: - Extension on String containing the string literals for the Stock Photos feature
+/// Extension on String containing the literals for the Stock Photos feature
 extension String {
     static var freePhotosLibrary: String {
         return NSLocalizedString("Free Photo Library", comment: "")
