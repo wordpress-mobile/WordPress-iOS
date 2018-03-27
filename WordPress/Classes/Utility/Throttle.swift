@@ -23,7 +23,7 @@ public class Throttle {
 
     func throttle(callbackQueue: DispatchQueue = DispatchQueue.main, block: @escaping () -> ()) {
         job.cancel()
-        job = DispatchWorkItem(){ [weak self] in
+        job = DispatchWorkItem() { [weak self] in
             self?.previousRun = Date()
             callbackQueue.async {
                 block()
@@ -41,4 +41,3 @@ private extension Date {
         return Date().timeIntervalSince(referenceDate).rounded()
     }
 }
-
