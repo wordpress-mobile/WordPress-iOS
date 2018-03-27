@@ -1,11 +1,12 @@
 import MobileCoreServices
+import WPMediaPicker
 
 /// Prepares the alert controller that will be presented when tapping the "more" button in Aztec's Format Bar
 final class AztecMoreCoordinator {
     func present(origin: UIViewController & UIDocumentPickerDelegate, view: UIView) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        alertController.addAction(freePhoto())
+        alertController.addAction(freePhoto(origin: origin))
         alertController.addAction(files(origin: origin))
         alertController.addAction(cancel())
 
@@ -17,9 +18,9 @@ final class AztecMoreCoordinator {
         origin.present(alertController, animated: true, completion: nil)
     }
 
-    private func freePhoto() -> UIAlertAction {
+    private func freePhoto(origin: UIViewController) -> UIAlertAction {
         return UIAlertAction(title: .freePhotosLibrary, style: .default, handler: { [weak self] action in
-            self?.showStockPhotos()
+            self?.showStockPhotos(origin: origin)
         })
     }
 
@@ -33,9 +34,23 @@ final class AztecMoreCoordinator {
         return UIAlertAction(title: .cancelMoreOptions, style: .cancel, handler: nil)
     }
 
-    private func showStockPhotos() {
-        //This would be the starting point of the next PR
-        print("Nothing to see here yet")
+    private func showStockPhotos(origin: UIViewController) {
+//        //This would be the starting point of the next PR
+//        print("Nothing to see here yet")
+
+        let stockDataSource = StockPhotosDataSource()
+
+        let options = WPMediaPickerOptions()
+        options.showMostRecentFirst = true
+        options.filter = [.all]
+        options.allowCaptureOfMedia = false
+        options.showSearchBar = true
+
+        let picker = WPNavigationMediaPickerViewController()
+        picker.dataSource = stockDataSource
+        picker.mediaPicker.options = options
+        picker.modalPresentationStyle = .currentContext
+        origin.present(picker, animated: true)
     }
 
     private func showDocumentPicker(origin: UIViewController & UIDocumentPickerDelegate) {
