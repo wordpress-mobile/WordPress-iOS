@@ -2,6 +2,7 @@ import WPMediaPicker
 
 final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     func numberOfGroups() -> Int {
+        print("==== number of groups ====")
         return 1
     }
 
@@ -10,7 +11,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     }
 
     func selectedGroup() -> WPMediaGroup? {
-        return nil
+        return StockPhotosMediaGroup()
     }
 
     func setSelectedGroup(_ group: WPMediaGroup) {
@@ -18,6 +19,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     }
 
     func numberOfAssets() -> Int {
+        print("==== number of assets ===")
         return 0
     }
 
@@ -26,7 +28,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     }
 
     func media(withIdentifier identifier: String) -> WPMediaAsset? {
-        return nil
+        return StockPhotosMedia()
     }
 
     func registerChangeObserverBlock(_ callback: @escaping WPMediaChangesBlock) -> NSObjectProtocol {

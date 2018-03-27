@@ -1,9 +1,11 @@
 import WPMediaPicker
 
 final class StockPhotosPicker: NSObject {
-    private lazy var dataSource: StockPhotosDataSource = {
-        return StockPhotosDataSource()
-    }()
+//    private lazy var dataSource: StockPhotosDataSource = {
+//        return StockPhotosDataSource()
+//    }()
+
+    private let dataSource = StockPhotosDataSource()
 
     func presentPicker(origin: UIViewController) {
 //        let options = WPMediaPickerOptions()
@@ -13,7 +15,7 @@ final class StockPhotosPicker: NSObject {
 //        options.showSearchBar = true
 
         let picker = WPNavigationMediaPickerViewController()
-//        picker.dataSource = dataSource
+        picker.dataSource = dataSource
 //        picker.mediaPicker.options = options
 //        picker.view.backgroundColor = .red
         picker.delegate = self
