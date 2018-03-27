@@ -889,6 +889,7 @@
 		D8A3A5B1206A49A100992576 /* StockPhotosMediaGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5B0206A49A100992576 /* StockPhotosMediaGroup.swift */; };
 		D8A3A5B3206A49BF00992576 /* StockPhotosMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5B2206A49BF00992576 /* StockPhotosMedia.swift */; };
 		D8A3A5B5206A4C7800992576 /* StockPhotosPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5B4206A4C7800992576 /* StockPhotosPicker.swift */; };
+		D8A3A5B7206A563900992576 /* StockPhotosPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5B6206A563900992576 /* StockPhotosPlaceholder.swift */; };
 		D8B6BEB7203E11F2007C8A19 /* Bundle+LoadFromNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B6BEB6203E11F2007C8A19 /* Bundle+LoadFromNib.swift */; };
 		D8B9B58F204F4EA1003C6042 /* NetworkAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B9B58E204F4EA1003C6042 /* NetworkAware.swift */; };
 		D8B9B591204F658A003C6042 /* CommentsViewController+NetworkAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B9B590204F658A003C6042 /* CommentsViewController+NetworkAware.swift */; };
@@ -2432,6 +2433,7 @@
 		D8A3A5B0206A49A100992576 /* StockPhotosMediaGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosMediaGroup.swift; sourceTree = "<group>"; };
 		D8A3A5B2206A49BF00992576 /* StockPhotosMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosMedia.swift; sourceTree = "<group>"; };
 		D8A3A5B4206A4C7800992576 /* StockPhotosPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosPicker.swift; sourceTree = "<group>"; };
+		D8A3A5B6206A563900992576 /* StockPhotosPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosPlaceholder.swift; sourceTree = "<group>"; };
 		D8B6BEB6203E11F2007C8A19 /* Bundle+LoadFromNib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+LoadFromNib.swift"; sourceTree = "<group>"; };
 		D8B9B58E204F4EA1003C6042 /* NetworkAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkAware.swift; sourceTree = "<group>"; };
 		D8B9B590204F658A003C6042 /* CommentsViewController+NetworkAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentsViewController+NetworkAware.swift"; sourceTree = "<group>"; };
@@ -5630,6 +5632,7 @@
 				D8A3A5B0206A49A100992576 /* StockPhotosMediaGroup.swift */,
 				D8A3A5B2206A49BF00992576 /* StockPhotosMedia.swift */,
 				D8A3A5B4206A4C7800992576 /* StockPhotosPicker.swift */,
+				D8A3A5B6206A563900992576 /* StockPhotosPlaceholder.swift */,
 			);
 			path = "Stock Photos";
 			sourceTree = "<group>";
@@ -7553,6 +7556,7 @@
 				43EACB1E1FE08B9000DD9C2F /* SiteCreationDomainSearchTableViewCell.swift in Sources */,
 				5DF8D26119E82B1000A2CD95 /* ReaderCommentsViewController.m in Sources */,
 				59A3CADD1CD2FF0C009BFA1B /* BasePageListCell.m in Sources */,
+				D8A3A5B7206A563900992576 /* StockPhotosPlaceholder.swift in Sources */,
 				E114D79A153D85A800984182 /* WPError.m in Sources */,
 				43CE48B31F103C1F00768B87 /* FancyAlertViewController+LoginError.swift in Sources */,
 				5926E1E31AC4468300964783 /* WPCrashlytics.m in Sources */,
