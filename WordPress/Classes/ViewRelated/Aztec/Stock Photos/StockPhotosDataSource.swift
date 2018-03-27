@@ -18,7 +18,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     }
 
     func numberOfAssets() -> Int {
-        return 10
+        return 0
     }
 
     func media(at index: Int) -> WPMediaAsset {
