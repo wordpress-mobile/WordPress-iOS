@@ -1,2 +1,0 @@
-En ny utökningsmodul för delning lägger till stöd för att spara utkast och hantera etiketter.
-Hantering av tillägg har blivit ett snäpp bättre: nu kan du söka och installera tillägg.
