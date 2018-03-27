@@ -57,7 +57,7 @@ enum PluginQuery {
     }
 }
 
-enum PluginDirectoryEntryState {
+enum PluginDirectoryEntryState: Codable {
     case unknown
     case missing(Date)
     case present(PluginDirectoryEntry)
@@ -107,6 +107,50 @@ enum PluginDirectoryEntryState {
             return left
         }
     }
+
+    private enum CodingKeys: String, CodingKey {
+        case unknown
+        case missing
+        case present
+        case partial
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        switch self {
+        case .unknown:
+            try container.encode(true, forKey: .unknown)
+        case .missing(let value):
+            try container.encode(value, forKey: .missing)
+        case .present(let value):
+            try container.encode(value, forKey: .present)
+        case .partial(let value):
+            try container.encode(value, forKey: .partial)
+        }
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        if let date = try container.decodeIfPresent(Date.self, forKey: .missing) {
+            self = .missing(date)
+            return
+        }
+
+        if let entry = try container.decodeIfPresent(PluginDirectoryEntry.self, forKey: .present) {
+            self = .present(entry)
+            return
+        }
+
+        if let entry = try container.decodeIfPresent(PluginDirectoryEntry.self, forKey: .partial) {
+            self = .partial(entry)
+            return
+        }
+
+        self = .unknown
+    }
+
 }
 
 struct PluginStoreState {
@@ -353,7 +397,7 @@ extension PluginStore {
     func shouldFetchDirectory(feed: PluginDirectoryFeedType) -> Bool {
         let isFetching = state.fetchingDirectoryFeed[feed.slug, default: false]
 
-        if case .search = feed {
+        if case .search(let term) = feed, term.count > 0 {
             return !isFetching
         }
 
