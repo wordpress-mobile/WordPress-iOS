@@ -1,6 +1,6 @@
 import UIKit
 
-class SiteCreationSiteDetailsViewController: NUXAbstractViewController, SigninKeyboardResponder {
+class SiteCreationSiteDetailsViewController: NUXViewController, NUXKeyboardResponder {
 
     // MARK: - SigninKeyboardResponder Properties
 
@@ -17,9 +17,8 @@ class SiteCreationSiteDetailsViewController: NUXAbstractViewController, SigninKe
     @IBOutlet weak var siteTitleField: LoginTextField!
     @IBOutlet weak var taglineField: LoginTextField!
     @IBOutlet weak var tagDescriptionLabel: UILabel!
-    @IBOutlet weak var nextButton: LoginButton!
-
-    override var sourceTag: SupportSourceTag {
+    @IBOutlet weak var nextButton: NUXButton!
+    override var sourceTag: WordPressSupportSourceTag {
         get {
             return .wpComCreateSiteDetails
         }
@@ -51,9 +50,14 @@ class SiteCreationSiteDetailsViewController: NUXAbstractViewController, SigninKe
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destination = segue.destination as? SiteCreationDomainsViewController {
-            destination.siteName = siteTitleField.text
+
+        guard let siteTitle = siteTitleField.text else {
+            return
         }
+
+        SiteCreationFields.sharedInstance.title = siteTitle
+        SiteCreationFields.sharedInstance.tagline = taglineField.text
+
         let backButton = UIBarButtonItem()
         backButton.title = NSLocalizedString("Back", comment: "Back button title.")
         navigationItem.backBarButtonItem = backButton
@@ -71,13 +75,13 @@ class SiteCreationSiteDetailsViewController: NUXAbstractViewController, SigninKe
     }
 
     private func configureView() {
-        _ = addHelpButtonToNavController()
+        setupHelpButtonIfNeeded()
 
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
         WPStyleGuide.configureColors(for: view, andTableView: nil)
         nextButton.isEnabled = false
-        siteTitleField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
-        taglineField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        siteTitleField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        taglineField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
     }
 
     private func setLabelText() {

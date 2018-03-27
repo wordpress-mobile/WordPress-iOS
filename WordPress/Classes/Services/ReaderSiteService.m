@@ -259,7 +259,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
 - (NSError *)errorForAlreadyFollowingSiteOrFeed
 {
-    NSString *description = NSLocalizedString(@"You are already following that site.", @"Error message informing the user that they are already following a site in their reader.");
+    NSString *description = NSLocalizedString(@"You are already following this site.", @"Error message informing the user that they are already following a site in their reader.");
     NSDictionary *userInfo = @{NSLocalizedDescriptionKey:description};
     NSError *error = [[NSError alloc] initWithDomain:ReaderSiteServiceErrorDomain code:ReaderSiteServiceErrorAlreadyFollowingSite userInfo:userInfo];
     return error;

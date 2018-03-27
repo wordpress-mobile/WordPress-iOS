@@ -842,7 +842,7 @@ public protocol ThemePresenter: class {
 
     @objc open func presentCustomizeForTheme(_ theme: Theme?) {
         WPAppAnalytics.track(.themesCustomizeAccessed, with: self.blog)
-        presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: false)
+        presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: false, modalStyle: .fullScreen)
     }
 
     @objc open func presentPreviewForTheme(_ theme: Theme?) {
@@ -870,7 +870,7 @@ public protocol ThemePresenter: class {
         presentUrlForTheme(theme, url: theme?.viewUrl())
     }
 
-    @objc open func presentUrlForTheme(_ theme: Theme?, url: String?, activeButton: Bool = true) {
+    @objc open func presentUrlForTheme(_ theme: Theme?, url: String?, activeButton: Bool = true, modalStyle: UIModalPresentationStyle = .pageSheet) {
         guard let theme = theme, let url = url.flatMap(URL.init(string:)) else {
             return
         }
@@ -889,13 +889,15 @@ public protocol ThemePresenter: class {
             buttons = [activate]
         }
         webViewController.navigationItem.rightBarButtonItems = buttons
+        let navigation = UINavigationController(rootViewController: webViewController)
+        navigation.modalPresentationStyle = modalStyle
 
         if searchController != nil && searchController.isActive {
             searchController.dismiss(animated: true, completion: {
-                self.navigationController?.pushViewController(webViewController, animated: true)
+                self.present(navigation, animated: true, completion: nil)
             })
         } else {
-            navigationController?.pushViewController(webViewController, animated: true)
+            present(navigation, animated: true, completion: nil)
         }
     }
 

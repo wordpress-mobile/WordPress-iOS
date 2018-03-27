@@ -2,6 +2,9 @@
 #import "WordPressAppDelegate.h"
 #import "WordPress-Swift.h"
 
+@import WordPressUI;
+
+
 @interface ReachabilityAlert : NSObject
 @property (nonatomic, copy) void (^retryBlock)(void);
 
@@ -30,7 +33,7 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
     }
 
     NSString *title = NSLocalizedString(@"No Connection", @"");
-    NSString *message = NSLocalizedString(@"The Internet connection appears to be offline.", @"");
+    NSString *message = [ReachabilityUtils noConnectionMessage];
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
                                                                              message:message
@@ -74,6 +77,11 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
 {
     ReachabilityAlert *alert = [[ReachabilityAlert alloc] initWithRetryBlock:retryBlock];
     [alert show];
+}
+
++ (NSString *)noConnectionMessage
+{
+    return NSLocalizedString(@"The Internet connection appears to be offline.", @"");
 }
 
 @end

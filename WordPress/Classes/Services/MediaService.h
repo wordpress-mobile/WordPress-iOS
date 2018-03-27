@@ -8,6 +8,13 @@
 @class Blog;
 @protocol ExportableAsset;
 
+extern NSErrorDomain _Nonnull const MediaServiceErrorDomain;
+typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
+    MediaServiceErrorFileDoesNotExist = 0,
+    MediaServiceErrorFileLargerThanDiskQuotaAvailable = 1,
+    MediaServiceErrorFileLargerThanMaxFileSize = 2
+};
+
 @interface MediaService : LocalCoreDataService
 
 /**
@@ -27,7 +34,7 @@
 - (nonnull Media *)createMediaWith:(nonnull id<ExportableAsset>)exportable
                           objectID:(nonnull NSManagedObjectID *)objectID
                           progress:(NSProgress * __nullable __autoreleasing * __nullable)progress
-                 thumbnailCallback:(nullable void (^)(NSURL * __nonnull thumbnailURL))thumbnailCallback
+                 thumbnailCallback:(nullable void (^)(Media * __nonnull media, NSURL * __nonnull thumbnailURL))thumbnailCallback
                         completion:(nullable void (^)(Media * __nullable media, NSError * __nullable error))completion;
 
 

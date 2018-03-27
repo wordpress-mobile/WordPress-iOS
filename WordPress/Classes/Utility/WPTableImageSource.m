@@ -2,8 +2,11 @@
 #import "AccountService.h"
 #import "ContextManager.h"
 #import "WPAccount.h"
-#import "UIImage+Resize.h"
+
+@import WordPressUI;
 @import WordPressShared;
+
+
 
 static const NSInteger WPTableImageSourceMaxPhotonQuality = 100;
 static const NSInteger WPTableImageSourceMinPhotonQuality = 1;

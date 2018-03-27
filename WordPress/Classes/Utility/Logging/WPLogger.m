@@ -2,6 +2,7 @@
 
 @import CocoaLumberjack;
 #import "WPCrashlyticsLogger.h"
+#import "WordPressAppDelegate.h"
 
 @interface WPLogger ()
 @property (nonatomic, strong, readwrite) DDFileLogger *fileLogger;
@@ -46,11 +47,8 @@
 #endif
     
     [DDLog addLogger:self.fileLogger];
-    
-    BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
-    if (extraDebug) {
-        ddLogLevel = DDLogLevelVerbose;
-    }
+
+    [WPLogger configureLoggerLevelWithExtraDebug];
 }
 
 #pragma mark - Getters
@@ -97,6 +95,17 @@
     }
     
     return description;
+}
+
+#pragma mark - Public static methods
+
++ (void)configureLoggerLevelWithExtraDebug {
+    BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
+    if (extraDebug) {
+        [WordPressAppDelegate setLogLevel:DDLogLevelVerbose];
+    } else {
+        [WordPressAppDelegate setLogLevel:DDLogLevelInfo];
+    }
 }
 
 @end

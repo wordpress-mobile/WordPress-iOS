@@ -10,6 +10,7 @@
 #import "BlogService.h"
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
+#import <WordPressUI/WordPressUI.h>
 
 
 

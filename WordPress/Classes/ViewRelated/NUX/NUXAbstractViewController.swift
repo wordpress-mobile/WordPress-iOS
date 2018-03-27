@@ -1,24 +1,58 @@
 import UIKit
 import WordPressShared
+import Gridicons
+
+protocol LoginWithLogoAndHelpViewController {
+    func addWordPressLogoToNavController()
+    func handleHelpButtonTapped(_ sender: AnyObject)
+    func displaySupportViewController(from source: WordPressSupportSourceTag)
+    func refreshBadgeCount()
+}
+
+extension LoginWithLogoAndHelpViewController where Self: UIViewController {
+    func addWordPressLogoToNavController() {
+        let image = Gridicon.iconOfType(.mySites)
+        let imageView = UIImageView(image: image.imageWithTintColor(UIColor.white))
+        navigationItem.titleView = imageView
+    }
+
+    /// Displays the support vc.
+    ///
+    func displaySupportViewController(from source: WordPressSupportSourceTag) {
+        guard let navigationController = navigationController else {
+            fatalError()
+        }
+
+        WordPressAuthenticator.shared.delegate?.presentSupport(from: navigationController, sourceTag: source, options: [:])
+    }
+}
+
 
 /// A base class for the various NUX related related view controllers.
 /// The base class sets up and configures common functionality, such as the help
 /// button and badge.
 /// It is assumed that NUX controllers will always be presented modally.
 ///
-
-class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithLogoAndHelpViewController {
-    @objc var helpBadge: WPNUXHelpBadgeLabel!
+class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLogoAndHelpViewController {
+    @objc var helpBadge: NUXHelpBadgeLabel!
     @objc var helpButton: UIButton!
     @objc var loginFields = LoginFields()
     @objc var restrictToWPCom = false
 
     @objc let helpButtonMarginSpacerWidth = CGFloat(-8)
-    @objc let helpBadgeSize = CGSize(width: 12, height: 10)
+    @objc let helpBadgeSize = CGSize(width: 12, height: 12)
     @objc let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
 
     @objc var dismissBlock: ((_ cancelled: Bool) -> Void)?
 
+    /// Indicates if the Help Button should be displayed, or not.
+    ///
+    var shouldDisplayHelpButton: Bool {
+        return WordPressAuthenticator.shared.delegate?.supportActionEnabled ?? false
+    }
+
+    /// SegueIdentifier
+    ///
     enum SegueIdentifier: String {
         case showURLUsernamePassword
         case showSelfHostedLogin
@@ -27,13 +61,13 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
         case showMagicLink
         case showLinkMailView
         case show2FA
-        case showEpilogue
         case showDomains
+        case showCreateSite
     }
 
     /// The Helpshift tag to track the origin of user conversations
     ///
-    @objc var sourceTag: SupportSourceTag {
+    var sourceTag: WordPressSupportSourceTag {
         get {
             return .generalLogin
         }
@@ -51,14 +85,14 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
 
         setupBackgroundTapGestureRecognizer()
         setupCancelButtonIfNeeded()
-        setupHelpButtonAndBadge()
+        setupHelpButtonAndBadgeIfNeeded()
     }
 
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        HelpshiftUtils.refreshUnreadNotificationCount()
+        WordPressAuthenticator.shared.delegate?.refreshSupportBadgeCount()
     }
 
 
@@ -94,12 +128,23 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
         navigationItem.leftBarButtonItem = cancelButton
     }
 
+    /// Attaches the Help Button, when the WordPressAuthenticationDelegate says we should!
+    ///
+    func setupHelpButtonAndBadgeIfNeeded() {
+        guard shouldDisplayHelpButton else {
+            return
+        }
 
-    /// Sets up the help button and the helpshift conversation badge.
+        setupHelpButtonAndBadge()
+        refreshBadgeCount()
+    }
+
+    /// Sets up the help button and the Help conversation badge.
     ///
     /// - Note: this is only used in the old single-page signup screen and can be removed once that screen is gone.
-    @objc func setupHelpButtonAndBadge() {
-        NotificationCenter.default.addObserver(self, selector: #selector(NUXAbstractViewController.handleHelpshiftUnreadCountUpdated(_:)), name: NSNotification.Name.HelpshiftUnreadCountUpdated, object: nil)
+    ///
+    private func setupHelpButtonAndBadge() {
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshBadgeCount), name: .wordpressSupportBadgeUpdated, object: nil)
 
         let customView = UIView(frame: helpButtonContainerFrame)
 
@@ -121,7 +166,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
         helpButton.topAnchor.constraint(equalTo: customView.topAnchor).isActive = true
         helpButton.bottomAnchor.constraint(equalTo: customView.bottomAnchor).isActive = true
 
-        helpBadge = WPNUXHelpBadgeLabel()
+        helpBadge = NUXHelpBadgeLabel()
         helpBadge.translatesAutoresizingMaskIntoConstraints = false
         helpBadge.isHidden = true
         customView.addSubview(helpBadge)
@@ -152,24 +197,15 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
         return isCancellable() && navigationController?.viewControllers.first == self
     }
 
-
-    /// Checks if the signin vc modal should be cancellable. The controller is
-    /// cancellable when there is a default wpcom account, or at least one
-    /// self-hosted blog.
+    /// Returns true whenever the current ViewController can be dismissed.
     ///
-    /// - Returns: True if cancellable. False otherwise.
-    ///
-    @objc func isCancellable() -> Bool {
-        // if there is an existing blog, or an existing account return true.
-        let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-
-        return AccountHelper.isDotcomAvailable() || blogService.blogCountForAllAccounts() > 0
+    func isCancellable() -> Bool {
+        return WordPressAuthenticator.shared.delegate?.dismissActionEnabled ?? true
     }
 
     /// Displays a login error in an attractive dialog
     ///
-    @objc func displayError(_ error: NSError, sourceTag: SupportSourceTag) {
+    func displayError(_ error: NSError, sourceTag: WordPressSupportSourceTag) {
         let presentingController = navigationController ?? self
         let controller = FancyAlertViewController.alertForError(error as NSError, loginFields: loginFields, sourceTag: sourceTag)
         controller.modalPresentationStyle = .custom
@@ -179,7 +215,7 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
 
     /// Displays a login error message in an attractive dialog
     ///
-    @objc func displayErrorAlert(_ message: String, sourceTag: SupportSourceTag) {
+    func displayErrorAlert(_ message: String, sourceTag: WordPressSupportSourceTag) {
         let presentingController = navigationController ?? self
         let controller = FancyAlertViewController.alertForGenericErrorMessageWithHelpshiftButton(message, loginFields: loginFields, sourceTag: sourceTag)
         controller.modalPresentationStyle = .custom
@@ -211,8 +247,8 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
 
     /// Updates the badge count and its visibility.
     ///
-    @objc func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) {
-        let count = HelpshiftUtils.unreadNotificationCount()
+    @objc func refreshBadgeCount() {
+        let count = WordPressAuthenticator.shared.delegate?.supportBadgeCount ?? 0
         helpBadge.text = "\(count)"
         helpBadge.isHidden = (count == 0)
     }
@@ -228,13 +264,13 @@ class NUXAbstractViewController: UIViewController, LoginSegueHandler, LoginWithL
 
     @objc func handleCancelButtonTapped(_ sender: UIButton) {
         dismiss(cancelled: true)
-        NotificationCenter.default.post(name: .WPLoginCancelled, object: nil)
+        NotificationCenter.default.post(name: .wordpressLoginCancelled, object: nil)
     }
 
     // Handle the help button being tapped
     //
     func handleHelpButtonTapped(_ sender: AnyObject) {
-        displaySupportViewController(sourceTag: sourceTag)
+        displaySupportViewController(from: sourceTag)
     }
 }
 

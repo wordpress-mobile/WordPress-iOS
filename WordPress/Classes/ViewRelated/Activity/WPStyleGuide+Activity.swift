@@ -47,8 +47,21 @@ extension WPStyleGuide {
             guard let gridiconType = stringToGridiconTypeMapping[activity.gridicon] else {
                 return nil
             }
-            let gridicon = Gridicon.iconOfType(gridiconType)
-            return gridicon.imageWithTintColor(getColorByActivityStatus(activity))
+
+            return Gridicon.iconOfType(gridiconType).imageWithTintColor(.white)
+        }
+
+        public static func getColorByActivityStatus(_ activity: Activity) -> UIColor {
+            switch activity.status {
+            case ActivityStatus.error:
+                return WPStyleGuide.errorRed()
+            case ActivityStatus.success:
+                return WPStyleGuide.validGreen()
+            case ActivityStatus.warning:
+                return WPStyleGuide.warningYellow()
+            default:
+                return WPStyleGuide.greyLighten10()
+            }
         }
 
         // MARK: - Private Properties
@@ -78,24 +91,12 @@ extension WPStyleGuide {
                                            alignment: .natural)
         }
 
-        private static func getColorByActivityStatus(_ activity: Activity) -> UIColor {
-            switch activity.status {
-            case ActivityStatus.error:
-                return WPStyleGuide.errorRed()
-            case ActivityStatus.success:
-                return WPStyleGuide.validGreen()
-            case ActivityStatus.warning:
-                return WPStyleGuide.warningYellow()
-            default:
-                return WPStyleGuide.greyLighten10()
-            }
-        }
-
         // We will be able to get rid of this disgusting dictionary once we build the
         // String->GridiconType mapping into the Gridicon module and we get a server side
         // fix to have all the names correctly mapping.
         private static let stringToGridiconTypeMapping: [String: GridiconType] = [
             "checkmark": GridiconType.checkmark,
+            "cloud": GridiconType.cloud,
             "cog": GridiconType.cog,
             "comment": GridiconType.comment,
             "cross": GridiconType.cross,
@@ -111,6 +112,7 @@ extension WPStyleGuide {
             "notice": GridiconType.notice,
             "notice-outline": GridiconType.noticeOutline,
             "pages": GridiconType.pages,
+            "plans": GridiconType.plans,
             "plugins": GridiconType.plugins,
             "posts": GridiconType.posts,
             "share": GridiconType.share,

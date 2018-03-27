@@ -2,30 +2,35 @@ import Foundation
 import XCTest
 
 class BaseScreen {
+    enum UITestError: Error {
+        case unableToLocateElement
+    }
+
     var app: XCUIApplication!
     var expectedElement: XCUIElement!
     var waitTimeout: Double!
-    public static var testCase: XCTestCase!
 
     init(element: XCUIElement) {
         app = XCUIApplication()
         expectedElement = element
         waitTimeout = 20
-        _ = waitForPage()
+        _ = try! waitForPage()
     }
 
-    func waitForPage() -> BaseScreen {
-        _ = expectedElement.waitForExistence(timeout: waitTimeout)
+    func waitForPage() throws -> BaseScreen {
+        let result = waitFor(element: expectedElement, predicate: "isEnabled == true", timeout: 20)
+        XCTAssert(result)
         Logger.log(message: "Page \(self) is loaded", event: .i)
         return self
     }
 
-    // predicate: "isEnabled == true"
-    func waitFor(element: XCUIElement, predicate: String, timeout: Int? = nil) {
+    func waitFor(element: XCUIElement, predicate: String, timeout: Int? = nil) -> Bool {
         let timeoutValue = timeout ?? 5
 
         let elementPredicate = XCTNSPredicateExpectation(predicate: NSPredicate(format: predicate), object: element)
-        _ = XCTWaiter.wait(for: [elementPredicate], timeout: TimeInterval(timeoutValue))
+        let result = XCTWaiter.wait(for: [elementPredicate], timeout: TimeInterval(timeoutValue))
+
+        return result == .completed
     }
 
     func isLoaded() -> Bool {

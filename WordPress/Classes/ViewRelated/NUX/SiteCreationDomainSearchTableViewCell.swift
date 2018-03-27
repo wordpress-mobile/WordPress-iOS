@@ -28,8 +28,8 @@ class SiteCreationDomainSearchTableViewCell: UITableViewCell {
         super.awakeFromNib()
         textField?.text = placeholder
         textField?.delegate = self
-        textField?.textInsets = Constants.textInsetsWithIcon
-        textField?.placeholder = NSLocalizedString("Type to get more suggestions", comment: "Placeholder text for domain search during site creation.")
+        textField?.contentInsets = Constants.textInsetsWithIcon
+        textField?.placeholder = NSLocalizedString("Type a keyword for more ideas", comment: "Placeholder text for domain search during site creation.")
         textField?.accessibilityIdentifier = "Domain search field"
 
         if let searchIcon = textField?.leftViewImage {

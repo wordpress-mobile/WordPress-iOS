@@ -6,14 +6,14 @@ import GoogleSignIn
 /// Provides a form and functionality for entering a two factor auth code and
 /// signing into WordPress.com
 ///
-class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITextFieldDelegate {
+class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextFieldDelegate {
+
     @IBOutlet weak var verificationCodeField: LoginTextField!
     @IBOutlet weak var sendCodeButton: UIButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint?
     @objc var pasteboardBeforeBackground: String? = nil
-
-    override var sourceTag: SupportSourceTag {
+    override var sourceTag: WordPressSupportSourceTag {
         get {
             return .login2FA
         }
@@ -49,7 +49,7 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
         nc.addObserver(self, selector: #selector(applicationBecameInactive), name: .UIApplicationWillResignActive, object: nil)
         nc.addObserver(self, selector: #selector(applicationBecameActive), name: .UIApplicationDidBecomeActive, object: nil)
 
-        WPAppAnalytics.track(.loginTwoFactorFormViewed)
+        WordPressAuthenticator.post(event: .loginTwoFactorFormViewed)
     }
 
 
@@ -64,6 +64,17 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
         verificationCodeField.text = ""
     }
 
+
+    /// MARK: Dynamic Type
+    override func didChangePreferredContentSize() {
+        super.didChangePreferredContentSize()
+        styleSendCodeButton()
+    }
+
+    private func styleSendCodeButton() {
+        sendCodeButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        sendCodeButton.titleLabel?.adjustsFontSizeToFitWidth = true
+    }
 
     // MARK: Configuration Methods
 
@@ -87,7 +98,7 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
     /// configures the text fields
     ///
     @objc func configureTextFields() {
-        verificationCodeField.textInsets = WPStyleGuide.edgeInsetForLoginTextFields()
+        verificationCodeField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
     }
 
     /// Configures the appearance and state of the submit button.
@@ -133,11 +144,6 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
     // MARK: - Instance Methods
 
 
-    @objc func showEpilogue() {
-        performSegue(withIdentifier: .showEpilogue, sender: self)
-    }
-
-
     /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with the submit action.
     ///
@@ -155,12 +161,12 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
         loginFacade.loginToWordPressDotCom(withUser: loginFields.nonceUserID, authType: authType, twoStepCode: code, twoStepNonce: nonce)
     }
 
-    func finishedLogin(withNonceAuthToken authToken: String!) {
+    func finishedLogin(withNonceAuthToken authToken: String) {
         let username = loginFields.username
         syncWPCom(username, authToken: authToken, requiredMultifactor: true)
         // Disconnect now that we're done with Google.
         GIDSignIn.sharedInstance().disconnect()
-        WPAppAnalytics.track(.loginSocialSuccess)
+        WordPressAuthenticator.post(event: .loginSocialSuccess)
     }
 
     /// Only allow digits in the 2FA text field
@@ -264,7 +270,7 @@ class Login2FAViewController: LoginViewController, SigninKeyboardResponder, UITe
 
 extension Login2FAViewController {
 
-    override func displayRemoteError(_ error: Error!) {
+    override func displayRemoteError(_ error: Error) {
         displayError(message: "")
 
         configureViewLoading(false)

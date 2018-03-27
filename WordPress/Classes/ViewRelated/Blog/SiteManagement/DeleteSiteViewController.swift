@@ -121,7 +121,7 @@ open class DeleteSiteViewController: UITableViewController {
                                            comment: "Paragraph 2 of 2 of main text body for the delete screen.")
 
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .left
+        paragraphStyle.alignment = .natural
 
         let attributes: [NSAttributedStringKey: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
                                                         .foregroundColor: WPStyleGuide.darkGrey(),
@@ -144,6 +144,8 @@ open class DeleteSiteViewController: UITableViewController {
                                                             comment: "Button label for contacting support"),
                                                             attributes: contactButtonAttributes),
                                                             for: .normal)
+
+        supportButton.naturalContentHorizontalAlignment = .leading
     }
 
     /// One time setup of fourth section (delete button)

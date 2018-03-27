@@ -2,7 +2,7 @@
 #import "PostCardActionBarItem.h"
 #import <WordPressShared/UIDevice+Helpers.h>
 #import <WordPressShared/WPStyleGuide.h>
-#import <WordPressShared/UIImage+Util.h>
+#import <WordPressUI/WordPressUI.h>
 #import "WordPress-Swift.h"
 
 static NSInteger ActionBarMoreButtonIndex = 999;
@@ -10,6 +10,20 @@ static NSInteger const ActionBarMaxNumButtonsHorizontallyCompact = 3;
 static NSInteger const ActionBarMaxNumButtonsHorizontallyRegular = 4;
 
 static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
+
+@interface PostCardActionButton: UIButton
+@end
+
+@implementation PostCardActionButton
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    if (previousTraitCollection.preferredContentSizeCategory != self.traitCollection.preferredContentSizeCategory) {
+        self.titleLabel.font = [WPStyleGuide subtitleFont];
+    }
+}
+@end
 
 @interface PostCardActionBar()
 @property (nonatomic, strong) UIView *contentView;
@@ -169,7 +183,7 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 
 - (UIButton *)newButton
 {
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *button = [PostCardActionButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.exclusiveTouch = YES;
     button.backgroundColor = [WPStyleGuide lightGrey];
@@ -317,7 +331,13 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
         item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"More", @"")
                                               image:[UIImage imageNamed:@"icon-post-actionbar-more"]
                                    highlightedImage:nil];
-        item.imageInsets = [InsetsHelper flipForRightToLeftLayoutDirection:MoreButtonImageInsets];
+
+        UIEdgeInsets imageInsets = MoreButtonImageInsets;
+        if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionRightToLeft) {
+            imageInsets = [InsetsHelper flipForRightToLeftLayoutDirection:imageInsets];
+        }
+
+        item.imageInsets = imageInsets;
     }
     return item;
 }
