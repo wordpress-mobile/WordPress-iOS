@@ -30,7 +30,7 @@ final class AztecMoreCoordinator {
     }
 
     private func cancel() -> UIAlertAction {
-        return UIAlertAction(title: .cancel, style: .cancel, handler: nil)
+        return UIAlertAction(title: .cancelMoreOptions, style: .cancel, handler: nil)
     }
 
     private func showDocumentPicker(origin: UIViewController & UIDocumentPickerDelegate) {
