@@ -1,9 +1,11 @@
 import WPMediaPicker
 
 final class StockPhotosPicker: NSObject {
-    func presentPicker(origin: UIViewController) {
-        let stockDataSource = StockPhotosDataSource()
+    private lazy var dataSource: StockPhotosDataSource = {
+        return StockPhotosDataSource()
+    }()
 
+    func presentPicker(origin: UIViewController) {
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [.all]
@@ -11,9 +13,12 @@ final class StockPhotosPicker: NSObject {
         options.showSearchBar = true
 
         let picker = WPNavigationMediaPickerViewController()
-        picker.dataSource = stockDataSource
+        picker.dataSource = dataSource
         picker.mediaPicker.options = options
         picker.delegate = self
+        picker.startOnGroupSelector = false
+        picker.showGroupSelector = false
+        picker.selectionActionTitle = "Cesar"
         picker.modalPresentationStyle = .currentContext
         origin.present(picker, animated: true)
     }
