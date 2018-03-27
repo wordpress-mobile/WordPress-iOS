@@ -567,6 +567,8 @@ extension ShareExtensionEditorViewController {
                 break  // Not used here
             case .sourcecode:
                 break // Not used here
+            case .code:
+                toggleCode()
             }
 
             updateFormatBar()
@@ -575,6 +577,10 @@ extension ShareExtensionEditorViewController {
 
     @objc func toggleBold() {
         richTextView.toggleBold(range: richTextView.selectedRange)
+    }
+
+    @objc func toggleCode() {
+        richTextView.toggleCode(range: richTextView.selectedRange)
     }
 
     @objc func toggleItalic() {
