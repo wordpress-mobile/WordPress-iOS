@@ -1671,7 +1671,8 @@ extension AztecPostViewController {
                 presentMediaPickerFullScreen(animated: true, dataSourceType: .mediaLibrary)
             case .otherApplications:
                 trackFormatBarAnalytics(stat: .editorMediaPickerTappedOtherApps)
-                showDocumentPicker()
+                //showDocumentPicker()
+                showMore(from: barItem)
             }
         }
     }
@@ -2110,12 +2111,22 @@ extension AztecPostViewController {
         return .none
     }
 
-    private func showDocumentPicker() {
-        let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
-        let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
-        docPicker.delegate = self
-        WPStyleGuide.configureDocumentPickerNavBarAppearance()
-        present(docPicker, animated: true, completion: nil)
+//    private func showDocumentPicker() {
+//        let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
+//        let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
+//        docPicker.delegate = self
+//        WPStyleGuide.configureDocumentPickerNavBarAppearance()
+//        present(docPicker, animated: true, completion: nil)
+//    }
+
+    private func showMore(from: FormatBarItem) {
+//        let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
+//        let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
+//        docPicker.delegate = self
+//        WPStyleGuide.configureDocumentPickerNavBarAppearance()
+//        present(docPicker, animated: true, completion: nil)
+        let moreSheet = AztecMoreOptionsSheet()
+        moreSheet.present(origin: self, view: from)
     }
 
     // MARK: - Present Toolbar related VC
