@@ -6,4 +6,8 @@ extension String {
     static var files: String {
         return NSLocalizedString("Files", comment: "")
     }
+
+    static var cancel: String {
+        return NSLocalizedString("Cancel", comment: "")
+    }
 }
