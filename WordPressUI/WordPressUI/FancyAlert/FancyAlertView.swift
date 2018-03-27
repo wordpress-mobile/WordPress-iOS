@@ -119,7 +119,7 @@ open class FancyAlertView: UIView {
 
     /// Action Button(s) Font
     ///
-    @objc public dynamic var actionsFont: UIFont? {
+    @objc public dynamic var actionFont: UIFont? {
         get {
             return defaultButton.titleLabel?.font
         }
