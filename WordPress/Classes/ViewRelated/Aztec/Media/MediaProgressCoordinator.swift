@@ -246,6 +246,17 @@ public class MediaProgressCoordinator: NSObject {
         return failedMediaIDs.flatMap({ media(withIdentifier: $0) })
     }
 
+    /// Returns a list of all media objects that have completed successfully
+    ///
+    var successfulMedia: [Media] {
+        guard !isRunning else {
+            return []
+        }
+
+        let mediaIDs = mediaInProgress.filter({ !$0.value.isFailed && !$0.value.isCancelled })
+        return mediaIDs.flatMap({ media(withIdentifier: $0.key) })
+    }
+
     // MARK: - KeyPath observer method for the global progress property
 
     public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
@@ -287,6 +298,7 @@ public class MediaProgressCoordinator: NSObject {
         }
         if mediaProgress.completedUnitCount < mediaProgress.totalUnitCount {
             mediaProgress.cancel()
+            finishOneItem()
         }
         mediaInProgress.removeValue(forKey: mediaID)
     }

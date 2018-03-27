@@ -37,7 +37,7 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
     init(siteID: Int, service: ActivityServiceRemote) {
         self.siteID = siteID
         self.service = service
-        super.init(style: .grouped)
+        super.init(style: .plain)
         title = NSLocalizedString("Activity", comment: "Title for the activity list")
         noResultsView.delegate = self
     }
@@ -67,7 +67,13 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidLoad() {
         super.viewDidLoad()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+
+        let nib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
+        tableView.register(nib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
         ImmuTable.registerRows([ActivityListRow.self], tableView: tableView)
+        // Magic to avoid cell separators being displayed while a plain table loads
+        tableView.tableFooterView = UIView()
+
         refreshModel()
     }
 
@@ -110,6 +116,30 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
     func hideNoResults() {
         noResultsView.removeFromSuperview()
+    }
+
+}
+
+// MARK: - UITableViewDelegate
+
+extension ActivityListViewController {
+
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0.0
+    }
+
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: ActivityListSectionHeaderView.identifier) as? ActivityListSectionHeaderView else {
+            return nil
+        }
+
+        cell.titleLabel.text = handler.tableView(tableView, titleForHeaderInSection: section)?.localizedUppercase
+
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return ActivityListSectionHeaderView.height
     }
 
 }
@@ -176,14 +206,17 @@ extension ActivityListViewController {
             restoreTimedout()
             return
         }
-        service.restoreStatusForSite(siteID, restoreID: restoreID, success: { (restoreStatus) in
+
+        service.getRewindStatus(siteID, success: { (rewindStatus) in
+            guard let restoreStatus = rewindStatus.restore,
+                restoreStatus.id == restoreID else {
+                self.delayedRetryForRestoreID(restoreID, showingProgress: 0)
+                return
+            }
+
             switch restoreStatus.status {
             case .running, .queued:
-                self.showRestoringMessage(Float(restoreStatus.percent) / 100.0)
-                self.delayedRetry = DispatchDelayedAction(delay: .seconds(self.delay.current)) { [weak self] in
-                    self?.checkStatusDelayedForRestoreID(restoreID)
-                }
-                self.delay.increment()
+                self.delayedRetryForRestoreID(restoreID, showingProgress: restoreStatus.progress)
             case .finished:
                 self.restoreCompleted()
             case .fail:
@@ -192,6 +225,14 @@ extension ActivityListViewController {
         }) { (error) in
             DDLogError("Error checking restore status \(error)")
         }
+    }
+
+    fileprivate func delayedRetryForRestoreID(_ restoreID: String, showingProgress progress: Int) {
+        self.showRestoringMessage(Float(progress) / 100.0)
+        self.delayedRetry = DispatchDelayedAction(delay: .seconds(self.delay.current)) { [weak self] in
+            self?.checkStatusDelayedForRestoreID(restoreID)
+        }
+        self.delay.increment()
     }
 
     fileprivate func showErrorRestoringMessage() {

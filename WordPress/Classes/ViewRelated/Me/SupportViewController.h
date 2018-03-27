@@ -7,9 +7,9 @@ extern SupportSourceTag const SupportSourceTagWPOrgLogin;
 extern SupportSourceTag const SupportSourceTagJetpackLogin;
 extern SupportSourceTag const SupportSourceTagGeneralLogin;
 extern SupportSourceTag const SupportSourceTagInAppFeedback;
-extern SupportSourceTag const SupportSourceTagAztecFeedback;
 extern SupportSourceTag const SupportSourceTagLoginEmail;
 extern SupportSourceTag const SupportSourceTagLoginMagicLink;
+extern SupportSourceTag const SupportSourceTagSignupMagicLink;
 extern SupportSourceTag const SupportSourceTagLoginWPComPassword;
 extern SupportSourceTag const SupportSourceTagLogin2FA;
 extern SupportSourceTag const SupportSourceTagLoginSiteAddress;
@@ -18,7 +18,10 @@ extern SupportSourceTag const SupportSourceTagWPComCreateSiteCategory;
 extern SupportSourceTag const SupportSourceTagWPComCreateSiteTheme;
 extern SupportSourceTag const SupportSourceTagWPComCreateSiteDetails;
 extern SupportSourceTag const SupportSourceTagWPComCreateSiteDomain;
+extern SupportSourceTag const SupportSourceTagWPComCreateSiteUsername;
+extern SupportSourceTag const SupportSourceTagWPComCreateSiteCreation;
 extern SupportSourceTag const SupportSourceTagWPComSignupEmail;
+extern SupportSourceTag const SupportSourceTagSignupWaitingForGoogle;
 
 @interface SupportViewController : UITableViewController
 @property (nonatomic, strong) SupportSourceTag sourceTag;

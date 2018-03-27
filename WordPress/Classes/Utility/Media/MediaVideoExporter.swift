@@ -37,11 +37,14 @@ class MediaVideoExporter: MediaExporter {
         case failedToInitializeVideoExportSession
         case failedExportingVideoDuringExportSession
         case failedGeneratingVideoPreviewImage
+        case videoExportSessionCancelled
 
         var description: String {
             switch self {
             case .failedGeneratingVideoPreviewImage:
                 return NSLocalizedString("Video Preview Unavailable", comment: "Message shown if a video preview image is unavailable while the video is being uploaded.")
+            case .videoExportSessionCancelled:
+                return NSLocalizedString("Video export cancelled.", comment: "Message shown if a video export is cancelled by the user.")
             default:
                 return NSLocalizedString("The video could not be added to the Media Library.", comment: "Message shown when a video failed to load while trying to add it to the Media library.")
             }
@@ -142,7 +145,11 @@ class MediaVideoExporter: MediaExporter {
                 if let error = session.error {
                     onError(self.exporterErrorWith(error: error))
                 } else {
-                    onError(VideoExportError.failedExportingVideoDuringExportSession)
+                    if session.status == .cancelled {
+                        onError(VideoExportError.videoExportSessionCancelled)
+                    } else {
+                        onError(VideoExportError.failedExportingVideoDuringExportSession)
+                    }
                 }
                 return
             }
@@ -162,6 +169,7 @@ class MediaVideoExporter: MediaExporter {
     ///
     /// - imageOptions: ImageExporter options for the generated thumbnail image.
     ///
+    @discardableResult
     func exportPreviewImageForVideo(atURL url: URL, imageOptions: MediaImageExporter.Options?, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         let asset = AVURLAsset(url: url)
         guard asset.isExportable else {

@@ -7,15 +7,16 @@ import WordPressShared
 /// details of the user.
 ///
 protocol SigninWPComSyncHandler: class {
+    var isJetpackLogin: Bool { get }
+
     func configureViewLoading(_ loading: Bool)
     func configureStatusLabel(_ message: String)
     func dismiss()
-    func displayError(_ error: NSError, sourceTag: SupportSourceTag)
+    func displayError(_ error: NSError, sourceTag: WordPressSupportSourceTag)
     func updateSafariCredentialsIfNeeded()
-    func isJetpackLogin() -> Bool
 
     func syncWPCom(_ username: String, authToken: String, requiredMultifactor: Bool)
-    func handleSyncSuccess(_ requiredMultifactor: Bool)
+    func handleSyncSuccess(for account: WPAccount, requiredMultifactor: Bool)
     func handleSyncFailure(_ error: NSError?)
 }
 
@@ -39,7 +40,7 @@ extension SigninWPComSyncHandler {
         // Create reusable success and failure blocks to share between service calls.
         let successBlock = { [weak self] in
             accountFacade.updateUserDetails(for: account, success: { [weak self] in
-                self?.handleSyncSuccess(requiredMultifactor)
+                self?.handleSyncSuccess(for: account, requiredMultifactor: requiredMultifactor)
 
                 }, failure: { [weak self] (error: Error?) in
                     self?.handleSyncFailure(error as NSError?)
@@ -51,7 +52,7 @@ extension SigninWPComSyncHandler {
         }
 
         let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        if isJetpackLogin() && !accountService.isDefaultWordPressComAccount(account) {
+        if isJetpackLogin && !accountService.isDefaultWordPressComAccount(account) {
             let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
             blogService.associateSyncedBlogs(toJetpackAccount: account, success: successBlock, failure: failureBlock)
 
@@ -67,7 +68,7 @@ extension SigninWPComSyncHandler {
     ///
     /// - Parameters:
     ///
-    func handleSyncSuccess(_ requiredMultifactor: Bool) {
+    func handleSyncSuccess(for account: WPAccount, requiredMultifactor: Bool) {
         configureStatusLabel("")
         configureViewLoading(false)
 
@@ -76,8 +77,8 @@ extension SigninWPComSyncHandler {
         // for Jetpack logins.  When WPTabViewController no longer destroy's
         // and rebuilds the view hierarchy this alternate notification can be
         // removed.
-        let notification = isJetpackLogin() ? .WPLoginFinishedJetpackLogin : Foundation.Notification.Name(rawValue: SigninHelpers.WPSigninDidFinishNotification)
-        NotificationCenter.default.post(name: notification, object: nil)
+        let notification = isJetpackLogin ? .wordpressLoginFinishedJetpackLogin : Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification)
+        NotificationCenter.default.post(name: notification, object: account)
 
         dismiss()
 
@@ -86,7 +87,7 @@ extension SigninWPComSyncHandler {
             "dotcom_user": true.description
         ]
 
-        WPAppAnalytics.track(WPAnalyticsStat.signedIn, withProperties: properties)
+        WordPressAuthenticator.post(event: .signedIn(properties: properties))
     }
 
 

@@ -14,9 +14,11 @@ import AVKit
 //
 class AztecPostViewController: UIViewController, PostEditor {
 
-    /// Closure to be executed when the editor gets closed
+    /// Closure to be executed when the editor gets closed.
+    /// Pass `false` for `showPostEpilogue` to prevent the post epilogue
+    /// (PostPost) flow being displayed after the editor is closed.
     ///
-    var onClose: ((_ changesSaved: Bool) -> ())?
+    var onClose: ((_ changesSaved: Bool, _ showPostEpilogue: Bool) -> ())?
 
 
     /// Indicates if Aztec was launched for Photo Posting
@@ -30,6 +32,11 @@ class AztecPostViewController: UIViewController, PostEditor {
         return self.createToolbar()
     }()
 
+    private let errorDomain = "AztecPostViewController.errorDomain"
+
+    private enum ErrorCode: Int {
+        case expectedSecondaryAction = 1
+    }
 
     /// Aztec's Awesomeness
     ///
@@ -69,6 +76,9 @@ class AztecPostViewController: UIViewController, PostEditor {
             textView.smartDashesType = .no
             textView.smartQuotesType = .no
         }
+
+        // We need this false to be able to set negative `scrollInset` values.
+        textView.clipsToBounds = false
 
         return textView
     }()
@@ -114,6 +124,9 @@ class AztecPostViewController: UIViewController, PostEditor {
             textView.smartDashesType = .no
             textView.smartQuotesType = .no
         }
+
+        // We need this false to be able to set negative `scrollInset` values.
+        textView.clipsToBounds = false
 
         return textView
 
@@ -302,21 +315,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         return button
     }()
 
-
-    /// Beta Tag Button
-    ///
-    fileprivate lazy var betaButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        WPStyleGuide.configureBetaButton(button)
-
-        button.setContentHuggingPriority(.required, for: .horizontal)
-        button.isEnabled = true
-        button.addTarget(self, action: #selector(betaButtonTapped), for: .touchUpInside)
-
-        return button
-    }()
-
     /// Active Editor's Mode
     ///
     fileprivate(set) var mode = EditMode.richText {
@@ -379,15 +377,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     fileprivate lazy var devicePhotoLibraryDataSource = WPPHAssetDataSource()
 
-
-    /// Media Progress Coordinator
-    ///
-    fileprivate lazy var mediaProgressCoordinator: MediaProgressCoordinator = {
-        let coordinator = MediaProgressCoordinator()
-        coordinator.delegate = self
-        return coordinator
-    }()
-
+    fileprivate let mediaCoordinator = MediaCoordinator.shared
 
     /// Media Progress View
     ///
@@ -401,6 +391,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         return progressView
     }()
 
+    fileprivate var mediaObserverReceipt: UUID?
 
     /// Selected Text Attachment
     ///
@@ -423,9 +414,9 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate var currentKeyboardFrame: CGRect = .zero
 
 
-    /// Origin of selected media, used for analytics
+    /// Method of selecting media for upload, used for analytics
     ///
-    fileprivate var selectedMediaOrigin: WPAppAnalytics.SelectedMediaOrigin = .none
+    fileprivate var mediaSelectionMethod: MediaSelectionMethod = .none
 
 
     /// Options
@@ -465,7 +456,15 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     // MARK: - Initializers
 
+    /// Initializer
+    ///
+    /// - Parameters:
+    ///     - post: the post to edit in this VC.  Must be already assigned to a `ManagedObjectContext`
+    ///             since that's necessary for the edits to be saved.
+    ///
     required init(post: AbstractPost) {
+        precondition(post.managedObjectContext != nil)
+
         self.post = post
 
         super.init(nibName: nil, bundle: nil)
@@ -474,6 +473,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         self.restorationClass = type(of: self)
         self.shouldRemovePostOnDismiss = post.shouldRemoveOnDismiss
 
+        PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         addObservers(toPost: post)
     }
 
@@ -484,7 +484,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     deinit {
         NotificationCenter.default.removeObserver(self)
         removeObservers(fromPost: post)
-
+        unregisterMediaObserver()
         cancelAllPendingMediaRequests()
     }
 
@@ -508,8 +508,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         configureView()
         configureSubviews()
 
-        // Register HTML Processors for WordPress shortcodes
-
         // UI elements might get their properties reset when the view is effectively loaded. Refresh it all!
         refreshInterface()
 
@@ -519,6 +517,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         if isOpenedDirectlyForPhotoPost {
             presentMediaPickerFullScreen(animated: false)
         }
+
+        registerMediaObserver()
     }
 
 
@@ -546,15 +546,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         stopListeningToNotifications()
         rememberFirstResponder()
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        var safeInsets = self.view.layoutMargins
-        safeInsets.top = richTextView.textContainerInset.top
-        richTextView.textContainerInset = safeInsets
-        htmlTextView.textContainerInset = safeInsets
     }
 
 
@@ -601,8 +592,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         var titleWidth = titleTextField.bounds.width
         if titleWidth <= 0 {
             // Use the title text field's width if available, otherwise calculate it.
-            // View's frame minus left and right margins as well as margin between title and beta button
-            titleWidth = view.frame.width - (insets.left + insets.right + layoutMargins.left + layoutMargins.right) - betaButton.frame.width
+            titleWidth = view.frame.width - (insets.left + insets.right + layoutMargins.left + layoutMargins.right)
         }
 
         let sizeThatShouldFitTheContent = titleTextField.sizeThatFits(CGSize(width: titleWidth, height: CGFloat.greatestFiniteMagnitude))
@@ -650,18 +640,12 @@ class AztecPostViewController: UIViewController, PostEditor {
         titleTopConstraint = titleTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: -richTextView.contentOffset.y)
         textPlaceholderTopConstraint = placeholderLabel.topAnchor.constraint(equalTo: richTextView.topAnchor, constant: richTextView.textContainerInset.top + richTextView.contentInset.top)
         updateTitleHeight()
-        let layoutGuide = view.layoutMarginsGuide
 
         NSLayoutConstraint.activate([
-            titleTextField.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+            titleTextField.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
+            titleTextField.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
             titleTopConstraint,
             titleHeightConstraint
-            ])
-
-        NSLayoutConstraint.activate([
-            betaButton.centerYAnchor.constraint(equalTo: titlePlaceholderLabel.centerYAnchor),
-            betaButton.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
-            titleTextField.trailingAnchor.constraint(equalTo: betaButton.leadingAnchor, constant: -titleTextField.textContainerInset.right)
             ])
 
         let insets = titleTextField.textContainerInset
@@ -674,15 +658,15 @@ class AztecPostViewController: UIViewController, PostEditor {
             ])
 
         NSLayoutConstraint.activate([
-            separatorView.leftAnchor.constraint(equalTo: layoutGuide.leftAnchor),
-            separatorView.rightAnchor.constraint(equalTo: layoutGuide.rightAnchor),
+            separatorView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
             separatorView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor),
             separatorView.heightAnchor.constraint(equalToConstant: separatorView.frame.height)
             ])
 
         NSLayoutConstraint.activate([
-            richTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            richTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            richTextView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
+            richTextView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
             richTextView.topAnchor.constraint(equalTo: view.topAnchor),
             richTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
@@ -695,8 +679,8 @@ class AztecPostViewController: UIViewController, PostEditor {
             ])
 
         NSLayoutConstraint.activate([
-            placeholderLabel.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: Constants.placeholderPadding.left),
-            placeholderLabel.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -(Constants.placeholderPadding.right + richTextView.textContainer.lineFragmentPadding)),
+            placeholderLabel.leftAnchor.constraint(equalTo: richTextView.leftAnchor, constant: insets.left + richTextView.textContainer.lineFragmentPadding),
+            placeholderLabel.rightAnchor.constraint(equalTo: richTextView.rightAnchor, constant: -insets.right - richTextView.textContainer.lineFragmentPadding),
             textPlaceholderTopConstraint,
             placeholderLabel.bottomAnchor.constraint(lessThanOrEqualTo: richTextView.bottomAnchor, constant: Constants.placeholderPadding.bottom)
             ])
@@ -741,7 +725,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         view.addSubview(titlePlaceholderLabel)
         view.addSubview(separatorView)
         view.addSubview(placeholderLabel)
-        view.addSubview(betaButton)
     }
 
     func configureMediaProgressView(in navigationBar: UINavigationBar) {
@@ -970,7 +953,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
         let referenceView: UIScrollView = mode == .richText ? richTextView : htmlTextView
 
-        let scrollInsets = UIEdgeInsets(top: referenceView.scrollIndicatorInsets.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
+        let scrollInsets = UIEdgeInsets(top: referenceView.scrollIndicatorInsets.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: referenceView.frame.maxX - view.frame.maxX)
         let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
 
         htmlTextView.scrollIndicatorInsets = scrollInsets
@@ -1053,25 +1036,30 @@ extension AztecPostViewController {
 //
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
-        trackPostSave(stat: postEditorStateContext.publishActionAnalyticsStat)
 
-        publishTapped(dismissWhenDone: postEditorStateContext.publishActionDismissesEditor)
+        let action = self.postEditorStateContext.action
+
+        publishPost(
+            action: action,
+            dismissWhenDone: action.dismissesEditor,
+            analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
     }
 
-    @IBAction func secondaryPublishButtonTapped(dismissWhenDone: Bool = true) {
-        let publishPostClosure = {
-            if self.postEditorStateContext.secondaryPublishButtonAction == .save {
-                self.post.status = .draft
-            } else if self.postEditorStateContext.secondaryPublishButtonAction == .publish {
-                self.post.date_created_gmt = Date()
-                self.post.status = .publish
-            }
+    @IBAction func secondaryPublishButtonTapped() {
+        guard let action = self.postEditorStateContext.secondaryPublishButtonAction else {
+            // If the user tapped on the secondary publish action button, it means we should have a secondary publish action.
+            let error = NSError(domain: errorDomain, code: ErrorCode.expectedSecondaryAction.rawValue, userInfo: nil)
+            Crashlytics.sharedInstance().recordError(error)
+            return
+        }
 
-            if let stat = self.postEditorStateContext.secondaryPublishActionAnalyticsStat {
-                self.trackPostSave(stat: stat)
-            }
+        let secondaryStat = self.postEditorStateContext.secondaryPublishActionAnalyticsStat
 
-            self.publishTapped(dismissWhenDone: dismissWhenDone)
+        let publishPostClosure = { [unowned self] in
+            self.publishPost(
+                action: action,
+                dismissWhenDone: action.dismissesEditor,
+                analyticsStat: secondaryStat)
         }
 
         if presentedViewController != nil {
@@ -1095,19 +1083,17 @@ extension AztecPostViewController {
 
         // Button: Save Draft/Update Draft
         if post.hasLocalChanges() {
-            if !post.hasRemote() {
-                // The post is a local draft or an autosaved draft: Discard or Save
-                alertController.addDefaultActionWithTitle(saveTitle) { _ in
-                    self.post.status = .draft
-                    self.trackPostSave(stat: self.postEditorStateContext.publishActionAnalyticsStat)
-                    self.publishTapped(dismissWhenDone: true)
+            let title: String = {
+                if !post.hasRemote() || post.status == .draft {
+                    return saveTitle
+                } else {
+                    return updateTitle
                 }
-            } else if post.status == .draft {
-                // The post was already a draft
-                alertController.addDefaultActionWithTitle(updateTitle) { _ in
-                    self.trackPostSave(stat: self.postEditorStateContext.publishActionAnalyticsStat)
-                    self.publishTapped(dismissWhenDone: true)
-                }
+            }()
+
+            // The post is a local or remote draft
+            alertController.addDefaultActionWithTitle(title) { _ in
+                self.publishPost(action: .save, dismissWhenDone: true, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
             }
         }
 
@@ -1120,65 +1106,62 @@ extension AztecPostViewController {
         present(alertController, animated: true, completion: nil)
     }
 
-    private func publishTapped(dismissWhenDone: Bool) {
+    private func publishPost(
+        action: PostEditorAction,
+        dismissWhenDone: Bool,
+        analyticsStat: WPAnalyticsStat?) {
+
         // Cancel publishing if media is currently being uploaded
-        if mediaProgressCoordinator.isRunning {
+        if mediaCoordinator.isUploadingMedia(for: post) {
             displayMediaIsUploadingAlert()
             return
         }
 
         // If there is any failed media allow it to be removed or cancel publishing
-        if mediaProgressCoordinator.hasFailedMedia {
+        if hasFailedMedia {
             displayHasFailedMediaAlert(then: {
                 // Failed media is removed, try again.
                 // Note: Intentionally not tracking another analytics stat here (no appropriate one exists yet)
-                self.publishTapped(dismissWhenDone: dismissWhenDone)
+                self.publishPost(action: action, dismissWhenDone: dismissWhenDone, analyticsStat: analyticsStat)
             })
             return
         }
 
         // If the user is trying to publish to WP.com and they haven't verified their account, prompt them to do so.
-        if let verificationHelper = verificationPromptHelper, verificationHelper.neeedsVerification(before: postEditorStateContext.action) {
-            verificationHelper.displayVerificationPrompt(from: self) { [weak self] verifiedInBackground in
+        if let verificationHelper = verificationPromptHelper, verificationHelper.needsVerification(before: postEditorStateContext.action) {
+            verificationHelper.displayVerificationPrompt(from: self) { [unowned self] verifiedInBackground in
                 // User could've been plausibly silently verified in the background.
                 // If so, proceed to publishing the post as normal, otherwise save it as a draft.
                 if !verifiedInBackground {
-                    self?.post.status = .draft
+                    self.post.status = .draft
                 }
 
-                self?.publishTapped(dismissWhenDone: dismissWhenDone)
+                self.publishPost(action: action, dismissWhenDone: dismissWhenDone, analyticsStat: analyticsStat)
             }
             return
         }
 
-        SVProgressHUD.setDefaultMaskType(.clear)
-        SVProgressHUD.show(withStatus: postEditorStateContext.publishVerbText)
-        postEditorStateContext.updated(isBeingPublished: true)
-
-        // Finally, publish the post.
-        publishPost() { uploadedPost, error in
-            self.postEditorStateContext.updated(isBeingPublished: false)
-            SVProgressHUD.dismiss()
-
-            let generator = UINotificationFeedbackGenerator()
-            generator.prepare()
-
-            if let error = error {
-                DDLogError("Error publishing post: \(error.localizedDescription)")
-
-                SVProgressHUD.showDismissibleError(withStatus: self.postEditorStateContext.publishErrorText)
-                generator.notificationOccurred(.error)
-            } else if let uploadedPost = uploadedPost {
-                self.post = uploadedPost
-
-                generator.notificationOccurred(.success)
+        let publishBlock = { [unowned self] in
+            if action == .save || action == .saveAsDraft {
+                self.post.status = .draft
+            } else if action == .publish {
+                self.post.status = .publish
+            } else if action == .publishNow {
+                self.post.date_created_gmt = Date()
+                self.post.status = .publish
             }
 
-            if dismissWhenDone {
-                self.dismissOrPopView(didSave: true)
-            } else {
-                self.createRevisionOfPost()
+            if let analyticsStat = analyticsStat {
+                self.trackPostSave(stat: analyticsStat)
             }
+
+            self.uploadPost(action: action, dismissWhenDone: dismissWhenDone)
+        }
+
+        if action == .publish || action == .publishNow {
+            displayPublishConfirmationAlert(onPublish: publishBlock)
+        } else {
+            publishBlock()
         }
     }
 
@@ -1198,12 +1181,6 @@ extension AztecPostViewController {
 
     @IBAction func moreWasPressed() {
         displayMoreSheet()
-    }
-
-    @IBAction func betaButtonTapped() {
-        WPAppAnalytics.track(.editorAztecBetaLink)
-
-        FancyAlertViewController.presentWhatsNewWebView(from: self)
     }
 
     private func trackPostSave(stat: WPAnalyticsStat) {
@@ -1278,23 +1255,44 @@ private extension AztecPostViewController {
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        if postEditorStateContext.isSecondaryPublishButtonShown,
-            let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
-            let dismissWhenDone = postEditorStateContext.secondaryPublishButtonAction == .publish
-            alert.addActionWithTitle(buttonTitle, style: dismissWhenDone ? .destructive : .default ) { _ in
-                self.secondaryPublishButtonTapped(dismissWhenDone: dismissWhenDone)
+        if FeatureFlag.asyncPosting.enabled {
+            alert.addDefaultActionWithTitle("Async Publish (Debug)") { [unowned self]  _ in
+                self.mapUIContentToPostAndSave()
+                PostCoordinator.shared.save(post: self.post)
+                self.dismissOrPopView(didSave: true, shouldShowPostEpilogue: false)
             }
         }
 
-        alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { _ in
+        if postEditorStateContext.isSecondaryPublishButtonShown,
+            let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
+
+            alert.addDefaultActionWithTitle(buttonTitle) { _ in
+                self.secondaryPublishButtonTapped()
+            }
+        }
+
+        let toggleModeTitle: String = {
+            if mode == .richText {
+                return MoreSheetAlert.htmlTitle
+            } else {
+                return MoreSheetAlert.richTitle
+            }
+        }()
+
+        alert.addDefaultActionWithTitle(toggleModeTitle) { [unowned self] _ in
+            self.toggleEditingMode()
+        }
+
+        alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { [unowned self]  _ in
             self.displayPreview()
         }
 
-        alert.addDefaultActionWithTitle(MoreSheetAlert.optionsTitle) { _ in
-            self.displayPostOptions()
+        alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [unowned self]  _ in
+            self.displayPostSettings()
         }
 
-        alert.addCancelActionWithTitle(MoreSheetAlert.cancelTitle)
+        alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
+
         alert.popoverPresentationController?.barButtonItem = moreBarButtonItem
 
         present(alert, animated: true, completion: nil)
@@ -1312,7 +1310,7 @@ private extension AztecPostViewController {
         present(alert, animated: true, completion: nil)
     }
 
-    func displayPostOptions() {
+    func displayPostSettings() {
         let settingsViewController: PostSettingsViewController
         if post is Page {
             settingsViewController = PageSettingsViewController(post: post)
@@ -1349,13 +1347,34 @@ private extension AztecPostViewController {
     @IBAction func displayCancelMediaUploads() {
         let alertController = UIAlertController(title: MediaUploadingCancelAlert.title, message: MediaUploadingCancelAlert.message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(MediaUploadingCancelAlert.acceptTitle) { alertAction in
-            self.mediaProgressCoordinator.cancelAndStopAllInProgressMedia()
+            self.mediaCoordinator.cancelUploadOfAllMedia(for: self.post)
         }
         alertController.addCancelActionWithTitle(MediaUploadingCancelAlert.cancelTitle)
         present(alertController, animated: true, completion: nil)
         return
     }
 
+    /// Displays a publish confirmation alert with two options: "Keep Editing" and "Publish".
+    ///
+    /// - Parameters:
+    ///     - dismissWhenDone: if `true`, the VC will be dismissed if the user picks "Publish".
+    ///
+    func displayPublishConfirmationAlert(onPublish publishAction: @escaping () -> ()) {
+        let title = NSLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing.")
+
+        let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
+        let publishTitle = NSLocalizedString("Publish", comment: "Button shown when the author is asked for publishing confirmation.")
+
+        let style: UIAlertControllerStyle = UIDevice.isPad() ? .alert : .actionSheet
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
+
+        alertController.addCancelActionWithTitle(keepEditingTitle)
+        alertController.addDefaultActionWithTitle(publishTitle) { _ in
+            publishAction()
+        }
+
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
 
@@ -2499,7 +2518,7 @@ private extension AztecPostViewController {
             post.remove()
         }
 
-        mediaProgressCoordinator.cancelAndStopAllInProgressMedia()
+        mediaCoordinator.cancelUploadOfAllMedia(for: post)
         ContextManager.sharedInstance().save(context)
     }
 
@@ -2509,13 +2528,13 @@ private extension AztecPostViewController {
         dismissOrPopView(didSave: false)
     }
 
-    func dismissOrPopView(didSave: Bool) {
+    func dismissOrPopView(didSave: Bool, shouldShowPostEpilogue: Bool = true) {
         stopEditing()
 
         WPAppAnalytics.track(.editorClosed, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
 
         if let onClose = onClose {
-            onClose(didSave)
+            onClose(didSave, shouldShowPostEpilogue)
         } else if isModal() {
             presentingViewController?.dismiss(animated: true, completion: nil)
         } else {
@@ -2544,8 +2563,52 @@ private extension AztecPostViewController {
 
         ContextManager.sharedInstance().save(post.managedObjectContext!)
     }
+}
 
-    func publishPost(completion: ((_ post: AbstractPost?, _ error: Error?) -> Void)? = nil) {
+// MARK: - Publishing
+
+private extension AztecPostViewController {
+
+    /// Shows the publishing overlay and starts the publishing process.
+    ///
+    func uploadPost(action: PostEditorAction, dismissWhenDone: Bool) {
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.show(withStatus: action.publishingActionLabel)
+        postEditorStateContext.updated(isBeingPublished: true)
+
+        uploadPost() { uploadedPost, error in
+            self.postEditorStateContext.updated(isBeingPublished: false)
+            SVProgressHUD.dismiss()
+
+            let generator = UINotificationFeedbackGenerator()
+            generator.prepare()
+
+            if let error = error {
+                DDLogError("Error publishing post: \(error.localizedDescription)")
+
+                SVProgressHUD.showDismissibleError(withStatus: action.publishingErrorLabel)
+                generator.notificationOccurred(.error)
+            } else if let uploadedPost = uploadedPost {
+                self.post = uploadedPost
+
+                generator.notificationOccurred(.success)
+                SearchManager.shared.indexItem(uploadedPost)
+            }
+
+            if dismissWhenDone {
+                self.dismissOrPopView(didSave: true)
+            } else {
+                self.createRevisionOfPost()
+            }
+        }
+    }
+
+    /// Uploads the post
+    ///
+    /// - Parameters:
+    ///     - completion: the closure to execute when the publish operation completes.
+    ///
+    private func uploadPost(completion: ((_ post: AbstractPost?, _ error: Error?) -> Void)?) {
         mapUIContentToPostAndSave()
 
         let managedObjectContext = ContextManager.sharedInstance().mainContext
@@ -2558,9 +2621,8 @@ private extension AztecPostViewController {
     }
 }
 
-
 // MARK: - Computed Properties
-//
+
 private extension AztecPostViewController {
     var mainContext: NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
@@ -2611,10 +2673,42 @@ private extension AztecPostViewController {
     }
 }
 
-
-// MARK: - MediaProgressCoordinatorDelegate
+// MARK: - Media Support
 //
-extension AztecPostViewController: MediaProgressCoordinatorDelegate {
+extension AztecPostViewController {
+
+    func registerMediaObserver() {
+        mediaObserverReceipt =  mediaCoordinator.addObserver({ [weak self](media, state) in
+            self?.mediaObserver(media: media, state: state)
+            }, forMediaFor: post)
+    }
+
+    func unregisterMediaObserver() {
+        if let receipt = mediaObserverReceipt {
+            mediaCoordinator.removeObserver(withUUID: receipt)
+        }
+    }
+
+    func mediaObserver(media: Media, state: MediaCoordinator.MediaState) {
+        refreshGlobalProgress()
+        guard let attachment = findAttachment(withUploadID: media.uploadID) else {
+            return
+        }
+        switch state {
+        case .processing:
+            DDLogInfo("Creating media")
+        case .thumbnailReady(let url):
+            handleThumbnailURL(url, attachment: attachment)
+        case .uploading:
+            break
+        case .ended:
+            handleUploaded(media: media, mediaUploadID: media.uploadID)
+        case .failed(let error):
+            handleError(error, onAttachment: attachment)
+        case .progress(let value):
+            handleProgress(value, forMedia: media, onAttachment: attachment)
+        }
+    }
 
     func configureMediaAppearance() {
         MediaAttachment.defaultAppearance.progressBackgroundColor = Colors.mediaProgressBarBackground
@@ -2634,121 +2728,48 @@ extension AztecPostViewController: MediaProgressCoordinatorDelegate {
         return result
     }
 
-    func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange progress: Double) {
-        mediaProgressView.isHidden = !mediaProgressCoordinator.isRunning
-        mediaProgressView.progress = Float(progress)
-        for (attachmentID, progress) in self.mediaProgressCoordinator.mediaInProgress {
-            guard let attachment = findAttachment(withUploadID: attachmentID) else {
-                continue
+    func refreshGlobalProgress() {
+        mediaProgressView.isHidden = !mediaCoordinator.isUploadingMedia(for: post)
+        mediaProgressView.progress = Float(mediaCoordinator.totalProgress(for: post))
+        postEditorStateContext.update(isUploadingMedia: mediaCoordinator.isUploadingMedia(for: post))
+        refreshNavigationBar()
+    }
+
+    fileprivate func insert(exportableAsset: ExportableAsset, source: MediaSource, attachment: MediaAttachment? = nil) {
+        var attachment = attachment
+        if attachment == nil {
+            switch exportableAsset.assetMediaType {
+            case .image:
+                attachment = insertImageAttachment()
+            case .video:
+                attachment = insertVideoAttachmentWithPlaceholder()
+            default:
+                return
             }
-            if progress.fractionCompleted >= 1 {
-                attachment.progress = nil
-            } else {
-                attachment.progress = progress.fractionCompleted
-            }
-            richTextView.refresh(attachment)
         }
+
+        let info = MediaAnalyticsInfo(origin: .editor(source), selectionMethod: mediaSelectionMethod)
+        let media = mediaCoordinator.addMedia(from: exportableAsset, to: self.post, analyticsInfo: info)
+        attachment?.uploadID = media.uploadID
     }
-
-    func mediaProgressCoordinatorDidStartUploading(_ mediaProgressCoordinator: MediaProgressCoordinator) {
-        postEditorStateContext.update(isUploadingMedia: true)
-        refreshNavigationBar()
-    }
-
-    func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
-        postEditorStateContext.update(isUploadingMedia: false)
-        refreshNavigationBar()
-    }
-}
-
-
-// MARK: - Media Support
-//
-extension AztecPostViewController {
 
     fileprivate func insertExternalMediaWithURL(_ url: URL) {
-        do {
-            var newAttachment: MediaAttachment?
-            var newStatType: WPAnalyticsStat?
-            let expected = try MediaURLExporter.expectedExport(with: url)
-
-            switch expected {
-            case .image:
-                newAttachment = insertImageAttachment()
-                newStatType = .editorAddedPhotoViaOtherApps
-            case .video:
-                newAttachment = videoAttachmentWithPlaceholder()
-                newStatType = .editorAddedVideoViaOtherApps
-            default: break
-            }
-
-            guard let attachment = newAttachment, let statType = newStatType else { return }
-            attachment.uploadID = attachment.identifier
-            let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            mediaService.createMedia(with: url as NSURL, objectID: post.objectID, progress: nil,
-                                     thumbnailCallback: { [weak self](thumbnailURL) in
-                                        self?.handleThumbnailURL(thumbnailURL, attachment: attachment)
-                },
-                                     completion: { [weak self](media, error) in
-                                        self?.handleNewMedia(media, error: error, attachment: attachment, statType: statType)
-            })
-        } catch {
-            print(MediaURLExporter(url: url).exporterErrorWith(error: error))
-            return
-        }
+        insert(exportableAsset: url as NSURL, source: .otherApps)
     }
 
     fileprivate func insertDeviceMedia(phAsset: PHAsset) {
-        switch phAsset.mediaType {
-        case .image:
-            insertDeviceImage(phAsset: phAsset)
-        case .video:
-            insertDeviceVideo(phAsset: phAsset)
-        default:
-            return
-        }
+        insert(exportableAsset: phAsset, source: .deviceLibrary)
     }
 
-    fileprivate func insertDeviceImage(phAsset: PHAsset) {
-        let attachment = insertImageAttachment()
-        let uploadID = attachment.identifier
-        attachment.uploadID = uploadID
+    /// Insert media to the post from the site's media library.
+    ///
+    func prepopulateMediaItems(_ media: [Media]) {
+        mediaSelectionMethod = .mediaUploadWritePost
 
-        let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        mediaService.createMedia(with: phAsset,
-                                 objectID: post.objectID, progress: nil,
-                                 thumbnailCallback: { [weak self](thumbnailURL) in
-                                    if let attachment = self?.findAttachment(withUploadID: uploadID) {
-                                        self?.handleThumbnailURL(thumbnailURL, attachment: attachment)
-                                    }
-                                 },
-                                 completion: { [weak self](media, error) in
-                                    if let attachment = self?.findAttachment(withUploadID: uploadID) {
-                                        self?.handleNewMedia(media, error: error, attachment: attachment, statType: .editorAddedPhotoViaLocalLibrary)
-                                    }
-        })
+        media.forEach({ insertSiteMediaLibrary(media: $0) })
     }
 
-    fileprivate func insertDeviceVideo(phAsset: PHAsset) {
-        let attachment = videoAttachmentWithPlaceholder()
-        let uploadID = attachment.identifier
-        attachment.uploadID = uploadID
-        let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        mediaService.createMedia(with: phAsset,
-                                 objectID: post.objectID, progress: nil,
-                                 thumbnailCallback: { [weak self](thumbnailURL) in
-                                    if let attachment = self?.findAttachment(withUploadID: uploadID) {
-                                        self?.handleThumbnailURL(thumbnailURL, attachment: attachment)
-                                    }
-            },
-                                 completion: { [weak self](media, error) in
-                                    if let attachment = self?.findAttachment(withUploadID: uploadID) {
-                                        self?.handleNewMedia(media, error: error, attachment: attachment, statType: .editorAddedVideoViaLocalLibrary)
-                                    }
-        })
-    }
-
-    fileprivate func insertSiteMediaLibrary(media: Media) {
+    private func insertSiteMediaLibrary(media: Media) {
         if media.hasRemote {
             insertRemoteSiteMediaLibrary(media: media)
         } else {
@@ -2762,7 +2783,7 @@ extension AztecPostViewController {
         return attachment
     }
 
-    private func videoAttachmentWithPlaceholder() -> VideoAttachment {
+    private func insertVideoAttachmentWithPlaceholder() -> VideoAttachment {
         return richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: Constants.placeholderMediaLink, posterURL: Constants.placeholderMediaLink, placeHolderImage: Assets.defaultMissingImage)
     }
 
@@ -2779,24 +2800,6 @@ extension AztecPostViewController {
         }
     }
 
-    private func handleNewMedia(_ media: Media?, error: Error?, attachment: MediaAttachment, statType: WPAnalyticsStat) {
-        guard let mediaUploadID = attachment.uploadID else {
-            return
-        }
-
-        if error != nil {
-            DispatchQueue.main.async {
-                self.handleError(error as NSError?, onMediaUploadID: mediaUploadID)
-            }
-            return
-        }
-
-        if let media = media {
-            WPAppAnalytics.track(statType, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post.blog)
-            upload(media: media, mediaID: mediaUploadID)
-        }
-    }
-
     fileprivate func insertRemoteSiteMediaLibrary(media: Media) {
 
         guard let remoteURLStr = media.remoteURL, let remoteURL = URL(string: remoteURLStr) else {
@@ -2806,7 +2809,7 @@ extension AztecPostViewController {
         case .image:
             let attachment = insertImageAttachment(with: remoteURL)
             attachment.alt = media.alt
-            WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
+            WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, selectionMethod: mediaSelectionMethod), with: post)
         case .video:
             var posterURL: URL?
             if let posterURLString = media.remoteThumbnailURL {
@@ -2817,14 +2820,13 @@ extension AztecPostViewController {
                 attachment.videoPressID = videoPressGUID
                 richTextView.refresh(attachment)
             }
-            WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
+            WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, selectionMethod: mediaSelectionMethod), with: post)
         default:
             // If we drop in here, let's just insert a link the the remote media
             let linkTitle = media.title?.nonEmptyString() ?? remoteURLStr
             richTextView.setLink(remoteURL, title: linkTitle, inRange: richTextView.selectedRange)
-            WPAppAnalytics.track(.editorAddedOtherMediaViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
+            WPAppAnalytics.track(.editorAddedOtherMediaViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, selectionMethod: mediaSelectionMethod), with: post)
         }
-        self.mediaProgressCoordinator.finishOneItem()
     }
 
     fileprivate func insertLocalSiteMediaLibrary(media: Media) {
@@ -2836,15 +2838,15 @@ extension AztecPostViewController {
         var attachment: MediaAttachment?
         if media.mediaType == .image {
             attachment = insertImageAttachment(with: tempMediaURL)
-            WPAppAnalytics.track(.editorAddedPhotoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
         } else if media.mediaType == .video,
             let remoteURLStr = media.remoteURL,
             let remoteURL = URL(string: remoteURLStr) {
             attachment = richTextView.replaceWithVideo(at: richTextView.selectedRange, sourceURL: remoteURL, posterURL: media.absoluteThumbnailLocalURL, placeHolderImage: Assets.defaultMissingImage)
-            WPAppAnalytics.track(.editorAddedVideoViaWPMediaLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: selectedMediaOrigin), with: post)
         }
         if let attachment = attachment {
-            upload(media: media, mediaID: attachment.identifier)
+            attachment.uploadID = media.uploadID
+            let info = MediaAnalyticsInfo(origin: .editor(.wpMediaLibrary), selectionMethod: mediaSelectionMethod)
+            mediaCoordinator.addMedia(media, to: post, analyticsInfo: info)
         }
     }
 
@@ -2852,61 +2854,7 @@ extension AztecPostViewController {
         guard let image = attachment.image else {
             return
         }
-        mediaProgressCoordinator.track(numberOfItems: 1)
-        let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        mediaService.createMedia(with: image, objectID: post.objectID, progress: nil, thumbnailCallback: { (thumbnailURL) in
-            DispatchQueue.main.async {
-                if let imageAttachment = attachment as? ImageAttachment {
-                    imageAttachment.updateURL(thumbnailURL)
-                    self.richTextView.refresh(imageAttachment)
-                }
-            }
-        }, completion: { [weak self](media, error) in
-            guard let strongSelf = self else {
-                return
-            }
-            guard let media = media, error == nil else {
-                DispatchQueue.main.async {
-                    strongSelf.handleError(error as NSError?, onMediaUploadID: attachment.identifier)
-                }
-                return
-            }
-
-            if media.mediaType == .image {
-                WPAppAnalytics.track(.editorAddedPhotoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
-            } else if media.mediaType == .video {
-                WPAppAnalytics.track(.editorAddedVideoViaLocalLibrary, withProperties: WPAppAnalytics.properties(for: media, mediaOrigin: strongSelf.selectedMediaOrigin), with: strongSelf.post.blog)
-            }
-
-            strongSelf.upload(media: media, mediaID: attachment.identifier)
-        })
-    }
-
-    private func upload(media: Media, mediaID: String) {
-        let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        var uploadProgress: Progress?
-
-        mediaService.uploadMedia(media, progress: &uploadProgress, success: { [weak self] in
-                guard let strongSelf = self else {
-                    return
-                }
-                DispatchQueue.main.async {
-                    strongSelf.handleUploaded(media: media, mediaUploadID: mediaID)
-                }
-            }, failure: { [weak self] error in
-                guard let strongSelf = self else {
-                    return
-                }
-
-                WPAppAnalytics.track(.editorUploadMediaFailed, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: strongSelf.post.blog)
-
-                DispatchQueue.main.async {
-                    strongSelf.handleError(error as NSError?, onMediaUploadID: mediaID)
-                }
-        })
-        if let progress = uploadProgress {
-            mediaProgressCoordinator.track(progress: progress, of: media, withIdentifier: mediaID)
-        }
+        insert(exportableAsset: image, source: .otherApps, attachment: attachment)
     }
 
     private func handleUploaded(media: Media, mediaUploadID: String) {
@@ -2922,6 +2870,7 @@ extension AztecPostViewController {
                 return
             }
             attachment.uploadID = nil
+            attachment.progress = nil
             if let imageAttachment = attachment as? ImageAttachment {
                 if let width = media.width?.intValue {
                     imageAttachment.width = width
@@ -2933,16 +2882,19 @@ extension AztecPostViewController {
                     imageAttachment.imageID = mediaID
                 }
                 imageAttachment.updateURL(remoteURL, refreshAsset: false)
+                richTextView.refresh(attachment, overlayUpdateOnly: true)
             } else if let videoAttachment = attachment as? VideoAttachment, let videoURLString = media.remoteURL {
                 videoAttachment.srcURL = URL(string: videoURLString)
+                var posterChange = false
                 if let videoPosterURLString = media.remoteThumbnailURL {
                     videoAttachment.posterURL = URL(string: videoPosterURLString)
+                    posterChange = true
                 }
                 if let videoPressGUID = media.videopressGUID, !videoPressGUID.isEmpty {
                     videoAttachment.videoPressID = videoPressGUID
                 }
+                richTextView.refresh(attachment, overlayUpdateOnly: !posterChange)
             }
-            richTextView.refresh(attachment)
         case .html:
             if media.mediaType == .image {
                 let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, width: media.width?.intValue, height: media.height?.intValue)
@@ -2954,120 +2906,156 @@ extension AztecPostViewController {
         }
     }
 
-    private func handleError(_ error: NSError?, onMediaUploadID mediaID: String) {
-        guard let attachment = findAttachment(withUploadID: mediaID) else {
+    private func handleError(_ error: Error?, onAttachment attachment: Aztec.MediaAttachment) {
+        if let nserror = error as NSError?, nserror.domain == NSURLErrorDomain && nserror.code == NSURLErrorCancelled {
+            self.richTextView.remove(attachmentID: attachment.identifier)
             return
         }
-        if let error = error {
-            if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
-                self.richTextView.remove(attachmentID: attachment.identifier)
-                return
-            }
-            mediaProgressCoordinator.attach(error: error, toMediaID: mediaID)
+        if let videoExportError = error as? MediaVideoExporter.VideoExportError, videoExportError == MediaVideoExporter.VideoExportError.videoExportSessionCancelled {
+            self.richTextView.remove(attachmentID: attachment.identifier)
+            return
         }
 
-        handleError(error, onAttachment: attachment)
-    }
+        WPAppAnalytics.track(.editorUploadMediaFailed, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: self.post.blog)
 
-    private func handleError(_ error: NSError?, onAttachment attachment: Aztec.MediaAttachment) {
-        let message = NSLocalizedString("Failed to insert media.\n Please tap for options.", comment: "Error message to show to use when media insertion on a post fails")
+        let message = MediaAttachmentActionSheet.failedMediaActionTitle
 
-        let attributeMessage = NSAttributedString(string: message, attributes: mediaMessageAttributes)
+        let attributeMessage = NSAttributedString(string: message, attributes: Constants.mediaMessageAttributes)
         attachment.message = attributeMessage
         attachment.overlayImage = Gridicon.iconOfType(.refresh, withSize: Constants.mediaOverlayIconSize)
         attachment.shouldHideBorder = true
-        richTextView.refresh(attachment)
+        attachment.progress = nil
+        richTextView.refresh(attachment, overlayUpdateOnly: true)
+    }
+
+    private func handleProgress(_ value: Double, forMedia media: Media, onAttachment attachment: Aztec.MediaAttachment) {
+        guard media.remoteStatus == .processing || media.remoteStatus == .pushing else {
+            return
+        }
+        if value >= 1 {
+            attachment.progress = nil
+        } else {
+            attachment.progress = value
+        }
+        richTextView.refresh(attachment, overlayUpdateOnly: true)
+    }
+
+    fileprivate var failedMediaIDs: [String] {
+        var failedIDs = [String]()
+        richTextView.textStorage.enumerateAttachments { (attachment, range) in
+            guard let mediaAttachment = attachment as? MediaAttachment,
+                let mediaUploadID = mediaAttachment.uploadID,
+                let media = self.mediaCoordinator.media(withObjectID: mediaUploadID),
+                media.error != nil
+                else {
+                    return
+            }
+            failedIDs.append(mediaUploadID)
+        }
+        return failedIDs
+    }
+
+    fileprivate var hasFailedMedia: Bool {
+        return !failedMediaIDs.isEmpty
     }
 
     fileprivate func removeFailedMedia() {
-        let failedMediaIDs = mediaProgressCoordinator.failedMediaIDs
         for mediaID in failedMediaIDs {
-            richTextView.remove(attachmentID: mediaID)
-            mediaProgressCoordinator.cancelAndStopTrack(of: mediaID)
+            if let attachment = self.findAttachment(withUploadID: mediaID) {
+                richTextView.remove(attachmentID: attachment.identifier)
+            }
+            if let media = mediaCoordinator.media(withObjectID: mediaID) {
+                mediaCoordinator.delete(media)
+            }
         }
+    }
+
+    fileprivate func retryAllFailedMediaUploads() {
+        for mediaID in failedMediaIDs {
+            guard let attachment = self.findAttachment(withUploadID: mediaID),
+                let media = mediaCoordinator.media(withObjectID: mediaID) else {
+                continue
+            }
+            retryFailedMediaUpload(media: media, attachment: attachment)
+        }
+    }
+
+    fileprivate func retryFailedMediaUpload(media: Media, attachment: MediaAttachment) {
+        resetMediaAttachmentOverlay(attachment)
+        attachment.progress = 0
+        richTextView.refresh(attachment)
+
+        let info = MediaAnalyticsInfo(origin: .editor(.none), selectionMethod: mediaSelectionMethod)
+        mediaCoordinator.retryMedia(media, analyticsInfo: info)
     }
 
     fileprivate func processMediaAttachments() {
-        processMediaWithErrorAttachments()
-        processVideoPressAttachments()
-    }
-
-    fileprivate func processMediaWithErrorAttachments() {
+        refreshGlobalProgress()
         richTextView.textStorage.enumerateAttachments { (attachment, range) in
-            guard let mediaAttachment = attachment as? MediaAttachment, let mediaUploadID = mediaAttachment.uploadID else {
+            guard let mediaAttachment = attachment as? MediaAttachment else {
                 return
             }
-            if let error = self.mediaProgressCoordinator.error(forMediaID: mediaUploadID) {
-                self.handleError(error, onAttachment: mediaAttachment)
+            // Check if media is uploading and we have a media object for it
+            if let mediaUploadID = mediaAttachment.uploadID,
+               let media = self.mediaCoordinator.media(withObjectID: mediaUploadID) {
+                if let thumbnailURL = media.absoluteThumbnailLocalURL {
+                    self.handleThumbnailURL(thumbnailURL, attachment: mediaAttachment)
+                }
+
+                if let error = media.error {
+                    self.handleError(error, onAttachment: mediaAttachment)
+                }
+
+                if let progress = self.mediaCoordinator.progress(for: media) {
+                    self.handleProgress(progress.fractionCompleted, forMedia: media, onAttachment: mediaAttachment)
+                }
+            } else {
+                if let videoAttachment = mediaAttachment as? VideoAttachment {
+                    self.process(videoAttachment: videoAttachment)
+                }
             }
         }
     }
 
-    fileprivate func processVideoPressAttachments() {
-        richTextView.textStorage.enumerateAttachments { (attachment, range) in
-            guard let videoAttachment = attachment as? VideoAttachment else {
-                return
-            }
-            // Use a placeholder for video while trying to generate a thumbnail
-            DispatchQueue.main.async {
-                videoAttachment.image = Gridicon.iconOfType(.video, withSize: Constants.mediaPlaceholderImageSize)
+    fileprivate func process(videoAttachment: VideoAttachment) {
+        // Use a placeholder for video while trying to generate a thumbnail
+        DispatchQueue.main.async {
+            videoAttachment.image = Gridicon.iconOfType(.video, withSize: Constants.mediaPlaceholderImageSize)
+            self.richTextView.refresh(videoAttachment)
+        }
+        if let videoSrcURL = videoAttachment.srcURL,
+           videoSrcURL.scheme == VideoShortcodeProcessor.videoPressScheme,
+           let videoPressID = videoSrcURL.host {
+            // It's videoPress video so let's fetch the information for the video
+            let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
+                videoAttachment.srcURL = URL(string: videoURLString)
+                if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
+                    videoAttachment.posterURL = posterURL
+                }
                 self.richTextView.refresh(videoAttachment)
-            }
-            if let videoSrcURL = videoAttachment.srcURL,
-               videoSrcURL.scheme == VideoShortcodeProcessor.videoPressScheme,
-               let videoPressID = videoSrcURL.host {
-                // It's videoPress video so let's fetch the information for the video
-                let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-                mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
-                    videoAttachment.srcURL = URL(string: videoURLString)
-                    if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
-                        videoAttachment.posterURL = posterURL
-                    }
+            }, failure: { (error) in
+                DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
+            })
+        } else if let videoSrcURL = videoAttachment.srcURL, videoSrcURL != Constants.placeholderMediaLink, videoAttachment.posterURL == nil {
+            let thumbnailGenerator = MediaVideoExporter(url: videoSrcURL)
+            thumbnailGenerator.exportPreviewImageForVideo(atURL: videoSrcURL, imageOptions: nil, onCompletion: { (exportResult) in
+                DispatchQueue.main.async {
+                    videoAttachment.posterURL = exportResult.url
                     self.richTextView.refresh(videoAttachment)
-                }, failure: { (error) in
-                    DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
-                })
-            } else if let videoSrcURL = videoAttachment.srcURL, videoAttachment.posterURL == nil {
-                let asset = AVURLAsset(url: videoSrcURL as URL, options: nil)
-                let imgGenerator = AVAssetImageGenerator(asset: asset)
-                imgGenerator.maximumSize = .zero
-                imgGenerator.appliesPreferredTrackTransform = true
-                let timeToCapture = NSValue(time: CMTimeMake(0, 1))
-                imgGenerator.generateCGImagesAsynchronously(forTimes: [timeToCapture],
-                                                            completionHandler: { (time, cgImage, actualTime, result, error) in
-                    guard let cgImage = cgImage else {
-                        return
-                    }
-                    let uiImage = UIImage(cgImage: cgImage)
-                    let url = self.URLForTemporaryFileWithFileExtension(".jpg")
-                    do {
-                        try uiImage.writeJPEGToURL(url)
-                        DispatchQueue.main.async {
-                            videoAttachment.posterURL = url
-                            self.richTextView.refresh(videoAttachment)
-                        }
-                    } catch {
-                        DDLogError("Unable to grab frame from video = \(videoSrcURL). Details: \(error.localizedDescription)")
-                    }
-                })
-            }
+                }
+            }, onError: { (error) in
+                DDLogError("Unable to grab frame from video = \(videoSrcURL). Details: \(error.localizedDescription)")
+            })
         }
     }
 
-    private func URLForTemporaryFileWithFileExtension(_ fileExtension: String) -> URL {
-        assert(!fileExtension.isEmpty, "file Extension cannot be empty")
-        let fileName = "\(ProcessInfo.processInfo.globallyUniqueString)_file.\(fileExtension)"
-        let fileURL = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(fileName)
-        return fileURL
-    }
-
-    // TODO: Extract these strings into structs like other items
     fileprivate func displayActions(forAttachment attachment: MediaAttachment, position: CGPoint) {
-        let mediaID = attachment.identifier
-        let title: String = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
+        let attachmentID = attachment.identifier
+        let title: String = MediaAttachmentActionSheet.title
         var message: String?
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-        alertController.addActionWithTitle(NSLocalizedString("Dismiss", comment: "User action to dismiss media options."),
+        alertController.addActionWithTitle(MediaAttachmentActionSheet.dismissActionTitle,
                                            style: .cancel,
                                            handler: { (action) in
                                             if attachment == self.currentSelectedAttachment {
@@ -3076,56 +3064,66 @@ extension AztecPostViewController {
                                                 self.richTextView.refresh(attachment)
                                             }
         })
-        if let imageAttachment = attachment as? ImageAttachment {
-            alertController.preferredAction = alertController.addActionWithTitle(NSLocalizedString("Edit", comment: "User action to edit media details."),
-                                               style: .default,
-                                               handler: { (action) in
-                                                self.displayDetails(forAttachment: imageAttachment)
-            })
-        } else if let videoAttachment = attachment as? VideoAttachment,
-            mediaProgressCoordinator.error(forMediaID: mediaID) == nil,
-            !mediaProgressCoordinator.isMediaInProgress(mediaID: mediaID) {
-            alertController.preferredAction = alertController.addActionWithTitle(NSLocalizedString("Play Video", comment: "User action to play a video on the editor."),
-                                                                                 style: .default,
-                                                                                 handler: { (action) in
-                                                                                    self.displayPlayerFor(videoAttachment: videoAttachment, atPosition: position)
-            })
-        }
-
-        // Is upload still going?
-        if let mediaProgress = mediaProgressCoordinator.progress(forMediaID: mediaID),
-            mediaProgress.completedUnitCount < mediaProgress.totalUnitCount && !mediaProgress.isFailed {
-            alertController.addActionWithTitle(NSLocalizedString("Stop Upload", comment: "User action to stop upload."),
-                                               style: .destructive,
-                                               handler: { (action) in
-                                                mediaProgress.cancel()
-                                                self.richTextView.remove(attachmentID: mediaID)
-            })
-        } else {
-            if let error = mediaProgressCoordinator.error(forMediaID: mediaID) {
-                message = error.localizedDescription
-                alertController.addActionWithTitle(NSLocalizedString("Retry Upload", comment: "User action to retry media upload."),
-                                                   style: .default,
+        var showDefaultActions = true
+        if let mediaUploadID = attachment.uploadID,
+            let media = mediaCoordinator.media(withIdentifier: mediaUploadID, for: post) {
+            // Is upload still going?
+            if media.remoteStatus == .pushing || media.remoteStatus == .processing {
+                showDefaultActions = false
+                alertController.addActionWithTitle(MediaAttachmentActionSheet.stopUploadActionTitle,
+                                                   style: .destructive,
                                                    handler: { (action) in
-                                                    //retry upload
-                                                    if let media = self.mediaProgressCoordinator.media(withIdentifier: mediaID),
-                                                        let attachment = self.richTextView.attachment(withId: mediaID) {
-                                                        self.resetMediaAttachmentOverlay(attachment)
-                                                        attachment.progress = 0
-                                                        self.richTextView.refresh(attachment)
-                                                        self.mediaProgressCoordinator.track(numberOfItems: 1)
-
-                                                        WPAppAnalytics.track(.editorUploadMediaRetried, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: self.post.blog)
-
-                                                        self.upload(media: media, mediaID: mediaID)
-                                                    }
+                                                    self.mediaCoordinator.delete(media)
                 })
             }
-            alertController.addActionWithTitle(NSLocalizedString("Remove", comment: "User action to remove media."),
-                                               style: .destructive,
-                                               handler: { (action) in
-                                                self.richTextView.remove(attachmentID: mediaID)
+        } else {
+            alertController.addActionWithTitle(attachment is ImageAttachment ? MediaAttachmentActionSheet.removeImageActionTitle : MediaAttachmentActionSheet.removeVideoActionTitle,
+                style: .destructive,
+                handler: { (action) in
+                    self.richTextView.remove(attachmentID: attachmentID)
             })
+        }
+        if let mediaUploadID = attachment.uploadID,
+           let media = mediaCoordinator.media(withObjectID: mediaUploadID),
+           let error = media.error {
+            showDefaultActions = false
+            message = error.localizedDescription
+            // only show retry options if we at least have a local file to try to upload again.
+            if media.absoluteLocalURL != nil {
+                if failedMediaIDs.count > 1 {
+                    alertController.addActionWithTitle(MediaAttachmentActionSheet.retryAllFailedUploadsActionTitle,
+                                                       style: .default,
+                                                       handler: { [weak self] (action) in
+                                                        self?.retryAllFailedMediaUploads()
+                    })
+                }
+
+                alertController.addActionWithTitle(MediaAttachmentActionSheet.retryUploadActionTitle,
+                                                   style: .default,
+                                                   handler: { [weak self] (action) in
+                                                    guard let strongSelf = self,
+                                                        let attachment = strongSelf.richTextView.attachment(withId: attachmentID) else {
+                                                            return
+                                                    }
+                                                    strongSelf.retryFailedMediaUpload(media: media, attachment: attachment)
+                })
+            }
+        }
+
+        if showDefaultActions {
+            if let imageAttachment = attachment as? ImageAttachment {
+                alertController.preferredAction = alertController.addActionWithTitle(MediaAttachmentActionSheet.editActionTitle,
+                                                                                     style: .default,
+                                                                                     handler: { (action) in
+                                                                                        self.displayDetails(forAttachment: imageAttachment)
+                })
+            } else if let videoAttachment = attachment as? VideoAttachment {
+                alertController.preferredAction = alertController.addActionWithTitle(MediaAttachmentActionSheet.playVideoActionTitle,
+                                                                                     style: .default,
+                                                                                     handler: { (action) in
+                                                                                        self.displayPlayerFor(videoAttachment: videoAttachment, atPosition: position)
+                })
+            }
         }
 
         alertController.title = title
@@ -3183,13 +3181,52 @@ extension AztecPostViewController {
         WPAppAnalytics.track(.editorEditedImage, withProperties: [WPAppAnalyticsKeyEditorSource: Analytics.editorSource], with: post)
     }
 
-    var mediaMessageAttributes: [NSAttributedStringKey: Any] {
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
+    func displayPlayerFor(videoAttachment: VideoAttachment, atPosition position: CGPoint) {
+        guard let videoURL = videoAttachment.srcURL else {
+            return
+        }
+        guard let videoPressID = videoAttachment.videoPressID else {
+            displayVideoPlayer(for: videoURL)
+            return
+        }
+        // It's videoPress video so let's fetch the information for the video
+        let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { [weak self] (videoURLString, posterURLString) in
+            guard let `self` = self else {
+                return
+            }
+            guard let videoURL = URL(string: videoURLString) else {
+                self.displayUnableToPlayVideoAlert()
+                return
+            }
+            videoAttachment.srcURL = videoURL
+            if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
+                videoAttachment.posterURL = posterURL
+            }
+            self.richTextView.refresh(videoAttachment)
+            self.displayVideoPlayer(for: videoURL)
+        }, failure: { [weak self] (error) in
+            self?.displayUnableToPlayVideoAlert()
+            DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
+        })
+    }
 
-        return [.font: Fonts.mediaOverlay,
-                .paragraphStyle: paragraphStyle,
-                .foregroundColor: UIColor.white]
+    func displayVideoPlayer(for videoURL: URL) {
+        let asset = AVURLAsset(url: videoURL)
+        let controller = AVPlayerViewController()
+        let playerItem = AVPlayerItem(asset: asset)
+        let player = AVPlayer(playerItem: playerItem)
+        controller.showsPlaybackControls = true
+        controller.player = player
+        player.play()
+        present(controller, animated: true, completion: nil)
+    }
+
+    func displayUnableToPlayVideoAlert() {
+        let alertController = UIAlertController(title: MediaUnableToPlayVideoAlert.title, message: MediaUnableToPlayVideoAlert.message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: nil))
+        present(alertController, animated: true, completion: nil)
+        return
     }
 
     func placeholderImage(for attachment: NSTextAttachment) -> UIImage {
@@ -3207,13 +3244,17 @@ extension AztecPostViewController {
         return icon
     }
 
-    // [2017-08-30] We need to auto-close the input media picker when multitasking panes are resized - iOS
-    // is dropping the input picker's view from the view hierarchy. Not an ideal solution, but prevents
-    // the user from seeing an empty grey rect as a keyboard. Issue affects the 7.9", 9.7", and 10.5"
-    // iPads only...not the 12.9"
-    // See http://www.openradar.me/radar?id=4972612522344448 for more details.
-    //
     @objc func applicationWillResignActive(_ notification: Foundation.Notification) {
+
+        // [2018-03-05] Need to close the options VC on backgrounding to prevent view hierarchy inconsistency crasher.
+        dismissOptionsViewControllerIfNecessary()
+
+        // [2017-08-30] We need to auto-close the input media picker when multitasking panes are resized - iOS
+        // is dropping the input picker's view from the view hierarchy. Not an ideal solution, but prevents
+        // the user from seeing an empty grey rect as a keyboard. Issue affects the 7.9", 9.7", and 10.5"
+        // iPads only...not the 12.9"
+        // See http://www.openradar.me/radar?id=4972612522344448 for more details.
+        //
         if UIDevice.isPad() {
             closeMediaPickerInputViewController()
         }
@@ -3230,9 +3271,7 @@ extension AztecPostViewController {
     }
 
     fileprivate func resetMediaAttachmentOverlay(_ mediaAttachment: MediaAttachment) {
-        if mediaAttachment is ImageAttachment {
-            mediaAttachment.overlayImage = nil
-        }
+        mediaAttachment.overlayImage = nil
         mediaAttachment.message = nil
         mediaAttachment.shouldHideBorder = false
     }
@@ -3259,59 +3298,29 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     }
 
     func selected(textAttachment attachment: MediaAttachment, atPosition position: CGPoint) {
-        // Check to see if this is an error
-        if mediaProgressCoordinator.error(forMediaID: attachment.identifier) == nil {
+        // Check to see if there is an error associated to the attachment
+        var errorAssociatedToAttachment = false
+        if let uploadID = attachment.uploadID,
+           let media = mediaCoordinator.media(withObjectID: uploadID),
+           media.error != nil {
+            errorAssociatedToAttachment = true
+        }
+        if !errorAssociatedToAttachment {
             // If it's a new attachment tapped let's unmark the previous one...
             if let selectedAttachment = currentSelectedAttachment {
-                self.resetMediaAttachmentOverlay(selectedAttachment)
+                resetMediaAttachmentOverlay(selectedAttachment)
                 richTextView.refresh(selectedAttachment)
             }
 
             // ...and mark the newly tapped attachment
             let message = ""
-            attachment.message = NSAttributedString(string: message, attributes: mediaMessageAttributes)
+            attachment.message = NSAttributedString(string: message, attributes: Constants.mediaMessageAttributes)
             richTextView.refresh(attachment)
             currentSelectedAttachment = attachment
         }
 
         // Display the action sheet right away
         displayActions(forAttachment: attachment, position: position)
-    }
-
-    func displayPlayerFor(videoAttachment: VideoAttachment, atPosition position: CGPoint) {
-        guard let videoURL = videoAttachment.srcURL else {
-            return
-        }
-        if let videoPressID = videoAttachment.videoPressID {
-            // It's videoPress video so let's fetch the information for the video
-            let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
-                guard let videoURL = URL(string: videoURLString) else {
-                    return
-                }
-                videoAttachment.srcURL = videoURL
-                if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
-                    videoAttachment.posterURL = posterURL
-                }
-                self.richTextView.refresh(videoAttachment)
-                self.displayVideoPlayer(for: videoURL)
-            }, failure: { (error) in
-                DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
-            })
-        } else {
-            displayVideoPlayer(for: videoURL)
-        }
-    }
-
-    func displayVideoPlayer(for videoURL: URL) {
-        let asset = AVURLAsset(url: videoURL)
-        let controller = AVPlayerViewController()
-        let playerItem = AVPlayerItem(asset: asset)
-        let player = AVPlayer(playerItem: playerItem)
-        controller.showsPlaybackControls = true
-        controller.player = player
-        player.play()
-        present(controller, animated: true, completion: nil)
     }
 
     public func textView(_ textView: TextView, deselected attachment: NSTextAttachment, atPosition position: CGPoint) {
@@ -3385,8 +3394,14 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         activeMediaRequests.removeAll()
     }
 
-    func textView(_ textView: TextView, deletedAttachmentWith attachmentID: String) {
-        mediaProgressCoordinator.cancelAndStopTrack(of: attachmentID)
+    func textView(_ textView: TextView, deletedAttachment attachment: MediaAttachment) {
+        guard let uploadID = attachment.uploadID,
+            let media = mediaCoordinator.media(withIdentifier: uploadID, for: post),
+            (media.remoteStatus == .pushing || media.remoteStatus == .processing)
+        else {
+            return
+        }
+        mediaCoordinator.delete(media)
     }
 
     func textView(_ textView: TextView, placeholderFor attachment: NSTextAttachment) -> UIImage {
@@ -3435,9 +3450,9 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             unregisterChangeObserver()
             mediaLibraryDataSource.searchCancelled()
             dismiss(animated: true, completion: nil)
-            selectedMediaOrigin = .fullScreenPicker
+            mediaSelectionMethod = .fullScreenPicker
         } else {
-            selectedMediaOrigin = .inlinePicker
+            mediaSelectionMethod = .inlinePicker
         }
 
         closeMediaPickerInputViewController()
@@ -3446,7 +3461,6 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             return
         }
 
-        mediaProgressCoordinator.track(numberOfItems: assets.count)
         for asset in assets {
             switch asset {
             case let phAsset as PHAsset:
@@ -3538,8 +3552,7 @@ extension AztecPostViewController: UIViewControllerRestoration {
 extension AztecPostViewController: UIDocumentPickerDelegate {
 
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        selectedMediaOrigin = .documentPicker
-        mediaProgressCoordinator.track(numberOfItems: urls.count)
+        mediaSelectionMethod = .documentPicker
         for documentURL in urls {
             insertExternalMediaWithURL(documentURL)
         }
@@ -3578,6 +3591,14 @@ extension AztecPostViewController {
         static let mediaOverlayBorderWidth  = CGFloat(3.0)
         static let mediaOverlayIconSize     = CGSize(width: 32, height: 32)
         static let mediaPlaceholderImageSize = CGSize(width: 128, height: 128)
+        static let mediaMessageAttributes: [NSAttributedStringKey: Any] = {
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.alignment = .center
+
+            return [.font: Fonts.mediaOverlay,
+                    .paragraphStyle: paragraphStyle,
+                    .foregroundColor: UIColor.white]
+        }()
         static let placeholderMediaLink = URL(string: "placeholder://")!
 
         struct Animations {
@@ -3587,11 +3608,24 @@ extension AztecPostViewController {
     }
 
     struct MoreSheetAlert {
-        static let htmlTitle                = NSLocalizedString("Switch to HTML", comment: "Switches the Editor to HTML Mode")
-        static let richTitle                = NSLocalizedString("Switch to Rich Text", comment: "Switches the Editor to Rich Text Mode")
-        static let previewTitle             = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
-        static let optionsTitle             = NSLocalizedString("Options", comment: "Displays the Post's Options")
-        static let cancelTitle              = NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen")
+        static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
+        static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
+        static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
+        static let postSettingsTitle = NSLocalizedString("Post Settings", comment: "Name of the button to open the post settings")
+        static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
+    }
+
+    struct MediaAttachmentActionSheet {
+        static let title = NSLocalizedString("Media Options", comment: "Title for action sheet with media options.")
+        static let dismissActionTitle = NSLocalizedString("Dismiss", comment: "User action to dismiss media options.")
+        static let stopUploadActionTitle = NSLocalizedString("Stop upload", comment: "User action to stop upload.")
+        static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry media upload.")
+        static let retryAllFailedUploadsActionTitle = NSLocalizedString("Retry all", comment: "User action to retry all failed media uploads.")
+        static let editActionTitle = NSLocalizedString("Edit", comment: "User action to edit media details.")
+        static let playVideoActionTitle = NSLocalizedString("Play video", comment: "User action to play a video on the editor.")
+        static let removeImageActionTitle = NSLocalizedString("Remove image", comment: "User action to remove image.")
+        static let removeVideoActionTitle = NSLocalizedString("Remove video", comment: "User action to remove video.")
+        static let failedMediaActionTitle = NSLocalizedString("Failed to insert media.\n Please tap for options.", comment: "Error message to show to use when media insertion on a post fails")
     }
 
     struct Colors {
@@ -3651,5 +3685,10 @@ extension AztecPostViewController {
         static let message = NSLocalizedString("You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", comment: "This prompt is displayed when the user attempts to stop media uploads in the post editor.")
         static let acceptTitle  = NSLocalizedString("Yes", comment: "Yes")
         static let cancelTitle  = NSLocalizedString("Not Now", comment: "Nicer dialog answer for \"No\".")
+    }
+
+    struct MediaUnableToPlayVideoAlert {
+        static let title = NSLocalizedString("Unable to play video", comment: "Dialog box title for when the user is cancelling an upload.")
+        static let message = NSLocalizedString("Something went wrong. Please check your connectivity and try again.", comment: "This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server.")
     }
 }

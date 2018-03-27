@@ -70,6 +70,35 @@ struct BlogJetpackSettingsService {
         })
     }
 
+    /// Sync ALL the Jetpack Modules settings for a blog
+    ///
+    func syncJetpackModulesForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
+        guard blog.supports(.jetpackSettings) else {
+            success()
+            return
+        }
+        guard let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: blog.wordPressComRestApi()),
+            let blogDotComId = blog.dotComID as? Int,
+            let blogSettings = blog.settings else {
+                failure(nil)
+                return
+        }
+
+        remote.getJetpackModulesSettingsForSite(blogDotComId,
+                                                success: { (remoteModulesSettings) in
+                                                    self.updateJetpackModulesSettings(blogSettings, remoteSettings: remoteModulesSettings)
+                                                    do {
+                                                        try self.context.save()
+                                                        success()
+                                                    } catch let error as NSError {
+                                                        failure(error)
+                                                    }
+                                                },
+                                                failure: { (error) in
+                                                    failure(error)
+                                                })
+    }
+
     func updateJetpackSettingsForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         guard let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: blog.wordPressComRestApi()),
             let blogDotComId = blog.dotComID as? Int,
@@ -117,6 +146,63 @@ struct BlogJetpackSettingsService {
                                                    })
     }
 
+    func updateJetpackLazyImagesModuleSettingForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
+        guard let blogSettings = blog.settings else {
+            failure(nil)
+            return
+        }
+
+        updateJetpackModuleActiveSettingForBlog(blog,
+                                                module: BlogJetpackSettingsServiceRemote.Keys.lazyLoadImages,
+                                                active: blogSettings.jetpackLazyLoadImages,
+                                                success: {
+                                                    success()
+                                                },
+                                                failure: { (error) in
+                                                    failure(error)
+                                                })
+    }
+
+    func updateJetpackServeImagesFromOurServersModuleSettingForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
+        guard let blogSettings = blog.settings else {
+            failure(nil)
+            return
+        }
+
+        updateJetpackModuleActiveSettingForBlog(blog,
+                                                module: BlogJetpackSettingsServiceRemote.Keys.serveImagesFromOurServers,
+                                                active: blogSettings.jetpackServeImagesFromOurServers,
+                                                success: {
+                                                    success()
+                                                },
+                                                failure: { (error) in
+                                                    failure(error)
+                                                })
+    }
+
+    func updateJetpackModuleActiveSettingForBlog(_ blog: Blog, module: String, active: Bool, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
+        guard let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: blog.wordPressComRestApi()),
+            let blogDotComId = blog.dotComID as? Int else {
+            failure(nil)
+            return
+        }
+
+        remote.updateJetpackModuleActiveSettingForSite(blogDotComId,
+                                                       module: module,
+                                                       active: active,
+                                                       success: {
+                                                           do {
+                                                               try self.context.save()
+                                                               success()
+                                                           } catch let error as NSError {
+                                                               failure(error)
+                                                           }
+                                                       },
+                                                       failure: { (error) in
+                                                           failure(error)
+                                                       })
+    }
+
     func disconnectJetpackFromBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         guard let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: blog.wordPressComRestApi()),
             let blogDotComId = blog.dotComID as? Int else {
@@ -149,6 +235,11 @@ private extension BlogJetpackSettingsService {
     func updateJetpackMonitorSettings(_ settings: BlogSettings, remoteSettings: RemoteBlogJetpackMonitorSettings) {
         settings.jetpackMonitorEmailNotifications = remoteSettings.monitorEmailNotifications
         settings.jetpackMonitorPushNotifications = remoteSettings.monitorPushNotifications
+    }
+
+    func updateJetpackModulesSettings(_ settings: BlogSettings, remoteSettings: RemoteBlogJetpackModulesSettings) {
+        settings.jetpackLazyLoadImages = remoteSettings.lazyLoadImages
+        settings.jetpackServeImagesFromOurServers = remoteSettings.serveImagesFromOurServers
     }
 
     func jetpackSettingsRemote(_ settings: BlogSettings) -> RemoteBlogJetpackSettings {

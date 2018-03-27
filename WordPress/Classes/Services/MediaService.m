@@ -4,14 +4,17 @@
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "Blog.h"
-#import "UIImage+Resize.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "WordPress-Swift.h"
 #import "WPXMLRPCDecoder.h"
 #import <WordPressShared/WPImageSource.h>
 #import <WordPressShared/WPAnalytics.h>
+
 @import WordPressKit;
+@import WordPressUI;
 @import WordPressShared;
+
+NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 
 @interface MediaService ()
 
@@ -35,7 +38,7 @@
 - (Media *)createMediaWith:(id<ExportableAsset>)exportable
                   objectID:(NSManagedObjectID *)objectID
                   progress:(NSProgress **)progress
-         thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+         thumbnailCallback:(void (^)(Media *media, NSURL *thumbnailURL))thumbnailCallback
                 completion:(void (^)(Media *media, NSError *error))completion
 {
     NSProgress *createProgress = [NSProgress discreteProgressWithTotalUnitCount:1];
@@ -65,20 +68,33 @@
         }
         media.mediaType = exportable.assetMediaType;
         media.remoteStatus = MediaRemoteStatusProcessing;
+        [self.managedObjectContext obtainPermanentIDsForObjects:@[media] error:nil];
         [self.managedObjectContext save: nil];
     }];
-
+    NSManagedObjectID *mediaObjectID = media.objectID;
     [self.managedObjectContext performBlock:^{
         // Setup completion handlers
         void(^completionWithMedia)(Media *) = ^(Media *media) {
+            media.remoteStatus = MediaRemoteStatusLocal;
+            media.error = nil;
             // Pre-generate a thumbnail image, see the method notes.
             [self exportPlaceholderThumbnailForMedia:media
-                                          completion:thumbnailCallback];
+                                          completion:^(NSURL *url){
+                                              if (thumbnailCallback) {
+                                                  thumbnailCallback(media, url);
+                                              }
+                                          }];
             if (completion) {
                 completion(media, nil);
             }
         };
         void(^completionWithError)( NSError *) = ^(NSError *error) {
+            Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
+            if (mediaInContext) {
+                mediaInContext.error = error;
+                mediaInContext.remoteStatus = MediaRemoteStatusFailed;
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            }
             if (completion) {
                 completion(media, error);
             }
@@ -129,6 +145,50 @@
 
 #pragma mark - Uploading media
 
+- (BOOL)isValidFileInMedia:(Media *)media error:(NSError **)error {
+    Blog *blog = media.blog;
+    if (media.absoluteLocalURL == nil) {
+        if (error){
+            *error = [NSError errorWithDomain:MediaServiceErrorDomain
+                                         code:MediaServiceErrorFileDoesNotExist
+                                     userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Media doesn't have an associated file to upload.", @"Error message to show to users when trying to upload a media object with no local file associated")}];
+        }
+        return NO;
+    }
+
+    if (![blog hasSpaceAvailableFor:media.absoluteLocalURL]) {
+        if (error) {
+            NSString *errorReason = NSLocalizedString(@"Not enough space to upload", @"Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota");
+            NSString *quotaInfo = blog.quotaUsageDescription;
+            NSString *errorMessage = errorReason;
+            if (quotaInfo != nil) {
+                errorMessage = [NSString stringWithFormat:@"%@\n%@", errorReason, quotaInfo];
+            }
+            *error = [NSError errorWithDomain:MediaServiceErrorDomain
+                                         code:MediaServiceErrorFileLargerThanDiskQuotaAvailable
+                                     userInfo:@{NSLocalizedDescriptionKey: errorMessage}];
+        }
+        return NO;
+    }
+
+    if (![blog isAbleToHandleFileSizeOfUrl:media.absoluteLocalURL]) {
+        if (error) {
+            NSNumber *fileSize = media.absoluteLocalURL.fileSize;
+            NSString *fileSizeDescription = [NSByteCountFormatter stringFromByteCount:fileSize.longLongValue countStyle:NSByteCountFormatterCountStyleBinary];
+            NSNumber *maxFileSize = blog.maxUploadSize;
+            NSString *maxFileSizeDescription = [NSByteCountFormatter stringFromByteCount:maxFileSize.longLongValue countStyle:NSByteCountFormatterCountStyleBinary];
+            NSString *errorLocalized = NSLocalizedString(@"Media filesize (%@) is too large to upload. Maximum allowed is %@", @"Error message to show to users when trying to upload a media object with file size is larger than the max file size allowed in the site");
+            NSString *errorMessage = [NSString stringWithFormat:errorLocalized, fileSizeDescription, maxFileSizeDescription];
+            *error = [NSError errorWithDomain:MediaServiceErrorDomain
+                                         code:MediaServiceErrorFileLargerThanMaxFileSize
+                                     userInfo:@{NSLocalizedDescriptionKey: errorMessage}];
+        }
+        return NO;
+    }
+
+    return YES;
+}
+
 - (void)uploadMedia:(Media *)media
            progress:(NSProgress **)progress
             success:(void (^)(void))success
@@ -137,16 +197,53 @@
     Blog *blog = media.blog;
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
     RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
-
     // Even though jpeg is a valid extension, use jpg instead for the widest possible
     // support.  Some third-party image related plugins prefer the .jpg extension.
     // See https://github.com/wordpress-mobile/WordPress-iOS/issues/4663
     remoteMedia.file = [remoteMedia.file stringByReplacingOccurrencesOfString:@".jpeg" withString:@".jpg"];
-    [self.managedObjectContext performBlock:^{
-        media.remoteStatus = MediaRemoteStatusPushing;
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    }];
     NSManagedObjectID *mediaObjectID = media.objectID;
+
+    void (^failureBlock)(NSError *error) = ^(NSError *error) {
+        [self.managedObjectContext performBlock:^{
+            if (error) {
+                [self trackUploadError:error];
+                DDLogError(@"Error uploading media: %@", error);
+            }
+            NSError *customError = [self customMediaUploadError:error remote:remote];
+            Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
+            if (mediaInContext) {
+                mediaInContext.remoteStatus = MediaRemoteStatusFailed;
+                mediaInContext.error = customError;
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                    if (failure) {
+                        failure(customError);
+                    }
+                }];
+                return;
+            }
+            if (failure) {
+                failure(customError);
+            }
+        }];
+    };
+
+    NSError *mediaValidationError = nil;
+    if (![self isValidFileInMedia:media error: &mediaValidationError]) {
+        if(progress) {
+            *progress = [NSProgress discreteProgressWithTotalUnitCount:1];
+        }
+        failureBlock(mediaValidationError);
+        return;
+    }
+
+    [self.managedObjectContext performBlock:^{
+        Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
+        if (mediaInContext) {
+            mediaInContext.remoteStatus = MediaRemoteStatusPushing;
+            mediaInContext.error = nil;
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        }
+    }];
     void (^successBlock)(RemoteMedia *media) = ^(RemoteMedia *media) {
         [self.managedObjectContext performBlock:^{
             [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadSuccessful withBlog:blog];
@@ -169,22 +266,7 @@
             }];
         }];
     };
-    void (^failureBlock)(NSError *error) = ^(NSError *error) {
-        [self.managedObjectContext performBlock:^{
-            if (error) {
-                [self trackUploadError:error];
-            }
 
-            Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
-            if (mediaInContext) {
-                mediaInContext.remoteStatus = MediaRemoteStatusFailed;
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-            }
-            if (failure) {
-                failure([self customMediaUploadError:error remote:remote]);
-            }
-        }];
-    };
     [self.managedObjectContext performBlock:^{
         [WPAppAnalytics track:WPAnalyticsStatMediaServiceUploadStarted withBlog:blog];
     }];
@@ -302,10 +384,11 @@
     if ([remote isKindOfClass:[MediaServiceRemoteXMLRPC class]]) {
         // For self-hosted sites we should generally pass on the raw system/network error message.
         // Which should help debug issues with a self-hosted site.
-        if ([error.domain isEqualToString:WPXMLRPCFaultErrorDomain]) {
-            switch (error.code) {
+        if ([error.domain isEqualToString:WordPressOrgXMLRPCApiErrorDomain] && [error.userInfo objectForKey:WordPressOrgXMLRPCApi.WordPressOrgXMLRPCApiErrorKeyStatusCode] != nil) {
+            NSNumber *errorCode = (NSNumber *)[error.userInfo objectForKey:WordPressOrgXMLRPCApi.WordPressOrgXMLRPCApiErrorKeyStatusCode];
+            switch (errorCode.intValue) {
                 case 500:{
-                    customErrorMessage = NSLocalizedString(@"Your site does not support this media file format.", @"Message to show to user when media upload failed because server doesn't support media type");
+                    customErrorMessage = NSLocalizedString(@"This file is too large to upload to your site or it does not support this media format.", @"Message to show to user when media upload failed because server doesn't support media type");
                 } break;
                 case 401:{
                     customErrorMessage = NSLocalizedString(@"Your site is out of storage space for media uploads.", @"Message to show to user when media upload failed because user doesn't have enough space on quota/disk");
@@ -660,10 +743,7 @@
             [self.managedObjectContext deleteObject:deleteMedia];
         }
     }
-    NSError *error;
-    if (![self.managedObjectContext save:&error]){
-        DDLogError(@"Error saving context afer adding media %@", [error localizedDescription]);
-    }
+    [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
     if (completion) {
         completion();
     }

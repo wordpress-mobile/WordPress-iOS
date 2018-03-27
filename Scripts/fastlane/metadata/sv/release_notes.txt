@@ -1,2 +1,0 @@
-Tillägg: Nu kan du hantera dina tillägg i appen. Du hittar det via uppgifter om din webbplats -> Tillägg.
-Redigerare: Några problem med kinesiska skrivtecken är lösta.

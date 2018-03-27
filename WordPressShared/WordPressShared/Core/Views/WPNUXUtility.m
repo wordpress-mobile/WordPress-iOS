@@ -1,6 +1,7 @@
 #import "WPNUXUtility.h"
 #import "WPFontManager.h"
 
+
 @implementation WPNUXUtility
 
 #pragma mark - Fonts
@@ -109,7 +110,7 @@
     paragraphStyle.lineHeightMultiple = 0.9;
     paragraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
     paragraphStyle.alignment = NSTextAlignmentCenter;
-    NSDictionary *attributes = @{NSFontAttributeName: [WPNUXUtility titleFont],
+    NSDictionary *attributes = @{NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2],
                                  NSForegroundColorAttributeName: color,
                                  NSParagraphStyleAttributeName: paragraphStyle};
     return attributes;

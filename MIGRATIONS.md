@@ -3,6 +3,26 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 73
+
+- @sergioestevao 2018-03-05
+- ``Blog` added `quotaSpaceAllowed` and 'quotaSpaceUsed' that stores a Int64, long number with quota information for the site.
+
+## WordPress 72
+
+- @sergioestevao 2018-02-07
+- ``Media` added `error` Transformable property that stores a NSError object that resulted from a failed import or upload.
+
+## WordPress 71
+
+- @elibud 2018-02-02
+- `BlogSettings` added `jetpackLazyLoadImages` and `jetpackServeImagesFromOurServers` Bool properties.
+
+## WordPress 70
+
+- @koke 2018-01-16
+- `BlogSettings` added `gmtOffset` Decimal property, and `timeZoneString` String property. Store the timezone settings.
+
 ## WordPress 69
 - @ctarda 2017-11-27
 - `PostTag` added `tagDescription`  string property and `postCount` integer property. Store an optional description and the number of posts a tag has been used in.

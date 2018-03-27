@@ -1,15 +1,12 @@
 import UIKit
 import SVProgressHUD
 
-class SiteCreationThemeSelectionViewController: UICollectionViewController, LoginWithLogoAndHelpViewController, UICollectionViewDelegateFlowLayout, WPContentSyncHelperDelegate {
+class SiteCreationThemeSelectionViewController: NUXCollectionViewController, UICollectionViewDelegateFlowLayout, WPContentSyncHelperDelegate {
 
     // MARK: - Properties
 
     var siteType: SiteType?
     private typealias Styles = WPStyleGuide.Themes
-
-    private var helpBadge: WPNUXHelpBadgeLabel!
-    private var helpButton: UIButton!
 
     private let themeService = ThemeService(managedObjectContext: ContextManager.sharedInstance().mainContext)
     private var themesSyncHelper: WPContentSyncHelper?
@@ -27,11 +24,13 @@ class SiteCreationThemeSelectionViewController: UICollectionViewController, Logi
         syncContent()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        SVProgressHUD.dismiss()
+    }
+
     private func configureView() {
         WPStyleGuide.configureColors(for: view, collectionView: collectionView)
-        let (helpButtonResult, helpBadgeResult) = addHelpButtonToNavController()
-        helpButton = helpButtonResult
-        helpBadge = helpBadgeResult
         navigationItem.title = NSLocalizedString("Create New Site", comment: "Create New Site title.")
     }
 
@@ -41,10 +40,6 @@ class SiteCreationThemeSelectionViewController: UICollectionViewController, Logi
         coordinator.animate(alongsideTransition: { _ in
             self.collectionView?.collectionViewLayout.invalidateLayout()
         })
-    }
-
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return UIDevice.isPad() ? .all : .portrait
     }
 
     // MARK: - UICollectionViewDataSource
@@ -115,11 +110,11 @@ class SiteCreationThemeSelectionViewController: UICollectionViewController, Logi
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
-        // TODO: save selected Theme for site creation step.
-        guard let _ = themeAtIndexPath(indexPath) else {
+        guard let selectedTheme = themeAtIndexPath(indexPath) else {
             return
         }
 
+        SiteCreationFields.sharedInstance.theme = selectedTheme
         performSegue(withIdentifier: "showSiteDetails", sender: nil)
     }
 
@@ -170,18 +165,6 @@ class SiteCreationThemeSelectionViewController: UICollectionViewController, Logi
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
         // Nothing to be done here. There will only be one page.
-    }
-
-    // MARK: - LoginWithLogoAndHelpViewController
-
-    func handleHelpButtonTapped(_ sender: AnyObject) {
-        displaySupportViewController(sourceTag: .wpComCreateSiteTheme)
-    }
-
-    func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification) {
-        let count = HelpshiftUtils.unreadNotificationCount()
-        helpBadge.text = "\(count)"
-        helpBadge.isHidden = (count == 0)
     }
 
     // MARK: - Navigation

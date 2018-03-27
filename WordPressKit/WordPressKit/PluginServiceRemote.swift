@@ -8,6 +8,27 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
         case unknownError
     }
 
+    public func getFeaturedPlugins(success: @escaping ([PluginDirectoryEntry]) -> Void, failure: @escaping (Error) -> Void) {
+        let endpoint = "wpcom/v2/plugins/featured"
+
+        wordPressComRestApi.GET(endpoint, parameters: nil, success: { (responseObject, httpResponse) in
+            guard let response = responseObject as? [[String: AnyObject]] else {
+                failure(ResponseError.decodingFailure)
+                return
+            }
+
+            do {
+                let pluginEntries = try response.map { try PluginDirectoryEntry(responseObject: $0) }
+                success(pluginEntries)
+            } catch {
+                failure(ResponseError.decodingFailure)
+            }
+        }, failure: { (error, httpResponse) in
+            failure(error)
+        })
+    }
+
+
     public func getPlugins(siteID: Int, success: @escaping (SitePlugins) -> Void, failure: @escaping (Error) -> Void) {
         let endpoint = "sites/\(siteID)/plugins"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_2)!
@@ -86,6 +107,38 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
         modifyPlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
     }
 
+    public func activateAndEnableAutoupdated(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
+        let parameters = [
+            "active": "true",
+            "autoupdate": "true"
+            ] as [String: AnyObject]
+        modifyPlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
+    }
+
+    public func install(pluginSlug: String, siteID: Int, success: @escaping (PluginState) -> Void, failure: @escaping (Error) -> Void) {
+        let endpoint = "sites/\(siteID)/plugins/\(pluginSlug)/install"
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_2)!
+
+        wordPressComRestApi.POST(
+            path,
+            parameters: nil,
+            success: { responseObject,_  in
+                guard let response = responseObject as? [String: AnyObject] else {
+                    failure(ResponseError.decodingFailure)
+                    return
+                }
+                do {
+                    let pluginState = try self.pluginState(response: response)
+                    success(pluginState)
+                } catch {
+                    failure(self.errorFromResponse(response))
+                }
+            }, failure: { (error, _) in
+                failure(error)
+            }
+        )
+    }
+
      public func remove(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         guard let escapedPluginID = encoded(pluginID: pluginID) else {
             return
@@ -148,22 +201,31 @@ fileprivate extension PluginServiceRemote {
             let slug = response["slug"] as? String,
             let active = response["active"] as? Bool,
             let autoupdate = response["autoupdate"] as? Bool,
-            let name = response["display_name"] as? String else {
+            let name = response["display_name"] as? String,
+            let author = response["author"] as? String else {
                 throw ResponseError.decodingFailure
         }
+
+
         let version = (response["version"] as? String)?.nonEmptyString()
         let url = (response["plugin_url"] as? String).flatMap(URL.init(string:))
         let availableUpdate = (response["update"] as? [String: String])?["new_version"]
         let updateState: PluginState.UpdateState = availableUpdate.map({ .available($0) }) ?? .updated
+
+        let actions = response["action_links"] as? [String: String]
+        let settingsURL = (actions?["Settings"]).flatMap(URL.init(string:))
+
         return PluginState(id: id,
                            slug: slug,
                            active: active,
                            name: name,
+                           author: author,
                            version: version,
                            updateState: updateState,
                            autoupdate: autoupdate,
                            automanaged: false,
-                           url: url)
+                           url: url,
+                           settingsURL: settingsURL)
 
     }
 

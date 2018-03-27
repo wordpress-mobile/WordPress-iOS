@@ -5,9 +5,13 @@ class MySitesScreen: BaseScreen {
     let tabBar: TabNavComponent
 
     init() {
-        let navBar = XCUIApplication().navigationBars.element(boundBy: 0)
-        tabBar = TabNavComponent.init()
+        tabBar = TabNavComponent()
+        let blogsTable = XCUIApplication().tables["Blogs"]
 
-        super.init(element: navBar)
+        super.init(element: blogsTable)
+    }
+
+    static func isLoaded() -> Bool {
+        return XCUIApplication().tables["Blogs"].exists
     }
 }

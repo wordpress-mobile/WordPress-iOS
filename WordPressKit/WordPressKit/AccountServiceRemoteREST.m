@@ -193,13 +193,52 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
                             clientID:(NSString *)clientID
                         clientSecret:(NSString *)clientSecret
                          wpcomScheme:(NSString *)scheme
-                             success:(void (^)(void))success failure:(void (^)(NSError *error))failure
+                             success:(void (^)(void))success
+                             failure:(void (^)(NSError *error))failure
+{
+    
+    NSString *path = [self pathForEndpoint:@"auth/send-login-email"
+                               withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+    
+    [self requestWPComMagicLinkForEmail:email
+                                   path:path
+                               clientID:clientID
+                           clientSecret:clientSecret
+                            wpcomScheme:scheme
+                                success:success
+                                failure:failure];
+}
+
+- (void)requestWPComSignupLinkForEmail:(NSString *)email
+                              clientID:(NSString *)clientID
+                          clientSecret:(NSString *)clientSecret
+                           wpcomScheme:(NSString *)scheme
+                               success:(void (^)(void))success
+                               failure:(void (^)(NSError *error))failure
+{
+    
+    NSString *path = [self pathForEndpoint:@"auth/send-signup-email"
+                               withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+    
+    [self requestWPComMagicLinkForEmail:email
+                                   path:path
+                               clientID:clientID
+                           clientSecret:clientSecret
+                            wpcomScheme:scheme
+                                success:success
+                                failure:failure];
+}
+
+- (void)requestWPComMagicLinkForEmail:(NSString *)email
+                                 path:(NSString *)path
+                             clientID:(NSString *)clientID
+                         clientSecret:(NSString *)clientSecret
+                          wpcomScheme:(NSString *)scheme
+                              success:(void (^)(void))success
+                              failure:(void (^)(NSError *error))failure
 {
     NSAssert([email length] > 0, @"Needs an email address.");
-
-    NSString *path = [self pathForEndpoint:@"auth/send-login-email"
-                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
-
+    
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:@{
                                                                                   @"email": email,
                                                                                   @"client_id": clientID,
@@ -210,16 +249,16 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
     }
 
     [self.wordPressComRestApi POST:path
-        parameters:[NSDictionary dictionaryWithDictionary:params]
-           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
-               if (success) {
-                   success();
-               }
-           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
-               if (failure) {
-                   failure(error);
-               }
-           }];
+                        parameters:[NSDictionary dictionaryWithDictionary:params]
+                           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                               if (success) {
+                                   success();
+                               }
+                           } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                               if (failure) {
+                                   failure(error);
+                               }
+                           }];
 }
 
 - (void)requestVerificationEmailWithSucccess:(void (^)(void))success
@@ -246,7 +285,7 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
                        failure:(void (^)(NSError *))failure
 {
     NSString *requestUrl = [self pathForEndpoint:@"me/sites"
-                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_2];
     [self.wordPressComRestApi GET:requestUrl
                        parameters:parameters
                           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {

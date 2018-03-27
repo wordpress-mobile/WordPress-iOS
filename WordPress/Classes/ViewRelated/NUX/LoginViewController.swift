@@ -1,89 +1,18 @@
-import Foundation
-import Gridicons
-
-protocol LoginWithLogoAndHelpViewController {
-    func addWordPressLogoToNavController()
-    func handleHelpButtonTapped(_ sender: AnyObject)
-    func addHelpButtonToNavController() -> (UIButton, WPNUXHelpBadgeLabel)
-    func displaySupportViewController(sourceTag: SupportSourceTag)
-    func handleHelpshiftUnreadCountUpdated(_ notification: Foundation.Notification)
-}
-
-extension LoginWithLogoAndHelpViewController where Self: UIViewController {
-    func addWordPressLogoToNavController() {
-        let image = Gridicon.iconOfType(.mySites)
-        let imageView = UIImageView(image: image.imageWithTintColor(UIColor.white))
-        navigationItem.titleView = imageView
-    }
-
-    func addHelpButtonToNavController() -> (UIButton, WPNUXHelpBadgeLabel) {
-        let helpButtonMarginSpacerWidth = CGFloat(-8)
-        let helpBadgeSize = CGSize(width: 12, height: 10)
-        let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
-
-        NotificationCenter.default.addObserver(forName: .HelpshiftUnreadCountUpdated, object: nil, queue: nil) { [weak self](notification) in
-            self?.handleHelpshiftUnreadCountUpdated(notification)
-        }
-
-        let customView = UIView(frame: helpButtonContainerFrame)
-
-        let helpButton = UIButton(type: .custom)
-        helpButton.setTitle(NSLocalizedString("Help", comment: "Help button"), for: .normal)
-        helpButton.setTitleColor(UIColor(white: 1.0, alpha: 0.4), for: .highlighted)
-        helpButton.on(.touchUpInside) { [weak self] control in
-            self?.handleHelpButtonTapped(helpButton)
-        }
-
-        customView.addSubview(helpButton)
-        helpButton.translatesAutoresizingMaskIntoConstraints = false
-        helpButton.leadingAnchor.constraint(equalTo: customView.leadingAnchor).isActive = true
-        helpButton.trailingAnchor.constraint(equalTo: customView.trailingAnchor).isActive = true
-        helpButton.topAnchor.constraint(equalTo: customView.topAnchor).isActive = true
-        helpButton.bottomAnchor.constraint(equalTo: customView.bottomAnchor).isActive = true
-
-        let helpBadge = WPNUXHelpBadgeLabel()
-        helpBadge.translatesAutoresizingMaskIntoConstraints = false
-        helpBadge.isHidden = true
-        customView.addSubview(helpBadge)
-        helpBadge.centerXAnchor.constraint(equalTo: helpButton.trailingAnchor).isActive = true
-        helpBadge.centerYAnchor.constraint(equalTo: helpButton.topAnchor).isActive = true
-        helpBadge.widthAnchor.constraint(equalToConstant: helpBadgeSize.width).isActive = true
-        helpBadge.heightAnchor.constraint(equalToConstant: helpBadgeSize.height).isActive = true
-
-        let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-        spacer.width = helpButtonMarginSpacerWidth
-
-        let barButton = UIBarButtonItem(customView: customView)
-        navigationItem.rightBarButtonItems = [spacer, barButton]
-
-        return (helpButton, helpBadge)
-    }
-
-    /// Displays the support vc.
-    ///
-    func displaySupportViewController(sourceTag: SupportSourceTag) {
-        let controller = SupportViewController()
-        controller.sourceTag = sourceTag
-
-        let navController = UINavigationController(rootViewController: controller)
-        navController.navigationBar.isTranslucent = false
-        navController.modalPresentationStyle = .formSheet
-
-        navigationController?.present(navController, animated: true, completion: nil)
-    }
-}
-
-class LoginViewController: NUXAbstractViewController {
+/// View Controller for login-specific screens
+class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacadeDelegate {
     @IBOutlet var instructionLabel: UILabel?
-    @IBOutlet var errorLabel: UILabel?
-    @IBOutlet var submitButton: NUXSubmitButton?
     @objc var errorToPresent: Error?
+    var restrictToWPCom = false
 
-    @objc lazy var loginFacade: LoginFacade = {
+    lazy var loginFacade: LoginFacade = {
         let facade = LoginFacade()
         facade.delegate = self
         return facade
     }()
+
+    var isJetpackLogin: Bool {
+        return loginFields.meta.jetpackLogin
+    }
 
 
     // MARK: Lifecycle Methods
@@ -99,6 +28,9 @@ class LoginViewController: NUXAbstractViewController {
         }
     }
 
+    func didChangePreferredContentSize() {
+        styleInstructions()
+    }
 
     // MARK: - Setup and Configuration
 
@@ -112,19 +44,16 @@ class LoginViewController: NUXAbstractViewController {
     ///
     @objc func styleInstructions() {
         instructionLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+        instructionLabel?.adjustsFontForContentSizeCategory = true
     }
 
-    /// Sets up the help button and the helpshift conversation badge.
-    ///
-    override func setupHelpButtonAndBadge() {
-        let (helpButtonResult, helpBadgeResult) = addHelpButtonToNavController()
-        helpButton = helpButtonResult
-        helpBadge = helpBadgeResult
+    func configureViewLoading(_ loading: Bool) {
+        configureSubmitButton(animating: loading)
+        navigationItem.hidesBackButton = loading
     }
 
     /// Sets the text of the error label.
-    ///
-    @objc func displayError(message: String) {
+    func displayError(message: String) {
         guard message.count > 0 else {
             errorLabel?.isHidden = true
             return
@@ -133,30 +62,8 @@ class LoginViewController: NUXAbstractViewController {
         errorLabel?.text = message
     }
 
-    /// Configures the appearance and state of the submit button.
-    ///
-    @objc func configureSubmitButton(animating: Bool) {
-        submitButton?.showActivityIndicator(animating)
-        submitButton?.isEnabled = enableSubmit(animating: animating)
-    }
-
-    /// Determines if the submit button should be enabled. Meant to be overridden in subclasses.
-    ///
-    @objc open func enableSubmit(animating: Bool) -> Bool {
-        return !animating
-    }
-
-    override func dismiss() {
-        if shouldShowEpilogue() {
-            self.performSegue(withIdentifier: .showEpilogue, sender: self)
-            return
-        }
-        dismissBlock?(false)
-        navigationController?.dismiss(animated: true, completion: nil)
-    }
-
     fileprivate func shouldShowEpilogue() -> Bool {
-        if !isJetpackLogin() {
+        if !isJetpackLogin {
             return true
         }
         let context = ContextManager.sharedInstance().mainContext
@@ -165,21 +72,48 @@ class LoginViewController: NUXAbstractViewController {
             let objectID = loginFields.meta.jetpackBlogID,
             let blog = context.object(with: objectID) as? Blog,
             let account = blog.account
-        else {
+            else {
                 return false
         }
         return accountService.isDefaultWordPressComAccount(account)
     }
 
+    func showLoginEpilogue() {
+        guard let delegate = WordPressAuthenticator.shared.delegate, let navigationController = navigationController else {
+            fatalError()
+        }
+
+        delegate.presentLoginEpilogue(in: navigationController, epilogueInfo: nil, isJetpackLogin: isJetpackLogin) {
+            self.dismissBlock?(false)
+        }
+    }
+
+    func dismiss() {
+        if shouldShowEpilogue() {
+
+            if let linkSource = loginFields.meta.emailMagicLinkSource,
+                linkSource == .signup {
+                    performSegue(withIdentifier: .showSignupEpilogue, sender: self)
+            } else {
+                showLoginEpilogue()
+            }
+
+            return
+        }
+
+        dismissBlock?(false)
+        navigationController?.dismiss(animated: true, completion: nil)
+    }
+
     /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with login.
     ///
-    @objc func validateFormAndLogin() {
+    func validateFormAndLogin() {
         view.endEditing(true)
         displayError(message: "")
 
         // Is everything filled out?
-        if !SigninHelpers.validateFieldsPopulatedForSignin(loginFields) {
+        if !loginFields.validateFieldsPopulatedForSignin() {
             let errorMsg = NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields.")
             displayError(message: errorMsg)
 
@@ -194,37 +128,18 @@ class LoginViewController: NUXAbstractViewController {
     /// Manages data transfer when seguing to a new VC
     ///
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let source = segue.source as? LoginViewController else {
+        guard let source = segue.source as? LoginViewController, let destination = segue.destination as? LoginViewController else {
             return
         }
 
-        if let destination = segue.destination as? LoginEpilogueViewController {
-            destination.dismissBlock = source.dismissBlock
-            destination.jetpackLogin = source.loginFields.meta.jetpackLogin
-        } else if let destination = segue.destination as? LoginViewController {
-            destination.loginFields = source.loginFields
-            destination.restrictToWPCom = source.restrictToWPCom
-            destination.dismissBlock = source.dismissBlock
-            destination.errorToPresent = source.errorToPresent
-        }
-    }
-}
-
-extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
-    @objc func configureStatusLabel(_ message: String) {
-        // this is now a no-op, unless status labels return
+        destination.loginFields = source.loginFields
+        destination.restrictToWPCom = source.restrictToWPCom
+        destination.dismissBlock = source.dismissBlock
+        destination.errorToPresent = source.errorToPresent
     }
 
-    /// Configure the view's loading state.
-    ///
-    /// - Parameter loading: True if the form should be configured to a "loading" state.
-    ///
-    @objc func configureViewLoading(_ loading: Bool) {
-        configureSubmitButton(animating: loading)
-        navigationItem.hidesBackButton = loading
-    }
-
-    func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
+    // MARK: SigninWPComSyncHandler methods
+    dynamic func finishedLogin(withUsername username: String, authToken: String, requiredMultifactorCode: Bool) {
         syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
         guard let service = loginFields.meta.socialService, service == SocialServiceName.google,
             let token = loginFields.meta.socialServiceIDToken else {
@@ -233,11 +148,11 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
 
         let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         accountService.connectToSocialService(service, serviceIDToken: token, success: {
-            WPAppAnalytics.track(.loginSocialConnectSuccess)
-            WPAppAnalytics.track(.loginSocialSuccess)
+            WordPressAuthenticator.post(event: .loginSocialConnectSuccess)
+            WordPressAuthenticator.post(event: .loginSocialSuccess)
         }, failure: { error in
             DDLogError(error.description)
-            WPAppAnalytics.track(.loginSocialConnectFailure, error: error)
+            WordPressAuthenticator.post(event: .loginSocialConnectFailure(error: error))
             // We're opting to let this call fail silently.
             // Our user has already successfully authenticated and can use the app --
             // connecting the social service isn't critical.  There's little to
@@ -249,7 +164,12 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
         })
     }
 
-    func displayRemoteError(_ error: Error!) {
+    func configureStatusLabel(_ message: String) {
+        // this is now a no-op, unless status labels return
+    }
+
+    /// Overridden here to direct these errors to the login screen's error label
+    dynamic func displayRemoteError(_ error: Error) {
         configureViewLoading(false)
 
         let err = error as NSError
@@ -266,17 +186,23 @@ extension LoginViewController: SigninWPComSyncHandler, LoginFacadeDelegate {
         displayError(message: "")
         configureViewLoading(false)
 
-        WPAppAnalytics.track(.twoFactorCodeRequested)
+        WordPressAuthenticator.post(event: .twoFactorCodeRequested)
         self.performSegue(withIdentifier: .show2FA, sender: self)
     }
 
     // Update safari stored credentials. Call after a successful sign in.
     ///
-    @objc func updateSafariCredentialsIfNeeded() {
-        SigninHelpers.updateSafariCredentialsIfNeeded(loginFields)
+    func updateSafariCredentialsIfNeeded() {
+        SafariCredentialsService.updateSafariCredentialsIfNeeded(with: loginFields)
     }
+}
 
-    func isJetpackLogin() -> Bool {
-        return loginFields.meta.jetpackLogin
+// MARK: - Handle changes in traitCollections. In particular, changes in Dynamic Type
+extension LoginViewController {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            didChangePreferredContentSize()
+        }
     }
 }

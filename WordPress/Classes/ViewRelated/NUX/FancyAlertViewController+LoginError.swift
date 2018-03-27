@@ -1,5 +1,7 @@
 import UIKit
 import wpxmlrpc
+import SafariServices
+
 
 extension FancyAlertViewController {
     private struct Strings {
@@ -17,22 +19,17 @@ extension FancyAlertViewController {
         }
     }
 
-    @objc static func siteAddressHelpController(loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
+    static func siteAddressHelpController(loginFields: LoginFields, sourceTag: WordPressSupportSourceTag) -> FancyAlertViewController {
         let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
-                guard let delegate = UIApplication.shared.delegate,
-                    let window = delegate.window,
-                    let viewController = window?.topmostPresentedViewController else { return }
+                guard WordPressAuthenticator.shared.delegate?.livechatActionEnabled == true,
+                    let viewController = UIApplication.shared.delegate?.window??.topmostPresentedViewController
+                else {
+                    return
+                }
 
-                guard HelpshiftUtils.isHelpshiftEnabled() else { return }
-
-                let presenter = HelpshiftPresenter()
-                presenter.sourceTag = sourceTag
-                presenter.optionsDictionary = loginFields.helpshiftLoginOptions()
-                presenter.presentHelpshiftConversationWindowFromViewController(viewController,
-                                                                               refreshUserDetails: true,
-                                                                               completion: nil)
+                WordPressAuthenticator.shared.delegate?.presentLivechat(from: viewController, sourceTag: sourceTag, options: loginFields.helpshiftLoginOptions())
             }
         }
 
@@ -66,13 +63,13 @@ extension FancyAlertViewController {
     ///
     /// - Returns: A FancyAlertViewController instance.
     ///
-    @objc static func alertForError(_ error: NSError, loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
+    static func alertForError(_ error: NSError, loginFields: LoginFields, sourceTag: WordPressSupportSourceTag) -> FancyAlertViewController {
         var message = error.localizedDescription
 
         DDLogError(message)
 
         if sourceTag == .jetpackLogin && error.domain == WordPressAppErrorDomain && error.code == NSURLErrorBadURL {
-            if HelpshiftUtils.isHelpshiftEnabled() {
+            if WordPressAuthenticator.shared.delegate?.livechatActionEnabled == true {
                 // TODO: Placeholder Jetpack login error message. Needs updating with final wording. 2017-06-15 Aerych.
                 message = NSLocalizedString("We're not able to connect to the Jetpack site at that URL.  Contact us for assistance.", comment: "Error message shown when having trouble connecting to a Jetpack site.")
                 return alertForGenericErrorMessageWithHelpshiftButton(message, loginFields: loginFields, sourceTag: sourceTag)
@@ -80,11 +77,11 @@ extension FancyAlertViewController {
         }
 
         if error.domain != WPXMLRPCFaultErrorDomain && error.code != NSURLErrorBadURL {
-            if HelpshiftUtils.isHelpshiftEnabled() {
+            if WordPressAuthenticator.shared.delegate?.livechatActionEnabled == true {
                 return alertForGenericErrorMessageWithHelpshiftButton(message, loginFields: loginFields, sourceTag: sourceTag)
-            } else {
-                return alertForGenericErrorMessage(message, loginFields: loginFields, sourceTag: sourceTag)
             }
+
+            return alertForGenericErrorMessage(message, loginFields: loginFields, sourceTag: sourceTag)
         }
 
         if error.code == 403 {
@@ -96,7 +93,7 @@ extension FancyAlertViewController {
         }
 
         if error.code == NSURLErrorBadURL {
-            return alertForBadURLMessage(message)
+            return alertForBadURL(with: message)
         }
 
         return alertForGenericErrorMessage(message, loginFields: loginFields, sourceTag: sourceTag)
@@ -107,23 +104,17 @@ extension FancyAlertViewController {
     ///
     /// - Parameter message: The error message to show.
     ///
-    private static func alertForGenericErrorMessage(_ message: String, loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
+    private static func alertForGenericErrorMessage(_ message: String, loginFields: LoginFields, sourceTag: WordPressSupportSourceTag) -> FancyAlertViewController {
         let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
-                // Find the topmost view controller that we can present from
-                guard let appDelegate = UIApplication.shared.delegate,
-                    let window = appDelegate.window,
-                    let viewController = window?.topmostPresentedViewController else { return }
+                guard let sourceViewController = UIApplication.shared.delegate?.window??.topmostPresentedViewController,
+                    let authDelegate = WordPressAuthenticator.shared.delegate
+                else {
+                    return
+                }
 
-                let supportController = SupportViewController()
-                supportController.sourceTag = sourceTag
-                supportController.helpshiftOptions = loginFields.helpshiftLoginOptions()
-
-                let navController = UINavigationController(rootViewController: supportController)
-                navController.navigationBar.isTranslucent = false
-                navController.modalPresentationStyle = .formSheet
-
-                viewController.present(navController, animated: true, completion: nil)
+                let options = loginFields.helpshiftLoginOptions()
+                authDelegate.presentSupport(from: sourceViewController, sourceTag: sourceTag, options: options)
             }
         }
 
@@ -146,22 +137,19 @@ extension FancyAlertViewController {
     /// - Parameter message: The error message to show.
     /// - Parameter sourceTag: tag of the source of the error
     ///
-    @objc static func alertForGenericErrorMessageWithHelpshiftButton(_ message: String, loginFields: LoginFields, sourceTag: SupportSourceTag) -> FancyAlertViewController {
+    static func alertForGenericErrorMessageWithHelpshiftButton(_ message: String, loginFields: LoginFields, sourceTag: WordPressSupportSourceTag) -> FancyAlertViewController {
         let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
                 guard let appDelegate = UIApplication.shared.delegate,
                     let window = appDelegate.window,
-                    let viewController = window?.topmostPresentedViewController else { return }
+                    let viewController = window?.topmostPresentedViewController,
+                    WordPressAuthenticator.shared.delegate?.livechatActionEnabled == true
+                else {
+                    return
+                }
 
-                guard HelpshiftUtils.isHelpshiftEnabled() else { return }
-
-                let presenter = HelpshiftPresenter()
-                presenter.sourceTag = sourceTag
-                presenter.optionsDictionary = loginFields.helpshiftLoginOptions()
-                presenter.presentHelpshiftConversationWindowFromViewController(viewController,
-                                                                               refreshUserDetails: true,
-                                                                               completion: nil)
+                WordPressAuthenticator.shared.delegate?.presentLivechat(from: viewController, sourceTag: sourceTag, options: loginFields.helpshiftLoginOptions())
             }
         }
 
@@ -182,19 +170,19 @@ extension FancyAlertViewController {
     ///
     /// - Parameter message: The error message to show.
     ///
-    private static func alertForBadURLMessage(_ message: String) -> FancyAlertViewController {
+    private static func alertForBadURL(with message: String) -> FancyAlertViewController {
         let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
             controller.dismiss(animated: true) {
                 // Find the topmost view controller that we can present from
-                guard let appDelegate = UIApplication.shared.delegate,
-                    let window = appDelegate.window,
-                    let viewController = window?.topmostPresentedViewController,
+                guard let viewController = UIApplication.shared.delegate?.window??.topmostPresentedViewController,
                     let url = URL(string: "https://apps.wordpress.org/support/#faq-ios-3")
-                    else { return }
+                    else {
+                        return
+                }
 
-                let webController = WebViewControllerFactory.controller(url: url)
-                let navController = UINavigationController(rootViewController: webController)
-                viewController.present(navController, animated: true, completion: nil)
+                let safariViewController = SFSafariViewController(url: url)
+                safariViewController.modalPresentationStyle = .pageSheet
+                viewController.present(safariViewController, animated: true, completion: nil)
             }
         }
 

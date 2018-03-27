@@ -264,6 +264,12 @@ class WPSplitViewController: UISplitViewController {
 
         detailNavigationStackHasBeenModified = true
 
+        if let navigationController = viewControllers.first as? UINavigationController,
+            traitCollection.containsTraits(in: UITraitCollection(horizontalSizeClass: .compact)) {
+            navigationController.show(vc, sender: sender)
+            return
+        }
+
         super.showDetailViewController(detailVC, sender: sender)
     }
 

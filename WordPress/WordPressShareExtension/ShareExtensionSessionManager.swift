@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import WordPressFlux
 
 /// Manages URLSessions initiated by the share extension
 ///
@@ -57,6 +58,55 @@ import CoreData
         DDLogInfo("Initializing background session: \(backgroundSession)")
     }
 
+    /// Displays a notification to the user about the successful/error-ridden post if necessary.
+    ///
+    /// - Parameter postUploadOp: The post UploadOperation in question
+    ///
+    static func fireUserNotificationIfNeeded(_ postUploadOpID: String) {
+        let coreDataStack = SharedCoreDataStack()
+        coreDataStack.managedContext.refreshAllObjects()
+        guard let postUploadOp = coreDataStack.fetchPostUploadOp(withObjectID: postUploadOpID) else {
+            return
+        }
+
+        let uploadStatus = postUploadOp.currentStatus
+        var uploadedMediaCount = 0
+
+        if uploadStatus == .error {
+            // The post upload failed
+            let model = ShareNoticeViewModel(post: nil, uploadStatus: uploadStatus, uploadedMediaCount: uploadedMediaCount)
+            if let notice = model?.notice {
+                ActionDispatcher.dispatch(NoticeAction.post(notice))
+            }
+        } else {
+            // The post upload was successful
+            if let groupID = postUploadOp.groupID, let mediaUploadOps = coreDataStack.fetchMediaUploadOps(for: groupID) {
+                uploadedMediaCount = mediaUploadOps.count
+            }
+
+            let context = ContextManager.sharedInstance().mainContext
+            let blogService = BlogService(managedObjectContext: context)
+            guard let blog = blogService.blog(byBlogId: NSNumber(value: postUploadOp.siteID)) else {
+                return
+            }
+
+            // Sync the remote post to WPiOS so that we can open it for editing if needed.
+            let postService = PostService(managedObjectContext: context)
+            postService.getPostWithID(NSNumber(value: postUploadOp.remotePostID), for: blog, success: { post in
+                guard let post = post as? Post else {
+                    return
+                }
+
+                let model = ShareNoticeViewModel(post: post, uploadStatus: uploadStatus, uploadedMediaCount: uploadedMediaCount)
+                if let notice = model?.notice {
+                    ActionDispatcher.dispatch(NoticeAction.post(notice))
+                }
+            }) { error in
+                DDLogError("Unable to create user notification for share extension session with.")
+            }
+        }
+    }
+
     // MARK: - Private Functions
 
     /// Clean up the session manager and end things gracefully (run the stored completion block, etc). Run
@@ -97,7 +147,7 @@ import CoreData
     /// For the provided group ID:
     ///   1. Find the (not completed) post upload op (there should be one)
     ///   2. Find all of the completed media upload ops
-    ///   3. Append the media to the postContent property of the post upload op
+    ///   3. Update the media in tags within the postContent property of the post upload op
     ///   4. Save the post upload op and return it
     ///
     /// - Parameter groupID: Group ID representing all of the media upload ops and single post upload op
@@ -108,12 +158,20 @@ import CoreData
             let mediaUploadOps = coreDataStack.fetchMediaUploadOps(for: groupID) else {
                 return nil
         }
-        let remoteURLText = mediaUploadOps.flatMap({ $0 })
-            .map({ "".stringByAppendingMediaURL(remoteURL: $0.remoteURL, remoteID: $0.remoteMediaID, height: $0.height, width: $0.width) })
-            .joined()
 
-        let content = postUploadOp.postContent ?? ""
-        postUploadOp.postContent = content + remoteURLText
+        mediaUploadOps.forEach { mediaUploadOp in
+            guard let fileName = mediaUploadOp.fileName,
+                let remoteURL = mediaUploadOp.remoteURL else {
+                    return
+            }
+
+            let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: fileName,
+                                                            remoteURLString: remoteURL,
+                                                            width: Int(mediaUploadOp.width),
+                                                            height: Int(mediaUploadOp.height))
+            let content = postUploadOp.postContent ?? ""
+            postUploadOp.postContent = imgPostUploadProcessor.process(content)
+        }
         coreDataStack.saveContext()
 
         return postUploadOp
@@ -154,6 +212,8 @@ import CoreData
             }
             postUploadOp.currentStatus = .complete
             self.coreDataStack.saveContext()
+
+            ShareExtensionSessionManager.fireUserNotificationIfNeeded(postUploadOpID.uriRepresentation().absoluteString)
             self.cleanupSessionAndTerminate()
         }, failure: { error in
             var errorString = "Error creating post"
@@ -161,6 +221,7 @@ import CoreData
                 errorString += ": \(error.localizedDescription)"
             }
             self.logError(errorString, uploadOpObjectIDs: postUploadOpID)
+            ShareExtensionSessionManager.fireUserNotificationIfNeeded(postUploadOpID.uriRepresentation().absoluteString)
             self.cleanupSessionAndTerminate()
         })
     }

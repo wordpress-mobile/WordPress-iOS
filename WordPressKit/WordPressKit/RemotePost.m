@@ -10,6 +10,19 @@ NSString * const PostStatusTrash = @"trash";
 NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API when a post is permanently deleted.
 
 @implementation RemotePost
+
+- (id)initWithSiteID:(NSNumber *)siteID status:(NSString *)status title:(NSString *)title content:(NSString *)content
+{
+    self = [super init];
+    if (self) {
+        _siteID = siteID;
+        _status = status;
+        _title = title;
+        _content = content;
+    }
+    return self;
+}
+
 - (NSString *)debugDescription {
     NSDictionary *properties = [self debugProperties];
     return [NSString stringWithFormat:@"<%@: %p> (%@)", NSStringFromClass([self class]), self, properties];

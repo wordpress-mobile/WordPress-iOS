@@ -8,6 +8,7 @@
 #import "WordPress-Swift.h"
 #import "SFHFKeychainUtils.h"
 #import "WPUserAgent.h"
+#import "WordPress-Swift.h"
 
 static NSInteger const ImageSizeSmallWidth = 240;
 static NSInteger const ImageSizeSmallHeight = 180;
@@ -28,7 +29,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @interface Blog ()
 
 @property (nonatomic, strong, readwrite) WordPressOrgXMLRPCApi *xmlrpcApi;
-@property (nonatomic, strong, readwrite) JetpackState *jetpack;
 
 @end
 
@@ -76,12 +76,13 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @dynamic sharingButtons;
 @dynamic capabilities;
 @dynamic userID;
+@dynamic quotaSpaceAllowed;
+@dynamic quotaSpaceUsed;
 
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
 @synthesize videoPressEnabled;
 @synthesize isSyncingMedia;
-@synthesize jetpack = _jetpack;
 @synthesize xmlrpcApi = _xmlrpcApi;
 
 #pragma mark - NSManagedObject subclass methods
@@ -457,6 +458,8 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
             return [self isHostedAtWPcom] && [self isAdmin];
         case BlogFeaturePluginManagement:
             return [self supportsPluginManagement];
+        case BlogFeatureJetpackImageSettings:
+            return [self supportsJetpackImageSettings];
         case BlogFeatureJetpackSettings:
             return [self supportsRestApi] && ![self isHostedAtWPcom] && [self isAdmin];
         case BlogFeaturePushNotifications:
@@ -537,12 +540,14 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     return [self accountIsDefaultAccount];
 }
 
+- (BOOL)supportsJetpackImageSettings
+{
+    return [self hasRequiredJetpackVersion:@"5.6"];
+}
+
 - (BOOL)supportsPluginManagement
 {
-    NSString *requiredJetpackVersion = @"5.6";
-    return [self supportsRestApi]
-        && ![self isHostedAtWPcom]
-        && [self.jetpack.version compare:requiredJetpackVersion options:NSNumericSearch] != NSOrderedAscending;
+    return [self hasRequiredJetpackVersion:@"5.6"];
 }
 
 - (BOOL)accountIsDefaultAccount
@@ -586,8 +591,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 {
     [self willChangeValueForKey:@"options"];
     [self setPrimitiveValue:options forKey:@"options"];
-    // Invalidate the Jetpack state since it's constructed from options
-    self.jetpack = nil;
     [self didChangeValueForKey:@"options"];
 
     self.siteVisibility = (SiteVisibility)([[self getOptionValue:@"blog_public"] integerValue]);
@@ -645,27 +648,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 
 #pragma mark - Jetpack
 
-- (JetpackState *)jetpack
-{
-    if (_jetpack) {
-        return _jetpack;
-    }
-    if ([self.options count] == 0) {
-        return nil;
-    }
-    _jetpack = [JetpackState new];
-    _jetpack.siteID = [[self getOptionValue:@"jetpack_client_id"] numericValue];
-    _jetpack.version = [self getOptionValue:@"jetpack_version"];
-    if (self.account.username) {
-        _jetpack.connectedUsername = self.account.username;
-    } else {
-        _jetpack.connectedUsername = [self getOptionValue:@"jetpack_user_login"];
-    }
-    _jetpack.connectedEmail = [self getOptionValue:@"jetpack_user_email"];
-    _jetpack.automatedTransfer = [[[self getOptionValue:@"is_automated_transfer"] numericValue] boolValue];
-    return _jetpack;
-}
-
 - (BOOL)jetpackActiveModule:(NSString *)moduleName
 {
     NSArray *activeModules = (NSArray *)[self getOptionValue:OptionsKeyActiveModules];
@@ -682,7 +664,8 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     return [self jetpackActiveModule:ActiveModulesKeySharingButtons];
 }
 
-- (BOOL)isBasicAuthCredentialStored {
+- (BOOL)isBasicAuthCredentialStored
+{
     NSURLCredentialStorage *storage = [NSURLCredentialStorage sharedCredentialStorage];
     NSURL *url = [NSURL URLWithString:self.url];
     NSDictionary * credentials = storage.allCredentials;
@@ -694,6 +677,13 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         }
     }
     return NO;
+}
+
+- (BOOL)hasRequiredJetpackVersion:(NSString *)requiredJetpackVersion
+{
+    return [self supportsRestApi]
+    && ![self isHostedAtWPcom]
+    && [self.jetpack.version compare:requiredJetpackVersion options:NSNumericSearch] != NSOrderedAscending;
 }
 
 #pragma mark - Private Methods

@@ -9,6 +9,8 @@ extern NSString * const PostStatusTrash;
 extern NSString * const PostStatusDeleted;
 
 @interface RemotePost : NSObject
+- (id)initWithSiteID:(NSNumber *)siteID status:(NSString *)status title:(NSString *)title content:(NSString *)content;
+
 @property (nonatomic, strong) NSNumber *postID;
 @property (nonatomic, strong) NSNumber *siteID;
 @property (nonatomic, strong) NSString *authorAvatarURL;
