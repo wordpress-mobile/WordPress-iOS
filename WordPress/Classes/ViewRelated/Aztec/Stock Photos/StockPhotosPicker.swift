@@ -30,7 +30,7 @@ extension StockPhotosPicker: WPMediaPickerViewControllerDelegate {
     }
 
     func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
-        let searchHint = MediaNoResultsView()
+        let searchHint = StockPhotosPlaceholder()
 
         return searchHint
     }
