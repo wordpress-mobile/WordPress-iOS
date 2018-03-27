@@ -219,6 +219,10 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)updateSearchVisibility
 {
+    if (self.isEditing) {
+        return;
+    }
+    
     if (self.dataSource.visibleBlogsCount <= HideSearchMinSites) {
         // Hide the search bar if there's only a few blogs
         [self.searchBar removeFromSuperview];
@@ -1023,6 +1027,7 @@ static NSInteger HideSearchMinSites = 3;
     [self updateEditButton];
     [[WordPressAppDelegate sharedInstance] trackLogoutIfNeeded];
     [self maybeShowNUX];
+    [self updateSearchVisibility];
     [self updateViewsForCurrentSiteCount];
     [self validateBlogDetailsViewController];
 }
