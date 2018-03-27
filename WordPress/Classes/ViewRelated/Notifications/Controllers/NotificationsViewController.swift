@@ -743,9 +743,7 @@ private extension NotificationsViewController {
         }
     }
 
-    func selectRow(for notification: Notification?, animated: Bool = true, scrollPosition: UITableViewScrollPosition = .none) {
-        guard let notification = notification else { return }
-
+    func selectRow(for notification: Notification, animated: Bool = true, scrollPosition: UITableViewScrollPosition = .none) {
         selectedNotification = notification
 
         if let indexPath = tableViewHandler.resultsController.indexPath(forObject: notification), indexPath != tableView.indexPathForSelectedRow {
@@ -757,8 +755,8 @@ private extension NotificationsViewController {
         tableView.reloadData()
 
         // Show the current selection if our split view isn't collapsed
-        if !splitViewControllerIsHorizontallyCompact {
-            selectRow(for: selectedNotification, animated: false, scrollPosition: .none)
+        if !splitViewControllerIsHorizontallyCompact, let notification = selectedNotification {
+            selectRow(for: notification, animated: false, scrollPosition: .none)
         }
     }
 }
