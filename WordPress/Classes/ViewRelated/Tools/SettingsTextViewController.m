@@ -247,7 +247,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 #pragma mark - Getters
 
-- (NSString *)attributedText
+- (NSAttributedString *)attributedText
 {
     return self.textField.attributedText;
 }

@@ -11,7 +11,6 @@ class AztecAttachmentViewController: UITableViewController {
             if let attachment = attachment {
                 alignment = attachment.alignment
                 alt = attachment.alt
-                caption = attachment.caption
                 size = attachment.size
             }
         }

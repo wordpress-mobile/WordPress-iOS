@@ -1656,6 +1656,8 @@ extension AztecPostViewController {
                 insertHorizontalRuler()
             case .more:
                 insertMore()
+            case .code:
+                toggleCode()
             }
 
             updateFormatBar()
@@ -1695,6 +1697,9 @@ extension AztecPostViewController {
         richTextView.toggleBold(range: richTextView.selectedRange)
     }
 
+    @objc func toggleCode() {
+        richTextView.toggleCode(range: richTextView.selectedRange)
+    }
 
     @objc func toggleItalic() {
         trackFormatBarAnalytics(stat: .editorTappedItalic)
@@ -3152,17 +3157,28 @@ extension AztecPostViewController {
         }
 
         controller.onUpdate = { [weak self] (alignment, size, linkURL, alt, caption) in
-            self?.richTextView.edit(attachment) { updated in
+
+            guard let `self` = self else {
+                return
+            }
+
+            self.richTextView.edit(attachment) { updated in
                 updated.alignment = alignment
                 updated.size = size
                 updated.alt = alt
-                updated.caption = caption
             }
+
+            if let caption = caption, caption.length > 0 {
+                self.richTextView.replaceCaption(for: attachment, with: caption)
+            } else {
+                self.richTextView.removeCaption(for: attachment)
+            }
+
             // Update associated link
             if let updatedURL = linkURL {
-                self?.richTextView.setLink(updatedURL, inRange: attachmentRange)
+                self.richTextView.setLink(updatedURL, inRange: attachmentRange)
             } else if oldURL != nil && linkURL == nil {
-                self?.richTextView.removeLink(inRange: attachmentRange)
+                self.richTextView.removeLink(inRange: attachmentRange)
             }
         }
 
