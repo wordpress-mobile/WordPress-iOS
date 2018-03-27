@@ -90,7 +90,7 @@ import Foundation
         } else {
             predicate = NSPredicate(format: "NOT status IN %@ OR remoteStatusNumber = %d", statusesExcluded.strings, AbstractPostRemoteStatus.local.rawValue)
         }
-t
+
         let title = NSLocalizedString("Drafts", comment: "Title of the drafts filter.  This filter shows a list of draft posts.")
 
         return PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
