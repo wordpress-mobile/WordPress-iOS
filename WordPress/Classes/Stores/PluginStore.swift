@@ -198,12 +198,15 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
     fileprivate let refreshInterval: TimeInterval = 60 // seconds
 
     init(dispatcher: ActionDispatcher = .global) {
-        super.init(initialState: PluginStoreState(), dispatcher: dispatcher)
+        let initialState = PluginStore.initialState() ?? PluginStoreState()
+
+        super.init(initialState: initialState, dispatcher: dispatcher)
     }
 
     override func queriesChanged() {
         guard !activeQueries.isEmpty else {
             // Remove plugins from memory if nothing is listening for changes
+            writeCachedJSON()
             transaction({ (state) in
                 state.plugins = [:]
                 state.lastFetch = [:]
@@ -218,6 +221,10 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
     }
 
     func processQueries() {
+        // We clear out the Store when there are no more active queries registered. When a new
+        // one query comes in, we want to reinitialise the store from the cached state, if one is available.
+        reinitialiseIfNeeded()
+
         // Fetching installed Plugins.
          sitesToFetch
             .forEach { fetchPlugins(site: $0) }
@@ -233,6 +240,27 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
         // Fetching featured plugins.
         if shouldFetchFeatured() {
             fetchFeaturedPlugins()
+        }
+    }
+
+    private func reinitialiseIfNeeded() {
+        // We don't want to accidentally clobber any data we have downloaded with the cached version,
+        // so we only reinitialise if all of all of the `plugins`/`directoryEntries`/`directoryFeed`/`featuredPluginSlugs`
+        // are empty.
+
+        guard state.plugins.count == 0,
+            state.directoryEntries.count == 0,
+            state.directoryFeeds.count == 0,
+            state.featuredPluginsSlugs.count == 0,
+            let initialState = PluginStore.initialState()  else {
+                return
+        }
+
+        transaction { state in
+            state.plugins = initialState.plugins
+            state.directoryEntries = initialState.directoryEntries
+            state.directoryFeeds = initialState.directoryFeeds
+            state.featuredPluginsSlugs = initialState.featuredPluginsSlugs
         }
     }
 
