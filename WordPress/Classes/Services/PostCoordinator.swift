@@ -17,26 +17,31 @@ class PostCoordinator: NSObject {
 
     private var observerUUIDs: [AbstractPost: UUID] = [:]
 
+    private lazy var mediaCoordinator: MediaCoordinator = {
+        return MediaCoordinator.shared
+    }()
+
     /// Saves the post to both the local database and the server if available.
     /// If media is still uploading it keeps track of the ongoing media operations and updates the post content when they finish
     ///
     /// - Parameter post: the post to save
     func save(post: AbstractPost) {
-        let mediaCoordinator = MediaCoordinator.shared
-
         if mediaCoordinator.isUploadingMedia(for: post) {
             // Only observe if we're not already
             guard !isObserving(post: post) else {
                 return
             }
 
-            let uuid = mediaCoordinator.addObserver({ (media, state) in
+            let uuid = mediaCoordinator.addObserver({ [weak self](media, state) in
+                guard let `self` = self else {
+                    return
+                }
                 switch state {
                 case .ended:
                     self.updateReferences(to: media, in: post)
 
                     // Let's check if media uploading is still going, if all finished with success then we can upload the post
-                    if !mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
+                    if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
                         self.removeObserver(for: post)
                         self.upload(post: post)
                     }
@@ -68,7 +73,7 @@ class PostCoordinator: NSObject {
             guard media.remoteStatus == .failed else {
                 continue
             }
-            MediaCoordinator.shared.retryMedia(media)
+            mediaCoordinator.retryMedia(media)
         }
         save(post: post)
     }
@@ -121,7 +126,7 @@ class PostCoordinator: NSObject {
             observerUUIDs.removeValue(forKey: post)
 
             if let uuid = uuid {
-                MediaCoordinator.shared.removeObserver(withUUID: uuid)
+                mediaCoordinator.removeObserver(withUUID: uuid)
             }
         }
     }
