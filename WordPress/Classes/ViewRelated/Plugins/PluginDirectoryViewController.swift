@@ -9,6 +9,8 @@ class PluginDirectoryViewController: UITableViewController {
     private var tableViewModel: ImmuTable!
     private var searchWrapperView: SearchWrapperView!
 
+    private let searchThrottle = Throttle(seconds: 0.5)
+
     init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         viewModel = PluginDirectoryViewModel(site: site, store: store)
 
@@ -180,8 +182,10 @@ extension PluginDirectoryViewController: UISearchResultsUpdating {
             return
         }
 
-        pluginListViewController.query = .feed(type: .search(term: searchedText))
-        pluginListViewController.tableView.contentInset.top = searchWrapperView.bounds.height
+        searchThrottle.throttle {
+            pluginListViewController.query = .feed(type: .search(term: searchedText))
+            pluginListViewController.tableView.contentInset.top = self.searchWrapperView.bounds.height
+        }
     }
 }
 
