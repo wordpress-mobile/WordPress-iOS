@@ -38,10 +38,14 @@ msgctxt "app_store_keywords"
 msgid "social networking, blogging, blogs, photos, writing, geotagging, media, blog, wordpress\n"
 msgstr ""
 
-msgctxt "v9.5-whats-new"
+msgctxt "v9.6-whats-new"
 msgid ""
-"A new share extension that adds support to save drafts and handles tags.\n"
-"Plugin management taken to the next level: you can now browse and install plugins.\n"
+"Posts: Post publishing now requires confirmation.\n"
+"Editor, iPad: The editor now has readable margins!\n"
+"Posts: Post deletion now requires confirmation.\n"
+"Media: Showing the disk quota in Site Settings and when adding media to the library.\n"
+"Sharing: Saving a Draft to WordPress now lets you pick the categories for the post.\n"
+"Self-hosted: Shows an error messages when XMLRPC is blocked.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
