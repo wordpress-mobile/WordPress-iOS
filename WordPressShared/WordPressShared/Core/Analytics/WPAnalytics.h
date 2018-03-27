@@ -124,6 +124,7 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatMediaLibrarySharedItemLink,
     WPAnalyticsStatMediaLibraryAddedPhoto,
     WPAnalyticsStatMediaLibraryAddedVideo,
+    WPAnalyticsStatMediaLibraryUploadMediaRetried,
     WPAnalyticsStatMediaServiceUploadStarted,
     WPAnalyticsStatMediaServiceUploadFailed,
     WPAnalyticsStatMediaServiceUploadSuccessful,

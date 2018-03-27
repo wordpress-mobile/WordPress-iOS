@@ -76,6 +76,8 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @dynamic sharingButtons;
 @dynamic capabilities;
 @dynamic userID;
+@dynamic quotaSpaceAllowed;
+@dynamic quotaSpaceUsed;
 
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
