@@ -5,6 +5,22 @@ import Gridicons
 ///
 class PostCardStatusViewModel: NSObject {
     private let post: Post
+    private var progressObserverUUID: UUID? = nil
+    @objc var progressBlock: ((Double) -> Void)? = nil {
+        didSet {
+            if let _ = oldValue, let uuid = progressObserverUUID {
+                MediaCoordinator.shared.removeObserver(withUUID: uuid)
+            }
+
+            if let progressBlock = progressBlock {
+                progressObserverUUID = MediaCoordinator.shared.addObserver({ [weak self] (_, _) in
+                    if let post = self?.post {
+                        progressBlock(MediaCoordinator.shared.totalProgress(for: post))
+                    }
+                }, forMediaFor: post)
+            }
+        }
+    }
 
     @objc
     init(post: Post) {
@@ -14,7 +30,15 @@ class PostCardStatusViewModel: NSObject {
 
     @objc
     var status: String? {
-        return post.statusForDisplay()
+        if MediaCoordinator.shared.isUploadingMedia(for: post) {
+            return NSLocalizedString("Uploading media...", comment: "Message displayed on a post's card while the post is uploading media")
+        } else if postIsFailed {
+            return NSLocalizedString("Upload failed", comment: "Message displayed on a post's card when the post has failed to upload")
+        } else if post.remoteStatus == .pushing {
+            return NSLocalizedString("Uploading post...", comment: "Message displayed on a post's card when the post has failed to upload")
+        } else {
+            return post.statusForDisplay()
+        }
     }
 
     private var postStatus: BasePost.Status? {
@@ -36,6 +60,15 @@ class PostCardStatusViewModel: NSObject {
             return nil
         }
 
+        // In progress uploads
+        if MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing {
+            return Gridicon.iconOfType(.cloudUpload)
+        }
+
+        if postIsFailed {
+            return Gridicon.iconOfType(.cloudUpload)
+        }
+
         switch status {
         case .pending:
             return Gridicon.iconOfType(.chat)
@@ -54,6 +87,14 @@ class PostCardStatusViewModel: NSObject {
             return WPStyleGuide.darkGrey()
         }
 
+        if MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing {
+            return WPStyleGuide.grey()
+        }
+
+        if postIsFailed {
+            return WPStyleGuide.errorRed()
+        }
+
         switch status {
         case .pending:
             return WPStyleGuide.validGreen()
@@ -68,6 +109,15 @@ class PostCardStatusViewModel: NSObject {
 
     @objc
     var shouldHideProgressView: Bool {
-        return true
+        return !(MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing)
+    }
+
+    var progress: Double {
+        return MediaCoordinator.shared.totalProgress(for: post)
+    }
+
+    @objc
+    var postIsFailed: Bool {
+        return post.remoteStatus == .failed || MediaCoordinator.shared.hasFailedMedia(for: post)
     }
 }
