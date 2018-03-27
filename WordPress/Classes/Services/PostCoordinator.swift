@@ -59,6 +59,20 @@ class PostCoordinator: NSObject {
         return post.remoteStatus == .pushing
     }
 
+    /// Retries the upload and save of the post and any associated media with it.
+    ///
+    /// - Parameter post: the post to retry the upload
+    ///
+    func retrySave(of post: AbstractPost) {
+        for media in post.media {
+            guard media.remoteStatus == .failed else {
+                continue
+            }
+            MediaCoordinator.shared.retryMedia(media)
+        }
+        save(post: post)
+    }
+
     private func upload(post: AbstractPost) {
         let postService = PostService(managedObjectContext: mainContext)
         postService.uploadPost(post, success: { uploadedPost in
