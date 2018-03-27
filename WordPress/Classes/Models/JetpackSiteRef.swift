@@ -8,7 +8,7 @@
 /// The keychain will store the oAuth token associated to the username, and if
 /// that changes, authentication will stop working.
 ///
-struct JetpackSiteRef: Hashable {
+struct JetpackSiteRef: Hashable, Codable {
     /// The WordPress.com site ID.
     let siteID: Int
     /// The WordPress.com username.

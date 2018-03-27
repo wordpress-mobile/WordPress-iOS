@@ -1,7 +1,7 @@
 import Foundation
 
-public struct PluginState: Equatable {
-    public enum UpdateState: Equatable {
+public struct PluginState: Equatable, Codable {
+    public enum UpdateState: Equatable, Codable {
         public static func ==(lhs: PluginState.UpdateState, rhs: PluginState.UpdateState) -> Bool {
             switch (lhs, rhs) {
             case (.updated, .updated):
@@ -15,10 +15,52 @@ public struct PluginState: Equatable {
             }
         }
 
+        private enum CodingKeys: String, CodingKey  {
+            case updated
+            case available
+            case updating
+        }
+
         case updated
         case available(String)
         case updating(String)
+
+        public func encode(to encoder: Encoder) throws {
+            var encoder = encoder.container(keyedBy: CodingKeys.self)
+
+            switch self {
+            case .updated:
+                try encoder.encode(true, forKey: .updated)
+            case .available(let value):
+                try encoder.encode(value, forKey: .available)
+            case .updating(let value):
+                try encoder.encode(value, forKey: .updating)
+            }
+        }
+
+        public init(from decoder: Decoder) throws {
+            let decoder = try decoder.container(keyedBy: CodingKeys.self)
+
+            if let _ = try decoder.decodeIfPresent(Bool.self, forKey: .updated) {
+                self = .updated
+                return
+            }
+
+            if let value = try decoder.decodeIfPresent(String.self, forKey: .available) {
+                self = .available(value)
+                return
+            }
+
+            if let value = try decoder.decodeIfPresent(String.self, forKey: .updating) {
+                self = .updating(value)
+                return
+            }
+
+            self = .updated
+        }
+
     }
+
     public let id: String
     public let slug: String
     public var active: Bool
