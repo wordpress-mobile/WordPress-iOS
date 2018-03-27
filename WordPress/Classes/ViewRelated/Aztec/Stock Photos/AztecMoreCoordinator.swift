@@ -14,12 +14,13 @@ final class AztecMoreCoordinator {
         alertController.popoverPresentationController?.sourceView = view
         alertController.popoverPresentationController?.sourceRect = CGRect(origin: view.frame.origin, size: CGSize(width: 1, height: 1))
         alertController.popoverPresentationController?.permittedArrowDirections = .any
+
         origin.present(alertController, animated: true, completion: nil)
     }
 
     private func freePhoto() -> UIAlertAction {
-        return UIAlertAction(title: .freePhotosLibrary, style: .default, handler: { action in
-            print("going to free photos")
+        return UIAlertAction(title: .freePhotosLibrary, style: .default, handler: { [weak self] action in
+            self?.showStockPhotos()
         })
     }
 
@@ -31,6 +32,10 @@ final class AztecMoreCoordinator {
 
     private func cancel() -> UIAlertAction {
         return UIAlertAction(title: .cancelMoreOptions, style: .cancel, handler: nil)
+    }
+
+    private func showStockPhotos() {
+        print("Nothing to see here yet")
     }
 
     private func showDocumentPicker(origin: UIViewController & UIDocumentPickerDelegate) {
