@@ -12,9 +12,9 @@ final class StockPhotosPicker: NSObject {
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
 
-        let picker = WPNavigationMediaPickerViewController()
+        let picker = WPNavigationMediaPickerViewController(options: options)
         picker.dataSource = dataSource
-        picker.mediaPicker.options = options
+        //picker.mediaPicker.options = options
         picker.delegate = self
         picker.startOnGroupSelector = false
         picker.showGroupSelector = false
