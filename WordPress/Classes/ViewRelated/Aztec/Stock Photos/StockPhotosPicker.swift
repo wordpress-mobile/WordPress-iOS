@@ -6,20 +6,21 @@ final class StockPhotosPicker: NSObject {
     }()
 
     func presentPicker(origin: UIViewController) {
-        let options = WPMediaPickerOptions()
-        options.showMostRecentFirst = true
-        options.filter = [.all]
-        options.allowCaptureOfMedia = false
-        options.showSearchBar = true
+//        let options = WPMediaPickerOptions()
+//        options.showMostRecentFirst = true
+//        options.filter = [.all]
+//        options.allowCaptureOfMedia = false
+//        options.showSearchBar = true
 
-        let picker = WPNavigationMediaPickerViewController(options: options)
-        picker.dataSource = dataSource
-        //picker.mediaPicker.options = options
+        let picker = WPNavigationMediaPickerViewController()
+//        picker.dataSource = dataSource
+//        picker.mediaPicker.options = options
+//        picker.view.backgroundColor = .red
         picker.delegate = self
-        picker.startOnGroupSelector = false
-        picker.showGroupSelector = false
-        picker.selectionActionTitle = "Cesar"
-        picker.modalPresentationStyle = .currentContext
+//        picker.startOnGroupSelector = false
+//        picker.showGroupSelector = false
+//        picker.selectionActionTitle = "Cesar"
+//        picker.modalPresentationStyle = .currentContext
         origin.present(picker, animated: true)
     }
 }
