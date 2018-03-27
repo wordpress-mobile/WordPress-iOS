@@ -35,22 +35,8 @@ final class AztecMoreCoordinator {
     }
 
     private func showStockPhotos(origin: UIViewController) {
-//        //This would be the starting point of the next PR
-//        print("Nothing to see here yet")
-
-        let stockDataSource = StockPhotosDataSource()
-
-        let options = WPMediaPickerOptions()
-        options.showMostRecentFirst = true
-        options.filter = [.all]
-        options.allowCaptureOfMedia = false
-        options.showSearchBar = true
-
-        let picker = WPNavigationMediaPickerViewController()
-        picker.dataSource = stockDataSource
-        picker.mediaPicker.options = options
-        picker.modalPresentationStyle = .currentContext
-        origin.present(picker, animated: true)
+        let stockPhotos = StockPhotosPickerPresenter()
+        stockPhotos.presentPicker(origin: origin)
     }
 
     private func showDocumentPicker(origin: UIViewController & UIDocumentPickerDelegate) {
