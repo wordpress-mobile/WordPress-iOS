@@ -74,17 +74,27 @@ class LoginProloguePromoViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupBackground()
+        setupHeadingLabel()
+        setupLayout()
+    }
 
+    private func setupBackground() {
         view.backgroundColor = UIColor.clear
+    }
 
+    private func setupHeadingLabel() {
         headingLabel.font = WPStyleGuide.mediumWeightFont(forStyle: .title3)
         headingLabel.textColor = type.headlineColor
         headingLabel.text = type.headlineText
         headingLabel.textAlignment = .center
         headingLabel.numberOfLines = 0
+        headingLabel.adjustsFontSizeToFitWidth = true
         headingLabel.sizeToFit()
+    }
 
-        setupLayout()
+    private func didChangePreferredContentSize() {
+        setupHeadingLabel()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -142,5 +152,14 @@ class LoginProloguePromoViewController: UIViewController {
             animationView.topAnchor.constraint(equalTo: animationHolder.topAnchor),
             animationView.bottomAnchor.constraint(equalTo: animationHolder.bottomAnchor)
         ])
+    }
+}
+
+extension LoginProloguePromoViewController {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            didChangePreferredContentSize()
+        }
     }
 }

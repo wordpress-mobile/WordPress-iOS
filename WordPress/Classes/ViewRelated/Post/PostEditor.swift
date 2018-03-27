@@ -13,7 +13,7 @@ import CocoaLumberjack
 
     /// Closure to be executed when the editor gets closed.
     ///
-    var onClose: ((_ changesSaved: Bool) -> Void)? { get set }
+    var onClose: ((_ changesSaved: Bool, _ shouldShowPostPost: Bool) -> Void)? { get set }
 
     /// Whether the editor should open directly to the media picker.
     ///
