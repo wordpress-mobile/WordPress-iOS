@@ -1,5 +1,6 @@
 /// Extension on String containing the literals for the Stock Photos feature
 extension String {
+    // MARK: - Entry point: alert controller
     static var freePhotosLibrary: String {
         return NSLocalizedString("Free Photo Library", comment: "")
     }
