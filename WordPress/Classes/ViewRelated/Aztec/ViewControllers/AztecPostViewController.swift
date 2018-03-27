@@ -451,6 +451,10 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
 
+    fileprivate lazy var moreOptionsCoordinator: AztecMoreOptionsSheet = {
+        return AztecMoreOptionsSheet()
+    }()
+
 
     // MARK: - Initializers
 
@@ -2125,8 +2129,8 @@ extension AztecPostViewController {
 //        docPicker.delegate = self
 //        WPStyleGuide.configureDocumentPickerNavBarAppearance()
 //        present(docPicker, animated: true, completion: nil)
-        let moreSheet = AztecMoreOptionsSheet()
-        moreSheet.present(origin: self, view: from)
+
+        moreOptionsCoordinator.present(origin: self, view: from)
     }
 
     // MARK: - Present Toolbar related VC
