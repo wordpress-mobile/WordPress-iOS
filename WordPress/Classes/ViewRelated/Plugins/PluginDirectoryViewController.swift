@@ -64,11 +64,7 @@ class PluginDirectoryViewController: UITableViewController {
     private func reloadTable() {
         tableViewModel = viewModel.tableViewModel(presenter: self)
 
-        if tableView.numberOfRows(inSection: 0) != tableViewModel.sections.first?.rows.count {
-            tableView.reloadData()
-        } else {
-            tableView.reloadSections([0], with: .none)
-        }
+        tableView.reloadData()
     }
 
     private func setupSearchBar() {
@@ -193,11 +189,23 @@ extension PluginDirectoryViewController: WPNoResultsViewDelegate {
 
 extension PluginDirectoryViewController: PluginPresenter {
     func present(plugin: Plugin, capabilities: SitePluginCapabilities) {
+        guard navigationController?.topViewController == self else {
+            // because of some work we're doing when presenting the VC, there might be a slight lag
+            // between when a user taps on a plugin, and when it appears on screen — unfortunately enough
+            // for users to not be sure whether the tap "registered".
+            // this prevents from pushing the same screen multiple times when users taps again.
+            return
+        }
+
         let pluginVC = PluginViewController(plugin: plugin, capabilities: capabilities, site: viewModel.site)
         navigationController?.pushViewController(pluginVC, animated: true)
     }
 
     func present(directoryEntry: PluginDirectoryEntry) {
+        guard navigationController?.topViewController == self else {
+            return
+        }
+
         let pluginVC = PluginViewController(directoryEntry: directoryEntry, site: viewModel.site)
         navigationController?.pushViewController(pluginVC, animated: true)
     }

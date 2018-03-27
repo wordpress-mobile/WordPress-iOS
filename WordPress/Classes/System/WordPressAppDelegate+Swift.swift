@@ -54,7 +54,10 @@ extension WordPressAppDelegate {
             let wwan = reachability.isReachableViaWWAN() ? "Y" : "N"
 
             DDLogInfo("Reachability - Internet - WiFi: \(wifi) WWAN: \(wwan)")
-            self?.connectionAvailable = reachability.isReachable()
+            let newValue = reachability.isReachable()
+            self?.connectionAvailable = newValue
+
+            NotificationCenter.default.post(name: .reachabilityChanged, object: self, userInfo: [Foundation.Notification.reachabilityKey: newValue])
         }
 
         internetReachability.reachableBlock = reachabilityBlock
@@ -70,6 +73,7 @@ extension WordPressAppDelegate {
         authTracker = WordPressAuthenticationTracker()
 
         authTracker.startListeningToAuthenticationEvents()
+        authManager.startRelayingHelpshiftNotifications()
 
         WordPressAuthenticator.shared.delegate = authManager
     }
@@ -167,9 +171,8 @@ extension WordPressAppDelegate {
 
         if let account = account,
             let username = account.username,
-            let userID = account.userID,
-            let verificationStatus = account.verificationStatus() {
-            DDLogInfo("wp.com account: \(username) (ID: \(userID)) (\(verificationStatus))")
+            let userID = account.userID {
+            DDLogInfo("wp.com account: \(username) (ID: \(userID)) (\(account.verificationStatus.rawValue))")
         }
 
         if let blogs = blogs as? [Blog], blogs.count > 0 {

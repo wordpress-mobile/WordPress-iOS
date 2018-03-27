@@ -1289,7 +1289,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         width = width - (PostFeaturedImageCellMargin * 2); // left and right cell margins
         CGFloat height = ceilf(width * 0.66);
         CGSize imageSize = CGSizeMake(width, height);
-        [mediaService thumbnailImageForMedia:featuredMedia preferredSize:imageSize completion:^(UIImage *image, NSError *error) {
+        [MediaThumbnailCoordinator.shared thumbnailFor:media with:imageSize onCompletion:^(UIImage * image, NSError * error) {
             self.featuredImage = image;
             [self.tableView reloadData];
         }];

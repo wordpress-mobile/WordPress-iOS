@@ -49,6 +49,11 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         configureForWPComOnlyIfNeeded()
     }
 
+    override func didChangePreferredContentSize() {
+        super.didChangePreferredContentSize()
+        configureEmailField()
+        configureAlternativeLabel()
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -63,7 +68,6 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         configureSubmitButton()
         configureViewForEditingIfNeeded()
     }
-
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -191,8 +195,12 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     func configureEmailField() {
         emailTextField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
         emailTextField.text = loginFields.username
+        emailTextField.adjustsFontForContentSizeCategory = true
     }
 
+    private func configureAlternativeLabel() {
+        alternativeLoginLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
+    }
 
     /// Configures whether appearance of the submit button.
     ///
@@ -233,7 +241,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     ///
     func fetchSharedWebCredentialsIfAvailable() {
         didRequestSafariSharedCredentials = true
-        WordPressAuthenticator.requestSharedWebCredentials { [weak self] (found, username, password) in
+        SafariCredentialsService.requestSharedWebCredentials { [weak self] (found, username, password) in
             self?.handleFetchedWebCredentials(found, username: username, password: password)
         }
     }
@@ -336,7 +344,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         })
     }
 
-    override func displayRemoteError(_ error: Error!) {
+    override func displayRemoteError(_ error: Error) {
         configureViewLoading(false)
 
         if awaitingGoogle {
@@ -452,7 +460,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
 // LoginFacadeDelegate methods for Google Google Sign In
 extension LoginEmailViewController {
-    func finishedLogin(withGoogleIDToken googleIDToken: String!, authToken: String!) {
+    func finishedLogin(withGoogleIDToken googleIDToken: String, authToken: String) {
         let username = loginFields.username
         syncWPCom(username, authToken: authToken, requiredMultifactor: false)
         // Disconnect now that we're done with Google.
@@ -461,7 +469,7 @@ extension LoginEmailViewController {
     }
 
 
-    func existingUserNeedsConnection(_ email: String!) {
+    func existingUserNeedsConnection(_ email: String) {
         // Disconnect now that we're done with Google.
         GIDSignIn.sharedInstance().disconnect()
 
@@ -474,7 +482,7 @@ extension LoginEmailViewController {
     }
 
 
-    func needsMultifactorCode(forUserID userID: Int, andNonceInfo nonceInfo: SocialLogin2FANonceInfo!) {
+    func needsMultifactorCode(forUserID userID: Int, andNonceInfo nonceInfo: SocialLogin2FANonceInfo) {
         loginFields.nonceInfo = nonceInfo
         loginFields.nonceUserID = userID
 
