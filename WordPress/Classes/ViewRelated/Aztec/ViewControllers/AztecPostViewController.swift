@@ -451,8 +451,8 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
 
-    fileprivate lazy var moreOptionsCoordinator: AztecMoreOptionsSheet = {
-        return AztecMoreOptionsSheet()
+    fileprivate lazy var moreOptionsCoordinator: AztecMoreCoordinator = {
+        return AztecMoreCoordinator()
     }()
 
 
