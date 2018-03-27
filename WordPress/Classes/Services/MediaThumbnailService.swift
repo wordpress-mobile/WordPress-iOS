@@ -32,6 +32,10 @@ class MediaThumbnailService: LocalCoreDataService {
     ///
     @objc func thumbnailURL(forMedia media: Media, preferredSize: CGSize, onCompletion: @escaping OnThumbnailURL, onError: OnError?) {
         managedObjectContext.perform {
+            guard let objectInContext = try? self.managedObjectContext.existingObject(with: media.objectID),
+                let mediaInContext =  objectInContext as? Media else {
+                return
+            }
             // Configure a thumbnail exporter.
             let exporter = MediaThumbnailExporter()
             exporter.mediaDirectoryType = .cache
@@ -45,13 +49,13 @@ class MediaThumbnailService: LocalCoreDataService {
             }
 
             // Check if there is already an exported thumbnail available.
-            if let identifier = media.localThumbnailIdentifier, let availableThumbnail = exporter.availableThumbnail(with: identifier) {
+            if let identifier = mediaInContext.localThumbnailIdentifier, let availableThumbnail = exporter.availableThumbnail(with: identifier) {
                 onCompletion(availableThumbnail)
                 return
             }
 
             // If we already set an identifier before let's reuse it
-            if let identifier = media.localThumbnailIdentifier {
+            if let identifier = mediaInContext.localThumbnailIdentifier {
                 exporter.options.identifier = identifier
             } else {
                 exporter.options.identifier = media.objectID.uriRepresentation().lastPathComponent
@@ -73,7 +77,7 @@ class MediaThumbnailService: LocalCoreDataService {
 
             // Configure an attempt to download a remote thumbnail and export it as a thumbnail.
             let attemptDownloadingThumbnail: () -> Void = {
-                self.downloadThumbnail(forMedia: media, preferredSize: preferredSize, onCompletion: { (image) in
+                self.downloadThumbnail(forMedia: mediaInContext, preferredSize: preferredSize, onCompletion: { (image) in
                     guard let image = image else {
                         onError?(MediaThumbnailExporter.ThumbnailExportError.failedToGenerateThumbnailFileURL)
                         return
@@ -89,7 +93,7 @@ class MediaThumbnailService: LocalCoreDataService {
             }
 
             // If the Media asset is available locally, export thumbnails from the local asset.
-            if let localAssetURL = media.absoluteLocalURL, exporter.supportsThumbnailExport(forFile: localAssetURL) {
+            if let localAssetURL = mediaInContext.absoluteLocalURL, exporter.supportsThumbnailExport(forFile: localAssetURL) {
                 self.exportQueue.async {
                     exporter.exportThumbnail(forFile: localAssetURL,
                                              onCompletion: onThumbnailExport,
@@ -99,7 +103,7 @@ class MediaThumbnailService: LocalCoreDataService {
             }
 
             // If the Media item is a video and has a remote video URL, try and export from the remote video URL.
-            if media.mediaType == .video, let remoteURLStr = media.remoteURL, let videoURL = URL(string: remoteURLStr) {
+            if mediaInContext.mediaType == .video, let remoteURLStr = mediaInContext.remoteURL, let videoURL = URL(string: remoteURLStr) {
                 self.exportQueue.async {
                     exporter.exportThumbnail(forVideoURL: videoURL,
                                              onCompletion: onThumbnailExport,
