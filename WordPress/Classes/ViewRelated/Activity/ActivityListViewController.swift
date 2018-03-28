@@ -66,6 +66,9 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tableView.estimatedRowHeight = 62
+
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
         let nib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
