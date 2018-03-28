@@ -95,6 +95,7 @@ typedef void (^SettingsAttributedTextChanged)(NSAttributedString * _Nonnull);
 ///  - hint: String to be displayed at the bottom.
 ///
 - (nonnull instancetype)initWithAttributedText:(NSAttributedString * __nullable)text
+                             defaultAttributes:(NSDictionary<NSAttributedStringKey, id> * __nullable)defaultAttributes
                                    placeholder:(NSString * __nullable)placeholder
                                           hint:(NSString * __nullable)hint;
 
