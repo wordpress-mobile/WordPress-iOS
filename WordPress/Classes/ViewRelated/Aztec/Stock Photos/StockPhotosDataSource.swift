@@ -12,7 +12,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
         self.service = service
         super.init()
     }
-    
+
     func numberOfGroups() -> Int {
         return 1
     }
@@ -69,7 +69,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
         return true
     }
 
-    //MARK: Unnused protocol methods
+    // MARK: Unnused protocol methods
 
     func setSelectedGroup(_ group: WPMediaGroup) {
         //
@@ -92,7 +92,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     }
 }
 
-//MARK: - Helpers
+// MARK: - Helpers
 
 extension StockPhotosDataSource {
     private func searchCompleted(result: [StockPhotosMedia]) {
