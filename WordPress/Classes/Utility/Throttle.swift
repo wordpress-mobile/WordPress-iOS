@@ -1,18 +1,19 @@
 import Foundation
 
-// Based on code by Daniele Margutti — http://www.danielemargutti.com (http://www.danielemargutti.com) and Ignazio Calò:
-// http://danielemargutti.com/2017/10/19/throttle-in-swift/
-
-/// This class provides an easy way to ensure that an operation won't be repeated more often than `seconds` amount of time.
-/// Common use cases include online search — avoiding hitting the backend with a request for every character
-/// the user types.
-
-/// - Note:
+/// Based on code by Daniele Margutti — http://www.danielemargutti.com (http://www.danielemargutti.com)
+/// and Ignazio Calò: http://danielemargutti.com/2017/10/19/throttle-in-swift/
+///
+/// This class provides an easy way to ensure that an operation won't happen more than once in the specified
+/// amount of seconds.
+/// A common use case is when performing an online search, to limit the number of requests made to the backend as well
+/// as the number of (possibly stale) UI updates as the user types.
+///
+/// Note:
 /// Any new block passed to `throttle(:_)` cancels the previous one. If you need to throttle multiple things
 /// (i.e. online search and unrelated background refresh), you'll need to have a separate `Throttle` for each of them.
+///
 public class Throttle {
     private let queue: DispatchQueue = DispatchQueue.global(qos: .default)
-
     private var job: DispatchWorkItem = DispatchWorkItem(block: {})
     private var previousRun: Date = Date.distantPast
     private var maxInterval: Double
