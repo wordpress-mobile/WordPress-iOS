@@ -5,9 +5,9 @@ final class AztecMoreCoordinator {
     func present(origin: UIViewController & UIDocumentPickerDelegate, view: UIView) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        alertController.addAction(freePhoto())
-        alertController.addAction(files(origin: origin))
-        alertController.addAction(cancel())
+        alertController.addAction(freePhotoAction())
+        alertController.addAction(otherAppsAction(origin: origin))
+        alertController.addAction(cancelAction())
 
 
         alertController.popoverPresentationController?.sourceView = view
@@ -17,19 +17,19 @@ final class AztecMoreCoordinator {
         origin.present(alertController, animated: true, completion: nil)
     }
 
-    private func freePhoto() -> UIAlertAction {
+    private func freePhotoAction() -> UIAlertAction {
         return UIAlertAction(title: .freePhotosLibrary, style: .default, handler: { [weak self] action in
             self?.showStockPhotos()
         })
     }
 
-    private func files(origin: UIViewController & UIDocumentPickerDelegate) -> UIAlertAction {
+    private func otherAppsAction(origin: UIViewController & UIDocumentPickerDelegate) -> UIAlertAction {
         return UIAlertAction(title: .files, style: .default, handler: { [weak self] action in
             self?.showDocumentPicker(origin: origin)
         })
     }
 
-    private func cancel() -> UIAlertAction {
+    private func cancelAction() -> UIAlertAction {
         return UIAlertAction(title: .cancelMoreOptions, style: .cancel, handler: nil)
     }
 
