@@ -26,6 +26,7 @@ class PostCoordinator: NSObject {
     ///
     /// - Parameter post: the post to save
     func save(post: AbstractPost) {
+        change(post: post, status: .pushing)
         if mediaCoordinator.isUploadingMedia(for: post) {
             // Only observe if we're not already
             guard !isObserving(post: post) else {
@@ -45,8 +46,10 @@ class PostCoordinator: NSObject {
                         self.removeObserver(for: post)
                         self.upload(post: post)
                     }
+                case .failed:
+                    self.change(post: post, status: .failed)
                 default:
-                    print("Post Coordinator -> Media state: \(state)")
+                    DDLogInfo("Post Coordinator -> Media state: \(state)")
                 }
             }, forMediaFor: post)
             trackObserver(receipt: uuid, for: post)
@@ -137,5 +140,12 @@ class PostCoordinator: NSObject {
             result = observerUUIDs[post] != nil
         }
         return result
+    }
+
+    private func change(post: AbstractPost, status: AbstractPostRemoteStatus) {
+        post.managedObjectContext?.perform {
+            post.remoteStatus = status
+            try? post.managedObjectContext?.save()
+        }
     }
 }
