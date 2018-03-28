@@ -22,7 +22,7 @@ final class StockPhotosPicker: NSObject {
 //        picker.startOnGroupSelector = false
 //        picker.showGroupSelector = false
 //        picker.selectionActionTitle = "Cesar"
-//        picker.modalPresentationStyle = .currentContext
+        picker.modalPresentationStyle = .currentContext
         origin.present(picker, animated: true)
     }
 }
