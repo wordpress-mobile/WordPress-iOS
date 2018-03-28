@@ -20,6 +20,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     ActionBarModeDraftWithFutureDate,
     ActionBarModeDraft,
     ActionBarModeTrash,
+    ActionBarModeFailed,
 };
 
 
@@ -405,7 +406,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
         self.viewModel.progressBlock = ^(double progress){
             weakSelf.progressView.progress = progress;
             if (progress >= 1.0) {
-                weakSelf.statusLabel.text = weakSelf.viewModel.status;
+                [weakSelf configureWithPost:weakSelf.post];
             }
         };
     }
@@ -416,7 +417,9 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 - (void)configureActionBar
 {
     NSString *status = [self.post status];
-    if ([status isEqualToString:PostStatusPublish] || [status isEqualToString:PostStatusPrivate]) {
+    if ([self.viewModel postIsFailed]) {
+        [self configureFailedActionBar];
+    } else if ([status isEqualToString:PostStatusPublish] || [status isEqualToString:PostStatusPrivate]) {
         [self configurePublishedActionBar];
     } else if ([status isEqualToString:PostStatusTrash]) {
         // trashed
@@ -435,6 +438,25 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [self.actionBar reset];
 }
 
+- (void)configureFailedActionBar
+{
+    if (self.currentActionBarMode == ActionBarModeFailed) {
+        return;
+    }
+    self.currentActionBarMode = ActionBarModeFailed;
+
+    UIEdgeInsets imageInsets = ActionbarButtonImageInsets;
+    if ([self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionRightToLeft) {
+        imageInsets = [InsetsHelper flipForRightToLeftLayoutDirection:imageInsets];
+    }
+
+    NSMutableArray *items = [NSMutableArray array];
+    [items addObject:[self editActionBarItemWithInsets:imageInsets]];
+    [items addObject:[self retryActionBarItemWithInsets:imageInsets]];
+    [items addObject:[self trashActionBarItemWithInsets:imageInsets]];
+    [self.actionBar setItems:items];
+}
+
 - (void)configurePublishedActionBar
 {
     if (self.currentActionBarMode == ActionBarModePublish) {
@@ -449,11 +471,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
     NSMutableArray *items = [NSMutableArray array];
     [items addObject:[self editActionBarItemWithInsets:imageInsets]];
-    if (self.viewModel.postIsFailed) {
-        [items addObject:[self retryActionBarItemWithInsets:imageInsets]];
-    } else {
-        [items addObject:[self viewActionBarItemWithInsets:imageInsets]];
-    }
+    [items addObject:[self viewActionBarItemWithInsets:imageInsets]];
     if ([self.post supportsStats]) {
         [items addObject:[self statsActionBarItemWithInsets:imageInsets]];
     }
@@ -475,7 +493,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
     NSMutableArray *items = [NSMutableArray array];
     [items addObject:[self editActionBarItemWithInsets:imageInsets]];
-    [items addObject:[self retryOrPreviewActionBarItemWithInsets:imageInsets]];
+    [items addObject:[self previewActionBarItemWithInsets:imageInsets]];
     [items addObject:[self trashActionBarItemWithInsets:imageInsets]];
     [self.actionBar setItems:items];
 }
@@ -494,7 +512,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
     NSMutableArray *items = [NSMutableArray array];
     [items addObject:[self editActionBarItemWithInsets:imageInsets]];
-    [items addObject:[self retryOrPreviewActionBarItemWithInsets:imageInsets]];
+    [items addObject:[self previewActionBarItemWithInsets:imageInsets]];
     [items addObject:[self scheduleActionBarItemWithInsets:imageInsets]];
     [items addObject:[self trashActionBarItemWithInsets:imageInsets]];
     [self.actionBar setItems:items];
@@ -514,7 +532,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
     NSMutableArray *items = [NSMutableArray array];
     [items addObject:[self editActionBarItemWithInsets:imageInsets]];
-    [items addObject:[self retryOrPreviewActionBarItemWithInsets:imageInsets]];
+    [items addObject:[self previewActionBarItemWithInsets:imageInsets]];
     [items addObject:[self publishActionBarItemWithInsets:imageInsets]];
     [items addObject:[self trashActionBarItemWithInsets:imageInsets]];
     [self.actionBar setItems:items];
@@ -536,15 +554,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [items addObject:[self restoreActionBarItemWithInsets:imageInsets]];
     [items addObject:[self deleteActionBarItemWithInsets:imageInsets]];
     [self.actionBar setItems:items];
-}
-
-- (PostCardActionBarItem *)retryOrPreviewActionBarItemWithInsets:(UIEdgeInsets)imageInsets
-{
-    if ([Feature enabled:FeatureFlagAsyncPosting] && self.viewModel.postIsFailed) {
-        return [self retryActionBarItemWithInsets:imageInsets];
-    } else {
-        return [self previewActionBarItemWithInsets:imageInsets];
-    }
 }
 
 - (PostCardActionBarItem *)editActionBarItemWithInsets:(UIEdgeInsets)imageInsets
