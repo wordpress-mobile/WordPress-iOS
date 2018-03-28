@@ -118,6 +118,6 @@ class PostCardStatusViewModel: NSObject {
 
     @objc
     var postIsFailed: Bool {
-        return post.remoteStatus == .failed || MediaCoordinator.shared.hasFailedMedia(for: post)
+        return post.remoteStatus == .failed || MediaCoordinator.shared.hasFailedMedia(for: post) || post.hasFailedMedia
     }
 }
