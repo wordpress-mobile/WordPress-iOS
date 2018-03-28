@@ -2117,7 +2117,7 @@ extension AztecPostViewController {
     }
 
     private func showMore(from: FormatBarItem) {
-        closeMediaPickerInputViewController()
+        rememberFirstResponder()
         moreCoordinator.present(origin: self, view: from)
     }
 
@@ -3561,11 +3561,7 @@ extension AztecPostViewController: UIDocumentPickerDelegate {
 
 extension AztecPostViewController: AztecMoreCoordinatorDelegate {
     func didCancel(coordinator: AztecMoreCoordinator?) {
-        guard let leadingButton = formatBar.leadingItem else {
-            return
-        }
-
-        toggleMediaPicker(fromButton: leadingButton)
+        restoreFirstResponder()
     }
 }
 
