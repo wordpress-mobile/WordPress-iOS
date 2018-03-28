@@ -27,6 +27,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 @property (nonatomic, assign) BOOL              shouldNotifyValue;
 @property (nonatomic, strong) NSString          *originalString;
 @property (nonatomic, strong) NSAttributedString *originalAttributedString;
+@property (nonatomic, copy) NSDictionary<NSAttributedStringKey, id> *defaultAttributes;
 @end
 
 
@@ -57,7 +58,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     return self;
 }
 
-- (instancetype)initWithAttributedText:(NSAttributedString *)text placeholder:(NSString *)placeholder hint:(NSString *)hint
+- (instancetype)initWithAttributedText:(NSAttributedString *)text defaultAttributes:(NSDictionary<NSAttributedStringKey, id> *)defaultAttributes placeholder:(NSString *)placeholder hint:(NSString *)hint
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
@@ -67,6 +68,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
         _originalAttributedString = text;
         _textField.attributedText = text;
         _textField.allowsEditingTextAttributes = true;
+        _textField.defaultTextAttributes = defaultAttributes;
     }
     return self;
 }
@@ -103,7 +105,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     // Don't auto-size rows
     self.tableView.estimatedRowHeight = 0;
 

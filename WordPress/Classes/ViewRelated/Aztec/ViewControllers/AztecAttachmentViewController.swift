@@ -132,7 +132,7 @@ class AztecAttachmentViewController: UITableViewController {
         let editableRow = row as! EditableAttributedTextRow
         let hint = NSLocalizedString("Image Caption", comment: "Hint for image caption on image settings.")
 
-        pushSettingsController(for: editableRow, hint: hint, settingsTextMode: .text) { [weak self] value in
+        pushSettingsController(for: editableRow, hint: hint) { [weak self] value in
             guard let `self` = self else {
                 return
             }
@@ -251,14 +251,19 @@ class AztecAttachmentViewController: UITableViewController {
 
     private func pushSettingsController(for row: EditableAttributedTextRow,
                                         hint: String? = nil,
-                                        settingsTextMode: SettingsTextModes,
                                         onValueChanged: @escaping SettingsAttributedTextChanged) {
+        
+        // TODO: This shouldn't duplicate the styling from the Figcaption formatter.  Try to unify.
+        let defaultAttributes: [NSAttributedStringKey:Any] = [
+            .font: WPFontManager.notoRegularFont(ofSize: 14),
+            .foregroundColor: UIColor.gray,
+        ]
+        
         let title = row.title
         let value = row.value
-        let controller = SettingsTextViewController(attributedText: value, placeholder: "\(title)...", hint: hint)
+        let controller = SettingsTextViewController(attributedText: value, defaultAttributes: defaultAttributes, placeholder: "\(title)...", hint: hint)
 
         controller.title = title
-        controller.mode = settingsTextMode
         controller.onAttributedValueChanged = onValueChanged
 
         navigationController?.pushViewController(controller, animated: true)
