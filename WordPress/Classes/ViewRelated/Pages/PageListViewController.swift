@@ -23,6 +23,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     fileprivate let animatedBox = WPAnimatedBox()
 
+    @IBOutlet weak var filterTabBarTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var filterTabBariOS10TopConstraint: NSLayoutConstraint!
     @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
 
@@ -80,9 +82,26 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         super.viewDidLoad()
 
         title = NSLocalizedString("Site Pages", comment: "Title of the screen showing the list of pages for a blog.")
+
+        configureFilterBarTopConstraint()
     }
 
     // MARK: - Configuration
+
+    private func configureFilterBarTopConstraint() {
+        // Not an ideal solution, but fixes an issue where the filter bar
+        // wasn't showing up on iOS 10: https://github.com/wordpress-mobile/WordPress-iOS/issues/8937
+        if #available(iOS 11.0, *) {
+            filterTabBariOS10TopConstraint.isActive = false
+        } else {
+            extendedLayoutIncludesOpaqueBars = false
+            edgesForExtendedLayout = []
+
+            filterTabBarTopConstraint.isActive = false
+
+            view.layoutIfNeeded()
+        }
+    }
 
     override func configureTableView() {
         tableView.accessibilityIdentifier = "PagesTable"
@@ -261,7 +280,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let page = pageAtIndexPath(indexPath)
 
-        if page.remoteStatus != .pushing && page.status != .trash {
+        if page.status != .trash {
             editPage(page)
         }
     }
@@ -328,6 +347,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     fileprivate func editPage(_ apost: AbstractPost) {
+        guard !PostCoordinator.shared.isUploading(post: apost) else {
+            presentAlertForPageBeingUploaded()
+            return
+        }
         WPAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics())
         showEditor(post: apost)
     }
@@ -354,6 +377,16 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         present(navController, animated: true, completion: { [weak self] in
             self?.updateFilterWithPostStatus(.draft)
         })
+    }
+
+    func presentAlertForPageBeingUploaded() {
+        let message = NSLocalizedString("This page is currently uploading. It won't take long -- try again soon and you'll be able to edit it.", comment: "Prompts the user that the page is being uploaded and cannot be edited while that process is ongoing.")
+
+        let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
+
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        alertController.addCancelActionWithTitle(alertCancel, handler: nil)
+        alertController.presentFromRootViewController()
     }
 
     fileprivate func draftPage(_ apost: AbstractPost) {

@@ -42,7 +42,8 @@
                             <constraint firstItem="cnu-9z-5GZ" firstAttribute="top" secondItem="Nmf-Iz-jkG" secondAttribute="bottom" id="Hb8-6N-iSm"/>
                             <constraint firstAttribute="trailing" secondItem="Nmf-Iz-jkG" secondAttribute="trailing" id="KGt-NK-T3O"/>
                             <constraint firstItem="cnu-9z-5GZ" firstAttribute="top" secondItem="Zhd-4n-wcm" secondAttribute="topMargin" id="UwE-7o-GHb"/>
-                            <constraint firstItem="Nmf-Iz-jkG" firstAttribute="top" secondItem="Zhd-4n-wcm" secondAttribute="topMargin" id="fGy-cf-WIB"/>
+                            <constraint firstItem="Nmf-Iz-jkG" firstAttribute="top" secondItem="Zhd-4n-wcm" secondAttribute="topMargin" id="ZFh-Do-F2v"/>
+                            <constraint firstItem="Nmf-Iz-jkG" firstAttribute="top" secondItem="rUe-TB-81b" secondAttribute="bottom" priority="999" id="fGy-cf-WIB"/>
                             <constraint firstAttribute="trailing" secondItem="cnu-9z-5GZ" secondAttribute="trailing" id="hEd-mB-ZfB"/>
                             <constraint firstItem="Nmf-Iz-jkG" firstAttribute="leading" secondItem="Zhd-4n-wcm" secondAttribute="leading" id="npO-qQ-WgT"/>
                             <constraint firstItem="cnu-9z-5GZ" firstAttribute="leading" secondItem="Zhd-4n-wcm" secondAttribute="leading" id="phA-Qk-kzl"/>
@@ -63,6 +64,8 @@
                         <outlet property="addButton" destination="9Az-zB-Hwe" id="r4s-oX-gyT"/>
                         <outlet property="filterTabBar" destination="Nmf-Iz-jkG" id="Ydz-ff-EUy"/>
                         <outlet property="filterTabBarBottomConstraint" destination="Hb8-6N-iSm" id="GsJ-Hc-dE5"/>
+                        <outlet property="filterTabBarTopConstraint" destination="ZFh-Do-F2v" id="hq3-Iz-dZu"/>
+                        <outlet property="filterTabBariOS10TopConstraint" destination="fGy-cf-WIB" id="2s9-pa-9Ee"/>
                         <outlet property="rightBarButtonView" destination="8Ph-e4-iOe" id="V4F-lw-glT"/>
                         <outlet property="searchWrapperView" destination="sFK-WP-z2Z" id="CJ1-ul-bLt"/>
                         <outlet property="tableViewTopConstraint" destination="UwE-7o-GHb" id="4mJ-Ry-6Xa"/>

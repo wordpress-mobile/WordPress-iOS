@@ -9,10 +9,12 @@ class PluginDirectoryViewController: UITableViewController {
     private var tableViewModel: ImmuTable!
     private var searchWrapperView: SearchWrapperView!
 
+    private let searchThrottle = Throttle(seconds: 0.5)
+
     init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         viewModel = PluginDirectoryViewModel(site: site, store: store)
 
-        super.init(style: .grouped)
+        super.init(style: .plain)
         tableViewModel = viewModel.tableViewModel(presenter: self)
         title = NSLocalizedString("Plugins", comment: "Title for the plugin directory")
     }
@@ -48,13 +50,7 @@ class PluginDirectoryViewController: UITableViewController {
         tableView.estimatedRowHeight = Constants.rowHeight
         tableView.separatorInset = Constants.separatorInset
 
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
-        tableView.tableFooterView = footerView
-        // We want the tableView to be in `.grouped` style, but we don't want the additional
-        // padding that comes with it, so we need to have this tiny useless footer.
-
-        ImmuTable.registerRows([CollectionViewContainerRow<PluginDirectoryCollectionViewCell, PluginDirectoryEntry>.self,
-                                TextRow.self],
+        ImmuTable.registerRows([CollectionViewContainerRow<PluginDirectoryCollectionViewCell, PluginDirectoryEntry>.self],
                                tableView: tableView)
 
         tableViewModel = viewModel.tableViewModel(presenter: self)
@@ -64,11 +60,7 @@ class PluginDirectoryViewController: UITableViewController {
     private func reloadTable() {
         tableViewModel = viewModel.tableViewModel(presenter: self)
 
-        if tableView.numberOfRows(inSection: 0) != tableViewModel.sections.first?.rows.count {
-            tableView.reloadData()
-        } else {
-            tableView.reloadSections([0], with: .none)
-        }
+        tableView.reloadData()
     }
 
     private func setupSearchBar() {
@@ -180,8 +172,10 @@ extension PluginDirectoryViewController: UISearchResultsUpdating {
             return
         }
 
-        pluginListViewController.query = .feed(type: .search(term: searchedText))
-        pluginListViewController.tableView.contentInset.top = searchWrapperView.bounds.height
+        searchThrottle.throttle {
+            pluginListViewController.query = .feed(type: .search(term: searchedText))
+            pluginListViewController.tableView.contentInset.top = self.searchWrapperView.bounds.height
+        }
     }
 }
 
@@ -193,11 +187,23 @@ extension PluginDirectoryViewController: WPNoResultsViewDelegate {
 
 extension PluginDirectoryViewController: PluginPresenter {
     func present(plugin: Plugin, capabilities: SitePluginCapabilities) {
+        guard navigationController?.topViewController == self else {
+            // because of some work we're doing when presenting the VC, there might be a slight lag
+            // between when a user taps on a plugin, and when it appears on screen — unfortunately enough
+            // for users to not be sure whether the tap "registered".
+            // this prevents from pushing the same screen multiple times when users taps again.
+            return
+        }
+
         let pluginVC = PluginViewController(plugin: plugin, capabilities: capabilities, site: viewModel.site)
         navigationController?.pushViewController(pluginVC, animated: true)
     }
 
     func present(directoryEntry: PluginDirectoryEntry) {
+        guard navigationController?.topViewController == self else {
+            return
+        }
+
         let pluginVC = PluginViewController(directoryEntry: directoryEntry, site: viewModel.site)
         navigationController?.pushViewController(pluginVC, animated: true)
     }
