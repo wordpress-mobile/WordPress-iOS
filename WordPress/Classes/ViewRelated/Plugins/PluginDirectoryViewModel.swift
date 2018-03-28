@@ -24,6 +24,8 @@ class PluginDirectoryViewModel: Observable {
     private var storeReceipt: Receipt?
     private var actionReceipt: Receipt?
 
+    private let throttle = Throttle(seconds: 1)
+
     public init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         self.store = store
         self.site = site
@@ -33,8 +35,21 @@ class PluginDirectoryViewModel: Observable {
         popularReceipt = store.query(.feed(type: .popular))
         newReceipt = store.query(.feed(type: .newest))
 
-        storeReceipt = store.onChange { [weak self] in
-            self?.changeDispatcher.dispatch()
+        actionReceipt = ActionDispatcher.global.subscribe { [changeDispatcher, throttle] action in
+            switch action {
+            case PluginAction.receivePlugins,
+                 PluginAction.receiveFeaturedPlugins,
+                 PluginAction.receivePluginDirectoryFeed,
+                 PluginAction.receivePluginDirectoryEntry:
+                // Fairly often, a bunch of those network calls can finish very close to each other — within few hundred
+                // milliseconds or so. Doing a reload in this case is both wasteful and noticably slow.
+                // Instead, we throttle the call so we trigger the reload at most once a second.
+                throttle.throttle {
+                    changeDispatcher.dispatch()
+                }
+            default:
+                break
+            }
         }
     }
 

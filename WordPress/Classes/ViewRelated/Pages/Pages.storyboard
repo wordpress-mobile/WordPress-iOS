@@ -42,6 +42,7 @@
                             <constraint firstAttribute="trailing" secondItem="LM5-dj-tFF" secondAttribute="trailing" id="AVm-wb-6M1"/>
                             <constraint firstAttribute="bottomMargin" secondItem="LM5-dj-tFF" secondAttribute="bottom" id="Icj-Cf-hTM"/>
                             <constraint firstItem="kb7-5Y-cyY" firstAttribute="top" secondItem="MiP-YM-poS" secondAttribute="topMargin" id="Iu4-wT-NJl"/>
+                            <constraint firstItem="kb7-5Y-cyY" firstAttribute="top" secondItem="zEU-W1-HEN" secondAttribute="bottom" priority="999" id="N3R-GK-VXe"/>
                             <constraint firstItem="LM5-dj-tFF" firstAttribute="top" secondItem="kb7-5Y-cyY" secondAttribute="bottom" id="VTs-hm-pCI"/>
                             <constraint firstAttribute="trailing" secondItem="kb7-5Y-cyY" secondAttribute="trailing" id="bVD-D5-qun"/>
                             <constraint firstItem="LM5-dj-tFF" firstAttribute="top" secondItem="MiP-YM-poS" secondAttribute="topMargin" id="hqa-P7-bPN"/>
@@ -63,6 +64,8 @@
                         <outlet property="addButton" destination="AUi-GI-97s" id="D1f-jZ-iVb"/>
                         <outlet property="filterTabBar" destination="kb7-5Y-cyY" id="yfM-1V-Kgn"/>
                         <outlet property="filterTabBarBottomConstraint" destination="VTs-hm-pCI" id="8xw-da-7bY"/>
+                        <outlet property="filterTabBarTopConstraint" destination="Iu4-wT-NJl" id="ncb-1g-VsV"/>
+                        <outlet property="filterTabBariOS10TopConstraint" destination="N3R-GK-VXe" id="qgA-sx-Yrb"/>
                         <outlet property="rightBarButtonView" destination="eMR-fX-0uB" id="tkm-aq-s67"/>
                         <outlet property="tableViewTopConstraint" destination="hqa-P7-bPN" id="Mas-aT-2OZ"/>
                     </connections>

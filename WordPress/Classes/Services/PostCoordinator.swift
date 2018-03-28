@@ -26,7 +26,7 @@ class PostCoordinator: NSObject {
 
         if mediaCoordinator.isUploadingMedia(for: post) {
             // Only observe if we're not already
-            guard observerUUIDs[post] == nil else {
+            guard !isObserving(post: post) else {
                 return
             }
 
@@ -44,12 +44,19 @@ class PostCoordinator: NSObject {
                     print("Post Coordinator -> Media state: \(state)")
                 }
             }, forMediaFor: post)
-
-            observerUUIDs[post] = uuid
+            trackObserver(receipt: uuid, for: post)
             return
         }
 
         upload(post: post)
+    }
+
+    func cancelAnyPendingSaveOf(post: AbstractPost) {
+        removeObserver(for: post)
+    }
+
+    func isUploading(post: AbstractPost) -> Bool {
+        return post.remoteStatus == .pushing
     }
 
     private func upload(post: AbstractPost) {
@@ -87,13 +94,29 @@ class PostCoordinator: NSObject {
         post.content = postContent
     }
 
-    private func removeObserver(for post: AbstractPost) {
-        let uuid = observerUUIDs[post]
-
-        observerUUIDs.removeValue(forKey: post)
-
-        if let uuid = uuid {
-            MediaCoordinator.shared.removeObserver(withUUID: uuid)
+    private func trackObserver(receipt: UUID, for post: AbstractPost) {
+        queue.sync {
+            observerUUIDs[post] = receipt
         }
+    }
+
+    private func removeObserver(for post: AbstractPost) {
+        queue.sync {
+            let uuid = observerUUIDs[post]
+
+            observerUUIDs.removeValue(forKey: post)
+
+            if let uuid = uuid {
+                MediaCoordinator.shared.removeObserver(withUUID: uuid)
+            }
+        }
+    }
+
+    private func isObserving(post: AbstractPost) -> Bool {
+        var result = false
+        queue.sync {
+            result = observerUUIDs[post] != nil
+        }
+        return result
     }
 }
