@@ -1,3 +1,4 @@
+// Empty state for Stock Photos
 final class StockPhotosPlaceholder: WPNoResultsView {
     init() {
         super.init(frame: .zero)

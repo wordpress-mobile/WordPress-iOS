@@ -4,6 +4,7 @@ import WPMediaPicker
 /// Prepares the alert controller that will be presented when tapping the "more" button in Aztec's Format Bar
 final class AztecMoreCoordinator {
     private weak var delegate: AztecMoreCoordinatorDelegate?
+
     private let stockPhotos = StockPhotosPicker()
 
     init(delegate: AztecMoreCoordinatorDelegate) {
@@ -43,7 +44,6 @@ final class AztecMoreCoordinator {
     }
 
     private func showStockPhotos(origin: UIViewController) {
-        //let stockPhotos = StockPhotosPicker()
         stockPhotos.presentPicker(origin: origin)
     }
 

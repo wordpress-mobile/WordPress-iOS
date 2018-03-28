@@ -1,5 +1,7 @@
 import WPMediaPicker
 
+
+/// Data Source for Stock Photos
 final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     func numberOfGroups() -> Int {
         print("==== number of groups ====")
