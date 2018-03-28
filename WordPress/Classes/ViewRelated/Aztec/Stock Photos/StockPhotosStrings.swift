@@ -6,10 +6,10 @@ extension String {
     }
 
     static var files: String {
-        return NSLocalizedString("Files", comment: "Label for the action Open Files in the post composer")
+        return NSLocalizedString("Other Apps", comment: "Menu option used for adding media from other applications.")
     }
 
     static var cancelMoreOptions: String {
-        return NSLocalizedString("Cancel", comment: "Dismisses the Alert from Screen")
+        return NSLocalizedString("Dismiss", comment: "Dismiss the AlertView")
     }
 }
