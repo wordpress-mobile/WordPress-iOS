@@ -184,8 +184,10 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
         if isOnlyNumbers && isShortEnough {
             displayError(message: "")
 
-            // because the string was stripped of whitespace, we can't return true. But we can do the change ourselves
+            // because the string was stripped of whitespace, we can't return true and we update the textfield ourselves
             textField.text = resultStringStripped
+            loginFields.multifactorCode = resultStringStripped
+            configureSubmitButton(animating: false)
         } else if let pasteString = UIPasteboard.general.string, pasteString == replacementString {
             displayError(message: NSLocalizedString("That doesn't appear to be a valid verification code.", comment: "Shown when a user pastes a code into the two factor field that contains letters or is the wrong length"))
         } else if !isOnlyNumbers {
@@ -202,13 +204,6 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
 
 
     // MARK: - Actions
-
-    @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
-        loginFields.multifactorCode = verificationCodeField.nonNilTrimmedText()
-
-        configureSubmitButton(animating: false)
-    }
-
 
     @IBAction func handleSubmitForm() {
         validateForm()
