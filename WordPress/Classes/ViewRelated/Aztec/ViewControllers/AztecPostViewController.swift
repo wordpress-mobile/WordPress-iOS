@@ -2117,6 +2117,7 @@ extension AztecPostViewController {
     }
 
     private func showMore(from: FormatBarItem) {
+        closeMediaPickerInputViewController()
         moreCoordinator.present(origin: self, view: from)
     }
 
