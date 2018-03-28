@@ -2117,6 +2117,7 @@ extension AztecPostViewController {
     }
 
     private func showMore(from: FormatBarItem) {
+        stopListeningToNotifications()
         rememberFirstResponder()
         moreCoordinator.present(origin: self, view: from)
     }
@@ -3561,6 +3562,7 @@ extension AztecPostViewController: UIDocumentPickerDelegate {
 
 extension AztecPostViewController: AztecMoreCoordinatorDelegate {
     func didCancel(coordinator: AztecMoreCoordinator?) {
+        startListeningToNotifications()
         restoreFirstResponder()
     }
 }
