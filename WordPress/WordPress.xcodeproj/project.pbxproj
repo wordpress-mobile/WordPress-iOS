@@ -890,6 +890,7 @@
 		D8A3A5B3206A49BF00992576 /* StockPhotosMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5B2206A49BF00992576 /* StockPhotosMedia.swift */; };
 		D8A3A5B5206A4C7800992576 /* StockPhotosPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5B4206A4C7800992576 /* StockPhotosPicker.swift */; };
 		D8A3A5B7206A563900992576 /* StockPhotosPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5B6206A563900992576 /* StockPhotosPlaceholder.swift */; };
+		D8B43E70206B439F00DDAFAA /* AztecMoreCoordinatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B43E6F206B439F00DDAFAA /* AztecMoreCoordinatorDelegate.swift */; };
 		D8B6BEB7203E11F2007C8A19 /* Bundle+LoadFromNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B6BEB6203E11F2007C8A19 /* Bundle+LoadFromNib.swift */; };
 		D8B9B58F204F4EA1003C6042 /* NetworkAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B9B58E204F4EA1003C6042 /* NetworkAware.swift */; };
 		D8B9B591204F658A003C6042 /* CommentsViewController+NetworkAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B9B590204F658A003C6042 /* CommentsViewController+NetworkAware.swift */; };
@@ -2434,6 +2435,7 @@
 		D8A3A5B2206A49BF00992576 /* StockPhotosMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosMedia.swift; sourceTree = "<group>"; };
 		D8A3A5B4206A4C7800992576 /* StockPhotosPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosPicker.swift; sourceTree = "<group>"; };
 		D8A3A5B6206A563900992576 /* StockPhotosPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosPlaceholder.swift; sourceTree = "<group>"; };
+		D8B43E6F206B439F00DDAFAA /* AztecMoreCoordinatorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AztecMoreCoordinatorDelegate.swift; sourceTree = "<group>"; };
 		D8B6BEB6203E11F2007C8A19 /* Bundle+LoadFromNib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+LoadFromNib.swift"; sourceTree = "<group>"; };
 		D8B9B58E204F4EA1003C6042 /* NetworkAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkAware.swift; sourceTree = "<group>"; };
 		D8B9B590204F658A003C6042 /* CommentsViewController+NetworkAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentsViewController+NetworkAware.swift"; sourceTree = "<group>"; };
@@ -5633,6 +5635,7 @@
 				D8A3A5B2206A49BF00992576 /* StockPhotosMedia.swift */,
 				D8A3A5B4206A4C7800992576 /* StockPhotosPicker.swift */,
 				D8A3A5B6206A563900992576 /* StockPhotosPlaceholder.swift */,
+				D8B43E6F206B439F00DDAFAA /* AztecMoreCoordinatorDelegate.swift */,
 			);
 			path = "Stock Photos";
 			sourceTree = "<group>";
@@ -7436,6 +7439,7 @@
 				E6D2E1651B8AAD7E0000ED14 /* ReaderSiteStreamHeader.swift in Sources */,
 				E14B74111C7B16FD00C26E21 /* WPNoResultsView+Model.swift in Sources */,
 				E166FA1B1BB0656B00374B5B /* PeopleCellViewModel.swift in Sources */,
+				D8B43E70206B439F00DDAFAA /* AztecMoreCoordinatorDelegate.swift in Sources */,
 				83FEFC7611FF6C5A0078B462 /* SiteSettingsViewController.m in Sources */,
 				B56994451B7A7EF200FF26FA /* WPStyleGuide+Comments.swift in Sources */,
 				74AF4D741FE417D200E3EBFE /* MediaUploadOperation.swift in Sources */,
