@@ -216,13 +216,14 @@ extension SignupUsernameTableViewController {
         switch indexPath.section {
         case Sections.suggestions.rawValue:
             if indexPath.row == 0 {
-                selectedUsername = ""
+                selectedUsername = currentUsername ?? ""
             } else {
                 selectedUsername = suggestions[indexPath.row - 1]
             }
         default:
             return
         }
+
         delegate?.usernameSelected(selectedUsername)
 
         tableView.deselectSelectedRowWithAnimation(true)
