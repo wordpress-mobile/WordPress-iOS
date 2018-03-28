@@ -120,7 +120,6 @@ extension WordPressAppDelegate {
 }
 
 
-
 // MARK: - Helpers
 
 extension WordPressAppDelegate {
