@@ -18,21 +18,21 @@ class AztecVerificationPromptHelper: NSObject {
 
         accountService = AccountService(managedObjectContext: managedObjectContext)
 
-//        guard accountService.isDefaultWordPressComAccount(passedAccount),
-//              passedAccount.needsEmailVerification else {
-//                // if the post the user is trying to compose isn't on a WP.com account,
-//                // or they're already verified, then the verification prompt is irrelevant.
-//                return nil
-//        }
+        guard accountService.isDefaultWordPressComAccount(passedAccount),
+              passedAccount.needsEmailVerification else {
+                // if the post the user is trying to compose isn't on a WP.com account,
+                // or they're already verified, then the verification prompt is irrelevant.
+                return nil
+        }
 
         wpComAccount = passedAccount
 
         super.init()
 
-//        NotificationCenter.default.addObserver(self,
-//                                               selector: #selector(updateVerificationStatus),
-//                                               name: .UIApplicationDidBecomeActive,
-//                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(updateVerificationStatus),
+                                               name: .UIApplicationDidBecomeActive,
+                                               object: nil)
     }
 
     deinit {
@@ -62,7 +62,7 @@ class AztecVerificationPromptHelper: NSObject {
         fancyAlert.transitioningDelegate = self
         presentingViewController.present(fancyAlert, animated: true)
 
-//        updateVerificationStatus()
+        updateVerificationStatus()
         // Silently kick off the request to make sure the user still actually needs to be verified.
         // If in the meantime user has been verified, we'll dismiss the prompt,
         // call the completion block and let caller handle the new situation.
