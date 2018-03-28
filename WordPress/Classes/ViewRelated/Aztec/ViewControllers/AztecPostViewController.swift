@@ -454,7 +454,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Presents whatever happens when FormatBar's more button is selected
     fileprivate lazy var moreCoordinator: AztecMoreCoordinator = {
-        return AztecMoreCoordinator()
+        return AztecMoreCoordinator(delegate: self)
     }()
 
 
@@ -3556,6 +3556,16 @@ extension AztecPostViewController: UIDocumentPickerDelegate {
         for documentURL in urls {
             insertExternalMediaWithURL(documentURL)
         }
+    }
+}
+
+extension AztecPostViewController: AztecMoreCoordinatorDelegate {
+    func didCancel(coordinator: AztecMoreCoordinator?) {
+        guard let leadingButton = formatBar.leadingItem else {
+            return
+        }
+
+        toggleMediaPicker(fromButton: leadingButton)
     }
 }
 
