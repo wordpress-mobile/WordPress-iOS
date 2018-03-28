@@ -171,17 +171,22 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
 
     /// Only allow digits in the 2FA text field
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString: String) -> Bool {
+        guard let fieldText = textField.text as NSString? else {
+            return true
+        }
+        let resultString = fieldText.replacingCharacters(in: range, with: replacementString)
+        let resultStringStripped = resultString.components(separatedBy: .whitespacesAndNewlines).joined()
         let allowedCharacters = CharacterSet.decimalDigits
-        let characterSet = CharacterSet(charactersIn: replacementString)
-        let isOnlyNumbers = allowedCharacters.isSuperset(of: characterSet)
-        let isShortEnough = (textField.text?.count ?? 0) + replacementString.count <= SocialLogin2FANonceInfo.TwoFactorTypeLengths.backup.rawValue
+        let resultCharacterSet = CharacterSet(charactersIn: resultStringStripped)
+        let isOnlyNumbers = allowedCharacters.isSuperset(of: resultCharacterSet)
+        let isShortEnough = resultStringStripped.count <= SocialLogin2FANonceInfo.TwoFactorTypeLengths.backup.rawValue
 
         if isOnlyNumbers && isShortEnough {
             displayError(message: "")
-            return true
-        }
 
-        if let pasteString = UIPasteboard.general.string, pasteString == replacementString {
+            // because the string was stripped of whitespace, we can't return true. But we can do the change ourselves
+            textField.text = resultStringStripped
+        } else if let pasteString = UIPasteboard.general.string, pasteString == replacementString {
             displayError(message: NSLocalizedString("That doesn't appear to be a valid verification code.", comment: "Shown when a user pastes a code into the two factor field that contains letters or is the wrong length"))
         } else if !isOnlyNumbers {
             displayError(message: NSLocalizedString("A verification code will only contain numbers.", comment: "Shown when a user types a non-number into the two factor field."))
