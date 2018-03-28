@@ -3070,7 +3070,7 @@ extension AztecPostViewController {
                 alertController.addActionWithTitle(MediaAttachmentActionSheet.stopUploadActionTitle,
                                                    style: .destructive,
                                                    handler: { (action) in
-                                                    self.mediaCoordinator.delete(media)
+                                                    self.mediaCoordinator.cancelUpload(of: media)
                 })
             }
         } else {
