@@ -1,5 +1,7 @@
 import WPMediaPicker
 
+
+/// Presents the Stock Photos main interface
 final class StockPhotosPicker: NSObject {
     private let dataSource = StockPhotosDataSource()
 
@@ -32,6 +34,6 @@ extension StockPhotosPicker: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
-        print("cancel")
+        picker.dismiss(animated: true, completion: nil)
     }
 }
