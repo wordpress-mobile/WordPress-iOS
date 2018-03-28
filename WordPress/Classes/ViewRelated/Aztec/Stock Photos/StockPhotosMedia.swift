@@ -1,10 +1,72 @@
 import WPMediaPicker
 
+/*** JSON Structure of a StockPhoto object coming from the API ***
+{
+    "ID": "PEXELS-710916",
+    "URL": "https://images.pexels.com/photos/710916/pexels-photo-710916.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "title": "pexels-photo-710916.jpeg",
+    "date": "2018-03-28 00:00:00",
+    "name": "pexels-photo-710916.jpeg",
+    "file": "pexels-photo-710916.jpeg",
+    "guid": "{\"url\":\"https:\\/\\/images.pexels.com\\/photos\\/710916\\/pexels-photo-710916.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940\",\"name\":\"pexels-photo-710916.jpeg\",\"title\":\"pexels-photo-710916.jpeg\"}",
+    "height": 1253,
+    "width": 1880,
+    "thumbnails": {
+        "large": "https://images.pexels.com/photos/710916/pexels-photo-710916.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "medium": "https://images.pexels.com/photos/710916/pexels-photo-710916.jpeg?auto=compress&cs=tinysrgb&h=350",
+        "post-thumbnail": "https://images.pexels.com/photos/710916/pexels-photo-710916.jpeg?auto=compress&cs=tinysrgb&h=130",
+        "thumbnail": "https://images.pexels.com/photos/710916/pexels-photo-710916.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=200&w=280"
+    },
+    "type": "image",
+    "extension": "jpeg"
+}
+*/
+
+struct ThumbnailCollection {
+    let largeURL: URL
+    let mediumURL: URL
+    let postThumbnailURL: URL
+    let thumbnailURL: URL
+}
 
 /// Models a Stock Photo
-final class StockPhotosMedia: NSObject, WPMediaAsset {
+///
+final class StockPhotosMedia: NSObject {
+    let id: Int
+    let guid: String
+    let URL: URL
+    let title: String
+    let name: String
+    let size: CGSize
+    let thumbnails: ThumbnailCollection
+
+    init(id: Int, guid: String, URL: URL, title: String, name: String, size: CGSize, thumbnails: ThumbnailCollection) {
+        self.id = id
+        self.guid = guid
+        self.URL = URL
+        self.title = title
+        self.name = name
+        self.size = size
+        self.thumbnails = thumbnails
+    }
+}
+
+extension StockPhotosMedia: WPMediaAsset {
     func image(with size: CGSize, completionHandler: @escaping WPMediaImageBlock) -> WPMediaRequestID {
-        return 0
+
+        //Temporary loading image from URL
+        DispatchQueue.global().async {
+            do {
+                let data = try Data(contentsOf: self.thumbnails.postThumbnailURL)
+                let image = UIImage(data: data)
+                completionHandler(image, nil)
+            } catch {
+                completionHandler(nil, error)
+            }
+        }
+
+        let number = NSNumber(value: id)
+        return number.int32Value as WPMediaRequestID
     }
 
     func cancelImageRequest(_ requestID: WPMediaRequestID) {
@@ -24,11 +86,11 @@ final class StockPhotosMedia: NSObject, WPMediaAsset {
     }
 
     func baseAsset() -> Any {
-        return ""
+        return self
     }
 
     func identifier() -> String {
-        return "image"
+        return guid
     }
 
     func date() -> Date {
@@ -36,6 +98,6 @@ final class StockPhotosMedia: NSObject, WPMediaAsset {
     }
 
     func pixelSize() -> CGSize {
-        return .zero
+        return size
     }
 }
