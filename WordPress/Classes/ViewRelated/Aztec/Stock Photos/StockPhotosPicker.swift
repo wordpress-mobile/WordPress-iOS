@@ -1,28 +1,21 @@
 import WPMediaPicker
 
 final class StockPhotosPicker: NSObject {
-//    private lazy var dataSource: StockPhotosDataSource = {
-//        return StockPhotosDataSource()
-//    }()
-
     private let dataSource = StockPhotosDataSource()
 
     func presentPicker(origin: UIViewController) {
-//        let options = WPMediaPickerOptions()
-//        options.showMostRecentFirst = true
-//        options.filter = [.all]
-//        options.allowCaptureOfMedia = false
-//        options.showSearchBar = true
+        let options = WPMediaPickerOptions()
+        options.showMostRecentFirst = true
+        options.filter = [.all]
+        options.allowCaptureOfMedia = false
+        options.showSearchBar = true
 
-        let picker = WPMediaPickerViewController()
+        let picker = WPNavigationMediaPickerViewController(options: options)
+        picker.delegate = self
+        picker.startOnGroupSelector = false
+        picker.showGroupSelector = false
         picker.dataSource = dataSource
-//        picker.mediaPicker.options = options
-//        picker.view.backgroundColor = .red
-        picker.mediaPickerDelegate = self
-//        picker.startOnGroupSelector = false
-//        picker.showGroupSelector = false
-//        picker.selectionActionTitle = "Cesar"
-        picker.modalPresentationStyle = .currentContext
+
         origin.present(picker, animated: true)
     }
 }
