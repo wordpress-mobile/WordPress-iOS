@@ -1,5 +1,7 @@
 import WPMediaPicker
 
+
+/// Models a Stock Photo
 final class StockPhotosMedia: NSObject, WPMediaAsset {
     func image(with size: CGSize, completionHandler: @escaping WPMediaImageBlock) -> WPMediaRequestID {
         return 0
