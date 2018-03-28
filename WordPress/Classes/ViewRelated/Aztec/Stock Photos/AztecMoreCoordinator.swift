@@ -3,13 +3,18 @@ import WPMediaPicker
 
 /// Prepares the alert controller that will be presented when tapping the "more" button in Aztec's Format Bar
 final class AztecMoreCoordinator {
+    private weak var delegate: AztecMoreCoordinatorDelegate?
+
+    init(delegate: AztecMoreCoordinatorDelegate) {
+        self.delegate = delegate
+    }
+
     func present(origin: UIViewController & UIDocumentPickerDelegate, view: UIView) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        alertController.addAction(freePhoto(origin: origin))
-        alertController.addAction(files(origin: origin))
-        alertController.addAction(cancel())
-
+        alertController.addAction(freePhotoAction(origin: origin))
+        alertController.addAction(otherAppsAction(origin: origin))
+        alertController.addAction(cancelAction())
 
         alertController.popoverPresentationController?.sourceView = view
         alertController.popoverPresentationController?.sourceRect = CGRect(origin: view.frame.origin, size: CGSize(width: 1, height: 1))
@@ -18,20 +23,22 @@ final class AztecMoreCoordinator {
         origin.present(alertController, animated: true, completion: nil)
     }
 
-    private func freePhoto(origin: UIViewController) -> UIAlertAction {
+    private func freePhotoAction(origin: UIViewController) -> UIAlertAction {
         return UIAlertAction(title: .freePhotosLibrary, style: .default, handler: { [weak self] action in
             self?.showStockPhotos(origin: origin)
         })
     }
 
-    private func files(origin: UIViewController & UIDocumentPickerDelegate) -> UIAlertAction {
+    private func otherAppsAction(origin: UIViewController & UIDocumentPickerDelegate) -> UIAlertAction {
         return UIAlertAction(title: .files, style: .default, handler: { [weak self] action in
             self?.showDocumentPicker(origin: origin)
         })
     }
 
-    private func cancel() -> UIAlertAction {
-        return UIAlertAction(title: .cancelMoreOptions, style: .cancel, handler: nil)
+    private func cancelAction() -> UIAlertAction {
+        return UIAlertAction(title: .cancelMoreOptions, style: .cancel, handler: { [weak self] action in
+            self?.delegate?.didCancel(coordinator: self)
+        })
     }
 
     private func showStockPhotos(origin: UIViewController) {
