@@ -2,6 +2,12 @@ import MobileCoreServices
 
 /// Prepares the alert controller that will be presented when tapping the "more" button in Aztec's Format Bar
 final class AztecMoreCoordinator {
+    private weak var delegate: AztecMoreCoordinatorDelegate?
+
+    init(delegate: AztecMoreCoordinatorDelegate) {
+        self.delegate = delegate
+    }
+
     func present(origin: UIViewController & UIDocumentPickerDelegate, view: UIView) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
@@ -30,7 +36,9 @@ final class AztecMoreCoordinator {
     }
 
     private func cancelAction() -> UIAlertAction {
-        return UIAlertAction(title: .cancelMoreOptions, style: .cancel, handler: nil)
+        return UIAlertAction(title: .cancelMoreOptions, style: .cancel, handler: { [weak self] action in
+            self?.delegate?.didCancel(coordinator: self)
+        })
     }
 
     private func showStockPhotos() {
