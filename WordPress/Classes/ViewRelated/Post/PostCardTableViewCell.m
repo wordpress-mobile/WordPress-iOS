@@ -577,6 +577,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
                                                          image:[Gridicon iconOfType:GridiconTypeRefresh withSize:CGSizeMake(ActionbarButtonImageSize, ActionbarButtonImageSize)]
                                                    imageInsets:imageInsets
                                                    andCallback:^{
+                                                       [PostCoordinator.shared retrySaveOf:self.post];
                                                    }];
     item.tintColor = self.viewModel.statusColor;
     return item;
