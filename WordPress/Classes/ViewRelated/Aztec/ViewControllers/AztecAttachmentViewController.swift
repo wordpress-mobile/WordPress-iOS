@@ -252,13 +252,13 @@ class AztecAttachmentViewController: UITableViewController {
     private func pushSettingsController(for row: EditableAttributedTextRow,
                                         hint: String? = nil,
                                         onValueChanged: @escaping SettingsAttributedTextChanged) {
-        
+
         // TODO: This shouldn't duplicate the styling from the Figcaption formatter.  Try to unify.
-        let defaultAttributes: [NSAttributedStringKey:Any] = [
+        let defaultAttributes: [NSAttributedStringKey: Any] = [
             .font: WPFontManager.notoRegularFont(ofSize: 14),
             .foregroundColor: UIColor.gray,
         ]
-        
+
         let title = row.title
         let value = row.value
         let controller = SettingsTextViewController(attributedText: value, defaultAttributes: defaultAttributes, placeholder: "\(title)...", hint: hint)
