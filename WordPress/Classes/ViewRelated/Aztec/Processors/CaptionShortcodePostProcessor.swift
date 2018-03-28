@@ -14,9 +14,10 @@ class CaptionShortcodePostProcessor: Aztec.HTMLProcessor {
 
             /// Parse the Shortcode's Payload: We expect an [IMG, Figcaption]
             ///
-            let parsed = HTMLParser().parse(payload)
-            guard let image = parsed.firstChild(ofType: .img),
-                let figcaption = parsed.firstChild(ofType: .figcaption)
+            let rootNode = HTMLParser().parse(payload)
+
+            guard let coreNode = rootNode.firstChild(ofType: .img) ?? rootNode.firstChild(ofType: .a),
+                let figcaption = rootNode.firstChild(ofType: .figcaption)
             else {
                 return nil
             }
@@ -29,7 +30,7 @@ class CaptionShortcodePostProcessor: Aztec.HTMLProcessor {
 
             var html = "[caption" + padding + attributes + "]"
 
-            html += serializer.serialize(image)
+            html += serializer.serialize(coreNode)
 
             for child in figcaption.children {
                 html += serializer.serialize(child)
