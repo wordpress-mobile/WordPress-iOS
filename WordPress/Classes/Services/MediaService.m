@@ -743,10 +743,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
             [self.managedObjectContext deleteObject:deleteMedia];
         }
     }
-    NSError *error;
-    if (![self.managedObjectContext save:&error]){
-        DDLogError(@"Error saving context afer adding media %@", [error localizedDescription]);
-    }
+    [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
     if (completion) {
         completion();
     }

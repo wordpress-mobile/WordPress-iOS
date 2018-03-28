@@ -27,11 +27,10 @@ struct PluginDirectoryAccessoryItem {
     }
 
     private static func automanaged() -> UIView {
-        let icon = Gridicon.iconOfType(.domains, withSize: Constants.imageSize)
-        let color = WPStyleGuide.validGreen()
+        let color = WPStyleGuide.greyDarken10()
         let text = NSLocalizedString("Auto-managed", comment: "Describes a status of a plugin")
 
-        return PluginDirectoryAccessoryItem.label(with: icon, tintColor: color, text: text)
+        return PluginDirectoryAccessoryItem.label(with: nil, tintColor: color, text: text)
     }
 
     private static func active() -> UIView {
@@ -66,12 +65,13 @@ struct PluginDirectoryAccessoryItem {
         return PluginDirectoryAccessoryItem.label(with: icon, tintColor: color, text: text)
     }
 
-    private static func label(with icon: UIImage, tintColor: UIColor, text: String) -> UIView {
-        let container = UIView(frame: .zero)
+    private static func label(with icon: UIImage?, tintColor: UIColor, text: String) -> UIView {
+        let container = UIStackView(frame: .zero)
         container.translatesAutoresizingMaskIntoConstraints = false
 
         let imageView = UIImageView(image: icon)
         imageView.tintColor = tintColor
+        imageView.translatesAutoresizingMaskIntoConstraints = false
 
         let label = UILabel(frame: .zero)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -79,17 +79,16 @@ struct PluginDirectoryAccessoryItem {
         label.textColor = tintColor
         label.text = text
 
-        container.addSubview(imageView)
-        container.addSubview(label)
+        container.axis = .horizontal
+        container.distribution = .fillProportionally
+        container.spacing = Constants.trailingSpacing
 
-        label.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
-        label.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
-        label.trailingAnchor.constraint(equalTo: container.trailingAnchor).isActive = true
+        if icon == nil {
+            imageView.isHidden = true
+        }
 
-        imageView.leadingAnchor.constraint(equalTo: container.leadingAnchor).isActive = true
-        imageView.trailingAnchor.constraint(equalTo: label.leadingAnchor, constant: -Constants.trailingSpacing).isActive = true
-
-        imageView.centerYAnchor.constraint(equalTo: label.centerYAnchor).isActive = true
+        container.addArrangedSubview(imageView)
+        container.addArrangedSubview(label)
 
         return container
     }
