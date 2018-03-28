@@ -3567,6 +3567,13 @@ extension AztecPostViewController: AztecMoreCoordinatorDelegate {
     }
 }
 
+extension AztecPostViewController: StockPhotosPickerDelegate {
+    func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
+        ///TODO:  Insert picked assets
+        ///Hint: Follow `mediaPickerController(_:didFinishPicking:)`
+    }
+}
+
 // MARK: - Constants
 //
 extension AztecPostViewController {
