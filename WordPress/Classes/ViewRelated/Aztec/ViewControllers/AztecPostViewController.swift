@@ -3145,8 +3145,12 @@ extension AztecPostViewController {
         guard let attachmentRange = richTextView.textStorage.ranges(forAttachment: attachment).first else {
             return
         }
+        
+        let caption = richTextView.caption(for: attachment)
+        
         let controller = AztecAttachmentViewController()
         controller.attachment = attachment
+        controller.caption = caption
         var oldURL: URL?
 
         if let linkRange = richTextView.linkFullRange(forRange: attachmentRange),
@@ -3162,12 +3166,12 @@ extension AztecPostViewController {
                 return
             }
 
-            self.richTextView.edit(attachment) { updated in
-                updated.alignment = alignment
-                updated.size = size
-                updated.alt = alt
+            let attachment = self.richTextView.edit(attachment) { attachment in
+                attachment.alignment = alignment
+                attachment.size = size
+                attachment.alt = alt
             }
-
+            
             if let caption = caption, caption.length > 0 {
                 self.richTextView.replaceCaption(for: attachment, with: caption)
             } else {
