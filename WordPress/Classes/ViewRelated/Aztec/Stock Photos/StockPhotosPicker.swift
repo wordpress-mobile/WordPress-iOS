@@ -14,11 +14,11 @@ final class StockPhotosPicker: NSObject {
 //        options.allowCaptureOfMedia = false
 //        options.showSearchBar = true
 
-        let picker = WPNavigationMediaPickerViewController()
+        let picker = WPMediaPickerViewController()
         picker.dataSource = dataSource
 //        picker.mediaPicker.options = options
 //        picker.view.backgroundColor = .red
-        picker.delegate = self
+        picker.mediaPickerDelegate = self
 //        picker.startOnGroupSelector = false
 //        picker.showGroupSelector = false
 //        picker.selectionActionTitle = "Cesar"
