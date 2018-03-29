@@ -266,7 +266,7 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
             pasteString != pasteboardBeforeBackground else {
                 return
         }
-        
+
         switch isValidCode(code: pasteString) {
         case .valid(let cleanedCode):
             displayError(message: "")
