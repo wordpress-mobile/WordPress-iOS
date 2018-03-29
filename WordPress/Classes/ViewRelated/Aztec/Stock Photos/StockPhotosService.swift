@@ -1,13 +1,13 @@
 
 import Foundation
 
-protocol StockPhotosServiceProtocol {
+protocol StockPhotosService {
     func search(text: String, completion: @escaping ([StockPhotosMedia]) -> Void)
 }
 
 // MARK: - Temporary mock for testing
 
-final class StockPhotosServiceMock: StockPhotosServiceProtocol {
+final class StockPhotosServiceMock: StockPhotosService {
     func search(text: String, completion: @escaping ([StockPhotosMedia]) -> Void) {
         guard text.count > 0 else {
             completion([])
