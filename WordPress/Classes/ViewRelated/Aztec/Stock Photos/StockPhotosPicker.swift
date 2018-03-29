@@ -9,7 +9,7 @@ final class StockPhotosPicker: NSObject {
     private let dataSource = StockPhotosDataSource(service: StockPhotosServiceMock())
     weak var delegate: StockPhotosPickerDelegate?
 
-    func presentPicker(origin: UIViewController) {
+    func presentPicker(origin: UIViewController, blog: Blog) {
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [.all]

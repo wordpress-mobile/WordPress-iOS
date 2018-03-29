@@ -20,11 +20,12 @@ final class AztecMoreCoordinator {
 
     func present(context: MoreCoordinatorContext) {
         let origin = context.origin
+        let blog = context.blog
         let fromView = context.view
 
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        alertController.addAction(freePhotoAction(origin: origin))
+        alertController.addAction(freePhotoAction(origin: origin, blog: blog))
         alertController.addAction(otherAppsAction(origin: origin))
         alertController.addAction(cancelAction())
 
@@ -35,9 +36,9 @@ final class AztecMoreCoordinator {
         origin.present(alertController, animated: true, completion: nil)
     }
 
-    private func freePhotoAction(origin: UIViewController) -> UIAlertAction {
+    private func freePhotoAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
         return UIAlertAction(title: .freePhotosLibrary, style: .default, handler: { [weak self] action in
-            self?.showStockPhotos(origin: origin)
+            self?.showStockPhotos(origin: origin, blog: blog)
         })
     }
 
@@ -53,8 +54,8 @@ final class AztecMoreCoordinator {
         })
     }
 
-    private func showStockPhotos(origin: UIViewController) {
-        stockPhotos.presentPicker(origin: origin)
+    private func showStockPhotos(origin: UIViewController, blog: Blog) {
+        stockPhotos.presentPicker(origin: origin, blog: blog)
     }
 
     private func showDocumentPicker(origin: UIViewController & UIDocumentPickerDelegate) {
