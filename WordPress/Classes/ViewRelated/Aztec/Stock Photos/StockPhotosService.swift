@@ -1,8 +1,12 @@
 
 import Foundation
 
+struct StockPhotosSearchParams {
+    let text: String
+}
+
 protocol StockPhotosService {
-    func search(text: String, completion: @escaping ([StockPhotosMedia]) -> Void)
+    func search(params: StockPhotosSearchParams, completion: @escaping ([StockPhotosMedia]) -> Void)
 }
 
 final class DefaultStockPhotosService: StockPhotosService {
@@ -18,8 +22,8 @@ final class DefaultStockPhotosService: StockPhotosService {
         self.api = api
     }
 
-    func search(text: String, completion: @escaping ([StockPhotosMedia]) -> Void) {
-        api.GET(endPoint, parameters: parameters(text: text), success: { results, response in
+    func search(params: StockPhotosSearchParams, completion: @escaping ([StockPhotosMedia]) -> Void) {
+        api.GET(endPoint, parameters: parameters(params: params), success: { results, response in
             print("========= success! ====")
             print("========= response! ====")
             print(results)
@@ -33,15 +37,16 @@ final class DefaultStockPhotosService: StockPhotosService {
         //StockPhotosServiceMock().search(text: text, completion: completion)
     }
 
-    private func parameters(text: String) -> [String: AnyObject] {
-        return [Parameters.search: text as AnyObject]
+    private func parameters(params: StockPhotosSearchParams) -> [String: AnyObject] {
+        return [Parameters.search: params.text as AnyObject]
     }
 }
 
 // MARK: - Temporary mock for testing
 
 final class StockPhotosServiceMock: StockPhotosService {
-    func search(text: String, completion: @escaping ([StockPhotosMedia]) -> Void) {
+    func search(params: StockPhotosSearchParams, completion: @escaping ([StockPhotosMedia]) -> Void) {
+        let text = params.text
         guard text.count > 0 else {
             completion([])
             return
