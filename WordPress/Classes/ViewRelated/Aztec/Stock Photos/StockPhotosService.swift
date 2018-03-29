@@ -40,10 +40,12 @@ final class DefaultStockPhotosService: StockPhotosService {
 
                     completion(parsedResponse)
                 } catch {
+                    // Not sure how to handle this
                     completion([])
                 }
             }
         }) { error, response in
+            // I am not sure how we are going to handle errors. In the meantime, I'm returning an empty result
             completion([])
         }
     }
