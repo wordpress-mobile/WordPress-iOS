@@ -80,11 +80,11 @@ public protocol WordPressAuthenticatorDelegate: class {
     // MARK: - Helpers for presenting the login flow
 
     /// Used to present the new login flow from the app delegate
-    @objc class func showLoginFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool) {
-        showLoginFromPresenter(presenter, animated: animated, thenEditor: thenEditor, showCancel: false)
+    @objc class func showLoginFromPresenter(_ presenter: UIViewController, animated: Bool) {
+        showLogin(from: presenter, animated: animated)
     }
 
-    class func showLoginFromPresenter(_ presenter: UIViewController, animated: Bool, thenEditor: Bool, showCancel: Bool) {
+    class func showLogin(from presenter: UIViewController, animated: Bool, showCancel: Bool = false, restrictToWPCom: Bool = false) {
         defer {
             trackOpenedLogin()
         }
@@ -92,6 +92,7 @@ public protocol WordPressAuthenticatorDelegate: class {
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         if let controller = storyboard.instantiateInitialViewController() {
             if let childController = controller.childViewControllers.first as? LoginPrologueViewController {
+                childController.restrictToWPCom = true
                 childController.showCancel = showCancel
             }
             presenter.present(controller, animated: animated, completion: nil)
