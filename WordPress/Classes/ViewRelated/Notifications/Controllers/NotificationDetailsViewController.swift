@@ -845,6 +845,8 @@ private extension NotificationDetailsViewController {
                 fallthrough
             case .Matcher:
                 fallthrough
+            case .NewPost:
+                fallthrough
             case .Post:
                 try displayReaderWithPostId(note.metaPostID, siteID: note.metaSiteID)
             case .Comment:

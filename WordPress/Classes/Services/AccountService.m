@@ -47,6 +47,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     WPAccount *defaultAccount = nil;
     if (fetchedObjects.count > 0) {
         defaultAccount = fetchedObjects.firstObject;
+        defaultAccount.displayName = [defaultAccount.displayName stringByDecodingXMLCharacters];
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
         [[NSUserDefaults standardUserDefaults] synchronize];

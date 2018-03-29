@@ -146,7 +146,7 @@ class ReaderCommentCell: UITableViewCell {
         }
 
         authorButton.isEnabled = true
-        authorButton.setTitle(comment.author, for: .normal)
+        authorButton.setTitle(comment.authorForDisplay(), for: .normal)
         authorButton.setTitleColor(WPStyleGuide.lightBlue(), for: .highlighted)
         authorButton.setTitleColor(WPStyleGuide.greyDarken30(), for: .disabled)
 
