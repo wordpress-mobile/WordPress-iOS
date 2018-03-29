@@ -204,6 +204,7 @@
 		40640046200ED30300106789 /* TextWithAccessoryButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40640045200ED30300106789 /* TextWithAccessoryButtonCell.xib */; };
 		40A2777F20191AA500D078D5 /* PluginDirectoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A2777E20191AA500D078D5 /* PluginDirectoryCollectionViewCell.swift */; };
 		40A2778120191B5E00D078D5 /* PluginDirectoryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40A2778020191B5E00D078D5 /* PluginDirectoryCollectionViewCell.xib */; };
+		40D7823A206AEA880015A3A1 /* Throttle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D78238206ABD970015A3A1 /* Throttle.swift */; };
 		40E4698F2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E4698E2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift */; };
 		40E469912017EAB10030DB5F /* plugin-directory-jetpack.json in Resources */ = {isa = PBXBuildFile; fileRef = 40E469902017EAB10030DB5F /* plugin-directory-jetpack.json */; };
 		40E469932017F4070030DB5F /* PluginDirectoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E469922017F3D20030DB5F /* PluginDirectoryViewController.swift */; };
@@ -422,6 +423,7 @@
 		74585B991F0D58F300E7E667 /* DomainsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74585B981F0D58F300E7E667 /* DomainsServiceTests.swift */; };
 		74585B9C1F0D591D00E7E667 /* domain-service-valid-domains.json in Resources */ = {isa = PBXBuildFile; fileRef = 74585B9A1F0D591D00E7E667 /* domain-service-valid-domains.json */; };
 		74585B9D1F0D591D00E7E667 /* domain-service-all-domain-types.json in Resources */ = {isa = PBXBuildFile; fileRef = 74585B9B1F0D591D00E7E667 /* domain-service-all-domain-types.json */; };
+		745A41B02065405600299D75 /* ReaderPost+Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745A41AF2065405600299D75 /* ReaderPost+Searchable.swift */; };
 		745EAF452003FD050066F415 /* ShareSegueHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745EAF442003FD050066F415 /* ShareSegueHandler.swift */; };
 		745EAF472003FDAA0066F415 /* ShareExtensionAbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745EAF462003FDAA0066F415 /* ShareExtensionAbstractViewController.swift */; };
 		745EAF4A20040B220066F415 /* ShareData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745EAF4920040B220066F415 /* ShareData.swift */; };
@@ -1563,6 +1565,7 @@
 		40640045200ED30300106789 /* TextWithAccessoryButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextWithAccessoryButtonCell.xib; sourceTree = "<group>"; };
 		40A2777E20191AA500D078D5 /* PluginDirectoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		40A2778020191B5E00D078D5 /* PluginDirectoryCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PluginDirectoryCollectionViewCell.xib; sourceTree = "<group>"; };
+		40D78238206ABD970015A3A1 /* Throttle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Throttle.swift; sourceTree = "<group>"; };
 		40E4698E2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryEntryStateTests.swift; sourceTree = "<group>"; };
 		40E469902017EAB10030DB5F /* plugin-directory-jetpack.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "plugin-directory-jetpack.json"; path = "../../../WordPressKit/WordPressKitTests/Mock Data/plugin-directory-jetpack.json"; sourceTree = "<group>"; };
 		40E469922017F3D20030DB5F /* PluginDirectoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryViewController.swift; sourceTree = "<group>"; };
@@ -1809,6 +1812,7 @@
 		74585B981F0D58F300E7E667 /* DomainsServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsServiceTests.swift; sourceTree = "<group>"; };
 		74585B9A1F0D591D00E7E667 /* domain-service-valid-domains.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "domain-service-valid-domains.json"; sourceTree = "<group>"; };
 		74585B9B1F0D591D00E7E667 /* domain-service-all-domain-types.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "domain-service-all-domain-types.json"; sourceTree = "<group>"; };
+		745A41AF2065405600299D75 /* ReaderPost+Searchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderPost+Searchable.swift"; sourceTree = "<group>"; };
 		745EAF442003FD050066F415 /* ShareSegueHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSegueHandler.swift; sourceTree = "<group>"; };
 		745EAF462003FDAA0066F415 /* ShareExtensionAbstractViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionAbstractViewController.swift; sourceTree = "<group>"; };
 		745EAF4920040B220066F415 /* ShareData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareData.swift; sourceTree = "<group>"; };
@@ -3318,7 +3322,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				E1B34C091CCDFFCE00889709 /* Credentials */,
@@ -3495,6 +3499,7 @@
 				E6374DBE1C444D8B00F24720 /* PublicizeService.swift */,
 				5D42A3DC175E7452005CFF05 /* ReaderPost.h */,
 				5D42A3DD175E7452005CFF05 /* ReaderPost.m */,
+				745A41AF2065405600299D75 /* ReaderPost+Searchable.swift */,
 				E6C09B3D1BF0FDEB003074CB /* ReaderCrossPostMeta.swift */,
 				5DE471B71B4C710E00665C44 /* ReaderPostContentProvider.h */,
 				E6A3384A1BB08E3F00371587 /* ReaderGapMarker.h */,
@@ -4274,6 +4279,7 @@
 				B526DC241B1E473B002A8C5F /* WebViewController */,
 				E1BEEC621C4E35A8000B4FA0 /* Animator.swift */,
 				E14BCABA1E0BC817002E0603 /* Delay.swift */,
+				40D78238206ABD970015A3A1 /* Throttle.swift */,
 				E1C3C8521CE467A900D5DB36 /* EmailTypoChecker.swift */,
 				E6B046881F0FE85B0079F9FA /* EmailFormatValidator.swift */,
 				E11000981CDB5F1E00E33887 /* KeychainTools.swift */,
@@ -6544,7 +6550,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -7547,6 +7553,7 @@
 				E6E57CD51D0F08B200C22E3E /* ReaderMenuViewController.swift in Sources */,
 				08D978591CD2AF7D0054F19A /* MenuItemSourceTextBar.m in Sources */,
 				40E469952017FB1F0030DB5F /* PluginDirectoryViewModel.swift in Sources */,
+				745A41B02065405600299D75 /* ReaderPost+Searchable.swift in Sources */,
 				E1A8CACB1C22FF7C0038689E /* MeViewController.swift in Sources */,
 				17A28DC52050404C00EA6D9E /* AuthorFilterButton.swift in Sources */,
 				08216FD31CDBF96000304BA7 /* MenuItemTagsViewController.m in Sources */,
@@ -7862,6 +7869,7 @@
 				E19B17AE1E5C6944007517C6 /* BasePost.swift in Sources */,
 				E1EBC36F1C118EA500F638E0 /* ImmuTable.swift in Sources */,
 				B59B18751CC7FB8D0055EB7C /* PersonViewController.swift in Sources */,
+				40D7823A206AEA880015A3A1 /* Throttle.swift in Sources */,
 				E6FACB1E1EC675E300284AC7 /* GravatarProfile.swift in Sources */,
 				827704F11F607C0E002E8A03 /* JetpackConnectionViewController.swift in Sources */,
 				5D839AAB187F0D8000811F4A /* PostGeolocationCell.m in Sources */,
@@ -8963,7 +8971,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				WPCOM_CONFIG = "$HOME/.wpcom_alpha_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_alpha_app_credentials;
 			};
 			name = "Release-Alpha";
 		};
@@ -9438,7 +9446,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				WPCOM_CONFIG = "$HOME/.wpcom_internal_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_internal_app_credentials;
 			};
 			name = "Release-Internal";
 		};
@@ -9781,7 +9789,7 @@
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 3.0;
-				WPCOM_CONFIG = "$HOME/.wpcom_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
 			name = Debug;
 		};
@@ -9831,7 +9839,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				WPCOM_CONFIG = "$HOME/.wpcom_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
 			name = Release;
 		};

@@ -39,11 +39,13 @@ class MediaCoordinator: NSObject {
             return cachedCoordinator
         }
 
+        let original = post.original ?? post
+
         let coordinator = MediaProgressCoordinator()
         coordinator.delegate = self
 
         progressCoordinatorQueue.async(flags: .barrier) {
-            self.postMediaProgressCoordinators[post] = coordinator
+            self.postMediaProgressCoordinators[original] = coordinator
         }
 
         return coordinator
@@ -52,8 +54,11 @@ class MediaCoordinator: NSObject {
     /// - returns: The progress coordinator for the specified post, or nil
     ///            if one does not exist.
     private func cachedCoordinator(for post: AbstractPost) -> MediaProgressCoordinator? {
+        // Use the original post so we don't create new coordinators for post revisions
+        let original = post.original ?? post
+
         return progressCoordinatorQueue.sync {
-            return postMediaProgressCoordinators[post]
+            return postMediaProgressCoordinators[original]
         }
     }
 
@@ -394,7 +399,8 @@ class MediaCoordinator: NSObject {
     @discardableResult func addObserver(_ onUpdate: @escaping ObserverBlock, forMediaFor post: AbstractPost) -> UUID {
         let uuid = UUID()
 
-        let observer = MediaObserver(post: post, onUpdate: onUpdate)
+        let original = post.original ?? post
+        let observer = MediaObserver(post: original, onUpdate: onUpdate)
 
         queue.async {
             self.mediaObservers[uuid] = observer
@@ -474,10 +480,11 @@ class MediaCoordinator: NSObject {
         let mediaObservers = self.mediaObservers.values.filter({ $0.media?.uploadID == media.uploadID })
 
         let postObservers = self.mediaObservers.values.filter({
-            guard let posts = media.posts,
+            guard let posts = media.posts as? Set<AbstractPost>,
                 let post = $0.post else { return false }
 
-            return posts.contains(post)
+            let originals = posts.map({ $0.original ?? $0 })
+            return originals.contains(post)
         })
 
         return mediaObservers + postObservers + wildcardObservers

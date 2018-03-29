@@ -102,6 +102,10 @@ class SiteCreationCategoryTableViewController: NUXTableViewController {
         }
 
         themeVC.siteType = tableRow.siteType
+
+        let backButton = UIBarButtonItem()
+        backButton.title = NSLocalizedString("Back", comment: "Back button title.")
+        navigationItem.backBarButtonItem = backButton
     }
 
     // MARK: - Misc
