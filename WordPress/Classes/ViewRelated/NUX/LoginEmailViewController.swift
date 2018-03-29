@@ -22,13 +22,6 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     var didFindSafariSharedCredentials = false
     var didRequestSafariSharedCredentials = false
     fileprivate var awaitingGoogle = false
-    override var restrictToWPCom: Bool {
-        didSet {
-            if isViewLoaded {
-                configureForWPComOnlyIfNeeded()
-            }
-        }
-    }
 
     private struct Constants {
         static let alternativeLogInAnimationDuration: TimeInterval = 0.33
@@ -46,7 +39,6 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         setupOnePasswordButtonIfNeeded()
         addGoogleButton()
         addSelfHostedLogInButton()
-        configureForWPComOnlyIfNeeded()
     }
 
     override func didChangePreferredContentSize() {
@@ -67,6 +59,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         configureEmailField()
         configureSubmitButton()
         configureViewForEditingIfNeeded()
+        configureForWPComOnlyIfNeeded()
     }
 
     override func viewDidAppear(_ animated: Bool) {
