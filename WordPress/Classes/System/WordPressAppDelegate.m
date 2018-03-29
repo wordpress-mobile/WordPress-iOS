@@ -491,7 +491,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
 {
-    [WordPressAuthenticator showLoginFromPresenter:self.window.rootViewController animated:animated thenEditor:thenEditor];
+    [WordPressAuthenticator showLoginFromPresenter:self.window.rootViewController animated:animated];
 }
 
 - (void)customizeAppearance
