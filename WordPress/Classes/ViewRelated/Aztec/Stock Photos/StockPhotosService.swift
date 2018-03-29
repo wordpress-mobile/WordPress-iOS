@@ -29,11 +29,16 @@ final class DefaultStockPhotosService: StockPhotosService {
 
     func search(params: StockPhotosSearchParams, completion: @escaping ([StockPhotosMedia]) -> Void) {
         api.GET(endPoint, parameters: parameters(params: params), success: { results, response in
-            print("========= success! ====")
-            print("========= response! ====")
-            print(results)
-            print("//////// response! ====")
-            // success
+            if let media = results["media"] {
+                do {
+                    let json = try JSONSerialization.data(withJSONObject: media)
+                    let parsedResponse = try JSONDecoder().decode([StockPhotosMedia].self, from: json)
+
+                    completion(parsedResponse)
+                } catch {
+                    completion([])
+                }
+            }
         }) { error, response in
             completion([])
         }

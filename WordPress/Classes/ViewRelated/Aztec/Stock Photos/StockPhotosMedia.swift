@@ -76,7 +76,7 @@ extension StockPhotosMedia: WPMediaAsset {
             }
         }
 
-        let number = Int32(id)!
+        let number = Int32(id) ?? 0
         return number as WPMediaRequestID
     }
 
