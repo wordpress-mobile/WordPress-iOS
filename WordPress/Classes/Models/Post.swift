@@ -300,6 +300,10 @@ class Post: AbstractPost {
     override func featuredImageURLForDisplay() -> URL? {
 
         guard let path = pathForDisplayImage else {
+            if let foundPath = self.searchForImagesInContent() {
+                pathForDisplayImage = foundPath
+                return URL(string: foundPath)
+            }
             return nil
         }
 
