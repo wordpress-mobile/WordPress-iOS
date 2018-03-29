@@ -2,7 +2,7 @@ import WPMediaPicker
 
 final class StockPhotosMediaGroup: NSObject, WPMediaGroup {
     func name() -> String {
-        return "group"
+        return String.freePhotosLibrary
     }
 
     func image(with size: CGSize, completionHandler: @escaping WPMediaImageBlock) -> WPMediaRequestID {
