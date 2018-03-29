@@ -11,11 +11,12 @@ final class StockPhotosPicker: NSObject {
     }()
 
     private lazy var stockPhotosService: StockPhotosService = {
-        guard let blog = self.blog else {
+        guard let api = self.blog?.wordPressComRestApi() else {
+            //TO DO. Present a user facing error (although in theory we shoul dnever reach this case if we limit Stock Photos to Jetpack blogs only
             return StockPhotosServiceMock()
         }
 
-        return DefaultStockPhotosService()
+        return DefaultStockPhotosService(api: api)
     }()
 
     weak var delegate: StockPhotosPickerDelegate?
