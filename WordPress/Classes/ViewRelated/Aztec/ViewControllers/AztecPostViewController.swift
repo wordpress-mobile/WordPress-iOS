@@ -452,6 +452,12 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
 
 
+    /// Presents whatever happens when FormatBar's more button is selected
+    fileprivate lazy var moreCoordinator: AztecMoreCoordinator = {
+        return AztecMoreCoordinator(delegate: self)
+    }()
+
+
     // MARK: - Initializers
 
     /// Initializer
@@ -1671,7 +1677,7 @@ extension AztecPostViewController {
                 presentMediaPickerFullScreen(animated: true, dataSourceType: .mediaLibrary)
             case .otherApplications:
                 trackFormatBarAnalytics(stat: .editorMediaPickerTappedOtherApps)
-                showDocumentPicker()
+                showMore(from: barItem)
             }
         }
     }
@@ -2110,12 +2116,10 @@ extension AztecPostViewController {
         return .none
     }
 
-    private func showDocumentPicker() {
-        let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
-        let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
-        docPicker.delegate = self
-        WPStyleGuide.configureDocumentPickerNavBarAppearance()
-        present(docPicker, animated: true, completion: nil)
+    private func showMore(from: FormatBarItem) {
+        stopListeningToNotifications()
+        rememberFirstResponder()
+        moreCoordinator.present(origin: self, view: from)
     }
 
     // MARK: - Present Toolbar related VC
@@ -3553,6 +3557,20 @@ extension AztecPostViewController: UIDocumentPickerDelegate {
         for documentURL in urls {
             insertExternalMediaWithURL(documentURL)
         }
+    }
+}
+
+extension AztecPostViewController: AztecMoreCoordinatorDelegate {
+    func didCancel(coordinator: AztecMoreCoordinator?) {
+        startListeningToNotifications()
+        restoreFirstResponder()
+    }
+}
+
+extension AztecPostViewController: StockPhotosPickerDelegate {
+    func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
+        ///TODO:  Insert picked assets
+        ///Hint: Follow `mediaPickerController(_:didFinishPicking:)`
     }
 }
 
