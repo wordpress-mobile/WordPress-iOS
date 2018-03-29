@@ -6,6 +6,13 @@ protocol StockPhotosService {
 }
 
 final class DefaultStockPhotosService: StockPhotosService {
+    private let api: WordPressComRestApi
+
+    init(api: WordPressComRestApi) {
+        print("=== initializing with API===")
+        self.api = api
+    }
+
     func search(text: String, completion: @escaping ([StockPhotosMedia]) -> Void) {
         StockPhotosServiceMock().search(text: text, completion: completion)
     }
