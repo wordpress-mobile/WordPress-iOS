@@ -63,19 +63,12 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     }
 
     fileprivate func shouldShowEpilogue() -> Bool {
-        if !isJetpackLogin {
-            return true
+        guard let delegate = WordPressAuthenticator.shared.delegate else {
+            fatalError()
         }
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
-        guard
-            let objectID = loginFields.meta.jetpackBlogID,
-            let blog = context.object(with: objectID) as? Blog,
-            let account = blog.account
-            else {
-                return false
-        }
-        return accountService.isDefaultWordPressComAccount(account)
+
+        let meta = loginFields.meta
+        return delegate.shouldPresentLoginEpilogue(jetpackBlogXMLRPC: meta.jetpackBlogXMLRPC, jetpackBlogUsername: meta.jetpackBlogUsername)
     }
 
     func showLoginEpilogue() {
