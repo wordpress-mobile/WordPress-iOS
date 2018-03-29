@@ -42,6 +42,14 @@ public protocol WordPressAuthenticatorDelegate: class {
     /// such as all of the User's Login details.
     ///
     func presentLivechat(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
+
+    /// Indicates if the Login Epilogue should be displayed.
+    ///
+    /// - Parameters:
+    ///     - jetpackBlogXMLRPC: Endpoint for the self hosted site that just got Jetpack-Connected (if any).
+    ///     - jetpackBlogUsername: Username for the self hosted site that just got Jetpack-Connected (if any).
+    ///
+    func shouldPresentLoginEpilogue(jetpackBlogXMLRPC: String?, jetpackBlogUsername: String?) -> Bool
 }
 
 
