@@ -527,7 +527,7 @@ extension NotificationsViewController {
 
         // Display Details
         //
-        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher {
+        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher || note.kind == .NewPost {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
             showDetailViewController(readerViewController, sender: nil)
             return
@@ -1323,7 +1323,7 @@ extension NotificationsViewController: WPSplitViewControllerDetailProvider {
 
         prepareToShowDetailsForNotification(note)
 
-        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher {
+        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher || note.kind == .NewPost {
             return ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
         }
 
