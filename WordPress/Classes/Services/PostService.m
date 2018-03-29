@@ -425,6 +425,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 - (void)initializeDraft:(AbstractPost *)post {
     post.remoteStatus = AbstractPostRemoteStatusLocal;
     post.dateModified = [NSDate date];
+    post.status = PostStatusDraft;
 }
 
 - (void)mergePosts:(NSArray <RemotePost *> *)remotePosts
