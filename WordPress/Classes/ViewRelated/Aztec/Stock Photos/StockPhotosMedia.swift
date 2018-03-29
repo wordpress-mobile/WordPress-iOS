@@ -28,18 +28,6 @@ struct ThumbnailCollection {
     private(set) var mediumURL: URL
     private(set) var postThumbnailURL: URL
     private(set) var thumbnailURL: URL
-
-    init() {
-        let mock = URL(string: "http://nil")!
-        self.init(largeURL: mock, mediumURL: mock, postThumbnailURL: mock, thumbnailURL: mock)
-    }
-
-    init(largeURL: URL, mediumURL: URL, postThumbnailURL: URL, thumbnailURL: URL) {
-        self.largeURL = largeURL
-        self.mediumURL = mediumURL
-        self.postThumbnailURL = postThumbnailURL
-        self.thumbnailURL = thumbnailURL
-    }
 }
 
 /// Models a Stock Photo
@@ -140,16 +128,14 @@ extension StockPhotosMedia: Decodable {
     }
 
     convenience init(from decoder: Decoder) throws {
-        let url = Foundation.URL(string: "http://elpais.com")!
-
-        self.init(id: "", URL: url, title: "", name: "", size: .zero, thumbnails: ThumbnailCollection())
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(String.self, forKey: .ID)
-        URL = try values.decode(String.self, forKey: .URL).asURL()
-        title = try values.decode(String.self, forKey: .title)
-        name = try values.decode(String.self, forKey: .name)
-        size = .zero
+        let id = try values.decode(String.self, forKey: .ID)
+        let URL = try values.decode(String.self, forKey: .URL).asURL()
+        let title = try values.decode(String.self, forKey: .title)
+        let name = try values.decode(String.self, forKey: .name)
+        let size: CGSize = .zero
+        let thumbnails = try values.decode(ThumbnailCollection.self, forKey: .thumbnails)
 
-        thumbnails = try values.decode(ThumbnailCollection.self, forKey: .thumbnails)
+        self.init(id: id, URL: URL, title: title, name: name, size: size, thumbnails: thumbnails)
     }
 }
