@@ -19,8 +19,11 @@ final class DefaultStockPhotosService: StockPhotosService {
     }
 
     func search(text: String, completion: @escaping ([StockPhotosMedia]) -> Void) {
-        api.GET(endPoint, parameters: parameters(text: text), success: { something, response in
+        api.GET(endPoint, parameters: parameters(text: text), success: { results, response in
             print("========= success! ====")
+            print("========= response! ====")
+            print(results)
+            print("//////// response! ====")
             // success
         }) { error, response in
             // Fail!
