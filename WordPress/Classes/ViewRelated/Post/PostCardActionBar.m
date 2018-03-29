@@ -237,6 +237,11 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
     [button setImage:item.image forState:UIControlStateNormal];
     [button setImageEdgeInsets:item.imageInsets];
     [button setImage:item.highlightedImage forState:UIControlStateHighlighted];
+
+    if (item.tintColor) {
+        [button setTintColor:item.tintColor];
+        [button setTitleColor:item.tintColor forState:UIControlStateNormal];
+    }
 }
 
 - (void)configureButtonsWithAnimation
