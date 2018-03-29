@@ -1,14 +1,20 @@
 
 import Foundation
 
+
+/// Encapsulates search parameters (text, pagination, etc)
 struct StockPhotosSearchParams {
     let text: String
 }
 
+
+/// Abstracts the serive used to fetch Stock Photos
 protocol StockPhotosService {
     func search(params: StockPhotosSearchParams, completion: @escaping ([StockPhotosMedia]) -> Void)
 }
 
+
+/// Default implementation of the Stock Photos Service, attacking a blog's restful api
 final class DefaultStockPhotosService: StockPhotosService {
     private let endPoint = "/rest/v1/meta/external-media/pexels"
 
@@ -34,7 +40,6 @@ final class DefaultStockPhotosService: StockPhotosService {
             print("========= failure! ==== ", error)
             print("========= response! ==== ", response)
         }
-        //StockPhotosServiceMock().search(text: text, completion: completion)
     }
 
     private func parameters(params: StockPhotosSearchParams) -> [String: AnyObject] {
