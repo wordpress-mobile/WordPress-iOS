@@ -7,8 +7,9 @@ final class AztecMoreCoordinator {
 
     private let stockPhotos = StockPhotosPicker()
 
-    init(delegate: AztecMoreCoordinatorDelegate) {
+    init(delegate: AztecMoreCoordinatorDelegate & StockPhotosPickerDelegate) {
         self.delegate = delegate
+        stockPhotos.delegate = delegate
     }
 
     func present(origin: UIViewController & UIDocumentPickerDelegate, view: UIView) {
