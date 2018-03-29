@@ -633,4 +633,23 @@
     [self save];
 }
 
+- (NSString *)searchForImagesInContent
+{
+    // First lets check the post content for a suitable image
+    NSString *result = [DisplayableImageHelper searchPostContentForImageToDisplay:self.content];
+    if (result.length > 0) {
+        return result;
+    }
+    // If none found let's see if some galleries are available
+    NSSet *mediaIDs = [DisplayableImageHelper searchPostContentForAttachmentIdsInGalleries:self.content];
+    for (Media *media in self.blog.media) {
+        NSNumber *mediaID = media.mediaID;
+        if (mediaID && [mediaIDs containsObject:mediaID]) {
+            result = media.remoteURL;
+        }
+    }
+
+    return result;
+}
+
 @end

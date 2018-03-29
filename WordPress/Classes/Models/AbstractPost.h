@@ -182,6 +182,8 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (nullable NSString *)remoteStatusText;
 + (NSString *)titleForRemoteStatus:(nullable NSNumber *)remoteStatus;
 
+- (nullable NSString *)searchForImagesInContent;
+
 @end
 
 @interface AbstractPost (CoreDataGeneratedAccessors)
