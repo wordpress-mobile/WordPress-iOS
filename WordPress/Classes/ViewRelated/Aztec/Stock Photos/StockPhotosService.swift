@@ -5,6 +5,12 @@ protocol StockPhotosService {
     func search(text: String, completion: @escaping ([StockPhotosMedia]) -> Void)
 }
 
+final class DefaultStockPhotosService: StockPhotosService {
+    func search(text: String, completion: @escaping ([StockPhotosMedia]) -> Void) {
+        StockPhotosServiceMock().search(text: text, completion: completion)
+    }
+}
+
 // MARK: - Temporary mock for testing
 
 final class StockPhotosServiceMock: StockPhotosService {
