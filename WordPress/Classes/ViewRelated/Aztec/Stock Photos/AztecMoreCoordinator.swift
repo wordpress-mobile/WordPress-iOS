@@ -1,20 +1,23 @@
 import MobileCoreServices
+import WPMediaPicker
 
 /// Prepares the alert controller that will be presented when tapping the "more" button in Aztec's Format Bar
 final class AztecMoreCoordinator {
     private weak var delegate: AztecMoreCoordinatorDelegate?
 
-    init(delegate: AztecMoreCoordinatorDelegate) {
+    private let stockPhotos = StockPhotosPicker()
+
+    init(delegate: AztecMoreCoordinatorDelegate & StockPhotosPickerDelegate) {
         self.delegate = delegate
+        stockPhotos.delegate = delegate
     }
 
     func present(origin: UIViewController & UIDocumentPickerDelegate, view: UIView) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        alertController.addAction(freePhotoAction())
+        alertController.addAction(freePhotoAction(origin: origin))
         alertController.addAction(otherAppsAction(origin: origin))
         alertController.addAction(cancelAction())
-
 
         alertController.popoverPresentationController?.sourceView = view
         alertController.popoverPresentationController?.sourceRect = CGRect(origin: view.frame.origin, size: CGSize(width: 1, height: 1))
@@ -23,9 +26,9 @@ final class AztecMoreCoordinator {
         origin.present(alertController, animated: true, completion: nil)
     }
 
-    private func freePhotoAction() -> UIAlertAction {
+    private func freePhotoAction(origin: UIViewController) -> UIAlertAction {
         return UIAlertAction(title: .freePhotosLibrary, style: .default, handler: { [weak self] action in
-            self?.showStockPhotos()
+            self?.showStockPhotos(origin: origin)
         })
     }
 
@@ -41,9 +44,8 @@ final class AztecMoreCoordinator {
         })
     }
 
-    private func showStockPhotos() {
-        //This would be the starting point of the next PR
-        print("Nothing to see here yet")
+    private func showStockPhotos(origin: UIViewController) {
+        stockPhotos.presentPicker(origin: origin)
     }
 
     private func showDocumentPicker(origin: UIViewController & UIDocumentPickerDelegate) {
