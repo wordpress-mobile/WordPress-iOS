@@ -79,12 +79,16 @@ class LoginFieldsMeta: NSObject {
 
     /// Indicates whether a self-hosted user is attempting to log in to Jetpack
     @objc var jetpackLogin: Bool {
-        if let _ = self.jetpackBlogID {
-            return true
-        }
-        return false
+        return jetpackBlogXMLRPC != nil && jetpackBlogUsername != nil
     }
-    @objc var jetpackBlogID: NSManagedObjectID?
+
+    /// Username of the selfhosted site for which we're attempting to perform a Jetpack Connection.
+    ///
+    @objc var jetpackBlogUsername: String?
+
+    /// XMLRPC of the selfhosted site for which we're attempting to perform a Jetpack Connection.
+    ///
+    @objc var jetpackBlogXMLRPC: String?
 
     /// Indicates whether a user is logging in via the wpcom flow or a self-hosted flow.  Used by the
     /// the LoginFacade in its branching logic.
