@@ -1,5 +1,6 @@
 import UIKit
 import GoogleSignIn
+import WordPressShared
 
 /// This is the first screen following the log in prologue screen if the user chooses to log in.
 ///
