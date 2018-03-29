@@ -27,7 +27,6 @@ import SafariServices
     @objc var didCorrectEmailOnce: Bool = false
     @objc var userDefinedSiteAddress: Bool = false
     @objc let operationQueue = OperationQueue()
-    @objc var account: WPAccount?
 
     @objc let LanguageIDKey = "lang_id"
     @objc let BlogDetailsKey = "blog_details"
