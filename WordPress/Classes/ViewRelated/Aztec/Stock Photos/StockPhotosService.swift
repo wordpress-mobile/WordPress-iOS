@@ -31,7 +31,7 @@ final class DefaultStockPhotosService: StockPhotosService {
     }
 
     private func parameters(text: String) -> [String: AnyObject] {
-        return [Parameters.search: text as! AnyObject]
+        return [Parameters.search: text as AnyObject]
     }
 }
 
