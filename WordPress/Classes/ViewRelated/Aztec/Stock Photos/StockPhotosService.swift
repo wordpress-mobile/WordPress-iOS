@@ -21,6 +21,10 @@ final class DefaultStockPhotosService: StockPhotosService {
         static let search = "search"
     }
 
+    private struct ParsingKeys {
+        static let media = "media"
+    }
+
     private let api: WordPressComRestApi
 
     init(api: WordPressComRestApi) {
@@ -29,7 +33,7 @@ final class DefaultStockPhotosService: StockPhotosService {
 
     func search(params: StockPhotosSearchParams, completion: @escaping ([StockPhotosMedia]) -> Void) {
         api.GET(endPoint, parameters: parameters(params: params), success: { results, response in
-            if let media = results["media"] {
+            if let media = results[ParsingKeys.media] {
                 do {
                     let json = try JSONSerialization.data(withJSONObject: media)
                     let parsedResponse = try JSONDecoder().decode([StockPhotosMedia].self, from: json)
