@@ -2,15 +2,17 @@ import UIKit
 
 // MARK: - RotationAwareNavigationViewController
 //
-class RotationAwareNavigationViewController: UINavigationController {
+open class RotationAwareNavigationViewController: UINavigationController {
 
-    override var shouldAutorotate: Bool {
-        // Respect the top child's orientation prefs.
+    /// Should Autorotate: Respect the top child's orientation prefs.
+    ///
+    override open var shouldAutorotate: Bool {
         return topViewController?.shouldAutorotate ?? super.shouldAutorotate
     }
 
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        // Respect the top child's orientation prefs.
+    /// Supported Orientations: Respect the top child's orientation prefs.
+    ///
+    override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if let supportedOrientations = topViewController?.supportedInterfaceOrientations {
             return supportedOrientations
         }
