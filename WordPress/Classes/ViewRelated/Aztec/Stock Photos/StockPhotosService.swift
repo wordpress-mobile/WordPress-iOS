@@ -6,15 +6,32 @@ protocol StockPhotosService {
 }
 
 final class DefaultStockPhotosService: StockPhotosService {
+    private let endPoint = "/rest/v1/meta/external-media/pexels"
+
+    private struct Parameters {
+        static let search = "search"
+    }
+
     private let api: WordPressComRestApi
 
     init(api: WordPressComRestApi) {
-        print("=== initializing with API===")
         self.api = api
     }
 
     func search(text: String, completion: @escaping ([StockPhotosMedia]) -> Void) {
-        StockPhotosServiceMock().search(text: text, completion: completion)
+        api.GET(endPoint, parameters: parameters(text: text), success: { something, response in
+            print("========= success! ====")
+            // success
+        }) { error, response in
+            // Fail!
+            print("========= failure! ==== ", error)
+            print("========= response! ==== ", response)
+        }
+        //StockPhotosServiceMock().search(text: text, completion: completion)
+    }
+
+    private func parameters(text: String) -> [String: AnyObject] {
+        return [Parameters.search: text as! AnyObject]
     }
 }
 
