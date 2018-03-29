@@ -1,6 +1,12 @@
 import MobileCoreServices
 import WPMediaPicker
 
+struct MoreCoordinatorContext {
+    let origin: UIViewController & UIDocumentPickerDelegate
+    let view: UIView
+    let blog: Blog
+}
+
 /// Prepares the alert controller that will be presented when tapping the "more" button in Aztec's Format Bar
 final class AztecMoreCoordinator {
     private weak var delegate: AztecMoreCoordinatorDelegate?
@@ -12,23 +18,27 @@ final class AztecMoreCoordinator {
         stockPhotos.delegate = delegate
     }
 
-    func present(origin: UIViewController & UIDocumentPickerDelegate, view: UIView) {
+    func present(context: MoreCoordinatorContext) {
+        let origin = context.origin
+        let blog = context.blog
+        let fromView = context.view
+
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        alertController.addAction(freePhotoAction(origin: origin))
+        alertController.addAction(freePhotoAction(origin: origin, blog: blog))
         alertController.addAction(otherAppsAction(origin: origin))
         alertController.addAction(cancelAction())
 
-        alertController.popoverPresentationController?.sourceView = view
-        alertController.popoverPresentationController?.sourceRect = CGRect(origin: view.frame.origin, size: CGSize(width: 1, height: 1))
+        alertController.popoverPresentationController?.sourceView = fromView
+        alertController.popoverPresentationController?.sourceRect = CGRect(origin: fromView.frame.origin, size: CGSize(width: 1, height: 1))
         alertController.popoverPresentationController?.permittedArrowDirections = .any
 
         origin.present(alertController, animated: true, completion: nil)
     }
 
-    private func freePhotoAction(origin: UIViewController) -> UIAlertAction {
+    private func freePhotoAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
         return UIAlertAction(title: .freePhotosLibrary, style: .default, handler: { [weak self] action in
-            self?.showStockPhotos(origin: origin)
+            self?.showStockPhotos(origin: origin, blog: blog)
         })
     }
 
@@ -44,8 +54,8 @@ final class AztecMoreCoordinator {
         })
     }
 
-    private func showStockPhotos(origin: UIViewController) {
-        stockPhotos.presentPicker(origin: origin)
+    private func showStockPhotos(origin: UIViewController, blog: Blog) {
+        stockPhotos.presentPicker(origin: origin, blog: blog)
     }
 
     private func showDocumentPicker(origin: UIViewController & UIDocumentPickerDelegate) {

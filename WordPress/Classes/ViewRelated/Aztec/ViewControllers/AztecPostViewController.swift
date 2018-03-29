@@ -2119,7 +2119,9 @@ extension AztecPostViewController {
     private func showMore(from: FormatBarItem) {
         stopListeningToNotifications()
         rememberFirstResponder()
-        moreCoordinator.present(origin: self, view: from)
+
+        let moreCoordinatorContext = MoreCoordinatorContext(origin: self, view: view, blog: post.blog)
+        moreCoordinator.present(context: moreCoordinatorContext)
     }
 
     // MARK: - Present Toolbar related VC

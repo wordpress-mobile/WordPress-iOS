@@ -1,3 +1,4 @@
+import Foundation
 import WPMediaPicker
 
 /*** JSON Structure of a StockPhoto object coming from the API ***
@@ -23,26 +24,24 @@ import WPMediaPicker
 */
 
 struct ThumbnailCollection {
-    let largeURL: URL
-    let mediumURL: URL
-    let postThumbnailURL: URL
-    let thumbnailURL: URL
+    private(set) var largeURL: URL
+    private(set) var mediumURL: URL
+    private(set) var postThumbnailURL: URL
+    private(set) var thumbnailURL: URL
 }
 
 /// Models a Stock Photo
 ///
 final class StockPhotosMedia: NSObject {
-    let id: Int
-    let guid: String
-    let URL: URL
-    let title: String
-    let name: String
-    let size: CGSize
-    let thumbnails: ThumbnailCollection
+    private(set) var id: String
+    private(set) var URL: URL
+    private(set) var title: String
+    private(set) var name: String
+    private(set) var size: CGSize
+    private(set) var thumbnails: ThumbnailCollection
 
-    init(id: Int, guid: String, URL: URL, title: String, name: String, size: CGSize, thumbnails: ThumbnailCollection) {
+    init(id: String, URL: URL, title: String, name: String, size: CGSize, thumbnails: ThumbnailCollection) {
         self.id = id
-        self.guid = guid
         self.URL = URL
         self.title = title
         self.name = name
@@ -65,8 +64,8 @@ extension StockPhotosMedia: WPMediaAsset {
             }
         }
 
-        let number = NSNumber(value: id)
-        return number.int32Value as WPMediaRequestID
+        let number = Int32(id) ?? 0
+        return number as WPMediaRequestID
     }
 
     func cancelImageRequest(_ requestID: WPMediaRequestID) {
@@ -90,7 +89,7 @@ extension StockPhotosMedia: WPMediaAsset {
     }
 
     func identifier() -> String {
-        return guid
+        return id
     }
 
     func date() -> Date {
@@ -99,5 +98,44 @@ extension StockPhotosMedia: WPMediaAsset {
 
     func pixelSize() -> CGSize {
         return size
+    }
+}
+
+extension ThumbnailCollection: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case large
+        case medium
+        case postThumbnail = "post-thumbnail"
+        case thumbnail
+    }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        largeURL = try values.decode(String.self, forKey: .large).asURL()
+        mediumURL = try values.decode(String.self, forKey: .medium).asURL()
+        postThumbnailURL = try values.decode(String.self, forKey: .large).asURL()
+        thumbnailURL = try values.decode(String.self, forKey: .large).asURL()
+    }
+}
+
+extension StockPhotosMedia: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case ID
+        case URL
+        case title
+        case name
+        case thumbnails
+    }
+
+    convenience init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        let id = try values.decode(String.self, forKey: .ID)
+        let URL = try values.decode(String.self, forKey: .URL).asURL()
+        let title = try values.decode(String.self, forKey: .title)
+        let name = try values.decode(String.self, forKey: .name)
+        let size: CGSize = .zero
+        let thumbnails = try values.decode(ThumbnailCollection.self, forKey: .thumbnails)
+
+        self.init(id: id, URL: URL, title: title, name: name, size: size, thumbnails: thumbnails)
     }
 }

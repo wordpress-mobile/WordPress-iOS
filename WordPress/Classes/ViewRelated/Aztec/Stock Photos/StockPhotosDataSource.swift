@@ -6,9 +6,9 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
 
     var photosMedia = [StockPhotosMedia]()
     var observers = [String: WPMediaChangesBlock]()
-    let service: StockPhotosServiceProtocol
+    let service: StockPhotosService
 
-    init(service: StockPhotosServiceProtocol) {
+    init(service: StockPhotosService) {
         self.service = service
         super.init()
     }
@@ -18,7 +18,8 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     }
 
     func search(for searchText: String?) {
-        service.search(text: searchText ?? "") { (result) in
+        let params = StockPhotosSearchParams(text: searchText ?? "")
+        service.search(params: params) { (result) in
             self.searchCompleted(result: result)
         }
     }
