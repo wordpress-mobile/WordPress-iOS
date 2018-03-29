@@ -127,25 +127,53 @@ import MobileCoreServices
         }
 
         let (itemType, domainString, identifier) = SearchIdentifierGenerator.decomposeFromUniqueIdentifier(compositeIdentifier)
-        guard itemType == .abstractPost, let postID = NumberFormatter().number(from: identifier) else {
-            // We are only handling posts for now.
-            DDLogError("Search manager unable to open post - postID:\(identifier) siteID:\(domainString)")
+        switch itemType {
+        case .abstractPost:
+            return handleAbstractPost(domainString: domainString, identifier: identifier)
+        case .readerPost:
+            return handleReaderPost(domainString: domainString, identifier: identifier)
+        default:
+            return false
+        }
+    }
+
+    fileprivate func handleAbstractPost(domainString: String, identifier: String) -> Bool {
+        guard let postID = NumberFormatter().number(from: identifier) else {
+            DDLogError("Search manager unable to parse postID/siteID for identifier:\(identifier) domain:\(domainString)")
             return false
         }
 
         if let siteID = validWPComSiteID(with: domainString) {
             fetchPost(postID, blogID: siteID, onSuccess: { [weak self] apost in
                 self?.navigateToScreen(for: apost)
-            }, onFailure: {
-                DDLogError("Search manager unable to open post - postID:\(postID) siteID:\(siteID)")
+                }, onFailure: {
+                    DDLogError("Search manager unable to open post - postID:\(postID) siteID:\(siteID)")
             })
         } else {
             fetchSelfHostedPost(postID, blogXMLRpcString: domainString, onSuccess: { [weak self] apost in
                 self?.navigateToScreen(for: apost, isDotCom: false)
-            }, onFailure: {
-                DDLogError("Search manager unable to open self hosted post - postID:\(postID) xmlrpc:\(domainString)")
+                }, onFailure: {
+                    DDLogError("Search manager unable to open self hosted post - postID:\(postID) xmlrpc:\(domainString)")
             })
         }
+
+        return true
+    }
+
+    fileprivate func handleReaderPost(domainString: String, identifier: String) -> Bool {
+        guard let siteID = validWPComSiteID(with: domainString),
+            let readerPostID = NumberFormatter().number(from: identifier) else {
+                DDLogError("Search manager unable to parse postID/siteID for identifier:\(identifier) domain:\(domainString)")
+                return false
+        }
+        var properties = [AnyHashable: Any]()
+        properties[WPAppAnalyticsKeyBlogID] = siteID
+        properties[WPAppAnalyticsKeyPostID] = readerPostID
+        WPAppAnalytics.track(.spotlightSearchOpenedReaderPost, withProperties: properties)
+        openReader(for: readerPostID, siteID: siteID, onFailure: {
+            DDLogError("Search manager unable to open reader for readerPostID:\(readerPostID) siteID:\(siteID)")
+        })
+
         return true
     }
 }
@@ -258,6 +286,15 @@ fileprivate extension SearchManager {
         WPTabBarController.sharedInstance().showReaderTab(forPost: postID, onBlog: blogID)
     }
 
+    func openReader(for postID: NSNumber, siteID: NSNumber, onFailure: () -> Void) {
+        closeAnyOpenPreview()
+        guard postID.intValue > 0, siteID.intValue > 0 else {
+            onFailure()
+            return
+        }
+        WPTabBarController.sharedInstance().showReaderTab(forPost: postID, onBlog: siteID)
+    }
+
     func openEditor(for post: Post) {
         closePreviewIfNeeded(for: post)
         openListView(for: post)
@@ -295,6 +332,9 @@ fileprivate extension SearchManager {
         openListView(for: apost)
     }
 
+    /// If there is a PostPreviewViewController window open and it is already displaying the provided
+    /// AbstractPost, leave it open, otherwise close it.
+    ///
     func closePreviewIfNeeded(for apost: AbstractPost) {
         guard let navController = WPTabBarController.sharedInstance().presentedViewController as? UINavigationController,
             let previewVC = navController.topViewController as? PostPreviewViewController,
@@ -302,8 +342,16 @@ fileprivate extension SearchManager {
                 // Do nothing — post is already loaded or PostPreviewViewController isn't visible
                 return
         }
+        navController.dismiss(animated: true, completion: nil)
+    }
 
-        // Close the current nav controller containing the post preview
+    /// If there is any PostPreviewViewController window open, close it.
+    ///
+    func closeAnyOpenPreview() {
+        guard let navController = WPTabBarController.sharedInstance().presentedViewController as? UINavigationController,
+            let _ = navController.topViewController as? PostPreviewViewController else {
+                return
+        }
         navController.dismiss(animated: true, completion: nil)
     }
 }
