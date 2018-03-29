@@ -55,14 +55,14 @@ final class StockPhotosServiceMock: StockPhotosService {
         }
         DispatchQueue.global().async {
             let totalMedia = text.count
-            let mediaResult = (1...totalMedia).map { self.crateStockPhotosMedia(id: $0 as Int) }
+            let mediaResult = (1...totalMedia).map { self.crateStockPhotosMedia(id: "\($0)") }
             DispatchQueue.main.async {
                 completion(mediaResult)
             }
         }
     }
 
-    private func crateStockPhotosMedia(id: Int) -> StockPhotosMedia {
+    private func crateStockPhotosMedia(id: String) -> StockPhotosMedia {
         let url = "https://images.pexels.com/photos/710916/pexels-photo-710916.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940".toURL()!
         let thumbs = ThumbnailCollection(
             largeURL: "https://images.pexels.com/photos/710916/pexels-photo-710916.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940".toURL()!,
@@ -72,7 +72,6 @@ final class StockPhotosServiceMock: StockPhotosService {
         )
         return StockPhotosMedia(
             id: id,
-            guid: "\(id)",
             URL: url,
             title: "pexels-photo-710916.jpeg",
             name: "pexels-photo-710916.jpeg",
