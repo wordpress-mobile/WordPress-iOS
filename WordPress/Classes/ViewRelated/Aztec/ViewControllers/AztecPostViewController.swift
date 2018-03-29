@@ -1255,6 +1255,20 @@ private extension AztecPostViewController {
         if FeatureFlag.asyncPosting.enabled {
             alert.addDefaultActionWithTitle("Async Publish (Debug)") { [unowned self]  _ in
                 self.mapUIContentToPostAndSave()
+
+                let action = self.postEditorStateContext.action
+                if action == .save || action == .saveAsDraft {
+                    self.post.status = .draft
+                } else if action == .publish {
+                    if self.post.date_created_gmt == nil {
+                        self.post.date_created_gmt = Date()
+                    }
+                    self.post.status = .publish
+                } else if action == .publishNow {
+                    self.post.date_created_gmt = Date()
+                    self.post.status = .publish
+                }
+
                 PostCoordinator.shared.save(post: self.post)
                 self.dismissOrPopView(didSave: true, shouldShowPostEpilogue: false)
             }
