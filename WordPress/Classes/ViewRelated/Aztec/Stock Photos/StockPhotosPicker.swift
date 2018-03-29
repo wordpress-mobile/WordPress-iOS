@@ -7,7 +7,15 @@ protocol StockPhotosPickerDelegate: AnyObject {
 /// Presents the Stock Photos main interface
 final class StockPhotosPicker: NSObject {
     private lazy var dataSource: StockPhotosDataSource = {
-        return StockPhotosDataSource(service: StockPhotosServiceMock())
+        return StockPhotosDataSource(service: self.stockPhotosService)
+    }()
+
+    private lazy var stockPhotosService: StockPhotosService = {
+        guard let blog = self.blog else {
+            return StockPhotosServiceMock()
+        }
+
+        return DefaultStockPhotosService()
     }()
 
     weak var delegate: StockPhotosPickerDelegate?
