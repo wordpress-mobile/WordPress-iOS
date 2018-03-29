@@ -37,8 +37,11 @@ class MediaCoordinator: NSObject {
     private func coordinator(for post: AbstractPost) -> MediaProgressCoordinator {
         var cachedCoordinator: MediaProgressCoordinator?
 
+        // Use the original post so we don't create new coordinators for post revisions
+        let original = post.original ?? post
+
         progressCoordinatorQueue.sync {
-            cachedCoordinator = postMediaProgressCoordinators[post]
+            cachedCoordinator = postMediaProgressCoordinators[original]
         }
 
         if let cachedCoordinator = cachedCoordinator {
@@ -49,7 +52,7 @@ class MediaCoordinator: NSObject {
         coordinator.delegate = self
 
         progressCoordinatorQueue.async(flags: .barrier) {
-            self.postMediaProgressCoordinators[post] = coordinator
+            self.postMediaProgressCoordinators[original] = coordinator
         }
 
         return coordinator
@@ -392,7 +395,8 @@ class MediaCoordinator: NSObject {
     @discardableResult func addObserver(_ onUpdate: @escaping ObserverBlock, forMediaFor post: AbstractPost) -> UUID {
         let uuid = UUID()
 
-        let observer = MediaObserver(post: post, onUpdate: onUpdate)
+        let original = post.original ?? post
+        let observer = MediaObserver(post: original, onUpdate: onUpdate)
 
         queue.async {
             self.mediaObservers[uuid] = observer
@@ -471,10 +475,11 @@ class MediaCoordinator: NSObject {
         let mediaObservers = self.mediaObservers.values.filter({ $0.media?.uploadID == media.uploadID })
 
         let postObservers = self.mediaObservers.values.filter({
-            guard let posts = media.posts,
+            guard let posts = media.posts as? Set<AbstractPost>,
                 let post = $0.post else { return false }
 
-            return posts.contains(post)
+            let originals = posts.map({ $0.original ?? $0 })
+            return originals.contains(post)
         })
 
         return mediaObservers + postObservers + wildcardObservers
