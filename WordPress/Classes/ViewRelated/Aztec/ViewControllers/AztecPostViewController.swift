@@ -348,7 +348,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         didSet {
             removeObservers(fromPost: oldValue)
             addObservers(toPost: post)
-
+            unregisterMediaObserver()
+            registerMediaObserver()
             postEditorStateContext = createEditorStateContext(for: post)
             refreshInterface()
         }
@@ -515,8 +516,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         if isOpenedDirectlyForPhotoPost {
             presentMediaPickerFullScreen(animated: false)
         }
-
-        registerMediaObserver()
     }
 
 
@@ -3071,7 +3070,7 @@ extension AztecPostViewController {
                 alertController.addActionWithTitle(MediaAttachmentActionSheet.stopUploadActionTitle,
                                                    style: .destructive,
                                                    handler: { (action) in
-                                                    self.mediaCoordinator.delete(media)
+                                                    self.mediaCoordinator.cancelUpload(of: media)
                 })
             }
         } else {
