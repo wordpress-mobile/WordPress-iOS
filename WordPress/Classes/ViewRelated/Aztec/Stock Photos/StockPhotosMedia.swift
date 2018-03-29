@@ -141,6 +141,7 @@ extension StockPhotosMedia: Decodable {
 
     convenience init(from decoder: Decoder) throws {
         let url = Foundation.URL(string: "http://elpais.com")!
+
         self.init(id: "", URL: url, title: "", name: "", size: .zero, thumbnails: ThumbnailCollection())
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(String.self, forKey: .ID)
@@ -149,9 +150,6 @@ extension StockPhotosMedia: Decodable {
         name = try values.decode(String.self, forKey: .name)
         size = .zero
 
-        //let thumbnailsInfo = try values.nestedContainer(keyedBy: CodingKeys.self, forKey: .thumbnails)
         thumbnails = try values.decode(ThumbnailCollection.self, forKey: .thumbnails)
-
-        //self.init(id: id, URL: URL, title: title, name: name, size: size, thumbnails: thumbnails)
     }
 }
