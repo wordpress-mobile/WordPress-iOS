@@ -1,6 +1,12 @@
 import MobileCoreServices
 import WPMediaPicker
 
+struct MoreCoordinatorContext {
+    let origin: UIViewController & UIDocumentPickerDelegate
+    let view: UIView
+    let blog: Blog
+}
+
 /// Prepares the alert controller that will be presented when tapping the "more" button in Aztec's Format Bar
 final class AztecMoreCoordinator {
     private weak var delegate: AztecMoreCoordinatorDelegate?
@@ -12,15 +18,18 @@ final class AztecMoreCoordinator {
         stockPhotos.delegate = delegate
     }
 
-    func present(origin: UIViewController & UIDocumentPickerDelegate, view: UIView) {
+    func present(context: MoreCoordinatorContext) {
+        let origin = context.origin
+        let fromView = context.view
+
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         alertController.addAction(freePhotoAction(origin: origin))
         alertController.addAction(otherAppsAction(origin: origin))
         alertController.addAction(cancelAction())
 
-        alertController.popoverPresentationController?.sourceView = view
-        alertController.popoverPresentationController?.sourceRect = CGRect(origin: view.frame.origin, size: CGSize(width: 1, height: 1))
+        alertController.popoverPresentationController?.sourceView = fromView
+        alertController.popoverPresentationController?.sourceRect = CGRect(origin: fromView.frame.origin, size: CGSize(width: 1, height: 1))
         alertController.popoverPresentationController?.permittedArrowDirections = .any
 
         origin.present(alertController, animated: true, completion: nil)
