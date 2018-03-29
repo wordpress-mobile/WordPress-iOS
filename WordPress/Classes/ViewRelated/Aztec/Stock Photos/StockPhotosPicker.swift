@@ -6,10 +6,15 @@ protocol StockPhotosPickerDelegate: AnyObject {
 
 /// Presents the Stock Photos main interface
 final class StockPhotosPicker: NSObject {
-    private let dataSource = StockPhotosDataSource(service: StockPhotosServiceMock())
+    private lazy var dataSource: StockPhotosDataSource = {
+        return StockPhotosDataSource(service: StockPhotosServiceMock())
+    }()
+
     weak var delegate: StockPhotosPickerDelegate?
+    private var blog: Blog?
 
     func presentPicker(origin: UIViewController, blog: Blog) {
+        self.blog = blog
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [.all]
