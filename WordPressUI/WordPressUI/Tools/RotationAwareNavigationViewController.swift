@@ -1,7 +1,7 @@
 import UIKit
-import WordPressShared
 
-
+// MARK: - RotationAwareNavigationViewController
+//
 class RotationAwareNavigationViewController: UINavigationController {
 
     override var shouldAutorotate: Bool {
@@ -15,6 +15,7 @@ class RotationAwareNavigationViewController: UINavigationController {
             return supportedOrientations
         }
 
-        return WPDeviceIdentification.isiPad() ? .all : .allButUpsideDown
+        let isPad = UIDevice.current.userInterfaceIdiom == .pad
+        return isPad ? .all : .allButUpsideDown
     }
 }
