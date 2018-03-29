@@ -6,9 +6,9 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
 
     var photosMedia = [StockPhotosMedia]()
     var observers = [String: WPMediaChangesBlock]()
-    let service: StockPhotosServiceProtocol
+    let service: StockPhotosService
 
-    init(service: StockPhotosServiceProtocol) {
+    init(service: StockPhotosService) {
         self.service = service
         super.init()
     }
