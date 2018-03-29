@@ -24,7 +24,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
  when the date_created_gmt and the modified date match.
  */
 @property (nonatomic, strong, nullable) NSDate * dateModified;
-@property (nonatomic, strong) NSSet *media;
+@property (nonatomic, strong) NSSet<Media *> *media;
 @property (weak, readonly) AbstractPost *original;
 @property (weak, readonly) AbstractPost *revision;
 @property (nonatomic, strong) NSSet *comments;
