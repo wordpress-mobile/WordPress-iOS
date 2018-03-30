@@ -79,6 +79,10 @@ open class MediaImportService: LocalCoreDataService {
             exporter.imageOptions = self.exporterImageOptions
             exporter.videoOptions = self.exporterVideoOptions
             return exporter
+        case let stockPhotosMedia as StockPhotosMedia:
+            let exporter = StockPhotosMediaExporter(stockPhotosMedia: stockPhotosMedia)
+//            exporter.imageOptions = self.exporterImageOptions
+            return exporter
         default:
             return nil
         }
