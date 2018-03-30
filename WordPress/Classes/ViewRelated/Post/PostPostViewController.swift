@@ -66,6 +66,8 @@ class PostPostViewController: UIViewController {
         editButton.setTitle(NSLocalizedString("Edit Post", comment: "Button label for editing a post"), for: .normal)
         viewButton.setTitle(NSLocalizedString("View Post", comment: "Button label for viewing a post"), for: .normal)
 
+        configureForPost()
+
         if revealPost {
             view.alpha = WPAlphaFull
             animatePostPost()
@@ -130,11 +132,11 @@ class PostPostViewController: UIViewController {
         }) { (context) in }
     }
 
-    @objc func setup(post: Post) {
-        guard let blogSettings = post.blog.settings else {
-            return
+    private func configureForPost() {
+        guard let post = self.post,
+            let blogSettings = post.blog.settings else {
+                return
         }
-        self.post = post
 
         titleLabel.text = post.titleForDisplay().strippingHTML()
 
@@ -153,6 +155,11 @@ class PostPostViewController: UIViewController {
         if isPrivate {
             shareButton.isHidden = true
         }
+
+    }
+
+    @objc func setup(post: Post) {
+        self.post = post
 
         revealPost = true
     }

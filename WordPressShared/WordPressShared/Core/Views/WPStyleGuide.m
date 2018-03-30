@@ -2,7 +2,7 @@
 #import "WPTextFieldTableViewCell.h"
 #import "WPFontManager.h"
 #import "WPDeviceIdentification.h"
-
+#import <WordPressShared/WordPressShared-Swift.h>
 
 
 @implementation WPStyleGuide
@@ -11,7 +11,8 @@
 
 + (UIFont *)subtitleFont
 {
-    return [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+    CGFloat maximumPointSize = [WPStyleGuide maxFontSize];
+    return [self fontForTextStyle:UIFontTextStyleCaption1 maximumPointSize: maximumPointSize];
 }
 
 + (NSDictionary *)subtitleAttributes

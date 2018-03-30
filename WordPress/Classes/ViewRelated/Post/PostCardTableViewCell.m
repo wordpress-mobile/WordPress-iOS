@@ -44,6 +44,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet UIButton *metaButtonLeft;
 @property (nonatomic, strong) IBOutlet UIProgressView *progressView;
 @property (nonatomic, strong) IBOutlet PostCardActionBar *actionBar;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewTopConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewLeftConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewHeightConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewLowerConstraint;
@@ -232,11 +233,13 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 {
     if (![self.post isMultiAuthorBlog]) {
         self.headerViewHeightConstraint.constant = 0;
-        self.headerViewLowerConstraint.constant = 0;
+        // Move the next element up to where the header was.
+        self.headerViewLowerConstraint.constant = self.headerViewTopConstraint.constant;
         // If not visible, just return and don't bother setting the text or loading the avatar.
         self.headerView.hidden = YES;
         return;
     }
+
     self.headerView.hidden = NO;
     self.headerViewHeightConstraint.constant = self.headerViewHeight;
     self.headerViewLowerConstraint.constant = self.headerViewLowerMargin;
@@ -690,6 +693,14 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 {
     if ([self.delegate respondsToSelector:@selector(cell:handleStatsForPost:)]) {
         [self.delegate cell:self handleStatsForPost:self.post];
+    }
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    if (previousTraitCollection.preferredContentSizeCategory != self.traitCollection.preferredContentSizeCategory) {
+        [self applyStyles];
     }
 }
 
