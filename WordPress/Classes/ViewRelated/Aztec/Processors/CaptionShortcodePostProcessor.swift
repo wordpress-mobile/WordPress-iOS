@@ -25,10 +25,30 @@ class CaptionShortcodePostProcessor: Aztec.HTMLProcessor {
             /// Serialize the Caption's Shortcode!
             ///
             let serializer = DefaultHTMLSerializer()
-            let attributes = shortcode.attributes.toString()
-            let padding = attributes.isEmpty ? "" : " "
+            var attributes = shortcode.attributes.named
+            var imgId = ""
+            if coreNode.isNodeType(.img) {
+                let imgAttributes = coreNode.attributes
+                for attribute in imgAttributes {
+                    if attribute.name == "src" {
+                        continue
+                    }
+                    if attribute.name == "class" {
+                        imgId = ""
+                    }
+                    attributes[attribute.name] = attribute.value.toString()
+                }
+            }
 
-            var html = "[caption" + padding + attributes + "]"
+            var attributesHTMLRepresentation: String = ""
+
+            for (key, value) in attributes {
+                attributesHTMLRepresentation += " \(key)=\"\(value)\""
+            }
+
+            let padding = attributesHTMLRepresentation.isEmpty ? "" : " "
+
+            var html = "[caption id=\"\(imgId)\" " + imgId + padding + attributesHTMLRepresentation + "]"
 
             html += serializer.serialize(coreNode)
 
