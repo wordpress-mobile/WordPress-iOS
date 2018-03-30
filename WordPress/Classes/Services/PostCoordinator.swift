@@ -28,6 +28,7 @@ class PostCoordinator: NSObject {
     func save(post: AbstractPost) {
         change(post: post, status: .pushing)
         if mediaCoordinator.isUploadingMedia(for: post) {
+            change(post: post, status: .pushingMedia)
             // Only observe if we're not already
             guard !isObserving(post: post) else {
                 return
@@ -79,6 +80,14 @@ class PostCoordinator: NSObject {
             mediaCoordinator.retryMedia(media)
         }
         save(post: post)
+    }
+
+    /// This method checks the status of all post objects and updates them to the correct status if needed.
+    /// The main cause of wrong status is the app being killed while uploads of posts are happening.
+    ///
+    @objc func refreshPostStatus() {
+        let service = PostService(managedObjectContext: backgroundContext)
+        service.refreshPostStatus()
     }
 
     private func upload(post: AbstractPost) {
