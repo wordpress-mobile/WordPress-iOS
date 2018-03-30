@@ -29,7 +29,6 @@ static NSInteger HideSearchMinSites = 3;
                                         UIDataSourceModelAssociation,
                                         UITableViewDelegate,
                                         UISearchBarDelegate,
-                                        WPNoResultsViewDelegate, // To be removed with FeatureFlagSiteCreation.
                                         NoResultsViewControllerDelegate,
                                         WPSplitViewControllerDetailProvider>
 
@@ -37,7 +36,6 @@ static NSInteger HideSearchMinSites = 3;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UILabel *headerLabel;
-@property (nonatomic, strong) WPNoResultsView *noResultsView; // To be removed with FeatureFlagSiteCreation.
 @property (nonatomic, strong) NoResultsViewController *noResultsViewController;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic,   weak) UIAlertController *addSiteAlertController;
@@ -155,8 +153,6 @@ static NSInteger HideSearchMinSites = 3;
     [self.stackView addArrangedSubview:self.tableView];
 
     self.editButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
-
-    [self configureNoResultsView];
 
     [self registerForAccountChangeNotification];
 }
@@ -492,24 +488,6 @@ static NSInteger HideSearchMinSites = 3;
     self.noResultsViewController.delegate = self;
 }
 
-// To be removed with FeatureFlagSiteCreation.
-- (void)configureNoResultsView
-{
-    self.noResultsView = [WPNoResultsView noResultsViewWithTitle:nil
-                                                         message:nil
-                                                   accessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"theme-empty-results"]]
-                                                     buttonTitle:nil];
-    [self.tableView addSubview:self.noResultsView];
-    [self.noResultsView setTranslatesAutoresizingMaskIntoConstraints:NO];
-
-    [self.tableView pinSubviewAtCenter:self.noResultsView];
-    [self.noResultsView layoutIfNeeded];
-
-    self.noResultsView.hidden = YES;
-
-    self.noResultsView.delegate = self;
-}
-
 #pragma mark - Notifications
 
 - (void)registerForAccountChangeNotification
@@ -825,7 +803,6 @@ static NSInteger HideSearchMinSites = 3;
 
         self.firstHide = nil;
         self.hideCount = 0;
-        self.noResultsView.hidden = YES;
     }
     else {
         self.tableView.tableHeaderView = nil;
@@ -969,14 +946,6 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)actionButtonPressed {
     [self showAddSiteAlertFromButton:self.noResultsViewController.actionButton];
-}
-
-// To be removed with FeatureFlagSiteCreation.
-#pragma mark - WPNoResultsViewDelegate
-
-- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
-{
-    [self showAddSiteAlertFromButton:noResultsView.button];
 }
 
 #pragma mark - View Delegate Helper
