@@ -54,11 +54,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-<<<<<<< HEAD
-	<string>9.6.1.20180330</string>
-=======
 	<string>9.7.0.20180316</string>
->>>>>>> develop
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
