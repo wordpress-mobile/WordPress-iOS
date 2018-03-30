@@ -281,34 +281,18 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)showNoResultsViewForSiteCount:(NSUInteger)siteCount
 {
-    if ([Feature enabled:FeatureFlagSiteCreation]) {
-        // If we've gone from no results to having just one site, the user has
-        // added a new site so we should auto-select it
-        if (self.noResultsViewController.beingPresented && siteCount == 1) {
-            [self removeNoResultsFromView];
-            [self bypassBlogListViewController];
-        }
-        
-        // If we have no sites, show the No Results VC.
-        if (siteCount == 0) {
-            [self addNoResultsToView];
+    // If we've gone from no results to having just one site, the user has
+    // added a new site so we should auto-select it
+    if (self.noResultsViewController.beingPresented && siteCount == 1) {
+        [self removeNoResultsFromView];
+        [self bypassBlogListViewController];
+    }
 
-            [self.noResultsViewController configureWithTitle:NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.") buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.") subtitle:nil image:nil];
-        }
-    } else {
-        // If we've gone from no results to having just one site, the user has
-        // added a new site so we should auto-select it
-        if (!self.noResultsView.hidden && siteCount == 1) {
-            [self bypassBlogListViewController];
-        }
-        
-        self.noResultsView.hidden = siteCount > 0;
-        
-        if (!self.noResultsView.hidden) {
-            self.noResultsView.titleText = NSLocalizedString(@"You don't have any WordPress sites yet.", @"Title shown when the user has no sites.");
-            self.noResultsView.messageText = NSLocalizedString(@"Would you like to start one?", @"Prompt asking user whether they'd like to create a new site if they don't already have one.");
-            self.noResultsView.buttonTitle = NSLocalizedString(@"Create Site", nil);
-        }
+    // If we have no sites, show the No Results VC.
+    if (siteCount == 0) {
+        [self addNoResultsToView];
+
+        [self.noResultsViewController configureWithTitle:NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.") buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.") subtitle:nil image:nil];
     }
 }
 
@@ -323,35 +307,19 @@ static NSInteger HideSearchMinSites = 3;
     NSString *multipleSubtitle = NSLocalizedString(@"To manage them here, set them to visible.", @"Prompt asking user to make sites visible in order to use them in the app (plural)");
     
     NSString *buttonTitle = NSLocalizedString(@"Change Visibility", @"Button title to edit visibility of sites.");
-    
-    
-    if ([Feature enabled:FeatureFlagSiteCreation]) {
-        [self addNoResultsToView];
-        
-        if (count == 1) {
-            [self.noResultsViewController configureWithTitle:singularTitle
-                                                 buttonTitle:buttonTitle
-                                                    subtitle:singularSubtitle
-                                                       image:nil];
-        } else {
-            [self.noResultsViewController configureWithTitle:multipleTitle
-                                                 buttonTitle:buttonTitle
-                                                    subtitle:multipleSubtitle
-                                                       image:nil];
-        }
-        
+
+    [self addNoResultsToView];
+
+    if (count == 1) {
+        [self.noResultsViewController configureWithTitle:singularTitle
+                                             buttonTitle:buttonTitle
+                                                subtitle:singularSubtitle
+                                                   image:nil];
     } else {
-        if (count == 1) {
-            self.noResultsView.titleText = singularTitle;
-            self.noResultsView.messageText = singularSubtitle;
-        } else {
-            self.noResultsView.titleText = multipleTitle;
-            self.noResultsView.messageText = multipleSubtitle;
-        }
-        
-        self.noResultsView.buttonTitle = buttonTitle;
-        
-        self.noResultsView.hidden = NO;
+        [self.noResultsViewController configureWithTitle:multipleTitle
+                                             buttonTitle:buttonTitle
+                                                subtitle:multipleSubtitle
+                                                   image:nil];
     }
 }
 
@@ -901,7 +869,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)setAddSiteBarButtonItem
 {
-    if ([Feature enabled:FeatureFlagSiteCreation] && self.dataSource.allBlogsCount == 0) {
+    if (self.dataSource.allBlogsCount == 0) {
         self.navigationItem.rightBarButtonItem = nil;
     }
     else {
@@ -958,18 +926,11 @@ static NSInteger HideSearchMinSites = 3;
 {
     [self setEditing:NO animated:NO];
     
-    if ([Feature enabled:FeatureFlagSiteCreation]) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteCreation" bundle:nil];
-        SiteCreationCategoryTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"siteCategory"];
-        SiteCreationNavigationController *navController = [[SiteCreationNavigationController alloc]
-                                                           initWithRootViewController:controller];
-        [self presentViewController:navController animated:YES completion:nil];
-    }
-    
-    else {
-        CreateNewBlogViewController *createNewBlogViewController = [[CreateNewBlogViewController alloc] init];
-        [self.navigationController presentViewController:createNewBlogViewController animated:YES completion:nil];
-    }
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteCreation" bundle:nil];
+    SiteCreationCategoryTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"siteCategory"];
+    SiteCreationNavigationController *navController = [[SiteCreationNavigationController alloc]
+                                                       initWithRootViewController:controller];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)showLoginControllerForAddingSelfHostedSite
