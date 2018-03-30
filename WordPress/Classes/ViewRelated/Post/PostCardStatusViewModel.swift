@@ -112,8 +112,13 @@ class PostCardStatusViewModel: NSObject {
         return !(MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing)
     }
 
+    @objc
     var progress: Double {
-        return MediaCoordinator.shared.totalProgress(for: post)
+        if post.remoteStatus == .pushing {
+            return 1.0
+        } else {
+            return MediaCoordinator.shared.totalProgress(for: post)
+        }
     }
 
     @objc
