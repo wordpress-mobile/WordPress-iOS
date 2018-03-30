@@ -290,7 +290,9 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     CGFloat desiredWidth = [UIApplication  sharedApplication].keyWindow.frame.size.width;
     CGFloat desiredHeight = self.postCardImageViewHeightConstraint.constant;
     CGSize imageSize = CGSizeMake(desiredWidth, desiredHeight);
-    if ([post isPrivate] && [post.blog isHostedAtWPcom]) {
+    if ([url isFileURL]) {
+        [self.postCardImageView setImageWithURL:url placeholderImage:nil];
+    } else if ([post isPrivate] && [post.blog isHostedAtWPcom]) {
         CGFloat scale = [[UIScreen mainScreen] scale];
         CGSize scaledSize = CGSizeMake(desiredWidth * scale, desiredHeight * scale);
         url = [WPImageURLHelper imageURLWithSize:scaledSize forImageURL:url];

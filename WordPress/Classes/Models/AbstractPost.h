@@ -183,6 +183,12 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (nullable NSString *)remoteStatusText;
 + (NSString *)titleForRemoteStatus:(nullable NSNumber *)remoteStatus;
 
+/**
+ * Updates the path for the display image by looking at the post content and trying to find an good image to use.
+ * If no appropiated image is found the path is set to nil.
+ */
+- (void)updatePathForDisplayImageBasedOnContent;
+
 @end
 
 @interface AbstractPost (CoreDataGeneratedAccessors)
