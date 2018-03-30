@@ -401,6 +401,8 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
         self.progressView.hidden = shouldHide;
     }
 
+    self.progressView.progress = self.viewModel.progress;
+
     if (!shouldHide && !self.viewModel.progressBlock) {
         __weak __typeof(self) weakSelf = self;
         self.viewModel.progressBlock = ^(double progress){
