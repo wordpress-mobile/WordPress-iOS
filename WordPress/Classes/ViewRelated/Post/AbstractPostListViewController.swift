@@ -105,7 +105,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     @objc var postListFooterView: PostListFooterView!
 
-    @IBOutlet var filterButton: NavBarTitleDropdownButton!
+    @IBOutlet var filterTabBar: FilterTabBar!
     @IBOutlet var rightBarButtonView: UIView!
     @IBOutlet var addButton: UIButton!
 
@@ -121,6 +121,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         refreshControl?.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
 
+        configureFilterBar()
         configureTableView()
         configureFooterView()
         configureWindowlessCell()
@@ -132,6 +133,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         tableView.reloadData()
+
+        observeNetworkStatus()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -141,6 +144,9 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             reloadTableViewBeforeAppearing = false
             tableView.reloadData()
         }
+
+        filterTabBar.layoutIfNeeded()
+        updateSelectedFilter()
 
         refreshResults()
         registerForKeyboardNotifications()
@@ -219,7 +225,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     // MARK: - Configuration
 
-    @objc func heightForFooterView() -> CGFloat {
+    func heightForFooterView() -> CGFloat {
         return type(of: self).defaultHeightForFooterView
     }
 
@@ -227,7 +233,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         return .lightContent
     }
 
-    @objc func configureNavbar() {
+    func configureNavbar() {
         // IMPORTANT: this code makes sure that the back button in WPPostViewController doesn't show
         // this VC's title.
         //
@@ -237,15 +243,23 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         let rightBarButtonItem = UIBarButtonItem(customView: rightBarButtonView)
         rightBarButtonItem.width = rightBarButtonView.frame.size.width
         WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(rightBarButtonItem, for: navigationItem)
-        navigationItem.titleView = filterButton
-        updateFilterTitle()
     }
 
-    @objc func configureTableView() {
+    func configureFilterBar() {
+        filterTabBar.tintColor = WPStyleGuide.wordPressBlue()
+        filterTabBar.deselectedTabColor = WPStyleGuide.greyDarken10()
+        filterTabBar.dividerColor = WPStyleGuide.greyLighten20()
+
+        filterTabBar.items = filterSettings.availablePostListFilters().map({ $0.title })
+
+        filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
+    }
+
+    func configureTableView() {
         assert(false, "You should implement this method in the subclass")
     }
 
-    @objc func configureFooterView() {
+    func configureFooterView() {
 
         let mainBundle = Bundle.main
 
@@ -272,14 +286,19 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             return
         }
 
+        let _ = DispatchDelayedAction(delay: .milliseconds(500)) { [weak self] in
+            self?.refreshControl?.endRefreshing()
+        }
+
         if tableViewHandler.resultsController.fetchedObjects?.count > 0 {
             hideNoResultsView()
+            presentNoNetworkAlert()
         } else {
             showNoResultsView()
         }
     }
 
-    @objc func configureAuthorFilter() {
+    func configureAuthorFilter() {
         fatalError("You should implement this method in the subclass")
     }
 
@@ -312,21 +331,25 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     fileprivate func configureSearchBackingView() {
         // This mask view is required to cover the area between the top of the search
-        // bar and the top of the screen on an iPhone X.
+        // bar and the top of the screen on an iPhone X and on iOS 10.
+        var topAnchor = topLayoutGuide.bottomAnchor
+
         if #available(iOS 11.0, *) {
-            let backingView = UIView()
-            view.addSubview(backingView)
-
-            backingView.backgroundColor = searchController.searchBar.barTintColor
-            backingView.translatesAutoresizingMaskIntoConstraints = false
-
-            NSLayoutConstraint.activate([
-                backingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                backingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                backingView.topAnchor.constraint(equalTo: view.topAnchor),
-                backingView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-                ])
+            topAnchor = view.safeAreaLayoutGuide.topAnchor
         }
+
+        let backingView = UIView()
+        view.addSubview(backingView)
+
+        backingView.backgroundColor = searchController.searchBar.barTintColor
+        backingView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            backingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backingView.topAnchor.constraint(equalTo: view.topAnchor),
+            backingView.bottomAnchor.constraint(equalTo: topAnchor)
+            ])
     }
 
     @objc func configureSearchHelper() {
@@ -545,10 +568,6 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         createPost()
     }
 
-    @IBAction func didTapFilterButton(_ sender: AnyObject) {
-        displayFilters()
-    }
-
     // MARK: - Synching
 
     @objc func automaticallySyncIfAppropriate() {
@@ -563,6 +582,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         if appDelegate?.connectionAvailable == false {
             refreshResults()
+            presentNoNetworkAlert()
             return
         }
 
@@ -572,6 +592,14 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         } else {
             // Update in the background
             syncItemsWithUserInteraction(false)
+        }
+    }
+
+    func presentNoNetworkAlert() {
+        if shouldPresentAlert() {
+            let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+            let message = NSLocalizedString("The Internet connection appears to be offline.", comment: "Message of error prompt shown when a sync the user initiated fails.")
+            WPError.showAlert(withTitle: title, message: message)
         }
     }
 
@@ -639,6 +667,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
                 if posts.count > 0 {
                     strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
+                    SearchManager.shared.indexItems(posts)
                 }
 
                 success?(filter.hasMore)
@@ -690,6 +719,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
                 if posts.count > 0 {
                     strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
+                    SearchManager.shared.indexItems(posts)
                 }
 
                 success?(filter.hasMore)
@@ -895,6 +925,9 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         recentlyTrashedPostObjectIDs.append(postObjectID)
 
+        // Remove the trashed post from spotlight
+        SearchManager.shared.deleteSearchableItem(apost)
+
         // Update the fetch request *before* making the service call.
         updateAndPerformFetchRequest()
 
@@ -968,6 +1001,9 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
                 }
 
                 strongSelf.promptThatPostRestoredToFilter(filter)
+
+                // Reindex the restored post in spotlight
+                SearchManager.shared.indexItem(apost)
             }
         }) { [weak self] (error) in
 
@@ -1010,7 +1046,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     @objc func refreshAndReload() {
         recentlyTrashedPostObjectIDs.removeAll()
-        updateFilterTitle()
+        updateSelectedFilter()
         resetTableViewContentOffset()
         updateAndPerformFetchRequestRefreshingResults()
     }
@@ -1021,58 +1057,24 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         WPAnalytics.track(.postListStatusFilterChanged, withProperties: propertiesForAnalytics())
     }
 
-    @objc func updateFilter(index: Int) {
+    func updateFilter(index: Int) {
         filterSettings.setCurrentFilterIndex(index)
         refreshAndReload()
     }
 
-    @objc func updateFilterTitle() {
-        filterButton.setAttributedTitleForTitle(filterSettings.currentPostListFilter().title)
+    func updateSelectedFilter() {
+        if filterTabBar.selectedIndex != filterSettings.currentFilterIndex() {
+            filterTabBar.setSelectedIndex(filterSettings.currentFilterIndex(), animated: false)
+        }
     }
 
-    @objc func displayFilters() {
-        let availableFilters = filterSettings.availablePostListFilters()
+    @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
+        filterSettings.setCurrentFilterIndex(filterBar.selectedIndex)
 
-        let titles = availableFilters.map { (filter: PostListFilter) -> String in
-            return filter.title
-        }
+        refreshAndReload()
+        syncItemsWithUserInteraction(false)
 
-        let dict = [SettingsSelectionDefaultValueKey: availableFilters[0],
-                    SettingsSelectionTitleKey: NSLocalizedString("Filters", comment: "Title of the list of post status filters."),
-                    SettingsSelectionTitlesKey: titles,
-                    SettingsSelectionValuesKey: availableFilters,
-                    SettingsSelectionCurrentValueKey: filterSettings.currentPostListFilter()] as [String: Any]
-
-        let controller = SettingsSelectionViewController(style: .plain, andDictionary: dict as [AnyHashable: Any])
-        controller?.onItemSelected = { [weak self] (selectedValue: Any!) -> () in
-            if let strongSelf = self,
-                let index = strongSelf.filterSettings.availablePostListFilters().index(of: selectedValue as! PostListFilter) {
-
-                strongSelf.filterSettings.setCurrentFilterIndex(index)
-                strongSelf.dismiss(animated: true, completion: nil)
-
-                strongSelf.refreshAndReload()
-                strongSelf.syncItemsWithUserInteraction(false)
-
-                WPAnalytics.track(.postListStatusFilterChanged, withProperties: strongSelf.propertiesForAnalytics())
-            }
-        }
-
-        controller?.tableView.isScrollEnabled = false
-
-        displayFilterPopover(controller!)
-    }
-
-    @objc func displayFilterPopover(_ controller: UIViewController) {
-        controller.preferredContentSize = type(of: self).preferredFiltersPopoverContentSize
-
-        guard let titleView = navigationItem.titleView else {
-            return
-        }
-
-        ForcePopoverPresenter.configurePresentationControllerForViewController(controller, presentingFromView: titleView)
-
-        present(controller, animated: true, completion: nil)
+        WPAnalytics.track(.postListStatusFilterChanged, withProperties: propertiesForAnalytics())
     }
 
     // MARK: - Search Controller Delegate Methods
@@ -1091,5 +1093,17 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     func updateSearchResults(for searchController: UISearchController) {
         resetTableViewContentOffset()
         searchHelper.searchUpdated(searchController.searchBar.text)
+    }
+}
+
+extension AbstractPostListViewController: NetworkAwareUI {
+    func contentIsEmpty() -> Bool {
+        return tableViewHandler.resultsController.isEmpty()
+    }
+}
+
+extension AbstractPostListViewController: NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        automaticallySyncIfAppropriate()
     }
 }

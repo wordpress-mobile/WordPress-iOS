@@ -1061,6 +1061,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatSiteSettingsStartOverContactSupportClicked:
             eventName = @"site_settings_start_over_contact_support_clicked";
             break;
+        case WPAnalyticsStatSpotlightSearchOpenedPost:
+            eventName = @"spotlight_search_opened_post";
+            break;
+        case WPAnalyticsStatSpotlightSearchOpenedPage:
+            eventName = @"spotlight_search_opened_page";
+            break;
+        case WPAnalyticsStatSpotlightSearchOpenedReaderPost:
+            eventName = @"spotlight_search_opened_reader_post";
+            break;
         case WPAnalyticsStatSkippedConnectingToJetpack:
             eventName = @"skipped_connecting_to_jetpack";
             break;

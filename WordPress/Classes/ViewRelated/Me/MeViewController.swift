@@ -55,13 +55,14 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         NotificationCenter.default.addObserver(self, selector: #selector(MeViewController.accountDidChange), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
 
-        refreshAccountDetails()
-
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        refreshAccountDetails()
+
         HelpshiftUtils.refreshUnreadNotificationCount()
 
         if splitViewControllerIsHorizontallyCompact {
@@ -399,6 +400,9 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         service.removeDefaultWordPressComAccount()
+
+        // Also clear the spotlight index
+        SearchManager.shared.deleteAllSearchableItems()
     }
 
     // MARK: - Private Properties
