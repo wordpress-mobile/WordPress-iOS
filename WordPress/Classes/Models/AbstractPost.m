@@ -380,6 +380,21 @@
     return NO;
 }
 
+- (BOOL)hasFailedMedia
+{
+    if ([self.media count] == 0) {
+        return NO;
+    }
+
+    for (Media *media in self.media) {
+        if (media.remoteStatus ==  MediaRemoteStatusFailed) {
+            return YES;
+        }
+    }
+
+    return NO;
+}
+
 - (BOOL)hasCategories
 {
     return NO;
@@ -616,6 +631,24 @@
 {
     self.remoteStatus = AbstractPostRemoteStatusFailed;
     [self save];
+}
+
+- (void)updatePathForDisplayImageBasedOnContent
+{
+    // First lets check the post content for a suitable image
+    NSString *result = [DisplayableImageHelper searchPostContentForImageToDisplay:self.content];
+    if (result.length > 0) {
+        self.pathForDisplayImage = result;
+    }
+    // If none found let's see if some galleries are available
+    NSSet *mediaIDs = [DisplayableImageHelper searchPostContentForAttachmentIdsInGalleries:self.content];
+    for (Media *media in self.blog.media) {
+        NSNumber *mediaID = media.mediaID;
+        if (mediaID && [mediaIDs containsObject:mediaID]) {
+            result = media.remoteURL;
+        }
+    }
+    self.pathForDisplayImage = result;    
 }
 
 @end

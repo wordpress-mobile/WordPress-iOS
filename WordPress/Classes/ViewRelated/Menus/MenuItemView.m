@@ -3,6 +3,7 @@
 #import "MenuItem+ViewDesign.h"
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
+#import "WordPress-Swift.h"
 
 @import Gridicons;
 
@@ -53,7 +54,8 @@
 {
     UIButton *button = [[UIButton alloc] init];
     [button addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    button.titleLabel.font = [WPFontManager systemRegularFontOfSize:16.0];
+    button.titleLabel.font = [WPStyleGuide fontForTextStyle:UIFontTextStyleBody maximumPointSize:[WPStyleGuide maxFontSize]];
+    button.titleLabel.adjustsFontForContentSizeCategory = YES;
     [button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
 
     UIEdgeInsets inset = button.contentEdgeInsets;

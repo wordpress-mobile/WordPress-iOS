@@ -127,4 +127,19 @@ class NUXButtonViewController: UIViewController {
         callback()
     }
 
+    // MARK: - Dynamic type
+    func didChangePreferredContentSize() {
+        configure(button: bottomButton, withConfig: bottomButtonConfig)
+        configure(button: topButton, withConfig: topButtonConfig)
+        configure(button: tertiaryButton, withConfig: tertiaryButtonConfig)
+    }
+}
+
+extension NUXButtonViewController {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            didChangePreferredContentSize()
+        }
+    }
 }

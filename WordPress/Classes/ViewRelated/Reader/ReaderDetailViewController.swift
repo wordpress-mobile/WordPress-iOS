@@ -211,6 +211,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         bumpStats()
         bumpPageViewsForPost()
+        indexReaderPostInSpotlight()
     }
 
 
@@ -866,6 +867,14 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     @objc func isScrollViewAtBottom() -> Bool {
         return textView.contentOffset.y + textView.frame.height == textView.contentSize.height
+    }
+
+    @objc func indexReaderPostInSpotlight() {
+        guard let post = post else {
+            return
+        }
+
+        SearchManager.shared.indexItem(post)
     }
 
     // MARK: - Analytics

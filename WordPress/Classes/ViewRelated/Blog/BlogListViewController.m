@@ -219,9 +219,11 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)updateSearchVisibility
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    if ([blogService blogCountForAllAccounts] <= HideSearchMinSites) {
+    if (self.isEditing) {
+        return;
+    }
+    
+    if (self.dataSource.visibleBlogsCount <= HideSearchMinSites) {
         // Hide the search bar if there's only a few blogs
         [self.searchBar removeFromSuperview];
     } else if (self.searchBar.superview != self.stackView) {
@@ -386,6 +388,20 @@ static NSInteger HideSearchMinSites = 3;
             [blogService syncBlogsForAccount:defaultAccount success:nil failure:nil];
         }
     }];
+}
+
+- (void)removeBlogItemsFromSpotlight:(Blog *)blog {
+    if (!blog) {
+        return;
+    }
+
+    if (blog.dotComID && blog.dotComID > 0) {
+        [SearchManager.shared deleteAllSearchableItemsFromDomain: blog.dotComID.stringValue];
+    } else if (blog.xmlrpc && !blog.xmlrpc.isEmpty) {
+        [SearchManager.shared deleteAllSearchableItemsFromDomain: blog.xmlrpc];
+    } else {
+        DDLogWarn(@"Unable to delete all indexed spotlight items for blog: %@", blog.logDescription);
+    }
 }
 
 #pragma mark - Header methods
@@ -718,6 +734,7 @@ static NSInteger HideSearchMinSites = 3;
 - (void)confirmRemoveSiteForIndexPath:(NSIndexPath *)indexPath
 {
     Blog *blog = [self.dataSource blogAtIndexPath:indexPath];
+    [self removeBlogItemsFromSpotlight:blog];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService removeBlog:blog];
@@ -729,6 +746,7 @@ static NSInteger HideSearchMinSites = 3;
     Blog *blog = [self.dataSource blogAtIndexPath:indexPath];
     [self setVisible:NO forBlog:blog];
     [self.tableView setEditing:NO animated:YES];
+    [self removeBlogItemsFromSpotlight:blog];
 }
 
 - (void)unhideBlogAtIndexPath:(NSIndexPath *)indexPath
@@ -1009,6 +1027,7 @@ static NSInteger HideSearchMinSites = 3;
     [self updateEditButton];
     [[WordPressAppDelegate sharedInstance] trackLogoutIfNeeded];
     [self maybeShowNUX];
+    [self updateSearchVisibility];
     [self updateViewsForCurrentSiteCount];
     [self validateBlogDetailsViewController];
 }
