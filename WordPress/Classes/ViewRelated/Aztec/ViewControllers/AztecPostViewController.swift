@@ -1268,7 +1268,7 @@ private extension AztecPostViewController {
                     self.post.date_created_gmt = Date()
                     self.post.status = .publish
                 }
-                self.post.pathForDisplayImage = self.post.searchForImagesInContent()
+                self.post.updatePathForDisplayImageBasedOnContent()
                 PostCoordinator.shared.save(post: self.post)
                 self.dismissOrPopView(didSave: true, shouldShowPostEpilogue: false)
             }
