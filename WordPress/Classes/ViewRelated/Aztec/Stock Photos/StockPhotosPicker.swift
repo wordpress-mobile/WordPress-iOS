@@ -7,7 +7,7 @@ protocol StockPhotosPickerDelegate: AnyObject {
 /// Presents the Stock Photos main interface
 final class StockPhotosPicker: NSObject {
     private lazy var dataSource: StockPhotosDataSource = {
-        return StockPhotosDataSource(service: self.stockPhotosService)
+        return StockPhotosDataSource(service: stockPhotosService)
     }()
 
     private lazy var stockPhotosService: StockPhotosService = {
