@@ -89,10 +89,15 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     /// Hides the self-hosted login option.
     ///
     func configureForWPComOnlyIfNeeded() {
-        if restrictToWPCom {
+        if loginFields.meta.jetpackLogin {
             selfHostedLoginButton?.isHidden = true
+            wpcomSignupButton?.isHidden = false
+        } else if restrictToWPCom {
+            selfHostedLoginButton?.isHidden = true
+            wpcomSignupButton?.isHidden = true
         } else {
             selfHostedLoginButton?.isHidden = false
+            wpcomSignupButton?.isHidden = true
         }
     }
 
