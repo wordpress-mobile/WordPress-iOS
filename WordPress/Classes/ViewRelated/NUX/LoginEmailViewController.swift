@@ -10,9 +10,13 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     @IBOutlet var inputStack: UIStackView?
     @IBOutlet var alternativeLoginLabel: UILabel?
 
-    var onePasswordButton: UIButton!
+    //var onePasswordButton: UIButton!
     var googleLoginButton: UIButton?
     var selfHostedLoginButton: UIButton?
+
+    // This signup button isn't for the main flow; it's only shown during Jetpack installation
+    var wpcomSignupButton: UIButton?
+
     override var sourceTag: WordPressSupportSourceTag {
         get {
             return .loginEmail
@@ -39,6 +43,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         setupOnePasswordButtonIfNeeded()
         addGoogleButton()
         addSelfHostedLogInButton()
+        addSignupButton()
     }
 
     override func didChangePreferredContentSize() {
@@ -85,11 +90,9 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     ///
     func configureForWPComOnlyIfNeeded() {
         if restrictToWPCom {
-            selfHostedLoginButton?.isEnabled = false
-            selfHostedLoginButton?.alpha = 0.0
+            selfHostedLoginButton?.isHidden = true
         } else {
-            selfHostedLoginButton?.isEnabled = true
-            selfHostedLoginButton?.alpha = 1.0
+            selfHostedLoginButton?.isHidden = false
         }
     }
 
@@ -180,6 +183,31 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
             ])
 
         selfHostedLoginButton = button
+    }
+
+    /// Add the sign up button
+    ///
+    /// Note: This is only used during Jetpack setup, not the normal flows
+    ///
+    func addSignupButton() {
+        guard let instructionLabel = instructionLabel,
+            let stackView = inputStack else {
+                return
+        }
+
+        let button = WPStyleGuide.wpcomSignupButton()
+        stackView.addArrangedSubview(button)
+        //button.addTarget(self, action: #selector(handleSelfHostedButtonTapped), for: .touchUpInside)
+        button.on(.touchUpInside) { (button) in
+            // pass
+        }
+
+        stackView.addConstraints([
+            button.leadingAnchor.constraint(equalTo: instructionLabel.leadingAnchor),
+            button.trailingAnchor.constraint(equalTo: instructionLabel.trailingAnchor),
+            ])
+
+        wpcomSignupButton = button
     }
 
     /// Configures the email text field, updating its text based on what's stored
