@@ -12,7 +12,6 @@
 #import "UILabel+SuggestSize.h"
 #import "WordPress-Swift.h"
 #import "WPGUIConstants.h"
-#import "CreateNewBlogViewController.h"
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPTableViewCell.h>
 #import <WordPressUI/WordPressUI.h>
@@ -160,7 +159,6 @@ static NSInteger HideSearchMinSites = 3;
     [self configureNoResultsView];
 
     [self registerForAccountChangeNotification];
-    [self registerForBlogCreationNotification];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -522,14 +520,6 @@ static NSInteger HideSearchMinSites = 3;
                                                object:nil];
 }
 
-- (void)registerForBlogCreationNotification
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(newWordPressComBlogCreated:)
-                                                 name:NewWPComBlogCreatedNotification
-                                               object:nil];
-}
-
 - (void)registerForKeyboardNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -588,24 +578,6 @@ static NSInteger HideSearchMinSites = 3;
 {
     [self setEditing:NO];
     [self updateSearchVisibility];
-}
-
-- (void)newWordPressComBlogCreated:(NSNotification *)notification
-{
-    Blog *blog = notification.userInfo[NewWPComBlogCreatedNotificationBlogUserInfoKey];
-
-    if (blog) {
-        NSIndexPath *indexPath = [self.dataSource indexPathForBlog:blog];
-        if (indexPath) {
-            [self.tableView flashRowAtIndexPath:indexPath
-                                 scrollPosition:UITableViewScrollPositionMiddle
-                                     completion:^{
-                                         if (![self splitViewControllerIsHorizontallyCompact]) {
-                                             [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
-                                         }
-                                     }];
-        }
-    }
 }
 
 #pragma mark - Table view delegate
