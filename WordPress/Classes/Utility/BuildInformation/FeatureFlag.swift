@@ -6,7 +6,6 @@ enum FeatureFlag: Int {
     case socialSignup
     case jetpackDisconnect
     case activity
-    case siteCreation
     case usernameChanging
     case asyncPosting
 
@@ -21,8 +20,6 @@ enum FeatureFlag: Int {
             return BuildConfiguration.current == .localDeveloper
         case .activity:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
-        case .siteCreation:
-            return true
         case .usernameChanging:
             return BuildConfiguration.current == .localDeveloper
         case .asyncPosting:
