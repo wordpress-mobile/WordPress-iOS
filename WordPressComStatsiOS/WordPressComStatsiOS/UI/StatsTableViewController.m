@@ -505,56 +505,56 @@ static NSString *const StatsTableSectionHeaderSimpleBorder = @"StatsTableSection
          group.offsetRows = StatsTableRowDataOffsetWithoutGroupHeader;
          weakSelf.sectionData[@(StatsSectionEvents)] = group;
          
-         [self reloadSection:StatsSectionEvents];
+         [weakSelf reloadSection:StatsSectionEvents];
      }
                          postsCompletionHandler:^(StatsGroup *group, NSError *error)
      {
          group.offsetRows = StatsTableRowDataOffsetStandard;
          weakSelf.sectionData[@(StatsSectionPosts)] = group;
 
-         [self reloadSection:StatsSectionPosts];
+         [weakSelf reloadSection:StatsSectionPosts];
      }
                      referrersCompletionHandler:^(StatsGroup *group, NSError *error)
      {
          group.offsetRows = StatsTableRowDataOffsetStandard;
          weakSelf.sectionData[@(StatsSectionReferrers)] = group;
          
-         [self reloadSection:StatsSectionReferrers];
+         [weakSelf reloadSection:StatsSectionReferrers];
      }
                         clicksCompletionHandler:^(StatsGroup *group, NSError *error)
      {
          group.offsetRows = StatsTableRowDataOffsetStandard;
          weakSelf.sectionData[@(StatsSectionClicks)] = group;
          
-         [self reloadSection:StatsSectionClicks];
+         [weakSelf reloadSection:StatsSectionClicks];
      }
                        countryCompletionHandler:^(StatsGroup *group, NSError *error)
      {
          group.offsetRows = StatsTableRowDataOffsetStandard;
          weakSelf.sectionData[@(StatsSectionCountry)] = group;
          
-         [self reloadSection:StatsSectionCountry];
+         [weakSelf reloadSection:StatsSectionCountry];
      }
                         videosCompletionHandler:^(StatsGroup *group, NSError *error)
      {
          group.offsetRows = StatsTableRowDataOffsetStandard;
          weakSelf.sectionData[@(StatsSectionVideos)] = group;
          
-         [self reloadSection:StatsSectionVideos];
+         [weakSelf reloadSection:StatsSectionVideos];
      }
                       authorsCompletionHandler:^(StatsGroup *group, NSError *error)
      {
          group.offsetRows = StatsTableRowDataOffsetStandard;
          weakSelf.sectionData[@(StatsSectionAuthors)] = group;
          
-         [self reloadSection:StatsSectionAuthors];
+         [weakSelf reloadSection:StatsSectionAuthors];
      }
                   searchTermsCompletionHandler:^(StatsGroup *group, NSError *error)
      {
          group.offsetRows = StatsTableRowDataOffsetStandard;
          weakSelf.sectionData[@(StatsSectionSearchTerms)] = group;
          
-         [self reloadSection:StatsSectionSearchTerms];
+         [weakSelf reloadSection:StatsSectionSearchTerms];
      }
                                  progressBlock:^(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations)
     {
