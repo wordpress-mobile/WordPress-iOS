@@ -65,6 +65,17 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
     }
 
 
+    /// MARK: Dynamic Type
+    override func didChangePreferredContentSize() {
+        super.didChangePreferredContentSize()
+        styleSendCodeButton()
+    }
+
+    private func styleSendCodeButton() {
+        sendCodeButton.titleLabel?.adjustsFontForContentSizeCategory = true
+        sendCodeButton.titleLabel?.adjustsFontSizeToFitWidth = true
+    }
+
     // MARK: Configuration Methods
 
 
@@ -133,11 +144,6 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
     // MARK: - Instance Methods
 
 
-    @objc func showEpilogue() {
-        performSegue(withIdentifier: .showEpilogue, sender: self)
-    }
-
-
     /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with the submit action.
     ///
@@ -155,7 +161,7 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
         loginFacade.loginToWordPressDotCom(withUser: loginFields.nonceUserID, authType: authType, twoStepCode: code, twoStepNonce: nonce)
     }
 
-    func finishedLogin(withNonceAuthToken authToken: String!) {
+    func finishedLogin(withNonceAuthToken authToken: String) {
         let username = loginFields.username
         syncWPCom(username, authToken: authToken, requiredMultifactor: true)
         // Disconnect now that we're done with Google.
@@ -264,7 +270,7 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
 
 extension Login2FAViewController {
 
-    override func displayRemoteError(_ error: Error!) {
+    override func displayRemoteError(_ error: Error) {
         displayError(message: "")
 
         configureViewLoading(false)

@@ -224,6 +224,8 @@ import WordPressShared
         setupSyncHelper()
         setupResultsStatusView()
 
+        observeNetworkStatus()
+
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
         didSetupView = true
@@ -439,6 +441,12 @@ import WordPressShared
         }
 
         tableView.tableHeaderView?.isHidden = true
+
+        guard connectionAvailable() else {
+            displayNoConnectionView(topic)
+            return
+        }
+
         let response: NoResultsResponse = ReaderStreamViewController.responseForNoResults(topic)
         resultsStatusView.titleText = response.title
         resultsStatusView.messageText = response.message
@@ -450,6 +458,13 @@ import WordPressShared
             resultsStatusView.buttonTitle = nil
             resultsStatusView.delegate = nil
         }
+        displayResultsStatus()
+    }
+
+    private func displayNoConnectionView(_ topic: ReaderAbstractTopic) {
+        resultsStatusView.titleText = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+        resultsStatusView.messageText = noConnectionMessage()
+        resultsStatusView.accessoryView = nil
         displayResultsStatus()
     }
 
@@ -986,18 +1001,16 @@ import WordPressShared
     @objc func handleRefresh(_ sender: UIRefreshControl) {
         if !canSync() {
             cleanupAfterSync()
-            if !connectionAvailable() {
-                _ = DispatchDelayedAction(delay: .seconds(1)) {
-                    let title = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-                    let message = NSLocalizedString("The Internet connection appears to be offline.", comment: "Message of error prompt shown when a sync the user initiated fails.")
-                    WPError.showAlert(withTitle: title, message: message)
-                }
+
+            /// Delay presenting the alert, so that the refreshControl can end its own dismissal animation, and the table view scroll back to its original offset
+            let _ = DispatchDelayedAction(delay: .milliseconds(200)) { [weak self] in
+                self?.handleConnectionError()
             }
+
             return
         }
         syncHelper.syncContentWithUserInteraction(true)
     }
-
 
     /// Handle's the user tapping the search button.  Displays the search controller
     ///
@@ -1098,6 +1111,8 @@ import WordPressShared
         let interval = Int( Date().timeIntervalSince(lastSynced))
         if canSync() && (interval >= refreshInterval || topic.posts.count == 0) {
             syncHelper.syncContentWithUserInteraction(false)
+        } else {
+            handleConnectionError()
         }
     }
 
@@ -1807,9 +1822,20 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
 }
 
-
 extension ReaderStreamViewController: WPNoResultsViewDelegate {
     public func didTap(_ noResultsView: WPNoResultsView!) {
         showManageSites()
+    }
+}
+
+extension ReaderStreamViewController: NetworkAwareUI {
+    func contentIsEmpty() -> Bool {
+        return tableViewHandler.resultsController.isEmpty()
+    }
+}
+
+extension ReaderStreamViewController: NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        syncIfAppropriate()
     }
 }

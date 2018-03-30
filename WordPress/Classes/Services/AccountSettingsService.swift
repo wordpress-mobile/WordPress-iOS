@@ -186,7 +186,12 @@ class AccountSettingsService {
     }
 
     fileprivate func accountSettingsWithID(_ userID: Int) -> AccountSettings? {
-        return managedAccountSettingsWithID(userID).map(AccountSettings.init)
+
+        guard let managedAccount = managedAccountSettingsWithID(userID) else {
+            return nil
+        }
+
+        return AccountSettings.init(managed: managedAccount)
     }
 
     fileprivate func managedAccountSettingsWithID(_ userID: Int) -> ManagedAccountSettings? {

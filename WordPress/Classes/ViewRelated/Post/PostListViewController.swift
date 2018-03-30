@@ -2,6 +2,7 @@ import Foundation
 import CocoaLumberjack
 import WordPressComStatsiOS
 import WordPressShared
+
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -44,11 +45,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     static fileprivate let postCardEstimatedRowHeight = CGFloat(300.0)
     static fileprivate let postListHeightForFooterView = CGFloat(34.0)
 
-    @IBOutlet fileprivate weak var authorFilterSegmentedControl: UISegmentedControl!
-
-    @IBOutlet var authorsFilterView: UIView!
     @IBOutlet var searchWrapperView: UIView!
-    @IBOutlet var headerStackView: UIStackView!
+    @IBOutlet weak var filterTabBarTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var filterTabBariOS10TopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
 
     // MARK: - GUI
 
@@ -60,7 +61,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let storyBoard = UIStoryboard(name: "Posts", bundle: Bundle.main)
         let controller = storyBoard.instantiateViewController(withIdentifier: "PostListViewController") as! PostListViewController
-
         controller.blog = blog
         controller.restorationClass = self
 
@@ -111,12 +111,29 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         super.viewDidLoad()
 
         title = NSLocalizedString("Blog Posts", comment: "Title of the screen showing the list of posts for a blog.")
+
+        configureFilterBarTopConstraint()
     }
 
     // MARK: - Configuration
 
     override func heightForFooterView() -> CGFloat {
         return type(of: self).postListHeightForFooterView
+    }
+
+    private func configureFilterBarTopConstraint() {
+        // Not an ideal solution, but fixes an issue where the filter bar
+        // wasn't showing up on iOS 10: https://github.com/wordpress-mobile/WordPress-iOS/issues/8937
+        if #available(iOS 11.0, *) {
+            filterTabBariOS10TopConstraint.isActive = false
+        } else {
+            extendedLayoutIncludesOpaqueBars = false
+            edgesForExtendedLayout = []
+
+            filterTabBarTopConstraint.isActive = false
+
+            view.layoutIfNeeded()
+        }
     }
 
     override func configureTableView() {
@@ -140,6 +157,18 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.register(postCardRestoreCellNib, forCellReuseIdentifier: type(of: self).postCardRestoreCellIdentifier)
     }
 
+    override func configureAuthorFilter() {
+        guard filterSettings.canFilterByAuthor() else {
+            return
+        }
+
+        let authorFilter = AuthorFilterButton()
+        authorFilter.addTarget(self, action: #selector(showAuthorSelectionPopover(_:)), for: .touchUpInside)
+        filterTabBar.accessoryView = authorFilter
+
+        updateAuthorFilter()
+    }
+
     override func configureSearchController() {
         super.configureSearchController()
 
@@ -153,15 +182,17 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     fileprivate func updateTableHeaderSize() {
         if searchController.isActive {
             // Account for the search bar being moved to the top of the screen.
-            searchWrapperView.frame.size.height = (searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y) - topLayoutGuide.length
+            if #available(iOS 11.0, *) {
+                searchWrapperView.frame.size.height = (searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y) - topLayoutGuide.length
+            } else {
+                searchWrapperView.frame.size.height = (searchController.searchBar.bounds.height + searchController.searchBar.frame.origin.y)
+            }
         } else {
             searchWrapperView.frame.size.height = searchController.searchBar.bounds.height
         }
 
-        headerStackView.frame.size.height = headerStackView.subviews.reduce(0, { $0 + $1.frame.size.height })
-
         // Resetting the tableHeaderView is necessary to get the new height to take effect
-        tableView.tableHeaderView = headerStackView
+        tableView.tableHeaderView = searchWrapperView
     }
 
 
@@ -198,33 +229,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
                 .published: published]
     }
 
-    override func configureAuthorFilter() {
-        let onlyMe = NSLocalizedString("Only Me", comment: "Label for the post author filter. This fliter shows posts only authored by the current user.")
-        let everyone = NSLocalizedString("Everyone", comment: "Label for the post author filter. This filter shows posts for all users on the blog.")
-
-        WPStyleGuide.applyPostAuthorFilterStyle(authorFilterSegmentedControl)
-
-        authorFilterSegmentedControl.setTitle(onlyMe, forSegmentAt: 0)
-        authorFilterSegmentedControl.setTitle(everyone, forSegmentAt: 1)
-
-        authorsFilterView?.backgroundColor = WPStyleGuide.lightGrey()
-
-        if !filterSettings.canFilterByAuthor() {
-            authorsFilterView.removeFromSuperview()
-
-            headerStackView.frame.size.height = searchController.searchBar.frame.height
-
-            // Required to update the size of the table header view
-            tableView.tableHeaderView = headerStackView
-        }
-
-        if filterSettings.currentPostAuthorFilter() == .mine {
-            authorFilterSegmentedControl.selectedSegmentIndex = 0
-        } else {
-            authorFilterSegmentedControl.selectedSegmentIndex = 1
-        }
-    }
-
     // Mark - Layout Methods
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -251,14 +255,37 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - Actions
 
-    @IBAction func handleAuthorFilterChanged(_ sender: AnyObject) {
-        var authorFilter = PostListFilterSettings.AuthorFilter.everyone
-        if authorFilterSegmentedControl.selectedSegmentIndex == 0 {
-            authorFilter = .mine
+    @objc
+    private func showAuthorSelectionPopover(_ sender: UIView) {
+        let filterController = AuthorFilterViewController(initialSelection: filterSettings.currentPostAuthorFilter(),
+                                                          gravatarEmail: blog.account?.email) { [weak self] filter in
+                                                            if filter != self?.filterSettings.currentPostAuthorFilter() {
+                                                                UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, sender)
+                                                            }
+
+                                                            self?.filterSettings.setCurrentPostAuthorFilter(filter)
+                                                            self?.updateAuthorFilter()
+                                                            self?.refreshAndReload()
+                                                            self?.syncItemsWithUserInteraction(false)
+                                                            self?.dismiss(animated: true, completion: nil)
         }
-        filterSettings.setCurrentPostAuthorFilter(authorFilter)
-        refreshAndReload()
-        syncItemsWithUserInteraction(false)
+
+        ForcePopoverPresenter.configurePresentationControllerForViewController(filterController, presentingFromView: sender)
+        filterController.popoverPresentationController?.permittedArrowDirections = .up
+
+        present(filterController, animated: true)
+    }
+
+    private func updateAuthorFilter() {
+        guard let accessoryView = filterTabBar.accessoryView as? AuthorFilterButton else {
+            return
+        }
+
+        if filterSettings.currentPostAuthorFilter() == .everyone {
+            accessoryView.filterType = .everyone
+        } else {
+            accessoryView.filterType = .user(gravatarEmail: blog.account?.email)
+        }
     }
 
     // MARK: - Data Model Interaction
@@ -338,11 +365,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let post = postAtIndexPath(indexPath)
 
-        if post.remoteStatus == .pushing {
-            // Don't allow editing while pushing changes
-            return
-        }
-
         if post.status == .trash {
             // No editing posts that are trashed.
             return
@@ -387,7 +409,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         if recentlyTrashedPostObjectIDs.contains(post.objectID) == true && filterSettings.currentPostListFilter().filterType != .trashed {
             identifier = type(of: self).postCardRestoreCellIdentifier
-        } else if post.pathForDisplayImage?.count > 0 {
+        } else if post.featuredImageURLForDisplay() != nil {
             identifier = type(of: self).postCardImageCellIdentifier
         } else {
             identifier = type(of: self).postCardTextCellIdentifier
@@ -421,6 +443,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         guard let post = apost as? Post else {
             return
         }
+        guard !PostCoordinator.shared.isUploading(post: post) else {
+            presentAlertForPostBeingUploaded()
+            return
+        }
         let editor = EditPostViewController(post: post)
         editor.onClose = { [weak self] changesSaved in
             if changesSaved {
@@ -432,6 +458,16 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         editor.modalPresentationStyle = .fullScreen
         present(editor, animated: false, completion: nil)
         WPAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics())
+    }
+
+    func presentAlertForPostBeingUploaded() {
+        let message = NSLocalizedString("This post is currently uploading. It won't take long -- try again soon and you'll be able to edit it.", comment: "Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing.")
+
+        let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
+
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        alertController.addCancelActionWithTitle(alertCancel, handler: nil)
+        alertController.presentFromRootViewController()
     }
 
     override func promptThatPostRestoredToFilter(_ filter: PostListFilter) {
@@ -552,10 +588,21 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - Refreshing noResultsView
 
     fileprivate func handleRefreshNoResultsView(_ noResultsView: WPNoResultsView) {
+        guard connectionAvailable() else {
+            showNoConnectionView()
+            return
+        }
+
         noResultsView.titleText = noResultsTitle()
         noResultsView.messageText = noResultsMessage()
         noResultsView.accessoryView = noResultsAccessoryView()
         noResultsView.buttonTitle = noResultsButtonTitle()
+    }
+
+    private func showNoConnectionView() {
+        noResultsView.titleText = noConnectionMessage()
+        noResultsView.messageText = ""
+        noResultsView.accessoryView = nil
     }
 
     // MARK: - NoResultsView Customizer helpers
@@ -617,6 +664,14 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - UISearchControllerDelegate
 
+    override func willPresentSearchController(_ searchController: UISearchController) {
+        super.willPresentSearchController(searchController)
+
+        self.filterTabBar.alpha = WPAlphaZero
+        filterTabBarBottomConstraint.isActive = false
+        tableViewTopConstraint.isActive = true
+    }
+
     func didPresentSearchController(_ searchController: UISearchController) {
         if #available(iOS 11.0, *) {
             updateTableHeaderSize()
@@ -628,5 +683,16 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     func didDismissSearchController(_ searchController: UISearchController) {
         updateTableHeaderSize()
+
+        tableViewTopConstraint.isActive = false
+        filterTabBarBottomConstraint.isActive = true
+
+        UIView.animate(withDuration: Animations.searchDismissDuration) {
+            self.filterTabBar.alpha = WPAlphaFull
+        }
+    }
+
+    enum Animations {
+        static let searchDismissDuration: TimeInterval = 0.3
     }
 }

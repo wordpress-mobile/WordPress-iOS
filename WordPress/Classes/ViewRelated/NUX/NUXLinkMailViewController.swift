@@ -82,6 +82,11 @@ class NUXLinkMailViewController: LoginViewController {
         }()
     }
 
+    // MARK: - Dynamic type
+    override func didChangePreferredContentSize() {
+        label?.font = WPStyleGuide.fontForTextStyle(.headline)
+    }
+
     // MARK: - Actions
 
     @IBAction func handleOpenMailTapped(_ sender: UIButton) {
@@ -111,5 +116,15 @@ class NUXLinkMailViewController: LoginViewController {
 
     @IBAction func handleUsePasswordTapped(_ sender: UIButton) {
         WordPressAuthenticator.post(event: .loginMagicLinkExited)
+    }
+}
+
+extension NUXLinkMailViewController {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            didChangePreferredContentSize()
+        }
     }
 }

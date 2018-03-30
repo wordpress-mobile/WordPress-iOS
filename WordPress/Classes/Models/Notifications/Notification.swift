@@ -379,6 +379,7 @@ extension Notification {
         case Follow         = "follow"
         case Like           = "like"
         case Matcher        = "automattcher"
+        case NewPost        = "new_post"
         case Post           = "post"
         case User           = "user"
         case Unknown        = "unknown"
