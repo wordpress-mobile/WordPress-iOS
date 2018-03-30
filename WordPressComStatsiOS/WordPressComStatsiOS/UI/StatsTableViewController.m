@@ -440,12 +440,7 @@ static NSString *const StatsTableSectionHeaderSimpleBorder = @"StatsTableSection
     self.selectedPeriodUnit = toPeriod;
     [self resetDateToTodayForSite];
 
-    NSInteger periodHeaderSectionIndex = [self.sections indexOfObject:@(StatsSectionPeriodHeader)];
-    NSIndexPath *periodHeaderIndexPath = [NSIndexPath indexPathForRow:0 inSection:periodHeaderSectionIndex];
-    if ([self.tableView cellForRowAtIndexPath:periodHeaderIndexPath]) { //Animate just if cell is visible
-        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex: periodHeaderSectionIndex];
-        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationFade];
-    }
+    [self reloadSection:StatsSectionPeriodHeader];
 
     [self wipeDataAndSeedGroups];
     [self.tableView reloadData];
@@ -455,6 +450,17 @@ static NSString *const StatsTableSectionHeaderSimpleBorder = @"StatsTableSection
     [self trackViewControllerAnalytics];
 }
 
+- (void)reloadSection:(StatsSection)section
+{
+    NSInteger sectionNumber = [self.sections indexOfObject:@(section)];
+
+    if (sectionNumber <= [self.tableView numberOfSections] - 1) { //Animate if section exists
+        [self.tableView beginUpdates];
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:sectionNumber];
+        [self.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+    }
+}
 
 - (void)switchToSummaryType:(StatsSummaryType)summaryType
 {
@@ -499,104 +505,56 @@ static NSString *const StatsTableSectionHeaderSimpleBorder = @"StatsTableSection
          group.offsetRows = StatsTableRowDataOffsetWithoutGroupHeader;
          weakSelf.sectionData[@(StatsSectionEvents)] = group;
          
-         [weakSelf.tableView beginUpdates];
-         
-         NSUInteger sectionNumber = [weakSelf.sections indexOfObject:@(StatsSectionEvents)];
-         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:sectionNumber];
-         [weakSelf.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
-         
-         [weakSelf.tableView endUpdates];
+         [self reloadSection:StatsSectionEvents];
      }
                          postsCompletionHandler:^(StatsGroup *group, NSError *error)
      {
          group.offsetRows = StatsTableRowDataOffsetStandard;
          weakSelf.sectionData[@(StatsSectionPosts)] = group;
-         
-         [weakSelf.tableView beginUpdates];
-         
-         NSUInteger sectionNumber = [weakSelf.sections indexOfObject:@(StatsSectionPosts)];
-         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:sectionNumber];
-         [weakSelf.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
-         
-         [weakSelf.tableView endUpdates];
+
+         [self reloadSection:StatsSectionPosts];
      }
                      referrersCompletionHandler:^(StatsGroup *group, NSError *error)
      {
          group.offsetRows = StatsTableRowDataOffsetStandard;
          weakSelf.sectionData[@(StatsSectionReferrers)] = group;
          
-         [weakSelf.tableView beginUpdates];
-         
-         NSUInteger sectionNumber = [weakSelf.sections indexOfObject:@(StatsSectionReferrers)];
-         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:sectionNumber];
-         [weakSelf.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
-         
-         [weakSelf.tableView endUpdates];
+         [self reloadSection:StatsSectionReferrers];
      }
                         clicksCompletionHandler:^(StatsGroup *group, NSError *error)
      {
          group.offsetRows = StatsTableRowDataOffsetStandard;
          weakSelf.sectionData[@(StatsSectionClicks)] = group;
          
-         [weakSelf.tableView beginUpdates];
-         
-         NSUInteger sectionNumber = [weakSelf.sections indexOfObject:@(StatsSectionClicks)];
-         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:sectionNumber];
-         [weakSelf.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
-         
-         [weakSelf.tableView endUpdates];
+         [self reloadSection:StatsSectionClicks];
      }
                        countryCompletionHandler:^(StatsGroup *group, NSError *error)
      {
          group.offsetRows = StatsTableRowDataOffsetStandard;
          weakSelf.sectionData[@(StatsSectionCountry)] = group;
          
-         [weakSelf.tableView beginUpdates];
-         
-         NSUInteger sectionNumber = [weakSelf.sections indexOfObject:@(StatsSectionCountry)];
-         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:sectionNumber];
-         [weakSelf.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
-         
-         [weakSelf.tableView endUpdates];
+         [self reloadSection:StatsSectionCountry];
      }
                         videosCompletionHandler:^(StatsGroup *group, NSError *error)
      {
          group.offsetRows = StatsTableRowDataOffsetStandard;
          weakSelf.sectionData[@(StatsSectionVideos)] = group;
          
-         [weakSelf.tableView beginUpdates];
-         
-         NSUInteger sectionNumber = [weakSelf.sections indexOfObject:@(StatsSectionVideos)];
-         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:sectionNumber];
-         [weakSelf.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
-         
-         [weakSelf.tableView endUpdates];
+         [self reloadSection:StatsSectionVideos];
      }
                       authorsCompletionHandler:^(StatsGroup *group, NSError *error)
      {
          group.offsetRows = StatsTableRowDataOffsetStandard;
          weakSelf.sectionData[@(StatsSectionAuthors)] = group;
          
-         [weakSelf.tableView beginUpdates];
-         
-         NSUInteger sectionNumber = [weakSelf.sections indexOfObject:@(StatsSectionAuthors)];
-         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:sectionNumber];
-         [weakSelf.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
-         
-         [weakSelf.tableView endUpdates];
+         [self reloadSection:StatsSectionAuthors];
      }
                   searchTermsCompletionHandler:^(StatsGroup *group, NSError *error)
      {
          group.offsetRows = StatsTableRowDataOffsetStandard;
          weakSelf.sectionData[@(StatsSectionSearchTerms)] = group;
          
-         [weakSelf.tableView beginUpdates];
-         
-         NSUInteger sectionNumber = [weakSelf.sections indexOfObject:@(StatsSectionSearchTerms)];
-         NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:sectionNumber];
-         [weakSelf.tableView reloadSections:indexSet withRowAnimation:UITableViewRowAnimationAutomatic];
-         
-         [weakSelf.tableView endUpdates];
+         [self reloadSection:StatsSectionSearchTerms];
      }
                                  progressBlock:^(NSUInteger numberOfFinishedOperations, NSUInteger totalNumberOfOperations)
     {
