@@ -195,6 +195,10 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     /// Note: This is only used during Jetpack setup, not the normal flows
     ///
     func addSignupButton() {
+        guard Feature.enabled(.jetpackSignup) else {
+            return
+        }
+
         guard let instructionLabel = instructionLabel,
             let stackView = inputStack else {
                 return
