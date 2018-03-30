@@ -92,7 +92,7 @@ public protocol WordPressAuthenticatorDelegate: class {
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         if let controller = storyboard.instantiateInitialViewController() {
             if let childController = controller.childViewControllers.first as? LoginPrologueViewController {
-                childController.restrictToWPCom = true
+                childController.restrictToWPCom = restrictToWPCom
                 childController.showCancel = showCancel
             }
             presenter.present(controller, animated: animated, completion: nil)

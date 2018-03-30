@@ -447,7 +447,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         let controller = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
 
         if FeatureFlag.socialSignup.enabled {
-            WordPressAuthenticator.showLogin(from: self, animated: true, showCancel: true)
+            WordPressAuthenticator.showLogin(from: self, animated: true, showCancel: true, restrictToWPCom: true)
         } else {
             controller.addActionWithTitle(NSLocalizedString("Log In",
                                                             comment: "Button title.  Tapping takes the user to the login form."),
