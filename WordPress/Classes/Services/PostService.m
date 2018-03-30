@@ -530,7 +530,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     post.post_thumbnail = remotePost.postThumbnailID;
     post.pathForDisplayImage = remotePost.pathForDisplayImage;
     if (post.pathForDisplayImage.length == 0) {
-        post.pathForDisplayImage = [post searchForImagesInContent];
+        [post updatePathForDisplayImageBasedOnContent];
     }
     post.authorAvatarURL = remotePost.authorAvatarURL;
     post.mt_excerpt = remotePost.excerpt;

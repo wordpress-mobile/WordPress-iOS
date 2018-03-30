@@ -633,12 +633,12 @@
     [self save];
 }
 
-- (NSString *)searchForImagesInContent
+- (void)updatePathForDisplayImageBasedOnContent
 {
     // First lets check the post content for a suitable image
     NSString *result = [DisplayableImageHelper searchPostContentForImageToDisplay:self.content];
     if (result.length > 0) {
-        return result;
+        self.pathForDisplayImage = result;
     }
     // If none found let's see if some galleries are available
     NSSet *mediaIDs = [DisplayableImageHelper searchPostContentForAttachmentIdsInGalleries:self.content];
@@ -648,8 +648,7 @@
             result = media.remoteURL;
         }
     }
-
-    return result;
+    self.pathForDisplayImage = result;    
 }
 
 @end
