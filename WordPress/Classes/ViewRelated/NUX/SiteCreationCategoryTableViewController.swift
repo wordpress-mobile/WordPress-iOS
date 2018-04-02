@@ -40,8 +40,7 @@ class SiteCreationCategoryTableViewController: NUXTableViewController {
     // MARK: - Table Model
 
     private func tableViewModel() -> ImmuTable {
-
-        let step = NSLocalizedString("STEP 1 OF 4", comment: "Step for view.")
+        let step = NSLocalizedString("Step 1 of 4", comment: "Title for first step in the site creation process.").localizedUppercase
         let instr1 = NSLocalizedString("What kind of site do you need?", comment: "Site type question.")
         let instr2 = NSLocalizedString("Choose an option below:", comment: "Choose site type prompt.")
         let instructionRow = InstructionRow(step: step, instr1: instr1, instr2: instr2, action: nil)
