@@ -111,6 +111,12 @@ extension StockPhotosMedia: ExportableAsset {
     }
 }
 
+// MARK: - MediaExternalAsset conformance
+
+extension StockPhotosMedia: MediaExternalAsset {
+    
+}
+
 // MARK: - Decodable conformance
 
 extension ThumbnailCollection: Decodable {

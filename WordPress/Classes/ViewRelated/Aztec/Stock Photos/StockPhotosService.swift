@@ -35,7 +35,7 @@ final class DefaultStockPhotosService: StockPhotosService {
         api.GET(endPoint, parameters: parameters(params: params), success: { results, response in
             if let media = results[ParsingKeys.media] {
                 do {
-                    let json = try JSONSerialization.data(withJSONObject: media)
+                    let json = try JSONSerialization.data(withJSONObject: media as Any)
                     let parsedResponse = try JSONDecoder().decode([StockPhotosMedia].self, from: json)
 
                     completion(parsedResponse)
