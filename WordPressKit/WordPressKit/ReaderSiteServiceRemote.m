@@ -43,13 +43,11 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 
 - (void)followSiteWithID:(NSUInteger)siteID success:(void (^)(void))success failure:(void(^)(NSError *error))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%lu/follows/new", (unsigned long)siteID];
+    NSString *path = [NSString stringWithFormat:@"sites/%lu/follows/new?%@=%@", (unsigned long)siteID, ReaderSiteServiceRemoteSourceKey, ReaderSiteServiceRemoteSourceValue];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
-    NSDictionary *params = @{ReaderSiteServiceRemoteSourceKey: ReaderSiteServiceRemoteSourceValue};
-
-    [self.wordPressComRestApi POST:requestUrl parameters:params success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+    [self.wordPressComRestApi POST:requestUrl parameters:@{} success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         if (success) {
             success();
         }
