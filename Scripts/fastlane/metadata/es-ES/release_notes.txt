@@ -1,2 +1,1 @@
-Una nueva extensión de compartir que añade compatibilidad con guardar borradores y gestionar etiquetas.
-Gestión de plugins llevada al siguiente nivel: ahora puedes revisar e instalar plugins.
+Para esta versión, pulimos algunos pixeles, nos deshicimos de algunos errores y trabajamos entre bambalinas para hacer la experiencia de WordPress más fluida para los usuarios de nuestras aplicaciones.
