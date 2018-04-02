@@ -34,7 +34,6 @@ class MediaExternalExporter: MediaExporter {
         asset = externalAsset
     }
 
-
     /// Downloads and export de external media asset
     ///
     func export(onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
