@@ -53,4 +53,3 @@ class MediaExternalExporter: MediaExporter {
         exporter.export(onCompletion: onCompletion, onError: onError)
     }
 }
-
