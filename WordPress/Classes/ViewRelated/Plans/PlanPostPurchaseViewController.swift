@@ -342,7 +342,7 @@ enum PlanPostPurchasePageType: String {
         // Get all of the page types for the plan's features
         let slugs = plan.featureGroups
             .flatMap({ $0.slugs })
-            .flatMap(PlanPostPurchasePageType.init)
+            .compactMap(PlanPostPurchasePageType.init)
 
         // Put them in the order we'd like
         return [.PurchaseComplete] + orderedPageTypes.filter({ slugs.contains($0) })

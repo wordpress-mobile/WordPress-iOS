@@ -57,7 +57,7 @@ class PluginDirectoryViewModel: Observable {
         allQueries
             .filter { !isFetching(for: $0) }
             .filter { !hasResults(for: $0) }
-            .flatMap { refreshAction(for: $0) }
+            .compactMap { refreshAction(for: $0) }
             .forEach { ActionDispatcher.dispatch($0) }
     }
 
@@ -237,7 +237,7 @@ class PluginDirectoryViewModel: Observable {
 
     public func refresh() {
         allQueries
-            .flatMap { refreshAction(for: $0) }
+            .compactMap { refreshAction(for: $0) }
             .forEach { ActionDispatcher.dispatch($0) }
     }
 
