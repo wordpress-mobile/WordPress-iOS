@@ -3,32 +3,50 @@ import Foundation
 
 public extension UIImageView {
 
+    /// Downloads an image and updates the current UIImageView Instance.
     ///
+    /// - Parameters:
+    ///     -   url: The target Image's URL.
+    ///     -   placeholderImage: Image to be displayed while the actual asset gets downloaded.
+    ///     -   pointSize: *Maximum* allowed size. if the actual asset exceeds this size, we'll shrink it down.
     ///
-    public func downloadResizedImage(at url: URL, placeholderImage: UIImage? = nil, pointSize: CGSize) {
+    public func downloadResizedImage(at url: URL?, placeholderImage: UIImage? = nil, pointSize: CGSize) {
         downloadImage(at: url, placeholderImage: placeholderImage, success: { [weak self] image in
-            var resizedImage = image
-            if image.size.height > pointSize.height || image.size.width > pointSize.width {
-                resizedImage = image.resizedImage(with: .scaleAspectFit, bounds: pointSize, interpolationQuality: .high)
-            }
-
-            self?.image = resizedImage
-        })
-    }
-
-    /// Downloads an image and updates the UIImageView Instance
-    ///
-    /// - Parameter url: The URL of the target image
-    ///
-    public func downloadImage(at url: URL, placeholderImage: UIImage? = nil, success: ((UIImage) -> ())? = nil, failure: ((Error?) -> ())? = nil) {
-        // Let's wrap the onSuccess callback
-        let internalOnSuccess = { [weak self] (image: UIImage) in
-            guard let success = success else {
+            guard image.size.height > pointSize.height || image.size.width > pointSize.width else {
                 self?.image = image
                 return
             }
 
-            success(image)
+            self?.image = image.resizedImage(with: .scaleAspectFit, bounds: pointSize, interpolationQuality: .high)
+        })
+    }
+
+    /// Downloads an image and updates the current UIImageView Instance.
+    ///
+    /// - Parameters:
+    ///     -   url: The URL of the target image
+    ///     -   placeholderImage: Image to be displayed while the actual asset gets downloaded.
+    ///     -   success: Closure to be executed on success. If it's nil, we'll simply update `self.image`
+    ///     -   failure: Closure to be executed upon failure.
+    ///
+    public func downloadImage(at url: URL?, placeholderImage: UIImage? = nil, success: ((UIImage) -> ())? = nil, failure: ((Error?) -> ())? = nil) {
+        // By default, onSuccess we just set the image instance
+        let defaultOnSuccess = { [weak self] (image: UIImage) in
+            self?.image = image
+        }
+
+        let internalOnSuccess = success ?? defaultOnSuccess
+
+        // Placeholder?
+        if let placeholderImage = placeholderImage {
+            image = placeholderImage
+        }
+
+        // Ideally speaking, this method should *not* receive an Optional URL. But we're doing so, for convenience.
+        // If the actual URL was nil, at least we set the Placeholder Image. Capicci?
+        //
+        guard let url = url else {
+            return
         }
 
         // Hit the cache
@@ -37,24 +55,14 @@ public extension UIImageView {
             return
         }
 
-        // Placeholder?
-        if let placeholderImage = placeholderImage {
-            image = placeholderImage
-        }
-
         // Cancel any previous OP's
-        if let task = downloadTask {
-            task.cancel()
-            downloadTask = nil
-        }
+        downloadTask?.cancel()
+        downloadTask = nil
 
         // Hit the Backend
-        var request = URLRequest(url: url)
-        request.httpShouldHandleCookies = false
-        request.addValue("image/*", forHTTPHeaderField: "Accept")
+        let request = self.request(for: url)
 
-        let session = URLSession.shared
-        let task = session.dataTask(with: request, completionHandler: { [weak self] data, response, error in
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { [weak self] data, response, error in
             guard let data = data, let image = UIImage(data: data, scale: UIScreen.main.scale) else {
                 failure?(error)
                 return
@@ -72,6 +80,17 @@ public extension UIImageView {
 
         downloadTask = task
         task.resume()
+    }
+
+
+    /// Returns a URLRequest for an image, hosted at the specified URL.
+    ///
+    private func request(for url: URL) -> URLRequest {
+        var request = URLRequest(url: url)
+        request.httpShouldHandleCookies = false
+        request.addValue("image/*", forHTTPHeaderField: "Accept")
+
+        return request
     }
 
 
