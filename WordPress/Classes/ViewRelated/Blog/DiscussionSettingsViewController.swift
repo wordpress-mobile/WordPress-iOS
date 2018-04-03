@@ -269,7 +269,7 @@ open class DiscussionSettingsViewController: UITableViewController {
     fileprivate func pressedThreading(_ payload: AnyObject?) {
         let settingsViewController              = SettingsSelectionViewController(style: .grouped)
         settingsViewController.title            = NSLocalizedString("Threading", comment: "Discussion Settings Title")
-        settingsViewController.currentValue     = settings.commentsThreading.rawValue as NSObject!
+        settingsViewController.currentValue     = settings.commentsThreading.rawValue as NSObject?
         settingsViewController.titles           = CommentsThreading.allTitles
         settingsViewController.values           = CommentsThreading.allValues
         settingsViewController.onItemSelected   = { [weak self] (selected: Any?) in
@@ -305,7 +305,7 @@ open class DiscussionSettingsViewController: UITableViewController {
     fileprivate func pressedAutomaticallyApprove(_ payload: AnyObject?) {
         let settingsViewController              = SettingsSelectionViewController(style: .grouped)
         settingsViewController.title            = NSLocalizedString("Automatically Approve", comment: "Discussion Settings Title")
-        settingsViewController.currentValue     = settings.commentsAutoapproval.rawValue as NSObject!
+        settingsViewController.currentValue     = settings.commentsAutoapproval.rawValue as NSObject?
         settingsViewController.titles           = CommentsAutoapproval.allTitles
         settingsViewController.values           = CommentsAutoapproval.allValues
         settingsViewController.hints            = CommentsAutoapproval.allHints
