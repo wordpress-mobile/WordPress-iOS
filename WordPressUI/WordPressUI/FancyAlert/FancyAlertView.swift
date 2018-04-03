@@ -161,4 +161,13 @@ open class FancyAlertView: UIView {
             headerImageWrapperView.backgroundColor = newValue
         }
     }
+
+
+    /// Switches the button ButtonStackView's layout, if needed.
+    ///
+    func updateButtonLayout() {
+        if defaultButton.intrinsicContentSize.width > defaultButton.bounds.width || cancelButton.intrinsicContentSize.width > cancelButton.bounds.width {
+            buttonStackView.axis = .vertical
+        }
+    }
 }
