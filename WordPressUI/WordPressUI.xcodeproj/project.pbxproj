@@ -11,6 +11,7 @@
 		43067E2E203C8D03001DD610 /* UIBarButtonItem+BlockEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43067E2D203C8D03001DD610 /* UIBarButtonItem+BlockEvents.swift */; };
 		43067E30203C8D27001DD610 /* UIGestureRecognizer+BlockEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43067E2F203C8D27001DD610 /* UIGestureRecognizer+BlockEvents.swift */; };
 		828BEAC6203B59CD003F7078 /* UIImage+Crop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828BEAC5203B59CD003F7078 /* UIImage+Crop.swift */; };
+		B518D76520740E6900F05DB4 /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B518D76420740E6900F05DB4 /* UIImageView+Extensions.swift */; };
 		B529F289202C855B00895D88 /* UIColorHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B529F288202C855B00895D88 /* UIColorHelpersTests.swift */; };
 		B5393FEA206D7047007BF9D4 /* RotationAwareNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5393FE9206D7047007BF9D4 /* RotationAwareNavigationViewController.swift */; };
 		B59DCB66202B146D00BEBD8A /* WordPressUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B59DCB5C202B146D00BEBD8A /* WordPressUI.framework */; };
@@ -52,6 +53,7 @@
 		43067E2D203C8D03001DD610 /* UIBarButtonItem+BlockEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+BlockEvents.swift"; sourceTree = "<group>"; };
 		43067E2F203C8D27001DD610 /* UIGestureRecognizer+BlockEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIGestureRecognizer+BlockEvents.swift"; sourceTree = "<group>"; };
 		828BEAC5203B59CD003F7078 /* UIImage+Crop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Crop.swift"; sourceTree = "<group>"; };
+		B518D76420740E6900F05DB4 /* UIImageView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extensions.swift"; sourceTree = "<group>"; };
 		B529F288202C855B00895D88 /* UIColorHelpersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorHelpersTests.swift; sourceTree = "<group>"; };
 		B5393FE9206D7047007BF9D4 /* RotationAwareNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotationAwareNavigationViewController.swift; sourceTree = "<group>"; };
 		B59DCB5C202B146D00BEBD8A /* WordPressUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WordPressUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -187,6 +189,7 @@
 				828BEAC5203B59CD003F7078 /* UIImage+Crop.swift */,
 				B5A787AC202B2323007874FB /* UIImage+Rotation.swift */,
 				B5A787A4202B2322007874FB /* UIImage+Tint.swift */,
+				B518D76420740E6900F05DB4 /* UIImageView+Extensions.swift */,
 				B5A787AD202B2323007874FB /* UITableView+Helpers.swift */,
 				B5A787A7202B2322007874FB /* UITableViewController+Helpers.swift */,
 				B5A787A5202B2322007874FB /* UITextField+TextHelper.swift */,
@@ -340,6 +343,7 @@
 				B5393FEA206D7047007BF9D4 /* RotationAwareNavigationViewController.swift in Sources */,
 				B5A787B6202B2324007874FB /* UIView+Animations.swift in Sources */,
 				B5A787B8202B2324007874FB /* UIImage+Rotation.swift in Sources */,
+				B518D76520740E6900F05DB4 /* UIImageView+Extensions.swift in Sources */,
 				43067E2B203C8CC4001DD610 /* UIControl+BlockEvents.swift in Sources */,
 				B5A78826202B4178007874FB /* UIAlertController+Helpers.swift in Sources */,
 				B5A787B9202B2324007874FB /* UITableView+Helpers.swift in Sources */,
