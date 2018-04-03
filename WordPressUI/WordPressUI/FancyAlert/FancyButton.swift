@@ -8,61 +8,138 @@ open class FancyButton: UIButton {
 
     /// Style: Primary + Normal State
     ///
-    @objc public dynamic var primaryNormalBackgroundColor = Primary.normalBackgroundColor
-    @objc public dynamic var primaryNormalBorderColor = Primary.normalBorderColor
+    @objc public dynamic var primaryNormalBackgroundColor = Primary.normalBackgroundColor {
+        didSet {
+            configureBackgrounds()
+        }
+    }
+    @objc public dynamic var primaryNormalBorderColor = Primary.normalBorderColor {
+        didSet {
+            configureBackgrounds()
+        }
+    }
 
     /// Style: Primary + Highlighted State
     ///
-    @objc public dynamic var primaryHighlightBackgroundColor = Primary.highlightBackgroundColor
-    @objc public dynamic var primaryHighlightBorderColor = Primary.highlightBorderColor
+    @objc public dynamic var primaryHighlightBackgroundColor = Primary.highlightBackgroundColor {
+        didSet {
+            configureBackgrounds()
+        }
+    }
+    @objc public dynamic var primaryHighlightBorderColor = Primary.highlightBorderColor {
+        didSet {
+            configureBackgrounds()
+        }
+    }
 
     /// Style: Secondary
     ///
-    @objc public dynamic var secondaryNormalBackgroundColor = Secondary.normalBackgroundColor
-    @objc public dynamic var secondaryNormalBorderColor = Secondary.normalBorderColor
-    @objc public dynamic var secondaryHighlightBackgroundColor = Secondary.highlightBackgroundColor
-    @objc public dynamic var secondaryHighlightBorderColor = Secondary.highlightBorderColor
+    @objc public dynamic var secondaryNormalBackgroundColor = Secondary.normalBackgroundColor {
+        didSet {
+            configureBackgrounds()
+        }
+    }
+    @objc public dynamic var secondaryNormalBorderColor = Secondary.normalBorderColor {
+        didSet {
+            configureBackgrounds()
+        }
+    }
+    @objc public dynamic var secondaryHighlightBackgroundColor = Secondary.highlightBackgroundColor {
+        didSet {
+            configureBackgrounds()
+        }
+    }
+    @objc public dynamic var secondaryHighlightBorderColor = Secondary.highlightBorderColor {
+        didSet {
+            configureBackgrounds()
+        }
+    }
 
     /// Style: Disabled State
     ///
-    @objc public dynamic var disabledBackgroundColor = Disabled.backgroundColor
-    @objc public dynamic var disabledBorderColor = Disabled.borderColor
+    @objc public dynamic var disabledBackgroundColor = Disabled.backgroundColor {
+        didSet {
+            configureBackgrounds()
+        }
+    }
+    @objc public dynamic var disabledBorderColor = Disabled.borderColor {
+        didSet {
+            configureBackgrounds()
+        }
+    }
 
     /// Style: Title!
     ///
-    @objc public dynamic var titleFont = Title.defaultFont
-    @objc public dynamic var primaryTitleColor = Title.primaryColor
-    @objc public dynamic var secondaryTitleColor = Title.secondaryColor
-    @objc public dynamic var disabledTitleColor = Title.disabledColor
+    @objc public dynamic var titleFont = Title.defaultFont {
+        didSet {
+            configureTitleLabel()
+        }
+    }
+    @objc public dynamic var primaryTitleColor = Title.primaryColor {
+        didSet {
+            configureTitleColors()
+        }
+    }
+    @objc public dynamic var secondaryTitleColor = Title.secondaryColor {
+        didSet {
+            configureTitleColors()
+        }
+    }
+    @objc public dynamic var disabledTitleColor = Title.disabledColor {
+        didSet {
+            configureTitleColors()
+        }
+    }
 
     /// Insets to be applied over the Contents.
     ///
-    @objc public dynamic var contentInsets = Metrics.contentInsets
+    @objc public dynamic var contentInsets = Metrics.contentInsets {
+        didSet {
+            configureInsets()
+        }
+    }
 
     /// Indicates if the current instance should be rendered with the "Primary" Style.
     ///
     @IBInspectable var isPrimary: Bool = false {
         didSet {
-            configureButton()
+            configureBackgrounds()
+            configureTitleColors()
         }
     }
 
 
     // MARK: - LifeCycle Methods
 
+    open override func didMoveToWindow() {
+        super.didMoveToWindow()
+        configureAllTheThings()
+    }
+
     open override func awakeFromNib() {
         super.awakeFromNib()
-        configureButton()
+        configureAllTheThings()
     }
 
 
-    /// Configure the appearance of the button.
+    /// Setup: Everything = [Insets, Backgrounds, titleColor(s), titleLabel]
     ///
-    private func configureButton() {
-        contentEdgeInsets = contentInsets
+    private func configureAllTheThings() {
+        configureInsets()
+        configureBackgrounds()
+        configureTitleColors()
+        configureTitleLabel()
+    }
 
-        /// Setup: BackgroundImage
-        ///
+    /// Setup: FancyButton's Default Settings
+    ///
+    private func configureInsets() {
+        contentEdgeInsets = contentInsets
+    }
+
+    /// Setup: BackgroundImage
+    ///
+    private func configureBackgrounds() {
         let normalImage: UIImage
         let highlightedImage: UIImage
         let disabledImage = renderBackgroundImage(fill: disabledBackgroundColor, border: disabledBorderColor)
@@ -78,17 +155,21 @@ open class FancyButton: UIButton {
         setBackgroundImage(normalImage, for: .normal)
         setBackgroundImage(highlightedImage, for: .highlighted)
         setBackgroundImage(disabledImage, for: .disabled)
+    }
 
-        /// Setup: TitleColor
-        ///
+    /// Setup: TitleColor
+    ///
+    private func configureTitleColors() {
         let titleColorNormal = isPrimary ? primaryTitleColor : secondaryTitleColor
 
         setTitleColor(titleColorNormal, for: .normal)
         setTitleColor(titleColorNormal, for: .highlighted)
         setTitleColor(disabledTitleColor, for: .disabled)
+    }
 
-        /// Setup: TitleLabel
-        ///
+    /// Setup: TitleLabel
+    ///
+    private func configureTitleLabel() {
         titleLabel?.font = titleFont
         titleLabel?.adjustsFontForContentSizeCategory = true
         titleLabel?.textAlignment = .center
