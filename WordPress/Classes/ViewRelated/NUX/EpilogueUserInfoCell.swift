@@ -17,7 +17,7 @@ class EpilogueUserInfoCell: UITableViewCell {
 
         if let gravatarUrl = userInfo.gravatarUrl,
             let url = URL(string: gravatarUrl) {
-            gravatarView?.downloadImage(at: url, placeholderImage: nil)
+            gravatarView?.downloadImage(at: url)
         } else {
             gravatarView?.downloadGravatarWithEmail(userInfo.email, rating: .x)
         }
