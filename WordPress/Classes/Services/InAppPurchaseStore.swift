@@ -228,7 +228,7 @@ extension InAppPurchaseStore {
     /// one of the plans didn't have a product identifier, it's treated as a
     /// "free" plan and the returned price will be an empty string.
     func getPricesForPlans(_ plans: [Plan], success: @escaping ([PricedPlan]) -> Void, failure: @escaping (Error) -> Void) {
-        let identifiers = Set(plans.flatMap({ $0.productIdentifier }))
+        let identifiers = Set(plans.compactMap({ $0.productIdentifier }))
         getProductsWithIdentifiers(
             identifiers,
             success: { products in
@@ -327,7 +327,7 @@ struct MockStore: InAppPurchaseStore {
         if !products.filter({ $0 == nil }).isEmpty {
             failure(ProductRequestError.missingProduct)
         } else {
-            let products = products.flatMap({ $0 })
+            let products = products.compactMap({ $0 })
 
             let completion = {
                 if self.succeeds {
