@@ -114,6 +114,8 @@ public protocol WordPressAuthenticatorDelegate: class {
             controller.loginFields.meta.jetpackBlogID = blog.objectID
             if let email = blog.jetpack?.connectedEmail {
                 controller.loginFields.username = email
+            } else {
+                controller.offerSignupOption = true
             }
         }
 
