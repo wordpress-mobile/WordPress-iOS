@@ -1,5 +1,7 @@
 import Foundation
 import WordPressShared
+import WordPressUI
+
 
 enum PlanListViewModel {
     case loading

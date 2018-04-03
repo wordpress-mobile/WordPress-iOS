@@ -1,4 +1,6 @@
 import UIKit
+import WordPressUI
+
 
 class SiteCreationNavigationController: RotationAwareNavigationViewController {
 
@@ -6,5 +8,4 @@ class SiteCreationNavigationController: RotationAwareNavigationViewController {
         super.viewWillDisappear(animated)
         SiteCreationFields.resetSharedInstance()
     }
-
 }

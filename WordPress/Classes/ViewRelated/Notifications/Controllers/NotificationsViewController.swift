@@ -181,7 +181,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             tableView.deselectSelectedRowWithAnimation(true)
         } else {
             if let selectedNotification = selectedNotification {
-                selectRowForNotification(selectedNotification, animated: true, scrollPosition: .middle)
+                selectRow(for: selectedNotification, animated: true, scrollPosition: .middle)
             } else {
                 selectFirstNotificationIfAppropriate()
             }
@@ -199,12 +199,10 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             coder.encode(uriRepresentation, forKey: type(of: self).selectedNotificationRestorationIdentifier)
         }
 
-        if let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) {
-            // If the filter's 'Unread', we won't save it because the notification
-            // that's selected won't be unread any more once we come back to it.
-            let index = (filter != .unread) ? filter.rawValue : Filter.none.rawValue
-            coder.encode(index, forKey: type(of: self).selectedSegmentIndexRestorationIdentifier)
-        }
+        // If the filter's 'Unread', we won't save it because the notification
+        // that's selected won't be unread any more once we come back to it.
+        let index: Filter = (filter != .unread) ? filter : .none
+        coder.encode(index.rawValue, forKey: type(of: self).selectedSegmentIndexRestorationIdentifier)
 
         super.encodeRestorableState(with: coder)
     }
@@ -300,7 +298,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         }
 
         selectedNotification = note
-        showDetailsForNotification(note)
+        showDetails(for: note)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -322,7 +320,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             self.showUndeleteForNoteWithID(note.objectID, request: request)
         }
         detailsViewController.onSelectedNoteChange = { note in
-            self.selectRowForNotification(note)
+            self.selectRow(for: note)
         }
     }
 }
@@ -503,31 +501,38 @@ extension NotificationsViewController {
     ///
     /// - Parameter notificationID: The ID of the Notification that should be rendered onscreen.
     ///
-    @objc func showDetailsForNotificationWithID(_ noteId: String) {
-        if let note = loadNotificationWithID(noteId) {
-            showDetailsForNotification(note)
+    @objc
+    func showDetailsForNotificationWithID(_ noteId: String) {
+        if let note = loadNotification(with: noteId) {
+            showDetails(for: note)
             return
         }
 
-        syncNotificationWithID(noteId, timeout: Syncing.pushMaxWait) { note in
-            self.showDetailsForNotification(note)
+        syncNotification(with: noteId, timeout: Syncing.pushMaxWait) { note in
+            self.showDetails(for: note)
         }
     }
 
     /// Pushes the details for a given Notification Instance.
     ///
-    /// - Parameter note: The Notification that should be rendered.
-    ///
-    @objc func showDetailsForNotification(_ note: Notification) {
+    private func showDetails(for note: Notification) {
         DDLogInfo("Pushing Notification Details for: [\(note.notificationId)]")
 
-        prepareToShowDetailsForNotification(note)
-
+        /// Note: markAsRead should be the *first* thing we do. This triggers a context save, and may have many side effects that
+        /// could affect the OP's that go below!!!.
+        ///
+        /// YES figuring that out took me +90 minutes of debugger time!!!
+        ///
         markAsRead(note: note)
+        trackWillPushDetails(for: note)
+
+        ensureNotificationsListIsOnscreen()
+        ensureNoteIsNotBeingFiltered(note)
+        selectRow(for: note, animated: false, scrollPosition: .top)
 
         // Display Details
         //
-        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher {
+        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher || note.kind == .NewPost {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
             showDetailViewController(readerViewController, sender: nil)
             return
@@ -535,7 +540,7 @@ extension NotificationsViewController {
 
         // This dispatch avoids a bug that was occurring occasionally where navigation (nav bar and tab bar)
         // would be missing entirely when launching the app from the background and presenting a notification.
-        // The issue seems tied to performing a `pop` in `prepareToShowDetailsForNotification` and presenting
+        // The issue seems tied to performing a `pop` in `prepareToShowDetails` and presenting
         // the new detail view controller at the same time. More info: https://github.com/wordpress-mobile/WordPress-iOS/issues/6976
         //
         // Plus: Avoid pushing multiple DetailsViewController's, upon quick & repeated touch events.
@@ -548,15 +553,39 @@ extension NotificationsViewController {
         }
     }
 
-    fileprivate func prepareToShowDetailsForNotification(_ note: Notification) {
-        // Track
+    /// Tracks: Details Event!
+    ///
+    private func trackWillPushDetails(for note: Notification) {
         let properties = [Stats.noteTypeKey: note.type ?? Stats.noteTypeUnknown]
         WPAnalytics.track(.openedNotificationDetails, withProperties: properties)
+    }
 
-        // Failsafe: Don't push nested!
-        if navigationController?.visibleViewController != self {
-            _ = navigationController?.popViewController(animated: false)
+    /// Failsafe: Make sure the Notifications List is onscreen!
+    ///
+    private func ensureNotificationsListIsOnscreen() {
+        guard navigationController?.visibleViewController != self else {
+            return
         }
+
+        _ = navigationController?.popViewController(animated: false)
+    }
+
+    /// This method will make sure the Notification that's about to be displayed is not currently being filtered.
+    ///
+    private func ensureNoteIsNotBeingFiltered(_ note: Notification) {
+        guard filter != .none else {
+            return
+        }
+
+        let noteIndexPath = tableView.indexPathsForVisibleRows?.first { indexPath in
+            return note == tableViewHandler.resultsController.object(at: indexPath) as? Notification
+        }
+
+        guard noteIndexPath == nil else {
+            return
+        }
+
+        filter = .none
     }
 
     /// Will display an Undelete button on top of a given notification.
@@ -567,7 +596,7 @@ extension NotificationsViewController {
     ///     -   noteObjectID: The Core Data ObjectID associated to a given notification.
     ///     -   request: A DeletionRequest Struct
     ///
-    func showUndeleteForNoteWithID(_ noteObjectID: NSManagedObjectID, request: NotificationDeletionRequest) {
+    private func showUndeleteForNoteWithID(_ noteObjectID: NSManagedObjectID, request: NotificationDeletionRequest) {
         // Mark this note as Pending Deletion and Reload
         notificationDeletionRequests[noteObjectID] = request
         reloadRowForNotificationWithID(noteObjectID)
@@ -722,12 +751,10 @@ private extension NotificationsViewController {
         }
     }
 
-    func selectRowForNotification(_ notification: Notification?, animated: Bool = true, scrollPosition: UITableViewScrollPosition = .none) {
-        guard let notification = notification else { return }
-
+    func selectRow(for notification: Notification, animated: Bool = true, scrollPosition: UITableViewScrollPosition = .none) {
         selectedNotification = notification
 
-        if let indexPath = tableViewHandler.resultsController.indexPath(forObject: notification) {
+        if let indexPath = tableViewHandler.resultsController.indexPath(forObject: notification), indexPath != tableView.indexPathForSelectedRow {
             tableView.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
         }
     }
@@ -736,8 +763,8 @@ private extension NotificationsViewController {
         tableView.reloadData()
 
         // Show the current selection if our split view isn't collapsed
-        if !splitViewControllerIsHorizontallyCompact {
-            selectRowForNotification(selectedNotification, animated: false, scrollPosition: .none)
+        if !splitViewControllerIsHorizontallyCompact, let notification = selectedNotification {
+            selectRow(for: notification, animated: false, scrollPosition: .none)
         }
     }
 }
@@ -788,8 +815,7 @@ extension NotificationsViewController {
     @objc func segmentedControlDidChange(_ sender: UISegmentedControl) {
         selectedNotification = nil
 
-        let filterTitle = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex)?.title ?? ""
-        let properties = [Stats.selectedFilter: filterTitle]
+        let properties = [Stats.selectedFilter: filter.title]
         WPAnalytics.track(.notificationsTappedSegmentedControl, withProperties: properties)
 
         updateUnreadNotificationsForSegmentedControlChange()
@@ -805,7 +831,7 @@ extension NotificationsViewController {
         if !splitViewControllerIsHorizontallyCompact && selectedNotification == nil {
             if let firstNotification = tableViewHandler.resultsController.fetchedObjects?.first as? Notification,
                 let indexPath = tableViewHandler.resultsController.indexPath(forObject: firstNotification) {
-                selectRowForNotification(firstNotification, animated: false, scrollPosition: .none)
+                selectRow(for: firstNotification, animated: false, scrollPosition: .none)
                 self.tableView(tableView, didSelectRowAt: indexPath)
             } else {
                 // If there's no notification to select, we should wipe out
@@ -816,7 +842,7 @@ extension NotificationsViewController {
     }
 
     @objc func updateUnreadNotificationsForSegmentedControlChange() {
-        if Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) == .unread {
+        if filter == .unread {
             refreshUnreadNotifications(reloadingResultsController: false)
         } else {
             clearUnreadNotifications()
@@ -848,9 +874,8 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     @objc func predicateForSelectedFilters() -> NSPredicate {
-        guard let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex),
-            let condition = filter.condition else {
-                return NSPredicate(value: true)
+        guard let condition = filter.condition else {
+            return NSPredicate(value: true)
         }
 
         var subpredicates: [NSPredicate] = [NSPredicate(format: condition)]
@@ -939,7 +964,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         showNoResultsViewIfNeeded()
 
         if let selectedNotification = selectedNotification {
-            selectRowForNotification(selectedNotification, animated: false, scrollPosition: .none)
+            selectRow(for: selectedNotification, animated: false, scrollPosition: .none)
         } else {
             selectFirstNotificationIfAppropriate()
         }
@@ -1110,15 +1135,15 @@ private extension NotificationsViewController {
     }
 
     var noResultsTitleText: String {
-        return Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex)?.noResultsTitle ?? ""
+        return filter.noResultsTitle
     }
 
     var noResultsMessageText: String {
-        return Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex)?.noResultsMessage ?? ""
+        return filter.noResultsMessage
     }
 
     var noResultsButtonText: String {
-        return Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex)?.noResultsButtonTitle ?? ""
+        return filter.noResultsButtonTitle
     }
 
     var shouldDisplayJetpackPrompt: Bool {
@@ -1130,14 +1155,11 @@ private extension NotificationsViewController {
     }
 
     var shouldDisplayFullscreenNoResultsView: Bool {
-        let currentFilter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none
-        return shouldDisplayNoResultsView && currentFilter == .none
+        return shouldDisplayNoResultsView && filter == .none
     }
 
     var shouldDimDetailViewController: Bool {
-        let currentFilter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) ?? .none
-
-        return shouldDisplayNoResultsView && currentFilter != .none
+        return shouldDisplayNoResultsView && filter != .none
     }
 }
 
@@ -1146,19 +1168,17 @@ private extension NotificationsViewController {
 //
 extension NotificationsViewController: WPNoResultsViewDelegate {
     func didTap(_ noResultsView: WPNoResultsView) {
-        if let filter = Filter(rawValue: filtersSegmentedControl.selectedSegmentIndex) {
-            let properties = [Stats.sourceKey: Stats.sourceValue]
-            switch filter {
-            case .none,
-                 .comment,
-                 .follow,
-                 .like:
-                WPAnalytics.track(.notificationsTappedViewReader, withProperties: properties)
-                WPTabBarController.sharedInstance().showReaderTab()
-            case .unread:
-                WPAnalytics.track(.notificationsTappedNewPost, withProperties: properties)
-                WPTabBarController.sharedInstance().showPostTab()
-            }
+        let properties = [Stats.sourceKey: Stats.sourceValue]
+        switch filter {
+        case .none,
+             .comment,
+             .follow,
+             .like:
+            WPAnalytics.track(.notificationsTappedViewReader, withProperties: properties)
+            WPTabBarController.sharedInstance().showReaderTab()
+        case .unread:
+            WPAnalytics.track(.notificationsTappedNewPost, withProperties: properties)
+            WPTabBarController.sharedInstance().showPostTab()
         }
     }
 }
@@ -1214,7 +1234,7 @@ private extension NotificationsViewController {
         mediator?.sync()
     }
 
-    func syncNotificationWithID(_ noteId: String, timeout: TimeInterval, success: @escaping (_ note: Notification) -> Void) {
+    func syncNotification(with noteId: String, timeout: TimeInterval, success: @escaping (_ note: Notification) -> Void) {
         let mediator = NotificationSyncMediator()
         let startDate = Date()
 
@@ -1255,7 +1275,7 @@ private extension NotificationsViewController {
         }
     }
 
-    func loadNotificationWithID(_ noteId: String) -> Notification? {
+    func loadNotification(with noteId: String) -> Notification? {
         let predicate = NSPredicate(format: "(notificationId == %@)", noteId)
 
         return mainContext.firstObject(ofType: Notification.self, matching: predicate)
@@ -1321,9 +1341,10 @@ extension NotificationsViewController: WPSplitViewControllerDetailProvider {
 
         selectedNotification = note
 
-        prepareToShowDetailsForNotification(note)
+        trackWillPushDetails(for: note)
+        ensureNotificationsListIsOnscreen()
 
-        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher {
+        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher || note.kind == .NewPost {
             return ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
         }
 
@@ -1435,6 +1456,17 @@ private extension NotificationsViewController {
         set {
             userDefaults.setValue(newValue, forKey: Settings.lastSeenTime)
             userDefaults.synchronize()
+        }
+    }
+
+    var filter: Filter {
+        get {
+            let selectedIndex = filtersSegmentedControl?.selectedSegmentIndex ?? Filter.none.rawValue
+            return Filter(rawValue: selectedIndex) ?? .none
+        }
+        set {
+            filtersSegmentedControl?.selectedSegmentIndex = newValue.rawValue
+            reloadResultsController()
         }
     }
 
