@@ -10,7 +10,6 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     @IBOutlet var inputStack: UIStackView?
     @IBOutlet var alternativeLoginLabel: UILabel?
 
-    //var onePasswordButton: UIButton!
     var googleLoginButton: UIButton?
     var selfHostedLoginButton: UIButton?
 
@@ -206,7 +205,6 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
         let button = WPStyleGuide.wpcomSignupButton()
         stackView.addArrangedSubview(button)
-        //button.addTarget(self, action: #selector(handleSelfHostedButtonTapped), for: .touchUpInside)
         button.on(.touchUpInside) { (button) in
             // pass
         }

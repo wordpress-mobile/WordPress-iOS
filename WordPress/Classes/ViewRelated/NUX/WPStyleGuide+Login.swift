@@ -93,25 +93,6 @@ extension WPStyleGuide {
         return UIFont.systemFont(ofSize: maxAllowedFontSize, weight: .medium)
     }
 
-    /// Creates a attributed string with one underlined section that's surrounded by underscores
-    /// Such as "this _is_ underlined" would under the "is"
-    ///
-    class func underline(formattedString baseString: String, color: UIColor? = nil, underlineColor: UIColor? = nil) -> NSAttributedString {
-        let labelParts = baseString.components(separatedBy: "_")
-        let firstPart = labelParts[0]
-        let underlinePart = labelParts.indices.contains(1) ? labelParts[1] : ""
-        let lastPart = labelParts.indices.contains(2) ? labelParts[2] : ""
-
-        let foregroundColor = color ?? UIColor.black
-        let underlineForegroundColor = underlineColor ?? foregroundColor
-
-        let underlinedString = NSMutableAttributedString(string: firstPart, attributes: [.foregroundColor: foregroundColor])
-        underlinedString.append(NSAttributedString(string: underlinePart, attributes: [.underlineStyle: NSUnderlineStyle.styleSingle.rawValue, .foregroundColor: underlineForegroundColor]))
-        underlinedString.append(NSAttributedString(string: lastPart, attributes: [.foregroundColor: foregroundColor]))
-
-        return underlinedString
-    }
-
     // MARK: - Login Button Methods
 
     /// Creates a button for Google Sign-in
@@ -150,9 +131,9 @@ extension WPStyleGuide {
     /// - Note: This button is only used during Jetpack setup, not the usual flows
     ///
     class func wpcomSignupButton() -> UIButton {
-        let baseString = NSLocalizedString("Don't have an account? _Sign up_", comment: "Label for button to log in using your site address.")
-        let attrStrNormal = underline(formattedString: baseString, color: WPStyleGuide.greyDarken20(), underlineColor: WPStyleGuide.wordPressBlue())
-        let attrStrHighlight = underline(formattedString: baseString, color: WPStyleGuide.greyDarken20(), underlineColor: WPStyleGuide.lightBlue())
+        let baseString = NSLocalizedString("Don't have an account? _Sign up_", comment: "Label for button to log in using your site address. The underscores _..._ denote underline")
+        let attrStrNormal = baseString.underlined(color: WPStyleGuide.greyDarken20(), underlineColor: WPStyleGuide.wordPressBlue())
+        let attrStrHighlight = baseString.underlined(color: WPStyleGuide.greyDarken20(), underlineColor: WPStyleGuide.lightBlue())
 
         let font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
 
@@ -166,7 +147,7 @@ extension WPStyleGuide {
     class func termsButton() -> UIButton {
         let baseString =  NSLocalizedString("By signing up, you agree to our _Terms of Service_.", comment: "Legal disclaimer for signup buttons, the underscores _..._ denote underline")
 
-        let labelString = underline(formattedString: baseString)
+        let labelString = baseString.underlined()
 
         let font = WPStyleGuide.mediumWeightFont(forStyle: .caption2)
         return textButton(normal: labelString, highlighted: labelString, font: font, alignment: .center)
