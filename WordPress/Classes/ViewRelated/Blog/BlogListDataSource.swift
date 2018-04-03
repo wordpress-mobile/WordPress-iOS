@@ -12,7 +12,7 @@ private struct BrowsingWithRecentDataSourceMapper: BlogListDataSourceMapper {
         let service = RecentSitesService()
         let recentSiteUrls = service.allRecentSites
         let visible = data.filter({ $0.visible })
-        let allRecent = recentSiteUrls.flatMap({ url in
+        let allRecent = recentSiteUrls.compactMap({ url in
             return visible.first(where: { $0.url == url })
         })
         let recent = Array(allRecent.prefix(service.maxSiteCount))

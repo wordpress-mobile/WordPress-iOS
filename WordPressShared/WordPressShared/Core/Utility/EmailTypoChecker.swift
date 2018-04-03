@@ -103,7 +103,7 @@ private func deletes(_ word: String) -> [String] {
 }
 
 private func transposes(_ word: String) -> [String] {
-    return word.indices.flatMap({ index in
+    return word.indices.compactMap({ index in
         let (i, j) = (index, word.index(after: index))
         guard j < word.endIndex else {
             return nil
