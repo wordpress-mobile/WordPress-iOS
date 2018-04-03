@@ -54,7 +54,7 @@ class SiteCreationThemeSelectionCell: UICollectionViewCell {
     private func refreshScreenshot(url imageUrl: String) {
         themeImageView.backgroundColor = Styles.placeholderColor
         activityView.startAnimating()
-        themeImageView.downloadImage(URL(string: imageUrl),
+        themeImageView.downloadImage(at: URL(string: imageUrl),
                                 placeholderImage: nil,
                                 success: { [weak self] (image: UIImage) in
                                     self?.showScreenshot()

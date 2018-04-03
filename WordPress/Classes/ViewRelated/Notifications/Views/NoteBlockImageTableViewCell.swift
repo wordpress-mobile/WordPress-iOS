@@ -24,7 +24,7 @@ class NoteBlockImageTableViewCell: NoteBlockTableViewCell {
 
         imageURL = url
 
-        blockImageView.downloadImage(url, placeholderImage: nil, success: { image in
+        blockImageView.downloadImage(at: url, placeholderImage: nil, success: { image in
             self.blockImageView.image = image
             self.blockImageView.expandSpringAnimation()
         })

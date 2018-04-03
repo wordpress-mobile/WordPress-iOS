@@ -17,7 +17,7 @@ public extension UIImageView {
         }
 
         let size = CGSize(width: blavatarSizeInPoints, height: blavatarSizeInPoints)
-        downloadImage(updatedURL, pointSize: size)
+        downloadResizedImage(at: updatedURL, pointSize: size)
     }
 
 
@@ -27,17 +27,19 @@ public extension UIImageView {
         return blavatarSizeInPoints * Int(mainScreenScale)
     }
 
+
     /// Returns the desired Blavatar Side-Size, in points
     ///
     private var blavatarSizeInPoints: Int {
         var size = Downloader.defaultImageSize
 
-        if !bounds.size.equalTo(CGSize.zero) {
+        if !bounds.size.equalTo(.zero) {
             size = max(bounds.width, bounds.height)
         }
 
         return Int(size)
     }
+
 
     /// Returns the Main Screen Scale
     ///

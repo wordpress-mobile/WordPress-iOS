@@ -92,7 +92,7 @@ class NoteTableViewCell: MGSwipeTableCell {
 
         // Handle non-gravatar images
         let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: !unapproved)
-        iconImageView.downloadImage(url, placeholderImage: placeholderImage, success: nil, failure: {[weak self] (error) in
+        iconImageView.downloadImage(at: url, placeholderImage: placeholderImage, success: nil, failure: { [weak self] error in
             // Note: Don't cache 404's. Otherwise Unapproved / Approved gravatars won't switch!
             if (self?.gravatarURL == url) == true {
                 self?.gravatarURL = nil

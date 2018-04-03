@@ -16,7 +16,7 @@ struct PlanListRow: ImmuTableRow {
 
     func configureCell(_ cell: UITableViewCell) {
         WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
-        cell.imageView?.downloadResizedImage(iconUrl, placeholderImage: UIImage(named: "plan-placeholder")!, pointSize: iconSize)
+        cell.imageView?.downloadResizedImage(at: iconUrl, placeholderImage: UIImage(named: "plan-placeholder")!, pointSize: iconSize)
         cell.textLabel?.attributedText = attributedTitle
         cell.textLabel?.adjustsFontSizeToFitWidth = true
         cell.detailTextLabel?.text = description

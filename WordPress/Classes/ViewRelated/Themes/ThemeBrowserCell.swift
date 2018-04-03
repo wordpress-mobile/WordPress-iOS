@@ -196,7 +196,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
 
         imageView.backgroundColor = Styles.placeholderColor
         activityView.startAnimating()
-        imageView.downloadImage(screenshotUrl,
+        imageView.downloadImage(at: screenshotUrl,
                                 placeholderImage: nil,
                                 success: { [weak self] (image: UIImage) in
                                     self?.showScreenshot()
