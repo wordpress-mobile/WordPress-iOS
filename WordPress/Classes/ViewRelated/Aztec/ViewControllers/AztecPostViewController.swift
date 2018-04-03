@@ -348,7 +348,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         didSet {
             removeObservers(fromPost: oldValue)
             addObservers(toPost: post)
-
+            unregisterMediaObserver()
+            registerMediaObserver()
             postEditorStateContext = createEditorStateContext(for: post)
             refreshInterface()
         }
@@ -515,8 +516,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         if isOpenedDirectlyForPhotoPost {
             presentMediaPickerFullScreen(animated: false)
         }
-
-        registerMediaObserver()
     }
 
 
@@ -1034,7 +1033,6 @@ extension AztecPostViewController {
 //
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
-
         let action = self.postEditorStateContext.action
 
         publishPost(
@@ -1254,10 +1252,39 @@ private extension AztecPostViewController {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         if FeatureFlag.asyncPosting.enabled {
-            alert.addDefaultActionWithTitle("Async Publish (Debug)") { [unowned self]  _ in
+            let publishAction = { [unowned self] in
                 self.mapUIContentToPostAndSave()
+
+                let action = self.postEditorStateContext.action
+                if action == .save || action == .saveAsDraft {
+                    self.post.status = .draft
+                } else if action == .publish {
+                    if self.post.date_created_gmt == nil {
+                        self.post.date_created_gmt = Date()
+                    }
+                    self.post.status = .publish
+                } else if action == .publishNow {
+                    self.post.date_created_gmt = Date()
+                    self.post.status = .publish
+                }
+                self.post.updatePathForDisplayImageBasedOnContent()
                 PostCoordinator.shared.save(post: self.post)
                 self.dismissOrPopView(didSave: true, shouldShowPostEpilogue: false)
+            }
+
+            alert.addDefaultActionWithTitle("Async Publish (Debug)") { [unowned self]  _ in
+                if !UserDefaults.standard.asyncPromoWasDisplayed {
+                    UserDefaults.standard.asyncPromoWasDisplayed = true
+
+                    let controller = FancyAlertViewController.makeAsyncPostingAlertController(publishAction: publishAction)
+                    controller.modalPresentationStyle = .custom
+                    controller.transitioningDelegate = self
+                    self.present(controller, animated: true, completion: nil)
+
+                    return
+                }
+
+                publishAction()
             }
         }
 
@@ -3071,7 +3098,7 @@ extension AztecPostViewController {
                 alertController.addActionWithTitle(MediaAttachmentActionSheet.stopUploadActionTitle,
                                                    style: .destructive,
                                                    handler: { (action) in
-                                                    self.mediaCoordinator.delete(media)
+                                                    self.mediaCoordinator.cancelUpload(of: media)
                 })
             }
         } else {
@@ -3687,5 +3714,15 @@ extension AztecPostViewController {
     struct MediaUnableToPlayVideoAlert {
         static let title = NSLocalizedString("Unable to play video", comment: "Dialog box title for when the user is cancelling an upload.")
         static let message = NSLocalizedString("Something went wrong. Please check your connectivity and try again.", comment: "This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server.")
+    }
+}
+
+extension AztecPostViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        guard presented is FancyAlertViewController else {
+            return nil
+        }
+
+        return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
     }
 }

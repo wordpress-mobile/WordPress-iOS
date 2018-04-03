@@ -187,6 +187,8 @@ open class FancyAlertViewController: UIViewController {
         } else if let _ = configuration?.headerImage {
             alertView.headerImageWrapperView.isHiddenInStackView = false
         }
+
+        updateButtonLayout()
     }
 
     /// MARK: - View configuration
@@ -231,6 +233,8 @@ open class FancyAlertViewController: UIViewController {
 
         view.layoutIfNeeded()
 
+        updateButtonLayout()
+
         alertView.titleLabel.accessibilityHint = (isButtonless) ? NSLocalizedString("Double tap to dismiss", comment: "Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it") : nil
 
         UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, alertView.titleLabel)
@@ -261,6 +265,12 @@ open class FancyAlertViewController: UIViewController {
         // the image touches the divider if it is at the top
         alertView.headerImageViewWrapperBottomConstraint?.constant = configuration?.dividerPosition == .top ? 0.0 : Constants.headerImageVerticalConstraintRegular
         alertView.buttonWrapperViewTopConstraint?.constant = configuration?.dividerPosition == .top ? 0.0 : Constants.headerImageVerticalConstraintRegular
+    }
+
+    private func updateButtonLayout() {
+        if defaultButton.intrinsicContentSize.width > defaultButton.bounds.width || cancelButton.intrinsicContentSize.width > cancelButton.bounds.width {
+            buttonStackView.axis = .vertical
+        }
     }
 
     private func update(_ button: UIButton, with buttonConfig: Config.ButtonConfig?) {
