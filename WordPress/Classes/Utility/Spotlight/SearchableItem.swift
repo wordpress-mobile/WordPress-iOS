@@ -65,6 +65,12 @@ import MobileCoreServices
     /// *Local* URL to image that should be displayed in spotlight search
     ///
     @objc optional var searchLocalImageURL: URL? {get}
+
+    /// Expiration date for an indexed search item. If not set, the expiration
+    /// date will use the spotlight default: "the system automatically expires the
+    /// item after a period of time."
+    ///
+    @objc optional var searchExpirationDate: Date? {get}
 }
 
 extension SearchableItemConvertable {
@@ -95,8 +101,14 @@ extension SearchableItemConvertable {
             searchableItemAttributeSet.thumbnailURL = imgURL
         }
 
-        return CSSearchableItem(uniqueIdentifier: uniqueIdentifier,
-                                domainIdentifier: searchDomain,
-                                attributeSet: searchableItemAttributeSet)
+        let searchableItem = CSSearchableItem(uniqueIdentifier: uniqueIdentifier,
+                                              domainIdentifier: searchDomain,
+                                              attributeSet: searchableItemAttributeSet)
+
+        if let expirationDate = searchExpirationDate {
+            searchableItem.expirationDate = expirationDate
+        }
+
+        return searchableItem
     }
 }

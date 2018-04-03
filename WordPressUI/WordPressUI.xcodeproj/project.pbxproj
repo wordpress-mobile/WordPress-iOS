@@ -17,6 +17,7 @@
 		B592B4522064296600FF568E /* FancyAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B592B44C2064296500FF568E /* FancyAlertViewController.swift */; };
 		B592B4532064296600FF568E /* FlingableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B592B44E2064296500FF568E /* FlingableViewHandler.swift */; };
 		B592B45520643E3400FF568E /* FancyAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B592B45420643E3400FF568E /* FancyAlertView.swift */; };
+		B5393FEA206D7047007BF9D4 /* RotationAwareNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5393FE9206D7047007BF9D4 /* RotationAwareNavigationViewController.swift */; };
 		B59DCB66202B146D00BEBD8A /* WordPressUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B59DCB5C202B146D00BEBD8A /* WordPressUI.framework */; };
 		B59DCB6D202B146D00BEBD8A /* WordPressUI.h in Headers */ = {isa = PBXBuildFile; fileRef = B59DCB5F202B146D00BEBD8A /* WordPressUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5A787B0202B2324007874FB /* UIImage+Tint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787A4202B2322007874FB /* UIImage+Tint.swift */; };
@@ -63,6 +64,7 @@
 		B592B44C2064296500FF568E /* FancyAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FancyAlertViewController.swift; sourceTree = "<group>"; };
 		B592B44E2064296500FF568E /* FlingableViewHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlingableViewHandler.swift; sourceTree = "<group>"; };
 		B592B45420643E3400FF568E /* FancyAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyAlertView.swift; sourceTree = "<group>"; };
+		B5393FE9206D7047007BF9D4 /* RotationAwareNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotationAwareNavigationViewController.swift; sourceTree = "<group>"; };
 		B59DCB5C202B146D00BEBD8A /* WordPressUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WordPressUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B59DCB5F202B146D00BEBD8A /* WordPressUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WordPressUI.h; sourceTree = "<group>"; };
 		B59DCB60202B146D00BEBD8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -147,6 +149,12 @@
 				B592B44E2064296500FF568E /* FlingableViewHandler.swift */,
 			);
 			path = FlingableView;
+		B5393FE8206D7047007BF9D4 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				B5393FE9206D7047007BF9D4 /* RotationAwareNavigationViewController.swift */,
+			);
+			path = Tools;
 			sourceTree = "<group>";
 		};
 		B59DCB52202B146D00BEBD8A = {
@@ -176,6 +184,7 @@
 				B5A787CB202B2AA6007874FB /* Categories */,
 				B5A787F3202B3587007874FB /* Constants */,
 				B5A78799202B1A93007874FB /* Extensions */,
+				B5393FE8206D7047007BF9D4 /* Tools */,
 				B59DCB5F202B146D00BEBD8A /* WordPressUI.h */,
 				B59DCB60202B146D00BEBD8A /* Info.plist */,
 			);
@@ -363,6 +372,7 @@
 				B5A787B1202B2324007874FB /* UITextField+TextHelper.swift in Sources */,
 				B5A787DB202B2AA7007874FB /* UIColor+Helpers.m in Sources */,
 				B5A787B7202B2324007874FB /* UIViewController+Helpers.swift in Sources */,
+				B5393FEA206D7047007BF9D4 /* RotationAwareNavigationViewController.swift in Sources */,
 				B5A787B6202B2324007874FB /* UIView+Animations.swift in Sources */,
 				B5A787B8202B2324007874FB /* UIImage+Rotation.swift in Sources */,
 				43067E2B203C8CC4001DD610 /* UIControl+BlockEvents.swift in Sources */,
