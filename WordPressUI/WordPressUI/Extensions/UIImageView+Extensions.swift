@@ -1,12 +1,13 @@
 import Foundation
 
 
-extension UIImageView {
+public extension UIImageView {
+
     /// Downloads an image and updates the UIImageView Instance
     ///
     /// - Parameter url: The URL of the target image
     ///
-    public func downloadImage(_ url: URL) {
+    public func downloadImage(_ url: URL, pointSize: CGSize? = nil) {
         // Hit the cache
         if let cachedImage = Downloader.cache.object(forKey: url as AnyObject) as? UIImage {
             self.image = cachedImage
@@ -19,10 +20,6 @@ extension UIImageView {
             downloadTask = nil
         }
 
-        // Helpers
-        let scale = mainScreenScale
-        let size = CGSize(width: blavatarSizeInPoints, height: blavatarSizeInPoints)
-
         // Hit the Backend
         var request = URLRequest(url: url)
         request.httpShouldHandleCookies = false
@@ -30,18 +27,15 @@ extension UIImageView {
 
         let session = URLSession.shared
         let task = session.dataTask(with: request, completionHandler: { [weak self] data, response, error in
-            guard let data = data, let image = UIImage(data: data, scale: scale) else {
+            guard let data = data, let image = UIImage(data: data, scale: UIScreen.main.scale) else {
                 return
             }
 
             DispatchQueue.main.async {
                 // Resize if needed!
                 var resizedImage = image
-
-                if image.size.height > size.height || image.size.width > size.width {
-                    resizedImage = image.resizedImage(with: .scaleAspectFit,
-                                                                     bounds: size,
-                                                                     interpolationQuality: .high)
+                if let pointSize = pointSize, image.size.height > pointSize.height || image.size.width > pointSize.width {
+                    resizedImage = image.resizedImage(with: .scaleAspectFit, bounds: pointSize, interpolationQuality: .high)
                 }
 
                 // Update the Cache
@@ -55,48 +49,9 @@ extension UIImageView {
     }
 
 
-    /// Downloads a resized Blavatar, meant to perfectly fit the UIImageView's Dimensions
-    ///
-    /// - Parameter url: The URL of the target blavatar
-    ///
-    public func downloadBlavatar(_ url: URL) {
-        var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
-        components?.query = String(format: Downloader.blavatarResizeFormat, blavatarSize)
-
-        if let updatedURL = components?.url {
-            downloadImage(updatedURL)
-        }
-    }
-
-
-    /// Returns the desired Blavatar Side-Size, in pixels
-    ///
-    fileprivate var blavatarSize: Int {
-        return blavatarSizeInPoints * Int(mainScreenScale)
-    }
-
-    /// Returns the desired Blavatar Side-Size, in points
-    ///
-    fileprivate var blavatarSizeInPoints: Int {
-        var size = Downloader.defaultImageSize
-
-        if !bounds.size.equalTo(CGSize.zero) {
-            size = max(bounds.width, bounds.height)
-        }
-
-        return Int(size)
-    }
-
-    /// Returns the Main Screen Scale
-    ///
-    fileprivate var mainScreenScale: CGFloat {
-        return UIScreen.main.scale
-    }
-
-
     /// Stores the current DataTask, in charge of downloading the remote Image
     ///
-    fileprivate var downloadTask: URLSessionDataTask? {
+    private var downloadTask: URLSessionDataTask? {
         get {
             return objc_getAssociatedObject(self, Downloader.taskKey) as? URLSessionDataTask
         }
@@ -109,14 +64,7 @@ extension UIImageView {
 
     /// Private helper structure
     ///
-    fileprivate struct Downloader {
-        /// Default Blavatar Image Size
-        ///
-        static let defaultImageSize = CGFloat(40)
-
-        /// Blavatar Resize Query FormatString
-        ///
-        static let blavatarResizeFormat = "d=404&s=%d"
+    private struct Downloader {
 
         /// Stores all of the previously downloaded images
         ///
