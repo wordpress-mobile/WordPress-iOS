@@ -24,6 +24,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
     var didFindSafariSharedCredentials = false
     var didRequestSafariSharedCredentials = false
+    var offerSignupOption = false
     fileprivate var awaitingGoogle = false
 
     private struct Constants {
@@ -88,16 +89,8 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     /// Hides the self-hosted login option.
     ///
     func configureForWPComOnlyIfNeeded() {
-        if loginFields.meta.jetpackLogin {
-            selfHostedLoginButton?.isHidden = true
-            wpcomSignupButton?.isHidden = false
-        } else if restrictToWPCom {
-            selfHostedLoginButton?.isHidden = true
-            wpcomSignupButton?.isHidden = true
-        } else {
-            selfHostedLoginButton?.isHidden = false
-            wpcomSignupButton?.isHidden = true
-        }
+        wpcomSignupButton?.isHidden = !offerSignupOption
+        selfHostedLoginButton?.isHidden = restrictToWPCom
     }
 
 
