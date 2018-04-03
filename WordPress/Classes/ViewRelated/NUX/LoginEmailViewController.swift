@@ -198,8 +198,8 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
         let button = WPStyleGuide.wpcomSignupButton()
         stackView.addArrangedSubview(button)
-        button.on(.touchUpInside) { (button) in
-            // pass
+        button.on(.touchUpInside) { [weak self] (button) in
+            self?.performSegue(withIdentifier: .showSignupEmail, sender: self)
         }
 
         stackView.addConstraints([
