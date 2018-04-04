@@ -31,7 +31,6 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
 
     // MARK: - Lifecycle Methods
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -276,11 +275,11 @@ extension LoginSelfHostedViewController {
             fatalError()
         }
 
-        let endpoint = WordPressEndpoint.wporg(username: username, password: password, xmlrpc: xmlrpc, options: options)
-        delegate.sync(endpoint: endpoint) { [weak self] _ in
+        let credentials = WordPressCredentials.wporg(username: username, password: password, xmlrpc: xmlrpc, options: options)
+        delegate.sync(credentials: credentials) { [weak self] _ in
 
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
-            self?.showLoginEpilogue(for: endpoint)
+            self?.showLoginEpilogue(for: credentials)
         }
     }
 

@@ -20,7 +20,7 @@ class LoginEpilogueTableViewController: UITableViewController {
 
     /// Site that was just connected to our awesome app.
     ///
-    private var endpoint: WordPressEndpoint?
+    private var credentials: WordPressCredentials?
 
 
     // MARK: - Initializers
@@ -41,9 +41,9 @@ class LoginEpilogueTableViewController: UITableViewController {
 
     /// Initializes the EpilogueTableView so that data associated with the specified Endpoint is displayed.
     ///
-    func setup(with endpoint: WordPressEndpoint) {
-        self.endpoint = endpoint
-        refreshInterface(for: endpoint)
+    func setup(with credentials: WordPressCredentials) {
+        self.credentials = credentials
+        refreshInterface(for: credentials)
     }
 }
 
@@ -161,8 +161,8 @@ private extension LoginEpilogueTableViewController {
 
     /// Refreshes the interface, so that the specified Endpoint's sites are displayed.
     ///
-    func refreshInterface(for endpoint: WordPressEndpoint) {
-        switch endpoint {
+    func refreshInterface(for credentials: WordPressCredentials) {
+        switch credentials {
         case .wpcom:
             epilogueUserInfo = loadEpilogueForDotcom()
 

@@ -32,13 +32,13 @@ class LoginEpilogueViewController: UIViewController {
 
     /// Site that was just connected to our awesome app.
     ///
-    var endpoint: WordPressEndpoint? {
+    var credentials: WordPressCredentials? {
         didSet {
-            guard isViewLoaded, let endpoint = endpoint else {
+            guard isViewLoaded, let credentials = credentials else {
                 return
             }
 
-            refreshInterface(with: endpoint)
+            refreshInterface(with: credentials)
         }
     }
 
@@ -48,11 +48,11 @@ class LoginEpilogueViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        guard let endpoint = endpoint else {
+        guard let credentials = credentials else {
             fatalError()
         }
 
-        refreshInterface(with: endpoint)
+        refreshInterface(with: credentials)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -68,11 +68,11 @@ class LoginEpilogueViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        guard let epilogueTableViewController = segue.destination as? LoginEpilogueTableViewController, let endpoint = endpoint else {
+        guard let epilogueTableViewController = segue.destination as? LoginEpilogueTableViewController, let credentials = credentials else {
             return
         }
 
-        epilogueTableViewController.setup(with: endpoint)
+        epilogueTableViewController.setup(with: credentials)
         tableViewController = epilogueTableViewController
     }
 
@@ -93,8 +93,8 @@ private extension LoginEpilogueViewController {
 
     /// Refreshes the UI so that the specified WordPressSite is displayed.
     ///
-    func refreshInterface(with endpoint: WordPressEndpoint) {
-        switch endpoint {
+    func refreshInterface(with credentials: WordPressCredentials) {
+        switch credentials {
         case .wporg:
             configureButtons()
         case .wpcom(_, _, let isJetpackLogin, _):

@@ -1,5 +1,6 @@
 import UIKit
 import GoogleSignIn
+import WordPressShared
 
 /// This is the first screen following the log in prologue screen if the user chooses to log in.
 ///
@@ -461,8 +462,8 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 // LoginFacadeDelegate methods for Google Google Sign In
 extension LoginEmailViewController {
     func finishedLogin(withGoogleIDToken googleIDToken: String, authToken: String) {
-        let endpoint = WordPressEndpoint.wpcom(username: loginFields.username, authToken: authToken, isJetpackLogin: isJetpackLogin, multifactor: false)
-        syncWPCom(endpoint: endpoint)
+        let credentials = WordPressCredentials.wpcom(username: loginFields.username, authToken: authToken, isJetpackLogin: isJetpackLogin, multifactor: false)
+        syncWPCom(credentials: credentials)
 
         // Disconnect now that we're done with Google.
         GIDSignIn.sharedInstance().disconnect()

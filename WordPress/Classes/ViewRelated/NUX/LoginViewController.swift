@@ -81,7 +81,7 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
 
     // MARK: - Epilogue: Gravatar and User Profile Acquisition
 
-    func showLoginEpilogue(for endpoint: WordPressEndpoint) {
+    func showLoginEpilogue(for credentials: WordPressCredentials) {
         /// Epilogue: Signup
         /// TODO: @jlp Mar.19.2018. Move this to the WordPressAuthenticatorDelegate's API!
         ///
@@ -96,7 +96,7 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
             fatalError()
         }
 
-        delegate.presentLoginEpilogue(in: navigationController, for: endpoint) { [weak self] in
+        delegate.presentLoginEpilogue(in: navigationController, for: credentials) { [weak self] in
             self?.dismissBlock?(false)
         }
     }
@@ -136,15 +136,15 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
 
     // MARK: SigninWPComSyncHandler methods
     dynamic func finishedLogin(withUsername username: String, authToken: String, requiredMultifactorCode: Bool) {
-        let endpoint = WordPressEndpoint.wpcom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin, multifactor: requiredMultifactorCode)
+        let credentials = WordPressCredentials.wpcom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin, multifactor: requiredMultifactorCode)
 
-        syncWPCom(endpoint: endpoint) { [weak self] in
+        syncWPCom(credentials: credentials) { [weak self] in
             guard let `self` = self else {
                 return
             }
 
             if self.shouldShowEpilogue() {
-                self.showLoginEpilogue(for: endpoint)
+                self.showLoginEpilogue(for: credentials)
             } else {
                 self.dismiss()
             }
@@ -195,7 +195,7 @@ extension LoginViewController {
     ///
     /// Signals the main app to signal the specified WordPress.com account.
     ///
-    func syncWPCom(endpoint: WordPressEndpoint, completion: (() -> ())? = nil) {
+    func syncWPCom(credentials: WordPressCredentials, completion: (() -> ())? = nil) {
         guard let delegate = WordPressAuthenticator.shared.delegate else {
             fatalError()
         }
@@ -204,11 +204,11 @@ extension LoginViewController {
 
         configureStatusLabel(NSLocalizedString("Getting account information", comment: "Alerts the user that wpcom account information is being retrieved."))
 
-        delegate.sync(endpoint: endpoint) { [weak self] _ in
+        delegate.sync(credentials: credentials) { [weak self] _ in
 
             self?.configureStatusLabel("")
             self?.configureViewLoading(false)
-            self?.trackSignIn(endpoint: endpoint)
+            self?.trackSignIn(credentials: credentials)
 
             completion?()
         }
@@ -216,10 +216,10 @@ extension LoginViewController {
 
     /// Tracks the SignIn Event
     ///
-    func trackSignIn(endpoint: WordPressEndpoint) {
+    func trackSignIn(credentials: WordPressCredentials) {
         var properties = [String: String]()
 
-        switch endpoint {
+        switch credentials {
         case .wporg:
             break
         case .wpcom(_, _, _, let multifactor):
