@@ -111,6 +111,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self setupPingHub];
     [self setupShortcutCreator];
     [self setupBackgroundRefresh:application];
+    [self setupComponentsAppearance];
     [self disableAnimationsForUITests:application];
 
     return YES;
@@ -498,7 +499,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
 {
-    [WordPressAuthenticator showLoginFromPresenter:self.window.rootViewController animated:animated thenEditor:thenEditor];
+    [WordPressAuthenticator showLoginFromPresenter:self.window.rootViewController animated:animated];
 }
 
 - (void)customizeAppearance
