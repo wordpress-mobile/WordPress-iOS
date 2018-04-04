@@ -61,4 +61,18 @@ extension StockPhotosPicker: WPMediaPickerViewControllerDelegate {
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
         picker.dismiss(animated: true, completion: nil)
     }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didSelect asset: WPMediaAsset) {
+        hideKeyboard(from: picker.searchBar)
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didDeselect asset: WPMediaAsset) {
+        hideKeyboard(from: picker.searchBar)
+    }
+
+    private func hideKeyboard(from view: UIView?) {
+        if let view = view, view.isFirstResponder {
+            view.resignFirstResponder()
+        }
+    }
 }
