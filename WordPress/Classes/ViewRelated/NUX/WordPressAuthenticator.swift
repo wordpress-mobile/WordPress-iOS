@@ -187,7 +187,7 @@ public protocol WordPressAuthenticatorDelegate: class {
         // The only time we should expect a magic link login when there is already a default wpcom account
         // is when a user is logging into Jetpack.
         if allowWordPressComAuth == false && loginFields.meta.jetpackLogin == false {
-            DDLogInfo("App opened with authentication link but there is already an existing wpcom account. \(account)")
+            DDLogInfo("App opened with authentication link but there is already an existing wpcom account.")
             return false
         }
 
