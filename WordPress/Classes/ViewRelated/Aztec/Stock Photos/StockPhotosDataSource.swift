@@ -13,6 +13,13 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
         super.init()
     }
 
+    func clearSearch(notifyObservers shouldNotify: Bool) {
+        photosMedia.removeAll()
+        if shouldNotify {
+            notifyObservers()
+        }
+    }
+
     func numberOfGroups() -> Int {
         return 1
     }
