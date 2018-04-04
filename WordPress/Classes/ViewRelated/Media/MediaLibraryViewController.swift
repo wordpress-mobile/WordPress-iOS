@@ -28,7 +28,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     fileprivate var uploadObserverUUID: UUID?
 
-    fileprivate lazy var optionsCoordinator: MediaLibraryMediaPickingCoordinator = {
+    fileprivate lazy var mediaPickingCoordinator: MediaLibraryMediaPickingCoordinator = {
         return MediaLibraryMediaPickingCoordinator(delegate: self)
     }()
 
@@ -258,6 +258,9 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     }
 
     private func showOptionsMenu() {
+        let pickingContext = MediaPickingContext(origin: self, view: view, blog: blog)
+        mediaPickingCoordinator.present(context: pickingContext)
+        /*
         let menuAlert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
 
         if let quotaUsageDescription = blog.quotaUsageDescription {
@@ -287,6 +290,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         menuAlert.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
 
         present(menuAlert, animated: true, completion: nil)
+        */
     }
 
     @objc private func editTapped() {
