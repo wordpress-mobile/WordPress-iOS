@@ -18,6 +18,7 @@ final class MediaLibraryMediaPickingCoordinator {
         let origin = context.origin
         let blog = context.blog
         let fromView = context.view
+        let buttonItem = context.barButtonItem
 
         let menuAlert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
 
@@ -38,9 +39,8 @@ final class MediaLibraryMediaPickingCoordinator {
 
         menuAlert.addAction(cancelAction())
 
-        // iPad support
-//        menuAlert.popoverPresentationController?.sourceView = fromView
-//        menuAlert.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        menuAlert.popoverPresentationController?.sourceView = fromView
+        menuAlert.popoverPresentationController?.barButtonItem = buttonItem
 
         origin.present(menuAlert, animated: true, completion: nil)
     }
