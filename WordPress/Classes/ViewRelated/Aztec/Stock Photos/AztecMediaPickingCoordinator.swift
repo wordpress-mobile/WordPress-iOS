@@ -1,24 +1,18 @@
 import MobileCoreServices
 import WPMediaPicker
 
-struct MoreCoordinatorContext {
-    let origin: UIViewController & UIDocumentPickerDelegate
-    let view: UIView
-    let blog: Blog
-}
-
 /// Prepares the alert controller that will be presented when tapping the "more" button in Aztec's Format Bar
-final class AztecMoreCoordinator {
-    private weak var delegate: AztecMoreCoordinatorDelegate?
+final class AztecMediaPickingCoordinator {
+    private weak var delegate: MediaPickingOptionsDelegate?
 
     private let stockPhotos = StockPhotosPicker()
 
-    init(delegate: AztecMoreCoordinatorDelegate & StockPhotosPickerDelegate) {
+    init(delegate: MediaPickingOptionsDelegate & StockPhotosPickerDelegate) {
         self.delegate = delegate
         stockPhotos.delegate = delegate
     }
 
-    func present(context: MoreCoordinatorContext) {
+    func present(context: MediaPickingContext) {
         let origin = context.origin
         let blog = context.blog
         let fromView = context.view
@@ -50,7 +44,7 @@ final class AztecMoreCoordinator {
 
     private func cancelAction() -> UIAlertAction {
         return UIAlertAction(title: .cancelMoreOptions, style: .cancel, handler: { [weak self] action in
-            self?.delegate?.didCancel(coordinator: self)
+            self?.delegate?.didCancel()
         })
     }
 
