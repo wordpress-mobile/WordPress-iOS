@@ -243,7 +243,7 @@ open class DiscussionSettingsViewController: UITableViewController {
         pickerViewController.pickerSelectedValue = settings.commentsCloseAutomaticallyAfterDays as? Int
         pickerViewController.onChange           = { [weak self] (enabled: Bool, newValue: Int) in
             self?.settings.commentsCloseAutomatically = enabled
-            self?.settings.commentsCloseAutomaticallyAfterDays = newValue as NSNumber?
+            self?.settings.commentsCloseAutomaticallyAfterDays = newValue as NSNumber
         }
 
         navigationController?.pushViewController(pickerViewController, animated: true)
@@ -269,7 +269,7 @@ open class DiscussionSettingsViewController: UITableViewController {
     fileprivate func pressedThreading(_ payload: AnyObject?) {
         let settingsViewController              = SettingsSelectionViewController(style: .grouped)
         settingsViewController.title            = NSLocalizedString("Threading", comment: "Discussion Settings Title")
-        settingsViewController.currentValue     = settings.commentsThreading.rawValue as NSObject?
+        settingsViewController.currentValue     = settings.commentsThreading.rawValue as NSObject
         settingsViewController.titles           = CommentsThreading.allTitles
         settingsViewController.values           = CommentsThreading.allValues
         settingsViewController.onItemSelected   = { [weak self] (selected: Any?) in
@@ -296,7 +296,7 @@ open class DiscussionSettingsViewController: UITableViewController {
         pickerViewController.pickerSelectedValue = settings.commentsPageSize as? Int
         pickerViewController.onChange           = { [weak self] (enabled: Bool, newValue: Int) in
             self?.settings.commentsPagingEnabled = enabled
-            self?.settings.commentsPageSize = newValue as NSNumber?
+            self?.settings.commentsPageSize = newValue as NSNumber
         }
 
         navigationController?.pushViewController(pickerViewController, animated: true)
@@ -305,7 +305,7 @@ open class DiscussionSettingsViewController: UITableViewController {
     fileprivate func pressedAutomaticallyApprove(_ payload: AnyObject?) {
         let settingsViewController              = SettingsSelectionViewController(style: .grouped)
         settingsViewController.title            = NSLocalizedString("Automatically Approve", comment: "Discussion Settings Title")
-        settingsViewController.currentValue     = settings.commentsAutoapproval.rawValue as NSObject?
+        settingsViewController.currentValue     = settings.commentsAutoapproval.rawValue as NSObject
         settingsViewController.titles           = CommentsAutoapproval.allTitles
         settingsViewController.values           = CommentsAutoapproval.allValues
         settingsViewController.hints            = CommentsAutoapproval.allHints
@@ -330,7 +330,7 @@ open class DiscussionSettingsViewController: UITableViewController {
         pickerViewController.pickerMaximumValue = commentsLinksMaximumValue
         pickerViewController.pickerSelectedValue = settings.commentsMaximumLinks as? Int
         pickerViewController.onChange           = { [weak self] (enabled: Bool, newValue: Int) in
-            self?.settings.commentsMaximumLinks = newValue as NSNumber?
+            self?.settings.commentsMaximumLinks = newValue as NSNumber
         }
 
         navigationController?.pushViewController(pickerViewController, animated: true)
