@@ -1,0 +1,1 @@
+Bu dağıtım için bir kaç pikseli cilaladık, bir kaç hataya elveda dedik ve uygulama kullanıcılarımız için WordPress deneyimini iyileştirecek arka plan geliştirmeleri yaptık.

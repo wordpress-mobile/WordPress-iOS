@@ -1,0 +1,1 @@
+Für diese Version haben wir etliche Pixel aufpoliert, uns von einigen Fehlern verabschiedet und hinter den Kulissen gearbeitet, um das WordPress-Erlebnis für unsere App-Benutzer noch besser zu machen.

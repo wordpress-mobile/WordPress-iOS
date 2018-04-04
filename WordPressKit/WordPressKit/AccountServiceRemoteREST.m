@@ -243,6 +243,7 @@ static NSString * const UserDictionaryEmailVerifiedKey = @"email_verified";
                                                                                   @"email": email,
                                                                                   @"client_id": clientID,
                                                                                   @"client_secret": clientSecret,
+                                                                                  @"locale": [[WordPressComLanguageDatabase new] deviceLanguageSlug],
                                                                                   }];
     if (![@"wordpress" isEqualToString:scheme]) {
         [params setObject:scheme forKey:@"scheme"];

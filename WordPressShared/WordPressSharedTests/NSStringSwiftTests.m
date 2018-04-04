@@ -1,10 +1,11 @@
 #import <XCTest/XCTest.h>
+@import WordPressShared;
 
-@interface NSStringHelpersTest : XCTestCase
+@interface NSStringSwiftTest : XCTestCase
 
 @end
 
-@implementation NSStringHelpersTest
+@implementation NSStringSwiftTest
 
 - (void)testHostname
 {

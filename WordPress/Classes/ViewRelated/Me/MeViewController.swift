@@ -55,13 +55,14 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         NotificationCenter.default.addObserver(self, selector: #selector(MeViewController.accountDidChange), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
 
-        refreshAccountDetails()
-
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        refreshAccountDetails()
+
         HelpshiftUtils.refreshUnreadNotificationCount()
 
         if splitViewControllerIsHorizontallyCompact {
@@ -443,11 +444,12 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     /// into a self-hosted site the ability to create a WordPress.com account.
     ///
     fileprivate func promptForLoginOrSignup() {
-        let controller = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
 
         if FeatureFlag.socialSignup.enabled {
             WordPressAuthenticator.showLoginFromPresenter(self, animated: true, thenEditor: false, showCancel: true)
         } else {
+            let controller = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
+
             controller.addActionWithTitle(NSLocalizedString("Log In",
                                                             comment: "Button title.  Tapping takes the user to the login form."),
                                           style: .default,
@@ -463,17 +465,17 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                                             let navController = NUXNavigationController(rootViewController: controller)
                                             self.present(navController, animated: true, completion: nil)
                                           })
-        }
 
-        controller.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel"))
-        controller.modalPresentationStyle = .popover
-        present(controller, animated: true, completion: nil)
+            controller.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel"))
+            controller.modalPresentationStyle = .popover
+            present(controller, animated: true, completion: nil)
 
-        if let presentationController = controller.popoverPresentationController,
-            let cell = tableView.visibleCells.last {
-            presentationController.permittedArrowDirections = .any
-            presentationController.sourceView = cell
-            presentationController.sourceRect = cell.bounds
+            if let presentationController = controller.popoverPresentationController,
+                let cell = tableView.visibleCells.last {
+                presentationController.permittedArrowDirections = .any
+                presentationController.sourceView = cell
+                presentationController.sourceRect = cell.bounds
+            }
         }
     }
 }
