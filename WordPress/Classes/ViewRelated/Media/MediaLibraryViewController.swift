@@ -641,10 +641,12 @@ extension MediaLibraryViewController: MediaPickingOptionsDelegate {
 
 extension MediaLibraryViewController: StockPhotosPickerDelegate {
     func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
-//        assets.forEach {
-//            self.insert(exportableAsset: $0, source: .stockPhotos)
-//        }
-
-        print("assets received ", assets)
+        assets.forEach {
+            let _ = $0.image(with: .zero, completionHandler: { [weak self] image, error in
+                if let image = image {
+                    self?.pickerDataSource.add(image, metadata: nil, completionBlock: nil)
+                }
+            })
+        }
     }
 }
