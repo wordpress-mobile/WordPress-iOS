@@ -6,10 +6,12 @@ final class MediaLibraryMediaPickingCoordinator {
 
     private let stockPhotos = StockPhotosPicker()
     private let cameraCapture = CameraCaptureCoordinator()
+    private let mediaLibrary = MediaLibraryPicker()
 
-    init(delegate: MediaPickingOptionsDelegate & StockPhotosPickerDelegate) {
+    init(delegate: MediaPickingOptionsDelegate & StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate) {
         self.delegate = delegate
         stockPhotos.delegate = delegate
+        mediaLibrary.delegate = delegate
     }
 
     func present(context: MediaPickingContext) {
@@ -28,7 +30,7 @@ final class MediaLibraryMediaPickingCoordinator {
         }
 
         menuAlert.addDefaultActionWithTitle(NSLocalizedString("Photo Library", comment: "Menu option for selecting media from the device's photo library.")) { [weak self] _ in
-            self?.showMediaPicker(origin: origin)
+            self?.showMediaPicker(origin: origin, blog: blog)
         }
 
         menuAlert.addAction(freePhotoAction(origin: origin, blog: blog))
@@ -86,16 +88,17 @@ final class MediaLibraryMediaPickingCoordinator {
         origin.present(docPicker, animated: true, completion: nil)
     }
 
-    private func showMediaPicker(origin: UIViewController & UIDocumentPickerDelegate) {
-        let options = WPMediaPickerOptions()
-        options.showMostRecentFirst = true
-        options.filter = [.all]
-        options.allowCaptureOfMedia = false
-
-        let picker = WPNavigationMediaPickerViewController(options: options)
-        picker.dataSource = WPPHAssetDataSource()
-        //picker.delegate = self
-
-        origin.present(picker, animated: true, completion: nil)
+    private func showMediaPicker(origin: UIViewController, blog: Blog) {
+//        let options = WPMediaPickerOptions()
+//        options.showMostRecentFirst = true
+//        options.filter = [.all]
+//        options.allowCaptureOfMedia = false
+//
+//        let picker = WPNavigationMediaPickerViewController(options: options)
+//        picker.dataSource = WPPHAssetDataSource()
+//        //picker.delegate = self
+//
+//        origin.present(picker, animated: true, completion: nil)
+        mediaLibrary.presentPicker(origin: origin, blog: blog)
     }
 }
