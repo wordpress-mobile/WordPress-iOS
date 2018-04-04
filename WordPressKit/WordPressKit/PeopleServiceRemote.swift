@@ -382,7 +382,7 @@ private extension PeopleServiceRemote {
     func peopleFromResponse<T: RemotePerson>(_ rawPeople: [[String: AnyObject]],
                                         siteID: Int,
                                         type: T.Type) throws -> [T] {
-        let people = try rawPeople.flatMap { (user) -> T? in
+        let people = try rawPeople.compactMap { (user) -> T? in
             return try personFromResponse(user, siteID: siteID, type: type)
         }
 

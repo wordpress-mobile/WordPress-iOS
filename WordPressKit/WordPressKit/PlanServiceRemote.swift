@@ -81,7 +81,7 @@ private func mapPlansResponse(_ response: AnyObject) throws -> (activePlan: Remo
 }
 
 private func parseFeatureGroups(_ json: [[String: AnyObject]]) throws -> [RemotePlanFeatureGroupPlaceholder] {
-    return try json.flatMap { groupJson in
+    return try json.compactMap { groupJson in
         guard let slugs = groupJson["items"] as? [String] else { throw PlanServiceRemote.ResponseError.decodingFailure }
         return RemotePlanFeatureGroupPlaceholder(title: groupJson["title"] as? String, slugs: slugs)
     }

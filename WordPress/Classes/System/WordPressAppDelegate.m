@@ -291,9 +291,9 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
         // Synchronize the cleanup call on the main thread in case
         // the task actually finishes at around the same time.
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (_bgTask != UIBackgroundTaskInvalid) {
-                [app endBackgroundTask:_bgTask];
-                _bgTask = UIBackgroundTaskInvalid;
+            if (self.bgTask != UIBackgroundTaskInvalid) {
+                [app endBackgroundTask:self.bgTask];
+                self.bgTask = UIBackgroundTaskInvalid;
             }
         });
     }];
@@ -437,13 +437,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
     [[PushNotificationsManager shared] registrationDidFail:error];
-}
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
-{
-    DDLogMethod();
-
-    [[PushNotificationsManager shared] handleNotification:userInfo completionHandler:nil];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler

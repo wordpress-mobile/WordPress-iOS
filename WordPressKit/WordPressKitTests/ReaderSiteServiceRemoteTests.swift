@@ -153,7 +153,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
         let url = URL(string: "http://www.wordpress.com")!
         let expectedPath = readerSiteServiceRemote.path(forEndpoint: "sites/\(url.host!)",
                                                         withVersion: ._1_1)
-        readerSiteServiceRemote.findSiteID(for: url as URL!, success: nil, failure: nil)
+        readerSiteServiceRemote.findSiteID(for: url as URL, success: nil, failure: nil)
         XCTAssertTrue(mockRemoteApi.getMethodCalled, "Wrong method")
         XCTAssertEqual(mockRemoteApi.URLStringPassedIn, expectedPath, "Wrong path")
     }
@@ -162,8 +162,8 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
 
         let response = [String: AnyObject]()
         var failure = false
-        let url = URL(string: "http://")
-        readerSiteServiceRemote.findSiteID(for: url as URL!, success: nil, failure: { _ in
+        let url = URL(string: "http://")!
+        readerSiteServiceRemote.findSiteID(for: url as URL, success: nil, failure: { _ in
             failure = true
         })
         mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
@@ -174,8 +174,8 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
 
         let response = ["ID": 1]
         var siteID: UInt = 0
-        let url = URL(string: "http://www.wordpress.com")
-        readerSiteServiceRemote.findSiteID(for: url as URL!, success: {
+        let url = URL(string: "http://www.wordpress.com")!
+        readerSiteServiceRemote.findSiteID(for: url as URL, success: {
             siteID = $0
         }, failure: nil)
         mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
@@ -218,7 +218,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
         let url = URL(string: "http://www.wordpress.com")!
         let expectedPath = readerSiteServiceRemote.path(forEndpoint: "read/following/mine",
                                                         withVersion: ._1_1)
-        readerSiteServiceRemote.checkSubscribedToFeed(by: url as URL!, success: nil, failure: nil)
+        readerSiteServiceRemote.checkSubscribedToFeed(by: url as URL, success: nil, failure: nil)
         XCTAssertTrue(mockRemoteApi.getMethodCalled, "Wrong method")
         XCTAssertEqual(mockRemoteApi.URLStringPassedIn, expectedPath, "Wrong path")
     }
@@ -228,7 +228,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
         let url = URL(string: "http://www.wordpress.com")!
         var subscribed = false
         let response = url.absoluteString
-        readerSiteServiceRemote.checkSubscribedToFeed(by: url as URL!, success: {
+        readerSiteServiceRemote.checkSubscribedToFeed(by: url as URL, success: {
             subscribed = $0
             }, failure: nil)
         mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
@@ -240,7 +240,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
         let url = URL(string: "http://www.wordpress.com")!
         var subscribed = false
         let response = "http://www.gravatar.com"
-        readerSiteServiceRemote.checkSubscribedToFeed(by: url as URL!, success: {
+        readerSiteServiceRemote.checkSubscribedToFeed(by: url as URL, success: {
             subscribed = $0
         }, failure: nil)
         mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())

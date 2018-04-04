@@ -23,7 +23,7 @@ import Foundation
             return statuses.strings
         }
         set {
-            statuses = newValue.flatMap({ BasePost.Status(rawValue: $0) })
+            statuses = newValue.compactMap({ BasePost.Status(rawValue: $0) })
         }
     }
 
