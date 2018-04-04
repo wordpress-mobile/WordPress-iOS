@@ -245,7 +245,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     }
 
     private func showOptionsMenu() {
-        let pickingContext = MediaPickingContext(origin: self, view: view, blog: blog)
+        let pickingContext = MediaPickingContext(origin: self, view: view, barButtonItem: navigationItem.rightBarButtonItem, blog: blog)
         mediaPickingCoordinator.present(context: pickingContext)
     }
 
