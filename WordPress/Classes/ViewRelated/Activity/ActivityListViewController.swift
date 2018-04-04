@@ -147,14 +147,18 @@ extension ActivityListViewController {
             return false
         }
 
-        return (!row.activity.isDiscarded && row.activity.rewindable)
+        return row.activity.isRewindable
     }
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        guard let row = handler.viewModel.rowAtIndexPath(indexPath) as? ActivityListRow, row.activity.isRewindable else {
+            return nil
+        }
+
         let rewindAction = UITableViewRowAction(style: .normal,
                                                 title: NSLocalizedString("Rewind", comment: "Title displayed when user swipes on a rewind cell"),
                                                 handler: { [weak self] _, indexPath in
-                                                    self?.handler.tableView(tableView, didSelectRowAt: indexPath)
+                                                    self?.presentRewindFor(activity: row.activity)
         })
         rewindAction.backgroundColor = WPStyleGuide.mediumBlue()
 
@@ -177,9 +181,8 @@ extension ActivityListViewController: WPNoResultsViewDelegate {
 extension ActivityListViewController: ActivityRewindPresenter {
 
     func presentRewindFor(activity: Activity) {
-        guard let rewindID = activity.rewindID,
-            !activity.isDiscarded && activity.rewindable else {
-            return
+        guard activity.isRewindable, let rewindID = activity.rewindID else {
+                return
         }
 
         let title = NSLocalizedString("Rewind Site",
@@ -202,12 +205,22 @@ extension ActivityListViewController: ActivityRewindPresenter {
     }
 
 }
+extension ActivityListViewController: ActivityDetailPresenter {
+
+    func presentDetailsFor(activity: Activity) {
+        let detailVC = ActivityDetailViewController(activity: activity,
+                                                    rewindPresenter: self)
+        self.navigationController?.pushViewController(detailVC, animated: true)
+    }
+
+}
 
 // MARK: - Restores handling
 
 extension ActivityListViewController {
 
     fileprivate func restoreSiteToRewindID(_ rewindID: String) {
+        navigationController?.popToViewController(self, animated: true)
         tableView.isUserInteractionEnabled = false
         service.restoreSite(siteID, rewindID: rewindID, success: { (restoreID) in
             self.showRestoringMessage()
