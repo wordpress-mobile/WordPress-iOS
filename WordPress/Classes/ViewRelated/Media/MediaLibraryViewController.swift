@@ -244,18 +244,18 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         showOptionsMenu()
     }
 
-    private func showMediaPicker() {
-        let options = WPMediaPickerOptions()
-        options.showMostRecentFirst = true
-        options.filter = [.all]
-        options.allowCaptureOfMedia = false
-
-        let picker = WPNavigationMediaPickerViewController(options: options)
-        picker.dataSource = WPPHAssetDataSource()
-        picker.delegate = self
-
-        present(picker, animated: true, completion: nil)
-    }
+//    private func showMediaPicker() {
+//        let options = WPMediaPickerOptions()
+//        options.showMostRecentFirst = true
+//        options.filter = [.all]
+//        options.allowCaptureOfMedia = false
+//
+//        let picker = WPNavigationMediaPickerViewController(options: options)
+//        picker.dataSource = WPPHAssetDataSource()
+//        picker.delegate = self
+//
+//        present(picker, animated: true, completion: nil)
+//    }
 
     private func showOptionsMenu() {
         let pickingContext = MediaPickingContext(origin: self, view: view, blog: blog)
@@ -453,49 +453,49 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     // MARK: - Upload Media from Camera
 
-    private func presentMediaCapture() {
-        capturePresenter = WPMediaCapturePresenter(presenting: self)
-        capturePresenter!.completionBlock = { [weak self] mediaInfo in
-            if let mediaInfo = mediaInfo as NSDictionary? {
-                self?.processMediaCaptured(mediaInfo)
-            }
-            self?.capturePresenter = nil
-        }
-
-        capturePresenter!.presentCapture()
-    }
-
-    private func processMediaCaptured(_ mediaInfo: NSDictionary) {
-        let completionBlock: WPMediaAddedBlock = { [weak self] media, error in
-            if error != nil || media == nil {
-                print("Adding media failed: ", error?.localizedDescription ?? "no media")
-                return
-            }
-            guard let blog = self?.blog,
-                let media = media as? PHAsset else {
-                return
-            }
-
-            let info = MediaAnalyticsInfo(origin: .mediaLibrary, selectionMethod: .fullScreenPicker)
-            MediaCoordinator.shared.addMedia(from: media, to: blog, analyticsInfo: info)
-        }
-
-        guard let mediaType = mediaInfo[UIImagePickerControllerMediaType] as? String else { return }
-
-        switch mediaType {
-        case String(kUTTypeImage):
-            if let image = mediaInfo[UIImagePickerControllerOriginalImage] as? UIImage,
-                let metadata = mediaInfo[UIImagePickerControllerMediaMetadata] as? [AnyHashable: Any] {
-                WPPHAssetDataSource().add(image, metadata: metadata, completionBlock: completionBlock)
-            }
-        case String(kUTTypeMovie):
-            if let mediaURL = mediaInfo[UIImagePickerControllerMediaURL] as? URL {
-                WPPHAssetDataSource().addVideo(from: mediaURL, completionBlock: completionBlock)
-            }
-        default:
-            break
-        }
-    }
+//    fileprivate func presentMediaCapture() {
+//        capturePresenter = WPMediaCapturePresenter(presenting: self)
+//        capturePresenter!.completionBlock = { [weak self] mediaInfo in
+//            if let mediaInfo = mediaInfo as NSDictionary? {
+//                self?.processMediaCaptured(mediaInfo)
+//            }
+//            self?.capturePresenter = nil
+//        }
+//
+//        capturePresenter!.presentCapture()
+//    }
+//
+//    private func processMediaCaptured(_ mediaInfo: NSDictionary) {
+//        let completionBlock: WPMediaAddedBlock = { [weak self] media, error in
+//            if error != nil || media == nil {
+//                print("Adding media failed: ", error?.localizedDescription ?? "no media")
+//                return
+//            }
+//            guard let blog = self?.blog,
+//                let media = media as? PHAsset else {
+//                return
+//            }
+//
+//            let info = MediaAnalyticsInfo(origin: .mediaLibrary, selectionMethod: .fullScreenPicker)
+//            MediaCoordinator.shared.addMedia(from: media, to: blog, analyticsInfo: info)
+//        }
+//
+//        guard let mediaType = mediaInfo[UIImagePickerControllerMediaType] as? String else { return }
+//
+//        switch mediaType {
+//        case String(kUTTypeImage):
+//            if let image = mediaInfo[UIImagePickerControllerOriginalImage] as? UIImage,
+//                let metadata = mediaInfo[UIImagePickerControllerMediaMetadata] as? [AnyHashable: Any] {
+//                WPPHAssetDataSource().add(image, metadata: metadata, completionBlock: completionBlock)
+//            }
+//        case String(kUTTypeMovie):
+//            if let mediaURL = mediaInfo[UIImagePickerControllerMediaURL] as? URL {
+//                WPPHAssetDataSource().addVideo(from: mediaURL, completionBlock: completionBlock)
+//            }
+//        default:
+//            break
+//        }
+//    }
 }
 
 // MARK: - UIDocumentPickerDelegate

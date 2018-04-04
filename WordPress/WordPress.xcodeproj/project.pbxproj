@@ -884,6 +884,8 @@
 		D809E686203F0215001AA0DE /* ReaderPostCardCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D809E685203F0215001AA0DE /* ReaderPostCardCellTests.swift */; };
 		D80BC79C207464D200614A59 /* MediaLibraryMediaPickingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BC79B207464D200614A59 /* MediaLibraryMediaPickingCoordinator.swift */; };
 		D80BC79E20746B4100614A59 /* MediaPickingContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BC79D20746B4100614A59 /* MediaPickingContext.swift */; };
+		D80BC7A02074722000614A59 /* CameraCaptureCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BC79F2074722000614A59 /* CameraCaptureCoordinator.swift */; };
+		D80BC7A22074739400614A59 /* MediaLibraryStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BC7A12074739300614A59 /* MediaLibraryStrings.swift */; };
 		D80EE63A203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80EE639203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift */; };
 		D81322B32050F9110067714D /* NotificationName+Names.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81322B22050F9110067714D /* NotificationName+Names.swift */; };
 		D8A3A5AA2069E53900992576 /* AztecMediaPickingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5A92069E53900992576 /* AztecMediaPickingCoordinator.swift */; };
@@ -2426,6 +2428,8 @@
 		D809E685203F0215001AA0DE /* ReaderPostCardCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderPostCardCellTests.swift; sourceTree = "<group>"; };
 		D80BC79B207464D200614A59 /* MediaLibraryMediaPickingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaLibraryMediaPickingCoordinator.swift; sourceTree = "<group>"; };
 		D80BC79D20746B4100614A59 /* MediaPickingContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickingContext.swift; sourceTree = "<group>"; };
+		D80BC79F2074722000614A59 /* CameraCaptureCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCaptureCoordinator.swift; sourceTree = "<group>"; };
+		D80BC7A12074739300614A59 /* MediaLibraryStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaLibraryStrings.swift; sourceTree = "<group>"; };
 		D80EE639203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderFollowedSitesStreamHeaderTests.swift; sourceTree = "<group>"; };
 		D81322B22050F9110067714D /* NotificationName+Names.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Names.swift"; sourceTree = "<group>"; };
 		D8A3A5A92069E53900992576 /* AztecMediaPickingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AztecMediaPickingCoordinator.swift; sourceTree = "<group>"; };
@@ -3860,6 +3864,8 @@
 				17D5C3F61FFCF2D800EB70FF /* MediaProgressCoordinatorNoticeViewModel.swift */,
 				1750BD6C201144DB0050F13A /* MediaNoticeNavigationCoordinator.swift */,
 				D80BC79B207464D200614A59 /* MediaLibraryMediaPickingCoordinator.swift */,
+				D80BC79F2074722000614A59 /* CameraCaptureCoordinator.swift */,
+				D80BC7A12074739300614A59 /* MediaLibraryStrings.swift */,
 			);
 			path = Media;
 			sourceTree = "<group>";
@@ -7377,6 +7383,7 @@
 				E64384831C628FCC0052ADB5 /* WPStyleGuide+Sharing.swift in Sources */,
 				177074851FB209F100951A4A /* MediaCellProgressView.swift in Sources */,
 				7462BFD42028CD4400B552D8 /* ShareNoticeNavigationCoordinator.swift in Sources */,
+				D80BC7A02074722000614A59 /* CameraCaptureCoordinator.swift in Sources */,
 				74729CAE205722E300D1394D /* AbstractPost+Searchable.swift in Sources */,
 				43B3823C20090AE8008434F4 /* NUXViewControllerBase.swift in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
@@ -7789,6 +7796,7 @@
 				FFB1FA9E1BF0EB840090C761 /* UIImage+Exporters.swift in Sources */,
 				E6B84DD51F01BDAA00B1B686 /* SiteInfoHeaderView.swift in Sources */,
 				E1556CF2193F6FE900FC52EA /* CommentService.m in Sources */,
+				D80BC7A22074739400614A59 /* MediaLibraryStrings.swift in Sources */,
 				5DB3BA0518D0E7B600F3F3E9 /* WPPickerView.m in Sources */,
 				B5E94D151FE04815000E7C20 /* UIImageView+SiteIcon.swift in Sources */,
 				5D42A405175E76A7005CFF05 /* WPImageViewController.m in Sources */,
