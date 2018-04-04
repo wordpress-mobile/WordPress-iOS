@@ -30,7 +30,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
 
     var gravatarProfile: GravatarProfile?
     var userProfile: UserProfile?
-    var endpoint: WordPressEndpoint?
+    var credentials: WordPressCredentials?
 
 
     // MARK: - Lifecycle Methods
@@ -257,7 +257,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
             info.email = profile.email
         }
 
-        info.endpoint = endpoint
+        info.credentials = credentials
 
         return info
     }
@@ -356,12 +356,12 @@ extension LoginSelfHostedViewController {
             fatalError()
         }
 
-        let endpoint = WordPressEndpoint.wporg(username: username, password: password, xmlrpc: xmlrpc, options: options)
-        delegate.sync(endpoint: endpoint) { [weak self] _ in
+        let credentials = WordPressCredentials.wporg(username: username, password: password, xmlrpc: xmlrpc, options: options)
+        delegate.sync(credentials: credentials) { [weak self] _ in
 
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
 
-            self?.endpoint = endpoint
+            self?.credentials = credentials
             self?.fetchUserProfileInfo(username: username, password: password, xmlrpc: xmlrpc) {
                 self?.showLoginEpilogue()
             }

@@ -8,7 +8,7 @@ public struct LoginEpilogueUserInfo {
     var fullName = ""
     var email = ""
     var gravatarUrl: String?
-    var endpoint: WordPressEndpoint?
+    var credentials: WordPressCredentials?
 
     init(account: WPAccount) {
         if let name = account.username {
