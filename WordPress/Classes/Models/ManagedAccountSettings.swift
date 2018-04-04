@@ -89,18 +89,17 @@ class ManagedAccountSettings: NSManagedObject {
 
 extension AccountSettings {
     init(managed: ManagedAccountSettings) {
-        firstName = managed.firstName.stringByDecodingXMLCharacters()
-        lastName = managed.lastName.stringByDecodingXMLCharacters()
-        displayName = managed.displayName.stringByDecodingXMLCharacters()
-        aboutMe = managed.aboutMe
-
-        username = managed.username
-        email = managed.email
-        emailPendingAddress = managed.emailPendingAddress
-        emailPendingChange = managed.emailPendingChange
-        primarySiteID = managed.primarySiteID.intValue
-        webAddress = managed.webAddress
-        language = managed.language
+        self.init(firstName: managed.firstName.stringByDecodingXMLCharacters(),
+                  lastName: managed.lastName.stringByDecodingXMLCharacters(),
+                  displayName: managed.displayName.stringByDecodingXMLCharacters(),
+                  aboutMe: managed.aboutMe,
+                  username: managed.username,
+                  email: managed.email,
+                  emailPendingAddress: managed.emailPendingAddress,
+                  emailPendingChange: managed.emailPendingChange,
+                  primarySiteID: managed.primarySiteID.intValue,
+                  webAddress: managed.webAddress,
+                  language: managed.language)
     }
 
     var emailForDisplay: String {
