@@ -446,7 +446,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     fileprivate func promptForLoginOrSignup() {
 
         if FeatureFlag.socialSignup.enabled {
-            WordPressAuthenticator.showLoginFromPresenter(self, animated: true, thenEditor: false, showCancel: true)
+            WordPressAuthenticator.showLogin(from: self, animated: true, showCancel: true, restrictToWPCom: true)
         } else {
             let controller = UIAlertController.init(title: nil, message: nil, preferredStyle: .actionSheet)
 

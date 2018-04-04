@@ -182,19 +182,12 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     [super didReceiveMemoryWarning];
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-                                duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     if ([self.passwordTextField isFirstResponder]) {
         self.textFieldDidHaveFocusBeforeOrientationChange = YES;
     }
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    //[self reloadData];
 }
 
 #pragma mark - Password Field
@@ -1041,9 +1034,9 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     vc.onItemSelected = ^(NSString *visibility) {
         [weakVc dismiss];
         
-        NSAssert(_apost != nil, @"The post should not be nil here.");
-        NSAssert(!_apost.isFault, @"The post should not be a fault here here.");
-        NSAssert(_apost.managedObjectContext != nil, @"The post's MOC should not be nil here.");
+        NSAssert(self.apost != nil, @"The post should not be nil here.");
+        NSAssert(!self.apost.isFault, @"The post should not be a fault here here.");
+        NSAssert(self.apost.managedObjectContext != nil, @"The post's MOC should not be nil here.");
 
         if ([visibility isEqualToString:NSLocalizedString(@"Private", @"Post privacy status in the Post Editor/Settings area (compare with WP core translations).")]) {
             self.apost.status = PostStatusPrivate;
@@ -1061,11 +1054,11 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
                 
                 NSString *password = @"";
                 
-                NSAssert(_apost.original != nil,
+                NSAssert(self.apost.original != nil,
                          @"We're expecting to have a reference to the original post here.");
-                NSAssert(!_apost.original.isFault,
+                NSAssert(!self.apost.original.isFault,
                          @"The original post should not be a fault here here.");
-                NSAssert(_apost.original.managedObjectContext != nil,
+                NSAssert(self.apost.original.managedObjectContext != nil,
                          @"The original post's MOC should not be nil here.");
                 
                 if (self.apost.original.password) {

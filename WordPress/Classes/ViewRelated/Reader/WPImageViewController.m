@@ -189,9 +189,9 @@ static CGFloat const MinimumZoomScale = 0.1;
     [self hideBars:NO animated:animated];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     [self centerImage];
 }
 
