@@ -451,16 +451,6 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         }
     }
 
-    // MARK: - Document Picker
-
-    private func showDocumentPicker() {
-        let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
-        let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
-        docPicker.delegate = self
-        WPStyleGuide.configureDocumentPickerNavBarAppearance()
-        present(docPicker, animated: true, completion: nil)
-    }
-
     // MARK: - Upload Media from Camera
 
     private func presentMediaCapture() {
