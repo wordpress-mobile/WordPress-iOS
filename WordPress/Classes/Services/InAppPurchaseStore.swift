@@ -394,7 +394,7 @@ private func priceForProduct(_ identifier: String, products: [Product]) throws -
     }
     let formatter = NumberFormatter()
     formatter.numberStyle = .currency
-    formatter.locale = product.priceLocale as Locale?
+    formatter.locale = product.priceLocale
     guard let price = formatter.string(from: product.price) else {
         throw ProductRequestError.invalidProductPrice
     }
