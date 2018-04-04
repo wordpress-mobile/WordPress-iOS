@@ -52,5 +52,14 @@
 + (NSString *)debuggingKey {
     return @"";
 }
++ (NSString *)zendeskAppId {
+    return @"";
+}
++ (NSString *)zendeskUrl {
+    return @"";
+}
++ (NSString *)zendeskClientId {
+    return @"";
+}
 
 @end
