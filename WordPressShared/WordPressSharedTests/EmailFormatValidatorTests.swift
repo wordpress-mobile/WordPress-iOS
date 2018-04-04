@@ -1,5 +1,5 @@
 import XCTest
-@testable import WordPress
+import WordPressShared
 
 class EmailFormatValidatorTests: XCTestCase {
 
@@ -27,5 +27,4 @@ class EmailFormatValidatorTests: XCTestCase {
         XCTAssertFalse(EmailFormatValidator.validate(string: "examp***le@exam_ple.com"))
         XCTAssertFalse(EmailFormatValidator.validate(string: "example@exam ple.com"))
     }
-
 }

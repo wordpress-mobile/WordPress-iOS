@@ -110,6 +110,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self setupPingHub];
     [self setupShortcutCreator];
     [self setupBackgroundRefresh:application];
+    [self setupComponentsAppearance];
     [self disableAnimationsForUITests:application];
 
     return YES;
@@ -406,6 +407,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [MediaCoordinator.shared refreshMediaStatus];
+        [PostCoordinator.shared refreshPostStatus];
         [MediaFileManager clearUnusedMediaUploadFilesOnCompletion:nil onError:nil];
     });
     
@@ -491,7 +493,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
 {
-    [WordPressAuthenticator showLoginFromPresenter:self.window.rootViewController animated:animated thenEditor:thenEditor];
+    [WordPressAuthenticator showLoginFromPresenter:self.window.rootViewController animated:animated];
 }
 
 - (void)customizeAppearance
