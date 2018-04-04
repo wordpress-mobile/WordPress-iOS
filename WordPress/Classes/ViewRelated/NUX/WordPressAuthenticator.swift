@@ -140,13 +140,11 @@ public protocol WordPressAuthenticatorDelegate: class {
 
 
     // Helper used by WPAuthTokenIssueSolver
-    @objc class func signinForWPComFixingAuthToken(_ onDismissed: ((_ cancelled: Bool) -> Void)?) -> UIViewController {
-        let context = ContextManager.sharedInstance().mainContext
+    @objc
+    class func signinForWPCom(dotcomEmailAddress: String?, dotcomUsername: String?, onDismissed: ((_ cancelled: Bool) -> Void)? = nil) -> UIViewController {
         let loginFields = LoginFields()
-        if let account = AccountService(managedObjectContext: context).defaultWordPressComAccount() {
-            loginFields.emailAddress = account.email
-            loginFields.username = account.username
-        }
+        loginFields.emailAddress = dotcomEmailAddress ?? String()
+        loginFields.username = dotcomUsername ?? String()
 
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         guard let controller = storyboard.instantiateViewController(withIdentifier: "LoginWPcomPassword") as? LoginWPComViewController else {
@@ -155,17 +153,8 @@ public protocol WordPressAuthenticatorDelegate: class {
 
         controller.loginFields = loginFields
         controller.dismissBlock = onDismissed
+
         return NUXNavigationController(rootViewController: controller)
-    }
-
-
-    // Helper used by WPError
-    @objc class func showSigninForWPComFixingAuthToken() {
-        let controller = signinForWPComFixingAuthToken(nil)
-        let presenter = UIApplication.shared.keyWindow?.rootViewController
-        presenter?.present(controller, animated: true, completion: nil)
-
-        trackOpenedLogin()
     }
 
     private class func trackOpenedLogin() {
