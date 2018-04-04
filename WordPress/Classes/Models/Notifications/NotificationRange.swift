@@ -116,7 +116,7 @@ extension NotificationRange {
     /// Parses NotificationRange instances, given an array of raw ranges.
     ///
     class func rangesFromArray(_ ranges: [[String: AnyObject]]?) -> [NotificationRange] {
-        let parsed = ranges?.flatMap {
+        let parsed = ranges?.compactMap {
             return NotificationRange(dictionary: $0)
         }
 
