@@ -9,7 +9,7 @@ typedef NS_ENUM(NSUInteger, WPImageSourceError) {
     WPImageSourceErrorNilImage
 };
 
-extern NSString * const WPImageSourceErrorDomain;
+extern NSString * _Nonnull const WPImageSourceErrorDomain;
 
 /**
  WPImageSource takes care of downloading images.
@@ -20,6 +20,8 @@ extern NSString * const WPImageSourceErrorDomain;
  Otherwise, a download is started.
  */
 @interface WPImageSource : NSObject
+
+NS_ASSUME_NONNULL_BEGIN
 
 /**
  Returns the shared source object.
@@ -53,8 +55,10 @@ extern NSString * const WPImageSourceErrorDomain;
  */
 
 - (void)downloadImageForURL:(NSURL *)url
-                  authToken:(NSString *)authToken
+                  authToken:(NSString * _Nullable)authToken
                 withSuccess:(void (^)(UIImage *))success
                     failure:(void (^)(NSError *))failure;
+
+NS_ASSUME_NONNULL_END
 
 @end
