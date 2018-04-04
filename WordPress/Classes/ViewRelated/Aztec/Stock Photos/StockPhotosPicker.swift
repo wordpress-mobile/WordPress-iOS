@@ -36,7 +36,9 @@ final class StockPhotosPicker: NSObject {
         picker.showGroupSelector = false
         picker.dataSource = dataSource
 
-        origin.present(picker, animated: true)
+        origin.present(picker, animated: true) {
+            picker.mediaPicker.searchBar?.becomeFirstResponder()
+        }
     }
 }
 
