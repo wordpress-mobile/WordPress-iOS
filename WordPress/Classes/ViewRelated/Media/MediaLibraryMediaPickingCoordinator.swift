@@ -5,6 +5,7 @@ final class MediaLibraryMediaPickingCoordinator {
     private weak var delegate: MediaPickingOptionsDelegate?
 
     private let stockPhotos = StockPhotosPicker()
+    private let cameraCapture = CameraCaptureCoordinator()
 
     init(delegate: MediaPickingOptionsDelegate & StockPhotosPickerDelegate) {
         self.delegate = delegate
@@ -23,28 +24,32 @@ final class MediaLibraryMediaPickingCoordinator {
         }
 
         if WPMediaCapturePresenter.isCaptureAvailable() {
-            menuAlert.addDefaultActionWithTitle(NSLocalizedString("Take Photo or Video", comment: "Menu option for taking an image or video with the device's camera.")) { _ in
-                //self.presentMediaCapture()
-            }
+            menuAlert.addAction(cameraAction(origin: origin, blog: blog))
         }
 
-        menuAlert.addDefaultActionWithTitle(NSLocalizedString("Photo Library", comment: "Menu option for selecting media from the device's photo library.")) { _ in
-            //self.showMediaPicker()
+        menuAlert.addDefaultActionWithTitle(NSLocalizedString("Photo Library", comment: "Menu option for selecting media from the device's photo library.")) { [weak self] _ in
+            self?.showMediaPicker(origin: origin)
         }
+
+        menuAlert.addAction(freePhotoAction(origin: origin, blog: blog))
 
         if #available(iOS 11.0, *) {
-            menuAlert.addDefaultActionWithTitle(NSLocalizedString("Other Apps", comment: "Menu option used for adding media from other applications.")) { _ in
-                //self.showDocumentPicker()
-            }
+            menuAlert.addAction(otherAppsAction(origin: origin))
         }
 
-        menuAlert.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel button"))
+        menuAlert.addAction(cancelAction())
 
         // iPad support
 //        menuAlert.popoverPresentationController?.sourceView = fromView
 //        menuAlert.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
 
         origin.present(menuAlert, animated: true, completion: nil)
+    }
+
+    private func cameraAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
+                return UIAlertAction(title: .takePhotoOrVideo, style: .default, handler: { [weak self] action in
+                    self?.showCameraCapture(origin: origin, blog: blog)
+                })
     }
 
     private func freePhotoAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
@@ -65,6 +70,10 @@ final class MediaLibraryMediaPickingCoordinator {
         })
     }
 
+    private func showCameraCapture(origin: UIViewController, blog: Blog) {
+        cameraCapture.presentMediaCapture(origin: origin, blog: blog)
+    }
+
     private func showStockPhotos(origin: UIViewController, blog: Blog) {
         stockPhotos.presentPicker(origin: origin, blog: blog)
     }
@@ -77,4 +86,16 @@ final class MediaLibraryMediaPickingCoordinator {
         origin.present(docPicker, animated: true, completion: nil)
     }
 
+    private func showMediaPicker(origin: UIViewController & UIDocumentPickerDelegate) {
+        let options = WPMediaPickerOptions()
+        options.showMostRecentFirst = true
+        options.filter = [.all]
+        options.allowCaptureOfMedia = false
+
+        let picker = WPNavigationMediaPickerViewController(options: options)
+        picker.dataSource = WPPHAssetDataSource()
+        //picker.delegate = self
+
+        origin.present(picker, animated: true, completion: nil)
+    }
 }
