@@ -77,6 +77,10 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
         return true
     }
 
+    func searchCancelled() {
+        clearSearch(notifyObservers: true)
+    }
+
     // MARK: Unnused protocol methods
 
     func setSelectedGroup(_ group: WPMediaGroup) {
