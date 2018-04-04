@@ -29,10 +29,7 @@ final class MediaLibraryMediaPickingCoordinator {
             menuAlert.addAction(cameraAction(origin: origin, blog: blog))
         }
 
-        menuAlert.addDefaultActionWithTitle(NSLocalizedString("Photo Library", comment: "Menu option for selecting media from the device's photo library.")) { [weak self] _ in
-            self?.showMediaPicker(origin: origin, blog: blog)
-        }
-
+        menuAlert.addAction(photoLibraryAction(origin: origin, blog: blog))
         menuAlert.addAction(freePhotoAction(origin: origin, blog: blog))
 
         if #available(iOS 11.0, *) {
@@ -52,6 +49,12 @@ final class MediaLibraryMediaPickingCoordinator {
                 return UIAlertAction(title: .takePhotoOrVideo, style: .default, handler: { [weak self] action in
                     self?.showCameraCapture(origin: origin, blog: blog)
                 })
+    }
+
+    private func photoLibraryAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
+        return UIAlertAction(title: .importFromPhotoLibrary, style: .default, handler: { [weak self] action in
+            self?.showMediaPicker(origin: origin, blog: blog)
+        })
     }
 
     private func freePhotoAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
