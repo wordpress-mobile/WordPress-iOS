@@ -2,4 +2,8 @@ extension String {
     static var takePhotoOrVideo: String {
         return NSLocalizedString("Take Photo or Video", comment: "Menu option for taking an image or video with the device's camera.")
     }
+
+    static var importFromPhotoLibrary: String {
+        return NSLocalizedString("Photo Library", comment: "Menu option for selecting media from the device's photo library.")
+    }
 }
