@@ -28,6 +28,10 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     fileprivate var uploadObserverUUID: UUID?
 
+    fileprivate lazy var mediaPickingCoordinator: MediaLibraryMediaPickingCoordinator = {
+        return MediaLibraryMediaPickingCoordinator(delegate: self)
+    }()
+
     // MARK: - Initializers
 
     @objc init(blog: Blog) {
@@ -240,49 +244,9 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         showOptionsMenu()
     }
 
-    private func showMediaPicker() {
-        let options = WPMediaPickerOptions()
-        options.showMostRecentFirst = true
-        options.filter = [.all]
-        options.allowCaptureOfMedia = false
-
-        let picker = WPNavigationMediaPickerViewController(options: options)
-        picker.dataSource = WPPHAssetDataSource()
-        picker.delegate = self
-
-        present(picker, animated: true, completion: nil)
-    }
-
     private func showOptionsMenu() {
-        let menuAlert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
-
-        if let quotaUsageDescription = blog.quotaUsageDescription {
-            menuAlert.title = quotaUsageDescription
-        }
-
-        if WPMediaCapturePresenter.isCaptureAvailable() {
-            menuAlert.addDefaultActionWithTitle(NSLocalizedString("Take Photo or Video", comment: "Menu option for taking an image or video with the device's camera.")) { _ in
-                self.presentMediaCapture()
-            }
-        }
-
-        menuAlert.addDefaultActionWithTitle(NSLocalizedString("Photo Library", comment: "Menu option for selecting media from the device's photo library.")) { _ in
-            self.showMediaPicker()
-        }
-
-        if #available(iOS 11.0, *) {
-            menuAlert.addDefaultActionWithTitle(NSLocalizedString("Other Apps", comment: "Menu option used for adding media from other applications.")) { _ in
-                self.showDocumentPicker()
-            }
-        }
-
-        menuAlert.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel button"))
-
-        // iPad support
-        menuAlert.popoverPresentationController?.sourceView = view
-        menuAlert.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-
-        present(menuAlert, animated: true, completion: nil)
+        let pickingContext = MediaPickingContext(origin: self, view: view, barButtonItem: navigationItem.rightBarButtonItem, blog: blog)
+        mediaPickingCoordinator.present(context: pickingContext)
     }
 
     @objc private func editTapped() {
@@ -440,62 +404,6 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     private func unregisterUploadCoordinatorObserver() {
         if let uuid = uploadObserverUUID {
             MediaCoordinator.shared.removeObserver(withUUID: uuid)
-        }
-    }
-
-    // MARK: - Document Picker
-
-    private func showDocumentPicker() {
-        let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
-        let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
-        docPicker.delegate = self
-        WPStyleGuide.configureDocumentPickerNavBarAppearance()
-        present(docPicker, animated: true, completion: nil)
-    }
-
-    // MARK: - Upload Media from Camera
-
-    private func presentMediaCapture() {
-        capturePresenter = WPMediaCapturePresenter(presenting: self)
-        capturePresenter!.completionBlock = { [weak self] mediaInfo in
-            if let mediaInfo = mediaInfo as NSDictionary? {
-                self?.processMediaCaptured(mediaInfo)
-            }
-            self?.capturePresenter = nil
-        }
-
-        capturePresenter!.presentCapture()
-    }
-
-    private func processMediaCaptured(_ mediaInfo: NSDictionary) {
-        let completionBlock: WPMediaAddedBlock = { [weak self] media, error in
-            if error != nil || media == nil {
-                print("Adding media failed: ", error?.localizedDescription ?? "no media")
-                return
-            }
-            guard let blog = self?.blog,
-                let media = media as? PHAsset else {
-                return
-            }
-
-            let info = MediaAnalyticsInfo(origin: .mediaLibrary, selectionMethod: .fullScreenPicker)
-            MediaCoordinator.shared.addMedia(from: media, to: blog, analyticsInfo: info)
-        }
-
-        guard let mediaType = mediaInfo[UIImagePickerControllerMediaType] as? String else { return }
-
-        switch mediaType {
-        case String(kUTTypeImage):
-            if let image = mediaInfo[UIImagePickerControllerOriginalImage] as? UIImage,
-                let metadata = mediaInfo[UIImagePickerControllerMediaMetadata] as? [AnyHashable: Any] {
-                WPPHAssetDataSource().add(image, metadata: metadata, completionBlock: completionBlock)
-            }
-        case String(kUTTypeMovie):
-            if let mediaURL = mediaInfo[UIImagePickerControllerMediaURL] as? URL {
-                WPPHAssetDataSource().addVideo(from: mediaURL, completionBlock: completionBlock)
-            }
-        default:
-            break
         }
     }
 }
@@ -722,5 +630,24 @@ fileprivate extension Blog {
     var userCanUploadMedia: Bool {
         // Self-hosted non-Jetpack blogs have no capabilities, so we'll just assume that users can post media
         return capabilities != nil ? isUploadingFilesAllowed() : true
+    }
+}
+
+extension MediaLibraryViewController: MediaPickingOptionsDelegate {
+    func didCancel() {
+
+    }
+}
+
+extension MediaLibraryViewController: StockPhotosPickerDelegate {
+    func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
+        guard assets.count > 0 else {
+            return
+        }
+
+        let mediaCoordinator = MediaCoordinator.shared
+        assets.forEach {
+            mediaCoordinator.addMedia(from: $0, to: blog)
+        }
     }
 }

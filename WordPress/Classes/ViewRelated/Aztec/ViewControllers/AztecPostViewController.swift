@@ -454,8 +454,8 @@ class AztecPostViewController: UIViewController, PostEditor {
 
 
     /// Presents whatever happens when FormatBar's more button is selected
-    fileprivate lazy var moreCoordinator: AztecMoreCoordinator = {
-        return AztecMoreCoordinator(delegate: self)
+    fileprivate lazy var moreCoordinator: AztecMediaPickingCoordinator = {
+        return AztecMediaPickingCoordinator(delegate: self)
     }()
 
 
@@ -2147,7 +2147,7 @@ extension AztecPostViewController {
         stopListeningToNotifications()
         rememberFirstResponder()
 
-        let moreCoordinatorContext = MoreCoordinatorContext(origin: self, view: view, blog: post.blog)
+        let moreCoordinatorContext = MediaPickingContext(origin: self, view: view, blog: post.blog)
         moreCoordinator.present(context: moreCoordinatorContext)
     }
 
@@ -3593,8 +3593,8 @@ extension AztecPostViewController: UIDocumentPickerDelegate {
     }
 }
 
-extension AztecPostViewController: AztecMoreCoordinatorDelegate {
-    func didCancel(coordinator: AztecMoreCoordinator?) {
+extension AztecPostViewController: MediaPickingOptionsDelegate {
+    func didCancel() {
         startListeningToNotifications()
         restoreFirstResponder()
     }
