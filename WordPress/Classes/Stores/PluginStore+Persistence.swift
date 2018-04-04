@@ -31,21 +31,25 @@ extension PluginStoreState: Codable {
 }
 
 extension PluginStore {
+    private static func cacheFileURL() throws -> URL {
+        let cacheFilename = "plugins.json"
 
-    private static let cacheFilename = "plugins.json"
+        let documentsPath = try FileManager.default.url(for: .cachesDirectory,
+                                                        in: .userDomainMask,
+                                                        appropriateFor: nil,
+                                                        create: true)
+
+        let targetURL = documentsPath.appendingPathComponent(cacheFilename)
+
+        return targetURL
+    }
 
     func writeCachedJSON() {
         do {
             let jsonEncoder = JSONEncoder.init()
             let encodedStore = try jsonEncoder.encode(state)
 
-            let documentsPath = try FileManager.default.url(for: .documentDirectory,
-                                                            in: .userDomainMask,
-                                                            appropriateFor: nil,
-                                                            create: true)
-            let targetURL = documentsPath.appendingPathComponent(PluginStore.cacheFilename)
-
-            try encodedStore.write(to: targetURL, options: [.atomic])
+            try encodedStore.write(to: try PluginStore.cacheFileURL(), options: [.atomic])
         } catch {
             DDLogError("[PluginStore Error] \(error)")
         }
@@ -53,12 +57,7 @@ extension PluginStore {
 
     static func initialState() -> PluginStoreState? {
         do {
-            let fileURL = try FileManager.default.url(for: .documentDirectory,
-                                                   in: .userDomainMask,
-                                                   appropriateFor: nil,
-                                                   create: true).appendingPathComponent(PluginStore.cacheFilename)
-
-            let data = try Data(contentsOf: fileURL)
+            let data = try Data(contentsOf: try PluginStore.cacheFileURL())
             let state = try JSONDecoder().decode(PluginStoreState.self, from: data)
 
             return state
