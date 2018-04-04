@@ -89,16 +89,6 @@ final class MediaLibraryMediaPickingCoordinator {
     }
 
     private func showMediaPicker(origin: UIViewController, blog: Blog) {
-//        let options = WPMediaPickerOptions()
-//        options.showMostRecentFirst = true
-//        options.filter = [.all]
-//        options.allowCaptureOfMedia = false
-//
-//        let picker = WPNavigationMediaPickerViewController(options: options)
-//        picker.dataSource = WPPHAssetDataSource()
-//        //picker.delegate = self
-//
-//        origin.present(picker, animated: true, completion: nil)
         mediaLibrary.presentPicker(origin: origin, blog: blog)
     }
 }
