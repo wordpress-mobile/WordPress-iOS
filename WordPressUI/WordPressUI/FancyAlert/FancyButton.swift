@@ -113,18 +113,18 @@ open class FancyButton: UIButton {
 
     open override func didMoveToWindow() {
         super.didMoveToWindow()
-        configureAllTheThings()
+        configureAppearance()
     }
 
     open override func awakeFromNib() {
         super.awakeFromNib()
-        configureAllTheThings()
+        configureAppearance()
     }
 
 
     /// Setup: Everything = [Insets, Backgrounds, titleColor(s), titleLabel]
     ///
-    private func configureAllTheThings() {
+    private func configureAppearance() {
         configureInsets()
         configureBackgrounds()
         configureTitleColors()
