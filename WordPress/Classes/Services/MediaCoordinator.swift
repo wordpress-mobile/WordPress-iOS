@@ -347,6 +347,7 @@ class MediaCoordinator: NSObject {
 
     /// Returns true if there is any media with a fail state
     ///
+    @objc
     func hasFailedMedia(for post: AbstractPost) -> Bool {
         return cachedCoordinator(for: post)?.hasFailedMedia ?? false
     }
