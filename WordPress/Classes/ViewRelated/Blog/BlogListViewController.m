@@ -12,7 +12,6 @@
 #import "UILabel+SuggestSize.h"
 #import "WordPress-Swift.h"
 #import "WPGUIConstants.h"
-#import "CreateNewBlogViewController.h"
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPTableViewCell.h>
 #import <WordPressUI/WordPressUI.h>
@@ -30,7 +29,6 @@ static NSInteger HideSearchMinSites = 3;
                                         UIDataSourceModelAssociation,
                                         UITableViewDelegate,
                                         UISearchBarDelegate,
-                                        WPNoResultsViewDelegate, // To be removed with FeatureFlagSiteCreation.
                                         NoResultsViewControllerDelegate,
                                         WPSplitViewControllerDetailProvider>
 
@@ -38,7 +36,6 @@ static NSInteger HideSearchMinSites = 3;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UILabel *headerLabel;
-@property (nonatomic, strong) WPNoResultsView *noResultsView; // To be removed with FeatureFlagSiteCreation.
 @property (nonatomic, strong) NoResultsViewController *noResultsViewController;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic,   weak) UIAlertController *addSiteAlertController;
@@ -157,10 +154,7 @@ static NSInteger HideSearchMinSites = 3;
 
     self.editButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
 
-    [self configureNoResultsView];
-
     [self registerForAccountChangeNotification];
-    [self registerForBlogCreationNotification];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -219,9 +213,11 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)updateSearchVisibility
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    if ([blogService blogCountForAllAccounts] <= HideSearchMinSites) {
+    if (self.isEditing) {
+        return;
+    }
+    
+    if (self.dataSource.visibleBlogsCount <= HideSearchMinSites) {
         // Hide the search bar if there's only a few blogs
         [self.searchBar removeFromSuperview];
     } else if (self.searchBar.superview != self.stackView) {
@@ -279,34 +275,18 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)showNoResultsViewForSiteCount:(NSUInteger)siteCount
 {
-    if ([Feature enabled:FeatureFlagSiteCreation]) {
-        // If we've gone from no results to having just one site, the user has
-        // added a new site so we should auto-select it
-        if (self.noResultsViewController.beingPresented && siteCount == 1) {
-            [self removeNoResultsFromView];
-            [self bypassBlogListViewController];
-        }
-        
-        // If we have no sites, show the No Results VC.
-        if (siteCount == 0) {
-            [self addNoResultsToView];
+    // If we've gone from no results to having just one site, the user has
+    // added a new site so we should auto-select it
+    if (self.noResultsViewController.beingPresented && siteCount == 1) {
+        [self removeNoResultsFromView];
+        [self bypassBlogListViewController];
+    }
 
-            [self.noResultsViewController configureWithTitle:NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.") buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.") subtitle:nil image:nil];
-        }
-    } else {
-        // If we've gone from no results to having just one site, the user has
-        // added a new site so we should auto-select it
-        if (!self.noResultsView.hidden && siteCount == 1) {
-            [self bypassBlogListViewController];
-        }
-        
-        self.noResultsView.hidden = siteCount > 0;
-        
-        if (!self.noResultsView.hidden) {
-            self.noResultsView.titleText = NSLocalizedString(@"You don't have any WordPress sites yet.", @"Title shown when the user has no sites.");
-            self.noResultsView.messageText = NSLocalizedString(@"Would you like to start one?", @"Prompt asking user whether they'd like to create a new site if they don't already have one.");
-            self.noResultsView.buttonTitle = NSLocalizedString(@"Create Site", nil);
-        }
+    // If we have no sites, show the No Results VC.
+    if (siteCount == 0) {
+        [self addNoResultsToView];
+
+        [self.noResultsViewController configureWithTitle:NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.") buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.") subtitle:nil image:nil];
     }
 }
 
@@ -321,35 +301,19 @@ static NSInteger HideSearchMinSites = 3;
     NSString *multipleSubtitle = NSLocalizedString(@"To manage them here, set them to visible.", @"Prompt asking user to make sites visible in order to use them in the app (plural)");
     
     NSString *buttonTitle = NSLocalizedString(@"Change Visibility", @"Button title to edit visibility of sites.");
-    
-    
-    if ([Feature enabled:FeatureFlagSiteCreation]) {
-        [self addNoResultsToView];
-        
-        if (count == 1) {
-            [self.noResultsViewController configureWithTitle:singularTitle
-                                                 buttonTitle:buttonTitle
-                                                    subtitle:singularSubtitle
-                                                       image:nil];
-        } else {
-            [self.noResultsViewController configureWithTitle:multipleTitle
-                                                 buttonTitle:buttonTitle
-                                                    subtitle:multipleSubtitle
-                                                       image:nil];
-        }
-        
+
+    [self addNoResultsToView];
+
+    if (count == 1) {
+        [self.noResultsViewController configureWithTitle:singularTitle
+                                             buttonTitle:buttonTitle
+                                                subtitle:singularSubtitle
+                                                   image:nil];
     } else {
-        if (count == 1) {
-            self.noResultsView.titleText = singularTitle;
-            self.noResultsView.messageText = singularSubtitle;
-        } else {
-            self.noResultsView.titleText = multipleTitle;
-            self.noResultsView.messageText = multipleSubtitle;
-        }
-        
-        self.noResultsView.buttonTitle = buttonTitle;
-        
-        self.noResultsView.hidden = NO;
+        [self.noResultsViewController configureWithTitle:multipleTitle
+                                             buttonTitle:buttonTitle
+                                                subtitle:multipleSubtitle
+                                                   image:nil];
     }
 }
 
@@ -524,24 +488,6 @@ static NSInteger HideSearchMinSites = 3;
     self.noResultsViewController.delegate = self;
 }
 
-// To be removed with FeatureFlagSiteCreation.
-- (void)configureNoResultsView
-{
-    self.noResultsView = [WPNoResultsView noResultsViewWithTitle:nil
-                                                         message:nil
-                                                   accessoryView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"theme-empty-results"]]
-                                                     buttonTitle:nil];
-    [self.tableView addSubview:self.noResultsView];
-    [self.noResultsView setTranslatesAutoresizingMaskIntoConstraints:NO];
-
-    [self.tableView pinSubviewAtCenter:self.noResultsView];
-    [self.noResultsView layoutIfNeeded];
-
-    self.noResultsView.hidden = YES;
-
-    self.noResultsView.delegate = self;
-}
-
 #pragma mark - Notifications
 
 - (void)registerForAccountChangeNotification
@@ -549,14 +495,6 @@ static NSInteger HideSearchMinSites = 3;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(wordPressComAccountChanged:)
                                                  name:WPAccountDefaultWordPressComAccountChangedNotification
-                                               object:nil];
-}
-
-- (void)registerForBlogCreationNotification
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(newWordPressComBlogCreated:)
-                                                 name:NewWPComBlogCreatedNotification
                                                object:nil];
 }
 
@@ -618,24 +556,6 @@ static NSInteger HideSearchMinSites = 3;
 {
     [self setEditing:NO];
     [self updateSearchVisibility];
-}
-
-- (void)newWordPressComBlogCreated:(NSNotification *)notification
-{
-    Blog *blog = notification.userInfo[NewWPComBlogCreatedNotificationBlogUserInfoKey];
-
-    if (blog) {
-        NSIndexPath *indexPath = [self.dataSource indexPathForBlog:blog];
-        if (indexPath) {
-            [self.tableView flashRowAtIndexPath:indexPath
-                                 scrollPosition:UITableViewScrollPositionMiddle
-                                     completion:^{
-                                         if (![self splitViewControllerIsHorizontallyCompact]) {
-                                             [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
-                                         }
-                                     }];
-        }
-    }
 }
 
 #pragma mark - Table view delegate
@@ -883,7 +803,6 @@ static NSInteger HideSearchMinSites = 3;
 
         self.firstHide = nil;
         self.hideCount = 0;
-        self.noResultsView.hidden = YES;
     }
     else {
         self.tableView.tableHeaderView = nil;
@@ -899,7 +818,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)setAddSiteBarButtonItem
 {
-    if ([Feature enabled:FeatureFlagSiteCreation] && self.dataSource.allBlogsCount == 0) {
+    if (self.dataSource.allBlogsCount == 0) {
         self.navigationItem.rightBarButtonItem = nil;
     }
     else {
@@ -956,18 +875,11 @@ static NSInteger HideSearchMinSites = 3;
 {
     [self setEditing:NO animated:NO];
     
-    if ([Feature enabled:FeatureFlagSiteCreation]) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteCreation" bundle:nil];
-        SiteCreationCategoryTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"siteCategory"];
-        SiteCreationNavigationController *navController = [[SiteCreationNavigationController alloc]
-                                                           initWithRootViewController:controller];
-        [self presentViewController:navController animated:YES completion:nil];
-    }
-    
-    else {
-        CreateNewBlogViewController *createNewBlogViewController = [[CreateNewBlogViewController alloc] init];
-        [self.navigationController presentViewController:createNewBlogViewController animated:YES completion:nil];
-    }
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteCreation" bundle:nil];
+    SiteCreationCategoryTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"siteCategory"];
+    SiteCreationNavigationController *navController = [[SiteCreationNavigationController alloc]
+                                                       initWithRootViewController:controller];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)showLoginControllerForAddingSelfHostedSite
@@ -1025,6 +937,7 @@ static NSInteger HideSearchMinSites = 3;
     [self updateEditButton];
     [[WordPressAppDelegate sharedInstance] trackLogoutIfNeeded];
     [self maybeShowNUX];
+    [self updateSearchVisibility];
     [self updateViewsForCurrentSiteCount];
     [self validateBlogDetailsViewController];
 }
@@ -1033,14 +946,6 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)actionButtonPressed {
     [self showAddSiteAlertFromButton:self.noResultsViewController.actionButton];
-}
-
-// To be removed with FeatureFlagSiteCreation.
-#pragma mark - WPNoResultsViewDelegate
-
-- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
-{
-    [self showAddSiteAlertFromButton:noResultsView.button];
 }
 
 #pragma mark - View Delegate Helper

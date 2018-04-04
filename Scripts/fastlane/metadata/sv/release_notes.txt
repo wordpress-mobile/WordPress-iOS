@@ -1,2 +1,1 @@
-En ny utökningsmodul för delning lägger till stöd för att spara utkast och hantera etiketter.
-Hantering av tillägg har blivit ett snäpp bättre: nu kan du söka och installera tillägg.
+I denna utgåva har vi fixat till några pixlar, sagt hejdå till några programfel och bakom kulisserna arbetat på att ge ett smidigare WordPress för dem som använder vår app.
