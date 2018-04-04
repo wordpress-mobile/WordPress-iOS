@@ -1,5 +1,6 @@
 import MobileCoreServices
 
+/// Encapsulates capturing media from a device camera
 final class CameraCaptureCoordinator {
     private var capturePresenter: WPMediaCapturePresenter?
 

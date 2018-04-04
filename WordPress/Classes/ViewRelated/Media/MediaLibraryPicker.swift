@@ -1,5 +1,6 @@
 import WPMediaPicker
 
+/// Encapsulates launching and customization of a media picker to import media from the Photos Library
 final class MediaLibraryPicker: NSObject {
     private let dataSource = WPPHAssetDataSource()
 

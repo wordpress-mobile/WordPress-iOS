@@ -1,3 +1,4 @@
+/// Encapsulates context parameters to initiate a flow to pick media from several sources
 struct MediaPickingContext {
     let origin: UIViewController & UIDocumentPickerDelegate
     let view: UIView
