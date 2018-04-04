@@ -16,7 +16,7 @@ extension BlogSettings {
         /// Returns the sorted collection of all of the Localized Enum Titles.
         ///
         static var allTitles: [String] {
-            return allValues.flatMap { descriptionMap[$0] }
+            return allValues.compactMap { descriptionMap[$0] }
         }
 
         /// Returns the sorted collection of all of the possible Enum Values.
@@ -60,7 +60,7 @@ extension BlogSettings {
         /// Order is guarranteed to match exactly with *allValues*.
         ///
         static var allTitles: [String] {
-            return allValues.flatMap { descriptionMap[$0] }
+            return allValues.compactMap { descriptionMap[$0] }
         }
 
         /// Returns the sorted collection of all of the possible Enum Values.
@@ -106,7 +106,7 @@ extension BlogSettings {
         /// Returns the sorted collection of all of the Localized Enum Titles.
         ///
         static var allTitles: [String] {
-            return allValues.flatMap { descriptionMap[$0] }
+            return allValues.compactMap { descriptionMap[$0] }
         }
 
         /// Returns the sorted collection of all of the possible Enum Values.

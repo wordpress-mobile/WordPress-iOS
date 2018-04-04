@@ -57,7 +57,7 @@ class MediaNoticeNavigationCoordinator {
         let context = ContextManager.sharedInstance().mainContext
 
         if let mediaIDs = userInfo[key] as? [String] {
-            let media = mediaIDs.flatMap({ mediaID -> Media? in
+            let media = mediaIDs.compactMap({ mediaID -> Media? in
                 if let URIRepresentation = URL(string: mediaID),
                     let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: URIRepresentation),
                     let managedObject = try? context.existingObject(with: objectID),
