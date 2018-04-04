@@ -1089,7 +1089,7 @@ extension AztecPostViewController {
 
             // The post is a local or remote draft
             alertController.addDefaultActionWithTitle(title) { _ in
-                self.publishPost(action: .save, dismissWhenDone: true, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
+                self.asyncPublishPost(action: .save, dismissWhenDone: true, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
             }
         }
 
@@ -1205,7 +1205,7 @@ extension AztecPostViewController {
         }
 
         let promoBlock = { [unowned self] in
-            if !UserDefaults.standard.asyncPromoWasDisplayed {
+            if (action == .publish || action == .publishNow) && !UserDefaults.standard.asyncPromoWasDisplayed {
                 UserDefaults.standard.asyncPromoWasDisplayed = true
 
                 let controller = FancyAlertViewController.makeAsyncPostingAlertController(publishAction: publishBlock)
