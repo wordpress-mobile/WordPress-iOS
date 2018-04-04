@@ -243,7 +243,7 @@ public class MediaProgressCoordinator: NSObject {
     /// Returns a list of all media objects that have an error attached
     ///
     var failedMedia: [Media] {
-        return failedMediaIDs.flatMap({ media(withIdentifier: $0) })
+        return failedMediaIDs.compactMap({ media(withIdentifier: $0) })
     }
 
     /// Returns a list of all media objects that have completed successfully
@@ -254,7 +254,7 @@ public class MediaProgressCoordinator: NSObject {
         }
 
         let mediaIDs = mediaInProgress.filter({ !$0.value.isFailed && !$0.value.isCancelled })
-        return mediaIDs.flatMap({ media(withIdentifier: $0.key) })
+        return mediaIDs.compactMap({ media(withIdentifier: $0.key) })
     }
 
     // MARK: - KeyPath observer method for the global progress property
