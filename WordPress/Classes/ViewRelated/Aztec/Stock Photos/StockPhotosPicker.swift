@@ -49,7 +49,9 @@ extension StockPhotosPicker: WPMediaPickerViewControllerDelegate {
             return
         }
         delegate?.stockPhotosPicker(self, didFinishPicking: stockPhotosMedia)
-        picker.dismiss(animated: true, completion: nil)
+        picker.dismiss(animated: true)
+        dataSource.clearSearch(notifyObservers: false)
+        hideKeyboard(from: picker.searchBar)
     }
 
     func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
@@ -59,7 +61,9 @@ extension StockPhotosPicker: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
-        picker.dismiss(animated: true, completion: nil)
+        picker.dismiss(animated: true)
+        dataSource.clearSearch(notifyObservers: false)
+        hideKeyboard(from: picker.searchBar)
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didSelect asset: WPMediaAsset) {
