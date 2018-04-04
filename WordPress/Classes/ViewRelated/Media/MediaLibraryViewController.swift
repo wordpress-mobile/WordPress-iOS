@@ -644,5 +644,7 @@ extension MediaLibraryViewController: StockPhotosPickerDelegate {
 //        assets.forEach {
 //            self.insert(exportableAsset: $0, source: .stockPhotos)
 //        }
+
+        print("assets received ", assets)
     }
 }
