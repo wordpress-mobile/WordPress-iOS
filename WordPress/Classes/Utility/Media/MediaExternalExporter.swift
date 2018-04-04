@@ -34,7 +34,7 @@ class MediaExternalExporter: MediaExporter {
         asset = externalAsset
     }
 
-    /// Downloads and export de external media asset
+    /// Downloads and export the external media asset
     ///
     func export(onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         WPImageSource.shared().downloadImage(for: asset.URL, withSuccess: { (image) in
