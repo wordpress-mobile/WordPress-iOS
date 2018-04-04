@@ -116,6 +116,12 @@ PODS:
   - WordPress-Aztec-iOS (1.0.0-beta.18.1)
   - WPMediaPicker (0.27)
   - wpxmlrpc (0.8.3)
+  - ZendeskSDK (1.11.0.1):
+    - ZendeskSDK/Providers (= 1.11.0.1)
+    - ZendeskSDK/UI (= 1.11.0.1)
+  - ZendeskSDK/Providers (1.11.0.1)
+  - ZendeskSDK/UI (1.11.0.1):
+    - ZendeskSDK/Providers
 
 DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
@@ -148,6 +154,7 @@ DEPENDENCIES:
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `52849f1be62bc6a6316f3828d56e8fc32f5fa8e4`)
   - WPMediaPicker (= 0.27)
   - wpxmlrpc (= 0.8.3)
+  - ZendeskSDK (= 1.11.0.1)
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
@@ -199,7 +206,8 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 2d8c58f68f422ce521db689fb582122220e77f8d
   WPMediaPicker: 1fe532b4ff215a9dd259f08439376fc0dbab1039
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
+  ZendeskSDK: 4e075d7610e74755c576188886a073cfc5810145
 
-PODFILE CHECKSUM: c2d140c68f12836dd678e62aac8262c08daa158f
+PODFILE CHECKSUM: 9b0f273c328d7c4d231d46a64dea17b3c33aa5c2
 
 COCOAPODS: 1.4.0

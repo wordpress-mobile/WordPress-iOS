@@ -127,7 +127,7 @@ private extension PostTagPickerViewController {
         service.getTopTags(
             for: blog,
             success: { [weak self] tags in
-                let tagNames = tags.flatMap { return $0.name }
+                let tagNames = tags.compactMap { return $0.name }
                 self?.tagsLoaded(tags: tagNames)
             },
             failure: { [weak self] error in

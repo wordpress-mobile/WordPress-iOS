@@ -8,13 +8,14 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
     let siteID: Int
     let service: ActivityServiceRemote
 
-    enum Configuration {
+    enum Constants {
         /// Sequence of increasing delays to apply to the fetch restore status mechanism (in seconds)
         ///
         static let delaySequence = [1, 5]
         static let maxRetries = 12
+        static let estimatedRowHeight: CGFloat = 62
     }
-    fileprivate var delay = IncrementalDelay(Configuration.delaySequence)
+    fileprivate var delay = IncrementalDelay(Constants.delaySequence)
     fileprivate var delayedRetry: DispatchDelayedAction?
     fileprivate var delayedRetryAttempt: Int = 0
 
@@ -66,6 +67,9 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tableView.estimatedRowHeight = Constants.estimatedRowHeight
+
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
         let nib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
@@ -221,7 +225,7 @@ extension ActivityListViewController {
 
     fileprivate func checkStatusDelayedForRestoreID(_ restoreID: String) {
         delayedRetryAttempt = delayedRetryAttempt + 1
-        guard delayedRetryAttempt < Configuration.maxRetries else {
+        guard delayedRetryAttempt < Constants.maxRetries else {
             restoreTimedout()
             return
         }
