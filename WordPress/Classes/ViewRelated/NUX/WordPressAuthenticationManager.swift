@@ -109,8 +109,8 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
     /// Synchronizes the specified WordPress Account.
     ///
-    func sync(endpoint: WordPressEndpoint, onCompletion: @escaping (Error?) -> ()) {
-        switch endpoint {
+    func sync(credentials: WordPressCredentials, onCompletion: @escaping (Error?) -> ()) {
+        switch credentials {
         case .wpcom(let username, let authToken, let isJetpackLogin):
             syncWPCom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin, onCompletion: onCompletion)
         case .wporg(let username, let password, let xmlrpc, let options):
