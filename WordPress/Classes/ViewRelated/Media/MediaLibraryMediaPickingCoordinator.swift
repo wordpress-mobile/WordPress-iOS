@@ -1,6 +1,7 @@
 import MobileCoreServices
 import WPMediaPicker
 
+/// Prepares the alert controller that will be presented when tapping the "+" button in Media Library
 final class MediaLibraryMediaPickingCoordinator {
     private weak var delegate: MediaPickingOptionsDelegate?
 
@@ -46,9 +47,9 @@ final class MediaLibraryMediaPickingCoordinator {
     }
 
     private func cameraAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
-                return UIAlertAction(title: .takePhotoOrVideo, style: .default, handler: { [weak self] action in
-                    self?.showCameraCapture(origin: origin, blog: blog)
-                })
+        return UIAlertAction(title: .takePhotoOrVideo, style: .default, handler: { [weak self] action in
+            self?.showCameraCapture(origin: origin, blog: blog)
+        })
     }
 
     private func photoLibraryAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
