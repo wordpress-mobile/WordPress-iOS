@@ -146,7 +146,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `1b9e6398f054f8726cf40de9e9a2ace753804502`)
-  - WPMediaPicker (= 0.27)
+  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, commit `906c757c062adcb4f5a49c955d92a210136caa9c`)
   - wpxmlrpc (= 0.8.3)
 
 EXTERNAL SOURCES:
@@ -156,6 +156,9 @@ EXTERNAL SOURCES:
   WordPress-Aztec-iOS:
     :commit: 1b9e6398f054f8726cf40de9e9a2ace753804502
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WPMediaPicker:
+    :commit: 906c757c062adcb4f5a49c955d92a210136caa9c
+    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -164,6 +167,9 @@ CHECKOUT OPTIONS:
   WordPress-Aztec-iOS:
     :commit: 1b9e6398f054f8726cf40de9e9a2ace753804502
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WPMediaPicker:
+    :commit: 906c757c062adcb4f5a49c955d92a210136caa9c
+    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -200,6 +206,6 @@ SPEC CHECKSUMS:
   WPMediaPicker: 1fe532b4ff215a9dd259f08439376fc0dbab1039
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
 
-PODFILE CHECKSUM: ecec6a14bddbdd1bf7303d6f6b00af2a21f70404
+PODFILE CHECKSUM: c8a4bb8935aa06a72ad3ed7591e23b3c9867bf66
 
 COCOAPODS: 1.4.0
