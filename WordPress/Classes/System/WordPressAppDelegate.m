@@ -110,6 +110,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self setupPingHub];
     [self setupShortcutCreator];
     [self setupBackgroundRefresh:application];
+    [self setupComponentsAppearance];
     [self disableAnimationsForUITests:application];
 
     return YES;
