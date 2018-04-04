@@ -52,7 +52,7 @@
 
 - (NSString *)authorForDisplay
 {
-    return self.author;
+    return [self.author stringByDecodingXMLCharacters];
 }
 
 - (NSString *)blogNameForDisplay

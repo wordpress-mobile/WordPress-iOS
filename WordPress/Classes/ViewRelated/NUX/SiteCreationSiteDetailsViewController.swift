@@ -85,7 +85,7 @@ class SiteCreationSiteDetailsViewController: NUXViewController, NUXKeyboardRespo
     }
 
     private func setLabelText() {
-        stepLabel.text = NSLocalizedString("STEP 3 OF 4", comment: "Step for view.")
+        stepLabel.text = NSLocalizedString("Step 3 of 4", comment: "Title for third step in the site creation process.").localizedUppercase
         stepDescriptionLabel1.text = NSLocalizedString("Tell us more about the site you're creating.", comment: "Shown during the site details step of the site creation flow.")
         stepDescriptionLabel2.text = NSLocalizedString("What's the title and tagline?", comment: "Prompts the user for Site details information.")
 

@@ -67,7 +67,7 @@ class Post: AbstractPost {
 
     fileprivate func buildContentPreview() {
         if let excerpt = mt_excerpt, excerpt.count > 0 {
-            storedContentPreviewForDisplay = String.makePlainText(excerpt)
+            storedContentPreviewForDisplay = NSString.makePlainText(excerpt)
         } else if let content = content {
             storedContentPreviewForDisplay = NSString.summary(fromContent: content)
         }
