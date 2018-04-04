@@ -76,7 +76,7 @@ static ContextManager *_override;
     dispatch_once(&onceToken, ^{
         NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
         context.persistentStoreCoordinator = self.persistentStoreCoordinator;
-        self->_writerContext = context;
+        self.writerContext = context;
     });
 
     return _writerContext;
@@ -88,7 +88,7 @@ static ContextManager *_override;
     dispatch_once(&onceToken, ^{
         NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
         context.parentContext = self.writerContext;
-        self->_mainContext = context;
+        self.mainContext = context;
     });
 
     return _mainContext;

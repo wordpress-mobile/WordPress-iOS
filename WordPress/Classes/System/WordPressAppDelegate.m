@@ -289,9 +289,9 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
         // Synchronize the cleanup call on the main thread in case
         // the task actually finishes at around the same time.
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (self->_bgTask != UIBackgroundTaskInvalid) {
-                [app endBackgroundTask:self->_bgTask];
-                self->_bgTask = UIBackgroundTaskInvalid;
+            if (self.bgTask != UIBackgroundTaskInvalid) {
+                [app endBackgroundTask:self.bgTask];
+                self.bgTask = UIBackgroundTaskInvalid;
             }
         });
     }];

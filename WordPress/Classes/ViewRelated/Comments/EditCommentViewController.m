@@ -149,7 +149,7 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
     
     [UIView animateWithDuration:animationDuration animations:^{
         CGRect frm = self.textView.frame;
-        frm.size.height = CGRectGetMinY(self->_keyboardFrame);
+        frm.size.height = CGRectGetMinY(self.keyboardFrame);
         self.textView.frame = frm;
     }];
 }
