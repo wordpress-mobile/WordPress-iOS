@@ -24,7 +24,6 @@ class JetpackLoginViewController: UIViewController {
 
     @IBOutlet fileprivate weak var jetpackImage: UIImageView!
     @IBOutlet fileprivate weak var descriptionLabel: UILabel!
-    @IBOutlet fileprivate weak var scrollView: UIScrollView!
     @IBOutlet fileprivate weak var signinButton: WPNUXMainButton!
     @IBOutlet fileprivate weak var installJetpackButton: WPNUXMainButton!
 

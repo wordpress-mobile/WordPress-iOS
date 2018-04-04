@@ -1,0 +1,1 @@
+Pour cette version, nous avons lissé quelques pixels, dit au revoir à quelques bogues et travailler en coulisses pour vous donner une meilleure expérience de notre app WordPress.
