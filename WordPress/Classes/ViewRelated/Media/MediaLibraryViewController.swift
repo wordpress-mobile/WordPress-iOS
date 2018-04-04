@@ -645,11 +645,9 @@ extension MediaLibraryViewController: StockPhotosPickerDelegate {
             return
         }
 
-        //let info = MediaAnalyticsInfo(origin: .mediaLibrary, selectionMethod: .documentPicker)
         let mediaCoordinator = MediaCoordinator.shared
         assets.forEach {
             mediaCoordinator.addMedia(from: $0, to: blog)
-
         }
     }
 }
