@@ -178,11 +178,6 @@ CGFloat const HelpshiftFlagCheckDelay = 2.0;
     }
 }
 
-- (void)didReceiveNotificationCount:(NSInteger)count
-{
-    // Helpshift deprecated this in 6.1 but didn't mark it as optional :(
-}
-
 - (void)didReceiveUnreadMessagesCount:(NSInteger)count
 {
     self.unreadNotificationCount = count;

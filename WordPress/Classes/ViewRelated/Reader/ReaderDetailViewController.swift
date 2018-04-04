@@ -1072,8 +1072,8 @@ extension ReaderDetailViewController: WPRichContentViewDelegate {
     func richContentView(_ richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage) {
         var controller: WPImageViewController
 
-        if WPImageViewController.isUrlSupported(image.linkURL as URL!) {
-            controller = WPImageViewController(image: image.imageView.image, andURL: image.linkURL as URL!)
+        if let linkURL = image.linkURL, WPImageViewController.isUrlSupported(linkURL) {
+            controller = WPImageViewController(image: image.imageView.image, andURL: linkURL)
 
         } else if let linkURL = image.linkURL {
             presentWebViewControllerWithURL(linkURL as URL)
