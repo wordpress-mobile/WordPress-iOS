@@ -7,7 +7,7 @@ extension ImmuTableSection {
     /// If all the rows are nil, the initializer will return a nil section
     ///
     init?(headerText: String? = nil, optionalRows: [ImmuTableRow?], footerText: String? = nil) {
-        let rows = optionalRows.flatMap({ $0 })
+        let rows = optionalRows.compactMap({ $0 })
         guard rows.count > 0 else {
             return nil
         }
@@ -19,7 +19,7 @@ extension ImmuTable {
     /// Initializes an ImmuTable object with the given sections, skipping any nil ones.
     ///
     init(optionalSections: [ImmuTableSection?]) {
-        let sections = optionalSections.flatMap({ $0 })
+        let sections = optionalSections.compactMap({ $0 })
         self.init(sections: sections)
     }
 }
