@@ -50,6 +50,8 @@ final class StockPhotosMedia: NSObject {
     }
 }
 
+// MARK: - WPMediaAsset conformance
+
 extension StockPhotosMedia: WPMediaAsset {
     func image(with size: CGSize, completionHandler: @escaping WPMediaImageBlock) -> WPMediaRequestID {
 
@@ -100,6 +102,22 @@ extension StockPhotosMedia: WPMediaAsset {
         return size
     }
 }
+
+// MARK: - ExportableAsset conformance
+
+extension StockPhotosMedia: ExportableAsset {
+    var assetMediaType: MediaType {
+        return .image
+    }
+}
+
+// MARK: - MediaExternalAsset conformance
+
+extension StockPhotosMedia: MediaExternalAsset {
+
+}
+
+// MARK: - Decodable conformance
 
 extension ThumbnailCollection: Decodable {
     enum CodingKeys: String, CodingKey {

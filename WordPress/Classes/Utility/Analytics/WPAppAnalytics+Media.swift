@@ -119,6 +119,8 @@ enum MediaUploadOrigin {
             return .editorAddedPhotoViaWPMediaLibrary
         case (.editor(let source), .image) where source == .otherApps:
             return .editorAddedPhotoViaOtherApps
+        case (.editor(let source), .image) where source == .stockPhotos:
+            return .editorAddedPhotoViaStockPhotos
         case (.editor(let source), .video) where source == .deviceLibrary:
             return .editorAddedVideoViaLocalLibrary
         case (.editor(let source), .video) where source == .wpMediaLibrary:
@@ -137,4 +139,5 @@ enum MediaSource {
     case deviceLibrary
     case otherApps
     case wpMediaLibrary
+    case stockPhotos
 }
