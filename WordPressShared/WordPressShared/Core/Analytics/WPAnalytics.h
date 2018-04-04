@@ -37,6 +37,7 @@ typedef NS_ENUM(NSUInteger, WPAnalyticsStat) {
     WPAnalyticsStatEditorAddedVideoViaWPMediaLibrary,
     WPAnalyticsStatEditorAddedOtherMediaViaWPMediaLibrary,
     WPAnalyticsStatEditorAddedPhotoViaOtherApps,
+    WPAnalyticsStatEditorAddedPhotoViaStockPhotos,
     WPAnalyticsStatEditorAddedVideoViaOtherApps,
     WPAnalyticsStatEditorAztecBetaLink,
     WPAnalyticsStatEditorAztecPromoLink,

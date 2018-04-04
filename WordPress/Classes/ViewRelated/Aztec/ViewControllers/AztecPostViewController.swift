@@ -2792,6 +2792,10 @@ extension AztecPostViewController {
         insert(exportableAsset: phAsset, source: .deviceLibrary)
     }
 
+    private func insertStockPhotosMedia(_ media: StockPhotosMedia) {
+        insert(exportableAsset: media, source: .stockPhotos)
+    }
+
     /// Insert media to the post from the site's media library.
     ///
     func prepopulateMediaItems(_ media: [Media]) {
@@ -3598,8 +3602,9 @@ extension AztecPostViewController: AztecMoreCoordinatorDelegate {
 
 extension AztecPostViewController: StockPhotosPickerDelegate {
     func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
-        ///TODO:  Insert picked assets
-        ///Hint: Follow `mediaPickerController(_:didFinishPicking:)`
+        assets.forEach {
+            self.insert(exportableAsset: $0, source: .stockPhotos)
+        }
     }
 }
 
