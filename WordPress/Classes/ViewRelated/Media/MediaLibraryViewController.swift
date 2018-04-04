@@ -28,6 +28,10 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     fileprivate var uploadObserverUUID: UUID?
 
+    fileprivate lazy var optionsCoordinator: MediaLibraryMediaPickingCoordinator = {
+        return MediaLibraryMediaPickingCoordinator(delegate: self)
+    }()
+
     // MARK: - Initializers
 
     @objc init(blog: Blog) {
@@ -722,5 +726,20 @@ fileprivate extension Blog {
     var userCanUploadMedia: Bool {
         // Self-hosted non-Jetpack blogs have no capabilities, so we'll just assume that users can post media
         return capabilities != nil ? isUploadingFilesAllowed() : true
+    }
+}
+
+extension MediaLibraryViewController: MediaPickingOptionsDelegate {
+    func didCancel() {
+//        startListeningToNotifications()
+//        restoreFirstResponder()
+    }
+}
+
+extension MediaLibraryViewController: StockPhotosPickerDelegate {
+    func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
+//        assets.forEach {
+//            self.insert(exportableAsset: $0, source: .stockPhotos)
+//        }
     }
 }
