@@ -425,6 +425,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 - (void)initializeDraft:(AbstractPost *)post {
     post.remoteStatus = AbstractPostRemoteStatusLocal;
     post.dateModified = [NSDate date];
+    post.status = PostStatusDraft;
 }
 
 - (void)mergePosts:(NSArray <RemotePost *> *)remotePosts
@@ -529,18 +530,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     post.post_thumbnail = remotePost.postThumbnailID;
     post.pathForDisplayImage = remotePost.pathForDisplayImage;
     if (post.pathForDisplayImage.length == 0) {
-        // First lets check the post content for a suitable image
-        post.pathForDisplayImage = [DisplayableImageHelper searchPostContentForImageToDisplay:post.content];
-        if (post.pathForDisplayImage.length == 0) {
-            // If none found let's see if some galleries are available
-            NSSet *mediaIDs = [DisplayableImageHelper searchPostContentForAttachmentIdsInGalleries:post.content];
-            for (Media *media in post.blog.media) {
-                NSNumber *mediaID = media.mediaID;
-                if (mediaID && [mediaIDs containsObject:mediaID]) {
-                    post.pathForDisplayImage = media.remoteURL;
-                }
-            }
-        }
+        [post updatePathForDisplayImageBasedOnContent];
     }
     post.authorAvatarURL = remotePost.authorAvatarURL;
     post.mt_excerpt = remotePost.excerpt;

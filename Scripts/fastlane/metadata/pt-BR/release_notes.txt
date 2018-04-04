@@ -1,0 +1,1 @@
+Para esta versão, nós polimos alguns píxeis, demos adeus a alguns bugs, e trabalhamos nos bastidores para tornar a experiência de WordPress mais suave para nossos usuários do app.
