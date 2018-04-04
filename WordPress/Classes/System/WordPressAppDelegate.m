@@ -432,13 +432,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [[PushNotificationsManager shared] registrationDidFail:error];
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
-{
-    DDLogMethod();
-
-    [[PushNotificationsManager shared] handleNotification:userInfo completionHandler:nil];
-}
-
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     DDLogMethod();
