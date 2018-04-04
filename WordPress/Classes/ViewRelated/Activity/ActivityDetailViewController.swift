@@ -67,7 +67,6 @@ class ActivityDetailViewController: UIViewController {
 
         stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: bottomMargin).isActive = true
     }
-    
 
     private func headerStackView() -> UIStackView {
         let stackView = UIStackView(frame: .zero)
@@ -131,15 +130,29 @@ class ActivityDetailViewController: UIViewController {
     private func dateStackView() -> UIStackView {
         let dateLabel = UILabel(frame: .zero)
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.textAlignment = .right
         dateLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
         dateLabel.textColor = WPStyleGuide.darkGrey()
 
+        if view.effectiveUserInterfaceLayoutDirection == .leftToRight {
+            // swiftlint:disable:next inverse_text_alignment
+            dateLabel.textAlignment = .right
+        } else {
+            // swiftlint:disable:next natural_text_alignment
+            dateLabel.textAlignment = .left
+        }
+
         let timeLabel = UILabel(frame: .zero)
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
-        timeLabel.textAlignment = .right
         timeLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
         timeLabel.textColor = WPStyleGuide.darkGrey()
+
+        if view.effectiveUserInterfaceLayoutDirection == .leftToRight {
+            // swiftlint:disable:next inverse_text_alignment
+            timeLabel.textAlignment = .right
+        } else {
+            // swiftlint:disable:next natural_text_alignment
+            timeLabel.textAlignment = .left
+        }
 
         let stackView = UIStackView(frame: .zero)
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -198,7 +211,7 @@ class ActivityDetailViewController: UIViewController {
         button.addTarget(self, action: #selector(rewindButtonTapped(sender:)), for: .touchUpInside)
         button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body)
         button.tintColor = WPStyleGuide.mediumBlue()
-        button.contentHorizontalAlignment = .left
+        button.naturalContentHorizontalAlignment = .leading
         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: Constants.titleEdgeInset, bottom: 0, right: 0)
 
         button.heightAnchor.constraint(equalToConstant: Constants.buttonHeight).isActive = true
@@ -230,4 +243,3 @@ class ActivityDetailViewController: UIViewController {
     }
 
 }
-
