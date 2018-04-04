@@ -1251,43 +1251,6 @@ private extension AztecPostViewController {
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        if FeatureFlag.asyncPosting.enabled {
-            let publishAction = { [unowned self] in
-                self.mapUIContentToPostAndSave()
-
-                let action = self.postEditorStateContext.action
-                if action == .save || action == .saveAsDraft {
-                    self.post.status = .draft
-                } else if action == .publish {
-                    if self.post.date_created_gmt == nil {
-                        self.post.date_created_gmt = Date()
-                    }
-                    self.post.status = .publish
-                } else if action == .publishNow {
-                    self.post.date_created_gmt = Date()
-                    self.post.status = .publish
-                }
-                self.post.updatePathForDisplayImageBasedOnContent()
-                PostCoordinator.shared.save(post: self.post)
-                self.dismissOrPopView(didSave: true, shouldShowPostEpilogue: false)
-            }
-
-            alert.addDefaultActionWithTitle("Async Publish (Debug)") { [unowned self]  _ in
-                if !UserDefaults.standard.asyncPromoWasDisplayed {
-                    UserDefaults.standard.asyncPromoWasDisplayed = true
-
-                    let controller = FancyAlertViewController.makeAsyncPostingAlertController(publishAction: publishAction)
-                    controller.modalPresentationStyle = .custom
-                    controller.transitioningDelegate = self
-                    self.present(controller, animated: true, completion: nil)
-
-                    return
-                }
-
-                publishAction()
-            }
-        }
-
         if postEditorStateContext.isSecondaryPublishButtonShown,
             let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
 
