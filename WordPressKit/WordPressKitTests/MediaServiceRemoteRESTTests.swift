@@ -27,7 +27,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
 
         let id = 1
         let expectedPath = mediaServiceRemote.path(forEndpoint: "sites/\(siteID)/media/\(id)", withVersion: ._1_1)
-        mediaServiceRemote.getMediaWithID(id as NSNumber!, success: nil, failure: nil)
+        mediaServiceRemote.getMediaWithID(id as NSNumber, success: nil, failure: nil)
         XCTAssertTrue(mockRemoteApi.getMethodCalled, "Wrong method, expected GET got \(mockRemoteApi.methodCalled())")
         XCTAssertEqual(mockRemoteApi.URLStringPassedIn, expectedPath, "Wrong path")
     }
@@ -37,7 +37,7 @@ class MediaServiceRemoteRESTTests: XCTestCase {
         let id = 1
         let response = ["ID": id]
         var remoteMedia: RemoteMedia? = nil
-        mediaServiceRemote.getMediaWithID(id as NSNumber!, success: {
+        mediaServiceRemote.getMediaWithID(id as NSNumber, success: {
             remoteMedia = $0
             }, failure: nil)
         mockRemoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())

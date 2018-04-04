@@ -652,7 +652,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         let options = PostServiceSyncOptions()
         options.statuses = filter.statuses.strings
         options.authorID = author
-        options.number = numberOfPostsPerSync() as NSNumber!
+        options.number = numberOfPostsPerSync() as NSNumber?
         options.purgesLocalSync = true
 
         postService.syncPosts(
@@ -704,8 +704,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         let options = PostServiceSyncOptions()
         options.statuses = filter.statuses.strings
         options.authorID = author
-        options.number = numberOfPostsPerSync() as NSNumber!
-        options.offset = tableViewHandler.resultsController.fetchedObjects?.count as NSNumber!
+        options.number = numberOfPostsPerSync() as NSNumber?
+        options.offset = tableViewHandler.resultsController.fetchedObjects?.count as NSNumber?
 
         postService.syncPosts(
             ofType: postTypeToSync(),
