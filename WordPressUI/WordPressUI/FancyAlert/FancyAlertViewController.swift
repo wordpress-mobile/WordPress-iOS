@@ -3,10 +3,10 @@ import UIKit
 /// A small card-like view displaying helpful information or prompts to the user.
 /// Initialize using the `controllerWithConfiguration` static method.
 ///
-class FancyAlertViewController: UIViewController {
+open class FancyAlertViewController: UIViewController {
 
     /// Intended method of initialization
-    static func controllerWithConfiguration(configuration: Config) -> FancyAlertViewController {
+    public static func controllerWithConfiguration(configuration: Config) -> FancyAlertViewController {
         let infoController = controller()
         infoController.configuration = configuration
 
@@ -14,20 +14,20 @@ class FancyAlertViewController: UIViewController {
     }
 
     private static func controller() -> FancyAlertViewController {
-        return UIStoryboard(name: "FancyAlerts", bundle: Bundle.main)
-            .instantiateInitialViewController() as! FancyAlertViewController
+        let bundle = Bundle(for: self)
+        return UIStoryboard(name: "FancyAlerts", bundle: bundle).instantiateInitialViewController() as! FancyAlertViewController
     }
 
-    enum DividerPosition {
+    public enum DividerPosition {
         case top
         case bottom
     }
 
     /// Enapsulates values for all UI components of the info dialog.
     ///
-    struct Config {
+    public struct Config {
         /// Convenience alias for a title and a handler for a UIButton
-        typealias ButtonConfig = (title: String, handler: FancyAlertButtonHandler?)
+        public typealias ButtonConfig = (title: String, handler: FancyAlertButtonHandler?)
 
         /// The title of the dialog
         let titleText: String?
@@ -55,53 +55,49 @@ class FancyAlertViewController: UIViewController {
 
         /// A block to execute after this view controller has been dismissed
         let dismissAction: (() -> Void)?
+
+        /// Config Initializer. Required since the default one cannot be set as public.
+        ///
+        public init(titleText: String?,
+                    bodyText: String?,
+                    headerImage: UIImage?,
+                    dividerPosition: DividerPosition?,
+                    defaultButton: ButtonConfig?,
+                    cancelButton: ButtonConfig?,
+                    moreInfoButton: ButtonConfig?,
+                    titleAccessoryButton: ButtonConfig?,
+                    dismissAction: (() ->  Void)?) {
+
+            self.titleText = titleText
+            self.bodyText = bodyText
+            self.headerImage = headerImage
+            self.dividerPosition = dividerPosition
+            self.defaultButton = defaultButton
+            self.cancelButton = cancelButton
+            self.moreInfoButton = moreInfoButton
+            self.titleAccessoryButton = titleAccessoryButton
+            self.dismissAction = dismissAction
+        }
     }
+
 
     // MARK: - Constants
 
     private struct Constants {
         static let cornerRadius: CGFloat = 15.0
-        static let buttonFont = WPStyleGuide.fontForTextStyle(.headline)
-        static let moreInfoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
-        static let bodyFont = WPStyleGuide.fontForTextStyle(.body)
         static let headerImageVerticalConstraintCompact: CGFloat = 0.0
         static let headerImageVerticalConstraintRegular: CGFloat = 20.0
-        static let headerBackgroundColor = WPStyleGuide.lightGrey()
 
         static let fadeAnimationDuration: TimeInterval = 0.3
         static let resizeAnimationDuration: TimeInterval = 0.3
         static let resizeAnimationDelay: TimeInterval = 0.3
     }
 
-    // MARK: - IBOutlets
+    // MARK: - Properties
 
-    /// Wraps the entire view to give it a background and rounded corners
-    @IBOutlet private weak var wrapperView: UIView!
-
-    @IBOutlet private weak var headerImageWrapperView: UIView!
-    @IBOutlet private(set) weak var headerImageView: UIImageView!
+    /// Header's Height
+    ///
     private var headerImageViewHeightConstraint: NSLayoutConstraint?
-    @IBOutlet private weak var headerImageViewTopConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var headerImageViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var headerImageViewWrapperBottomConstraint: NSLayoutConstraint?
-    @IBOutlet private weak var buttonWrapperViewTopConstraint: NSLayoutConstraint?
-    @IBOutlet private var titleAccessoryButtonTrailingConstraint: NSLayoutConstraint!
-
-    @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var bodyLabel: UILabel!
-
-    /// Divides the primary buttons from the rest of the dialog
-    @IBOutlet private weak var topDividerView: UIView!
-    @IBOutlet private weak var bottomDividerView: UIView!
-    @IBOutlet private weak var buttonWrapperView: UIView!
-    @IBOutlet private weak var buttonStackView: UIStackView!
-
-    @IBOutlet private weak var cancelButton: UIButton!
-    @IBOutlet private weak var defaultButton: UIButton!
-    @IBOutlet private weak var moreInfoButton: UIButton!
-    @IBOutlet private weak var titleAccessoryButton: UIButton!
-
-    @IBOutlet private var contentViews: [UIView]!
 
     /// Gesture recognizer for taps on the dialog if no buttons are present
     ///
@@ -115,9 +111,19 @@ class FancyAlertViewController: UIViewController {
     ///
     private var buttonHandlers = [UIButton: FancyAlertButtonHandler]()
 
-    typealias FancyAlertButtonHandler = (FancyAlertViewController, UIButton) -> Void
+    /// FancyAlertButtonHandler: onTouchUP callback!
+    ///
+    public typealias FancyAlertButtonHandler = (FancyAlertViewController, UIButton) -> Void
 
+    /// Active Configuration
+    ///
     private(set) var configuration: Config?
+
+    /// FancyAlertView Reference
+    ///
+    @IBOutlet private weak var alertView: FancyAlertView!
+
+
 
     /// The configuration determines the content and visibility of all UI
     /// components in the dialog. Changing this value after presenting the
@@ -130,9 +136,9 @@ class FancyAlertViewController: UIViewController {
     ///   - alongside: An optional animation block which will be animated 
     ///                alongside the new configuration's fade in animation.
     ///
-    func setViewConfiguration(_ configuration: Config,
-                              animated: Bool,
-                              alongside animation: ((FancyAlertViewController) -> Void)? = nil) {
+    open func setViewConfiguration(_ configuration: Config,
+                                   animated: Bool,
+                                   alongside animation: ((FancyAlertViewController) -> Void)? = nil) {
         self.configuration = configuration
 
         if animated {
@@ -151,7 +157,7 @@ class FancyAlertViewController: UIViewController {
         }
     }
 
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
 
         accessibilityViewIsModal = true
@@ -161,45 +167,28 @@ class FancyAlertViewController: UIViewController {
         dismissGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissTapped))
         view.addGestureRecognizer(dismissGestureRecognizer)
 
-        wrapperView.layer.masksToBounds = true
-        wrapperView.layer.cornerRadius = Constants.cornerRadius
-
-        headerImageWrapperView.backgroundColor = Constants.headerBackgroundColor
-        topDividerView.backgroundColor = WPStyleGuide.greyLighten30()
-        bottomDividerView.backgroundColor = WPStyleGuide.lightGrey()
-
-        WPStyleGuide.configureLabel(titleLabel, textStyle: .title2, fontWeight: .semibold)
-        titleLabel.textColor = WPStyleGuide.darkGrey()
-        WPStyleGuide.configureLabel(bodyLabel, textStyle: .body)
-        bodyLabel.textColor = WPStyleGuide.darkGrey()
-
-        WPStyleGuide.configureBetaButton(titleAccessoryButton)
-
-        defaultButton.titleLabel?.font = Constants.buttonFont
-        cancelButton.titleLabel?.font = Constants.buttonFont
-
-        moreInfoButton.titleLabel?.font = Constants.moreInfoFont
-        moreInfoButton.tintColor = WPStyleGuide.wordPressBlue()
+        alertView.wrapperView.layer.masksToBounds = true
+        alertView.wrapperView.layer.cornerRadius = Constants.cornerRadius
 
         updateViewConfiguration()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
+    override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         updateFlingableViewHandler()
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         if traitCollection.containsTraits(in: UITraitCollection(verticalSizeClass: .compact)) {
-            headerImageWrapperView.isHiddenInStackView = true
+            alertView.headerImageWrapperView.isHiddenInStackView = true
         } else if let _ = configuration?.headerImage {
-            headerImageWrapperView.isHiddenInStackView = false
+            alertView.headerImageWrapperView.isHiddenInStackView = false
         }
 
-        updateButtonLayout()
+        alertView.updateButtonLayout()
     }
 
     /// MARK: - View configuration
@@ -210,29 +199,32 @@ class FancyAlertViewController: UIViewController {
 
         buttonHandlers.removeAll()
 
-        titleLabel.text = configuration.titleText
-        bodyLabel.text = configuration.bodyText
+        alertView.titleLabel.text = configuration.titleText
+        alertView.bodyLabel.text = configuration.bodyText
+
+        alertView.titleLabel.adjustsFontForContentSizeCategory = true
+        alertView.bodyLabel.adjustsFontForContentSizeCategory = true
 
         updateDivider()
 
         updateHeaderImage()
 
-        update(defaultButton, with: configuration.defaultButton)
-        update(cancelButton, with: configuration.cancelButton)
-        update(moreInfoButton, with: configuration.moreInfoButton)
-        update(titleAccessoryButton, with: configuration.titleAccessoryButton)
+        update(alertView.defaultButton, with: configuration.defaultButton)
+        update(alertView.cancelButton, with: configuration.cancelButton)
+        update(alertView.moreInfoButton, with: configuration.moreInfoButton)
+        update(alertView.titleAccessoryButton, with: configuration.titleAccessoryButton)
 
         // If we have no title accessory button, we need to
         // disable the trailing constraint to allow the title to flow correctly
-        titleAccessoryButtonTrailingConstraint.isActive = (configuration.titleAccessoryButton != nil)
+        alertView.titleAccessoryButtonTrailingConstraint.isActive = (configuration.titleAccessoryButton != nil)
 
         // If both primary buttons are hidden, we'll hide the bottom area of the dialog
-        buttonWrapperView.isHiddenInStackView = isButtonless
+        alertView.buttonWrapperView.isHiddenInStackView = isButtonless
 
         // If both primary buttons are hidden, we'll shrink the header image view down a little
         let constant = isImageCompact ? Constants.headerImageVerticalConstraintCompact : Constants.headerImageVerticalConstraintRegular
-        headerImageViewTopConstraint.constant = constant
-        headerImageViewBottomConstraint.constant = constant
+        alertView.headerImageViewTopConstraint.constant = constant
+        alertView.headerImageViewBottomConstraint.constant = constant
 
         updateFlingableViewHandler()
 
@@ -241,44 +233,38 @@ class FancyAlertViewController: UIViewController {
 
         view.layoutIfNeeded()
 
-        updateButtonLayout()
+        alertView.updateButtonLayout()
 
-        titleLabel.accessibilityHint = (isButtonless) ? NSLocalizedString("Double tap to dismiss", comment: "Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it") : nil
+        alertView.titleLabel.accessibilityHint = (isButtonless) ? NSLocalizedString("Double tap to dismiss", comment: "Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it") : nil
 
-        UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, titleLabel)
+        UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, alertView.titleLabel)
     }
 
     private func updateHeaderImage() {
         if let headerImage = configuration?.headerImage {
-            headerImageView.image = headerImage
-            headerImageWrapperView.isHiddenInStackView = false
+            alertView.headerImageView.image = headerImage
+            alertView.headerImageWrapperView.isHiddenInStackView = false
 
             if let heightConstraint = headerImageViewHeightConstraint {
-                headerImageView.removeConstraint(heightConstraint)
+                alertView.headerImageView.removeConstraint(heightConstraint)
             }
 
             // set the aspect ratio constraint
             let imageAspectRatio = headerImage.size.height / headerImage.size.width
-            headerImageViewHeightConstraint = headerImageView.heightAnchor.constraint(equalTo: headerImageView.widthAnchor, multiplier: imageAspectRatio)
+            headerImageViewHeightConstraint = alertView.headerImageView.heightAnchor.constraint(equalTo: alertView.headerImageView.widthAnchor, multiplier: imageAspectRatio)
             headerImageViewHeightConstraint?.isActive = true
         } else {
-            headerImageWrapperView.isHiddenInStackView = true
+            alertView.headerImageWrapperView.isHiddenInStackView = true
         }
     }
 
     private func updateDivider() {
-        topDividerView.isHiddenInStackView = configuration?.dividerPosition == .bottom
-        bottomDividerView.isHiddenInStackView = isButtonless || configuration?.dividerPosition == .top
+        alertView.topDividerView.isHiddenInStackView = configuration?.dividerPosition == .bottom
+        alertView.bottomDividerView.isHiddenInStackView = isButtonless || configuration?.dividerPosition == .top
 
         // the image touches the divider if it is at the top
-        headerImageViewWrapperBottomConstraint?.constant = configuration?.dividerPosition == .top ? 0.0 : Constants.headerImageVerticalConstraintRegular
-        buttonWrapperViewTopConstraint?.constant = configuration?.dividerPosition == .top ? 0.0 : Constants.headerImageVerticalConstraintRegular
-    }
-
-    private func updateButtonLayout() {
-        if defaultButton.intrinsicContentSize.width > defaultButton.bounds.width || cancelButton.intrinsicContentSize.width > cancelButton.bounds.width {
-            buttonStackView.axis = .vertical
-        }
+        alertView.headerImageViewWrapperBottomConstraint?.constant = configuration?.dividerPosition == .top ? 0.0 : Constants.headerImageVerticalConstraintRegular
+        alertView.buttonWrapperViewTopConstraint?.constant = configuration?.dividerPosition == .top ? 0.0 : Constants.headerImageVerticalConstraintRegular
     }
 
     private func update(_ button: UIButton, with buttonConfig: Config.ButtonConfig?) {
@@ -308,7 +294,7 @@ class FancyAlertViewController: UIViewController {
     /// An alert is buttonless if both of the bottom buttons are hidden
     ///
     private var isButtonless: Bool {
-        return defaultButton.isHiddenInStackView && cancelButton.isHiddenInStackView
+        return alertView.defaultButton.isHiddenInStackView && alertView.cancelButton.isHiddenInStackView
     }
 
     /// The header image is compact if the divider is at the top or the alert is buttonless
@@ -321,7 +307,7 @@ class FancyAlertViewController: UIViewController {
 
     @objc func fadeAllViews(visible: Bool, alongside animation: ((FancyAlertViewController) -> Void)? = nil, completion: ((Bool) -> Void)? = nil) {
         UIView.animate(withDuration: Constants.fadeAnimationDuration, animations: {
-            self.contentViews.forEach({ $0.alpha = (visible) ? WPAlphaFull : WPAlphaZero })
+            self.alertView.contentViews.forEach { $0.alpha = (visible) ? UIKitConstants.alphaFull : UIKitConstants.alphaZero }
             animation?(self)
         }, completion: completion)
     }
@@ -341,7 +327,7 @@ class FancyAlertViewController: UIViewController {
         }
     }
 
-    override func accessibilityPerformEscape() -> Bool {
+    override open func accessibilityPerformEscape() -> Bool {
         dismissTapped()
         return true
     }
@@ -350,15 +336,15 @@ class FancyAlertViewController: UIViewController {
 // MARK: - FlingableViewHandlerDelegate
 
 extension FancyAlertViewController: FlingableViewHandlerDelegate {
-    func flingableViewHandlerDidBeginRecognizingGesture(_ handler: FlingableViewHandler) {
+    public func flingableViewHandlerDidBeginRecognizingGesture(_ handler: FlingableViewHandler) {
         dismissGestureRecognizer.isEnabled = false
     }
 
-    func flingableViewHandlerWasCancelled(_ handler: FlingableViewHandler) {
+    public func flingableViewHandlerWasCancelled(_ handler: FlingableViewHandler) {
         dismissGestureRecognizer.isEnabled = true
     }
 
-    func flingableViewHandlerDidEndRecognizingGesture(_ handler: FlingableViewHandler) {
+    public func flingableViewHandlerDidEndRecognizingGesture(_ handler: FlingableViewHandler) {
         dismissTapped()
     }
 }
