@@ -193,7 +193,8 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
         if ([URLString rangeOfString:@"magic-login"].length) {
             DDLogInfo(@"App launched with authentication link");
-            returnValue = [WordPressAuthenticator openAuthenticationURL:url fromRootViewController:self.window.rootViewController];
+            BOOL allowWordPressComAuth = [AccountHelper isDotcomAvailable] == false;
+            returnValue = [WordPressAuthenticator openAuthenticationURL:url allowWordPressComAuth:allowWordPressComAuth fromRootViewController:self.window.rootViewController];
         } else if ([URLString rangeOfString:@"viewpost"].length) {
             // View the post specified by the shared blog ID and post ID
             NSDictionary *params = [[url query] dictionaryFromQueryString];
