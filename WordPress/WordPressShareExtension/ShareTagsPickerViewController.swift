@@ -180,7 +180,7 @@ fileprivate extension ShareTagsPickerViewController {
         dataSource = LoadingDataSource()
         let service = AppExtensionsService()
         service.fetchTopTagsForSite(siteID, onSuccess: { tags in
-            let tagNames = tags.flatMap { return $0.name }
+            let tagNames = tags.compactMap { return $0.name }
             self.tagsLoaded(tags: tagNames)
         }) { error in
             self.tagsFailedLoading(error: error)

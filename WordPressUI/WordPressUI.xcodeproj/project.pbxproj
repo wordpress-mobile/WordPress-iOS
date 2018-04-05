@@ -11,8 +11,13 @@
 		43067E2E203C8D03001DD610 /* UIBarButtonItem+BlockEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43067E2D203C8D03001DD610 /* UIBarButtonItem+BlockEvents.swift */; };
 		43067E30203C8D27001DD610 /* UIGestureRecognizer+BlockEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43067E2F203C8D27001DD610 /* UIGestureRecognizer+BlockEvents.swift */; };
 		828BEAC6203B59CD003F7078 /* UIImage+Crop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 828BEAC5203B59CD003F7078 /* UIImage+Crop.swift */; };
+		B518D76D20742ADB00F05DB4 /* FlingableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B518D76C20742ADB00F05DB4 /* FlingableViewHandler.swift */; };
 		B529F289202C855B00895D88 /* UIColorHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B529F288202C855B00895D88 /* UIColorHelpersTests.swift */; };
 		B5393FEA206D7047007BF9D4 /* RotationAwareNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5393FE9206D7047007BF9D4 /* RotationAwareNavigationViewController.swift */; };
+		B592B44F2064296600FF568E /* FancyAlertPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B592B4492064296500FF568E /* FancyAlertPresentationController.swift */; };
+		B592B4502064296600FF568E /* FancyAlerts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B592B44A2064296500FF568E /* FancyAlerts.storyboard */; };
+		B592B4522064296600FF568E /* FancyAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B592B44C2064296500FF568E /* FancyAlertViewController.swift */; };
+		B592B45520643E3400FF568E /* FancyAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B592B45420643E3400FF568E /* FancyAlertView.swift */; };
 		B59DCB66202B146D00BEBD8A /* WordPressUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B59DCB5C202B146D00BEBD8A /* WordPressUI.framework */; };
 		B59DCB6D202B146D00BEBD8A /* WordPressUI.h in Headers */ = {isa = PBXBuildFile; fileRef = B59DCB5F202B146D00BEBD8A /* WordPressUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5A787B0202B2324007874FB /* UIImage+Tint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787A4202B2322007874FB /* UIImage+Tint.swift */; };
@@ -35,6 +40,7 @@
 		B5A787E1202B2B59007874FB /* UIControl+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787E0202B2B59007874FB /* UIControl+Helpers.swift */; };
 		B5A787F5202B3587007874FB /* UIKitConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787F4202B3587007874FB /* UIKitConstants.swift */; };
 		B5A78826202B4178007874FB /* UIAlertController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A78825202B4178007874FB /* UIAlertController+Helpers.swift */; };
+		B5D91458206AD8BA00EF333D /* FancyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D91457206AD8BA00EF333D /* FancyButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,8 +58,13 @@
 		43067E2D203C8D03001DD610 /* UIBarButtonItem+BlockEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+BlockEvents.swift"; sourceTree = "<group>"; };
 		43067E2F203C8D27001DD610 /* UIGestureRecognizer+BlockEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIGestureRecognizer+BlockEvents.swift"; sourceTree = "<group>"; };
 		828BEAC5203B59CD003F7078 /* UIImage+Crop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Crop.swift"; sourceTree = "<group>"; };
+		B518D76C20742ADB00F05DB4 /* FlingableViewHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlingableViewHandler.swift; sourceTree = "<group>"; };
 		B529F288202C855B00895D88 /* UIColorHelpersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorHelpersTests.swift; sourceTree = "<group>"; };
 		B5393FE9206D7047007BF9D4 /* RotationAwareNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotationAwareNavigationViewController.swift; sourceTree = "<group>"; };
+		B592B4492064296500FF568E /* FancyAlertPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FancyAlertPresentationController.swift; sourceTree = "<group>"; };
+		B592B44A2064296500FF568E /* FancyAlerts.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FancyAlerts.storyboard; sourceTree = "<group>"; };
+		B592B44C2064296500FF568E /* FancyAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FancyAlertViewController.swift; sourceTree = "<group>"; };
+		B592B45420643E3400FF568E /* FancyAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyAlertView.swift; sourceTree = "<group>"; };
 		B59DCB5C202B146D00BEBD8A /* WordPressUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WordPressUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B59DCB5F202B146D00BEBD8A /* WordPressUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WordPressUI.h; sourceTree = "<group>"; };
 		B59DCB60202B146D00BEBD8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -80,6 +91,7 @@
 		B5A787E0202B2B59007874FB /* UIControl+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+Helpers.swift"; sourceTree = "<group>"; };
 		B5A787F4202B3587007874FB /* UIKitConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitConstants.swift; sourceTree = "<group>"; };
 		B5A78825202B4178007874FB /* UIAlertController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Helpers.swift"; sourceTree = "<group>"; };
+		B5D91457206AD8BA00EF333D /* FancyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +123,14 @@
 			path = BlockEvents;
 			sourceTree = "<group>";
 		};
+		B518D76B20742ADB00F05DB4 /* FlingableView */ = {
+			isa = PBXGroup;
+			children = (
+				B518D76C20742ADB00F05DB4 /* FlingableViewHandler.swift */,
+			);
+			path = FlingableView;
+			sourceTree = "<group>";
+		};
 		B529F287202C855B00895D88 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -125,6 +145,18 @@
 				B5393FE9206D7047007BF9D4 /* RotationAwareNavigationViewController.swift */,
 			);
 			path = Tools;
+			sourceTree = "<group>";
+		};
+		B592B4482064296500FF568E /* FancyAlert */ = {
+			isa = PBXGroup;
+			children = (
+				B592B4492064296500FF568E /* FancyAlertPresentationController.swift */,
+				B592B44A2064296500FF568E /* FancyAlerts.storyboard */,
+				B592B44C2064296500FF568E /* FancyAlertViewController.swift */,
+				B592B45420643E3400FF568E /* FancyAlertView.swift */,
+				B5D91457206AD8BA00EF333D /* FancyButton.swift */,
+			);
+			path = FancyAlert;
 			sourceTree = "<group>";
 		};
 		B59DCB52202B146D00BEBD8A = {
@@ -149,6 +181,8 @@
 		B59DCB5E202B146D00BEBD8A /* WordPressUI */ = {
 			isa = PBXGroup;
 			children = (
+				B592B4482064296500FF568E /* FancyAlert */,
+				B518D76B20742ADB00F05DB4 /* FlingableView */,
 				B5A787CB202B2AA6007874FB /* Categories */,
 				B5A787F3202B3587007874FB /* Constants */,
 				B5A78799202B1A93007874FB /* Extensions */,
@@ -279,7 +313,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 0920;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = automattic;
 				TargetAttributes = {
 					B59DCB5B202B146D00BEBD8A = {
@@ -315,6 +349,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B592B4502064296600FF568E /* FancyAlerts.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,6 +369,7 @@
 			files = (
 				43067E30203C8D27001DD610 /* UIGestureRecognizer+BlockEvents.swift in Sources */,
 				B5A787B0202B2324007874FB /* UIImage+Tint.swift in Sources */,
+				B592B45520643E3400FF568E /* FancyAlertView.swift in Sources */,
 				B5A787B1202B2324007874FB /* UITextField+TextHelper.swift in Sources */,
 				B5A787DB202B2AA7007874FB /* UIColor+Helpers.m in Sources */,
 				B5A787B7202B2324007874FB /* UIViewController+Helpers.swift in Sources */,
@@ -343,16 +379,20 @@
 				43067E2B203C8CC4001DD610 /* UIControl+BlockEvents.swift in Sources */,
 				B5A78826202B4178007874FB /* UIAlertController+Helpers.swift in Sources */,
 				B5A787B9202B2324007874FB /* UITableView+Helpers.swift in Sources */,
+				B5D91458206AD8BA00EF333D /* FancyButton.swift in Sources */,
 				B5A787BD202B2358007874FB /* CGAffineTransform+Helpers.swift in Sources */,
 				B5A787DF202B2AA7007874FB /* UIImage+Resize.m in Sources */,
 				B5A787B4202B2324007874FB /* UIWindow+Helpers.swift in Sources */,
 				B5A787B2202B2324007874FB /* UIView+Helpers.swift in Sources */,
 				B5A787E1202B2B59007874FB /* UIControl+Helpers.swift in Sources */,
 				43067E2E203C8D03001DD610 /* UIBarButtonItem+BlockEvents.swift in Sources */,
+				B592B4522064296600FF568E /* FancyAlertViewController.swift in Sources */,
 				B5A787F5202B3587007874FB /* UIKitConstants.swift in Sources */,
+				B518D76D20742ADB00F05DB4 /* FlingableViewHandler.swift in Sources */,
 				B5A787DC202B2AA7007874FB /* UIImage+Util.m in Sources */,
 				B5A787B5202B2324007874FB /* UIDevice+Helpers.swift in Sources */,
 				B5A787B3202B2324007874FB /* UITableViewController+Helpers.swift in Sources */,
+				B592B44F2064296600FF568E /* FancyAlertPresentationController.swift in Sources */,
 				828BEAC6203B59CD003F7078 /* UIImage+Crop.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -390,6 +430,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -397,6 +438,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -481,6 +523,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -488,6 +531,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -572,6 +616,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -579,6 +624,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -632,6 +678,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -639,6 +686,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;

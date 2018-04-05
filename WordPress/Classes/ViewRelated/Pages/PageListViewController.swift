@@ -355,6 +355,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         showEditor(post: apost)
     }
 
+    fileprivate func retryPage(_ apost: AbstractPost) {
+        PostCoordinator.shared.retrySave(of: apost)
+    }
+
     fileprivate func showEditor(post: AbstractPost) {
         let filterIndex = filterSettings.currentFilterIndex()
         let editorSettings = EditorSettings()
@@ -380,7 +384,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func presentAlertForPageBeingUploaded() {
-        let message = NSLocalizedString("This page is currently uploading. It won't take long -- try again soon and you'll be able to edit it.", comment: "Prompts the user that the page is being uploaded and cannot be edited while that process is ongoing.")
+        let message = NSLocalizedString("This page is currently uploading. It won't take long – try again soon and you'll be able to edit it.", comment: "Prompts the user that the page is being uploaded and cannot be edited while that process is ongoing.")
 
         let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
 
@@ -435,6 +439,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     fileprivate func handleMenuAction(fromCell cell: UITableViewCell, fromButton button: UIButton, forPage page: AbstractPost) {
         let objectID = page.objectID
 
+        let retryButtonTitle = NSLocalizedString("Retry", comment: "Label for a button that attempts to re-upload a page that previously failed to upload.")
         let viewButtonTitle = NSLocalizedString("View", comment: "Label for a button that opens the page when tapped.")
         let draftButtonTitle = NSLocalizedString("Move to Draft", comment: "Label for a button that moves a page to the draft folder")
         let publishButtonTitle = NSLocalizedString("Publish Immediately", comment: "Label for a button that moves a page to the published folder, publishing with the current date/time.")
@@ -475,23 +480,34 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 strongSelf.deletePost(page)
             })
         } else if filter == .published {
-            alertController.addActionWithTitle(viewButtonTitle, style: .default, handler: { [weak self] (action) in
-                guard let strongSelf = self,
-                    let page = strongSelf.pageForObjectID(objectID) else {
-                        return
-                }
+            if page.isFailed {
+                alertController.addActionWithTitle(retryButtonTitle, style: .default, handler: { [weak self] (action) in
+                    guard let strongSelf = self,
+                        let page = strongSelf.pageForObjectID(objectID) else {
+                            return
+                    }
 
-                strongSelf.viewPost(page)
-            })
+                    strongSelf.retryPage(page)
+                })
+            } else {
+                alertController.addActionWithTitle(viewButtonTitle, style: .default, handler: { [weak self] (action) in
+                    guard let strongSelf = self,
+                        let page = strongSelf.pageForObjectID(objectID) else {
+                            return
+                    }
 
-            alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
-                guard let strongSelf = self,
-                    let page = strongSelf.pageForObjectID(objectID) else {
-                        return
-                }
+                    strongSelf.viewPost(page)
+                })
 
-                strongSelf.draftPage(page)
-            })
+                alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
+                    guard let strongSelf = self,
+                        let page = strongSelf.pageForObjectID(objectID) else {
+                            return
+                    }
+
+                    strongSelf.draftPage(page)
+                })
+            }
 
             alertController.addActionWithTitle(trashButtonTitle, style: .default, handler: { [weak self] (action) in
                 guard let strongSelf = self,
@@ -502,23 +518,34 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 strongSelf.deletePost(page)
             })
         } else {
-            alertController.addActionWithTitle(viewButtonTitle, style: .default, handler: { [weak self] (action) in
-                guard let strongSelf = self,
-                    let page = strongSelf.pageForObjectID(objectID) else {
-                        return
-                }
+            if page.isFailed {
+                alertController.addActionWithTitle(retryButtonTitle, style: .default, handler: { [weak self] (action) in
+                    guard let strongSelf = self,
+                        let page = strongSelf.pageForObjectID(objectID) else {
+                            return
+                    }
 
-                strongSelf.viewPost(page)
-            })
+                    strongSelf.retryPage(page)
+                })
+            } else {
+                alertController.addActionWithTitle(viewButtonTitle, style: .default, handler: { [weak self] (action) in
+                    guard let strongSelf = self,
+                        let page = strongSelf.pageForObjectID(objectID) else {
+                            return
+                    }
 
-            alertController.addActionWithTitle(publishButtonTitle, style: .default, handler: { [weak self] (action) in
-                guard let strongSelf = self,
-                    let page = strongSelf.pageForObjectID(objectID) else {
-                        return
-                }
+                    strongSelf.viewPost(page)
+                })
 
-                strongSelf.publishPost(page)
-            })
+                alertController.addActionWithTitle(publishButtonTitle, style: .default, handler: { [weak self] (action) in
+                    guard let strongSelf = self,
+                        let page = strongSelf.pageForObjectID(objectID) else {
+                            return
+                    }
+
+                    strongSelf.publishPost(page)
+                })
+            }
 
             alertController.addActionWithTitle(trashButtonTitle, style: .default, handler: { [weak self] (action) in
                 guard let strongSelf = self,
