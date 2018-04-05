@@ -126,6 +126,8 @@
 #import "WPWalkthroughTextField.h"
 #import "WPUserAgent.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
+#import "WPLogger.h"
+
 
 // Pods
 #import <SVProgressHUD/SVProgressHUD.h>
