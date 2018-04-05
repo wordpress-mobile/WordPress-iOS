@@ -75,6 +75,7 @@ private extension SupportTableViewController {
         // Information Section
         let versionRow = TextRow(title: LocalizedText.version, value: "1.1")
         let switchRow = SwitchRow(title: LocalizedText.extraDebug, value: false, onChange: extraDebugToggled())
+        let versionRow = TextRow(title: LocalizedText.version, value: Bundle.main.shortVersionString())
         let logsRow = NavigationItemRow(title: LocalizedText.activityLogs, action: activityLogsSelected())
 
         let informationSection = ImmuTableSection(
