@@ -91,12 +91,16 @@ extension WordPressAuthenticationTracker {
             WPAppAnalytics.track(.loginTwoFactorFormViewed)
         case .loginURLFormViewed:
             WPAppAnalytics.track(.loginURLFormViewed)
+        case .loginURLHelpScreenViewed:
+            WPAppAnalytics.track(.loginURLHelpScreenViewed)
         case .loginUsernamePasswordFormViewed:
             WPAppAnalytics.track(.loginUsernamePasswordFormViewed)
         case .onePasswordFailed:
             WPAppAnalytics.track(.onePasswordFailed)
         case .onePasswordLogin:
             WPAppAnalytics.track(.onePasswordLogin)
+        case .onePasswordSignup:
+            WPAppAnalytics.track(.onePasswordSignup)
         case .openedLogin:
             WPAppAnalytics.track(.openedLogin)
         case .signupMagicLinkOpenEmailClientViewed:
@@ -105,6 +109,12 @@ extension WordPressAuthenticationTracker {
             WPAppAnalytics.track(.signupMagicLinkOpened)
         case .signupMagicLinkSucceeded:
             WPAppAnalytics.track(.signupMagicLinkSucceeded)
+        case .signupMagicLinkFailed:
+            WPAppAnalytics.track(.signupMagicLinkFailed)
+        case .signupMagicLinkRequested:
+            WPAppAnalytics.track(.signupMagicLinkRequested)
+        case .signupSocialSuccess:
+            WPAppAnalytics.track(.signupSocialSuccess)
         case .signedIn(let properties):
             WPAppAnalytics.track(.signedIn, withProperties: properties)
         case .twoFactorCodeRequested:
