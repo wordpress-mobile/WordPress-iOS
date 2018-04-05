@@ -939,7 +939,15 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        postService.trashPost(apost, success: nil) { [weak self] (error) in
+        let trashed = (apost.status == .trash)
+
+        postService.trashPost(apost, success: {
+            // If we permanently deleted the post
+            if trashed {
+                PostCoordinator.shared.cancelAnyPendingSaveOf(post: apost)
+                MediaCoordinator.shared.cancelUploadOfAllMedia(for: apost)
+            }
+        }, failure: { [weak self] (error) in
 
             guard let strongSelf = self else {
                 return
@@ -960,7 +968,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
                     strongSelf.updateAndPerformFetchRequestRefreshingResults()
                 }
             }
-        }
+        })
     }
 
     @objc func restorePost(_ apost: AbstractPost) {
