@@ -123,8 +123,8 @@ private extension SupportTableViewController {
     // MARK: - Row Handlers
 
     func helpCenterSelected() -> ImmuTableAction {
-        tableView.deselectSelectedRowWithAnimation(true)
         return { [unowned self] row in
+            self.tableView.deselectSelectedRowWithAnimation(true)
             if ZendeskUtils.zendeskEnabled {
                 guard let navController = self.navigationController else {
                     return
@@ -140,8 +140,8 @@ private extension SupportTableViewController {
     }
 
     func contactUsSelected() -> ImmuTableAction {
-        tableView.deselectSelectedRowWithAnimation(true)
         return { [unowned self] row in
+            self.tableView.deselectSelectedRowWithAnimation(true)
             if ZendeskUtils.zendeskEnabled {
                 guard let navController = self.navigationController else {
                     return
@@ -157,8 +157,8 @@ private extension SupportTableViewController {
     }
 
     func myTicketsSelected() -> ImmuTableAction {
-        tableView.deselectSelectedRowWithAnimation(true)
         return { [unowned self] row in
+            self.tableView.deselectSelectedRowWithAnimation(true)
             guard let navController = self.navigationController else {
                 return
             }
