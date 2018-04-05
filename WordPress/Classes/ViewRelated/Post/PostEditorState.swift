@@ -348,7 +348,8 @@ public class PostEditorStateContext {
     /// Indicates whether the Publish Action should be allowed, or not
     ///
     private func updatePublishActionAllowed() {
-        publishActionAllowed = hasContent && hasChanges && !isBeingPublished && !isUploadingMedia
+        let actionIsPublish = action == .publish || action == .publishNow
+        publishActionAllowed = hasContent && hasChanges && !isBeingPublished && (actionIsPublish || !isUploadingMedia)
     }
 }
 
