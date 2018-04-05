@@ -15,7 +15,7 @@
     
     BOOL isFixingAuthTokenIssue = NO;
     
-    if ([self hasAuthTokenIssues]) {
+//    if ([self hasAuthTokenIssues]) {
         UIViewController *controller = [WordPressAuthenticationManager signinForWPComFixingAuthToken:^(BOOL cancelled) {
             if (cancelled) {
                 [self showCancelReAuthenticationAlertAndOnOK:^{
@@ -34,10 +34,10 @@
 
         [self showExplanationAlertForReAuthenticationDueToMissingAuthToken];
         isFixingAuthTokenIssue = YES;
-    } else {
-        onComplete();
-    }
-    
+//    } else {
+//        onComplete();
+//    }
+
     return isFixingAuthTokenIssue;
 }
 
