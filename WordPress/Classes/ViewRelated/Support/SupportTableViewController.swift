@@ -26,6 +26,8 @@ class SupportTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        createZendeskIdentity()
         setupNavBar()
         setupTable()
     }
@@ -41,6 +43,25 @@ class SupportTableViewController: UITableViewController {
 // MARK: - Private Extension
 
 private extension SupportTableViewController {
+
+    func createZendeskIdentity() {
+
+        let context = ContextManager.sharedInstance().mainContext
+        let accountService = AccountService(managedObjectContext: context)
+
+        guard let defaultAccount = accountService.defaultWordPressComAccount(),
+        let api = defaultAccount.wordPressComRestApi else {
+            return
+        }
+
+        let service = AccountSettingsService(userID: defaultAccount.userID.intValue, api: api)
+        guard let accountSettings = service.settings else {
+            return
+        }
+
+        ZendeskUtils.createIdentity(with: accountSettings)
+    }
+
     func setupNavBar() {
         title = LocalizedText.viewTitle
 
@@ -108,7 +129,7 @@ private extension SupportTableViewController {
                 guard let navController = self.navigationController else {
                     return
                 }
-                ZendeskUtils.showHelpCenterFrom(navController)
+                ZendeskUtils.showHelpCenter(from: navController)
             } else {
                 guard let url = Constants.appSupportURL else {
                     return
@@ -122,7 +143,10 @@ private extension SupportTableViewController {
         tableView.deselectSelectedRowWithAnimation(true)
         return { [unowned self] row in
             if ZendeskUtils.zendeskEnabled {
-                self.showAlert()
+                guard let navController = self.navigationController else {
+                    return
+                }
+                ZendeskUtils.showNewRequest(from: navController)
             } else {
                 guard let url = Constants.forumsURL else {
                     return
