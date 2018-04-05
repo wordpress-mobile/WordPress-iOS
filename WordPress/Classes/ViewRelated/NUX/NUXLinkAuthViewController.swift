@@ -27,7 +27,7 @@ class NUXLinkAuthViewController: LoginViewController {
         didSync = true // Make sure we don't call this twice by accident
 
         let credentials = WordPressCredentials.wpcom(username: email, authToken: token, isJetpackLogin: isJetpackLogin, multifactor: false)
-        syncWPCom(credentials: credentials)
+        syncWPComAndPresentEpilogue(credentials: credentials)
 
         // Count this as success since we're authed. Even if there is a glitch
         // while syncing the user has valid credentials.

@@ -191,11 +191,28 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
 //
 extension LoginViewController {
 
+
+    /// Signals the Main App to synchronize the specified WordPress.com account. On completion, the epilogue will be pushed (if needed).
+    ///
+    func syncWPComAndPresentEpilogue(credentials: WordPressCredentials) {
+        syncWPCom(credentials: credentials) { [weak self] in
+            guard let `self` = self else {
+                return
+            }
+
+            if self.shouldShowEpilogue() {
+                self.showLoginEpilogue(for: credentials)
+            } else {
+                self.dismiss()
+            }
+        }
+    }
+
     /// TODO: @jlp Mar.19.2018. Officially support wporg, and rename to `sync(site)`
     ///
-    /// Signals the main app to signal the specified WordPress.com account.
+    /// Signals the Main App to synchronize the specified WordPress.com account.
     ///
-    func syncWPCom(credentials: WordPressCredentials, completion: (() -> ())? = nil) {
+    private func syncWPCom(credentials: WordPressCredentials, completion: (() -> ())? = nil) {
         guard let delegate = WordPressAuthenticator.shared.delegate else {
             fatalError()
         }
