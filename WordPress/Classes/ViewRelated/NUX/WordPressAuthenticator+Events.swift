@@ -34,13 +34,18 @@ public extension WordPressAuthenticator {
         case loginSocialSuccess
         case loginTwoFactorFormViewed
         case loginURLFormViewed
+        case loginURLHelpScreenViewed
         case loginUsernamePasswordFormViewed
         case onePasswordFailed
         case onePasswordLogin
+        case onePasswordSignup
         case openedLogin
         case signupMagicLinkOpenEmailClientViewed
         case signupMagicLinkOpened
         case signupMagicLinkSucceeded
+        case signupMagicLinkFailed
+        case signupMagicLinkRequested
+        case signupSocialSuccess
         case signedIn(properties: [String: String])
         case twoFactorCodeRequested
     }
