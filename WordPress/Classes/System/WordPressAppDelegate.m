@@ -30,6 +30,7 @@
 #import "HelpshiftUtils.h"
 #import "TodayExtensionService.h"
 #import "WPAuthTokenIssueSolver.h"
+#import <ZendeskSDK/ZendeskSDK.h>
 
 // Networking
 #import "WPUserAgent.h"
@@ -383,9 +384,14 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self toggleExtraDebuggingIfNeeded];
 #if DEBUG
     [KeychainTools processKeychainDebugArguments];
+    [ZDKLogger enable:YES];
 #endif
 
     [HelpshiftUtils setup];
+    
+    if ([Feature enabled:FeatureFlagZendeskMobile]) {
+        [ZendeskUtils setup];
+    }
 
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
