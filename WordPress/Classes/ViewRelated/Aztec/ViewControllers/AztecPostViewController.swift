@@ -1035,7 +1035,7 @@ extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIBarButtonItem) {
         let action = self.postEditorStateContext.action
 
-        asyncPublishPost(
+        publishPost(
                 action: action,
                 dismissWhenDone: action.dismissesEditor,
                 analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
@@ -1089,7 +1089,7 @@ extension AztecPostViewController {
 
             // The post is a local or remote draft
             alertController.addDefaultActionWithTitle(title) { _ in
-                self.asyncPublishPost(action: .save, dismissWhenDone: true, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
+                self.publishPost(action: .save, dismissWhenDone: true, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
             }
         }
 
@@ -1135,59 +1135,6 @@ extension AztecPostViewController {
             if action == .save || action == .saveAsDraft {
                 self.post.status = .draft
             } else if action == .publish {
-                self.post.status = .publish
-            } else if action == .publishNow {
-                self.post.date_created_gmt = Date()
-                self.post.status = .publish
-            }
-
-            if let analyticsStat = analyticsStat {
-                self.trackPostSave(stat: analyticsStat)
-            }
-
-            self.uploadPost(action: action, dismissWhenDone: dismissWhenDone)
-        }
-
-        if action == .publish || action == .publishNow {
-            displayPublishConfirmationAlert(onPublish: publishBlock)
-        } else {
-            publishBlock()
-        }
-    }
-
-    private func asyncPublishPost(
-        action: PostEditorAction,
-        dismissWhenDone: Bool,
-        analyticsStat: WPAnalyticsStat?) {
-
-        // If there is any failed media allow it to be removed or cancel publishing
-        if hasFailedMedia {
-            displayHasFailedMediaAlert(then: {
-                // Failed media is removed, try again.
-                // Note: Intentionally not tracking another analytics stat here (no appropriate one exists yet)
-                self.asyncPublishPost(action: action, dismissWhenDone: dismissWhenDone, analyticsStat: analyticsStat)
-            })
-            return
-        }
-
-        // If the user is trying to publish to WP.com and they haven't verified their account, prompt them to do so.
-        if let verificationHelper = verificationPromptHelper, verificationHelper.needsVerification(before: postEditorStateContext.action) {
-            verificationHelper.displayVerificationPrompt(from: self) { [unowned self] verifiedInBackground in
-                // User could've been plausibly silently verified in the background.
-                // If so, proceed to publishing the post as normal, otherwise save it as a draft.
-                if !verifiedInBackground {
-                    self.post.status = .draft
-                }
-
-                self.asyncPublishPost(action: action, dismissWhenDone: dismissWhenDone, analyticsStat: analyticsStat)
-            }
-            return
-        }
-
-        let publishBlock = { [unowned self] in
-            if action == .save || action == .saveAsDraft {
-                self.post.status = .draft
-            } else if action == .publish {
                 if self.post.date_created_gmt == nil {
                     self.post.date_created_gmt = Date()
                 }
@@ -1201,7 +1148,11 @@ extension AztecPostViewController {
                 self.trackPostSave(stat: analyticsStat)
             }
 
-            self.asyncUploadPost(action: action, dismissWhenDone: dismissWhenDone)
+            if action == .publish || action == .publishNow {
+                self.asyncUploadPost(action: action, dismissWhenDone: dismissWhenDone)
+            } else {
+                self.uploadPost(action: action, dismissWhenDone: dismissWhenDone)
+            }
         }
 
         let promoBlock = { [unowned self] in
