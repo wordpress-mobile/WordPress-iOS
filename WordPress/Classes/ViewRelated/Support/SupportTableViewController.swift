@@ -181,16 +181,6 @@ private extension SupportTableViewController {
         }
     }
 
-    func showAlert() {
-        tableView.deselectSelectedRowWithAnimation(true)
-        let message = "This is a work in progress. If you need to create a ticket, disable the zendeskMobile feature flag."
-        let alertController = UIAlertController(title: nil,
-                                                message: message,
-                                                preferredStyle: .alert)
-        alertController.addDefaultActionWithTitle("OK")
-        present(alertController, animated: true, completion: nil)
-    }
-
     // MARK: - ImmuTableRow Struct
 
     struct HelpRow: ImmuTableRow {
