@@ -209,6 +209,14 @@
             </objects>
             <point key="canvasLocation" x="362" y="717"/>
         </scene>
+        <!--Signup Email Entry-->
+        <scene sceneID="gjg-iE-qSx">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Signup" referencedIdentifier="emailEntry" id="klu-4U-PyL" userLabel="Signup Email Entry" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OWM-SL-SwW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2125" y="46"/>
+        </scene>
         <!--Login Email View Controller-->
         <scene sceneID="w6Y-pB-a3f">
             <objects>
@@ -398,6 +406,7 @@
                         <segue destination="Mwz-tq-5A8" kind="custom" identifier="showEpilogue" customClass="EpilogueSegue" customModule="WordPress" customModuleProvider="target" id="gAE-di-Wyf"/>
                         <segue destination="bAd-Df-IzS" kind="show" identifier="show2FA" id="kRR-qz-Hu2"/>
                         <segue destination="anK-hg-K4j" kind="show" identifier="showSelfHostedLogin" id="bK1-J1-hfT"/>
+                        <segue destination="klu-4U-PyL" kind="show" identifier="showSignupEmail" id="dh4-9P-l8W"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wWl-qb-1Yp" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1618,8 +1627,8 @@
         <image name="icon-wp" width="50" height="52"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="7lv-19-h36"/>
-        <segue reference="qLI-qX-rkG"/>
+        <segue reference="gAE-di-Wyf"/>
+        <segue reference="kRR-qz-Hu2"/>
         <segue reference="ySQ-EM-6JI"/>
         <segue reference="1xT-tL-sp6"/>
         <segue reference="swV-lc-6gI"/>
