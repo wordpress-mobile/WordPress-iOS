@@ -159,7 +159,10 @@ private extension SupportTableViewController {
     func myTicketsSelected() -> ImmuTableAction {
         tableView.deselectSelectedRowWithAnimation(true)
         return { [unowned self] row in
-            self.showAlert()
+            guard let navController = self.navigationController else {
+                return
+            }
+            ZendeskUtils.showTicketList(from: navController)
         }
     }
 
