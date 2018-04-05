@@ -76,7 +76,7 @@ class MediaCoordinator: NSObject {
 
     private func removeCoordinator(_ progressCoordinator: MediaProgressCoordinator) {
         progressCoordinatorQueue.async(flags: .barrier) {
-            if let index = postMediaProgressCoordinators.index(where: { $0.value == progressCoordinator }) {
+            if let index = self.postMediaProgressCoordinators.index(where: { $0.value == progressCoordinator }) {
                 self.postMediaProgressCoordinators.remove(at: index)
             }
         }
