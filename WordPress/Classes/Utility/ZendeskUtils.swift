@@ -11,6 +11,8 @@ import ZendeskSDK
         return UserDefaults.standard.bool(forKey: UserDefaultsKeys.zendeskEnabled)
     }
 
+    private static var identityCreated = false
+
     // MARK: - Public Methods
 
     @objc static func setup() {
@@ -31,9 +33,25 @@ import ZendeskSDK
         ZendeskUtils.sharedInstance.enableZendesk(true)
     }
 
-    static func showHelpCenterFrom(_ navController: UINavigationController) {
+    static func createIdentity(with accountSettings: AccountSettings) {
         let zendeskIdentity = ZDKAnonymousIdentity()
+
+        var userName = accountSettings.username
+        if accountSettings.firstName.count > 0 || accountSettings.lastName.count > 0 {
+            userName = accountSettings.firstName + " " + accountSettings.lastName
+        }
+
+        zendeskIdentity.email = accountSettings.email
+        zendeskIdentity.name = userName
         ZDKConfig.instance().userIdentity = zendeskIdentity
+        ZendeskUtils.identityCreated = true
+    }
+
+    static func showHelpCenter(from navController: UINavigationController) {
+
+        if !ZendeskUtils.identityCreated {
+            return
+        }
 
         let helpCenterContentModel = ZDKHelpCenterOverviewContentModel.defaultContent()
 
@@ -44,11 +62,21 @@ import ZendeskSDK
         ZDKHelpCenter.pushOverview(navController, with: helpCenterContentModel)
     }
 
+    static func showNewRequest(from navController: UINavigationController) {
+
+        if !ZendeskUtils.identityCreated {
+            return
+        }
+
+        ZDKRequests.presentRequestCreation(with: navController)
+    }
+
 }
 
 // MARK: - Private Extension
 
 private extension ZendeskUtils {
+
     func enableZendesk(_ enabled: Bool) {
         let defaults = UserDefaults.standard
         defaults.set(enabled, forKey: UserDefaultsKeys.zendeskEnabled)
