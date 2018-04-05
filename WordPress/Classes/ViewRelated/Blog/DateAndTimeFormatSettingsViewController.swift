@@ -114,7 +114,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
             let settingsViewController = SettingsSelectionViewController(style: .grouped)
             settingsViewController.title = NSLocalizedString("Date Format",
                                                              comment: "Writing Date Format Settings Title")
-            settingsViewController.currentValue = self.settings.dateFormat as NSObject!
+            settingsViewController.currentValue = self.settings.dateFormat as NSObject
 
             var allTitles = DateFormat.allTitles
             var allValues = DateFormat.allValues
@@ -147,7 +147,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
             let settingsViewController = SettingsSelectionViewController(style: .grouped)
             settingsViewController.title = NSLocalizedString("Time Format",
                                                              comment: "Writing Time Format Settings Title")
-            settingsViewController.currentValue = self.settings.timeFormat as NSObject!
+            settingsViewController.currentValue = self.settings.timeFormat as NSObject
 
             var allTitles = TimeFormat.allTitles
             var allValues = TimeFormat.allValues
@@ -180,7 +180,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
             let settingsViewController = SettingsSelectionViewController(style: .grouped)
             settingsViewController.title = NSLocalizedString("Week starts on",
                                                              comment: "Blog Writing Settings: Weeks starts on")
-            settingsViewController.currentValue = self.settings.startOfWeek as NSObject!
+            settingsViewController.currentValue = self.settings.startOfWeek as NSObject
             settingsViewController.titles = DaysOfTheWeek.allTitles
             settingsViewController.values = DaysOfTheWeek.allValues
             settingsViewController.onItemSelected = { [weak self] (selected: Any?) in
