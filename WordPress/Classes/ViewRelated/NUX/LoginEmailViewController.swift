@@ -484,7 +484,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 extension LoginEmailViewController {
     func finishedLogin(withGoogleIDToken googleIDToken: String, authToken: String) {
         let credentials = WordPressCredentials.wpcom(username: loginFields.username, authToken: authToken, isJetpackLogin: isJetpackLogin, multifactor: false)
-        syncWPCom(credentials: credentials)
+        syncWPComAndPresentEpilogue(credentials: credentials)
 
         // Disconnect now that we're done with Google.
         GIDSignIn.sharedInstance().disconnect()
