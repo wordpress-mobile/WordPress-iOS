@@ -1,7 +1,7 @@
 import Foundation
 
 
-/// WordPressComSyncService encapsulates all of the logic related to Logging into a WordPress.com account, and sync'ing the
+/// WordPressComSyncService encapsulates all of the logic related to Logging into a WordPress.com account, and syncing the
 /// User's blogs.
 ///
 class WordPressComSyncService {
