@@ -60,6 +60,9 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (BOOL)hasCategories;
 - (BOOL)hasTags;
 
+/// True if either the post failed to upload, or the post has media that failed to upload.
+@property (nonatomic, assign, readonly) BOOL isFailed;
+
 @property (nonatomic, assign, readonly) BOOL hasFailedMedia;
 
 /**

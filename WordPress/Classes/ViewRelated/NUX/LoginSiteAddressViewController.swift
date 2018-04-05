@@ -242,7 +242,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
         alert.modalPresentationStyle = .custom
         alert.transitioningDelegate = self
         present(alert, animated: true, completion: nil)
-        WPAnalytics.track(.loginURLHelpScreenViewed)
+        WordPressAuthenticator.post(event: .loginURLHelpScreenViewed)
     }
 
     @IBAction func handleTextFieldDidChange(_ sender: UITextField) {

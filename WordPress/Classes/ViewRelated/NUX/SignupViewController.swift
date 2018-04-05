@@ -355,8 +355,6 @@ import SafariServices
         }
 
         let successBlock = {
-            self.displayLoginMessage("")
-            self.configureLoading(false)
             self.dismiss()
         }
 
@@ -448,7 +446,7 @@ import SafariServices
             self.usernameField.text = username
             self.passwordField.text = password
 
-            WPAnalytics.track(.onePasswordSignup)
+            WordPressAuthenticator.post(event: .onePasswordSignup)
 
             // Note: Since the Site field is right below the 1Password field, let's continue with the edition flow
             // and make the SiteAddress Field the first responder.
@@ -459,7 +457,7 @@ import SafariServices
             }
 
             DDLogError("Failed to use 1Password App Extension to save a new Login: \(error)")
-            WPAnalytics.track(.onePasswordFailed)
+            WordPressAuthenticator.post(event: .onePasswordFailed)
         })
     }
 
