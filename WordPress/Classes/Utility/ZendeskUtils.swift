@@ -7,8 +7,8 @@ import ZendeskSDK
 
     static var sharedInstance: ZendeskUtils = ZendeskUtils()
 
-    private struct UserDefaultsKeys {
-        static let zendeskEnabled = "wp_zendesk_enabled"
+    static var zendeskEnabled: Bool {
+        return UserDefaults.standard.bool(forKey: UserDefaultsKeys.zendeskEnabled)
     }
 
     // MARK: - Public Methods
@@ -31,8 +31,17 @@ import ZendeskSDK
         ZendeskUtils.sharedInstance.enableZendesk(true)
     }
 
-    static func isZendeskEnabled() -> Bool {
-        return UserDefaults.standard.bool(forKey: UserDefaultsKeys.zendeskEnabled)
+    static func showHelpCenterFrom(_ navController: UINavigationController) {
+        let zendeskIdentity = ZDKAnonymousIdentity()
+        ZDKConfig.instance().userIdentity = zendeskIdentity
+
+        let helpCenterContentModel = ZDKHelpCenterOverviewContentModel.defaultContent()
+
+        helpCenterContentModel?.groupType = .category
+        helpCenterContentModel?.groupIds = [HelpCenterFilters.mobileCategoryID]
+        helpCenterContentModel?.labels = [HelpCenterFilters.iosLabel]
+
+        ZDKHelpCenter.pushOverview(navController, with: helpCenterContentModel)
     }
 
 }
@@ -46,4 +55,14 @@ private extension ZendeskUtils {
         defaults.synchronize()
         DDLogInfo("Zendesk Enabled: \(enabled)")
     }
+
+    struct UserDefaultsKeys {
+        static let zendeskEnabled = "wp_zendesk_enabled"
+    }
+
+    struct HelpCenterFilters {
+        static let mobileCategoryID = "360000041586"
+        static let iosLabel = "iOS"
+    }
+
 }
