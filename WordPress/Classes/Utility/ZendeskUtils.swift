@@ -71,6 +71,14 @@ import ZendeskSDK
         ZDKRequests.presentRequestCreation(with: navController)
     }
 
+    static func showTicketList(from navController: UINavigationController) {
+
+        if !ZendeskUtils.identityCreated {
+            return
+        }
+
+        ZDKRequests.pushRequestList(with: navController, layoutGuide: ZDKLayoutRespectTop)
+    }
 }
 
 // MARK: - Private Extension
