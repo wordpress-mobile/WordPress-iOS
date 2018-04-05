@@ -6,6 +6,7 @@ class SupportTableViewController: UITableViewController {
 
     var sourceTag: SupportSourceTag?
     private var tableHandler: ImmuTableViewHandler!
+    private let userDefaults = UserDefaults.standard
 
     // MARK: - Init
 
@@ -50,7 +51,11 @@ private extension SupportTableViewController {
     }
 
     func setupTable() {
-        ImmuTable.registerRows([SwitchRow.self, NavigationItemRow.self, TextRow.self, HelpRow.self], tableView: tableView)
+        ImmuTable.registerRows([SwitchRow.self,
+                                NavigationItemRow.self,
+                                TextRow.self,
+                                HelpRow.self],
+                               tableView: tableView)
         tableHandler = ImmuTableViewHandler(takeOver: self)
         tableHandler.viewModel = tableViewModel()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
@@ -73,9 +78,10 @@ private extension SupportTableViewController {
             footerText: LocalizedText.helpFooter)
 
         // Information Section
-        let versionRow = TextRow(title: LocalizedText.version, value: "1.1")
-        let switchRow = SwitchRow(title: LocalizedText.extraDebug, value: false, onChange: extraDebugToggled())
         let versionRow = TextRow(title: LocalizedText.version, value: Bundle.main.shortVersionString())
+        let switchRow = SwitchRow(title: LocalizedText.extraDebug,
+                                  value: userDefaults.bool(forKey: UserDefaultsKeys.extraDebug),
+                                  onChange: extraDebugToggled())
         let logsRow = NavigationItemRow(title: LocalizedText.activityLogs, action: activityLogsSelected())
 
         let informationSection = ImmuTableSection(
@@ -109,7 +115,9 @@ private extension SupportTableViewController {
 
     func extraDebugToggled() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
-            self.showAlert()
+            self.userDefaults.set(newValue, forKey: UserDefaultsKeys.extraDebug)
+            self.userDefaults.synchronize()
+            WPLogger.configureLoggerLevelWithExtraDebug()
         }
     }
 
@@ -162,6 +170,12 @@ private extension SupportTableViewController {
         static let extraDebug = NSLocalizedString("Extra Debug", comment: "Option in Support view to enable/disable adding extra information to support ticket.")
         static let activityLogs = NSLocalizedString("Activity Logs", comment: "Option in Support view to see activity logs.")
         static let informationFooter = NSLocalizedString("The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app.", comment: "Support screen footer text explaining the Extra Debug feature.")
+    }
+
+    // MARK: - User Defaults Keys
+
+    struct UserDefaultsKeys {
+        static let extraDebug = "extra_debug"
     }
 
 }
