@@ -63,19 +63,10 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     }
 
     fileprivate func shouldShowEpilogue() -> Bool {
-        if !isJetpackLogin {
-            return true
+        if isJetpackLogin && !isSignUp() {
+            return false
         }
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
-        guard
-            let objectID = loginFields.meta.jetpackBlogID,
-            let blog = context.object(with: objectID) as? Blog,
-            let account = blog.account
-            else {
-                return false
-        }
-        return accountService.isDefaultWordPressComAccount(account)
+        return true
     }
 
     func showLoginEpilogue() {
@@ -91,9 +82,8 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     func dismiss() {
         if shouldShowEpilogue() {
 
-            if let linkSource = loginFields.meta.emailMagicLinkSource,
-                linkSource == .signup {
-                    performSegue(withIdentifier: .showSignupEpilogue, sender: self)
+            if isSignUp() {
+                performSegue(withIdentifier: .showSignupEpilogue, sender: self)
             } else {
                 showLoginEpilogue()
             }
@@ -103,6 +93,14 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
 
         dismissBlock?(false)
         navigationController?.dismiss(animated: true, completion: nil)
+    }
+
+    private func isSignUp() -> Bool {
+        if let linkSource = loginFields.meta.emailMagicLinkSource,
+            linkSource == .signup {
+            return true
+        }
+        return false
     }
 
     /// Validates what is entered in the various form fields and, if valid,
