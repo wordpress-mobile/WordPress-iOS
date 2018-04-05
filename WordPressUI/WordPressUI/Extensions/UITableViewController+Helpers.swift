@@ -18,11 +18,12 @@ extension UITableViewController {
 
         if let indexPath = tableView.indexPathForSelectedRow {
             if let coordinator = transitionCoordinator {
-                let animationBlock: (UIViewControllerTransitionCoordinatorContext!) -> () = { [unowned self] _ in
+                let animationBlock: (UIViewControllerTransitionCoordinatorContext?) -> () = { [unowned self] _ in
                     self.tableView.deselectRow(at: indexPath, animated: true)
                 }
-                let completionBlock: (UIViewControllerTransitionCoordinatorContext!) -> () = { [unowned self] context in
-                    if context.isCancelled {
+                let completionBlock: (UIViewControllerTransitionCoordinatorContext?) -> () = { [unowned self] context in
+                    if let context = context,
+                        context.isCancelled {
                         self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
                     }
                 }

@@ -6,6 +6,20 @@ import WordPressUI
 
 
 
+// MARK: - WordPress Credentials
+//
+public enum WordPressCredentials {
+
+    /// WordPress.org Site Credentials.
+    ///
+    case wporg(username: String, password: String, xmlrpc: String, options: [AnyHashable: Any])
+
+    /// WordPress.com Site Credentials.
+    ///
+    case wpcom(username: String, authToken: String, isJetpackLogin: Bool)
+}
+
+
 // MARK: - WordPressAuthenticator Delegate Protocol
 //
 public protocol WordPressAuthenticatorDelegate: class {
@@ -26,9 +40,10 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     var supportBadgeCount: Int { get }
 
-    /// Refreshes Support's Badge Count.
+    /// Presents the Livechat Interface, from a given ViewController, with a specified SourceTag, and additional metadata,
+    /// such as all of the User's Login details.
     ///
-    func refreshSupportBadgeCount()
+    func presentLivechat(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
 
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
@@ -38,10 +53,9 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
 
-    /// Presents the Livechat Interface, from a given ViewController, with a specified SourceTag, and additional metadata,
-    /// such as all of the User's Login details.
+    /// Refreshes Support's Badge Count.
     ///
-    func presentLivechat(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
+    func refreshSupportBadgeCount()
 
     /// Indicates if the Login Epilogue should be displayed.
     ///
@@ -50,6 +64,14 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///     - jetpackBlogUsername: Username for the self hosted site that just got Jetpack-Connected (if any).
     ///
     func shouldPresentLoginEpilogue(jetpackBlogXMLRPC: String?, jetpackBlogUsername: String?) -> Bool
+
+    /// Signals the Host App that a WordPress Site (wpcom or wporg) is available with the specified credentials.
+    ///
+    /// - Parameters:
+    ///     - credentials: WordPress Site Credentials.
+    ///     - onCompletion: Closure to be executed on completion.
+    ///
+    func sync(credentials: WordPressCredentials, onCompletion: @escaping (Error?) -> ())
 }
 
 

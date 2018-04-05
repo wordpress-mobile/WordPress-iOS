@@ -7,7 +7,7 @@ extension RemotePostCategory {
             return nil
         }
 
-        let remotePostcategories: [RemotePostCategory] = categories.arrayOfTags().flatMap({Int($0)}).map({
+        let remotePostcategories: [RemotePostCategory] = categories.arrayOfTags().compactMap({Int($0)}).map({
             let remoteCat = RemotePostCategory()
             remoteCat.categoryID = NSNumber(value: $0)
             return remoteCat

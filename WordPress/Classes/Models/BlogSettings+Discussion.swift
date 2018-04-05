@@ -24,14 +24,14 @@ extension BlogSettings {
         /// Order is guarranteed to match exactly with *allValues*.
         ///
         static var allTitles: [String] {
-            return allValues.flatMap { descriptionMap[$0] }
+            return allValues.compactMap { descriptionMap[$0] }
         }
 
         /// Returns the sorted collection of Localized Hints for all of the Enum Case's.
         /// Order is guarranteed to match exactly with *allValues*.
         ///
         static var allHints: [String] {
-            return allValues.flatMap { hintsMap[$0] }
+            return allValues.compactMap { hintsMap[$0] }
         }
 
 
@@ -77,7 +77,7 @@ extension BlogSettings {
         /// Order is guarranteed to match exactly with *allValues*.
         ///
         static var allTitles: [String] {
-            return allValues.flatMap { descriptionMap[$0] }
+            return allValues.compactMap { descriptionMap[$0] }
         }
 
 
@@ -151,7 +151,7 @@ extension BlogSettings {
         /// Order is guarranteed to match exactly with *allValues*.
         ///
         static var allTitles: [String] {
-            return allValues.flatMap { descriptionMap[$0] }
+            return allValues.compactMap { descriptionMap[$0] }
         }
 
 

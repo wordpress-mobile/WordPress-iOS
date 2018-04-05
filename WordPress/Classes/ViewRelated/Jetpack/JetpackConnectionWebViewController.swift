@@ -286,7 +286,6 @@ private extension JetpackConnectionWebViewController {
 
     func stopObservingLoginNotifications() {
         NotificationCenter.default.removeObserver(self, name: .wordpressLoginFinishedJetpackLogin, object: nil)
-
     }
 
     @objc func handleLoginCancelled() {
