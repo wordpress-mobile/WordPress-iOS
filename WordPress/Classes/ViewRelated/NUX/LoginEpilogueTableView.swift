@@ -7,7 +7,7 @@ class LoginEpilogueTableView: UITableViewController {
     var blogCount: Int?
     var epilogueUserInfo: LoginEpilogueUserInfo? {
         didSet {
-            blogDataSource.blog = epilogueUserInfo?.blog
+            blogDataSource.blog = loadBlog(for: epilogueUserInfo?.credentials)
             blogDataSource.loggedIn = true
         }
     }
@@ -25,6 +25,17 @@ class LoginEpilogueTableView: UITableViewController {
 
         let userInfoNib = UINib(nibName: "EpilogueUserInfoCell", bundle: nil)
         tableView.register(userInfoNib, forCellReuseIdentifier: "userInfo")
+    }
+
+    private func loadBlog(for credentials: WordPressCredentials?) -> Blog? {
+        guard let credentials = credentials, case let WordPressCredentials.wporg(username, _, xmlrpc, _) = credentials else {
+            return nil
+        }
+
+        let context = ContextManager.sharedInstance().mainContext
+        let service = BlogService(managedObjectContext: context)
+
+        return service.findBlog(withXmlrpc: xmlrpc, andUsername: username)
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {

@@ -1,5 +1,5 @@
 /// View Controller for login-specific screens
-class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacadeDelegate {
+class LoginViewController: NUXViewController, LoginFacadeDelegate {
     @IBOutlet var instructionLabel: UILabel?
     @objc var errorToPresent: Error?
     var restrictToWPCom = false
@@ -36,13 +36,13 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
 
     /// Places the WordPress logo in the navbar
     ///
-    @objc func setupNavBarIcon() {
+    func setupNavBarIcon() {
         addWordPressLogoToNavController()
     }
 
     /// Configures instruction label font
     ///
-    @objc func styleInstructions() {
+    func styleInstructions() {
         instructionLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
         instructionLabel?.adjustsFontForContentSizeCategory = true
     }
@@ -82,6 +82,9 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     }
 
     func dismiss() {
+        configureStatusLabel("")
+        configureViewLoading(false)
+
         if shouldShowEpilogue() {
 
             if let linkSource = loginFields.meta.emailMagicLinkSource,
@@ -133,7 +136,7 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
 
     // MARK: SigninWPComSyncHandler methods
     dynamic func finishedLogin(withUsername username: String, authToken: String, requiredMultifactorCode: Bool) {
-        syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
+        syncWPCom(username: username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
         guard let service = loginFields.meta.socialService, service == SocialServiceName.google,
             let token = loginFields.meta.socialServiceIDToken else {
                 return
@@ -190,10 +193,48 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     }
 }
 
+
+// MARK: - Sync Helpers
+//
+extension LoginViewController {
+
+    /// Signals the main app to signal the specified WordPress.com account.
+    ///
+    func syncWPCom(username: String, authToken: String, requiredMultifactor: Bool) {
+        guard let delegate = WordPressAuthenticator.shared.delegate else {
+            fatalError()
+        }
+
+        SafariCredentialsService.updateSafariCredentialsIfNeeded(with: loginFields)
+
+        configureStatusLabel(NSLocalizedString("Getting account information", comment: "Alerts the user that wpcom account information is being retrieved."))
+
+        let credentials = WordPressCredentials.wpcom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin)
+        delegate.sync(credentials: credentials) { [weak self] _ in
+
+            /// Tracker
+            ///
+            let properties = [
+                "multifactor": requiredMultifactor.description,
+                "dotcom_user": true.description
+            ]
+
+            WordPressAuthenticator.post(event: .signedIn(properties: properties))
+
+            /// All good!
+            ///
+            self?.dismiss()
+        }
+    }
+}
+
+
 // MARK: - Handle changes in traitCollections. In particular, changes in Dynamic Type
+//
 extension LoginViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
             didChangePreferredContentSize()
         }
