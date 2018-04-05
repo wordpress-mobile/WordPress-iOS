@@ -79,23 +79,34 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
     }
 
 
-    // MARK: - Epilogue: Gravatar and User Profile Acquisition
+    // MARK: - Login + Signup Epilogue
+
+    func showSignupEpilogue(for credentials: WordPressCredentials) {
+        guard let delegate = WordPressAuthenticator.shared.delegate, let navigationController = navigationController else {
+            fatalError()
+        }
+
+        let service = loginFields.meta.googleUser.flatMap {
+            return SocialService.google(user: $0)
+        }
+
+        delegate.presentSignupEpilogue(in: navigationController, for: credentials, service: service)
+    }
 
     func showLoginEpilogue(for credentials: WordPressCredentials) {
+        guard let delegate = WordPressAuthenticator.shared.delegate, let navigationController = navigationController else {
+            fatalError()
+        }
+
         /// Epilogue: Signup
-        /// TODO: @jlp Mar.19.2018. Move this to the WordPressAuthenticatorDelegate's API!
         ///
-        if let linkSource = loginFields.meta.emailMagicLinkSource, linkSource == .signup {
-            performSegue(withIdentifier: .showSignupEpilogue, sender: self)
+        if loginFields.meta.emailMagicLinkSource == .signup {
+            showSignupEpilogue(for: credentials)
             return
         }
 
         /// Epilogue: Login
         ///
-        guard let delegate = WordPressAuthenticator.shared.delegate, let navigationController = navigationController else {
-            fatalError()
-        }
-
         delegate.presentLoginEpilogue(in: navigationController, for: credentials) { [weak self] in
             self?.dismissBlock?(false)
         }

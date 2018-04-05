@@ -1,6 +1,7 @@
 import UIKit
 import CocoaLumberjack
 import NSURL_IDN
+import GoogleSignIn
 import WordPressShared
 import WordPressUI
 
@@ -19,6 +20,14 @@ public enum WordPressCredentials {
     case wpcom(username: String, authToken: String, isJetpackLogin: Bool, multifactor: Bool)
 }
 
+// MARK: - Social Services Metadata
+//
+public enum SocialService {
+
+    /// Google's Signup Linked Account
+    ///
+    case google(user: GIDGoogleUser)
+}
 
 // MARK: - WordPressAuthenticator Delegate Protocol
 //
@@ -48,6 +57,10 @@ public protocol WordPressAuthenticatorDelegate: class {
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: WordPressCredentials, onDismiss: @escaping () -> Void)
+
+    /// Presents the Login Epilogue, in the specified NavigationController.
+    ///
+    func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: WordPressCredentials, service: SocialService?)
 
     /// Presents the Support Interface from a given ViewController, with a specified SourceTag.
     ///

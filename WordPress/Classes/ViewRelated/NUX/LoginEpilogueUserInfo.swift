@@ -23,18 +23,6 @@ public struct LoginEpilogueUserInfo {
         }
     }
 
-    init(account: WPAccount, loginFields: LoginFields) {
-        email = loginFields.emailAddress
-
-        if let name = account.username {
-            username = name
-        }
-
-        if let googleFullName = loginFields.meta.googleUser?.profile.name {
-            fullName = googleFullName
-        }
-    }
-
     init() {
         // NO-OP
     }
@@ -58,5 +46,15 @@ extension LoginEpilogueUserInfo {
     mutating func update(with profile: GravatarProfile) {
         gravatarUrl = profile.thumbnailUrl
         fullName = profile.displayName
+    }
+
+    /// Updates the Epilogue properties, given a SocialService instance.
+    ///
+    mutating func update(with service: SocialService) {
+        switch service {
+        case .google(let user):
+            fullName = user.profile.name
+            email = user.profile.email
+        }
     }
 }

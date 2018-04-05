@@ -106,6 +106,20 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         navigationController.pushViewController(epilogueViewController, animated: true)
     }
 
+    /// Presents the Signup Epilogue, in the specified NavigationController.
+    ///
+    func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: WordPressCredentials, service: SocialService?) {
+        let storyboard = UIStoryboard(name: "SignupEpilogue", bundle: .main)
+        guard let epilogueViewController = storyboard.instantiateInitialViewController() as? SignupEpilogueViewController else {
+            fatalError()
+        }
+
+        epilogueViewController.credentials = credentials
+        epilogueViewController.socialService = service
+
+        navigationController.pushViewController(epilogueViewController, animated: true)
+    }
+
     /// Synchronizes the specified WordPress Account.
     ///
     func sync(credentials: WordPressCredentials, onCompletion: @escaping (Error?) -> ()) {
