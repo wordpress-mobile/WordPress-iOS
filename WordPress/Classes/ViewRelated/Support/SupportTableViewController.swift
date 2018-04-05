@@ -123,7 +123,8 @@ private extension SupportTableViewController {
 
     func activityLogsSelected() -> ImmuTableAction {
         return { [unowned self] row in
-            self.showAlert()
+            let activityLogViewController = ActivityLogViewController()
+            self.navigationController?.pushViewController(activityLogViewController, animated: true)
         }
     }
 
