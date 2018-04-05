@@ -16,7 +16,7 @@ public enum WordPressCredentials {
 
     /// WordPress.com Site Credentials.
     ///
-    case wpcom(username: String, authToken: String, isJetpackLogin: Bool)
+    case wpcom(username: String, authToken: String, isJetpackLogin: Bool, multifactor: Bool)
 }
 
 
@@ -47,7 +47,7 @@ public protocol WordPressAuthenticatorDelegate: class {
 
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
-    func presentLoginEpilogue(in navigationController: UINavigationController, epilogueInfo: LoginEpilogueUserInfo?, isJetpackLogin: Bool, onDismiss: @escaping () -> Void)
+    func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: WordPressCredentials, onDismiss: @escaping () -> Void)
 
     /// Presents the Support Interface from a given ViewController, with a specified SourceTag.
     ///
