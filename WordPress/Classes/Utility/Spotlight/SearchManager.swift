@@ -28,7 +28,7 @@ import MobileCoreServices
     ///   - items: the items to be indexed
     ///
     @objc func indexItems(_ items: [SearchableItemConvertable]) {
-        let items = items.map({ $0.indexableItem() }).flatMap({ $0 })
+        let items = items.map({ $0.indexableItem() }).compactMap({ $0 })
         guard !items.isEmpty else {
             return
         }
@@ -59,7 +59,7 @@ import MobileCoreServices
     ///   - items: items to remove
     ///
     @objc func deleteSearchableItems(_ items: [SearchableItemConvertable]) {
-        let ids = items.map({ $0.uniqueIdentifier }).flatMap({ $0 })
+        let ids = items.map({ $0.uniqueIdentifier }).compactMap({ $0 })
         guard !ids.isEmpty else {
             return
         }

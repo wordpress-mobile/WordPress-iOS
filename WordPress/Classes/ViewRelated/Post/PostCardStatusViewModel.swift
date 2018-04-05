@@ -32,7 +32,7 @@ class PostCardStatusViewModel: NSObject {
     var status: String? {
         if MediaCoordinator.shared.isUploadingMedia(for: post) {
             return NSLocalizedString("Uploading media...", comment: "Message displayed on a post's card while the post is uploading media")
-        } else if postIsFailed {
+        } else if post.isFailed {
             return NSLocalizedString("Upload failed", comment: "Message displayed on a post's card when the post has failed to upload")
         } else if post.remoteStatus == .pushing {
             return NSLocalizedString("Uploading post...", comment: "Message displayed on a post's card when the post has failed to upload")
@@ -65,7 +65,7 @@ class PostCardStatusViewModel: NSObject {
             return Gridicon.iconOfType(.cloudUpload)
         }
 
-        if postIsFailed {
+        if post.isFailed {
             return Gridicon.iconOfType(.cloudUpload)
         }
 
@@ -91,7 +91,7 @@ class PostCardStatusViewModel: NSObject {
             return WPStyleGuide.grey()
         }
 
-        if postIsFailed {
+        if post.isFailed {
             return WPStyleGuide.errorRed()
         }
 
@@ -119,10 +119,5 @@ class PostCardStatusViewModel: NSObject {
         } else {
             return MediaCoordinator.shared.totalProgress(for: post)
         }
-    }
-
-    @objc
-    var postIsFailed: Bool {
-        return post.remoteStatus == .failed || MediaCoordinator.shared.hasFailedMedia(for: post) || post.hasFailedMedia
     }
 }

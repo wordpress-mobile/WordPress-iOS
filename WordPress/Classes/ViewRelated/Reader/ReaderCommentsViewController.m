@@ -1020,12 +1020,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self.tableView reloadData];
 }
 
-- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange
-{
-    [self presentWebViewControllerWithURL:URL];
-    return NO;
-}
-
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange interaction:(UITextItemInteraction)interaction
 {
     [self presentWebViewControllerWithURL:URL];
