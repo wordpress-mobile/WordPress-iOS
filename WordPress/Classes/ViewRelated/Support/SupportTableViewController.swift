@@ -68,13 +68,19 @@ private extension SupportTableViewController {
     func tableViewModel() -> ImmuTable {
 
         // Help Section
-        let helpCenterRow = HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected())
-        let contactRow = HelpRow(title: LocalizedText.contactUs, action: contactUsSelected())
-        let ticketsRow = HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected())
+        var helpSectionRows = [HelpRow]()
+        helpSectionRows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected()))
+
+        if ZendeskUtils.zendeskEnabled {
+            helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected()))
+            helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected()))
+        } else {
+            helpSectionRows.append(HelpRow(title: LocalizedText.wpForums, action: contactUsSelected()))
+        }
 
         let helpSection = ImmuTableSection(
             headerText: nil,
-            rows: [helpCenterRow, contactRow, ticketsRow],
+            rows: helpSectionRows,
             footerText: LocalizedText.helpFooter)
 
         // Information Section
@@ -96,18 +102,38 @@ private extension SupportTableViewController {
     // MARK: - Row Handlers
 
     func helpCenterSelected() -> ImmuTableAction {
+        tableView.deselectSelectedRowWithAnimation(true)
         return { [unowned self] row in
-            self.showAlert()
+            if ZendeskUtils.zendeskEnabled {
+                guard let navController = self.navigationController else {
+                    return
+                }
+                ZendeskUtils.showHelpCenterFrom(navController)
+            } else {
+                guard let url = Constants.appSupportURL else {
+                    return
+                }
+                UIApplication.shared.open(url)
+            }
         }
     }
 
     func contactUsSelected() -> ImmuTableAction {
+        tableView.deselectSelectedRowWithAnimation(true)
         return { [unowned self] row in
-            self.showAlert()
+            if ZendeskUtils.zendeskEnabled {
+                self.showAlert()
+            } else {
+                guard let url = Constants.forumsURL else {
+                    return
+                }
+                UIApplication.shared.open(url)
+            }
         }
     }
 
     func myTicketsSelected() -> ImmuTableAction {
+        tableView.deselectSelectedRowWithAnimation(true)
         return { [unowned self] row in
             self.showAlert()
         }
@@ -165,6 +191,7 @@ private extension SupportTableViewController {
         static let closeButton = NSLocalizedString("Close", comment: "Dismiss the current view")
         static let wpHelpCenter = NSLocalizedString("WordPress Help Center", comment: "Option in Support view to launch the Help Center.")
         static let contactUs = NSLocalizedString("Contact Us", comment: "Option in Support view to contact the support team.")
+        static let wpForums = NSLocalizedString("WordPress Forums", comment: "Option in Support view to view the Forums.")
         static let myTickets = NSLocalizedString("My Tickets", comment: "Option in Support view to access previous help tickets.")
         static let helpFooter = NSLocalizedString("Visit the Help Center to get answers to common questions, or contact us for more help.", comment: "Support screen footer text displayed when Zendesk is enabled.")
         static let version = NSLocalizedString("Version", comment: "Label in Support view displaying the app version.")
@@ -177,6 +204,13 @@ private extension SupportTableViewController {
 
     struct UserDefaultsKeys {
         static let extraDebug = "extra_debug"
+    }
+
+    // MARK: - Constants
+
+    struct Constants {
+        static let appSupportURL = URL(string: "https://apps.wordpress.com/support")
+        static let forumsURL = URL(string: "https://ios.forums.wordpress.org")
     }
 
 }
