@@ -182,11 +182,10 @@ public class PostEditorStateContext {
     }
 
     private static func initialAction(for originalPostStatus: BasePost.Status?, userCanPublish: Bool) -> PostEditorAction {
-        guard let originalPostStatus = originalPostStatus else {
-            return publishAction(userCanPublish: userCanPublish)
-        }
+        // We assume an initial status of draft if none is set
+        let newPostStatus = originalPostStatus ?? .draft
 
-        return action(for: originalPostStatus, newPostStatus: originalPostStatus, userCanPublish: userCanPublish)
+        return action(for: originalPostStatus, newPostStatus: newPostStatus, userCanPublish: userCanPublish)
     }
 
     private static func action(
