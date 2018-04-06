@@ -38,7 +38,7 @@ import ZendeskSDK
 
         var userName = accountSettings.username
         if accountSettings.firstName.count > 0 || accountSettings.lastName.count > 0 {
-            userName = accountSettings.firstName + " " + accountSettings.lastName
+            userName = (accountSettings.firstName + " " + accountSettings.lastName).trim()
         }
 
         zendeskIdentity.email = accountSettings.email
