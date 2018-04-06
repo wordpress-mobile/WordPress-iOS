@@ -1069,7 +1069,9 @@ extension AztecPostViewController {
         let title = NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
         let cancelTitle = NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
         let saveTitle = NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
-        let updateTitle = NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")
+        let updateTitle = NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already saved draft.")
+        let updatePostTitle = NSLocalizedString("Update Post", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published post.")
+        let updatePageTitle = NSLocalizedString("Update Page", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published page.")
         let discardTitle = NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
 
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
@@ -1080,16 +1082,23 @@ extension AztecPostViewController {
         // Button: Save Draft/Update Draft
         if post.hasLocalChanges() {
             let title: String = {
-                if !post.hasRemote() || post.status == .draft {
-                    return saveTitle
+                if post.status == .draft {
+                    if !post.hasRemote() {
+                        return saveTitle
+                    } else {
+                        return updateTitle
+                    }
+                } else if post is Page {
+                    return updatePageTitle
                 } else {
-                    return updateTitle
+                    return updatePostTitle
                 }
             }()
 
             // The post is a local or remote draft
             alertController.addDefaultActionWithTitle(title) { _ in
-                self.publishPost(action: .save, dismissWhenDone: true, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
+                let action: PostEditorAction = (self.post.status == .draft) ? .saveAsDraft : .publish
+                self.publishPost(action: action, dismissWhenDone: true, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
             }
         }
 
