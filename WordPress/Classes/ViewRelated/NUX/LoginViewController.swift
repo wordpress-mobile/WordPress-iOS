@@ -131,18 +131,7 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
     dynamic func finishedLogin(withUsername username: String, authToken: String, requiredMultifactorCode: Bool) {
         let credentials = WordPressCredentials.wpcom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin, multifactor: requiredMultifactorCode)
 
-        syncWPCom(credentials: credentials) { [weak self] in
-            guard let `self` = self else {
-                return
-            }
-
-            if self.shouldShowEpilogue() {
-                self.showLoginEpilogue(for: credentials)
-            } else {
-                self.dismiss()
-            }
-        }
-
+        syncWPComAndPresentEpilogue(credentials: credentials)
         linkSocialServiceIfNeeded(with: loginFields)
     }
 
