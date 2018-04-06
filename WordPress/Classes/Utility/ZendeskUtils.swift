@@ -1,6 +1,18 @@
 import Foundation
 import ZendeskSDK
 
+/// A public struct for providing user specific information used to create Zendesk ticket.
+///
+struct ZendeskTicketFields {
+    var appVersion: String
+    var allBlogs: String
+    var deviceFreeSpace: String
+    var networkInformation: String
+    var logs: String
+    var tags: [String]
+    
+}
+
 @objc class ZendeskUtils: NSObject {
 
     // MARK: - Properties
@@ -9,18 +21,6 @@ import ZendeskSDK
 
     static var zendeskEnabled: Bool {
         return UserDefaults.standard.bool(forKey: Constants.zendeskEnabledUDKey)
-    }
-
-    /// A public struct for providing user specific information used to create Zendesk ticket.
-    ///
-    struct ZendeskTicketFields {
-        var appVersion: String
-        var allBlogs: String
-        var deviceFreeSpace: String
-        var networkInformation: String
-        var logs: String
-        var tags: [String]
-
     }
 
     private static var identityCreated = false
