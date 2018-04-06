@@ -12,4 +12,13 @@ extension String {
     static var cancelMoreOptions: String {
         return NSLocalizedString("Dismiss", comment: "Dismiss the AlertView")
     }
+
+    // MARK: - Placeholder
+    static var freePhotosPlaceholderTitle: String {
+        return NSLocalizedString("Search to find free photos to add to your Media Library!", comment: "Title for placeholder in Free Photos")
+    }
+
+    static var freePhotosPlaceholderSubtitle: String {
+        return NSLocalizedString("Photos provided by Pexels", comment: "Subtitle for placeholder in Free Photos")
+    }
 }
