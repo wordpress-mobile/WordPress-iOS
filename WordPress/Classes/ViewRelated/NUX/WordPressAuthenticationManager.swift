@@ -142,28 +142,11 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         navigationController.pushViewController(epilogueViewController, animated: true)
     }
 
-    /// Indicates if the Login Epilogue should be presented. This is true whenever:
+    /// Indicates if the Login Epilogue should be presented. This is always true, except when we're connecting a
+    /// Self Hosted Site to WPcom (Jetpack Login).
     ///
-    ///     A. We're logging into a Dotcom Account
-    ///     B. We're connecting a Self Hosted Site to WPcom (Jetpack Login)
-    ///
-    /// Note: Whenever it's a Jetpack Login, but the actual blog cannot be found (or the account is already there), we will not present
-    /// the epilogue!.
-    ///
-    func shouldPresentLoginEpilogue(jetpackBlogXMLRPC: String?, jetpackBlogUsername: String?) -> Bool {
-        guard let xmlrpc = jetpackBlogXMLRPC, let username = jetpackBlogUsername else {
-            return true
-        }
-
-        let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-
-        guard let blog = blogService.findBlog(withXmlrpc: xmlrpc, andUsername: username), let account = blog.account else {
-            return false
-        }
-
-        let accountService = AccountService(managedObjectContext: context)
-        return accountService.isDefaultWordPressComAccount(account)
+    func shouldPresentLoginEpilogue(isJetpackLogin: Bool) -> Bool {
+        return isJetpackLogin == false
     }
 
     /// Synchronizes the specified WordPress Account.

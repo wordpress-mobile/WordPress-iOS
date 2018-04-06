@@ -67,8 +67,7 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
             fatalError()
         }
 
-        let meta = loginFields.meta
-        return delegate.shouldPresentLoginEpilogue(jetpackBlogXMLRPC: meta.jetpackBlogXMLRPC, jetpackBlogUsername: meta.jetpackBlogUsername)
+        return delegate.shouldPresentLoginEpilogue(isJetpackLogin: isJetpackLogin)
     }
 
     func showLoginEpilogue() {
@@ -87,9 +86,8 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
 
         if shouldShowEpilogue() {
 
-            if let linkSource = loginFields.meta.emailMagicLinkSource,
-                linkSource == .signup {
-                    performSegue(withIdentifier: .showSignupEpilogue, sender: self)
+            if isSignUp() {
+                performSegue(withIdentifier: .showSignupEpilogue, sender: self)
             } else {
                 showLoginEpilogue()
             }
@@ -99,6 +97,10 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
 
         dismissBlock?(false)
         navigationController?.dismiss(animated: true, completion: nil)
+    }
+
+    private func isSignUp() -> Bool {
+        return loginFields.meta.emailMagicLinkSource == .signup
     }
 
     /// Validates what is entered in the various form fields and, if valid,
