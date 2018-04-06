@@ -190,7 +190,7 @@ extension LoginViewController {
         }
     }
 
-    /// TODO: @jlp Mar.19.2018. Officially support wporg, and rename to `sync(site)`
+    /// TODO: @jlp Mar.19.2018. Officially support wporg, and rename to `sync(site)` + Update LoginSelfHostedViewController
     ///
     /// Signals the Main App to synchronize the specified WordPress.com account.
     ///
