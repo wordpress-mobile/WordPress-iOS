@@ -57,7 +57,7 @@ extension LoginEpilogueTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
+        if section == Sections.userInfoSection {
             return 1
         }
 
@@ -66,20 +66,20 @@ extension LoginEpilogueTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: Settings.userCellReuseIdentifier) as? EpilogueUserInfoCell else {
-                fatalError("Failed to get a user info cell")
-            }
-
-            if let info = epilogueUserInfo {
-                cell.configure(userInfo: info)
-            }
-
-            return cell
+        guard indexPath.section == Sections.userInfoSection else {
+            let wrappedPath = IndexPath(row: indexPath.row, section: indexPath.section-1)
+            return blogDataSource.tableView(tableView, cellForRowAt: wrappedPath)
         }
 
-        let wrappedPath = IndexPath(row: indexPath.row, section: indexPath.section-1)
-        return blogDataSource.tableView(tableView, cellForRowAt: wrappedPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Settings.userCellReuseIdentifier) as! EpilogueUserInfoCell
+        if let info = epilogueUserInfo {
+            cell.stopSpinner()
+            cell.configure(userInfo: info)
+        } else {
+            cell.startSpinner()
+        }
+
+        return cell
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -141,7 +141,7 @@ private extension LoginEpilogueTableViewController {
     /// Returns the title for the current section!.
     ///
     func title(for section: Int) -> String {
-        if section == 0 {
+        if section == Sections.userInfoSection {
             return NSLocalizedString("Logged In As", comment: "Header for user info, shown after loggin in").localizedUppercase
         }
 
@@ -237,7 +237,11 @@ private extension LoginEpilogueTableViewController {
 //
 private extension LoginEpilogueTableViewController {
 
-    struct Settings {
+    enum Sections {
+        static let userInfoSection = 0
+    }
+
+    enum Settings {
         static let headerReuseIdentifier = "SectionHeader"
         static let userCellReuseIdentifier = "userInfo"
         static let profileRowHeight = CGFloat(140)
