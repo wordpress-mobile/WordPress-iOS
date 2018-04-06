@@ -3,7 +3,7 @@ import UIKit
 
 // MARK: - SearchTableViewCellDelegate
 //
-protocol SearchTableViewCellDelegate {
+protocol SearchTableViewCellDelegate: class {
     func startSearch(for: String)
 }
 
@@ -11,32 +11,57 @@ protocol SearchTableViewCellDelegate {
 // MARK: - SearchTableViewCell
 //
 class SearchTableViewCell: UITableViewCell {
-    @IBOutlet var textField: LoginTextField!
-    public static let cellIdentifier = "SearchTableViewCell"
-    open var delegate: SearchTableViewCellDelegate?
 
-    private enum Constants {
-        static let textInsetsWithIcon = WPStyleGuide.edgeInsetForLoginTextFields()
+    /// UITableView's Reuse Identifier
+    ///
+    public static let reuseIdentifier = "SearchTableViewCell"
+
+    /// Search 'UITextField's reference!
+    ///
+    @IBOutlet private var textField: LoginTextField!
+
+    /// UITextField's listener
+    ///
+    open weak var delegate: SearchTableViewCellDelegate?
+
+    /// Search UITextField's placeholder
+    ///
+    open var placeholder: String? {
+        get {
+            return textField.placeholder
+        }
+        set {
+            textField.placeholder = newValue
+        }
     }
+
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-    }
-
-    init() {
-        super.init(style: .default, reuseIdentifier: SearchTableViewCell.cellIdentifier)
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
         textField.delegate = self
         textField.contentInsets = Constants.textInsetsWithIcon
-        textField.placeholder = NSLocalizedString("Type a keyword for more ideas", comment: "Placeholder text for domain search during site creation.")
-        textField.accessibilityIdentifier = "Domain search field"
-        textField.leftViewImage = textField?.leftViewImage?.imageWithTintColor(WPStyleGuide.grey())
+        textField.accessibilityIdentifier = "Search field"
+        textField.leftViewImage = textField?.leftViewImage?.imageWithTintColor(Constants.leftImageTintColor)
     }
 }
 
+
+// MARK: - Settings
+//
+private extension SearchTableViewCell {
+    enum Constants {
+        static let textInsetsWithIcon = WPStyleGuide.edgeInsetForLoginTextFields()
+        static let leftImageTintColor = WPStyleGuide.grey()
+    }
+}
+
+
+// MARK: - UITextFieldDelegate
+//
 extension SearchTableViewCell: UITextFieldDelegate {
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         delegate?.startSearch(for: "")
