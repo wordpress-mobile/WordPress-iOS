@@ -36,7 +36,9 @@ final class StockPhotosPicker: NSObject {
         picker.showGroupSelector = false
         picker.dataSource = dataSource
 
-        origin.present(picker, animated: true)
+        origin.present(picker, animated: true) {
+            picker.mediaPicker.searchBar?.becomeFirstResponder()
+        }
     }
 }
 
@@ -47,7 +49,9 @@ extension StockPhotosPicker: WPMediaPickerViewControllerDelegate {
             return
         }
         delegate?.stockPhotosPicker(self, didFinishPicking: stockPhotosMedia)
-        picker.dismiss(animated: true, completion: nil)
+        picker.dismiss(animated: true)
+        dataSource.clearSearch(notifyObservers: false)
+        hideKeyboard(from: picker.searchBar)
     }
 
     func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
@@ -57,6 +61,22 @@ extension StockPhotosPicker: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
-        picker.dismiss(animated: true, completion: nil)
+        picker.dismiss(animated: true)
+        dataSource.clearSearch(notifyObservers: false)
+        hideKeyboard(from: picker.searchBar)
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didSelect asset: WPMediaAsset) {
+        hideKeyboard(from: picker.searchBar)
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, didDeselect asset: WPMediaAsset) {
+        hideKeyboard(from: picker.searchBar)
+    }
+
+    private func hideKeyboard(from view: UIView?) {
+        if let view = view, view.isFirstResponder {
+            view.resignFirstResponder()
+        }
     }
 }
