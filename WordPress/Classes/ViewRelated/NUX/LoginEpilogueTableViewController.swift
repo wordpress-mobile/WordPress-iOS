@@ -215,8 +215,7 @@ private extension LoginEpilogueTableViewController {
                 return
             }
 
-            var epilogueInfo = LoginEpilogueUserInfo()
-            epilogueInfo.update(with: userProfile)
+            var epilogueInfo = LoginEpilogueUserInfo(profile: userProfile)
 
             /// Load: Gravatar's Metadata
             ///

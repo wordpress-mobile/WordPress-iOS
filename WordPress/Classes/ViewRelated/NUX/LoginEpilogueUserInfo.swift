@@ -35,8 +35,12 @@ public struct LoginEpilogueUserInfo {
         }
     }
 
-    init() {
-        // NO-OP
+    /// Updates the Epilogue properties, given an UserProfile instance.
+    ///
+    init(profile: UserProfile) {
+        username = profile.username
+        fullName = profile.displayName
+        email = profile.email
     }
 }
 
@@ -44,14 +48,6 @@ public struct LoginEpilogueUserInfo {
 // MARK: - LoginEpilogueUserInfo
 //
 extension LoginEpilogueUserInfo {
-
-    /// Updates the Epilogue properties, given an UserProfile instance.
-    ///
-    mutating func update(with profile: UserProfile) {
-        username = profile.username
-        fullName = profile.displayName
-        email = profile.email
-    }
 
     /// Updates the Epilogue properties, given a GravatarProfile instance.
     ///
