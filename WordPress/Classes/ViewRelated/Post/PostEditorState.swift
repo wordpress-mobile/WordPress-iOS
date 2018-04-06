@@ -109,16 +109,6 @@ public enum PostEditorAction {
     }
 }
 
-/// Protocol used by all concrete states for the UI - never exposed outside of `PostEditorStateContext`
-///
-fileprivate protocol PostEditorActionState {
-    var action: PostEditorAction { get }
-
-    // Actions that change state
-    func updated(postStatus: BasePost.Status, context: PostEditorStateContext) -> PostEditorActionState
-    func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState
-}
-
 public protocol PostEditorStateContextDelegate: class {
     func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction)
     func context(_ context: PostEditorStateContext, didChangeActionAllowed: Bool)
@@ -128,9 +118,9 @@ public protocol PostEditorStateContextDelegate: class {
 /// Encapsulates all of the editor UI state based upon actions performed on the post being edited.
 ///
 public class PostEditorStateContext {
-    private var editorState: PostEditorActionState {
+    var action: PostEditorAction {
         didSet {
-            delegate?.context(self, didChangeAction: editorState.action)
+            delegate?.context(self, didChangeAction: action)
         }
     }
 
@@ -186,15 +176,16 @@ public class PostEditorStateContext {
         self.delegate = delegate
 
         guard let originalPostStatus = originalPostStatus else {
-            editorState = PostEditorStatePublish()
+            action = .publish
             return
         }
 
         switch originalPostStatus {
         case .draft where userCanPublish == false:
-            editorState = PostEditorStateSubmitForReview()
+            action = .submitForReview
         default:
-            editorState = PostEditorStateUpdate()
+            action = .update
+
         }
     }
 
@@ -202,25 +193,51 @@ public class PostEditorStateContext {
     ///
     func updated(postStatus: BasePost.Status) {
         currentPostStatus = postStatus
-        let updatedState = editorState.updated(postStatus: postStatus, context: self)
-        guard type(of: editorState) != type(of: updatedState) else {
-            return
-        }
 
-        editorState = updatedState
+        let updatedAction = { () -> PostEditorAction in
+            switch postStatus {
+            case .draft where originalPostStatus != nil && originalPostStatus != .draft:
+                return .update
+            case .draft, .pending:
+                return .save
+            case .publish where originalPostStatus == nil || originalPostStatus == .draft:
+                if userCanPublish {
+                    return .publish
+                } else {
+                    return .submitForReview
+                }
+            case .publish:
+                return .update
+            case .publishPrivate where originalPostStatus == nil || originalPostStatus == .draft:
+                if userCanPublish {
+                    return .publish
+                } else {
+                    return .submitForReview
+                }
+            case .publishPrivate:
+                return .update
+            case .scheduled where originalPostStatus == nil || originalPostStatus == .draft:
+                if userCanPublish {
+                    return .schedule
+                } else {
+                    return .submitForReview
+                }
+            case .scheduled:
+                return .update
+            case .deleted, .trash:
+                // Deleted posts should really not be editable, but either way we'll try to handle it
+                // gracefully by allowing a "Save" action, even it if failed.
+                return .save
+            }
+        }()
+
+        action = updatedAction
     }
 
     /// Call when the publish date has changed (picked a future date) or nil if publish immediately selected
     ///
     func updated(publishDate: Date?) {
         currentPublishDate = publishDate
-
-        let updatedState = editorState.updated(publishDate: publishDate, context: self)
-        guard type(of: editorState) != type(of: updatedState) else {
-            return
-        }
-
-        editorState = updatedState
     }
 
     /// Call whenever the post content is not empty - title or content body
@@ -247,12 +264,6 @@ public class PostEditorStateContext {
         self.isUploadingMedia = isUploadingMedia
     }
 
-    /// Returns the current PostEditorAction state the UI is in
-    ///
-    var action: PostEditorAction {
-        return editorState.action
-    }
-
     /// Should the publish button be enabled given the current state
     ///
     var isPublishButtonEnabled: Bool {
@@ -263,25 +274,25 @@ public class PostEditorStateContext {
     /// e.g. Publish, Schedule, Update, Save
     ///
     var publishButtonText: String {
-        return editorState.action.publishActionLabel
+        return action.publishActionLabel
     }
 
     /// Returns the WPAnalyticsStat enum to be tracked when this post is published
     ///
     var publishActionAnalyticsStat: WPAnalyticsStat {
-        return editorState.action.publishActionAnalyticsStat
+        return action.publishActionAnalyticsStat
     }
 
     /// Indicates if the editor should be dismissed when the publish button is tapped
     ///
     var publishActionDismissesEditor: Bool {
-        return editorState.action != .update
+        return action != .update
     }
 
     /// Should post-post be shown for the current editor when publishing has happened
     ///
     var isPostPostShown: Bool {
-        return editorState.action.isPostPostShown
+        return action.isPostPostShown
     }
 
     /// Returns whether the secondary publish button should be displayed, or not
@@ -292,7 +303,7 @@ public class PostEditorStateContext {
         }
 
         // Don't show Publish Now for an already published or scheduled post with the update button as primary
-        guard !((currentPostStatus == .publish || currentPostStatus == .scheduled) && editorState.action == .update) else {
+        guard !((currentPostStatus == .publish || currentPostStatus == .scheduled) && action == .update) else {
             return false
         }
 
@@ -301,7 +312,7 @@ public class PostEditorStateContext {
             return false
         }
 
-        return editorState.action.secondaryPublishAction != nil
+        return action.secondaryPublishAction != nil
     }
 
     /// Returns the secondary publish action
@@ -311,7 +322,7 @@ public class PostEditorStateContext {
             return nil
         }
 
-        return editorState.action.secondaryPublishAction
+        return action.secondaryPublishAction
     }
 
     /// Returns the secondary publish button text
@@ -321,7 +332,7 @@ public class PostEditorStateContext {
             return nil
         }
 
-        return editorState.action.secondaryPublishAction?.publishActionLabel
+        return action.secondaryPublishAction?.publishActionLabel
     }
 
     /// Returns the WPAnalyticsStat enum to be tracked when this post is published with the secondary action
@@ -330,7 +341,7 @@ public class PostEditorStateContext {
             return nil
         }
 
-        return editorState.action.secondaryPublishAction?.publishActionAnalyticsStat
+        return action.secondaryPublishAction?.publishActionAnalyticsStat
     }
 
 
@@ -338,136 +349,6 @@ public class PostEditorStateContext {
     ///
     private func updatePublishActionAllowed() {
         publishActionAllowed = hasContent && hasChanges && !isBeingPublished && !isUploadingMedia
-    }
-}
-
-/// Concrete State for Publish
-///
-fileprivate class PostEditorStatePublish: PostEditorActionState {
-    var action: PostEditorAction {
-        return .publish
-    }
-
-    func updated(postStatus: BasePost.Status, context: PostEditorStateContext) -> PostEditorActionState {
-        switch postStatus {
-        case .draft where context.originalPostStatus == .publish:
-            // If switching to a draft the post should show Update
-            return PostEditorStateUpdate()
-        case .draft:
-            // Posts switching to Draft should show Save
-            return PostEditorStateSave()
-        default:
-            return self
-        }
-    }
-
-    func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
-        if isFutureDated(publishDate) {
-            // When future scheduling, button should show Schedule
-            return PostEditorStateSchedule()
-        }
-
-        return self
-    }
-}
-
-/// Concrete State for Save
-///
-fileprivate class PostEditorStateSave: PostEditorActionState {
-    var action: PostEditorAction {
-        return .save
-    }
-
-    func updated(postStatus: BasePost.Status, context: PostEditorStateContext) -> PostEditorActionState {
-        switch postStatus {
-        case .publish:
-            // If a draft is published, it should show Update
-            return PostEditorStateUpdate()
-        default:
-            return self
-        }
-    }
-
-    func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
-        if isFutureDated(publishDate) {
-            // When future scheduling a draft, button should show Schedule
-            return PostEditorStateSchedule()
-        }
-
-        return self
-    }
-}
-
-/// Concrete State for Schedule
-///
-fileprivate class PostEditorStateSchedule: PostEditorActionState {
-    var action: PostEditorAction {
-        return .schedule
-    }
-
-    func updated(postStatus: BasePost.Status, context: PostEditorStateContext) -> PostEditorActionState {
-        switch postStatus {
-        case .scheduled:
-            // When a post is scheduled, button should transition to Update
-            return PostEditorStateUpdate()
-        default:
-            return self
-        }
-    }
-
-    func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
-        if isFutureDated(publishDate) == false {
-            // If a post changed to a future date then back, button should be Publish again
-            return PostEditorStatePublish()
-        }
-
-        return self
-    }
-}
-
-/// Concrete State for Submit for Review
-///
-fileprivate class PostEditorStateSubmitForReview: PostEditorActionState {
-    var action: PostEditorAction {
-        return .submitForReview
-    }
-
-    func updated(postStatus: BasePost.Status, context: PostEditorStateContext) -> PostEditorActionState {
-        return self
-    }
-
-    func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
-        return self
-    }
-}
-
-/// Concrete State for Update
-///
-fileprivate class PostEditorStateUpdate: PostEditorActionState {
-    var action: PostEditorAction {
-        return .update
-    }
-
-    func updated(postStatus: BasePost.Status, context: PostEditorStateContext) -> PostEditorActionState {
-        switch postStatus {
-        case .publish:
-            // If a draft is published immediately, change state to Publish
-            return PostEditorStatePublish()
-        default:
-            return self
-        }
-    }
-
-    func updated(publishDate: Date?, context: PostEditorStateContext) -> PostEditorActionState {
-        if isFutureDated(publishDate) && context.originalPostStatus != .scheduled {
-            return PostEditorStateSchedule()
-        }
-
-        if isPastDated(publishDate) && context.originalPostStatus == .scheduled {
-            return PostEditorStatePublish()
-        }
-
-        return self
     }
 }
 
