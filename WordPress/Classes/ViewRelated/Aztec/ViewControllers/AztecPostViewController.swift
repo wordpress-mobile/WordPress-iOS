@@ -1116,6 +1116,12 @@ extension AztecPostViewController {
         dismissWhenDone: Bool,
         analyticsStat: WPAnalyticsStat?) {
 
+        // Cancel publishing if media is currently being uploaded
+        if !action.isAsync && !dismissWhenDone && mediaCoordinator.isUploadingMedia(for: post) {
+            displayMediaIsUploadingAlert()
+            return
+        }
+
         // If there is any failed media allow it to be removed or cancel publishing
         if hasFailedMedia {
             displayHasFailedMediaAlert(then: {
@@ -1184,6 +1190,12 @@ extension AztecPostViewController {
         } else {
             promoBlock()
         }
+    }
+
+    func displayMediaIsUploadingAlert() {
+        let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
+        alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
+        present(alertController, animated: true, completion: nil)
     }
 
     @IBAction func closeWasPressed() {
@@ -3690,6 +3702,12 @@ extension AztecPostViewController {
 
         static let acceptTitle              = NSLocalizedString("OK", comment: "Accept Action")
         static let cancelTitle              = NSLocalizedString("Cancel", comment: "Cancel Action")
+    }
+
+    struct MediaUploadingAlert {
+        static let title = NSLocalizedString("Uploading media", comment: "Title for alert when trying to save/exit a post before media upload process is complete.")
+        static let message = NSLocalizedString("You are currently uploading media. Please wait until this completes.", comment: "This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
+        static let acceptTitle  = NSLocalizedString("OK", comment: "Accept Action")
     }
 
     struct FailedMediaRemovalAlert {
