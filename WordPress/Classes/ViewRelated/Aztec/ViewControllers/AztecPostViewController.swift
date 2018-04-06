@@ -1164,7 +1164,7 @@ extension AztecPostViewController {
             }
 
             if action.isAsync || dismissWhenDone {
-                self.asyncUploadPost(action: action, dismissWhenDone: dismissWhenDone)
+                self.asyncUploadPost(action: action)
             } else {
                 self.uploadPost(action: action, dismissWhenDone: dismissWhenDone)
             }
@@ -2623,7 +2623,7 @@ private extension AztecPostViewController {
 
     /// Starts the publishing process.
     ///
-    func asyncUploadPost(action: PostEditorAction, dismissWhenDone: Bool) {
+    func asyncUploadPost(action: PostEditorAction) {
         postEditorStateContext.updated(isBeingPublished: true)
 
         mapUIContentToPostAndSave()
@@ -2632,11 +2632,7 @@ private extension AztecPostViewController {
 
         PostCoordinator.shared.save(post: post)
 
-        if dismissWhenDone {
-            dismissOrPopView(didSave: true, shouldShowPostEpilogue: false)
-        } else {
-            self.createRevisionOfPost()
-        }
+        dismissOrPopView(didSave: true, shouldShowPostEpilogue: false)
 
         self.postEditorStateContext.updated(isBeingPublished: false)
     }
