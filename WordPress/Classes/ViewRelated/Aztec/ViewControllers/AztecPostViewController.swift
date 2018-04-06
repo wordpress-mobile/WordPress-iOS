@@ -1148,7 +1148,7 @@ extension AztecPostViewController {
                 self.trackPostSave(stat: analyticsStat)
             }
 
-            if action == .publish || action == .publishNow {
+            if action.isAsync || dismissWhenDone {
                 self.asyncUploadPost(action: action, dismissWhenDone: dismissWhenDone)
             } else {
                 self.uploadPost(action: action, dismissWhenDone: dismissWhenDone)
@@ -1156,7 +1156,7 @@ extension AztecPostViewController {
         }
 
         let promoBlock = { [unowned self] in
-            if (action == .publish || action == .publishNow) && !UserDefaults.standard.asyncPromoWasDisplayed {
+            if action.isAsync && !UserDefaults.standard.asyncPromoWasDisplayed {
                 UserDefaults.standard.asyncPromoWasDisplayed = true
 
                 let controller = FancyAlertViewController.makeAsyncPostingAlertController(publishAction: publishBlock)
@@ -1170,7 +1170,7 @@ extension AztecPostViewController {
             }
         }
 
-        if action == .publish || action == .publishNow {
+        if action.isAsync {
             displayPublishConfirmationAlert(onPublish: promoBlock)
         } else {
             promoBlock()
