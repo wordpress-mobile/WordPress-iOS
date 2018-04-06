@@ -159,12 +159,12 @@ private extension SiteCreationCreateSiteViewController {
             }
 
             self.newSite = blog
-            performSegue(withIdentifier: Constants.epilogueSegueIdentifier, sender: self)
+            self.performSegue(withIdentifier: Constants.epilogueSegueIdentifier, sender: self)
         }
 
         let failureBlock = { (error: Error?) in
             self.setErrorMessageForLastStatus()
-            performSegue(withIdentifier: Constants.errorSegueIdentifier, sender: self)
+            self.performSegue(withIdentifier: Constants.errorSegueIdentifier, sender: self)
         }
 
         // Start the site creation process
