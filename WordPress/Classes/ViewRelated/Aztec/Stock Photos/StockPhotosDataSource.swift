@@ -13,6 +13,13 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
         super.init()
     }
 
+    func clearSearch(notifyObservers shouldNotify: Bool) {
+        photosMedia.removeAll()
+        if shouldNotify {
+            notifyObservers()
+        }
+    }
+
     func numberOfGroups() -> Int {
         return 1
     }
@@ -68,6 +75,10 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
 
     func ascendingOrdering() -> Bool {
         return true
+    }
+
+    func searchCancelled() {
+        clearSearch(notifyObservers: true)
     }
 
     // MARK: Unnused protocol methods
