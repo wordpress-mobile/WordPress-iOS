@@ -70,6 +70,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         options.allowMultipleSelection = false
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
+        options.showActionBar = false
 
         return options
     }
