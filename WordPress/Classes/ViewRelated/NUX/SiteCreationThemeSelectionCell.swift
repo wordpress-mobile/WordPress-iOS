@@ -54,7 +54,7 @@ class SiteCreationThemeSelectionCell: UICollectionViewCell {
     private func refreshScreenshot(url imageUrl: String) {
         themeImageView.backgroundColor = Styles.placeholderColor
         activityView.startAnimating()
-        themeImageView.downloadImage(at: URL(string: imageUrl), success: { [weak self] image in
+        themeImageView.downloadImage(from: URL(string: imageUrl), success: { [weak self] image in
             self?.showScreenshot()
         }, failure: { [weak self] error in
                 if let error = error as NSError?, error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {

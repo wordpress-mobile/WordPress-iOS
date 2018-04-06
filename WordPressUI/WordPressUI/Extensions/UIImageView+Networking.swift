@@ -10,8 +10,8 @@ public extension UIImageView {
     ///     -   placeholderImage: Image to be displayed while the actual asset gets downloaded.
     ///     -   pointSize: *Maximum* allowed size. if the actual asset exceeds this size, we'll shrink it down.
     ///
-    public func downloadResizedImage(at url: URL?, placeholderImage: UIImage? = nil, pointSize: CGSize) {
-        downloadImage(at: url, placeholderImage: placeholderImage, success: { [weak self] image in
+    public func downloadResizedImage(from url: URL?, placeholderImage: UIImage? = nil, pointSize: CGSize) {
+        downloadImage(from: url, placeholderImage: placeholderImage, success: { [weak self] image in
             guard image.size.height > pointSize.height || image.size.width > pointSize.width else {
                 self?.image = image
                 return
@@ -29,7 +29,7 @@ public extension UIImageView {
     ///     -   success: Closure to be executed on success. If it's nil, we'll simply update `self.image`
     ///     -   failure: Closure to be executed upon failure.
     ///
-    public func downloadImage(at url: URL?, placeholderImage: UIImage? = nil, success: ((UIImage) -> ())? = nil, failure: ((Error?) -> ())? = nil) {
+    public func downloadImage(from url: URL?, placeholderImage: UIImage? = nil, success: ((UIImage) -> ())? = nil, failure: ((Error?) -> ())? = nil) {
         // By default, onSuccess we just set the image instance
         let defaultOnSuccess = { [weak self] (image: UIImage) in
             self?.image = image

@@ -49,7 +49,7 @@ class PluginDirectoryCollectionViewCell: UICollectionViewCell {
     func configure(name: String, author: String, image: URL?) {
         let iconPlaceholder = Gridicon.iconOfType(.plugins, withSize: CGSize(width: 98, height: 98))
 
-        logoImageView?.downloadImage(at: image, placeholderImage: iconPlaceholder)
+        logoImageView?.downloadImage(from: image, placeholderImage: iconPlaceholder)
         authorLabel?.text = author
         nameLabel?.text = name
     }

@@ -14,13 +14,13 @@ class PluginDetailViewHeaderCell: UITableViewCell {
     open func configureCell(_ directoryEntry: PluginDirectoryEntry) {
         if let banner = directoryEntry.banner {
             headerImageView?.isHidden = false
-            headerImageView?.downloadImage(at: banner)
+            headerImageView?.downloadImage(from: banner)
         } else {
             headerImageView?.isHidden = true
         }
 
         let iconPlaceholder = Gridicon.iconOfType(.plugins, withSize: CGSize(width: 40, height: 40))
-        iconImageView?.downloadImage(at: directoryEntry.icon, placeholderImage: iconPlaceholder)
+        iconImageView?.downloadImage(from: directoryEntry.icon, placeholderImage: iconPlaceholder)
 
         nameLabel?.text = directoryEntry.name
 

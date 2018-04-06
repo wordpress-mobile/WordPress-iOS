@@ -17,7 +17,7 @@ public extension UIImageView {
         }
 
         let size = CGSize(width: blavatarSizeInPoints, height: blavatarSizeInPoints)
-        downloadResizedImage(at: updatedURL, pointSize: size)
+        downloadResizedImage(from: updatedURL, pointSize: size)
     }
 
 
