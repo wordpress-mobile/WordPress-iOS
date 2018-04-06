@@ -10,7 +10,12 @@ final class StockPhotosPlaceholder: WPNoResultsView {
     }
 
     private func populate() {
+        configureImage()
         titleText = "Search to find free photos to add to your Media Library!"
         messageText = "Photos provided by Pexels"
+    }
+
+    private func configureImage() {
+        accessoryView = UIImageView(image: UIImage(named: "media-free-photos-no-results"))
     }
 }
