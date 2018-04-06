@@ -102,18 +102,29 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         HelpshiftUtils.refreshUnreadNotificationCount()
     }
 
-    /// Returns an instance of SupportViewController, configured to be displayed from a specified Support Source.
+    /// Returns an instance of a SupportView, configured to be displayed from a specified Support Source.
     ///
     func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any] = [:]) {
-        let supportViewController = SupportViewController()
-        supportViewController.sourceTag = sourceTag.toSupportSourceTag()
-        supportViewController.helpshiftOptions = options
 
-        let navController = UINavigationController(rootViewController: supportViewController)
-        navController.navigationBar.isTranslucent = false
-        navController.modalPresentationStyle = .formSheet
+        if FeatureFlag.zendeskMobile.enabled {
+            let controller = SupportTableViewController()
+            controller.sourceTag = sourceTag.toSupportSourceTag()
 
-        sourceViewController.present(navController, animated: true, completion: nil)
+            let navController = UINavigationController(rootViewController: controller)
+            navController.modalPresentationStyle = .formSheet
+
+            sourceViewController.present(navController, animated: true, completion: nil)
+        } else {
+            let supportViewController = SupportViewController()
+            supportViewController.sourceTag = sourceTag.toSupportSourceTag()
+            supportViewController.helpshiftOptions = options
+
+            let navController = UINavigationController(rootViewController: supportViewController)
+            navController.navigationBar.isTranslucent = false
+            navController.modalPresentationStyle = .formSheet
+
+            sourceViewController.present(navController, animated: true, completion: nil)
+        }
     }
 
     /// Presents Helpshift, with the specified ViewController as a source. Additional metadata is supplied, such as the sourceTag and Login details.
