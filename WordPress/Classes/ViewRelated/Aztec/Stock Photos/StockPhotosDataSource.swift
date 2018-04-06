@@ -8,6 +8,8 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     var observers = [String: WPMediaChangesBlock]()
     let service: StockPhotosService
 
+    private let throttle = Throttle(seconds: 1)
+
     init(service: StockPhotosService) {
         self.service = service
         super.init()
@@ -25,9 +27,17 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     }
 
     func search(for searchText: String?) {
-        let params = StockPhotosSearchParams(text: searchText ?? "")
-        service.search(params: params) { (result) in
-            self.searchCompleted(result: result)
+        throttle.throttle { [weak self] in
+            let params = StockPhotosSearchParams(text: searchText ?? "")
+            self?.search(params)
+        }
+    }
+
+    private func search(_ params: StockPhotosSearchParams) {
+        DispatchQueue.main.async { [weak self] in
+            self?.service.search(params: params) { (result) in
+                self?.searchCompleted(result: result)
+            }
         }
     }
 
