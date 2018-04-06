@@ -26,6 +26,8 @@ class SupportTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        createZendeskIdentity()
         setupNavBar()
         setupTable()
     }
@@ -41,6 +43,25 @@ class SupportTableViewController: UITableViewController {
 // MARK: - Private Extension
 
 private extension SupportTableViewController {
+
+    func createZendeskIdentity() {
+
+        let context = ContextManager.sharedInstance().mainContext
+        let accountService = AccountService(managedObjectContext: context)
+
+        guard let defaultAccount = accountService.defaultWordPressComAccount(),
+        let api = defaultAccount.wordPressComRestApi else {
+            return
+        }
+
+        let service = AccountSettingsService(userID: defaultAccount.userID.intValue, api: api)
+        guard let accountSettings = service.settings else {
+            return
+        }
+
+        ZendeskUtils.createIdentity(with: accountSettings)
+    }
+
     func setupNavBar() {
         title = LocalizedText.viewTitle
 
@@ -68,13 +89,19 @@ private extension SupportTableViewController {
     func tableViewModel() -> ImmuTable {
 
         // Help Section
-        let helpCenterRow = HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected())
-        let contactRow = HelpRow(title: LocalizedText.contactUs, action: contactUsSelected())
-        let ticketsRow = HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected())
+        var helpSectionRows = [HelpRow]()
+        helpSectionRows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected()))
+
+        if ZendeskUtils.zendeskEnabled {
+            helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected()))
+            helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected()))
+        } else {
+            helpSectionRows.append(HelpRow(title: LocalizedText.wpForums, action: contactUsSelected()))
+        }
 
         let helpSection = ImmuTableSection(
             headerText: nil,
-            rows: [helpCenterRow, contactRow, ticketsRow],
+            rows: helpSectionRows,
             footerText: LocalizedText.helpFooter)
 
         // Information Section
@@ -97,19 +124,45 @@ private extension SupportTableViewController {
 
     func helpCenterSelected() -> ImmuTableAction {
         return { [unowned self] row in
-            self.showAlert()
+            self.tableView.deselectSelectedRowWithAnimation(true)
+            if ZendeskUtils.zendeskEnabled {
+                guard let navController = self.navigationController else {
+                    return
+                }
+                ZendeskUtils.showHelpCenter(from: navController)
+            } else {
+                guard let url = Constants.appSupportURL else {
+                    return
+                }
+                UIApplication.shared.open(url)
+            }
         }
     }
 
     func contactUsSelected() -> ImmuTableAction {
         return { [unowned self] row in
-            self.showAlert()
+            self.tableView.deselectSelectedRowWithAnimation(true)
+            if ZendeskUtils.zendeskEnabled {
+                guard let navController = self.navigationController else {
+                    return
+                }
+                ZendeskUtils.showNewRequest(from: navController)
+            } else {
+                guard let url = Constants.forumsURL else {
+                    return
+                }
+                UIApplication.shared.open(url)
+            }
         }
     }
 
     func myTicketsSelected() -> ImmuTableAction {
         return { [unowned self] row in
-            self.showAlert()
+            self.tableView.deselectSelectedRowWithAnimation(true)
+            guard let navController = self.navigationController else {
+                return
+            }
+            ZendeskUtils.showTicketList(from: navController)
         }
     }
 
@@ -126,16 +179,6 @@ private extension SupportTableViewController {
             let activityLogViewController = ActivityLogViewController()
             self.navigationController?.pushViewController(activityLogViewController, animated: true)
         }
-    }
-
-    func showAlert() {
-        tableView.deselectSelectedRowWithAnimation(true)
-        let message = "This is a work in progress. If you need to create a ticket, disable the zendeskMobile feature flag."
-        let alertController = UIAlertController(title: nil,
-                                                message: message,
-                                                preferredStyle: .alert)
-        alertController.addDefaultActionWithTitle("OK")
-        present(alertController, animated: true, completion: nil)
     }
 
     // MARK: - ImmuTableRow Struct
@@ -165,6 +208,7 @@ private extension SupportTableViewController {
         static let closeButton = NSLocalizedString("Close", comment: "Dismiss the current view")
         static let wpHelpCenter = NSLocalizedString("WordPress Help Center", comment: "Option in Support view to launch the Help Center.")
         static let contactUs = NSLocalizedString("Contact Us", comment: "Option in Support view to contact the support team.")
+        static let wpForums = NSLocalizedString("WordPress Forums", comment: "Option in Support view to view the Forums.")
         static let myTickets = NSLocalizedString("My Tickets", comment: "Option in Support view to access previous help tickets.")
         static let helpFooter = NSLocalizedString("Visit the Help Center to get answers to common questions, or contact us for more help.", comment: "Support screen footer text displayed when Zendesk is enabled.")
         static let version = NSLocalizedString("Version", comment: "Label in Support view displaying the app version.")
@@ -177,6 +221,13 @@ private extension SupportTableViewController {
 
     struct UserDefaultsKeys {
         static let extraDebug = "extra_debug"
+    }
+
+    // MARK: - Constants
+
+    struct Constants {
+        static let appSupportURL = URL(string: "https://apps.wordpress.com/support")
+        static let forumsURL = URL(string: "https://ios.forums.wordpress.org")
     }
 
 }
