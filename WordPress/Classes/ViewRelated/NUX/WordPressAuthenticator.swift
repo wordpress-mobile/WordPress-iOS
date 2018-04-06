@@ -70,6 +70,14 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     func refreshSupportBadgeCount()
 
+    /// Indicates if the Login Epilogue should be displayed.
+    ///
+    /// - Parameters:
+    ///     - jetpackBlogXMLRPC: Endpoint for the self hosted site that just got Jetpack-Connected (if any).
+    ///     - jetpackBlogUsername: Username for the self hosted site that just got Jetpack-Connected (if any).
+    ///
+    func shouldPresentLoginEpilogue(jetpackBlogXMLRPC: String?, jetpackBlogUsername: String?) -> Bool
+
     /// Signals the Host App that a WordPress Site (wpcom or wporg) is available with the specified credentials.
     ///
     /// - Parameters:
@@ -98,11 +106,12 @@ public protocol WordPressAuthenticatorDelegate: class {
 
     /// Internal Constants.
     ///
-    fileprivate enum Constants {
-        static let authenticationInfoKey = "authenticationInfoKey"
-        static let jetpackBlogIDURL = "jetpackBlogIDURL"
-        static let username = "username"
-        static let emailMagicLinkSource = "emailMagicLinkSource"
+    private enum Constants {
+        static let authenticationInfoKey    = "authenticationInfoKey"
+        static let jetpackBlogXMLRPC        = "jetpackBlogXMLRPC"
+        static let jetpackBlogUsername      = "jetpackBlogUsername"
+        static let username                 = "username"
+        static let emailMagicLinkSource     = "emailMagicLinkSource"
     }
 
 
@@ -135,7 +144,7 @@ public protocol WordPressAuthenticatorDelegate: class {
     }
 
     /// Used to present the new wpcom-only login flow from the app delegate
-    @objc class func showLoginForJustWPComFromPresenter(_ presenter: UIViewController, forJetpackBlog blog: Blog? = nil) {
+    @objc class func showLoginForJustWPCom(from presenter: UIViewController, xmlrpc: String? = nil, username: String? = nil, connectedEmail: String? = nil) {
         defer {
             trackOpenedLogin()
         }
@@ -144,19 +153,21 @@ public protocol WordPressAuthenticatorDelegate: class {
         guard let controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? LoginEmailViewController else {
             return
         }
+
         controller.restrictToWPCom = true
-        if let blog = blog {
-            controller.loginFields.meta.jetpackBlogID = blog.objectID
-            if let email = blog.jetpack?.connectedEmail {
-                controller.loginFields.username = email
-            } else {
-                controller.offerSignupOption = true
-            }
+        controller.loginFields.meta.jetpackBlogXMLRPC = xmlrpc
+        controller.loginFields.meta.jetpackBlogUsername = username
+
+        if let email = connectedEmail {
+            controller.loginFields.username = email
+        } else {
+            controller.offerSignupOption = true
         }
 
         let navController = LoginNavigationController(rootViewController: controller)
         presenter.present(navController, animated: true, completion: nil)
     }
+
 
     /// Used to present the new self-hosted login flow from BlogListViewController
     @objc class func showLoginForSelfHostedSite(_ presenter: UIViewController) {
@@ -330,8 +341,12 @@ public protocol WordPressAuthenticatorDelegate: class {
         var dict: [String: String] = [
             Constants.username: loginFields.username
         ]
-        if let url = loginFields.meta.jetpackBlogID?.uriRepresentation().absoluteString {
-            dict[Constants.jetpackBlogIDURL] = url
+        if let xmlrpc = loginFields.meta.jetpackBlogXMLRPC {
+            dict[Constants.jetpackBlogXMLRPC] = xmlrpc
+        }
+
+        if let username = loginFields.meta.jetpackBlogUsername {
+            dict[Constants.jetpackBlogUsername] = username
         }
 
         if let linkSource = loginFields.meta.emailMagicLinkSource {
@@ -362,11 +377,12 @@ public protocol WordPressAuthenticatorDelegate: class {
             loginFields.meta.emailMagicLinkSource = EmailMagicLinkSource(rawValue: linkSourceRawValue)
         }
 
-        let store = ContextManager.sharedInstance().persistentStoreCoordinator
-        if  let path = dict[Constants.jetpackBlogIDURL] as? String,
-            let url = URL(string: path),
-            let objectID = store.managedObjectID(forURIRepresentation: url) {
-            loginFields.meta.jetpackBlogID = objectID
+        if let xmlrpc = dict[Constants.jetpackBlogXMLRPC] as? String {
+            loginFields.meta.jetpackBlogXMLRPC = xmlrpc
+        }
+
+        if let username = dict[Constants.jetpackBlogUsername] as? String {
+            loginFields.meta.jetpackBlogUsername = username
         }
 
         return loginFields

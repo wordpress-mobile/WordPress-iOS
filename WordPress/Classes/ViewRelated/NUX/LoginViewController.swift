@@ -63,19 +63,12 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
     }
 
     fileprivate func shouldShowEpilogue() -> Bool {
-        if !isJetpackLogin {
-            return true
+        guard let delegate = WordPressAuthenticator.shared.delegate else {
+            fatalError()
         }
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
-        guard
-            let objectID = loginFields.meta.jetpackBlogID,
-            let blog = context.object(with: objectID) as? Blog,
-            let account = blog.account
-            else {
-                return false
-        }
-        return accountService.isDefaultWordPressComAccount(account)
+
+        let meta = loginFields.meta
+        return delegate.shouldPresentLoginEpilogue(jetpackBlogXMLRPC: meta.jetpackBlogXMLRPC, jetpackBlogUsername: meta.jetpackBlogUsername)
     }
 
 
@@ -149,18 +142,7 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
     dynamic func finishedLogin(withUsername username: String, authToken: String, requiredMultifactorCode: Bool) {
         let credentials = WordPressCredentials.wpcom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin, multifactor: requiredMultifactorCode)
 
-        syncWPCom(credentials: credentials) { [weak self] in
-            guard let `self` = self else {
-                return
-            }
-
-            if self.shouldShowEpilogue() {
-                self.showLoginEpilogue(for: credentials)
-            } else {
-                self.dismiss()
-            }
-        }
-
+        syncWPComAndPresentEpilogue(credentials: credentials)
         linkSocialServiceIfNeeded(with: loginFields)
     }
 
@@ -219,7 +201,7 @@ extension LoginViewController {
         }
     }
 
-    /// TODO: @jlp Mar.19.2018. Officially support wporg, and rename to `sync(site)`
+    /// TODO: @jlp Mar.19.2018. Officially support wporg, and rename to `sync(site)` + Update LoginSelfHostedViewController
     ///
     /// Signals the Main App to synchronize the specified WordPress.com account.
     ///
