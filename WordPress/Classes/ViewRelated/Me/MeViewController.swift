@@ -453,14 +453,14 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             controller.addActionWithTitle(NSLocalizedString("Log In",
                                                             comment: "Button title.  Tapping takes the user to the login form."),
                                           style: .default,
-                                          handler: { (_) in
-                                            WordPressAuthenticator.showLoginForJustWPComFromPresenter(self)
+                                          handler: { _ in
+                                            WordPressAuthenticator.showLoginForJustWPCom(from: self)
                                           })
 
             controller.addActionWithTitle(NSLocalizedString("Create a WordPress site",
                                                             comment: "Button title. Tapping takes the user to a form where they can create a new WordPress site."),
                                           style: .default,
-                                          handler: { (_) in
+                                          handler: { _ in
                                             let controller = SignupViewController.controller()
                                             let navController = NUXNavigationController(rootViewController: controller)
                                             self.present(navController, animated: true, completion: nil)

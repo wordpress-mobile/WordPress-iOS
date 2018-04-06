@@ -3,7 +3,8 @@ import Foundation
 
 // MARK: - WordPressAuthenticationManager
 //
-class WordPressAuthenticationManager {
+@objc
+class WordPressAuthenticationManager: NSObject {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -14,6 +15,40 @@ class WordPressAuthenticationManager {
     ///
     func startRelayingHelpshiftNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(helpshiftUnreadCountWasUpdated), name: .HelpshiftUnreadCountUpdated, object: nil)
+    }
+}
+
+
+// MARK: - Static Methods
+//
+extension WordPressAuthenticationManager {
+
+    /// Returns an Authentication ViewController (configured to allow only WordPress.com). This method pre-populates the Email + Username
+    /// with the values returned by the default WordPress.com account (if any).
+    ///
+    /// - Parameter onDismissed: Closure to be executed whenever the returned ViewController is dismissed.
+    ///
+    @objc
+    class func signinForWPComFixingAuthToken(_ onDismissed: ((_ cancelled: Bool) -> Void)? = nil) -> UIViewController {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        let account = service.defaultWordPressComAccount()
+
+        return WordPressAuthenticator.signinForWPCom(dotcomEmailAddress: account?.email, dotcomUsername: account?.username, onDismissed: onDismissed)
+    }
+
+    /// Presents the WordPress Authentication UI from the rootViewController (configured to allow only WordPress.com).
+    /// This method pre-populates the Email + Username with the values returned by the default WordPress.com account (if any).
+    ///
+    @objc
+    class func showSigninForWPComFixingAuthToken() {
+        guard let presenter = UIApplication.shared.keyWindow?.rootViewController else {
+            assertionFailure()
+            return
+        }
+
+        let controller = signinForWPComFixingAuthToken()
+        presenter.present(controller, animated: true, completion: nil)
     }
 }
 
@@ -116,6 +151,30 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         epilogueViewController.onDismiss = onDismiss
 
         navigationController.pushViewController(epilogueViewController, animated: true)
+    }
+
+    /// Indicates if the Login Epilogue should be presented. This is true whenever:
+    ///
+    ///     A. We're logging into a Dotcom Account
+    ///     B. We're connecting a Self Hosted Site to WPcom (Jetpack Login)
+    ///
+    /// Note: Whenever it's a Jetpack Login, but the actual blog cannot be found (or the account is already there), we will not present
+    /// the epilogue!.
+    ///
+    func shouldPresentLoginEpilogue(jetpackBlogXMLRPC: String?, jetpackBlogUsername: String?) -> Bool {
+        guard let xmlrpc = jetpackBlogXMLRPC, let username = jetpackBlogUsername else {
+            return true
+        }
+
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+
+        guard let blog = blogService.findBlog(withXmlrpc: xmlrpc, andUsername: username), let account = blog.account else {
+            return false
+        }
+
+        let accountService = AccountService(managedObjectContext: context)
+        return accountService.isDefaultWordPressComAccount(account)
     }
 
     /// Synchronizes the specified WordPress Account.
