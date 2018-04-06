@@ -8,7 +8,7 @@ import ZendeskSDK
     static var sharedInstance: ZendeskUtils = ZendeskUtils()
 
     static var zendeskEnabled: Bool {
-        return UserDefaults.standard.bool(forKey: UserDefaultsKeys.zendeskEnabled)
+        return UserDefaults.standard.bool(forKey: Constants.zendeskEnabledUDKey)
     }
 
     /// A public struct for providing user specific information used to create Zendesk ticket.
@@ -70,8 +70,8 @@ import ZendeskSDK
         }
 
         helpCenterContentModel.groupType = .category
-        helpCenterContentModel.groupIds = [HelpCenterFilters.mobileCategoryID]
-        helpCenterContentModel.labels = [HelpCenterFilters.iosLabel]
+        helpCenterContentModel.groupIds = [Constants.mobileCategoryID]
+        helpCenterContentModel.labels = [Constants.articleLabel]
 
         ZDKHelpCenter.pushOverview(navController, with: helpCenterContentModel)
     }
@@ -120,6 +120,9 @@ import ZendeskSDK
 
             // Set tags
             requestCreationConfig.tags = ticketInformation.tags
+
+            // Set the ticket subject
+            requestCreationConfig.subject = Constants.ticketSubject
         }
     }
 
@@ -131,18 +134,16 @@ private extension ZendeskUtils {
 
     func enableZendesk(_ enabled: Bool) {
         let defaults = UserDefaults.standard
-        defaults.set(enabled, forKey: UserDefaultsKeys.zendeskEnabled)
+        defaults.set(enabled, forKey: Constants.zendeskEnabledUDKey)
         defaults.synchronize()
         DDLogInfo("Zendesk Enabled: \(enabled)")
     }
 
-    struct UserDefaultsKeys {
-        static let zendeskEnabled = "wp_zendesk_enabled"
-    }
-
-    struct HelpCenterFilters {
+    struct Constants {
+        static let zendeskEnabledUDKey = "wp_zendesk_enabled"
         static let mobileCategoryID = "360000041586"
-        static let iosLabel = "iOS"
+        static let articleLabel = "iOS"
+        static let ticketSubject = NSLocalizedString("WordPress for iOS Support", comment: "Subject of new Zendesk ticket.")
     }
 
     struct TicketFieldIDs {
