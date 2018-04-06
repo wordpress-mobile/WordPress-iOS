@@ -771,13 +771,14 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func rememberFirstResponder() {
-        lastFirstResponder = view.findFirstResponder()
+        lastFirstResponder = view.findFirstResponder() ?? lastFirstResponder
         lastFirstResponder?.resignFirstResponder()
     }
 
     func restoreFirstResponder() {
         let nextFirstResponder = lastFirstResponder ?? titleTextField
         nextFirstResponder.becomeFirstResponder()
+        lastFirstResponder = nil
     }
 
     func refreshInterface() {
@@ -2144,7 +2145,6 @@ extension AztecPostViewController {
     }
 
     private func showMore(from: FormatBarItem) {
-        stopListeningToNotifications()
         rememberFirstResponder()
 
         let moreCoordinatorContext = MediaPickingContext(origin: self, view: view, blog: post.blog)
@@ -3595,7 +3595,6 @@ extension AztecPostViewController: UIDocumentPickerDelegate {
 
 extension AztecPostViewController: MediaPickingOptionsDelegate {
     func didCancel() {
-        startListeningToNotifications()
         restoreFirstResponder()
     }
 }
