@@ -2,8 +2,6 @@
 #import "NSURL+IDN.h"
 #import "WordPressComOAuthClientFacade.h"
 #import "WordPressXMLRPCAPIFacade.h"
-#import "WPError.h"
-#import "BlogService.h"
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 

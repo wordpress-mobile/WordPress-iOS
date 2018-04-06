@@ -327,6 +327,8 @@ static const CGFloat CategoryCellIndentation = 16.0;
             [self.delegate postCategoriesViewController:self didUpdateSelectedCategories:[NSSet setWithArray:self.selectedCategories]];
         }
     }
+
+    [self reloadCategoriesTableViewData];
 }
 
 @end

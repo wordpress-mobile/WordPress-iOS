@@ -761,7 +761,7 @@ public protocol ThemePresenter: class {
     fileprivate func browsePredicateThemesWithCustomValue(_ custom: Bool) -> NSPredicate? {
         let blogPredicate = NSPredicate(format: "blog == %@ AND custom == %d", self.blog, custom ? 1 : 0)
 
-        let subpredicates = [blogPredicate, searchNamePredicate(), filterType.predicate].flatMap { $0 }
+        let subpredicates = [blogPredicate, searchNamePredicate(), filterType.predicate].compactMap { $0 }
         switch subpredicates.count {
         case 1:
             return subpredicates[0]
