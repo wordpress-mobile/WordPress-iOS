@@ -118,15 +118,19 @@ public protocol PostEditorStateContextDelegate: class {
 /// Encapsulates all of the editor UI state based upon actions performed on the post being edited.
 ///
 public class PostEditorStateContext {
-    var action: PostEditorAction {
+    var action: PostEditorAction = .publish {
         didSet {
-            delegate?.context(self, didChangeAction: action)
+            if oldValue != action {
+                delegate?.context(self, didChangeAction: action)
+            }
         }
     }
 
     private var publishActionAllowed = false {
         didSet {
-            delegate?.context(self, didChangeActionAllowed: publishActionAllowed)
+            if oldValue != publishActionAllowed {
+                delegate?.context(self, didChangeActionAllowed: publishActionAllowed)
+            }
         }
     }
 
@@ -175,17 +179,67 @@ public class PostEditorStateContext {
         self.currentPublishDate = publishDate
         self.delegate = delegate
 
+        self.action = PostEditorStateContext.initialAction(for: originalPostStatus, userCanPublish: userCanPublish)
+    }
+
+    private static func initialAction(for originalPostStatus: BasePost.Status?, userCanPublish: Bool) -> PostEditorAction {
         guard let originalPostStatus = originalPostStatus else {
-            action = .publish
-            return
+            return publishAction(userCanPublish: userCanPublish)
         }
 
-        switch originalPostStatus {
-        case .draft where userCanPublish == false:
-            action = .submitForReview
-        default:
-            action = .update
+        return action(for: originalPostStatus, newPostStatus: originalPostStatus, userCanPublish: userCanPublish)
+    }
 
+    private static func action(
+        for originalPostStatus: BasePost.Status?,
+        newPostStatus: BasePost.Status,
+        userCanPublish: Bool) -> PostEditorAction {
+
+        let isNewOrDraft = { (status: BasePost.Status?) -> Bool in
+            return status == nil || status == .draft
+        }
+
+        switch newPostStatus {
+        case .draft where !isNewOrDraft(originalPostStatus):
+            return .update
+        case .draft, .pending:
+            return .save
+        case .publish where isNewOrDraft(originalPostStatus):
+            return publishAction(userCanPublish: userCanPublish)
+        case .publish:
+            return .update
+        case .publishPrivate where isNewOrDraft(originalPostStatus):
+            return publishAction(userCanPublish: userCanPublish)
+        case .publishPrivate:
+            return .update
+        case .scheduled where isNewOrDraft(originalPostStatus):
+            return scheduleAction(userCanPublish: userCanPublish)
+        case .scheduled:
+            return .update
+        case .deleted, .trash:
+            // Deleted posts should really not be editable, but either way we'll try to handle it
+            // gracefully by allowing a "Save" action, even it if failed.
+            return .save
+        }
+    }
+
+    private func action(for newPostStatus: BasePost.Status) -> PostEditorAction {
+        return PostEditorStateContext.action(for: originalPostStatus, newPostStatus: newPostStatus, userCanPublish: userCanPublish)
+    }
+
+    private static func publishAction(userCanPublish: Bool) -> PostEditorAction {
+        if userCanPublish {
+            return .publish
+        } else {
+            return .submitForReview
+        }
+    }
+
+    private static func scheduleAction(userCanPublish: Bool) -> PostEditorAction {
+        if userCanPublish {
+            return .schedule
+        } else {
+            return .submitForReview
         }
     }
 
@@ -193,45 +247,7 @@ public class PostEditorStateContext {
     ///
     func updated(postStatus: BasePost.Status) {
         currentPostStatus = postStatus
-
-        let updatedAction = { () -> PostEditorAction in
-            switch postStatus {
-            case .draft where originalPostStatus != nil && originalPostStatus != .draft:
-                return .update
-            case .draft, .pending:
-                return .save
-            case .publish where originalPostStatus == nil || originalPostStatus == .draft:
-                if userCanPublish {
-                    return .publish
-                } else {
-                    return .submitForReview
-                }
-            case .publish:
-                return .update
-            case .publishPrivate where originalPostStatus == nil || originalPostStatus == .draft:
-                if userCanPublish {
-                    return .publish
-                } else {
-                    return .submitForReview
-                }
-            case .publishPrivate:
-                return .update
-            case .scheduled where originalPostStatus == nil || originalPostStatus == .draft:
-                if userCanPublish {
-                    return .schedule
-                } else {
-                    return .submitForReview
-                }
-            case .scheduled:
-                return .update
-            case .deleted, .trash:
-                // Deleted posts should really not be editable, but either way we'll try to handle it
-                // gracefully by allowing a "Save" action, even it if failed.
-                return .save
-            }
-        }()
-
-        action = updatedAction
+        action = action(for: postStatus)
     }
 
     /// Call when the publish date has changed (picked a future date) or nil if publish immediately selected
