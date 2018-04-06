@@ -199,7 +199,7 @@ public class PostEditorStateContext {
         }
 
         switch newPostStatus {
-        case .draft where !isNewOrDraft(originalPostStatus):
+        case .draft where originalPostStatus != nil:
             return .update
         case .draft, .pending:
             return .save
