@@ -42,6 +42,8 @@
 		B5A787E1202B2B59007874FB /* UIControl+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787E0202B2B59007874FB /* UIControl+Helpers.swift */; };
 		B5A787F5202B3587007874FB /* UIKitConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A787F4202B3587007874FB /* UIKitConstants.swift */; };
 		B5A78826202B4178007874FB /* UIAlertController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A78825202B4178007874FB /* UIAlertController+Helpers.swift */; };
+		B5C82AE32077C01B00DB2E78 /* UILabel+SuggestSize.h in Headers */ = {isa = PBXBuildFile; fileRef = B5C82AE22077C01B00DB2E78 /* UILabel+SuggestSize.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B5C82AE52077C02200DB2E78 /* UILabel+SuggestSize.m in Sources */ = {isa = PBXBuildFile; fileRef = B5C82AE42077C02100DB2E78 /* UILabel+SuggestSize.m */; };
 		B5D91458206AD8BA00EF333D /* FancyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D91457206AD8BA00EF333D /* FancyButton.swift */; };
 /* End PBXBuildFile section */
 
@@ -95,6 +97,8 @@
 		B5A787E0202B2B59007874FB /* UIControl+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+Helpers.swift"; sourceTree = "<group>"; };
 		B5A787F4202B3587007874FB /* UIKitConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIKitConstants.swift; sourceTree = "<group>"; };
 		B5A78825202B4178007874FB /* UIAlertController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Helpers.swift"; sourceTree = "<group>"; };
+		B5C82AE22077C01B00DB2E78 /* UILabel+SuggestSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+SuggestSize.h"; sourceTree = "<group>"; };
+		B5C82AE42077C02100DB2E78 /* UILabel+SuggestSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+SuggestSize.m"; sourceTree = "<group>"; };
 		B5D91457206AD8BA00EF333D /* FancyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FancyButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -247,6 +251,8 @@
 				B5A787D5202B2AA6007874FB /* UIImage+Resize.m */,
 				B5A787CC202B2AA6007874FB /* UIImage+Util.h */,
 				B5A787D2202B2AA6007874FB /* UIImage+Util.m */,
+				B5C82AE22077C01B00DB2E78 /* UILabel+SuggestSize.h */,
+				B5C82AE42077C02100DB2E78 /* UILabel+SuggestSize.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -269,6 +275,7 @@
 				B59DCB6D202B146D00BEBD8A /* WordPressUI.h in Headers */,
 				B5A787D7202B2AA7007874FB /* UIColor+Helpers.h in Headers */,
 				B5A787D9202B2AA7007874FB /* UIImage+Resize.h in Headers */,
+				B5C82AE32077C01B00DB2E78 /* UILabel+SuggestSize.h in Headers */,
 				B5A787D6202B2AA7007874FB /* UIImage+Util.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -391,6 +398,7 @@
 				B5A787DF202B2AA7007874FB /* UIImage+Resize.m in Sources */,
 				B5A787B4202B2324007874FB /* UIWindow+Helpers.swift in Sources */,
 				B5A787B2202B2324007874FB /* UIView+Helpers.swift in Sources */,
+				B5C82AE52077C02200DB2E78 /* UILabel+SuggestSize.m in Sources */,
 				B5A787E1202B2B59007874FB /* UIControl+Helpers.swift in Sources */,
 				B518D76720740F0800F05DB4 /* UIImageView+Blavatar.swift in Sources */,
 				43067E2E203C8D03001DD610 /* UIBarButtonItem+BlockEvents.swift in Sources */,
