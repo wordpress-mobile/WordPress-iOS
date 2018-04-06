@@ -622,6 +622,7 @@
 		93F2E5421E9E5A350050D489 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E5411E9E5A350050D489 /* QuickLook.framework */; };
 		93F2E5441E9E5A570050D489 /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F2E5431E9E5A570050D489 /* CoreSpotlight.framework */; };
 		93FA59DD18D88C1C001446BC /* PostCategoryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FA59DC18D88C1C001446BC /* PostCategoryService.m */; };
+		98077B5A2075561800109F95 /* SupportTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98077B592075561800109F95 /* SupportTableViewController.swift */; };
 		9808655A203D075E00D58786 /* EpilogueUserInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98086559203D075D00D58786 /* EpilogueUserInfoCell.xib */; };
 		9808655C203D079B00D58786 /* EpilogueUserInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808655B203D079A00D58786 /* EpilogueUserInfoCell.swift */; };
 		9827B3B1201FF30700530AF5 /* SiteCreationFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9827B3B0201FF30700530AF5 /* SiteCreationFields.swift */; };
@@ -2101,6 +2102,7 @@
 		93FA0F0218E451A80007903B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		93FA59DB18D88C1C001446BC /* PostCategoryService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PostCategoryService.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		93FA59DC18D88C1C001446BC /* PostCategoryService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PostCategoryService.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		98077B592075561800109F95 /* SupportTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportTableViewController.swift; sourceTree = "<group>"; };
 		98086559203D075D00D58786 /* EpilogueUserInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EpilogueUserInfoCell.xib; sourceTree = "<group>"; };
 		9808655B203D079A00D58786 /* EpilogueUserInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpilogueUserInfoCell.swift; sourceTree = "<group>"; };
 		9827B3B0201FF30700530AF5 /* SiteCreationFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationFields.swift; sourceTree = "<group>"; };
@@ -4193,6 +4195,7 @@
 		8584FDB31923EF4F0019C02E /* ViewRelated */ = {
 			isa = PBXGroup;
 			children = (
+				98077B58207555E400109F95 /* Support */,
 				D80EE638203DBB7E0094C34C /* Accessibility */,
 				82FC61181FA8ADAC00A1757E /* Activity */,
 				B50C0C441EF429D500372C65 /* Aztec */,
@@ -4532,6 +4535,14 @@
 				FF0D8145205809C8000EE505 /* PostCoordinator.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		98077B58207555E400109F95 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				98077B592075561800109F95 /* SupportTableViewController.swift */,
+			);
+			path = Support;
 			sourceTree = "<group>";
 		};
 		982A65261FCCE2F0008236BA /* Select Theme */ = {
@@ -7278,6 +7289,7 @@
 				9827B3B1201FF30700530AF5 /* SiteCreationFields.swift in Sources */,
 				1751E5931CE23801000CA08D /* NSAttributedString+StyledHTML.swift in Sources */,
 				D8071631203DA23700B32FD9 /* Accessible.swift in Sources */,
+				98077B5A2075561800109F95 /* SupportTableViewController.swift in Sources */,
 				E17E67031FA22C93009BDC9A /* PluginViewModel.swift in Sources */,
 				7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */,
 				B5E167F419C08D18009535AA /* NSCalendar+Helpers.swift in Sources */,
