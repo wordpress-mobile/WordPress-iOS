@@ -11,6 +11,18 @@ import ZendeskSDK
         return UserDefaults.standard.bool(forKey: UserDefaultsKeys.zendeskEnabled)
     }
 
+    /// A public struct for providing user specific information used to create Zendesk ticket.
+    ///
+    struct ZendeskTicketFields {
+        var appVersion: String
+        var allBlogs: String
+        var deviceFreeSpace: String
+        var networkInformation: String
+        var logs: String
+        var tags: [String]
+
+    }
+
     private static var identityCreated = false
 
     // MARK: - Public Methods
@@ -81,6 +93,36 @@ import ZendeskSDK
 
         ZDKRequests.pushRequestList(with: navController, layoutGuide: ZDKLayoutRespectTop)
     }
+
+    static func createRequest(ticketInformation: ZendeskTicketFields) {
+
+        if !ZendeskUtils.identityCreated {
+            return
+        }
+
+        ZDKRequests.configure { (account, requestCreationConfig) in
+
+            guard let requestCreationConfig = requestCreationConfig else {
+                return
+            }
+
+            // Set Zendesk ticket form to use
+            ZDKConfig.instance().ticketFormId = TicketFieldIDs.form
+
+            // Set form field values
+            var ticketFields = [ZDKCustomField]()
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.appVersion, andValue: ticketInformation.appVersion))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.allBlogs, andValue: ticketInformation.allBlogs))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.deviceFreeSpace, andValue: ticketInformation.deviceFreeSpace))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.networkInformation, andValue: ticketInformation.networkInformation))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.logs, andValue: ticketInformation.logs))
+            ZDKConfig.instance().customTicketFields = ticketFields
+
+            // Set tags
+            requestCreationConfig.tags = ticketInformation.tags
+        }
+    }
+
 }
 
 // MARK: - Private Extension
@@ -101,6 +143,15 @@ private extension ZendeskUtils {
     struct HelpCenterFilters {
         static let mobileCategoryID = "360000041586"
         static let iosLabel = "iOS"
+    }
+
+    struct TicketFieldIDs {
+        static let form: NSNumber = 360000010286
+        static let appVersion: NSNumber = 360000086866
+        static let allBlogs: NSNumber = 360000087183
+        static let deviceFreeSpace: NSNumber = 360000089123
+        static let networkInformation: NSNumber = 360000086966
+        static let logs: NSNumber = 22871957
     }
 
 }
