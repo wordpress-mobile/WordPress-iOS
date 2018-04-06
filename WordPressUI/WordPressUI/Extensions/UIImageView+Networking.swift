@@ -98,11 +98,10 @@ public extension UIImageView {
     ///
     private var downloadTask: URLSessionDataTask? {
         get {
-            return objc_getAssociatedObject(self, Downloader.taskKey) as? URLSessionDataTask
+            return objc_getAssociatedObject(self, &Downloader.taskKey) as? URLSessionDataTask
         }
         set {
-            let policy = objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC
-            objc_setAssociatedObject(self, Downloader.taskKey, newValue, policy)
+            objc_setAssociatedObject(self, &Downloader.taskKey, newValue as AnyObject, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 
@@ -117,6 +116,6 @@ public extension UIImageView {
 
         /// Key used to associate a Download task to the current instance
         ///
-        static let taskKey = "downloadTaskKey"
+        static var taskKey = "downloadTaskKey"
     }
 }
