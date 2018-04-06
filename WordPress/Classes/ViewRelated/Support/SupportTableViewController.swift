@@ -84,6 +84,20 @@ private extension SupportTableViewController {
         tableView.tableFooterView = UIView()
     }
 
+    func setupTicketInformation() {
+        let appVersion = Bundle.main.shortVersionString() ?? "unknown"
+        let deviceFreeSpace = getDeviceFreeSpace()
+
+        let ticketFields = ZendeskTicketFields(appVersion: appVersion,
+                                               allBlogs: "unknown",
+                                               deviceFreeSpace: deviceFreeSpace,
+                                               networkInformation: "unknown",
+                                               logs: "unknown",
+                                               tags: ["unknown"])
+
+        ZendeskUtils.createRequest(ticketInformation: ticketFields)
+    }
+
     // MARK: - Table Model
 
     func tableViewModel() -> ImmuTable {
@@ -147,6 +161,7 @@ private extension SupportTableViewController {
                     return
                 }
                 ZendeskUtils.showNewRequest(from: navController)
+                self.setupTicketInformation()
             } else {
                 guard let url = Constants.forumsURL else {
                     return
@@ -199,6 +214,21 @@ private extension SupportTableViewController {
             WPStyleGuide.configureTableViewCell(cell)
             cell.textLabel?.textColor = WPStyleGuide.wordPressBlue()
         }
+    }
+
+    // MARK: - Data Helpers
+
+    func getDeviceFreeSpace() -> String {
+
+        var deviceFreeSpace = "unknown"
+
+        if let resourceValues = try? URL(fileURLWithPath: "/").resourceValues(forKeys: [.volumeAvailableCapacityKey]),
+            let capacity = resourceValues.volumeAvailableCapacity {
+            // format string using human readable units. ex: 1.5 GB
+            deviceFreeSpace = ByteCountFormatter.string(fromByteCount: Int64(capacity), countStyle: .binary)
+        }
+
+        return deviceFreeSpace
     }
 
     // MARK: - Localized Text
