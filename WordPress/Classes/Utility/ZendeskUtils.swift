@@ -53,11 +53,13 @@ import ZendeskSDK
             return
         }
 
-        let helpCenterContentModel = ZDKHelpCenterOverviewContentModel.defaultContent()
+        guard let helpCenterContentModel = ZDKHelpCenterOverviewContentModel.defaultContent() else {
+            return
+        }
 
-        helpCenterContentModel?.groupType = .category
-        helpCenterContentModel?.groupIds = [HelpCenterFilters.mobileCategoryID]
-        helpCenterContentModel?.labels = [HelpCenterFilters.iosLabel]
+        helpCenterContentModel.groupType = .category
+        helpCenterContentModel.groupIds = [HelpCenterFilters.mobileCategoryID]
+        helpCenterContentModel.labels = [HelpCenterFilters.iosLabel]
 
         ZDKHelpCenter.pushOverview(navController, with: helpCenterContentModel)
     }
