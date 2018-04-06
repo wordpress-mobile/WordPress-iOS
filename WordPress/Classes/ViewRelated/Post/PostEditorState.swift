@@ -178,7 +178,6 @@ public class PostEditorStateContext {
         self.userCanPublish = userCanPublish
         self.currentPublishDate = publishDate
         self.delegate = delegate
-
         self.action = PostEditorStateContext.initialAction(for: originalPostStatus, userCanPublish: userCanPublish)
     }
 
