@@ -27,7 +27,7 @@ class PostEditorStateTests: XCTestCase {
 
         context.updated(postStatus: .draft)
 
-        XCTAssertEqual(PostEditorAction.save, context.action, "New posts switched to draft should show Save button.")
+        XCTAssertEqual(PostEditorAction.publish, context.action, "New posts, even if switched to draft, should show Publish button.")
     }
 
     func testContextExistingDraft() {
@@ -93,12 +93,10 @@ extension PostEditorStateTests {
     }
 
     func testContextUserCannotPublish() {
-        context = PostEditorStateContext(originalPostStatus: .draft, userCanPublish: false, delegate: self)
+        context = PostEditorStateContext(originalPostStatus: nil, userCanPublish: false, delegate: self)
 
         XCTAssertEqual(PostEditorAction.submitForReview, context.action, "should return 'Submit for Review' if the post is a draft and user can't publish")
     }
-
-
 
     func testPublishEnabledHasContentAndChangesNotPublishing() {
         context = PostEditorStateContext(originalPostStatus: .draft, userCanPublish: true, delegate: self)
