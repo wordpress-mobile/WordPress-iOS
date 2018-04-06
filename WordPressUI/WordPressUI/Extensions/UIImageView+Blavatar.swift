@@ -7,7 +7,7 @@ public extension UIImageView {
     ///
     /// - Parameter url: The URL of the target blavatar
     ///
-    public func downloadBlavatar(at url: URL) {
+    public func downloadBlavatar(from url: URL) {
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
         components?.query = String(format: Downloader.blavatarResizeFormat, blavatarSize)
 

@@ -572,7 +572,7 @@ fileprivate extension ShareModularViewController {
         cell.imageView?.image = WPStyleGuide.Share.blavatarPlaceholderImage
         if let siteIconPath = site.icon,
             let siteIconUrl = URL(string: siteIconPath) {
-            cell.imageView?.downloadBlavatar(at: siteIconUrl)
+            cell.imageView?.downloadBlavatar(from: siteIconUrl)
         } else {
             cell.imageView?.image = WPStyleGuide.Share.blavatarPlaceholderImage
         }
