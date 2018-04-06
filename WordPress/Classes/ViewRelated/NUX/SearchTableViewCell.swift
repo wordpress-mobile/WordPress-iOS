@@ -1,52 +1,51 @@
 import UIKit
 
-protocol SiteCreationDomainSearchTableViewCellDelegate {
+
+// MARK: - SearchTableViewCellDelegate
+//
+protocol SearchTableViewCellDelegate {
     func startSearch(for: String)
 }
 
-class SiteCreationDomainSearchTableViewCell: UITableViewCell {
-    @IBOutlet var textField: LoginTextField?
-    private var placeholder: String
-    public static let cellIdentifier = "SiteCreationDomainSearchTableViewCell"
-    open var delegate: SiteCreationDomainSearchTableViewCellDelegate?
+
+// MARK: - SearchTableViewCell
+//
+class SearchTableViewCell: UITableViewCell {
+    @IBOutlet var textField: LoginTextField!
+    public static let cellIdentifier = "SearchTableViewCell"
+    open var delegate: SearchTableViewCellDelegate?
 
     private enum Constants {
         static let textInsetsWithIcon = WPStyleGuide.edgeInsetForLoginTextFields()
     }
 
     required init?(coder aDecoder: NSCoder) {
-        placeholder = ""
         super.init(coder: aDecoder)
     }
 
-    init(placeholder: String) {
-        self.placeholder = placeholder
-        super.init(style: .default, reuseIdentifier: SiteCreationDomainSearchTableViewCell.cellIdentifier)
+    init() {
+        super.init(style: .default, reuseIdentifier: SearchTableViewCell.cellIdentifier)
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        textField?.text = placeholder
-        textField?.delegate = self
-        textField?.contentInsets = Constants.textInsetsWithIcon
-        textField?.placeholder = NSLocalizedString("Type a keyword for more ideas", comment: "Placeholder text for domain search during site creation.")
-        textField?.accessibilityIdentifier = "Domain search field"
-
-        if let searchIcon = textField?.leftViewImage {
-            textField?.leftViewImage = searchIcon.imageWithTintColor(WPStyleGuide.grey())
-        }
+        textField.delegate = self
+        textField.contentInsets = Constants.textInsetsWithIcon
+        textField.placeholder = NSLocalizedString("Type a keyword for more ideas", comment: "Placeholder text for domain search during site creation.")
+        textField.accessibilityIdentifier = "Domain search field"
+        textField.leftViewImage = textField?.leftViewImage?.imageWithTintColor(WPStyleGuide.grey())
     }
 }
 
-extension SiteCreationDomainSearchTableViewCell: UITextFieldDelegate {
+extension SearchTableViewCell: UITextFieldDelegate {
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        self.delegate?.startSearch(for: "")
+        delegate?.startSearch(for: "")
         return true
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let searchText = textField.text {
-            self.delegate?.startSearch(for: searchText)
+            delegate?.startSearch(for: searchText)
         }
         return false
     }
