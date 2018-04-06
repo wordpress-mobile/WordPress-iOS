@@ -5421,15 +5421,6 @@
 			name = 3DTouch;
 			sourceTree = "<group>";
 		};
-		BE8A267F1BEC1A3500C1D3D3 /* CreateNewBlog */ = {
-			isa = PBXGroup;
-			children = (
-				BEC62E2A1BF2F58D007685B2 /* CreateNewBlogViewController.h */,
-				BEC62E2B1BF2F58D007685B2 /* CreateNewBlogViewController.m */,
-			);
-			name = CreateNewBlog;
-			sourceTree = "<group>";
-		};
 		BEA0E4821BD8353B000AEE81 /* System */ = {
 			isa = PBXGroup;
 			children = (
