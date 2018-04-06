@@ -22,6 +22,8 @@ final class StockPhotosPicker: NSObject {
     weak var delegate: StockPhotosPickerDelegate?
     private var blog: Blog?
 
+    private let searchHint = StockPhotosPlaceholder()
+
     func presentPicker(origin: UIViewController, blog: Blog) {
         self.blog = blog
         let options = WPMediaPickerOptions()
@@ -55,8 +57,6 @@ extension StockPhotosPicker: WPMediaPickerViewControllerDelegate {
     }
 
     func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
-        let searchHint = StockPhotosPlaceholder()
-
         return searchHint
     }
 
