@@ -196,7 +196,8 @@ open class ThemeBrowserCell: UICollectionViewCell {
 
         imageView.backgroundColor = Styles.placeholderColor
         activityView.startAnimating()
-        imageView.downloadImage(from: screenshotUrl, success: { [weak self] image in
+        imageView.downloadImage(from: screenshotUrl, success: { [weak self, weak imageView] image in
+            imageView?.image = image
             self?.showScreenshot()
         }, failure: { [weak self] error in
                 if let error = error as NSError?, error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
