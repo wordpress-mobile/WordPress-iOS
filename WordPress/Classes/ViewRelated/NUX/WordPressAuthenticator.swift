@@ -173,13 +173,11 @@ public protocol WordPressAuthenticatorDelegate: class {
 
 
     // Helper used by WPAuthTokenIssueSolver
-    @objc class func signinForWPComFixingAuthToken(_ onDismissed: ((_ cancelled: Bool) -> Void)?) -> UIViewController {
-        let context = ContextManager.sharedInstance().mainContext
+    @objc
+    class func signinForWPCom(dotcomEmailAddress: String?, dotcomUsername: String?, onDismissed: ((_ cancelled: Bool) -> Void)? = nil) -> UIViewController {
         let loginFields = LoginFields()
-        if let account = AccountService(managedObjectContext: context).defaultWordPressComAccount() {
-            loginFields.emailAddress = account.email
-            loginFields.username = account.username
-        }
+        loginFields.emailAddress = dotcomEmailAddress ?? String()
+        loginFields.username = dotcomUsername ?? String()
 
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         guard let controller = storyboard.instantiateViewController(withIdentifier: "LoginWPcomPassword") as? LoginWPComViewController else {
@@ -188,17 +186,8 @@ public protocol WordPressAuthenticatorDelegate: class {
 
         controller.loginFields = loginFields
         controller.dismissBlock = onDismissed
+
         return NUXNavigationController(rootViewController: controller)
-    }
-
-
-    // Helper used by WPError
-    @objc class func showSigninForWPComFixingAuthToken() {
-        let controller = signinForWPComFixingAuthToken(nil)
-        let presenter = UIApplication.shared.keyWindow?.rootViewController
-        presenter?.present(controller, animated: true, completion: nil)
-
-        trackOpenedLogin()
     }
 
     private class func trackOpenedLogin() {
@@ -213,10 +202,11 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     /// - Parameters:
     ///     - url: The authentication URL
-    ///     - rootViewController: The view controller to act as the presenter for
-    ///     the signin view controller. By convention this is the app's root vc.
+    ///     - allowWordPressComAuth: Indicates if WordPress.com Authentication Links should be handled, or not.
+    ///     - rootViewController: The view controller to act as the presenter for the signin view controller.
+    ///                           By convention this is the app's root vc.
     ///
-    @objc class func openAuthenticationURL(_ url: URL, fromRootViewController rootViewController: UIViewController) -> Bool {
+    @objc class func openAuthenticationURL(_ url: URL, allowWordPressComAuth: Bool, fromRootViewController rootViewController: UIViewController) -> Bool {
         guard let token = url.query?.dictionaryFromQueryString().string(forKey: "token") else {
             DDLogError("Signin Error: The authentication URL did not have the expected path.")
             return false
@@ -227,14 +217,11 @@ public protocol WordPressAuthenticatorDelegate: class {
             return false
         }
 
-        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        if let account = accountService.defaultWordPressComAccount() {
-            // The only time we should expect a magic link login when there is already a default wpcom account
-            // is when a user is logging into Jetpack.
-            if !loginFields.meta.jetpackLogin {
-                DDLogInfo("App opened with authentication link but there is already an existing wpcom account. \(account)")
-                return false
-            }
+        // The only time we should expect a magic link login when there is already a default wpcom account
+        // is when a user is logging into Jetpack.
+        if allowWordPressComAuth == false && loginFields.meta.jetpackLogin == false {
+            DDLogInfo("App opened with authentication link but there is already an existing wpcom account.")
+            return false
         }
 
         let storyboard = UIStoryboard(name: "EmailMagicLink", bundle: nil)
