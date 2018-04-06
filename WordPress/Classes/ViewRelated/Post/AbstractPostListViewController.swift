@@ -281,7 +281,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: abstractPostWindowlessCellIdenfitier)
     }
 
-    fileprivate func refreshResults(ignoringNetworkAlerts: Bool = true) {
+    fileprivate func refreshResults(forcingNetworkAlerts: Bool = true) {
         guard isViewLoaded == true else {
             return
         }
@@ -292,7 +292,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         if tableViewHandler.resultsController.fetchedObjects?.count > 0 {
             hideNoResultsView()
-            if ignoringNetworkAlerts {
+            if forcingNetworkAlerts {
                 presentNoNetworkAlert()
             }
         } else {
@@ -611,7 +611,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     @objc func syncItemsWithUserInteraction(_ userInteraction: Bool) {
         syncHelper.syncContentWithUserInteraction(userInteraction)
-        refreshResults(ignoringNetworkAlerts: userInteraction)
+        refreshResults(forcingNetworkAlerts: userInteraction)
     }
 
     @objc func updateFilter(_ filter: PostListFilter, withSyncedPosts posts: [AbstractPost], syncOptions options: PostServiceSyncOptions) {
