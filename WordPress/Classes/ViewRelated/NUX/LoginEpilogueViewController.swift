@@ -68,8 +68,12 @@ class LoginEpilogueViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        guard let epilogueTableViewController = segue.destination as? LoginEpilogueTableViewController, let credentials = credentials else {
+        guard let epilogueTableViewController = segue.destination as? LoginEpilogueTableViewController else {
             return
+        }
+
+        guard let credentials = credentials else {
+            fatalError()
         }
 
         epilogueTableViewController.setup(with: credentials)
