@@ -47,6 +47,11 @@ extension AbstractPost: SearchableItemConvertable {
     var searchKeywords: [String]? {
         return generateKeywordsFromContent()
     }
+
+    var searchExpirationDate: Date? {
+        // Use the default expiration in spotlight.
+        return nil
+    }
 }
 
 // MARK: - Private Helper Functions

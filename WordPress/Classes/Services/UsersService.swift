@@ -1,26 +1,42 @@
 import Foundation
+import WordPressKit
 
-public enum UsersServiceError: Int, Error {
-    case BlogNotSelfhosted
-}
 
-/// UserService is responsible for interacting with UserServiceRemoteXMLRPC to 
-/// fetch User and Profile related details from self-hosted blogs.  See the
-/// PeopleService for WordPress.com blogs via the REST API.
+/// UserService is responsible for interacting with UserServiceRemoteXMLRPC to fetch User and Profile related details
+/// from self-hosted blogs. See the PeopleService for WordPress.com blogs via the REST API.
 ///
 open class UsersService {
 
-    /// Fetch profile information for the user of the specified blog.
+    /// XMLRPC API associated to the Endpoint.
     ///
-    func fetchProfile(blog: Blog, success: @escaping ((UserProfile) -> Void), failure: @escaping ((NSError?) -> Void)) {
-        guard let api = blog.xmlrpcApi, let username = blog.username, let password = blog.password else {
-            assertionFailure("Only self-hosted blogs are allowed.")
-            failure(UsersServiceError.BlogNotSelfhosted as NSError)
-            return
+    let api: WordPressOrgXMLRPCApi
+
+    /// Endpoint's Username.
+    ///
+    let username: String
+
+    /// Endpoint's Password.
+    ///
+    let password: String
+
+
+    /// Designated Initializer.
+    ///
+    init?(username: String, password: String, xmlrpc: String) {
+        guard let endpoint = URL(string: xmlrpc) else {
+            return nil
         }
 
+        self.api = WordPressOrgXMLRPCApi(endpoint: endpoint)
+        self.username = username
+        self.password = password
+    }
+
+    /// Fetch profile information for the user of the specified blog.
+    ///
+    func fetchProfile(success: @escaping ((UserProfile) -> Void), failure: @escaping ((NSError?) -> Void)) {
         let remote = UsersServiceRemoteXMLRPC(api: api, username: username, password: password)
-        remote.fetchProfile({ (remoteProfile) in
+        remote.fetchProfile({ remoteProfile in
 
             var profile = UserProfile()
             profile.bio = remoteProfile.bio
@@ -36,7 +52,7 @@ open class UsersService {
 
             success(profile)
 
-        }, failure: { (error) in
+        }, failure: { error in
             failure(error)
         })
     }

@@ -45,7 +45,7 @@ class SignupGoogleViewController: LoginViewController {
 
         GIDSignIn.sharedInstance().signIn()
 
-        WPAppAnalytics.track(.loginSocialButtonClick)
+        WordPressAuthenticator.post(event: .loginSocialButtonClick)
     }
 
     // MARK: - Navigation
@@ -86,10 +86,10 @@ extension SignupGoogleViewController: GIDSignInDelegate {
             SVProgressHUD.dismiss()
             if accountCreated {
                 self?.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
-                WPAnalytics.track(.signupSocialSuccess)
+                WordPressAuthenticator.post(event: .signupSocialSuccess)
             } else {
                 self?.showLoginEpilogue()
-                WPAnalytics.track(.loginSocialSuccess)
+                WordPressAuthenticator.post(event: .loginSocialSuccess)
             }
         }) { [weak self] (error) in
             SVProgressHUD.dismiss()

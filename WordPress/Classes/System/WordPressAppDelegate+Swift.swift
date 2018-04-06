@@ -79,6 +79,47 @@ extension WordPressAppDelegate {
     }
 }
 
+// MARK: - UIAppearance
+
+extension WordPressAppDelegate {
+
+    /// Sets up all of the shared component(s) Appearance.
+    ///
+    @objc func setupComponentsAppearance() {
+        setupFancyAlertAppearance()
+        setupFancyButtonAppearance()
+    }
+
+
+    /// Setup: FancyAlertView's Appearance
+    ///
+    private func setupFancyAlertAppearance() {
+        let appearance = FancyAlertView.appearance()
+
+        appearance.titleTextColor = WPStyleGuide.darkGrey()
+        appearance.titleFont = WPStyleGuide.fontForTextStyle(.title2, fontWeight: .semibold)
+
+        appearance.bodyTextColor = WPStyleGuide.darkGrey()
+        appearance.bodyFont = WPStyleGuide.fontForTextStyle(.body)
+
+        appearance.actionFont = WPStyleGuide.fontForTextStyle(.headline)
+        appearance.infoFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
+        appearance.infoTintColor = WPStyleGuide.wordPressBlue()
+
+        appearance.topDividerColor = WPStyleGuide.greyLighten30()
+        appearance.bottomDividerColor = WPStyleGuide.lightGrey()
+        appearance.headerBackgroundColor = WPStyleGuide.lightGrey()
+    }
+
+    /// Setup: FancyButton's Appearance
+    ///
+    private func setupFancyButtonAppearance() {
+        let appearance = FancyButton.appearance()
+        appearance.titleFont = WPStyleGuide.fontForTextStyle(.headline)
+    }
+}
+
+
 // MARK: - Helpers
 
 extension WordPressAppDelegate {

@@ -1,2 +1,1 @@
-A new share extension that adds support to save drafts and handles tags.
-Plugin management taken to the next level: you can now browse and install plugins.
+For this release, we polished some pixels, waved a few bugs goodbye, and worked behind the scenes to make the WordPress experience smoother for our app users.
