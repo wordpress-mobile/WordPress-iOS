@@ -26,7 +26,7 @@ public extension UIImageView {
     /// - Parameters:
     ///     -   url: The URL of the target image
     ///     -   placeholderImage: Image to be displayed while the actual asset gets downloaded.
-    ///     -   success: Closure to be executed on success. If it's nil, we'll simply update `self.image`
+    ///     -   success: Closure to be executed on success.
     ///     -   failure: Closure to be executed upon failure.
     ///
     public func downloadImage(from url: URL?, placeholderImage: UIImage? = nil, success: ((UIImage) -> ())? = nil, failure: ((Error?) -> ())? = nil) {
@@ -45,11 +45,10 @@ public extension UIImageView {
         downloadURL = url
 
         // By default, onSuccess we just set the image instance
-        let defaultOnSuccess = { [weak self] (image: UIImage) in
+        let internalOnSuccess = { [weak self] (image: UIImage) in
             self?.image = image
+            success?(image)
         }
-
-        let internalOnSuccess = success ?? defaultOnSuccess
 
         // Hit the cache
         if let cachedImage = Downloader.cache.object(forKey: url as AnyObject) as? UIImage {
