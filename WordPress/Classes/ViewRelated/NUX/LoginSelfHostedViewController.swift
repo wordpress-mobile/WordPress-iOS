@@ -30,7 +30,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
 
     var gravatarProfile: GravatarProfile?
     var userProfile: UserProfile?
-    @objc var blog: Blog?
+    var credentials: WordPressCredentials?
 
 
     // MARK: - Lifecycle Methods
@@ -257,7 +257,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
             info.email = profile.email
         }
 
-        info.blog = blog
+        info.credentials = credentials
 
         return info
     }
@@ -266,26 +266,32 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
     /// Fetches the user's profile data from their blog. If success, it next queries
     /// the user's gravatar profile data passing the completion block.
     ///
-    @objc func fetchUserProfileInfo(blog: Blog, completion: @escaping (() -> Void )) {
-        let service = UsersService()
-        service.fetchProfile(blog: blog, success: { [weak self] (profile) in
+    private func fetchUserProfileInfo(username: String, password: String, xmlrpc: String, completion: @escaping (() -> Void )) {
+        guard let service = UsersService(username: username, password: password, xmlrpc: xmlrpc) else {
+            completion()
+            return
+        }
+
+        service.fetchProfile(success: { [weak self] profile in
             self?.userProfile = profile
             self?.fetchGravatarProfileInfo(email: profile.email, completion: completion)
-            }, failure: { [weak self] _ in
-                self?.showLoginEpilogue()
+
+        }, failure: { [weak self] _ in
+            self?.showLoginEpilogue()
         })
     }
 
 
     /// Queries the user's gravatar profile data. On success calls completion.
     ///
-    @objc func fetchGravatarProfileInfo(email: String, completion: @escaping (() -> Void )) {
+    private func fetchGravatarProfileInfo(email: String, completion: @escaping (() -> Void )) {
         let service = GravatarService()
-        service.fetchProfile(email, success: { [weak self] (profile) in
+
+        service.fetchProfile(email, success: { [weak self] profile in
             self?.gravatarProfile = profile
             completion()
-            }, failure: { [weak self] _ in
-                self?.showLoginEpilogue()
+        }, failure: { [weak self] _ in
+            self?.showLoginEpilogue()
         })
     }
 
@@ -339,22 +345,26 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
 extension LoginSelfHostedViewController {
 
     override func finishedLogin(withUsername username: String, authToken: String, requiredMultifactorCode: Bool) {
-        syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
+        syncWPCom(username: username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
     }
 
 
     func finishedLogin(withUsername username: String, password: String, xmlrpc: String, options: [AnyHashable: Any]) {
         displayLoginMessage("")
 
-        BlogSyncFacade().syncBlog(withUsername: username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] blog in
+        guard let delegate = WordPressAuthenticator.shared.delegate else {
+            fatalError()
+        }
 
-            RecentSitesService().touch(blog: blog)
+        let credentials = WordPressCredentials.wporg(username: username, password: password, xmlrpc: xmlrpc, options: options)
+        delegate.sync(credentials: credentials) { [weak self] _ in
+
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
 
-            self?.blog = blog
-            self?.fetchUserProfileInfo(blog: blog, completion: {
+            self?.credentials = credentials
+            self?.fetchUserProfileInfo(username: username, password: password, xmlrpc: xmlrpc) {
                 self?.showLoginEpilogue()
-            })
+            }
         }
     }
 

@@ -331,21 +331,25 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     fileprivate func configureSearchBackingView() {
         // This mask view is required to cover the area between the top of the search
-        // bar and the top of the screen on an iPhone X.
+        // bar and the top of the screen on an iPhone X and on iOS 10.
+        var topAnchor = topLayoutGuide.bottomAnchor
+
         if #available(iOS 11.0, *) {
-            let backingView = UIView()
-            view.addSubview(backingView)
-
-            backingView.backgroundColor = searchController.searchBar.barTintColor
-            backingView.translatesAutoresizingMaskIntoConstraints = false
-
-            NSLayoutConstraint.activate([
-                backingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                backingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                backingView.topAnchor.constraint(equalTo: view.topAnchor),
-                backingView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-                ])
+            topAnchor = view.safeAreaLayoutGuide.topAnchor
         }
+
+        let backingView = UIView()
+        view.addSubview(backingView)
+
+        backingView.backgroundColor = searchController.searchBar.barTintColor
+        backingView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            backingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backingView.topAnchor.constraint(equalTo: view.topAnchor),
+            backingView.bottomAnchor.constraint(equalTo: topAnchor)
+            ])
     }
 
     @objc func configureSearchHelper() {
@@ -648,7 +652,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         let options = PostServiceSyncOptions()
         options.statuses = filter.statuses.strings
         options.authorID = author
-        options.number = numberOfPostsPerSync() as NSNumber!
+        options.number = numberOfPostsPerSync() as NSNumber?
         options.purgesLocalSync = true
 
         postService.syncPosts(
@@ -700,8 +704,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         let options = PostServiceSyncOptions()
         options.statuses = filter.statuses.strings
         options.authorID = author
-        options.number = numberOfPostsPerSync() as NSNumber!
-        options.offset = tableViewHandler.resultsController.fetchedObjects?.count as NSNumber!
+        options.number = numberOfPostsPerSync() as NSNumber?
+        options.offset = tableViewHandler.resultsController.fetchedObjects?.count as NSNumber?
 
         postService.syncPosts(
             ofType: postTypeToSync(),
@@ -935,7 +939,15 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        postService.trashPost(apost, success: nil) { [weak self] (error) in
+        let trashed = (apost.status == .trash)
+
+        postService.trashPost(apost, success: {
+            // If we permanently deleted the post
+            if trashed {
+                PostCoordinator.shared.cancelAnyPendingSaveOf(post: apost)
+                MediaCoordinator.shared.cancelUploadOfAllMedia(for: apost)
+            }
+        }, failure: { [weak self] (error) in
 
             guard let strongSelf = self else {
                 return
@@ -956,7 +968,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
                     strongSelf.updateAndPerformFetchRequestRefreshingResults()
                 }
             }
-        }
+        })
     }
 
     @objc func restorePost(_ apost: AbstractPost) {

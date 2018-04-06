@@ -26,7 +26,7 @@ public struct PluginDirectoryFeedPage: Decodable, Equatable {
                 let parsedPlugins = try container.decode([Int: PluginDirectoryEntry].self, forKey: .plugins)
                 plugins = parsedPlugins
                     .sorted { $0.key < $1.key }
-                    .flatMap { $0.value }
+                    .compactMap { $0.value }
             }
         }
 
