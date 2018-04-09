@@ -346,6 +346,23 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
 
         return nil
     }
+
+    open func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if target.responds(to: #selector(UITableViewDataSource.tableView(_:canEditRowAt:))) {
+            return target.tableView(tableView, canEditRowAt: indexPath)
+        }
+
+        return false
+    }
+
+    open func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        if target.responds(to: #selector(UITableViewDelegate.tableView(_:editActionsForRowAt:))) {
+            return target.tableView(tableView, editActionsForRowAt: indexPath)
+        }
+
+        return nil
+    }
+
 }
 
 

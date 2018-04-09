@@ -25,7 +25,7 @@ extension Array where Element: Equatable {
     /// corresponding element in the given array.
     ///
     public func differentIndices(_ other: [Element]) -> [Int] {
-        return enumerated().flatMap({ (offset, value) -> Int? in
+        return enumerated().compactMap({ (offset, value) -> Int? in
             guard offset < other.endIndex else {
                 return offset
             }

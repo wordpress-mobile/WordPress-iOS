@@ -45,7 +45,7 @@ class SignupGoogleViewController: LoginViewController {
 
         GIDSignIn.sharedInstance().signIn()
 
-        WPAppAnalytics.track(.loginSocialButtonClick)
+        WordPressAuthenticator.post(event: .loginSocialButtonClick)
     }
 
     // MARK: - Navigation
@@ -82,14 +82,16 @@ extension SignupGoogleViewController: GIDSignInDelegate {
 
         let context = ContextManager.sharedInstance().mainContext
         let service = SignupService(managedObjectContext: context)
+        let credentials = WordPressCredentials.wpcom(username: email, authToken: token, isJetpackLogin: isJetpackLogin, multifactor: false)
+
         service.createWPComUserWithGoogle(token: token, success: { [weak self] (accountCreated) in
             SVProgressHUD.dismiss()
             if accountCreated {
                 self?.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
-                WPAnalytics.track(.signupSocialSuccess)
+                WordPressAuthenticator.post(event: .signupSocialSuccess)
             } else {
-                self?.showLoginEpilogue()
-                WPAnalytics.track(.loginSocialSuccess)
+                self?.showLoginEpilogue(for: credentials)
+                WordPressAuthenticator.post(event: .loginSocialSuccess)
             }
         }) { [weak self] (error) in
             SVProgressHUD.dismiss()
