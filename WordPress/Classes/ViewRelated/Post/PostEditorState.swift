@@ -16,7 +16,16 @@ public enum PostEditorAction {
 
     var dismissesEditor: Bool {
         switch self {
-        case .publish, .publishNow, .schedule:
+        case .publish, .publishNow, .schedule, .submitForReview:
+            return true
+        default:
+            return false
+        }
+    }
+
+    var isAsync: Bool {
+        switch self {
+        case .publish, .publishNow, .schedule, .submitForReview:
             return true
         default:
             return false
@@ -69,12 +78,7 @@ public enum PostEditorAction {
     }
 
     fileprivate var isPostPostShown: Bool {
-        switch self {
-        case .publish:
-            return true
-        default:
-            return false
-        }
+        return false
     }
 
     fileprivate var secondaryPublishAction: PostEditorAction? {
@@ -364,7 +368,7 @@ public class PostEditorStateContext {
     /// Indicates whether the Publish Action should be allowed, or not
     ///
     private func updatePublishActionAllowed() {
-        publishActionAllowed = hasContent && hasChanges && !isBeingPublished && !isUploadingMedia
+        publishActionAllowed = hasContent && hasChanges && !isBeingPublished && (action.isAsync || !isUploadingMedia)
     }
 }
 

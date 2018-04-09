@@ -873,6 +873,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             apost.date_created_gmt = Date()
             apost.status = .publish
             self.uploadPost(apost)
+            self.updateFilterWithPostStatus(.publish)
         }
 
         present(alertController, animated: true, completion: nil)
@@ -883,26 +884,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         apost.status = .scheduled
         uploadPost(apost)
+        updateFilterWithPostStatus(.scheduled)
     }
 
     fileprivate func uploadPost(_ apost: AbstractPost) {
-        let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-
-        postService.uploadPost(apost, success: nil) { [weak self] (error: Error?) in
-
-            let error = error as NSError?
-            guard let strongSelf = self else {
-                return
-            }
-
-            if error?.code == type(of: strongSelf).HTTPErrorCodeForbidden {
-                strongSelf.promptForPassword()
-            } else {
-                WPError.showXMLRPCErrorAlert(error)
-            }
-
-            strongSelf.syncItemsWithUserInteraction(false)
-        }
+        PostCoordinator.shared.save(post: apost)
     }
 
     @objc func viewPost(_ apost: AbstractPost) {
