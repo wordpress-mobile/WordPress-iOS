@@ -16,6 +16,7 @@
 		B518D76D20742ADB00F05DB4 /* FlingableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B518D76C20742ADB00F05DB4 /* FlingableViewHandler.swift */; };
 		B529F289202C855B00895D88 /* UIColorHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B529F288202C855B00895D88 /* UIColorHelpersTests.swift */; };
 		B5393FEA206D7047007BF9D4 /* RotationAwareNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5393FE9206D7047007BF9D4 /* RotationAwareNavigationViewController.swift */; };
+		B589BE2E207BE662007D72D4 /* NSMutableAttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B589BE2D207BE662007D72D4 /* NSMutableAttributedString+Helpers.swift */; };
 		B592B44F2064296600FF568E /* FancyAlertPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B592B4492064296500FF568E /* FancyAlertPresentationController.swift */; };
 		B592B4502064296600FF568E /* FancyAlerts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B592B44A2064296500FF568E /* FancyAlerts.storyboard */; };
 		B592B4522064296600FF568E /* FancyAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B592B44C2064296500FF568E /* FancyAlertViewController.swift */; };
@@ -67,6 +68,7 @@
 		B518D76C20742ADB00F05DB4 /* FlingableViewHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlingableViewHandler.swift; sourceTree = "<group>"; };
 		B529F288202C855B00895D88 /* UIColorHelpersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorHelpersTests.swift; sourceTree = "<group>"; };
 		B5393FE9206D7047007BF9D4 /* RotationAwareNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotationAwareNavigationViewController.swift; sourceTree = "<group>"; };
+		B589BE2D207BE662007D72D4 /* NSMutableAttributedString+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Helpers.swift"; sourceTree = "<group>"; };
 		B592B4492064296500FF568E /* FancyAlertPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FancyAlertPresentationController.swift; sourceTree = "<group>"; };
 		B592B44A2064296500FF568E /* FancyAlerts.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FancyAlerts.storyboard; sourceTree = "<group>"; };
 		B592B44C2064296500FF568E /* FancyAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FancyAlertViewController.swift; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				43067E29203C8CA4001DD610 /* BlockEvents */,
+				B589BE2D207BE662007D72D4 /* NSMutableAttributedString+Helpers.swift */,
 				B5A787BC202B2358007874FB /* CGAffineTransform+Helpers.swift */,
 				B5A78825202B4178007874FB /* UIAlertController+Helpers.swift */,
 				B5A787E0202B2B59007874FB /* UIControl+Helpers.swift */,
@@ -393,6 +396,7 @@
 				43067E2B203C8CC4001DD610 /* UIControl+BlockEvents.swift in Sources */,
 				B5A78826202B4178007874FB /* UIAlertController+Helpers.swift in Sources */,
 				B5A787B9202B2324007874FB /* UITableView+Helpers.swift in Sources */,
+				B589BE2E207BE662007D72D4 /* NSMutableAttributedString+Helpers.swift in Sources */,
 				B5D91458206AD8BA00EF333D /* FancyButton.swift in Sources */,
 				B5A787BD202B2358007874FB /* CGAffineTransform+Helpers.swift in Sources */,
 				B5A787DF202B2AA7007874FB /* UIImage+Resize.m in Sources */,
