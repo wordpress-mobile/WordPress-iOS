@@ -174,7 +174,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
         siteHeaderView.subtitle = siteAddress
         siteHeaderView.subtitleIsHidden = false
 
-        siteHeaderView.blavatarBorderIsHidden = true
+        siteHeaderView.blavatarBorderIsHidden = false
         siteHeaderView.downloadBlavatar(at: siteInfo.icon)
     }
 
@@ -185,7 +185,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
         siteHeaderView.title = sanitizedSiteAddress(siteAddress: loginFields.siteAddress)
         siteHeaderView.subtitleIsHidden = true
 
-        siteHeaderView.blavatarBorderIsHidden = false
+        siteHeaderView.blavatarBorderIsHidden = true
         siteHeaderView.blavatarImage = .linkFieldImage
     }
 
