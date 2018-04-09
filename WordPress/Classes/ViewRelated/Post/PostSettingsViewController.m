@@ -1453,8 +1453,24 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         if (fabs(interval) < 1.0) {
             return;
         }
+        
         self.apost.dateCreated = selectedDate;
+        
+        if ([self isFutureDated:selectedDate]) {
+            self.apost.status = PostStatusScheduled;
+        }
     }
+}
+
+- (BOOL)isFutureDated:(NSDate *)date {
+    
+    if (date == nil) {
+        return NO;
+    }
+    
+    NSComparisonResult comparison = [NSCalendar.currentCalendar compareDate:[NSDate date] toDate:date toUnitGranularity:NSCalendarUnitMinute];
+    
+    return comparison == NSOrderedAscending;
 }
 
 #pragma mark - WPMediaPickerViewControllerDelegate methods

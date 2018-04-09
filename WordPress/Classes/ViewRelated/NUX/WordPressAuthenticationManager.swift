@@ -102,18 +102,29 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         HelpshiftUtils.refreshUnreadNotificationCount()
     }
 
-    /// Returns an instance of SupportViewController, configured to be displayed from a specified Support Source.
+    /// Returns an instance of a SupportView, configured to be displayed from a specified Support Source.
     ///
     func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any] = [:]) {
-        let supportViewController = SupportViewController()
-        supportViewController.sourceTag = sourceTag.toSupportSourceTag()
-        supportViewController.helpshiftOptions = options
 
-        let navController = UINavigationController(rootViewController: supportViewController)
-        navController.navigationBar.isTranslucent = false
-        navController.modalPresentationStyle = .formSheet
+        if FeatureFlag.zendeskMobile.enabled {
+            let controller = SupportTableViewController()
+            controller.sourceTag = sourceTag.toSupportSourceTag()
 
-        sourceViewController.present(navController, animated: true, completion: nil)
+            let navController = UINavigationController(rootViewController: controller)
+            navController.modalPresentationStyle = .formSheet
+
+            sourceViewController.present(navController, animated: true, completion: nil)
+        } else {
+            let supportViewController = SupportViewController()
+            supportViewController.sourceTag = sourceTag.toSupportSourceTag()
+            supportViewController.helpshiftOptions = options
+
+            let navController = UINavigationController(rootViewController: supportViewController)
+            navController.navigationBar.isTranslucent = false
+            navController.modalPresentationStyle = .formSheet
+
+            sourceViewController.present(navController, animated: true, completion: nil)
+        }
     }
 
     /// Presents Helpshift, with the specified ViewController as a source. Additional metadata is supplied, such as the sourceTag and Login details.
@@ -129,14 +140,13 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
-    func presentLoginEpilogue(in navigationController: UINavigationController, epilogueInfo: LoginEpilogueUserInfo? = nil, isJetpackLogin: Bool, onDismiss: @escaping () -> Void) {
+    func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: WordPressCredentials, onDismiss: @escaping () -> Void) {
         let storyboard = UIStoryboard(name: "LoginEpilogue", bundle: .main)
         guard let epilogueViewController = storyboard.instantiateInitialViewController() as? LoginEpilogueViewController else {
             fatalError()
         }
 
-        epilogueViewController.epilogueUserInfo = epilogueInfo
-        epilogueViewController.jetpackLogin = isJetpackLogin
+        epilogueViewController.credentials = credentials
         epilogueViewController.onDismiss = onDismiss
 
         navigationController.pushViewController(epilogueViewController, animated: true)
@@ -159,12 +169,18 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func sync(credentials: WordPressCredentials, onCompletion: @escaping (Error?) -> ()) {
         switch credentials {
-        case .wpcom(let username, let authToken, let isJetpackLogin):
+        case .wpcom(let username, let authToken, let isJetpackLogin, _):
             syncWPCom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin, onCompletion: onCompletion)
         case .wporg(let username, let password, let xmlrpc, let options):
             syncWPOrg(username: username, password: password, xmlrpc: xmlrpc, options: options, onCompletion: onCompletion)
         }
     }
+}
+
+
+// MARK: - WordPressAuthenticatorManager
+//
+private extension WordPressAuthenticationManager {
 
     /// Synchronizes a WordPress.com account with the specified credentials.
     ///
