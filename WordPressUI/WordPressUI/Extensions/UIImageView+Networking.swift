@@ -30,7 +30,6 @@ public extension UIImageView {
     ///     -   failure: Closure to be executed upon failure.
     ///
     public func downloadImage(from url: URL?, placeholderImage: UIImage? = nil, success: ((UIImage) -> ())? = nil, failure: ((Error?) -> ())? = nil) {
-        // Placeholder?
         if let placeholderImage = placeholderImage {
             image = placeholderImage
         }
@@ -44,19 +43,16 @@ public extension UIImageView {
 
         downloadURL = url
 
-        // By default, onSuccess we just set the image instance
         let internalOnSuccess = { [weak self] (image: UIImage) in
             self?.image = image
             success?(image)
         }
 
-        // Hit the cache
         if let cachedImage = Downloader.cache.object(forKey: url as AnyObject) as? UIImage {
             internalOnSuccess(cachedImage)
             return
         }
 
-        // Hit the Backend
         let request = self.request(for: url)
 
         let task = URLSession.shared.dataTask(with: request, completionHandler: { [weak self] data, response, error in
@@ -66,15 +62,12 @@ public extension UIImageView {
             }
 
             DispatchQueue.main.async {
-                // Update the Cache
                 Downloader.cache.setObject(image, forKey: url as AnyObject)
 
-                // Yet another failsafe
                 if response?.url == self?.downloadURL {
                     internalOnSuccess(image)
                 }
 
-                // Cleanup
                 self?.downloadTask = nil
             }
         })
