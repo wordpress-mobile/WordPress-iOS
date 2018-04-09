@@ -196,7 +196,7 @@ extension LoginViewController {
             }
 
             if self.mustShowSignupEpilogue() {
-                self.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
+                self.showSignupEpilogue(for: credentials)
             } else if self.mustShowLoginEpilogue() {
                 self.showLoginEpilogue(for: credentials)
             } else {
