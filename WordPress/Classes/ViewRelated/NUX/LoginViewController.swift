@@ -81,19 +81,6 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
         return isSignUp && authenticationDelegate.shouldPresentSignupEpilogue()
     }
 
-    func dismiss() {
-        configureStatusLabel("")
-        configureViewLoading(false)
-
-        if mustShowSignupEpilogue() {
-            performSegue(withIdentifier: .showSignupEpilogue, sender: self)
-        } else if mustShowLoginEpilogue() {
-            showLoginEpilogue()
-        } else {
-            dismissBlock?(false)
-            navigationController?.dismiss(animated: true, completion: nil)
-        }
-    }
 
     // MARK: - Epilogue: Gravatar and User Profile Acquisition
 
@@ -206,7 +193,9 @@ extension LoginViewController {
                 return
             }
 
-            if self.shouldShowEpilogue() {
+            if self.mustShowSignupEpilogue() {
+                self.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
+            } else if self.mustShowLoginEpilogue() {
                 self.showLoginEpilogue(for: credentials)
             } else {
                 self.dismiss()
@@ -219,10 +208,6 @@ extension LoginViewController {
     /// Signals the Main App to synchronize the specified WordPress.com account.
     ///
     private func syncWPCom(credentials: WordPressCredentials, completion: (() -> ())? = nil) {
-        guard let delegate = WordPressAuthenticator.shared.delegate else {
-            fatalError()
-        }
-
         SafariCredentialsService.updateSafariCredentialsIfNeeded(with: loginFields)
 
         configureStatusLabel(NSLocalizedString("Getting account information", comment: "Alerts the user that wpcom account information is being retrieved."))
