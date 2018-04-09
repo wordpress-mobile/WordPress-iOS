@@ -21,7 +21,6 @@ extern NSString *const WPTwitterWordPressMobileURL;
 /// Gravatar Constants
 ///
 extern NSString *const WPBlavatarBaseURL;
-extern NSString *const WPGravatarBaseURL;
 
 /// Notifications Constants
 ///

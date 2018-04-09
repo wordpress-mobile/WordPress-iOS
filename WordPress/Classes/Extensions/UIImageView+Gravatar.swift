@@ -52,7 +52,7 @@ extension UIImageView {
     ///
     @objc
     public func downloadGravatarWithEmail(_ email: String, rating: GravatarRatings = .`default`, placeholderImage: UIImage = .gravatarPlaceholderImage) {
-        let gravatarURL = gravatarUrlForEmail(email, size: gravatarDefaultSize(), rating: rating.stringValue())
+        let gravatarURL = gravatarUrl(for: email, size: gravatarDefaultSize(), rating: rating.stringValue())
 
         downloadImage(from: gravatarURL, placeholderImage: placeholderImage)
     }
@@ -112,7 +112,7 @@ extension UIImageView {
     ///
     @objc
     public func overrideGravatarImageCache(_ image: UIImage, rating: GravatarRatings, email: String) {
-        guard let gravatarURL = gravatarUrlForEmail(email, size: gravatarDefaultSize(), rating: rating.stringValue()) else {
+        guard let gravatarURL = gravatarUrl(for: email, size: gravatarDefaultSize(), rating: rating.stringValue()) else {
             return
         }
 
@@ -131,11 +131,11 @@ extension UIImageView {
     ///
     /// - Returns: Gravatar's URL
     ///
-    private func gravatarUrlForEmail(_ email: String, size: Int, rating: String) -> URL? {
+    private func gravatarUrl(for email: String, size: Int, rating: String) -> URL? {
         let sanitizedEmail = email
             .lowercased()
             .trimmingCharacters(in: .whitespaces)
-        let targetURL = String(format: "%@/%@?d=404&s=%d&r=%@", WPGravatarBaseURL, sanitizedEmail.md5(), size, rating)
+        let targetURL = String(format: "%@/%@?d=404&s=%d&r=%@", Defaults.baseURL, sanitizedEmail.md5(), size, rating)
         return URL(string: targetURL)
     }
 
@@ -154,5 +154,6 @@ extension UIImageView {
     ///
     private struct Defaults {
         static let imageSize = 80
+        static let baseURL = "http://gravatar.com/avatar"
     }
 }
