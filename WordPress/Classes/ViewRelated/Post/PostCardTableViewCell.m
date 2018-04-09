@@ -421,7 +421,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 - (void)configureActionBar
 {
     NSString *status = [self.post status];
-    if ([Feature enabled:FeatureFlagAsyncPosting] && self.post.isFailed) {
+    if (self.post.isFailed) {
         [self configureFailedActionBar];
     } else if ([status isEqualToString:PostStatusPublish] || [status isEqualToString:PostStatusPrivate]) {
         [self configurePublishedActionBar];
