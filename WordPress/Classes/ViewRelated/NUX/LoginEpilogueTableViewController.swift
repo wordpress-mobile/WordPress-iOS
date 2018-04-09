@@ -23,11 +23,7 @@ class LoginEpilogueTableViewController: UITableViewController {
     private var credentials: WordPressCredentials?
 
 
-    // MARK: - Initializers
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
