@@ -94,6 +94,9 @@ class PostCoordinator: NSObject {
         let postService = PostService(managedObjectContext: mainContext)
         postService.uploadPost(post, success: { uploadedPost in
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
+
+            SearchManager.shared.indexItem(uploadedPost)
+
             let model = PostNoticeViewModel(post: uploadedPost)
             ActionDispatcher.dispatch(NoticeAction.post(model.notice))
         }, failure: { error in

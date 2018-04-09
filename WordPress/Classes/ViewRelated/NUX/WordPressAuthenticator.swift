@@ -16,7 +16,7 @@ public enum WordPressCredentials {
 
     /// WordPress.com Site Credentials.
     ///
-    case wpcom(username: String, authToken: String, isJetpackLogin: Bool)
+    case wpcom(username: String, authToken: String, isJetpackLogin: Bool, multifactor: Bool)
 }
 
 
@@ -47,7 +47,7 @@ public protocol WordPressAuthenticatorDelegate: class {
 
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
-    func presentLoginEpilogue(in navigationController: UINavigationController, epilogueInfo: LoginEpilogueUserInfo?, isJetpackLogin: Bool, onDismiss: @escaping () -> Void)
+    func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: WordPressCredentials, onDismiss: @escaping () -> Void)
 
     /// Presents the Support Interface from a given ViewController, with a specified SourceTag.
     ///
@@ -59,11 +59,13 @@ public protocol WordPressAuthenticatorDelegate: class {
 
     /// Indicates if the Login Epilogue should be displayed.
     ///
-    /// - Parameters:
-    ///     - jetpackBlogXMLRPC: Endpoint for the self hosted site that just got Jetpack-Connected (if any).
-    ///     - jetpackBlogUsername: Username for the self hosted site that just got Jetpack-Connected (if any).
+    /// - Parameter isJetpackLogin: Indicates if we've just logged into a WordPress.com account for Jetpack purposes!.
     ///
-    func shouldPresentLoginEpilogue(jetpackBlogXMLRPC: String?, jetpackBlogUsername: String?) -> Bool
+    func shouldPresentLoginEpilogue(isJetpackLogin: Bool) -> Bool
+
+    /// Indicates if the Signup Epilogue should be displayed.
+    ///
+    func shouldPresentSignupEpilogue() -> Bool
 
     /// Signals the Host App that a WordPress Site (wpcom or wporg) is available with the specified credentials.
     ///
