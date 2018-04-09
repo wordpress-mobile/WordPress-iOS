@@ -18,11 +18,6 @@ NSString *const WPGithubMainURL                                     = @"https://
 NSString *const WPTwitterWordPressHandle                            = @"@WordPressiOS";
 NSString *const WPTwitterWordPressMobileURL                         = @"https://twitter.com/WordPressiOS";
 
-/// Gravatar Constants
-///
-NSString *const WPBlavatarBaseURL                                   = @"http://gravatar.com/blavatar";
-NSString *const WPGravatarBaseURL                                   = @"http://gravatar.com/avatar";
-
 /// Notifications Constants
 ///
 #ifdef DEBUG

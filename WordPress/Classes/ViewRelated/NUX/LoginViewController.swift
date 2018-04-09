@@ -14,6 +14,17 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
         return loginFields.meta.jetpackLogin
     }
 
+    private var isSignUp: Bool {
+        return loginFields.meta.emailMagicLinkSource == .signup
+    }
+
+    private var authenticationDelegate: WordPressAuthenticatorDelegate {
+        guard let delegate = WordPressAuthenticator.shared.delegate else {
+            fatalError()
+        }
+
+        return delegate
+    }
 
     // MARK: Lifecycle Methods
 
@@ -62,17 +73,16 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
         errorLabel?.text = message
     }
 
-    fileprivate func shouldShowEpilogue() -> Bool {
-        guard let delegate = WordPressAuthenticator.shared.delegate else {
-            fatalError()
-        }
+    private func mustShowLoginEpilogue() -> Bool {
+        return isSignUp == false && authenticationDelegate.shouldPresentLoginEpilogue(isJetpackLogin: isJetpackLogin)
+    }
 
-        let meta = loginFields.meta
-        return delegate.shouldPresentLoginEpilogue(jetpackBlogXMLRPC: meta.jetpackBlogXMLRPC, jetpackBlogUsername: meta.jetpackBlogUsername)
+    private func mustShowSignupEpilogue() -> Bool {
+        return isSignUp && authenticationDelegate.shouldPresentSignupEpilogue()
     }
 
 
-    // MARK: - Login + Signup Epilogue
+    // MARK: - Epilogue
 
     func showSignupEpilogue(for credentials: WordPressCredentials) {
         guard let delegate = WordPressAuthenticator.shared.delegate, let navigationController = navigationController else {
@@ -87,23 +97,15 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
     }
 
     func showLoginEpilogue(for credentials: WordPressCredentials) {
-        guard let delegate = WordPressAuthenticator.shared.delegate, let navigationController = navigationController else {
+        guard let navigationController = navigationController else {
             fatalError()
         }
 
-        /// Epilogue: Signup
-        ///
-        if loginFields.meta.emailMagicLinkSource == .signup {
-            showSignupEpilogue(for: credentials)
-            return
-        }
-
-        /// Epilogue: Login
-        ///
-        delegate.presentLoginEpilogue(in: navigationController, for: credentials) { [weak self] in
+        authenticationDelegate.presentLoginEpilogue(in: navigationController, for: credentials) { [weak self] in
             self?.dismissBlock?(false)
         }
     }
+
 
     /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with login.
@@ -193,7 +195,9 @@ extension LoginViewController {
                 return
             }
 
-            if self.shouldShowEpilogue() {
+            if self.mustShowSignupEpilogue() {
+                self.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
+            } else if self.mustShowLoginEpilogue() {
                 self.showLoginEpilogue(for: credentials)
             } else {
                 self.dismiss()
@@ -206,15 +210,11 @@ extension LoginViewController {
     /// Signals the Main App to synchronize the specified WordPress.com account.
     ///
     private func syncWPCom(credentials: WordPressCredentials, completion: (() -> ())? = nil) {
-        guard let delegate = WordPressAuthenticator.shared.delegate else {
-            fatalError()
-        }
-
         SafariCredentialsService.updateSafariCredentialsIfNeeded(with: loginFields)
 
         configureStatusLabel(NSLocalizedString("Getting account information", comment: "Alerts the user that wpcom account information is being retrieved."))
 
-        delegate.sync(credentials: credentials) { [weak self] _ in
+        authenticationDelegate.sync(credentials: credentials) { [weak self] _ in
 
             self?.configureStatusLabel("")
             self?.configureViewLoading(false)
