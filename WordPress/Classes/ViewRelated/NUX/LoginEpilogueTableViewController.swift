@@ -23,11 +23,7 @@ class LoginEpilogueTableViewController: UITableViewController {
     private var credentials: WordPressCredentials?
 
 
-    // MARK: - Initializers
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -215,8 +211,7 @@ private extension LoginEpilogueTableViewController {
                 return
             }
 
-            var epilogueInfo = LoginEpilogueUserInfo()
-            epilogueInfo.update(with: userProfile)
+            var epilogueInfo = LoginEpilogueUserInfo(profile: userProfile)
 
             /// Load: Gravatar's Metadata
             ///

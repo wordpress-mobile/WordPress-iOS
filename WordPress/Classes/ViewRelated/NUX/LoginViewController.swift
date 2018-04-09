@@ -100,6 +100,10 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
 
         /// Epilogue: Login
         ///
+        guard let delegate = WordPressAuthenticator.shared.delegate, let navigationController = navigationController else {
+            fatalError()
+        }
+
         delegate.presentLoginEpilogue(in: navigationController, for: credentials) { [weak self] in
             self?.dismissBlock?(false)
         }

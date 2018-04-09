@@ -3,7 +3,8 @@ import Foundation
 
 // MARK: - WordPressAuthenticationManager
 //
-class WordPressAuthenticationManager {
+@objc
+class WordPressAuthenticationManager: NSObject {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -14,6 +15,40 @@ class WordPressAuthenticationManager {
     ///
     func startRelayingHelpshiftNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(helpshiftUnreadCountWasUpdated), name: .HelpshiftUnreadCountUpdated, object: nil)
+    }
+}
+
+
+// MARK: - Static Methods
+//
+extension WordPressAuthenticationManager {
+
+    /// Returns an Authentication ViewController (configured to allow only WordPress.com). This method pre-populates the Email + Username
+    /// with the values returned by the default WordPress.com account (if any).
+    ///
+    /// - Parameter onDismissed: Closure to be executed whenever the returned ViewController is dismissed.
+    ///
+    @objc
+    class func signinForWPComFixingAuthToken(_ onDismissed: ((_ cancelled: Bool) -> Void)? = nil) -> UIViewController {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        let account = service.defaultWordPressComAccount()
+
+        return WordPressAuthenticator.signinForWPCom(dotcomEmailAddress: account?.email, dotcomUsername: account?.username, onDismissed: onDismissed)
+    }
+
+    /// Presents the WordPress Authentication UI from the rootViewController (configured to allow only WordPress.com).
+    /// This method pre-populates the Email + Username with the values returned by the default WordPress.com account (if any).
+    ///
+    @objc
+    class func showSigninForWPComFixingAuthToken() {
+        guard let presenter = UIApplication.shared.keyWindow?.rootViewController else {
+            assertionFailure()
+            return
+        }
+
+        let controller = signinForWPComFixingAuthToken()
+        presenter.present(controller, animated: true, completion: nil)
     }
 }
 
@@ -67,18 +102,29 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         HelpshiftUtils.refreshUnreadNotificationCount()
     }
 
-    /// Returns an instance of SupportViewController, configured to be displayed from a specified Support Source.
+    /// Returns an instance of a SupportView, configured to be displayed from a specified Support Source.
     ///
     func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any] = [:]) {
-        let supportViewController = SupportViewController()
-        supportViewController.sourceTag = sourceTag.toSupportSourceTag()
-        supportViewController.helpshiftOptions = options
 
-        let navController = UINavigationController(rootViewController: supportViewController)
-        navController.navigationBar.isTranslucent = false
-        navController.modalPresentationStyle = .formSheet
+        if FeatureFlag.zendeskMobile.enabled {
+            let controller = SupportTableViewController()
+            controller.sourceTag = sourceTag.toSupportSourceTag()
 
-        sourceViewController.present(navController, animated: true, completion: nil)
+            let navController = UINavigationController(rootViewController: controller)
+            navController.modalPresentationStyle = .formSheet
+
+            sourceViewController.present(navController, animated: true, completion: nil)
+        } else {
+            let supportViewController = SupportViewController()
+            supportViewController.sourceTag = sourceTag.toSupportSourceTag()
+            supportViewController.helpshiftOptions = options
+
+            let navController = UINavigationController(rootViewController: supportViewController)
+            navController.navigationBar.isTranslucent = false
+            navController.modalPresentationStyle = .formSheet
+
+            sourceViewController.present(navController, animated: true, completion: nil)
+        }
     }
 
     /// Presents Helpshift, with the specified ViewController as a source. Additional metadata is supplied, such as the sourceTag and Login details.

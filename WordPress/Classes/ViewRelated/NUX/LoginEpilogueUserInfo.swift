@@ -11,6 +11,8 @@ public struct LoginEpilogueUserInfo {
     var gravatarUrl: String?
     var credentials: WordPressCredentials?
 
+    /// Initializes the EpilogueUserInfo with all of the metadata contained within WPAccount.
+    ///
     init(account: WPAccount) {
         if let name = account.username {
             username = name
@@ -23,8 +25,12 @@ public struct LoginEpilogueUserInfo {
         }
     }
 
-    init() {
-        // NO-OP
+    /// Initializes the EpilogueUserInfo with all of the metadata contained within UserProfile.
+    ///
+    init(profile: UserProfile) {
+        username = profile.username
+        fullName = profile.displayName
+        email = profile.email
     }
 }
 
@@ -39,13 +45,6 @@ extension LoginEpilogueUserInfo {
         username = profile.username
         fullName = profile.displayName
         email = profile.email
-    }
-
-    /// Updates the Epilogue properties, given a GravatarProfile instance.
-    ///
-    mutating func update(with profile: GravatarProfile) {
-        gravatarUrl = profile.thumbnailUrl
-        fullName = profile.displayName
     }
 
     /// Updates the Epilogue properties, given a SocialService instance.
