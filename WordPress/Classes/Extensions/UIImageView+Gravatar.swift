@@ -42,12 +42,10 @@ extension UIImageView {
     ///     - rating: expected image rating
     ///     - placeholderImage: Image to be used as Placeholder
     ///
-    @objc func downloadGravatarWithEmail(_ email: String, rating: GravatarRatings = GravatarDefaults.rating, placeholderImage: UIImage) {
-        let targetSize = gravatarDefaultSize()
-        let targetURL = gravatarUrlForEmail(email, size: targetSize, rating: rating.stringValue())
-        let targetRequest = URLRequest(url: targetURL!)
+    @objc func downloadGravatarWithEmail(_ email: String, rating: GravatarRatings = GravatarDefaults.rating, placeholderImage: UIImage = .gravatarPlaceholderImage) {
+        let gravatarURL = gravatarUrlForEmail(email, size: gravatarDefaultSize(), rating: rating.stringValue())
 
-        setImageWith(targetRequest, placeholderImage: placeholderImage, success: nil, failure: nil)
+        downloadImage(from: gravatarURL, placeholderImage: placeholderImage)
     }
 
     /// Downloads the provided Gravatar.
@@ -104,21 +102,12 @@ extension UIImageView {
     /// Hope buddah, and the code reviewer, can forgive me for this hack.
     ///
     @objc func overrideGravatarImageCache(_ image: UIImage, rating: GravatarRatings, email: String) {
-        guard let targetURL = gravatarUrlForEmail(email, size: gravatarDefaultSize(), rating: rating.stringValue()) else {
+        guard let gravatarURL = gravatarUrlForEmail(email, size: gravatarDefaultSize(), rating: rating.stringValue()) else {
             return
         }
 
-        let request = URLRequest(url: targetURL)
-
-        type(of: self).sharedImageDownloader().imageCache?.removeImageforRequest(request, withAdditionalIdentifier: nil)
-        type(of: self).sharedImageDownloader().imageCache?.add(image, for: request, withAdditionalIdentifier: nil)
-
-        // Remove all cached responses - removing an individual response does not work since iOS 7.
-        // This feels hacky to do but what else can we do...
-        let sessionConfiguration = type(of: self).sharedImageDownloader().sessionManager.value(forKey: "sessionConfiguration") as? URLSessionConfiguration
-        sessionConfiguration?.urlCache?.removeAllCachedResponses()
+        overrideImageCache(for: gravatarURL, with: image)
     }
-
 
 
     // MARK: - Private Helpers
