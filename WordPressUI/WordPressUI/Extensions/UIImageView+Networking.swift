@@ -30,8 +30,14 @@ public extension UIImageView {
     ///     -   failure: Closure to be executed upon failure.
     ///
     public func downloadImage(from url: URL?, placeholderImage: UIImage? = nil, success: ((UIImage) -> ())? = nil, failure: ((Error?) -> ())? = nil) {
-        if let placeholderImage = placeholderImage {
-            image = placeholderImage
+        let internalOnSuccess = { [weak self] (image: UIImage) in
+            self?.image = image
+            success?(image)
+        }
+
+        if let cachedImage = Downloader.cache.object(forKey: url as AnyObject) as? UIImage {
+            internalOnSuccess(cachedImage)
+            return
         }
 
         // Ideally speaking, this method should *not* receive an Optional URL. But we're doing so, for convenience.
@@ -43,14 +49,8 @@ public extension UIImageView {
 
         downloadURL = url
 
-        let internalOnSuccess = { [weak self] (image: UIImage) in
-            self?.image = image
-            success?(image)
-        }
-
-        if let cachedImage = Downloader.cache.object(forKey: url as AnyObject) as? UIImage {
-            internalOnSuccess(cachedImage)
-            return
+        if let placeholderImage = placeholderImage {
+            image = placeholderImage
         }
 
         let request = self.request(for: url)
