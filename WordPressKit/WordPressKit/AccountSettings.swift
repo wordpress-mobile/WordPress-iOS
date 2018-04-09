@@ -15,6 +15,30 @@ public struct AccountSettings {
     public let primarySiteID: Int  // primary_site_ID
     public let webAddress: String  // user_URL
     public let language: String    // language
+
+    public init(firstName: String,
+                lastName: String,
+                displayName: String,
+                aboutMe: String,
+                username: String,
+                email: String,
+                emailPendingAddress: String?,
+                emailPendingChange: Bool,
+                primarySiteID: Int,
+                webAddress: String,
+                language: String) {
+        self.firstName = firstName
+        self.lastName = lastName
+        self.displayName = displayName
+        self.aboutMe = aboutMe
+        self.username = username
+        self.email = email
+        self.emailPendingAddress = emailPendingAddress
+        self.emailPendingChange = emailPendingChange
+        self.primarySiteID = primarySiteID
+        self.webAddress = webAddress
+        self.language = language
+    }
 }
 
 public enum AccountSettingsChange {

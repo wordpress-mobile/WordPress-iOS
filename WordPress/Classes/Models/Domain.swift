@@ -6,9 +6,9 @@ public typealias Domain = RemoteDomain
 
 extension Domain {
     init(managedDomain: ManagedDomain) {
-        domainName = managedDomain.domainName
-        isPrimaryDomain = managedDomain.isPrimary
-        domainType = managedDomain.domainType
+        self.init(domainName: managedDomain.domainName,
+                  isPrimaryDomain: managedDomain.isPrimary,
+                  domainType: managedDomain.domainType)
     }
 }
 

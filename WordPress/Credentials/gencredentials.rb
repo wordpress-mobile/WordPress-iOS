@@ -129,7 +129,31 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_login_server, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)
+def print_zendesk_app_id(zendesk_app_id)
+print <<-EOF
++ (NSString *)zendeskAppId {
+    return @"#{zendesk_app_id}";
+}
+EOF
+end
+
+def print_zendesk_url(zendesk_url)
+print <<-EOF
++ (NSString *)zendeskUrl {
+    return @"#{zendesk_url}";
+}
+EOF
+end
+
+def print_zendesk_client_id(zendesk_client_id)
+print <<-EOF
++ (NSString *)zendeskClientId {
+    return @"#{zendesk_client_id}";
+}
+EOF
+end
+
+def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_login_server, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
   print <<-EOF
 #import "ApiCredentials.h"
 @implementation ApiCredentials
@@ -146,6 +170,9 @@ EOF
   print_helpshift_domain_name(helpshift_domain_name)
   print_helpshift_app_id(helpshift_app_id)
   print_debugging_key(debugging_key)
+  print_zendesk_app_id(zendesk_app_id)
+  print_zendesk_url(zendesk_url)
+  print_zendesk_client_id(zendesk_client_id)
   printf("@end\n")
 end
 
@@ -173,6 +200,9 @@ helpshift_api_key = nil
 helpshift_domain_name = nil
 helpshift_app_id = nil
 debugging_key = nil
+zendesk_app_id = nil
+zendesk_url = nil
+zendesk_client_id = nil
 File.open(path) do |f|
   f.each_line do |l|
     (k,value) = l.split("=")
@@ -202,6 +232,12 @@ File.open(path) do |f|
       helpshift_app_id = value
     elsif k == "DEBUGGING_KEY"
       debugging_key = value
+    elsif k == "ZENDESK_APP_ID"
+      zendesk_app_id = value
+    elsif k == "ZENDESK_URL"
+      zendesk_url = value
+    elsif k == "ZENDESK_CLIENT_ID"
+      zendesk_client_id = value
     end
   end
 end
@@ -244,6 +280,10 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
       $stderr.puts "warning: HockeyApp App Id not found"
     end 
   end
+  
+  if zendesk_app_id.nil? || zendesk_url.nil? || zendesk_client_id.nil?
+      $stderr.puts "warning: Zendesk keys not found"
+  end
 end
 
-print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_login_server, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key)
+print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_login_server, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)

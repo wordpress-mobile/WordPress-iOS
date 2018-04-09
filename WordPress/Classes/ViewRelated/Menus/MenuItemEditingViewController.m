@@ -86,7 +86,7 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
         if (error) {
             DDLogError(@"Error occurred obtaining existing MenuItem object in context: %@", error);
         }
-        _item = itemInContext;
+        self->_item = itemInContext;
     }];
 }
 
