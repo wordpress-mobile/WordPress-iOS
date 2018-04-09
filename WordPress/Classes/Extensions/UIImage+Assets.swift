@@ -12,6 +12,12 @@ extension UIImage {
         return UIImage(named: "blavatar-default")!
     }
 
+    /// Returns the Link Image.
+    ///
+    @objc
+    public static var linkFieldImage: UIImage {
+        return UIImage(named: "icon-url-field")!
+    }
 
     /// Returns the Default Gravatar Placeholder Image.
     ///
