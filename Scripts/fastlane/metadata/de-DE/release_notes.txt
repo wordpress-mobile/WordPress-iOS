@@ -1,0 +1,7 @@
+Liste der Beiträge, Zugänglichkeit: Die Liste der Beiträge verarbeitet Dynamic Type-Schriftarten jetzt besser.
+Liste der Beiträge: Neue Beitragsstatus- und Autorenfilterleiste!
+Liste der Beiträge, Zugänglichkeit: Die neue Beitragsstatus- und Autorenfilterleiste bietet Unterstützung für Audiokommentare.
+Anmeldung, Zugänglichkeit: Der Anmeldeablauf verarbeitet Dynamic Type jetzt besser.
+Menüs, Zugänglichkeit: Der Menüabschnitt Ihrer Websites unterstützt jetzt Dynamic Type.
+Mein Profil: Du hast jetzt eine deutlicher sichtbare Option zur Bearbeitung deines Gravatar-Icons.
+Spotlight: Indiziert jetzt Beiträge und Seiten!

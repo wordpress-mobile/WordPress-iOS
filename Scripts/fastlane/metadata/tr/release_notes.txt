@@ -1,0 +1,7 @@
+Gönderi Listesi, Erişilebilirlik: Gönderi listesi artık Dinamik Tür yazı tiplerini daha iyi destekliyor.
+Gönderi Listesi: Yeni gönderi durumu ve yazar filtresi çubuğu!
+Gönderi Listesi, Erişilebilirlik: Yeni gönderi durumu ve yazar filtresi çubuğu, Voiceover’ı destekler.
+Oturum Açma, Erişilebilirlik: Oturum açma akışı artık Dinamik Tür yazı tiplerini daha iyi destekliyor.
+Menüler, Erişilebilirlik: Sitenizdeki Menü bölümü artık Dinamik Tür yazı tiplerini destekliyor.
+Profilim: Gravatar simgenizi düzenlemeye yönelik daha açık seçenekler eklendi.
+Gündem: Artık gönderi ve sayfaları dizinliyor!
