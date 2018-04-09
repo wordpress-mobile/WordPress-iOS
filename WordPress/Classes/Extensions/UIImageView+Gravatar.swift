@@ -154,6 +154,6 @@ extension UIImageView {
     ///
     private struct Defaults {
         static let imageSize = 80
-        static let baseURL = "http://gravatar.com/avatar"
+        static let baseURL = "https://gravatar.com/avatar"
     }
 }
