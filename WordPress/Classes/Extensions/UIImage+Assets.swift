@@ -8,7 +8,7 @@ extension UIImage {
     /// Returns the Default SiteIcon Placeholder Image.
     ///
     @objc
-    static var siteIconPlaceholderImage: UIImage {
+    public static var siteIconPlaceholderImage: UIImage {
         return UIImage(named: "blavatar-default")!
     }
 
@@ -16,7 +16,7 @@ extension UIImage {
     /// Returns the Default Gravatar Placeholder Image.
     ///
     @objc
-    static var gravatarPlaceholderImage: UIImage {
+    public static var gravatarPlaceholderImage: UIImage {
         return UIImage(named: "gravatar.png")!
     }
 
@@ -24,7 +24,7 @@ extension UIImage {
     /// Returns the Gravatar's "Unapproved" Image.
     ///
     @objc
-    static var gravatarUnapprovedImage: UIImage {
+    public static var gravatarUnapprovedImage: UIImage {
         return UIImage(named: "gravatar-unapproved")!
     }
 }
