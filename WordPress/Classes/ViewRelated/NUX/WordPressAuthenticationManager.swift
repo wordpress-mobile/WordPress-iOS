@@ -152,11 +152,19 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         navigationController.pushViewController(epilogueViewController, animated: true)
     }
 
-    /// Indicates if the Login Epilogue should be presented. This is always true, except when we're connecting a
-    /// Self Hosted Site to WPcom (Jetpack Login).
+    /// Indicates if the Login Epilogue should be presented. This is false only when we're doing a Jetpack Connect, and the new
+    /// WordPress.com account has no sites. Capicci?
     ///
     func shouldPresentLoginEpilogue(isJetpackLogin: Bool) -> Bool {
-        return isJetpackLogin == false
+        guard isJetpackLogin else {
+            return true
+        }
+
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        let numberOfBlogs = service.defaultWordPressComAccount()?.blogs?.count ?? 0
+
+        return numberOfBlogs > 0
     }
 
     /// Indicates if the Signup Epilogue should be displayed.
