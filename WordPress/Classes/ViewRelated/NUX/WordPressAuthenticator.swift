@@ -63,6 +63,10 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     func shouldPresentLoginEpilogue(isJetpackLogin: Bool) -> Bool
 
+    /// Indicates if the Signup Epilogue should be displayed.
+    ///
+    func shouldPresentSignupEpilogue() -> Bool
+
     /// Signals the Host App that a WordPress Site (wpcom or wporg) is available with the specified credentials.
     ///
     /// - Parameters:

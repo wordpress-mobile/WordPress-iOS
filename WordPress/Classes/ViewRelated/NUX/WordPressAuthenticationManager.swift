@@ -149,6 +149,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         return isJetpackLogin == false
     }
 
+    /// Indicates if the Signup Epilogue should be displayed.
+    ///
+    func shouldPresentSignupEpilogue() -> Bool {
+        return true
+    }
+
     /// Synchronizes the specified WordPress Account.
     ///
     func sync(credentials: WordPressCredentials, onCompletion: @escaping (Error?) -> ()) {

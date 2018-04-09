@@ -14,6 +14,17 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
         return loginFields.meta.jetpackLogin
     }
 
+    private var isSignUp: Bool {
+        return loginFields.meta.emailMagicLinkSource == .signup
+    }
+
+    private var authenticationDelegate: WordPressAuthenticatorDelegate {
+        guard let delegate = WordPressAuthenticator.shared.delegate else {
+            fatalError()
+        }
+
+        return delegate
+    }
 
     // MARK: Lifecycle Methods
 
@@ -62,20 +73,20 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
         errorLabel?.text = message
     }
 
-    fileprivate func shouldShowEpilogue() -> Bool {
-        guard let delegate = WordPressAuthenticator.shared.delegate else {
-            fatalError()
-        }
+    private func mustShowLoginEpilogue() -> Bool {
+        return isSignUp == false && authenticationDelegate.shouldPresentLoginEpilogue(isJetpackLogin: isJetpackLogin)
+    }
 
-        return delegate.shouldPresentLoginEpilogue(isJetpackLogin: isJetpackLogin)
+    private func mustShowSignupEpilogue() -> Bool {
+        return isSignUp && authenticationDelegate.shouldPresentSignupEpilogue()
     }
 
     func showLoginEpilogue() {
-        guard let delegate = WordPressAuthenticator.shared.delegate, let navigationController = navigationController else {
+        guard let navigationController = navigationController else {
             fatalError()
         }
 
-        delegate.presentLoginEpilogue(in: navigationController, epilogueInfo: nil, isJetpackLogin: isJetpackLogin) {
+        authenticationDelegate.presentLoginEpilogue(in: navigationController, epilogueInfo: nil, isJetpackLogin: isJetpackLogin) {
             self.dismissBlock?(false)
         }
     }
@@ -84,24 +95,16 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
         configureStatusLabel("")
         configureViewLoading(false)
 
-        if shouldShowEpilogue() {
-
-            if isSignUp() {
-                performSegue(withIdentifier: .showSignupEpilogue, sender: self)
-            } else {
-                showLoginEpilogue()
-            }
-
-            return
+        if mustShowSignupEpilogue() {
+            performSegue(withIdentifier: .showSignupEpilogue, sender: self)
+        } else if mustShowLoginEpilogue() {
+            showLoginEpilogue()
+        } else {
+            dismissBlock?(false)
+            navigationController?.dismiss(animated: true, completion: nil)
         }
-
-        dismissBlock?(false)
-        navigationController?.dismiss(animated: true, completion: nil)
     }
 
-    private func isSignUp() -> Bool {
-        return loginFields.meta.emailMagicLinkSource == .signup
-    }
 
     /// Validates what is entered in the various form fields and, if valid,
     /// proceeds with login.
@@ -203,16 +206,12 @@ extension LoginViewController {
     /// Signals the main app to signal the specified WordPress.com account.
     ///
     func syncWPCom(username: String, authToken: String, requiredMultifactor: Bool) {
-        guard let delegate = WordPressAuthenticator.shared.delegate else {
-            fatalError()
-        }
-
         SafariCredentialsService.updateSafariCredentialsIfNeeded(with: loginFields)
 
         configureStatusLabel(NSLocalizedString("Getting account information", comment: "Alerts the user that wpcom account information is being retrieved."))
 
         let credentials = WordPressCredentials.wpcom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin)
-        delegate.sync(credentials: credentials) { [weak self] _ in
+        authenticationDelegate.sync(credentials: credentials) { [weak self] _ in
 
             /// Tracker
             ///
