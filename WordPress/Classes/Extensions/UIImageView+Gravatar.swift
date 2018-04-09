@@ -13,13 +13,20 @@ extension UIImageView {
         case pg
         case r
         case x
+        case `default`
 
         func stringValue() -> String {
             switch self {
-                case .g:    return "g"
-                case .pg:   return "pg"
-                case .r:    return "r"
-                case .x:    return "x"
+            case .default:
+                fallthrough
+            case .g:
+                return "g"
+            case .pg:
+                return "pg"
+            case .r:
+                return "r"
+            case .x:
+                return "x"
             }
         }
     }
@@ -31,7 +38,8 @@ extension UIImageView {
     ///     - email: the user's email
     ///     - rating: expected image rating
     ///
-    @objc func downloadGravatarWithEmail(_ email: String, rating: GravatarRatings) {
+    @objc
+    public func downloadGravatarWithEmail(_ email: String, rating: GravatarRatings) {
         downloadGravatarWithEmail(email, rating: rating, placeholderImage: .gravatarPlaceholderImage)
     }
 
@@ -42,7 +50,8 @@ extension UIImageView {
     ///     - rating: expected image rating
     ///     - placeholderImage: Image to be used as Placeholder
     ///
-    @objc func downloadGravatarWithEmail(_ email: String, rating: GravatarRatings = GravatarDefaults.rating, placeholderImage: UIImage = .gravatarPlaceholderImage) {
+    @objc
+    public func downloadGravatarWithEmail(_ email: String, rating: GravatarRatings = .`default`, placeholderImage: UIImage = .gravatarPlaceholderImage) {
         let gravatarURL = gravatarUrlForEmail(email, size: gravatarDefaultSize(), rating: rating.stringValue())
 
         downloadImage(from: gravatarURL, placeholderImage: placeholderImage)
@@ -56,7 +65,7 @@ extension UIImageView {
     ///     - animate: enable/disable fade in animation
     ///     - failure: Callback block to be invoked when an error occurs while fetching the Gravatar image
     ///
-    func downloadGravatar(_ gravatar: Gravatar?, placeholder: UIImage, animate: Bool, failure: ((Error?) -> ())? = nil) {
+    public func downloadGravatar(_ gravatar: Gravatar?, placeholder: UIImage, animate: Bool, failure: ((Error?) -> ())? = nil) {
         guard let gravatar = gravatar else {
             self.image = placeholder
             return
@@ -101,7 +110,8 @@ extension UIImageView {
     /// P.s.:
     /// Hope buddah, and the code reviewer, can forgive me for this hack.
     ///
-    @objc func overrideGravatarImageCache(_ image: UIImage, rating: GravatarRatings, email: String) {
+    @objc
+    public func overrideGravatarImageCache(_ image: UIImage, rating: GravatarRatings, email: String) {
         guard let gravatarURL = gravatarUrlForEmail(email, size: gravatarDefaultSize(), rating: rating.stringValue()) else {
             return
         }
@@ -121,19 +131,19 @@ extension UIImageView {
     ///
     /// - Returns: Gravatar's URL
     ///
-    fileprivate func gravatarUrlForEmail(_ email: String, size: Int, rating: String) -> URL? {
+    private func gravatarUrlForEmail(_ email: String, size: Int, rating: String) -> URL? {
         let sanitizedEmail = email
             .lowercased()
-            .trimmingCharacters(in: CharacterSet.whitespaces)
+            .trimmingCharacters(in: .whitespaces)
         let targetURL = String(format: "%@/%@?d=404&s=%d&r=%@", WPGravatarBaseURL, sanitizedEmail.md5(), size, rating)
         return URL(string: targetURL)
     }
 
     /// Returns the required gravatar size. If the current view's size is zero, falls back to the default size.
     ///
-    fileprivate func gravatarDefaultSize() -> Int {
-        guard bounds.size.equalTo(CGSize.zero) == false else {
-            return GravatarDefaults.imageSize
+    private func gravatarDefaultSize() -> Int {
+        guard bounds.size.equalTo(.zero) == false else {
+            return Defaults.imageSize
         }
 
         let targetSize = max(bounds.width, bounds.height) * UIScreen.main.scale
@@ -142,8 +152,7 @@ extension UIImageView {
 
     /// Private helper structure: contains the default Gravatar parameters
     ///
-    fileprivate struct GravatarDefaults {
+    private struct Defaults {
         static let imageSize = 80
-        static let rating = GravatarRatings.g
     }
 }
