@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ck1-vY-O11">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ck1-vY-O11">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -403,7 +403,6 @@
                         <outlet property="submitButton" destination="OZC-xf-OAn" id="k1c-SJ-qiK"/>
                         <segue destination="Kvo-Y2-yhG" kind="show" identifier="startMagicLinkFlow" id="db9-5R-Qq7"/>
                         <segue destination="lmD-c6-SLs" kind="show" identifier="showWPComLogin" id="ySQ-EM-6JI"/>
-                        <segue destination="Mwz-tq-5A8" kind="custom" identifier="showEpilogue" customClass="EpilogueSegue" customModule="WordPress" customModuleProvider="target" id="gAE-di-Wyf"/>
                         <segue destination="bAd-Df-IzS" kind="show" identifier="show2FA" id="kRR-qz-Hu2"/>
                         <segue destination="anK-hg-K4j" kind="show" identifier="showSelfHostedLogin" id="bK1-J1-hfT"/>
                         <segue destination="klu-4U-PyL" kind="show" identifier="showSignupEmail" id="dh4-9P-l8W"/>
@@ -834,7 +833,6 @@
                         <outlet property="submitButton" destination="SBB-7Z-qWs" id="jfi-ms-7V1"/>
                         <outlet property="usernameField" destination="ESh-DI-dtB" id="T1z-yJ-peq"/>
                         <segue destination="bAd-Df-IzS" kind="show" identifier="show2FA" id="fWM-mD-lXg"/>
-                        <segue destination="Mwz-tq-5A8" kind="show" identifier="showEpilogue" customClass="EpilogueSegue" customModule="WordPress" customModuleProvider="target" id="fA5-mb-vrv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X4T-gd-ISx" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1009,7 +1007,6 @@
                         <outlet property="instructionLabel" destination="bBi-2N-RAh" id="NDi-pM-b0p"/>
                         <outlet property="passwordField" destination="BtS-3D-CIU" id="FjI-Ba-FDh"/>
                         <outlet property="submitButton" destination="E3x-LN-sUk" id="9eE-vi-xgc"/>
-                        <segue destination="Mwz-tq-5A8" kind="custom" identifier="showEpilogue" customClass="EpilogueSegue" customModule="WordPress" customModuleProvider="target" id="7lv-19-h36"/>
                         <segue destination="bAd-Df-IzS" kind="show" identifier="show2FA" id="qLI-qX-rkG"/>
                     </connections>
                 </viewController>
@@ -1172,185 +1169,11 @@
                         <outlet property="sendCodeButton" destination="309-z3-fPx" id="ML8-O4-ZZs"/>
                         <outlet property="submitButton" destination="6eO-V2-a64" id="O2y-fh-zZd"/>
                         <outlet property="verificationCodeField" destination="A2K-lq-6XM" id="U35-Ci-hs6"/>
-                        <segue destination="Mwz-tq-5A8" kind="custom" identifier="showEpilogue" customClass="EpilogueSegue" customModule="WordPress" customModuleProvider="target" id="lIb-sw-yM7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PwX-lW-aCa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2964" y="1072"/>
-        </scene>
-        <!--Login Epilogue View Controller-->
-        <scene sceneID="mq7-wS-hIR">
-            <objects>
-                <viewController storyboardIdentifier="LoginEpilogue" automaticallyAdjustsScrollViewInsets="NO" id="Mwz-tq-5A8" customClass="LoginEpilogueViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Vw0-RX-ERM"/>
-                        <viewControllerLayoutGuide type="bottom" id="pCc-dg-bxb"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" id="gJB-TV-Tpp">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Onf-X6-J5w">
-                                <rect key="frame" x="-4" y="20" width="383" height="495"/>
-                                <connections>
-                                    <segue destination="0GP-rM-Hvu" kind="embed" id="taY-7m-sQh"/>
-                                </connections>
-                            </containerView>
-                            <view opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="juu-ng-v2N">
-                                <rect key="frame" x="-4" y="515" width="383" height="152"/>
-                                <subviews>
-                                    <imageView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="darkgrey-shadow" translatesAutoresizingMaskIntoConstraints="NO" id="cmz-zv-QBQ">
-                                        <rect key="frame" x="0.0" y="-10" width="383" height="10"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="10" id="P6k-Ic-btx"/>
-                                        </constraints>
-                                    </imageView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="tnB-lr-Pvr">
-                                        <rect key="frame" x="20" y="20" width="343" height="108"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XTC-PV-ffk" customClass="SubheadlineButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="343" height="44"/>
-                                                <accessibility key="accessibilityConfiguration" identifier="connectSite"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="44" id="cSh-Lw-mAl"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                <state key="normal" title="Connect another site" backgroundImage="beveled-secondary-button">
-                                                    <color key="titleColor" red="0.1803921568627451" green="0.26666666666666666" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="handleConnectAnotherButton" destination="Mwz-tq-5A8" eventType="touchUpInside" id="HJD-RL-8hX"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jiQ-IN-bzh" customClass="SubheadlineButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="64" width="343" height="44"/>
-                                                <accessibility key="accessibilityConfiguration" identifier="continueToSites"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="44" id="wlF-fo-JMp"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                <state key="normal" title="Continue" backgroundImage="beveled-blue-button">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <state key="selected" backgroundImage="beveled-blue-button-down"/>
-                                                <state key="highlighted" backgroundImage="beveled-blue-button-down">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="dismissEpilogue" destination="Mwz-tq-5A8" eventType="touchUpInside" id="YjA-Wy-vFv"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="tnB-lr-Pvr" firstAttribute="top" secondItem="cmz-zv-QBQ" secondAttribute="bottom" constant="20" id="40J-9i-XFg"/>
-                                    <constraint firstItem="cmz-zv-QBQ" firstAttribute="leading" secondItem="juu-ng-v2N" secondAttribute="leading" id="FGD-LE-owi"/>
-                                    <constraint firstAttribute="bottom" secondItem="tnB-lr-Pvr" secondAttribute="bottom" constant="24" id="OQn-af-sdr"/>
-                                    <constraint firstAttribute="trailing" secondItem="tnB-lr-Pvr" secondAttribute="trailing" constant="20" id="PeV-l7-k6R"/>
-                                    <constraint firstAttribute="trailing" secondItem="cmz-zv-QBQ" secondAttribute="trailing" id="UCI-QQ-LRq"/>
-                                    <constraint firstItem="tnB-lr-Pvr" firstAttribute="leading" secondItem="juu-ng-v2N" secondAttribute="leading" constant="20" id="gvl-Gf-kyb"/>
-                                    <constraint firstItem="cmz-zv-QBQ" firstAttribute="top" secondItem="juu-ng-v2N" secondAttribute="top" constant="-10" id="szN-7w-7ie"/>
-                                </constraints>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" red="0.95294117649999999" green="0.96470588239999999" blue="0.97254901959999995" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstItem="pCc-dg-bxb" firstAttribute="top" secondItem="juu-ng-v2N" secondAttribute="bottom" id="2YQ-AQ-fc2"/>
-                            <constraint firstItem="juu-ng-v2N" firstAttribute="leading" secondItem="gJB-TV-Tpp" secondAttribute="leadingMargin" constant="-20" id="LvJ-ZH-lPS"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Onf-X6-J5w" secondAttribute="trailing" constant="-20" id="OQw-38-rm1"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="juu-ng-v2N" secondAttribute="trailing" constant="-20" id="UWB-Dd-jb9"/>
-                            <constraint firstItem="Onf-X6-J5w" firstAttribute="leading" secondItem="gJB-TV-Tpp" secondAttribute="leadingMargin" constant="-20" id="h9l-pW-sPl"/>
-                            <constraint firstItem="juu-ng-v2N" firstAttribute="top" secondItem="Onf-X6-J5w" secondAttribute="bottom" id="kSC-dQ-z75"/>
-                            <constraint firstItem="Onf-X6-J5w" firstAttribute="top" secondItem="Vw0-RX-ERM" secondAttribute="bottom" id="zHX-lw-7Nx"/>
-                        </constraints>
-                    </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
-                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-                    <connections>
-                        <outlet property="buttonPanel" destination="juu-ng-v2N" id="WUF-SL-5Nq"/>
-                        <outlet property="connectButton" destination="XTC-PV-ffk" id="m23-fx-dSP"/>
-                        <outlet property="continueButton" destination="jiQ-IN-bzh" id="OuY-ju-D4b"/>
-                        <outlet property="shadowView" destination="cmz-zv-QBQ" id="z9D-6E-kZE"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="S0K-oR-yFr" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4117.6000000000004" y="927.88605697151434"/>
-        </scene>
-        <!--Login Epilogue Table View-->
-        <scene sceneID="YcQ-wo-pmy">
-            <objects>
-                <tableViewController id="0GP-rM-Hvu" customClass="LoginEpilogueTableView" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="154" sectionHeaderHeight="28" sectionFooterHeight="28" id="TzF-S4-1lW">
-                        <rect key="frame" x="0.0" y="0.0" width="383" height="495"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.95294117647058818" green="0.96470588235294119" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
-                        <inset key="separatorInset" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BlogCell" rowHeight="52" id="Efm-ja-Y8C" customClass="LoginEpilogueBlogCell" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="383" height="52"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Efm-ja-Y8C" id="Xid-Yh-Kpa">
-                                    <rect key="frame" x="0.0" y="0.0" width="383" height="52"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rtc-ao-Fl6">
-                                            <rect key="frame" x="20" y="2" width="40" height="40"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="40" id="54N-go-xro"/>
-                                                <constraint firstAttribute="height" constant="40" id="mlW-vk-8m6"/>
-                                            </constraints>
-                                        </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Masdftg" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OfN-Q9-bSA">
-                                            <rect key="frame" x="72" y="2" width="57" height="18"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="18" id="P3Z-FG-QZ0"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mastg" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Yz-UQ-eSh">
-                                            <rect key="frame" x="72" y="24" width="38" height="16"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="16" id="xnN-P0-Xpf"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="3Yz-UQ-eSh" secondAttribute="bottom" constant="12" id="0zb-DY-Y9E"/>
-                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Rtc-ao-Fl6" secondAttribute="bottom" constant="10" id="1Og-kM-CYS"/>
-                                        <constraint firstItem="OfN-Q9-bSA" firstAttribute="top" secondItem="Rtc-ao-Fl6" secondAttribute="top" id="8j1-Sa-1RD"/>
-                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="OfN-Q9-bSA" secondAttribute="trailing" constant="20" id="B7q-Nq-2bp"/>
-                                        <constraint firstItem="OfN-Q9-bSA" firstAttribute="leading" secondItem="Rtc-ao-Fl6" secondAttribute="trailing" constant="12" id="ewu-p4-E6y"/>
-                                        <constraint firstItem="Rtc-ao-Fl6" firstAttribute="top" secondItem="Xid-Yh-Kpa" secondAttribute="top" constant="2" id="fFy-Ht-Nhg"/>
-                                        <constraint firstItem="Rtc-ao-Fl6" firstAttribute="leading" secondItem="Xid-Yh-Kpa" secondAttribute="leading" constant="20" id="joG-nq-PKL"/>
-                                        <constraint firstItem="3Yz-UQ-eSh" firstAttribute="top" secondItem="OfN-Q9-bSA" secondAttribute="bottom" constant="4" id="kgK-cW-v6B"/>
-                                        <constraint firstItem="3Yz-UQ-eSh" firstAttribute="leading" secondItem="OfN-Q9-bSA" secondAttribute="leading" id="zDF-BH-FcH"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="siteIcon" destination="Rtc-ao-Fl6" id="4pV-Bx-Jdp"/>
-                                    <outlet property="siteNameLabel" destination="OfN-Q9-bSA" id="bES-zE-8MN"/>
-                                    <outlet property="urlLabel" destination="3Yz-UQ-eSh" id="mGn-yR-cJx"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="0GP-rM-Hvu" id="xLD-Wu-z2e"/>
-                            <outlet property="delegate" destination="0GP-rM-Hvu" id="3k4-jb-Ovg"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jiq-6d-L8E" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4920.8000000000002" y="887.40629685157433"/>
         </scene>
         <!--Login Link Request View Controller-->
         <scene sceneID="lHx-fY-p45">
@@ -1616,9 +1439,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="beveled-blue-button" width="18" height="19"/>
-        <image name="beveled-blue-button-down" width="18" height="19"/>
-        <image name="beveled-secondary-button" width="18" height="19"/>
         <image name="darkgrey-shadow" width="10" height="10"/>
         <image name="icon-email-field" width="18" height="22"/>
         <image name="icon-password-field" width="18" height="22"/>
@@ -1627,7 +1447,6 @@
         <image name="icon-wp" width="50" height="52"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gAE-di-Wyf"/>
         <segue reference="kRR-qz-Hu2"/>
         <segue reference="ySQ-EM-6JI"/>
         <segue reference="1xT-tL-sp6"/>
