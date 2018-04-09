@@ -4,7 +4,7 @@ import Foundation
 
 // MARK: - CaptionShortcodePostProcessor: Converts <figure><img><figcaption> structures into a [caption] shortcode.
 //
-class CaptionShortcodePostProcessor: Aztec.HTMLProcessor {
+class CaptionShortcodePostProcessor: HTMLProcessor {
 
     init() {
         super.init(tag: StandardElementType.figure.rawValue) { shortcode in
@@ -18,37 +18,37 @@ class CaptionShortcodePostProcessor: Aztec.HTMLProcessor {
 
             guard let coreNode = rootNode.firstChild(ofType: .img) ?? rootNode.firstChild(ofType: .a),
                 let figcaption = rootNode.firstChild(ofType: .figcaption)
-            else {
-                return nil
+                else {
+                    return nil
             }
 
             /// Serialize the Caption's Shortcode!
             ///
             let serializer = DefaultHTMLSerializer()
             var attributes = shortcode.attributes.named
-            var imgId = ""
+            var imgNode: ElementNode?
+
+            // Find img child node of caption
             if coreNode.isNodeType(.img) {
-                let imgAttributes = coreNode.attributes
-                for attribute in imgAttributes {
-                    if attribute.name == "src" {
-                        continue
-                    }
-                    if attribute.name == "class" {
-                        imgId = ""
-                    }
-                    attributes[attribute.name] = attribute.value.toString()
-                }
+                imgNode = coreNode
+            } else {
+                imgNode = coreNode.firstChild(ofType: .img)
             }
 
-            var attributesHTMLRepresentation: String = ""
+            if let imgNode = imgNode {
+                attributes = CaptionShortcodePostProcessor.captionAttributesFrom(imgNode: imgNode, basedOn: attributes)
+            }
 
+            var attributesHTMLRepresentation: String = " id=\"\""
+            if let idValue = attributes["id"] {
+                attributesHTMLRepresentation = " id=\"\(idValue)\""
+                attributes.removeValue(forKey: "id")
+            }
             for (key, value) in attributes {
                 attributesHTMLRepresentation += " \(key)=\"\(value)\""
             }
 
-            let padding = attributesHTMLRepresentation.isEmpty ? "" : " "
-
-            var html = "[caption id=\"\(imgId)\" " + imgId + padding + attributesHTMLRepresentation + "]"
+            var html = "[caption" + attributesHTMLRepresentation + "]"
 
             html += serializer.serialize(coreNode)
 
@@ -60,5 +60,30 @@ class CaptionShortcodePostProcessor: Aztec.HTMLProcessor {
 
             return html
         }
+    }
+
+    static func captionAttributesFrom(imgNode: ElementNode, basedOn baseAttributes: [String: String]) -> [String: String] {
+        var captionAttributes = baseAttributes
+        let imgAttributes = imgNode.attributes
+        for attribute in imgAttributes {
+            guard attribute.name != "src",
+                let attributeValue = attribute.value.toString() else {
+                    continue
+            }
+
+            if attribute.name == "class" {
+                let classAttributes = attributeValue.components(separatedBy: " ")
+                for classAttribute in classAttributes {
+                    if classAttribute.hasPrefix("wp-image-") {
+                        captionAttributes["id"] = classAttribute.replacingOccurrences(of: "wp-image-", with: "attachment_")
+                    } else if classAttribute.hasPrefix("align") {
+                        captionAttributes["align"] = classAttribute
+                    }
+                }
+            } else {
+                captionAttributes[attribute.name] = attributeValue
+            }
+        }
+        return captionAttributes
     }
 }
