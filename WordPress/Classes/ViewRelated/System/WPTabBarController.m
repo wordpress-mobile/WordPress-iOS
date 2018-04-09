@@ -500,25 +500,20 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
 {
     [self showReaderTab];
-    
-    if (self.selectedIndex == WPTabReader) {
-        UIViewController *topViewController = (ReaderDetailViewController *)self.readerNavigationController.topViewController;
-        if ([topViewController isKindOfClass:[ReaderDetailViewController class]]) {
-            ReaderDetailViewController *readerDetailVC = (ReaderDetailViewController *)topViewController;
-            ReaderPost *readerPost = readerDetailVC.post;
-            if ([readerPost.postID isEqual:postId] && [readerPost.siteID isEqual: blogId]) {
-                 // The desired reader detail VC is already the top VC for the tab. Move along.
-                return;
-            } else {
-                // Close the existing detail tab before opening another one.
-                [self.readerSplitViewController popToRootViewControllersAnimated:YES];
-            }
+
+    UIViewController *topDetailVC = (ReaderDetailViewController *)self.readerSplitViewController.topDetailViewController;
+    if ([topDetailVC isKindOfClass:[ReaderDetailViewController class]]) {
+        ReaderDetailViewController *readerDetailVC = (ReaderDetailViewController *)topDetailVC;
+        ReaderPost *readerPost = readerDetailVC.post;
+        if ([readerPost.postID isEqual:postId] && [readerPost.siteID isEqual: blogId]) {
+             // The desired reader detail VC is already the top VC for the tab. Move along.
+            return;
         }
     }
 
-    ReaderMenuViewController *readerMenuViewController = (ReaderMenuViewController *)[self.readerNavigationController.viewControllers firstObject];
-    if ([readerMenuViewController isKindOfClass:[ReaderMenuViewController class]]) {
-        [readerMenuViewController openPost:postId onBlog:blogId];
+    if (topDetailVC && topDetailVC.navigationController) {
+        ReaderDetailViewController *readerPostDetailVC = [ReaderDetailViewController controllerWithPostID:postId siteID:blogId];
+        [topDetailVC.navigationController pushFullscreenViewController:readerPostDetailVC animated:YES];
     }
 }
 
@@ -545,8 +540,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (void)switchTabToPagesListForPost:(AbstractPost *)post
 {
     UIViewController *topVC = [self.blogListSplitViewController topDetailViewController];
-    if ([topVC isKindOfClass:[PostListViewController class]]) {
-        Blog *blog = ((PostListViewController *)topVC).blog;
+    if ([topVC isKindOfClass:[PageListViewController class]]) {
+        Blog *blog = ((PageListViewController *)topVC).blog;
         if ([post.blog.objectID isEqual:blog.objectID]) {
             // The desired post view controller is already the top viewController for the tab.
             // Nothing to see here.  Move along.

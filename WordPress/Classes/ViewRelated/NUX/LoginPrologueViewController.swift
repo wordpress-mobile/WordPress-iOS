@@ -1,7 +1,7 @@
 import UIKit
 import Lottie
 
-class LoginPrologueViewController: UIViewController, UIViewControllerTransitioningDelegate {
+class LoginPrologueViewController: LoginViewController {
 
     private var buttonViewController: NUXButtonViewController?
 
@@ -106,7 +106,7 @@ class LoginPrologueViewController: UIViewController, UIViewControllerTransitioni
         }
     }
 
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+    override func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         if presented is LoginPrologueSignupMethodViewController {
             return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
         }

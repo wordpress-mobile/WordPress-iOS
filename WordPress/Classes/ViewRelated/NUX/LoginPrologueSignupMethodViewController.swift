@@ -1,3 +1,6 @@
+import WordPressUI
+
+
 class LoginPrologueSignupMethodViewController: NUXViewController {
     /// Buttons at bottom of screen
     private var buttonViewController: NUXButtonViewController?

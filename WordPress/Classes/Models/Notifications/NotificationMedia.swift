@@ -50,7 +50,7 @@ extension NotificationMedia {
     /// Parses NotificationMedia instances, given an array of raw media.
     ///
     class func mediaFromArray(_ media: [[String: AnyObject]]?) -> [NotificationMedia] {
-        let parsed = media?.flatMap {
+        let parsed = media?.compactMap {
             return NotificationMedia(dictionary: $0)
         }
 

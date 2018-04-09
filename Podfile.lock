@@ -116,6 +116,12 @@ PODS:
   - WordPress-Aztec-iOS (1.0.0-beta.18.1)
   - WPMediaPicker (0.27)
   - wpxmlrpc (0.8.3)
+  - ZendeskSDK (1.11.0.1):
+    - ZendeskSDK/Providers (= 1.11.0.1)
+    - ZendeskSDK/UI (= 1.11.0.1)
+  - ZendeskSDK/Providers (1.11.0.1)
+  - ZendeskSDK/UI (1.11.0.1):
+    - ZendeskSDK/Providers
 
 DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
@@ -145,16 +151,17 @@ DEPENDENCIES:
   - Starscream (= 3.0.4)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `84f0b4b8456ec4accdbed3092082b62fbb4973e0`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `f6e0e800f8fa3a9173a3927c6e914b2a154e8299`)
   - WPMediaPicker (= 0.27)
   - wpxmlrpc (= 0.8.3)
+  - ZendeskSDK (= 1.11.0.1)
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.2
   WordPress-Aztec-iOS:
-    :commit: 84f0b4b8456ec4accdbed3092082b62fbb4973e0
+    :commit: f6e0e800f8fa3a9173a3927c6e914b2a154e8299
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 CHECKOUT OPTIONS:
@@ -162,7 +169,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.2
   WordPress-Aztec-iOS:
-    :commit: 84f0b4b8456ec4accdbed3092082b62fbb4973e0
+    :commit: f6e0e800f8fa3a9173a3927c6e914b2a154e8299
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 SPEC CHECKSUMS:
@@ -196,10 +203,11 @@ SPEC CHECKSUMS:
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: 2e99ee80c61ba9d5f5a38560043b273830f2c9d6
+  WordPress-Aztec-iOS: 2d8c58f68f422ce521db689fb582122220e77f8d
   WPMediaPicker: 1fe532b4ff215a9dd259f08439376fc0dbab1039
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
+  ZendeskSDK: 4e075d7610e74755c576188886a073cfc5810145
 
-PODFILE CHECKSUM: 4abdd14e6aee7db702026b00a80f5389fb956ef2
+PODFILE CHECKSUM: a62c9bd4760dfce975d033998602b4e0925a4b03
 
 COCOAPODS: 1.4.0

@@ -35,24 +35,31 @@ class MediaCoordinator: NSObject {
     /// - returns: The progress coordinator for the specified post. If a coordinator
     ///            does not exist, one will be created.
     private func coordinator(for post: AbstractPost) -> MediaProgressCoordinator {
-        var cachedCoordinator: MediaProgressCoordinator?
-
-        progressCoordinatorQueue.sync {
-            cachedCoordinator = postMediaProgressCoordinators[post]
-        }
-
-        if let cachedCoordinator = cachedCoordinator {
+        if let cachedCoordinator = cachedCoordinator(for: post) {
             return cachedCoordinator
         }
+
+        let original = post.original ?? post
 
         let coordinator = MediaProgressCoordinator()
         coordinator.delegate = self
 
         progressCoordinatorQueue.async(flags: .barrier) {
-            self.postMediaProgressCoordinators[post] = coordinator
+            self.postMediaProgressCoordinators[original] = coordinator
         }
 
         return coordinator
+    }
+
+    /// - returns: The progress coordinator for the specified post, or nil
+    ///            if one does not exist.
+    private func cachedCoordinator(for post: AbstractPost) -> MediaProgressCoordinator? {
+        // Use the original post so we don't create new coordinators for post revisions
+        let original = post.original ?? post
+
+        return progressCoordinatorQueue.sync {
+            return postMediaProgressCoordinators[original]
+        }
     }
 
     /// - returns: The progress coordinator for the specified media item. Either
@@ -68,8 +75,8 @@ class MediaCoordinator: NSObject {
     }
 
     private func removeCoordinator(_ progressCoordinator: MediaProgressCoordinator) {
-        if let index = postMediaProgressCoordinators.index(where: { $0.value == progressCoordinator }) {
-            progressCoordinatorQueue.async(flags: .barrier) {
+        progressCoordinatorQueue.async(flags: .barrier) {
+            if let index = self.postMediaProgressCoordinators.index(where: { $0.value == progressCoordinator }) {
                 self.postMediaProgressCoordinators.remove(at: index)
             }
         }
@@ -296,7 +303,7 @@ class MediaCoordinator: NSObject {
     /// The global value of progress for all tasks running on the coordinator for the specified post.
     ///
     func totalProgress(for post: AbstractPost) -> Double {
-        return coordinator(for: post).totalProgress
+        return cachedCoordinator(for: post)?.totalProgress ?? 0
     }
 
     /// Returns the error associated to media if any
@@ -335,19 +342,20 @@ class MediaCoordinator: NSObject {
     /// Returns true if any media is being processed or uploading
     ///
     func isUploadingMedia(for post: AbstractPost) -> Bool {
-        return coordinator(for: post).isRunning
+        return cachedCoordinator(for: post)?.isRunning ?? false
     }
 
     /// Returns true if there is any media with a fail state
     ///
+    @objc
     func hasFailedMedia(for post: AbstractPost) -> Bool {
-        return coordinator(for: post).hasFailedMedia
+        return cachedCoordinator(for: post)?.hasFailedMedia ?? false
     }
 
     /// Return an array with all failed media IDs
     ///
     func failedMediaIDs(for post: AbstractPost) -> [String] {
-        return coordinator(for: post).failedMediaIDs
+        return cachedCoordinator(for: post)?.failedMediaIDs ?? []
     }
 
     // MARK: - Observing
@@ -392,7 +400,8 @@ class MediaCoordinator: NSObject {
     @discardableResult func addObserver(_ onUpdate: @escaping ObserverBlock, forMediaFor post: AbstractPost) -> UUID {
         let uuid = UUID()
 
-        let observer = MediaObserver(post: post, onUpdate: onUpdate)
+        let original = post.original ?? post
+        let observer = MediaObserver(post: original, onUpdate: onUpdate)
 
         queue.async {
             self.mediaObservers[uuid] = observer
@@ -405,6 +414,7 @@ class MediaCoordinator: NSObject {
     ///
     /// - parameter uuid: The UUID that matches the observer to be removed.
     ///
+    @objc
     func removeObserver(withUUID uuid: UUID) {
         queue.async {
             self.mediaObservers[uuid] = nil
@@ -471,10 +481,11 @@ class MediaCoordinator: NSObject {
         let mediaObservers = self.mediaObservers.values.filter({ $0.media?.uploadID == media.uploadID })
 
         let postObservers = self.mediaObservers.values.filter({
-            guard let posts = media.posts,
+            guard let posts = media.posts as? Set<AbstractPost>,
                 let post = $0.post else { return false }
 
-            return posts.contains(post)
+            let originals = posts.map({ $0.original ?? $0 })
+            return originals.contains(post)
         })
 
         return mediaObservers + postObservers + wildcardObservers
