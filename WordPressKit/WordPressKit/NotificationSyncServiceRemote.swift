@@ -154,7 +154,7 @@ private extension NotificationSyncServiceRemote {
         wordPressComRestApi.GET(requestUrl!, parameters: parameters, success: { response, _  in
             let document = response as? [String: AnyObject]
             let notes = document?["notes"] as? [[String: AnyObject]]
-            let parsed = notes?.flatMap { RemoteNotification(document: $0) }
+            let parsed = notes?.compactMap { RemoteNotification(document: $0) }
 
             if let parsed = parsed {
                 completion(nil, parsed)

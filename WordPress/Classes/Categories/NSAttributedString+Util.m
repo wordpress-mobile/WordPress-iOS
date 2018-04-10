@@ -19,12 +19,4 @@
     }
 }
 
-- (void)applyForegroundColor:(UIColor *)color
-{
-    NSParameterAssert(color);
-    
-    NSRange range = NSMakeRange(0, self.length);
-    [self addAttribute:NSForegroundColorAttributeName value:color range:range];
-}
-
 @end
