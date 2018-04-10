@@ -24,6 +24,14 @@ public struct RemoteDomain {
     public let domainName: String
     public let isPrimaryDomain: Bool
     public let domainType: DomainType
+
+    public init(domainName: String,
+                isPrimaryDomain: Bool,
+                domainType: DomainType) {
+        self.domainName = domainName
+        self.isPrimaryDomain = isPrimaryDomain
+        self.domainType = domainType
+    }
 }
 
 extension RemoteDomain: CustomStringConvertible {

@@ -47,6 +47,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     WPAccount *defaultAccount = nil;
     if (fetchedObjects.count > 0) {
         defaultAccount = fetchedObjects.firstObject;
+        defaultAccount.displayName = [defaultAccount.displayName stringByDecodingXMLCharacters];
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -66,6 +67,10 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 {
     NSParameterAssert(account != nil);
     NSAssert(account.authToken.length > 0, @"Account should have an authToken for WP.com");
+
+    if ([[self defaultWordPressComAccount] isEqual:account]) {
+        return;
+    }
 
     [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
