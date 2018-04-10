@@ -293,7 +293,7 @@ public class PostEditorStateContext {
 
         guard originalPostStatus != .publish
             && originalPostStatus != .publishPrivate
-            && originalPostStatus == .scheduled else {
+            && originalPostStatus != .scheduled else {
                 return false
         }
 
