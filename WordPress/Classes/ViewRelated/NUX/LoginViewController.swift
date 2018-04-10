@@ -85,7 +85,7 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
     // MARK: - Epilogue
 
     func showSignupEpilogue(for credentials: WordPressCredentials) {
-        guard let delegate = WordPressAuthenticator.shared.delegate, let navigationController = navigationController else {
+        guard let navigationController = navigationController else {
             fatalError()
         }
 
@@ -93,7 +93,7 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
             return SocialService.google(user: $0)
         }
 
-        delegate.presentSignupEpilogue(in: navigationController, for: credentials, service: service)
+        authenticationDelegate.presentSignupEpilogue(in: navigationController, for: credentials, service: service)
     }
 
     func showLoginEpilogue(for credentials: WordPressCredentials) {
