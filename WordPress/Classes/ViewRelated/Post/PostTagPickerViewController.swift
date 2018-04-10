@@ -85,10 +85,6 @@ class PostTagPickerViewController: UIViewController {
         textViewContainer.layer.borderColor = WPStyleGuide.greyLighten20().cgColor
         textViewContainer.layer.borderWidth = 0.5
         textViewContainer.layer.masksToBounds = false
-        textViewContainer.layer.shadowOffset = CGSize(width: 0, height: 2)
-        textViewContainer.layer.shadowRadius = 2
-        textViewContainer.layer.shadowOpacity = 0.5
-        textViewContainer.layer.shadowColor = WPStyleGuide.greyDarken30().cgColor
 
         keyboardObserver.tableView = tableView
     }
@@ -112,7 +108,6 @@ class PostTagPickerViewController: UIViewController {
 
     fileprivate func reloadTableData() {
         tableView.reloadData()
-        textViewContainer.layer.shadowOpacity = tableView.isEmpty ? 0 : 0.5
     }
 }
 
@@ -127,7 +122,7 @@ private extension PostTagPickerViewController {
         service.getTopTags(
             for: blog,
             success: { [weak self] tags in
-                let tagNames = tags.flatMap { return $0.name }
+                let tagNames = tags.compactMap { return $0.name }
                 self?.tagsLoaded(tags: tagNames)
             },
             failure: { [weak self] error in

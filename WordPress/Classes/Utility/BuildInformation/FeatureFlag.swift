@@ -5,10 +5,10 @@ enum FeatureFlag: Int {
     case exampleFeature
     case socialSignup
     case jetpackDisconnect
+    case jetpackSignup
     case activity
-    case siteCreation
     case usernameChanging
-    case asyncPosting
+    case zendeskMobile
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -19,17 +19,15 @@ enum FeatureFlag: Int {
             return true
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
+        case .jetpackSignup:
+            return BuildConfiguration.current == .localDeveloper
         case .activity:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
-        case .siteCreation:
-            return true
         case .usernameChanging:
             return BuildConfiguration.current == .localDeveloper
-        case .asyncPosting:
+        case .zendeskMobile:
             return BuildConfiguration.current == .localDeveloper
         }
-
-
     }
 }
 

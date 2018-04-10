@@ -96,7 +96,7 @@ extension NotificationBlock {
     /// Returns all of the Image URL's referenced by the NotificationMedia instances.
     ///
     var imageUrls: [URL] {
-        return media.flatMap {
+        return media.compactMap {
             guard $0.kind == .Image && $0.mediaURL != nil else {
                 return nil
             }
@@ -255,7 +255,7 @@ extension NotificationBlock {
     /// Parses a collection of Block Definitions into NotificationBlock instances.
     ///
     class func blocksFromArray(_ blocks: [[String: AnyObject]], parent: Notification) -> [NotificationBlock] {
-        return blocks.flatMap {
+        return blocks.compactMap {
             return NotificationBlock(dictionary: $0, parent: parent)
         }
     }

@@ -147,10 +147,10 @@ private extension ShareExtractor {
                 completion(nil)
                 return
             }
-            let combinedTitle = extractedItems.flatMap({ $0.title }).joined(separator: " ")
-            let combinedDescription = extractedItems.flatMap({ $0.description }).joined(separator: " ")
-            let combinedSelectedText = extractedItems.flatMap({ $0.selectedText }).joined(separator: "\n\n")
-            let urls = extractedItems.flatMap({ $0.url })
+            let combinedTitle = extractedItems.compactMap({ $0.title }).joined(separator: " ")
+            let combinedDescription = extractedItems.compactMap({ $0.description }).joined(separator: " ")
+            let combinedSelectedText = extractedItems.compactMap({ $0.selectedText }).joined(separator: "\n\n")
+            let urls = extractedItems.compactMap({ $0.url })
 
             completion(ExtractedItem(selectedText: combinedSelectedText,
                                      description: combinedDescription,
@@ -170,7 +170,7 @@ private extension ShareExtractor {
                 completion(nil)
                 return
             }
-            let images = extractedItems.flatMap({ $0.image })
+            let images = extractedItems.compactMap({ $0.image })
             completion(images)
         }
     }

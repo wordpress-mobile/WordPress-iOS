@@ -1,7 +1,8 @@
 import XCTest
-import WordPress
+import WordPressShared
 
 class EmailTypoCheckerTests: XCTestCase {
+
     func testSuggestions() {
         XCTAssertEqual(EmailTypoChecker.guessCorrection(email: "hello@mop.com"), "hello@mop.com")
         XCTAssertEqual(EmailTypoChecker.guessCorrection(email: "hello@gmail.com"), "hello@gmail.com")
