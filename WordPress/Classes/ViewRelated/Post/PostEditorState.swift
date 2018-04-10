@@ -291,9 +291,10 @@ public class PostEditorStateContext {
             return false
         }
 
-        // Don't show Publish Now for an already published or scheduled post with the update button as primary
-        guard !((currentPostStatus == .publish || currentPostStatus == .scheduled) && editorState.action == .update) else {
-            return false
+        guard originalPostStatus != .publish
+            && originalPostStatus != .publishPrivate
+            && originalPostStatus == .scheduled else {
+                return false
         }
 
         // Don't show Publish Now for a draft with a future date
