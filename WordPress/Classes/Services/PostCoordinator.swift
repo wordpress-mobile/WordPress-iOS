@@ -17,31 +17,40 @@ class PostCoordinator: NSObject {
 
     private var observerUUIDs: [AbstractPost: UUID] = [:]
 
+    private lazy var mediaCoordinator: MediaCoordinator = {
+        return MediaCoordinator.shared
+    }()
+
     /// Saves the post to both the local database and the server if available.
     /// If media is still uploading it keeps track of the ongoing media operations and updates the post content when they finish
     ///
     /// - Parameter post: the post to save
     func save(post: AbstractPost) {
-        let mediaCoordinator = MediaCoordinator.shared
-
+        change(post: post, status: .pushing)
         if mediaCoordinator.isUploadingMedia(for: post) {
+            change(post: post, status: .pushingMedia)
             // Only observe if we're not already
             guard !isObserving(post: post) else {
                 return
             }
 
-            let uuid = mediaCoordinator.addObserver({ (media, state) in
+            let uuid = mediaCoordinator.addObserver({ [weak self](media, state) in
+                guard let `self` = self else {
+                    return
+                }
                 switch state {
                 case .ended:
                     self.updateReferences(to: media, in: post)
 
                     // Let's check if media uploading is still going, if all finished with success then we can upload the post
-                    if !mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
+                    if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
                         self.removeObserver(for: post)
                         self.upload(post: post)
                     }
+                case .failed:
+                    self.change(post: post, status: .failed)
                 default:
-                    print("Post Coordinator -> Media state: \(state)")
+                    DDLogInfo("Post Coordinator -> Media state: \(state)")
                 }
             }, forMediaFor: post)
             trackObserver(receipt: uuid, for: post)
@@ -59,10 +68,35 @@ class PostCoordinator: NSObject {
         return post.remoteStatus == .pushing
     }
 
+    /// Retries the upload and save of the post and any associated media with it.
+    ///
+    /// - Parameter post: the post to retry the upload
+    ///
+    @objc func retrySave(of post: AbstractPost) {
+        for media in post.media {
+            guard media.remoteStatus == .failed else {
+                continue
+            }
+            mediaCoordinator.retryMedia(media)
+        }
+        save(post: post)
+    }
+
+    /// This method checks the status of all post objects and updates them to the correct status if needed.
+    /// The main cause of wrong status is the app being killed while uploads of posts are happening.
+    ///
+    @objc func refreshPostStatus() {
+        let service = PostService(managedObjectContext: backgroundContext)
+        service.refreshPostStatus()
+    }
+
     private func upload(post: AbstractPost) {
         let postService = PostService(managedObjectContext: mainContext)
         postService.uploadPost(post, success: { uploadedPost in
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
+
+            SearchManager.shared.indexItem(uploadedPost)
+
             let model = PostNoticeViewModel(post: uploadedPost)
             ActionDispatcher.dispatch(NoticeAction.post(model.notice))
         }, failure: { error in
@@ -107,7 +141,7 @@ class PostCoordinator: NSObject {
             observerUUIDs.removeValue(forKey: post)
 
             if let uuid = uuid {
-                MediaCoordinator.shared.removeObserver(withUUID: uuid)
+                mediaCoordinator.removeObserver(withUUID: uuid)
             }
         }
     }
@@ -118,5 +152,12 @@ class PostCoordinator: NSObject {
             result = observerUUIDs[post] != nil
         }
         return result
+    }
+
+    private func change(post: AbstractPost, status: AbstractPostRemoteStatus) {
+        post.managedObjectContext?.perform {
+            post.remoteStatus = status
+            try? post.managedObjectContext?.save()
+        }
     }
 }
