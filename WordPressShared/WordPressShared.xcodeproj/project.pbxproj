@@ -26,7 +26,6 @@
 		74650F7B1F0EA2FA00188EDB /* NSString+Helpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 74650F791F0EA2FA00188EDB /* NSString+Helpers.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		74650F7C1F0EA2FA00188EDB /* NSString+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 74650F7A1F0EA2FA00188EDB /* NSString+Helpers.m */; };
 		74650F801F0EA4BD00188EDB /* NSMutableData+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74650F7F1F0EA4BD00188EDB /* NSMutableData+Helpers.swift */; };
-		747EEFDC1F168A73001FA132 /* Gravatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747EEFDB1F168A73001FA132 /* Gravatar.swift */; };
 		747EEFDE1F168B15001FA132 /* GravatarTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747EEFDD1F168B15001FA132 /* GravatarTest.swift */; };
 		748710AC1F06C465008095AB /* StringHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 748710AB1F06C465008095AB /* StringHelperTests.swift */; };
 		74D44ED91F0EC6230075F96B /* NSStringHelpersTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D44ED81F0EC6230075F96B /* NSStringHelpersTests.m */; };
@@ -125,7 +124,6 @@
 		74650F791F0EA2FA00188EDB /* NSString+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Helpers.h"; sourceTree = "<group>"; };
 		74650F7A1F0EA2FA00188EDB /* NSString+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Helpers.m"; sourceTree = "<group>"; };
 		74650F7F1F0EA4BD00188EDB /* NSMutableData+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableData+Helpers.swift"; sourceTree = "<group>"; };
-		747EEFDB1F168A73001FA132 /* Gravatar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gravatar.swift; sourceTree = "<group>"; };
 		747EEFDD1F168B15001FA132 /* GravatarTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravatarTest.swift; sourceTree = "<group>"; };
 		748710AB1F06C465008095AB /* StringHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringHelperTests.swift; sourceTree = "<group>"; };
 		74D44ED81F0EC6230075F96B /* NSStringHelpersTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringHelpersTests.m; sourceTree = "<group>"; };
@@ -268,7 +266,6 @@
 				740B23CB1F17F1FF00067A2A /* DisplayableImageHelper.m */,
 				B5393FD6206D608E007BF9D4 /* EmailFormatValidator.swift */,
 				B5393FD7206D608F007BF9D4 /* EmailTypoChecker.swift */,
-				747EEFDB1F168A73001FA132 /* Gravatar.swift */,
 				93C674F41EE83D4B00BFAF05 /* Languages.swift */,
 				7414BD571F13CEA5005759F8 /* NSBundle+VersionNumberHelper.h */,
 				7414BD581F13CEA5005759F8 /* NSBundle+VersionNumberHelper.m */,
@@ -669,7 +666,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E1A444291F063CAB00F6AA8A /* WPAnalytics.m in Sources */,
-				747EEFDC1F168A73001FA132 /* Gravatar.swift in Sources */,
 				827070101ECA43AA00155CBF /* WPImageSource.m in Sources */,
 				93C674F51EE83D4B00BFAF05 /* Languages.swift in Sources */,
 				B5A787E6202B2BD3007874FB /* WPDeviceIdentification.m in Sources */,
