@@ -5,10 +5,10 @@ import Foundation
 //
 extension UIImage {
 
-    /// Returns the Default Blavatar Placeholder Image.
+    /// Returns the Default Site Icon Placeholder Image.
     ///
     @objc
-    public static var blavatarPlaceholderImage: UIImage {
+    public static var siteIconPlaceholderImage: UIImage {
         return UIImage(named: "blavatar")!
     }
 
