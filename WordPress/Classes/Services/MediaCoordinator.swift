@@ -39,6 +39,7 @@ class MediaCoordinator: NSObject {
             return cachedCoordinator
         }
 
+        // Use the original post so we don't create new coordinators for post revisions
         let original = post.original ?? post
 
         let coordinator = MediaProgressCoordinator()
