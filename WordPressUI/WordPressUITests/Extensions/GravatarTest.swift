@@ -1,5 +1,5 @@
 import XCTest
-@testable import WordPressShared
+@testable import WordPressUI
 
 class GravatarTest: XCTestCase {
     func testUnknownGravatarUrlMatchesURLWithSubdomainAndQueryParameters() {

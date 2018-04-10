@@ -14,6 +14,7 @@
 		B518D76520740E6900F05DB4 /* UIImageView+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = B518D76420740E6900F05DB4 /* UIImageView+Networking.swift */; };
 		B518D76720740F0800F05DB4 /* UIImageView+Blavatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B518D76620740F0800F05DB4 /* UIImageView+Blavatar.swift */; };
 		B518D76D20742ADB00F05DB4 /* FlingableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B518D76C20742ADB00F05DB4 /* FlingableViewHandler.swift */; };
+		B5226C68207CCDB2003C606E /* GravatarTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5226C67207CCDB2003C606E /* GravatarTest.swift */; };
 		B529F289202C855B00895D88 /* UIColorHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B529F288202C855B00895D88 /* UIColorHelpersTests.swift */; };
 		B5393FEA206D7047007BF9D4 /* RotationAwareNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5393FE9206D7047007BF9D4 /* RotationAwareNavigationViewController.swift */; };
 		B589BE2E207BE662007D72D4 /* NSMutableAttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B589BE2D207BE662007D72D4 /* NSMutableAttributedString+Helpers.swift */; };
@@ -73,6 +74,7 @@
 		B518D76420740E6900F05DB4 /* UIImageView+Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Networking.swift"; sourceTree = "<group>"; };
 		B518D76620740F0800F05DB4 /* UIImageView+Blavatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Blavatar.swift"; sourceTree = "<group>"; };
 		B518D76C20742ADB00F05DB4 /* FlingableViewHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlingableViewHandler.swift; sourceTree = "<group>"; };
+		B5226C67207CCDB2003C606E /* GravatarTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravatarTest.swift; sourceTree = "<group>"; };
 		B529F288202C855B00895D88 /* UIColorHelpersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorHelpersTests.swift; sourceTree = "<group>"; };
 		B5393FE9206D7047007BF9D4 /* RotationAwareNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotationAwareNavigationViewController.swift; sourceTree = "<group>"; };
 		B589BE2D207BE662007D72D4 /* NSMutableAttributedString+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Helpers.swift"; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 		B529F287202C855B00895D88 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B5226C67207CCDB2003C606E /* GravatarTest.swift */,
 				B529F288202C855B00895D88 /* UIColorHelpersTests.swift */,
 			);
 			path = Extensions;
@@ -466,6 +469,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B529F289202C855B00895D88 /* UIColorHelpersTests.swift in Sources */,
+				B5226C68207CCDB2003C606E /* GravatarTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
