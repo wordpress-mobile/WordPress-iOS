@@ -292,6 +292,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         if tableViewHandler.resultsController.fetchedObjects?.count > 0 {
             hideNoResultsView()
+            presentNoNetworkAlert()
         } else {
             showNoResultsView()
         }
