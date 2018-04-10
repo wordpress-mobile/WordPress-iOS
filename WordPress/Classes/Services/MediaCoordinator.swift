@@ -35,6 +35,15 @@ class MediaCoordinator: NSObject {
     /// - returns: The progress coordinator for the specified post. If a coordinator
     ///            does not exist, one will be created.
     private func coordinator(for post: AbstractPost) -> MediaProgressCoordinator {
+        var cachedCoordinator: MediaProgressCoordinator?
+
+        // Use the original post so we don't create new coordinators for post revisions
+        let original = post.original ?? post
+
+        progressCoordinatorQueue.sync {
+            cachedCoordinator = postMediaProgressCoordinators[original]
+        }
+
         if let cachedCoordinator = cachedCoordinator(for: post) {
             return cachedCoordinator
         }
