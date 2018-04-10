@@ -38,6 +38,7 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
         case showSiteCreationEpilogue
         case showSiteCreationError
         case showSignupEpilogue
+        case showSignupEmail
         case showUsernames
     }
 

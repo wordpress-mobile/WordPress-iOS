@@ -1,5 +1,6 @@
 import UIKit
 import GoogleSignIn
+import WordPressShared
 
 /// This is the first screen following the log in prologue screen if the user chooses to log in.
 ///
@@ -10,9 +11,12 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     @IBOutlet var inputStack: UIStackView?
     @IBOutlet var alternativeLoginLabel: UILabel?
 
-    var onePasswordButton: UIButton!
     var googleLoginButton: UIButton?
     var selfHostedLoginButton: UIButton?
+
+    // This signup button isn't for the main flow; it's only shown during Jetpack installation
+    var wpcomSignupButton: UIButton?
+
     override var sourceTag: WordPressSupportSourceTag {
         get {
             return .loginEmail
@@ -21,14 +25,8 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
     var didFindSafariSharedCredentials = false
     var didRequestSafariSharedCredentials = false
+    var offerSignupOption = false
     fileprivate var awaitingGoogle = false
-    override var restrictToWPCom: Bool {
-        didSet {
-            if isViewLoaded {
-                configureForWPComOnlyIfNeeded()
-            }
-        }
-    }
 
     private struct Constants {
         static let alternativeLogInAnimationDuration: TimeInterval = 0.33
@@ -46,7 +44,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         setupOnePasswordButtonIfNeeded()
         addGoogleButton()
         addSelfHostedLogInButton()
-        configureForWPComOnlyIfNeeded()
+        addSignupButton()
     }
 
     override func didChangePreferredContentSize() {
@@ -67,6 +65,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         configureEmailField()
         configureSubmitButton()
         configureViewForEditingIfNeeded()
+        configureForWPComOnlyIfNeeded()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -91,13 +90,8 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     /// Hides the self-hosted login option.
     ///
     func configureForWPComOnlyIfNeeded() {
-        if restrictToWPCom {
-            selfHostedLoginButton?.isEnabled = false
-            selfHostedLoginButton?.alpha = 0.0
-        } else {
-            selfHostedLoginButton?.isEnabled = true
-            selfHostedLoginButton?.alpha = 1.0
-        }
+        wpcomSignupButton?.isHidden = !offerSignupOption
+        selfHostedLoginButton?.isHidden = restrictToWPCom
     }
 
 
@@ -187,6 +181,34 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
             ])
 
         selfHostedLoginButton = button
+    }
+
+    /// Add the sign up button
+    ///
+    /// Note: This is only used during Jetpack setup, not the normal flows
+    ///
+    func addSignupButton() {
+        guard Feature.enabled(.jetpackSignup) else {
+            return
+        }
+
+        guard let instructionLabel = instructionLabel,
+            let stackView = inputStack else {
+                return
+        }
+
+        let button = WPStyleGuide.wpcomSignupButton()
+        stackView.addArrangedSubview(button)
+        button.on(.touchUpInside) { [weak self] (button) in
+            self?.performSegue(withIdentifier: .showSignupEmail, sender: self)
+        }
+
+        stackView.addConstraints([
+            button.leadingAnchor.constraint(equalTo: instructionLabel.leadingAnchor),
+            button.trailingAnchor.constraint(equalTo: instructionLabel.trailingAnchor),
+            ])
+
+        wpcomSignupButton = button
     }
 
     /// Configures the email text field, updating its text based on what's stored
@@ -461,8 +483,9 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 // LoginFacadeDelegate methods for Google Google Sign In
 extension LoginEmailViewController {
     func finishedLogin(withGoogleIDToken googleIDToken: String, authToken: String) {
-        let username = loginFields.username
-        syncWPCom(username, authToken: authToken, requiredMultifactor: false)
+        let credentials = WordPressCredentials.wpcom(username: loginFields.username, authToken: authToken, isJetpackLogin: isJetpackLogin, multifactor: false)
+        syncWPComAndPresentEpilogue(credentials: credentials)
+
         // Disconnect now that we're done with Google.
         GIDSignIn.sharedInstance().disconnect()
         WordPressAuthenticator.post(event: .loginSocialSuccess)

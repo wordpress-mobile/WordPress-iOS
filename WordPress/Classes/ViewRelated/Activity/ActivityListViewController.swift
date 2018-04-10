@@ -8,13 +8,14 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
     let siteID: Int
     let service: ActivityServiceRemote
 
-    enum Configuration {
+    enum Constants {
         /// Sequence of increasing delays to apply to the fetch restore status mechanism (in seconds)
         ///
         static let delaySequence = [1, 5]
         static let maxRetries = 12
+        static let estimatedRowHeight: CGFloat = 62
     }
-    fileprivate var delay = IncrementalDelay(Configuration.delaySequence)
+    fileprivate var delay = IncrementalDelay(Constants.delaySequence)
     fileprivate var delayedRetry: DispatchDelayedAction?
     fileprivate var delayedRetryAttempt: Int = 0
 
@@ -66,6 +67,9 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tableView.estimatedRowHeight = Constants.estimatedRowHeight
+
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
         let nib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
@@ -142,6 +146,25 @@ extension ActivityListViewController {
         return ActivityListSectionHeaderView.height
     }
 
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        guard let row = handler.viewModel.rowAtIndexPath(indexPath) as? ActivityListRow else {
+            return false
+        }
+
+        return (!row.activity.isDiscarded && row.activity.rewindable)
+    }
+
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let rewindAction = UITableViewRowAction(style: .normal,
+                                                title: NSLocalizedString("Rewind", comment: "Title displayed when user swipes on a rewind cell"),
+                                                handler: { [weak self] _, indexPath in
+                                                    self?.handler.tableView(tableView, didSelectRowAt: indexPath)
+        })
+        rewindAction.backgroundColor = WPStyleGuide.mediumBlue()
+
+        return [rewindAction]
+    }
+
 }
 
 // MARK: - WPNoResultsViewDelegate
@@ -202,7 +225,7 @@ extension ActivityListViewController {
 
     fileprivate func checkStatusDelayedForRestoreID(_ restoreID: String) {
         delayedRetryAttempt = delayedRetryAttempt + 1
-        guard delayedRetryAttempt < Configuration.maxRetries else {
+        guard delayedRetryAttempt < Constants.maxRetries else {
             restoreTimedout()
             return
         }

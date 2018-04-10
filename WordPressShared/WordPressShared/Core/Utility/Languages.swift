@@ -155,7 +155,7 @@ public class WordPressComLanguageDatabase: NSObject {
         /// Given an array of raw languages, will return a parsed array.
         ///
         public static func fromArray(_ array: [NSDictionary]) -> [Language] {
-            return array.flatMap {
+            return array.compactMap {
                 return Language(dict: $0)
             }
         }

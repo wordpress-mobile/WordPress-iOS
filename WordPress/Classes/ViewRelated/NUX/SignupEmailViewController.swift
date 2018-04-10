@@ -1,4 +1,6 @@
 import UIKit
+import WordPressShared
+
 
 class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
 
@@ -186,14 +188,14 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
 
             }, failure: { [weak self] (error: Error) in
                 DDLogError("Request for signup link email failed.")
-                WPAppAnalytics.track(.signupMagicLinkFailed)
+                WordPressAuthenticator.post(event: .signupMagicLinkFailed)
                 self?.displayError(message: ErrorMessage.magicLinkRequestFail.description())
                 self?.configureSubmitButton(animating: false)
         })
     }
 
     private func didRequestSignupLink() {
-        WPAppAnalytics.track(.signupMagicLinkRequested)
+        WordPressAuthenticator.post(event: .signupMagicLinkRequested)
         WordPressAuthenticator.storeLoginInfoForTokenAuth(loginFields)
         performSegue(withIdentifier: "showLinkMailView", sender: nil)
     }
