@@ -54,7 +54,8 @@ NSString *const XMLRPCOriginalErrorKey = @"XMLRPCOriginalErrorKey";
                                    NSLocalizedFailureReasonErrorKey: error.localizedDescription,
                                    XMLRPCOriginalErrorKey: error
                                    };
-        NSError *err = [NSError errorWithDomain:WordPressAppErrorDomain code:NSURLErrorBadURL userInfo:userInfo];
+
+        NSError *err = [NSError errorWithDomain:WordPressAuthenticator.errorDomain code:NSURLErrorBadURL userInfo:userInfo];
         return err;
     }
 }
