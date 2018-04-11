@@ -8,14 +8,14 @@ extension WordPressAuthenticator {
     /// Tracks the specified event.
     ///
     @objc
-    static func track(_ event: WPAnalyticsStat) {
+    public static func track(_ event: WPAnalyticsStat) {
         WordPressAuthenticator.shared.delegate?.track(event: event)
     }
 
     /// Tracks the specified event, with the specified properties.
     ///
     @objc
-    static func track(_ event: WPAnalyticsStat, properties: [AnyHashable: Any]) {
+    public static func track(_ event: WPAnalyticsStat, properties: [AnyHashable: Any]) {
         WordPressAuthenticator.shared.delegate?.track(event: event, properties: properties)
     }
 
@@ -25,7 +25,7 @@ extension WordPressAuthenticator {
     /// has it's nullability specifier set. We're just covering unexpected scenarios.
     ///
     @objc
-    static func track(_ event: WPAnalyticsStat, error: Error?) {
+    public static func track(_ event: WPAnalyticsStat, error: Error?) {
         guard let error = error else {
             track(event)
             return
