@@ -47,7 +47,7 @@ class LoginPrologueSignupMethodViewController: NUXViewController {
         }
         let termsButton = WPStyleGuide.termsButton()
         termsButton.on(.touchUpInside) { [weak self] button in
-            guard let url = URL(string: WPAutomatticTermsOfServiceURL) else {
+            guard let url = URL(string: WordPressAuthenticator.shared.configuration.wpcomTermsOfServiceURL) else {
                 return
             }
 

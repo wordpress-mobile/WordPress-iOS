@@ -462,7 +462,7 @@ import SafariServices
 
 
     @IBAction func handleTermsOfServiceButtonTapped(_ sender: UIButton) {
-        guard let url = URL(string: WPAutomatticTermsOfServiceURL) else {
+        guard let url = URL(string: WordPressAuthenticator.shared.configuration.wpcomTermsOfServiceURL) else {
             return
         }
 

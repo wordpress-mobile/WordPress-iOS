@@ -40,8 +40,8 @@ class SignupGoogleViewController: LoginViewController {
         // Configure all the things and sign in.
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().clientID = ApiCredentials.googleLoginClientId()
-        GIDSignIn.sharedInstance().serverClientID = ApiCredentials.googleLoginServerClientId()
+        GIDSignIn.sharedInstance().clientID = WordPressAuthenticator.shared.configuration.googleLoginClientId
+        GIDSignIn.sharedInstance().serverClientID = WordPressAuthenticator.shared.configuration.googleLoginServerClientId
 
         GIDSignIn.sharedInstance().signIn()
 
