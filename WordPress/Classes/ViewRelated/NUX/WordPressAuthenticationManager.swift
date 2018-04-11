@@ -198,6 +198,24 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             syncWPOrg(username: username, password: password, xmlrpc: xmlrpc, options: options, onCompletion: onCompletion)
         }
     }
+
+    /// Tracks a given Analytics Event.
+    ///
+    func track(event: WPAnalyticsStat) {
+        WPAppAnalytics.track(event)
+    }
+
+    /// Tracks a given Analytics Event, with the specified properties.
+    ///
+    func track(event: WPAnalyticsStat, properties: [AnyHashable: Any]) {
+        WPAppAnalytics.track(event, withProperties: properties)
+    }
+
+    /// Tracks a given Analytics Event, with the specified error.
+    ///
+    func track(event: WPAnalyticsStat, error: Error) {
+        WPAppAnalytics.track(event, error: error)
+    }
 }
 
 

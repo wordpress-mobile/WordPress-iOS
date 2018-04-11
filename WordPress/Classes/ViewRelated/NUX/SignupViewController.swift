@@ -57,7 +57,7 @@ import SafariServices
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 
-        WordPressAuthenticator.post(event: .createAccountInitiated)
+        WordPressAuthenticator.track(.createAccountInitiated)
     }
 
 
@@ -445,7 +445,7 @@ import SafariServices
             self.usernameField.text = username
             self.passwordField.text = password
 
-            WordPressAuthenticator.post(event: .onePasswordSignup)
+            WordPressAuthenticator.track(.onePasswordSignup)
 
             // Note: Since the Site field is right below the 1Password field, let's continue with the edition flow
             // and make the SiteAddress Field the first responder.
@@ -456,7 +456,7 @@ import SafariServices
             }
 
             DDLogError("Failed to use 1Password App Extension to save a new Login: \(error)")
-            WordPressAuthenticator.post(event: .onePasswordFailed)
+            WordPressAuthenticator.track(.onePasswordFailed)
         })
     }
 

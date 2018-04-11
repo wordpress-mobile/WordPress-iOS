@@ -74,6 +74,18 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///     - onCompletion: Closure to be executed on completion.
     ///
     func sync(credentials: WordPressCredentials, onCompletion: @escaping (Error?) -> ())
+
+    /// Signals the Host App that a given Analytics Event has occurred.
+    ///
+    func track(event: WPAnalyticsStat)
+
+    /// Signals the Host App that a given Analytics Event (with the specified properties) has occurred.
+    ///
+    func track(event: WPAnalyticsStat, properties: [AnyHashable: Any])
+
+    /// Signals the Host App that a given Analytics Event (with an associated Error) has occurred.
+    ///
+    func track(event: WPAnalyticsStat, error: Error)
 }
 
 
@@ -262,7 +274,7 @@ public struct WordPressAuthenticatorConfiguration {
     }
 
     private class func trackOpenedLogin() {
-        WordPressAuthenticator.post(event: .openedLogin)
+        WordPressAuthenticator.track(.openedLogin)
     }
 
 
@@ -308,9 +320,9 @@ public struct WordPressAuthenticatorConfiguration {
         if let linkSource = loginFields.meta.emailMagicLinkSource {
             switch linkSource {
             case .signup:
-                WordPressAuthenticator.post(event: .signupMagicLinkOpened)
+                WordPressAuthenticator.track(.signupMagicLinkOpened)
             case .login:
-                WordPressAuthenticator.post(event: .loginMagicLinkOpened)
+                WordPressAuthenticator.track(.loginMagicLinkOpened)
             }
         }
 
@@ -473,7 +485,7 @@ public struct WordPressAuthenticatorConfiguration {
             loginFields.password = password
             loginFields.multifactorCode = otp ?? String()
 
-            WordPressAuthenticator.post(event: .onePasswordLogin)
+            WordPressAuthenticator.track(.onePasswordLogin)
             success(loginFields)
 
         }, failure: { error in
@@ -482,7 +494,7 @@ public struct WordPressAuthenticatorConfiguration {
             }
 
             DDLogError("OnePassword Error: \(error.localizedDescription)")
-            WordPressAuthenticator.post(event: .onePasswordFailed)
+            WordPressAuthenticator.track(.onePasswordFailed)
         })
     }
 }

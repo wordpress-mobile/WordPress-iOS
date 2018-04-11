@@ -48,7 +48,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
 
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
-        WordPressAuthenticator.post(event: .loginURLFormViewed)
+        WordPressAuthenticator.track(.loginURLFormViewed)
     }
 
 
@@ -150,8 +150,8 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
                 return
             }
             DDLogError(error.localizedDescription)
-            WordPressAuthenticator.post(event: .loginFailedToGuessXMLRPC(error: error))
-            WordPressAuthenticator.post(event: .loginFailed(error: error))
+            WordPressAuthenticator.track(.loginFailedToGuessXMLRPC, error: error)
+            WordPressAuthenticator.track(.loginFailed, error: error)
             strongSelf.configureViewLoading(false)
 
             let err = strongSelf.originalErrorOrError(error: error as NSError)
@@ -242,7 +242,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
         alert.modalPresentationStyle = .custom
         alert.transitioningDelegate = self
         present(alert, animated: true, completion: nil)
-        WordPressAuthenticator.post(event: .loginURLHelpScreenViewed)
+        WordPressAuthenticator.track(.loginURLHelpScreenViewed)
     }
 
     @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
