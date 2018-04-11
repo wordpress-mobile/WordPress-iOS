@@ -64,6 +64,9 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Social login via a social account with 2FA using a nonce.
  *
+ * @param userID        WordPress.com User ID
+ * @param authType      Indicates the Kind of Authentication we're performing (sms / authenticator / etc).
+ * @param twoStepCode   Multifactor Code.
  * @param googleIDToken A Google id_token.
  */
 - (void)loginToWordPressDotComWithUser:(NSInteger)userID
@@ -163,7 +166,6 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Called when finished logging in to a WordPress.com site via a 2FA Nonce.
  *
- *  @param googleIDToken            the token used
  *  @param authToken                authToken to be used to access the site
  */
 - (void)finishedLoginWithNonceAuthToken:(NSString *)authToken;
