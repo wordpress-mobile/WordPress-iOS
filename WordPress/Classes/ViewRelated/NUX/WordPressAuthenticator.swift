@@ -205,7 +205,7 @@ public protocol WordPressAuthenticatorDelegate: class {
     }
 
     private class func trackOpenedLogin() {
-        WordPressAuthenticator.post(event: .openedLogin)
+        WordPressAuthenticator.track(.openedLogin)
     }
 
 
@@ -251,9 +251,9 @@ public protocol WordPressAuthenticatorDelegate: class {
         if let linkSource = loginFields.meta.emailMagicLinkSource {
             switch linkSource {
             case .signup:
-                WordPressAuthenticator.post(event: .signupMagicLinkOpened)
+                WordPressAuthenticator.track(.signupMagicLinkOpened)
             case .login:
-                WordPressAuthenticator.post(event: .loginMagicLinkOpened)
+                WordPressAuthenticator.track(.loginMagicLinkOpened)
             }
         }
 
@@ -416,7 +416,7 @@ public protocol WordPressAuthenticatorDelegate: class {
             loginFields.password = password
             loginFields.multifactorCode = otp ?? String()
 
-            WordPressAuthenticator.post(event: .onePasswordLogin)
+            WordPressAuthenticator.track(.onePasswordLogin)
             success(loginFields)
 
         }, failure: { error in
@@ -425,7 +425,7 @@ public protocol WordPressAuthenticatorDelegate: class {
             }
 
             DDLogError("OnePassword Error: \(error.localizedDescription)")
-            WordPressAuthenticator.post(event: .onePasswordFailed)
+            WordPressAuthenticator.track(.onePasswordFailed)
         })
     }
 }
