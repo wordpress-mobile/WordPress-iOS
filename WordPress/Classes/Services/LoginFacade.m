@@ -2,10 +2,10 @@
 #import "NSURL+IDN.h"
 #import "WordPressComOAuthClientFacade.h"
 #import "WordPressXMLRPCAPIFacade.h"
-#import "WPAppAnalytics.h"
+#import <WordPressShared/WPAnalytics.h>
+#import <CocoaLumberjack/CocoaLumberjack.h>
 #import "WordPress-Swift.h"
 
-@import WordPressShared;
 
 @implementation LoginFacade
 
