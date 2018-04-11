@@ -231,7 +231,6 @@
 		930999581F16598A00F006A1 /* get-single-theme-v1.1.json in Resources */ = {isa = PBXBuildFile; fileRef = 930999551F16598A00F006A1 /* get-single-theme-v1.1.json */; };
 		9309995B1F16616A00F006A1 /* RemoteTheme.h in Headers */ = {isa = PBXBuildFile; fileRef = 930999591F16616A00F006A1 /* RemoteTheme.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9309995C1F16616A00F006A1 /* RemoteTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 9309995A1F16616A00F006A1 /* RemoteTheme.m */; };
-		930F52B81ECF88F9002F921B /* WordPressShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930F52B71ECF88F9002F921B /* WordPressShared.framework */; };
 		9311A6851F22625A00704AC9 /* RemoteTaxonomyPaging.h in Headers */ = {isa = PBXBuildFile; fileRef = 9311A67E1F22625A00704AC9 /* RemoteTaxonomyPaging.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9311A6861F22625A00704AC9 /* RemoteTaxonomyPaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 9311A67F1F22625A00704AC9 /* RemoteTaxonomyPaging.m */; };
 		9311A6871F22625A00704AC9 /* TaxonomyServiceRemote.h in Headers */ = {isa = PBXBuildFile; fileRef = 9311A6801F22625A00704AC9 /* TaxonomyServiceRemote.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -775,7 +774,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B56D96AF202C9B7500485233 /* WordPressUI.framework in Frameworks */,
-				930F52B81ECF88F9002F921B /* WordPressShared.framework in Frameworks */,
 				AFEFF3378CD0A507125E5019 /* Pods_WordPressKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1802,6 +1800,7 @@
 				"${BUILT_PRODUCTS_DIR}/FormatterKit/FormatterKit.framework",
 				"${BUILT_PRODUCTS_DIR}/NSObject-SafeExpectations/NSObject_SafeExpectations.framework",
 				"${BUILT_PRODUCTS_DIR}/UIDeviceIdentifier/UIDeviceIdentifier.framework",
+				"${BUILT_PRODUCTS_DIR}/WordPressShared/WordPressShared.framework",
 				"${BUILT_PRODUCTS_DIR}/wpxmlrpc/wpxmlrpc.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1814,6 +1813,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FormatterKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSObject_SafeExpectations.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIDeviceIdentifier.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WordPressShared.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/wpxmlrpc.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
