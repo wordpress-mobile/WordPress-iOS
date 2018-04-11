@@ -5,6 +5,7 @@
 
 @interface WordPressXMLRPCAPIFacade ()
 
+@property (nonatomic, strong) NSString *userAgent;
 
 @end
 
@@ -12,13 +13,23 @@ NSString *const XMLRPCOriginalErrorKey = @"XMLRPCOriginalErrorKey";
 
 @implementation WordPressXMLRPCAPIFacade
 
+- (instancetype)initWithUserAgent:(NSString *)userAgent
+{
+    self = [super init];
+    if (self) {
+        _userAgent = userAgent;
+    }
+
+    return self;
+}
+
 - (void)guessXMLRPCURLForSite:(NSString *)url
                       success:(void (^)(NSURL *xmlrpcURL))success
                       failure:(void (^)(NSError *error))failure
 {
     WordPressOrgXMLRPCValidator *validator = [[WordPressOrgXMLRPCValidator alloc] init];
     [validator guessXMLRPCURLForSite:url
-                           userAgent:WPUserAgent.wordPressUserAgent
+                           userAgent:self.userAgent
                              success:success
                              failure:^(NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -55,7 +66,7 @@ NSString *const XMLRPCOriginalErrorKey = @"XMLRPCOriginalErrorKey";
                           failure:(void (^)(NSError *error))failure;
 {
     
-    WordPressOrgXMLRPCApi *api = [[WordPressOrgXMLRPCApi alloc] initWithEndpoint:xmlrpc userAgent:[WPUserAgent wordPressUserAgent]];
+    WordPressOrgXMLRPCApi *api = [[WordPressOrgXMLRPCApi alloc] initWithEndpoint:xmlrpc userAgent:self.userAgent];
     [api checkCredentials:username password:password success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (![responseObject isKindOfClass:[NSDictionary class]]) {
