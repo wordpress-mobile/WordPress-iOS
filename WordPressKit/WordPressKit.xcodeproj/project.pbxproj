@@ -613,7 +613,6 @@
 		930999551F16598A00F006A1 /* get-single-theme-v1.1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "get-single-theme-v1.1.json"; sourceTree = "<group>"; };
 		930999591F16616A00F006A1 /* RemoteTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteTheme.h; sourceTree = "<group>"; };
 		9309995A1F16616A00F006A1 /* RemoteTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteTheme.m; sourceTree = "<group>"; };
-		930F52B71ECF88F9002F921B /* WordPressShared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WordPressShared.framework; path = "../../../Library/Developer/Xcode/DerivedData/WordPress-gvhisgbaqipfupeijvwdwkhpgxbd/Build/Products/Debug-iphonesimulator/WordPressShared.framework"; sourceTree = "<group>"; };
 		9311A67E1F22625A00704AC9 /* RemoteTaxonomyPaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteTaxonomyPaging.h; sourceTree = "<group>"; };
 		9311A67F1F22625A00704AC9 /* RemoteTaxonomyPaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteTaxonomyPaging.m; sourceTree = "<group>"; };
 		9311A6801F22625A00704AC9 /* TaxonomyServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaxonomyServiceRemote.h; sourceTree = "<group>"; };
@@ -795,7 +794,6 @@
 			children = (
 				B56D96B0202C9B7500485233 /* WordPressUI.framework */,
 				B5A78828202B421B007874FB /* WordPressUIKit.framework */,
-				930F52B71ECF88F9002F921B /* WordPressShared.framework */,
 				CF1A37C8C9E463E3B9F6B61A /* Pods_WordPressKit.framework */,
 				9F902B70CBB63DD7EB9D275A /* Pods_WordPressKitTests.framework */,
 			);
