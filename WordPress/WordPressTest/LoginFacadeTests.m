@@ -17,8 +17,8 @@ __block LoginFields *loginFields;
 beforeEach(^{
     mockOAuthFacade = [OCMockObject niceMockForProtocol:@protocol(WordPressComOAuthClientFacade)];
     mockXMLRPCAPIFacade = [OCMockObject niceMockForProtocol:@protocol(WordPressXMLRPCAPIFacade)];
-    mockLoginFacadeDelegate = [OCMockObject  niceMockForProtocol:@protocol(LoginFacadeDelegate)];
-    
+    mockLoginFacadeDelegate = [OCMockObject niceMockForProtocol:@protocol(LoginFacadeDelegate)];
+
     loginFacade = [LoginFacade new];
     loginFacade.wordpressComOAuthClientFacade = mockOAuthFacade;
     loginFacade.wordpressXMLRPCAPIFacade = mockXMLRPCAPIFacade;

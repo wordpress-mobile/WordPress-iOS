@@ -170,6 +170,18 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
     func updateSafariCredentialsIfNeeded() {
         SafariCredentialsService.updateSafariCredentialsIfNeeded(with: loginFields)
     }
+
+    /// Tracks the Authentication Event that has just occurred.
+    ///
+    func track(_ stat: WPAnalyticsStat) {
+        WordPressAuthenticator.track(stat)
+    }
+
+    /// Tracks the Authentication Event that has just occurred, along with it's error.
+    ///
+    func track(_ stat: WPAnalyticsStat, error: Error?) {
+        WordPressAuthenticator.track(stat, error: error)
+    }
 }
 
 

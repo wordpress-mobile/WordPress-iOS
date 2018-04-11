@@ -1,4 +1,6 @@
 #import <Foundation/Foundation.h>
+#import <WordPressShared/WPAnalytics.h>
+
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -184,6 +186,16 @@ extern NSString *const WordPressOrgMinimumVersion;
  * @param email The email address that was matched.
  */
 - (void)existingUserNeedsConnection:(NSString *)email;
+
+/**
+ * Lets the delegate know that an event has occurred.
+ */
+- (void)track:(WPAnalyticsStat)stat;
+
+/**
+ * Lets the delegate know that an event has occurred, and passess along the error as well.
+ */
+- (void)track:(WPAnalyticsStat)stat error:(nullable NSError *)error;
 
 @end
 
