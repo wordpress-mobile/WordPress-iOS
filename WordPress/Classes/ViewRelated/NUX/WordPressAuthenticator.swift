@@ -74,6 +74,18 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///     - onCompletion: Closure to be executed on completion.
     ///
     func sync(credentials: WordPressCredentials, onCompletion: @escaping (Error?) -> ())
+
+    /// Signals the Host App that a given Analytics Event has occurred.
+    ///
+    func track(event: WPAnalyticsStat)
+
+    /// Signals the Host App that a given Analytics Event (with the specified properties) has occurred.
+    ///
+    func track(event: WPAnalyticsStat, properties: [AnyHashable: Any])
+
+    /// Signals the Host App that a given Analytics Event (with an associated Error) has occurred.
+    ///
+    func track(event: WPAnalyticsStat, error: Error)
 }
 
 
