@@ -7,6 +7,10 @@
 
 @import WordPressShared;
 
+
+NSString *const WordPressOrgMinimumVersion = @"4.0";
+
+
 @implementation LoginFacade
 
 @synthesize delegate;
@@ -162,8 +166,8 @@
         } else {
             NSString *versionString = options[@"software_version"][@"value"];
             CGFloat version = [versionString floatValue];
-            if (version > 0 && version < [WordPressMinimumVersion floatValue]) {
-                NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", nil), [xmlRPCURL host], versionString, WordPressMinimumVersion];
+            if (version > 0 && version < [WordPressOrgMinimumVersion floatValue]) {
+                NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", nil), [xmlRPCURL host], versionString, WordPressOrgMinimumVersion];
                 NSError *versionError = [NSError errorWithDomain:WordPressAppErrorDomain
                                                             code:WordPressAppErrorCodeInvalidVersion
                                                         userInfo:@{NSLocalizedDescriptionKey:errorMessage}];
