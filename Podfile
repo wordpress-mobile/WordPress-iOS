@@ -8,9 +8,9 @@ workspace 'WordPress.xcworkspace'
 
 
 
-# Pods shared between all the targets
-# ===================================
-#
+## Pods shared between all the targets
+## ===================================
+##
 def shared_with_all_pods
   pod 'CocoaLumberjack', '3.4.1'
   pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
@@ -32,18 +32,18 @@ end
 
 
 
-# WordPress iOS
-# =============
-#
+## WordPress iOS
+## =============
+##
 target 'WordPress' do
   project 'WordPress/WordPress.xcodeproj'
 
   shared_with_all_pods
   shared_with_networking_pods
 
-  # Third party libraries
-  # =====================
-  #
+  ## Third party libraries
+  ## =====================
+  ##
   pod '1PasswordExtension', '1.8.5'
   pod 'HockeySDK', '5.1.2', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'MRProgress', '0.8.3'
@@ -59,9 +59,9 @@ target 'WordPress' do
   pod 'ZendeskSDK', '1.11.0.1'
 
 
-  # Automattic libraries
-  # ====================
-  #
+  ## Automattic libraries
+  ## ====================
+  ##
   pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.3'
   pod 'Gridicons', '0.15'
   pod 'NSURL+IDN', '0.3'
@@ -78,9 +78,9 @@ target 'WordPress' do
   end
 
 
-  # Share Extension
-  # ===============
-  #
+  ## Share Extension
+  ## ===============
+  ##
   target 'WordPressShareExtension' do
     inherit! :search_paths
 
@@ -92,9 +92,9 @@ target 'WordPress' do
   end
 
 
-  # DraftAction Extension
-  # =====================
-  #
+  ## DraftAction Extension
+  ## =====================
+  ##
   target 'WordPressDraftActionExtension' do
     inherit! :search_paths
 
@@ -106,9 +106,9 @@ target 'WordPress' do
   end
 
 
-  # Today Widget
-  # ============
-  #
+  ## Today Widget
+  ## ============
+  ##
   target 'WordPressTodayWidget' do
     inherit! :search_paths
 
@@ -119,9 +119,9 @@ end
 
 
 
-# WordPress Authenticator
-# =======================
-#
+## WordPress Authenticator
+## =======================
+##
 target 'WordPressAuthenticator' do
   project 'WordPressAuthenticator/WordPressAuthenticator.xcodeproj'
 
@@ -134,9 +134,9 @@ end
 
 
 
-# WordPress.com Stats
-# ===================
-#
+## WordPress.com Stats
+## ===================
+##
 target 'WordPressComStatsiOS' do
   project 'WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj'
 
@@ -152,9 +152,9 @@ end
 
 
 
-# WordPress Kit
-# =============
-#
+## WordPress Kit
+## =============
+##
 target 'WordPressKit' do
   project 'WordPressKit/WordPressKit.xcodeproj'
 
@@ -170,9 +170,9 @@ end
 
 
 
-# WordPress Shared
-# ================
-#
+## WordPress Shared
+## ================
+##
 target 'WordPressShared' do
   project 'WordPressShared/WordPressShared.xcodeproj'
 
