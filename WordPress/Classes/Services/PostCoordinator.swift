@@ -27,7 +27,7 @@ class PostCoordinator: NSObject {
     /// - Parameter post: the post to save
     func save(post postToSave: AbstractPost) {
         var post = postToSave
-        if postToSave.isRevision(), let originalPost = postToSave.original {
+        if postToSave.isRevision() && !postToSave.hasRemote(), let originalPost = postToSave.original {
             post = originalPost
             post.applyRevision()
             post.deleteRevision()
