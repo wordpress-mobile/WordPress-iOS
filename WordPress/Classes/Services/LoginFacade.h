@@ -14,6 +14,17 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol LoginFacade
 
 /**
+ *  This method initializes the LoginFacade instance.
+ *
+ *  @param dotcomClientID   WordPress.com Client ID.
+ *  @param dotcomSecret     WordPress.com Secret.
+ *  @param userAgent        UserAgent string to be used interacting with a remote endpoint.
+ *
+ *  @note When this class is Swifted, we can (probably) just query WordPressAuthenticator.
+ */
+- (instancetype)initWithDotcomClientID:(NSString *)dotcomClientID dotcomSecret:(NSString *)dotcomSecret userAgent:(NSString *)userAgent;
+
+/**
  *  This method will attempt to sign in to a self hosted/.com site.
  *  XMLRPC endpoint discover is performed.
  *

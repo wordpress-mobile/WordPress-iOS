@@ -13,19 +13,14 @@
 @synthesize wordpressComOAuthClientFacade = _wordpressComOAuthClientFacade;
 @synthesize wordpressXMLRPCAPIFacade = _wordpressXMLRPCAPIFacade;
 
-- (instancetype)init
+- (instancetype)initWithDotcomClientID:(NSString *)dotcomClientID dotcomSecret:(NSString *)dotcomSecret userAgent:(NSString *)userAgent
 {
     self = [super init];
     if (self) {
-        [self initializeServices];
+        _wordpressComOAuthClientFacade = [[WordPressComOAuthClientFacade alloc] initWithClient:dotcomClientID secret:dotcomSecret];
+        _wordpressXMLRPCAPIFacade = [[WordPressXMLRPCAPIFacade alloc] initWithUserAgent:userAgent];
     }
     return self;
-}
-
-- (void)initializeServices
-{
-    _wordpressComOAuthClientFacade = [WordPressComOAuthClientFacade new];
-    _wordpressXMLRPCAPIFacade = [WordPressXMLRPCAPIFacade new];
 }
 
 - (void)signInWithLoginFields:(LoginFields *)loginFields
