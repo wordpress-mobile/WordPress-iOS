@@ -20,6 +20,13 @@ extension UIImage {
         return UIImage(named: "gravatar", in: bundle, compatibleWith: nil)!
     }
 
+    /// Returns the Link Image.
+    ///
+    @objc
+    public static var linkFieldImage: UIImage {
+        return UIImage(named: "icon-url-field", in: bundle, compatibleWith: nil)!
+    }
+
     /// Returns WordPressUI's Bundle
     ///
     private static var bundle: Bundle {
