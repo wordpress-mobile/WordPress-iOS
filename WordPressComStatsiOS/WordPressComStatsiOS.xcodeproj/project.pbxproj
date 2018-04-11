@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		82706F971ECA2D2300155CBF /* WordPressShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 82ED26051ECA1967006D9E6D /* WordPressShared.framework */; };
 		930F52BD1ECF8AF8002F921B /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 930F52BC1ECF8AF8002F921B /* WordPressKit.framework */; };
 		931C032E1EBCB120005E6BB4 /* AppExtensionUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 931CFFF91EBCB11F005E6BB4 /* AppExtensionUtils.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		931C032F1EBCB120005E6BB4 /* AppExtensionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 931CFFFA1EBCB11F005E6BB4 /* AppExtensionUtils.m */; };
@@ -846,7 +845,6 @@
 			files = (
 				B56D96B1202C9B8800485233 /* WordPressUI.framework in Frameworks */,
 				930F52BD1ECF8AF8002F921B /* WordPressKit.framework in Frameworks */,
-				82706F971ECA2D2300155CBF /* WordPressShared.framework in Frameworks */,
 				B7D18EC1D923DC8756B1D0C7 /* Pods_WordPressComStatsiOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1885,6 +1883,7 @@
 				"${BUILT_PRODUCTS_DIR}/FormatterKit/FormatterKit.framework",
 				"${BUILT_PRODUCTS_DIR}/NSObject-SafeExpectations/NSObject_SafeExpectations.framework",
 				"${BUILT_PRODUCTS_DIR}/UIDeviceIdentifier/UIDeviceIdentifier.framework",
+				"${BUILT_PRODUCTS_DIR}/WordPressShared/WordPressShared.framework",
 				"${BUILT_PRODUCTS_DIR}/wpxmlrpc/wpxmlrpc.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1897,6 +1896,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FormatterKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSObject_SafeExpectations.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIDeviceIdentifier.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WordPressShared.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/wpxmlrpc.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,6 +8,7 @@ workspace 'WordPress.xcworkspace'
 
 ## Pods shared between all the targets
 def shared_with_all_pods
+  pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git'
   pod 'CocoaLumberjack', '3.4.1'
   pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
   pod 'NSObject-SafeExpectations', '0.0.2'
@@ -119,19 +120,5 @@ target 'WordPressKit' do
     inherit! :search_paths
 
     shared_test_pods
-  end
-end
-
-target 'WordPressShared' do
-  project 'WordPressShared/WordPressShared.xcodeproj'
-
-  shared_with_all_pods
-
-  target 'WordPressSharedTests' do
-    inherit! :search_paths
-
-    shared_test_pods
-    pod 'Specta', '1.0.7'
-    pod 'Expecta', '1.0.6'
   end
 end

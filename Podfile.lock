@@ -114,6 +114,10 @@ PODS:
   - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-Aztec-iOS (1.0.0-beta.18.1)
+  - WordPressShared (1.0.0):
+    - CocoaLumberjack (~> 3.4)
+    - FormatterKit/TimeIntervalFormatter (= 1.8.2)
+    - NSObject-SafeExpectations (= 0.0.2)
   - WPMediaPicker (0.27)
   - wpxmlrpc (0.8.3)
   - ZendeskSDK (1.11.0.1):
@@ -152,6 +156,7 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `52849f1be62bc6a6316f3828d56e8fc32f5fa8e4`)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`)
   - WPMediaPicker (= 0.27)
   - wpxmlrpc (= 0.8.3)
   - ZendeskSDK (= 1.11.0.1)
@@ -163,6 +168,8 @@ EXTERNAL SOURCES:
   WordPress-Aztec-iOS:
     :commit: 52849f1be62bc6a6316f3828d56e8fc32f5fa8e4
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WordPressShared:
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -171,6 +178,9 @@ CHECKOUT OPTIONS:
   WordPress-Aztec-iOS:
     :commit: 52849f1be62bc6a6316f3828d56e8fc32f5fa8e4
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WordPressShared:
+    :commit: 43775e62f42db751f68f404eb9b0e613527acff2
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -204,10 +214,11 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 2d8c58f68f422ce521db689fb582122220e77f8d
+  WordPressShared: fb447c657ec87c69181ff1656ae57eba889f1a9f
   WPMediaPicker: 1fe532b4ff215a9dd259f08439376fc0dbab1039
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 4e075d7610e74755c576188886a073cfc5810145
 
-PODFILE CHECKSUM: d2bde7d6e03e77f1c2beee2a86cf0e2d57b24390
+PODFILE CHECKSUM: 1a7f81f4622a0114f220f143b9c396c0fbb1c211
 
 COCOAPODS: 1.4.0
