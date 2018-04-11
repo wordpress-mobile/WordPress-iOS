@@ -188,18 +188,21 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func track(event: WPAnalyticsStat) {
         WPAppAnalytics.track(event)
+        NSLog("## Tracking Event [\(event.rawValue)]")
     }
 
     /// Tracks a given Analytics Event, with the specified properties.
     ///
     func track(event: WPAnalyticsStat, properties: [AnyHashable: Any]) {
         WPAppAnalytics.track(event, withProperties: properties)
+        NSLog("## Tracking Event [\(event.rawValue) Properties [\(properties)]")
     }
 
     /// Tracks a given Analytics Event, with the specified error.
     ///
     func track(event: WPAnalyticsStat, error: Error) {
         WPAppAnalytics.track(event, error: error)
+        NSLog("## Tracking Event [\(event.rawValue) Error [\(error)]")
     }
 }
 
