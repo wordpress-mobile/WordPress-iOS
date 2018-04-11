@@ -51,7 +51,7 @@ struct TimeZoneSelectorViewModel: Observable {
             return groups
         }
 
-        return groups.flatMap({ (group) in
+        return groups.compactMap({ (group) in
             if group.name.localizedCaseInsensitiveContains(filter) {
                 return group
             } else {

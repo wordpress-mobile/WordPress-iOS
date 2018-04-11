@@ -12,6 +12,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
     AbstractPostRemoteStatusFailed,      // Upload failed
     AbstractPostRemoteStatusLocal,       // Only local version
     AbstractPostRemoteStatusSync,       // Post uploaded
+    AbstractPostRemoteStatusPushingMedia, // Push Media
 };
 
 @interface AbstractPost : BasePost
@@ -24,7 +25,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
  when the date_created_gmt and the modified date match.
  */
 @property (nonatomic, strong, nullable) NSDate * dateModified;
-@property (nonatomic, strong) NSSet *media;
+@property (nonatomic, strong) NSSet<Media *> *media;
 @property (weak, readonly) AbstractPost *original;
 @property (weak, readonly) AbstractPost *revision;
 @property (nonatomic, strong) NSSet *comments;
@@ -58,6 +59,9 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (BOOL)hasVideo;
 - (BOOL)hasCategories;
 - (BOOL)hasTags;
+
+/// True if either the post failed to upload, or the post has media that failed to upload.
+@property (nonatomic, assign, readonly) BOOL isFailed;
 
 @property (nonatomic, assign, readonly) BOOL hasFailedMedia;
 
@@ -181,6 +185,12 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 // Subclass methods
 - (nullable NSString *)remoteStatusText;
 + (NSString *)titleForRemoteStatus:(nullable NSNumber *)remoteStatus;
+
+/**
+ * Updates the path for the display image by looking at the post content and trying to find an good image to use.
+ * If no appropiated image is found the path is set to nil.
+ */
+- (void)updatePathForDisplayImageBasedOnContent;
 
 @end
 

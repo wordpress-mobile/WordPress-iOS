@@ -1,33 +1,33 @@
 import UIKit
 
 @objc
-protocol FlingableViewHandlerDelegate {
+public protocol FlingableViewHandlerDelegate {
     @objc optional func flingableViewHandlerDidBeginRecognizingGesture(_ handler: FlingableViewHandler)
     @objc optional func flingableViewHandlerDidEndRecognizingGesture(_ handler: FlingableViewHandler)
     @objc optional func flingableViewHandlerWasCancelled(_ handler: FlingableViewHandler)
 }
 
-class FlingableViewHandler: NSObject {
+open class FlingableViewHandler: NSObject {
     /// The velocity at which the target view must be flung before it detaches.
     // Default value found through trial and error.
-    @objc var escapeVelocity: CGFloat = 1500
+    @objc public var escapeVelocity: CGFloat = 1500
 
     /// The amount of oscillation when the view snaps back to its original position
     /// Default is 0.8. 0.0 for no oscillation, 1.0 for max.
-    @objc var snapDamping: CGFloat = 0.8
+    @objc public var snapDamping: CGFloat = 0.8
 
     /// Used to 'slow down' the fling velocity when the user releases their finger
     /// in horizontally or vertically compact views, otherwise the view feels
     /// like it's moving far too quickly.
-    @objc var flingVelocityScaleFactorForCompactTraits: CGFloat = 5.0
+    @objc public var flingVelocityScaleFactorForCompactTraits: CGFloat = 5.0
 
-    @objc var isActive = false {
+    @objc public var isActive = false {
         didSet {
             panGestureRecognizer.isEnabled = isActive
         }
     }
 
-    @objc var delegate: FlingableViewHandlerDelegate?
+    @objc public var delegate: FlingableViewHandlerDelegate?
 
     fileprivate let animator: UIDynamicAnimator
     fileprivate var attachmentBehavior: UIAttachmentBehavior!
@@ -37,7 +37,7 @@ class FlingableViewHandler: NSObject {
     fileprivate var initialCenter: CGPoint? = nil
 
     /// - parameter targetView: The view that can be flung.
-    @objc init(targetView: UIView) {
+    @objc public init(targetView: UIView) {
         precondition(targetView.superview != nil, "The target view must have a superview!")
 
         animator = UIDynamicAnimator(referenceView: targetView.superview!)

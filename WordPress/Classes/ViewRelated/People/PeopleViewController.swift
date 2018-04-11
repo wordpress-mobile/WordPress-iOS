@@ -395,7 +395,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         controller.title            = NSLocalizedString("Filters", comment: "Title of the list of People Filters")
         controller.titles           = filters.map { $0.title }
         controller.values           = filters.map { $0.rawValue }
-        controller.currentValue     = filter.rawValue as NSObject!
+        controller.currentValue     = filter.rawValue as NSObject?
         controller.onItemSelected   = { [weak self] selectedValue in
             guard let rawFilter = selectedValue as? String, let filter = Filter(rawValue: rawFilter) else {
                 fatalError()
