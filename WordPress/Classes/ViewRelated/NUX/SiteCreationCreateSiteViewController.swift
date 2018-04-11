@@ -70,7 +70,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
         }
 
         if let vc = segue.destination as? NoResultsViewController {
-            let title = NSLocalizedString("Something went wrong...", comment: "Primary message on site creation error page.")
+            let title = NSLocalizedString("Something went wrong…", comment: "Primary message on site creation error page.")
             let errorButtonTitle = NSLocalizedString("Try again", comment: "Button text on site creation error page.")
             let imageName = "site-creation-error"
 

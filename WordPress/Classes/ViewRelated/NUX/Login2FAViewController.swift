@@ -49,7 +49,7 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
         nc.addObserver(self, selector: #selector(applicationBecameInactive), name: .UIApplicationWillResignActive, object: nil)
         nc.addObserver(self, selector: #selector(applicationBecameActive), name: .UIApplicationDidBecomeActive, object: nil)
 
-        WordPressAuthenticator.post(event: .loginTwoFactorFormViewed)
+        WordPressAuthenticator.track(.loginTwoFactorFormViewed)
     }
 
 
@@ -167,7 +167,7 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
 
         // Disconnect now that we're done with Google.
         GIDSignIn.sharedInstance().disconnect()
-        WordPressAuthenticator.post(event: .loginSocialSuccess)
+        WordPressAuthenticator.track(.loginSocialSuccess)
     }
 
     /// Only allow digits in the 2FA text field
