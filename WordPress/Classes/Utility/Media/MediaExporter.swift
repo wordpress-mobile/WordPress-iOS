@@ -13,7 +13,7 @@ class MediaExport {
     ///
     let url: URL
     /// The resulting file size in bytes of the export.
-    let fileSize: Int?
+    let fileSize: Int64?
     /// The pixel width of the media exported.
     let width: CGFloat?
     /// The pixel height of the media exported.
@@ -21,7 +21,7 @@ class MediaExport {
     /// The duration of a media file, this is only available if the asset is a video.
     let duration: TimeInterval?
 
-    init(url: URL, fileSize: Int?, width: CGFloat?, height: CGFloat?, duration: TimeInterval?) {
+    init(url: URL, fileSize: Int64?, width: CGFloat?, height: CGFloat?, duration: TimeInterval?) {
         self.url = url
         self.fileSize = fileSize
         self.height = height
