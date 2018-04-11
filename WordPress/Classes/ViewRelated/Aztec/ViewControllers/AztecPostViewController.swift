@@ -1153,10 +1153,16 @@ extension AztecPostViewController {
                 if self.post.date_created_gmt == nil {
                     self.post.date_created_gmt = Date()
                 }
-                self.post.status = .publish
+              
+                if self.post.status != .publishPrivate {
+                    self.post.status = .publish
+                }
             } else if action == .publishNow {
                 self.post.date_created_gmt = Date()
-                self.post.status = .publish
+
+                if self.post.status != .publishPrivate {
+                    self.post.status = .publish
+                }
             }
 
             if let analyticsStat = analyticsStat {
