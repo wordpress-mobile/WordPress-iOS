@@ -1,3 +1,4 @@
+import SafariServices
 import WordPressUI
 
 
@@ -49,9 +50,10 @@ class LoginPrologueSignupMethodViewController: NUXViewController {
             guard let url = URL(string: WPAutomatticTermsOfServiceURL) else {
                 return
             }
-            let controller = WebViewControllerFactory.controller(url: url)
-            let navController = RotationAwareNavigationViewController(rootViewController: controller)
-            self?.present(navController, animated: true, completion: nil)
+
+            let safariViewController = SFSafariViewController(url: url)
+            safariViewController.modalPresentationStyle = .pageSheet
+            self?.present(safariViewController, animated: true, completion: nil)
         }
         buttonViewController.stackView?.insertArrangedSubview(termsButton, at: 0)
         buttonViewController.backgroundColor = WPStyleGuide.lightGrey()
