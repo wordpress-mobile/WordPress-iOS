@@ -16,6 +16,21 @@ class WordPressAuthenticationManager: NSObject {
     func startRelayingHelpshiftNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(helpshiftUnreadCountWasUpdated), name: .HelpshiftUnreadCountUpdated, object: nil)
     }
+
+    /// Initializes WordPressAuthenticator with all of the paramteres that will be needed during the login flow.
+    ///
+    func initializeWordPressAuthenticator() {
+        let configuration = WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client(),
+                                                                wpcomSecret: ApiCredentials.secret(),
+                                                                wpcomTermsOfServiceURL: WPAutomatticTermsOfServiceURL,
+                                                                googleLoginClientId: ApiCredentials.googleLoginClientId(),
+                                                                googleLoginServerClientId: ApiCredentials.googleLoginServerClientId(),
+                                                                userAgent: WPUserAgent.wordPress(),
+                                                                supportsJetpackSignup: Feature.enabled(.socialSignup),
+                                                                supportsSocialSignup: Feature.enabled(.jetpackSignup))
+
+        WordPressAuthenticator.initialize(configuration: configuration)
+    }
 }
 
 
