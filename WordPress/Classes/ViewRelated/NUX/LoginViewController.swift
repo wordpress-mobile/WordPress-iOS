@@ -170,7 +170,7 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
         displayError(message: "")
         configureViewLoading(false)
 
-        WordPressAuthenticator.post(event: .twoFactorCodeRequested)
+        WordPressAuthenticator.track(.twoFactorCodeRequested)
         self.performSegue(withIdentifier: .show2FA, sender: self)
     }
 
@@ -239,7 +239,7 @@ extension LoginViewController {
             ]
         }
 
-        WordPressAuthenticator.post(event: .signedIn(properties: properties))
+        WordPressAuthenticator.track(.signedIn, properties: properties)
     }
 
     /// Links the current WordPress Account to a Social Service, if needed.
@@ -253,11 +253,11 @@ extension LoginViewController {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         service.connectToSocialService(socialService, serviceIDToken: token, success: {
-            WordPressAuthenticator.post(event: .loginSocialConnectSuccess)
-            WordPressAuthenticator.post(event: .loginSocialSuccess)
+            WordPressAuthenticator.track(.loginSocialConnectSuccess)
+            WordPressAuthenticator.track(.loginSocialSuccess)
         }, failure: { error in
             DDLogError(error.description)
-            WordPressAuthenticator.post(event: .loginSocialConnectFailure(error: error))
+            WordPressAuthenticator.track(.loginSocialConnectFailure, error: error)
             // We're opting to let this call fail silently.
             // Our user has already successfully authenticated and can use the app --
             // connecting the social service isn't critical.  There's little to

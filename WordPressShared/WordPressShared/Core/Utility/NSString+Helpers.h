@@ -27,7 +27,6 @@
 + (NSString *)summaryFromContent:(NSString *)string;
 
 - (NSString *)stringByUrlEncoding;
-- (NSString *)md5;
 - (NSMutableDictionary *)dictionaryFromQueryString;
 - (NSString *)stringByReplacingHTMLEmoticonsWithEmoji;
 - (NSString *)stringByStrippingHTML;
