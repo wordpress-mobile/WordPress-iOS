@@ -77,17 +77,69 @@ public protocol WordPressAuthenticatorDelegate: class {
 }
 
 
-// MARK: - A collection of helper methods for NUX.
+// MARK: - WordPressAuthenticator Configuration
+//
+public struct WordPressAuthenticatorConfiguration {
+
+    /// WordPress.com Client ID
+    ///
+    let wpcomClientId: String
+
+    /// WordPress.com Secret
+    ///
+    let wpcomSecret: String
+
+    /// WordPress.com Terms of Service URL
+    ///
+    let wpcomTermsOfServiceURL: String
+
+    /// GoogleLogin Client ID
+    ///
+    let googleLoginClientId: String
+
+    /// GoogleLogin ServerClient ID
+    ///
+    let googleLoginServerClientId: String
+
+    /// UserAgent
+    ///
+    let userAgent: String
+
+    /// Indicates if Jetpack Signup is allowed, or not.
+    ///
+    let supportsJetpackSignup: Bool
+
+    /// Indicates if Social Signup is allowed, or not.
+    ///
+    let supportsSocialSignup: Bool
+}
+
+
+// MARK: - WordPressAuthenticator: Public API to deal with WordPress.com and WordPress.org authentication.
 //
 @objc public class WordPressAuthenticator: NSObject {
+
+    /// (Private) Shared Instance.
+    ///
+    private static var privateInstance: WordPressAuthenticator?
+
+    /// Shared Instance.
+    ///
+    @objc public static var shared: WordPressAuthenticator {
+        guard let privateInstance = privateInstance else {
+            fatalError("WordPressAuthenticator wasn't initialized")
+        }
+
+        return privateInstance
+    }
 
     /// Authenticator's Delegate.
     ///
     public weak var delegate: WordPressAuthenticatorDelegate?
 
-    /// Shared Instance.
+    /// Authenticator's Configuration.
     ///
-    public static let shared = WordPressAuthenticator()
+    public let configuration: WordPressAuthenticatorConfiguration
 
     /// Notification to be posted whenever the signing flow completes.
     ///
@@ -103,6 +155,23 @@ public protocol WordPressAuthenticatorDelegate: class {
         static let emailMagicLinkSource     = "emailMagicLinkSource"
     }
 
+    // MARK: - Initialization
+
+    /// Designated Initializer
+    ///
+    private init(configuration: WordPressAuthenticatorConfiguration) {
+        self.configuration = configuration
+    }
+
+    /// Initializes the WordPressAuthenticator with the specified Configuration.
+    ///
+    public static func initialize(configuration: WordPressAuthenticatorConfiguration) {
+        guard privateInstance == nil else {
+            fatalError("WordPressAuthenticator is already initialized")
+        }
+
+        privateInstance = WordPressAuthenticator(configuration: configuration)
+    }
 
     // MARK: - Public Methods
 
