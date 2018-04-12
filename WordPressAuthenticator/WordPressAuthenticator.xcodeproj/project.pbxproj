@@ -11,7 +11,6 @@
 		B5ED78FE207E976500A8FD8C /* WordPressAuthenticator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ED78F4207E976500A8FD8C /* WordPressAuthenticator.framework */; };
 		B5ED7905207E976500A8FD8C /* WordPressAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = B5ED78F7207E976500A8FD8C /* WordPressAuthenticator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5ED7912207E981400A8FD8C /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ED7911207E981400A8FD8C /* WordPressKit.framework */; };
-		B5ED7914207E981400A8FD8C /* WordPressShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ED7913207E981400A8FD8C /* WordPressShared.framework */; };
 		B5ED7916207E981400A8FD8C /* WordPressUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ED7915207E981400A8FD8C /* WordPressUI.framework */; };
 		B5ED791D207E993E00A8FD8C /* WPAuthenticatorLogging.h in Headers */ = {isa = PBXBuildFile; fileRef = B5ED7918207E993E00A8FD8C /* WPAuthenticatorLogging.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5ED791E207E993E00A8FD8C /* WPAuthenticatorLoggingPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = B5ED7919207E993E00A8FD8C /* WPAuthenticatorLoggingPrivate.m */; };
@@ -63,7 +62,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5ED7912207E981400A8FD8C /* WordPressKit.framework in Frameworks */,
-				B5ED7914207E981400A8FD8C /* WordPressShared.framework in Frameworks */,
 				B5ED7916207E981400A8FD8C /* WordPressUI.framework in Frameworks */,
 				BBFA4A0E80228A2232BBB06C /* Pods_WordPressAuthenticator.framework in Frameworks */,
 			);
