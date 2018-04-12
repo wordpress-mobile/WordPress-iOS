@@ -114,6 +114,10 @@ public struct WordPressAuthenticatorConfiguration {
     ///
     let wpcomSecret: String
 
+    /// Client App: Used for Magic Link purposes.
+    ///
+    let wpcomScheme: String
+
     /// WordPress.com Terms of Service URL
     ///
     let wpcomTermsOfServiceURL: String
