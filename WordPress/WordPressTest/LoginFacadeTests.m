@@ -11,6 +11,7 @@ SpecBegin(LoginFacade)
 __block LoginFacade *loginFacade;
 __block id mockOAuthFacade;
 __block id mockXMLRPCAPIFacade;
+__block id mockLoginFacade;
 __block id mockLoginFacadeDelegate;
 __block LoginFields *loginFields;
 
@@ -23,6 +24,10 @@ beforeEach(^{
     loginFacade.wordpressComOAuthClientFacade = mockOAuthFacade;
     loginFacade.wordpressXMLRPCAPIFacade = mockXMLRPCAPIFacade;
     loginFacade.delegate = mockLoginFacadeDelegate;
+
+    mockLoginFacade = OCMPartialMock(loginFacade);
+    OCMStub([[mockLoginFacade ignoringNonObjectArgs] track:0]);
+    OCMStub([[mockLoginFacade ignoringNonObjectArgs] track:0 error:[OCMArg any]]);
 
     loginFields = [LoginFields new];
     loginFields.username = @"username";

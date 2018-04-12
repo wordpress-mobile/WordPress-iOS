@@ -187,16 +187,6 @@ extern NSString *const WordPressOrgMinimumVersion;
  */
 - (void)existingUserNeedsConnection:(NSString *)email;
 
-/**
- * Lets the delegate know that an event has occurred.
- */
-- (void)track:(WPAnalyticsStat)stat;
-
-/**
- * Lets the delegate know that an event has occurred, and passess along the error as well.
- */
-- (void)track:(WPAnalyticsStat)stat error:(nullable NSError *)error;
-
 @end
 
 NS_ASSUME_NONNULL_END
