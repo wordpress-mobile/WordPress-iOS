@@ -9,11 +9,6 @@
 
 #pragma mark - Initialization tests
 
-- (void)testThatInitThrowsAssertionFailureWithoutApi
-{
-    XCTAssertThrows([[ServiceRemoteWordPressComREST alloc] initWithWordPressComRestApi:nil]);
-}
-
 - (void)testRegularInitialization
 {
     WordPressComRestApi *api = [[WordPressComRestApi alloc] initWithOAuthToken:nil userAgent:nil];
