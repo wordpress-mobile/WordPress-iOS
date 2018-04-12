@@ -129,7 +129,7 @@ open class SignupService: LocalCoreDataService {
         status(.creatingUser)
         let locale = WordPressComLanguageDatabase().deviceLanguage.slug
         let remote = WordPressComServiceRemote(wordPressComRestApi: self.anonymousApi())
-        remote?.createWPComAccount(withEmail: params.email,
+        remote.createWPComAccount(withEmail: params.email,
                                             andUsername: params.username,
                                             andPassword: params.password,
                                             andLocale: locale,
@@ -157,7 +157,7 @@ open class SignupService: LocalCoreDataService {
         let remote = WordPressComServiceRemote(wordPressComRestApi: self.anonymousApi())
         let locale = WordPressComLanguageDatabase().deviceLanguage.slug
 
-        remote?.createWPComAccount(withGoogle: token,
+        remote.createWPComAccount(withGoogle: token,
                                    andLocale: locale,
                                    andClientID: ApiCredentials.client(),
                                    andClientSecret: ApiCredentials.secret(),
