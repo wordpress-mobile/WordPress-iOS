@@ -6,8 +6,6 @@ import WordPressShared
 ///
 class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
     @IBOutlet var siteHeaderView: SiteInfoHeaderView!
-    @IBOutlet var siteAddressStackView: UIStackView!
-    @IBOutlet var siteAddressLabel: UILabel!
     @IBOutlet var usernameField: WPWalkthroughTextField!
     @IBOutlet var passwordField: WPWalkthroughTextField!
     @IBOutlet var forgotPasswordButton: WPNUXSecondaryButton!
@@ -61,7 +59,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
 
-        WordPressAuthenticator.post(event: .loginUsernamePasswordFormViewed)
+        WordPressAuthenticator.track(.loginUsernamePasswordFormViewed)
     }
 
 
@@ -171,24 +169,24 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
     /// Configure the site header to show the BlogDetailsHeaderView
     ///
     @objc func configureBlogDetailHeaderView(siteInfo: SiteInfo) {
-        siteAddressStackView.isHidden = true
-        siteHeaderView.isHidden = false
-
         let siteAddress = sanitizedSiteAddress(siteAddress: siteInfo.url)
-        siteHeaderView.setTitleText(siteInfo.name)
-        siteHeaderView.setSubtitleText(siteAddress)
-        siteHeaderView.loadImage(atPath: siteInfo.icon)
+        siteHeaderView.title = siteInfo.name
+        siteHeaderView.subtitle = siteAddress
+        siteHeaderView.subtitleIsHidden = false
+
+        siteHeaderView.blavatarBorderIsHidden = false
+        siteHeaderView.downloadBlavatar(at: siteInfo.icon)
     }
 
 
     /// Configure the site header to show the site address label.
     ///
     @objc func configureSiteAddressHeader() {
-        siteAddressStackView.isHidden = false
-        siteHeaderView.isHidden = true
+        siteHeaderView.title = sanitizedSiteAddress(siteAddress: loginFields.siteAddress)
+        siteHeaderView.subtitleIsHidden = true
 
-        siteAddressLabel.text = sanitizedSiteAddress(siteAddress: loginFields.siteAddress)
-        siteAddressLabel.adjustsFontForContentSizeCategory = true
+        siteHeaderView.blavatarBorderIsHidden = true
+        siteHeaderView.blavatarImage = .linkFieldImage
     }
 
 
@@ -249,7 +247,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
 
     @IBAction func handleForgotPasswordButtonTapped(_ sender: UIButton) {
         WordPressAuthenticator.openForgotPasswordURL(loginFields)
-        WordPressAuthenticator.post(event: .loginForgotPasswordClicked)
+        WordPressAuthenticator.track(.loginForgotPasswordClicked)
     }
 
     // MARK: - Keyboard Notifications
