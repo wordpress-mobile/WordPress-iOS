@@ -37,8 +37,11 @@ class MediaCoordinator: NSObject {
     private func coordinator(for post: AbstractPost) -> MediaProgressCoordinator {
         var cachedCoordinator: MediaProgressCoordinator?
 
+        // Use the original post so we don't create new coordinators for post revisions
+        let original = post.original ?? post
+
         progressCoordinatorQueue.sync {
-            cachedCoordinator = postMediaProgressCoordinators[post]
+            cachedCoordinator = postMediaProgressCoordinators[original]
         }
 
         if let cachedCoordinator = cachedCoordinator {
@@ -49,7 +52,7 @@ class MediaCoordinator: NSObject {
         coordinator.delegate = self
 
         progressCoordinatorQueue.async(flags: .barrier) {
-            self.postMediaProgressCoordinators[post] = coordinator
+            self.postMediaProgressCoordinators[original] = coordinator
         }
 
         return coordinator
@@ -167,16 +170,18 @@ class MediaCoordinator: NSObject {
     /// Starts the upload of an already existing local media object
     ///
     /// - Parameter media: the media to upload
+    /// - Parameter post: the post where media is being inserted
     /// - parameter origin: The location in the app where the upload was initiated (optional).
     ///
-    func addMedia(_ media: Media, analyticsInfo: MediaAnalyticsInfo? = nil) {
+    func addMedia(_ media: Media, to post: AbstractPost, analyticsInfo: MediaAnalyticsInfo? = nil) {
         guard media.remoteStatus == .local else {
             DDLogError("Can't try to upload Media that isn't local only. \(String(describing: media))")
             return
         }
-
-        let coordinator = self.coordinator(for: media)
+        media.addPostsObject(post)
+        let coordinator = self.coordinator(for: post)
         coordinator.track(numberOfItems: 1)
+        trackUploadOf(media, analyticsInfo: analyticsInfo)
         let uploadProgress = uploadMedia(media)
         coordinator.track(progress: uploadProgress, of: media, withIdentifier: media.uploadID)
     }
@@ -387,10 +392,11 @@ class MediaCoordinator: NSObject {
     ///                   with this post via its media relationship.
     /// - returns: A UUID that can be used to unregister the observer block at a later time.
     ///
-    func addObserver(_ onUpdate: @escaping ObserverBlock, forMediaFor post: AbstractPost) -> UUID {
+    @discardableResult func addObserver(_ onUpdate: @escaping ObserverBlock, forMediaFor post: AbstractPost) -> UUID {
         let uuid = UUID()
 
-        let observer = MediaObserver(post: post, onUpdate: onUpdate)
+        let original = post.original ?? post
+        let observer = MediaObserver(post: original, onUpdate: onUpdate)
 
         queue.async {
             self.mediaObservers[uuid] = observer
@@ -466,13 +472,14 @@ class MediaCoordinator: NSObject {
     /// including any 'wildcard' observers that are observing _all_ media items.
     ///
     private func observersForMedia(_ media: Media) -> [MediaObserver] {
-        let mediaObservers = self.mediaObservers.values.filter({ $0.media?.mediaID == media.mediaID })
+        let mediaObservers = self.mediaObservers.values.filter({ $0.media?.uploadID == media.uploadID })
 
         let postObservers = self.mediaObservers.values.filter({
-            guard let posts = media.posts,
+            guard let posts = media.posts as? Set<AbstractPost>,
                 let post = $0.post else { return false }
 
-            return posts.contains(post)
+            let originals = posts.map({ $0.original ?? $0 })
+            return originals.contains(post)
         })
 
         return mediaObservers + postObservers + wildcardObservers
@@ -571,9 +578,9 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
     }
 
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
-        // Currently, we only want to show a successful upload notice for uploads
-        // initiated within the media library.
-        if mediaProgressCoordinator == mediaLibraryProgressCoordinator {
+        // We only want to show an upload notice for uploads initiated within
+        // the media library, or if there's been a failure.
+        if mediaProgressCoordinator == mediaLibraryProgressCoordinator || mediaProgressCoordinator.hasFailedMedia {
             let model = MediaProgressCoordinatorNoticeViewModel(mediaProgressCoordinator: mediaProgressCoordinator)
             if let notice = model?.notice {
                 ActionDispatcher.dispatch(NoticeAction.post(notice))

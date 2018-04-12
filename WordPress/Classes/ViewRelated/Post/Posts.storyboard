@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,19 +23,36 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="100" translatesAutoresizingMaskIntoConstraints="NO" id="cnu-9z-5GZ">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="110" width="375" height="557"/>
                                 <connections>
                                     <segue destination="zOz-bT-2ph" kind="embed" id="m8J-kl-Bnz"/>
                                 </connections>
                             </containerView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nmf-Iz-jkG" customClass="FilterTabBar" customModule="WordPress" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="64" width="375" height="46"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="46" placeholder="YES" id="fBi-N5-bzO"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="cnu-9z-5GZ" firstAttribute="top" secondItem="Zhd-4n-wcm" secondAttribute="topMargin" id="142-xs-2mp"/>
                             <constraint firstAttribute="bottomMargin" secondItem="cnu-9z-5GZ" secondAttribute="bottom" id="CxD-qt-v2d"/>
+                            <constraint firstItem="cnu-9z-5GZ" firstAttribute="top" secondItem="Nmf-Iz-jkG" secondAttribute="bottom" id="Hb8-6N-iSm"/>
+                            <constraint firstAttribute="trailing" secondItem="Nmf-Iz-jkG" secondAttribute="trailing" id="KGt-NK-T3O"/>
+                            <constraint firstItem="cnu-9z-5GZ" firstAttribute="top" secondItem="Zhd-4n-wcm" secondAttribute="topMargin" id="UwE-7o-GHb"/>
+                            <constraint firstItem="Nmf-Iz-jkG" firstAttribute="top" secondItem="Zhd-4n-wcm" secondAttribute="topMargin" id="ZFh-Do-F2v"/>
+                            <constraint firstItem="Nmf-Iz-jkG" firstAttribute="top" secondItem="rUe-TB-81b" secondAttribute="bottom" priority="999" id="fGy-cf-WIB"/>
                             <constraint firstAttribute="trailing" secondItem="cnu-9z-5GZ" secondAttribute="trailing" id="hEd-mB-ZfB"/>
+                            <constraint firstItem="Nmf-Iz-jkG" firstAttribute="leading" secondItem="Zhd-4n-wcm" secondAttribute="leading" id="npO-qQ-WgT"/>
                             <constraint firstItem="cnu-9z-5GZ" firstAttribute="leading" secondItem="Zhd-4n-wcm" secondAttribute="leading" id="phA-Qk-kzl"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="UwE-7o-GHb"/>
+                            </mask>
+                        </variation>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <toolbarItems/>
@@ -44,27 +62,16 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="addButton" destination="9Az-zB-Hwe" id="r4s-oX-gyT"/>
-                        <outlet property="authorFilterSegmentedControl" destination="2zZ-72-iKA" id="A6u-P2-Z7M"/>
-                        <outlet property="authorsFilterView" destination="9at-tM-m4A" id="Iue-Ql-B4V"/>
-                        <outlet property="filterButton" destination="qr8-Nf-Mwl" id="u7d-J1-vsa"/>
-                        <outlet property="headerStackView" destination="PF5-eU-KAv" id="7PN-bA-mdX"/>
+                        <outlet property="filterTabBar" destination="Nmf-Iz-jkG" id="Ydz-ff-EUy"/>
+                        <outlet property="filterTabBarBottomConstraint" destination="Hb8-6N-iSm" id="GsJ-Hc-dE5"/>
+                        <outlet property="filterTabBarTopConstraint" destination="ZFh-Do-F2v" id="hq3-Iz-dZu"/>
+                        <outlet property="filterTabBariOS10TopConstraint" destination="fGy-cf-WIB" id="2s9-pa-9Ee"/>
                         <outlet property="rightBarButtonView" destination="8Ph-e4-iOe" id="V4F-lw-glT"/>
                         <outlet property="searchWrapperView" destination="sFK-WP-z2Z" id="CJ1-ul-bLt"/>
+                        <outlet property="tableViewTopConstraint" destination="UwE-7o-GHb" id="4mJ-Ry-6Xa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mrN-zD-yTr" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="qr8-Nf-Mwl" customClass="NavBarTitleDropdownButton">
-                    <rect key="frame" x="0.0" y="0.0" width="77" height="25"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <inset key="imageEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
-                    <state key="normal" title="Button" image="icon-nav-chevron">
-                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </state>
-                    <connections>
-                        <action selector="didTapFilterButton:" destination="VTO-0U-HpP" eventType="touchUpInside" id="B6R-YT-dc3"/>
-                    </connections>
-                </button>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Ph-e4-iOe">
                     <rect key="frame" x="0.0" y="0.0" width="80" height="44"/>
                     <subviews>
@@ -88,58 +95,20 @@
                         <constraint firstAttribute="bottom" secondItem="9Az-zB-Hwe" secondAttribute="bottom" id="Usu-ZA-zoK"/>
                     </constraints>
                 </view>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" id="PF5-eU-KAv">
+                <view contentMode="scaleToFill" id="sFK-WP-z2Z" customClass="SearchWrapperView" customModule="WordPress" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="88"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sFK-WP-z2Z" customClass="SearchWrapperView" customModule="WordPress" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                        </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9at-tM-m4A">
-                            <rect key="frame" x="0.0" y="44" width="600" height="44"/>
-                            <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ESQ-oX-ZqN">
-                                    <rect key="frame" x="0.0" y="43" width="600" height="1"/>
-                                    <color key="backgroundColor" red="0.82352941176470584" green="0.87058823529411766" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="1" id="4Sy-We-JMj"/>
-                                    </constraints>
-                                </view>
-                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="2zZ-72-iKA">
-                                    <rect key="frame" x="160" y="8" width="280" height="29"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="280" id="4I1-mY-hd0"/>
-                                    </constraints>
-                                    <segments>
-                                        <segment title="Only Me"/>
-                                        <segment title="Everyone"/>
-                                    </segments>
-                                    <connections>
-                                        <action selector="handleAuthorFilterChanged:" destination="VTO-0U-HpP" eventType="valueChanged" id="q2z-tP-54k"/>
-                                    </connections>
-                                </segmentedControl>
-                            </subviews>
-                            <constraints>
-                                <constraint firstAttribute="centerX" secondItem="2zZ-72-iKA" secondAttribute="centerX" constant="-0.5" id="3PO-xC-h2M"/>
-                                <constraint firstItem="ESQ-oX-ZqN" firstAttribute="leading" secondItem="9at-tM-m4A" secondAttribute="leading" id="EkC-Du-0w6"/>
-                                <constraint firstAttribute="height" constant="44" id="KUd-OB-pfW"/>
-                                <constraint firstAttribute="bottom" secondItem="ESQ-oX-ZqN" secondAttribute="bottom" id="LQ5-GJ-0XZ"/>
-                                <constraint firstAttribute="centerY" secondItem="2zZ-72-iKA" secondAttribute="centerY" id="uve-eW-3Xv"/>
-                                <constraint firstAttribute="trailing" secondItem="ESQ-oX-ZqN" secondAttribute="trailing" id="zJx-BR-zvI"/>
-                            </constraints>
-                        </view>
-                    </subviews>
-                </stackView>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                </view>
             </objects>
-            <point key="canvasLocation" x="519" y="318"/>
+            <point key="canvasLocation" x="517.60000000000002" y="317.99100449775113"/>
         </scene>
         <!--Table View Controller-->
         <scene sceneID="2RX-OH-EPn">
             <objects>
                 <tableViewController id="zOz-bT-2ph" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="300" sectionHeaderHeight="22" sectionFooterHeight="22" id="srU-rF-GC6">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="557"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <connections>
@@ -159,7 +128,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="icon-nav-chevron" width="14" height="8"/>
         <image name="icon-post-add" width="22" height="22"/>
         <image name="icon-post-add-highlight" width="22" height="22"/>
     </resources>

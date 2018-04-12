@@ -10,6 +10,11 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
         return facade
     }()
 
+    var isJetpackLogin: Bool {
+        return loginFields.meta.jetpackLogin
+    }
+
+
     // MARK: Lifecycle Methods
 
     override func viewDidLoad() {
@@ -23,6 +28,9 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
         }
     }
 
+    func didChangePreferredContentSize() {
+        styleInstructions()
+    }
 
     // MARK: - Setup and Configuration
 
@@ -36,6 +44,7 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     ///
     @objc func styleInstructions() {
         instructionLabel?.font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+        instructionLabel?.adjustsFontForContentSizeCategory = true
     }
 
     func configureViewLoading(_ loading: Bool) {
@@ -54,7 +63,7 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     }
 
     fileprivate func shouldShowEpilogue() -> Bool {
-        if !isJetpackLogin() {
+        if !isJetpackLogin {
             return true
         }
         let context = ContextManager.sharedInstance().mainContext
@@ -69,6 +78,16 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
         return accountService.isDefaultWordPressComAccount(account)
     }
 
+    func showLoginEpilogue() {
+        guard let delegate = WordPressAuthenticator.shared.delegate, let navigationController = navigationController else {
+            fatalError()
+        }
+
+        delegate.presentLoginEpilogue(in: navigationController, epilogueInfo: nil, isJetpackLogin: isJetpackLogin) {
+            self.dismissBlock?(false)
+        }
+    }
+
     func dismiss() {
         if shouldShowEpilogue() {
 
@@ -76,7 +95,7 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
                 linkSource == .signup {
                     performSegue(withIdentifier: .showSignupEpilogue, sender: self)
             } else {
-                performSegue(withIdentifier: .showEpilogue, sender: self)
+                showLoginEpilogue()
             }
 
             return
@@ -94,7 +113,7 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
         displayError(message: "")
 
         // Is everything filled out?
-        if !WordPressAuthenticator.validateFieldsPopulatedForSignin(loginFields) {
+        if !loginFields.validateFieldsPopulatedForSignin() {
             let errorMsg = NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields.")
             displayError(message: errorMsg)
 
@@ -109,23 +128,18 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     /// Manages data transfer when seguing to a new VC
     ///
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let source = segue.source as? LoginViewController else {
+        guard let source = segue.source as? LoginViewController, let destination = segue.destination as? LoginViewController else {
             return
         }
 
-        if let destination = segue.destination as? LoginEpilogueViewController {
-            destination.dismissBlock = source.dismissBlock
-            destination.jetpackLogin = source.loginFields.meta.jetpackLogin
-        } else if let destination = segue.destination as? LoginViewController {
-            destination.loginFields = source.loginFields
-            destination.restrictToWPCom = source.restrictToWPCom
-            destination.dismissBlock = source.dismissBlock
-            destination.errorToPresent = source.errorToPresent
-        }
+        destination.loginFields = source.loginFields
+        destination.restrictToWPCom = source.restrictToWPCom
+        destination.dismissBlock = source.dismissBlock
+        destination.errorToPresent = source.errorToPresent
     }
 
     // MARK: SigninWPComSyncHandler methods
-    dynamic func finishedLogin(withUsername username: String!, authToken: String!, requiredMultifactorCode: Bool) {
+    dynamic func finishedLogin(withUsername username: String, authToken: String, requiredMultifactorCode: Bool) {
         syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
         guard let service = loginFields.meta.socialService, service == SocialServiceName.google,
             let token = loginFields.meta.socialServiceIDToken else {
@@ -150,16 +164,12 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
         })
     }
 
-    func isJetpackLogin() -> Bool {
-        return loginFields.meta.jetpackLogin
-    }
-
     func configureStatusLabel(_ message: String) {
         // this is now a no-op, unless status labels return
     }
 
     /// Overridden here to direct these errors to the login screen's error label
-    dynamic func displayRemoteError(_ error: Error!) {
+    dynamic func displayRemoteError(_ error: Error) {
         configureViewLoading(false)
 
         let err = error as NSError
@@ -183,6 +193,16 @@ class LoginViewController: NUXViewController, SigninWPComSyncHandler, LoginFacad
     // Update safari stored credentials. Call after a successful sign in.
     ///
     func updateSafariCredentialsIfNeeded() {
-        WordPressAuthenticator.updateSafariCredentialsIfNeeded(loginFields)
+        SafariCredentialsService.updateSafariCredentialsIfNeeded(with: loginFields)
+    }
+}
+
+// MARK: - Handle changes in traitCollections. In particular, changes in Dynamic Type
+extension LoginViewController {
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            didChangePreferredContentSize()
+        }
     }
 }

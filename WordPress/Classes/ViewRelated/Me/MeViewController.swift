@@ -399,6 +399,9 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         service.removeDefaultWordPressComAccount()
+
+        // Also clear the spotlight index
+        SearchManager.shared.deleteAllSearchableItems()
     }
 
     // MARK: - Private Properties

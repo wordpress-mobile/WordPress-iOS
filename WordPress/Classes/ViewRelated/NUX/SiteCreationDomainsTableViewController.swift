@@ -8,20 +8,38 @@ protocol SiteCreationDomainsTableViewControllerDelegate {
 
 class SiteCreationDomainsTableViewController: NUXTableViewController {
 
+    // MARK: - Properties
+
     open var siteName: String?
     open var delegate: SiteCreationDomainsTableViewControllerDelegate?
 
+    private var noResultsViewController: NoResultsViewController?
     private var service: DomainsService?
     private var siteTitleSuggestions: [String] = []
     private var searchSuggestions: [String] = []
     private var isSearching: Bool = false
     private var selectedCell: UITableViewCell?
 
+    // API returned no domain suggestions.
+    private var noSuggestions: Bool = false
+
+    fileprivate enum ViewPadding: CGFloat {
+        case noResultsView = 60
+    }
+
+    // MARK: - Init
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         tableView.register(UINib(nibName: "SiteCreationDomainSearchTableViewCell", bundle: nil), forCellReuseIdentifier: SiteCreationDomainSearchTableViewCell.cellIdentifier)
         setupBackgroundTapGestureRecognizer()
     }
+
+    // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +53,8 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // only procede with initial search if we don't have site title suggestions yet (hopefully only the first time)
+        // only procede with initial search if we don't have site title suggestions yet
+        // (hopefully only the first time)
         guard siteTitleSuggestions.count < 1,
             let nameToSearch = siteName else {
             return
@@ -69,14 +88,25 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
 
         let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
         SVProgressHUD.show(withStatus: NSLocalizedString("Loading domains", comment: "Shown while the app waits for the domain suggestions web service to return during the site creation process."))
+
         service.getDomainSuggestions(base: searchTerm, success: { [weak self] (suggestions) in
             self?.isSearching = false
+            self?.noSuggestions = false
             SVProgressHUD.dismiss()
+            self?.tableView.separatorStyle = .singleLine
+            // Dismiss the keyboard so the full results list can be seen.
+            self?.view.endEditing(true)
             addSuggestions(suggestions)
         }) { [weak self] (error) in
             DDLogError("Error getting Domain Suggestions: \(error.localizedDescription)")
             self?.isSearching = false
+            self?.noSuggestions = true
             SVProgressHUD.dismiss()
+            self?.tableView.separatorStyle = .none
+            // Dismiss the keyboard so the full no results view can be seen.
+            self?.view.endEditing(true)
+            // Add no suggestions to display the no results view.
+            addSuggestions([])
         }
     }
 
@@ -94,7 +124,7 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
     }
 }
 
-// MARK: UITableViewDataSource
+// MARK: - UITableViewDataSource
 
 extension SiteCreationDomainsTableViewController {
     fileprivate enum Sections: Int {
@@ -117,6 +147,9 @@ extension SiteCreationDomainsTableViewController {
              Sections.searchField.rawValue:
             return 1
         case Sections.suggestions.rawValue:
+            if noSuggestions == true {
+                return 1
+            }
             return searchSuggestions.count > 0 ? searchSuggestions.count : siteTitleSuggestions.count
         default:
             return 0
@@ -133,15 +166,33 @@ extension SiteCreationDomainsTableViewController {
         case Sections.suggestions.rawValue:
             fallthrough
         default:
-            let suggestion: String
-            if searchSuggestions.count > 0 {
-                suggestion = searchSuggestions[indexPath.row]
+            if noSuggestions == true {
+                cell = noResultsCell()
             } else {
-                suggestion = siteTitleSuggestions[indexPath.row]
+                let suggestion: String
+                if searchSuggestions.count > 0 {
+                    suggestion = searchSuggestions[indexPath.row]
+                } else {
+                    suggestion = siteTitleSuggestions[indexPath.row]
+                }
+                cell = suggestionCell(domain: suggestion)
             }
-            cell = suggestionCell(domain: suggestion)
         }
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+
+        if indexPath.section == Sections.suggestions.rawValue && noSuggestions == true {
+            // Calculate the height of the no results cell from the bottom of
+            // the search field to the screen bottom, minus some padding.
+            let searchFieldRect = tableView.rect(forSection: Sections.searchField.rawValue)
+            let searchFieldBottom = searchFieldRect.origin.y + searchFieldRect.height
+            let screenBottom = UIScreen.main.bounds.height
+            return screenBottom - searchFieldBottom - ViewPadding.noResultsView.rawValue
+        }
+
+        return super.tableView(tableView, heightForRowAt: indexPath)
     }
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -179,6 +230,13 @@ extension SiteCreationDomainsTableViewController {
         return cell
     }
 
+    private func noResultsCell() -> UITableViewCell {
+        let cell = UITableViewCell()
+        addNoResultsTo(cell: cell)
+        cell.isUserInteractionEnabled = false
+        return cell
+    }
+
     private func suggestionCell(domain: String) -> UITableViewCell {
         let cell = UITableViewCell()
 
@@ -199,7 +257,46 @@ extension SiteCreationDomainsTableViewController {
     }
 }
 
-// MARK: UITableViewDelegate
+// MARK: - NoResultsViewController Extension
+
+private extension SiteCreationDomainsTableViewController {
+
+    func addNoResultsTo(cell: UITableViewCell) {
+        if noResultsViewController == nil {
+            instantiateNoResultsViewController()
+        }
+
+        guard let noResultsViewController = noResultsViewController else {
+            return
+        }
+
+        noResultsViewController.view.frame = cell.frame
+        cell.contentView.addSubview(noResultsViewController.view)
+
+        addChildViewController(noResultsViewController)
+        noResultsViewController.didMove(toParentViewController: self)
+    }
+
+    func removeNoResultsFromView() {
+        noSuggestions = false
+        tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
+        noResultsViewController?.view.removeFromSuperview()
+        noResultsViewController?.removeFromParentViewController()
+    }
+
+    func instantiateNoResultsViewController() {
+        let noResultsSB = UIStoryboard(name: "NoResults", bundle: nil)
+        noResultsViewController = noResultsSB.instantiateViewController(withIdentifier: "NoResults") as? NoResultsViewController
+
+        let title = NSLocalizedString("We couldn't find any available address with the words you entered - let's try again.", comment: "Primary message shown when there are no domains that match the user entered text.")
+        let subtitle = NSLocalizedString("Enter different words above and we'll look for an address that matches it.", comment: "Secondary message shown when there are no domains that match the user entered text.")
+
+        noResultsViewController?.configure(title: title, buttonTitle: nil, subtitle: subtitle)
+    }
+
+}
+
+// MARK: - UITableViewDelegate
 
 extension SiteCreationDomainsTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -234,11 +331,12 @@ extension SiteCreationDomainsTableViewController {
     }
 }
 
-// MARK: SiteCreationDomainSearchTableViewCellDelegate
+// MARK: - SiteCreationDomainSearchTableViewCellDelegate
 
 extension SiteCreationDomainsTableViewController: SiteCreationDomainSearchTableViewCellDelegate {
     func startSearch(for searchTerm: String) {
 
+        removeNoResultsFromView()
         delegate?.newSearchStarted()
 
         guard searchTerm.count > 0 else {
