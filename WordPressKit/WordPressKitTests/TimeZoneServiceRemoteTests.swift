@@ -39,7 +39,7 @@ class TimeZoneServiceRemoteTests: RemoteTestCase, RESTTestable {
         stubRemoteResponse("timezones", filename: "timezones.json", contentType: .ApplicationJSON)
 
         let expect = expectation(description: "Get time zones")
-        let remote = TimeZoneServiceRemote(wordPressComRestApi: getRestApi())!
+        let remote = TimeZoneServiceRemote(wordPressComRestApi: getRestApi())
         remote.getTimezones(success: { (results) in
             XCTAssertEqual(results.count, 11)
             XCTAssertEqual(results[0].name, "Africa")
