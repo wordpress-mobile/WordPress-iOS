@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Elenco dei post, accessibilità: L’elenco dei post ora gestisce meglio i caratteri di tipo dinamico.
 Elenco dei post: Nuova barra filtro autore e stato del post!
 Elenco dei post, accessibilità: La nuova barra filtro autore e stato del post offre il supporto Voiceover.
@@ -5,3 +6,6 @@ Accesso, Accessibilità: Il flusso degli accessi ora gestisce meglio il tipo din
 Menu, Accessibilità: La sezione Menu dei siti ora supporta il tipo Dinamico.
 Il mio profilo: è ora disponibile un’opzione più esplicita per la modifica dell’icona Gravatar.
 Riflettori puntati: ora esegue l’indicizzazione di post e pagine!
+=======
+Per questo rilascio, abbiamo raffinato alcuni pixel, salutato alcuni bug e lavorato dietro le quinte per rendere più agevole l'esperienza su WordPress ai nostri utenti.
+>>>>>>> master

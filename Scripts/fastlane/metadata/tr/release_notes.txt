@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Gönderi Listesi, Erişilebilirlik: Gönderi listesi artık Dinamik Tür yazı tiplerini daha iyi destekliyor.
 Gönderi Listesi: Yeni gönderi durumu ve yazar filtresi çubuğu!
 Gönderi Listesi, Erişilebilirlik: Yeni gönderi durumu ve yazar filtresi çubuğu, Voiceover’ı destekler.
@@ -5,3 +6,6 @@ Oturum Açma, Erişilebilirlik: Oturum açma akışı artık Dinamik Tür yazı 
 Menüler, Erişilebilirlik: Sitenizdeki Menü bölümü artık Dinamik Tür yazı tiplerini destekliyor.
 Profilim: Gravatar simgenizi düzenlemeye yönelik daha açık seçenekler eklendi.
 Gündem: Artık gönderi ve sayfaları dizinliyor!
+=======
+Bu dağıtım için bir kaç pikseli cilaladık, bir kaç hataya elveda dedik ve uygulama kullanıcılarımız için WordPress deneyimini iyileştirecek arka plan geliştirmeleri yaptık.
+>>>>>>> master

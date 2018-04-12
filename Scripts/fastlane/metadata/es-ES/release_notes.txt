@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Lista de entradas, accesibilidad: La lista de entradas ahora gestiona mejor las fuentes de tipo dinámico.
 Lista de entradas: 'Nueva barra de filtro por estado de entrada y autor!
 Lista de entradas, accesibilidad: La nueva barra de filtro por estado de entrada y autor ofrece compatibilidad con Voiceover.
@@ -5,3 +6,6 @@ Acceso, accesibilidad: El flujo de acceso ahora gestiona mejor el tipo dinámico
 Menús, accesibilidad: La sección de menú de tus sitios ahora es compatible con el tipo dinámico.
 Mi perfil: ahora tienes una opción más clara para editar tu icono de Gravatar.
 Spotlight: ¡Ahora indexa entradas y páginas!
+=======
+Para esta versión, pulimos algunos pixeles, nos deshicimos de algunos errores y trabajamos entre bambalinas para hacer la experiencia de WordPress más fluida para los usuarios de nuestras aplicaciones.
+>>>>>>> master
