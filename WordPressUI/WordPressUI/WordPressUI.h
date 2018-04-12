@@ -13,3 +13,4 @@ FOUNDATION_EXPORT const unsigned char WordPressUIVersionString[];
 #import <WordPressUI/UIImage+Resize.h>
 #import <WordPressUI/UIImage+Util.h>
 #import <WordPressUI/UILabel+SuggestSize.h>
+#import <WordPressUI/NSString+Gravatar.h>
