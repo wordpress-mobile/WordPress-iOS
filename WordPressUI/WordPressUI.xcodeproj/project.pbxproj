@@ -14,9 +14,17 @@
 		B518D76520740E6900F05DB4 /* UIImageView+Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = B518D76420740E6900F05DB4 /* UIImageView+Networking.swift */; };
 		B518D76720740F0800F05DB4 /* UIImageView+Blavatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B518D76620740F0800F05DB4 /* UIImageView+Blavatar.swift */; };
 		B518D76D20742ADB00F05DB4 /* FlingableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B518D76C20742ADB00F05DB4 /* FlingableViewHandler.swift */; };
+		B5226C68207CCDB2003C606E /* GravatarTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5226C67207CCDB2003C606E /* GravatarTest.swift */; };
 		B529F289202C855B00895D88 /* UIColorHelpersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B529F288202C855B00895D88 /* UIColorHelpersTests.swift */; };
 		B5393FEA206D7047007BF9D4 /* RotationAwareNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5393FE9206D7047007BF9D4 /* RotationAwareNavigationViewController.swift */; };
 		B589BE2E207BE662007D72D4 /* NSMutableAttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B589BE2D207BE662007D72D4 /* NSMutableAttributedString+Helpers.swift */; };
+		B58C4EAF207C503000E32E4D /* UIImageView+Gravatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C4EAE207C503000E32E4D /* UIImageView+Gravatar.swift */; };
+		B58C4EB5207C532B00E32E4D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B58C4EB4207C532B00E32E4D /* Security.framework */; };
+		B58C4EBC207C55D300E32E4D /* UIImage+Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C4EBB207C55D200E32E4D /* UIImage+Assets.swift */; };
+		B58C4EC2207C570000E32E4D /* Gravatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58C4EBF207C570000E32E4D /* Gravatar.swift */; };
+		B58C4EC3207C570000E32E4D /* NSString+Gravatar.h in Headers */ = {isa = PBXBuildFile; fileRef = B58C4EC0207C570000E32E4D /* NSString+Gravatar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B58C4EC4207C570000E32E4D /* NSString+Gravatar.m in Sources */ = {isa = PBXBuildFile; fileRef = B58C4EC1207C570000E32E4D /* NSString+Gravatar.m */; };
+		B58C4EC6207C592B00E32E4D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B58C4EC5207C592B00E32E4D /* Assets.xcassets */; };
 		B592B44F2064296600FF568E /* FancyAlertPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B592B4492064296500FF568E /* FancyAlertPresentationController.swift */; };
 		B592B4502064296600FF568E /* FancyAlerts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B592B44A2064296500FF568E /* FancyAlerts.storyboard */; };
 		B592B4522064296600FF568E /* FancyAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B592B44C2064296500FF568E /* FancyAlertViewController.swift */; };
@@ -66,9 +74,17 @@
 		B518D76420740E6900F05DB4 /* UIImageView+Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Networking.swift"; sourceTree = "<group>"; };
 		B518D76620740F0800F05DB4 /* UIImageView+Blavatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Blavatar.swift"; sourceTree = "<group>"; };
 		B518D76C20742ADB00F05DB4 /* FlingableViewHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlingableViewHandler.swift; sourceTree = "<group>"; };
+		B5226C67207CCDB2003C606E /* GravatarTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravatarTest.swift; sourceTree = "<group>"; };
 		B529F288202C855B00895D88 /* UIColorHelpersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorHelpersTests.swift; sourceTree = "<group>"; };
 		B5393FE9206D7047007BF9D4 /* RotationAwareNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotationAwareNavigationViewController.swift; sourceTree = "<group>"; };
 		B589BE2D207BE662007D72D4 /* NSMutableAttributedString+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Helpers.swift"; sourceTree = "<group>"; };
+		B58C4EAE207C503000E32E4D /* UIImageView+Gravatar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Gravatar.swift"; sourceTree = "<group>"; };
+		B58C4EB4207C532B00E32E4D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		B58C4EBB207C55D200E32E4D /* UIImage+Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Assets.swift"; sourceTree = "<group>"; };
+		B58C4EBF207C570000E32E4D /* Gravatar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gravatar.swift; sourceTree = "<group>"; };
+		B58C4EC0207C570000E32E4D /* NSString+Gravatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Gravatar.h"; sourceTree = "<group>"; };
+		B58C4EC1207C570000E32E4D /* NSString+Gravatar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Gravatar.m"; sourceTree = "<group>"; };
+		B58C4EC5207C592B00E32E4D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B592B4492064296500FF568E /* FancyAlertPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FancyAlertPresentationController.swift; sourceTree = "<group>"; };
 		B592B44A2064296500FF568E /* FancyAlerts.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FancyAlerts.storyboard; sourceTree = "<group>"; };
 		B592B44C2064296500FF568E /* FancyAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FancyAlertViewController.swift; sourceTree = "<group>"; };
@@ -109,6 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B58C4EB5207C532B00E32E4D /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,6 +161,7 @@
 		B529F287202C855B00895D88 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B5226C67207CCDB2003C606E /* GravatarTest.swift */,
 				B529F288202C855B00895D88 /* UIColorHelpersTests.swift */,
 			);
 			path = Extensions;
@@ -155,6 +173,24 @@
 				B5393FE9206D7047007BF9D4 /* RotationAwareNavigationViewController.swift */,
 			);
 			path = Tools;
+			sourceTree = "<group>";
+		};
+		B58C4EBE207C570000E32E4D /* Gravatar */ = {
+			isa = PBXGroup;
+			children = (
+				B58C4EBF207C570000E32E4D /* Gravatar.swift */,
+				B58C4EC0207C570000E32E4D /* NSString+Gravatar.h */,
+				B58C4EC1207C570000E32E4D /* NSString+Gravatar.m */,
+			);
+			path = Gravatar;
+			sourceTree = "<group>";
+		};
+		B58C4EC8207C594300E32E4D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B58C4EC5207C592B00E32E4D /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		B592B4482064296500FF568E /* FancyAlert */ = {
@@ -197,6 +233,7 @@
 				B5A787F3202B3587007874FB /* Constants */,
 				B5A78799202B1A93007874FB /* Extensions */,
 				B5393FE8206D7047007BF9D4 /* Tools */,
+				B58C4EC8207C594300E32E4D /* Resources */,
 				B59DCB5F202B146D00BEBD8A /* WordPressUI.h */,
 				B59DCB60202B146D00BEBD8A /* Info.plist */,
 			);
@@ -215,6 +252,7 @@
 		B5A78796202B1A58007874FB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B58C4EB4207C532B00E32E4D /* Security.framework */,
 				B5A78798202B1A58007874FB /* WordPressShared.framework */,
 			);
 			name = Frameworks;
@@ -224,15 +262,18 @@
 			isa = PBXGroup;
 			children = (
 				43067E29203C8CA4001DD610 /* BlockEvents */,
-				B589BE2D207BE662007D72D4 /* NSMutableAttributedString+Helpers.swift */,
+				B58C4EBE207C570000E32E4D /* Gravatar */,
 				B5A787BC202B2358007874FB /* CGAffineTransform+Helpers.swift */,
+				B589BE2D207BE662007D72D4 /* NSMutableAttributedString+Helpers.swift */,
 				B5A78825202B4178007874FB /* UIAlertController+Helpers.swift */,
 				B5A787E0202B2B59007874FB /* UIControl+Helpers.swift */,
 				B5A787A9202B2323007874FB /* UIDevice+Helpers.swift */,
+				B58C4EBB207C55D200E32E4D /* UIImage+Assets.swift */,
 				828BEAC5203B59CD003F7078 /* UIImage+Crop.swift */,
 				B5A787AC202B2323007874FB /* UIImage+Rotation.swift */,
 				B5A787A4202B2322007874FB /* UIImage+Tint.swift */,
 				B518D76620740F0800F05DB4 /* UIImageView+Blavatar.swift */,
+				B58C4EAE207C503000E32E4D /* UIImageView+Gravatar.swift */,
 				B518D76420740E6900F05DB4 /* UIImageView+Networking.swift */,
 				B5A787AD202B2323007874FB /* UITableView+Helpers.swift */,
 				B5A787A7202B2322007874FB /* UITableViewController+Helpers.swift */,
@@ -279,6 +320,7 @@
 				B5A787D7202B2AA7007874FB /* UIColor+Helpers.h in Headers */,
 				B5A787D9202B2AA7007874FB /* UIImage+Resize.h in Headers */,
 				B5C82AE32077C01B00DB2E78 /* UILabel+SuggestSize.h in Headers */,
+				B58C4EC3207C570000E32E4D /* NSString+Gravatar.h in Headers */,
 				B5A787D6202B2AA7007874FB /* UIImage+Util.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -366,6 +408,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B592B4502064296600FF568E /* FancyAlerts.storyboard in Resources */,
+				B58C4EC6207C592B00E32E4D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,6 +428,7 @@
 			files = (
 				43067E30203C8D27001DD610 /* UIGestureRecognizer+BlockEvents.swift in Sources */,
 				B5A787B0202B2324007874FB /* UIImage+Tint.swift in Sources */,
+				B58C4EC4207C570000E32E4D /* NSString+Gravatar.m in Sources */,
 				B592B45520643E3400FF568E /* FancyAlertView.swift in Sources */,
 				B5A787B1202B2324007874FB /* UITextField+TextHelper.swift in Sources */,
 				B5A787DB202B2AA7007874FB /* UIColor+Helpers.m in Sources */,
@@ -398,15 +442,18 @@
 				B5A787B9202B2324007874FB /* UITableView+Helpers.swift in Sources */,
 				B589BE2E207BE662007D72D4 /* NSMutableAttributedString+Helpers.swift in Sources */,
 				B5D91458206AD8BA00EF333D /* FancyButton.swift in Sources */,
+				B58C4EC2207C570000E32E4D /* Gravatar.swift in Sources */,
 				B5A787BD202B2358007874FB /* CGAffineTransform+Helpers.swift in Sources */,
 				B5A787DF202B2AA7007874FB /* UIImage+Resize.m in Sources */,
 				B5A787B4202B2324007874FB /* UIWindow+Helpers.swift in Sources */,
 				B5A787B2202B2324007874FB /* UIView+Helpers.swift in Sources */,
 				B5C82AE52077C02200DB2E78 /* UILabel+SuggestSize.m in Sources */,
+				B58C4EAF207C503000E32E4D /* UIImageView+Gravatar.swift in Sources */,
 				B5A787E1202B2B59007874FB /* UIControl+Helpers.swift in Sources */,
 				B518D76720740F0800F05DB4 /* UIImageView+Blavatar.swift in Sources */,
 				43067E2E203C8D03001DD610 /* UIBarButtonItem+BlockEvents.swift in Sources */,
 				B592B4522064296600FF568E /* FancyAlertViewController.swift in Sources */,
+				B58C4EBC207C55D300E32E4D /* UIImage+Assets.swift in Sources */,
 				B5A787F5202B3587007874FB /* UIKitConstants.swift in Sources */,
 				B518D76D20742ADB00F05DB4 /* FlingableViewHandler.swift in Sources */,
 				B5A787DC202B2AA7007874FB /* UIImage+Util.m in Sources */,
@@ -422,6 +469,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B529F289202C855B00895D88 /* UIColorHelpersTests.swift in Sources */,
+				B5226C68207CCDB2003C606E /* GravatarTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
