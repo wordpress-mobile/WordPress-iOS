@@ -16,7 +16,7 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - Alamofire (4.7.0)
-  - Automattic-Tracks-iOS (0.2.2):
+  - Automattic-Tracks-iOS (0.2.3):
     - CocoaLumberjack (~> 3.4.1)
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 0.4)
@@ -30,7 +30,7 @@ PODS:
   - Crashlytics (3.10.1):
     - Fabric (~> 1.7.5)
   - Expecta (1.0.6)
-  - Fabric (1.7.5)
+  - Fabric (1.7.6)
   - FLAnimatedImage (1.0.12)
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
@@ -127,7 +127,7 @@ DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
   - AFNetworking (= 3.1.0)
   - Alamofire (= 4.7.0)
-  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.2.2`)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.2.3`)
   - BuddyBuildSDK (= 1.0.17)
   - CocoaLumberjack (= 3.4.1)
   - Crashlytics (= 3.10.1)
@@ -159,7 +159,7 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.2.2
+    :tag: 0.2.3
   WordPress-Aztec-iOS:
     :commit: f6e0e800f8fa3a9173a3927c6e914b2a154e8299
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
@@ -167,7 +167,7 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.2.2
+    :tag: 0.2.3
   WordPress-Aztec-iOS:
     :commit: f6e0e800f8fa3a9173a3927c6e914b2a154e8299
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
@@ -176,12 +176,12 @@ SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   Alamofire: 907e0a98eb68cdb7f9d1f541a563d6ac5dc77b25
-  Automattic-Tracks-iOS: 878edd82f3e535bd94da52facd94fc0bf5542797
+  Automattic-Tracks-iOS: d8c6c6c1351b1905a73e45f431b15598d71963b5
   BuddyBuildSDK: 8ae12ee721098b356a961ea7dce70ae55f93a7d2
   CocoaLumberjack: 2e258a064cacc8eb9a2aca318e24d02a0a7fd56d
   Crashlytics: aee1a064cbbf99b32efa3f056a5f458d846bc8ff
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  Fabric: ae7146a5f505ea370a1e44820b4b1dc8890e2890
+  Fabric: f8d42c893bb187326a7968b62abe55c36a987a46
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   GoogleSignIn: d9ef55b10f0aa401a5de2747f59b725e4b9732ac
@@ -208,6 +208,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 4e075d7610e74755c576188886a073cfc5810145
 
-PODFILE CHECKSUM: a62c9bd4760dfce975d033998602b4e0925a4b03
+PODFILE CHECKSUM: 30b1d81ae93f3f8ade47c053fb8c0a07db80b19b
 
 COCOAPODS: 1.4.0

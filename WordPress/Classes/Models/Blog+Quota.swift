@@ -47,7 +47,7 @@ extension Blog {
 
     /// Returns the disk space quota still available to use in the site.
     @objc var quotaSpaceAvailable: NSNumber? {
-        guard let quotaSpaceAllowed = quotaSpaceAllowed?.doubleValue, let quotaSpaceUsed = quotaSpaceUsed?.doubleValue else {
+        guard let quotaSpaceAllowed = quotaSpaceAllowed?.int64Value, let quotaSpaceUsed = quotaSpaceUsed?.int64Value else {
             return nil
         }
         let quotaSpaceAvailable = quotaSpaceAllowed - quotaSpaceUsed
@@ -69,7 +69,7 @@ extension Blog {
     /// - Returns: true if there is space available
     @objc func hasSpaceAvailable(for url: URL) -> Bool {
         guard let fileSize = url.fileSize,
-              let spaceAvailable = quotaSpaceAvailable?.intValue
+              let spaceAvailable = quotaSpaceAvailable?.int64Value
         else {
             // let's assume the site can handle it if we don't know any of quota or fileSize information.
             return true
@@ -83,7 +83,7 @@ extension Blog {
     /// - Returns: true if the site is able to support the URL file size.
     @objc func isAbleToHandleFileSizeOf(url: URL) -> Bool {
         guard let fileSize = url.fileSize,
-            let maxUploadSize = maxUploadSize?.intValue
+            let maxUploadSize = maxUploadSize?.int64Value
             else {
                 // let's assume the site can handle it.
                 return true

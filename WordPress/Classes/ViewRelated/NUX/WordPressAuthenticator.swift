@@ -59,11 +59,13 @@ public protocol WordPressAuthenticatorDelegate: class {
 
     /// Indicates if the Login Epilogue should be displayed.
     ///
-    /// - Parameters:
-    ///     - jetpackBlogXMLRPC: Endpoint for the self hosted site that just got Jetpack-Connected (if any).
-    ///     - jetpackBlogUsername: Username for the self hosted site that just got Jetpack-Connected (if any).
+    /// - Parameter isJetpackLogin: Indicates if we've just logged into a WordPress.com account for Jetpack purposes!.
     ///
-    func shouldPresentLoginEpilogue(jetpackBlogXMLRPC: String?, jetpackBlogUsername: String?) -> Bool
+    func shouldPresentLoginEpilogue(isJetpackLogin: Bool) -> Bool
+
+    /// Indicates if the Signup Epilogue should be displayed.
+    ///
+    func shouldPresentSignupEpilogue() -> Bool
 
     /// Signals the Host App that a WordPress Site (wpcom or wporg) is available with the specified credentials.
     ///
@@ -72,6 +74,18 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///     - onCompletion: Closure to be executed on completion.
     ///
     func sync(credentials: WordPressCredentials, onCompletion: @escaping (Error?) -> ())
+
+    /// Signals the Host App that a given Analytics Event has occurred.
+    ///
+    func track(event: WPAnalyticsStat)
+
+    /// Signals the Host App that a given Analytics Event (with the specified properties) has occurred.
+    ///
+    func track(event: WPAnalyticsStat, properties: [AnyHashable: Any])
+
+    /// Signals the Host App that a given Analytics Event (with an associated Error) has occurred.
+    ///
+    func track(event: WPAnalyticsStat, error: Error)
 }
 
 
@@ -191,7 +205,7 @@ public protocol WordPressAuthenticatorDelegate: class {
     }
 
     private class func trackOpenedLogin() {
-        WordPressAuthenticator.post(event: .openedLogin)
+        WordPressAuthenticator.track(.openedLogin)
     }
 
 
@@ -237,9 +251,9 @@ public protocol WordPressAuthenticatorDelegate: class {
         if let linkSource = loginFields.meta.emailMagicLinkSource {
             switch linkSource {
             case .signup:
-                WordPressAuthenticator.post(event: .signupMagicLinkOpened)
+                WordPressAuthenticator.track(.signupMagicLinkOpened)
             case .login:
-                WordPressAuthenticator.post(event: .loginMagicLinkOpened)
+                WordPressAuthenticator.track(.loginMagicLinkOpened)
             }
         }
 
@@ -402,7 +416,7 @@ public protocol WordPressAuthenticatorDelegate: class {
             loginFields.password = password
             loginFields.multifactorCode = otp ?? String()
 
-            WordPressAuthenticator.post(event: .onePasswordLogin)
+            WordPressAuthenticator.track(.onePasswordLogin)
             success(loginFields)
 
         }, failure: { error in
@@ -411,7 +425,7 @@ public protocol WordPressAuthenticatorDelegate: class {
             }
 
             DDLogError("OnePassword Error: \(error.localizedDescription)")
-            WordPressAuthenticator.post(event: .onePasswordFailed)
+            WordPressAuthenticator.track(.onePasswordFailed)
         })
     }
 }

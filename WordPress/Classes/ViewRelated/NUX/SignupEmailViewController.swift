@@ -45,7 +45,7 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
         super.viewDidLoad()
         WPStyleGuide.configureColors(for: view, andTableView: nil)
         localizeControls()
-        WordPressAuthenticator.post(event: .createAccountInitiated)
+        WordPressAuthenticator.track(.createAccountInitiated)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -188,14 +188,14 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
 
             }, failure: { [weak self] (error: Error) in
                 DDLogError("Request for signup link email failed.")
-                WordPressAuthenticator.post(event: .signupMagicLinkFailed)
+                WordPressAuthenticator.track(.signupMagicLinkFailed)
                 self?.displayError(message: ErrorMessage.magicLinkRequestFail.description())
                 self?.configureSubmitButton(animating: false)
         })
     }
 
     private func didRequestSignupLink() {
-        WordPressAuthenticator.post(event: .signupMagicLinkRequested)
+        WordPressAuthenticator.track(.signupMagicLinkRequested)
         WordPressAuthenticator.storeLoginInfoForTokenAuth(loginFields)
         performSegue(withIdentifier: "showLinkMailView", sender: nil)
     }
