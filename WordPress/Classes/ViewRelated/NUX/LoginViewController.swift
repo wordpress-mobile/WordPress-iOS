@@ -249,7 +249,7 @@ extension LoginViewController {
     /// Links the current WordPress Account to a Social Service (if possible!!).
     ///
     func linkSocialServiceIfNeeded(loginFields: LoginFields, wpcomAuthToken: String) {
-        guard let serviceName = loginFields.meta.socialService, let serviceToken = loginFields.meta.socialServiceIDToken else  {
+        guard let serviceName = loginFields.meta.socialService, let serviceToken = loginFields.meta.socialServiceIDToken else {
             return
         }
 
