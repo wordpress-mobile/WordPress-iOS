@@ -39,7 +39,7 @@
                            success:(void (^)(NSArray *))success
                            failure:(void (^)(NSError *))failure
 {
-    NSInteger pageSize = 2;
+    NSInteger pageSize = 100;
     NSDictionary *filter = @{
                                 @"number": @(pageSize),
                                 @"offset": @(offset)
