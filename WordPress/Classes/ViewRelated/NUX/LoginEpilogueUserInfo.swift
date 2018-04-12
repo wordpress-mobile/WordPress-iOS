@@ -3,7 +3,7 @@ import GoogleSignIn
 
 /// A simple container for the user info shown on the login epilogue screen.
 ///
-struct LoginEpilogueUserInfo {
+public struct LoginEpilogueUserInfo {
     var username = ""
     var fullName = ""
     var email = ""

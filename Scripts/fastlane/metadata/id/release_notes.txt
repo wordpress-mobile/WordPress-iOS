@@ -1,1 +1,11 @@
+<<<<<<< HEAD
+Daftar Pos, Aksesibilitas: Daftar pos sekarang menangani font Jenis Dinamis dengan lebih baik.
+Daftar Pos: Status pos baru dan bilah penyaring penulis!
+Daftar Pos, Aksesibilitas: Status pos baru dan bilah penyaring penulis menawarkan dukungan Pengisi Suara.
+Login, Aksesbilitas: Alur login sekarang menangani Jenis Dinamis dengan lebih baik.
+Menu, Aksesbilitas: Bagian menu pada situs Anda sekarang mendukung Jenis Dinamis.
+Profil Saya: Anda sekarang memiliki pilihan yang lebih eksplisit untuk mengedit ikon Gravatar Anda.
+Spotlight: Sekarang mengindeks pos dan halaman!
+=======
 Untuk rilis ini, kami menyempurnakan piksel, menyingkirkan bug, dan bekerja di balik layar untuk memastikan pengalaman WordPress yang lebih lancar bagi pengguna aplikasi kami.
+>>>>>>> master

@@ -499,9 +499,25 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
 {
+    [self showReaderTab];
+    
+    if (self.selectedIndex == WPTabReader) {
+        UIViewController *topViewController = (ReaderDetailViewController *)self.readerNavigationController.topViewController;
+        if ([topViewController isKindOfClass:[ReaderDetailViewController class]]) {
+            ReaderDetailViewController *readerDetailVC = (ReaderDetailViewController *)topViewController;
+            ReaderPost *readerPost = readerDetailVC.post;
+            if ([readerPost.postID isEqual:postId] && [readerPost.siteID isEqual: blogId]) {
+                 // The desired reader detail VC is already the top VC for the tab. Move along.
+                return;
+            } else {
+                // Close the existing detail tab before opening another one.
+                [self.readerSplitViewController popToRootViewControllersAnimated:YES];
+            }
+        }
+    }
+
     ReaderMenuViewController *readerMenuViewController = (ReaderMenuViewController *)[self.readerNavigationController.viewControllers firstObject];
-    if ([ReaderMenuViewController isKindOfClass:[ReaderMenuViewController class]]) {
-        [self showReaderTab];
+    if ([readerMenuViewController isKindOfClass:[ReaderMenuViewController class]]) {
         [readerMenuViewController openPost:postId onBlog:blogId];
     }
 }
@@ -523,6 +539,26 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
     if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
         [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionPosts];
+    }
+}
+
+- (void)switchTabToPagesListForPost:(AbstractPost *)post
+{
+    UIViewController *topVC = [self.blogListSplitViewController topDetailViewController];
+    if ([topVC isKindOfClass:[PostListViewController class]]) {
+        Blog *blog = ((PostListViewController *)topVC).blog;
+        if ([post.blog.objectID isEqual:blog.objectID]) {
+            // The desired post view controller is already the top viewController for the tab.
+            // Nothing to see here.  Move along.
+            return;
+        }
+    }
+
+    [self switchMySitesTabToBlogDetailsForBlog:post.blog];
+
+    BlogDetailsViewController *blogDetailVC = (BlogDetailsViewController *)self.blogListNavigationController.topViewController;
+    if ([blogDetailVC isKindOfClass:[BlogDetailsViewController class]]) {
+        [blogDetailVC showDetailViewForSubsection:BlogDetailsSubsectionPages];
     }
 }
 
