@@ -30,8 +30,14 @@ public extension UIImageView {
     ///     -   failure: Closure to be executed upon failure.
     ///
     public func downloadImage(from url: URL?, placeholderImage: UIImage? = nil, success: ((UIImage) -> ())? = nil, failure: ((Error?) -> ())? = nil) {
-        if let placeholderImage = placeholderImage {
-            image = placeholderImage
+        let internalOnSuccess = { [weak self] (image: UIImage) in
+            self?.image = image
+            success?(image)
+        }
+
+        if let cachedImage = Downloader.cache.object(forKey: url as AnyObject) as? UIImage {
+            internalOnSuccess(cachedImage)
+            return
         }
 
         // Ideally speaking, this method should *not* receive an Optional URL. But we're doing so, for convenience.
@@ -43,14 +49,8 @@ public extension UIImageView {
 
         downloadURL = url
 
-        let internalOnSuccess = { [weak self] (image: UIImage) in
-            self?.image = image
-            success?(image)
-        }
-
-        if let cachedImage = Downloader.cache.object(forKey: url as AnyObject) as? UIImage {
-            internalOnSuccess(cachedImage)
-            return
+        if let placeholderImage = placeholderImage {
+            image = placeholderImage
         }
 
         let request = self.request(for: url)
@@ -75,6 +75,21 @@ public extension UIImageView {
         downloadTask?.cancel()
         downloadTask = task
         task.resume()
+    }
+
+
+    /// Overrides the cached UIImage, for a given URL. This is useful for whenever we've just updated a remote resource,
+    /// and we need to prevent returning the (old) cached entry.
+    ///
+    public func overrideImageCache(for url: URL, with image: UIImage) {
+        Downloader.cache.setObject(image, forKey: url as AnyObject)
+
+        // Remove all cached responses - removing an individual response does not work since iOS 7.
+        // This feels hacky to do but what else can we do...
+        //
+        // Update: Years have gone by (iOS 11 era). Still broken. Still ashamed about this. Thank you, Apple.
+        //
+        URLSession.shared.configuration.urlCache?.removeAllCachedResponses()
     }
 
 

@@ -417,7 +417,6 @@ private extension PeopleServiceRemote {
         let lastName = user["last_name"] as? String
         let avatarURL = (user["avatar_URL"] as? NSString)
             .flatMap { URL(string: $0.byUrlEncoding())}
-            .flatMap { Gravatar($0)?.canonicalURL }
 
         let linkedUserID = user["linked_user_ID"] as? Int ?? ID
         let isSuperAdmin = user["is_super_admin"] as? Bool ?? false

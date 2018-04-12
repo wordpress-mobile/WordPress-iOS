@@ -9,7 +9,9 @@ public typealias Person = RemotePerson
 class ManagedPerson: NSManagedObject {
 
     func updateWith<T: Person>(_ person: T) {
-        avatarURL = person.avatarURL?.absoluteString
+        let canonicalAvatarURL = person.avatarURL.flatMap { Gravatar($0)?.canonicalURL }
+
+        avatarURL = canonicalAvatarURL?.absoluteString
         displayName = person.displayName
         firstName = person.firstName
         lastName = person.lastName

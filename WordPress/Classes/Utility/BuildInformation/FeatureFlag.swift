@@ -8,7 +8,6 @@ enum FeatureFlag: Int {
     case jetpackSignup
     case activity
     case usernameChanging
-    case asyncPosting
     case zendeskMobile
 
     /// Returns a boolean indicating if the feature is enabled
@@ -25,8 +24,6 @@ enum FeatureFlag: Int {
         case .activity:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .usernameChanging:
-            return BuildConfiguration.current == .localDeveloper
-        case .asyncPosting:
             return BuildConfiguration.current == .localDeveloper
         case .zendeskMobile:
             return BuildConfiguration.current == .localDeveloper
