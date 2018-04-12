@@ -47,16 +47,6 @@ class SignupGoogleViewController: LoginViewController {
 
         WordPressAuthenticator.track(.loginSocialButtonClick)
     }
-
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        if let vc = segue.destination as? SignupEpilogueViewController {
-            vc.loginFields = loginFields
-        }
-    }
-
 }
 
 // MARK: - GIDSignInDelegate
@@ -87,7 +77,7 @@ extension SignupGoogleViewController: GIDSignInDelegate {
         service.createWPComUserWithGoogle(token: token, success: { [weak self] (accountCreated) in
             SVProgressHUD.dismiss()
             if accountCreated {
-                self?.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
+                self?.showSignupEpilogue(for: credentials)
                 WordPressAuthenticator.track(.signupSocialSuccess)
             } else {
                 self?.showLoginEpilogue(for: credentials)
