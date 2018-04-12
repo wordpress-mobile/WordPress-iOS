@@ -35,7 +35,7 @@
 }
 
 - (void)getMediaLibraryStartOffset:(NSUInteger)offset
-                             media:(NSMutableArray *)media
+                             media:(NSArray *)media
                            success:(void (^)(NSArray *))success
                            failure:(void (^)(NSError *))failure
 {
@@ -52,18 +52,19 @@
                      NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
                      if (success) {
                          NSArray *pageMedia = [self remoteMediaFromXMLRPCArray:responseObject];
+                         NSMutableArray *resultMedia = [NSMutableArray arrayWithArray:media];
                          if (pageMedia.count > 0) {
-                             [media addObjectsFromArray: pageMedia];
+                             [resultMedia addObjectsFromArray: pageMedia];
                          }
                          // Did we got all the items we requested or it's finished?
                          if (pageMedia.count < pageSize) {
                              if (success) {
-                                 success(media);
+                                 success(resultMedia);
                              }
                              return;
                          }
-                         NSUInteger newOffset = offset + pageMedia.count;
-                         [self getMediaLibraryStartOffset:newOffset media:media success: success failure: failure];
+                         NSUInteger newOffset = offset + pageSize;
+                         [self getMediaLibraryStartOffset:newOffset media:resultMedia success: success failure: failure];
                      }
                  }
                  failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
