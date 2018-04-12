@@ -9,6 +9,8 @@ extern ServiceRemoteWordPressComRESTApiVersion const ServiceRemoteWordPressComRE
 extern ServiceRemoteWordPressComRESTApiVersion const ServiceRemoteWordPressComRESTApiVersion_1_3;
 extern ServiceRemoteWordPressComRESTApiVersion const ServiceRemoteWordPressComRESTApiVersion_2_0;
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  @class  ServiceRemoteREST
  *  @brief  Parent class for all REST service classes.
@@ -28,7 +30,7 @@ extern ServiceRemoteWordPressComRESTApiVersion const ServiceRemoteWordPressComRE
  *
  *  @returns    The initialized object.
  */
-- (id)initWithWordPressComRestApi:(WordPressComRestApi *)api;
+- (instancetype)initWithWordPressComRestApi:(WordPressComRestApi *)api;
 
 #pragma mark - Request URL construction
 
@@ -50,5 +52,6 @@ extern ServiceRemoteWordPressComRESTApiVersion const ServiceRemoteWordPressComRE
  */
 + (WordPressComRestApi *)anonymousWordPressComRestApiWithUserAgent:(NSString *)userAgent;
 
-
 @end
+
+NS_ASSUME_NONNULL_END
