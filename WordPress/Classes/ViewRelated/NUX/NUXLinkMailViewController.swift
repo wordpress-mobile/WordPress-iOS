@@ -45,9 +45,9 @@ class NUXLinkMailViewController: LoginViewController {
 
         switch emailMagicLinkSource {
         case .login:
-            WordPressAuthenticator.post(event: .loginMagicLinkOpenEmailClientViewed)
+            WordPressAuthenticator.track(.loginMagicLinkOpenEmailClientViewed)
         case .signup:
-            WordPressAuthenticator.post(event: .signupMagicLinkOpenEmailClientViewed)
+            WordPressAuthenticator.track(.signupMagicLinkOpenEmailClientViewed)
         }
     }
 
@@ -115,7 +115,7 @@ class NUXLinkMailViewController: LoginViewController {
 
 
     @IBAction func handleUsePasswordTapped(_ sender: UIButton) {
-        WordPressAuthenticator.post(event: .loginMagicLinkExited)
+        WordPressAuthenticator.track(.loginMagicLinkExited)
     }
 }
 
