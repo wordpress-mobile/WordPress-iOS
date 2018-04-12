@@ -62,7 +62,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         DDLogInfo(@"WPAnalyticsStat not supported by WPAnalyticsTrackerAutomatticTracks: %@", @(stat));
         return;
     }
-    
+
+    DDLogInfo(@"🔵 Tracked: %@", eventPair.eventName);
+
     NSMutableDictionary *mergedProperties = [NSMutableDictionary new];
 
     [mergedProperties addEntriesFromDictionary:eventPair.properties];
