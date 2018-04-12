@@ -1,13 +1,15 @@
 #import "WordPressComOAuthClientFacade.h"
 #import "WordPress-Swift.h"
 
-@interface WordPressComOAuthClientFacade(Internal)
+@interface WordPressComOAuthClientFacade ()
 
 @property (nonatomic, strong) WordPressComOAuthClient *client;
 
 @end
 
 @implementation WordPressComOAuthClientFacade
+
+@synthesize client;
 
 - (instancetype)initWithClient:(NSString *)client secret:(NSString *)secret
 {
