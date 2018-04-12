@@ -75,7 +75,7 @@ extern NSString *const WordPressOrgMinimumVersion;
  * @param userID        WordPress.com User ID
  * @param authType      Indicates the Kind of Authentication we're performing (sms / authenticator / etc).
  * @param twoStepCode   Multifactor Code.
- * @param googleIDToken A Google id_token.
+ * @param twoStepNonce  Two Step Nonce.
  */
 - (void)loginToWordPressDotComWithUser:(NSInteger)userID
                               authType:(NSString *)authType
