@@ -30,13 +30,40 @@
 - (void)getMediaLibraryWithSuccess:(void (^)(NSArray *))success
                            failure:(void (^)(NSError *))failure
 {
-    NSArray *parameters = [self defaultXMLRPCArguments];
+    NSMutableArray * mediaResult = [[NSMutableArray alloc] init];
+    [self getMediaLibraryStartOffset:0 media:mediaResult success:success failure:failure];
+}
+
+- (void)getMediaLibraryStartOffset:(NSUInteger)offset
+                             media:(NSMutableArray *)media
+                           success:(void (^)(NSArray *))success
+                           failure:(void (^)(NSError *))failure
+{
+    NSInteger pageSize = 2;
+    NSDictionary *filter = @{
+                                @"number": @(pageSize),
+                                @"offset": @(offset)
+                            };
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:filter];
+
     [self.api callMethod:@"wp.getMediaLibrary"
               parameters:parameters
                  success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                      NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
                      if (success) {
-                         success([self remoteMediaFromXMLRPCArray:responseObject]);
+                         NSArray *pageMedia = [self remoteMediaFromXMLRPCArray:responseObject];
+                         if (pageMedia.count > 0) {
+                             [media addObjectsFromArray: pageMedia];
+                         }
+                         // Did we got all the items we requested or it's finished?
+                         if (pageMedia.count < pageSize) {
+                             if (success) {
+                                 success(media);
+                             }
+                             return;
+                         }
+                         NSUInteger newOffset = offset + pageMedia.count;
+                         [self getMediaLibraryStartOffset:newOffset media:media success: success failure: failure];
                      }
                  }
                  failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
