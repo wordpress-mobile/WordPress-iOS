@@ -2,9 +2,12 @@
 #import "NSURL+IDN.h"
 #import "WordPressComOAuthClientFacade.h"
 #import "WordPressXMLRPCAPIFacade.h"
-#import <WordPressShared/WPAnalytics.h>
 #import <CocoaLumberjack/CocoaLumberjack.h>
 #import "WordPress-Swift.h"
+
+
+
+NSString *const WordPressOrgMinimumVersion = @"4.0";
 
 
 @implementation LoginFacade
@@ -13,19 +16,14 @@
 @synthesize wordpressComOAuthClientFacade = _wordpressComOAuthClientFacade;
 @synthesize wordpressXMLRPCAPIFacade = _wordpressXMLRPCAPIFacade;
 
-- (instancetype)init
+- (instancetype)initWithDotcomClientID:(NSString *)dotcomClientID dotcomSecret:(NSString *)dotcomSecret userAgent:(NSString *)userAgent
 {
     self = [super init];
     if (self) {
-        [self initializeServices];
+        _wordpressComOAuthClientFacade = [[WordPressComOAuthClientFacade alloc] initWithClient:dotcomClientID secret:dotcomSecret];
+        _wordpressXMLRPCAPIFacade = [[WordPressXMLRPCAPIFacade alloc] initWithUserAgent:userAgent];
     }
     return self;
-}
-
-- (void)initializeServices
-{
-    _wordpressComOAuthClientFacade = [WordPressComOAuthClientFacade new];
-    _wordpressXMLRPCAPIFacade = [WordPressXMLRPCAPIFacade new];
 }
 
 - (void)signInWithLoginFields:(LoginFields *)loginFields
@@ -42,7 +40,7 @@
 - (void)requestOneTimeCodeWithLoginFields:(LoginFields *)loginFields
 {
     [self.wordpressComOAuthClientFacade requestOneTimeCodeWithUsername:loginFields.username password:loginFields.password success:^{
-        [WordPressAuthenticator track:WPAnalyticsStatTwoFactorSentSMS];
+        [self track:WPAnalyticsStatTwoFactorSentSMS];
     } failure:^(NSError *error) {
         DDLogError(@"Failed to request one time code");
     }];
@@ -84,8 +82,8 @@
             [self.delegate existingUserNeedsConnection: email];
         }
     } failure:^(NSError *error) {
-        [WordPressAuthenticator track:WPAnalyticsStatLoginFailed error:error];
-        [WordPressAuthenticator track:WPAnalyticsStatLoginSocialFailure error:error];
+        [self track:WPAnalyticsStatLoginFailed error:error];
+        [self track:WPAnalyticsStatLoginSocialFailure error:error];
         if ([self.delegate respondsToSelector:@selector(displayRemoteError:)]) {
             [self.delegate displayRemoteError:error];
         }
@@ -110,7 +108,7 @@
                                                                     [self.delegate finishedLoginWithNonceAuthToken:authToken];
                                                                 }
                                                             } failure:^(NSError *error) {
-                                                                [WordPressAuthenticator track:WPAnalyticsStatLoginFailed error:error];
+                                                                [self track:WPAnalyticsStatLoginFailed error:error];
                                                                 if ([self.delegate respondsToSelector:@selector(displayRemoteError:)]) {
                                                                     [self.delegate displayRemoteError:error];
                                                                 }
@@ -132,7 +130,7 @@
             [self.delegate needsMultifactorCode];
         }
     } failure:^(NSError *error) {
-        [WordPressAuthenticator track:WPAnalyticsStatLoginFailed error:error];
+        [self track:WPAnalyticsStatLoginFailed error:error];
         if ([self.delegate respondsToSelector:@selector(displayRemoteError:)]) {
             [self.delegate displayRemoteError:error];
         }
@@ -147,8 +145,8 @@
     };
 
     void (^guessXMLRPCURLFailure)(NSError *) = ^(NSError *error){
-        [WordPressAuthenticator track:WPAnalyticsStatLoginFailedToGuessXMLRPC error:error];
-        [WordPressAuthenticator track:WPAnalyticsStatLoginFailed error:error];
+        [self track:WPAnalyticsStatLoginFailedToGuessXMLRPC error:error];
+        [self track:WPAnalyticsStatLoginFailed error:error];
         [self.delegate displayRemoteError:error];
     };
 
@@ -167,12 +165,12 @@
         } else {
             NSString *versionString = options[@"software_version"][@"value"];
             CGFloat version = [versionString floatValue];
-            if (version > 0 && version < [WordPressMinimumVersion floatValue]) {
-                NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", nil), [xmlRPCURL host], versionString, WordPressMinimumVersion];
-                NSError *versionError = [NSError errorWithDomain:WordPressAppErrorDomain
-                                                            code:WordPressAppErrorCodeInvalidVersion
+            if (version > 0 && version < [WordPressOrgMinimumVersion floatValue]) {
+                NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", nil), [xmlRPCURL host], versionString, WordPressOrgMinimumVersion];
+                NSError *versionError = [NSError errorWithDomain:WordPressAuthenticator.errorDomain
+                                                            code:WordPressAuthenticator.invalidVersionErrorCode
                                                         userInfo:@{NSLocalizedDescriptionKey:errorMessage}];
-                [WordPressAuthenticator track:WPAnalyticsStatLoginFailed error:versionError];
+                [self track:WPAnalyticsStatLoginFailed error:versionError];
                 [self.delegate displayRemoteError:versionError];
                 return;
             }
@@ -180,9 +178,19 @@
             [self.delegate finishedLoginWithUsername:loginFields.username password:loginFields.password xmlrpc:xmlrpc options:options];
         }
     } failure:^(NSError *error) {
-        [WordPressAuthenticator track:WPAnalyticsStatLoginFailed error:error];
+        [self track:WPAnalyticsStatLoginFailed error:error];
         [self.delegate displayRemoteError:error];
     }];
+}
+
+- (void)track:(WPAnalyticsStat)stat
+{
+    [WordPressAuthenticator track:stat];
+}
+
+- (void)track:(WPAnalyticsStat)stat error:(NSError *)error
+{
+    [WordPressAuthenticator track:stat error:error];
 }
 
 @end

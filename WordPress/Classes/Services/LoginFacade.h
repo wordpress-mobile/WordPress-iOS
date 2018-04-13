@@ -1,4 +1,6 @@
 #import <Foundation/Foundation.h>
+#import <WordPressShared/WPAnalytics.h>
+
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -8,10 +10,27 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol WordPressXMLRPCAPIFacade;
 @protocol LoginFacadeDelegate;
 
+
+/**
+ *  Minimum WordPress.org Supported Version.
+ */
+extern NSString *const WordPressOrgMinimumVersion;
+
 /**
  *  This protocol represents a class that handles the signing in to a self hosted/.com site.
  */
 @protocol LoginFacade
+
+/**
+ *  This method initializes the LoginFacade instance.
+ *
+ *  @param dotcomClientID   WordPress.com Client ID.
+ *  @param dotcomSecret     WordPress.com Secret.
+ *  @param userAgent        UserAgent string to be used interacting with a remote endpoint.
+ *
+ *  @note When this class is Swifted, we can (probably) just query WordPressAuthenticator.
+ */
+- (instancetype)initWithDotcomClientID:(NSString *)dotcomClientID dotcomSecret:(NSString *)dotcomSecret userAgent:(NSString *)userAgent;
 
 /**
  *  This method will attempt to sign in to a self hosted/.com site.
@@ -53,7 +72,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Social login via a social account with 2FA using a nonce.
  *
- * @param googleIDToken A Google id_token.
+ * @param userID        WordPress.com User ID
+ * @param authType      Indicates the Kind of Authentication we're performing (sms / authenticator / etc).
+ * @param twoStepCode   Multifactor Code.
+ * @param twoStepNonce  Two Step Nonce.
  */
 - (void)loginToWordPressDotComWithUser:(NSInteger)userID
                               authType:(NSString *)authType
@@ -152,7 +174,6 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  Called when finished logging in to a WordPress.com site via a 2FA Nonce.
  *
- *  @param googleIDToken            the token used
  *  @param authToken                authToken to be used to access the site
  */
 - (void)finishedLoginWithNonceAuthToken:(NSString *)authToken;

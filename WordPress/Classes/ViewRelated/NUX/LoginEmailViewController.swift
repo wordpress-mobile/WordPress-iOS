@@ -155,8 +155,8 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         // Configure all the things and sign in.
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().clientID = ApiCredentials.googleLoginClientId()
-        GIDSignIn.sharedInstance().serverClientID = ApiCredentials.googleLoginServerClientId()
+        GIDSignIn.sharedInstance().clientID = WordPressAuthenticator.shared.configuration.googleLoginClientId
+        GIDSignIn.sharedInstance().serverClientID = WordPressAuthenticator.shared.configuration.googleLoginServerClientId
 
         GIDSignIn.sharedInstance().signIn()
 
@@ -188,7 +188,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     /// Note: This is only used during Jetpack setup, not the normal flows
     ///
     func addSignupButton() {
-        guard Feature.enabled(.jetpackSignup) else {
+        guard WordPressAuthenticator.shared.configuration.supportsJetpackSignup else {
             return
         }
 
@@ -340,14 +340,14 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         }
 
         configureViewLoading(true)
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.isPasswordlessAccount(loginFields.username,
-                                      success: { [weak self] (passwordless: Bool) in
+        let service = WordPressComAccountService()
+        service.isPasswordlessAccount(username: loginFields.username,
+                                      success: { [weak self] passwordless in
                                         self?.configureViewLoading(false)
                                         self?.loginFields.meta.passwordless = passwordless
                                         self?.requestLink()
             },
-                                      failure: { [weak self] (error: Error) in
+                                      failure: { [weak self] error in
                                         WordPressAuthenticator.track(.loginFailed, error: error)
                                         DDLogError(error.localizedDescription)
                                         guard let strongSelf = self else {
@@ -550,6 +550,7 @@ extension LoginEmailViewController: LoginSocialErrorViewControllerDelegate {
     }
     func retryAsSignup() {
         cleanupAfterSocialErrors()
+
 
         let storyboard = UIStoryboard(name: "Signup", bundle: nil)
         if let controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? SignupEmailViewController {
