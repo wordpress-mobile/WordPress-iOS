@@ -29,7 +29,7 @@ class SignupGoogleViewController: LoginViewController {
     }
 
     private func displayGoogleSingleSignonIfNeeded() {
-        guard !hasShownGoogle else  {
+        guard !hasShownGoogle else {
             return
         }
 
