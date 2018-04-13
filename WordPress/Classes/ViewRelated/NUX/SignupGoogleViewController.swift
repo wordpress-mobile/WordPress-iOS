@@ -102,10 +102,14 @@ private extension SignupGoogleViewController {
         service.createWPComUser(googleToken: googleToken, success: { [weak self] accountCreated, wpcomUsername, wpcomToken in
 
             let credentials = WordPressCredentials.wpcom(username: wpcomUsername, authToken: wpcomToken, isJetpackLogin: false, multifactor: false)
-            if accountCreated {
-                self?.socialSignupWasSuccessful(with: credentials)
-            } else {
-                self?.socialLoginWasSuccessful(with: credentials)
+            self?.authenticationDelegate.sync(credentials: credentials) { _ in
+// TODO: Just create the account when it's a freshly created wpcom user!
+// TODO: Improve this!
+                if accountCreated {
+                    self?.socialSignupWasSuccessful(with: credentials)
+                } else {
+                    self?.socialLoginWasSuccessful(with: credentials)
+                }
             }
 
         }, failure: { [weak self] error in
@@ -113,6 +117,7 @@ private extension SignupGoogleViewController {
             self?.socialSignupDidFail(with: error)
         })
     }
+
 
     /// Social Signup Successful: Analytics + Pushing the Signup Epilogue.
     ///

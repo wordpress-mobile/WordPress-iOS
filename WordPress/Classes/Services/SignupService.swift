@@ -24,43 +24,21 @@ class SignupService {
         let locale = WordPressComLanguageDatabase().deviceLanguage.slug
 
         remote.createWPComAccount(withGoogle: googleToken,
-                                   andLocale: locale,
-                                   andClientID: configuration.wpcomClientId,
-                                   andClientSecret: configuration.wpcomSecret,
-                                   success: { responseDictionary in
-                                        guard let username = responseDictionary?[ResponseKeys.username] as? String,
-                                            let bearer_token = responseDictionary?[ResponseKeys.bearerToken] as? String else {
-                                                failure(ServiceError.unknown)
-                                                return
-                                        }
+                                  andLocale: locale,
+                                  andClientID: configuration.wpcomClientId,
+                                  andClientSecret: configuration.wpcomSecret,
+                                  success: { response in
 
-                                        let createdAccount = (responseDictionary?[ResponseKeys.createdAccount] as? Int ?? 0) == 1
+            guard let username = response?[ResponseKeys.username] as? String,
+                let bearer_token = response?[ResponseKeys.bearerToken] as? String else {
+                    failure(ServiceError.unknown)
+                    return
+            }
 
-                                        success(createdAccount, username, bearer_token)
-
-// TODO: Fixme
-//                                        // create the local account
-//                                        let service = AccountService(managedObjectContext: self.managedObjectContext)
-//                                        let account = service.createOrUpdateAccount(withUsername: username, authToken: bearer_token)
-//                                        if service.defaultWordPressComAccount() == nil {
-//                                            service.setDefaultWordPressComAccount(account)
-//                                        }
-//
-//                                        let createdAccount = (responseDictionary?[ResponseKeys.createdAccount] as? Int ?? 0) == 1
-//                                        if createdAccount {
-//                                            success(createdAccount)
-//                                        } else {
-//                                            // we need to sync the blogs for existing accounts to be able to display the Login Epilogue
-//                                            BlogSyncFacade().syncBlogs(for: account, success: {
-//                                                success(createdAccount)
-//                                            }, failure: { (_) in
-//                                                // the blog sync failed but the user is already logged in
-//                                                success(createdAccount)
-//                                            })
-//                                        }
-                                    },
-                                    failure: { error in
-                                        failure(error ?? ServiceError.unknown)
+            let createdAccount = (response?[ResponseKeys.createdAccount] as? Int ?? 0) == 1
+            success(createdAccount, username, bearer_token)
+        }, failure: { error in
+            failure(error ?? ServiceError.unknown)
         })
     }
 }
