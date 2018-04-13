@@ -10,10 +10,11 @@ extension AccountService {
     ///     - success
     ///     - failure
     func connectToSocialService(_ service: SocialServiceName, serviceIDToken token: String, success:@escaping (() -> Void), failure:@escaping ((NSError) -> Void)) {
-        guard let api = defaultWordPressComAccount()?.wordPressComRestApi,
-            let remote = AccountServiceRemoteREST(wordPressComRestApi: api) else {
-                fatalError("Failed to initialize a valid remote via the default WordPress.com account.")
+        guard let api = defaultWordPressComAccount()?.wordPressComRestApi  else {
+            fatalError("Failed to initialize a valid remote via the default WordPress.com account.")
         }
+
+        let remote = AccountServiceRemoteREST(wordPressComRestApi: api)
         remote.connectToSocialService(service, serviceIDToken: token, oAuthClientID: ApiCredentials.client(), oAuthClientSecret: ApiCredentials.secret(), success: success, failure: failure)
     }
 
@@ -23,10 +24,11 @@ extension AccountService {
     ///     - success
     ///     - failure
     func disconnectFromSocialService(_ service: SocialServiceName, success:@escaping (() -> Void), failure:@escaping ((NSError) -> Void)) {
-        guard let api = defaultWordPressComAccount()?.wordPressComRestApi,
-            let remote = AccountServiceRemoteREST(wordPressComRestApi: api) else {
-                fatalError("Failed to initialize a valid remote via the default WordPress.com account.")
+        guard let api = defaultWordPressComAccount()?.wordPressComRestApi else {
+            fatalError("Failed to initialize a valid remote via the default WordPress.com account.")
         }
+
+        let remote = AccountServiceRemoteREST(wordPressComRestApi: api)
         remote.disconnectFromSocialService(service, oAuthClientID: ApiCredentials.client(), oAuthClientSecret: ApiCredentials.secret(), success: success, failure: failure)
     }
 
