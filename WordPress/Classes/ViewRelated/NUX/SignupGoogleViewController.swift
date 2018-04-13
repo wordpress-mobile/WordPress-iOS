@@ -70,26 +70,24 @@ extension SignupGoogleViewController: GIDSignInDelegate {
 
         SVProgressHUD.show(withStatus: NSLocalizedString("Completing Signup", comment: "Shown while the app waits for the site creation process to complete."))
 
-        let context = ContextManager.sharedInstance().mainContext
-        let service = SignupService(managedObjectContext: context)
-        let credentials = WordPressCredentials.wpcom(username: email, authToken: token, isJetpackLogin: isJetpackLogin, multifactor: false)
+        let service = SignupService()
+        let isJetpackLogin = self.isJetpackLogin
 
-        service.createWPComUserWithGoogle(token: token, success: { [weak self] (accountCreated) in
-            SVProgressHUD.dismiss()
+        service.createWPComUser(googleToken: token, success: { [weak self] accountCreated, username, wpcomToken in
+
+            let credentials = WordPressCredentials.wpcom(username: email, authToken: wpcomToken, isJetpackLogin: isJetpackLogin, multifactor: false)
             if accountCreated {
                 self?.showSignupEpilogue(for: credentials)
+                WordPressAuthenticator.track(.createdAccount)
                 WordPressAuthenticator.track(.signupSocialSuccess)
             } else {
                 self?.showLoginEpilogue(for: credentials)
                 WordPressAuthenticator.track(.loginSocialSuccess)
             }
-        }) { [weak self] (error) in
+        }) { [weak self] error in
             SVProgressHUD.dismiss()
             WPAnalytics.track(.signupSocialFailure)
-            guard let error = error else {
-                self?.navigationController?.popViewController(animated: true)
-                return
-            }
+
             self?.titleLabel?.textColor = WPStyleGuide.errorRed()
             self?.titleLabel?.text = NSLocalizedString("Google sign up failed.",
                                                        comment: "Message shown on screen after the Google sign up process failed.")
