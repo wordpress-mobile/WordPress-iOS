@@ -30,8 +30,7 @@
 - (void)getMediaLibraryWithSuccess:(void (^)(NSArray *))success
                            failure:(void (^)(NSError *))failure
 {
-    NSMutableArray * mediaResult = [[NSMutableArray alloc] init];
-    [self getMediaLibraryStartOffset:0 media:mediaResult success:success failure:failure];
+    [self getMediaLibraryStartOffset:0 media:@[] success:success failure:failure];
 }
 
 - (void)getMediaLibraryStartOffset:(NSUInteger)offset
@@ -50,22 +49,18 @@
               parameters:parameters
                  success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                      NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
-                     if (success) {
-                         NSArray *pageMedia = [self remoteMediaFromXMLRPCArray:responseObject];
-                         NSMutableArray *resultMedia = [NSMutableArray arrayWithArray:media];
-                         if (pageMedia.count > 0) {
-                             [resultMedia addObjectsFromArray: pageMedia];
-                         }
-                         // Did we got all the items we requested or it's finished?
-                         if (pageMedia.count < pageSize) {
-                             if (success) {
-                                 success(resultMedia);
-                             }
-                             return;
-                         }
-                         NSUInteger newOffset = offset + pageSize;
-                         [self getMediaLibraryStartOffset:newOffset media:resultMedia success: success failure: failure];
+                     if (!success) {
+                         return;
                      }
+                     NSArray *pageMedia = [self remoteMediaFromXMLRPCArray:responseObject];
+                     NSArray *resultMedia = [media arrayByAddingObjectsFromArray:pageMedia];
+                     // Did we got all the items we requested or it's finished?
+                     if (pageMedia.count < pageSize) {
+                         success(resultMedia);
+                         return;
+                     }
+                     NSUInteger newOffset = offset + pageSize;
+                     [self getMediaLibraryStartOffset:newOffset media:resultMedia success: success failure: failure];                     
                  }
                  failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                      if (failure) {
