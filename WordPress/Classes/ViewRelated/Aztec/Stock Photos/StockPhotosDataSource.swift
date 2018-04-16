@@ -7,7 +7,6 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
 
     fileprivate var photosMedia = [StockPhotosMedia]()
     var observers = [String: WPMediaChangesBlock]()
-    //private let service: StockPhotosService
     private var dataLoader: StockPhotosDataLoader?
 
     private let throttle = Throttle(seconds: 1)
@@ -117,9 +116,15 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
 // MARK: - Helpers
 
 extension StockPhotosDataSource {
-    private func notifyObservers() {
+//    private func notifyObservers() {
+//        observers.forEach {
+//            $0.value(false, IndexSet(), IndexSet(), IndexSet(), [])
+//        }
+//    }
+
+    private func notifyObservers(incremental: Bool = false, inserted: IndexSet = IndexSet()) {
         observers.forEach {
-            $0.value(false, IndexSet(), IndexSet(), IndexSet(), [])
+            $0.value(incremental, IndexSet(), inserted, IndexSet(), [])
         }
     }
 }
