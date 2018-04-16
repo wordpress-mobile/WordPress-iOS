@@ -32,8 +32,14 @@ class MediaThumbnailService: LocalCoreDataService {
     ///
     @objc func thumbnailURL(forMedia media: Media, preferredSize: CGSize, onCompletion: @escaping OnThumbnailURL, onError: OnError?) {
         managedObjectContext.perform {
-            guard let objectInContext = try? self.managedObjectContext.existingObject(with: media.objectID),
-                let mediaInContext =  objectInContext as? Media else {
+            var objectInContext: NSManagedObject?
+            do {
+                objectInContext = try self.managedObjectContext.existingObject(with: media.objectID)
+            } catch {
+                onError?(error)
+                return
+            }
+            guard let mediaInContext = objectInContext as? Media else {
                 return
             }
             // Configure a thumbnail exporter.
