@@ -35,8 +35,10 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
 
     private func search(_ params: StockPhotosSearchParams) {
         DispatchQueue.main.async { [weak self] in
-            self?.service.search(params: params) { (result) in
-                self?.searchCompleted(result: result)
+            self?.service.search(params: params) { resultsPage in
+                if let content = resultsPage.content() {
+                    self?.searchCompleted(result: content)
+                }
             }
         }
     }
