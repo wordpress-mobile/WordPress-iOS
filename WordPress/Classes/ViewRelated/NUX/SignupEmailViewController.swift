@@ -4,7 +4,7 @@ import WordPressShared
 
 class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
 
-    // MARK: - SigninKeyboardResponder Properties
+    // MARK: - NUXKeyboardResponder Properties
 
     @IBOutlet weak var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet weak var verticalCenterConstraint: NSLayoutConstraint?
