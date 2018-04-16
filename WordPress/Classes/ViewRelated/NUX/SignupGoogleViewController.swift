@@ -58,6 +58,7 @@ extension SignupGoogleViewController: GIDSignInDelegate {
         guard let user = user,
             let token = user.authentication.idToken,
             let email = user.profile.email else {
+                WordPressAuthenticator.track(.signupSocialButtonFailure, error: error)
                 self.navigationController?.popViewController(animated: true)
                 return
         }
