@@ -62,7 +62,6 @@ class NUXAbstractViewController: UIViewController, NUXSegueHandler, LoginWithLog
         case showLinkMailView
         case show2FA
         case showDomains
-        case showCreateSite
     }
 
     /// The Helpshift tag to track the origin of user conversations
