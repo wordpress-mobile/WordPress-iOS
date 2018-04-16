@@ -42,9 +42,6 @@ final class DefaultStockPhotosService: StockPhotosService {
 
     func search(params: StockPhotosSearchParams, completion: @escaping (StockPhotosResultsPage) -> Void) {
         api.GET(endPoint, parameters: parameters(params: params), success: { results, response in
-            print("============== results ===========")
-            print(results)
-            print("////////////// results ===========")
             if let media = results[ParsingKeys.media], let meta = results[ParsingKeys.meta] {
                 do {
                     let mediaJSON = try JSONSerialization.data(withJSONObject: media as Any)
@@ -76,6 +73,7 @@ final class DefaultStockPhotosService: StockPhotosService {
         let pageSize = params.pageable?.pageSize() ?? 10
         let pageIndex = params.pageable?.pageIndex() ?? 0
 
+        print("==== page size: \(pageSize) - \(pageIndex)")
         return [Parameters.search: text as AnyObject,
                 Parameters.resultsPerPage: pageSize as AnyObject,
                 Parameters.pageIndex: pageIndex as AnyObject]
