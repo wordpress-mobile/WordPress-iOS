@@ -3,10 +3,15 @@ import WPMediaPicker
 
 /// Data Source for Stock Photos
 final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
+    fileprivate static let paginationThreshold = 10
 
-    var photosMedia = [StockPhotosMedia]()
+    fileprivate var photosMedia = [StockPhotosMedia]()
     var observers = [String: WPMediaChangesBlock]()
     private let service: StockPhotosService
+
+    private lazy var currentPageable: Pageable = {
+        return StockPhotosPageable(number: 50, pageHandle: 0)
+    }()
 
     private let throttle = Throttle(seconds: 1)
 
@@ -56,6 +61,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     }
 
     func media(at index: Int) -> WPMediaAsset {
+        fetchMoreContentIfNecessary(index)
         return photosMedia[index]
     }
 
@@ -128,5 +134,17 @@ extension StockPhotosDataSource {
         observers.forEach {
             $0.value(false, IndexSet(), IndexSet(), IndexSet(), [])
         }
+    }
+}
+
+extension StockPhotosDataSource {
+    fileprivate func fetchMoreContentIfNecessary(_ index: Int) {
+        if shoudLoadMore(index) {
+            print(" ==== must load new page")
+        }
+    }
+
+    private func shoudLoadMore(_ index: Int) -> Bool {
+        return index + type(of: self).paginationThreshold >= numberOfAssets()
     }
 }
