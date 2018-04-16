@@ -19,6 +19,9 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
         }
     }
 
+    private enum Constants {
+        static let headsUpDismissDelay = TimeInterval(1)
+    }
 
     // MARK: - Lifecycle Methods
 
@@ -240,7 +243,8 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
 
     @IBAction func handleSendVerificationButtonTapped(_ sender: UIButton) {
         let message = NSLocalizedString("SMS Sent", comment: "One Time Code has been sent via SMS")
-        SVProgressHUD.showDismissibleSuccess(withStatus: message)
+        SVProgressHUD.showSuccess(withStatus: message)
+        SVProgressHUD.dismiss(withDelay: Constants.headsUpDismissDelay)
 
         if let _ = loginFields.nonceInfo {
             // social login

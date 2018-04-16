@@ -99,11 +99,7 @@ class LoginPrologueViewController: LoginViewController {
     // MARK: - Actions
 
     @IBAction func signupTapped() {
-        if WordPressAuthenticator.shared.configuration.supportsSocialSignup {
-            performSegue(withIdentifier: NUXViewController.SegueIdentifier.showSignupMethod.rawValue, sender: self)
-        } else {
-            performSegue(withIdentifier: "showSigninV1", sender: self)
-        }
+        performSegue(withIdentifier: NUXViewController.SegueIdentifier.showSignupMethod.rawValue, sender: self)
     }
 
     override func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {

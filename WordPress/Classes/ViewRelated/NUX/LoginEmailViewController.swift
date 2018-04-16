@@ -551,18 +551,10 @@ extension LoginEmailViewController: LoginSocialErrorViewControllerDelegate {
     func retryAsSignup() {
         cleanupAfterSocialErrors()
 
-        if WordPressAuthenticator.shared.configuration.supportsSocialSignup {
-            let storyboard = UIStoryboard(name: "Signup", bundle: nil)
-            if let controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? SignupEmailViewController {
-                controller.loginFields = loginFields
-                navigationController?.pushViewController(controller, animated: true)
-            }
-        } else {
-            let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            if let controller = storyboard.instantiateViewController(withIdentifier: "SignupViewController") as? NUXAbstractViewController {
-                controller.loginFields = loginFields
-                navigationController?.pushViewController(controller, animated: true)
-            }
+        let storyboard = UIStoryboard(name: "Signup", bundle: nil)
+        if let controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? SignupEmailViewController {
+            controller.loginFields = loginFields
+            navigationController?.pushViewController(controller, animated: true)
         }
     }
 }

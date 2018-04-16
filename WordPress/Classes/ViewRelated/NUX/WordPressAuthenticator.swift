@@ -133,10 +133,6 @@ public struct WordPressAuthenticatorConfiguration {
     /// Indicates if Jetpack Signup is allowed, or not.
     ///
     let supportsJetpackSignup: Bool
-
-    /// Indicates if Social Signup is allowed, or not.
-    ///
-    let supportsSocialSignup: Bool
 }
 
 

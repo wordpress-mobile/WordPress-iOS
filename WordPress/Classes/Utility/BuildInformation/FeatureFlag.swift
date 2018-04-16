@@ -3,7 +3,6 @@
 @objc
 enum FeatureFlag: Int {
     case exampleFeature
-    case socialSignup
     case jetpackDisconnect
     case jetpackSignup
     case activity
@@ -14,8 +13,6 @@ enum FeatureFlag: Int {
     var enabled: Bool {
         switch self {
         case .exampleFeature:
-            return true
-        case .socialSignup:
             return true
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
