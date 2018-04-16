@@ -10,8 +10,6 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     //private let service: StockPhotosService
     private var dataLoader: StockPhotosDataLoader?
 
-    private var pageable: Pageable?
-
     private let throttle = Throttle(seconds: 1)
 
     fileprivate enum State {
@@ -41,8 +39,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
 
     func search(for searchText: String?) {
         throttle.throttle { [weak self] in
-            self?.pageable = StockPhotosPageable.initial()
-            let params = StockPhotosSearchParams(text: searchText, pageable: self?.pageable)
+            let params = StockPhotosSearchParams(text: searchText, pageable: StockPhotosPageable.initial())
             self?.search(params)
         }
     }
@@ -139,11 +136,6 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
 // MARK: - Helpers
 
 extension StockPhotosDataSource {
-//    private func searchCompleted(result: [StockPhotosMedia]) {
-//        photosMedia = result
-//        notifyObservers()
-//    }
-
     private func notifyObservers() {
         observers.forEach {
             $0.value(false, IndexSet(), IndexSet(), IndexSet(), [])
@@ -165,17 +157,7 @@ extension StockPhotosDataSource {
         }
 
         if shoudLoadMore(index) {
-
-
-//            guard let pageable = pageable else {
-//                return
-//            }
-//
-//            guard state == .idle else {
-//                return
-//            }
-//
-//            print(" ==== must load new page ===")
+            dataLoader?.loadNextPage()
         }
     }
 
