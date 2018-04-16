@@ -889,6 +889,10 @@
 		D80BC7A4207487F200614A59 /* MediaLibraryPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BC7A3207487F200614A59 /* MediaLibraryPicker.swift */; };
 		D80EE63A203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80EE639203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift */; };
 		D81322B32050F9110067714D /* NotificationName+Names.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81322B22050F9110067714D /* NotificationName+Names.swift */; };
+		D83CA3A520842CAF0060E310 /* Pageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A420842CAF0060E310 /* Pageable.swift */; };
+		D83CA3A720842CD90060E310 /* ResultsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A620842CD90060E310 /* ResultsPage.swift */; };
+		D83CA3A920842D190060E310 /* StockPhotosPageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A820842D190060E310 /* StockPhotosPageable.swift */; };
+		D83CA3AB20842E5F0060E310 /* StockPhotosResultsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3AA20842E5F0060E310 /* StockPhotosResultsPage.swift */; };
 		D8A3A5AA2069E53900992576 /* AztecMediaPickingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5A92069E53900992576 /* AztecMediaPickingCoordinator.swift */; };
 		D8A3A5AC2069FE5B00992576 /* StockPhotosStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5AB2069FE5B00992576 /* StockPhotosStrings.swift */; };
 		D8A3A5AF206A442800992576 /* StockPhotosDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5AE206A442800992576 /* StockPhotosDataSource.swift */; };
@@ -2434,6 +2438,10 @@
 		D80BC7A3207487F200614A59 /* MediaLibraryPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaLibraryPicker.swift; sourceTree = "<group>"; };
 		D80EE639203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderFollowedSitesStreamHeaderTests.swift; sourceTree = "<group>"; };
 		D81322B22050F9110067714D /* NotificationName+Names.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Names.swift"; sourceTree = "<group>"; };
+		D83CA3A420842CAF0060E310 /* Pageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pageable.swift; sourceTree = "<group>"; };
+		D83CA3A620842CD90060E310 /* ResultsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsPage.swift; sourceTree = "<group>"; };
+		D83CA3A820842D190060E310 /* StockPhotosPageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosPageable.swift; sourceTree = "<group>"; };
+		D83CA3AA20842E5F0060E310 /* StockPhotosResultsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosResultsPage.swift; sourceTree = "<group>"; };
 		D8A3A5A92069E53900992576 /* AztecMediaPickingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AztecMediaPickingCoordinator.swift; sourceTree = "<group>"; };
 		D8A3A5AB2069FE5B00992576 /* StockPhotosStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosStrings.swift; sourceTree = "<group>"; };
 		D8A3A5AE206A442800992576 /* StockPhotosDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosDataSource.swift; sourceTree = "<group>"; };
@@ -3338,7 +3346,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				E1B34C091CCDFFCE00889709 /* Credentials */,
@@ -5630,6 +5638,10 @@
 				D8A3A5B6206A563900992576 /* StockPhotosPlaceholder.swift */,
 				D8B43E6F206B439F00DDAFAA /* MediaPickingOptionsDelegate.swift */,
 				D80BC79D20746B4100614A59 /* MediaPickingContext.swift */,
+				D83CA3A420842CAF0060E310 /* Pageable.swift */,
+				D83CA3A620842CD90060E310 /* ResultsPage.swift */,
+				D83CA3A820842D190060E310 /* StockPhotosPageable.swift */,
+				D83CA3AA20842E5F0060E310 /* StockPhotosResultsPage.swift */,
 			);
 			path = "Stock Photos";
 			sourceTree = "<group>";
@@ -6318,7 +6330,7 @@
 				7457666E202B558C00F42E40 /* Sources */,
 				7457666F202B558C00F42E40 /* Frameworks */,
 				74576670202B558C00F42E40 /* Resources */,
-				BD7C837518AC26BD00B4C577 /* [CP] Copy Pods Resources */,
+				8215E281A76DA55A95999EA4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -6355,7 +6367,7 @@
 				932225A31C7CE50300443B02 /* Sources */,
 				932225A41C7CE50300443B02 /* Frameworks */,
 				932225A51C7CE50300443B02 /* Resources */,
-				EDE7CBC307936CBCE96B1707 /* [CP] Copy Pods Resources */,
+				77D92BDB2EA092BEBF1C5D72 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -6374,7 +6386,7 @@
 				93E5283619A7741A003A1A9C /* Sources */,
 				93E5283719A7741A003A1A9C /* Frameworks */,
 				93E5283819A7741A003A1A9C /* Resources */,
-				A97537AA9BD857609985AD74 /* [CP] Copy Pods Resources */,
+				04A1779DA36E811DC84F20E3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -6394,7 +6406,7 @@
 				E16AB92614D978240047A2E5 /* Frameworks */,
 				E16AB92714D978240047A2E5 /* Resources */,
 				C83A75A58AD5896466A771BE /* [CP] Embed Pods Frameworks */,
-				CEAFB620C7C0319097DF75AE /* [CP] Copy Pods Resources */,
+				AE941887295EC766C17EEEC0 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -6570,7 +6582,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -6801,6 +6813,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		04A1779DA36E811DC84F20E3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		37399571B0D91BBEAE911024 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -6917,6 +6944,36 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		77D92BDB2EA092BEBF1C5D72 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8215E281A76DA55A95999EA4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressDraftActionExtension/Pods-WordPressDraftActionExtension-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		825F0EBF1F7EBF7C00321528 /* App Icons: Add Version For Internal Releases */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -6995,7 +7052,7 @@
 			shellScript = "# sh ../run-oclint.sh <optional: filename to lint>\nsh ../Scripts/run-oclint.sh";
 			showEnvVarsInLog = 0;
 		};
-		A97537AA9BD857609985AD74 /* [CP] Copy Pods Resources */ = {
+		AE941887295EC766C17EEEC0 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -7007,22 +7064,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BD7C837518AC26BD00B4C577 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressDraftActionExtension/Pods-WordPressDraftActionExtension-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C83A75A58AD5896466A771BE /* [CP] Embed Pods Frameworks */ = {
@@ -7049,21 +7091,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CEAFB620C7C0319097DF75AE /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E00F6488DE2D86BDC84FBB0B /* [CP] Check Pods Manifest.lock */ = {
@@ -7134,21 +7161,6 @@
 			shellScript = "[ -f ~/.wpcom_app_credentials ] && source ~/.wpcom_app_credentials\n \nif [[ \"Debug\" == \"${CONFIGURATION}\" ]]; then\n  echo \"Skipping Fabric\";\n  exit 0;\nfi\n \nif [ \"x$FABRIC_SCRIPT_KEY\" != \"x\" ]; then\n  \"${PODS_ROOT}/Fabric/run\" $FABRIC_SCRIPT_KEY\nelse\n  echo \"warning: Fabric API Key not found\"\nfi";
 			showEnvVarsInLog = 0;
 		};
-		EDE7CBC307936CBCE96B1707 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		FFA8E2301F94E3EF0002170F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -7209,6 +7221,7 @@
 				FA77E02A1BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift in Sources */,
 				1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */,
 				98A437B0200693C0004A8A57 /* SiteCreationDomainsViewController.swift in Sources */,
+				D83CA3AB20842E5F0060E310 /* StockPhotosResultsPage.swift in Sources */,
 				B54A6BD62045FFD3001D2A37 /* WordPressAuthenticator+Notifications.swift in Sources */,
 				E102B7901E714F24007928E8 /* RecentSitesService.swift in Sources */,
 				E1D7FF381C74EB0E00E7E5E5 /* PlanService.swift in Sources */,
@@ -7502,6 +7515,7 @@
 				438A809C1EA5DB88005D4651 /* LoginLinkRequestViewController.swift in Sources */,
 				4322A20D203E1885004EA740 /* SignupUsernameTableViewController.swift in Sources */,
 				E14BCABB1E0BC817002E0603 /* Delay.swift in Sources */,
+				D83CA3A520842CAF0060E310 /* Pageable.swift in Sources */,
 				598DD1711B97985700146967 /* ThemeBrowserCell.swift in Sources */,
 				B5A05AD91CA48601002EC787 /* ImageCropViewController.swift in Sources */,
 				E6E27D621C6144DB0063F821 /* SharingButton.swift in Sources */,
@@ -7677,6 +7691,7 @@
 				31EC15081A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m in Sources */,
 				FF5371631FDFF64F00619A3F /* MediaService.swift in Sources */,
 				5DAFEAB81AF2CA6E00B3E1D7 /* PostMetaButton.m in Sources */,
+				D83CA3A720842CD90060E310 /* ResultsPage.swift in Sources */,
 				434D960A1EA959BF00B90B89 /* LoginSelfHostedViewController.swift in Sources */,
 				85C720B11730CEFA00460645 /* WPWalkthroughTextField.m in Sources */,
 				08D978551CD2AF7D0054F19A /* Menu+ViewDesign.m in Sources */,
@@ -7700,6 +7715,7 @@
 				B5A6CEA619FA800E009F07DE /* AccountToAccount20to21.swift in Sources */,
 				08216FAB1CDBF95100304BA7 /* MenuItemEditingViewController.m in Sources */,
 				E68191491F856B910055E197 /* LoginFields.swift in Sources */,
+				D83CA3A920842D190060E310 /* StockPhotosPageable.swift in Sources */,
 				E62079DF1CF79FC200F5CD46 /* ReaderSearchSuggestion.swift in Sources */,
 				E1F391EF1FF25E0C00DB32A3 /* JetpackConnectionWebViewController.swift in Sources */,
 				85B6F74F1742DA1E00CE7F3A /* WPNUXMainButton.m in Sources */,
@@ -8999,7 +9015,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				WPCOM_CONFIG = $HOME/.wpcom_alpha_app_credentials;
+				WPCOM_CONFIG = "$HOME/.wpcom_alpha_app_credentials";
 			};
 			name = "Release-Alpha";
 		};
@@ -9474,7 +9490,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				WPCOM_CONFIG = $HOME/.wpcom_internal_app_credentials;
+				WPCOM_CONFIG = "$HOME/.wpcom_internal_app_credentials";
 			};
 			name = "Release-Internal";
 		};
@@ -9817,7 +9833,7 @@
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 3.0;
-				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
+				WPCOM_CONFIG = "$HOME/.wpcom_app_credentials";
 			};
 			name = Debug;
 		};
@@ -9867,7 +9883,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
+				WPCOM_CONFIG = "$HOME/.wpcom_app_credentials";
 			};
 			name = Release;
 		};
