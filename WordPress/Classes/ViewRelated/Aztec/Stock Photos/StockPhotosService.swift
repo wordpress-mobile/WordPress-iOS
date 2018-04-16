@@ -1,7 +1,3 @@
-
-import Foundation
-
-
 /// Encapsulates search parameters (text, pagination, etc)
 struct StockPhotosSearchParams {
     let text: String
@@ -12,7 +8,6 @@ struct StockPhotosSearchParams {
         self.pageable = pageable
     }
 }
-
 
 /// Abstracts the service used to fetch Stock Photos
 protocol StockPhotosService {
@@ -77,7 +72,6 @@ final class DefaultStockPhotosService: StockPhotosService {
 }
 
 // MARK: - Temporary mock for testing
-
 final class StockPhotosServiceMock: StockPhotosService {
     func search(params: StockPhotosSearchParams, completion: @escaping (StockPhotosResultsPage) -> Void) {
         let text = params.text
