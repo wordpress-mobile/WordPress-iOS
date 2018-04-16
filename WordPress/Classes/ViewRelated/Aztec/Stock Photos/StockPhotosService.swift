@@ -72,9 +72,13 @@ final class DefaultStockPhotosService: StockPhotosService {
     }
 
     private func parameters(params: StockPhotosSearchParams) -> [String: AnyObject] {
-        return [Parameters.search: params.text as AnyObject,
-                Parameters.resultsPerPage: 50 as AnyObject,
-                Parameters.pageIndex: 0 as AnyObject]
+        let text = params.text
+        let pageSize = params.pageable?.pageSize() ?? 10
+        let pageIndex = params.pageable?.pageIndex() ?? 0
+
+        return [Parameters.search: text as AnyObject,
+                Parameters.resultsPerPage: pageSize as AnyObject,
+                Parameters.pageIndex: pageIndex as AnyObject]
     }
 }
 
