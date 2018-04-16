@@ -85,7 +85,7 @@ extension SignupGoogleViewController: GIDSignInDelegate {
             }
         }) { [weak self] (error) in
             SVProgressHUD.dismiss()
-            WPAnalytics.track(.signupSocialFailure)
+            WordPressAuthenticator.track(.signupSocialFailure)
             guard let error = error else {
                 self?.navigationController?.popViewController(animated: true)
                 return
