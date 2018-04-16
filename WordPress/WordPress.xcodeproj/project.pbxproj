@@ -893,6 +893,7 @@
 		D83CA3A720842CD90060E310 /* ResultsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A620842CD90060E310 /* ResultsPage.swift */; };
 		D83CA3A920842D190060E310 /* StockPhotosPageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A820842D190060E310 /* StockPhotosPageable.swift */; };
 		D83CA3AB20842E5F0060E310 /* StockPhotosResultsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3AA20842E5F0060E310 /* StockPhotosResultsPage.swift */; };
+		D83CA3B02084CAAF0060E310 /* StockPhotosDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3AF2084CAAF0060E310 /* StockPhotosDataLoader.swift */; };
 		D8A3A5AA2069E53900992576 /* AztecMediaPickingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5A92069E53900992576 /* AztecMediaPickingCoordinator.swift */; };
 		D8A3A5AC2069FE5B00992576 /* StockPhotosStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5AB2069FE5B00992576 /* StockPhotosStrings.swift */; };
 		D8A3A5AF206A442800992576 /* StockPhotosDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5AE206A442800992576 /* StockPhotosDataSource.swift */; };
@@ -2442,6 +2443,7 @@
 		D83CA3A620842CD90060E310 /* ResultsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsPage.swift; sourceTree = "<group>"; };
 		D83CA3A820842D190060E310 /* StockPhotosPageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosPageable.swift; sourceTree = "<group>"; };
 		D83CA3AA20842E5F0060E310 /* StockPhotosResultsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosResultsPage.swift; sourceTree = "<group>"; };
+		D83CA3AF2084CAAF0060E310 /* StockPhotosDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosDataLoader.swift; sourceTree = "<group>"; };
 		D8A3A5A92069E53900992576 /* AztecMediaPickingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AztecMediaPickingCoordinator.swift; sourceTree = "<group>"; };
 		D8A3A5AB2069FE5B00992576 /* StockPhotosStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosStrings.swift; sourceTree = "<group>"; };
 		D8A3A5AE206A442800992576 /* StockPhotosDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosDataSource.swift; sourceTree = "<group>"; };
@@ -3346,7 +3348,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				E1B34C091CCDFFCE00889709 /* Credentials */,
@@ -5642,6 +5644,7 @@
 				D83CA3A620842CD90060E310 /* ResultsPage.swift */,
 				D83CA3A820842D190060E310 /* StockPhotosPageable.swift */,
 				D83CA3AA20842E5F0060E310 /* StockPhotosResultsPage.swift */,
+				D83CA3AF2084CAAF0060E310 /* StockPhotosDataLoader.swift */,
 			);
 			path = "Stock Photos";
 			sourceTree = "<group>";
@@ -6582,7 +6585,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -7788,6 +7791,7 @@
 				E61084C21B9B47BA008050C5 /* ReaderTagTopic.swift in Sources */,
 				B53B02B31CAC3AAC003190A0 /* GravatarPickerViewController.swift in Sources */,
 				E6D2E1691B8AAD9B0000ED14 /* ReaderListStreamHeader.swift in Sources */,
+				D83CA3B02084CAAF0060E310 /* StockPhotosDataLoader.swift in Sources */,
 				E66969DA1B9E55AB00EC9C00 /* ReaderTopicToReaderTagTopic37to38.swift in Sources */,
 				172797D91CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift in Sources */,
 				4349B2661EE21F560075809A /* LoginProloguePageViewController.swift in Sources */,
@@ -9015,7 +9019,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				WPCOM_CONFIG = "$HOME/.wpcom_alpha_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_alpha_app_credentials;
 			};
 			name = "Release-Alpha";
 		};
@@ -9490,7 +9494,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				WPCOM_CONFIG = "$HOME/.wpcom_internal_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_internal_app_credentials;
 			};
 			name = "Release-Internal";
 		};
@@ -9833,7 +9837,7 @@
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 3.0;
-				WPCOM_CONFIG = "$HOME/.wpcom_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
 			name = Debug;
 		};
@@ -9883,7 +9887,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				WPCOM_CONFIG = "$HOME/.wpcom_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
 			name = Release;
 		};
