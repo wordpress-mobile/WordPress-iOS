@@ -5,11 +5,11 @@ import Foundation
 /// Encapsulates search parameters (text, pagination, etc)
 struct StockPhotosSearchParams {
     let text: String
-    let pageable: Pageable
+    let pageable: Pageable?
 
     init(text: String?, pageable: Pageable?) {
         self.text = text ?? ""
-        self.pageable = pageable ?? StockPhotosPageable.initial()
+        self.pageable = pageable
     }
 }
 
