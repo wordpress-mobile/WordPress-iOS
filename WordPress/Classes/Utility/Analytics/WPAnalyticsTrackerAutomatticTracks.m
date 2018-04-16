@@ -63,12 +63,16 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         return;
     }
 
-    DDLogInfo(@"🔵 Tracked: %@", eventPair.eventName);
-
     NSMutableDictionary *mergedProperties = [NSMutableDictionary new];
 
     [mergedProperties addEntriesFromDictionary:eventPair.properties];
     [mergedProperties addEntriesFromDictionary:properties];
+
+    if (eventPair.properties == nil && properties == nil) {
+        DDLogInfo(@"🔵 Tracked: %@", eventPair.eventName);
+    } else {
+        DDLogInfo(@"🔵 Tracked: %@, properties: %@", eventPair.eventName, mergedProperties);
+    }
 
     [self.tracksService trackEventName:eventPair.eventName withCustomProperties:mergedProperties];
 }
