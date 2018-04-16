@@ -9,9 +9,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     var observers = [String: WPMediaChangesBlock]()
     private let service: StockPhotosService
 
-    private lazy var currentPageable: Pageable = {
-        return StockPhotosPageable(number: 50, pageHandle: 0)
-    }()
+    private var pageable: Pageable?
 
     private let throttle = Throttle(seconds: 1)
 
@@ -33,7 +31,8 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
 
     func search(for searchText: String?) {
         throttle.throttle { [weak self] in
-            let params = StockPhotosSearchParams(text: searchText ?? "")
+            self?.pageable = StockPhotosPageable.initial()
+            let params = StockPhotosSearchParams(text: searchText, pageable: self?.pageable)
             self?.search(params)
         }
     }
@@ -41,6 +40,8 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     private func search(_ params: StockPhotosSearchParams) {
         DispatchQueue.main.async { [weak self] in
             self?.service.search(params: params) { resultsPage in
+                self?.pageable = resultsPage.nextPageable()
+
                 if let content = resultsPage.content() {
                     self?.searchCompleted(result: content)
                 }
@@ -140,7 +141,12 @@ extension StockPhotosDataSource {
 extension StockPhotosDataSource {
     fileprivate func fetchMoreContentIfNecessary(_ index: Int) {
         if shoudLoadMore(index) {
-            print(" ==== must load new page")
+
+            guard let pageable = pageable else {
+                return
+            }
+
+            print(" ==== must load new page ===")
         }
     }
 
