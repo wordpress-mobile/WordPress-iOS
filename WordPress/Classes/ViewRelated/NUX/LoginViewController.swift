@@ -84,6 +84,18 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
 
     // MARK: - Epilogue
 
+    func showSignupEpilogue(for credentials: WordPressCredentials) {
+        guard let navigationController = navigationController else {
+            fatalError()
+        }
+
+        let service = loginFields.meta.googleUser.flatMap {
+            return SocialService.google(user: $0)
+        }
+
+        authenticationDelegate.presentSignupEpilogue(in: navigationController, for: credentials, service: service)
+    }
+
     func showLoginEpilogue(for credentials: WordPressCredentials) {
         guard let navigationController = navigationController else {
             fatalError()
@@ -184,7 +196,7 @@ extension LoginViewController {
             }
 
             if self.mustShowSignupEpilogue() {
-                self.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
+                self.showSignupEpilogue(for: credentials)
             } else if self.mustShowLoginEpilogue() {
                 self.showLoginEpilogue(for: credentials)
             } else {
