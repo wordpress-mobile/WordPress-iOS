@@ -6,7 +6,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
 
     var photosMedia = [StockPhotosMedia]()
     var observers = [String: WPMediaChangesBlock]()
-    let service: StockPhotosService
+    private let service: StockPhotosService
 
     private let throttle = Throttle(seconds: 1)
 
