@@ -13,6 +13,10 @@ typedef enum {
 
 @interface PostSettingsViewController ()
 
-@property (nonatomic, strong) NSArray *sections;
+@property (nonnull, nonatomic, strong) NSArray *sections;
+
+@property (nullable, nonatomic, strong) NSProgress *featuredImageProgress;
+
+@property (nonatomic, assign) BOOL isUploadingMedia;
 
 @end
