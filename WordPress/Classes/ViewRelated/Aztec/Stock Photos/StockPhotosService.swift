@@ -50,10 +50,6 @@ final class DefaultStockPhotosService: StockPhotosService {
                     let metaJSON = try JSONSerialization.data(withJSONObject: meta as Any)
                     let parsedPageable = try JSONDecoder().decode(StockPhotosPageable.self, from: metaJSON)
 
-                    print("===== parsedPageable =====" )
-                    print(parsedPageable)
-                    print("///// parsedPageable =====" )
-
                     let page = StockPhotosResultsPage(results: parsedResponse, pageable: parsedPageable)
 
                     completion(page)

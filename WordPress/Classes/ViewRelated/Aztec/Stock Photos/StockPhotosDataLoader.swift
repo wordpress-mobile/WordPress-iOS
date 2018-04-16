@@ -3,6 +3,7 @@ protocol StockPhotosDataLoaderDelegate: class {
 }
 
 
+/// Tracks pagination status
 final class StockPhotosDataLoader {
     private let service: StockPhotosService
     private weak var delegate: StockPhotosDataLoaderDelegate?
