@@ -70,8 +70,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 @property (nonatomic, strong) UIImage *featuredImage;
 @property (nonatomic, strong) PublishDatePickerView *datePicker;
 @property (assign) BOOL textFieldDidHaveFocusBeforeOrientationChange;
-@property (nonatomic, assign) BOOL isUploadingMedia;
-@property (nonatomic, strong) NSProgress *featuredImageProgress;
+
 @property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaDataSource;
 @property (nonatomic, strong) NSArray *publicizeConnections;
 
@@ -1305,63 +1304,63 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     cell.textLabel.text = NSLocalizedString(@"Featured Image did not load", @"");
 }
 
-- (void)uploadFeatureImage:(PHAsset *)asset
-{
-    NSProgress * convertingProgress = [NSProgress progressWithTotalUnitCount:1];
-    convertingProgress.localizedDescription = NSLocalizedString(@"Preparing...",@"Label to show while converting and/or resizing media to send to server");
-    self.featuredImageProgress = convertingProgress;
-    __weak __typeof(self) weakSelf = self;
-    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [mediaService createMediaWith:asset
-                         objectID:self.apost.objectID
-                         progress:nil
-                       thumbnailCallback:nil
-                              completion:^(Media *media, NSError * error) {
-        if (!weakSelf) {
-            return;
-        }
-        PostSettingsViewController * strongSelf = weakSelf;
-        strongSelf.featuredImageProgress.completedUnitCount++;
-        if (error) {
-            DDLogError(@"Couldn't export image: %@", [error localizedDescription]);
-            [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
-            strongSelf.isUploadingMedia = NO;
-            return;
-        }
-        [self uploadFeaturedMedia:media];
-    }];
-}
+//- (void)uploadFeatureImage:(PHAsset *)asset
+//{
+//    NSProgress * convertingProgress = [NSProgress progressWithTotalUnitCount:1];
+//    convertingProgress.localizedDescription = NSLocalizedString(@"Preparing...",@"Label to show while converting and/or resizing media to send to server");
+//    self.featuredImageProgress = convertingProgress;
+//    __weak __typeof(self) weakSelf = self;
+//    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+//    [mediaService createMediaWith:asset
+//                         objectID:self.apost.objectID
+//                         progress:nil
+//                       thumbnailCallback:nil
+//                              completion:^(Media *media, NSError * error) {
+//        if (!weakSelf) {
+//            return;
+//        }
+//        PostSettingsViewController * strongSelf = weakSelf;
+//        strongSelf.featuredImageProgress.completedUnitCount++;
+//        if (error) {
+//            DDLogError(@"Couldn't export image: %@", [error localizedDescription]);
+//            [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
+//            strongSelf.isUploadingMedia = NO;
+//            return;
+//        }
+//        [self uploadFeaturedMedia:media];
+//    }];
+//}
 
-- (void)uploadFeaturedMedia:(Media *)media
-{
-    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    NSProgress * progress = nil;
-    __weak __typeof__(self) weakSelf = self;
-    [mediaService uploadMedia:media
-                     progress:&progress
-                      success:^{
-                          __typeof__(self) strongSelf = weakSelf;
-                          strongSelf.isUploadingMedia = NO;
-                          Post *post = (Post *)strongSelf.apost;
-                          post.featuredImage = media;
-                          [strongSelf.tableView reloadData];
-                      } failure:^(NSError *error) {
-                          __typeof__(self) strongSelf = weakSelf;
-                          strongSelf.isUploadingMedia = NO;
-                          [strongSelf.tableView reloadData];
-                          if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled) {
-                              return;
-                          }
-                          [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't upload featured image", @"The title for an alert that says to the user that the featured image he selected couldn't be uploaded.") message:error.localizedDescription];
-                          DDLogError(@"Couldn't upload featured image: %@", [error localizedDescription]);
-                      }];
-    [progress setUserInfoObject:[UIImage imageWithData:[NSData dataWithContentsOfFile:media.absoluteThumbnailLocalURL.path]] forKey:WPProgressImageThumbnailKey];
-    progress.localizedDescription = NSLocalizedString(@"Uploading...",@"Label to show while uploading media to server");
-    progress.kind = NSProgressKindFile;
-    [progress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];
-    self.featuredImageProgress = progress;
-    [self.tableView reloadData];
-}
+//- (void)uploadFeaturedMedia:(Media *)media
+//{
+//    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+//    NSProgress * progress = nil;
+//    __weak __typeof__(self) weakSelf = self;
+//    [mediaService uploadMedia:media
+//                     progress:&progress
+//                      success:^{
+//                          __typeof__(self) strongSelf = weakSelf;
+//                          strongSelf.isUploadingMedia = NO;
+//                          Post *post = (Post *)strongSelf.apost;
+//                          post.featuredImage = media;
+//                          [strongSelf.tableView reloadData];
+//                      } failure:^(NSError *error) {
+//                          __typeof__(self) strongSelf = weakSelf;
+//                          strongSelf.isUploadingMedia = NO;
+//                          [strongSelf.tableView reloadData];
+//                          if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled) {
+//                              return;
+//                          }
+//                          [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't upload featured image", @"The title for an alert that says to the user that the featured image he selected couldn't be uploaded.") message:error.localizedDescription];
+//                          DDLogError(@"Couldn't upload featured image: %@", [error localizedDescription]);
+//                      }];
+//    [progress setUserInfoObject:[UIImage imageWithData:[NSData dataWithContentsOfFile:media.absoluteThumbnailLocalURL.path]] forKey:WPProgressImageThumbnailKey];
+//    progress.localizedDescription = NSLocalizedString(@"Uploading...",@"Label to show while uploading media to server");
+//    progress.kind = NSProgressKindFile;
+//    [progress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];
+//    self.featuredImageProgress = progress;
+//    [self.tableView reloadData];
+//}
 
 - (NSString *)titleForVisibility
 {
@@ -1511,15 +1510,15 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     if ([[assets firstObject] isKindOfClass:[PHAsset class]]){
         PHAsset *asset = [assets firstObject];
         self.isUploadingMedia = YES;
-        [self uploadFeatureImage:asset];
+        [self setFeaturedImageWithAsset:asset];
     } else if ([[assets firstObject] isKindOfClass:[Media class]]){
         Media *media = [assets firstObject];
-        if ([media.mediaID intValue] != 0) {
+        if ([media hasRemote]) {
             Post *post = (Post *)self.apost;
             post.featuredImage = media;
         } else {
             self.isUploadingMedia = YES;
-            [self uploadFeaturedMedia:media];
+            [self setFeaturedImageWithMedia:media];
         }
     }
     
