@@ -8,7 +8,7 @@ struct StockPhotosSearchParams {
 }
 
 
-/// Abstracts the serive used to fetch Stock Photos
+/// Abstracts the service used to fetch Stock Photos
 protocol StockPhotosService {
     func search(params: StockPhotosSearchParams, completion: @escaping ([StockPhotosMedia]) -> Void)
 }
@@ -19,10 +19,13 @@ final class DefaultStockPhotosService: StockPhotosService {
 
     private struct Parameters {
         static let search = "search"
+        static let resultsPerPage = "number"
+        static let pageIndex = "page_handle"
     }
 
     private struct ParsingKeys {
         static let media = "media"
+        static let meta = "meta"
     }
 
     private let api: WordPressComRestApi
@@ -33,10 +36,22 @@ final class DefaultStockPhotosService: StockPhotosService {
 
     func search(params: StockPhotosSearchParams, completion: @escaping ([StockPhotosMedia]) -> Void) {
         api.GET(endPoint, parameters: parameters(params: params), success: { results, response in
-            if let media = results[ParsingKeys.media] {
+            print("============== results ===========")
+            print(results)
+            print("////////////// results ===========")
+            if let media = results[ParsingKeys.media], let meta = results[ParsingKeys.meta] {
                 do {
-                    let json = try JSONSerialization.data(withJSONObject: media as Any)
-                    let parsedResponse = try JSONDecoder().decode([StockPhotosMedia].self, from: json)
+                    let mediaJSON = try JSONSerialization.data(withJSONObject: media as Any)
+                    let parsedResponse = try JSONDecoder().decode([StockPhotosMedia].self, from: mediaJSON)
+
+                    let metaJSON = try JSONSerialization.data(withJSONObject: meta as Any)
+                    let parsedPageable = try JSONDecoder().decode(StockPhotosPageable.self, from: metaJSON)
+
+                    print("===== parsedPageable =====" )
+                    print(parsedPageable)
+                    print("///// parsedPageable =====" )
+
+                    let page = StockPhotosResultsPage(results: parsedResponse, pageable: parsedPageable)
 
                     completion(parsedResponse)
                 } catch {
@@ -51,7 +66,9 @@ final class DefaultStockPhotosService: StockPhotosService {
     }
 
     private func parameters(params: StockPhotosSearchParams) -> [String: AnyObject] {
-        return [Parameters.search: params.text as AnyObject]
+        return [Parameters.search: params.text as AnyObject,
+                Parameters.resultsPerPage: 30 as AnyObject,
+                Parameters.pageIndex: 0 as AnyObject]
     }
 }
 
