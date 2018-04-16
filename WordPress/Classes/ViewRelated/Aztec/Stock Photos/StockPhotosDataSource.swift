@@ -12,16 +12,8 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
 
     private let throttle = Throttle(seconds: 1)
 
-    fileprivate enum State {
-        case loading
-        case idle
-    }
-
-    fileprivate var state: State = .idle
 
     init(service: StockPhotosService) {
-        //self.service = service
-
         super.init()
         self.dataLoader = StockPhotosDataLoader(service: service, delegate: self)
     }
@@ -45,18 +37,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     }
 
     private func search(_ params: StockPhotosSearchParams) {
-        state = .loading
         dataLoader?.search(params)
-//        DispatchQueue.main.async { [weak self] in
-//            self?.service.search(params: params) { resultsPage in
-//                self?.state = .idle
-//                self?.pageable = resultsPage.nextPageable()
-//
-//                if let content = resultsPage.content() {
-//                    self?.searchCompleted(result: content)
-//                }
-//            }
-//        }
     }
 
     func group(at index: Int) -> WPMediaGroup {
@@ -143,19 +124,9 @@ extension StockPhotosDataSource {
     }
 }
 
-extension StockPhotosDataSource: StockPhotosDataLoaderDelegate {
-    func didLoad(media: [StockPhotosMedia]) {
-        photosMedia.append(contentsOf: media)
-        notifyObservers()
-    }
-}
-
+// MARK: - Pagination
 extension StockPhotosDataSource {
     fileprivate func fetchMoreContentIfNecessary(_ index: Int) {
-        guard state == .idle else {
-            return
-        }
-
         if shoudLoadMore(index) {
             dataLoader?.loadNextPage()
         }
@@ -163,5 +134,12 @@ extension StockPhotosDataSource {
 
     private func shoudLoadMore(_ index: Int) -> Bool {
         return index + type(of: self).paginationThreshold >= numberOfAssets()
+    }
+}
+
+extension StockPhotosDataSource: StockPhotosDataLoaderDelegate {
+    func didLoad(media: [StockPhotosMedia]) {
+        photosMedia.append(contentsOf: media)
+        notifyObservers()
     }
 }
