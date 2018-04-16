@@ -5,6 +5,12 @@ import Foundation
 /// Encapsulates search parameters (text, pagination, etc)
 struct StockPhotosSearchParams {
     let text: String
+    let pageable: Pageable
+
+    init(text: String?, pageable: Pageable?) {
+        self.text = text ?? ""
+        self.pageable = pageable ?? StockPhotosPageable.initial()
+    }
 }
 
 
@@ -67,7 +73,7 @@ final class DefaultStockPhotosService: StockPhotosService {
 
     private func parameters(params: StockPhotosSearchParams) -> [String: AnyObject] {
         return [Parameters.search: params.text as AnyObject,
-                Parameters.resultsPerPage: 30 as AnyObject,
+                Parameters.resultsPerPage: 50 as AnyObject,
                 Parameters.pageIndex: 0 as AnyObject]
     }
 }
