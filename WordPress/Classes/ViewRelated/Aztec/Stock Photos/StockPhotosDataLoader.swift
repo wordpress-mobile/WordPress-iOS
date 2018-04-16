@@ -8,6 +8,12 @@ final class StockPhotosDataLoader {
     private weak var delegate: StockPhotosDataLoaderDelegate?
     private var request: StockPhotosSearchParams?
 
+    fileprivate enum State {
+        case loading
+        case idle
+    }
+
+    fileprivate var state: State = .idle
 
     init(service: StockPhotosService, delegate: StockPhotosDataLoaderDelegate) {
         self.service = service
@@ -16,11 +22,10 @@ final class StockPhotosDataLoader {
 
     func search(_ params: StockPhotosSearchParams) {
         request = params
-        //state = .loading
+        state = .loading
         DispatchQueue.main.async { [weak self] in
             self?.service.search(params: params) { resultsPage in
-//                self?.state = .idle
-//                self?.pageable = resultsPage.nextPageable()
+                self?.state = .idle
                 self?.request = StockPhotosSearchParams(text: self?.request?.text, pageable: resultsPage.nextPageable())
 
                 if let content = resultsPage.content() {
@@ -31,6 +36,10 @@ final class StockPhotosDataLoader {
     }
 
     func loadNextPage() {
+        guard state == .idle else {
+            return
+        }
+
         guard let request = request else {
             return
         }
