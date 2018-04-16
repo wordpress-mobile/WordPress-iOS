@@ -7,15 +7,25 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
 
     fileprivate var photosMedia = [StockPhotosMedia]()
     var observers = [String: WPMediaChangesBlock]()
-    private let service: StockPhotosService
+    //private let service: StockPhotosService
+    private var dataLoader: StockPhotosDataLoader?
 
     private var pageable: Pageable?
 
     private let throttle = Throttle(seconds: 1)
 
+    fileprivate enum State {
+        case loading
+        case idle
+    }
+
+    fileprivate var state: State = .idle
+
     init(service: StockPhotosService) {
-        self.service = service
+        //self.service = service
+
         super.init()
+        self.dataLoader = StockPhotosDataLoader(service: service, delegate: self)
     }
 
     func clearSearch(notifyObservers shouldNotify: Bool) {
@@ -38,15 +48,18 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     }
 
     private func search(_ params: StockPhotosSearchParams) {
-        DispatchQueue.main.async { [weak self] in
-            self?.service.search(params: params) { resultsPage in
-                self?.pageable = resultsPage.nextPageable()
-
-                if let content = resultsPage.content() {
-                    self?.searchCompleted(result: content)
-                }
-            }
-        }
+        state = .loading
+        dataLoader?.search(params)
+//        DispatchQueue.main.async { [weak self] in
+//            self?.service.search(params: params) { resultsPage in
+//                self?.state = .idle
+//                self?.pageable = resultsPage.nextPageable()
+//
+//                if let content = resultsPage.content() {
+//                    self?.searchCompleted(result: content)
+//                }
+//            }
+//        }
     }
 
     func group(at index: Int) -> WPMediaGroup {
@@ -126,10 +139,10 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
 // MARK: - Helpers
 
 extension StockPhotosDataSource {
-    private func searchCompleted(result: [StockPhotosMedia]) {
-        self.photosMedia = result
-        self.notifyObservers()
-    }
+//    private func searchCompleted(result: [StockPhotosMedia]) {
+//        photosMedia = result
+//        notifyObservers()
+//    }
 
     private func notifyObservers() {
         observers.forEach {
@@ -138,15 +151,31 @@ extension StockPhotosDataSource {
     }
 }
 
+extension StockPhotosDataSource: StockPhotosDataLoaderDelegate {
+    func didLoad(media: [StockPhotosMedia]) {
+        photosMedia.append(contentsOf: media)
+        notifyObservers()
+    }
+}
+
 extension StockPhotosDataSource {
     fileprivate func fetchMoreContentIfNecessary(_ index: Int) {
+        guard state == .idle else {
+            return
+        }
+
         if shoudLoadMore(index) {
 
-            guard let pageable = pageable else {
-                return
-            }
 
-            print(" ==== must load new page ===")
+//            guard let pageable = pageable else {
+//                return
+//            }
+//
+//            guard state == .idle else {
+//                return
+//            }
+//
+//            print(" ==== must load new page ===")
         }
     }
 
