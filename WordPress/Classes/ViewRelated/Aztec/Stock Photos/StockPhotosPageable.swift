@@ -22,6 +22,12 @@ struct StockPhotosPageable: Pageable {
     }
 }
 
+extension StockPhotosPageable {
+    static func initial() -> StockPhotosPageable {
+        return StockPhotosPageable(number: defaultNumber, pageHandle: 0)
+    }
+}
+
 extension StockPhotosPageable: Decodable {
     enum CodingKeys: String, CodingKey {
         case nextPage = "next_page"
