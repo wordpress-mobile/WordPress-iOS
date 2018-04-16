@@ -64,7 +64,6 @@ final class DefaultStockPhotosService: StockPhotosService {
         let pageSize = params.pageable?.pageSize() ?? 10
         let pageIndex = params.pageable?.pageIndex() ?? 0
 
-        print("==== page size: \(pageSize) - \(pageIndex)")
         return [Parameters.search: text as AnyObject,
                 Parameters.resultsPerPage: pageSize as AnyObject,
                 Parameters.pageIndex: pageIndex as AnyObject]
