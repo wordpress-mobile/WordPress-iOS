@@ -1,9 +1,9 @@
 
 final class StockPhotosResultsPage: ResultsPage {
     private let results: [StockPhotosMedia]
-    private let pageable: Pageable
+    private let pageable: Pageable?
 
-    init(results: [StockPhotosMedia], pageable: Pageable) {
+    init(results: [StockPhotosMedia], pageable: Pageable?) {
         self.results = results
         self.pageable = pageable
     }
@@ -13,6 +13,12 @@ final class StockPhotosResultsPage: ResultsPage {
     }
 
     func nextPageable() -> Pageable? {
-        return pageable.next()
+        return pageable?.next()
+    }
+}
+
+extension StockPhotosResultsPage {
+    static func empty() -> StockPhotosResultsPage {
+        return StockPhotosResultsPage(results: [], pageable: nil)
     }
 }

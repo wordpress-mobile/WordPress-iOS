@@ -10,7 +10,7 @@ struct StockPhotosSearchParams {
 
 /// Abstracts the service used to fetch Stock Photos
 protocol StockPhotosService {
-    func search(params: StockPhotosSearchParams, completion: @escaping ([StockPhotosMedia]) -> Void)
+    func search(params: StockPhotosSearchParams, completion: @escaping (StockPhotosResultsPage) -> Void)
 }
 
 /// Default implementation of the Stock Photos Service, attacking a blog's restful api
@@ -34,7 +34,7 @@ final class DefaultStockPhotosService: StockPhotosService {
         self.api = api
     }
 
-    func search(params: StockPhotosSearchParams, completion: @escaping ([StockPhotosMedia]) -> Void) {
+    func search(params: StockPhotosSearchParams, completion: @escaping (StockPhotosResultsPage) -> Void) {
         api.GET(endPoint, parameters: parameters(params: params), success: { results, response in
             print("============== results ===========")
             print(results)
@@ -53,15 +53,15 @@ final class DefaultStockPhotosService: StockPhotosService {
 
                     let page = StockPhotosResultsPage(results: parsedResponse, pageable: parsedPageable)
 
-                    completion(parsedResponse)
+                    completion(page)
                 } catch {
                     // Not sure how to handle this
-                    completion([])
+                    completion(StockPhotosResultsPage.empty())
                 }
             }
         }) { error, response in
             // I am not sure how we are going to handle errors. In the meantime, I'm returning an empty result
-            completion([])
+            completion(StockPhotosResultsPage.empty())
         }
     }
 
@@ -75,17 +75,18 @@ final class DefaultStockPhotosService: StockPhotosService {
 // MARK: - Temporary mock for testing
 
 final class StockPhotosServiceMock: StockPhotosService {
-    func search(params: StockPhotosSearchParams, completion: @escaping ([StockPhotosMedia]) -> Void) {
+    func search(params: StockPhotosSearchParams, completion: @escaping (StockPhotosResultsPage) -> Void) {
         let text = params.text
         guard text.count > 0 else {
-            completion([])
+            completion(StockPhotosResultsPage.empty())
             return
         }
         DispatchQueue.global().async {
             let totalMedia = text.count
             let mediaResult = (1...totalMedia).map { self.crateStockPhotosMedia(id: "\($0)") }
             DispatchQueue.main.async {
-                completion(mediaResult)
+                let page = StockPhotosResultsPage(results: mediaResult, pageable: nil)
+                completion(page)
             }
         }
     }
