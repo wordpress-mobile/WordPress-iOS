@@ -87,12 +87,13 @@ private extension SupportTableViewController {
     func setupTicketInformation() {
         let appVersion = Bundle.main.shortVersionString() ?? "unknown"
         let deviceFreeSpace = getDeviceFreeSpace()
+        let logFile = getLogFile()
 
         let ticketFields = ZendeskTicketFields(appVersion: appVersion,
                                                allBlogs: "unknown",
                                                deviceFreeSpace: deviceFreeSpace,
                                                networkInformation: "unknown",
-                                               logs: "unknown",
+                                               currentLog: logFile,
                                                tags: ["unknown"])
 
         ZendeskUtils.createRequest(ticketInformation: ticketFields)
@@ -245,6 +246,22 @@ private extension SupportTableViewController {
         static let extraDebug = NSLocalizedString("Extra Debug", comment: "Option in Support view to enable/disable adding extra information to support ticket.")
         static let activityLogs = NSLocalizedString("Activity Logs", comment: "Option in Support view to see activity logs.")
         static let informationFooter = NSLocalizedString("The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app.", comment: "Support screen footer text explaining the Extra Debug feature.")
+    }
+
+    func getLogFile() -> String {
+
+        var logFile = ""
+
+        if let appDelegate = UIApplication.shared.delegate as? WordPressAppDelegate,
+            let fileLogger = appDelegate.logger.fileLogger,
+            let logFileInfo = fileLogger.logFileManager.sortedLogFileInfos.first,
+            let logData = try? Data(contentsOf: URL(fileURLWithPath: logFileInfo.filePath)),
+            let logText = String.init(data: logData, encoding: .utf8) {
+            logFile = logText
+
+        }
+
+        return logFile
     }
 
     // MARK: - User Defaults Keys
