@@ -1030,6 +1030,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatSignupSocialFailure:
             eventName = @"signup_social_failure";
+            break;
         case WPAnalyticsStatSignupMagicLinkRequested:
             eventName = @"signup_magic_link_requested";
             break;
