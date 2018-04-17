@@ -624,6 +624,30 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [blogListVC setSelectedBlog:blog animated:NO];
 }
 
+- (void)switchMeTabToMyProfile
+{
+    [self showMeTab];
+    [self.meNavigationController popToRootViewControllerAnimated:NO];
+
+    // If we don't dispatch_async here, the top inset of the app
+    // settings VC isn't correct when pushed...
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.meViewController navigateToMyProfile];
+    });
+}
+
+- (void)switchMeTabToAccountSettings
+{
+    [self showMeTab];
+    [self.meNavigationController popToRootViewControllerAnimated:NO];
+
+    // If we don't dispatch_async here, the top inset of the app
+    // settings VC isn't correct when pushed...
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.meViewController navigateToAccountSettings];
+    });
+}
+
 - (void)switchMeTabToAppSettings
 {
     [self showMeTab];
@@ -636,6 +660,18 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     });
 }
 
+- (void)switchMeTabToNotificationSettings
+{
+    [self showMeTab];
+    [self.meNavigationController popToRootViewControllerAnimated:NO];
+
+    // If we don't dispatch_async here, the top inset of the app
+    // settings VC isn't correct when pushed...
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.meViewController navigateToNotificationSettings];
+    });
+}
+
 - (void)switchMeTabToSupport
 {
     [self showMeTab];
@@ -644,7 +680,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     // If we don't dispatch_async here, the top inset of the app
     // settings VC isn't correct when pushed...
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.meViewController navigateHelpAndSupport];
+        [self.meViewController navigateToHelpAndSupport];
     });
 }
 

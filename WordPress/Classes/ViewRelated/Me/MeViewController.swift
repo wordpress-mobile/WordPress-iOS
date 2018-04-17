@@ -332,15 +332,33 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
+    /// Selects the My Profile row and pushes the Support view controller
+    ///
+    @objc public func navigateToMyProfile() {
+        navigateToTarget(for: RowTitles.myProfile)
+    }
+
+    /// Selects the Account Settings row and pushes the Account Settings view controller
+    ///
+    @objc public func navigateToAccountSettings() {
+        navigateToTarget(for: RowTitles.accountSettings)
+    }
+
     /// Selects the App Settings row and pushes the App Settings view controller
     ///
     @objc public func navigateToAppSettings() {
         navigateToTarget(for: appSettingsRow.title)
     }
 
+    /// Selects the Notification Settings row and pushes the Notification Settings view controller
+    ///
+    @objc public func navigateToNotificationSettings() {
+        navigateToTarget(for: RowTitles.notificationSettings)
+    }
+
     /// Selects the Help & Support row and pushes the Support view controller
     ///
-    @objc public func navigateHelpAndSupport() {
+    @objc public func navigateToHelpAndSupport() {
         navigateToTarget(for: RowTitles.support)
     }
 
