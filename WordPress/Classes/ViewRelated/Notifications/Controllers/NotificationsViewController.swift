@@ -164,6 +164,9 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         if !AccountHelper.isDotcomAvailable() {
             promptForJetpackCredentials()
         }
+
+        // Set the userActivity property of UIResponder for spotlight searching
+        userActivity = WPActivityType.createUserActivity(with: .notifications)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

@@ -70,6 +70,13 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        // Set the userActivity property of UIResponder for spotlight searching
+        userActivity = WPActivityType.createUserActivity(with: .me)
+    }
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 

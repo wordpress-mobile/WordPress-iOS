@@ -132,6 +132,13 @@ import WordPressShared
         reloadTableViewPreservingSelection()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        // Set the userActivity property of UIResponder for spotlight searching
+        userActivity = WPActivityType.createUserActivity(with: .reader)
+    }
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
@@ -327,7 +334,6 @@ import WordPressShared
     @objc func dismissModal() {
         dismiss(animated: true, completion: nil)
     }
-
 
     // MARK: - Tag Wrangling
 
