@@ -26,40 +26,33 @@ public extension UIImageView {
     /// - Parameters:
     ///     -   url: The URL of the target image
     ///     -   placeholderImage: Image to be displayed while the actual asset gets downloaded.
-    ///     -   success: Closure to be executed on success. If it's nil, we'll simply update `self.image`
+    ///     -   success: Closure to be executed on success.
     ///     -   failure: Closure to be executed upon failure.
     ///
     public func downloadImage(from url: URL?, placeholderImage: UIImage? = nil, success: ((UIImage) -> ())? = nil, failure: ((Error?) -> ())? = nil) {
-        // By default, onSuccess we just set the image instance
-        let defaultOnSuccess = { [weak self] (image: UIImage) in
+        let internalOnSuccess = { [weak self] (image: UIImage) in
             self?.image = image
+            success?(image)
         }
 
-        let internalOnSuccess = success ?? defaultOnSuccess
-
-        // Placeholder?
-        if let placeholderImage = placeholderImage {
-            image = placeholderImage
-        }
-
-        // Ideally speaking, this method should *not* receive an Optional URL. But we're doing so, for convenience.
-        // If the actual URL was nil, at least we set the Placeholder Image. Capicci?
-        //
-        guard let url = url else {
-            return
-        }
-
-        // Hit the cache
         if let cachedImage = Downloader.cache.object(forKey: url as AnyObject) as? UIImage {
             internalOnSuccess(cachedImage)
             return
         }
 
-        // Cancel any previous OP's
-        downloadTask?.cancel()
-        downloadTask = nil
+        // Ideally speaking, this method should *not* receive an Optional URL. But we're doing so, for convenience.
+        // If the actual URL was nil, at least we set the Placeholder Image. Capicci?
+        //
+        guard let url = url, url != downloadURL else {
+            return
+        }
 
-        // Hit the Backend
+        downloadURL = url
+
+        if let placeholderImage = placeholderImage {
+            image = placeholderImage
+        }
+
         let request = self.request(for: url)
 
         let task = URLSession.shared.dataTask(with: request, completionHandler: { [weak self] data, response, error in
@@ -69,17 +62,34 @@ public extension UIImageView {
             }
 
             DispatchQueue.main.async {
-                // Update the Cache
                 Downloader.cache.setObject(image, forKey: url as AnyObject)
-                internalOnSuccess(image)
 
-                // Cleanup
+                if response?.url == self?.downloadURL {
+                    internalOnSuccess(image)
+                }
+
                 self?.downloadTask = nil
             }
         })
 
+        downloadTask?.cancel()
         downloadTask = task
         task.resume()
+    }
+
+
+    /// Overrides the cached UIImage, for a given URL. This is useful for whenever we've just updated a remote resource,
+    /// and we need to prevent returning the (old) cached entry.
+    ///
+    public func overrideImageCache(for url: URL, with image: UIImage) {
+        Downloader.cache.setObject(image, forKey: url as AnyObject)
+
+        // Remove all cached responses - removing an individual response does not work since iOS 7.
+        // This feels hacky to do but what else can we do...
+        //
+        // Update: Years have gone by (iOS 11 era). Still broken. Still ashamed about this. Thank you, Apple.
+        //
+        URLSession.shared.configuration.urlCache?.removeAllCachedResponses()
     }
 
 
@@ -94,15 +104,26 @@ public extension UIImageView {
     }
 
 
-    /// Stores the current DataTask, in charge of downloading the remote Image
+    /// Stores the Image's remote URL, if any.
+    ///
+    private var downloadURL: URL? {
+        get {
+            return objc_getAssociatedObject(self, &Downloader.urlKey) as? URL
+        }
+        set {
+            objc_setAssociatedObject(self, &Downloader.urlKey, newValue as AnyObject, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+
+
+    /// Stores the current DataTask, in charge of downloading the remote Image.
     ///
     private var downloadTask: URLSessionDataTask? {
         get {
-            return objc_getAssociatedObject(self, Downloader.taskKey) as? URLSessionDataTask
+            return objc_getAssociatedObject(self, &Downloader.taskKey) as? URLSessionDataTask
         }
         set {
-            let policy = objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC
-            objc_setAssociatedObject(self, Downloader.taskKey, newValue, policy)
+            objc_setAssociatedObject(self, &Downloader.taskKey, newValue as AnyObject, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 
@@ -111,12 +132,16 @@ public extension UIImageView {
     ///
     private struct Downloader {
 
-        /// Stores all of the previously downloaded images
+        /// Stores all of the previously downloaded images.
         ///
         static let cache = NSCache<AnyObject, AnyObject>()
 
-        /// Key used to associate a Download task to the current instance
+        /// Key used to associate the current URL.
         ///
-        static let taskKey = "downloadTaskKey"
+        static var urlKey = "urlKey"
+
+        /// Key used to associate a Download task to the current instance.
+        ///
+        static var taskKey = "downloadTaskKey"
     }
 }

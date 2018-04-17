@@ -213,6 +213,7 @@
                             <constraint firstItem="O28-fP-tpX" firstAttribute="leading" secondItem="Lk7-nZ-b0t" secondAttribute="leading" constant="16" id="EvA-em-Rnw">
                                 <variation key="heightClass=regular-widthClass=regular" constant="24"/>
                             </constraint>
+                            <constraint firstItem="xIT-FJ-g43" firstAttribute="top" secondItem="Lk7-nZ-b0t" secondAttribute="top" constant="64" id="Kyi-5t-RfN"/>
                             <constraint firstItem="OuO-i7-2Ds" firstAttribute="top" secondItem="Lk7-nZ-b0t" secondAttribute="top" constant="15" id="Seu-o3-dkG"/>
                             <constraint firstAttribute="trailing" secondItem="POV-pe-wu8" secondAttribute="trailing" constant="16" id="SjY-e4-XWL">
                                 <variation key="heightClass=regular-widthClass=regular" constant="24"/>
@@ -223,7 +224,6 @@
                             <constraint firstItem="Z3W-ou-g2J" firstAttribute="top" secondItem="POV-pe-wu8" secondAttribute="bottom" constant="9" id="cgz-3E-MrQ">
                                 <variation key="heightClass=regular-widthClass=regular" constant="9"/>
                             </constraint>
-                            <constraint firstItem="xIT-FJ-g43" firstAttribute="top" secondItem="OuO-i7-2Ds" secondAttribute="bottom" constant="12" id="gXH-oU-BWB"/>
                             <constraint firstAttribute="trailing" secondItem="O28-fP-tpX" secondAttribute="trailing" constant="16" id="hDs-3W-qUQ">
                                 <variation key="heightClass=regular-widthClass=regular" constant="24"/>
                             </constraint>
@@ -279,7 +279,8 @@
                 <outlet property="headerView" destination="OuO-i7-2Ds" id="E0y-NW-njY"/>
                 <outlet property="headerViewHeightConstraint" destination="XPo-Pz-YMq" id="Hrp-nb-6G0"/>
                 <outlet property="headerViewLeftConstraint" destination="2pB-iJ-nFa" id="1Ha-rq-koT"/>
-                <outlet property="headerViewLowerConstraint" destination="gXH-oU-BWB" id="DR5-aJ-6Ye"/>
+                <outlet property="headerViewLowerConstraint" destination="Kyi-5t-RfN" id="blu-Sb-eNo"/>
+                <outlet property="headerViewTopConstraint" destination="Seu-o3-dkG" id="zaE-GJ-3WH"/>
                 <outlet property="metaButtonLeft" destination="uDE-AO-Rii" id="NHd-hW-Cag"/>
                 <outlet property="metaButtonRight" destination="Ovg-ci-Pfb" id="dCB-Tf-ED7"/>
                 <outlet property="metaView" destination="YwV-AJ-Nvl" id="KYr-Rj-rfE"/>

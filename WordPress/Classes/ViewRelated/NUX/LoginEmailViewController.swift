@@ -74,7 +74,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
 
-        WordPressAuthenticator.post(event: .loginEmailFormViewed)
+        WordPressAuthenticator.track(.loginEmailFormViewed)
     }
 
 
@@ -160,7 +160,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
         GIDSignIn.sharedInstance().signIn()
 
-        WordPressAuthenticator.post(event: .loginSocialButtonClick)
+        WordPressAuthenticator.track(.loginSocialButtonClick)
     }
 
     /// Add the log in with site address button to the view
@@ -292,7 +292,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
         loginWithUsernamePassword(immediately: true)
 
-        WordPressAuthenticator.post(event: .loginAutoFillCredentialsFilled)
+        WordPressAuthenticator.track(.loginAutoFillCredentialsFilled)
     }
 
 
@@ -348,7 +348,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
                                         self?.requestLink()
             },
                                       failure: { [weak self] (error: Error) in
-                                        WordPressAuthenticator.post(event: .loginFailed(error: error))
+                                        WordPressAuthenticator.track(.loginFailed, error: error)
                                         DDLogError(error.localizedDescription)
                                         guard let strongSelf = self else {
                                             return
@@ -378,7 +378,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
             if (error as NSError).code == WordPressComOAuthError.unknownUser.rawValue {
                 errorTitle = NSLocalizedString("Connected But…", comment: "Title shown when a user logs in with Google but no matching WordPress.com account is found")
                 errorDescription = NSLocalizedString("The Google account \"\(loginFields.username)\" doesn't match any account on WordPress.com", comment: "Description shown when a user logs in with Google but no matching WordPress.com account is found")
-                WordPressAuthenticator.post(event: .loginSocialErrorUnknownUser)
+                WordPressAuthenticator.track(.loginSocialErrorUnknownUser)
             } else {
                 errorTitle = NSLocalizedString("Unable To Connect", comment: "Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com")
                 errorDescription = error.localizedDescription
@@ -483,10 +483,12 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 // LoginFacadeDelegate methods for Google Google Sign In
 extension LoginEmailViewController {
     func finishedLogin(withGoogleIDToken googleIDToken: String, authToken: String) {
-        syncWPCom(username: loginFields.username, authToken: authToken, requiredMultifactor: false)
+        let credentials = WordPressCredentials.wpcom(username: loginFields.username, authToken: authToken, isJetpackLogin: isJetpackLogin, multifactor: false)
+        syncWPComAndPresentEpilogue(credentials: credentials)
+
         // Disconnect now that we're done with Google.
         GIDSignIn.sharedInstance().disconnect()
-        WordPressAuthenticator.post(event: .loginSocialSuccess)
+        WordPressAuthenticator.track(.loginSocialSuccess)
     }
 
 
@@ -498,7 +500,7 @@ extension LoginEmailViewController {
         loginFields.emailAddress = email
 
         performSegue(withIdentifier: .showWPComLogin, sender: self)
-        WordPressAuthenticator.post(event: .loginSocialAccountsNeedConnecting)
+        WordPressAuthenticator.track(.loginSocialAccountsNeedConnecting)
         configureViewLoading(false)
     }
 
@@ -508,7 +510,7 @@ extension LoginEmailViewController {
         loginFields.nonceUserID = userID
 
         performSegue(withIdentifier: .show2FA, sender: self)
-        WordPressAuthenticator.post(event: .loginSocial2faNeeded)
+        WordPressAuthenticator.track(.loginSocial2faNeeded)
         configureViewLoading(false)
     }
 }
@@ -519,7 +521,7 @@ extension LoginEmailViewController: GIDSignInDelegate {
             let token = user.authentication.idToken,
             let email = user.profile.email else {
                 // The Google SignIn for may have been canceled.
-                WordPressAuthenticator.post(event: .loginSocialButtonFailure(error: error))
+                WordPressAuthenticator.track(.loginSocialButtonFailure, error: error)
                 configureViewLoading(false)
                 return
         }
@@ -549,18 +551,10 @@ extension LoginEmailViewController: LoginSocialErrorViewControllerDelegate {
     func retryAsSignup() {
         cleanupAfterSocialErrors()
 
-        if FeatureFlag.socialSignup.enabled {
-            let storyboard = UIStoryboard(name: "Signup", bundle: nil)
-            if let controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? SignupEmailViewController {
-                controller.loginFields = loginFields
-                navigationController?.pushViewController(controller, animated: true)
-            }
-        } else {
-            let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            if let controller = storyboard.instantiateViewController(withIdentifier: "SignupViewController") as? NUXAbstractViewController {
-                controller.loginFields = loginFields
-                navigationController?.pushViewController(controller, animated: true)
-            }
+        let storyboard = UIStoryboard(name: "Signup", bundle: nil)
+        if let controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? SignupEmailViewController {
+            controller.loginFields = loginFields
+            navigationController?.pushViewController(controller, animated: true)
         }
     }
 }

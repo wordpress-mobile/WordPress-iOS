@@ -19,7 +19,7 @@ static NSString* const ServiceRemoteWordPressComRESTApiVersionString_2_0 = @"wpc
 
 @implementation ServiceRemoteWordPressComREST
 
-- (id)initWithWordPressComRestApi:(WordPressComRestApi *)wordPressComRestApi {
+- (instancetype)initWithWordPressComRestApi:(WordPressComRestApi *)wordPressComRestApi {
 
     NSParameterAssert([wordPressComRestApi isKindOfClass:[WordPressComRestApi class]]);
 
