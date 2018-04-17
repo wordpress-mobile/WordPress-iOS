@@ -352,6 +352,7 @@
 		93F50A481F227F3600B5BEBA /* xmlrpc-response-valid-but-unexpected-dictionary.xml in Resources */ = {isa = PBXBuildFile; fileRef = 93F50A461F227F3600B5BEBA /* xmlrpc-response-valid-but-unexpected-dictionary.xml */; };
 		9FE80A1820863D1B00B37CA5 /* NSObject+ObjectValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FE80A1620863D1A00B37CA5 /* NSObject+ObjectValidation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9FE80A1920863D1B00B37CA5 /* NSObject+ObjectValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FE80A1720863D1B00B37CA5 /* NSObject+ObjectValidation.m */; };
+		9FE80A1C208641C600B37CA5 /* RemoteReaderSiteInfoSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE80A1B208641C500B37CA5 /* RemoteReaderSiteInfoSubscription.swift */; };
 		AFEFF3378CD0A507125E5019 /* Pods_WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1A37C8C9E463E3B9F6B61A /* Pods_WordPressKit.framework */; };
 		B56D96AF202C9B7500485233 /* WordPressUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56D96B0202C9B7500485233 /* WordPressUI.framework */; };
 		E11C2AD21FA77FB90023BDE2 /* SitePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11C2AD11FA77FB90023BDE2 /* SitePlugin.swift */; };
@@ -743,6 +744,7 @@
 		9F902B70CBB63DD7EB9D275A /* Pods_WordPressKitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressKitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FE80A1620863D1A00B37CA5 /* NSObject+ObjectValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ObjectValidation.h"; sourceTree = "<group>"; };
 		9FE80A1720863D1B00B37CA5 /* NSObject+ObjectValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ObjectValidation.m"; sourceTree = "<group>"; };
+		9FE80A1B208641C500B37CA5 /* RemoteReaderSiteInfoSubscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteReaderSiteInfoSubscription.swift; sourceTree = "<group>"; };
 		A2CE6797F9E45AE059B28690 /* Pods-WordPressKit.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKit.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKit/Pods-WordPressKit.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		B459C2F3F70D7C971B441F04 /* Pods-WordPressKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKit.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKit/Pods-WordPressKit.debug.xcconfig"; sourceTree = "<group>"; };
 		B56D96B0202C9B7500485233 /* WordPressUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1182,6 +1184,7 @@
 				7430C9AC1F1927C50051B8E6 /* RemoteReaderSite.m */,
 				7430C9AD1F1927C50051B8E6 /* RemoteReaderSiteInfo.h */,
 				7430C9AE1F1927C50051B8E6 /* RemoteReaderSiteInfo.m */,
+				9FE80A1B208641C500B37CA5 /* RemoteReaderSiteInfoSubscription.swift */,
 				7430C9AF1F1927C50051B8E6 /* RemoteReaderTopic.h */,
 				7430C9B01F1927C50051B8E6 /* RemoteReaderTopic.m */,
 				74E2295D1F1E777B0085F7F2 /* RemoteSharingButton.swift */,
@@ -1904,6 +1907,7 @@
 				74BA04FA1F06DC3900ED5CD8 /* RemoteComment.m in Sources */,
 				93C674EC1EE8348F00BFAF05 /* RemoteBlogOptionsHelper.m in Sources */,
 				E632D7781F6E047400297F6D /* SocialLogin2FANonceInfo.swift in Sources */,
+				9FE80A1C208641C600B37CA5 /* RemoteReaderSiteInfoSubscription.swift in Sources */,
 				7403A2E41EF06ED500DED7DC /* AccountSettingsRemote.swift in Sources */,
 				93C674E81EE8345300BFAF05 /* RemoteBlog.m in Sources */,
 				93BD27831EE73944002BB00B /* WordPressRSDParser.swift in Sources */,
