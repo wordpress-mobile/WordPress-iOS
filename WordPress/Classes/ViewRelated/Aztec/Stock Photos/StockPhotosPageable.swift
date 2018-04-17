@@ -3,7 +3,8 @@ struct StockPhotosPageable: Pageable {
     let number: Int
     let pageHandle: Int
 
-    static let defaultNumber = 40
+    static let defaultPageSize = 40
+    static let defaultPageIndex = 0
 
     func next() -> Pageable? {
         if pageHandle == 0 {
@@ -24,7 +25,7 @@ struct StockPhotosPageable: Pageable {
 
 extension StockPhotosPageable {
     static func initial() -> StockPhotosPageable {
-        return StockPhotosPageable(number: defaultNumber, pageHandle: 0)
+        return StockPhotosPageable(number: defaultPageSize, pageHandle: defaultPageIndex)
     }
 }
 
@@ -36,7 +37,7 @@ extension StockPhotosPageable: Decodable {
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         pageHandle = try values.decode(Int.self, forKey: .nextPage)
-        number = type(of: self).defaultNumber
+        number = type(of: self).defaultPageSize
     }
 }
 
