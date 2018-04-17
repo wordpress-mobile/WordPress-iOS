@@ -350,7 +350,7 @@
 		93F50A441F227CFB00B5BEBA /* UsersServiceRemoteXMLRPCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F50A431F227CFB00B5BEBA /* UsersServiceRemoteXMLRPCTests.swift */; };
 		93F50A471F227F3600B5BEBA /* xmlrpc-response-getprofile.xml in Resources */ = {isa = PBXBuildFile; fileRef = 93F50A451F227F3600B5BEBA /* xmlrpc-response-getprofile.xml */; };
 		93F50A481F227F3600B5BEBA /* xmlrpc-response-valid-but-unexpected-dictionary.xml in Resources */ = {isa = PBXBuildFile; fileRef = 93F50A461F227F3600B5BEBA /* xmlrpc-response-valid-but-unexpected-dictionary.xml */; };
-		9FE80A1820863D1B00B37CA5 /* NSObject+ObjectValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FE80A1620863D1A00B37CA5 /* NSObject+ObjectValidation.h */; };
+		9FE80A1820863D1B00B37CA5 /* NSObject+ObjectValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FE80A1620863D1A00B37CA5 /* NSObject+ObjectValidation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9FE80A1920863D1B00B37CA5 /* NSObject+ObjectValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FE80A1720863D1B00B37CA5 /* NSObject+ObjectValidation.m */; };
 		AFEFF3378CD0A507125E5019 /* Pods_WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1A37C8C9E463E3B9F6B61A /* Pods_WordPressKit.framework */; };
 		B56D96AF202C9B7500485233 /* WordPressUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56D96B0202C9B7500485233 /* WordPressUI.framework */; };
