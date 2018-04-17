@@ -12,7 +12,7 @@ final class StockPhotosPicker: NSObject {
 
     private lazy var stockPhotosService: StockPhotosService = {
         guard let api = self.blog?.wordPressComRestApi() else {
-            //TO DO. Present a user facing error (although in theory we shoul dnever reach this case if we limit Stock Photos to Jetpack blogs only
+            //TO DO. Present a user facing error (although in theory we should never reach this case if we limit Stock Photos to Jetpack blogs only
             return StockPhotosServiceMock()
         }
 
@@ -41,6 +41,8 @@ final class StockPhotosPicker: NSObject {
         origin.present(picker, animated: true) {
             picker.mediaPicker.searchBar?.becomeFirstResponder()
         }
+
+        trackAccess()
     }
 }
 
@@ -78,5 +80,12 @@ extension StockPhotosPicker: WPMediaPickerViewControllerDelegate {
         if let view = view, view.isFirstResponder {
             view.resignFirstResponder()
         }
+    }
+}
+
+// MARK: - Tracks
+extension StockPhotosPicker {
+    fileprivate func trackAccess() {
+        WPAnalytics.track(.stockMediaAccessed)
     }
 }
