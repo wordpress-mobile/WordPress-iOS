@@ -8,9 +8,8 @@ struct ZendeskTicketFields {
     var allBlogs: String
     var deviceFreeSpace: String
     var networkInformation: String
-    var logs: String
+    var currentLog: String
     var tags: [String]
-    
 }
 
 @objc class ZendeskUtils: NSObject {
@@ -115,7 +114,7 @@ struct ZendeskTicketFields {
             ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.allBlogs, andValue: ticketInformation.allBlogs))
             ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.deviceFreeSpace, andValue: ticketInformation.deviceFreeSpace))
             ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.networkInformation, andValue: ticketInformation.networkInformation))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.logs, andValue: ticketInformation.logs))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.logs, andValue: ticketInformation.currentLog))
             ZDKConfig.instance().customTicketFields = ticketFields
 
             // Set tags
