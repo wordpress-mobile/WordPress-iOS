@@ -259,6 +259,10 @@ open class NotificationSettingsService: LocalCoreDataService {
 
     // MARK: - Private Computed Properties
     fileprivate var notificationsServiceRemote: NotificationSettingsServiceRemote? {
+        guard let remoteApi = remoteApi else {
+            return nil
+        }
+
         return NotificationSettingsServiceRemote(wordPressComRestApi: remoteApi)
     }
 

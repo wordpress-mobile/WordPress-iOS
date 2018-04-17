@@ -34,7 +34,7 @@ open class UsersService {
 
     /// Fetch profile information for the user of the specified blog.
     ///
-    func fetchProfile(success: @escaping ((UserProfile) -> Void), failure: @escaping ((NSError?) -> Void)) {
+    func fetchProfile(onCompletion: @escaping ((UserProfile?) -> Void)) {
         let remote = UsersServiceRemoteXMLRPC(api: api, username: username, password: password)
         remote.fetchProfile({ remoteProfile in
 
@@ -50,10 +50,11 @@ open class UsersService {
             profile.userID = remoteProfile.userID
             profile.username = remoteProfile.username
 
-            success(profile)
+            onCompletion(profile)
 
         }, failure: { error in
-            failure(error)
+            DDLogError(error.debugDescription)
+            onCompletion(nil)
         })
     }
 }
