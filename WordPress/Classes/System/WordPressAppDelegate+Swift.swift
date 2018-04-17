@@ -157,9 +157,7 @@ extension WordPressAppDelegate {
                 return false
             }
 
-            return visibleViewController is NUXAbstractViewController
-                || visibleViewController is LoginPrologueViewController
-                || visibleViewController is NUXViewControllerBase
+            return visibleViewController is LoginPrologueViewController || visibleViewController is NUXViewControllerBase
         }
     }
 }
