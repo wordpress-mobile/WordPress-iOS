@@ -359,6 +359,8 @@
 		9FE80A242086458000B37CA5 /* ServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE80A232086457F00B37CA5 /* ServiceRequest.swift */; };
 		9FE80A27208645DC00B37CA5 /* WordPressKitConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE80A26208645DC00B37CA5 /* WordPressKitConstants.swift */; };
 		9FE80A292086508F00B37CA5 /* RemoteReaderSiteInfoSubscriptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE80A282086508F00B37CA5 /* RemoteReaderSiteInfoSubscriptionTests.swift */; };
+		9FE80A2B2086573A00B37CA5 /* MockServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE80A2A2086573A00B37CA5 /* MockServiceRequest.swift */; };
+		9FE80A2D208657CE00B37CA5 /* ServiceRequestTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE80A2C208657CE00B37CA5 /* ServiceRequestTest.swift */; };
 		AFEFF3378CD0A507125E5019 /* Pods_WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1A37C8C9E463E3B9F6B61A /* Pods_WordPressKit.framework */; };
 		B56D96AF202C9B7500485233 /* WordPressUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56D96B0202C9B7500485233 /* WordPressUI.framework */; };
 		E11C2AD21FA77FB90023BDE2 /* SitePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11C2AD11FA77FB90023BDE2 /* SitePlugin.swift */; };
@@ -757,6 +759,8 @@
 		9FE80A232086457F00B37CA5 /* ServiceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceRequest.swift; sourceTree = "<group>"; };
 		9FE80A26208645DC00B37CA5 /* WordPressKitConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordPressKitConstants.swift; sourceTree = "<group>"; };
 		9FE80A282086508F00B37CA5 /* RemoteReaderSiteInfoSubscriptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteReaderSiteInfoSubscriptionTests.swift; sourceTree = "<group>"; };
+		9FE80A2A2086573A00B37CA5 /* MockServiceRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockServiceRequest.swift; sourceTree = "<group>"; };
+		9FE80A2C208657CE00B37CA5 /* ServiceRequestTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRequestTest.swift; sourceTree = "<group>"; };
 		A2CE6797F9E45AE059B28690 /* Pods-WordPressKit.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKit.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKit/Pods-WordPressKit.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		B459C2F3F70D7C971B441F04 /* Pods-WordPressKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKit.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKit/Pods-WordPressKit.debug.xcconfig"; sourceTree = "<group>"; };
 		B56D96B0202C9B7500485233 /* WordPressUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -834,6 +838,7 @@
 		7430C9BF1F192C210051B8E6 /* Reader */ = {
 			isa = PBXGroup;
 			children = (
+				9FE80A2C208657CE00B37CA5 /* ServiceRequestTest.swift */,
 				7430C9B91F192C0F0051B8E6 /* ReaderSiteServiceRemoteTests.swift */,
 				7430C9BA1F192C0F0051B8E6 /* ReaderPostServiceRemoteTests.m */,
 				7430C9BB1F192C0F0051B8E6 /* ReaderTopicServiceRemoteTests.m */,
@@ -971,6 +976,7 @@
 		930F52BA1ECF8A67002F921B /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				9FE80A2A2086573A00B37CA5 /* MockServiceRequest.swift */,
 				931924231F1662FA0069CBCC /* JSONLoader.swift */,
 				74B335D71F06F1CA0053A184 /* MockWordPressComRestApi.swift */,
 				74155E241EF87DDF00A06AEA /* ServiceRemoteRESTTests.m */,
@@ -2001,6 +2007,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E1E89C6A1FD6BDB1006E7A33 /* PluginDirectoryTests.swift in Sources */,
+				9FE80A2B2086573A00B37CA5 /* MockServiceRequest.swift in Sources */,
 				748437EF1F1D4D8B00E8DDAF /* MenusServiceRemoteTests.m in Sources */,
 				93AC8EDF1ED32FD000900F5A /* StatsStreakItemTests.m in Sources */,
 				74A44DD41F13C6D8006CD8F4 /* RemoteNotificationTests.swift in Sources */,
@@ -2017,6 +2024,7 @@
 				74B5F0DE1EF82A9600B411E7 /* BlogServiceRemoteRESTTests.m in Sources */,
 				7433BC041EFC4556002D9E92 /* PlanFeatureServiceRemoteTests.swift in Sources */,
 				74E2294B1F1E73340085F7F2 /* SharingServiceRemoteTests.m in Sources */,
+				9FE80A2D208657CE00B37CA5 /* ServiceRequestTest.swift in Sources */,
 				93AC8EDE1ED32FD000900F5A /* StatsItemTests.m in Sources */,
 				740B23D31F17F6BB00067A2A /* PostServiceRemoteXMLRPCTests.swift in Sources */,
 				93188D221F2264E60028ED4D /* TaxonomyServiceRemoteRESTTests.m in Sources */,
