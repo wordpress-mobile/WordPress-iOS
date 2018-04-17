@@ -627,13 +627,24 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (void)switchMeTabToAppSettings
 {
     [self showMeTab];
-
     [self.meNavigationController popToRootViewControllerAnimated:NO];
 
     // If we don't dispatch_async here, the top inset of the app
     // settings VC isn't correct when pushed...
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.meViewController navigateToAppSettings];
+    });
+}
+
+- (void)switchMeTabToSupport
+{
+    [self showMeTab];
+    [self.meNavigationController popToRootViewControllerAnimated:NO];
+
+    // If we don't dispatch_async here, the top inset of the app
+    // settings VC isn't correct when pushed...
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.meViewController navigateHelpAndSupport];
     });
 }
 

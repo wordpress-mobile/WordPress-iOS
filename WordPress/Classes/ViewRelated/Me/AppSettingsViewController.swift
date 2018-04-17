@@ -52,6 +52,13 @@ class AppSettingsViewController: UITableViewController {
         updateMediaCacheSize()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        // Set the userActivity property of UIResponder for spotlight searching
+        userActivity = WPActivityType.createUserActivity(with: .appSettings)
+    }
+
     // MARK: - Model mapping
 
     fileprivate func reloadViewModel() {

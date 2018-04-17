@@ -6,6 +6,8 @@ enum WPActivityType: String {
     case siteList       = "org.wordpress.mysites"
     case reader         = "org.wordpress.reader"
     case me             = "org.wordpress.me"
+    case appSettings    = "org.wordpress.me.appsettings"
+    case support        = "org.wordpress.me.support"
     case notifications  = "org.wordpress.notifications"
 
     var title: String {
@@ -16,6 +18,10 @@ enum WPActivityType: String {
             return NSLocalizedString("Reader", comment: "Title of the 'Reader' tab - used for spotlight indexing on iOS.")
         case .me:
             return NSLocalizedString("Me", comment: "Title of the 'Me' tab - used for spotlight indexing on iOS.")
+        case .appSettings:
+            return NSLocalizedString("App Settings", comment: "Title of the 'App Settings' screen within the 'Me' tab - used for spotlight indexing on iOS.")
+        case .support:
+            return NSLocalizedString("Help & Support", comment: "Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS.")
         case .notifications:
             return NSLocalizedString("Notifications", comment: "Title of the 'Notifications' tab - used for spotlight indexing on iOS.")
         }
@@ -165,6 +171,10 @@ enum WPActivityType: String {
             return openReaderTab()
         case WPActivityType.me.rawValue:
             return openMeTab()
+        case WPActivityType.appSettings.rawValue:
+            return openAppSettingsScreen()
+        case WPActivityType.support.rawValue:
+            return openSupportScreen()
         case WPActivityType.notifications.rawValue:
             return openNotificationsTab()
         default:
@@ -297,6 +307,16 @@ fileprivate extension SearchManager {
 
     func openMeTab() -> Bool {
         WPTabBarController.sharedInstance().showMeTab()
+        return true
+    }
+
+    func openAppSettingsScreen() -> Bool {
+        WPTabBarController.sharedInstance().switchMeTabToAppSettings()
+        return true
+    }
+
+    func openSupportScreen() -> Bool {
+        WPTabBarController.sharedInstance().switchMeTabToSupport()
         return true
     }
 
