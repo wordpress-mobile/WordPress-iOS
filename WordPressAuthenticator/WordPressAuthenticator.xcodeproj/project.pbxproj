@@ -181,7 +181,6 @@
 				B5ED78F0207E976500A8FD8C /* Frameworks */,
 				B5ED78F1207E976500A8FD8C /* Headers */,
 				B5ED78F2207E976500A8FD8C /* Resources */,
-				50EA310E6CD8F312B176268E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -201,7 +200,6 @@
 				B5ED78FA207E976500A8FD8C /* Frameworks */,
 				B5ED78FB207E976500A8FD8C /* Resources */,
 				4641E981667EADE136F7EC8D /* [CP] Embed Pods Frameworks */,
-				397E44FD848652D4F74CBE53 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -269,21 +267,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		397E44FD848652D4F74CBE53 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressAuthenticatorTests/Pods-WordPressAuthenticatorTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		4641E981667EADE136F7EC8D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -300,21 +283,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressAuthenticatorTests/Pods-WordPressAuthenticatorTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		50EA310E6CD8F312B176268E /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressAuthenticator/Pods-WordPressAuthenticator-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A277BB560A9C0A41F2727285 /* [CP] Check Pods Manifest.lock */ = {

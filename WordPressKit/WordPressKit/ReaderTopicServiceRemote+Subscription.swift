@@ -3,11 +3,7 @@ import Foundation
 
 extension ReaderTopicServiceRemote {
     private func POST(with request: ReaderTopicServiceSubscriptionsRequest, parameters: [String: AnyObject]? = nil, success: @escaping SuccessBlock, failure: @escaping FailureBlock) {
-        guard let urlRequest = path(forEndpoint: request.path, withVersion: request.apiVersion) else {
-            let error = NSError(domain: "ReaderTopicServiceRemote", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid url request"])
-            failure(error)
-            return
-        }
+        let urlRequest = path(forEndpoint: request.path, withVersion: request.apiVersion)
         
         DDLogInfo("URL: \(urlRequest)")
         
