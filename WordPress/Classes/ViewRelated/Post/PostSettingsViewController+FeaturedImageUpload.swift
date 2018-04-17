@@ -1,9 +1,6 @@
 import Foundation
 import Photos
 
-extension ProgressUserInfoKey {
-
-}
 extension PostSettingsViewController {
 
     @objc func setFeaturedImage(asset: PHAsset) {
@@ -14,19 +11,20 @@ extension PostSettingsViewController {
         }, for: media)
         let progress = MediaCoordinator.shared.progress(for: media)
         self.featuredImageProgress = progress
+        apost.featuredImage = media
     }
 
     @objc func setFeaturedImage(media: Media) {
-        if media.remoteStatus == .local || media.remoteStatus == .failed {
-            MediaCoordinator.shared.retryMedia(media)
-            let _ = MediaCoordinator.shared.addObserver({ [weak self](media, state) in
-                self?.mediaObserver(media: media, state: state)
-            })
-            let progress = MediaCoordinator.shared.progress(for: media)
-            self.featuredImageProgress = progress
-        } else {
-            apost.featuredImage = media
+        apost.featuredImage = media
+        if media.hasRemote {
+            return
         }
+        MediaCoordinator.shared.retryMedia(media)
+        let _ = MediaCoordinator.shared.addObserver({ [weak self](media, state) in
+            self?.mediaObserver(media: media, state: state)
+        })
+        let progress = MediaCoordinator.shared.progress(for: media)
+        self.featuredImageProgress = progress
     }
 
     func mediaObserver(media: Media, state: MediaCoordinator.MediaState) {
@@ -45,7 +43,6 @@ extension PostSettingsViewController {
             tableView.reloadData()
         case .ended:
             isUploadingMedia = false
-            apost.featuredImage = media
             tableView.reloadData()
         case .failed(let error):
             DDLogError("Couldn't export image: /(error.localizedDescription)")
