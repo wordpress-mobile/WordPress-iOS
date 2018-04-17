@@ -62,11 +62,17 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         DDLogInfo(@"WPAnalyticsStat not supported by WPAnalyticsTrackerAutomatticTracks: %@", @(stat));
         return;
     }
-    
+
     NSMutableDictionary *mergedProperties = [NSMutableDictionary new];
 
     [mergedProperties addEntriesFromDictionary:eventPair.properties];
     [mergedProperties addEntriesFromDictionary:properties];
+
+    if (eventPair.properties == nil && properties == nil) {
+        DDLogInfo(@"🔵 Tracked: %@", eventPair.eventName);
+    } else {
+        DDLogInfo(@"🔵 Tracked: %@, properties: %@", eventPair.eventName, mergedProperties);
+    }
 
     [self.tracksService trackEventName:eventPair.eventName withCustomProperties:mergedProperties];
 }
@@ -80,6 +86,11 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     }
 
     [self refreshMetadata];
+}
+
+- (void)endSession
+{
+    [self.tracksService clearQueuedEvents];
 }
 
 - (void)refreshMetadata

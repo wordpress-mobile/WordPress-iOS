@@ -67,12 +67,7 @@ import Foundation
         let filterType: Status = .published
         let statuses: [BasePost.Status] = [.publish, .publishPrivate]
 
-        let predicate: NSPredicate
-        if FeatureFlag.asyncPosting.enabled {
-            predicate = NSPredicate(format: "status IN %@", statuses.strings)
-        } else {
-            predicate = NSPredicate(format: "status IN %@ AND remoteStatusNumber <> %d", statuses.strings, AbstractPostRemoteStatus.local.rawValue)
-        }
+        let predicate = NSPredicate(format: "status IN %@", statuses.strings)
 
         let title = NSLocalizedString("Published", comment: "Title of the published filter. This filter shows a list of posts that the user has published.")
 
@@ -84,12 +79,7 @@ import Foundation
         let statuses: [BasePost.Status] = [.draft, .pending]
         let statusesExcluded: [BasePost.Status] = [.publish, .publishPrivate, .scheduled, .trash]
 
-        let predicate: NSPredicate
-        if FeatureFlag.asyncPosting.enabled {
-            predicate = NSPredicate(format: "NOT status IN %@", statusesExcluded.strings)
-        } else {
-            predicate = NSPredicate(format: "NOT status IN %@ OR remoteStatusNumber = %d", statusesExcluded.strings, AbstractPostRemoteStatus.local.rawValue)
-        }
+        let predicate = NSPredicate(format: "NOT status IN %@", statusesExcluded.strings)
 
         let title = NSLocalizedString("Drafts", comment: "Title of the drafts filter.  This filter shows a list of draft posts.")
 
