@@ -22,7 +22,7 @@ public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
         if let remote = remotes.object(forKey: api) as? AccountSettingsRemote {
             return remote
         } else {
-            let remote = AccountSettingsRemote(wordPressComRestApi: api)!
+            let remote = AccountSettingsRemote(wordPressComRestApi: api)
             remotes.setObject(remote, forKey: api)
             return remote
         }
@@ -33,7 +33,7 @@ public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
         let parameters = ["context": "edit"]
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
-        wordPressComRestApi.GET(path!,
+        wordPressComRestApi.GET(path,
                 parameters: parameters as [String : AnyObject]?,
                 success: {
                     responseObject, httpResponse in
@@ -55,7 +55,7 @@ public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
         let parameters = [fieldNameForChange(change): change.stringValue]
 
-        wordPressComRestApi.POST(path!,
+        wordPressComRestApi.POST(path,
             parameters: parameters as [String : AnyObject]?,
             success: {
                 responseObject, httpResponse in
@@ -78,10 +78,8 @@ public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
         let action = "none"
         let parameters = ["username": username, "action": action]
 
-        guard let path = self.path(forEndpoint: endpoint, withVersion: ._1_1) else {
-            failure()
-            return
-        }
+        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
+
         wordPressComRestApi.POST(path,
                                  parameters: parameters as [String : AnyObject]?,
                                  success: { responseObject, httpResponse in
@@ -114,7 +112,7 @@ public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
         let parameters = ["password": password]
         
-        wordPressComRestApi.POST(path!,
+        wordPressComRestApi.POST(path,
                                  parameters: parameters as [String : AnyObject]?,
                                  success: {
                                     responseObject, httpResponse in
