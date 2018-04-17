@@ -49,13 +49,11 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
     @objc convenience init?(blog: Blog) {
         precondition(blog.dotComID != nil)
-        guard let api = blog.wordPressComRestApi(),
-            let service = ActivityServiceRemote(wordPressComRestApi: api),
-            let siteID = blog.dotComID?.intValue
-        else {
+        guard let api = blog.wordPressComRestApi(), let siteID = blog.dotComID?.intValue else {
             return nil
         }
 
+        let service = ActivityServiceRemote(wordPressComRestApi: api)
         self.init(siteID: siteID, service: service)
     }
 
