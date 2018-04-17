@@ -475,6 +475,7 @@
 		74EA3B88202A0462004F802D /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
 		74EA3B89202A0462004F802D /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
 		74EFB5C8208674250070BD4E /* BlogListViewController+Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EFB5C7208674250070BD4E /* BlogListViewController+Activity.swift */; };
+		74EFB5CA20869DD30070BD4E /* SupportViewController+Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EFB5C920869DD30070BD4E /* SupportViewController+Activity.swift */; };
 		74F24F671EE8729700E8BFE8 /* xmlrpc-bad-username-password-error.xml in Resources */ = {isa = PBXBuildFile; fileRef = 74F24F621EE8729700E8BFE8 /* xmlrpc-bad-username-password-error.xml */; };
 		74F24F681EE8729700E8BFE8 /* xmlrpc-malformed-request-xml-error.xml in Resources */ = {isa = PBXBuildFile; fileRef = 74F24F631EE8729700E8BFE8 /* xmlrpc-malformed-request-xml-error.xml */; };
 		74F5CD381FE0646F00764E7C /* ShareExtension.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */; };
@@ -1865,6 +1866,7 @@
 		74E44B002031F07B00556205 /* en-AU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-AU"; path = "en-AU.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareNoticeConstants.swift; sourceTree = "<group>"; };
 		74EFB5C7208674250070BD4E /* BlogListViewController+Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogListViewController+Activity.swift"; sourceTree = "<group>"; };
+		74EFB5C920869DD30070BD4E /* SupportViewController+Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SupportViewController+Activity.swift"; sourceTree = "<group>"; };
 		74F24F621EE8729700E8BFE8 /* xmlrpc-bad-username-password-error.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-bad-username-password-error.xml"; sourceTree = "<group>"; };
 		74F24F631EE8729700E8BFE8 /* xmlrpc-malformed-request-xml-error.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-malformed-request-xml-error.xml"; sourceTree = "<group>"; };
 		74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ShareExtension.storyboard; sourceTree = "<group>"; };
@@ -3521,6 +3523,7 @@
 				E14B40FE1C58B93F005046F6 /* SettingsCommon.swift */,
 				93027BB61758332300483FFD /* SupportViewController.h */,
 				93027BB71758332300483FFD /* SupportViewController.m */,
+				74EFB5C920869DD30070BD4E /* SupportViewController+Activity.swift */,
 				CE1CCB2E2050502B000EE3AC /* MyProfileHeaderView.xib */,
 			);
 			path = Me;
@@ -7343,6 +7346,7 @@
 				8350E49611D2C71E00A7B073 /* Media.m in Sources */,
 				D8B9B58F204F4EA1003C6042 /* NetworkAware.swift in Sources */,
 				B54346961C6A707D0010B3AD /* LanguageViewController.swift in Sources */,
+				74EFB5CA20869DD30070BD4E /* SupportViewController+Activity.swift in Sources */,
 				E6805D321DCD399600168E4F /* WPRichTextMediaAttachment.swift in Sources */,
 				B5C0CF3D204DA41000DB0362 /* NotificationReplyStore.swift in Sources */,
 				B53AD9BC1BE95687009AB87E /* SettingsTextViewController.m in Sources */,
