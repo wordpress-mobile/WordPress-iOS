@@ -647,7 +647,8 @@ extension MediaLibraryViewController: StockPhotosPickerDelegate {
 
         let mediaCoordinator = MediaCoordinator.shared
         assets.forEach {
-            mediaCoordinator.addMedia(from: $0, to: blog)
+            let info = MediaAnalyticsInfo(origin: .editor(.stockPhotos), selectionMethod: .fullScreenPicker)
+            mediaCoordinator.addMedia(from: $0, to: blog, analyticsInfo: info)
             WPAnalytics.track(.stockMediaUploaded)
         }
     }
