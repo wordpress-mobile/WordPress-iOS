@@ -253,6 +253,9 @@ import WordPressShared
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.NSManagedObjectContextDidSave, object: mainContext)
 
         bumpStats()
+
+        // Set the userActivity property of UIResponder for spotlight searching
+        userActivity = WPActivityType.createUserActivity(with: .reader)
     }
 
 

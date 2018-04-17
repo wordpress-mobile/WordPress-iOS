@@ -2,6 +2,36 @@ import UIKit
 import CoreSpotlight
 import MobileCoreServices
 
+enum WPActivityType: String {
+    case siteList       = "org.wordpress.mysites"
+    case reader         = "org.wordpress.reader"
+    case me             = "org.wordpress.me"
+    case notifications  = "org.wordpress.notifications"
+
+    var title: String {
+        switch self {
+        case .siteList:
+            return NSLocalizedString("My Sites", comment: "Title of the 'My Sites' tab - used for spotlight indexing on iOS.")
+        case .reader:
+            return NSLocalizedString("Reader", comment: "Title of the 'Reader' tab - used for spotlight indexing on iOS.")
+        case .me:
+            return NSLocalizedString("Me", comment: "Title of the 'Me' tab - used for spotlight indexing on iOS.")
+        case .notifications:
+            return NSLocalizedString("Notifications", comment: "Title of the 'Notifications' tab - used for spotlight indexing on iOS.")
+        }
+    }
+
+    static func createUserActivity(with activityType: WPActivityType) -> NSUserActivity {
+        let oneWeekFromNow = Calendar.current.date(byAdding: .weekOfYear, value: 1, to: Date())
+        let activity = NSUserActivity(activityType: activityType.rawValue)
+        activity.title = activityType.title
+        activity.expirationDate = oneWeekFromNow
+        activity.isEligibleForSearch = true
+        activity.isEligibleForHandoff = false
+        return activity
+    }
+}
+
 /// Encapsulates CoreSpotlight operations for WPiOS
 ///
 @objc class SearchManager: NSObject {
@@ -121,9 +151,31 @@ import MobileCoreServices
     ///
     @discardableResult
     @objc func handle(activity: NSUserActivity?) -> Bool {
-        guard activity?.activityType == CSSearchableItemActionType,
-            let compositeIdentifier = activity?.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
-                return false
+        guard let activity = activity else {
+            return false
+        }
+
+        switch activity.activityType {
+        case CSSearchableItemActionType:
+            // This activityType is related to a CoreSpotlight search
+            return handleCoreSpotlightSearchableActivityType(activity: activity)
+        case WPActivityType.siteList.rawValue:
+            return openMySitesTab()
+        case WPActivityType.reader.rawValue:
+            return openReaderTab()
+        case WPActivityType.me.rawValue:
+            return openMeTab()
+        case WPActivityType.notifications.rawValue:
+            return openNotificationsTab()
+        default:
+            return false
+        }
+    }
+
+    fileprivate func handleCoreSpotlightSearchableActivityType(activity: NSUserActivity) -> Bool {
+        guard activity.activityType == CSSearchableItemActionType,
+            let compositeIdentifier = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
+            return false
         }
 
         let (itemType, domainString, identifier) = SearchIdentifierGenerator.decomposeFromUniqueIdentifier(compositeIdentifier)
@@ -227,6 +279,26 @@ fileprivate extension SearchManager {
     }
 
     // MARK: Navigation
+
+    func openMySitesTab() -> Bool {
+        WPTabBarController.sharedInstance().showMySitesTab()
+        return true
+    }
+
+    func openReaderTab() -> Bool {
+        WPTabBarController.sharedInstance().showReaderTab()
+        return true
+    }
+
+    func openNotificationsTab() -> Bool {
+        WPTabBarController.sharedInstance().showNotificationsTab()
+        return true
+    }
+
+    func openMeTab() -> Bool {
+        WPTabBarController.sharedInstance().showMeTab()
+        return true
+    }
 
     func navigateToScreen(for apost: AbstractPost, isDotCom: Bool = true) {
         if let post = apost as? Post {
