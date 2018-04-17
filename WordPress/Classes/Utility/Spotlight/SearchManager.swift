@@ -135,9 +135,10 @@ enum WPActivityType: String {
         })
     }
 
-    /// Removes *all* items from the on-device index.
+    /// Removes *all* items from the on-device, CoreSpotlight index.
     ///
-    /// Note: Be careful, this clears the entire index!
+    /// Note: This clears the entire index for CoreSpotlight only! NSUserActivity indexing will *not* be cleared
+    /// if this function is called (each indexed activity item will expire automatically based on the original expiration date).
     ///
     @objc func deleteAllSearchableItems() {
         CSSearchableIndex.default().deleteAllSearchableItems(completionHandler: { (error: Error?) -> Void in
@@ -150,7 +151,7 @@ enum WPActivityType: String {
 
     // MARK: - NSUserActivity Handling
 
-    /// Handle a NSUserAcitivity
+    /// Handle a NSUserAcitivity for both CoreSpotlight and NSUSerActivity indexing within the WPiOS
     ///
     /// - Parameter activity: NSUserActivity that opened the app
     /// - Returns: true if it was handled correctly and activitytype was `CSSearchableItemActionType`, otherwise false
@@ -163,7 +164,7 @@ enum WPActivityType: String {
 
         switch activity.activityType {
         case CSSearchableItemActionType:
-            // This activityType is related to a CoreSpotlight search
+            // This activityType is related to a CoreSpotlight search (SearchableItemConvertable)
             return handleCoreSpotlightSearchableActivityType(activity: activity)
         case WPActivityType.siteList.rawValue:
             return openMySitesTab()
