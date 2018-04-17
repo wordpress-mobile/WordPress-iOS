@@ -468,6 +468,7 @@
 				829DD13A1EC9EED200AB8C12 /* Frameworks */,
 				829DD13B1EC9EED200AB8C12 /* Headers */,
 				829DD13C1EC9EED200AB8C12 /* Resources */,
+				96A1D6EF3C3B685B710F7B11 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -487,6 +488,7 @@
 				829DD1441EC9EED200AB8C12 /* Frameworks */,
 				829DD1451EC9EED200AB8C12 /* Resources */,
 				BE523AA83F74B8EF8BC23240 /* [CP] Embed Pods Frameworks */,
+				A5168179AE2FBBDA10ACDBD7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -577,6 +579,36 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		96A1D6EF3C3B685B710F7B11 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressShared/Pods-WordPressShared-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A5168179AE2FBBDA10ACDBD7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressSharedTests/Pods-WordPressSharedTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BE523AA83F74B8EF8BC23240 /* [CP] Embed Pods Frameworks */ = {
