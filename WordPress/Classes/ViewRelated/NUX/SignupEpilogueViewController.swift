@@ -90,7 +90,9 @@ extension SignupEpilogueViewController: SignupEpilogueTableViewControllerDelegat
     }
 
     func passwordUpdated(newPassword: String) {
-        updatedPassword = newPassword
+        if !newPassword.isEmpty {
+            updatedPassword = newPassword
+        }
     }
 
     func usernameTapped(userInfo: LoginEpilogueUserInfo?) {
