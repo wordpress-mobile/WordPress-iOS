@@ -350,6 +350,8 @@
 		93F50A441F227CFB00B5BEBA /* UsersServiceRemoteXMLRPCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F50A431F227CFB00B5BEBA /* UsersServiceRemoteXMLRPCTests.swift */; };
 		93F50A471F227F3600B5BEBA /* xmlrpc-response-getprofile.xml in Resources */ = {isa = PBXBuildFile; fileRef = 93F50A451F227F3600B5BEBA /* xmlrpc-response-getprofile.xml */; };
 		93F50A481F227F3600B5BEBA /* xmlrpc-response-valid-but-unexpected-dictionary.xml in Resources */ = {isa = PBXBuildFile; fileRef = 93F50A461F227F3600B5BEBA /* xmlrpc-response-valid-but-unexpected-dictionary.xml */; };
+		9FE80A1820863D1B00B37CA5 /* NSObject+ObjectValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FE80A1620863D1A00B37CA5 /* NSObject+ObjectValidation.h */; };
+		9FE80A1920863D1B00B37CA5 /* NSObject+ObjectValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FE80A1720863D1B00B37CA5 /* NSObject+ObjectValidation.m */; };
 		AFEFF3378CD0A507125E5019 /* Pods_WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1A37C8C9E463E3B9F6B61A /* Pods_WordPressKit.framework */; };
 		B56D96AF202C9B7500485233 /* WordPressUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56D96B0202C9B7500485233 /* WordPressUI.framework */; };
 		E11C2AD21FA77FB90023BDE2 /* SitePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11C2AD11FA77FB90023BDE2 /* SitePlugin.swift */; };
@@ -739,6 +741,8 @@
 		93F50A451F227F3600B5BEBA /* xmlrpc-response-getprofile.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-getprofile.xml"; sourceTree = "<group>"; };
 		93F50A461F227F3600B5BEBA /* xmlrpc-response-valid-but-unexpected-dictionary.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-valid-but-unexpected-dictionary.xml"; sourceTree = "<group>"; };
 		9F902B70CBB63DD7EB9D275A /* Pods_WordPressKitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressKitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9FE80A1620863D1A00B37CA5 /* NSObject+ObjectValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ObjectValidation.h"; sourceTree = "<group>"; };
+		9FE80A1720863D1B00B37CA5 /* NSObject+ObjectValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ObjectValidation.m"; sourceTree = "<group>"; };
 		A2CE6797F9E45AE059B28690 /* Pods-WordPressKit.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKit.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKit/Pods-WordPressKit.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		B459C2F3F70D7C971B441F04 /* Pods-WordPressKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKit.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKit/Pods-WordPressKit.debug.xcconfig"; sourceTree = "<group>"; };
 		B56D96B0202C9B7500485233 /* WordPressUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1397,6 +1401,8 @@
 		93BD27871EE829B4002BB00B /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				9FE80A1620863D1A00B37CA5 /* NSObject+ObjectValidation.h */,
+				9FE80A1720863D1B00B37CA5 /* NSObject+ObjectValidation.m */,
 				93C674EF1EE8351E00BFAF05 /* NSMutableDictionary+Helpers.h */,
 				93C674F01EE8351E00BFAF05 /* NSMutableDictionary+Helpers.m */,
 			);
@@ -1459,6 +1465,7 @@
 				93BD276F1EE737A8002BB00B /* ServiceRemoteWordPressComREST.h in Headers */,
 				93BD277D1EE73944002BB00B /* NSDate+WordPressJSON.h in Headers */,
 				93BD273B1EE73282002BB00B /* AccountServiceRemote.h in Headers */,
+				9FE80A1820863D1B00B37CA5 /* NSObject+ObjectValidation.h in Headers */,
 				93BD27691EE736A8002BB00B /* RemoteUser.h in Headers */,
 				9368C7BF1EC630CE0092CE8E /* StatsStringUtilities.h in Headers */,
 				9368C7BB1EC630270092CE8E /* StatsVisits.h in Headers */,
@@ -1898,6 +1905,7 @@
 				93BD27801EE73944002BB00B /* WordPressComRestApi.swift in Sources */,
 				E11C2AD21FA77FB90023BDE2 /* SitePlugin.swift in Sources */,
 				74A44DCC1F13C533006CD8F4 /* NotificationSyncServiceRemote.swift in Sources */,
+				9FE80A1920863D1B00B37CA5 /* NSObject+ObjectValidation.m in Sources */,
 				74E229501F1E741B0085F7F2 /* RemotePublicizeConnection.swift in Sources */,
 				9311A6891F22625A00704AC9 /* TaxonomyServiceRemoteREST.m in Sources */,
 				93BD277C1EE73944002BB00B /* HTTPAuthenticationAlertController.swift in Sources */,
