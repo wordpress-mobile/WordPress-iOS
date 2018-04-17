@@ -19,4 +19,6 @@ typedef enum {
 
 @property (nonatomic, assign) BOOL isUploadingMedia;
 
+@property (nullable, nonatomic, strong) NSUUID *mediaObserverReceipt;
+
 @end
