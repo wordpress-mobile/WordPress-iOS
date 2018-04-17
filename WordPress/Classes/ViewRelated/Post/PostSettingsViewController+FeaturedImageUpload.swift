@@ -4,23 +4,29 @@ import Photos
 extension PostSettingsViewController {
 
     @objc func setFeaturedImage(asset: PHAsset) {
+        if let receipt = mediaObserverReceipt {
+            MediaCoordinator.shared.removeObserver(withUUID: receipt)
+        }
         isUploadingMedia = true
         let media = MediaCoordinator.shared.addMedia(from: asset, to: self.apost)
-        let _ = MediaCoordinator.shared.addObserver({ [weak self](media, state) in
+        mediaObserverReceipt = MediaCoordinator.shared.addObserver({ [weak self](media, state) in
             self?.mediaObserver(media: media, state: state)
         }, for: media)
         let progress = MediaCoordinator.shared.progress(for: media)
         self.featuredImageProgress = progress
-        apost.featuredImage = media
     }
 
     @objc func setFeaturedImage(media: Media) {
-        apost.featuredImage = media
+        if let receipt = mediaObserverReceipt {
+            MediaCoordinator.shared.removeObserver(withUUID: receipt)
+        }
         if media.hasRemote {
+            apost.featuredImage = media
             return
         }
+        isUploadingMedia = true
         MediaCoordinator.shared.retryMedia(media)
-        let _ = MediaCoordinator.shared.addObserver({ [weak self](media, state) in
+        mediaObserverReceipt = MediaCoordinator.shared.addObserver({ [weak self](media, state) in
             self?.mediaObserver(media: media, state: state)
         })
         let progress = MediaCoordinator.shared.progress(for: media)
@@ -42,6 +48,7 @@ extension PostSettingsViewController {
             featuredImageProgress?.localizedDescription = NSLocalizedString("Uploading...", comment: "Label to show while uploading media to server")
             tableView.reloadData()
         case .ended:
+            apost.featuredImage = media
             isUploadingMedia = false
             tableView.reloadData()
         case .failed(let error):
@@ -51,7 +58,7 @@ extension PostSettingsViewController {
             if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
                 break
             }
-            WPError.showAlert(withTitle: NSLocalizedString("Image unavailable", comment: "The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post."), message: error.localizedDescription)
+            WPError.showAlert(withTitle: NSLocalizedString("Couldn't upload featured image", comment: "The title for an alert that says to the user that the featured image he selected couldn't be uploaded."), message: error.localizedDescription)
         case .progress:
             break
         }
