@@ -4,28 +4,24 @@ import Photos
 extension PostSettingsViewController {
 
     @objc func setFeaturedImage(asset: PHAsset) {
-        if let receipt = mediaObserverReceipt {
-            MediaCoordinator.shared.removeObserver(withUUID: receipt)
-        }
-        isUploadingMedia = true
         let media = MediaCoordinator.shared.addMedia(from: asset, to: self.apost)
-        mediaObserverReceipt = MediaCoordinator.shared.addObserver({ [weak self](media, state) in
-            self?.mediaObserver(media: media, state: state)
-        }, for: media)
-        let progress = MediaCoordinator.shared.progress(for: media)
-        self.featuredImageProgress = progress
+        setupObservingOf(media: media)
     }
 
     @objc func setFeaturedImage(media: Media) {
-        if let receipt = mediaObserverReceipt {
-            MediaCoordinator.shared.removeObserver(withUUID: receipt)
-        }
         if media.hasRemote {
             apost.featuredImage = media
             return
         }
-        isUploadingMedia = true
         MediaCoordinator.shared.retryMedia(media)
+        setupObservingOf(media: media)
+    }
+
+    func setupObservingOf(media: Media) {
+        if let receipt = mediaObserverReceipt {
+            MediaCoordinator.shared.removeObserver(withUUID: receipt)
+        }
+        isUploadingMedia = true
         mediaObserverReceipt = MediaCoordinator.shared.addObserver({ [weak self](media, state) in
             self?.mediaObserver(media: media, state: state)
         })
