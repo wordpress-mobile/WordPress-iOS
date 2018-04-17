@@ -12,7 +12,6 @@ typealias SignupFailureBlock = (_ error: Error?) -> Void
 ///
 open class SignupService: LocalCoreDataService {
 
-
     /// Create a new WPcom account using Google signin token
     ///
     /// - Parameters:
@@ -26,7 +25,7 @@ open class SignupService: LocalCoreDataService {
         let remote = WordPressComServiceRemote(wordPressComRestApi: self.anonymousApi())
         let locale = WordPressComLanguageDatabase().deviceLanguage.slug
 
-        remote?.createWPComAccount(withGoogle: token,
+        remote.createWPComAccount(withGoogle: token,
                                    andLocale: locale,
                                    andClientID: ApiCredentials.client(),
                                    andClientSecret: ApiCredentials.secret(),
