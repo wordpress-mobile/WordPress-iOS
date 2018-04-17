@@ -76,7 +76,10 @@ extension StockPhotosPicker: WPMediaPickerViewControllerDelegate {
 
     private func hideKeyboard(from view: UIView?) {
         if let view = view, view.isFirstResponder {
-            view.resignFirstResponder()
+            //Fix animation conflict between dismissing the keyboard and showing the accessory input view
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                view.resignFirstResponder()
+            }
         }
     }
 }
