@@ -9,7 +9,7 @@ extension PostSettingsViewController {
     @objc func setFeaturedImage(asset: PHAsset) {
         isUploadingMedia = true
         let media = MediaCoordinator.shared.addMedia(from: asset, to: self.apost)
-        MediaCoordinator.shared.addObserver({ [weak self](media, state) in
+        let _ = MediaCoordinator.shared.addObserver({ [weak self](media, state) in
             self?.mediaObserver(media: media, state: state)
         }, for: media)
         let progress = MediaCoordinator.shared.progress(for: media)
@@ -19,7 +19,7 @@ extension PostSettingsViewController {
     @objc func setFeaturedImage(media: Media) {
         if media.remoteStatus == .local || media.remoteStatus == .failed {
             MediaCoordinator.shared.retryMedia(media)
-            MediaCoordinator.shared.addObserver({ [weak self](media, state) in
+            let _ = MediaCoordinator.shared.addObserver({ [weak self](media, state) in
                 self?.mediaObserver(media: media, state: state)
             })
             let progress = MediaCoordinator.shared.progress(for: media)
@@ -37,7 +37,8 @@ extension PostSettingsViewController {
             if let url = media.absoluteThumbnailLocalURL, let data = try? Data(contentsOf: url) {
                 featuredImageProgress?.setUserInfoObject(UIImage(data: data), forKey: .WPProgressImageThumbnailKey)
             }
-        case .uploading:
+        case .uploading(let progress):
+            featuredImageProgress = progress
             featuredImageProgress?.kind = .file
             featuredImageProgress?.setUserInfoObject(Progress.FileOperationKind.copying, forKey: ProgressUserInfoKey.fileOperationKindKey)
             featuredImageProgress?.localizedDescription = NSLocalizedString("Uploading...", comment: "Label to show while uploading media to server")
