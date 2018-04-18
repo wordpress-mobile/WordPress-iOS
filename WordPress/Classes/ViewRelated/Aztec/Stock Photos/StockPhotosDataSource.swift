@@ -116,12 +116,6 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
 // MARK: - Helpers
 
 extension StockPhotosDataSource {
-//    private func notifyObservers() {
-//        observers.forEach {
-//            $0.value(false, IndexSet(), IndexSet(), IndexSet(), [])
-//        }
-//    }
-
     private func notifyObservers(incremental: Bool = false, inserted: IndexSet = IndexSet()) {
         observers.forEach {
             $0.value(incremental, IndexSet(), inserted, IndexSet(), [])
