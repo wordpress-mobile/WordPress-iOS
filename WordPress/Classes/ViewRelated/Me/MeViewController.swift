@@ -73,8 +73,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        // Set the userActivity property of UIResponder for spotlight searching
-        userActivity = WPActivityType.createUserActivity(with: .me)
+        registerUserActivity()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -495,6 +494,30 @@ extension MeViewController: WPSplitViewControllerDetailProvider {
         }
 
         return myProfileViewController
+    }
+}
+
+// MARK: - SearchableActivity Conformance
+
+extension MeViewController: SearchableActivityConvertable {
+    var activityType: String {
+        return WPActivityType.me.rawValue
+    }
+
+    var activityTitle: String {
+        return NSLocalizedString("Me", comment: "Title of the 'Me' tab - used for spotlight indexing on iOS.")
+    }
+
+    var activityKeywords: Set<String>? {
+        let keyWordString = NSLocalizedString("wordpress, me, settings, account, notification log out, logout, log in, login, help, support",
+                                              comment: "This is a comma separated list of keywords used for spotlight indexing of the 'Me' tab.")
+        let keywordArray = keyWordString.arrayOfTags()
+
+        guard !keywordArray.isEmpty else {
+            return nil
+        }
+
+        return Set(keywordArray)
     }
 }
 

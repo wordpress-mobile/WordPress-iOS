@@ -16,7 +16,6 @@
 #import <WordPressUI/WordPressUI.h>
 
 
-
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 
 static NSInteger HideAllMinSites = 10;
