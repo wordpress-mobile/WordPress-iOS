@@ -155,8 +155,8 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         // Configure all the things and sign in.
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().clientID = ApiCredentials.googleLoginClientId()
-        GIDSignIn.sharedInstance().serverClientID = ApiCredentials.googleLoginServerClientId()
+        GIDSignIn.sharedInstance().clientID = WordPressAuthenticator.shared.configuration.googleLoginClientId
+        GIDSignIn.sharedInstance().serverClientID = WordPressAuthenticator.shared.configuration.googleLoginServerClientId
 
         GIDSignIn.sharedInstance().signIn()
 
@@ -188,7 +188,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     /// Note: This is only used during Jetpack setup, not the normal flows
     ///
     func addSignupButton() {
-        guard Feature.enabled(.jetpackSignup) else {
+        guard WordPressAuthenticator.shared.configuration.supportsJetpackSignup else {
             return
         }
 
