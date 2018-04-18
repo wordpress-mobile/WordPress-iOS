@@ -142,18 +142,26 @@ extension StockPhotosDataSource: StockPhotosDataLoaderDelegate {
             return
         }
 
+        if reset {
+            overwriteMedia(with: media)
+        } else {
+            appendMedia(with: media)
+        }
+    }
+
+    private func overwriteMedia(with media: [StockPhotosMedia]) {
+        photosMedia = media
+        notifyObservers(incremental: false)
+    }
+
+    private func appendMedia(with media: [StockPhotosMedia]) {
         let currentMaxIndex = photosMedia.count
         let newMaxIndex = currentMaxIndex + media.count - 1
 
         let isIncremental = currentMaxIndex != 0
         let insertedIndexes = IndexSet(integersIn: currentMaxIndex...newMaxIndex)
 
-        if reset {
-            photosMedia = media
-            notifyObservers(incremental: false)
-        } else {
-            photosMedia.append(contentsOf: media)
-            notifyObservers(incremental: isIncremental, inserted: insertedIndexes)
-        }
+        photosMedia.append(contentsOf: media)
+        notifyObservers(incremental: isIncremental, inserted: insertedIndexes)
     }
 }
