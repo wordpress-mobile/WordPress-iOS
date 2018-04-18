@@ -4,9 +4,6 @@ import Lottie
 class LoginPrologueViewController: LoginViewController {
 
     private var buttonViewController: NUXButtonViewController?
-
-    @IBOutlet var loginButton: UIButton!
-    @IBOutlet var signupButton: UIButton!
     var showCancel = false
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -14,12 +11,6 @@ class LoginPrologueViewController: LoginViewController {
     }
 
     // MARK: - Lifecycle Methods
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        localizeControls()
-    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -82,18 +73,6 @@ class LoginPrologueViewController: LoginViewController {
             }
         }
         buttonViewController.backgroundColor = WPStyleGuide.lightGrey()
-    }
-
-    // MARK: - Setup and Config
-
-    @objc func localizeControls() {
-        loginButton.setTitle(NSLocalizedString("Log In", comment: "Button title.  Tapping takes the user to the login form."),
-                             for: .normal)
-        loginButton.accessibilityIdentifier = "Log In"
-
-        signupButton.setTitle(NSLocalizedString("Create a WordPress site", comment: "Button title. Tapping takes the user to a form where they can create a new WordPress site."),
-                              for: .normal)
-
     }
 
     // MARK: - Actions
