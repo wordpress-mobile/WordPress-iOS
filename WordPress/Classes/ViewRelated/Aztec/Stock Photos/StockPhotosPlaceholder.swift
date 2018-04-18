@@ -28,7 +28,7 @@ final class StockPhotosPlaceholder: WPNoResultsView {
 
     private func configureSubtitle() {
         do {
-            attributedMessageText = try createStringWIthLinkAttributes(in: .freePhotosPlaceholderSubtitle)
+            attributedMessageText = try createStringWithLinkAttributes(from: .freePhotosPlaceholderSubtitle)
         } catch {
             // A translation error could make the link attributes to fail. (i.e. removing the '{')
             // This will make sure that the message is still present, without any {}, but without the link.
@@ -36,7 +36,7 @@ final class StockPhotosPlaceholder: WPNoResultsView {
         }
     }
 
-    private func createStringWIthLinkAttributes(in subtitle: String) throws -> NSAttributedString {
+    private func createStringWithLinkAttributes(from subtitle: String) throws -> NSAttributedString {
         let htmlTaggedString = subtitle.replacingOccurrences(of: "{", with: "<a href=\"\(pexelsUrl)\">")
             .replacingOccurrences(of: "}", with: "</a>")
 
