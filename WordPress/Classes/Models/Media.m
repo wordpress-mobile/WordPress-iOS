@@ -28,6 +28,7 @@
 @dynamic remoteThumbnailURL;
 @dynamic postID;
 @dynamic error;
+@dynamic featuredOn;
 
 #pragma mark -
 
@@ -174,6 +175,8 @@
             return NSLocalizedString(@"Pending", @"Status for Media object that is being processed locally.");
         case MediaRemoteStatusLocal:
             return NSLocalizedString(@"Local", @"Status for Media object that is only exists locally.");
+        case MediaRemoteStatusStub:
+            return NSLocalizedString(@"Stub", @"Status for Media object that is only has the mediaID locally.");
     }
 }
 

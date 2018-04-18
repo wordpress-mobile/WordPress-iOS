@@ -282,7 +282,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 - (void)addPostPropertiesObserver
 {
     [self.post addObserver:self
-             forKeyPath:@"post_thumbnail"
+             forKeyPath:@"featuredImage"
                 options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                 context:nil];
 
@@ -294,7 +294,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (void)removePostPropertiesObserver
 {
-    [self.post removeObserver:self forKeyPath:@"post_thumbnail"];
+    [self.post removeObserver:self forKeyPath:@"featuredImage"];
     [self.post removeObserver:self forKeyPath:@"geolocation"];
 }
 
@@ -303,7 +303,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    if ([@"post_thumbnail" isEqualToString:keyPath]) {
+    if ([@"featuredImage" isEqualToString:keyPath]) {
         self.featuredImage = nil;
     }
     [self.tableView reloadData];
@@ -717,7 +717,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 {
     UITableViewCell *cell;
 
-    if (!self.apost.post_thumbnail && !self.isUploadingMedia) {
+    if (!self.apost.featuredImage && !self.isUploadingMedia) {
         WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
         activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
         activityCell.tag = PostSettingsRowFeaturedImageAdd;
@@ -1192,7 +1192,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (void)showFeaturedImageSelector
 {
-    if (self.apost.post_thumbnail) {
+    if (self.apost.featuredImage) {
         // Check if the featured image is set, otherwise we don't want to do anything while it's still loading.
         if (self.featuredImage) {
             FeaturedImageViewController *featuredImageVC = [[FeaturedImageViewController alloc] initWithPost:self.apost];
@@ -1274,26 +1274,21 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (void)loadFeaturedImage:(NSIndexPath *)indexPath
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    MediaService * mediaService = [[MediaService alloc] initWithManagedObjectContext:context];
-    Media *media = [Media existingMediaWithMediaID:self.apost.post_thumbnail inBlog:self.apost.blog];
-    void (^successBlock)(Media * media) = ^(Media *featuredMedia) {
-        CGFloat width = CGRectGetWidth(self.view.frame);
-        width = width - (PostFeaturedImageCellMargin * 2); // left and right cell margins
-        CGFloat height = ceilf(width * 0.66);
-        CGSize imageSize = CGSizeMake(width, height);
-        [MediaThumbnailCoordinator.shared thumbnailFor:media with:imageSize onCompletion:^(UIImage * image, NSError * error) {
-            self.featuredImage = image;
-            [self.tableView reloadData];
-        }];
-    };
-    if (media){        
-        successBlock(media);
+    Media *media = self.apost.featuredImage;
+    if (!media) {
         return;
     }
-    
-    [mediaService getMediaWithID:self.apost.post_thumbnail inBlog:self.apost.blog withSuccess:successBlock failure:^(NSError *error) {
-        [self featuredImageFailedLoading:indexPath withError:error];
+    CGFloat width = CGRectGetWidth(self.view.frame);
+    width = width - (PostFeaturedImageCellMargin * 2); // left and right cell margins
+    CGFloat height = ceilf(width * 0.66);
+    CGSize imageSize = CGSizeMake(width, height);
+    [MediaThumbnailCoordinator.shared thumbnailFor:media with:imageSize onCompletion:^(UIImage * image, NSError * error) {
+        if (error) {
+            [self featuredImageFailedLoading:indexPath withError:error];
+            return;
+        }
+        self.featuredImage = image;
+        [self.tableView reloadData];
     }];
 }
 

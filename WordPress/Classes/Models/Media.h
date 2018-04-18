@@ -10,6 +10,7 @@ typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
     MediaRemoteStatusLocal,         /* Only local version. */
     MediaRemoteStatusPushing,       /* Uploading post. */
     MediaRemoteStatusProcessing,    /* Intermediate status before uploading. */
+    MediaRemoteStatusStub,          /* We only have the mediaID information from the server */
 };
 
 typedef NS_ENUM(NSUInteger, MediaType) {
@@ -52,6 +53,7 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong, nullable) NSSet *posts;
+@property (nonatomic, strong, nullable) NSSet *featuredOn;
 
 // Helper properties
 
@@ -100,6 +102,11 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 - (void)removePostsObject:(AbstractPost *)value;
 - (void)addPosts:(NSSet *)values;
 - (void)removePosts:(NSSet *)values;
+
+- (void)addFeaturedOnObject:(AbstractPost *)value;
+- (void)removeFeaturedOnObject:(AbstractPost *)value;
+- (void)addFeaturedOn:(NSSet *)values;
+- (void)removeFeaturedOn:(NSSet *)values;
 
 @end
 
