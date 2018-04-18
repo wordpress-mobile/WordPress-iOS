@@ -44,8 +44,6 @@ class SignupGoogleViewController: LoginViewController {
         GIDSignIn.sharedInstance().serverClientID = ApiCredentials.googleLoginServerClientId()
 
         GIDSignIn.sharedInstance().signIn()
-
-        WordPressAuthenticator.track(.loginSocialButtonClick)
     }
 }
 
