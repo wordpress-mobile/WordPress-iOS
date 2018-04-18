@@ -1,6 +1,6 @@
 /// Implementations of this protocol will be notified when data is loaded from the StockPhotosService
 protocol StockPhotosDataLoaderDelegate: class {
-    func didLoad(media: [StockPhotosMedia])
+    func didLoad(media: [StockPhotosMedia], reset: Bool)
 }
 
 /// Uses the StockPhotosService to load stock photos, handling pagination
@@ -23,6 +23,7 @@ final class StockPhotosDataLoader {
 
     func search(_ params: StockPhotosSearchParams) {
         request = params
+        let isFirstPage = request?.pageable?.pageIndex == StockPhotosPageable.defaultPageIndex
         state = .loading
         DispatchQueue.main.async { [weak self] in
             self?.service.search(params: params) { resultsPage in
@@ -30,7 +31,7 @@ final class StockPhotosDataLoader {
                 self?.request = StockPhotosSearchParams(text: self?.request?.text, pageable: resultsPage.nextPageable())
 
                 if let content = resultsPage.content() {
-                    self?.delegate?.didLoad(media: content)
+                    self?.delegate?.didLoad(media: content, reset: isFirstPage)
                 }
             }
         }

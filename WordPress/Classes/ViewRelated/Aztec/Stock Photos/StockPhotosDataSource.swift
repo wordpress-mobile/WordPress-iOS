@@ -137,7 +137,7 @@ extension StockPhotosDataSource {
 }
 
 extension StockPhotosDataSource: StockPhotosDataLoaderDelegate {
-    func didLoad(media: [StockPhotosMedia]) {
+    func didLoad(media: [StockPhotosMedia], reset: Bool) {
         guard media.count > 0 else {
             return
         }
@@ -148,7 +148,12 @@ extension StockPhotosDataSource: StockPhotosDataLoaderDelegate {
         let isIncremental = currentMaxIndex != 0
         let insertedIndexes = IndexSet(integersIn: currentMaxIndex...newMaxIndex)
 
-        photosMedia.append(contentsOf: media)
-        notifyObservers(incremental: isIncremental, inserted: insertedIndexes)
+        if reset {
+            photosMedia = media
+            notifyObservers(incremental: false)
+        } else {
+            photosMedia.append(contentsOf: media)
+            notifyObservers(incremental: isIncremental, inserted: insertedIndexes)
+        }
     }
 }
