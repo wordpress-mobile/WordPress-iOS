@@ -19,6 +19,6 @@ extension String {
     }
 
     static var freePhotosPlaceholderSubtitle: String {
-        return NSLocalizedString("Photos provided by Pexels", comment: "Subtitle for placeholder in Free Photos")
+        return NSLocalizedString("Photos provided by {Pexels}", comment: "Subtitle for placeholder in Free Photos. The {} won't be visible, but they are important to make that word a link to the Pexels website.")
     }
 }
