@@ -30,7 +30,7 @@ final class StockPhotosPlaceholder: WPNoResultsView {
         do {
             attributedMessageText = try createStringWithLinkAttributes(from: .freePhotosPlaceholderSubtitle)
         } catch {
-            // A translation error could make the link attributes to fail. (i.e. removing the '{')
+            // A translation error could make the creation of link attributes to fail. (i.e. removing the '{')
             // This will make sure that the message is still present, without any {}, but without the link.
             messageText = removeCurlybraces(from: .freePhotosPlaceholderSubtitle)
         }
