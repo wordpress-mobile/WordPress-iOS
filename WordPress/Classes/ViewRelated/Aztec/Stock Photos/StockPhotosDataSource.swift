@@ -29,8 +29,13 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     }
 
     func search(for searchText: String?) {
+        guard searchText?.isEmpty == false else {
+            clearSearch(notifyObservers: true)
+            return
+        }
+
         throttle.throttle { [weak self] in
-            let params = StockPhotosSearchParams(text: searchText, pageable: StockPhotosPageable.initial())
+            let params = StockPhotosSearchParams(text: searchText, pageable: StockPhotosPageable.first())
             self?.search(params)
         }
     }
@@ -116,12 +121,6 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
 // MARK: - Helpers
 
 extension StockPhotosDataSource {
-//    private func notifyObservers() {
-//        observers.forEach {
-//            $0.value(false, IndexSet(), IndexSet(), IndexSet(), [])
-//        }
-//    }
-
     private func notifyObservers(incremental: Bool = false, inserted: IndexSet = IndexSet()) {
         observers.forEach {
             $0.value(incremental, IndexSet(), inserted, IndexSet(), [])
@@ -143,11 +142,25 @@ extension StockPhotosDataSource {
 }
 
 extension StockPhotosDataSource: StockPhotosDataLoaderDelegate {
-    func didLoad(media: [StockPhotosMedia]) {
+    func didLoad(media: [StockPhotosMedia], reset: Bool) {
         guard media.count > 0 else {
+            clearSearch(notifyObservers: true)
             return
         }
 
+        if reset {
+            overwriteMedia(with: media)
+        } else {
+            appendMedia(with: media)
+        }
+    }
+
+    private func overwriteMedia(with media: [StockPhotosMedia]) {
+        photosMedia = media
+        notifyObservers(incremental: false)
+    }
+
+    private func appendMedia(with media: [StockPhotosMedia]) {
         let currentMaxIndex = photosMedia.count
         let newMaxIndex = currentMaxIndex + media.count - 1
 

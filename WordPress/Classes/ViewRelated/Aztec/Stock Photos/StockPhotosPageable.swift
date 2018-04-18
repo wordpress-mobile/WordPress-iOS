@@ -1,6 +1,6 @@
 
 struct StockPhotosPageable: Pageable {
-    let number: Int
+    let itemsPerPage: Int
     let pageHandle: Int
 
     static let defaultPageSize = 40
@@ -11,21 +11,24 @@ struct StockPhotosPageable: Pageable {
             return nil
         }
 
-        return StockPhotosPageable(number: number, pageHandle: pageHandle)
+        return StockPhotosPageable(itemsPerPage: itemsPerPage, pageHandle: pageHandle)
     }
 
-    func pageSize() -> Int {
-        return number
+    var pageSize: Int {
+        return itemsPerPage
     }
 
-    func pageIndex() -> Int {
+    var pageIndex: Int {
         return pageHandle
     }
 }
 
 extension StockPhotosPageable {
-    static func initial() -> StockPhotosPageable {
-        return StockPhotosPageable(number: defaultPageSize, pageHandle: defaultPageIndex)
+    /// Builds the Pageable corresponding to the first page, with the default page size.
+    ///
+    /// - Returns: A StockPhotosPageable configured with the default page size and the initial page handle
+    static func first() -> StockPhotosPageable {
+        return StockPhotosPageable(itemsPerPage: defaultPageSize, pageHandle: defaultPageIndex)
     }
 }
 
@@ -37,12 +40,12 @@ extension StockPhotosPageable: Decodable {
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         pageHandle = try values.decode(Int.self, forKey: .nextPage)
-        number = type(of: self).defaultPageSize
+        itemsPerPage = type(of: self).defaultPageSize
     }
 }
 
 extension StockPhotosPageable: CustomStringConvertible {
     var description: String {
-        return "Stock Photos Pageable: count \(number) next: \(pageHandle)"
+        return "Stock Photos Pageable: count \(itemsPerPage) next: \(pageHandle)"
     }
 }
