@@ -13,6 +13,10 @@ import ZendeskSDK
 
     private static var identityCreated = false
 
+    private static var appVersion: String {
+        return Bundle.main.shortVersionString() ?? "unknown"
+    }
+
     // MARK: - Public Methods
 
     @objc static func setup() {
@@ -99,7 +103,7 @@ import ZendeskSDK
 
             // Set form field values
             var ticketFields = [ZDKCustomField]()
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.appVersion, andValue: Bundle.main.shortVersionString() ?? "unknown"))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.appVersion, andValue: ZendeskUtils.appVersion))
             ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.allBlogs, andValue: ZendeskUtils.sharedInstance.getBlogInfo()))
             ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.deviceFreeSpace, andValue: ZendeskUtils.sharedInstance.getDeviceFreeSpace()))
             ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.networkInformation, andValue: "unknown"))
@@ -107,7 +111,7 @@ import ZendeskSDK
             ZDKConfig.instance().customTicketFields = ticketFields
 
             // Set tags
-            requestCreationConfig.tags = ["unknown"]
+            requestCreationConfig.tags = ZendeskUtils.sharedInstance.getTags()
 
             // Set the ticket subject
             requestCreationConfig.subject = Constants.ticketSubject
@@ -165,10 +169,34 @@ private extension ZendeskUtils {
         let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         if let allBlogs = blogService.blogsForAllAccounts() as? [Blog], allBlogs.count > 0 {
-            blogsInfo = (allBlogs.map { return $0.logDescription() }).joined(separator: Constants.blogSeperator)
+            blogsInfo = (allBlogs.map { $0.logDescription() }).joined(separator: Constants.blogSeperator)
         }
 
         return blogsInfo
+    }
+
+    func getTags() -> [String] {
+
+        var tags = [String]()
+
+        let context = ContextManager.sharedInstance().mainContext
+        let accountService = AccountService.init(managedObjectContext: context)
+
+        if let defaultAccount = accountService.defaultWordPressComAccount() {
+
+            tags = defaultAccount.blogs.filter {
+                $0.planTitle != nil
+                }.map {
+                    $0.planTitle!
+                }.unique
+
+            tags.append(Constants.wpComTag)
+
+        } else {
+            tags.append(Constants.jetpackTag)
+        }
+
+        return tags
     }
 
     // MARK: - Contants
@@ -179,6 +207,8 @@ private extension ZendeskUtils {
         static let articleLabel = "iOS"
         static let ticketSubject = NSLocalizedString("WordPress for iOS Support", comment: "Subject of new Zendesk ticket.")
         static let blogSeperator = "\n----------\n"
+        static let jetpackTag = "jetpack"
+        static let wpComTag = "wpcom"
     }
 
     struct TicketFieldIDs {
