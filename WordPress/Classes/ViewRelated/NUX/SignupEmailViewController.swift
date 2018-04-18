@@ -143,6 +143,9 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
 
         remote.isEmailAvailable(loginFields.emailAddress, success: { available in
             if !available {
+                defer {
+                    WPAppAnalytics.track(.signupEmailToLogin)
+                }
                 // If the user has already signed up redirect to the Login flow
                 self.performSegue(withIdentifier: .showEmailLogin, sender: self)
             }
