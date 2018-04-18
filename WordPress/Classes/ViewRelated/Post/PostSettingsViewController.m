@@ -1455,13 +1455,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         [self setFeaturedImageWithAsset:asset];
     } else if ([[assets firstObject] isKindOfClass:[Media class]]){
         Media *media = [assets firstObject];
-        if ([media hasRemote]) {
-            Post *post = (Post *)self.apost;
-            post.featuredImage = media;
-        } else {
-            self.isUploadingMedia = YES;
-            [self setFeaturedImageWithMedia:media];
-        }
+        [self setFeaturedImageWithMedia:media];
     }
     
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
