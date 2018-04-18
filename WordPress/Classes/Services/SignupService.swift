@@ -37,7 +37,6 @@ open class SignupService: LocalCoreDataService {
                                                 return
                                         }
 
-                                        WPAppAnalytics.track(.createdAccount)
                                         // create the local account
                                         let service = AccountService(managedObjectContext: self.managedObjectContext)
                                         let account = service.createOrUpdateAccount(withUsername: username, authToken: bearer_token)
@@ -47,8 +46,14 @@ open class SignupService: LocalCoreDataService {
 
                                         let createdAccount = (responseDictionary?[ResponseKeys.createdAccount] as? Int ?? 0) == 1
                                         if createdAccount {
+                                            defer {
+                                                WPAppAnalytics.track(.createdAccount)
+                                            }
                                             success(createdAccount)
                                         } else {
+                                            defer {
+                                                WPAppAnalytics.track(.signupSocialToLogin)
+                                            }
                                             // we need to sync the blogs for existing accounts to be able to display the Login Epilogue
                                             BlogSyncFacade().syncBlogs(for: account, success: {
                                                 success(createdAccount)
