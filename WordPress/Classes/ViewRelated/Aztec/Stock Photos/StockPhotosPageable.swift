@@ -14,11 +14,11 @@ struct StockPhotosPageable: Pageable {
         return StockPhotosPageable(itemsPerPage: itemsPerPage, pageHandle: pageHandle)
     }
 
-    func pageSize() -> Int {
+    var pageSize: Int {
         return itemsPerPage
     }
 
-    func pageIndex() -> Int {
+    var pageIndex: Int {
         return pageHandle
     }
 }
