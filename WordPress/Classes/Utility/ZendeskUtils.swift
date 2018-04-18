@@ -8,9 +8,7 @@ import CoreTelephony
 
     static var sharedInstance: ZendeskUtils = ZendeskUtils()
 
-    static var zendeskEnabled: Bool {
-        return UserDefaults.standard.bool(forKey: Constants.zendeskEnabledUDKey)
-    }
+    static var zendeskEnabled: Bool = false
 
     private static var identityCreated = false
 
@@ -127,9 +125,7 @@ import CoreTelephony
 private extension ZendeskUtils {
 
     func enableZendesk(_ enabled: Bool) {
-        let defaults = UserDefaults.standard
-        defaults.set(enabled, forKey: Constants.zendeskEnabledUDKey)
-        defaults.synchronize()
+        ZendeskUtils.zendeskEnabled = enabled
         DDLogInfo("Zendesk Enabled: \(enabled)")
     }
 
@@ -234,7 +230,6 @@ private extension ZendeskUtils {
     struct Constants {
         static let unknownValue = "unknown"
         static let noValue = "none"
-        static let zendeskEnabledUDKey = "wp_zendesk_enabled"
         static let mobileCategoryID = "360000041586"
         static let articleLabel = "iOS"
         static let ticketSubject = NSLocalizedString("WordPress for iOS Support", comment: "Subject of new Zendesk ticket.")
