@@ -5,6 +5,7 @@ extension PostSettingsViewController {
 
     @objc func setFeaturedImage(asset: PHAsset) {
         let media = MediaCoordinator.shared.addMedia(from: asset, to: self.apost)
+        apost.featuredImage = media
         setupObservingOf(media: media)
     }
 
@@ -13,6 +14,7 @@ extension PostSettingsViewController {
             apost.featuredImage = media
             return
         }
+        apost.featuredImage = media
         MediaCoordinator.shared.retryMedia(media)
         setupObservingOf(media: media)
     }
@@ -49,7 +51,6 @@ extension PostSettingsViewController {
             featuredImageProgress?.localizedDescription = NSLocalizedString("Uploading...", comment: "Label to show while uploading media to server")
             tableView.reloadData()
         case .ended:
-            apost.featuredImage = media
             isUploadingMedia = false
             tableView.reloadData()
         case .failed(let error):
