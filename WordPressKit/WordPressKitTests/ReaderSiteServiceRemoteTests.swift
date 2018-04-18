@@ -39,9 +39,10 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
                                                         withVersion: ._1_1)
         readerSiteServiceRemote.followSite(withID: 1, success: nil, failure: nil)
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Wrong method")
-        XCTAssertEqual(mockRemoteApi.URLStringPassedIn, expectedPath, "Wrong path")
-        let parameters: NSDictionary = mockRemoteApi.parametersPassedIn as! NSDictionary
-        XCTAssertEqual(parameters["source"] as! String?, "ios", "incorrect source parameter")
+
+        let url = URL(string: mockRemoteApi.URLStringPassedIn!)!
+        XCTAssertEqual(url.path, expectedPath, "Wrong path")
+        XCTAssertEqual(url.query, "source=ios", "incorrect source parameter")
     }
 
     func testFollowSiteWithID() {
