@@ -26,7 +26,7 @@ final class CameraCaptureCoordinator {
                     return
             }
 
-            let info = MediaAnalyticsInfo(origin: .mediaLibrary, selectionMethod: .fullScreenPicker)
+            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.camera), selectionMethod: .fullScreenPicker)
             MediaCoordinator.shared.addMedia(from: media, to: blog, analyticsInfo: info)
         }
 
