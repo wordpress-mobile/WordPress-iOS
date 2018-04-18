@@ -3603,7 +3603,6 @@ extension AztecPostViewController: StockPhotosPickerDelegate {
     func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
         assets.forEach {
             insert(exportableAsset: $0, source: .stockPhotos)
-            WPAnalytics.track(.editorAddedPhotoViaStockPhotos)
         }
     }
 }
