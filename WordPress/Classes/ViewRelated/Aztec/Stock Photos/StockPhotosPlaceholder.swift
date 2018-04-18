@@ -1,7 +1,8 @@
 // Empty state for Stock Photos
 final class StockPhotosPlaceholder: WPNoResultsView {
 
-    private let pexelsUrl = "https://www.pexels.com"
+    private let companyUrl = "https://www.pexels.com"
+    private let companyName = "Pexels"
 
     init() {
         super.init(frame: .zero)
@@ -27,32 +28,13 @@ final class StockPhotosPlaceholder: WPNoResultsView {
     }
 
     private func configureSubtitle() {
-        do {
-            attributedMessageText = try createStringWithLinkAttributes(from: .freePhotosPlaceholderSubtitle)
-        } catch {
-            // A translation error could make the creation of link attributes to fail. (i.e. removing the '{')
-            // This will make sure that the message is still present, without any {}, but without the link.
-            messageText = removeCurlybraces(from: .freePhotosPlaceholderSubtitle)
-        }
+        attributedMessageText = createStringWithLinkAttributes(from: .freePhotosPlaceholderSubtitle)
     }
 
-    private func createStringWithLinkAttributes(from subtitle: String) throws -> NSAttributedString {
-        let htmlTaggedString = subtitle.replacingOccurrences(of: "{", with: "<a href=\"\(pexelsUrl)\">")
-            .replacingOccurrences(of: "}", with: "</a>")
+    private func createStringWithLinkAttributes(from subtitle: String) -> NSAttributedString {
+        let htmlTaggedLink = "<a href=\"\(companyUrl)\">\(companyName)</a>"
+        let htmlTaggedText = subtitle.replacingOccurrences(of: companyName, with: htmlTaggedLink)
 
-        guard let htmlTaggedData = htmlTaggedString.data(using: .utf8) else {
-            throw NSError()
-        }
-
-        let attributedString = try NSMutableAttributedString(
-            data: htmlTaggedData,
-            options:[.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue],
-            documentAttributes: nil)
-
-        return attributedString
-    }
-
-    private func removeCurlybraces(from string: String) -> String {
-        return string.replacingOccurrences(of: "{", with: "").replacingOccurrences(of: "}", with: "")
+        return NSAttributedString.attributedStringWithHTML(htmlTaggedText, attributes: nil)
     }
 }
