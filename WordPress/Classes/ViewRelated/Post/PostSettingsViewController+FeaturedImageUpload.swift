@@ -17,10 +17,15 @@ extension PostSettingsViewController {
         setupObservingOf(media: media)
     }
 
-    func setupObservingOf(media: Media) {
+    @objc func removeMediaObserver() {
         if let receipt = mediaObserverReceipt {
             MediaCoordinator.shared.removeObserver(withUUID: receipt)
+            mediaObserverReceipt = nil
         }
+    }
+
+    func setupObservingOf(media: Media) {
+        removeMediaObserver()
         isUploadingMedia = true
         mediaObserverReceipt = MediaCoordinator.shared.addObserver({ [weak self](media, state) in
             self?.mediaObserver(media: media, state: state)
