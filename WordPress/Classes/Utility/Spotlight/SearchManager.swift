@@ -2,53 +2,6 @@ import UIKit
 import CoreSpotlight
 import MobileCoreServices
 
-/// Custom NSUSerActivity types for the WPiOS. Primarily used for navigation points.
-///
-enum WPActivityType: String {
-    case siteList               = "org.wordpress.mysites"
-    case reader                 = "org.wordpress.reader"
-    case me                     = "org.wordpress.me"
-    case myProfile              = "org.wordpress.me.myprofile"
-    case accountSettings        = "org.wordpress.me.accountsettings"
-    case appSettings            = "org.wordpress.me.appsettings"
-    case notificationSettings   = "org.wordpress.me.notificationsettings"
-    case support                = "org.wordpress.me.support"
-    case notifications          = "org.wordpress.notifications"
-
-    var title: String {
-        switch self {
-        case .siteList:
-            return NSLocalizedString("My Sites", comment: "Title of the 'My Sites' tab - used for spotlight indexing on iOS.")
-        case .reader:
-            return NSLocalizedString("Reader", comment: "Title of the 'Reader' tab - used for spotlight indexing on iOS.")
-        case .me:
-            return NSLocalizedString("Me", comment: "Title of the 'Me' tab - used for spotlight indexing on iOS.")
-        case .myProfile:
-            return NSLocalizedString("My Profile", comment: "Title of the 'My Profile' screen within the 'Me' tab - used for spotlight indexing on iOS.")
-        case .accountSettings:
-            return NSLocalizedString("Account Settings", comment: "Title of the 'Account Settings' screen within the 'Me' tab - used for spotlight indexing on iOS.")
-        case .appSettings:
-            return NSLocalizedString("App Settings", comment: "Title of the 'App Settings' screen within the 'Me' tab - used for spotlight indexing on iOS.")
-        case .notificationSettings:
-            return NSLocalizedString("Notification Settings", comment: "Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS.")
-        case .support:
-            return NSLocalizedString("Help & Support", comment: "Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS.")
-        case .notifications:
-            return NSLocalizedString("Notifications", comment: "Title of the 'Notifications' tab - used for spotlight indexing on iOS.")
-        }
-    }
-
-    static func createUserActivity(with activityType: WPActivityType) -> NSUserActivity {
-        let oneWeekFromNow = Calendar.current.date(byAdding: .weekOfYear, value: 1, to: Date())
-        let activity = NSUserActivity(activityType: activityType.rawValue)
-        activity.title = activityType.title
-        activity.expirationDate = oneWeekFromNow
-        activity.isEligibleForSearch = true
-        activity.isEligibleForHandoff = false
-        return activity
-    }
-}
-
 /// Encapsulates CoreSpotlight operations for WPiOS
 ///
 @objc class SearchManager: NSObject {
@@ -183,10 +136,6 @@ enum WPActivityType: String {
             return openReaderTab()
         case WPActivityType.me.rawValue:
             return openMeTab()
-        case WPActivityType.myProfile.rawValue:
-            return openMyProfileScreen()
-        case WPActivityType.accountSettings.rawValue:
-            return openAccountSettingsScreen()
         case WPActivityType.appSettings.rawValue:
             return openAppSettingsScreen()
         case WPActivityType.notificationSettings.rawValue:
@@ -324,16 +273,6 @@ fileprivate extension SearchManager {
 
     func openMeTab() -> Bool {
         WPTabBarController.sharedInstance().showMeTab()
-        return true
-    }
-
-    func openMyProfileScreen() -> Bool {
-        WPTabBarController.sharedInstance().switchMeTabToMyProfile()
-        return true
-    }
-
-    func openAccountSettingsScreen() -> Bool {
-        WPTabBarController.sharedInstance().switchMeTabToAccountSettings()
         return true
     }
 

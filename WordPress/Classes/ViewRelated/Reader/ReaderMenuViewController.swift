@@ -135,8 +135,7 @@ import WordPressShared
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        // Set the userActivity property of UIResponder for spotlight searching
-        userActivity = WPActivityType.createUserActivity(with: .reader)
+        registerUserActivity()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -610,5 +609,29 @@ extension ReaderMenuViewController: WPSplitViewControllerDetailProvider {
         }
 
         return nil
+    }
+}
+
+// MARK: - SearchableActivity Conformance
+
+extension ReaderMenuViewController: SearchableActivityConvertable {
+    var activityType: String {
+        return WPActivityType.reader.rawValue
+    }
+
+    var activityTitle: String {
+        return NSLocalizedString("Reader", comment: "Title of the 'Reader' tab - used for spotlight indexing on iOS.")
+    }
+
+    var activityKeywords: Set<String>? {
+        let keyWordString = NSLocalizedString("reader, articles, posts, blog post, followed, discover, likes, my likes, tags",
+                                              comment: "This is a comma separated list of keywords used for spotlight indexing of the 'Reader' tab.")
+        let keywordArray = keyWordString.arrayOfTags()
+
+        guard !keywordArray.isEmpty else {
+            return nil
+        }
+
+        return Set(keywordArray)
     }
 }
