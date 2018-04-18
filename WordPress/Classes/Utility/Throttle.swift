@@ -31,8 +31,7 @@ public class Throttle {
             }
         }
 
-        let delay = Date.second(from: previousRun) > maxInterval ? 0 : maxInterval
-        queue.asyncAfter(deadline: .now() + Double(delay), execute: job)
+        queue.asyncAfter(deadline: .now() + maxInterval, execute: job)
     }
 
 }
