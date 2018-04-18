@@ -2,13 +2,18 @@ import UIKit
 import CoreSpotlight
 import MobileCoreServices
 
+/// Custom NSUSerActivity types for the WPiOS. Primarily used for navigation points.
+///
 enum WPActivityType: String {
-    case siteList       = "org.wordpress.mysites"
-    case reader         = "org.wordpress.reader"
-    case me             = "org.wordpress.me"
-    case appSettings    = "org.wordpress.me.appsettings"
-    case support        = "org.wordpress.me.support"
-    case notifications  = "org.wordpress.notifications"
+    case siteList               = "org.wordpress.mysites"
+    case reader                 = "org.wordpress.reader"
+    case me                     = "org.wordpress.me"
+    case myProfile              = "org.wordpress.me.myprofile"
+    case accountSettings        = "org.wordpress.me.accountsettings"
+    case appSettings            = "org.wordpress.me.appsettings"
+    case notificationSettings   = "org.wordpress.me.notificationsettings"
+    case support                = "org.wordpress.me.support"
+    case notifications          = "org.wordpress.notifications"
 
     var title: String {
         switch self {
@@ -18,8 +23,14 @@ enum WPActivityType: String {
             return NSLocalizedString("Reader", comment: "Title of the 'Reader' tab - used for spotlight indexing on iOS.")
         case .me:
             return NSLocalizedString("Me", comment: "Title of the 'Me' tab - used for spotlight indexing on iOS.")
+        case .myProfile:
+            return NSLocalizedString("My Profile", comment: "Title of the 'My Profile' screen within the 'Me' tab - used for spotlight indexing on iOS.")
+        case .accountSettings:
+            return NSLocalizedString("Account Settings", comment: "Title of the 'Account Settings' screen within the 'Me' tab - used for spotlight indexing on iOS.")
         case .appSettings:
             return NSLocalizedString("App Settings", comment: "Title of the 'App Settings' screen within the 'Me' tab - used for spotlight indexing on iOS.")
+        case .notificationSettings:
+            return NSLocalizedString("Notification Settings", comment: "Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS.")
         case .support:
             return NSLocalizedString("Help & Support", comment: "Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS.")
         case .notifications:
@@ -172,8 +183,14 @@ enum WPActivityType: String {
             return openReaderTab()
         case WPActivityType.me.rawValue:
             return openMeTab()
+        case WPActivityType.myProfile.rawValue:
+            return openMyProfileScreen()
+        case WPActivityType.accountSettings.rawValue:
+            return openAccountSettingsScreen()
         case WPActivityType.appSettings.rawValue:
             return openAppSettingsScreen()
+        case WPActivityType.notificationSettings.rawValue:
+            return openNotificationSettingsScreen()
         case WPActivityType.support.rawValue:
             return openSupportScreen()
         case WPActivityType.notifications.rawValue:
@@ -289,25 +306,39 @@ fileprivate extension SearchManager {
         })
     }
 
-    // MARK: Navigation
+    // MARK: Site Tab Navigation
 
     func openMySitesTab() -> Bool {
         WPTabBarController.sharedInstance().showMySitesTab()
         return true
     }
 
+    // MARK: Reader Tab Navigation
+
     func openReaderTab() -> Bool {
         WPTabBarController.sharedInstance().showReaderTab()
         return true
     }
 
-    func openNotificationsTab() -> Bool {
-        WPTabBarController.sharedInstance().showNotificationsTab()
-        return true
-    }
+    // MARK: Me Tab Navigation
 
     func openMeTab() -> Bool {
         WPTabBarController.sharedInstance().showMeTab()
+        return true
+    }
+
+    func openMyProfileScreen() -> Bool {
+        WPTabBarController.sharedInstance().switchMeTabToMyProfile()
+        return true
+    }
+
+    func openAccountSettingsScreen() -> Bool {
+        WPTabBarController.sharedInstance().switchMeTabToAccountSettings()
+        return true
+    }
+
+    func openNotificationSettingsScreen() -> Bool {
+        WPTabBarController.sharedInstance().switchMeTabToNotificationSettings()
         return true
     }
 
@@ -320,6 +351,15 @@ fileprivate extension SearchManager {
         WPTabBarController.sharedInstance().switchMeTabToSupport()
         return true
     }
+
+    // MARK: Notification Tab Navigation
+
+    func openNotificationsTab() -> Bool {
+        WPTabBarController.sharedInstance().showNotificationsTab()
+        return true
+    }
+
+    // MARK: Specific Post & Page Navigation
 
     func navigateToScreen(for apost: AbstractPost, isDotCom: Bool = true) {
         if let post = apost as? Post {
