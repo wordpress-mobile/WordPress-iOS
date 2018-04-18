@@ -7,9 +7,6 @@
 
 
 
-NSString *const WordPressOrgMinimumVersion = @"4.0";
-
-
 @implementation LoginFacade
 
 @synthesize delegate;
@@ -164,9 +161,11 @@ NSString *const WordPressOrgMinimumVersion = @"4.0";
             [self signInToWordpressDotCom:loginFields];
         } else {
             NSString *versionString = options[@"software_version"][@"value"];
+            NSString *minimumSupported = [WordPressOrgXMLRPCApi minimumSupportedVersion];
             CGFloat version = [versionString floatValue];
-            if (version > 0 && version < [WordPressOrgMinimumVersion floatValue]) {
-                NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", nil), [xmlRPCURL host], versionString, WordPressOrgMinimumVersion];
+
+            if (version > 0 && version < [minimumSupported floatValue]) {
+                NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", nil), [xmlRPCURL host], versionString, minimumSupported];
                 NSError *versionError = [NSError errorWithDomain:WordPressAuthenticator.errorDomain
                                                             code:WordPressAuthenticator.invalidVersionErrorCode
                                                         userInfo:@{NSLocalizedDescriptionKey:errorMessage}];
