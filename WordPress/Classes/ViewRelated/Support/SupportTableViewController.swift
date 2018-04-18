@@ -84,22 +84,6 @@ private extension SupportTableViewController {
         tableView.tableFooterView = UIView()
     }
 
-    func setupTicketInformation() {
-        let appVersion = Bundle.main.shortVersionString() ?? "unknown"
-        let deviceFreeSpace = getDeviceFreeSpace()
-        let logFile = getLogFile()
-        let blogsInfo = getBlogInfo()
-
-        let ticketFields = ZendeskTicketFields(appVersion: appVersion,
-                                               allBlogs: blogsInfo,
-                                               deviceFreeSpace: deviceFreeSpace,
-                                               networkInformation: "unknown",
-                                               currentLog: logFile,
-                                               tags: ["unknown"])
-
-        ZendeskUtils.createRequest(ticketInformation: ticketFields)
-    }
-
     // MARK: - Table Model
 
     func tableViewModel() -> ImmuTable {
@@ -163,7 +147,7 @@ private extension SupportTableViewController {
                     return
                 }
                 ZendeskUtils.showNewRequest(from: navController)
-                self.setupTicketInformation()
+                ZendeskUtils.createRequest()
             } else {
                 guard let url = Constants.forumsURL else {
                     return
@@ -216,51 +200,6 @@ private extension SupportTableViewController {
             WPStyleGuide.configureTableViewCell(cell)
             cell.textLabel?.textColor = WPStyleGuide.wordPressBlue()
         }
-    }
-
-    // MARK: - Data Helpers
-
-    func getDeviceFreeSpace() -> String {
-
-        var deviceFreeSpace = "unknown"
-
-        if let resourceValues = try? URL(fileURLWithPath: "/").resourceValues(forKeys: [.volumeAvailableCapacityKey]),
-            let capacity = resourceValues.volumeAvailableCapacity {
-            // format string using human readable units. ex: 1.5 GB
-            deviceFreeSpace = ByteCountFormatter.string(fromByteCount: Int64(capacity), countStyle: .binary)
-        }
-
-        return deviceFreeSpace
-    }
-
-    func getLogFile() -> String {
-
-        var logFile = ""
-
-        if let appDelegate = UIApplication.shared.delegate as? WordPressAppDelegate,
-            let fileLogger = appDelegate.logger.fileLogger,
-            let logFileInfo = fileLogger.logFileManager.sortedLogFileInfos.first,
-            let logData = try? Data(contentsOf: URL(fileURLWithPath: logFileInfo.filePath)),
-            let logText = String.init(data: logData, encoding: .utf8) {
-            logFile = logText
-
-        }
-
-        return logFile
-    }
-
-    func getBlogInfo() -> String {
-
-        var blogsInfo = "none"
-        let blogSeperator = "\n----------\n"
-
-        let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-
-        if let allBlogs = blogService.blogsForAllAccounts() as? [Blog], allBlogs.count > 0 {
-            blogsInfo = (allBlogs.map { return $0.logDescription() }).joined(separator: blogSeperator)
-        }
-
-        return blogsInfo
     }
 
     // MARK: - Localized Text
