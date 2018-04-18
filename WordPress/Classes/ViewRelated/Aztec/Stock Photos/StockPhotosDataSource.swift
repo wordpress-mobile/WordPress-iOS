@@ -29,6 +29,11 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     }
 
     func search(for searchText: String?) {
+        guard searchText?.isEmpty == false else {
+            clearSearch(notifyObservers: true)
+            return
+        }
+
         throttle.throttle { [weak self] in
             let params = StockPhotosSearchParams(text: searchText, pageable: StockPhotosPageable.first())
             self?.search(params)
