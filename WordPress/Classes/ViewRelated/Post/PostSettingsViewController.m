@@ -102,6 +102,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self removePostPropertiesObserver];
+    [self removeMediaObserver];
 }
 
 - (instancetype)initWithPost:(AbstractPost *)aPost
