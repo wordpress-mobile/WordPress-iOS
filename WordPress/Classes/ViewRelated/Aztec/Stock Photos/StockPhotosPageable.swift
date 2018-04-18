@@ -24,7 +24,10 @@ struct StockPhotosPageable: Pageable {
 }
 
 extension StockPhotosPageable {
-    static func initial() -> StockPhotosPageable {
+    /// Builds the Pageable corresponding to the first page, with the default page size.
+    ///
+    /// - Returns: A StockPhotosPageable configured with the default page size and the initial page handle
+    static func first() -> StockPhotosPageable {
         return StockPhotosPageable(number: defaultPageSize, pageHandle: defaultPageIndex)
     }
 }
