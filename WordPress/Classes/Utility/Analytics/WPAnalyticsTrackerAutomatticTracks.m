@@ -1013,6 +1013,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatSignedInToJetpack:
             eventName = @"signed_into_jetpack";
             break;
+        case WPAnalyticsStatSignupButtonTapped:
+            eventName = @"signup_google_button_tapped";
+            break;
+        case WPAnalyticsStatSignupCancelled:
+            eventName = @"signup_cancelled";
+            break;
+        case WPAnalyticsStatSignupEmailButtonTapped:
+            eventName = @"signup_email_button_tapped";
+            break;
+        case WPAnalyticsStatSignupEmailToLogin:
+            eventName = @"signup_email_to_login";
+            break;
         case WPAnalyticsStatSignupMagicLinkFailed:
             eventName = @"signup_magic_link_failed";
             break;
@@ -1033,6 +1045,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatSignupSocialButtonFailure:
             eventName = @"signup_social_button_failure";
+            break;
+        case WPAnalyticsStatSignupSocialButtonTapped:
+            eventName = @"signup_google_button_tapped";
+            break;
+        case WPAnalyticsStatSignupSocialToLogin:
+            eventName = @"signup_social_to_login";
             break;
         case WPAnalyticsStatSignupMagicLinkRequested:
             eventName = @"signup_magic_link_requested";
