@@ -88,9 +88,10 @@ private extension SupportTableViewController {
         let appVersion = Bundle.main.shortVersionString() ?? "unknown"
         let deviceFreeSpace = getDeviceFreeSpace()
         let logFile = getLogFile()
+        let blogsInfo = getBlogInfo()
 
         let ticketFields = ZendeskTicketFields(appVersion: appVersion,
-                                               allBlogs: "unknown",
+                                               allBlogs: blogsInfo,
                                                deviceFreeSpace: deviceFreeSpace,
                                                networkInformation: "unknown",
                                                currentLog: logFile,
@@ -232,22 +233,6 @@ private extension SupportTableViewController {
         return deviceFreeSpace
     }
 
-    // MARK: - Localized Text
-
-    struct LocalizedText {
-        static let viewTitle = NSLocalizedString("Support", comment: "View title for Support page.")
-        static let closeButton = NSLocalizedString("Close", comment: "Dismiss the current view")
-        static let wpHelpCenter = NSLocalizedString("WordPress Help Center", comment: "Option in Support view to launch the Help Center.")
-        static let contactUs = NSLocalizedString("Contact Us", comment: "Option in Support view to contact the support team.")
-        static let wpForums = NSLocalizedString("WordPress Forums", comment: "Option in Support view to view the Forums.")
-        static let myTickets = NSLocalizedString("My Tickets", comment: "Option in Support view to access previous help tickets.")
-        static let helpFooter = NSLocalizedString("Visit the Help Center to get answers to common questions, or contact us for more help.", comment: "Support screen footer text displayed when Zendesk is enabled.")
-        static let version = NSLocalizedString("Version", comment: "Label in Support view displaying the app version.")
-        static let extraDebug = NSLocalizedString("Extra Debug", comment: "Option in Support view to enable/disable adding extra information to support ticket.")
-        static let activityLogs = NSLocalizedString("Activity Logs", comment: "Option in Support view to see activity logs.")
-        static let informationFooter = NSLocalizedString("The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app.", comment: "Support screen footer text explaining the Extra Debug feature.")
-    }
-
     func getLogFile() -> String {
 
         var logFile = ""
@@ -262,6 +247,36 @@ private extension SupportTableViewController {
         }
 
         return logFile
+    }
+
+    func getBlogInfo() -> String {
+
+        var blogsInfo = "none"
+        let blogSeperator = "\n----------\n"
+
+        let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+
+        if let allBlogs = blogService.blogsForAllAccounts() as? [Blog], allBlogs.count > 0 {
+            blogsInfo = (allBlogs.map { return $0.logDescription() }).joined(separator: blogSeperator)
+        }
+
+        return blogsInfo
+    }
+
+    // MARK: - Localized Text
+
+    struct LocalizedText {
+        static let viewTitle = NSLocalizedString("Support", comment: "View title for Support page.")
+        static let closeButton = NSLocalizedString("Close", comment: "Dismiss the current view")
+        static let wpHelpCenter = NSLocalizedString("WordPress Help Center", comment: "Option in Support view to launch the Help Center.")
+        static let contactUs = NSLocalizedString("Contact Us", comment: "Option in Support view to contact the support team.")
+        static let wpForums = NSLocalizedString("WordPress Forums", comment: "Option in Support view to view the Forums.")
+        static let myTickets = NSLocalizedString("My Tickets", comment: "Option in Support view to access previous help tickets.")
+        static let helpFooter = NSLocalizedString("Visit the Help Center to get answers to common questions, or contact us for more help.", comment: "Support screen footer text displayed when Zendesk is enabled.")
+        static let version = NSLocalizedString("Version", comment: "Label in Support view displaying the app version.")
+        static let extraDebug = NSLocalizedString("Extra Debug", comment: "Option in Support view to enable/disable adding extra information to support ticket.")
+        static let activityLogs = NSLocalizedString("Activity Logs", comment: "Option in Support view to see activity logs.")
+        static let informationFooter = NSLocalizedString("The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app.", comment: "Support screen footer text explaining the Extra Debug feature.")
     }
 
     // MARK: - User Defaults Keys
