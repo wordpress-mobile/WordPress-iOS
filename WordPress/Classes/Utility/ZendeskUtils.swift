@@ -1,5 +1,6 @@
 import Foundation
 import ZendeskSDK
+import CoreTelephony
 
 @objc class ZendeskUtils: NSObject {
 
@@ -14,7 +15,7 @@ import ZendeskSDK
     private static var identityCreated = false
 
     private static var appVersion: String {
-        return Bundle.main.shortVersionString() ?? "unknown"
+        return Bundle.main.shortVersionString() ?? Constants.unknownValue
     }
 
     // MARK: - Public Methods
@@ -102,16 +103,17 @@ import ZendeskSDK
             ZDKConfig.instance().ticketFormId = TicketFieldIDs.form
 
             // Set form field values
+            let zdUtilsInstance = ZendeskUtils.sharedInstance
             var ticketFields = [ZDKCustomField]()
             ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.appVersion, andValue: ZendeskUtils.appVersion))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.allBlogs, andValue: ZendeskUtils.sharedInstance.getBlogInfo()))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.deviceFreeSpace, andValue: ZendeskUtils.sharedInstance.getDeviceFreeSpace()))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.networkInformation, andValue: "unknown"))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.logs, andValue: ZendeskUtils.sharedInstance.getLogFile()))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.allBlogs, andValue: zdUtilsInstance.getBlogInformation()))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.deviceFreeSpace, andValue: zdUtilsInstance.getDeviceFreeSpace()))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.networkInformation, andValue: zdUtilsInstance.getNetworkInformation()))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.logs, andValue: zdUtilsInstance.getLogFile()))
             ZDKConfig.instance().customTicketFields = ticketFields
 
             // Set tags
-            requestCreationConfig.tags = ZendeskUtils.sharedInstance.getTags()
+            requestCreationConfig.tags = zdUtilsInstance.getTags()
 
             // Set the ticket subject
             requestCreationConfig.subject = Constants.ticketSubject
@@ -135,7 +137,7 @@ private extension ZendeskUtils {
 
     func getDeviceFreeSpace() -> String {
 
-        var deviceFreeSpace = "unknown"
+        var deviceFreeSpace = Constants.unknownValue
 
         if let resourceValues = try? URL(fileURLWithPath: "/").resourceValues(forKeys: [.volumeAvailableCapacityKey]),
             let capacity = resourceValues.volumeAvailableCapacity {
@@ -152,8 +154,8 @@ private extension ZendeskUtils {
 
         if let appDelegate = UIApplication.shared.delegate as? WordPressAppDelegate,
             let fileLogger = appDelegate.logger.fileLogger,
-            let logFileInfo = fileLogger.logFileManager.sortedLogFileInfos.first,
-            let logData = try? Data(contentsOf: URL(fileURLWithPath: logFileInfo.filePath)),
+            let logFileInformation = fileLogger.logFileManager.sortedLogFileInfos.first,
+            let logData = try? Data(contentsOf: URL(fileURLWithPath: logFileInformation.filePath)),
             let logText = String.init(data: logData, encoding: .utf8) {
             logFile = logText
 
@@ -162,17 +164,17 @@ private extension ZendeskUtils {
         return logFile
     }
 
-    func getBlogInfo() -> String {
+    func getBlogInformation() -> String {
 
-        var blogsInfo = "none"
+        var blogsInformation = Constants.noValue
 
         let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         if let allBlogs = blogService.blogsForAllAccounts() as? [Blog], allBlogs.count > 0 {
-            blogsInfo = (allBlogs.map { $0.logDescription() }).joined(separator: Constants.blogSeperator)
+            blogsInformation = (allBlogs.map { $0.logDescription() }).joined(separator: Constants.blogSeperator)
         }
 
-        return blogsInfo
+        return blogsInformation
     }
 
     func getTags() -> [String] {
@@ -199,9 +201,39 @@ private extension ZendeskUtils {
         return tags
     }
 
+    func getNetworkInformation() -> String {
+
+        var networkInformation = [String]()
+
+        let reachibilityStatus = ZDKReachability.forInternetConnection().currentReachabilityStatus()
+
+        let networkType: String = {
+            switch reachibilityStatus {
+            case .reachableViaWiFi:
+                return Constants.networkWiFi
+            case .reachableViaWWAN:
+                return Constants.networkWWAN
+            default:
+                return Constants.unknownValue
+            }
+        }()
+
+        let networkCarrier = CTTelephonyNetworkInfo().subscriberCellularProvider
+        let carrierName = networkCarrier?.carrierName ?? Constants.unknownValue
+        let carrierCountryCode = networkCarrier?.isoCountryCode ?? Constants.unknownValue
+
+        networkInformation.append("\(Constants.networkTypeLabel) \(networkType)")
+        networkInformation.append("\(Constants.networkCarrierLabel) \(carrierName)")
+        networkInformation.append("\(Constants.networkCountryCodeLabel) \(carrierCountryCode)")
+
+        return networkInformation.joined(separator: "\n")
+    }
+
     // MARK: - Contants
 
     struct Constants {
+        static let unknownValue = "unknown"
+        static let noValue = "none"
         static let zendeskEnabledUDKey = "wp_zendesk_enabled"
         static let mobileCategoryID = "360000041586"
         static let articleLabel = "iOS"
@@ -209,6 +241,11 @@ private extension ZendeskUtils {
         static let blogSeperator = "\n----------\n"
         static let jetpackTag = "jetpack"
         static let wpComTag = "wpcom"
+        static let networkWiFi = "WiFi"
+        static let networkWWAN = "Mobile"
+        static let networkTypeLabel = "Network Type:"
+        static let networkCarrierLabel = "Carrier:"
+        static let networkCountryCodeLabel = "Country Code:"
     }
 
     struct TicketFieldIDs {
