@@ -314,7 +314,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             }
             if media.absoluteLocalURL != nil {
                 alertController.addDefaultActionWithTitle(NSLocalizedString("Retry Upload", comment: "User action to retry media upload.")) { _ in
-                    let info = MediaAnalyticsInfo(origin: .mediaLibrary)
+                    let info = MediaAnalyticsInfo(origin: .mediaLibrary(.wpMediaLibrary))
                     MediaCoordinator.shared.retryMedia(media, analyticsInfo: info)
                 }
             } else {
@@ -413,7 +413,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 extension MediaLibraryViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         for documentURL in urls as [NSURL] {
-            let info = MediaAnalyticsInfo(origin: .mediaLibrary, selectionMethod: .documentPicker)
+            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.otherApps), selectionMethod: .documentPicker)
             MediaCoordinator.shared.addMedia(from: documentURL, to: blog, analyticsInfo: info)
         }
     }
@@ -459,7 +459,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
             assets.count > 0 else { return }
 
         for asset in assets {
-            let info = MediaAnalyticsInfo(origin: .mediaLibrary, selectionMethod: .fullScreenPicker)
+            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.deviceLibrary), selectionMethod: .fullScreenPicker)
             MediaCoordinator.shared.addMedia(from: asset, to: blog, analyticsInfo: info)
         }
     }

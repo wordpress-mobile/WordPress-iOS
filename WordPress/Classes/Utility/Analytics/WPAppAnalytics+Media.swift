@@ -104,7 +104,7 @@ public enum MediaSelectionMethod: CustomStringConvertible {
 /// Used for analytics to track where an upload was started within the app.
 ///
 enum MediaUploadOrigin {
-    case mediaLibrary
+    case mediaLibrary(MediaSource)
     case editor(MediaSource)
 
     func eventForMediaType(_ mediaType: MediaType) -> WPAnalyticsStat? {
@@ -140,4 +140,5 @@ enum MediaSource {
     case otherApps
     case wpMediaLibrary
     case stockPhotos
+    case camera
 }
