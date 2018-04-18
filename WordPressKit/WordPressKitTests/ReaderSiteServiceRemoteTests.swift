@@ -35,11 +35,14 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
 
     func testFollowSiteWithIDPath() {
 
-        let expectedPath = readerSiteServiceRemote.path(forEndpoint: "sites/1/follows/new?source=ios",
+        let expectedPath = readerSiteServiceRemote.path(forEndpoint: "sites/1/follows/new",
                                                         withVersion: ._1_1)
         readerSiteServiceRemote.followSite(withID: 1, success: nil, failure: nil)
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Wrong method")
-        XCTAssertEqual(mockRemoteApi.URLStringPassedIn, expectedPath, "Wrong path")
+
+        let url = URL(string: mockRemoteApi.URLStringPassedIn!)!
+        XCTAssertEqual(url.path, expectedPath, "Wrong path")
+        XCTAssertEqual(url.query, "source=ios", "incorrect source parameter")
     }
 
     func testFollowSiteWithID() {
