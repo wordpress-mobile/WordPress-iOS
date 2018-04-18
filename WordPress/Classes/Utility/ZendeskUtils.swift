@@ -1,17 +1,6 @@
 import Foundation
 import ZendeskSDK
 
-/// A public struct for providing user specific information used to create Zendesk ticket.
-///
-struct ZendeskTicketFields {
-    var appVersion: String
-    var allBlogs: String
-    var deviceFreeSpace: String
-    var networkInformation: String
-    var currentLog: String
-    var tags: [String]
-}
-
 @objc class ZendeskUtils: NSObject {
 
     // MARK: - Properties
@@ -93,7 +82,7 @@ struct ZendeskTicketFields {
         ZDKRequests.pushRequestList(with: navController, layoutGuide: ZDKLayoutRespectTop)
     }
 
-    static func createRequest(ticketInformation: ZendeskTicketFields) {
+    static func createRequest() {
 
         if !ZendeskUtils.identityCreated {
             return
@@ -110,15 +99,15 @@ struct ZendeskTicketFields {
 
             // Set form field values
             var ticketFields = [ZDKCustomField]()
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.appVersion, andValue: ticketInformation.appVersion))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.allBlogs, andValue: ticketInformation.allBlogs))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.deviceFreeSpace, andValue: ticketInformation.deviceFreeSpace))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.networkInformation, andValue: ticketInformation.networkInformation))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.logs, andValue: ticketInformation.currentLog))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.appVersion, andValue: Bundle.main.shortVersionString() ?? "unknown"))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.allBlogs, andValue: ZendeskUtils.sharedInstance.getBlogInfo()))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.deviceFreeSpace, andValue: ZendeskUtils.sharedInstance.getDeviceFreeSpace()))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.networkInformation, andValue: "unknown"))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.logs, andValue: ZendeskUtils.sharedInstance.getLogFile()))
             ZDKConfig.instance().customTicketFields = ticketFields
 
             // Set tags
-            requestCreationConfig.tags = ticketInformation.tags
+            requestCreationConfig.tags = ["unknown"]
 
             // Set the ticket subject
             requestCreationConfig.subject = Constants.ticketSubject
@@ -138,11 +127,58 @@ private extension ZendeskUtils {
         DDLogInfo("Zendesk Enabled: \(enabled)")
     }
 
+    // MARK: - Data Helpers
+
+    func getDeviceFreeSpace() -> String {
+
+        var deviceFreeSpace = "unknown"
+
+        if let resourceValues = try? URL(fileURLWithPath: "/").resourceValues(forKeys: [.volumeAvailableCapacityKey]),
+            let capacity = resourceValues.volumeAvailableCapacity {
+            // format string using human readable units. ex: 1.5 GB
+            deviceFreeSpace = ByteCountFormatter.string(fromByteCount: Int64(capacity), countStyle: .binary)
+        }
+
+        return deviceFreeSpace
+    }
+
+    func getLogFile() -> String {
+
+        var logFile = ""
+
+        if let appDelegate = UIApplication.shared.delegate as? WordPressAppDelegate,
+            let fileLogger = appDelegate.logger.fileLogger,
+            let logFileInfo = fileLogger.logFileManager.sortedLogFileInfos.first,
+            let logData = try? Data(contentsOf: URL(fileURLWithPath: logFileInfo.filePath)),
+            let logText = String.init(data: logData, encoding: .utf8) {
+            logFile = logText
+
+        }
+
+        return logFile
+    }
+
+    func getBlogInfo() -> String {
+
+        var blogsInfo = "none"
+
+        let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+
+        if let allBlogs = blogService.blogsForAllAccounts() as? [Blog], allBlogs.count > 0 {
+            blogsInfo = (allBlogs.map { return $0.logDescription() }).joined(separator: Constants.blogSeperator)
+        }
+
+        return blogsInfo
+    }
+
+    // MARK: - Contants
+
     struct Constants {
         static let zendeskEnabledUDKey = "wp_zendesk_enabled"
         static let mobileCategoryID = "360000041586"
         static let articleLabel = "iOS"
         static let ticketSubject = NSLocalizedString("WordPress for iOS Support", comment: "Subject of new Zendesk ticket.")
+        static let blogSeperator = "\n----------\n"
     }
 
     struct TicketFieldIDs {
