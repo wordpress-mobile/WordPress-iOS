@@ -12,11 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
- *  Minimum WordPress.org Supported Version.
- */
-extern NSString *const WordPressOrgMinimumVersion;
-
-/**
  *  This protocol represents a class that handles the signing in to a self hosted/.com site.
  */
 @protocol LoginFacade
