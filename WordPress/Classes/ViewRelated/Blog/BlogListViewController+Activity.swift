@@ -10,7 +10,7 @@ extension BlogListViewController: SearchableActivityConvertable {
     }
 
     var activityKeywords: Set<String>? {
-        let keyWordString = NSLocalizedString("sites, site, blogs, blog", comment: "This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab.")
+        let keyWordString = NSLocalizedString("wordpress, sites, site, blogs, blog", comment: "This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab.")
         let keywordArray = keyWordString.arrayOfTags()
 
         guard !keywordArray.isEmpty else {

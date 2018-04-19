@@ -1446,7 +1446,7 @@ extension NotificationsViewController: SearchableActivityConvertable {
     }
 
     var activityKeywords: Set<String>? {
-        let keyWordString = NSLocalizedString("notifications, alerts, updates",
+        let keyWordString = NSLocalizedString("wordpress, notifications, alerts, updates",
                                               comment: "This is a comma separated list of keywords used for spotlight indexing of the 'Notifications' tab.")
         let keywordArray = keyWordString.arrayOfTags()
 
