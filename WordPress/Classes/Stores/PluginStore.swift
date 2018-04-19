@@ -207,7 +207,7 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
     }
 
     init() {
-        super.init(initialState: PluginStoreState(), dispatcher: .global)
+        super.init(initialState: PluginStoreState())
     }
 
     func processQueries() {

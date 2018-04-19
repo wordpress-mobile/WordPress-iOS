@@ -79,7 +79,7 @@ open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
     }
 
 
-    override public init(initialState: State, dispatcher: ActionDispatcher) {
+    override public init(initialState: State, dispatcher: ActionDispatcher = .global) {
         self.initialState = initialState
         super.init(initialState: initialState, dispatcher: dispatcher)
     }
