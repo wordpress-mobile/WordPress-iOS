@@ -4,7 +4,7 @@ class SupportTableViewController: UITableViewController {
 
     // MARK: - Properties
 
-    var sourceTag: SupportSourceTag?
+    @objc var sourceTag: SupportSourceTag?
     private var tableHandler: ImmuTableViewHandler!
     private let userDefaults = UserDefaults.standard
 
@@ -32,7 +32,7 @@ class SupportTableViewController: UITableViewController {
         setupTable()
     }
 
-    func showFromTabBar() {
+    @objc func showFromTabBar() {
         let navigationController = UINavigationController.init(rootViewController: self)
 
         if WPDeviceIdentification.isiPad() {
