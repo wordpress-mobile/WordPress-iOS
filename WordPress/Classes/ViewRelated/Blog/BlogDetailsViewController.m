@@ -264,6 +264,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     [self preloadBlogData];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self createUserActivity];
+}
+
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];

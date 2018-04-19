@@ -170,6 +170,11 @@ static NSInteger HideSearchMinSites = 3;
     [self syncBlogs];
     [self setAddSiteBarButtonItem];
     [self updateCurrentBlogSelection];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     [self createUserActivity];
 }
 

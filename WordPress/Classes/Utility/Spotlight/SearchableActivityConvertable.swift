@@ -2,6 +2,7 @@
 ///
 enum WPActivityType: String {
     case siteList               = "org.wordpress.mysites"
+    case siteDetails            = "org.wordpress.mysites.details"
     case reader                 = "org.wordpress.reader"
     case me                     = "org.wordpress.me"
     case appSettings            = "org.wordpress.me.appsettings"
