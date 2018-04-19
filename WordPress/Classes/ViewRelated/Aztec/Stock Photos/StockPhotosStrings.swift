@@ -19,6 +19,6 @@ extension String {
     }
 
     static var freePhotosPlaceholderSubtitle: String {
-        return NSLocalizedString("Photos provided by Pexels", comment: "Subtitle for placeholder in Free Photos")
+        return NSLocalizedString("Photos provided by Pexels", comment: "Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is.")
     }
 }
