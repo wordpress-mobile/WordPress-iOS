@@ -44,10 +44,12 @@ class LoginPrologueSignupMethodViewController: NUXViewController {
             self?.dismiss(animated: true)
             self?.emailTapped?()
         }
-        buttonViewController.setupButtomButton(title: createTitle, isPrimary: false) { [weak self] in
+
+        buttonViewController.setupBottomButton(title: createTitle, isPrimary: false) { [weak self] in
             defer {
                 WordPressAuthenticator.track(.signupSocialButtonTapped)
             }
+
             self?.dismiss(animated: true)
             self?.googleTapped?()
         }
