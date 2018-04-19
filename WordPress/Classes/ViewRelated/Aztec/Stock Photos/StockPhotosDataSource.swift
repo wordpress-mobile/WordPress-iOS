@@ -34,7 +34,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
             return
         }
 
-        throttle.throttle { [weak self] in
+        throttle.debounce { [weak self] in
             let params = StockPhotosSearchParams(text: searchText, pageable: StockPhotosPageable.first())
             self?.search(params)
         }
