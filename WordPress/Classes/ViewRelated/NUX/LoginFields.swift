@@ -109,7 +109,7 @@ class LoginFieldsMeta: NSObject {
 
     /// Meta data about a site. This information is fetched and then displayed on the login epilogue.
     ///
-    @objc var siteInfo: SiteInfo?
+    var siteInfo: WordPressComSiteInfo?
 
     /// Flags whether a 2fa challenge had to be satisfied before a log in could be complete.
     /// Included in analytics after a successful login.

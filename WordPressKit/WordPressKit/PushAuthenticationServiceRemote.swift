@@ -20,7 +20,7 @@ import Foundation
             "push_token": token
         ]
 
-        wordPressComRestApi.POST(requestUrl!, parameters: parameters as [String: AnyObject],
+        wordPressComRestApi.POST(requestUrl, parameters: parameters as [String: AnyObject],
                                  success: { (response: AnyObject, httpResponse: HTTPURLResponse?) -> Void in
                                     success?()
                                  },
