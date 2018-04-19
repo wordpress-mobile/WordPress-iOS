@@ -133,8 +133,7 @@ import MobileCoreServices
         case WPActivityType.siteList.rawValue:
             return openMySitesTab()
         case WPActivityType.siteDetails.rawValue:
-            // FIXME: Open the specific site screen
-            return openMySitesTab()
+            return handleSite(activity: activity)
         case WPActivityType.reader.rawValue:
             return openReaderTab()
         case WPActivityType.me.rawValue:
@@ -208,6 +207,28 @@ import MobileCoreServices
 
         return true
     }
+
+    fileprivate func handleSite(activity: NSUserActivity) -> Bool {
+        guard let userInfo = activity.userInfo as? [String: Any],
+            let siteID = userInfo.valueAsString(forKey: WPActivityUserInfoKeys.siteId.rawValue) else {
+            return false
+        }
+
+        if let siteID = validWPComSiteID(with: siteID) {
+            fetchBlog(siteID, onSuccess: { [weak self] blog in
+                self?.openSiteDetailsScreen(for: blog)
+                }, onFailure: {
+                    DDLogError("Search manager unable to open site - siteID:\(siteID)")
+            })
+        } else {
+            fetchSelfHostedBlog(siteID, onSuccess: { [weak self] blog in
+                self?.openSiteDetailsScreen(for: blog)
+                }, onFailure: {
+                    DDLogError("Search manager unable to open self hosted site - xmlrpc:\(siteID)")
+            })
+        }
+        return true
+    }
 }
 
 // MARK: - Private Helpers
@@ -258,11 +279,40 @@ fileprivate extension SearchManager {
         })
     }
 
+    func fetchBlog(_ blogID: NSNumber,
+                   onSuccess: @escaping (_ blog: Blog) -> Void,
+                   onFailure: @escaping () -> Void) {
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+        guard let blog = blogService.blog(byBlogId: blogID) else {
+            onFailure()
+            return
+        }
+        onSuccess(blog)
+    }
+
+    func fetchSelfHostedBlog(_ blogXMLRpcString: String,
+                             onSuccess: @escaping (_ blog: Blog) -> Void,
+                             onFailure: @escaping () -> Void) {
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+        guard let selfHostedBlogs = blogService.blogsWithNoAccount() as? [Blog],
+            let blog = selfHostedBlogs.filter({ $0.xmlrpc == blogXMLRpcString }).first else {
+                onFailure()
+                return
+        }
+        onSuccess(blog)
+    }
+
     // MARK: Site Tab Navigation
 
     func openMySitesTab() -> Bool {
         WPTabBarController.sharedInstance().showMySitesTab()
         return true
+    }
+
+    func openSiteDetailsScreen(for blog: Blog) {
+        WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: blog)
     }
 
     // MARK: Reader Tab Navigation
