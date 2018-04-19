@@ -23,6 +23,18 @@ public class Throttle {
     }
 
     func throttle(callbackQueue: DispatchQueue = DispatchQueue.main, block: @escaping () -> ()) {
+        configureJob(callbackQueue: callbackQueue, block: block)
+
+        let delay = Date.second(from: previousRun) > maxInterval ? 0 : maxInterval
+        queue.asyncAfter(deadline: .now() + Double(delay), execute: job)
+    }
+
+    func debounce(callbackQueue: DispatchQueue = DispatchQueue.main, block: @escaping () -> ()) {
+        configureJob(callbackQueue: callbackQueue, block: block)
+        queue.asyncAfter(deadline: .now() + maxInterval, execute: job)
+    }
+
+    private func configureJob(callbackQueue: DispatchQueue = DispatchQueue.main, block: @escaping () -> ()) {
         job.cancel()
         job = DispatchWorkItem() { [weak self] in
             self?.previousRun = Date()
@@ -30,11 +42,7 @@ public class Throttle {
                 block()
             }
         }
-
-        let delay = Date.second(from: previousRun) > maxInterval ? 0 : maxInterval
-        queue.asyncAfter(deadline: .now() + Double(delay), execute: job)
     }
-
 }
 
 private extension Date {
