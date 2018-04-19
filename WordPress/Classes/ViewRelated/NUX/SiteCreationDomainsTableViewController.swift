@@ -35,7 +35,7 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        tableView.register(UINib(nibName: "SiteCreationDomainSearchTableViewCell", bundle: nil), forCellReuseIdentifier: SiteCreationDomainSearchTableViewCell.cellIdentifier)
+        tableView.register(UINib(nibName: "SearchTableViewCell", bundle: nil), forCellReuseIdentifier: SearchTableViewCell.reuseIdentifier)
         setupBackgroundTapGestureRecognizer()
     }
 
@@ -221,12 +221,15 @@ extension SiteCreationDomainsTableViewController {
         return cell
     }
 
-    private func searchFieldCell() -> SiteCreationDomainSearchTableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SiteCreationDomainSearchTableViewCell.cellIdentifier) as? SiteCreationDomainSearchTableViewCell else {
-            return SiteCreationDomainSearchTableViewCell(placeholder: "")
+    private func searchFieldCell() -> SearchTableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.reuseIdentifier) as? SearchTableViewCell else {
+            fatalError()
         }
+
+        cell.placeholder = NSLocalizedString("Type a keyword for more ideas", comment: "Placeholder text for domain search during site creation.")
         cell.delegate = self
         cell.selectionStyle = .none
+
         return cell
     }
 
@@ -331,9 +334,9 @@ extension SiteCreationDomainsTableViewController {
     }
 }
 
-// MARK: - SiteCreationDomainSearchTableViewCellDelegate
+// MARK: - SearchTableViewCellDelegate
 
-extension SiteCreationDomainsTableViewController: SiteCreationDomainSearchTableViewCellDelegate {
+extension SiteCreationDomainsTableViewController: SearchTableViewCellDelegate {
     func startSearch(for searchTerm: String) {
 
         removeNoResultsFromView()
