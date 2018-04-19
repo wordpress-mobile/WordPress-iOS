@@ -57,7 +57,7 @@ target 'WordPress' do
   pod 'lottie-ios', '1.5.1'
   pod 'Starscream', '3.0.4'
   pod 'GoogleSignIn', '4.1.2'
-  pod 'ZendeskSDK', '1.11.0.1'
+  pod 'ZendeskSDK', '1.11.2.1'
 
 
   ## Automattic libraries
