@@ -12,7 +12,7 @@ import Foundation
 /// Any new block passed to `throttle(:_)` cancels the previous one. If you need to throttle multiple things
 /// (i.e. online search and unrelated background refresh), you'll need to have a separate `Throttle` for each of them.
 ///
-public class Throttle {
+public class Scheduler {
     private let queue: DispatchQueue = DispatchQueue.global(qos: .default)
     private var job: DispatchWorkItem = DispatchWorkItem(block: {})
     private var previousRun: Date = Date.distantPast
