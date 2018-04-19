@@ -153,7 +153,7 @@ enum PluginDirectoryEntryState: Codable {
 
 }
 
-struct PluginStoreState: CachableState {
+struct PluginStoreState {
     var plugins = [JetpackSiteRef: SitePlugins]()
     var fetching = [JetpackSiteRef: Bool]()
     var lastFetch = [JetpackSiteRef: Date]()
@@ -198,12 +198,16 @@ extension PluginStoreState {
     }
 }
 
-class PluginStore: CachedStore<PluginStoreState, PluginQuery> {
+class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
     fileprivate let refreshInterval: TimeInterval = 60 // seconds
 
     override func queriesChanged() {
         super.queriesChanged()
         processQueries()
+    }
+
+    init() {
+        super.init(initialState: PluginStoreState(), dispatcher: .global)
     }
 
     func processQueries() {
