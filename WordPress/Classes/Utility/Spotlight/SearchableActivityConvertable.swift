@@ -1,3 +1,6 @@
+import CoreSpotlight
+import MobileCoreServices
+
 /// Custom NSUSerActivity types for the WPiOS. Primarily used for navigation points.
 ///
 enum WPActivityType: String {
@@ -39,7 +42,11 @@ enum WPActivityUserInfoKeys: String {
 
     /// A dictionary containing state information related to this indexed activity.
     ///
-    @objc optional var activityUserInfo: [String: Any]? {get}
+    @objc optional var activityUserInfo: [String: String]? {get}
+
+    /// Activity description
+    ///
+    @objc optional var activityDescription: String? {get}
 }
 
 extension SearchableActivityConvertable where Self: UIViewController {
@@ -58,14 +65,23 @@ extension SearchableActivityConvertable where Self: UIViewController {
             activity.expirationDate = oneWeekFromNow
         }
 
-        if let userInfo = activityUserInfo {
-            activity.userInfo = userInfo
+        if let activityUserInfo = activityUserInfo {
+            activity.userInfo = activityUserInfo
+            activity.requiredUserInfoKeys = Set([WPActivityUserInfoKeys.siteId.rawValue])
+        }
+
+        if let activityDescription = activityDescription {
+            let contentAttributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeText as String)
+            contentAttributeSet.contentDescription = activityDescription
+            contentAttributeSet.contentCreationDate = nil // Set this to nil so it doesn't display in spotlight
+            activity.contentAttributeSet = contentAttributeSet
         }
 
         activity.isEligibleForSearch = true
         activity.isEligibleForHandoff = false
 
-        // Set the userActivity property of UIResponder
+        // Set the UIViewController's userActivity property, which is defined in UIResponder. Doing this allows
+        // UIKit to automagically manage this user activity (e.g. making it current when needed)
         userActivity = activity
     }
 }

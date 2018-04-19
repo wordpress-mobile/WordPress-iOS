@@ -16,7 +16,7 @@ extension BlogDetailsViewController: SearchableActivityConvertable {
     }
 
     var activityKeywords: Set<String>? {
-        let keyWordString = NSLocalizedString("wordpress, site, blog", comment: "This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab.")
+        let keyWordString = NSLocalizedString("wordpress, sites, site, blogs, blog", comment: "This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab.")
         var keywordArray = keyWordString.arrayOfTags()
 
         if let siteName = siteName {
@@ -34,7 +34,7 @@ extension BlogDetailsViewController: SearchableActivityConvertable {
         return Set(keywordArray)
     }
 
-    var activityUserInfo: [String: Any]? {
+    var activityUserInfo: [String: String]? {
         var siteID: String
         if let dotComID = blog.dotComID, dotComID.intValue > 0 {
             siteID = dotComID.stringValue
@@ -46,16 +46,24 @@ extension BlogDetailsViewController: SearchableActivityConvertable {
         return [WPActivityUserInfoKeys.siteId.rawValue: siteID]
     }
 
-    // MARK: - Helpers
+    var activityDescription: String? {
+        guard let displayURL = displayURL else {
+            return nil
+        }
 
-    private var siteName: String? {
+        return displayURL
+    }
+
+    // MARK: Helpers
+
+    fileprivate var siteName: String? {
         guard let blogName = blog.settings?.name, blogName.isEmpty == false else {
             return nil
         }
         return blogName
     }
 
-    private var displayURL: String? {
+    fileprivate var displayURL: String? {
         guard let displayURL = blog.displayURL as String?, displayURL.isEmpty == false else {
             return nil
         }
@@ -64,5 +72,18 @@ extension BlogDetailsViewController: SearchableActivityConvertable {
 
     @objc func createUserActivity() {
         registerUserActivity()
+    }
+}
+
+// MARK: - UIResponder's ActivityContinuation Interface
+
+extension BlogDetailsViewController {
+    // We need to override this to ensure the userInfo is persisted into the spotlight index.
+    //
+    override open func updateUserActivityState(_ activity: NSUserActivity) {
+        if let activityUserInfo = activityUserInfo {
+            activity.addUserInfoEntries(from: activityUserInfo)
+        }
+        super.updateUserActivityState(activity)
     }
 }
