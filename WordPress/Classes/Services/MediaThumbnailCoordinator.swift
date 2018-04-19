@@ -33,20 +33,12 @@ class MediaThumbnailCoordinator: NSObject {
     /// Tries to generate a thumbnail for the specified media object with the size requested
     ///
     /// - Parameters:
-    ///   - media: the media object to generate the thumbail representation
+    ///   - media: the media object to generate the thumbnail representation
     ///   - size: the size of the thumbnail
-    ///   - onCompletion: a block that is invoked when the thumbnail generatio is completed with success or failure.
+    ///   - onCompletion: a block that is invoked when the thumbnail generation is completed with success or failure.
     @objc func thumbnail(for media: Media, with size: CGSize, onCompletion: @escaping ThumbnailBlock) {
         if media.remoteStatus == .stub {
-            guard let mediaID = media.mediaID else {
-                onCompletion(nil, MediaThumbnailExporter.ThumbnailExportError.failedToGenerateThumbnailFileURL)
-                return
-            }
-            mediaService.getMediaWithID(mediaID, in: media.blog, withSuccess: { (media) in
-                self.thumbnail(for: media, with: size, onCompletion: onCompletion)
-            }) { (error) in
-                onCompletion(nil, error)
-            }
+            fetchThumbnailForMediaStub(for: media, with: size, onCompletion: onCompletion)
             return
         }
         mediaThumbnailService.thumbnailURL(forMedia: media, preferredSize: size, onCompletion: { (url) in
@@ -60,11 +52,29 @@ class MediaThumbnailCoordinator: NSObject {
             DispatchQueue.main.async {
                 onCompletion(image, nil)
             }
-        }) { (error) in
+        }, onError: { (error) in
             DispatchQueue.main.async {
                 onCompletion(nil, error)
             }
+        })
+    }
+
+    /// Tries to generate a thumbnail for the specified media object that is stub with the size requested
+    ///
+    /// - Parameters:
+    ///   - media: the media object to generate the thumbnail representation
+    ///   - size: the size of the thumbnail
+    ///   - onCompletion: a block that is invoked when the thumbnail generation is completed with success or failure.
+    func fetchThumbnailForMediaStub(for media: Media, with size: CGSize, onCompletion: @escaping ThumbnailBlock) {
+        guard let mediaID = media.mediaID else {
+            onCompletion(nil, MediaThumbnailExporter.ThumbnailExportError.failedToGenerateThumbnailFileURL)
+            return
         }
+        mediaService.getMediaWithID(mediaID, in: media.blog, success: { (media) in
+            self.thumbnail(for: media, with: size, onCompletion: onCompletion)
+        }, failure: { (error) in
+            onCompletion(nil, error)
+        })
     }
 
 }

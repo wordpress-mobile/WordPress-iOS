@@ -48,7 +48,7 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
  */
 - (void)getMediaWithID:(nonnull NSNumber *)mediaID
                 inBlog:(nonnull Blog *)blog
-           withSuccess:(nullable void (^)(Media * _Nonnull media))success
+               Success:(nullable void (^)(Media * _Nonnull media))success
                failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 /**
