@@ -724,7 +724,11 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
         cell = activityCell;
 
-    } else if (self.isUploadingMedia){
+    } else if (self.isUploadingMedia || self.apost.featuredImage.remoteStatus == MediaRemoteStatusPushing) {
+        if (!self.isUploadingMedia) {
+            self.isUploadingMedia = YES;
+            [self setupObservingOfMedia: self.apost.featuredImage];
+        }
         WPProgressTableViewCell * progressCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewProgressCellIdentifier forIndexPath:indexPath];
         [progressCell setProgress:self.featuredImageProgress];
         [progressCell.imageView setImage:self.featuredImageProgress.userInfo[WPProgressImageThumbnailKey]];
