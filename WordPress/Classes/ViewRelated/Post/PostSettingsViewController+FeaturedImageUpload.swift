@@ -10,13 +10,12 @@ extension PostSettingsViewController {
     }
 
     @objc func setFeaturedImage(media: Media) {
-        if media.hasRemote {
-            apost.featuredImage = media
+        if !media.hasRemote {
+            MediaCoordinator.shared.retryMedia(media)
+            setupObservingOf(media: media)
             return
         }
         apost.featuredImage = media
-        MediaCoordinator.shared.retryMedia(media)
-        setupObservingOf(media: media)
     }
 
     @objc func removeMediaObserver() {
