@@ -104,15 +104,25 @@ public enum MediaSelectionMethod: CustomStringConvertible {
 /// Used for analytics to track where an upload was started within the app.
 ///
 enum MediaUploadOrigin {
-    case mediaLibrary
+    case mediaLibrary(MediaSource)
     case editor(MediaSource)
 
     func eventForMediaType(_ mediaType: MediaType) -> WPAnalyticsStat? {
         switch (self, mediaType) {
-        case (.mediaLibrary, .image):
-            return .mediaLibraryAddedPhoto
-        case (.mediaLibrary, .video):
-            return .mediaLibraryAddedVideo
+        case (.mediaLibrary(let source), .image) where source == .deviceLibrary:
+            return .mediaLibraryAddedPhotoViaDeviceLibrary
+        case (.mediaLibrary(let source), .image) where source == .otherApps:
+            return .mediaLibraryAddedPhotoViaOtherApps
+        case (.mediaLibrary(let source), .image) where source == .stockPhotos:
+            return .mediaLibraryAddedPhotoViaStockPhotos
+        case (.mediaLibrary(let source), .image) where source == .camera:
+            return .mediaLibraryAddedPhotoViaCamera
+        case (.mediaLibrary(let source), .video) where source == .deviceLibrary:
+            return .mediaLibraryAddedVideoViaDeviceLibrary
+        case (.mediaLibrary(let source), .video) where source == .otherApps:
+            return .mediaLibraryAddedVideoViaOtherApps
+        case (.mediaLibrary(let source), .video) where source == .camera:
+            return .mediaLibraryAddedVideoViaCamera
         case (.editor(let source), .image) where source == .deviceLibrary:
             return .editorAddedPhotoViaLocalLibrary
         case (.editor(let source), .image) where source == .wpMediaLibrary:
@@ -140,4 +150,5 @@ enum MediaSource {
     case otherApps
     case wpMediaLibrary
     case stockPhotos
+    case camera
 }
