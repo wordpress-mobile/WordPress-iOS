@@ -12,8 +12,7 @@ extension BlogDetailsViewController: SearchableActivityConvertable {
             return displayURL
         }
 
-        return NSLocalizedString("My Site",
-                                 comment: "Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.")
+        return NSLocalizedString("My Site", comment: "Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.")
     }
 
     var activityKeywords: Set<String>? {
@@ -35,6 +34,20 @@ extension BlogDetailsViewController: SearchableActivityConvertable {
         return Set(keywordArray)
     }
 
+    var activityUserInfo: [String: Any]? {
+        var siteID: String
+        if let dotComID = blog.dotComID, dotComID.intValue > 0 {
+            siteID = dotComID.stringValue
+        } else {
+            // This is a self-hosted site, set domain to the xmlrpc string
+            siteID = blog.xmlrpc ?? String()
+        }
+
+        return [WPActivityUserInfoKeys.siteId.rawValue: siteID]
+    }
+
+    // MARK: - Helpers
+
     private var siteName: String? {
         guard let blogName = blog.settings?.name, blogName.isEmpty == false else {
             return nil
@@ -50,7 +63,6 @@ extension BlogDetailsViewController: SearchableActivityConvertable {
     }
 
     @objc func createUserActivity() {
-        // FIXME: Store site ID in user data
         registerUserActivity()
     }
 }
