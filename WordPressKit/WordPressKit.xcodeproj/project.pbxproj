@@ -349,8 +349,6 @@
 		93F50A441F227CFB00B5BEBA /* UsersServiceRemoteXMLRPCTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F50A431F227CFB00B5BEBA /* UsersServiceRemoteXMLRPCTests.swift */; };
 		93F50A471F227F3600B5BEBA /* xmlrpc-response-getprofile.xml in Resources */ = {isa = PBXBuildFile; fileRef = 93F50A451F227F3600B5BEBA /* xmlrpc-response-getprofile.xml */; };
 		93F50A481F227F3600B5BEBA /* xmlrpc-response-valid-but-unexpected-dictionary.xml in Resources */ = {isa = PBXBuildFile; fileRef = 93F50A461F227F3600B5BEBA /* xmlrpc-response-valid-but-unexpected-dictionary.xml */; };
-		9F3E0B98208731C3009CB5BA /* NSObject+ObjectValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = 9F3E0B96208731C3009CB5BA /* NSObject+ObjectValidation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9F3E0B99208731C3009CB5BA /* NSObject+ObjectValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F3E0B97208731C3009CB5BA /* NSObject+ObjectValidation.m */; };
 		9F3E0B9B208732B3009CB5BA /* RemoteReaderSiteInfoSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3E0B9A208732B2009CB5BA /* RemoteReaderSiteInfoSubscription.swift */; };
 		9F3E0B9E208733C3009CB5BA /* ReaderServiceDeliveryFrequency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3E0B9C208733C2009CB5BA /* ReaderServiceDeliveryFrequency.swift */; };
 		9F3E0B9F208733C3009CB5BA /* ReaderServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3E0B9D208733C2009CB5BA /* ReaderServiceProtocol.swift */; };
@@ -361,6 +359,7 @@
 		9F3E0BAA20873773009CB5BA /* MockServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3E0BA920873772009CB5BA /* MockServiceRequest.swift */; };
 		9F3E0BAC20873785009CB5BA /* ServiceRequestTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3E0BAB20873785009CB5BA /* ServiceRequestTest.swift */; };
 		9F3E0BAE20873836009CB5BA /* ReaderTopicServiceRemoteTest+Subscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3E0BAD20873835009CB5BA /* ReaderTopicServiceRemoteTest+Subscriptions.swift */; };
+		9F4E52002088E38200424676 /* ObjectValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4E51FF2088E38200424676 /* ObjectValidation.swift */; };
 		AFEFF3378CD0A507125E5019 /* Pods_WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1A37C8C9E463E3B9F6B61A /* Pods_WordPressKit.framework */; };
 		B56D96AF202C9B7500485233 /* WordPressUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56D96B0202C9B7500485233 /* WordPressUI.framework */; };
 		E11C2AD21FA77FB90023BDE2 /* SitePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11C2AD11FA77FB90023BDE2 /* SitePlugin.swift */; };
@@ -748,8 +747,6 @@
 		93F50A431F227CFB00B5BEBA /* UsersServiceRemoteXMLRPCTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersServiceRemoteXMLRPCTests.swift; sourceTree = "<group>"; };
 		93F50A451F227F3600B5BEBA /* xmlrpc-response-getprofile.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-getprofile.xml"; sourceTree = "<group>"; };
 		93F50A461F227F3600B5BEBA /* xmlrpc-response-valid-but-unexpected-dictionary.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-valid-but-unexpected-dictionary.xml"; sourceTree = "<group>"; };
-		9F3E0B96208731C3009CB5BA /* NSObject+ObjectValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ObjectValidation.h"; sourceTree = "<group>"; };
-		9F3E0B97208731C3009CB5BA /* NSObject+ObjectValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ObjectValidation.m"; sourceTree = "<group>"; };
 		9F3E0B9A208732B2009CB5BA /* RemoteReaderSiteInfoSubscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteReaderSiteInfoSubscription.swift; sourceTree = "<group>"; };
 		9F3E0B9C208733C2009CB5BA /* ReaderServiceDeliveryFrequency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderServiceDeliveryFrequency.swift; sourceTree = "<group>"; };
 		9F3E0B9D208733C2009CB5BA /* ReaderServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderServiceProtocol.swift; sourceTree = "<group>"; };
@@ -760,6 +757,7 @@
 		9F3E0BA920873772009CB5BA /* MockServiceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockServiceRequest.swift; sourceTree = "<group>"; };
 		9F3E0BAB20873785009CB5BA /* ServiceRequestTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceRequestTest.swift; sourceTree = "<group>"; };
 		9F3E0BAD20873835009CB5BA /* ReaderTopicServiceRemoteTest+Subscriptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReaderTopicServiceRemoteTest+Subscriptions.swift"; sourceTree = "<group>"; };
+		9F4E51FF2088E38200424676 /* ObjectValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectValidation.swift; sourceTree = "<group>"; };
 		9F902B70CBB63DD7EB9D275A /* Pods_WordPressKitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressKitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2CE6797F9E45AE059B28690 /* Pods-WordPressKit.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKit.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKit/Pods-WordPressKit.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		B459C2F3F70D7C971B441F04 /* Pods-WordPressKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKit.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKit/Pods-WordPressKit.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1429,8 +1427,7 @@
 			children = (
 				93C674EF1EE8351E00BFAF05 /* NSMutableDictionary+Helpers.h */,
 				93C674F01EE8351E00BFAF05 /* NSMutableDictionary+Helpers.m */,
-				9F3E0B96208731C3009CB5BA /* NSObject+ObjectValidation.h */,
-				9F3E0B97208731C3009CB5BA /* NSObject+ObjectValidation.m */,
+				9F4E51FF2088E38200424676 /* ObjectValidation.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -1499,7 +1496,6 @@
 				93BD276F1EE737A8002BB00B /* ServiceRemoteWordPressComREST.h in Headers */,
 				93BD277D1EE73944002BB00B /* NSDate+WordPressJSON.h in Headers */,
 				93BD273B1EE73282002BB00B /* AccountServiceRemote.h in Headers */,
-				9F3E0B98208731C3009CB5BA /* NSObject+ObjectValidation.h in Headers */,
 				93BD27691EE736A8002BB00B /* RemoteUser.h in Headers */,
 				9368C7BF1EC630CE0092CE8E /* StatsStringUtilities.h in Headers */,
 				9368C7BB1EC630270092CE8E /* StatsVisits.h in Headers */,
@@ -1945,7 +1941,6 @@
 				93BD27801EE73944002BB00B /* WordPressComRestApi.swift in Sources */,
 				E11C2AD21FA77FB90023BDE2 /* SitePlugin.swift in Sources */,
 				74A44DCC1F13C533006CD8F4 /* NotificationSyncServiceRemote.swift in Sources */,
-				9F3E0B99208731C3009CB5BA /* NSObject+ObjectValidation.m in Sources */,
 				74E229501F1E741B0085F7F2 /* RemotePublicizeConnection.swift in Sources */,
 				9311A6891F22625A00704AC9 /* TaxonomyServiceRemoteREST.m in Sources */,
 				93BD277C1EE73944002BB00B /* HTTPAuthenticationAlertController.swift in Sources */,
@@ -1969,6 +1964,7 @@
 				7430C9B61F1927C50051B8E6 /* RemoteReaderSiteInfo.m in Sources */,
 				74DA56351F06EAF000FE9BF4 /* MediaServiceRemoteXMLRPC.m in Sources */,
 				93F50A381F226B9300B5BEBA /* WordPressComServiceRemote.m in Sources */,
+				9F4E52002088E38200424676 /* ObjectValidation.swift in Sources */,
 				7430C9B81F1927C50051B8E6 /* RemoteReaderTopic.m in Sources */,
 				7403A3021EF0726E00DED7DC /* AccountSettings.swift in Sources */,
 				9368C7C01EC630CE0092CE8E /* StatsStringUtilities.m in Sources */,
