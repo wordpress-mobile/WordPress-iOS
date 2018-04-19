@@ -25,10 +25,10 @@ class SignupGoogleViewController: LoginViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        displayGoogleSingleSignonIfNeeded()
+        displayGoogleSingleSignOnIfNeeded()
     }
 
-    private func displayGoogleSingleSignonIfNeeded() {
+    private func displayGoogleSingleSignOnIfNeeded() {
         guard !hasShownGoogle else {
             return
         }
@@ -103,8 +103,6 @@ private extension SignupGoogleViewController {
 
             let credentials = WordPressCredentials.wpcom(username: wpcomUsername, authToken: wpcomToken, isJetpackLogin: false, multifactor: false)
             self?.authenticationDelegate.sync(credentials: credentials) { _ in
-// TODO: Just create the account when it's a freshly created wpcom user!
-// TODO: Improve this!
                 if accountCreated {
                     self?.socialSignupWasSuccessful(with: credentials)
                 } else {
