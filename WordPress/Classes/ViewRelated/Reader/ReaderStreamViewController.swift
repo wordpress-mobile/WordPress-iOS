@@ -1835,7 +1835,7 @@ extension ReaderStreamViewController: SearchableActivityConvertable {
     }
 
     var activityKeywords: Set<String>? {
-        let keyWordString = NSLocalizedString("reader, articles, posts, blog post, followed, discover, likes, my likes, tags",
+        let keyWordString = NSLocalizedString("wordpress, reader, articles, posts, blog post, followed, discover, likes, my likes, tags, topics",
                                               comment: "This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab.")
         let keywordArray = keyWordString.arrayOfTags()
 

@@ -2,7 +2,7 @@ import Foundation
 
 extension SupportViewController: SearchableActivityConvertable {
     var activityType: String {
-        return WPActivityType.reader.rawValue
+        return WPActivityType.support.rawValue
     }
 
     var activityTitle: String {
@@ -10,7 +10,7 @@ extension SupportViewController: SearchableActivityConvertable {
     }
 
     var activityKeywords: Set<String>? {
-        let keyWordString = NSLocalizedString("WordPress, help, support, faq, questions, debug, logs, help center, contact",
+        let keyWordString = NSLocalizedString("wordpress, help, support, faq, questions, debug, logs, help center, contact",
                                               comment: "This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab")
         let keywordArray = keyWordString.arrayOfTags()
 
