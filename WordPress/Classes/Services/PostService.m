@@ -527,14 +527,8 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     post.content = remotePost.content;
     post.status = remotePost.status;
     post.password = remotePost.password;    
-    if (remotePost.postThumbnailID != nil) {
-        Media *featuredMedia = [Media existingMediaWithMediaID: remotePost.postThumbnailID inBlog:post.blog];
-        if (featuredMedia == nil) {
-            featuredMedia = [Media makeMediaWithBlog:post.blog];
-            featuredMedia.mediaID = remotePost.postThumbnailID;
-            featuredMedia.remoteStatus = MediaRemoteStatusStub;
-        }
-        post.featuredImage = featuredMedia;
+    if (remotePost.postThumbnailID != nil) {        
+        post.featuredImage = [Media existingOrStubMediaWithMediaID: remotePost.postThumbnailID inBlog:post.blog];
     } else {
         post.featuredImage = nil;
     }
