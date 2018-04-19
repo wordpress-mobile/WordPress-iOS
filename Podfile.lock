@@ -120,11 +120,11 @@ PODS:
     - NSObject-SafeExpectations (= 0.0.2)
   - WPMediaPicker (0.27)
   - wpxmlrpc (0.8.3)
-  - ZendeskSDK (1.11.0.1):
-    - ZendeskSDK/Providers (= 1.11.0.1)
-    - ZendeskSDK/UI (= 1.11.0.1)
-  - ZendeskSDK/Providers (1.11.0.1)
-  - ZendeskSDK/UI (1.11.0.1):
+  - ZendeskSDK (1.11.2.1):
+    - ZendeskSDK/Providers (= 1.11.2.1)
+    - ZendeskSDK/UI (= 1.11.2.1)
+  - ZendeskSDK/Providers (1.11.2.1)
+  - ZendeskSDK/UI (1.11.2.1):
     - ZendeskSDK/Providers
 
 DEPENDENCIES:
@@ -159,7 +159,7 @@ DEPENDENCIES:
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`)
   - WPMediaPicker (= 0.27)
   - wpxmlrpc (= 0.8.3)
-  - ZendeskSDK (= 1.11.0.1)
+  - ZendeskSDK (= 1.11.2.1)
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
@@ -217,8 +217,8 @@ SPEC CHECKSUMS:
   WordPressShared: b1bed3aa4db4438fd9fe78ccd0be58c8fee19c17
   WPMediaPicker: 1fe532b4ff215a9dd259f08439376fc0dbab1039
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
-  ZendeskSDK: 4e075d7610e74755c576188886a073cfc5810145
+  ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: 07a9bfc29f8ad350956e5d57126b99ccbba47ea7
+PODFILE CHECKSUM: 7d93b2d776338a843024e0d74797f58109137069
 
 COCOAPODS: 1.4.0
