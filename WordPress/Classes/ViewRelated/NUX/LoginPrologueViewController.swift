@@ -80,12 +80,4 @@ class LoginPrologueViewController: LoginViewController {
     @IBAction func signupTapped() {
         performSegue(withIdentifier: NUXViewController.SegueIdentifier.showSignupMethod.rawValue, sender: self)
     }
-
-    override func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        if presented is LoginPrologueSignupMethodViewController {
-            return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
-        }
-
-        return nil
-    }
 }
