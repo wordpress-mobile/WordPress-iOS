@@ -1177,24 +1177,22 @@ extension AztecPostViewController {
         }
 
         let promoBlock = { [unowned self] in
-            if action.isAsync && !UserDefaults.standard.asyncPromoWasDisplayed {
-                UserDefaults.standard.asyncPromoWasDisplayed = true
+            UserDefaults.standard.asyncPromoWasDisplayed = true
 
-                let controller = FancyAlertViewController.makeAsyncPostingAlertController(publishAction: publishBlock)
-                controller.modalPresentationStyle = .custom
-                controller.transitioningDelegate = self
-                self.present(controller, animated: true, completion: nil)
-
-                return
-            } else {
-                publishBlock()
-            }
+            let controller = FancyAlertViewController.makeAsyncPostingAlertController(publishAction: publishBlock)
+            controller.modalPresentationStyle = .custom
+            controller.transitioningDelegate = self
+            self.present(controller, animated: true, completion: nil)
         }
 
         if action.isAsync {
-            displayPublishConfirmationAlert(onPublish: promoBlock)
+            if !UserDefaults.standard.asyncPromoWasDisplayed {
+                promoBlock()
+            } else {
+                displayPublishConfirmationAlert(onPublish: publishBlock)
+            }
         } else {
-            promoBlock()
+            publishBlock()
         }
     }
 

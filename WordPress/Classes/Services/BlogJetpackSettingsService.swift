@@ -17,7 +17,7 @@ struct BlogJetpackSettingsService {
             success()
             return
         }
-        guard let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: blog.wordPressComRestApi()),
+        guard let remoteAPI = blog.wordPressComRestApi(),
             let blogDotComId = blog.dotComID as? Int,
             let blogSettings = blog.settings else {
                 success()
@@ -27,6 +27,7 @@ struct BlogJetpackSettingsService {
         var fetchError: Error? = nil
         var remoteJetpackSettings: RemoteBlogJetpackSettings? = nil
         var remoteJetpackMonitorSettings: RemoteBlogJetpackMonitorSettings? = nil
+        let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: remoteAPI)
 
         // Create a dispatch group to wait for both calls.
         let syncGroup = DispatchGroup()
@@ -77,13 +78,14 @@ struct BlogJetpackSettingsService {
             success()
             return
         }
-        guard let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: blog.wordPressComRestApi()),
+        guard let remoteAPI = blog.wordPressComRestApi(),
             let blogDotComId = blog.dotComID as? Int,
             let blogSettings = blog.settings else {
                 failure(nil)
                 return
         }
 
+        let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: remoteAPI)
         remote.getJetpackModulesSettingsForSite(blogDotComId,
                                                 success: { (remoteModulesSettings) in
                                                     self.updateJetpackModulesSettings(blogSettings, remoteSettings: remoteModulesSettings)
@@ -100,13 +102,14 @@ struct BlogJetpackSettingsService {
     }
 
     func updateJetpackSettingsForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
-        guard let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: blog.wordPressComRestApi()),
+        guard let remoteAPI = blog.wordPressComRestApi(),
             let blogDotComId = blog.dotComID as? Int,
             let blogSettings = blog.settings else {
                 failure(nil)
                 return
         }
 
+        let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: remoteAPI)
         remote.updateJetpackSettingsForSite(blogDotComId,
                                             settings: jetpackSettingsRemote(blogSettings),
                                             success: {
@@ -124,13 +127,14 @@ struct BlogJetpackSettingsService {
     }
 
     func updateJetpackMonitorSettingsForBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
-        guard let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: blog.wordPressComRestApi()),
+        guard let remoteAPI = blog.wordPressComRestApi(),
             let blogDotComId = blog.dotComID as? Int,
             let blogSettings = blog.settings else {
                 failure(nil)
                 return
         }
 
+        let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: remoteAPI)
         remote.updateJetpackMonitorSettingsForSite(blogDotComId,
                                                    settings: jetpackMonitorsSettingsRemote(blogSettings),
                                                    success: {
@@ -181,12 +185,13 @@ struct BlogJetpackSettingsService {
     }
 
     func updateJetpackModuleActiveSettingForBlog(_ blog: Blog, module: String, active: Bool, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
-        guard let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: blog.wordPressComRestApi()),
+        guard let remoteAPI = blog.wordPressComRestApi(),
             let blogDotComId = blog.dotComID as? Int else {
             failure(nil)
             return
         }
 
+        let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: remoteAPI)
         remote.updateJetpackModuleActiveSettingForSite(blogDotComId,
                                                        module: module,
                                                        active: active,
@@ -204,12 +209,13 @@ struct BlogJetpackSettingsService {
     }
 
     func disconnectJetpackFromBlog(_ blog: Blog, success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
-        guard let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: blog.wordPressComRestApi()),
+        guard let remoteAPI = blog.wordPressComRestApi(),
             let blogDotComId = blog.dotComID as? Int else {
                 failure(nil)
                 return
         }
 
+        let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: remoteAPI)
         remote.disconnectJetpackFromSite(blogDotComId,
                                          success: {
                                             success()
