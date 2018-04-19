@@ -3,16 +3,18 @@ import WPMediaPicker
 
 /// Data Source for Stock Photos
 final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
+    fileprivate static let paginationThreshold = 10
 
-    var photosMedia = [StockPhotosMedia]()
+    fileprivate var photosMedia = [StockPhotosMedia]()
     var observers = [String: WPMediaChangesBlock]()
-    let service: StockPhotosService
+    private var dataLoader: StockPhotosDataLoader?
 
     private let throttle = Throttle(seconds: 1)
 
+
     init(service: StockPhotosService) {
-        self.service = service
         super.init()
+        self.dataLoader = StockPhotosDataLoader(service: service, delegate: self)
     }
 
     func clearSearch(notifyObservers shouldNotify: Bool) {
@@ -27,18 +29,19 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     }
 
     func search(for searchText: String?) {
+        guard searchText?.isEmpty == false else {
+            clearSearch(notifyObservers: true)
+            return
+        }
+
         throttle.throttle { [weak self] in
-            let params = StockPhotosSearchParams(text: searchText ?? "")
+            let params = StockPhotosSearchParams(text: searchText, pageable: StockPhotosPageable.first())
             self?.search(params)
         }
     }
 
     private func search(_ params: StockPhotosSearchParams) {
-        DispatchQueue.main.async { [weak self] in
-            self?.service.search(params: params) { (result) in
-                self?.searchCompleted(result: result)
-            }
-        }
+        dataLoader?.search(params)
     }
 
     func group(at index: Int) -> WPMediaGroup {
@@ -54,6 +57,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     }
 
     func media(at index: Int) -> WPMediaAsset {
+        fetchMoreContentIfNecessary(index)
         return photosMedia[index]
     }
 
@@ -117,14 +121,53 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
 // MARK: - Helpers
 
 extension StockPhotosDataSource {
-    private func searchCompleted(result: [StockPhotosMedia]) {
-        self.photosMedia = result
-        self.notifyObservers()
+    private func notifyObservers(incremental: Bool = false, inserted: IndexSet = IndexSet()) {
+        observers.forEach {
+            $0.value(incremental, IndexSet(), inserted, IndexSet(), [])
+        }
+    }
+}
+
+// MARK: - Pagination
+extension StockPhotosDataSource {
+    fileprivate func fetchMoreContentIfNecessary(_ index: Int) {
+        if shoudLoadMore(index) {
+            dataLoader?.loadNextPage()
+        }
     }
 
-    private func notifyObservers() {
-        observers.forEach {
-            $0.value(false, IndexSet(), IndexSet(), IndexSet(), [])
+    private func shoudLoadMore(_ index: Int) -> Bool {
+        return index + type(of: self).paginationThreshold >= numberOfAssets()
+    }
+}
+
+extension StockPhotosDataSource: StockPhotosDataLoaderDelegate {
+    func didLoad(media: [StockPhotosMedia], reset: Bool) {
+        guard media.count > 0 else {
+            clearSearch(notifyObservers: true)
+            return
         }
+
+        if reset {
+            overwriteMedia(with: media)
+        } else {
+            appendMedia(with: media)
+        }
+    }
+
+    private func overwriteMedia(with media: [StockPhotosMedia]) {
+        photosMedia = media
+        notifyObservers(incremental: false)
+    }
+
+    private func appendMedia(with media: [StockPhotosMedia]) {
+        let currentMaxIndex = photosMedia.count
+        let newMaxIndex = currentMaxIndex + media.count - 1
+
+        let isIncremental = currentMaxIndex != 0
+        let insertedIndexes = IndexSet(integersIn: currentMaxIndex...newMaxIndex)
+
+        photosMedia.append(contentsOf: media)
+        notifyObservers(incremental: isIncremental, inserted: insertedIndexes)
     }
 }
