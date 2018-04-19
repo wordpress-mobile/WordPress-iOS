@@ -38,9 +38,11 @@ class MediaExternalExporter: MediaExporter {
     ///
     func export(onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         WPImageSource.shared().downloadImage(for: asset.URL, withSuccess: { (image) in
-            self.exportImage(image, onCompletion: onCompletion, onError: onError)
+            if let image = image {
+                self.exportImage(image, onCompletion: onCompletion, onError: onError)
+            }
         }) { (error) in
-            let exportError = ExportError.downloadError(error as NSError)
+            let exportError = ExportError.downloadError(error as! NSError)
             onError(exportError)
         }
 
