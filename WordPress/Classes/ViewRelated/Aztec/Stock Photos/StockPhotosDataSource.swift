@@ -11,6 +11,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
 
     private let throttle = Throttle(seconds: 1)
 
+    var searchQuery: String = ""
 
     init(service: StockPhotosService) {
         super.init()
@@ -29,6 +30,8 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     }
 
     func search(for searchText: String?) {
+        searchQuery = searchText ?? ""
+
         guard searchText?.isEmpty == false else {
             clearSearch(notifyObservers: true)
             return
@@ -92,6 +95,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     }
 
     func searchCancelled() {
+        searchQuery = ""
         clearSearch(notifyObservers: true)
     }
 
