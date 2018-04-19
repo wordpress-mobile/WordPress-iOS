@@ -9,7 +9,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     var observers = [String: WPMediaChangesBlock]()
     private var dataLoader: StockPhotosDataLoader?
 
-    private let scheduler = Scheduler(seconds: 1)
+    private let scheduler = Scheduler(seconds: 0.5)
 
 
     init(service: StockPhotosService) {
