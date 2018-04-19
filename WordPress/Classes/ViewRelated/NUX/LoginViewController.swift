@@ -5,7 +5,10 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
     var restrictToWPCom = false
 
     lazy var loginFacade: LoginFacade = {
-        let facade = LoginFacade()
+        let configuration = WordPressAuthenticator.shared.configuration
+        let facade = LoginFacade(dotcomClientID: configuration.wpcomClientId,
+                                 dotcomSecret: configuration.wpcomSecret,
+                                 userAgent: configuration.userAgent)
         facade.delegate = self
         return facade
     }()
