@@ -318,18 +318,17 @@ static NSString * const DeliveryMethodNotificationKey = @"notification";
  */
 - (RemoteReaderSiteInfoSubscriptionPost *)postSubscriptionFor:(NSDictionary *)subscription
 {
-    if (![subscription wp_isValidObject] && ![subscription[SubscriptionDeliveryMethodsKey] wp_isValidObject]) {
+    if (![subscription wp_isValidObject]) {
         return nil;
     }
     
-    NSDictionary *subscriptionDeliveryMethods = subscription[SubscriptionDeliveryMethodsKey];
-    NSDictionary *deliveryMethodNotification = subscriptionDeliveryMethods[DeliveryMethodNotificationKey];
+    NSDictionary *method = [[subscription dictionaryForKey: SubscriptionDeliveryMethodsKey] dictionaryForKey: DeliveryMethodNotificationKey];
     
-    if ([deliveryMethodNotification wp_isValidObject]) {
-        return [[RemoteReaderSiteInfoSubscriptionPost alloc] initWithDictionary:deliveryMethodNotification];
+    if (![method wp_isValidObject]) {
+        return nil;
     }
     
-    return nil;
+    return [[RemoteReaderSiteInfoSubscriptionPost alloc] initWithDictionary:method];
 }
 
 /**
@@ -341,18 +340,17 @@ static NSString * const DeliveryMethodNotificationKey = @"notification";
 
 - (RemoteReaderSiteInfoSubscriptionEmail *)emailSubscriptionFor:(NSDictionary *)subscription
 {
-    if (![subscription wp_isValidObject] && ![subscription[SubscriptionDeliveryMethodsKey] wp_isValidObject]) {
+    if (![subscription wp_isValidObject]) {
         return nil;
     }
 
-    NSDictionary *subscriptionDeliveryMethods = subscription[SubscriptionDeliveryMethodsKey];
-    NSDictionary *deliveryMethodEmail = subscriptionDeliveryMethods[DeliveryMethodEmailKey];
+    NSDictionary *method = [[subscription dictionaryForKey: SubscriptionDeliveryMethodsKey] dictionaryForKey: DeliveryMethodEmailKey];
 
-    if ([deliveryMethodEmail wp_isValidObject]) {
-        return [[RemoteReaderSiteInfoSubscriptionEmail alloc] initWithDictionary:deliveryMethodEmail];
+    if (![method wp_isValidObject]) {
+        return nil;
     }
     
-    return nil;
+    return [[RemoteReaderSiteInfoSubscriptionEmail alloc] initWithDictionary:method];
 }
 
 /**
