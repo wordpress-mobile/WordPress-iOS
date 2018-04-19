@@ -1025,6 +1025,36 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatSignupEmailToLogin:
             eventName = @"signup_email_to_login";
             break;
+        case WPAnalyticsStatSignupEpilogueViewed:
+            eventName = @"signup_epilogue_viewed";
+            break;
+        case WPAnalyticsStatSignupEpilogueUnchanged:
+            eventName = @"signup_epilogue_unchanged";
+            break;
+        case WPAnalyticsStatSignupEpilogueDisplayNameUpdateSucceeded:
+            eventName = @"signup_epilogue_update_display_name_succeeded";
+            break;
+        case WPAnalyticsStatSignupEpilogueDisplayNameUpdateFailed:
+            eventName = @"signup_epilogue_update_display_name_failed";
+            break;
+        case WPAnalyticsStatSignupEpiloguePasswordUpdateSucceeded:
+            eventName = @"signup_epilogue_update_password_succeeded";
+            break;
+        case WPAnalyticsStatSignupEpiloguePasswordUpdateFailed:
+            eventName = @"signup_epilogue_update_password_failed";
+            break;
+        case WPAnalyticsStatSignupEpilogueUsernameTapped:
+            eventName = @"signup_epilogue_username_tapped";
+            break;
+        case WPAnalyticsStatSignupEpilogueUsernameSuggestionsFailed:
+            eventName = @"signup_epilogue_username_suggestions_failed";
+            break;
+        case WPAnalyticsStatSignupEpilogueUsernameUpdateSucceeded:
+            eventName = @"signup_epilogue_update_username_succeeded";
+            break;
+        case WPAnalyticsStatSignupEpilogueUsernameUpdateFailed:
+            eventName = @"signup_epilogue_update_username_failed";
+            break;
         case WPAnalyticsStatSignupMagicLinkFailed:
             eventName = @"signup_magic_link_failed";
             break;
