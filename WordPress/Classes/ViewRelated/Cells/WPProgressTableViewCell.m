@@ -6,7 +6,7 @@
 
 static void *ProgressObserverContext = &ProgressObserverContext;
 
-NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
+NSProgressUserInfoKey const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
 @interface WPProgressTableViewCell ()
 
 @property (nonatomic, strong) IBOutlet MRActivityIndicatorView * progressView;
