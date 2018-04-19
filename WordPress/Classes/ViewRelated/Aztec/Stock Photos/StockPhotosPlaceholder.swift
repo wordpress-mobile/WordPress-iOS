@@ -1,8 +1,10 @@
 // Empty state for Stock Photos
 final class StockPhotosPlaceholder: WPNoResultsView {
 
-    private let companyUrl = "https://www.pexels.com"
-    private let companyName = "Pexels"
+    private enum Constants {
+        static let companyUrl = "https://www.pexels.com"
+        static let companyName = "Pexels"
+    }
 
     init() {
         super.init(frame: .zero)
@@ -32,8 +34,8 @@ final class StockPhotosPlaceholder: WPNoResultsView {
     }
 
     private func createStringWithLinkAttributes(from subtitle: String) -> NSAttributedString {
-        let htmlTaggedLink = "<a href=\"\(companyUrl)\">\(companyName)</a>"
-        let htmlTaggedText = subtitle.replacingOccurrences(of: companyName, with: htmlTaggedLink)
+        let htmlTaggedLink = "<a href=\"\(Constants.companyUrl)\">\(Constants.companyName)</a>"
+        let htmlTaggedText = subtitle.replacingOccurrences(of: Constants.companyName, with: htmlTaggedLink)
 
         return NSAttributedString.attributedStringWithHTML(htmlTaggedText, attributes: nil)
     }
