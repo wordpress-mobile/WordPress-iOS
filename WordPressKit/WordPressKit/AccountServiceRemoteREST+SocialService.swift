@@ -17,10 +17,8 @@ extension AccountServiceRemoteREST {
     ///     - success The block that will be executed on success.
     ///     - failure The block that will be executed on failure.
     public func connectToSocialService(_ service: SocialServiceName, serviceIDToken token: String, oAuthClientID: String, oAuthClientSecret: String, success:@escaping (() -> Void), failure:@escaping ((NSError) -> Void)) {
-        guard let path = self.path(forEndpoint: "me/social-login/connect", withVersion: ._1_1) else {
-            // This should never fail but if it does we don't want to ignore the problem.
-            fatalError("There was a problem creating a valid path for the supplied endpoint and REST API version.")
-        }
+        let path = self.path(forEndpoint: "me/social-login/connect", withVersion: ._1_1)
+
         let params = [
             "client_id": oAuthClientID,
             "client_secret": oAuthClientSecret,
@@ -43,15 +41,13 @@ extension AccountServiceRemoteREST {
     ///     - success The block that will be executed on success.
     ///     - failure The block that will be executed on failure.
     public func disconnectFromSocialService(_ service: SocialServiceName, oAuthClientID: String, oAuthClientSecret: String, success:@escaping(() -> Void), failure:@escaping((NSError) -> Void)) {
-        guard let path = self.path(forEndpoint: "me/social-login/disconnect", withVersion: ._1_1) else {
-            // This should never fail but if it does we don't want to ignore the problem.
-            fatalError("There was a problem creating a valid path for the supplied endpoint and REST API version.")
-        }
+        let path = self.path(forEndpoint: "me/social-login/disconnect", withVersion: ._1_1)
         let params = [
             "client_id": oAuthClientID,
             "client_secret": oAuthClientSecret,
             "service": service.rawValue,
         ] as [String: AnyObject]
+
         wordPressComRestApi.POST(path, parameters: params, success: { (responseObject, httpResponse) in
             success()
         }, failure: { (error, httpResponse) in
