@@ -47,6 +47,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *identifier;
+@property (nonatomic, strong) NSString *accessibilityIdentifier;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIImageView *accessoryView;
 @property (nonatomic, strong) NSString *detail;
@@ -69,7 +70,32 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 }
 
 - (instancetype)initWithTitle:(NSString * __nonnull)title
-                   identifier:(NSString * __nonnull)identifier 
+                   identifier:(NSString * __nonnull)identifier
+                        image:(UIImage * __nonnull)image
+                     callback:(void(^)(void))callback
+{
+    return [self initWithTitle:title
+                    identifier:identifier
+       accessibilityIdentifier:nil
+                         image:image
+                      callback:callback];
+}
+
+- (instancetype)initWithTitle:(NSString * __nonnull)title
+      accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
+                        image:(UIImage * __nonnull)image
+                     callback:(void(^)(void))callback
+{
+    return [self initWithTitle:title
+                    identifier:BlogDetailsCellIdentifier
+       accessibilityIdentifier:accessibilityIdentifier
+                         image:image
+                      callback:callback];
+}
+
+- (instancetype)initWithTitle:(NSString * __nonnull)title
+                   identifier:(NSString * __nonnull)identifier
+      accessibilityIdentifier:(NSString *__nullable)accessibilityIdentifier
                         image:(UIImage * __nonnull)image
                      callback:(void(^)(void))callback
 {
@@ -79,6 +105,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         _image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         _callback = callback;
         _identifier = identifier;
+        _accessibilityIdentifier = accessibilityIdentifier;
         _showsSelectionState = YES;
     }
     return self;
@@ -451,6 +478,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                  }]];
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blog Posts", @"Noun. Title. Links to the blog's Posts screen.")
+                                  accessibilityIdentifier:@"Blog Post Row"
                                                     image:[Gridicon iconOfType:GridiconTypePosts]
                                                  callback:^{
                                                      [weakSelf showPostList];
@@ -822,7 +850,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
     BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
     cell.textLabel.text = row.title;
-    cell.accessibilityIdentifier = row.identifier;
+    cell.accessibilityIdentifier = row.accessibilityIdentifier ?: row.identifier;
     cell.detailTextLabel.text = row.detail;
     cell.imageView.image = row.image;
     if (row.accessoryView) {
