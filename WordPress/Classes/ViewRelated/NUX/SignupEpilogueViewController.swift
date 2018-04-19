@@ -15,6 +15,11 @@ class SignupEpilogueViewController: NUXViewController {
 
     // MARK: - View
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        WordPressAuthenticator.track(.signupEpilogueViewed, properties: tracksProperties())
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
@@ -45,6 +50,12 @@ class SignupEpilogueViewController: NUXViewController {
         }
     }
 
+    // MARK: - analytics
+
+    private func tracksProperties() -> [AnyHashable: Any] {
+        let source = socialService != nil ? "google" : "email"
+        return ["source": source]
+    }
 }
 
 // MARK: - NUXButtonViewControllerDelegate
