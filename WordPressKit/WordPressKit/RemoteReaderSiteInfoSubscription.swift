@@ -28,8 +28,8 @@ private struct CodingKeys {
 
     
     @objc required public init(dictionary: [String: Any]) {
-        self.sendComments = (dictionary[CodingKeys.sendComments] as? Bool) ?? false
-        self.postDeliveryFrequency = (dictionary[CodingKeys.postDeliveryFrequency] as? String) ?? ""
+        sendComments = (dictionary[CodingKeys.sendComments] as? Bool) ?? false
+        postDeliveryFrequency = (dictionary[CodingKeys.postDeliveryFrequency] as? String) ?? ""
         super.init(dictionary: dictionary)
     }
 }
