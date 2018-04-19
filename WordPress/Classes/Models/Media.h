@@ -53,7 +53,7 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong, nullable) NSSet *posts;
-@property (nonatomic, strong, nullable) NSSet *featuredOn;
+@property (nonatomic, strong, nullable) NSSet *featuredOnPosts;
 
 // Helper properties
 
@@ -103,10 +103,10 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 - (void)addPosts:(NSSet *)values;
 - (void)removePosts:(NSSet *)values;
 
-- (void)addFeaturedOnObject:(AbstractPost *)value;
-- (void)removeFeaturedOnObject:(AbstractPost *)value;
-- (void)addFeaturedOn:(NSSet *)values;
-- (void)removeFeaturedOn:(NSSet *)values;
+- (void)addFeaturedOnPostsObject:(AbstractPost *)value;
+- (void)removeFeaturedOnPostsObject:(AbstractPost *)value;
+- (void)addFeaturedOnPosts:(NSSet *)values;
+- (void)removeFeaturedOnPosts:(NSSet *)values;
 
 @end
 
