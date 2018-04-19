@@ -46,7 +46,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
         let params = ["type": "publicize"]
 
-        wordPressComRestApi.GET(path!,
+        wordPressComRestApi.GET(path,
             parameters: params as [String : AnyObject]?,
             success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
                 guard let onSuccess = success else {
@@ -102,7 +102,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
         let endpoint = "me/keyring-connections"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
-        wordPressComRestApi.GET(path!,
+        wordPressComRestApi.GET(path,
             parameters: nil,
             success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
                 guard let onSuccess = success else {
@@ -178,7 +178,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
         let endpoint = "sites/\(siteID)/publicize-connections"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
-        wordPressComRestApi.GET(path!,
+        wordPressComRestApi.GET(path,
             parameters: nil,
             success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
                 guard let onSuccess = success else {
@@ -227,7 +227,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
                 parameters[PublicizeConnectionParams.externalUserID] = userID as AnyObject?
             }
 
-            wordPressComRestApi.POST(path!,
+            wordPressComRestApi.POST(path,
                 parameters: parameters,
                 success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
                     guard let onSuccess = success else {
@@ -272,7 +272,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
                 PublicizeConnectionParams.externalUserID: externalUserID
             ]
 
-            wordPressComRestApi.POST(path!,
+            wordPressComRestApi.POST(path,
                 parameters: parameters as [String : AnyObject]?,
                 success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
                     guard let onSuccess = success else {
@@ -313,7 +313,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
                 PublicizeConnectionParams.shared: shared
             ]
 
-            wordPressComRestApi.POST(path!,
+            wordPressComRestApi.POST(path,
                 parameters: parameters as [String : AnyObject]?,
                 success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
                     guard let onSuccess = success else {
@@ -346,7 +346,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
         let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)/delete"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
-        wordPressComRestApi.POST(path!,
+        wordPressComRestApi.POST(path,
             parameters: nil,
             success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
                 success?()
@@ -419,7 +419,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
         let endpoint = "sites/\(siteID)/sharing-buttons"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
-        wordPressComRestApi.GET(path!,
+        wordPressComRestApi.GET(path,
             parameters: nil,
             success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
                 guard let onSuccess = success else {
@@ -456,7 +456,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
         let buttons = dictionariesFromRemoteSharingButtons(sharingButtons)
         let parameters = [SharingButtonsKeys.sharingButtons: buttons]
 
-        wordPressComRestApi.POST(path!,
+        wordPressComRestApi.POST(path,
             parameters: parameters as [String : AnyObject]?,
             success: { (responseObject: AnyObject, httpResponse: HTTPURLResponse?) in
                 guard let onSuccess = success else {

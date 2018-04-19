@@ -631,7 +631,12 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 {
     NSManagedObjectID *mediaID = [mediaInRandomContext objectID];
     [self.managedObjectContext performBlock:^{
-        Media *media = (Media *)[self.managedObjectContext objectWithID: mediaID];
+        NSError *error;
+        Media *media = (Media *)[self.managedObjectContext existingObjectWithID:mediaID error:&error];
+        if (media == nil) {
+            completion(nil, error);
+            return;
+        }
         [self.thumbnailService thumbnailURLForMedia:media
                                       preferredSize:preferredSize
                                        onCompletion:^(NSURL *url) {
@@ -649,7 +654,12 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 {
     NSManagedObjectID *mediaID = [mediaInRandomContext objectID];
     [self.managedObjectContext performBlock:^{
-        Media *media = (Media *)[self.managedObjectContext objectWithID: mediaID];
+        NSError *error;
+        Media *media = (Media *)[self.managedObjectContext existingObjectWithID:mediaID error:&error];
+        if (media == nil) {
+            completion(nil, error);
+            return;
+        }
         [self.thumbnailService thumbnailURLForMedia:media
                                       preferredSize:preferredSize
                                        onCompletion:^(NSURL *url) {

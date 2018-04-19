@@ -4,7 +4,7 @@ import WordPressShared
 
 class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
 
-    // MARK: - SigninKeyboardResponder Properties
+    // MARK: - NUXKeyboardResponder Properties
 
     @IBOutlet weak var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet weak var verticalCenterConstraint: NSLayoutConstraint?
@@ -139,13 +139,7 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
 
     private func checkEmailAvailability(completion:@escaping (Bool) -> ()) {
 
-        // If cannot get Remote, display generic error message.
-        guard let remote = AccountServiceRemoteREST(wordPressComRestApi: WordPressComRestApi()) else {
-            DDLogError("Error creating AccountServiceRemoteREST instance.")
-            self.displayError(message: ErrorMessage.availabilityCheckFail.description())
-            completion(false)
-            return
-        }
+        let remote = AccountServiceRemoteREST(wordPressComRestApi: WordPressComRestApi())
 
         remote.isEmailAvailable(loginFields.emailAddress, success: { available in
             if !available {
