@@ -53,7 +53,7 @@ extension PostSettingsViewController {
             isUploadingMedia = false
             tableView.reloadData()
         case .failed(let error):
-            DDLogError("Couldn't export image: /(error.localizedDescription)")
+            DDLogError("Couldn't upload featured image: \(error.localizedDescription)")
             isUploadingMedia = false
             tableView.reloadData()
             if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
