@@ -282,20 +282,20 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 - (void)addPostPropertiesObserver
 {
     [self.post addObserver:self
-             forKeyPath:@"featuredImage"
+             forKeyPath:NSStringFromSelector(@selector(featuredImage))
                 options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                 context:nil];
 
     [self.post addObserver:self
-             forKeyPath:@"geolocation"
+             forKeyPath:NSStringFromSelector(@selector(geolocation))
                 options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                 context:nil];
 }
 
 - (void)removePostPropertiesObserver
 {
-    [self.post removeObserver:self forKeyPath:@"featuredImage"];
-    [self.post removeObserver:self forKeyPath:@"geolocation"];
+    [self.post removeObserver:self forKeyPath:NSStringFromSelector(@selector(featuredImage))];
+    [self.post removeObserver:self forKeyPath:NSStringFromSelector(@selector(geolocation))];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -303,7 +303,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    if ([@"featuredImage" isEqualToString:keyPath]) {
+    if ([NSStringFromSelector(@selector(featuredImage)) isEqualToString:keyPath]) {
         self.featuredImage = nil;
     }
     [self.tableView reloadData];
