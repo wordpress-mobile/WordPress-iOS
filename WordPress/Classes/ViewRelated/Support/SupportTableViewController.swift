@@ -32,6 +32,22 @@ class SupportTableViewController: UITableViewController {
         setupTable()
     }
 
+    func showFromTabBar() {
+        let navigationController = UINavigationController.init(rootViewController: self)
+
+        if WPDeviceIdentification.isiPad() {
+            navigationController.modalTransitionStyle = .crossDissolve
+            navigationController.modalPresentationStyle = .formSheet
+        }
+
+        let tabBarController = WPTabBarController.sharedInstance()
+        if let presentedVC = tabBarController?.presentedViewController {
+            presentedVC.present(navigationController, animated: true, completion: nil)
+        } else {
+            tabBarController?.present(navigationController, animated: true, completion: nil)
+        }
+    }
+
     // MARK: - Button Actions
 
     @IBAction func dismissPressed(_ sender: AnyObject) {
