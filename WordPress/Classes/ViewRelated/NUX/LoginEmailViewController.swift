@@ -340,14 +340,14 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         }
 
         configureViewLoading(true)
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.isPasswordlessAccount(loginFields.username,
-                                      success: { [weak self] (passwordless: Bool) in
+        let service = WordPressComAccountService()
+        service.isPasswordlessAccount(username: loginFields.username,
+                                      success: { [weak self] passwordless in
                                         self?.configureViewLoading(false)
                                         self?.loginFields.meta.passwordless = passwordless
                                         self?.requestLink()
             },
-                                      failure: { [weak self] (error: Error) in
+                                      failure: { [weak self] error in
                                         WordPressAuthenticator.track(.loginFailed, error: error)
                                         DDLogError(error.localizedDescription)
                                         guard let strongSelf = self else {
