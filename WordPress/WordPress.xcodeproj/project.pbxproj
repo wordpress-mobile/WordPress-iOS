@@ -7342,7 +7342,6 @@
 				BE1071FC1BC75E7400906AFF /* WPStyleGuide+Blog.swift in Sources */,
 				B56695B01D411EEB007E342F /* KeyboardDismissHelper.swift in Sources */,
 				FF54D4641D6F3FA900A0DC4D /* EditorSettings.swift in Sources */,
-				17D1C22D1EFB16C10076734A /* FancyAlertViewController.swift in Sources */,
 				D80BC79E20746B4100614A59 /* MediaPickingContext.swift in Sources */,
 				E6D2E16C1B8B423B0000ED14 /* ReaderStreamHeader.swift in Sources */,
 				B50C0C571EF42A0000372C65 /* VideoShortcodeProcessor.swift in Sources */,
