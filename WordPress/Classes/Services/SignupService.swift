@@ -47,7 +47,7 @@ open class SignupService: LocalCoreDataService {
                                         let createdAccount = (responseDictionary?[ResponseKeys.createdAccount] as? Int ?? 0) == 1
                                         if createdAccount {
                                             defer {
-                                                WPAppAnalytics.track(.createdAccount)
+                                                WPAppAnalytics.track(.createdAccount, withProperties: ["source": "google"])
                                             }
                                             success(createdAccount)
                                         } else {
