@@ -11,6 +11,12 @@ enum WPActivityType: String {
     case notifications          = "org.wordpress.notifications"
 }
 
+/// NSUserActivity userInfo keys
+///
+enum WPActivityUserInfoKeys: String {
+    case siteId = "siteid"
+}
+
 @objc protocol SearchableActivityConvertable {
     /// Type name used to uniquly indentify this activity.
     ///
@@ -30,6 +36,10 @@ enum WPActivityType: String {
     /// the expiration date will default to one week from the current date.
     ///
     @objc optional var activityExpirationDate: Date? {get}
+
+    /// A dictionary containing state information related to this indexed activity.
+    ///
+    @objc optional var activityUserInfo: [String: Any]? {get}
 }
 
 extension SearchableActivityConvertable where Self: UIViewController {
@@ -46,6 +56,10 @@ extension SearchableActivityConvertable where Self: UIViewController {
         } else {
             let oneWeekFromNow = Calendar.current.date(byAdding: .weekOfYear, value: 1, to: Date())
             activity.expirationDate = oneWeekFromNow
+        }
+
+        if let userInfo = activityUserInfo {
+            activity.userInfo = userInfo
         }
 
         activity.isEligibleForSearch = true
