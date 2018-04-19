@@ -1,11 +1,3 @@
-//
-//  MockServiceRequest.swift
-//  WordPressKitTests
-//
-//  Created by Daniele Bogo on 17/04/2018.
-//  Copyright © 2018 Automattic Inc. All rights reserved.
-//
-
 import Foundation
 @testable import WordPressKit
 
