@@ -26,6 +26,7 @@ final class StockPhotosDataLoader {
         let isFirstPage = request?.pageable?.pageIndex == StockPhotosPageable.defaultPageIndex
         state = .loading
         DispatchQueue.main.async { [weak self] in
+            WPAnalytics.track(.stockMediaSearched)
             self?.service.search(params: params) { resultsPage in
                 self?.state = .idle
                 self?.request = StockPhotosSearchParams(text: self?.request?.text, pageable: resultsPage.nextPageable())
