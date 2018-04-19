@@ -9,7 +9,6 @@
 #import "BlogService.h"
 #import "TodayExtensionService.h"
 #import "WPTabBarController.h"
-#import "UILabel+SuggestSize.h"
 #import "WordPress-Swift.h"
 #import "WPGUIConstants.h"
 #import <WordPressShared/WPFontManager.h>

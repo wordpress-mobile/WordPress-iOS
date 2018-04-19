@@ -11,9 +11,12 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     @IBOutlet var inputStack: UIStackView?
     @IBOutlet var alternativeLoginLabel: UILabel?
 
-    var onePasswordButton: UIButton!
     var googleLoginButton: UIButton?
     var selfHostedLoginButton: UIButton?
+
+    // This signup button isn't for the main flow; it's only shown during Jetpack installation
+    var wpcomSignupButton: UIButton?
+
     override var sourceTag: WordPressSupportSourceTag {
         get {
             return .loginEmail
@@ -22,14 +25,8 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
     var didFindSafariSharedCredentials = false
     var didRequestSafariSharedCredentials = false
+    var offerSignupOption = false
     fileprivate var awaitingGoogle = false
-    override var restrictToWPCom: Bool {
-        didSet {
-            if isViewLoaded {
-                configureForWPComOnlyIfNeeded()
-            }
-        }
-    }
 
     private struct Constants {
         static let alternativeLogInAnimationDuration: TimeInterval = 0.33
@@ -47,7 +44,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         setupOnePasswordButtonIfNeeded()
         addGoogleButton()
         addSelfHostedLogInButton()
-        configureForWPComOnlyIfNeeded()
+        addSignupButton()
     }
 
     override func didChangePreferredContentSize() {
@@ -68,6 +65,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         configureEmailField()
         configureSubmitButton()
         configureViewForEditingIfNeeded()
+        configureForWPComOnlyIfNeeded()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -76,7 +74,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
 
-        WordPressAuthenticator.post(event: .loginEmailFormViewed)
+        WordPressAuthenticator.track(.loginEmailFormViewed)
     }
 
 
@@ -92,13 +90,8 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     /// Hides the self-hosted login option.
     ///
     func configureForWPComOnlyIfNeeded() {
-        if restrictToWPCom {
-            selfHostedLoginButton?.isEnabled = false
-            selfHostedLoginButton?.alpha = 0.0
-        } else {
-            selfHostedLoginButton?.isEnabled = true
-            selfHostedLoginButton?.alpha = 1.0
-        }
+        wpcomSignupButton?.isHidden = !offerSignupOption
+        selfHostedLoginButton?.isHidden = restrictToWPCom
     }
 
 
@@ -162,12 +155,12 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         // Configure all the things and sign in.
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().clientID = ApiCredentials.googleLoginClientId()
-        GIDSignIn.sharedInstance().serverClientID = ApiCredentials.googleLoginServerClientId()
+        GIDSignIn.sharedInstance().clientID = WordPressAuthenticator.shared.configuration.googleLoginClientId
+        GIDSignIn.sharedInstance().serverClientID = WordPressAuthenticator.shared.configuration.googleLoginServerClientId
 
         GIDSignIn.sharedInstance().signIn()
 
-        WordPressAuthenticator.post(event: .loginSocialButtonClick)
+        WordPressAuthenticator.track(.loginSocialButtonClick)
     }
 
     /// Add the log in with site address button to the view
@@ -188,6 +181,34 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
             ])
 
         selfHostedLoginButton = button
+    }
+
+    /// Add the sign up button
+    ///
+    /// Note: This is only used during Jetpack setup, not the normal flows
+    ///
+    func addSignupButton() {
+        guard WordPressAuthenticator.shared.configuration.supportsJetpackSignup else {
+            return
+        }
+
+        guard let instructionLabel = instructionLabel,
+            let stackView = inputStack else {
+                return
+        }
+
+        let button = WPStyleGuide.wpcomSignupButton()
+        stackView.addArrangedSubview(button)
+        button.on(.touchUpInside) { [weak self] (button) in
+            self?.performSegue(withIdentifier: .showSignupEmail, sender: self)
+        }
+
+        stackView.addConstraints([
+            button.leadingAnchor.constraint(equalTo: instructionLabel.leadingAnchor),
+            button.trailingAnchor.constraint(equalTo: instructionLabel.trailingAnchor),
+            ])
+
+        wpcomSignupButton = button
     }
 
     /// Configures the email text field, updating its text based on what's stored
@@ -271,7 +292,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
         loginWithUsernamePassword(immediately: true)
 
-        WordPressAuthenticator.post(event: .loginAutoFillCredentialsFilled)
+        WordPressAuthenticator.track(.loginAutoFillCredentialsFilled)
     }
 
 
@@ -319,15 +340,15 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         }
 
         configureViewLoading(true)
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.isPasswordlessAccount(loginFields.username,
-                                      success: { [weak self] (passwordless: Bool) in
+        let service = WordPressComAccountService()
+        service.isPasswordlessAccount(username: loginFields.username,
+                                      success: { [weak self] passwordless in
                                         self?.configureViewLoading(false)
                                         self?.loginFields.meta.passwordless = passwordless
                                         self?.requestLink()
             },
-                                      failure: { [weak self] (error: Error) in
-                                        WordPressAuthenticator.post(event: .loginFailed(error: error))
+                                      failure: { [weak self] error in
+                                        WordPressAuthenticator.track(.loginFailed, error: error)
                                         DDLogError(error.localizedDescription)
                                         guard let strongSelf = self else {
                                             return
@@ -357,7 +378,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
             if (error as NSError).code == WordPressComOAuthError.unknownUser.rawValue {
                 errorTitle = NSLocalizedString("Connected But…", comment: "Title shown when a user logs in with Google but no matching WordPress.com account is found")
                 errorDescription = NSLocalizedString("The Google account \"\(loginFields.username)\" doesn't match any account on WordPress.com", comment: "Description shown when a user logs in with Google but no matching WordPress.com account is found")
-                WordPressAuthenticator.post(event: .loginSocialErrorUnknownUser)
+                WordPressAuthenticator.track(.loginSocialErrorUnknownUser)
             } else {
                 errorTitle = NSLocalizedString("Unable To Connect", comment: "Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com")
                 errorDescription = error.localizedDescription
@@ -462,11 +483,12 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 // LoginFacadeDelegate methods for Google Google Sign In
 extension LoginEmailViewController {
     func finishedLogin(withGoogleIDToken googleIDToken: String, authToken: String) {
-        let username = loginFields.username
-        syncWPCom(username, authToken: authToken, requiredMultifactor: false)
+        let credentials = WordPressCredentials.wpcom(username: loginFields.username, authToken: authToken, isJetpackLogin: isJetpackLogin, multifactor: false)
+        syncWPComAndPresentEpilogue(credentials: credentials)
+
         // Disconnect now that we're done with Google.
         GIDSignIn.sharedInstance().disconnect()
-        WordPressAuthenticator.post(event: .loginSocialSuccess)
+        WordPressAuthenticator.track(.loginSocialSuccess)
     }
 
 
@@ -478,7 +500,7 @@ extension LoginEmailViewController {
         loginFields.emailAddress = email
 
         performSegue(withIdentifier: .showWPComLogin, sender: self)
-        WordPressAuthenticator.post(event: .loginSocialAccountsNeedConnecting)
+        WordPressAuthenticator.track(.loginSocialAccountsNeedConnecting)
         configureViewLoading(false)
     }
 
@@ -488,7 +510,7 @@ extension LoginEmailViewController {
         loginFields.nonceUserID = userID
 
         performSegue(withIdentifier: .show2FA, sender: self)
-        WordPressAuthenticator.post(event: .loginSocial2faNeeded)
+        WordPressAuthenticator.track(.loginSocial2faNeeded)
         configureViewLoading(false)
     }
 }
@@ -499,7 +521,7 @@ extension LoginEmailViewController: GIDSignInDelegate {
             let token = user.authentication.idToken,
             let email = user.profile.email else {
                 // The Google SignIn for may have been canceled.
-                WordPressAuthenticator.post(event: .loginSocialButtonFailure(error: error))
+                WordPressAuthenticator.track(.loginSocialButtonFailure, error: error)
                 configureViewLoading(false)
                 return
         }
@@ -529,18 +551,10 @@ extension LoginEmailViewController: LoginSocialErrorViewControllerDelegate {
     func retryAsSignup() {
         cleanupAfterSocialErrors()
 
-        if FeatureFlag.socialSignup.enabled {
-            let storyboard = UIStoryboard(name: "Signup", bundle: nil)
-            if let controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? SignupEmailViewController {
-                controller.loginFields = loginFields
-                navigationController?.pushViewController(controller, animated: true)
-            }
-        } else {
-            let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            if let controller = storyboard.instantiateViewController(withIdentifier: "SignupViewController") as? NUXAbstractViewController {
-                controller.loginFields = loginFields
-                navigationController?.pushViewController(controller, animated: true)
-            }
+        let storyboard = UIStoryboard(name: "Signup", bundle: nil)
+        if let controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? SignupEmailViewController {
+            controller.loginFields = loginFields
+            navigationController?.pushViewController(controller, animated: true)
         }
     }
 }

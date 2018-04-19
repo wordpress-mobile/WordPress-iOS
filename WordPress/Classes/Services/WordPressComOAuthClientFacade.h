@@ -3,6 +3,7 @@
 @class SocialLogin2FANonceInfo;
 @protocol WordPressComOAuthClientFacade
 
+- (instancetype)initWithClient:(NSString *)client secret:(NSString *)secret;
 
 - (void)authenticateWithUsername:(NSString *)username
                         password:(NSString *)password
