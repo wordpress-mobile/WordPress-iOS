@@ -132,6 +132,9 @@ import MobileCoreServices
             return handleCoreSpotlightSearchableActivityType(activity: activity)
         case WPActivityType.siteList.rawValue:
             return openMySitesTab()
+        case WPActivityType.siteDetails.rawValue:
+            // FIXME: Open the specific site screen
+            return openMySitesTab()
         case WPActivityType.reader.rawValue:
             return openReaderTab()
         case WPActivityType.me.rawValue:
