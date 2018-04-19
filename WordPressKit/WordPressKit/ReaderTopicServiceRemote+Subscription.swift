@@ -50,7 +50,7 @@ extension ReaderTopicServiceRemote: SitePostsSubscriptable {
     }
     
     @nonobjc public func updateFrequencyPostsEmail(with siteId: NSNumber, frequency: ReaderServiceDeliveryFrequency, _ success: @escaping () -> Void, _ failure: @escaping (NSError?) -> Void) {
-        let parameters = [WordPressKitConstants.SiteSubscription.Delivery.frequency: NSString(string: frequency.rawValue)]
+        let parameters = [WordPressKitConstants.Delivery.frequency: NSString(string: frequency.rawValue)]
         POST(with: .postsEmail(siteId: siteId, action: .update), parameters: parameters, success: success, failure: failure)
     }
 }
