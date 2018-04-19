@@ -276,7 +276,8 @@ private extension JetpackConnectionWebViewController {
     func presentDotComLogin(redirect: URL) {
         pendingDotComRedirect = redirect
         startObservingLoginNotifications()
-        WordPressAuthenticator.showLoginForJustWPComFromPresenter(self, forJetpackBlog: blog)
+
+        WordPressAuthenticator.showLoginForJustWPCom(from: self, xmlrpc: blog.xmlrpc, username: blog.username, connectedEmail: blog.jetpack?.connectedEmail)
     }
 
     func startObservingLoginNotifications() {
@@ -285,7 +286,6 @@ private extension JetpackConnectionWebViewController {
 
     func stopObservingLoginNotifications() {
         NotificationCenter.default.removeObserver(self, name: .wordpressLoginFinishedJetpackLogin, object: nil)
-
     }
 
     @objc func handleLoginCancelled() {

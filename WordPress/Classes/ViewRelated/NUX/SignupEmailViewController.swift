@@ -4,7 +4,7 @@ import WordPressShared
 
 class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
 
-    // MARK: - SigninKeyboardResponder Properties
+    // MARK: - NUXKeyboardResponder Properties
 
     @IBOutlet weak var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet weak var verticalCenterConstraint: NSLayoutConstraint?
@@ -45,7 +45,7 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
         super.viewDidLoad()
         WPStyleGuide.configureColors(for: view, andTableView: nil)
         localizeControls()
-        WordPressAuthenticator.post(event: .createAccountInitiated)
+        WordPressAuthenticator.track(.createAccountInitiated)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -139,13 +139,7 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
 
     private func checkEmailAvailability(completion:@escaping (Bool) -> ()) {
 
-        // If cannot get Remote, display generic error message.
-        guard let remote = AccountServiceRemoteREST(wordPressComRestApi: WordPressComRestApi()) else {
-            DDLogError("Error creating AccountServiceRemoteREST instance.")
-            self.displayError(message: ErrorMessage.availabilityCheckFail.description())
-            completion(false)
-            return
-        }
+        let remote = AccountServiceRemoteREST(wordPressComRestApi: WordPressComRestApi())
 
         remote.isEmailAvailable(loginFields.emailAddress, success: { available in
             if !available {
@@ -188,14 +182,14 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
 
             }, failure: { [weak self] (error: Error) in
                 DDLogError("Request for signup link email failed.")
-                WPAppAnalytics.track(.signupMagicLinkFailed)
+                WordPressAuthenticator.track(.signupMagicLinkFailed)
                 self?.displayError(message: ErrorMessage.magicLinkRequestFail.description())
                 self?.configureSubmitButton(animating: false)
         })
     }
 
     private func didRequestSignupLink() {
-        WPAppAnalytics.track(.signupMagicLinkRequested)
+        WordPressAuthenticator.track(.signupMagicLinkRequested)
         WordPressAuthenticator.storeLoginInfoForTokenAuth(loginFields)
         performSegue(withIdentifier: "showLinkMailView", sender: nil)
     }

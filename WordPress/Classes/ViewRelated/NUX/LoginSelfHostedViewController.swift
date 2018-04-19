@@ -6,8 +6,6 @@ import WordPressShared
 ///
 class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
     @IBOutlet var siteHeaderView: SiteInfoHeaderView!
-    @IBOutlet var siteAddressStackView: UIStackView!
-    @IBOutlet var siteAddressLabel: UILabel!
     @IBOutlet var usernameField: WPWalkthroughTextField!
     @IBOutlet var passwordField: WPWalkthroughTextField!
     @IBOutlet var forgotPasswordButton: WPNUXSecondaryButton!
@@ -28,13 +26,8 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
         }
     }
 
-    var gravatarProfile: GravatarProfile?
-    var userProfile: UserProfile?
-    @objc var blog: Blog?
-
 
     // MARK: - Lifecycle Methods
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,7 +59,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
 
-        WordPressAuthenticator.post(event: .loginUsernamePasswordFormViewed)
+        WordPressAuthenticator.track(.loginUsernamePasswordFormViewed)
     }
 
 
@@ -176,24 +169,24 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
     /// Configure the site header to show the BlogDetailsHeaderView
     ///
     @objc func configureBlogDetailHeaderView(siteInfo: SiteInfo) {
-        siteAddressStackView.isHidden = true
-        siteHeaderView.isHidden = false
-
         let siteAddress = sanitizedSiteAddress(siteAddress: siteInfo.url)
-        siteHeaderView.setTitleText(siteInfo.name)
-        siteHeaderView.setSubtitleText(siteAddress)
-        siteHeaderView.loadImage(atPath: siteInfo.icon)
+        siteHeaderView.title = siteInfo.name
+        siteHeaderView.subtitle = siteAddress
+        siteHeaderView.subtitleIsHidden = false
+
+        siteHeaderView.blavatarBorderIsHidden = false
+        siteHeaderView.downloadBlavatar(at: siteInfo.icon)
     }
 
 
     /// Configure the site header to show the site address label.
     ///
     @objc func configureSiteAddressHeader() {
-        siteAddressStackView.isHidden = false
-        siteHeaderView.isHidden = true
+        siteHeaderView.title = sanitizedSiteAddress(siteAddress: loginFields.siteAddress)
+        siteHeaderView.subtitleIsHidden = true
 
-        siteAddressLabel.text = sanitizedSiteAddress(siteAddress: loginFields.siteAddress)
-        siteAddressLabel.adjustsFontForContentSizeCategory = true
+        siteHeaderView.blavatarBorderIsHidden = true
+        siteHeaderView.blavatarImage = .linkFieldImage
     }
 
 
@@ -226,72 +219,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
     }
 
 
-    // MARK: - Epilogue: Gravatar and User Profile Acquisition
-
-    override func showLoginEpilogue() {
-        guard let delegate = WordPressAuthenticator.shared.delegate, let navigationController = navigationController else {
-            fatalError()
-        }
-
-        configureViewLoading(false)
-        delegate.presentLoginEpilogue(in: navigationController, epilogueInfo: epilogueUserInfo(), isJetpackLogin: isJetpackLogin) { [weak self] in
-            self?.dismissBlock?(false)
-        }
-    }
-
-
-    /// Returns an instance of LoginEpilogueUserInfo composed from
-    /// a user's gravatar profile, and/or self-hosted blog profile.
-    ///
-    func epilogueUserInfo() -> LoginEpilogueUserInfo {
-        var info = LoginEpilogueUserInfo()
-        if let profile = gravatarProfile {
-            info.gravatarUrl = profile.thumbnailUrl
-            info.fullName = profile.displayName
-        }
-
-        // Whatever is in user profile trumps whatever is in the gravatar profile.
-        if let profile = userProfile {
-            info.username = profile.username
-            info.fullName = profile.displayName
-            info.email = profile.email
-        }
-
-        info.blog = blog
-
-        return info
-    }
-
-
-    /// Fetches the user's profile data from their blog. If success, it next queries
-    /// the user's gravatar profile data passing the completion block.
-    ///
-    @objc func fetchUserProfileInfo(blog: Blog, completion: @escaping (() -> Void )) {
-        let service = UsersService()
-        service.fetchProfile(blog: blog, success: { [weak self] (profile) in
-            self?.userProfile = profile
-            self?.fetchGravatarProfileInfo(email: profile.email, completion: completion)
-            }, failure: { [weak self] _ in
-                self?.showLoginEpilogue()
-        })
-    }
-
-
-    /// Queries the user's gravatar profile data. On success calls completion.
-    ///
-    @objc func fetchGravatarProfileInfo(email: String, completion: @escaping (() -> Void )) {
-        let service = GravatarService()
-        service.fetchProfile(email, success: { [weak self] (profile) in
-            self?.gravatarProfile = profile
-            completion()
-            }, failure: { [weak self] _ in
-                self?.showLoginEpilogue()
-        })
-    }
-
-
     // MARK: - Actions
-
 
     @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
         loginFields.username = usernameField.nonNilTrimmedText()
@@ -319,7 +247,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
 
     @IBAction func handleForgotPasswordButtonTapped(_ sender: UIButton) {
         WordPressAuthenticator.openForgotPasswordURL(loginFields)
-        WordPressAuthenticator.post(event: .loginForgotPasswordClicked)
+        WordPressAuthenticator.track(.loginForgotPasswordClicked)
     }
 
     // MARK: - Keyboard Notifications
@@ -338,23 +266,18 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
 
 extension LoginSelfHostedViewController {
 
-    override func finishedLogin(withUsername username: String, authToken: String, requiredMultifactorCode: Bool) {
-        syncWPCom(username, authToken: authToken, requiredMultifactor: requiredMultifactorCode)
-    }
-
-
     func finishedLogin(withUsername username: String, password: String, xmlrpc: String, options: [AnyHashable: Any]) {
         displayLoginMessage("")
 
-        BlogSyncFacade().syncBlog(withUsername: username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] blog in
+        guard let delegate = WordPressAuthenticator.shared.delegate else {
+            fatalError()
+        }
 
-            RecentSitesService().touch(blog: blog)
+        let credentials = WordPressCredentials.wporg(username: username, password: password, xmlrpc: xmlrpc, options: options)
+        delegate.sync(credentials: credentials) { [weak self] _ in
+
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
-
-            self?.blog = blog
-            self?.fetchUserProfileInfo(blog: blog, completion: {
-                self?.showLoginEpilogue()
-            })
+            self?.showLoginEpilogue(for: credentials)
         }
     }
 

@@ -7,8 +7,8 @@
 
 // WordPress Module
 
+#import "ActivityLogViewController.h"
 #import "AccountService.h"
-#import "AccountServiceFacade.h"
 #import "ApiCredentials.h"
 
 #import "Blog.h"
@@ -126,6 +126,8 @@
 #import "WPWalkthroughTextField.h"
 #import "WPUserAgent.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
+#import "WPLogger.h"
+
 
 // Pods
 #import <SVProgressHUD/SVProgressHUD.h>

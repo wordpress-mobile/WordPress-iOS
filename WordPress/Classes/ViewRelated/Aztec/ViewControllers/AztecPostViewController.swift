@@ -1043,9 +1043,9 @@ extension AztecPostViewController {
         let action = self.postEditorStateContext.action
 
         publishPost(
-            action: action,
-            dismissWhenDone: action.dismissesEditor,
-            analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
+                action: action,
+                dismissWhenDone: action.dismissesEditor,
+                analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
     }
 
     @IBAction func secondaryPublishButtonTapped() {
@@ -1076,7 +1076,9 @@ extension AztecPostViewController {
         let title = NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
         let cancelTitle = NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
         let saveTitle = NSLocalizedString("Save Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
-        let updateTitle = NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")
+        let updateTitle = NSLocalizedString("Update Draft", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already saved draft.")
+        let updatePostTitle = NSLocalizedString("Update Post", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published post.")
+        let updatePageTitle = NSLocalizedString("Update Page", comment: "Button shown if there are unsaved changes and the author is trying to move away from an already published page.")
         let discardTitle = NSLocalizedString("Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
 
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
@@ -1087,16 +1089,23 @@ extension AztecPostViewController {
         // Button: Save Draft/Update Draft
         if post.hasLocalChanges() {
             let title: String = {
-                if !post.hasRemote() || post.status == .draft {
-                    return saveTitle
+                if post.status == .draft {
+                    if !post.hasRemote() {
+                        return saveTitle
+                    } else {
+                        return updateTitle
+                    }
+                } else if post is Page {
+                    return updatePageTitle
                 } else {
-                    return updateTitle
+                    return updatePostTitle
                 }
             }()
 
             // The post is a local or remote draft
             alertController.addDefaultActionWithTitle(title) { _ in
-                self.publishPost(action: .save, dismissWhenDone: true, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
+                let action: PostEditorAction = (self.post.status == .draft) ? .saveAsDraft : .publish
+                self.publishPost(action: action, dismissWhenDone: true, analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
             }
         }
 
@@ -1115,7 +1124,7 @@ extension AztecPostViewController {
         analyticsStat: WPAnalyticsStat?) {
 
         // Cancel publishing if media is currently being uploaded
-        if mediaCoordinator.isUploadingMedia(for: post) {
+        if !action.isAsync && !dismissWhenDone && mediaCoordinator.isUploadingMedia(for: post) {
             displayMediaIsUploadingAlert()
             return
         }
@@ -1148,24 +1157,56 @@ extension AztecPostViewController {
             if action == .save || action == .saveAsDraft {
                 self.post.status = .draft
             } else if action == .publish {
-                self.post.status = .publish
+                if self.post.date_created_gmt == nil {
+                    self.post.date_created_gmt = Date()
+                }
+
+                if self.post.status != .publishPrivate {
+                    self.post.status = .publish
+                }
             } else if action == .publishNow {
                 self.post.date_created_gmt = Date()
-                self.post.status = .publish
+
+                if self.post.status != .publishPrivate {
+                    self.post.status = .publish
+                }
             }
 
             if let analyticsStat = analyticsStat {
                 self.trackPostSave(stat: analyticsStat)
             }
 
-            self.uploadPost(action: action, dismissWhenDone: dismissWhenDone)
+            if action.isAsync || dismissWhenDone {
+                self.asyncUploadPost(action: action)
+            } else {
+                self.uploadPost(action: action, dismissWhenDone: dismissWhenDone)
+            }
         }
 
-        if action == .publish || action == .publishNow {
-            displayPublishConfirmationAlert(onPublish: publishBlock)
+        let promoBlock = { [unowned self] in
+            UserDefaults.standard.asyncPromoWasDisplayed = true
+
+            let controller = FancyAlertViewController.makeAsyncPostingAlertController(publishAction: publishBlock)
+            controller.modalPresentationStyle = .custom
+            controller.transitioningDelegate = self
+            self.present(controller, animated: true, completion: nil)
+        }
+
+        if action.isAsync {
+            if !UserDefaults.standard.asyncPromoWasDisplayed {
+                promoBlock()
+            } else {
+                displayPublishConfirmationAlert(onPublish: publishBlock)
+            }
         } else {
             publishBlock()
         }
+    }
+
+    func displayMediaIsUploadingAlert() {
+        let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
+        alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
+        present(alertController, animated: true, completion: nil)
     }
 
     @IBAction func closeWasPressed() {
@@ -1258,43 +1299,6 @@ private extension AztecPostViewController {
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        if FeatureFlag.asyncPosting.enabled {
-            let publishAction = { [unowned self] in
-                self.mapUIContentToPostAndSave()
-
-                let action = self.postEditorStateContext.action
-                if action == .save || action == .saveAsDraft {
-                    self.post.status = .draft
-                } else if action == .publish {
-                    if self.post.date_created_gmt == nil {
-                        self.post.date_created_gmt = Date()
-                    }
-                    self.post.status = .publish
-                } else if action == .publishNow {
-                    self.post.date_created_gmt = Date()
-                    self.post.status = .publish
-                }
-                self.post.updatePathForDisplayImageBasedOnContent()
-                PostCoordinator.shared.save(post: self.post)
-                self.dismissOrPopView(didSave: true, shouldShowPostEpilogue: false)
-            }
-
-            alert.addDefaultActionWithTitle("Async Publish (Debug)") { [unowned self]  _ in
-                if !UserDefaults.standard.asyncPromoWasDisplayed {
-                    UserDefaults.standard.asyncPromoWasDisplayed = true
-
-                    let controller = FancyAlertViewController.makeAsyncPostingAlertController(publishAction: publishAction)
-                    controller.modalPresentationStyle = .custom
-                    controller.transitioningDelegate = self
-                    self.present(controller, animated: true, completion: nil)
-
-                    return
-                }
-
-                publishAction()
-            }
-        }
-
         if postEditorStateContext.isSecondaryPublishButtonShown,
             let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
 
@@ -1359,15 +1363,9 @@ private extension AztecPostViewController {
         navigationController?.pushViewController(previewController, animated: true)
     }
 
-    func displayMediaIsUploadingAlert() {
-        let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
-        alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
-        present(alertController, animated: true, completion: nil)
-    }
-
     func displayHasFailedMediaAlert(then: @escaping () -> ()) {
         let alertController = UIAlertController(title: FailedMediaRemovalAlert.title, message: FailedMediaRemovalAlert.message, preferredStyle: .alert)
-        alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle) { alertAction in
+        alertController.addDefaultActionWithTitle(FailedMediaRemovalAlert.acceptTitle) { alertAction in
             self.removeFailedMedia()
             then()
         }
@@ -2623,7 +2621,6 @@ private extension AztecPostViewController {
                 self.post = uploadedPost
 
                 generator.notificationOccurred(.success)
-                SearchManager.shared.indexItem(uploadedPost)
             }
 
             if dismissWhenDone {
@@ -2632,6 +2629,22 @@ private extension AztecPostViewController {
                 self.createRevisionOfPost()
             }
         }
+    }
+
+    /// Starts the publishing process.
+    ///
+    func asyncUploadPost(action: PostEditorAction) {
+        postEditorStateContext.updated(isBeingPublished: true)
+
+        mapUIContentToPostAndSave()
+
+        post.updatePathForDisplayImageBasedOnContent()
+
+        PostCoordinator.shared.save(post: post)
+
+        dismissOrPopView(didSave: true, shouldShowPostEpilogue: false)
+
+        self.postEditorStateContext.updated(isBeingPublished: false)
     }
 
     /// Uploads the post

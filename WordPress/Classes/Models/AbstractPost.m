@@ -380,6 +380,11 @@
     return NO;
 }
 
+- (BOOL)isFailed
+{
+    return self.remoteStatus == AbstractPostRemoteStatusFailed || [[MediaCoordinator shared] hasFailedMediaFor:self] || self.hasFailedMedia;
+}
+
 - (BOOL)hasFailedMedia
 {
     if ([self.media count] == 0) {
