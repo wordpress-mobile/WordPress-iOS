@@ -177,8 +177,8 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
 
         configureSubmitButton(animating: true)
 
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.requestSignupLink(loginFields.username,
+        let service = WordPressComAccountService()
+        service.requestSignupLink(for: loginFields.username,
                                   success: { [weak self] in
                                     self?.didRequestSignupLink()
                                     self?.configureSubmitButton(animating: false)
