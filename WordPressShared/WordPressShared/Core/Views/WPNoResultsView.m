@@ -222,6 +222,7 @@
 {
     NSAttributedString * finalAttributedText = [self applyMessageStylesToAttributedString:attributedMessageText];
     self.messageTextView.attributedText = finalAttributedText;
+    self.messageTextView.selectable = YES;
 }
 
 - (NSAttributedString *)applyMessageStylesToAttributedString:(NSAttributedString *)attributedString
