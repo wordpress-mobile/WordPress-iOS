@@ -28,7 +28,7 @@
 @dynamic remoteThumbnailURL;
 @dynamic postID;
 @dynamic error;
-@dynamic featuredOn;
+@dynamic featuredOnPosts;
 
 #pragma mark -
 
