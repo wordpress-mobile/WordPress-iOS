@@ -3602,7 +3602,7 @@ extension AztecPostViewController: MediaPickingOptionsDelegate {
 extension AztecPostViewController: StockPhotosPickerDelegate {
     func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
         assets.forEach {
-            self.insert(exportableAsset: $0, source: .stockPhotos)
+            insert(exportableAsset: $0, source: .stockPhotos)
         }
     }
 }
