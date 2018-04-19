@@ -8,9 +8,7 @@ import Foundation
 /// A common use case is when performing an online search, to limit the number of requests made to the backend as well
 /// as the number of (possibly stale) UI updates as the user types.
 ///
-/// Note:
-/// Any new block passed to `throttle(:_)` cancels the previous one. If you need to throttle multiple things
-/// (i.e. online search and unrelated background refresh), you'll need to have a separate `Throttle` for each of them.
+/// There are two different algorithms to achieve this: Throttle and Debounce. Both are implemented as a separate function in this class.
 ///
 public class Scheduler {
     private let queue: DispatchQueue = DispatchQueue.global(qos: .default)
@@ -22,6 +20,8 @@ public class Scheduler {
         self.maxInterval = seconds
     }
 
+    /// The original function be called the very first time this function is called, and, at most, once per specified period.
+    ///
     func throttle(callbackQueue: DispatchQueue = DispatchQueue.main, block: @escaping () -> ()) {
         configureJob(callbackQueue: callbackQueue, block: block)
 
@@ -29,6 +29,9 @@ public class Scheduler {
         queue.asyncAfter(deadline: .now() + Double(delay), execute: job)
     }
 
+
+    /// The original function will be called after the caller stops calling the this function after the specified period.
+    ///
     func debounce(callbackQueue: DispatchQueue = DispatchQueue.main, block: @escaping () -> ()) {
         configureJob(callbackQueue: callbackQueue, block: block)
         queue.asyncAfter(deadline: .now() + maxInterval, execute: job)
