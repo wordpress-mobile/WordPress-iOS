@@ -82,6 +82,7 @@
     _messageTextView.textAlignment   = NSTextAlignmentCenter;
     _messageTextView.adjustsFontForContentSizeCategory = YES;
     _messageTextView.editable = NO;
+    _messageTextView.selectable = NO;
     _messageTextView.textContainerInset = UIEdgeInsetsZero;
     _messageTextView.textContainer.lineFragmentPadding = 0;
     [self addSubview:_messageTextView];
