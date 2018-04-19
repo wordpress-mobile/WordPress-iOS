@@ -49,7 +49,7 @@ final class StockPhotosDataLoader {
         }
 
         // Bail out if we do not expect more pages of data 
-        guard request.pageable != nil else {
+        guard request.pageable?.next() != nil else {
             return
         }
 
