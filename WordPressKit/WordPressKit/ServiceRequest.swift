@@ -2,10 +2,6 @@ import Foundation
 
 
 /// Enumeration to identify a service action
-///
-/// - subscribe: The action 'new'
-/// - unsubscribe: The action 'delete'
-/// - update: The action 'update'
 enum ServiceRequestAction: String {
     case subscribe = "new"
     case unsubscribe = "delete"
@@ -24,17 +20,13 @@ protocol ServiceRequest {
 
 
 /// Reader Topic Service request
-///
-/// - notifications: Request type notifications
-/// - postsEmail: Posts email type notifications
-/// - comments: Comments type notifications
 enum ReaderTopicServiceSubscriptionsRequest {
     case notifications(siteId: NSNumber, action: ServiceRequestAction)
     case postsEmail(siteId: NSNumber, action: ServiceRequestAction)
     case comments(siteId: NSNumber, action: ServiceRequestAction)
     
     
-    //MARK: Private methods
+    // MARK: Private methods
     
     /// Private method to build a base URL string
     ///
