@@ -3,7 +3,10 @@
 #import "WordPressComOAuthClientFacade.h"
 #import "WordPressXMLRPCAPIFacade.h"
 #import <CocoaLumberjack/CocoaLumberjack.h>
-#import "WordPress-Swift.h"
+#import <WordPressAuthenticator/WordPressAuthenticator-Swift.h>
+#import <WordPressKit/WordPressKit.h>
+#import "WPAuthenticatorLoggingPrivate.h"
+
 
 
 
