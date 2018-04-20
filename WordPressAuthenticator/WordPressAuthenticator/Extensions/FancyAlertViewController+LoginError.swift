@@ -1,6 +1,7 @@
 import UIKit
 import wpxmlrpc
 import SafariServices
+import WordPressUI
 
 
 extension FancyAlertViewController {
