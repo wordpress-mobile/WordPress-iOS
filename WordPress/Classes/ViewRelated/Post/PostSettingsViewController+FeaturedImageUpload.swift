@@ -70,7 +70,7 @@ extension PostSettingsViewController {
         }
     }
 
-    @objc func showFeaturedImageRemoveOrRetryAction() {
+      @objc func showFeaturedImageRemoveOrRetryAction(atIndexPath indexPath: IndexPath) {
         guard let media = apost.featuredImage else {
             return
         }
@@ -95,10 +95,11 @@ extension PostSettingsViewController {
         if let error = media.error {
             alertController.message = error.localizedDescription
         }
-        let anchorView = self.tableView!
-        alertController.popoverPresentationController?.sourceView = anchorView
-        alertController.popoverPresentationController?.sourceRect = CGRect(origin: anchorView.center, size: CGSize(width: 1, height: 1))
-        alertController.popoverPresentationController?.permittedArrowDirections = .any
+        if let anchorView = self.tableView.cellForRow(at: indexPath) ?? self.view {
+            alertController.popoverPresentationController?.sourceView = anchorView
+            alertController.popoverPresentationController?.sourceRect = CGRect(origin: CGPoint(x: anchorView.bounds.midX, y: anchorView.bounds.midY), size: CGSize(width: 1, height: 1))
+            alertController.popoverPresentationController?.permittedArrowDirections = .any
+        }
         present(alertController, animated: true, completion: nil)
     }
 
