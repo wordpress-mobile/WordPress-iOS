@@ -18,18 +18,31 @@ class ActivityDetailViewController: UIViewController {
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var summaryLabel: UILabel!
 
+    @IBOutlet private var headerStackView: UIStackView!
     @IBOutlet private var rewindStackView: UIStackView!
+    @IBOutlet private var contentStackView: UIStackView!
+
     @IBOutlet private var bottomConstaint: NSLayoutConstraint!
 
     @IBOutlet private var rewindButton: UIButton!
 
     override func viewDidLoad() {
+        setupFonts()
         setupViews()
         setupText()
+        setupAccesibility()
     }
 
     @IBAction func rewindButtonTapped(sender: UIButton) {
         rewindPresenter?.presentRewindFor(activity: activity!)
+    }
+
+    private func setupFonts() {
+        nameLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .footnote).pointSize,
+                                           weight: .semibold)
+
+        textLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize,
+                                           weight: .semibold)
     }
 
     private func setupViews() {
@@ -40,24 +53,6 @@ class ActivityDetailViewController: UIViewController {
         if activity.isRewindable {
             rewindStackView.isHidden = false
             bottomConstaint.constant = 0
-        }
-
-        nameLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .footnote).pointSize,
-                                           weight: .semibold)
-
-        textLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize,
-                                           weight: .semibold)
-
-        if view.effectiveUserInterfaceLayoutDirection == .leftToRight {
-            // swiftlint:disable:next inverse_text_alignment
-            dateLabel.textAlignment = .right
-            // swiftlint:disable:next inverse_text_alignment
-            timeLabel.textAlignment = .right
-        } else {
-            // swiftlint:disable:next natural_text_alignment
-            dateLabel.textAlignment = .left
-            // swiftlint:disable:next natural_text_alignment
-            timeLabel.textAlignment = .left
         }
 
         if let avatar = activity.actor?.avatarURL, let avatarURL = URL(string: avatar) {
@@ -99,6 +94,50 @@ class ActivityDetailViewController: UIViewController {
         timeFormatter.timeZone = TimeZone(secondsFromGMT: 0)
 
         timeLabel.text = timeFormatter.string(from: activity.published)
+    }
+
+    private func setupAccesibility() {
+        guard let activity = activity else {
+            return
+        }
+
+        contentStackView.isAccessibilityElement = true
+        contentStackView.accessibilityTraits = UIAccessibilityTraitStaticText
+        contentStackView.accessibilityLabel = "\(activity.text), \(activity.summary)"
+        textLabel.isAccessibilityElement = false
+        summaryLabel.isAccessibilityElement = false
+
+        if #available(iOS 11.0, *) {
+            if traitCollection.preferredContentSizeCategory.isAccessibilityCategory {
+                headerStackView.axis = .vertical
+
+                dateLabel.textAlignment = .center
+                timeLabel.textAlignment = .center
+            } else {
+                headerStackView.axis = .horizontal
+
+                if view.effectiveUserInterfaceLayoutDirection == .leftToRight {
+                    // swiftlint:disable:next inverse_text_alignment
+                    dateLabel.textAlignment = .right
+                    // swiftlint:disable:next inverse_text_alignment
+                    timeLabel.textAlignment = .right
+                } else {
+                    // swiftlint:disable:next natural_text_alignment
+                    dateLabel.textAlignment = .left
+                    // swiftlint:disable:next natural_text_alignment
+                    timeLabel.textAlignment = .left
+                }
+            }
+        }
+
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            setupFonts()
+            setupAccesibility()
+        }
     }
 
     private enum Constants {
