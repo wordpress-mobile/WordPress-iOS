@@ -46,6 +46,12 @@ public class Scheduler {
             }
         }
     }
+
+    /// Cancels the current scheduled job, if any.
+    ///
+    func cancel() {
+        job.cancel()
+    }
 }
 
 private extension Date {
