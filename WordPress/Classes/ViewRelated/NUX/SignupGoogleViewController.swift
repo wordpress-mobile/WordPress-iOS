@@ -20,7 +20,7 @@ class SignupGoogleViewController: LoginViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         titleLabel?.text = NSLocalizedString("Waiting for Google to complete…", comment: "Message shown on screen while waiting for Google to finish its signup process.")
-        WordPressAuthenticator.post(event: .createAccountInitiated)
+        WordPressAuthenticator.track(.createAccountInitiated)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -40,23 +40,11 @@ class SignupGoogleViewController: LoginViewController {
         // Configure all the things and sign in.
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().clientID = ApiCredentials.googleLoginClientId()
-        GIDSignIn.sharedInstance().serverClientID = ApiCredentials.googleLoginServerClientId()
+        GIDSignIn.sharedInstance().clientID = WordPressAuthenticator.shared.configuration.googleLoginClientId
+        GIDSignIn.sharedInstance().serverClientID = WordPressAuthenticator.shared.configuration.googleLoginServerClientId
 
         GIDSignIn.sharedInstance().signIn()
-
-        WPAppAnalytics.track(.loginSocialButtonClick)
     }
-
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        if let vc = segue.destination as? SignupEpilogueViewController {
-            vc.loginFields = loginFields
-        }
-    }
-
 }
 
 // MARK: - GIDSignInDelegate
@@ -68,6 +56,7 @@ extension SignupGoogleViewController: GIDSignInDelegate {
         guard let user = user,
             let token = user.authentication.idToken,
             let email = user.profile.email else {
+                WordPressAuthenticator.track(.signupSocialButtonFailure, error: error)
                 self.navigationController?.popViewController(animated: true)
                 return
         }
@@ -82,18 +71,20 @@ extension SignupGoogleViewController: GIDSignInDelegate {
 
         let context = ContextManager.sharedInstance().mainContext
         let service = SignupService(managedObjectContext: context)
+        let credentials = WordPressCredentials.wpcom(username: email, authToken: token, isJetpackLogin: isJetpackLogin, multifactor: false)
+
         service.createWPComUserWithGoogle(token: token, success: { [weak self] (accountCreated) in
             SVProgressHUD.dismiss()
             if accountCreated {
-                self?.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
-                WPAnalytics.track(.signupSocialSuccess)
+                self?.showSignupEpilogue(for: credentials)
+                WordPressAuthenticator.track(.signupSocialSuccess)
             } else {
-                self?.showLoginEpilogue()
-                WPAnalytics.track(.loginSocialSuccess)
+                self?.showLoginEpilogue(for: credentials)
+                WordPressAuthenticator.track(.loginSocialSuccess)
             }
         }) { [weak self] (error) in
             SVProgressHUD.dismiss()
-            WPAnalytics.track(.signupSocialFailure)
+            WordPressAuthenticator.track(.signupSocialFailure)
             guard let error = error else {
                 self?.navigationController?.popViewController(animated: true)
                 return

@@ -1,38 +1,58 @@
 import UIKit
 import WordPressShared
 
+
+// MARK: - LoginEpilogueViewController
+//
 class LoginEpilogueViewController: UIViewController {
-    @IBOutlet var buttonPanel: UIView?
-    @IBOutlet var shadowView: UIView?
-    @IBOutlet var connectButton: UIButton?
-    @IBOutlet var continueButton: UIButton?
-    @objc var tableViewController: LoginEpilogueTableView?
+
+    /// Button's Container View.
+    ///
+    @IBOutlet var buttonPanel: UIView!
+
+    /// Separator: to be displayed above the actual buttons.
+    ///
+    @IBOutlet var shadowView: UIView!
+
+    /// Connect Button!
+    ///
+    @IBOutlet var connectButton: UIButton!
+
+    /// Continue Button.
+    ///
+    @IBOutlet var continueButton: UIButton!
+
+    /// Links to the Epilogue TableViewController
+    ///
+    private var tableViewController: LoginEpilogueTableViewController?
+
+    /// Closure to be executed upon dismissal.
+    ///
     var onDismiss: (() -> Void)?
-    var epilogueUserInfo: LoginEpilogueUserInfo?
-    var jetpackLogin = false
+
+    /// Site that was just connected to our awesome app.
+    ///
+    var credentials: WordPressCredentials? {
+        didSet {
+            guard isViewLoaded, let credentials = credentials else {
+                return
+            }
+
+            refreshInterface(with: credentials)
+        }
+    }
+
 
     // MARK: - Lifecycle Methods
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        var numberOfBlogs = 0
-        if let info = epilogueUserInfo {
-            tableViewController?.epilogueUserInfo = info
-            if info.blog != nil {
-                numberOfBlogs = 1
-            }
-        } else {
-            // The self-hosted flow sets user info,  If no user info is set, assume
-            // a wpcom flow and try the default wp account.
-            let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            if let account = service.defaultWordPressComAccount() {
-                tableViewController?.epilogueUserInfo = LoginEpilogueUserInfo(account: account)
-                numberOfBlogs = account.blogs.count
-            }
+        guard let credentials = credentials else {
+            fatalError()
         }
 
-        configureButtons(numberOfBlogs: numberOfBlogs)
+        refreshInterface(with: credentials)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -42,14 +62,22 @@ class LoginEpilogueViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        WordPressAuthenticator.post(event: .loginEpilogueViewed)
+        WordPressAuthenticator.track(.loginEpilogueViewed)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        if let vc = segue.destination as? LoginEpilogueTableView {
-            tableViewController = vc
+
+        guard let epilogueTableViewController = segue.destination as? LoginEpilogueTableViewController else {
+            return
         }
+
+        guard let credentials = credentials else {
+            fatalError()
+        }
+
+        epilogueTableViewController.setup(with: credentials)
+        tableViewController = epilogueTableViewController
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -58,49 +86,76 @@ class LoginEpilogueViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        colorPanelBasedOnTableViewContents()
+        configurePanelBasedOnTableViewContents()
+    }
+}
+
+
+// MARK: - Configuration
+//
+private extension LoginEpilogueViewController {
+
+    /// Refreshes the UI so that the specified WordPressSite is displayed.
+    ///
+    func refreshInterface(with credentials: WordPressCredentials) {
+        switch credentials {
+        case .wporg:
+            configureButtons()
+        case .wpcom(_, _, let isJetpackLogin, _):
+            configureButtons(numberOfBlogs: numberOfWordPressComBlogs, hidesConnectButton: isJetpackLogin)
+        }
     }
 
-    // MARK: - Configuration
+    /// Returns the number of WordPress.com sites.
+    ///
+    var numberOfWordPressComBlogs: Int {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
 
-    @objc func configureButtons(numberOfBlogs: Int) {
-        var connectTitle: String
+        return service.defaultWordPressComAccount()?.blogs.count ?? 0
+    }
+
+    /// Setup: Buttons
+    ///
+    func configureButtons(numberOfBlogs: Int = 1, hidesConnectButton: Bool = false) {
+        let connectTitle: String
         if numberOfBlogs == 0 {
             connectTitle = NSLocalizedString("Connect a site", comment: "Button title")
         } else {
             connectTitle = NSLocalizedString("Connect another site", comment: "Button title")
         }
-        continueButton?.setTitle(NSLocalizedString("Continue", comment: "A button title"),
-                                 for: .normal)
-        continueButton?.accessibilityIdentifier = "Continue"
-        connectButton?.setTitle(connectTitle, for: .normal)
 
-        if jetpackLogin {
-            connectButton?.isHidden = true
-        }
+        continueButton.setTitle(NSLocalizedString("Continue", comment: "A button title"), for: .normal)
+        continueButton.accessibilityIdentifier = "Continue"
+        connectButton.setTitle(connectTitle, for: .normal)
+        connectButton.isHidden = hidesConnectButton
     }
 
-    @objc func colorPanelBasedOnTableViewContents() {
-        guard let tableView = tableViewController?.tableView,
-            let buttonPanel = buttonPanel else {
-                return
+    /// Setup: Button Panel
+    ///
+    func configurePanelBasedOnTableViewContents() {
+        guard let tableView = tableViewController?.tableView else {
+            return
         }
 
         let contentSize = tableView.contentSize
-        let screenHeight = UIScreen.main.bounds.size.height
-        let panelHeight = buttonPanel.frame.size.height
+        let screenHeight = UIScreen.main.bounds.height
+        let panelHeight = buttonPanel.frame.height
 
         if contentSize.height > (screenHeight - panelHeight) {
-            buttonPanel.backgroundColor = UIColor.white
-            shadowView?.isHidden = false
+            buttonPanel.backgroundColor = .white
+            shadowView.isHidden = false
         } else {
             buttonPanel.backgroundColor = WPStyleGuide.lightGrey()
-            shadowView?.isHidden = true
+            shadowView.isHidden = true
         }
     }
+}
 
 
-    // MARK: - Actions
+// MARK: - Actions
+//
+extension LoginEpilogueViewController {
 
     @IBAction func dismissEpilogue() {
         onDismiss?()
