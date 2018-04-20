@@ -505,7 +505,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 #pragma mark - Getting media
 
 - (void) getMediaWithID:(NSNumber *) mediaID inBlog:(Blog *) blog
-                Success:(void (^)(Media *media))success
+                success:(void (^)(Media *media))success
                 failure:(void (^)(NSError *error))failure
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
