@@ -1,4 +1,6 @@
 import Gridicons
+import WordPressUI
+
 
 /// base protocol for NUX view controllers
 protocol NUXViewControllerBase {

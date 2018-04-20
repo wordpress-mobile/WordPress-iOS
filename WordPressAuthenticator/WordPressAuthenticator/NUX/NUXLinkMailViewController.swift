@@ -1,5 +1,7 @@
 import UIKit
 import MessageUI
+import WordPressShared
+
 
 /// Step two in the auth link flow. This VC prompts the user to open their email
 /// app to look for the emailed authentication link.

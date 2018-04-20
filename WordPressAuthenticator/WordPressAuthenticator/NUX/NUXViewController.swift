@@ -1,8 +1,11 @@
+import WordPressUI
+
+
 // MARK: - NUXViewController
 /// Base class to use for NUX view controllers that aren't a table view
 /// Note: shares most of its code with NUXTableViewController and NUXCollectionViewController. Look to make
 ///       most changes in either the base protocol NUXViewControllerBase or further subclasses like LoginViewController
-class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControllerTransitioningDelegate, NUXSegueHandler {
+open class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControllerTransitioningDelegate, NUXSegueHandler {
     // MARK: NUXViewControllerBase properties
     /// these properties comply with NUXViewControllerBase and are duplicated with NUXTableViewController
     var helpBadge: NUXHelpBadgeLabel = NUXHelpBadgeLabel()
@@ -15,7 +18,7 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
         }
     }
 
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return UIDevice.isPad() ? .all : .portrait
     }
 
@@ -39,7 +42,7 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
         case showUsernames
     }
 
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         setupHelpButtonIfNeeded()
         setupCancelButtonIfNeeded()
@@ -67,7 +70,7 @@ class NUXViewController: UIViewController, NUXViewControllerBase, UIViewControll
 extension NUXViewController {
     // Required so that any FancyAlertViewControllers presented within the NUX
     // use the correct dimmed backing view.
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+    open func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         if presented is FancyAlertViewController || presented is LoginPrologueSignupMethodViewController {
             return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
         }
