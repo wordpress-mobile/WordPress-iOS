@@ -102,6 +102,8 @@ private extension SignupGoogleViewController {
 
             let credentials = WordPressCredentials.wpcom(username: wpcomUsername, authToken: wpcomToken, isJetpackLogin: false, multifactor: false)
             self?.authenticationDelegate.sync(credentials: credentials) { _ in
+                SVProgressHUD.dismiss()
+
                 if accountCreated {
                     self?.socialSignupWasSuccessful(with: credentials)
                 } else {
