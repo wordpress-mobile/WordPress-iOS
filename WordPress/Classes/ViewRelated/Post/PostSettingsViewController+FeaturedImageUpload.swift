@@ -56,13 +56,13 @@ extension PostSettingsViewController {
             isUploadingMedia = false
             tableView.reloadData()
         case .failed(let error):
-            DDLogError("Couldn't upload featured image: \(error.localizedDescription)")
+            DDLogError("Couldn't upload the featured image: \(error.localizedDescription)")
             isUploadingMedia = false
             tableView.reloadData()
             if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
                 break
             }
-            WPError.showAlert(withTitle: NSLocalizedString("Couldn't upload featured image", comment: "The title for an alert that says to the user that the featured image he selected couldn't be uploaded."), message: error.localizedDescription)
+            WPError.showAlert(withTitle: NSLocalizedString("Couldn't upload the featured image", comment: "The title for an alert that says to the user that the featured image he selected couldn't be uploaded."), message: error.localizedDescription)
         case .progress:
             break
         }
