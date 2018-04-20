@@ -1,9 +1,9 @@
 import UIKit
 import WordPressShared
 
-class LoginTextField: WPWalkthroughTextField {
+open class LoginTextField: WPWalkthroughTextField {
 
-    override func draw(_ rect: CGRect) {
+    override open func draw(_ rect: CGRect) {
         if showTopLineSeparator {
             guard let context = UIGraphicsGetCurrentContext() else {
                 return
