@@ -24,7 +24,6 @@ public class ActivityUtils {
             }
         })
     }
-    
 }
 
 extension ActivityUtils {
