@@ -45,7 +45,6 @@ target 'WordPress' do
   ## Third party libraries
   ## =====================
   ##
-  pod '1PasswordExtension', '1.8.5'
   pod 'HockeySDK', '5.1.2', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'MRProgress', '0.8.3'
   pod 'Reachability',	'3.2'
@@ -126,7 +125,22 @@ end
 target 'WordPressAuthenticator' do
   project 'WordPressAuthenticator/WordPressAuthenticator.xcodeproj'
 
-  pod 'CocoaLumberjack', '3.4.1'
+  shared_with_all_pods
+
+  ## Automattic libraries
+  ## ====================
+  ##
+  pod 'Gridicons', '0.15'
+
+  ## Third party libraries
+  ## =====================
+  ##
+  pod '1PasswordExtension', '1.8.5'
+  pod 'GoogleSignIn', '4.1.2'
+  pod 'lottie-ios', '1.5.1'
+  pod 'NSURL+IDN', '0.3'
+  pod 'SVProgressHUD', '2.2.5'
+  pod 'wpxmlrpc', '0.8.3'
 
   target 'WordPressAuthenticatorTests' do
     inherit! :search_paths
