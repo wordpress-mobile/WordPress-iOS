@@ -1,5 +1,6 @@
 import UIKit
 import Gridicons
+import WordPressUI
 
 class ActivityDetailViewController: UIViewController {
 
@@ -61,7 +62,7 @@ class ActivityDetailViewController: UIViewController {
 
         if let avatar = activity.actor?.avatarURL, let avatarURL = URL(string: avatar) {
             imageView.backgroundColor = WPStyleGuide.greyLighten10()
-            imageView.downloadImage(avatarURL, placeholderImage: Gridicon.iconOfType(.user, withSize: Constants.gridiconSize))
+            imageView.downloadImage(from: avatarURL, placeholderImage: Gridicon.iconOfType(.user, withSize: Constants.gridiconSize))
         } else if let iconType = WPStyleGuide.ActivityStyleGuide.getGridiconTypeForActivity(activity) {
             imageView.contentMode = .center
             imageView.backgroundColor = WPStyleGuide.ActivityStyleGuide.getColorByActivityStatus(activity)
