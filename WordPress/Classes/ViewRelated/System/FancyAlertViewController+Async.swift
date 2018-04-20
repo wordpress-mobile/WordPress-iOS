@@ -23,17 +23,13 @@ extension FancyAlertViewController {
         }
 
         let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
-            let presenter = controller.presentingViewController
-            controller.dismiss(animated: true) {
-                // TODO: Add a relevant URL when we have a page up for this feature
-                guard let url = URL(string: "https://apps.wordpress.org/") else {
-                    return
-                }
-
-                let safariViewController = SFSafariViewController(url: url)
-                safariViewController.modalPresentationStyle = .pageSheet
-                presenter?.present(safariViewController, animated: true, completion: nil)
+            guard let url = URL(string: "http://en.blog.wordpress.com/2018/04/23/ios-nine-point-eight/") else {
+                return
             }
+
+            let safariViewController = SFSafariViewController(url: url)
+            safariViewController.modalPresentationStyle = .pageSheet
+            controller.present(safariViewController, animated: true, completion: nil)
         }
 
         let image = UIImage(named: "wp-illustration-easy-async")
