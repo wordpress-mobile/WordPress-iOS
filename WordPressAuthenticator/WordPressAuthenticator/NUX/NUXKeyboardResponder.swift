@@ -6,7 +6,7 @@ let NUXKeyboardDefaultFormVerticalOffset: CGFloat = -64.0
 /// A protocol and extension encapsulating common keyboard releated logic for
 /// Signin controllers.
 ///
-protocol NUXKeyboardResponder: class {
+public protocol NUXKeyboardResponder: class {
     var bottomContentConstraint: NSLayoutConstraint? {get}
     var verticalCenterConstraint: NSLayoutConstraint? {get}
 
@@ -19,7 +19,7 @@ protocol NUXKeyboardResponder: class {
     func keyboardWillHide(_ notification: Foundation.Notification)
 }
 
-extension NUXKeyboardResponder where Self: NUXViewController {
+public extension NUXKeyboardResponder where Self: NUXViewController {
 
     /// Registeres the receiver for keyboard events using the passed selectors.
     /// We pass the selectors this way so we can encapsulate functionality in a

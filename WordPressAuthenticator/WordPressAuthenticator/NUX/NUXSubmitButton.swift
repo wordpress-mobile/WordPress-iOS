@@ -4,15 +4,17 @@ import WordPressShared
 let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
 
 /// A protocol for an element that can display a UIActivityIndicatorView
-@objc protocol ActivityIndicatorButton {
+@objc
+public protocol ActivityIndicatorButton {
     func showActivityIndicator(_ show: Bool)
 }
 
 /// A stylized button used by NUX controllers. The button presents white text
 /// surrounded by a white border.  It also can display a `UIActivityIndicatorView`.
 ///
-@objc class NUXSubmitButton: UIButton, ActivityIndicatorButton {
-    @IBInspectable var isPrimary: Bool = false {
+@objc
+open class NUXSubmitButton: UIButton, ActivityIndicatorButton {
+    @IBInspectable open var isPrimary: Bool = false {
         didSet {
             configureButton()
         }
@@ -32,14 +34,14 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
     }()
 
 
-    override var isEnabled: Bool {
+    override open var isEnabled: Bool {
         didSet {
             configureBorderColor()
         }
     }
 
 
-    override var isHighlighted: Bool {
+    override open var isHighlighted: Bool {
         didSet {
             configureBorderColor()
         }
@@ -48,13 +50,13 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
 
     // MARK: - LifeCycle Methods
 
-    override func awakeFromNib() {
+    override open func awakeFromNib() {
         super.awakeFromNib()
         configureButton()
     }
 
 
-    override func layoutSubviews() {
+    override open func layoutSubviews() {
         super.layoutSubviews()
 
         if activityIndicator.isAnimating {
@@ -127,7 +129,7 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
     ///
     /// - Parameter show: True to show the spinner. False hides it.
     ///
-    func showActivityIndicator(_ show: Bool) {
+    open func showActivityIndicator(_ show: Bool) {
         if show {
             activityIndicator.startAnimating()
         } else {
@@ -143,7 +145,7 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
 }
 
 extension NUXSubmitButton {
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
             didChangePreferredContentSize()

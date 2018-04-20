@@ -4,11 +4,11 @@
 open class NUXTableViewController: UITableViewController, NUXViewControllerBase, UIViewControllerTransitioningDelegate {
     // MARK: NUXViewControllerBase properties
     /// these properties comply with NUXViewControllerBase and are duplicated with NUXTableViewController
-    var helpBadge: NUXHelpBadgeLabel = NUXHelpBadgeLabel()
-    var helpButton: UIButton = UIButton(type: .custom)
-    var dismissBlock: ((_ cancelled: Bool) -> Void)?
-    var loginFields = LoginFields()
-    var sourceTag: WordPressSupportSourceTag {
+    public var helpBadge: NUXHelpBadgeLabel = NUXHelpBadgeLabel()
+    public var helpButton: UIButton = UIButton(type: .custom)
+    public var dismissBlock: ((_ cancelled: Bool) -> Void)?
+    public var loginFields = LoginFields()
+    public var sourceTag: WordPressSupportSourceTag {
         get {
             return .generalLogin
         }
@@ -24,7 +24,7 @@ open class NUXTableViewController: UITableViewController, NUXViewControllerBase,
         setupCancelButtonIfNeeded()
     }
 
-    func shouldShowCancelButton() -> Bool {
+    public func shouldShowCancelButton() -> Bool {
         return shouldShowCancelButtonBase()
     }
 }

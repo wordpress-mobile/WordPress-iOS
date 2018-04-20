@@ -4,7 +4,7 @@ import WordPressShared
 
 // MARK: - NUXHelpBadgeLabel
 //
-class NUXHelpBadgeLabel: UILabel {
+open class NUXHelpBadgeLabel: UILabel {
 
     struct Constants {
         static let defaultInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
@@ -18,12 +18,12 @@ class NUXHelpBadgeLabel: UILabel {
         }
     }
 
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         commonSetup()
     }
 
-    required init(coder: NSCoder) {
+    public required init(coder: NSCoder) {
         fatalError()
     }
 
@@ -36,7 +36,7 @@ class NUXHelpBadgeLabel: UILabel {
         font = Constants.defaultFont
     }
 
-    override func drawText(in rect: CGRect) {
+    override open func drawText(in rect: CGRect) {
         super.drawText(in: UIEdgeInsetsInsetRect(rect, insets))
     }
 }
