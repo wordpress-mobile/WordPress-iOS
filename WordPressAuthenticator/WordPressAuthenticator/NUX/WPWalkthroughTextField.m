@@ -1,6 +1,5 @@
 #import "WPWalkthroughTextField.h"
-#import "Constants.h"
-#import <WordPressShared/WPNUXUtility.h>
+#import <WordPressShared/WordPressShared.h>
 #import <WordPressUI/WordPressUI.h>
 
 

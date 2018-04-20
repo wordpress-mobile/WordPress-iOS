@@ -1,6 +1,6 @@
 import UIKit
 
-@objc protocol NUXButtonViewControllerDelegate {
+@objc public protocol NUXButtonViewControllerDelegate {
     func primaryButtonPressed()
     @objc optional func secondaryButtonPressed()
     @objc optional func tertiaryButtonPressed()
@@ -14,7 +14,7 @@ private struct NUXButtonConfig {
     let callback: CallBackType?
 }
 
-class NUXButtonViewController: UIViewController {
+open class NUXButtonViewController: UIViewController {
     typealias CallBackType = () -> Void
 
     // MARK: - Properties
@@ -35,12 +35,12 @@ class NUXButtonViewController: UIViewController {
 
     // MARK: - View
 
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         view.translatesAutoresizingMaskIntoConstraints = false
     }
 
-    override func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         configure(button: bottomButton, withConfig: bottomButtonConfig)
@@ -136,7 +136,7 @@ class NUXButtonViewController: UIViewController {
 }
 
 extension NUXButtonViewController {
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
             didChangePreferredContentSize()

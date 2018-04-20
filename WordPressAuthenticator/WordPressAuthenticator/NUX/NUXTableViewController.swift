@@ -1,7 +1,7 @@
 // MARK: - NUXTableViewController
 /// Base class to use for NUX view controllers that are also a table view controller
 /// Note: shares most of its code with NUXViewController and NUXCollectionViewController.
-class NUXTableViewController: UITableViewController, NUXViewControllerBase, UIViewControllerTransitioningDelegate {
+open class NUXTableViewController: UITableViewController, NUXViewControllerBase, UIViewControllerTransitioningDelegate {
     // MARK: NUXViewControllerBase properties
     /// these properties comply with NUXViewControllerBase and are duplicated with NUXTableViewController
     var helpBadge: NUXHelpBadgeLabel = NUXHelpBadgeLabel()
@@ -14,11 +14,11 @@ class NUXTableViewController: UITableViewController, NUXViewControllerBase, UIVi
         }
     }
 
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return UIDevice.isPad() ? .all : .portrait
     }
 
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         setupHelpButtonIfNeeded()
         setupCancelButtonIfNeeded()
