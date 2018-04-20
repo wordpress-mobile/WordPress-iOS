@@ -1,6 +1,8 @@
 import UIKit
 import WebKit
 import Gridicons
+import WordPressAuthenticator
+
 
 protocol JetpackConnectionWebDelegate {
     func jetpackConnectionCompleted()
