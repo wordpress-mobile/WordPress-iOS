@@ -8,9 +8,9 @@ extension WordPressAuthenticator {
 
     /// Error Domain for Authentication issues.
     ///
-    @objc static let errorDomain = "org.wordpress.ios.authenticator"
+    @objc public static let errorDomain = "org.wordpress.ios.authenticator"
 
     /// "Invalid Version" Error Code. Used whenever the remote WordPress.org endpoint is below the supported version.
     ///
-    @objc static let invalidVersionErrorCode = 5000
+    @objc public static let invalidVersionErrorCode = 5000
 }

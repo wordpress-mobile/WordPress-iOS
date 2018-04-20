@@ -173,7 +173,7 @@ public struct WordPressAuthenticatorConfiguration {
 
     /// Notification to be posted whenever the signing flow completes.
     ///
-    @objc static let WPSigninDidFinishNotification = "WPSigninDidFinishNotification"
+    @objc public static let WPSigninDidFinishNotification = "WPSigninDidFinishNotification"
 
     /// Internal Constants.
     ///
@@ -212,8 +212,12 @@ public struct WordPressAuthenticatorConfiguration {
     // MARK: - Helpers for presenting the login flow
 
     /// Used to present the new login flow from the app delegate
-    @objc class func showLoginFromPresenter(_ presenter: UIViewController, animated: Bool) {
+    @objc public class func showLoginFromPresenter(_ presenter: UIViewController, animated: Bool) {
         showLogin(from: presenter, animated: animated)
+    }
+
+    class var bundle: Bundle {
+        return Bundle(for: WordPressAuthenticator.self)
     }
 
     class func showLogin(from presenter: UIViewController, animated: Bool, showCancel: Bool = false, restrictToWPCom: Bool = false) {
@@ -221,7 +225,7 @@ public struct WordPressAuthenticatorConfiguration {
             trackOpenedLogin()
         }
 
-        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let storyboard = UIStoryboard(name: "Login", bundle: bundle)
         if let controller = storyboard.instantiateInitialViewController() {
             if let childController = controller.childViewControllers.first as? LoginPrologueViewController {
                 childController.restrictToWPCom = restrictToWPCom
@@ -232,12 +236,12 @@ public struct WordPressAuthenticatorConfiguration {
     }
 
     /// Used to present the new wpcom-only login flow from the app delegate
-    @objc class func showLoginForJustWPCom(from presenter: UIViewController, xmlrpc: String? = nil, username: String? = nil, connectedEmail: String? = nil) {
+    @objc public class func showLoginForJustWPCom(from presenter: UIViewController, xmlrpc: String? = nil, username: String? = nil, connectedEmail: String? = nil) {
         defer {
             trackOpenedLogin()
         }
 
-        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let storyboard = UIStoryboard(name: "Login", bundle: bundle)
         guard let controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? LoginEmailViewController else {
             return
         }
@@ -258,12 +262,12 @@ public struct WordPressAuthenticatorConfiguration {
 
 
     /// Used to present the new self-hosted login flow from BlogListViewController
-    @objc class func showLoginForSelfHostedSite(_ presenter: UIViewController) {
+    @objc public class func showLoginForSelfHostedSite(_ presenter: UIViewController) {
         defer {
             trackOpenedLogin()
         }
 
-        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let storyboard = UIStoryboard(name: "Login", bundle: bundle)
         guard let controller = storyboard.instantiateViewController(withIdentifier: "siteAddress") as? LoginSiteAddressViewController else {
             return
         }
@@ -280,7 +284,7 @@ public struct WordPressAuthenticatorConfiguration {
         loginFields.emailAddress = dotcomEmailAddress ?? String()
         loginFields.username = dotcomUsername ?? String()
 
-        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let storyboard = UIStoryboard(name: "Login", bundle: bundle)
         guard let controller = storyboard.instantiateViewController(withIdentifier: "LoginWPcomPassword") as? LoginWPComViewController else {
             fatalError("unable to create wpcom password screen")
         }
@@ -307,7 +311,7 @@ public struct WordPressAuthenticatorConfiguration {
     ///     - rootViewController: The view controller to act as the presenter for the signin view controller.
     ///                           By convention this is the app's root vc.
     ///
-    @objc class func openAuthenticationURL(_ url: URL, allowWordPressComAuth: Bool, fromRootViewController rootViewController: UIViewController) -> Bool {
+    @objc public class func openAuthenticationURL(_ url: URL, allowWordPressComAuth: Bool, fromRootViewController rootViewController: UIViewController) -> Bool {
         guard let token = url.query?.dictionaryFromQueryString().string(forKey: "token") else {
             DDLogError("Signin Error: The authentication URL did not have the expected path.")
             return false
@@ -325,7 +329,7 @@ public struct WordPressAuthenticatorConfiguration {
             return false
         }
 
-        let storyboard = UIStoryboard(name: "EmailMagicLink", bundle: nil)
+        let storyboard = UIStoryboard(name: "EmailMagicLink", bundle: bundle)
         guard let loginController = storyboard.instantiateViewController(withIdentifier: "LinkAuthView") as? NUXLinkAuthViewController else {
             DDLogInfo("App opened with authentication link but couldn't create login screen.")
             return false
