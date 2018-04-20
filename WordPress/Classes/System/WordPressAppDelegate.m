@@ -24,6 +24,7 @@
 #import "WPLogger.h"
 #import <AutomatticTracks/TracksLogging.h>
 #import <WordPressComStatsiOS/WPStatsLogging.h>
+#import <WordPressAuthenticator/WPAuthenticatorLogging.h>
 
 // Misc managers, helpers, utilities
 #import "ContextManager.h"
@@ -629,6 +630,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     WPSharedSetLoggingLevel(logLevelInt);
     TracksSetLoggingLevel(logLevelInt);
     WPStatsSetLoggingLevel(logLevelInt);
+    WPAuthenticatorSetLoggingLevel(logLevelInt);
 }
 
 @end
