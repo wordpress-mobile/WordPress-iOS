@@ -4,14 +4,14 @@ import WordPressShared
 
 // MARK: - SearchTableViewCellDelegate
 //
-protocol SearchTableViewCellDelegate: class {
+public protocol SearchTableViewCellDelegate: class {
     func startSearch(for: String)
 }
 
 
 // MARK: - SearchTableViewCell
 //
-class SearchTableViewCell: UITableViewCell {
+open class SearchTableViewCell: UITableViewCell {
 
     /// UITableView's Reuse Identifier
     ///
@@ -37,11 +37,11 @@ class SearchTableViewCell: UITableViewCell {
     }
 
 
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 
-    override func awakeFromNib() {
+    override open func awakeFromNib() {
         super.awakeFromNib()
         textField.delegate = self
         textField.contentInsets = Constants.textInsetsWithIcon
@@ -64,12 +64,12 @@ private extension SearchTableViewCell {
 // MARK: - UITextFieldDelegate
 //
 extension SearchTableViewCell: UITextFieldDelegate {
-    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+    open func textFieldShouldClear(_ textField: UITextField) -> Bool {
         delegate?.startSearch(for: "")
         return true
     }
 
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    open func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let searchText = textField.text {
             delegate?.startSearch(for: searchText)
         }
