@@ -1,4 +1,6 @@
 import UIKit
+import WordPressAuthenticator
+
 
 @objc protocol NoResultsViewControllerDelegate {
     @objc optional func actionButtonPressed()

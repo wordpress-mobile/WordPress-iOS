@@ -2,6 +2,8 @@ import Foundation
 import CocoaLumberjack
 import Reachability
 import UIDeviceIdentifier
+import WordPressAuthenticator
+
 
 // MARK: - Utility Configuration
 

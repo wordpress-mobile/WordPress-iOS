@@ -1,4 +1,5 @@
 import Foundation
+import WordPressAuthenticator
 
 
 // MARK: - WordPressSupportSourceTag ClientApp Helper Methods
