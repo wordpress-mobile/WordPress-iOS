@@ -1,7 +1,3 @@
-Inläggslista, tillgänglighet: Nu hanterar inläggslistan dynamiska typsnitt bättre.
-Inläggslista: Ny filtreringslist för inläggsstatus och författare!
-Inläggslista, tillgänglighet: Den nya filtreringslisten för inläggsstatus och författare har stöd för VoiceOver.
-Inloggning, tillgänglighet: Inloggningslflödet hanterar nu dynamiska typsnitt bättre.
-Menyer, tillgänglighet: Nu har menyavsnittet av dina webbplatser stöd för dynamiska typsnitt.
-Min profil: Nu har du en direkt inställning för redigering av din Gravatar-profilbild.
-Spotlight: Nu indexeras inlägg och sidor!
+Nu görs uppladdningar asynkront!
+Sidor som inte kunnat laddas upp markeras nu med rött.
+Inmatningsfältet där man skriver kommentarer kan nu utvidgas upp till 5 rader.
