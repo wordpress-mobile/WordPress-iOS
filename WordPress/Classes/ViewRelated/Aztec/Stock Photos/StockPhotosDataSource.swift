@@ -34,7 +34,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
 
         guard searchText?.isEmpty == false else {
             clearSearch(notifyObservers: true)
-            throttle.cancel()
+            scheduler.cancel()
             return
         }
 
