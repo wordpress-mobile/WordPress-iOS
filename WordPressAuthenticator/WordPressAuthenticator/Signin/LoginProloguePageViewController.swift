@@ -1,4 +1,6 @@
 import UIKit
+import WordPressShared
+
 
 class LoginProloguePageViewController: UIPageViewController {
     @objc var pages: [UIViewController] = []

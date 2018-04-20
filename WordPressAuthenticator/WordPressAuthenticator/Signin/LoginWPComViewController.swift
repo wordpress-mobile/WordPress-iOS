@@ -1,5 +1,6 @@
 import UIKit
 import WordPressShared
+import WordPressKit
 
 /// Provides a form and functionality for signing a user in to WordPress.com
 ///

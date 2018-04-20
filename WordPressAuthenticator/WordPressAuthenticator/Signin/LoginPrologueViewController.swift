@@ -1,5 +1,7 @@
 import UIKit
 import Lottie
+import WordPressShared
+import WordPressUI
 
 class LoginPrologueViewController: LoginViewController {
 

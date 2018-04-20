@@ -1,5 +1,6 @@
 import SafariServices
 import WordPressUI
+import WordPressShared
 
 
 class LoginPrologueSignupMethodViewController: NUXViewController {

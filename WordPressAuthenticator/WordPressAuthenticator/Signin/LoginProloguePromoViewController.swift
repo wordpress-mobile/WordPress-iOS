@@ -1,5 +1,7 @@
 import UIKit
 import Lottie
+import WordPressShared
+
 
 class LoginProloguePromoViewController: UIViewController {
     fileprivate let type: PromoType
