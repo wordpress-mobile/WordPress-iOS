@@ -33,11 +33,11 @@ class SignupGoogleViewController: LoginViewController {
             return
         }
 
-        displayGoogleSingleSignon()
+        displayGoogleSingleSignOn()
         hasShownGoogle = true
     }
 
-    private func displayGoogleSingleSignon() {
+    private func displayGoogleSingleSignOn() {
         GIDSignIn.sharedInstance().disconnect()
 
         // Flag this as a social sign in.
@@ -55,8 +55,6 @@ class SignupGoogleViewController: LoginViewController {
         googleSSO.serverClientID = WordPressAuthenticator.shared.configuration.googleLoginServerClientId
 
         googleSSO.signIn()
-
-        WordPressAuthenticator.track(.loginSocialButtonClick)
     }
 }
 
