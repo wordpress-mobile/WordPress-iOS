@@ -137,6 +137,26 @@ public struct WordPressAuthenticatorConfiguration {
     /// Indicates if Jetpack Signup is allowed, or not.
     ///
     let supportsJetpackSignup: Bool
+
+    /// Designated Initializer
+    ///
+    public init (wpcomClientId: String,
+                 wpcomSecret: String,
+                 wpcomScheme: String,
+                 wpcomTermsOfServiceURL: String,
+                 googleLoginClientId: String,
+                 googleLoginServerClientId: String,
+                 userAgent: String,
+                 supportsJetpackSignup: Bool) {
+        self.wpcomClientId = wpcomClientId
+        self.wpcomSecret = wpcomSecret
+        self.wpcomScheme = wpcomScheme
+        self.wpcomTermsOfServiceURL = wpcomTermsOfServiceURL
+        self.googleLoginClientId =  googleLoginClientId
+        self.googleLoginServerClientId = googleLoginServerClientId
+        self.userAgent = userAgent
+        self.supportsJetpackSignup = supportsJetpackSignup
+    }
 }
 
 
@@ -200,7 +220,7 @@ public struct WordPressAuthenticatorConfiguration {
 
     // MARK: - Public Methods
 
-    func supportBadgeCountWasUpdated() {
+    public func supportBadgeCountWasUpdated() {
         NotificationCenter.default.post(name: .wordpressSupportBadgeUpdated, object: nil)
     }
 
@@ -215,7 +235,7 @@ public struct WordPressAuthenticatorConfiguration {
         return Bundle(for: WordPressAuthenticator.self)
     }
 
-    class func showLogin(from presenter: UIViewController, animated: Bool, showCancel: Bool = false, restrictToWPCom: Bool = false) {
+    public class func showLogin(from presenter: UIViewController, animated: Bool, showCancel: Bool = false, restrictToWPCom: Bool = false) {
         defer {
             trackOpenedLogin()
         }
@@ -274,7 +294,7 @@ public struct WordPressAuthenticatorConfiguration {
 
     // Helper used by WPAuthTokenIssueSolver
     @objc
-    class func signinForWPCom(dotcomEmailAddress: String?, dotcomUsername: String?, onDismissed: ((_ cancelled: Bool) -> Void)? = nil) -> UIViewController {
+    public class func signinForWPCom(dotcomEmailAddress: String?, dotcomUsername: String?, onDismissed: ((_ cancelled: Bool) -> Void)? = nil) -> UIViewController {
         let loginFields = LoginFields()
         loginFields.emailAddress = dotcomEmailAddress ?? String()
         loginFields.username = dotcomUsername ?? String()

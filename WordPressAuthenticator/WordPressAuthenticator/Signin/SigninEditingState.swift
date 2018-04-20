@@ -1,6 +1,6 @@
 import Foundation
 
-class SigninEditingState {
-    static var signinEditingStateActive = false
-    static var signinLastKeyboardHeightDelta: CGFloat = 0
+open class SigninEditingState {
+    public static var signinEditingStateActive = false
+    public static var signinLastKeyboardHeightDelta: CGFloat = 0
 }
