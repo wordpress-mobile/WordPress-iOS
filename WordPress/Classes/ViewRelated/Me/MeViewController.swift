@@ -290,6 +290,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         return { [unowned self] row in
             if FeatureFlag.zendeskMobile.enabled {
                 let controller = SupportTableViewController()
+                controller.showHelpFromViewController = self
                 self.showDetailViewController(controller, sender: self)
             } else {
                 let controller = SupportViewController()
