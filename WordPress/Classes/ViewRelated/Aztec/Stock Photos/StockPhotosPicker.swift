@@ -21,6 +21,7 @@ final class StockPhotosPicker: NSObject {
 
     weak var delegate: StockPhotosPickerDelegate?
     private var blog: Blog?
+    private var observerToken: NSObjectProtocol?
 
     private let searchHint = StockPhotosPlaceholder()
 
@@ -42,7 +43,32 @@ final class StockPhotosPicker: NSObject {
             picker.mediaPicker.searchBar?.becomeFirstResponder()
         }
 
+        observeDataSource()
         trackAccess()
+    }
+
+    private func observeDataSource() {
+        observerToken = dataSource.registerChangeObserverBlock { [weak self] (_, _, _, _, assets) in
+            self?.updateHintView()
+        }
+    }
+
+    private func shouldShowNoResults() -> Bool {
+        return dataSource.searchQuery.count > 0 && dataSource.numberOfAssets() == 0
+    }
+
+    private func updateHintView() {
+        if shouldShowNoResults() {
+            searchHint.configureAsNoSearchResults(for: dataSource.searchQuery)
+        } else {
+            searchHint.configureAsIntro()
+        }
+    }
+
+    deinit {
+        if let token = observerToken {
+            dataSource.unregisterChangeObserver(token)
+        }
     }
 }
 
