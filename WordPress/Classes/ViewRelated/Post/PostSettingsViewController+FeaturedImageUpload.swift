@@ -59,6 +59,8 @@ extension PostSettingsViewController {
             isUploadingMedia = false
             tableView.reloadData()
             if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
+                apost.featuredImage = nil
+                apost.removeMediaObject(media)
                 break
             }
             WPError.showAlert(withTitle: NSLocalizedString("Couldn't upload the featured image", comment: "The title for an alert that says to the user that the featured image he selected couldn't be uploaded."), message: error.localizedDescription)
