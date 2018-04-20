@@ -50,7 +50,7 @@ class WordPressScreenshotGeneration: XCTestCase {
 
 
         app.buttons["Log In Button"].tap()
-        app.buttons[" Log in by entering your site address."].tap()
+        app.buttons["Self Hosted Login Button"].tap()
 
         let username = ""
         let password = ""
