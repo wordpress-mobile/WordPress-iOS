@@ -69,6 +69,7 @@ extension SignupGoogleViewController: GIDSignInDelegate {
         GIDSignIn.sharedInstance().disconnect()
 
         guard let googleUser = user, let googleToken = googleUser.authentication.idToken, let googleEmail = googleUser.profile.email else {
+            WordPressAuthenticator.track(.signupSocialButtonFailure, error: error)
             self.navigationController?.popViewController(animated: true)
             return
         }
@@ -120,7 +121,7 @@ private extension SignupGoogleViewController {
     /// Social Signup Successful: Analytics + Pushing the Signup Epilogue.
     ///
     func socialSignupWasSuccessful(with credentials: WordPressCredentials) {
-        WordPressAuthenticator.track(.createdAccount)
+        WordPressAuthenticator.track(.createdAccount, properties: ["source": "google"])
         WordPressAuthenticator.track(.signupSocialSuccess)
 
         showSignupEpilogue(for: credentials)
@@ -130,6 +131,7 @@ private extension SignupGoogleViewController {
     ///
     func socialLoginWasSuccessful(with credentials: WordPressCredentials) {
         WordPressAuthenticator.track(.loginSocialSuccess)
+        WordPressAuthenticator.track(.signupSocialToLogin)
 
         showLoginEpilogue(for: credentials)
     }
