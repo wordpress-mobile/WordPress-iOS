@@ -71,7 +71,7 @@ open class NUXButtonViewController: UIViewController {
     ///   - secondary: Title string for secondary button. Optional.
     ///   - tertiary: Title string for the tertiary button. Optional.
     ///
-    func setButtonTitles(primary: String, secondary: String? = nil, tertiary: String? = nil) {
+    public func setButtonTitles(primary: String, secondary: String? = nil, tertiary: String? = nil) {
         bottomButtonConfig = NUXButtonConfig(title: primary, isPrimary: true, callback: nil)
         if let secondaryTitle = secondary {
             topButtonConfig = NUXButtonConfig(title: secondaryTitle, isPrimary: false, callback: nil)

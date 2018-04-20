@@ -3,7 +3,7 @@ import WordPressUI
 
 
 /// base protocol for NUX view controllers
-protocol NUXViewControllerBase {
+public protocol NUXViewControllerBase {
     var sourceTag: WordPressSupportSourceTag { get }
     var helpBadge: NUXHelpBadgeLabel { get }
     var helpButton: UIButton { get }
@@ -39,7 +39,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
     /// Sets up the cancel button for the navbar if its needed.
     /// The cancel button is only shown when its appropriate to dismiss the modal view controller.
     ///
-    func setupCancelButtonIfNeeded() {
+    public func setupCancelButtonIfNeeded() {
         if !shouldShowCancelButton() {
             return
         }
@@ -69,7 +69,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
 
     /// Displays a login error message in an attractive dialog
     ///
-    func displayErrorAlert(_ message: String, sourceTag: WordPressSupportSourceTag) {
+    public func displayErrorAlert(_ message: String, sourceTag: WordPressSupportSourceTag) {
         let presentingController = navigationController ?? self
         let controller = FancyAlertViewController.alertForGenericErrorMessageWithHelpshiftButton(message, loginFields: loginFields, sourceTag: sourceTag)
         controller.modalPresentationStyle = .custom
@@ -135,7 +135,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
 
     /// Adds the WP logo to the nav controller
     ///
-    func addWordPressLogoToNavController() {
+    public func addWordPressLogoToNavController() {
         let image = Gridicon.iconOfType(.mySites)
         let imageView = UIImageView(image: image.imageWithTintColor(UIColor.white))
         navigationItem.titleView = imageView
@@ -144,7 +144,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
     /// Whenever the WordPressAuthenticator Delegate returns true, when `shouldDisplayHelpButton` is queried, we'll proceed
     /// and attach the Help Button to the navigationController.
     ///
-    func setupHelpButtonIfNeeded() {
+    public func setupHelpButtonIfNeeded() {
         guard shouldDisplayHelpButton else {
             return
         }
@@ -155,7 +155,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
 
     /// Adds the Help Button to the nav controller
     ///
-    func addHelpButtonToNavController() {
+    public func addHelpButtonToNavController() {
         let helpButtonMarginSpacerWidth = CGFloat(-8)
         let helpBadgeSize = CGSize(width: 12, height: 12)
         let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)

@@ -2,7 +2,7 @@ import UIKit
 import WordPressShared
 
 /// A stylized button used by Login controllers. It also can display a `UIActivityIndicatorView`.
-@objc class NUXButton: NUXSubmitButton {
+@objc open class NUXButton: NUXSubmitButton {
     // MARK: - Configuration
     fileprivate let horizontalInset: CGFloat = 20
     fileprivate let verticalInset: CGFloat = 12
@@ -10,7 +10,7 @@ import WordPressShared
 
     /// Configure the appearance of the button.
     ///
-    override func configureButton() {
+    override open func configureButton() {
         contentEdgeInsets = UIEdgeInsets(top: verticalInset, left: horizontalInset, bottom: verticalInset, right: horizontalInset)
 
         titleLabel?.font = WPStyleGuide.fontForTextStyle(.headline, maximumPointSize: maxFontSize)
@@ -47,6 +47,6 @@ import WordPressShared
         addSubview(activityIndicator)
     }
 
-    override func configureBorderColor() {
+    override open func configureBorderColor() {
     }
 }
