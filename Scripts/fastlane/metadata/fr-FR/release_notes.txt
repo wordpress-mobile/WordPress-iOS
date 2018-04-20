@@ -1,7 +1,3 @@
-Liste des articles, accessibilité : la liste des articles gère bien mieux les polices dynamiques.
-Liste des articles : nouvel état d’article et barre de filtre d’auteur !
-Liste des articles, accessibilité : le nouvel état des articles et barre de filtre d’auteur offre le support de VoiceOver.
-Connexion, accessibilité : l’écran de connexion gère mieux les polices dynamiques.
-Menus, accessibilité : la section Menu de vos sites supporte à présent les polices dynamiques.
-Mon profil : vous avez maintenant plus d’options pour modifier votre Gravatar.
-Spotlight : indexe maintenant les articles et les pages !
+Les chargements sont désormais asynchrones !
+Les pages dont le chargement a échoué sont désormais indiquées en rouge.
+Le champ de saisie des commentaires peut désormais contenir jusqu'à 5 lignes.

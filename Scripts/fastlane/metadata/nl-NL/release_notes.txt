@@ -1,7 +1,3 @@
-Lijst met berichten, Toegankelijkheid: De lijst met berichten gaat nu beter om met Dynamic Type-lettertypen.
-Lijst met berichten: Nieuwe balk voor berichtstatus en auteursfilter!
-Lijst met berichten, Toegankelijkheid: De nieuwe balk voor de berichtstatus en het auteursfilter biedt voice-overondersteuning.
-Inloggen, Toegankelijkheid: De inlogflow gaat nu beter om met Dynamic Type.
-Menu's, Toegankelijkheid: Het menugedeelte van je sites ondersteunt nu Dynamic Type.
-Mijn profiel: Er is nu een duidelijke optie voor het bewerken van je Gravatar-pictogram beschikbaar.
-Spotlight: Indexeert nu berichten en pagina's!
+Uploads zijn nu asynchroon!
+Pagina's waarvan upload mislukt is, worden rood gemarkeerd.
+Het invoerveld om reacties te schrijven kan nu groeien naar 5 regels.
