@@ -579,14 +579,14 @@
         <attribute name="searchPhrase" attributeType="String" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="ReaderSearchTopic" representedClassName="WordPress.ReaderSearchTopic" parentEntity="ReaderAbstractTopic" syncable="YES"/>
-    <entity name="ReaderSiteInfoSubscriptionEmail" syncable="YES">
+    <entity name="ReaderSiteInfoSubscriptionEmail" representedClassName="WordPress.ReaderSiteInfoSubscriptionEmail" syncable="YES">
         <attribute name="postDeliveryFrequency" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="sendComments" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="sendPosts" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="sendComments" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="sendPosts" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="siteTopic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderSiteTopic" inverseName="emailSubscription" inverseEntity="ReaderSiteTopic" syncable="YES"/>
     </entity>
-    <entity name="ReaderSiteInfoSubscriptionPost" syncable="YES">
-        <attribute name="sendPosts" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+    <entity name="ReaderSiteInfoSubscriptionPost" representedClassName="WordPress.ReaderSiteInfoSubscriptionPost" syncable="YES">
+        <attribute name="sendPosts" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="siteTopic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderSiteTopic" inverseName="postSubscription" inverseEntity="ReaderSiteTopic" syncable="YES"/>
     </entity>
     <entity name="ReaderSiteTopic" representedClassName="WordPress.ReaderSiteTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
@@ -695,6 +695,8 @@
         <element name="ReaderPost" positionX="0" positionY="0" width="128" height="660"/>
         <element name="ReaderSearchSuggestion" positionX="36" positionY="162" width="128" height="75"/>
         <element name="ReaderSearchTopic" positionX="27" positionY="153" width="128" height="45"/>
+        <element name="ReaderSiteInfoSubscriptionEmail" positionX="36" positionY="162" width="128" height="105"/>
+        <element name="ReaderSiteInfoSubscriptionPost" positionX="27" positionY="153" width="128" height="75"/>
         <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="240"/>
         <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>
         <element name="ReaderTeamTopic" positionX="27" positionY="153" width="128" height="60"/>
@@ -702,7 +704,5 @@
         <element name="SharingButton" positionX="27" positionY="153" width="128" height="165"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="360"/>
-        <element name="ReaderSiteInfoSubscriptionPost" positionX="27" positionY="153" width="128" height="75"/>
-        <element name="ReaderSiteInfoSubscriptionEmail" positionX="36" positionY="162" width="128" height="105"/>
     </elements>
 </model>
