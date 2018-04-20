@@ -29,13 +29,10 @@ open class ActivityTableViewCell: WPTableViewCell {
         } else {
             iconImageView.isHidden = true
         }
-        if activity.isDiscarded {
-            contentView.backgroundColor = Style.backgroundDiscardedColor()
-            rewindIcon.isHidden = true
-        } else {
-            contentView.backgroundColor = Style.backgroundColor()
-            rewindIconContainer.isHidden  = !activity.rewindable
-        }
+
+        contentView.backgroundColor = Style.backgroundColor()
+        rewindIconContainer.isHidden  = !activity.rewindable
+
     }
 
     typealias Style = WPStyleGuide.ActivityStyleGuide
