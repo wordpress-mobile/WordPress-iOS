@@ -1,7 +1,7 @@
 import WordPressShared
 
 
-class LoginSocialErrorCell: UITableViewCell {
+open class LoginSocialErrorCell: UITableViewCell {
     private let errorTitle: String
     private let errorDescription: String
     private var errorDescriptionStyled: NSAttributedString?
@@ -15,7 +15,7 @@ class LoginSocialErrorCell: UITableViewCell {
         static let descriptionMinHeight: CGFloat = 14.0
     }
 
-    @objc init(title: String, description: String) {
+    @objc public init(title: String, description: String) {
         errorTitle = title
         errorDescription = description
         titleLabel = UILabel()
@@ -27,7 +27,7 @@ class LoginSocialErrorCell: UITableViewCell {
         layoutLabels()
     }
 
-    init(title: String, description styledDescription: NSAttributedString) {
+    public init(title: String, description styledDescription: NSAttributedString) {
         errorDescriptionStyled = styledDescription
         errorDescription = ""
         errorTitle = title
@@ -40,7 +40,7 @@ class LoginSocialErrorCell: UITableViewCell {
         layoutLabels()
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         errorTitle = aDecoder.value(forKey: "errorTitle") as? String ?? ""
         errorDescription = aDecoder.value(forKey: "errorDescription") as? String ?? ""
         titleLabel = UILabel()
