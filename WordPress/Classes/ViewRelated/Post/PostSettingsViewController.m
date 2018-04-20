@@ -569,7 +569,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     } else if (cell.tag == PostSettingsRowFeaturedImageAdd) {
         [self showFeaturedImageSelector];
     } else if (cell.tag == PostSettingsRowFeaturedImageRemove) {
-        [self showFeaturedImageRemoveOrRetryAction];
+        [self showFeaturedImageRemoveOrRetryActionAtIndexPath:indexPath];
     } else if (cell.tag == PostSettingsRowShareConnection) {
         [self toggleShareConnectionForIndexPath:indexPath];
     } else if (cell.tag == PostSettingsRowShareMessage) {
