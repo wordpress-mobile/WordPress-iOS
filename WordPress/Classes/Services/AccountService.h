@@ -48,19 +48,6 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
 - (BOOL)isDefaultWordPressComAccount:(WPAccount *)account;
 
 /**
- Query to check if a wpcom account requires a passwordless login option. Note that
- if there is no acccount matching the supplied identifier the REST endpoing
- returns a 404 error code.
-
- @param identifier - May be an email address, username, or user ID.
- @param success
- @param failure
- */
-- (void)isPasswordlessAccount:(NSString *)identifier
-                      success:(void (^)(BOOL passwordless))success
-                      failure:(void (^)(NSError *error))failure;
-
-/**
  Query to check if an email address is paired to a wpcom account. Used in the 
  magic links signup flow.
 
@@ -80,27 +67,6 @@ extern NSNotificationName const WPAccountEmailAndDefaultBlogUpdatedNotification;
 - (void)isUsernameAvailable:(NSString *)username
                     success:(void (^)(BOOL available))success
                     failure:(void (^)(NSError *error))failure;
-
-
-/**
- Requests a one-time authentication link sent to an existing account associated with the
- specified email address.
-
- @param email
- @param success
- @param failure
- */
-- (void)requestAuthenticationLink:(NSString *)email success:(void (^)(void))success failure:(void (^)(NSError *error))failure;
-
-
-/**
- Requests a one-time signup link sent to the specified email address.
- 
- @param email
- @param success
- @param failure
- */
-- (void)requestSignupLink:(NSString *)email success:(void (^)(void))success failure:(void (^)(NSError *error))failure;
 
 /**
  Requests a verification email to be sent to the email address associated with the current account.

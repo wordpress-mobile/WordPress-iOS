@@ -25,8 +25,16 @@ class PostCoordinator: NSObject {
     /// If media is still uploading it keeps track of the ongoing media operations and updates the post content when they finish
     ///
     /// - Parameter post: the post to save
-    func save(post: AbstractPost) {
+    func save(post postToSave: AbstractPost) {
+        var post = postToSave
+        if postToSave.isRevision() && !postToSave.hasRemote(), let originalPost = postToSave.original {
+            post = originalPost
+            post.applyRevision()
+            post.deleteRevision()
+        }
+
         change(post: post, status: .pushing)
+
         if mediaCoordinator.isUploadingMedia(for: post) {
             change(post: post, status: .pushingMedia)
             // Only observe if we're not already
@@ -94,6 +102,9 @@ class PostCoordinator: NSObject {
         let postService = PostService(managedObjectContext: mainContext)
         postService.uploadPost(post, success: { uploadedPost in
             print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
+
+            SearchManager.shared.indexItem(uploadedPost)
+
             let model = PostNoticeViewModel(post: uploadedPost)
             ActionDispatcher.dispatch(NoticeAction.post(model.notice))
         }, failure: { error in
