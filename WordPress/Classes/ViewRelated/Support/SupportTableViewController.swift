@@ -147,6 +147,7 @@ private extension SupportTableViewController {
                     return
                 }
                 ZendeskUtils.showNewRequest(from: navController)
+                ZendeskUtils.createRequest()
             } else {
                 guard let url = Constants.forumsURL else {
                     return
