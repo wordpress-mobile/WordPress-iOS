@@ -31,6 +31,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     func search(for searchText: String?) {
         guard searchText?.isEmpty == false else {
             clearSearch(notifyObservers: true)
+            throttle.cancel()
             return
         }
 

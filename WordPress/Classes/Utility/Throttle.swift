@@ -35,6 +35,9 @@ public class Throttle {
         queue.asyncAfter(deadline: .now() + Double(delay), execute: job)
     }
 
+    func cancel() {
+        job.cancel()
+    }
 }
 
 private extension Date {
