@@ -1,3 +1,4 @@
+import SafariServices
 import WordPressUI
 
 
@@ -37,27 +38,38 @@ class LoginPrologueSignupMethodViewController: NUXViewController {
         let loginTitle = NSLocalizedString("Sign up with Email", comment: "Button title. Tapping begins our normal sign up process.")
         let createTitle = NSLocalizedString("Sign up with Google", comment: "Button title. Tapping begins sign up using Google.")
         buttonViewController.setupTopButton(title: loginTitle, isPrimary: false) { [weak self] in
+            defer {
+                WordPressAuthenticator.track(.signupEmailButtonTapped)
+            }
             self?.dismiss(animated: true)
             self?.emailTapped?()
         }
         buttonViewController.setupButtomButton(title: createTitle, isPrimary: false) { [weak self] in
+            defer {
+                WordPressAuthenticator.track(.signupSocialButtonTapped)
+            }
             self?.dismiss(animated: true)
             self?.googleTapped?()
         }
         let termsButton = WPStyleGuide.termsButton()
         termsButton.on(.touchUpInside) { [weak self] button in
-            guard let url = URL(string: WPAutomatticTermsOfServiceURL) else {
+            defer {
+                WordPressAuthenticator.track(.signupTermsButtonTapped)
+            }
+            guard let url = URL(string: WordPressAuthenticator.shared.configuration.wpcomTermsOfServiceURL) else {
                 return
             }
-            let controller = WebViewControllerFactory.controller(url: url)
-            let navController = RotationAwareNavigationViewController(rootViewController: controller)
-            self?.present(navController, animated: true, completion: nil)
+
+            let safariViewController = SFSafariViewController(url: url)
+            safariViewController.modalPresentationStyle = .pageSheet
+            self?.present(safariViewController, animated: true, completion: nil)
         }
         buttonViewController.stackView?.insertArrangedSubview(termsButton, at: 0)
         buttonViewController.backgroundColor = WPStyleGuide.lightGrey()
     }
 
     @IBAction func dismissTapped() {
+        WordPressAuthenticator.track(.signupCancelled)
         dismiss(animated: true)
     }
 }

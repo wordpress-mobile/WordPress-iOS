@@ -97,15 +97,15 @@ static CGFloat const WPAnimatedBoxYPosPage3 = WPAnimatedBoxAnimationTolerance + 
     self.isAnimating = YES;
 
     [UIView animateWithDuration:1.4 delay:0.1 usingSpringWithDamping:0.5 initialSpringVelocity:0.1 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        _page1.transform = CGAffineTransformIdentity;
+        self->_page1.transform = CGAffineTransformIdentity;
     } completion:nil];
     [UIView animateWithDuration:1 delay:0.0 usingSpringWithDamping:0.65 initialSpringVelocity:0.01 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        _page2.transform = CGAffineTransformIdentity;
+        self->_page2.transform = CGAffineTransformIdentity;
     } completion: ^void(BOOL finished) {
         self.isAnimating = NO;
     }];
     [UIView animateWithDuration:1.2 delay:0.2 usingSpringWithDamping:0.5 initialSpringVelocity:0.1 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        _page3.transform = CGAffineTransformIdentity;
+        self->_page3.transform = CGAffineTransformIdentity;
     } completion:nil];
 }
 

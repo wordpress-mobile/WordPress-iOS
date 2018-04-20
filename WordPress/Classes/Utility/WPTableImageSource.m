@@ -115,7 +115,7 @@ static NSCache *sharedCache;
             image = [image.images firstObject];
         }
 
-        [self setCachedImage:image forURL:url withSize:_maxSize];
+        [self setCachedImage:image forURL:url withSize:self->_maxSize];
         [self processImage:image forURL:url receiver:_receiver];
     };
 
@@ -153,8 +153,8 @@ static NSCache *sharedCache;
 - (void)handleImageDownloadFailedForReceiver:(NSDictionary *)receiver error:(NSError *)error
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (_lastInvalidationOfIndexPaths
-            && [_lastInvalidationOfIndexPaths compare:receiver[@"date"]] == NSOrderedDescending) {
+        if (self->_lastInvalidationOfIndexPaths
+            && [self->_lastInvalidationOfIndexPaths compare:receiver[@"date"]] == NSOrderedDescending) {
             // This index path has been invalidated, don't call the delegate
             return;
         }
@@ -196,8 +196,8 @@ static NSCache *sharedCache;
         }
 
         dispatch_sync(dispatch_get_main_queue(), ^{
-            if (_lastInvalidationOfIndexPaths
-                && [_lastInvalidationOfIndexPaths compare:receiver[@"date"]] == NSOrderedDescending) {
+            if (self->_lastInvalidationOfIndexPaths
+                && [self->_lastInvalidationOfIndexPaths compare:receiver[@"date"]] == NSOrderedDescending) {
                 // This index path has been invalidated, don't call the delegate
                 return;
             }

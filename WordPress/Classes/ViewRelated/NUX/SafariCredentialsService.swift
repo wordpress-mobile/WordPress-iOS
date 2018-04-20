@@ -38,7 +38,7 @@ class SafariCredentialsService {
                 return
             }
             DispatchQueue.main.async(execute: {
-                WordPressAuthenticator.post(event: .loginAutoFillCredentialsUpdated)
+                WordPressAuthenticator.track(.loginAutoFillCredentialsUpdated)
             })
         })
     }
