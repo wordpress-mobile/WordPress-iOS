@@ -2139,6 +2139,9 @@ extension AztecPostViewController {
         let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
         let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
         docPicker.delegate = self
+        if #available(iOS 11.0, *) {
+            docPicker.allowsMultipleSelection = true
+        }
         WPStyleGuide.configureDocumentPickerNavBarAppearance()
         present(docPicker, animated: true, completion: nil)
     }
