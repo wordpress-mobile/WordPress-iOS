@@ -23,15 +23,15 @@
 		B56090D2208A4F5400399AE4 /* NUXButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56090C4208A4F5400399AE4 /* NUXButton.swift */; };
 		B56090D3208A4F5400399AE4 /* NUXLinkAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56090C5208A4F5400399AE4 /* NUXLinkAuthViewController.swift */; };
 		B56090DE208A4F9D00399AE4 /* WPWalkthroughOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = B56090D4208A4F9B00399AE4 /* WPWalkthroughOverlayView.m */; };
-		B56090DF208A4F9D00399AE4 /* WPNUXPrimaryButton.h in Headers */ = {isa = PBXBuildFile; fileRef = B56090D5208A4F9B00399AE4 /* WPNUXPrimaryButton.h */; };
-		B56090E0208A4F9D00399AE4 /* WPWalkthroughOverlayView.h in Headers */ = {isa = PBXBuildFile; fileRef = B56090D6208A4F9B00399AE4 /* WPWalkthroughOverlayView.h */; };
+		B56090DF208A4F9D00399AE4 /* WPNUXPrimaryButton.h in Headers */ = {isa = PBXBuildFile; fileRef = B56090D5208A4F9B00399AE4 /* WPNUXPrimaryButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B56090E0208A4F9D00399AE4 /* WPWalkthroughOverlayView.h in Headers */ = {isa = PBXBuildFile; fileRef = B56090D6208A4F9B00399AE4 /* WPWalkthroughOverlayView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B56090E1208A4F9D00399AE4 /* WPWalkthroughTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = B56090D7208A4F9C00399AE4 /* WPWalkthroughTextField.m */; };
 		B56090E2208A4F9D00399AE4 /* WPNUXSecondaryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B56090D8208A4F9C00399AE4 /* WPNUXSecondaryButton.m */; };
-		B56090E3208A4F9D00399AE4 /* WPNUXMainButton.h in Headers */ = {isa = PBXBuildFile; fileRef = B56090D9208A4F9C00399AE4 /* WPNUXMainButton.h */; };
+		B56090E3208A4F9D00399AE4 /* WPNUXMainButton.h in Headers */ = {isa = PBXBuildFile; fileRef = B56090D9208A4F9C00399AE4 /* WPNUXMainButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B56090E4208A4F9D00399AE4 /* WPNUXMainButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B56090DA208A4F9C00399AE4 /* WPNUXMainButton.m */; };
-		B56090E5208A4F9D00399AE4 /* WPWalkthroughTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = B56090DB208A4F9C00399AE4 /* WPWalkthroughTextField.h */; };
+		B56090E5208A4F9D00399AE4 /* WPWalkthroughTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = B56090DB208A4F9C00399AE4 /* WPWalkthroughTextField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B56090E6208A4F9D00399AE4 /* WPNUXPrimaryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B56090DC208A4F9C00399AE4 /* WPNUXPrimaryButton.m */; };
-		B56090E7208A4F9D00399AE4 /* WPNUXSecondaryButton.h in Headers */ = {isa = PBXBuildFile; fileRef = B56090DD208A4F9D00399AE4 /* WPNUXSecondaryButton.h */; };
+		B56090E7208A4F9D00399AE4 /* WPNUXSecondaryButton.h in Headers */ = {isa = PBXBuildFile; fileRef = B56090DD208A4F9D00399AE4 /* WPNUXSecondaryButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B56090EA208A51D000399AE4 /* LoginFields+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56090E8208A51D000399AE4 /* LoginFields+Validation.swift */; };
 		B56090EB208A51D000399AE4 /* LoginFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56090E9208A51D000399AE4 /* LoginFields.swift */; };
 		B56090EF208A527000399AE4 /* WPStyleGuide+Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56090EC208A527000399AE4 /* WPStyleGuide+Login.swift */; };
@@ -43,16 +43,16 @@
 		B56090FA208A533200399AE4 /* WordPressAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56090F5208A533200399AE4 /* WordPressAuthenticator.swift */; };
 		B56090FB208A533200399AE4 /* WordPressSupportSourceTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56090F6208A533200399AE4 /* WordPressSupportSourceTag.swift */; };
 		B5609107208A54F800399AE4 /* WordPressComBlogService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56090FC208A54F700399AE4 /* WordPressComBlogService.swift */; };
-		B5609108208A54F800399AE4 /* WordPressComOAuthClientFacade.h in Headers */ = {isa = PBXBuildFile; fileRef = B56090FD208A54F700399AE4 /* WordPressComOAuthClientFacade.h */; };
+		B5609108208A54F800399AE4 /* WordPressComOAuthClientFacade.h in Headers */ = {isa = PBXBuildFile; fileRef = B56090FD208A54F700399AE4 /* WordPressComOAuthClientFacade.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5609109208A54F800399AE4 /* SignupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56090FE208A54F700399AE4 /* SignupService.swift */; };
 		B560910A208A54F800399AE4 /* WordPressComAccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56090FF208A54F800399AE4 /* WordPressComAccountService.swift */; };
 		B560910B208A54F800399AE4 /* LoginFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = B5609100208A54F800399AE4 /* LoginFacade.m */; };
 		B560910C208A54F800399AE4 /* WordPressComOAuthClientFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = B5609101208A54F800399AE4 /* WordPressComOAuthClientFacade.m */; };
 		B560910D208A54F800399AE4 /* WordPressXMLRPCAPIFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = B5609102208A54F800399AE4 /* WordPressXMLRPCAPIFacade.m */; };
-		B560910E208A54F800399AE4 /* LoginFacade.h in Headers */ = {isa = PBXBuildFile; fileRef = B5609103208A54F800399AE4 /* LoginFacade.h */; };
+		B560910E208A54F800399AE4 /* LoginFacade.h in Headers */ = {isa = PBXBuildFile; fileRef = B5609103208A54F800399AE4 /* LoginFacade.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B560910F208A54F800399AE4 /* SafariCredentialsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5609104208A54F800399AE4 /* SafariCredentialsService.swift */; };
 		B5609110208A54F800399AE4 /* OnePasswordFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5609105208A54F800399AE4 /* OnePasswordFacade.swift */; };
-		B5609111208A54F800399AE4 /* WordPressXMLRPCAPIFacade.h in Headers */ = {isa = PBXBuildFile; fileRef = B5609106208A54F800399AE4 /* WordPressXMLRPCAPIFacade.h */; };
+		B5609111208A54F800399AE4 /* WordPressXMLRPCAPIFacade.h in Headers */ = {isa = PBXBuildFile; fileRef = B5609106208A54F800399AE4 /* WordPressXMLRPCAPIFacade.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5609116208A555600399AE4 /* LoginTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5609112208A555500399AE4 /* LoginTextField.swift */; };
 		B5609117208A555600399AE4 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5609113208A555500399AE4 /* SearchTableViewCell.swift */; };
 		B5609118208A555600399AE4 /* SearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5609114208A555500399AE4 /* SearchTableViewCell.xib */; };
@@ -565,9 +565,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressAuthenticatorTests/Pods-WordPressAuthenticatorTests-resources.sh",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -582,10 +585,36 @@
 			inputPaths = (
 				"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressAuthenticatorTests/Pods-WordPressAuthenticatorTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
+				"${BUILT_PRODUCTS_DIR}/FormatterKit/FormatterKit.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Gridicons/Gridicons.framework",
+				"${BUILT_PRODUCTS_DIR}/NSObject-SafeExpectations/NSObject_SafeExpectations.framework",
+				"${BUILT_PRODUCTS_DIR}/NSURL+IDN/NSURL_IDN.framework",
+				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/UIDeviceIdentifier/UIDeviceIdentifier.framework",
+				"${BUILT_PRODUCTS_DIR}/WordPressShared/WordPressShared.framework",
+				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
+				"${BUILT_PRODUCTS_DIR}/wpxmlrpc/wpxmlrpc.framework",
+				"${BUILT_PRODUCTS_DIR}/1PasswordExtension/OnePasswordExtension.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FormatterKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gridicons.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSObject_SafeExpectations.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSURL_IDN.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIDeviceIdentifier.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WordPressShared.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/wpxmlrpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OnePasswordExtension.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -598,9 +627,12 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressAuthenticator/Pods-WordPressAuthenticator-resources.sh",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -855,6 +887,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 75342E9B15CCDC942D18777A /* Pods-WordPressAuthenticator.debug.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -878,6 +911,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D8AA09F0F012B6E8F0D7D7FD /* Pods-WordPressAuthenticator.release.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -901,7 +935,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2B486F29F11FB3D50371716F /* Pods-WordPressAuthenticatorTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				INFOPLIST_FILE = WordPressAuthenticatorTests/Info.plist;
@@ -917,7 +950,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = ABBD3BD7BE3EBAF47AAB478A /* Pods-WordPressAuthenticatorTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				INFOPLIST_FILE = WordPressAuthenticatorTests/Info.plist;
@@ -989,6 +1021,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CAD7E149AC1A682AB34A0F7A /* Pods-WordPressAuthenticator.release-internal.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -1012,7 +1045,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DD32CEF3E637396C059EB5E7 /* Pods-WordPressAuthenticatorTests.release-internal.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				INFOPLIST_FILE = WordPressAuthenticatorTests/Info.plist;
@@ -1084,6 +1116,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 507363A502FE93136182BBF6 /* Pods-WordPressAuthenticator.release-alpha.xcconfig */;
 			buildSettings = {
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -1107,7 +1140,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1AC1F367EC83ED50FF5DD0FA /* Pods-WordPressAuthenticatorTests.release-alpha.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				INFOPLIST_FILE = WordPressAuthenticatorTests/Info.plist;
