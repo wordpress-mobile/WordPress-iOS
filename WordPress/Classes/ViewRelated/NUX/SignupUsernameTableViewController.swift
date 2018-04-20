@@ -1,4 +1,6 @@
 import SVProgressHUD
+import WordPressAuthenticator
+
 
 class SignupUsernameTableViewController: NUXTableViewController {
     open var currentUsername: String?

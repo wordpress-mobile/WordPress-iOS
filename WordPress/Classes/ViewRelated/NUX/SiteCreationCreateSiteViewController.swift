@@ -1,4 +1,6 @@
 import UIKit
+import WordPressAuthenticator
+
 
 class SiteCreationCreateSiteViewController: NUXViewController {
 
