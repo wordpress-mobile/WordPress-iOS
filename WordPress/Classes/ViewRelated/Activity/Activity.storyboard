@@ -38,7 +38,7 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="TYq-jP-lSb" userLabel="name nad role stack view">
                                                         <rect key="frame" x="46" y="0.0" width="254" height="38.5"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aJZ-Nu-hmA" userLabel="name">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aJZ-Nu-hmA" userLabel="name">
                                                                 <rect key="frame" x="0.0" y="0.0" width="254" height="20.5"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -55,13 +55,13 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="RtK-ZD-5sa" userLabel="date and time stack view">
                                                         <rect key="frame" x="310" y="2.5" width="33" height="34"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YIh-B5-5mX">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YIh-B5-5mX">
                                                                 <rect key="frame" x="0.0" y="0.0" width="33" height="16"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                 <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cqx-0J-WUT">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cqx-0J-WUT">
                                                                 <rect key="frame" x="0.0" y="18" width="33" height="16"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                 <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -80,7 +80,7 @@
                                                         <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ASx-wD-w08">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ASx-wD-w08">
                                                         <rect key="frame" x="0.0" y="28.5" width="343" height="20.5"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                         <color key="textColor" red="0.40000000000000002" green="0.55686274509803924" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
@@ -137,7 +137,9 @@
                     </view>
                     <connections>
                         <outlet property="bottomConstaint" destination="Fha-kb-hYl" id="vUN-uA-iaq"/>
+                        <outlet property="contentStackView" destination="jlr-kR-xzq" id="bkc-3M-MDt"/>
                         <outlet property="dateLabel" destination="YIh-B5-5mX" id="k3s-5c-AXy"/>
+                        <outlet property="headerStackView" destination="DDN-1Y-KHk" id="FTi-Sr-BFK"/>
                         <outlet property="imageView" destination="PGi-rI-w2P" id="wgx-g9-MgO"/>
                         <outlet property="nameLabel" destination="aJZ-Nu-hmA" id="yNG-9h-DUP"/>
                         <outlet property="rewindButton" destination="qzN-1h-59z" id="Xpx-fu-poI"/>
