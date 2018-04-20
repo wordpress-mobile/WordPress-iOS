@@ -206,6 +206,12 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
         }
         return searchController.searchBar.text?.nonEmptyString()
     }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        noResultsView.centerInSuperview()
+    }
+
 }
 
 // MARK: - WPNoResultsViewDelegate
