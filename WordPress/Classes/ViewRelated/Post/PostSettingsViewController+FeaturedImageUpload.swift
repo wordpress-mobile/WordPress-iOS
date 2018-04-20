@@ -32,7 +32,10 @@ extension PostSettingsViewController {
             self?.mediaObserver(media: media, state: state)
         })
         let progress = MediaCoordinator.shared.progress(for: media)
-        self.featuredImageProgress = progress
+        if let url = media.absoluteThumbnailLocalURL, let data = try? Data(contentsOf: url) {
+          progress?.setUserInfoObject(UIImage(data: data), forKey: .WPProgressImageThumbnailKey)
+        }
+        featuredImageProgress = progress
     }
 
     func mediaObserver(media: Media, state: MediaCoordinator.MediaState) {
