@@ -36,11 +36,11 @@ class SignupGoogleViewController: LoginViewController {
             return
         }
 
-        displayGoogleSingleSignon()
+        displayGoogleSingleSignOn()
         hasShownGoogle = true
     }
 
-    private func displayGoogleSingleSignon() {
+    private func displayGoogleSingleSignOn() {
         GIDSignIn.sharedInstance().disconnect()
 
         // Flag this as a social sign in.
@@ -58,8 +58,6 @@ class SignupGoogleViewController: LoginViewController {
         googleSSO.serverClientID = WordPressAuthenticator.shared.configuration.googleLoginServerClientId
 
         googleSSO.signIn()
-
-        WordPressAuthenticator.track(.loginSocialButtonClick)
     }
 }
 
@@ -72,6 +70,7 @@ extension SignupGoogleViewController: GIDSignInDelegate {
         GIDSignIn.sharedInstance().disconnect()
 
         guard let googleUser = user, let googleToken = googleUser.authentication.idToken, let googleEmail = googleUser.profile.email else {
+            WordPressAuthenticator.track(.signupSocialButtonFailure, error: error)
             self.navigationController?.popViewController(animated: true)
             return
         }
@@ -106,6 +105,8 @@ private extension SignupGoogleViewController {
 
             let credentials = WordPressCredentials.wpcom(username: wpcomUsername, authToken: wpcomToken, isJetpackLogin: false, multifactor: false)
             self?.authenticationDelegate.sync(credentials: credentials) { _ in
+                SVProgressHUD.dismiss()
+
                 if accountCreated {
                     self?.socialSignupWasSuccessful(with: credentials)
                 } else {
@@ -123,7 +124,7 @@ private extension SignupGoogleViewController {
     /// Social Signup Successful: Analytics + Pushing the Signup Epilogue.
     ///
     func socialSignupWasSuccessful(with credentials: WordPressCredentials) {
-        WordPressAuthenticator.track(.createdAccount)
+        WordPressAuthenticator.track(.createdAccount, properties: ["source": "google"])
         WordPressAuthenticator.track(.signupSocialSuccess)
 
         showSignupEpilogue(for: credentials)
@@ -133,6 +134,7 @@ private extension SignupGoogleViewController {
     ///
     func socialLoginWasSuccessful(with credentials: WordPressCredentials) {
         WordPressAuthenticator.track(.loginSocialSuccess)
+        WordPressAuthenticator.track(.signupSocialToLogin)
 
         showLoginEpilogue(for: credentials)
     }

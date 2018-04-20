@@ -63,7 +63,7 @@ class LoginPrologueViewController: LoginViewController {
         let loginTitle = NSLocalizedString("Log In", comment: "Button title.  Tapping takes the user to the login form.")
         let createTitle = NSLocalizedString("Sign up for WordPress.com", comment: "Button title. Tapping begins the process of creating a WordPress.com account.")
         buttonViewController.setupTopButton(title: loginTitle, isPrimary: true) { [weak self] in
-            self?.performSegue(withIdentifier: NUXViewController.SegueIdentifier.showEmailLogin.rawValue, sender: self)
+            self?.loginTapped()
         }
         buttonViewController.setupButtomButton(title: createTitle, isPrimary: false) { [weak self] in
             self?.signupTapped()
@@ -79,7 +79,12 @@ class LoginPrologueViewController: LoginViewController {
 
     // MARK: - Actions
 
-    @IBAction func signupTapped() {
+    private func loginTapped() {
+        performSegue(withIdentifier: NUXViewController.SegueIdentifier.showEmailLogin.rawValue, sender: self)
+    }
+
+    private func signupTapped() {
+        WordPressAuthenticator.track(.signupButtonTapped)
         performSegue(withIdentifier: NUXViewController.SegueIdentifier.showSignupMethod.rawValue, sender: self)
     }
 }
