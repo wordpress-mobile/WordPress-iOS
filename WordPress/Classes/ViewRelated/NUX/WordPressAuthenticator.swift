@@ -133,10 +133,6 @@ public struct WordPressAuthenticatorConfiguration {
     /// UserAgent
     ///
     let userAgent: String
-
-    /// Indicates if Jetpack Signup is allowed, or not.
-    ///
-    let supportsJetpackSignup: Bool
 }
 
 

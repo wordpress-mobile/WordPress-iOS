@@ -146,44 +146,37 @@ private extension ZendeskUtils {
 
     func getDeviceFreeSpace() -> String {
 
-        var deviceFreeSpace = Constants.unknownValue
-
-        if let resourceValues = try? URL(fileURLWithPath: "/").resourceValues(forKeys: [.volumeAvailableCapacityKey]),
-            let capacity = resourceValues.volumeAvailableCapacity {
-            // format string using human readable units. ex: 1.5 GB
-            deviceFreeSpace = ByteCountFormatter.string(fromByteCount: Int64(capacity), countStyle: .binary)
+        guard let resourceValues = try? URL(fileURLWithPath: "/").resourceValues(forKeys: [.volumeAvailableCapacityKey]),
+            let capacity = resourceValues.volumeAvailableCapacity else {
+                return Constants.unknownValue
         }
 
-        return deviceFreeSpace
+        // format string using human readable units. ex: 1.5 GB
+        return ByteCountFormatter.string(fromByteCount: Int64(capacity), countStyle: .binary)
     }
 
     func getLogFile() -> String {
 
-        var logFile = ""
-
-        if let appDelegate = UIApplication.shared.delegate as? WordPressAppDelegate,
+        guard let appDelegate = UIApplication.shared.delegate as? WordPressAppDelegate,
             let fileLogger = appDelegate.logger.fileLogger,
             let logFileInformation = fileLogger.logFileManager.sortedLogFileInfos.first,
             let logData = try? Data(contentsOf: URL(fileURLWithPath: logFileInformation.filePath)),
-            let logText = String.init(data: logData, encoding: .utf8) {
-            logFile = logText
-
+            let logText = String.init(data: logData, encoding: .utf8) else {
+            return ""
         }
 
-        return logFile
+        return logText
     }
 
     func getBlogInformation() -> String {
 
-        var blogsInformation = Constants.noValue
-
         let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        if let allBlogs = blogService.blogsForAllAccounts() as? [Blog], allBlogs.count > 0 {
-            blogsInformation = (allBlogs.map { $0.logDescription() }).joined(separator: Constants.blogSeperator)
+        guard let allBlogs = blogService.blogsForAllAccounts() as? [Blog], allBlogs.count > 0 else {
+            return Constants.noValue
         }
 
-        return blogsInformation
+        return (allBlogs.map { $0.logDescription() }).joined(separator: Constants.blogSeperator)
     }
 
     func getTags() -> [String] {
