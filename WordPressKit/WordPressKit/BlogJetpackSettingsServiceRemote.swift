@@ -16,7 +16,7 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
         let parameters = ["path": "/jetpack/v4/settings"]
 
-        wordPressComRestApi.GET(path!,
+        wordPressComRestApi.GET(path,
                                 parameters: parameters as [String : AnyObject]?,
                                 success: {
                                     response, _ in
@@ -39,7 +39,7 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
         let endpoint = "jetpack-blogs/\(siteID)"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
-        wordPressComRestApi.GET(path!,
+        wordPressComRestApi.GET(path,
                                 parameters: nil,
                                 success: {
                                     response, _ in
@@ -62,7 +62,7 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
         let endpoint = "sites/\(siteID)/jetpack/modules"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
-        wordPressComRestApi.GET(path!,
+        wordPressComRestApi.GET(path,
                                 parameters: nil,
                                 success: {
                                     response, _ in
@@ -95,7 +95,7 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
                           "body": jSONBody,
                           "json": true] as [String : AnyObject]
 
-        wordPressComRestApi.POST(path!,
+        wordPressComRestApi.POST(path,
                                  parameters: parameters,
                                  success: {
                                      _,_  in
@@ -114,7 +114,7 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
         let parameters = dictionaryFromJetpackMonitorSettings(settings)
 
-        wordPressComRestApi.POST(path!,
+        wordPressComRestApi.POST(path,
                                  parameters: parameters,
                                  success: {
                                     _,_  in
@@ -132,7 +132,7 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
         let parameters = [ModuleOptionKeys.active: active]
 
-        wordPressComRestApi.POST(path!,
+        wordPressComRestApi.POST(path,
                                  parameters: parameters as [String : AnyObject],
                                  success: {
                                      _,_  in
@@ -149,7 +149,7 @@ public class BlogJetpackSettingsServiceRemote: ServiceRemoteWordPressComREST {
         let endpoint = "jetpack-blogs/\(siteID)/mine/delete"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
-        wordPressComRestApi.POST(path!,
+        wordPressComRestApi.POST(path,
                                  parameters: nil,
                                  success: {
                                      _,_  in

@@ -74,38 +74,50 @@ enum EmailMagicLinkSource: Int {
 @objc
 class LoginFieldsMeta: NSObject {
 
-    /// Indicates where the Magic Link Email was sent from. 
+    /// Indicates where the Magic Link Email was sent from.
+    ///
     var emailMagicLinkSource: EmailMagicLinkSource?
 
     /// Indicates whether a self-hosted user is attempting to log in to Jetpack
+    ///
     @objc var jetpackLogin: Bool {
-        if let _ = self.jetpackBlogID {
-            return true
-        }
-        return false
+        return jetpackBlogXMLRPC != nil && jetpackBlogUsername != nil
     }
-    @objc var jetpackBlogID: NSManagedObjectID?
+
+    /// Username of the selfhosted site for which we're attempting to perform a Jetpack Connection.
+    ///
+    @objc var jetpackBlogUsername: String?
+
+    /// XMLRPC of the selfhosted site for which we're attempting to perform a Jetpack Connection.
+    ///
+    @objc var jetpackBlogXMLRPC: String?
 
     /// Indicates whether a user is logging in via the wpcom flow or a self-hosted flow.  Used by the
     /// the LoginFacade in its branching logic.
     /// This is a good candidate to refactor out and call the proper login method directly.
+    ///
     @objc var userIsDotCom = true
 
     /// Indicates a wpcom account created via social sign up that requires either a magic link, or a social log in option.
     /// If a user signed up via social sign up and subsequently reset their password this field will be false.
+    ///
     @objc var passwordless = false
 
     /// Should point to the site's xmlrpc.php for a self-hosted log in.  Should be the value returned via XML-RPC discovery.
+    ///
     @objc var xmlrpcURL: NSURL?
 
     /// Meta data about a site. This information is fetched and then displayed on the login epilogue.
-    @objc var siteInfo: SiteInfo?
+    ///
+    var siteInfo: WordPressComSiteInfo?
 
     /// Flags whether a 2fa challenge had to be satisfied before a log in could be complete.
     /// Included in analytics after a successful login.
+    ///
     @objc var requiredMultifactor = false // A 2fa prompt was needed.
 
     /// Identifies a social login and the service used.
+    ///
     var socialService: SocialServiceName?
 
     @objc var socialServiceIDToken: String?

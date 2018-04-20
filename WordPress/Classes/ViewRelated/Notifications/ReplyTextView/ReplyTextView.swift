@@ -369,7 +369,7 @@ private extension ReplyTextView {
 
         /// Maximum number of *visible* lines
         ///
-        static let maximumNumberOfVisibleLines = 3
+        static let maximumNumberOfVisibleLines = 5
 
         /// Default Line Height. Used as a safety measure, in case the actual font is not yet loaded.
         ///

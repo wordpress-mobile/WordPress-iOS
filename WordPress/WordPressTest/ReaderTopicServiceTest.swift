@@ -149,7 +149,7 @@ class ReaderTopicSwiftTest: XCTestCase {
 
         // Merge new set of topics
         expect = expectation(description: "topics saved expectation")
-        let foo = remoteTopics.first as RemoteReaderTopic!
+        let foo = remoteTopics.first as RemoteReaderTopic?
         service.mergeMenuTopics([foo!], withSuccess: { () -> Void in
             expect.fulfill()
         })

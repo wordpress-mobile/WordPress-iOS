@@ -68,6 +68,10 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     NSParameterAssert(account != nil);
     NSAssert(account.authToken.length > 0, @"Account should have an authToken for WP.com");
 
+    if ([[self defaultWordPressComAccount] isEqual:account]) {
+        return;
+    }
+
     [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
@@ -144,20 +148,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return [account.uuid isEqualToString:uuid];
 }
 
-- (void)isPasswordlessAccount:(NSString *)identifier success:(void (^)(BOOL passwordless))success failure:(void (^)(NSError *error))failure
-{
-    id<AccountServiceRemote> remote = [self remoteForAnonymous];
-    [remote isPasswordlessAccount:identifier success:^(BOOL passwordless) {
-        if (success) {
-            success(passwordless);
-        }
-    } failure:^(NSError * _Nonnull error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
 - (void)isEmailAvailable:(NSString *)email success:(void (^)(BOOL available))success failure:(void (^)(NSError *error))failure
 {
     id<AccountServiceRemote> remote = [self remoteForAnonymous];
@@ -186,44 +176,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
             failure(error);
         }
     }];
-}
-
-
-- (void)requestAuthenticationLink:(NSString *)email success:(void (^)(void))success failure:(void (^)(NSError *error))failure
-{
-    id<AccountServiceRemote> remote = [self remoteForAnonymous];
-    [remote requestWPComAuthLinkForEmail:email
-                                clientID:ApiCredentials.client
-                            clientSecret:ApiCredentials.secret
-                             wpcomScheme:WPComScheme
-                                 success:^{
-                                     if (success) {
-                                         success();
-                                     }
-                                 } failure:^(NSError *error) {
-                                     if (failure) {
-                                         failure(error);
-                                     }
-                                 }];
-}
-
-- (void)requestSignupLink:(NSString *)email success:(void (^)(void))success failure:(void (^)(NSError *error))failure
-{
-    id<AccountServiceRemote> remote = [self remoteForAnonymous];
-    
-    [remote requestWPComSignupLinkForEmail:email
-                                  clientID:ApiCredentials.client
-                              clientSecret:ApiCredentials.secret
-                               wpcomScheme:WPComScheme
-                                   success:^{
-                                       if (success) {
-                                           success();
-                                       }
-                                   } failure:^(NSError *error) {
-                                       if (failure) {
-                                           failure(error);
-                                       }
-                                   }];
 }
 
 - (void)requestVerificationEmail:(void (^)(void))success failure:(void (^)(NSError * _Nonnull))failure
