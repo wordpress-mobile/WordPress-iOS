@@ -41,6 +41,7 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowFormat,
     PostSettingsRowFeaturedImage,
     PostSettingsRowFeaturedImageAdd,
+    PostSettingsRowFeaturedImageRemove,
     PostSettingsRowFeaturedLoading,
     PostSettingsRowShareConnection,
     PostSettingsRowShareMessage,
@@ -567,6 +568,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         [self showFeaturedImageSelector];
     } else if (cell.tag == PostSettingsRowFeaturedImageAdd) {
         [self showFeaturedImageSelector];
+    } else if (cell.tag == PostSettingsRowFeaturedImageRemove) {
+        [self showFeaturedImageRemoveOrRetryAction];
     } else if (cell.tag == PostSettingsRowShareConnection) {
         [self toggleShareConnectionForIndexPath:indexPath];
     } else if (cell.tag == PostSettingsRowShareMessage) {
@@ -729,14 +732,21 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
             self.isUploadingMedia = YES;
             [self setupObservingOfMedia: self.apost.featuredImage];
         }
-        WPProgressTableViewCell * progressCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewProgressCellIdentifier forIndexPath:indexPath];
-        [progressCell setProgress:self.featuredImageProgress];
-        [progressCell.imageView setImage:self.featuredImageProgress.userInfo[WPProgressImageThumbnailKey]];
-        progressCell.textLabel.text = self.featuredImageProgress.localizedDescription;
-        progressCell.detailTextLabel.text = self.featuredImageProgress.localizedAdditionalDescription;
-        progressCell.tag = PostSettingsRowFeaturedLoading;
-        [WPStyleGuide configureTableViewCell:progressCell];
-        cell = progressCell;
+        if (self.progressCell == nil) {
+          self.progressCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewProgressCellIdentifier forIndexPath:indexPath];
+        }
+        [self.progressCell setProgress:self.featuredImageProgress];
+        [self.progressCell.imageView setImage:self.featuredImageProgress.userInfo[WPProgressImageThumbnailKey]];
+        self.progressCell.textLabel.text = self.featuredImageProgress.localizedDescription;
+        self.progressCell.detailTextLabel.text = self.featuredImageProgress.localizedAdditionalDescription;
+        self.progressCell.tag = PostSettingsRowFeaturedLoading;
+        [WPStyleGuide configureTableViewCell:self.progressCell];
+        cell = self.progressCell;
+    } else if (self.apost.featuredImage && self.apost.featuredImage.remoteStatus == MediaRemoteStatusFailed) {
+        WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
+        activityCell.textLabel.text = NSLocalizedString(@"Upload failed. Tap for options.", @"Description to show on post setting for a featured image that failed to upload.");
+        activityCell.tag = PostSettingsRowFeaturedImageRemove;
+        cell = activityCell;
     } else {
         static NSString *FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
         PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:FeaturedImageCellIdentifier];
