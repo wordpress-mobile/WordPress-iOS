@@ -50,6 +50,7 @@ extension PostSettingsViewController {
             featuredImageProgress?.kind = .file
             featuredImageProgress?.setUserInfoObject(Progress.FileOperationKind.copying, forKey: ProgressUserInfoKey.fileOperationKindKey)
             featuredImageProgress?.localizedDescription = NSLocalizedString("Uploading...", comment: "Label to show while uploading media to server")
+            progressCell?.setProgress(progress)
             tableView.reloadData()
         case .ended:
             isUploadingMedia = false
@@ -67,6 +68,45 @@ extension PostSettingsViewController {
         case .progress:
             break
         }
+    }
+
+    @objc func showFeaturedImageRemoveOrRetryAction() {
+        guard let media = apost.featuredImage else {
+            return
+        }
+
+        let alertController = UIAlertController(title: FeaturedImageActionSheet.title, message: nil, preferredStyle: .actionSheet)
+        alertController.addActionWithTitle(FeaturedImageActionSheet.dismissActionTitle,
+                                           style: .cancel,
+                                           handler: nil)
+
+        alertController.addActionWithTitle(FeaturedImageActionSheet.retryUploadActionTitle,
+                                           style: .default,
+                                           handler: { (action) in
+                                                self.setFeaturedImage(media: media)
+        })
+
+        alertController.addActionWithTitle(FeaturedImageActionSheet.removeActionTitle,
+                                           style: .destructive,
+                                           handler: { (action) in
+                                                self.apost.featuredImage = nil
+                                                self.apost.removeMediaObject(media)
+        })
+        if let error = media.error {
+            alertController.message = error.localizedDescription
+        }
+        let anchorView = self.tableView!
+        alertController.popoverPresentationController?.sourceView = anchorView
+        alertController.popoverPresentationController?.sourceRect = CGRect(origin: anchorView.center, size: CGSize(width: 1, height: 1))
+        alertController.popoverPresentationController?.permittedArrowDirections = .any
+        present(alertController, animated: true, completion: nil)
+    }
+
+    struct FeaturedImageActionSheet {
+        static let title = NSLocalizedString("Featured Image Options", comment: "Title for action sheet with featured media options.")
+        static let dismissActionTitle = NSLocalizedString("Dismiss", comment: "User action to dismiss featured media options.")
+        static let retryUploadActionTitle = NSLocalizedString("Retry", comment: "User action to retry featured media upload.")
+        static let removeActionTitle = NSLocalizedString("Remove", comment: "User action to remove featured media.")
     }
 
 }
