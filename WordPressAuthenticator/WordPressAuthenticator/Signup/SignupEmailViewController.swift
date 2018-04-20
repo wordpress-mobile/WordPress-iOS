@@ -1,5 +1,6 @@
 import UIKit
 import WordPressShared
+import WordPressKit
 
 
 class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
