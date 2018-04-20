@@ -1287,8 +1287,20 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
 
             // to be implemented
         case WPAnalyticsStatDefaultAccountChanged:
+        case WPAnalyticsStatEditorAddedPhotoViaStockPhotos:
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
+        case WPAnalyticsStatMediaLibraryAddedPhotoViaDeviceLibrary:
+        case WPAnalyticsStatMediaLibraryAddedPhotoViaOtherApps:
+        case WPAnalyticsStatMediaLibraryAddedPhotoViaStockPhotos:
+        case WPAnalyticsStatMediaLibraryAddedPhotoViaCamera:
+        case WPAnalyticsStatMediaLibraryAddedVideoViaDeviceLibrary:
+        case WPAnalyticsStatMediaLibraryAddedVideoViaCamera:
+        case WPAnalyticsStatMediaLibraryAddedVideoViaOtherApps:
+        case WPAnalyticsStatSpotlightSearchOpenedApp:
+        case WPAnalyticsStatStockMediaAccessed:
+        case WPAnalyticsStatStockMediaSearched:
+        case WPAnalyticsStatStockMediaUploaded:
         case WPAnalyticsStatMaxValue:
             return nil;
     }
