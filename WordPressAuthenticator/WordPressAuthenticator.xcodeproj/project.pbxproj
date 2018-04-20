@@ -32,6 +32,8 @@
 		B56090E5208A4F9D00399AE4 /* WPWalkthroughTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = B56090DB208A4F9C00399AE4 /* WPWalkthroughTextField.h */; };
 		B56090E6208A4F9D00399AE4 /* WPNUXPrimaryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = B56090DC208A4F9C00399AE4 /* WPNUXPrimaryButton.m */; };
 		B56090E7208A4F9D00399AE4 /* WPNUXSecondaryButton.h in Headers */ = {isa = PBXBuildFile; fileRef = B56090DD208A4F9D00399AE4 /* WPNUXSecondaryButton.h */; };
+		B56090EA208A51D000399AE4 /* LoginFields+Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56090E8208A51D000399AE4 /* LoginFields+Validation.swift */; };
+		B56090EB208A51D000399AE4 /* LoginFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56090E9208A51D000399AE4 /* LoginFields.swift */; };
 		B5ED78FE207E976500A8FD8C /* WordPressAuthenticator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ED78F4207E976500A8FD8C /* WordPressAuthenticator.framework */; };
 		B5ED7905207E976500A8FD8C /* WordPressAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = B5ED78F7207E976500A8FD8C /* WordPressAuthenticator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5ED7912207E981400A8FD8C /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ED7911207E981400A8FD8C /* WordPressKit.framework */; };
@@ -85,6 +87,8 @@
 		B56090DB208A4F9C00399AE4 /* WPWalkthroughTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWalkthroughTextField.h; sourceTree = "<group>"; };
 		B56090DC208A4F9C00399AE4 /* WPNUXPrimaryButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNUXPrimaryButton.m; sourceTree = "<group>"; };
 		B56090DD208A4F9D00399AE4 /* WPNUXSecondaryButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXSecondaryButton.h; sourceTree = "<group>"; };
+		B56090E8208A51D000399AE4 /* LoginFields+Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LoginFields+Validation.swift"; sourceTree = "<group>"; };
+		B56090E9208A51D000399AE4 /* LoginFields.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFields.swift; sourceTree = "<group>"; };
 		B5ED78F4207E976500A8FD8C /* WordPressAuthenticator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WordPressAuthenticator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5ED78F7207E976500A8FD8C /* WordPressAuthenticator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WordPressAuthenticator.h; sourceTree = "<group>"; };
 		B5ED78F8207E976500A8FD8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -197,6 +201,8 @@
 		B5609098208A4EAF00399AE4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B56090E9208A51D000399AE4 /* LoginFields.swift */,
+				B56090E8208A51D000399AE4 /* LoginFields+Validation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -507,6 +513,7 @@
 				B56090D1208A4F5400399AE4 /* NUXViewController.swift in Sources */,
 				B56090D2208A4F5400399AE4 /* NUXButton.swift in Sources */,
 				B56090D3208A4F5400399AE4 /* NUXLinkAuthViewController.swift in Sources */,
+				B56090EA208A51D000399AE4 /* LoginFields+Validation.swift in Sources */,
 				B56090E2208A4F9D00399AE4 /* WPNUXSecondaryButton.m in Sources */,
 				B56090E6208A4F9D00399AE4 /* WPNUXPrimaryButton.m in Sources */,
 				B56090CF208A4F5400399AE4 /* NUXCollectionViewController.swift in Sources */,
@@ -514,6 +521,7 @@
 				B56090C7208A4F5400399AE4 /* NUXKeyboardResponder.swift in Sources */,
 				B56090C9208A4F5400399AE4 /* NUXLinkMailViewController.swift in Sources */,
 				B56090C8208A4F5400399AE4 /* NUXHelpBadgeLabel.swift in Sources */,
+				B56090EB208A51D000399AE4 /* LoginFields.swift in Sources */,
 				B56090C6208A4F5400399AE4 /* NUXButtonViewController.swift in Sources */,
 				B5ED791F207E993E00A8FD8C /* CocoaLumberjack.swift in Sources */,
 				B56090CC208A4F5400399AE4 /* NUXTableViewController.swift in Sources */,
