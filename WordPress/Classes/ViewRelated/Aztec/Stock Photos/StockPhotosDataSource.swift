@@ -9,7 +9,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     var observers = [String: WPMediaChangesBlock]()
     private var dataLoader: StockPhotosDataLoader?
 
-    private let throttle = Throttle(seconds: 1)
+    private let scheduler = Scheduler(seconds: 0.5)
 
 
     init(service: StockPhotosService) {
@@ -34,7 +34,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
             return
         }
 
-        throttle.throttle { [weak self] in
+        scheduler.debounce { [weak self] in
             let params = StockPhotosSearchParams(text: searchText, pageable: StockPhotosPageable.first())
             self?.search(params)
         }
