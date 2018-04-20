@@ -34,7 +34,7 @@ open class ActivityTableViewCell: WPTableViewCell {
             rewindIcon.isHidden = true
         } else {
             contentView.backgroundColor = Style.backgroundColor()
-            rewindIconContainer.isHidden  = !activity.rewindable
+            rewindIconContainer.isHidden  = !activity.isRewindable
         }
     }
 
