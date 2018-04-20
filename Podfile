@@ -12,7 +12,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def shared_with_all_pods
-  pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '05e58447869691d475df31bda758acbbd36c1ee9'
+  pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => 'c12ec2133afb0c707eff5795efe9deed60b0bd74'
   pod 'CocoaLumberjack', '3.4.1'
   pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
   pod 'NSObject-SafeExpectations', '0.0.2'
