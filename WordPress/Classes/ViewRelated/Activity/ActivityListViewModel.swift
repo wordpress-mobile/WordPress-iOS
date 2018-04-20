@@ -40,9 +40,7 @@ enum ActivityListViewModel {
         case .loading, .error:
             return .Empty
         case .ready(let activities):
-            let rows = activities.filter({ activity in
-                !activity.isDiscarded
-            }).map({ activity in
+            let rows = activities.map({ activity in
                 return ActivityListRow(
                     activity: activity,
                     action: { (row) in
