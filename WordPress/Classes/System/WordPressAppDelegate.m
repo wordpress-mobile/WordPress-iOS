@@ -30,6 +30,7 @@
 #import "HelpshiftUtils.h"
 #import "TodayExtensionService.h"
 #import "WPAuthTokenIssueSolver.h"
+#import <ZendeskSDK/ZendeskSDK.h>
 
 // Networking
 #import "WPUserAgent.h"
@@ -193,7 +194,8 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
         if ([URLString rangeOfString:@"magic-login"].length) {
             DDLogInfo(@"App launched with authentication link");
-            returnValue = [WordPressAuthenticator openAuthenticationURL:url fromRootViewController:self.window.rootViewController];
+            BOOL allowWordPressComAuth = [AccountHelper isDotcomAvailable] == false;
+            returnValue = [WordPressAuthenticator openAuthenticationURL:url allowWordPressComAuth:allowWordPressComAuth fromRootViewController:self.window.rootViewController];
         } else if ([URLString rangeOfString:@"viewpost"].length) {
             // View the post specified by the shared blog ID and post ID
             NSDictionary *params = [[url query] dictionaryFromQueryString];
@@ -383,9 +385,14 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self toggleExtraDebuggingIfNeeded];
 #if DEBUG
     [KeychainTools processKeychainDebugArguments];
+    [ZDKLogger enable:YES];
 #endif
 
     [HelpshiftUtils setup];
+    
+    if ([Feature enabled:FeatureFlagZendeskMobile]) {
+        [ZendeskUtils setup];
+    }
 
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];

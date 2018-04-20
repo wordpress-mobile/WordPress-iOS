@@ -19,6 +19,9 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
         }
     }
 
+    private enum Constants {
+        static let headsUpDismissDelay = TimeInterval(1)
+    }
 
     // MARK: - Lifecycle Methods
 
@@ -49,7 +52,7 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
         nc.addObserver(self, selector: #selector(applicationBecameInactive), name: .UIApplicationWillResignActive, object: nil)
         nc.addObserver(self, selector: #selector(applicationBecameActive), name: .UIApplicationDidBecomeActive, object: nil)
 
-        WordPressAuthenticator.post(event: .loginTwoFactorFormViewed)
+        WordPressAuthenticator.track(.loginTwoFactorFormViewed)
     }
 
 
@@ -162,32 +165,58 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
     }
 
     func finishedLogin(withNonceAuthToken authToken: String) {
-        let username = loginFields.username
-        syncWPCom(username, authToken: authToken, requiredMultifactor: true)
+        let credentials = WordPressCredentials.wpcom(username: loginFields.username, authToken: authToken, isJetpackLogin: isJetpackLogin, multifactor: true)
+        syncWPComAndPresentEpilogue(credentials: credentials)
+
         // Disconnect now that we're done with Google.
         GIDSignIn.sharedInstance().disconnect()
-        WordPressAuthenticator.post(event: .loginSocialSuccess)
+        WordPressAuthenticator.track(.loginSocialSuccess)
     }
 
     /// Only allow digits in the 2FA text field
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString: String) -> Bool {
-        let allowedCharacters = CharacterSet.decimalDigits
-        let characterSet = CharacterSet(charactersIn: replacementString)
-        let isOnlyNumbers = allowedCharacters.isSuperset(of: characterSet)
-        let isShortEnough = (textField.text?.count ?? 0) + replacementString.count <= SocialLogin2FANonceInfo.TwoFactorTypeLengths.backup.rawValue
-
-        if isOnlyNumbers && isShortEnough {
-            displayError(message: "")
+        guard let fieldText = textField.text as NSString? else {
             return true
         }
+        let resultString = fieldText.replacingCharacters(in: range, with: replacementString)
 
-        if let pasteString = UIPasteboard.general.string, pasteString == replacementString {
-            displayError(message: NSLocalizedString("That doesn't appear to be a valid verification code.", comment: "Shown when a user pastes a code into the two factor field that contains letters or is the wrong length"))
-        } else if !isOnlyNumbers {
+        switch isValidCode(code: resultString) {
+        case .valid(let cleanedCode):
+            displayError(message: "")
+
+            // because the string was stripped of whitespace, we can't return true and we update the textfield ourselves
+            textField.text = cleanedCode
+            handleTextFieldDidChange()
+        case .invalid(nonNumbers: true):
             displayError(message: NSLocalizedString("A verification code will only contain numbers.", comment: "Shown when a user types a non-number into the two factor field."))
+        default:
+            if let pasteString = UIPasteboard.general.string, pasteString == replacementString {
+                displayError(message: NSLocalizedString("That doesn't appear to be a valid verification code.", comment: "Shown when a user pastes a code into the two factor field that contains letters or is the wrong length"))
+            }
         }
 
         return false
+    }
+
+    private enum CodeValidation {
+        case invalid(nonNumbers: Bool)
+        case valid(String)
+    }
+
+    private func isValidCode(code: String) -> CodeValidation {
+        let codeStripped = code.components(separatedBy: .whitespacesAndNewlines).joined()
+        let allowedCharacters = CharacterSet.decimalDigits
+        let resultCharacterSet = CharacterSet(charactersIn: codeStripped)
+        let isOnlyNumbers = allowedCharacters.isSuperset(of: resultCharacterSet)
+        let isShortEnough = codeStripped.count <= SocialLogin2FANonceInfo.TwoFactorTypeLengths.backup.rawValue
+
+        if isOnlyNumbers && isShortEnough {
+            return .valid(codeStripped)
+        } else if isOnlyNumbers {
+            return .invalid(nonNumbers: false)
+        } else {
+            return .invalid(nonNumbers: true)
+        }
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -195,15 +224,12 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
         return false
     }
 
-
-    // MARK: - Actions
-
-    @IBAction func handleTextFieldDidChange(_ sender: UITextField) {
+    func handleTextFieldDidChange() {
         loginFields.multifactorCode = verificationCodeField.nonNilTrimmedText()
-
         configureSubmitButton(animating: false)
     }
 
+    // MARK: - Actions
 
     @IBAction func handleSubmitForm() {
         validateForm()
@@ -217,7 +243,8 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
 
     @IBAction func handleSendVerificationButtonTapped(_ sender: UIButton) {
         let message = NSLocalizedString("SMS Sent", comment: "One Time Code has been sent via SMS")
-        SVProgressHUD.showDismissibleSuccess(withStatus: message)
+        SVProgressHUD.showSuccess(withStatus: message)
+        SVProgressHUD.dismiss(withDelay: Constants.headsUpDismissDelay)
 
         if let _ = loginFields.nonceInfo {
             // social login
@@ -244,13 +271,15 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
             pasteString != pasteboardBeforeBackground else {
                 return
         }
-        let isNumeric = pasteString.rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
-        guard isNumeric, let _ = SocialLogin2FANonceInfo.TwoFactorTypeLengths(rawValue: pasteString.count) else {
-            return
+
+        switch isValidCode(code: pasteString) {
+        case .valid(let cleanedCode):
+            displayError(message: "")
+            verificationCodeField.text = cleanedCode
+            handleTextFieldDidChange()
+        default:
+            break
         }
-        displayError(message: "")
-        verificationCodeField.text = pasteString
-        handleTextFieldDidChange(verificationCodeField)
     }
 
 
