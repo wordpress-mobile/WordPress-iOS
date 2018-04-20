@@ -40,8 +40,6 @@
 #import "InteractivePostView.h"
 #import "InteractivePostViewDelegate.h"
 
-#import "LoginFacade.h"
-
 #import "Media.h"
 #import "MediaLibraryPickerDataSource.h"
 #import "MediaService.h"
@@ -101,7 +99,6 @@
 #import "UIView+Subviews.h"
 
 #import "WordPressAppDelegate.h"
-#import "WordPressXMLRPCAPIFacade.h"
 #import "WPAccount.h"
 #import "WPActivityDefaults.h"
 #import "WPAnimatedBox.h"
@@ -115,8 +112,6 @@
 #import "WPGUIConstants.h"
 #import "WPImageViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
-#import "WPNUXMainButton.h"
-#import "WPNUXSecondaryButton.h"
 #import "WPScrollableViewController.h"
 #import "WPStyleGuide+Posts.h"
 #import "WPStyleGuide+ReadableMargins.h"
@@ -124,10 +119,8 @@
 #import "WPTableImageSource.h"
 #import "WPTableViewHandler.h"
 #import "WPUserAgent.h"
-#import "WPWalkthroughOverlayView.h"
 #import "WPWebViewController.h"
 #import "WPTabBarController.h"
-#import "WPWalkthroughTextField.h"
 #import "WPUserAgent.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import "WPLogger.h"
