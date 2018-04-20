@@ -1,1 +1,3 @@
-For this release, we polished some pixels, waved a few bugs goodbye, and worked behind the scenes to make the WordPress experience smoother for our app users.
+Uploads are now asynchronous!
+Pages that fail to upload will now be marked red.
+The input field for writing comments can now grow up to 5 lines.
