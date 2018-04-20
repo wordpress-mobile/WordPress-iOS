@@ -2,6 +2,9 @@ import UIKit
 import SafariServices
 
 extension FancyAlertViewController {
+
+    typealias ButtonConfig = FancyAlertViewController.Config.ButtonConfig
+
     private struct Strings {
         static let titleText = NSLocalizedString("Publish with Confidence", comment: "Title of alert informing users about the async publishing feature.")
         static let bodyText = NSLocalizedString("You can now leave the editor and your post will save and publish behind the scenes! Give it a try!", comment: "Body text of alert informing users about the async publishing feature.")
