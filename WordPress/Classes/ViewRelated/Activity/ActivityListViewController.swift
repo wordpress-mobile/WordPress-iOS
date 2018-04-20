@@ -149,7 +149,7 @@ extension ActivityListViewController {
             return false
         }
 
-        return (!row.activity.isDiscarded && row.activity.rewindable)
+        return row.activity.rewindable
     }
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
@@ -179,8 +179,7 @@ extension ActivityListViewController: WPNoResultsViewDelegate {
 extension ActivityListViewController: ActivityRewindPresenter {
 
     func presentRewindFor(activity: Activity) {
-        guard let rewindID = activity.rewindID,
-            !activity.isDiscarded && activity.rewindable else {
+        guard let rewindID = activity.rewindID, activity.rewindable else {
             return
         }
 
