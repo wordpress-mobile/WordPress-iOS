@@ -1,3 +1,6 @@
+import WordPressShared
+
+
 class LoginSocialErrorCell: UITableViewCell {
     private let errorTitle: String
     private let errorDescription: String
