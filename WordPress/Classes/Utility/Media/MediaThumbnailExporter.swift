@@ -120,6 +120,8 @@ class MediaThumbnailExporter: MediaExporter {
             switch expected {
             case .image, .video, .gif:
                 return true
+            case .other:
+                return false
             }
         } catch {
             return false
@@ -154,6 +156,8 @@ class MediaThumbnailExporter: MediaExporter {
                 return exportImageThumbnail(at: url, onCompletion: onCompletion, onError: onError)
             case .video:
                 return exportVideoThumbnail(at: url, onCompletion: onCompletion, onError: onError)
+            case .other:
+                return Progress.discreteCompletedProgress()
             }
         } catch {
             onError(exporterErrorWith(error: error))

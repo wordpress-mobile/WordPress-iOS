@@ -43,6 +43,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 {
     NSProgress *createProgress = [NSProgress discreteProgressWithTotalUnitCount:1];
     __block Media *media;
+    __block NSArray *allowedFileTypes = [NSArray array];
     [self.managedObjectContext performBlockAndWait:^{
         AbstractPost *post = nil;
         Blog *blog = nil;
@@ -59,6 +60,10 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
                 completion(nil, error);
             }
             return;
+        }
+        
+        if (blog.allowedFileTypes != nil) {
+            allowedFileTypes = blog.allowedFileTypes.allObjects;
         }
 
         if (post != nil) {
@@ -102,6 +107,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 
         // Export based on the type of the exportable.
         MediaImportService *importService = [[MediaImportService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        importService.allowableFileExtensions = allowedFileTypes;
         NSProgress *importProgress = [importService importResource:exportable toMedia:media onCompletion:completionWithMedia onError:completionWithError];
         [createProgress addChild:importProgress withPendingUnitCount:1];
     }];

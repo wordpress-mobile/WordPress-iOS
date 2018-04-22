@@ -411,7 +411,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     // MARK: - Document Picker
 
     private func showDocumentPicker() {
-        let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
+        let docTypes = blog.allowedTypeIdentifiers
         let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
         docPicker.delegate = self
         if #available(iOS 11.0, *) {
