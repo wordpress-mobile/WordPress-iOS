@@ -55,11 +55,9 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             return;
         }
         [service followSiteWithID:siteID success:^(){
-            if (success) {
-                success();
-            }
+            [self fetchTopicServiceWithID:siteID success:success failure:failure];
+            
             [WPAppAnalytics track:WPAnalyticsStatReaderSiteFollowed withBlogID:[NSNumber numberWithUnsignedInteger:siteID]];
-
         } failure:failure];
 
     } failure:^(NSError *error) {
@@ -206,6 +204,23 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 }
 
 #pragma mark - Private Methods
+
+
+/**
+ Fetch the topic after a site is followed
+ */
+- (void)fetchTopicServiceWithID:(NSUInteger)siteID success:(void(^)(void))success failure:(void(^)(NSError *error))failure
+{
+    DDLogInfo(@"Fetch and store followed topic");
+    ReaderTopicService *service  = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [service siteTopicForSiteWithID:[NSNumber numberWithUnsignedInteger:siteID]
+                             isFeed:false
+                            success:^(NSManagedObjectID *objectID, BOOL isFollowing) {
+                                if (success) {
+                                    success();
+                                }
+    } failure:failure];
+}
 
 /**
  Get the api to use for the request.
