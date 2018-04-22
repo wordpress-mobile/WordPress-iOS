@@ -3,8 +3,7 @@ import CocoaLumberjack
 import WordPressShared
 import QuartzCore
 
-open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration {
-
+open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration, Subscriptable {
     @objc static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"
 
     // Structs for Constants
@@ -98,6 +97,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
+    func managedObjectContext() -> NSManagedObjectContext {
+        return ContextManager.sharedInstance().mainContext
+    }
+    
     // MARK: - Convenience Factories
 
 
@@ -982,7 +985,35 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 
     @IBAction func didTapMenuButton(_ sender: UIButton) {
-        ReaderPostMenu.showMenuForPost(post!, fromView: menuButton, inViewController: self)
+        guard let post = post,
+            let context = post.managedObjectContext else {
+            return
+        }
+        
+        guard post.isFollowing else {
+            ReaderPostMenu.showMenuForPost(post, fromView: menuButton, inViewController: self)
+            return
+        }
+        
+        let service = ReaderTopicService(managedObjectContext: context)
+        if let topic = service.findSiteTopic(withSiteID: post.siteID) {
+            ReaderPostMenu.showMenuForPost(post, topic: topic, fromView: menuButton, inViewController: self)
+            return
+        }
+        
+        SVProgressHUD.show()
+        service.siteTopicForSite(withID: post.siteID,
+                                 isFeed: false,
+                                 success: { [weak self] (objectID: NSManagedObjectID?, isFollowing: Bool) in
+                                    SVProgressHUD.dismiss()
+                                    if let topic: ReaderSiteTopic = self?.existingObjectFor(objectID: objectID),
+                                        let post: ReaderPost = self?.existingObjectFor(objectID: post.objectID),
+                                        let menuButton = self?.menuButton {
+                                        ReaderPostMenu.showMenuForPost(post, topic: topic, fromView: menuButton, inViewController: self)
+                                    }
+            }, failure: {_ in
+                SVProgressHUD.dismiss()
+        })
     }
 
 
