@@ -9,13 +9,22 @@ struct ReaderPostMenuButtonTitles {
     static let visit = NSLocalizedString("Visit", comment: "An option to visit the site to which a specific post belongs")
     static let unfollow = NSLocalizedString("Unfollow Site", comment: "Verb. An option to unfollow a site.")
     static let follow = NSLocalizedString("Follow Site", comment: "Verb. An option to follow a site.")
+    static let subscribe = NSLocalizedString("Turn on site notifications", comment: "Verb. An option to switch on site notifications.")
+    static let unsubscribe = NSLocalizedString("Turn off site notifications", comment: "Verb. An option to switch off site notifications.")
 }
 
 
 open class ReaderPostMenu {
+    fileprivate typealias Dispatcher = Subscriptable & UIViewController
+    
     open static let BlockSiteNotification = "ReaderPostMenuBlockSiteNotification"
 
-    open class func showMenuForPost(_ post: ReaderPost, fromView anchorView: UIView, inViewController viewController: UIViewController) {
+    open class func showMenuForPost(_ post: ReaderPost, topic: ReaderSiteTopic? = nil, fromView anchorView: UIView, inViewController viewController: UIViewController?) {
+
+        guard let viewController = viewController as? Dispatcher else {
+            return
+        }
+        
         // Create the action sheet
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addCancelActionWithTitle(ReaderPostMenuButtonTitles.cancel, handler: nil)
@@ -29,12 +38,29 @@ open class ReaderPostMenu {
             })
         }
 
+        // Notification
+        if let topic = topic,
+            post.isFollowing {
+            let isSubscribedForPostNotifications = topic.isSubscribedForPostNotifications()
+            let buttonTitle = isSubscribedForPostNotifications ? ReaderPostMenuButtonTitles.unsubscribe : ReaderPostMenuButtonTitles.subscribe
+            alertController.addActionWithTitle(buttonTitle,
+                                               style: .default,
+                                               handler: { (action: UIAlertAction) in
+                                                if let topic: ReaderSiteTopic = viewController.existingObjectFor(objectID: topic.objectID) {
+                                                    viewController.toggleSubscribingNotificationsFor(siteID: topic.siteID,
+                                                                                                     subscribe: !topic.isSubscribedForPostNotifications())
+                                                }
+            })
+        }
+        
         // Following
         let buttonTitle = post.isFollowing ? ReaderPostMenuButtonTitles.unfollow : ReaderPostMenuButtonTitles.follow
         alertController.addActionWithTitle(buttonTitle,
             style: .default,
             handler: { (action: UIAlertAction) in
-                self.toggleFollowingForPost(post)
+                if let post: ReaderPost = viewController.existingObjectFor(objectID: post.objectID) {
+                    self.toggleFollowingForPost(post, viewController)
+                }
         })
 
         // Visit site
@@ -85,33 +111,36 @@ open class ReaderPostMenu {
     }
 
 
-    fileprivate class func toggleFollowingForPost(_ post: ReaderPost) {
+    fileprivate class func toggleFollowingForPost(_ post: ReaderPost, _ viewController: Dispatcher) {
         let generator = UINotificationFeedbackGenerator()
         generator.prepare()
 
-        var successMessage: String!
         var errorMessage: String!
         var errorTitle: String!
         if post.isFollowing {
-            successMessage = NSLocalizedString("Unfollowed site", comment: "Short confirmation that unfollowing a site was successful")
             errorTitle = NSLocalizedString("Problem Unfollowing Site", comment: "Title of a prompt")
             errorMessage = NSLocalizedString("There was a problem unfollowing the site. If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Short notice that there was a problem unfollowing a site and instructions on how to notify us of the problem.")
         } else {
-            successMessage = NSLocalizedString("Followed site", comment: "Short confirmation that following a site was successful")
             errorTitle = NSLocalizedString("Problem Following Site", comment: "Title of a prompt")
             errorMessage = NSLocalizedString("There was a problem following the site.  If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Short notice that there was a problem following a site and instructions on how to notify us of the problem.")
 
             generator.notificationOccurred(.success)
         }
 
-        SVProgressHUD.show()
-
+        let siteTitle = post.blogNameForDisplay()
+        let siteID = post.siteID
+        let toFollow = !post.isFollowing
+        
+        if !toFollow {
+            viewController.toggleSubscribingNotificationsFor(siteID: siteID, subscribe: false)
+        }
+        
         let postService = ReaderPostService(managedObjectContext: post.managedObjectContext!)
         postService.toggleFollowing(for: post, success: { () in
-            SVProgressHUD.showDismissibleSuccess(withStatus: successMessage)
-            }, failure: { (error: Error?) in
-                SVProgressHUD.dismiss()
-
+            if toFollow {
+                viewController.dispatchNoticeWith(siteTitle: siteTitle, siteID: siteID)
+            }
+        }, failure: { (error: Error?) in
                 generator.notificationOccurred(.error)
 
                 let cancelTitle = NSLocalizedString("OK", comment: "Text of an OK button to dismiss a prompt.")
