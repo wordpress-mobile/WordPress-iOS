@@ -16,7 +16,7 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - Alamofire (4.7.0)
-  - Automattic-Tracks-iOS (0.2.2):
+  - Automattic-Tracks-iOS (0.2.3):
     - CocoaLumberjack (~> 3.4.1)
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 0.4)
@@ -116,12 +116,18 @@ PODS:
   - WordPress-Aztec-iOS (1.0.0-beta.18.1)
   - WPMediaPicker (0.27)
   - wpxmlrpc (0.8.3)
+  - ZendeskSDK (1.11.0.1):
+    - ZendeskSDK/Providers (= 1.11.0.1)
+    - ZendeskSDK/UI (= 1.11.0.1)
+  - ZendeskSDK/Providers (1.11.0.1)
+  - ZendeskSDK/UI (1.11.0.1):
+    - ZendeskSDK/Providers
 
 DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
   - AFNetworking (= 3.1.0)
   - Alamofire (= 4.7.0)
-  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.2.2`)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.2.3`)
   - BuddyBuildSDK (= 1.0.17)
   - CocoaLumberjack (= 3.4.1)
   - Crashlytics (= 3.10.1)
@@ -145,31 +151,32 @@ DEPENDENCIES:
   - Starscream (= 3.0.4)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `1b9e6398f054f8726cf40de9e9a2ace753804502`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `52849f1be62bc6a6316f3828d56e8fc32f5fa8e4`)
   - WPMediaPicker (= 0.27)
   - wpxmlrpc (= 0.8.3)
+  - ZendeskSDK (= 1.11.0.1)
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.2.2
+    :tag: 0.2.3
   WordPress-Aztec-iOS:
-    :commit: 1b9e6398f054f8726cf40de9e9a2ace753804502
+    :commit: 52849f1be62bc6a6316f3828d56e8fc32f5fa8e4
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.2.2
+    :tag: 0.2.3
   WordPress-Aztec-iOS:
-    :commit: 1b9e6398f054f8726cf40de9e9a2ace753804502
+    :commit: 52849f1be62bc6a6316f3828d56e8fc32f5fa8e4
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   Alamofire: 907e0a98eb68cdb7f9d1f541a563d6ac5dc77b25
-  Automattic-Tracks-iOS: 878edd82f3e535bd94da52facd94fc0bf5542797
+  Automattic-Tracks-iOS: d8c6c6c1351b1905a73e45f431b15598d71963b5
   BuddyBuildSDK: 8ae12ee721098b356a961ea7dce70ae55f93a7d2
   CocoaLumberjack: 2e258a064cacc8eb9a2aca318e24d02a0a7fd56d
   Crashlytics: aee1a064cbbf99b32efa3f056a5f458d846bc8ff
@@ -196,10 +203,11 @@ SPEC CHECKSUMS:
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: 2e99ee80c61ba9d5f5a38560043b273830f2c9d6
+  WordPress-Aztec-iOS: 2d8c58f68f422ce521db689fb582122220e77f8d
   WPMediaPicker: 1fe532b4ff215a9dd259f08439376fc0dbab1039
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
+  ZendeskSDK: 4e075d7610e74755c576188886a073cfc5810145
 
-PODFILE CHECKSUM: ecec6a14bddbdd1bf7303d6f6b00af2a21f70404
+PODFILE CHECKSUM: d2bde7d6e03e77f1c2beee2a86cf0e2d57b24390
 
 COCOAPODS: 1.4.0
