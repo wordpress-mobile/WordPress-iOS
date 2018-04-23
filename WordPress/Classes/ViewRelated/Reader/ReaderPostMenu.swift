@@ -16,7 +16,7 @@ struct ReaderPostMenuButtonTitles {
 
 open class ReaderPostMenu {
     fileprivate typealias Dispatcher = Subscriptable & UIViewController
-    
+
     open static let BlockSiteNotification = "ReaderPostMenuBlockSiteNotification"
 
     open class func showMenuForPost(_ post: ReaderPost, topic: ReaderSiteTopic? = nil, fromView anchorView: UIView, inViewController viewController: UIViewController?) {
@@ -24,7 +24,7 @@ open class ReaderPostMenu {
         guard let viewController = viewController as? Dispatcher else {
             return
         }
-        
+
         // Create the action sheet
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addCancelActionWithTitle(ReaderPostMenuButtonTitles.cancel, handler: nil)
@@ -52,7 +52,7 @@ open class ReaderPostMenu {
                                                 }
             })
         }
-        
+
         // Following
         let buttonTitle = post.isFollowing ? ReaderPostMenuButtonTitles.unfollow : ReaderPostMenuButtonTitles.follow
         alertController.addActionWithTitle(buttonTitle,
@@ -130,11 +130,11 @@ open class ReaderPostMenu {
         let siteTitle = post.blogNameForDisplay()
         let siteID = post.siteID
         let toFollow = !post.isFollowing
-        
+
         if !toFollow {
             viewController.toggleSubscribingNotificationsFor(siteID: siteID, subscribe: false)
         }
-        
+
         let postService = ReaderPostService(managedObjectContext: post.managedObjectContext!)
         postService.toggleFollowing(for: post, success: { () in
             if toFollow {
