@@ -38,17 +38,6 @@ class NUXLinkMailViewController: LoginViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        guard let emailMagicLinkSource = emailMagicLinkSource else {
-            return
-        }
-
-        switch emailMagicLinkSource {
-        case .login:
-            WordPressAuthenticator.track(.loginMagicLinkOpenEmailClientViewed)
-        case .signup:
-            WordPressAuthenticator.track(.signupMagicLinkOpenEmailClientViewed)
-        }
     }
 
     // MARK: - Configuration
@@ -90,6 +79,16 @@ class NUXLinkMailViewController: LoginViewController {
     // MARK: - Actions
 
     @IBAction func handleOpenMailTapped(_ sender: UIButton) {
+        defer {
+            if let emailMagicLinkSource = emailMagicLinkSource {
+                switch emailMagicLinkSource {
+                case .login:
+                    WordPressAuthenticator.track(.loginMagicLinkOpenEmailClientViewed)
+                case .signup:
+                    WordPressAuthenticator.track(.signupMagicLinkOpenEmailClientViewed)
+                }
+            }
+        }
         if MFMailComposeViewController.canSendMail() {
             let url = URL(string: "message://")!
             UIApplication.shared.open(url)

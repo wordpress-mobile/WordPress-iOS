@@ -43,6 +43,10 @@ extension WPStyleGuide {
             return WPStyleGuide.lightBlue()
         }
 
+        public static func getGridiconTypeForActivity(_ activity: Activity) -> GridiconType? {
+            return stringToGridiconTypeMapping[activity.gridicon]
+        }
+
         public static func getIconForActivity(_ activity: Activity) -> UIImage? {
             guard let gridiconType = stringToGridiconTypeMapping[activity.gridicon] else {
                 return nil

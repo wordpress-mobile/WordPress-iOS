@@ -44,8 +44,6 @@ class SignupGoogleViewController: LoginViewController {
         GIDSignIn.sharedInstance().serverClientID = WordPressAuthenticator.shared.configuration.googleLoginServerClientId
 
         GIDSignIn.sharedInstance().signIn()
-
-        WordPressAuthenticator.track(.loginSocialButtonClick)
     }
 }
 
@@ -58,6 +56,7 @@ extension SignupGoogleViewController: GIDSignInDelegate {
         guard let user = user,
             let token = user.authentication.idToken,
             let email = user.profile.email else {
+                WordPressAuthenticator.track(.signupSocialButtonFailure, error: error)
                 self.navigationController?.popViewController(animated: true)
                 return
         }
@@ -85,7 +84,7 @@ extension SignupGoogleViewController: GIDSignInDelegate {
             }
         }) { [weak self] (error) in
             SVProgressHUD.dismiss()
-            WPAnalytics.track(.signupSocialFailure)
+            WordPressAuthenticator.track(.signupSocialFailure)
             guard let error = error else {
                 self?.navigationController?.popViewController(animated: true)
                 return
