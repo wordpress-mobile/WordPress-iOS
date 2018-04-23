@@ -1,7 +1,11 @@
 #import <Foundation/Foundation.h>
 
-@interface RemoteReaderSiteInfo : NSObject
 
+@class RemoteReaderSiteInfoSubscriptionEmail;
+@class RemoteReaderSiteInfoSubscriptionPost;
+
+
+@interface RemoteReaderSiteInfo: NSObject
 @property (nonatomic, strong) NSNumber *feedID;
 @property (nonatomic, strong) NSString *feedURL;
 @property (nonatomic) BOOL isFollowing;
@@ -16,5 +20,6 @@
 @property (nonatomic, strong) NSString *siteURL;
 @property (nonatomic, strong) NSNumber *subscriberCount;
 @property (nonatomic, strong) NSString *postsEndpoint;
-
+@property (nonatomic, strong) RemoteReaderSiteInfoSubscriptionPost *postSubscription;
+@property (nonatomic, strong) RemoteReaderSiteInfoSubscriptionEmail *emailSubscription;
 @end
