@@ -658,7 +658,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         let options = PostServiceSyncOptions()
         options.statuses = filter.statuses.strings
         options.authorID = author
-        options.number = numberOfPostsPerSync() as NSNumber!
+        options.number = numberOfPostsPerSync() as NSNumber?
         options.purgesLocalSync = true
 
         postService.syncPosts(
@@ -710,8 +710,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         let options = PostServiceSyncOptions()
         options.statuses = filter.statuses.strings
         options.authorID = author
-        options.number = numberOfPostsPerSync() as NSNumber!
-        options.offset = tableViewHandler.resultsController.fetchedObjects?.count as NSNumber!
+        options.number = numberOfPostsPerSync() as NSNumber?
+        options.offset = tableViewHandler.resultsController.fetchedObjects?.count as NSNumber?
 
         postService.syncPosts(
             ofType: postTypeToSync(),
@@ -879,6 +879,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             apost.date_created_gmt = Date()
             apost.status = .publish
             self.uploadPost(apost)
+            self.updateFilterWithPostStatus(.publish)
         }
 
         present(alertController, animated: true, completion: nil)
@@ -889,26 +890,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         apost.status = .scheduled
         uploadPost(apost)
+        updateFilterWithPostStatus(.scheduled)
     }
 
     fileprivate func uploadPost(_ apost: AbstractPost) {
-        let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-
-        postService.uploadPost(apost, success: nil) { [weak self] (error: Error?) in
-
-            let error = error as NSError?
-            guard let strongSelf = self else {
-                return
-            }
-
-            if error?.code == type(of: strongSelf).HTTPErrorCodeForbidden {
-                strongSelf.promptForPassword()
-            } else {
-                WPError.showXMLRPCErrorAlert(error)
-            }
-
-            strongSelf.syncItemsWithUserInteraction(false)
-        }
+        PostCoordinator.shared.save(post: apost)
     }
 
     @objc func viewPost(_ apost: AbstractPost) {
@@ -945,7 +931,15 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
-        postService.trashPost(apost, success: nil) { [weak self] (error) in
+        let trashed = (apost.status == .trash)
+
+        postService.trashPost(apost, success: {
+            // If we permanently deleted the post
+            if trashed {
+                PostCoordinator.shared.cancelAnyPendingSaveOf(post: apost)
+                MediaCoordinator.shared.cancelUploadOfAllMedia(for: apost)
+            }
+        }, failure: { [weak self] (error) in
 
             guard let strongSelf = self else {
                 return
@@ -966,7 +960,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
                     strongSelf.updateAndPerformFetchRequestRefreshingResults()
                 }
             }
-        }
+        })
     }
 
     @objc func restorePost(_ apost: AbstractPost) {

@@ -191,7 +191,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
                 }
 
                 let connections: Array = responseDict.array(forKey: ConnectionDictionaryKeys.connections)
-                let publicizeConnections: [RemotePublicizeConnection] = connections.flatMap { (dict) -> RemotePublicizeConnection? in
+                let publicizeConnections: [RemotePublicizeConnection] = connections.compactMap { (dict) -> RemotePublicizeConnection? in
                     let conn = self.remotePublicizeConnectionFromDictionary(dict as! NSDictionary)
                     return conn
                 }

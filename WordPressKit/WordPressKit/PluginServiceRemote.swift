@@ -24,6 +24,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
                 failure(ResponseError.decodingFailure)
             }
         }, failure: { (error, httpResponse) in
+            DDLogError("[PluginServiceRemoteError] Error fetching featured plugins: \(error)")
             failure(error)
         })
     }
@@ -47,6 +48,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
                 failure(self.errorFromResponse(response))
             }
         }, failure: { (error, httpResponse) in
+            DDLogError("[PluginServiceRemoteError] Error fetching site plugins: \(error)")
             failure(error)
         })
     }
@@ -75,6 +77,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
                 }
         },
             failure: { (error, _) in
+                DDLogError("[PluginServiceRemoteError] Error updating plugin: \(error)")
                 failure(error)
         })
     }
@@ -134,6 +137,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
                     failure(self.errorFromResponse(response))
                 }
             }, failure: { (error, _) in
+                DDLogError("[PluginServiceRemoteError] Error installing plugin: \(error)")
                 failure(error)
             }
         )
@@ -152,6 +156,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
             success: { _,_  in
                 success()
             }, failure: { (error, _) in
+                DDLogError("[PluginServiceRemoteError] Error removing plugin: \(error)")
                 failure(error)
             }
         )
@@ -171,6 +176,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
                 success()
             },
             failure: { (error, _) in
+                DDLogError("[PluginServiceRemoteError] Error modifying plugin: \(error)")
                 failure(error)
             })
     }

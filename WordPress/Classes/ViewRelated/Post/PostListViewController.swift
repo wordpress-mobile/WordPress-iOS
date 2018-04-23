@@ -409,7 +409,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         if recentlyTrashedPostObjectIDs.contains(post.objectID) == true && filterSettings.currentPostListFilter().filterType != .trashed {
             identifier = type(of: self).postCardRestoreCellIdentifier
-        } else if post.pathForDisplayImage?.count > 0 {
+        } else if post.featuredImageURLForDisplay() != nil {
             identifier = type(of: self).postCardImageCellIdentifier
         } else {
             identifier = type(of: self).postCardTextCellIdentifier
@@ -461,7 +461,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func presentAlertForPostBeingUploaded() {
-        let message = NSLocalizedString("This post is currently uploading. It won't take long -- try again soon and you'll be able to edit it.", comment: "Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing.")
+        let message = NSLocalizedString("This post is currently uploading. It won't take long – try again soon and you'll be able to edit it.", comment: "Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing.")
 
         let alertCancel = NSLocalizedString("OK", comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
 
