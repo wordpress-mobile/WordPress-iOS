@@ -13,4 +13,7 @@
 + (NSString *)helpshiftDomainName;
 + (NSString *)helpshiftAppId;
 + (NSString *)debuggingKey;
++ (NSString *)zendeskAppId;
++ (NSString *)zendeskUrl;
++ (NSString *)zendeskClientId;
 @end

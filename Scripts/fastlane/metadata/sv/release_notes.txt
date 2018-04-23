@@ -1,1 +1,7 @@
-I denna utgåva har vi fixat till några pixlar, sagt hejdå till några programfel och bakom kulisserna arbetat på att ge ett smidigare WordPress för dem som använder vår app.
+Inläggslista, tillgänglighet: Nu hanterar inläggslistan dynamiska typsnitt bättre.
+Inläggslista: Ny filtreringslist för inläggsstatus och författare!
+Inläggslista, tillgänglighet: Den nya filtreringslisten för inläggsstatus och författare har stöd för VoiceOver.
+Inloggning, tillgänglighet: Inloggningslflödet hanterar nu dynamiska typsnitt bättre.
+Menyer, tillgänglighet: Nu har menyavsnittet av dina webbplatser stöd för dynamiska typsnitt.
+Min profil: Nu har du en direkt inställning för redigering av din Gravatar-profilbild.
+Spotlight: Nu indexeras inlägg och sidor!

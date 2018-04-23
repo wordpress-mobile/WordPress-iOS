@@ -198,14 +198,14 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
                 if case .all = $0 { return true }
                 else { return false }
             }
-            .flatMap { $0.site }
+            .compactMap { $0.site }
             .unique
             .filter { shouldFetch(site: $0) }
     }
 
     private var feedsToFetch: [PluginDirectoryFeedType] {
         return activeQueries
-            .flatMap { $0.feedType }
+            .compactMap { $0.feedType }
             .unique
             .filter { shouldFetchDirectory(feed: $0) }
     }
@@ -227,7 +227,7 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
 
     private var pluginsToFetch: [String] {
         return activeQueries
-            .flatMap { $0.slug }
+            .compactMap { $0.slug }
             .unique
             .filter { shouldFetchDirectory(slug: $0) }
     }
@@ -306,7 +306,7 @@ extension PluginStore {
         guard !state.featuredPluginsSlugs.isEmpty else {
             return nil
         }
-        return state.featuredPluginsSlugs.flatMap { getPluginDirectoryEntry(slug: $0)}
+        return state.featuredPluginsSlugs.compactMap { getPluginDirectoryEntry(slug: $0)}
     }
 
     func getPluginDirectoryEntry(slug: String) -> PluginDirectoryEntry? {
@@ -331,7 +331,7 @@ extension PluginStore {
 
     func getPluginDirectoryFeedPlugins(from feed: PluginDirectoryFeedType) -> [PluginDirectoryEntry]? {
         guard let fetchedFeed = state.directoryFeeds[feed.slug] else { return nil }
-        let directoryEntries = fetchedFeed.pluginSlugs.flatMap { getPluginDirectoryEntry(slug: $0) }
+        let directoryEntries = fetchedFeed.pluginSlugs.compactMap { getPluginDirectoryEntry(slug: $0) }
 
         return directoryEntries
     }
@@ -693,10 +693,8 @@ private extension PluginStore {
     }
 
     func fetchFeaturedPlugins() {
-        guard let anonymousAPI = PluginServiceRemote.anonymousWordPressComRestApi(withUserAgent: WPUserAgent.wordPress()),
-            let remote = PluginServiceRemote(wordPressComRestApi: anonymousAPI) else {
-                return
-        }
+        let anonymousAPI = PluginServiceRemote.anonymousWordPressComRestApi(withUserAgent: WPUserAgent.wordPress())
+        let remote = PluginServiceRemote(wordPressComRestApi: anonymousAPI)
 
         state.fetchingFeatured = true
 

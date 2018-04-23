@@ -70,8 +70,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 @property (nonatomic, strong) UIImage *featuredImage;
 @property (nonatomic, strong) PublishDatePickerView *datePicker;
 @property (assign) BOOL textFieldDidHaveFocusBeforeOrientationChange;
-@property (nonatomic, assign) BOOL isUploadingMedia;
-@property (nonatomic, strong) NSProgress *featuredImageProgress;
+
 @property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaDataSource;
 @property (nonatomic, strong) NSArray *publicizeConnections;
 
@@ -103,6 +102,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self removePostPropertiesObserver];
+    [self removeMediaObserver];
 }
 
 - (instancetype)initWithPost:(AbstractPost *)aPost
@@ -182,19 +182,12 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     [super didReceiveMemoryWarning];
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-                                duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     if ([self.passwordTextField isFirstResponder]) {
         self.textFieldDidHaveFocusBeforeOrientationChange = YES;
     }
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    //[self reloadData];
 }
 
 #pragma mark - Password Field
@@ -1041,9 +1034,9 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     vc.onItemSelected = ^(NSString *visibility) {
         [weakVc dismiss];
         
-        NSAssert(_apost != nil, @"The post should not be nil here.");
-        NSAssert(!_apost.isFault, @"The post should not be a fault here here.");
-        NSAssert(_apost.managedObjectContext != nil, @"The post's MOC should not be nil here.");
+        NSAssert(self.apost != nil, @"The post should not be nil here.");
+        NSAssert(!self.apost.isFault, @"The post should not be a fault here here.");
+        NSAssert(self.apost.managedObjectContext != nil, @"The post's MOC should not be nil here.");
 
         if ([visibility isEqualToString:NSLocalizedString(@"Private", @"Post privacy status in the Post Editor/Settings area (compare with WP core translations).")]) {
             self.apost.status = PostStatusPrivate;
@@ -1061,11 +1054,11 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
                 
                 NSString *password = @"";
                 
-                NSAssert(_apost.original != nil,
+                NSAssert(self.apost.original != nil,
                          @"We're expecting to have a reference to the original post here.");
-                NSAssert(!_apost.original.isFault,
+                NSAssert(!self.apost.original.isFault,
                          @"The original post should not be a fault here here.");
-                NSAssert(_apost.original.managedObjectContext != nil,
+                NSAssert(self.apost.original.managedObjectContext != nil,
                          @"The original post's MOC should not be nil here.");
                 
                 if (self.apost.original.password) {
@@ -1312,64 +1305,6 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     cell.textLabel.text = NSLocalizedString(@"Featured Image did not load", @"");
 }
 
-- (void)uploadFeatureImage:(PHAsset *)asset
-{
-    NSProgress * convertingProgress = [NSProgress progressWithTotalUnitCount:1];
-    convertingProgress.localizedDescription = NSLocalizedString(@"Preparing...",@"Label to show while converting and/or resizing media to send to server");
-    self.featuredImageProgress = convertingProgress;
-    __weak __typeof(self) weakSelf = self;
-    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [mediaService createMediaWith:asset
-                         objectID:self.apost.objectID
-                         progress:nil
-                       thumbnailCallback:nil
-                              completion:^(Media *media, NSError * error) {
-        if (!weakSelf) {
-            return;
-        }
-        PostSettingsViewController * strongSelf = weakSelf;
-        strongSelf.featuredImageProgress.completedUnitCount++;
-        if (error) {
-            DDLogError(@"Couldn't export image: %@", [error localizedDescription]);
-            [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
-            strongSelf.isUploadingMedia = NO;
-            return;
-        }
-        [self uploadFeaturedMedia:media];
-    }];
-}
-
-- (void)uploadFeaturedMedia:(Media *)media
-{
-    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    NSProgress * progress = nil;
-    __weak __typeof__(self) weakSelf = self;
-    [mediaService uploadMedia:media
-                     progress:&progress
-                      success:^{
-                          __typeof__(self) strongSelf = weakSelf;
-                          strongSelf.isUploadingMedia = NO;
-                          Post *post = (Post *)strongSelf.apost;
-                          post.featuredImage = media;
-                          [strongSelf.tableView reloadData];
-                      } failure:^(NSError *error) {
-                          __typeof__(self) strongSelf = weakSelf;
-                          strongSelf.isUploadingMedia = NO;
-                          [strongSelf.tableView reloadData];
-                          if ([error.domain isEqualToString:NSURLErrorDomain] && error.code == NSURLErrorCancelled) {
-                              return;
-                          }
-                          [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't upload featured image", @"The title for an alert that says to the user that the featured image he selected couldn't be uploaded.") message:error.localizedDescription];
-                          DDLogError(@"Couldn't upload featured image: %@", [error localizedDescription]);
-                      }];
-    [progress setUserInfoObject:[UIImage imageWithData:[NSData dataWithContentsOfFile:media.absoluteThumbnailLocalURL.path]] forKey:WPProgressImageThumbnailKey];
-    progress.localizedDescription = NSLocalizedString(@"Uploading...",@"Label to show while uploading media to server");
-    progress.kind = NSProgressKindFile;
-    [progress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];
-    self.featuredImageProgress = progress;
-    [self.tableView reloadData];
-}
-
 - (NSString *)titleForVisibility
 {
     if (self.apost.password) {
@@ -1460,8 +1395,24 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         if (fabs(interval) < 1.0) {
             return;
         }
+        
         self.apost.dateCreated = selectedDate;
+        
+        if ([self isFutureDated:selectedDate]) {
+            self.apost.status = PostStatusScheduled;
+        }
     }
+}
+
+- (BOOL)isFutureDated:(NSDate *)date {
+    
+    if (date == nil) {
+        return NO;
+    }
+    
+    NSComparisonResult comparison = [NSCalendar.currentCalendar compareDate:[NSDate date] toDate:date toUnitGranularity:NSCalendarUnitMinute];
+    
+    return comparison == NSOrderedAscending;
 }
 
 #pragma mark - WPMediaPickerViewControllerDelegate methods
@@ -1502,16 +1453,10 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     if ([[assets firstObject] isKindOfClass:[PHAsset class]]){
         PHAsset *asset = [assets firstObject];
         self.isUploadingMedia = YES;
-        [self uploadFeatureImage:asset];
+        [self setFeaturedImageWithAsset:asset];
     } else if ([[assets firstObject] isKindOfClass:[Media class]]){
         Media *media = [assets firstObject];
-        if ([media.mediaID intValue] != 0) {
-            Post *post = (Post *)self.apost;
-            post.featuredImage = media;
-        } else {
-            self.isUploadingMedia = YES;
-            [self uploadFeaturedMedia:media];
-        }
+        [self setFeaturedImageWithMedia:media];
     }
     
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];

@@ -17,7 +17,7 @@ public class PlanServiceRemote: ServiceRemoteWordPressComREST {
         let locale = WordPressComLanguageDatabase().deviceLanguage.slug
         let parameters = ["locale": locale]
 
-        wordPressComRestApi.GET(path!,
+        wordPressComRestApi.GET(path,
             parameters: parameters as [String : AnyObject]?,
             success: {
                 response, _ in
@@ -81,7 +81,7 @@ private func mapPlansResponse(_ response: AnyObject) throws -> (activePlan: Remo
 }
 
 private func parseFeatureGroups(_ json: [[String: AnyObject]]) throws -> [RemotePlanFeatureGroupPlaceholder] {
-    return try json.flatMap { groupJson in
+    return try json.compactMap { groupJson in
         guard let slugs = groupJson["items"] as? [String] else { throw PlanServiceRemote.ResponseError.decodingFailure }
         return RemotePlanFeatureGroupPlaceholder(title: groupJson["title"] as? String, slugs: slugs)
     }
