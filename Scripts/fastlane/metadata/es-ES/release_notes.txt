@@ -1,7 +1,3 @@
-Lista de entradas, accesibilidad: La lista de entradas ahora gestiona mejor las fuentes de tipo dinámico.
-Lista de entradas: 'Nueva barra de filtro por estado de entrada y autor!
-Lista de entradas, accesibilidad: La nueva barra de filtro por estado de entrada y autor ofrece compatibilidad con Voiceover.
-Acceso, accesibilidad: El flujo de acceso ahora gestiona mejor el tipo dinámico.
-Menús, accesibilidad: La sección de menú de tus sitios ahora es compatible con el tipo dinámico.
-Mi perfil: ahora tienes una opción más clara para editar tu icono de Gravatar.
-Spotlight: ¡Ahora indexa entradas y páginas!
+¡Las subidas son ahora asíncronas!
+Las páginas que fallen en la subida serán marcadas en rojo.
+El campo de entrada para escribir comentarios puede llegar ahora hasta las 5 líneas.
