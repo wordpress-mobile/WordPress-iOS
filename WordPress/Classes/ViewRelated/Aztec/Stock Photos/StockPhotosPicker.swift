@@ -12,8 +12,9 @@ final class StockPhotosPicker: NSObject {
 
     private lazy var stockPhotosService: StockPhotosService = {
         guard let api = self.blog?.wordPressComRestApi() else {
-            //TO DO. Present a user facing error (although in theory we should never reach this case if we limit Stock Photos to Jetpack blogs only
-            return StockPhotosServiceMock()
+            //TO DO. Shall we present a user facing error (although in theory we should never reach this case if we limit Stock Photos to Jetpack blogs only)
+            // At this moment, what we do is return a null implementation of the StockPhotosService. The user-facing effect will be that there are no results
+            return NullStockPhotosService()
         }
 
         return DefaultStockPhotosService(api: api)
