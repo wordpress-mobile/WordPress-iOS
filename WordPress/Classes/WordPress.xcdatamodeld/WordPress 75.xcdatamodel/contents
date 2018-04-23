@@ -580,6 +580,16 @@
         <attribute name="searchPhrase" attributeType="String" indexed="YES" syncable="YES"/>
     </entity>
     <entity name="ReaderSearchTopic" representedClassName="WordPress.ReaderSearchTopic" parentEntity="ReaderAbstractTopic" syncable="YES"/>
+    <entity name="ReaderSiteInfoSubscriptionEmail" representedClassName="WordPress.ReaderSiteInfoSubscriptionEmail" syncable="YES">
+        <attribute name="postDeliveryFrequency" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sendComments" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="sendPosts" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="siteTopic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderSiteTopic" inverseName="emailSubscription" inverseEntity="ReaderSiteTopic" syncable="YES"/>
+    </entity>
+    <entity name="ReaderSiteInfoSubscriptionPost" representedClassName="WordPress.ReaderSiteInfoSubscriptionPost" syncable="YES">
+        <attribute name="sendPosts" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="siteTopic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderSiteTopic" inverseName="postSubscription" inverseEntity="ReaderSiteTopic" syncable="YES"/>
+    </entity>
     <entity name="ReaderSiteTopic" representedClassName="WordPress.ReaderSiteTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="feedID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="feedURL" optional="YES" attributeType="String" syncable="YES"/>
@@ -592,6 +602,8 @@
         <attribute name="siteID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="siteURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="subscriberCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="emailSubscription" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ReaderSiteInfoSubscriptionEmail" inverseName="siteTopic" inverseEntity="ReaderSiteInfoSubscriptionEmail" syncable="YES"/>
+        <relationship name="postSubscription" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ReaderSiteInfoSubscriptionPost" inverseName="siteTopic" inverseEntity="ReaderSiteInfoSubscriptionPost" syncable="YES"/>
     </entity>
     <entity name="ReaderTagTopic" representedClassName="WordPress.ReaderTagTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="isRecommended" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
@@ -684,12 +696,14 @@
         <element name="ReaderPost" positionX="0" positionY="0" width="128" height="660"/>
         <element name="ReaderSearchSuggestion" positionX="36" positionY="162" width="128" height="75"/>
         <element name="ReaderSearchTopic" positionX="27" positionY="153" width="128" height="45"/>
-        <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="210"/>
+        <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="240"/>
         <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>
         <element name="ReaderTeamTopic" positionX="27" positionY="153" width="128" height="60"/>
         <element name="Role" positionX="36" positionY="162" width="128" height="105"/>
         <element name="SharingButton" positionX="27" positionY="153" width="128" height="165"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="360"/>
+        <element name="ReaderSiteInfoSubscriptionPost" positionX="27" positionY="153" width="128" height="75"/>
+        <element name="ReaderSiteInfoSubscriptionEmail" positionX="36" positionY="162" width="128" height="105"/>
     </elements>
 </model>
