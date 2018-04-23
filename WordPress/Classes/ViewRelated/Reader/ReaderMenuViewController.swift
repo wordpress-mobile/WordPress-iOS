@@ -132,6 +132,12 @@ import WordPressShared
         reloadTableViewPreservingSelection()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        registerUserActivity()
+    }
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
@@ -344,7 +350,6 @@ import WordPressShared
     @objc func dismissModal() {
         dismiss(animated: true, completion: nil)
     }
-
 
     // MARK: - Tag Wrangling
 
@@ -621,5 +626,29 @@ extension ReaderMenuViewController: WPSplitViewControllerDetailProvider {
         }
 
         return nil
+    }
+}
+
+// MARK: - SearchableActivity Conformance
+
+extension ReaderMenuViewController: SearchableActivityConvertable {
+    var activityType: String {
+        return WPActivityType.reader.rawValue
+    }
+
+    var activityTitle: String {
+        return NSLocalizedString("Reader", comment: "Title of the 'Reader' tab - used for spotlight indexing on iOS.")
+    }
+
+    var activityKeywords: Set<String>? {
+        let keyWordString = NSLocalizedString("wordpress, reader, articles, posts, blog post, followed, discover, likes, my likes, tags, topics",
+                                              comment: "This is a comma separated list of keywords used for spotlight indexing of the 'Reader' tab.")
+        let keywordArray = keyWordString.arrayOfTags()
+
+        guard !keywordArray.isEmpty else {
+            return nil
+        }
+
+        return Set(keywordArray)
     }
 }
