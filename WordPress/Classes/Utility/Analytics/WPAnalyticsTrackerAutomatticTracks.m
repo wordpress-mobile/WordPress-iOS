@@ -331,6 +331,10 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"editor_photo_added";
             eventProperties = @{ @"via" : @"other_apps" };
             break;
+        case WPAnalyticsStatEditorAddedPhotoViaStockPhotos:
+            eventName = @"editor_photo_added";
+            eventProperties = @{ @"via" : @"stock_photos" };
+            break;
         case WPAnalyticsStatEditorAztecBetaLink:
             eventName = @"editor_aztec_beta_link";
             break;
@@ -589,11 +593,33 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatMediaLibrarySharedItemLink:
             eventName = @"media_library_shared_item_link";
             break;
-        case WPAnalyticsStatMediaLibraryAddedPhoto:
+        case WPAnalyticsStatMediaLibraryAddedPhotoViaDeviceLibrary:
             eventName = @"media_library_photo_added";
+            eventProperties = @{ @"via" : @"device_library" };
             break;
-        case WPAnalyticsStatMediaLibraryAddedVideo:
+        case WPAnalyticsStatMediaLibraryAddedPhotoViaOtherApps:
+            eventName = @"media_library_photo_added";
+            eventProperties = @{ @"via" : @"other_library" };
+            break;
+        case WPAnalyticsStatMediaLibraryAddedPhotoViaStockPhotos:
+            eventName = @"media_library_photo_added";
+            eventProperties = @{ @"via" : @"stock_photos" };
+            break;
+        case WPAnalyticsStatMediaLibraryAddedPhotoViaCamera:
+            eventName = @"media_library_photo_added";
+            eventProperties = @{ @"via" : @"camera" };
+            break;
+        case WPAnalyticsStatMediaLibraryAddedVideoViaDeviceLibrary:
             eventName = @"media_library_video_added";
+            eventProperties = @{ @"via" : @"device_library" };
+            break;
+        case WPAnalyticsStatMediaLibraryAddedVideoViaCamera:
+            eventName = @"media_library_video_added";
+            eventProperties = @{ @"via" : @"camera" };
+            break;
+        case WPAnalyticsStatMediaLibraryAddedVideoViaOtherApps:
+            eventName = @"media_library_video_added";
+            eventProperties = @{ @"via" : @"other_apps" };
             break;
         case WPAnalyticsStatMediaLibraryUploadMediaRetried:
             eventName = @"media_library_upload_media_retried";
@@ -1173,6 +1199,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatStatsViewAllAccessed:
             eventName = @"stats_view_all_accessed";
             break;
+        case WPAnalyticsStatStockMediaAccessed:
+            eventName = @"stock_media_accessed";
+            break;
+        case WPAnalyticsStatStockMediaSearched:
+            eventName = @"stock_media_searched";
+            break;
+        case WPAnalyticsStatStockMediaUploaded:
+            eventName = @"stock_media_uploaded";
+            break;
         case WPAnalyticsStatSupportOpenedHelpshiftScreen:
             eventName = @"support_opened_helpshift_screen";
             break;
@@ -1286,21 +1321,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
 
             // to be implemented
+        case WPAnalyticsStatMediaLibraryAddedPhoto:
+        case WPAnalyticsStatMediaLibraryAddedVideo:
         case WPAnalyticsStatDefaultAccountChanged:
-        case WPAnalyticsStatEditorAddedPhotoViaStockPhotos:
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
-        case WPAnalyticsStatMediaLibraryAddedPhotoViaDeviceLibrary:
-        case WPAnalyticsStatMediaLibraryAddedPhotoViaOtherApps:
-        case WPAnalyticsStatMediaLibraryAddedPhotoViaStockPhotos:
-        case WPAnalyticsStatMediaLibraryAddedPhotoViaCamera:
-        case WPAnalyticsStatMediaLibraryAddedVideoViaDeviceLibrary:
-        case WPAnalyticsStatMediaLibraryAddedVideoViaCamera:
-        case WPAnalyticsStatMediaLibraryAddedVideoViaOtherApps:
         case WPAnalyticsStatSpotlightSearchOpenedApp:
-        case WPAnalyticsStatStockMediaAccessed:
-        case WPAnalyticsStatStockMediaSearched:
-        case WPAnalyticsStatStockMediaUploaded:
         case WPAnalyticsStatMaxValue:
             return nil;
     }

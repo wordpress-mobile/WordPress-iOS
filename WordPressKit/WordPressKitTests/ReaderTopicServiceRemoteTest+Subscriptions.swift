@@ -6,7 +6,7 @@ class ReaderTopicServiceRemoteTestSubscriptions: XCTestCase {
     let mockRemoteApi = MockWordPressComRestApi()
     let response = [String: AnyObject]()
     let siteId = NSNumber(value: 0)
-    var failure: ReaderServiceSubscriptable.FailureBlock!
+    var failure: ((NSError?) -> Void)!
     var readerTopicServiceRemote: ReaderTopicServiceRemote!
     
     override func setUp() {
@@ -102,7 +102,7 @@ class ReaderTopicServiceRemoteTestSubscriptions: XCTestCase {
         XCTAssertTrue(success)
         
         guard let parameters = mockRemoteApi.parametersPassedIn as? [String: AnyObject],
-            let frequency = parameters[WordPressKitConstants.SiteSubscription.Delivery.frequency] as? String else {
+            let frequency = parameters["delivery_frequency"] as? String else {
             fatalError()
         }
         
