@@ -99,9 +99,10 @@ import MobileCoreServices
         })
     }
 
-    /// Removes *all* items from the on-device index.
+    /// Removes *all* items from the on-device, CoreSpotlight index.
     ///
-    /// Note: Be careful, this clears the entire index!
+    /// Note: This clears the entire index for CoreSpotlight only! NSUserActivity indexing will *not* be cleared
+    /// if this function is called (each indexed activity item will expire automatically based on the original expiration date).
     ///
     @objc func deleteAllSearchableItems() {
         CSSearchableIndex.default().deleteAllSearchableItems(completionHandler: { (error: Error?) -> Void in
@@ -114,16 +115,46 @@ import MobileCoreServices
 
     // MARK: - NSUserActivity Handling
 
-    /// Handle a NSUserAcitivity
+    /// Handle a NSUserAcitivity for both CoreSpotlight and NSUSerActivity indexing within the WPiOS
     ///
     /// - Parameter activity: NSUserActivity that opened the app
     /// - Returns: true if it was handled correctly and activitytype was `CSSearchableItemActionType`, otherwise false
     ///
     @discardableResult
     @objc func handle(activity: NSUserActivity?) -> Bool {
-        guard activity?.activityType == CSSearchableItemActionType,
-            let compositeIdentifier = activity?.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
-                return false
+        guard let activity = activity else {
+            return false
+        }
+
+        switch activity.activityType {
+        case CSSearchableItemActionType:
+            // This activityType is related to a CoreSpotlight search (SearchableItemConvertable)
+            return handleCoreSpotlightSearchableActivityType(activity: activity)
+        case WPActivityType.siteList.rawValue:
+            return openMySitesTab()
+        case WPActivityType.siteDetails.rawValue:
+            return handleSite(activity: activity)
+        case WPActivityType.reader.rawValue:
+            return openReaderTab()
+        case WPActivityType.me.rawValue:
+            return openMeTab()
+        case WPActivityType.appSettings.rawValue:
+            return openAppSettingsScreen()
+        case WPActivityType.notificationSettings.rawValue:
+            return openNotificationSettingsScreen()
+        case WPActivityType.support.rawValue:
+            return openSupportScreen()
+        case WPActivityType.notifications.rawValue:
+            return openNotificationsTab()
+        default:
+            return false
+        }
+    }
+
+    fileprivate func handleCoreSpotlightSearchableActivityType(activity: NSUserActivity) -> Bool {
+        guard activity.activityType == CSSearchableItemActionType,
+            let compositeIdentifier = activity.userInfo?[CSSearchableItemActivityIdentifier] as? String else {
+            return false
         }
 
         let (itemType, domainString, identifier) = SearchIdentifierGenerator.decomposeFromUniqueIdentifier(compositeIdentifier)
@@ -176,6 +207,28 @@ import MobileCoreServices
 
         return true
     }
+
+    fileprivate func handleSite(activity: NSUserActivity) -> Bool {
+        guard let userInfo = activity.userInfo as? [String: Any],
+            let siteID = userInfo.valueAsString(forKey: WPActivityUserInfoKeys.siteId.rawValue) else {
+            return false
+        }
+
+        if let siteID = validWPComSiteID(with: siteID) {
+            fetchBlog(siteID, onSuccess: { [weak self] blog in
+                self?.openSiteDetailsScreen(for: blog)
+                }, onFailure: {
+                    DDLogError("Search manager unable to open site - siteID:\(siteID)")
+            })
+        } else {
+            fetchSelfHostedBlog(siteID, onSuccess: { [weak self] blog in
+                self?.openSiteDetailsScreen(for: blog)
+                }, onFailure: {
+                    DDLogError("Search manager unable to open self hosted site - xmlrpc:\(siteID)")
+            })
+        }
+        return true
+    }
 }
 
 // MARK: - Private Helpers
@@ -226,7 +279,79 @@ fileprivate extension SearchManager {
         })
     }
 
-    // MARK: Navigation
+    func fetchBlog(_ blogID: NSNumber,
+                   onSuccess: @escaping (_ blog: Blog) -> Void,
+                   onFailure: @escaping () -> Void) {
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+        guard let blog = blogService.blog(byBlogId: blogID) else {
+            onFailure()
+            return
+        }
+        onSuccess(blog)
+    }
+
+    func fetchSelfHostedBlog(_ blogXMLRpcString: String,
+                             onSuccess: @escaping (_ blog: Blog) -> Void,
+                             onFailure: @escaping () -> Void) {
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+        guard let selfHostedBlogs = blogService.blogsWithNoAccount() as? [Blog],
+            let blog = selfHostedBlogs.filter({ $0.xmlrpc == blogXMLRpcString }).first else {
+                onFailure()
+                return
+        }
+        onSuccess(blog)
+    }
+
+    // MARK: Site Tab Navigation
+
+    func openMySitesTab() -> Bool {
+        WPTabBarController.sharedInstance().showMySitesTab()
+        return true
+    }
+
+    func openSiteDetailsScreen(for blog: Blog) {
+        WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: blog)
+    }
+
+    // MARK: Reader Tab Navigation
+
+    func openReaderTab() -> Bool {
+        WPTabBarController.sharedInstance().showReaderTab()
+        return true
+    }
+
+    // MARK: Me Tab Navigation
+
+    func openMeTab() -> Bool {
+        WPTabBarController.sharedInstance().showMeTab()
+        return true
+    }
+
+    func openNotificationSettingsScreen() -> Bool {
+        WPTabBarController.sharedInstance().switchMeTabToNotificationSettings()
+        return true
+    }
+
+    func openAppSettingsScreen() -> Bool {
+        WPTabBarController.sharedInstance().switchMeTabToAppSettings()
+        return true
+    }
+
+    func openSupportScreen() -> Bool {
+        WPTabBarController.sharedInstance().switchMeTabToSupport()
+        return true
+    }
+
+    // MARK: Notification Tab Navigation
+
+    func openNotificationsTab() -> Bool {
+        WPTabBarController.sharedInstance().showNotificationsTab()
+        return true
+    }
+
+    // MARK: Specific Post & Page Navigation
 
     func navigateToScreen(for apost: AbstractPost, isDotCom: Bool = true) {
         if let post = apost as? Post {
