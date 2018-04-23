@@ -9098,6 +9098,8 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
+				VERSION_LONG = 9.9.0.20180423;
+				VERSION_SHORT = 9.9;
 				WPCOM_CONFIG = $HOME/.wpcom_alpha_app_credentials;
 			};
 			name = "Release-Alpha";
@@ -9577,6 +9579,8 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
+				VERSION_LONG = 9.9.0.20180423;
+				VERSION_SHORT = 9.9;
 				WPCOM_CONFIG = $HOME/.wpcom_internal_app_credentials;
 			};
 			name = "Release-Internal";
@@ -9925,6 +9929,8 @@
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 3.0;
+				VERSION_LONG = 9.9.0.20180423;
+				VERSION_SHORT = 9.9;
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
 			name = Debug;
@@ -9977,6 +9983,8 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
+				VERSION_LONG = 9.9.0.0;
+				VERSION_SHORT = 9.9;
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
 			name = Release;
