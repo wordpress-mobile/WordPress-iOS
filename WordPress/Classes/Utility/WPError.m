@@ -175,9 +175,18 @@ NSString * const WPErrorSupportSourceKey = @"helpshift-support-source";
             UIAlertAction *action = [UIAlertAction actionWithTitle:supportText
                                                              style:UIAlertActionStyleCancel
                                                            handler:^(UIAlertAction * _Nonnull action) {
-                                                               SupportViewController *supportVC = [SupportViewController new];
-                                                               supportVC.sourceTag = sourceTag;
-                                                               [supportVC showFromTabBar];
+                                                               
+                                                               if ([Feature enabled:FeatureFlagZendeskMobile]) {
+                                                                   SupportTableViewController *supportVC = [SupportTableViewController new];
+                                                                   supportVC.sourceTag = sourceTag;
+                                                                   [supportVC showFromTabBar];
+                                                               }
+                                                               else {
+                                                                   SupportViewController *supportVC = [SupportViewController new];
+                                                                   supportVC.sourceTag = sourceTag;
+                                                                   [supportVC showFromTabBar];
+                                                               }
+                                                               
                                                                [WPError internalInstance].alertShowing = NO;
                                                            }];
             [alertController addAction:action];
