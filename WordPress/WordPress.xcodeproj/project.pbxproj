@@ -894,6 +894,7 @@
 		D88A6496208D7B0B008AE9BC /* NullStockPhotosService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88A6495208D7B0B008AE9BC /* NullStockPhotosService.swift */; };
 		D88A649C208D7D81008AE9BC /* StockPhotosDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88A649B208D7D81008AE9BC /* StockPhotosDataSourceTests.swift */; };
 		D88A649E208D82D2008AE9BC /* XCTestCase+Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88A649D208D82D2008AE9BC /* XCTestCase+Wait.swift */; };
+		D88A64A0208D8B7D008AE9BC /* StockPhotosMediaGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88A649F208D8B7D008AE9BC /* StockPhotosMediaGroupTests.swift */; };
 		D8A3A5AA2069E53900992576 /* AztecMediaPickingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5A92069E53900992576 /* AztecMediaPickingCoordinator.swift */; };
 		D8A3A5AC2069FE5B00992576 /* StockPhotosStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5AB2069FE5B00992576 /* StockPhotosStrings.swift */; };
 		D8A3A5AF206A442800992576 /* StockPhotosDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5AE206A442800992576 /* StockPhotosDataSource.swift */; };
@@ -2441,6 +2442,7 @@
 		D88A6495208D7B0B008AE9BC /* NullStockPhotosService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullStockPhotosService.swift; sourceTree = "<group>"; };
 		D88A649B208D7D81008AE9BC /* StockPhotosDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosDataSourceTests.swift; sourceTree = "<group>"; };
 		D88A649D208D82D2008AE9BC /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
+		D88A649F208D8B7D008AE9BC /* StockPhotosMediaGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosMediaGroupTests.swift; sourceTree = "<group>"; };
 		D8A3A5A92069E53900992576 /* AztecMediaPickingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AztecMediaPickingCoordinator.swift; sourceTree = "<group>"; };
 		D8A3A5AB2069FE5B00992576 /* StockPhotosStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosStrings.swift; sourceTree = "<group>"; };
 		D8A3A5AE206A442800992576 /* StockPhotosDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosDataSource.swift; sourceTree = "<group>"; };
@@ -5631,6 +5633,7 @@
 		D88A6490208D79F1008AE9BC /* Stock Photos */ = {
 			isa = PBXGroup;
 			children = (
+				D88A649F208D8B7D008AE9BC /* StockPhotosMediaGroupTests.swift */,
 				D88A649B208D7D81008AE9BC /* StockPhotosDataSourceTests.swift */,
 				D88A6491208D7A0A008AE9BC /* MockStockPhotosService.swift */,
 			);
@@ -8171,6 +8174,7 @@
 				B5ECA6CD1DBAAD510062D7E0 /* CoreDataHelperTests.swift in Sources */,
 				931D270019EDAE8600114F17 /* CoreDataMigrationTests.m in Sources */,
 				E6B9B8AA1B94E1FE0001B92F /* ReaderPostTest.m in Sources */,
+				D88A64A0208D8B7D008AE9BC /* StockPhotosMediaGroupTests.swift in Sources */,
 				931D26F619ED7F7000114F17 /* BlogServiceTest.m in Sources */,
 				B5882C471D5297D1008E0EAA /* NotificationTests.swift in Sources */,
 				E15618FD16DB8677006532C4 /* UIKitTestHelper.m in Sources */,
