@@ -4,7 +4,7 @@ import Foundation
     // Relations
     @NSManaged open var postSubscription: ReaderSiteInfoSubscriptionPost?
     @NSManaged open var emailSubscription: ReaderSiteInfoSubscriptionEmail?
-    
+
     // Properties
     @NSManaged open var feedID: NSNumber
     @NSManaged open var feedURL: String
@@ -27,14 +27,14 @@ import Foundation
             return siteID.intValue == 0
         }
     }
-    
-    
-    //MARK: - Public methods
-    
+
+
+    // MARK: - Public methods
+
     @objc public func blogNameToDisplay() -> String {
         return posts.first?.blogNameForDisplay() ?? title
     }
-    
+
     @objc public func isSubscribedForPostNotifications() -> Bool {
         return postSubscription?.sendPosts ?? false
     }

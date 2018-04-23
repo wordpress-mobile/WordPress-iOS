@@ -722,7 +722,7 @@ import WordPressFlux
                                                 }
             })
         }
-        
+
         // Following
         if isLoggedIn {
             let buttonTitle = post.isFollowing ? ReaderPostMenuButtonTitles.unfollow : ReaderPostMenuButtonTitles.follow
@@ -787,11 +787,11 @@ import WordPressFlux
         let siteTitle = post.blogNameForDisplay()
         let siteID = post.siteID
         let toFollow = !post.isFollowing
-        
+
         if !toFollow {
             toggleSubscribingNotificationsFor(siteID: siteID, subscribe: false)
         }
-        
+
         postService.toggleFollowing(for: post,
                                             success: { [weak self] in
                                                 self?.syncHelper.syncContent()
@@ -1479,11 +1479,11 @@ import WordPressFlux
         let toFollow = !topic.following
         let siteID = topic.siteID
         let siteTitle = topic.blogNameToDisplay()
-        
+
         if !toFollow {
             toggleSubscribingNotificationsFor(siteID: siteID, subscribe: false)
         }
-        
+
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
         service.toggleFollowing(forSite: topic, success: { [weak self] in
             self?.syncHelper.syncContent()
@@ -1610,12 +1610,12 @@ extension ReaderStreamViewController: ReaderPostCellDelegate {
         guard let post = provider as? ReaderPost else {
             return
         }
-        
+
         guard post.isFollowing else {
             showMenuForPost(post, fromView: sender)
             return
         }
-        
+
         let service = ReaderTopicService(managedObjectContext: managedObjectContext())
         if let topic = service.findSiteTopic(withSiteID: post.siteID) {
             showMenuForPost(post, topic: topic, fromView: sender)

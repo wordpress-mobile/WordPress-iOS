@@ -235,12 +235,12 @@ import WordPressShared
         if isSyncing {
             return
         }
-        
+
         isSyncing = true
 
         let dispatchGroup = DispatchGroup()
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        
+
         dispatchGroup.enter()
         service.fetchReaderMenu(success: { [weak self] in
                 self?.didSyncTopics = true
@@ -249,7 +249,7 @@ import WordPressShared
                 dispatchGroup.leave()
                 DDLogError("Error syncing menu: \(String(describing: error))")
         })
-        
+
         dispatchGroup.enter()
         service.fetchFollowedSites(success: {
             dispatchGroup.leave()
@@ -257,7 +257,7 @@ import WordPressShared
             dispatchGroup.leave()
             DDLogError("Could not sync sites: \(String(describing: error))")
         })
-        
+
         dispatchGroup.notify(queue: .main) { [weak self] in
             DDLogInfo("Both functions complete 👍")
             self?.cleanupAfterSync()
