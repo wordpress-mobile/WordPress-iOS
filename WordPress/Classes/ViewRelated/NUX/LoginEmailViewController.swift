@@ -188,10 +188,6 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     /// Note: This is only used during Jetpack setup, not the normal flows
     ///
     func addSignupButton() {
-        guard WordPressAuthenticator.shared.configuration.supportsJetpackSignup else {
-            return
-        }
-
         guard let instructionLabel = instructionLabel,
             let stackView = inputStack else {
                 return
@@ -200,7 +196,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         let button = WPStyleGuide.wpcomSignupButton()
         stackView.addArrangedSubview(button)
         button.on(.touchUpInside) { [weak self] (button) in
-            self?.performSegue(withIdentifier: .showSignupEmail, sender: self)
+            self?.performSegue(withIdentifier: .showSignupMethod, sender: self)
         }
 
         stackView.addConstraints([
@@ -401,6 +397,23 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         return EmailFormatValidator.validate(string: loginFields.username)
     }
 
+
+    // MARK: - Segue
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+
+        if let vc = segue.destination as? LoginPrologueSignupMethodViewController {
+            vc.transitioningDelegate = self
+            vc.emailTapped = { [weak self] in
+                self?.performSegue(withIdentifier: NUXViewController.SegueIdentifier.showSigninV2.rawValue, sender: self)
+            }
+            vc.googleTapped = { [weak self] in
+                self?.performSegue(withIdentifier: NUXViewController.SegueIdentifier.showGoogle.rawValue, sender: self)
+            }
+            vc.modalPresentationStyle = .custom
+        }
+    }
 
     // MARK: - Actions
 

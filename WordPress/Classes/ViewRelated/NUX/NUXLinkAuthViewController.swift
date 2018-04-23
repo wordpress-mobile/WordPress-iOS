@@ -34,7 +34,7 @@ class NUXLinkAuthViewController: LoginViewController {
         if let linkSource = loginFields.meta.emailMagicLinkSource {
             switch linkSource {
             case .signup:
-                WordPressAuthenticator.track(.createdAccount)
+                WordPressAuthenticator.track(.createdAccount, properties: ["source": "email"])
                 WordPressAuthenticator.track(.signupMagicLinkSucceeded)
             case .login:
                 WordPressAuthenticator.track(.loginMagicLinkSucceeded)
