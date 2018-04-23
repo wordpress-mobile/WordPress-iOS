@@ -11,7 +11,7 @@
 - (void)addPostPropertiesObserver
 {
     [self.apost addObserver:self
-                forKeyPath:NSStringFromSelector(@selector(post_thumbnail))
+                forKeyPath:NSStringFromSelector(@selector(featuredImage))
                    options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                    context:nil];
 
@@ -19,7 +19,7 @@
 
 - (void)removePostPropertiesObserver
 {
-    [self.apost removeObserver:self forKeyPath:NSStringFromSelector(@selector(post_thumbnail))];
+    [self.apost removeObserver:self forKeyPath:NSStringFromSelector(@selector(featuredImage))];
 }
 
 - (void)configureSections
