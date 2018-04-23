@@ -237,7 +237,7 @@ private extension ZendeskUtils {
     }
 
     struct TicketFieldIDs {
-        static let form = NSNumber(value: 360000010286 as UInt64)
+        static let form: NSNumber = 360000010286
         static let appVersion: NSNumber = 360000086866
         static let allBlogs: NSNumber = 360000087183
         static let deviceFreeSpace: NSNumber = 360000089123
