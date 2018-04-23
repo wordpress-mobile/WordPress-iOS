@@ -732,15 +732,11 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
             self.isUploadingMedia = YES;
             [self setupObservingOfMedia: self.apost.featuredImage];
         }
-        if (self.progressCell == nil) {
-          self.progressCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewProgressCellIdentifier forIndexPath:indexPath];
-        }
+
+        self.progressCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewProgressCellIdentifier forIndexPath:indexPath];
+        [WPStyleGuide configureTableViewCell:self.progressCell];        
         [self.progressCell setProgress:self.featuredImageProgress];
-        [self.progressCell.imageView setImage:self.featuredImageProgress.userInfo[WPProgressImageThumbnailKey]];
-        self.progressCell.textLabel.text = self.featuredImageProgress.localizedDescription;
-        self.progressCell.detailTextLabel.text = self.featuredImageProgress.localizedAdditionalDescription;
         self.progressCell.tag = PostSettingsRowFeaturedLoading;
-        [WPStyleGuide configureTableViewCell:self.progressCell];
         cell = self.progressCell;
     } else if (self.apost.featuredImage && self.apost.featuredImage.remoteStatus == MediaRemoteStatusFailed) {
         WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
