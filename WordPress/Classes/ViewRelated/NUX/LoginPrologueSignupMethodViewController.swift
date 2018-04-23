@@ -38,15 +38,24 @@ class LoginPrologueSignupMethodViewController: NUXViewController {
         let loginTitle = NSLocalizedString("Sign up with Email", comment: "Button title. Tapping begins our normal sign up process.")
         let createTitle = NSLocalizedString("Sign up with Google", comment: "Button title. Tapping begins sign up using Google.")
         buttonViewController.setupTopButton(title: loginTitle, isPrimary: false) { [weak self] in
+            defer {
+                WordPressAuthenticator.track(.signupEmailButtonTapped)
+            }
             self?.dismiss(animated: true)
             self?.emailTapped?()
         }
         buttonViewController.setupButtomButton(title: createTitle, isPrimary: false) { [weak self] in
+            defer {
+                WordPressAuthenticator.track(.signupSocialButtonTapped)
+            }
             self?.dismiss(animated: true)
             self?.googleTapped?()
         }
         let termsButton = WPStyleGuide.termsButton()
         termsButton.on(.touchUpInside) { [weak self] button in
+            defer {
+                WordPressAuthenticator.track(.signupTermsButtonTapped)
+            }
             guard let url = URL(string: WordPressAuthenticator.shared.configuration.wpcomTermsOfServiceURL) else {
                 return
             }
@@ -60,6 +69,7 @@ class LoginPrologueSignupMethodViewController: NUXViewController {
     }
 
     @IBAction func dismissTapped() {
+        WordPressAuthenticator.track(.signupCancelled)
         dismiss(animated: true)
     }
 }
