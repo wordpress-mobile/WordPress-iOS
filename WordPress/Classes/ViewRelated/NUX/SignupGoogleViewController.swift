@@ -141,6 +141,11 @@ private extension SignupGoogleViewController {
     func socialSignupDidFail(with error: Error) {
         WPAnalytics.track(.signupSocialFailure)
 
+        if (error as? SignupError) == .unknown {
+            navigationController?.popViewController(animated: true)
+            return
+        }
+
         titleLabel?.textColor = WPStyleGuide.errorRed()
         titleLabel?.text = NSLocalizedString("Google sign up failed.", comment: "Message shown on screen after the Google sign up process failed.")
         displayError(error as NSError, sourceTag: .wpComSignup)
