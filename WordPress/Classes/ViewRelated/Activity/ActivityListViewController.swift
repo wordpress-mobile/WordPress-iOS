@@ -120,6 +120,11 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         noResultsView.removeFromSuperview()
     }
 
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        noResultsView.centerInSuperview()
+    }
+
 }
 
 // MARK: - UITableViewDelegate
