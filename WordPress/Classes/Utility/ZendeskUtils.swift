@@ -98,16 +98,16 @@ import CoreTelephony
             }
 
             // Set Zendesk ticket form to use
-            ZDKConfig.instance().ticketFormId = TicketFieldIDs.form
+            ZDKConfig.instance().ticketFormId = TicketFieldIDs.form as NSNumber
 
             // Set form field values
             let zdUtilsInstance = ZendeskUtils.sharedInstance
             var ticketFields = [ZDKCustomField]()
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.appVersion, andValue: ZendeskUtils.appVersion))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.allBlogs, andValue: zdUtilsInstance.getBlogInformation()))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.deviceFreeSpace, andValue: zdUtilsInstance.getDeviceFreeSpace()))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.networkInformation, andValue: zdUtilsInstance.getNetworkInformation()))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.logs, andValue: zdUtilsInstance.getLogFile()))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.appVersion as NSNumber, andValue: ZendeskUtils.appVersion))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.allBlogs as NSNumber, andValue: zdUtilsInstance.getBlogInformation()))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.deviceFreeSpace as NSNumber, andValue: zdUtilsInstance.getDeviceFreeSpace()))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.networkInformation as NSNumber, andValue: zdUtilsInstance.getNetworkInformation()))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.logs as NSNumber, andValue: zdUtilsInstance.getLogFile()))
             ZDKConfig.instance().customTicketFields = ticketFields
 
             // Set tags
@@ -237,12 +237,12 @@ private extension ZendeskUtils {
     }
 
     struct TicketFieldIDs {
-        static let form: NSNumber = 360000010286
-        static let appVersion: NSNumber = 360000086866
-        static let allBlogs: NSNumber = 360000087183
-        static let deviceFreeSpace: NSNumber = 360000089123
-        static let networkInformation: NSNumber = 360000086966
-        static let logs: NSNumber = 22871957
+        static let form: UInt64 = 360000010286
+        static let appVersion: UInt64 = 360000086866
+        static let allBlogs: UInt64 = 360000087183
+        static let deviceFreeSpace: UInt64 = 360000089123
+        static let networkInformation: UInt64 = 360000086966
+        static let logs: UInt64 = 22871957
     }
 
 }
