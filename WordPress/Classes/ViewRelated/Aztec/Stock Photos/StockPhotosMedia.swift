@@ -131,8 +131,8 @@ extension ThumbnailCollection: Decodable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         largeURL = try values.decode(String.self, forKey: .large).asURL()
         mediumURL = try values.decode(String.self, forKey: .medium).asURL()
-        postThumbnailURL = try values.decode(String.self, forKey: .large).asURL()
-        thumbnailURL = try values.decode(String.self, forKey: .large).asURL()
+        postThumbnailURL = try values.decode(String.self, forKey: .postThumbnail).asURL()
+        thumbnailURL = try values.decode(String.self, forKey: .thumbnail).asURL()
     }
 }
 

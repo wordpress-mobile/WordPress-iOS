@@ -11,7 +11,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
 
     private let scheduler = Scheduler(seconds: 0.5)
 
-    var searchQuery: String = ""
+    private(set) var searchQuery: String = ""
 
     init(service: StockPhotosService) {
         super.init()
