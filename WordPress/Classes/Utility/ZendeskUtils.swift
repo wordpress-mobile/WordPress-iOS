@@ -50,7 +50,7 @@ import CoreTelephony
         ZendeskUtils.identityCreated = true
     }
 
-    static func showHelpCenter(from navController: UINavigationController) {
+    static func showHelpCenter(from controller: UIViewController) {
 
         if !ZendeskUtils.identityCreated {
             return
@@ -64,25 +64,28 @@ import CoreTelephony
         helpCenterContentModel.groupIds = [Constants.mobileCategoryID]
         helpCenterContentModel.labels = [Constants.articleLabel]
 
-        ZDKHelpCenter.pushOverview(navController, with: helpCenterContentModel)
+        let presentInController = ZendeskUtils.sharedInstance.configureViewController(controller)
+        ZDKHelpCenter.presentOverview(presentInController, with: helpCenterContentModel)
     }
 
-    static func showNewRequest(from navController: UINavigationController) {
+    static func showNewRequest(from controller: UIViewController) {
 
         if !ZendeskUtils.identityCreated {
             return
         }
 
-        ZDKRequests.presentRequestCreation(with: navController)
+        let presentInController = ZendeskUtils.sharedInstance.configureViewController(controller)
+        ZDKRequests.presentRequestCreation(with: presentInController)
     }
 
-    static func showTicketList(from navController: UINavigationController) {
+    static func showTicketList(from controller: UIViewController) {
 
         if !ZendeskUtils.identityCreated {
             return
         }
 
-        ZDKRequests.pushRequestList(with: navController, layoutGuide: ZDKLayoutRespectTop)
+        let presentInController = ZendeskUtils.sharedInstance.configureViewController(controller)
+        ZDKRequests.presentRequestList(with: presentInController)
     }
 
     static func createRequest() {
@@ -127,6 +130,16 @@ private extension ZendeskUtils {
     func enableZendesk(_ enabled: Bool) {
         ZendeskUtils.zendeskEnabled = enabled
         DDLogInfo("Zendesk Enabled: \(enabled)")
+    }
+
+    func configureViewController(_ controller: UIViewController) -> UIViewController {
+        // If the controller is a UIViewController, set the modal display for iPad.
+        // If the controller is a UINavigationController, do nothing as the ZD views will inherit from that.
+        if !controller.isKind(of: UINavigationController.self) && WPDeviceIdentification.isiPad() {
+            controller.modalPresentationStyle = .formSheet
+            controller.modalTransitionStyle = .crossDissolve
+        }
+        return controller
     }
 
     // MARK: - Data Helpers
