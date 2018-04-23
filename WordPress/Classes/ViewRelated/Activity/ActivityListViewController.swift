@@ -120,8 +120,8 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         noResultsView.removeFromSuperview()
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
         noResultsView.centerInSuperview()
     }
 
