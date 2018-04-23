@@ -12,8 +12,8 @@ fi
 
 commit=`git rev-parse --short HEAD`
 branch=`git rev-parse --abbrev-ref HEAD`
-version=`/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "${INFOPLIST_FILE}"`
-build_num=`/usr/libexec/PlistBuddy -c "Print CFBundleVersion" "${INFOPLIST_FILE}"`
+version="${VERSION_SHORT}"
+build_num="${VERSION_LONG}"
 
 shopt -s extglob
 shopt -u extglob
