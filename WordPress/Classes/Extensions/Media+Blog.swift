@@ -45,4 +45,18 @@ extension Media {
         }
         return blogMedia.first(where: ({ $0.remoteURL == remoteURL }))
     }
+
+    /// Returns an existing Media object that matches the mediaID if it exists, or creates a stub if not.
+    ///
+    @objc class func existingOrStubMediaWith(mediaID: NSNumber, inBlog blog: Blog) -> Media? {
+        if let media = Media.existingMediaWith(mediaID: mediaID, inBlog: blog) {
+            return media
+        }
+
+        let media = Media.makeMedia(blog: blog)
+        media.mediaID = mediaID
+        media.remoteStatus = .stub
+
+        return media
+    }
 }

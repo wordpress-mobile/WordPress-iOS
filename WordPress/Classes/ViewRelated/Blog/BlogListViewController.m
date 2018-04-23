@@ -16,7 +16,6 @@
 #import <WordPressUI/WordPressUI.h>
 
 
-
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 
 static NSInteger HideAllMinSites = 10;
@@ -171,6 +170,12 @@ static NSInteger HideSearchMinSites = 3;
     [self syncBlogs];
     [self setAddSiteBarButtonItem];
     [self updateCurrentBlogSelection];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self createUserActivity];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

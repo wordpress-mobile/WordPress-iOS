@@ -34,6 +34,15 @@ static NSString * const SiteDictionaryIDKey = @"ID";
 static NSString * const SiteDictionaryNameKey = @"name";
 static NSString * const SiteDictionaryURLKey = @"URL";
 static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
+static NSString * const SiteDictionarySubscriptionKey = @"subscription";
+
+// Subscription keys
+static NSString * const SubscriptionDeliveryMethodsKey = @"delivery_methods";
+
+// Delivery methods keys
+static NSString * const DeliveryMethodEmailKey = @"email";
+static NSString * const DeliveryMethodNotificationKey = @"notification";
+
 
 @implementation ReaderTopicServiceRemote
 
@@ -87,7 +96,7 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
 {
     NSString *path = @"read/following/mine?meta=site,feed";
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteWordPressComRESTApiVersion_1_2];
 
     [self.wordPressComRestApi GET:requestUrl parameters:nil success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
         if (!success) {
@@ -197,7 +206,7 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
     if (isFeed) {
         NSString *path = [NSString stringWithFormat:@"read/feed/%@", siteID];
         requestUrl = [self pathForEndpoint:path
-                               withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+                               withVersion:ServiceRemoteWordPressComRESTApiVersion_1_2];
     } else {
         NSString *path = [NSString stringWithFormat:@"read/sites/%@", siteID];
         requestUrl = [self pathForEndpoint:path
@@ -257,6 +266,11 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
     }
     NSString *endpointPath = [NSString stringWithFormat:@"read/sites/%@/posts/", siteInfo.siteID];
     siteInfo.postsEndpoint = [self endpointUrlForPath:endpointPath];
+    
+    NSDictionary *subscription = response[SiteDictionarySubscriptionKey];
+    siteInfo.postSubscription = [self postSubscriptionFor:subscription];
+    siteInfo.emailSubscription = [self emailSubscriptionFor:subscription];
+    
     return siteInfo;
 }
 
@@ -293,6 +307,50 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
 
 
 #pragma mark - Private Methods
+
+
+/**
+ Generate an Site Info Post Subscription object
+
+ @param subscription A dictionary object for the site subscription
+ @return A nullable Site Info Post Subscription
+ */
+- (RemoteReaderSiteInfoSubscriptionPost *)postSubscriptionFor:(NSDictionary *)subscription
+{
+    if (![subscription wp_isValidObject]) {
+        return nil;
+    }
+    
+    NSDictionary *method = [[subscription dictionaryForKey: SubscriptionDeliveryMethodsKey] dictionaryForKey: DeliveryMethodNotificationKey];
+    
+    if (![method wp_isValidObject]) {
+        return nil;
+    }
+    
+    return [[RemoteReaderSiteInfoSubscriptionPost alloc] initWithDictionary:method];
+}
+
+/**
+ Generate an Site Info Email Subscription object
+ 
+ @param subscription A dictionary object for the site subscription
+ @return A nullable Site Info Email Subscription
+ */
+
+- (RemoteReaderSiteInfoSubscriptionEmail *)emailSubscriptionFor:(NSDictionary *)subscription
+{
+    if (![subscription wp_isValidObject]) {
+        return nil;
+    }
+
+    NSDictionary *method = [[subscription dictionaryForKey: SubscriptionDeliveryMethodsKey] dictionaryForKey: DeliveryMethodEmailKey];
+
+    if (![method wp_isValidObject]) {
+        return nil;
+    }
+    
+    return [[RemoteReaderSiteInfoSubscriptionEmail alloc] initWithDictionary:method];
+}
 
 /**
  Formats the specified string for use as part of the URL path for the tags endpoints
