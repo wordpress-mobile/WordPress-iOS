@@ -100,7 +100,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     func managedObjectContext() -> NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
     }
-    
+
     // MARK: - Convenience Factories
 
 
@@ -989,18 +989,18 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             let context = post.managedObjectContext else {
             return
         }
-        
+
         guard post.isFollowing else {
             ReaderPostMenu.showMenuForPost(post, fromView: menuButton, inViewController: self)
             return
         }
-        
+
         let service = ReaderTopicService(managedObjectContext: context)
         if let topic = service.findSiteTopic(withSiteID: post.siteID) {
             ReaderPostMenu.showMenuForPost(post, topic: topic, fromView: menuButton, inViewController: self)
             return
         }
-        
+
         SVProgressHUD.show()
         service.siteTopicForSite(withID: post.siteID,
                                  isFeed: false,
