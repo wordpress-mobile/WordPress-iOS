@@ -56,6 +56,9 @@ final class AztecMediaPickingCoordinator {
         let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
         let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
         docPicker.delegate = origin
+        if #available(iOS 11.0, *) {
+            docPicker.allowsMultipleSelection = true
+        }
         WPStyleGuide.configureDocumentPickerNavBarAppearance()
         origin.present(docPicker, animated: true, completion: nil)
     }

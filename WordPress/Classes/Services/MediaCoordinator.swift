@@ -39,6 +39,7 @@ class MediaCoordinator: NSObject {
             return cachedCoordinator
         }
 
+        // Use the original post so we don't create new coordinators for post revisions
         let original = post.original ?? post
 
         let coordinator = MediaProgressCoordinator()
@@ -75,8 +76,8 @@ class MediaCoordinator: NSObject {
     }
 
     private func removeCoordinator(_ progressCoordinator: MediaProgressCoordinator) {
-        if let index = postMediaProgressCoordinators.index(where: { $0.value == progressCoordinator }) {
-            progressCoordinatorQueue.async(flags: .barrier) {
+        progressCoordinatorQueue.async(flags: .barrier) {
+            if let index = self.postMediaProgressCoordinators.index(where: { $0.value == progressCoordinator }) {
                 self.postMediaProgressCoordinators.remove(at: index)
             }
         }
@@ -249,7 +250,7 @@ class MediaCoordinator: NSObject {
         let service = MediaService(managedObjectContext: backgroundContext)
 
         var progress: Progress? = nil
-        uploading(media)
+
         service.uploadMedia(media,
                             progress: &progress,
                             success: {
@@ -261,11 +262,12 @@ class MediaCoordinator: NSObject {
             self.coordinator(for: media).attach(error: nserror, toMediaID: media.uploadID)
             self.fail(nserror, media: media)
         })
+        var resultProgress = Progress.discreteCompletedProgress()
         if let taskProgress = progress {
-            return taskProgress
-        } else {
-            return Progress.discreteCompletedProgress()
+            resultProgress =  taskProgress
         }
+        uploading(media, progress: resultProgress)
+        return resultProgress
     }
 
     private func trackUploadOf(_ media: Media, analyticsInfo: MediaAnalyticsInfo?) {
@@ -347,6 +349,7 @@ class MediaCoordinator: NSObject {
 
     /// Returns true if there is any media with a fail state
     ///
+    @objc
     func hasFailedMedia(for post: AbstractPost) -> Bool {
         return cachedCoordinator(for: post)?.hasFailedMedia ?? false
     }
@@ -425,7 +428,7 @@ class MediaCoordinator: NSObject {
     enum MediaState: CustomDebugStringConvertible {
         case processing
         case thumbnailReady(url: URL)
-        case uploading
+        case uploading(progress: Progress)
         case ended
         case failed(error: NSError)
         case progress(value: Double)
@@ -506,8 +509,8 @@ class MediaCoordinator: NSObject {
     }
     /// Notifies observers that a media item has begun uploading.
     ///
-    func uploading(_ media: Media) {
-        notifyObserversForMedia(media, ofStateChange: .uploading)
+    func uploading(_ media: Media, progress: Progress) {
+        notifyObserversForMedia(media, ofStateChange: .uploading(progress: progress))
     }
 
     /// Notifies observers that a thumbnail is ready for the media item

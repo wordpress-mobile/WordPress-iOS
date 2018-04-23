@@ -9,7 +9,9 @@ public typealias Person = RemotePerson
 class ManagedPerson: NSManagedObject {
 
     func updateWith<T: Person>(_ person: T) {
-        avatarURL = person.avatarURL?.absoluteString
+        let canonicalAvatarURL = person.avatarURL.flatMap { Gravatar($0)?.canonicalURL }
+
+        avatarURL = canonicalAvatarURL?.absoluteString
         displayName = person.displayName
         firstName = person.firstName
         lastName = person.lastName
@@ -53,45 +55,45 @@ extension Person {
 
 extension User {
     init(managedPerson: ManagedPerson) {
-        ID = Int(managedPerson.userID)
-        username = managedPerson.username
-        firstName = managedPerson.firstName
-        lastName = managedPerson.lastName
-        displayName = managedPerson.displayName
-        role = managedPerson.role
-        siteID = Int(managedPerson.siteID)
-        linkedUserID = Int(managedPerson.linkedUserID)
-        avatarURL = managedPerson.avatarURL.flatMap { URL(string: $0) }
-        isSuperAdmin = managedPerson.isSuperAdmin
+        self.init(ID: Int(managedPerson.userID),
+                  username: managedPerson.username,
+                  firstName: managedPerson.firstName,
+                  lastName: managedPerson.lastName,
+                  displayName: managedPerson.displayName,
+                  role: managedPerson.role,
+                  siteID: Int(managedPerson.siteID),
+                  linkedUserID: Int(managedPerson.linkedUserID),
+                  avatarURL: managedPerson.avatarURL.flatMap { URL(string: $0) },
+                  isSuperAdmin: managedPerson.isSuperAdmin)
     }
 }
 
 extension Follower {
     init(managedPerson: ManagedPerson) {
-        ID = Int(managedPerson.userID)
-        username = managedPerson.username
-        firstName = managedPerson.firstName
-        lastName = managedPerson.lastName
-        displayName = managedPerson.displayName
-        role = RemoteRole.follower.slug
-        siteID = Int(managedPerson.siteID)
-        linkedUserID = Int(managedPerson.linkedUserID)
-        avatarURL = managedPerson.avatarURL.flatMap { URL(string: $0) }
-        isSuperAdmin = managedPerson.isSuperAdmin
+        self.init(ID: Int(managedPerson.userID),
+                  username: managedPerson.username,
+                  firstName: managedPerson.firstName,
+                  lastName: managedPerson.lastName,
+                  displayName: managedPerson.displayName,
+                  role: RemoteRole.follower.slug,
+                  siteID: Int(managedPerson.siteID),
+                  linkedUserID: Int(managedPerson.linkedUserID),
+                  avatarURL: managedPerson.avatarURL.flatMap { URL(string: $0) },
+                  isSuperAdmin: managedPerson.isSuperAdmin)
     }
 }
 
 extension Viewer {
     init(managedPerson: ManagedPerson) {
-        ID = Int(managedPerson.userID)
-        username = managedPerson.username
-        firstName = managedPerson.firstName
-        lastName = managedPerson.lastName
-        displayName = managedPerson.displayName
-        role = RemoteRole.viewer.slug
-        siteID = Int(managedPerson.siteID)
-        linkedUserID = Int(managedPerson.linkedUserID)
-        avatarURL = managedPerson.avatarURL.flatMap { URL(string: $0) }
-        isSuperAdmin = managedPerson.isSuperAdmin
+        self.init(ID: Int(managedPerson.userID),
+                  username: managedPerson.username,
+                  firstName: managedPerson.firstName,
+                  lastName: managedPerson.lastName,
+                  displayName: managedPerson.displayName,
+                  role: RemoteRole.viewer.slug,
+                  siteID: Int(managedPerson.siteID),
+                  linkedUserID: Int(managedPerson.linkedUserID),
+                  avatarURL: managedPerson.avatarURL.flatMap { URL(string: $0) },
+                  isSuperAdmin: managedPerson.isSuperAdmin)
     }
 }

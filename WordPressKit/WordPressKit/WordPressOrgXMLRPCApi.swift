@@ -13,6 +13,10 @@ open class WordPressOrgXMLRPCApi: NSObject {
     fileprivate var backgroundSessionIdentifier: String
     @objc open static let defaultBackgroundSessionIdentifier = "org.wordpress.wporgxmlrpcapi"
 
+    /// Minimum WordPress.org Supported Version.
+    ///
+    @objc open static let minimumSupportedVersion = "4.0"
+
     fileprivate lazy var sessionManager: Alamofire.SessionManager = {
         let sessionConfiguration = URLSessionConfiguration.default
         let sessionManager = self.makeSessionManager(configuration: sessionConfiguration)

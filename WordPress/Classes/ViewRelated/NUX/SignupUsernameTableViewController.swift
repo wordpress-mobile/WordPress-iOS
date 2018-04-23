@@ -11,7 +11,7 @@ class SignupUsernameTableViewController: NUXTableViewController {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        tableView.register(UINib(nibName: "SiteCreationDomainSearchTableViewCell", bundle: nil), forCellReuseIdentifier: SiteCreationDomainSearchTableViewCell.cellIdentifier)
+        tableView.register(UINib(nibName: "SearchTableViewCell", bundle: nil), forCellReuseIdentifier: SearchTableViewCell.reuseIdentifier)
         setupBackgroundTapGestureRecognizer()
     }
 
@@ -61,6 +61,11 @@ class SignupUsernameTableViewController: NUXTableViewController {
 
         let service = AccountSettingsService(userID: account.userID.intValue, api: api)
         service.suggestUsernames(base: searchTerm) { [weak self] (newSuggestions) in
+            if newSuggestions.count == 0 {
+                defer {
+                    WordPressAuthenticator.track(.signupEpilogueUsernameSuggestionsFailed)
+                }
+            }
             self?.isSearching = false
             SVProgressHUD.dismiss()
             addSuggestions(newSuggestions)
@@ -175,12 +180,15 @@ extension SignupUsernameTableViewController {
         return description
     }
 
-    private func searchFieldCell() -> SiteCreationDomainSearchTableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SiteCreationDomainSearchTableViewCell.cellIdentifier) as? SiteCreationDomainSearchTableViewCell else {
-            return SiteCreationDomainSearchTableViewCell(placeholder: "")
+    private func searchFieldCell() -> SearchTableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.reuseIdentifier) as? SearchTableViewCell else {
+            fatalError()
         }
+
+        cell.placeholder = NSLocalizedString("Type a keyword for more ideas", comment: "Placeholder text for domain search during site creation.")
         cell.delegate = self
         cell.selectionStyle = .none
+
         return cell
     }
 
@@ -216,13 +224,14 @@ extension SignupUsernameTableViewController {
         switch indexPath.section {
         case Sections.suggestions.rawValue:
             if indexPath.row == 0 {
-                selectedUsername = ""
+                selectedUsername = currentUsername ?? ""
             } else {
                 selectedUsername = suggestions[indexPath.row - 1]
             }
         default:
             return
         }
+
         delegate?.usernameSelected(selectedUsername)
 
         tableView.deselectSelectedRowWithAnimation(true)
@@ -241,16 +250,15 @@ extension SignupUsernameTableViewController {
 }
 
 
-// MARK: SiteCreationDomainSearchTableViewCellDelegate
+// MARK: - SearchTableViewCellDelegate
 
-extension SignupUsernameTableViewController: SiteCreationDomainSearchTableViewCellDelegate {
+extension SignupUsernameTableViewController: SearchTableViewCellDelegate {
     func startSearch(for searchTerm: String) {
-
         guard searchTerm.count > 0 else {
             return
         }
 
-        suggestUsernames(for: searchTerm) { [weak self] (suggestions) in
+        suggestUsernames(for: searchTerm) { [weak self] suggestions in
             self?.suggestions = suggestions
             self?.tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
         }
