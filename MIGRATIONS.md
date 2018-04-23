@@ -3,6 +3,11 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 74
+
+- @sergioestevao 2018-04-18
+- ``AbstractPost` added `featuredImage` a relationship to Media for the media featured in a post  and removed 'post_thumbnail' that used to store a Int with the mediaID information.
+
 ## WordPress 73
 
 - @sergioestevao 2018-03-05

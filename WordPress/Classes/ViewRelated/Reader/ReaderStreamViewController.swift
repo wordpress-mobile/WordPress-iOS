@@ -254,6 +254,7 @@ import WordPressFlux
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.NSManagedObjectContextDidSave, object: mainContext)
 
         bumpStats()
+        registerUserActivity()
     }
 
 
@@ -1846,17 +1847,47 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
 }
 
+// MARK: - SearchableActivity Conformance
+
+extension ReaderStreamViewController: SearchableActivityConvertable {
+    var activityType: String {
+        return WPActivityType.reader.rawValue
+    }
+
+    var activityTitle: String {
+        return NSLocalizedString("Reader", comment: "Title of the 'Reader' tab - used for spotlight indexing on iOS.")
+    }
+
+    var activityKeywords: Set<String>? {
+        let keyWordString = NSLocalizedString("wordpress, reader, articles, posts, blog post, followed, discover, likes, my likes, tags, topics",
+                                              comment: "This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab.")
+        let keywordArray = keyWordString.arrayOfTags()
+
+        guard !keywordArray.isEmpty else {
+            return nil
+        }
+
+        return Set(keywordArray)
+    }
+}
+
+// MARK: - WPNoResultsViewDelegate Conformance
+
 extension ReaderStreamViewController: WPNoResultsViewDelegate {
     public func didTap(_ noResultsView: WPNoResultsView!) {
         showManageSites()
     }
 }
 
+// MARK: - NetworkAwareUI Conformance
+
 extension ReaderStreamViewController: NetworkAwareUI {
     func contentIsEmpty() -> Bool {
         return tableViewHandler.resultsController.isEmpty()
     }
 }
+
+// MARK: - NetworkAwareUI NetworkStatusDelegate
 
 extension ReaderStreamViewController: NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {
