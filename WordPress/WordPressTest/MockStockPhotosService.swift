@@ -1,6 +1,12 @@
 @testable import WordPress
 
 final class MockStockPhotosService: StockPhotosService {
+    private let mediaCount: Int
+
+    init(mediaCount: Int) {
+        self.mediaCount = mediaCount
+    }
+
     func search(params: StockPhotosSearchParams, completion: @escaping (StockPhotosResultsPage) -> Void) {
         let text = params.text
         guard text.count > 0 else {
@@ -8,8 +14,7 @@ final class MockStockPhotosService: StockPhotosService {
             return
         }
         DispatchQueue.global().async {
-            let totalMedia = text.count
-            let mediaResult = (1...totalMedia).map { self.crateStockPhotosMedia(id: "\($0)") }
+            let mediaResult = (1...self.mediaCount).map { self.crateStockPhotosMedia(id: "\($0)") }
             DispatchQueue.main.async {
                 let page = StockPhotosResultsPage(results: mediaResult, pageable: nil)
                 completion(page)
