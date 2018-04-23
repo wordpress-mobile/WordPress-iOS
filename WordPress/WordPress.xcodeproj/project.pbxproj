@@ -2890,6 +2890,12 @@
 		F117E5841F7AA8BF003D9ACB /* WordPress 67.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 67.xcdatamodel"; sourceTree = "<group>"; };
 		F128C31A1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPNavigationMediaPickerViewController+StatusBarStyle.h"; sourceTree = "<group>"; };
 		F128C31B1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPNavigationMediaPickerViewController+StatusBarStyle.m"; sourceTree = "<group>"; };
+		F14B5F70208E648200439554 /* WordPress.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = WordPress.debug.xcconfig; sourceTree = "<group>"; };
+		F14B5F71208E648200439554 /* WordPress.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = WordPress.release.xcconfig; sourceTree = "<group>"; };
+		F14B5F72208E648300439554 /* WordPress.internal.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = WordPress.internal.xcconfig; sourceTree = "<group>"; };
+		F14B5F73208E648300439554 /* WordPress.alpha.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = WordPress.alpha.xcconfig; sourceTree = "<group>"; };
+		F14B5F74208E64F900439554 /* Version.public.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.public.xcconfig; sourceTree = "<group>"; };
+		F14B5F75208E64F900439554 /* Version.internal.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.internal.xcconfig; sourceTree = "<group>"; };
 		F18B43771F849F580089B817 /* PostAttachmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PostAttachmentTests.swift; path = Posts/PostAttachmentTests.swift; sourceTree = "<group>"; };
 		F1D690141F828FF000200E30 /* BuildConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildConfiguration.swift; sourceTree = "<group>"; };
 		F1D690151F828FF000200E30 /* FeatureFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlag.swift; sourceTree = "<group>"; };
@@ -3369,6 +3375,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				F14B5F6F208E648200439554 /* config */,
 				E1B34C091CCDFFCE00889709 /* Credentials */,
 				E1756E661694AA1500D9EC00 /* Derived Sources */,
 				080E96DDFE201D6D7F000001 /* Classes */,
@@ -6285,6 +6292,20 @@
 			path = Pages;
 			sourceTree = "<group>";
 		};
+		F14B5F6F208E648200439554 /* config */ = {
+			isa = PBXGroup;
+			children = (
+				F14B5F75208E64F900439554 /* Version.internal.xcconfig */,
+				F14B5F74208E64F900439554 /* Version.public.xcconfig */,
+				F14B5F70208E648200439554 /* WordPress.debug.xcconfig */,
+				F14B5F71208E648200439554 /* WordPress.release.xcconfig */,
+				F14B5F72208E648300439554 /* WordPress.internal.xcconfig */,
+				F14B5F73208E648300439554 /* WordPress.alpha.xcconfig */,
+			);
+			name = config;
+			path = ../config;
+			sourceTree = "<group>";
+		};
 		F1D690131F828FF000200E30 /* BuildInformation */ = {
 			isa = PBXGroup;
 			children = (
@@ -9052,6 +9073,7 @@
 		};
 		8546B4431BEAD39700193C07 /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F73208E648300439554 /* WordPress.alpha.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -9098,8 +9120,6 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				VERSION_LONG = 9.9.0.20180423;
-				VERSION_SHORT = 9.9;
 				WPCOM_CONFIG = $HOME/.wpcom_alpha_app_credentials;
 			};
 			name = "Release-Alpha";
@@ -9533,6 +9553,7 @@
 		};
 		93DEAA9D182D567A004E34D1 /* Release-Internal */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F72208E648300439554 /* WordPress.internal.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -9579,8 +9600,6 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				VERSION_LONG = 9.9.0.20180423;
-				VERSION_SHORT = 9.9;
 				WPCOM_CONFIG = $HOME/.wpcom_internal_app_credentials;
 			};
 			name = "Release-Internal";
@@ -9880,6 +9899,7 @@
 		};
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F70208E648200439554 /* WordPress.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -9929,14 +9949,13 @@
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 3.0;
-				VERSION_LONG = 9.9.0.20180423;
-				VERSION_SHORT = 9.9;
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
 			name = Debug;
 		};
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F14B5F71208E648200439554 /* WordPress.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -9983,8 +10002,6 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				VERSION_LONG = 9.9.0.0;
-				VERSION_SHORT = 9.9;
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
 			name = Release;
