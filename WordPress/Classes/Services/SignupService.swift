@@ -5,8 +5,8 @@ import WordPressKit
 
 
 
-// MARK: - SignupService: Responsible for creating a new WPCom user and blog.
-//
+/// SignupService: Responsible for creating a new WPCom user and blog.
+///
 class SignupService {
 
     /// Create a new WPcom account using Google signin token
