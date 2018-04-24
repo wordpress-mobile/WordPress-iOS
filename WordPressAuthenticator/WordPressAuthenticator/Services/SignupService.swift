@@ -5,8 +5,8 @@ import WordPressKit
 
 
 
-// MARK: - SignupService: Responsible for creating a new WPCom user and blog.
-//
+/// SignupService: Responsible for creating a new WPCom user and blog.
+///
 class SignupService {
 
     /// Create a new WPcom account using Google signin token
@@ -16,14 +16,14 @@ class SignupService {
     ///   - success: block called when account is created successfully
     ///   - failure: block called when account creation fails
     ///
-    func createWPComUser(googleToken: String,
-                         success: @escaping (_ newAccount: Bool, _ username: String, _ wpcomToken: String) -> Void,
-                         failure: @escaping (_ error: Error) -> Void) {
+    func createWPComUserWithGoogle(token: String,
+                                   success: @escaping (_ newAccount: Bool, _ username: String, _ wpcomToken: String) -> Void,
+                                   failure: @escaping (_ error: Error) -> Void) {
 
         let remote = WordPressComServiceRemote(wordPressComRestApi: anonymousAPI)
         let locale = WordPressComLanguageDatabase().deviceLanguage.slug
 
-        remote.createWPComAccount(withGoogle: googleToken,
+        remote.createWPComAccount(withGoogle: token,
                                   andLocale: locale,
                                   andClientID: configuration.wpcomClientId,
                                   andClientSecret: configuration.wpcomSecret,
@@ -31,14 +31,14 @@ class SignupService {
 
             guard let username = response?[ResponseKeys.username] as? String,
                 let bearer_token = response?[ResponseKeys.bearerToken] as? String else {
-                    failure(ServiceError.unknown)
+                    failure(SignupError.unknown)
                     return
             }
 
             let createdAccount = (response?[ResponseKeys.createdAccount] as? Int ?? 0) == 1
             success(createdAccount, username, bearer_token)
         }, failure: { error in
-            failure(error ?? ServiceError.unknown)
+            failure(error ?? SignupError.unknown)
         })
     }
 }
@@ -48,15 +48,15 @@ class SignupService {
 //
 private extension SignupService {
 
-    private var anonymousAPI: WordPressComRestApi {
+    var anonymousAPI: WordPressComRestApi {
         return WordPressComRestApi(oAuthToken: nil, userAgent: configuration.userAgent)
     }
 
-    private var configuration: WordPressAuthenticatorConfiguration {
+    var configuration: WordPressAuthenticatorConfiguration {
         return WordPressAuthenticator.shared.configuration
     }
 
-    private struct ResponseKeys {
+    struct ResponseKeys {
         static let bearerToken = "bearer_token"
         static let username = "username"
         static let createdAccount = "created_account"
@@ -66,9 +66,6 @@ private extension SignupService {
 
 // MARK: - Errors
 //
-extension SignupService {
-
-    enum ServiceError: Error {
-        case unknown
-    }
+enum SignupError: Error {
+    case unknown
 }

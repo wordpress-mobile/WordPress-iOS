@@ -10,7 +10,7 @@ class SignupGoogleViewController: LoginViewController {
     // MARK: - Properties
 
     private var hasShownGoogle = false
-    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var titleLabel: UILabel?
 
     override var sourceTag: WordPressSupportSourceTag {
         get {
@@ -28,19 +28,19 @@ class SignupGoogleViewController: LoginViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        displayGoogleSingleSignOnIfNeeded()
+        showGoogleScreenIfNeeded()
     }
 
-    private func displayGoogleSingleSignOnIfNeeded() {
+    private func showGoogleScreenIfNeeded() {
         guard !hasShownGoogle else {
             return
         }
 
-        displayGoogleSingleSignOn()
+        showGoogleScreen()
         hasShownGoogle = true
     }
 
-    private func displayGoogleSingleSignOn() {
+    private func showGoogleScreen() {
         GIDSignIn.sharedInstance().disconnect()
 
         // Flag this as a social sign in.
@@ -85,7 +85,7 @@ extension SignupGoogleViewController: GIDSignInDelegate {
 //
 private extension SignupGoogleViewController {
 
-    /// TODO: Not cool with this. Let's refactor LoginFields, when time permits.
+    /// Updates the LoginFields structure, with the specified Google User + Token + Email.
     ///
     func updateLoginFields(googleUser: GIDGoogleUser, googleToken: String, googleEmail: String) {
         loginFields.emailAddress = googleEmail
@@ -101,17 +101,24 @@ private extension SignupGoogleViewController {
 
         let service = SignupService()
 
-        service.createWPComUser(googleToken: googleToken, success: { [weak self] accountCreated, wpcomUsername, wpcomToken in
+        service.createWPComUserWithGoogle(token: googleToken, success: { [weak self] accountCreated, wpcomUsername, wpcomToken in
 
             let credentials = WordPressCredentials.wpcom(username: wpcomUsername, authToken: wpcomToken, isJetpackLogin: false, multifactor: false)
+
+            /// New Account: We'll signal the host app right away!
+            ///
+            if accountCreated {
+                SVProgressHUD.dismiss()
+                self?.authenticationDelegate.createdWordPressComAccount(username: wpcomUsername, authToken: wpcomToken)
+                self?.socialSignupWasSuccessful(with: credentials)
+                return
+            }
+
+            /// Existing Account: We'll synchronize all the things before proceeding to the next screen.
+            ///
             self?.authenticationDelegate.sync(credentials: credentials) { _ in
                 SVProgressHUD.dismiss()
-
-                if accountCreated {
-                    self?.socialSignupWasSuccessful(with: credentials)
-                } else {
-                    self?.socialLoginWasSuccessful(with: credentials)
-                }
+                self?.wasLoggedInInstead(with: credentials)
             }
 
         }, failure: { [weak self] error in
@@ -132,9 +139,9 @@ private extension SignupGoogleViewController {
 
     /// Social Login Successful: Analytics + Pushing the Login Epilogue.
     ///
-    func socialLoginWasSuccessful(with credentials: WordPressCredentials) {
-        WordPressAuthenticator.track(.loginSocialSuccess)
+    func wasLoggedInInstead(with credentials: WordPressCredentials) {
         WordPressAuthenticator.track(.signupSocialToLogin)
+        WordPressAuthenticator.track(.loginSocialSuccess)
 
         showLoginEpilogue(for: credentials)
     }
@@ -144,8 +151,13 @@ private extension SignupGoogleViewController {
     func socialSignupDidFail(with error: Error) {
         WPAnalytics.track(.signupSocialFailure)
 
-        titleLabel.textColor = WPStyleGuide.errorRed()
-        titleLabel.text = NSLocalizedString("Google sign up failed.", comment: "Message shown on screen after the Google sign up process failed.")
+        if (error as? SignupError) == .unknown {
+            navigationController?.popViewController(animated: true)
+            return
+        }
+
+        titleLabel?.textColor = WPStyleGuide.errorRed()
+        titleLabel?.text = NSLocalizedString("Google sign up failed.", comment: "Message shown on screen after the Google sign up process failed.")
         displayError(error as NSError, sourceTag: .wpComSignup)
     }
 }
