@@ -2781,6 +2781,10 @@ extension AztecPostViewController {
 
     fileprivate func insert(exportableAsset: ExportableAsset, source: MediaSource, attachment: MediaAttachment? = nil) {
         var attachment = attachment
+
+        var externalMediaLinkObserver: MediaCoordinator.ObserverBlock?
+        var externalMediaLinkObserverReceipt: UUID?
+
         if attachment == nil {
             switch exportableAsset.assetMediaType {
             case .image:
@@ -2788,12 +2792,37 @@ extension AztecPostViewController {
             case .video:
                 attachment = insertVideoAttachmentWithPlaceholder()
             default:
-                return
+                guard let urlAsset = exportableAsset as? NSURL else { break }
+
+                let currentLocation = richTextView.selectedRange.location
+                insertLink(to: urlAsset as URL, range: richTextView.selectedRange)
+                let updatedLocation = richTextView.selectedRange.location
+                let updateLength = max(updatedLocation - currentLocation, 0)
+                let updateRange = NSMakeRange(currentLocation, updateLength)
+
+                externalMediaLinkObserver = { [weak self] media, mediaState in
+                    guard let strongSelf = self else { return }
+                    switch mediaState {
+                    case .ended:
+                        if let remoteURLString = media.remoteURL, let url = URL(string: remoteURLString) {
+                            strongSelf.insertLink(to: url, range: updateRange)
+                        }
+                        if let receiptIdentifier = externalMediaLinkObserverReceipt {
+                            strongSelf.mediaCoordinator.removeObserver(withUUID: receiptIdentifier)
+                        }
+                    default:
+                        break
+                    }
+                }
+                break
             }
         }
 
         let info = MediaAnalyticsInfo(origin: .editor(source), selectionMethod: mediaSelectionMethod)
         let media = mediaCoordinator.addMedia(from: exportableAsset, to: self.post, analyticsInfo: info)
+        if let observer = externalMediaLinkObserver {
+            externalMediaLinkObserverReceipt = mediaCoordinator.addObserver(observer)
+        }
         attachment?.uploadID = media.uploadID
     }
 
@@ -2829,6 +2858,11 @@ extension AztecPostViewController {
         let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: url, placeHolderImage: Assets.defaultMissingImage)
         attachment.size = .full
         return attachment
+    }
+
+    private func insertLink(to url: URL, range: NSRange) {
+        let title = url.lastPathComponent
+        richTextView.setLink(url, title: title, inRange: range)
     }
 
     private func insertVideoAttachmentWithPlaceholder() -> VideoAttachment {
