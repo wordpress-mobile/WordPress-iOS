@@ -4,7 +4,12 @@ class SupportTableViewController: UITableViewController {
 
     // MARK: - Properties
 
-    var sourceTag: SupportSourceTag?
+    @objc var sourceTag: SupportSourceTag?
+
+    // If set, the Zendesk views will be shown from this view instead of in the navigation controller.
+    // Specifically for Me > Help & Support on the iPad.
+    var showHelpFromViewController: UIViewController?
+
     private var tableHandler: ImmuTableViewHandler!
     private let userDefaults = UserDefaults.standard
 
@@ -30,6 +35,22 @@ class SupportTableViewController: UITableViewController {
         createZendeskIdentity()
         setupNavBar()
         setupTable()
+    }
+
+    @objc func showFromTabBar() {
+        let navigationController = UINavigationController.init(rootViewController: self)
+
+        if WPDeviceIdentification.isiPad() {
+            navigationController.modalTransitionStyle = .crossDissolve
+            navigationController.modalPresentationStyle = .formSheet
+        }
+
+        let tabBarController = WPTabBarController.sharedInstance()
+        if let presentedVC = tabBarController?.presentedViewController {
+            presentedVC.present(navigationController, animated: true, completion: nil)
+        } else {
+            tabBarController?.present(navigationController, animated: true, completion: nil)
+        }
     }
 
     // MARK: - Button Actions
@@ -65,10 +86,12 @@ private extension SupportTableViewController {
     func setupNavBar() {
         title = LocalizedText.viewTitle
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: LocalizedText.closeButton,
-                                                           style: WPStyleGuide.barButtonStyleForBordered(),
-                                                           target: self,
-                                                           action: #selector(SupportTableViewController.dismissPressed(_:)))
+        if  splitViewController == nil {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(title: LocalizedText.closeButton,
+                                                               style: WPStyleGuide.barButtonStyleForBordered(),
+                                                               target: self,
+                                                               action: #selector(SupportTableViewController.dismissPressed(_:)))
+        }
     }
 
     func setupTable() {
@@ -126,10 +149,11 @@ private extension SupportTableViewController {
         return { [unowned self] row in
             self.tableView.deselectSelectedRowWithAnimation(true)
             if ZendeskUtils.zendeskEnabled {
-                guard let navController = self.navigationController else {
+                guard let controllerToShowFrom = self.controllerToShowFrom() else {
                     return
                 }
-                ZendeskUtils.showHelpCenter(from: navController)
+
+                ZendeskUtils.showHelpCenter(from: controllerToShowFrom)
             } else {
                 guard let url = Constants.appSupportURL else {
                     return
@@ -143,10 +167,13 @@ private extension SupportTableViewController {
         return { [unowned self] row in
             self.tableView.deselectSelectedRowWithAnimation(true)
             if ZendeskUtils.zendeskEnabled {
-                guard let navController = self.navigationController else {
+
+                guard let controllerToShowFrom = self.controllerToShowFrom() else {
                     return
                 }
-                ZendeskUtils.showNewRequest(from: navController)
+
+                ZendeskUtils.showNewRequest(from: controllerToShowFrom)
+                ZendeskUtils.createRequest()
             } else {
                 guard let url = Constants.forumsURL else {
                     return
@@ -159,10 +186,10 @@ private extension SupportTableViewController {
     func myTicketsSelected() -> ImmuTableAction {
         return { [unowned self] row in
             self.tableView.deselectSelectedRowWithAnimation(true)
-            guard let navController = self.navigationController else {
+            guard let controllerToShowFrom = self.controllerToShowFrom() else {
                 return
             }
-            ZendeskUtils.showTicketList(from: navController)
+            ZendeskUtils.showTicketList(from: controllerToShowFrom)
         }
     }
 
@@ -199,6 +226,12 @@ private extension SupportTableViewController {
             WPStyleGuide.configureTableViewCell(cell)
             cell.textLabel?.textColor = WPStyleGuide.wordPressBlue()
         }
+    }
+
+    // MARK: - Helpers
+
+    func controllerToShowFrom() -> UIViewController? {
+        return showHelpFromViewController ?? navigationController ?? nil
     }
 
     // MARK: - Localized Text

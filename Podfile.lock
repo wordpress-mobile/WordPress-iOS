@@ -156,8 +156,8 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `52849f1be62bc6a6316f3828d56e8fc32f5fa8e4`)
-  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `c12ec2133afb0c707eff5795efe9deed60b0bd74`)
-  - WPMediaPicker (= 0.27)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `f7051f3b32fae3dadda267e725288d9f212fcc55`)
+  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, commit `5c487e4e4a7a42ae9d6999613e6e5195351fddf4`)
   - wpxmlrpc (= 0.8.3)
   - ZendeskSDK (= 1.11.2.1)
 
@@ -169,8 +169,11 @@ EXTERNAL SOURCES:
     :commit: 52849f1be62bc6a6316f3828d56e8fc32f5fa8e4
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressShared:
-    :commit: c12ec2133afb0c707eff5795efe9deed60b0bd74
+    :commit: f7051f3b32fae3dadda267e725288d9f212fcc55
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
+  WPMediaPicker:
+    :commit: 5c487e4e4a7a42ae9d6999613e6e5195351fddf4
+    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -180,8 +183,11 @@ CHECKOUT OPTIONS:
     :commit: 52849f1be62bc6a6316f3828d56e8fc32f5fa8e4
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressShared:
-    :commit: c12ec2133afb0c707eff5795efe9deed60b0bd74
+    :commit: f7051f3b32fae3dadda267e725288d9f212fcc55
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
+  WPMediaPicker:
+    :commit: 5c487e4e4a7a42ae9d6999613e6e5195351fddf4
+    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -220,6 +226,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: efcf6a2be66b51886cd9d39f251004fb758c07b6
+PODFILE CHECKSUM: 38f878b7436879ccabfbce96edb36626d69c7027
 
 COCOAPODS: 1.4.0

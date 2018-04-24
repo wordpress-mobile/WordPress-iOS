@@ -41,6 +41,7 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowFormat,
     PostSettingsRowFeaturedImage,
     PostSettingsRowFeaturedImageAdd,
+    PostSettingsRowFeaturedImageRemove,
     PostSettingsRowFeaturedLoading,
     PostSettingsRowShareConnection,
     PostSettingsRowShareMessage,
@@ -282,20 +283,20 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 - (void)addPostPropertiesObserver
 {
     [self.post addObserver:self
-             forKeyPath:@"post_thumbnail"
+             forKeyPath:NSStringFromSelector(@selector(featuredImage))
                 options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                 context:nil];
 
     [self.post addObserver:self
-             forKeyPath:@"geolocation"
+             forKeyPath:NSStringFromSelector(@selector(geolocation))
                 options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                 context:nil];
 }
 
 - (void)removePostPropertiesObserver
 {
-    [self.post removeObserver:self forKeyPath:@"post_thumbnail"];
-    [self.post removeObserver:self forKeyPath:@"geolocation"];
+    [self.post removeObserver:self forKeyPath:NSStringFromSelector(@selector(featuredImage))];
+    [self.post removeObserver:self forKeyPath:NSStringFromSelector(@selector(geolocation))];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -303,7 +304,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    if ([@"post_thumbnail" isEqualToString:keyPath]) {
+    if ([NSStringFromSelector(@selector(featuredImage)) isEqualToString:keyPath]) {
         self.featuredImage = nil;
     }
     [self.tableView reloadData];
@@ -567,6 +568,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         [self showFeaturedImageSelector];
     } else if (cell.tag == PostSettingsRowFeaturedImageAdd) {
         [self showFeaturedImageSelector];
+    } else if (cell.tag == PostSettingsRowFeaturedImageRemove) {
+        [self showFeaturedImageRemoveOrRetryActionAtIndexPath:indexPath];
     } else if (cell.tag == PostSettingsRowShareConnection) {
         [self toggleShareConnectionForIndexPath:indexPath];
     } else if (cell.tag == PostSettingsRowShareMessage) {
@@ -717,22 +720,29 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 {
     UITableViewCell *cell;
 
-    if (!self.apost.post_thumbnail && !self.isUploadingMedia) {
+    if (!self.apost.featuredImage && !self.isUploadingMedia) {
         WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
         activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
         activityCell.tag = PostSettingsRowFeaturedImageAdd;
 
         cell = activityCell;
 
-    } else if (self.isUploadingMedia){
-        WPProgressTableViewCell * progressCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewProgressCellIdentifier forIndexPath:indexPath];
-        [progressCell setProgress:self.featuredImageProgress];
-        [progressCell.imageView setImage:self.featuredImageProgress.userInfo[WPProgressImageThumbnailKey]];
-        progressCell.textLabel.text = self.featuredImageProgress.localizedDescription;
-        progressCell.detailTextLabel.text = self.featuredImageProgress.localizedAdditionalDescription;
-        progressCell.tag = PostSettingsRowFeaturedLoading;
-        [WPStyleGuide configureTableViewCell:progressCell];
-        cell = progressCell;
+    } else if (self.isUploadingMedia || self.apost.featuredImage.remoteStatus == MediaRemoteStatusPushing) {
+        if (!self.isUploadingMedia) {
+            self.isUploadingMedia = YES;
+            [self setupObservingOfMedia: self.apost.featuredImage];
+        }
+
+        self.progressCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewProgressCellIdentifier forIndexPath:indexPath];
+        [WPStyleGuide configureTableViewCell:self.progressCell];        
+        [self.progressCell setProgress:self.featuredImageProgress];
+        self.progressCell.tag = PostSettingsRowFeaturedLoading;
+        cell = self.progressCell;
+    } else if (self.apost.featuredImage && self.apost.featuredImage.remoteStatus == MediaRemoteStatusFailed) {
+        WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
+        activityCell.textLabel.text = NSLocalizedString(@"Upload failed. Tap for options.", @"Description to show on post setting for a featured image that failed to upload.");
+        activityCell.tag = PostSettingsRowFeaturedImageRemove;
+        cell = activityCell;
     } else {
         static NSString *FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
         PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:FeaturedImageCellIdentifier];
@@ -1192,7 +1202,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (void)showFeaturedImageSelector
 {
-    if (self.apost.post_thumbnail) {
+    if (self.apost.featuredImage) {
         // Check if the featured image is set, otherwise we don't want to do anything while it's still loading.
         if (self.featuredImage) {
             FeaturedImageViewController *featuredImageVC = [[FeaturedImageViewController alloc] initWithPost:self.apost];
@@ -1274,26 +1284,21 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (void)loadFeaturedImage:(NSIndexPath *)indexPath
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    MediaService * mediaService = [[MediaService alloc] initWithManagedObjectContext:context];
-    Media *media = [Media existingMediaWithMediaID:self.apost.post_thumbnail inBlog:self.apost.blog];
-    void (^successBlock)(Media * media) = ^(Media *featuredMedia) {
-        CGFloat width = CGRectGetWidth(self.view.frame);
-        width = width - (PostFeaturedImageCellMargin * 2); // left and right cell margins
-        CGFloat height = ceilf(width * 0.66);
-        CGSize imageSize = CGSizeMake(width, height);
-        [MediaThumbnailCoordinator.shared thumbnailFor:media with:imageSize onCompletion:^(UIImage * image, NSError * error) {
-            self.featuredImage = image;
-            [self.tableView reloadData];
-        }];
-    };
-    if (media){        
-        successBlock(media);
+    Media *media = self.apost.featuredImage;
+    if (!media) {
         return;
     }
-    
-    [mediaService getMediaWithID:self.apost.post_thumbnail inBlog:self.apost.blog withSuccess:successBlock failure:^(NSError *error) {
-        [self featuredImageFailedLoading:indexPath withError:error];
+    CGFloat width = CGRectGetWidth(self.view.frame);
+    width = width - (PostFeaturedImageCellMargin * 2); // left and right cell margins
+    CGFloat height = ceilf(width * 0.66);
+    CGSize imageSize = CGSizeMake(width, height);
+    [MediaThumbnailCoordinator.shared thumbnailFor:media with:imageSize onCompletion:^(UIImage * image, NSError * error) {
+        if (error) {
+            [self featuredImageFailedLoading:indexPath withError:error];
+            return;
+        }
+        self.featuredImage = image;
+        [self.tableView reloadData];
     }];
 }
 

@@ -72,6 +72,12 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        registerUserActivity()
+    }
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
@@ -130,7 +136,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         let accessoryType: UITableViewCellAccessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .none
 
         return NavigationItemRow(
-            title: NSLocalizedString("App Settings", comment: "Link to App Settings section"),
+            title: RowTitles.appSettings,
             icon: Gridicon.iconOfType(.phone),
             accessoryType: accessoryType,
             action: pushAppSettings())
@@ -140,40 +146,40 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         let accessoryType: UITableViewCellAccessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .none
 
         let myProfile = NavigationItemRow(
-            title: NSLocalizedString("My Profile", comment: "Link to My Profile section"),
+            title: RowTitles.myProfile,
             icon: Gridicon.iconOfType(.user),
             accessoryType: accessoryType,
             action: pushMyProfile())
 
         let accountSettings = NavigationItemRow(
-            title: NSLocalizedString("Account Settings", comment: "Link to Account Settings section"),
+            title: RowTitles.accountSettings,
             icon: Gridicon.iconOfType(.cog),
             accessoryType: accessoryType,
             action: pushAccountSettings())
 
         let notificationSettings = NavigationItemRow(
-            title: NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section"),
+            title: RowTitles.notificationSettings,
             icon: Gridicon.iconOfType(.bell),
             accessoryType: accessoryType,
             action: pushNotificationSettings())
 
         let helpAndSupport = BadgeNavigationItemRow(
-            title: NSLocalizedString("Help & Support", comment: "Link to Help section"),
+            title: RowTitles.support,
             icon: Gridicon.iconOfType(.help),
             badgeCount: helpshiftBadgeCount,
             accessoryType: accessoryType,
             action: pushHelp())
 
         let logIn = ButtonRow(
-            title: NSLocalizedString("Log In", comment: "Label for logging in to WordPress.com account"),
+            title: RowTitles.logIn,
             action: presentLogin())
 
         let logOut = DestructiveButtonRow(
-            title: NSLocalizedString("Log Out", comment: "Label for logging out from WordPress.com account"),
+            title: RowTitles.logOut,
             action: confirmLogout(),
             accessibilityIdentifier: "logOutFromWPcomButton")
 
-        let wordPressComAccount = NSLocalizedString("WordPress.com Account", comment: "WordPress.com sign-in/sign-out section header title")
+        let wordPressComAccount = HeaderTitles.wpAccount
 
         if loggedIn {
             return ImmuTable(
@@ -290,8 +296,14 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     func pushHelp() -> ImmuTableAction {
         return { [unowned self] row in
-            let controller = SupportViewController()
-            self.showDetailViewController(controller, sender: self)
+            if FeatureFlag.zendeskMobile.enabled {
+                let controller = SupportTableViewController()
+                controller.showHelpFromViewController = self
+                self.showDetailViewController(controller, sender: self)
+            } else {
+                let controller = SupportViewController()
+                self.showDetailViewController(controller, sender: self)
+            }
         }
     }
 
@@ -327,14 +339,43 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
+    /// Selects the My Profile row and pushes the Support view controller
+    ///
+    @objc public func navigateToMyProfile() {
+        navigateToTarget(for: RowTitles.myProfile)
+    }
+
+    /// Selects the Account Settings row and pushes the Account Settings view controller
+    ///
+    @objc public func navigateToAccountSettings() {
+        navigateToTarget(for: RowTitles.accountSettings)
+    }
+
     /// Selects the App Settings row and pushes the App Settings view controller
     ///
     @objc public func navigateToAppSettings() {
-        let matchRow: ((ImmuTableRow) -> Bool) = { [weak self] row in
-            if let row = row as? NavigationItemRow {
-                return row.title == self?.appSettingsRow.title
-            }
+        navigateToTarget(for: appSettingsRow.title)
+    }
 
+    /// Selects the Notification Settings row and pushes the Notification Settings view controller
+    ///
+    @objc public func navigateToNotificationSettings() {
+        navigateToTarget(for: RowTitles.notificationSettings)
+    }
+
+    /// Selects the Help & Support row and pushes the Support view controller
+    ///
+    @objc public func navigateToHelpAndSupport() {
+        navigateToTarget(for: RowTitles.support)
+    }
+
+    fileprivate func navigateToTarget(for rowTitle: String) {
+        let matchRow: ((ImmuTableRow) -> Bool) = { row in
+            if let row = row as? NavigationItemRow {
+                return row.title == rowTitle
+            } else if let row = row as? BadgeNavigationItemRow {
+                return row.title == rowTitle
+            }
             return false
         }
 
@@ -408,6 +449,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     }
 
     // MARK: - Private Properties
+
     fileprivate var gravatarUploadInProgress = false {
         didSet {
             headerView.showsActivityIndicator = gravatarUploadInProgress
@@ -450,6 +492,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     }
 }
 
+// MARK: - WPSplitViewControllerDetailProvider Conformance
+
 extension MeViewController: WPSplitViewControllerDetailProvider {
     func initialDetailViewControllerForSplitView(_ splitView: WPSplitViewController) -> UIViewController? {
         // If we're not logged in yet, return app settings
@@ -458,5 +502,47 @@ extension MeViewController: WPSplitViewControllerDetailProvider {
         }
 
         return myProfileViewController
+    }
+}
+
+// MARK: - SearchableActivity Conformance
+
+extension MeViewController: SearchableActivityConvertable {
+    var activityType: String {
+        return WPActivityType.me.rawValue
+    }
+
+    var activityTitle: String {
+        return NSLocalizedString("Me", comment: "Title of the 'Me' tab - used for spotlight indexing on iOS.")
+    }
+
+    var activityKeywords: Set<String>? {
+        let keyWordString = NSLocalizedString("wordpress, me, settings, account, notification log out, logout, log in, login, help, support",
+                                              comment: "This is a comma separated list of keywords used for spotlight indexing of the 'Me' tab.")
+        let keywordArray = keyWordString.arrayOfTags()
+
+        guard !keywordArray.isEmpty else {
+            return nil
+        }
+
+        return Set(keywordArray)
+    }
+}
+
+// MARK: - Constants
+
+extension MeViewController {
+    struct RowTitles {
+        static let appSettings = NSLocalizedString("App Settings", comment: "Link to App Settings section")
+        static let myProfile = NSLocalizedString("My Profile", comment: "Link to My Profile section")
+        static let accountSettings = NSLocalizedString("Account Settings", comment: "Link to Account Settings section")
+        static let notificationSettings = NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section")
+        static let support = NSLocalizedString("Help & Support", comment: "Link to Help section")
+        static let logIn = NSLocalizedString("Log In", comment: "Label for logging in to WordPress.com account")
+        static let logOut = NSLocalizedString("Log Out", comment: "Label for logging out from WordPress.com account")
+    }
+
+    struct HeaderTitles {
+        static let wpAccount = NSLocalizedString("WordPress.com Account", comment: "WordPress.com sign-in/sign-out section header title")
     }
 }

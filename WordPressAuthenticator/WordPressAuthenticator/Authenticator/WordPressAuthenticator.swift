@@ -134,10 +134,6 @@ public struct WordPressAuthenticatorConfiguration {
     ///
     let userAgent: String
 
-    /// Indicates if Jetpack Signup is allowed, or not.
-    ///
-    let supportsJetpackSignup: Bool
-
     /// Designated Initializer
     ///
     public init (wpcomClientId: String,
@@ -146,8 +142,7 @@ public struct WordPressAuthenticatorConfiguration {
                  wpcomTermsOfServiceURL: String,
                  googleLoginClientId: String,
                  googleLoginServerClientId: String,
-                 userAgent: String,
-                 supportsJetpackSignup: Bool) {
+                 userAgent: String) {
         self.wpcomClientId = wpcomClientId
         self.wpcomSecret = wpcomSecret
         self.wpcomScheme = wpcomScheme
@@ -155,7 +150,6 @@ public struct WordPressAuthenticatorConfiguration {
         self.googleLoginClientId =  googleLoginClientId
         self.googleLoginServerClientId = googleLoginServerClientId
         self.userAgent = userAgent
-        self.supportsJetpackSignup = supportsJetpackSignup
     }
 }
 

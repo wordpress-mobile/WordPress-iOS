@@ -28,8 +28,7 @@ class WordPressAuthenticationManager: NSObject {
                                                                 wpcomTermsOfServiceURL: WPAutomatticTermsOfServiceURL,
                                                                 googleLoginClientId: ApiCredentials.googleLoginClientId(),
                                                                 googleLoginServerClientId: ApiCredentials.googleLoginServerClientId(),
-                                                                userAgent: WPUserAgent.wordPress(),
-                                                                supportsJetpackSignup: Feature.enabled(.jetpackSignup))
+                                                                userAgent: WPUserAgent.wordPress())
 
         WordPressAuthenticator.initialize(configuration: configuration)
     }
