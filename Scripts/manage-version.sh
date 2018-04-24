@@ -18,19 +18,9 @@ OUTPUT_GREEN="\033[32m"
 OUTPUT_BOLD="\033[1m"
 
 # PList files
-buildPLists=("Info.plist" 
-    "WordPressDraftActionExtension/Info.plist"
-    "WordPressShareExtension/Info.plist"
-    "WordPressTodayWidget/Info.plist")
+buildPLists=("Version.public.xcconfig") 
 
-intPLists=("WordPress-Internal-Info.plist" \
-    "WordPressDraftActionExtension/Info-Alpha.plist" \
-    "WordPressDraftActionExtension/Info-Internal.plist" \
-    "WordPressShareExtension/Info-Alpha.plist" \
-    "WordPressShareExtension/Info-Internal.plist" \
-    "WordPressTodayWidget/Info-Alpha.plist" \
-    "WordPressTodayWidget/Info-Internal.plist" \
-    "Wordpress-Alpha-Info.plist")
+intPLists=("Version.internal.xcconfig")
 
 
 ### Function definitions
@@ -232,11 +222,11 @@ function updatePlistArray() {
 
     for i in "${fileList[@]}"
     do
-        cFile="../WordPress/$i"
+        cFile="../config/$i"
         if [ -f "$cFile" ]; then
             echo "Updating $cFile to version $2" >> $logFile 2>&1
-            sed -i '' "$(awk '/CFBundleShortVersionString/{ print NR + 1; exit }' "$cFile")s/<string>.*/<string>$newMainVer<\/string>/" "$cFile" >> $logFile 2>&1 || stopOnError
-            sed -i '' "$(awk '/CFBundleVersion/{ print NR + 1; exit }' "$cFile")s/<string>.*/<string>$updateVer<\/string>/" "$cFile" >> $logFile 2>&1 || stopOnError
+            sed -i '' "$(awk '/^VERSION_SHORT/{ print NR; exit }' "$cFile")s/=.*/=$newMainVer/" "$cFile" >> $logFile 2>&1 || stopOnError
+            sed -i '' "$(awk '/^VERSION_LONG/{ print NR; exit }' "$cFile")s/=.*/=$updateVer/" "$cFile" >> $logFile 2>&1 || stopOnError
         else
             stopOnError "$cFile  not found"
         fi
@@ -293,9 +283,9 @@ function createBranch() {
 
 # Reads a version from a Plist file
 function readVersion() {
-    cFile="../WordPress/$1"
+    cFile="../config/$1"
     if [ -f "$cFile" ]; then
-        tmp=$(sed -n "$(awk '/CFBundleVersion/{ print NR + 1; exit }' "$cFile")p" "$cFile" | cut -d'>' -f 2 | cut -d'<' -f 1)
+        tmp=$(sed -n "$(awk '/^VERSION_LONG/{ print NR; exit }' "$cFile")p" "$cFile" | cut -d'=' -f 2)
     else
         showErrorMessage "$cFile not found. Can't read version. Are you in the correct branch/folder?"
         exit 1
