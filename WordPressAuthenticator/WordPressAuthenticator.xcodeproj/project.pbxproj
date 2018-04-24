@@ -82,6 +82,7 @@
 		B5609143208A563800399AE4 /* LoginSocialErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5609132208A563700399AE4 /* LoginSocialErrorViewController.swift */; };
 		B5609144208A563800399AE4 /* LoginPrologueSignupMethodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5609133208A563700399AE4 /* LoginPrologueSignupMethodViewController.swift */; };
 		B5609145208A563800399AE4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5609134208A563700399AE4 /* LoginViewController.swift */; };
+		B5E07FF4208FD13800657A9A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5E07FF3208FD13800657A9A /* Assets.xcassets */; };
 		B5ED78FE207E976500A8FD8C /* WordPressAuthenticator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ED78F4207E976500A8FD8C /* WordPressAuthenticator.framework */; };
 		B5ED7905207E976500A8FD8C /* WordPressAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = B5ED78F7207E976500A8FD8C /* WordPressAuthenticator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5ED7912207E981400A8FD8C /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ED7911207E981400A8FD8C /* WordPressKit.framework */; };
@@ -185,6 +186,7 @@
 		B5609132208A563700399AE4 /* LoginSocialErrorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSocialErrorViewController.swift; sourceTree = "<group>"; };
 		B5609133208A563700399AE4 /* LoginPrologueSignupMethodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginPrologueSignupMethodViewController.swift; sourceTree = "<group>"; };
 		B5609134208A563700399AE4 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		B5E07FF3208FD13800657A9A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B5ED78F4207E976500A8FD8C /* WordPressAuthenticator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WordPressAuthenticator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5ED78F7207E976500A8FD8C /* WordPressAuthenticator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WordPressAuthenticator.h; sourceTree = "<group>"; };
 		B5ED78F8207E976500A8FD8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -425,6 +427,7 @@
 				B5609095208A4EAF00399AE4 /* Signin */,
 				B5609096208A4EAF00399AE4 /* Signup */,
 				B5609094208A4EAF00399AE4 /* UI */,
+				B5E07FF3208FD13800657A9A /* Assets.xcassets */,
 				B5ED78F7207E976500A8FD8C /* WordPressAuthenticator.h */,
 				B5ED78F8207E976500A8FD8C /* Info.plist */,
 			);
@@ -578,6 +581,7 @@
 				B560911E208A555E00399AE4 /* Signup.storyboard in Resources */,
 				B5609118208A555600399AE4 /* SearchTableViewCell.xib in Resources */,
 				B560913F208A563800399AE4 /* Login.storyboard in Resources */,
+				B5E07FF4208FD13800657A9A /* Assets.xcassets in Resources */,
 				B5609137208A563800399AE4 /* EmailMagicLink.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
