@@ -3,8 +3,8 @@ import WordPressShared
 import WordPressUI
 
 
-class LoginNavigationController: RotationAwareNavigationViewController {
-    override func viewDidLoad() {
+public class LoginNavigationController: RotationAwareNavigationViewController {
+    override public func viewDidLoad() {
         super.viewDidLoad()
 
         navigationBar.barTintColor = WPStyleGuide.wordPressBlue()
