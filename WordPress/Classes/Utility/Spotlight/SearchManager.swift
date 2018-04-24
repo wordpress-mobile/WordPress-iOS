@@ -131,20 +131,28 @@ import MobileCoreServices
             // This activityType is related to a CoreSpotlight search (SearchableItemConvertable)
             return handleCoreSpotlightSearchableActivityType(activity: activity)
         case WPActivityType.siteList.rawValue:
+            WPAppAnalytics.track(.spotlightSearchOpenedApp, withProperties: ["via": WPActivityType.siteList.rawValue])
             return openMySitesTab()
         case WPActivityType.siteDetails.rawValue:
+            WPAppAnalytics.track(.spotlightSearchOpenedApp, withProperties: ["via": WPActivityType.siteDetails.rawValue])
             return handleSite(activity: activity)
         case WPActivityType.reader.rawValue:
+            WPAppAnalytics.track(.spotlightSearchOpenedApp, withProperties: ["via": WPActivityType.reader.rawValue])
             return openReaderTab()
         case WPActivityType.me.rawValue:
+            WPAppAnalytics.track(.spotlightSearchOpenedApp, withProperties: ["via": WPActivityType.me.rawValue])
             return openMeTab()
         case WPActivityType.appSettings.rawValue:
+            WPAppAnalytics.track(.spotlightSearchOpenedApp, withProperties: ["via": WPActivityType.appSettings.rawValue])
             return openAppSettingsScreen()
         case WPActivityType.notificationSettings.rawValue:
+            WPAppAnalytics.track(.spotlightSearchOpenedApp, withProperties: ["via": WPActivityType.notificationSettings.rawValue])
             return openNotificationSettingsScreen()
         case WPActivityType.support.rawValue:
+            WPAppAnalytics.track(.spotlightSearchOpenedApp, withProperties: ["via": WPActivityType.support.rawValue])
             return openSupportScreen()
         case WPActivityType.notifications.rawValue:
+            WPAppAnalytics.track(.spotlightSearchOpenedApp, withProperties: ["via": WPActivityType.notifications.rawValue])
             return openNotificationsTab()
         default:
             return false
