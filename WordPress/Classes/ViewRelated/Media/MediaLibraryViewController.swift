@@ -407,65 +407,6 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             MediaCoordinator.shared.removeObserver(withUUID: uuid)
         }
     }
-
-    // MARK: - Document Picker
-
-    private func showDocumentPicker() {
-        let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
-        let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
-        docPicker.delegate = self
-        if #available(iOS 11.0, *) {
-            docPicker.allowsMultipleSelection = true
-        }
-        WPStyleGuide.configureDocumentPickerNavBarAppearance()
-        present(docPicker, animated: true, completion: nil)
-    }
-
-    // MARK: - Upload Media from Camera
-
-    private func presentMediaCapture() {
-        capturePresenter = WPMediaCapturePresenter(presenting: self)
-        capturePresenter!.completionBlock = { [weak self] mediaInfo in
-            if let mediaInfo = mediaInfo as NSDictionary? {
-                self?.processMediaCaptured(mediaInfo)
-            }
-            self?.capturePresenter = nil
-        }
-
-        capturePresenter!.presentCapture()
-    }
-
-    private func processMediaCaptured(_ mediaInfo: NSDictionary) {
-        let completionBlock: WPMediaAddedBlock = { [weak self] media, error in
-            if error != nil || media == nil {
-                print("Adding media failed: ", error?.localizedDescription ?? "no media")
-                return
-            }
-            guard let blog = self?.blog,
-                let media = media as? PHAsset else {
-                return
-            }
-
-            let info = MediaAnalyticsInfo(origin: .mediaLibrary(.wpMediaLibrary), selectionMethod: .fullScreenPicker)
-            MediaCoordinator.shared.addMedia(from: media, to: blog, analyticsInfo: info)
-        }
-
-        guard let mediaType = mediaInfo[UIImagePickerControllerMediaType] as? String else { return }
-
-        switch mediaType {
-        case String(kUTTypeImage):
-            if let image = mediaInfo[UIImagePickerControllerOriginalImage] as? UIImage,
-                let metadata = mediaInfo[UIImagePickerControllerMediaMetadata] as? [AnyHashable: Any] {
-                WPPHAssetDataSource().add(image, metadata: metadata, completionBlock: completionBlock)
-            }
-        case String(kUTTypeMovie):
-            if let mediaURL = mediaInfo[UIImagePickerControllerMediaURL] as? URL {
-                WPPHAssetDataSource().addVideo(from: mediaURL, completionBlock: completionBlock)
-            }
-        default:
-            break
-        }
-    }
 }
 
 // MARK: - UIDocumentPickerDelegate
