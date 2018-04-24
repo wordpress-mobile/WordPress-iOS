@@ -17,10 +17,9 @@ OUTPUT_RED="\033[31m"
 OUTPUT_GREEN="\033[32m"
 OUTPUT_BOLD="\033[1m"
 
-# PList files
-buildPLists=("Version.public.xcconfig") 
-
-intPLists=("Version.internal.xcconfig")
+# Config files
+publicConfig=("Version.public.xcconfig") 
+internalConfig=("Version.internal.xcconfig")
 
 
 ### Function definitions
@@ -215,8 +214,8 @@ function updateFastlaneDeliver() {
     fi
 }
 
-# Updates a list of plist files with the provided version 
-function updatePlistArray() {
+# Updates a list of config files with the provided version 
+function updateConfigFiles() {
     declare -a fileList=("${!1}")
     updateVer=$2
 
@@ -233,13 +232,13 @@ function updatePlistArray() {
     done
 }
 
-# Updates the pList files
-function updatePLists() {
-    updatePlistArray buildPLists[@] "$newVer"
-    updatePlistArray intPLists[@] "$newIntVer"
+# Updates the config files
+function updateXcConfigs() {
+    updateConfigFiles publicConfig[@] "$newVer"
+    updateConfigFiles internalConfig[@] "$newIntVer"
 }
 
-# Updates pLists files and fastlane deliver on the current branch
+# Updates config files and fastlane deliver on the current branch
 function updateBranch() {
     if [ $cmd == $CMD_UPDATE ]; then
         startLog
@@ -248,8 +247,8 @@ function updateBranch() {
         showConfig
     fi
 
-    showMessage "Updating pLists..."
-    updatePLists
+    showMessage "Updating XcConfig..."
+    updateXcConfigs
     showMessage "Done!"
 
     if [ $cmd == $CMD_UPDATE ]; then
@@ -281,7 +280,7 @@ function createBranch() {
     stopLog
 }
 
-# Reads a version from a Plist file
+# Reads a version from a config file
 function readVersion() {
     cFile="../config/$1"
     if [ -f "$cFile" ]; then
@@ -295,10 +294,10 @@ function readVersion() {
 # Reads the current internal and external versions
 function getCurrentVersions() {
     printf "Reading current version in this branch..."
-    readVersion ${buildPLists[0]}
+    readVersion ${publicConfig[0]}
     currentVer=$tmp
 
-    readVersion ${intPLists[0]}
+    readVersion ${internalConfig[0]}
     currentIntVer=$tmp 
     echo "Done."
 }
