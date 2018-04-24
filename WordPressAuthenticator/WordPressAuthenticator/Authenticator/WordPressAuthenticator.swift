@@ -285,13 +285,21 @@ public struct WordPressAuthenticatorConfiguration {
             trackOpenedLogin()
         }
 
+        let controller = signinForWPOrg()
+        let navController = LoginNavigationController(rootViewController: controller)
+
+        presenter.present(navController, animated: true, completion: nil)
+    }
+
+    /// Returns an instance of LoginSiteAddressViewController: allows the user to log into a WordPress.org website.
+    ///
+    @objc public class func signinForWPOrg() -> UIViewController {
         let storyboard = UIStoryboard(name: "Login", bundle: bundle)
         guard let controller = storyboard.instantiateViewController(withIdentifier: "siteAddress") as? LoginSiteAddressViewController else {
-            return
+            fatalError("unable to create wpcom password screen")
         }
 
-        let navController = LoginNavigationController(rootViewController: controller)
-        presenter.present(navController, animated: true, completion: nil)
+        return controller
     }
 
 

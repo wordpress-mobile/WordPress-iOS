@@ -165,10 +165,7 @@ extension LoginEpilogueViewController {
 
     @IBAction func handleConnectAnotherButton() {
         onDismiss?()
-        let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        guard let controller = storyboard.instantiateViewController(withIdentifier: "siteAddress") as? LoginSiteAddressViewController else {
-            return
-        }
+        let controller = WordPressAuthenticator.signinForWPOrg()
         navigationController?.setViewControllers([controller], animated: true)
     }
 }
