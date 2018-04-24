@@ -5,6 +5,8 @@
 #import "LoginFacade.h"
 #import "WordPressComOAuthClientFacade.h"
 #import "WordPressXMLRPCAPIFacade.h"
+#import <WordPressAuthenticator/WordPressAuthenticator-Swift.h>
+
 
 SpecBegin(LoginFacade)
 
