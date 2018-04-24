@@ -73,8 +73,6 @@ target 'WordPress' do
     inherit! :search_paths
 
     shared_test_pods
-    pod 'Specta', '1.0.7'
-    pod 'Expecta', '1.0.6'
     pod 'Nimble', '~> 7.0.3'
   end
 
@@ -127,6 +125,7 @@ target 'WordPressAuthenticator' do
   project 'WordPressAuthenticator/WordPressAuthenticator.xcodeproj'
 
   shared_with_all_pods
+  shared_with_networking_pods
 
   ## Automattic libraries
   ## ====================
@@ -141,10 +140,13 @@ target 'WordPressAuthenticator' do
   pod 'lottie-ios', '1.5.1'
   pod 'NSURL+IDN', '0.3'
   pod 'SVProgressHUD', '2.2.5'
-  pod 'wpxmlrpc', '0.8.3'
 
   target 'WordPressAuthenticatorTests' do
     inherit! :search_paths
+
+	shared_test_pods
+    pod 'Expecta', '1.0.6'
+    pod 'Specta', '1.0.7'
   end
 end
 
