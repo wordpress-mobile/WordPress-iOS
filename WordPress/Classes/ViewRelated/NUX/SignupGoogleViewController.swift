@@ -101,14 +101,21 @@ private extension SignupGoogleViewController {
         service.createWPComUserWithGoogle(token: googleToken, success: { [weak self] accountCreated, wpcomUsername, wpcomToken in
 
             let credentials = WordPressCredentials.wpcom(username: wpcomUsername, authToken: wpcomToken, isJetpackLogin: false, multifactor: false)
+
+            /// New Account: We'll signal the host app right away!
+            ///
+            if accountCreated {
+                SVProgressHUD.dismiss()
+                self?.authenticationDelegate.createdWordPressComAccount(username: wpcomUsername, authToken: wpcomToken)
+                self?.socialSignupWasSuccessful(with: credentials)
+                return
+            }
+
+            /// Existing Account: We'll synchronize all the things before proceeding to the next screen.
+            ///
             self?.authenticationDelegate.sync(credentials: credentials) { _ in
                 SVProgressHUD.dismiss()
-
-                if accountCreated {
-                    self?.socialSignupWasSuccessful(with: credentials)
-                } else {
-                    self?.wasLoggedInInstead(with: credentials)
-                }
+                self?.wasLoggedInInstead(with: credentials)
             }
 
         }, failure: { [weak self] error in
