@@ -1,5 +1,5 @@
 import XCTest
-@testable import WordPress
+@testable import WordPressAuthenticator
 
 
 // MARK: - WordPressAuthenticator Unit Tests
