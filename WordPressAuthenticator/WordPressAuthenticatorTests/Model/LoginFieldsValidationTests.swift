@@ -1,4 +1,5 @@
-@testable import WordPress
+import XCTest
+@testable import WordPressAuthenticator
 
 
 // MARK: - LoginFields Validation Tests
