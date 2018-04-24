@@ -227,15 +227,17 @@ public struct WordPressAuthenticatorConfiguration {
         NotificationCenter.default.post(name: .wordpressSupportBadgeUpdated, object: nil)
     }
 
+    /// Indicates if the specified ViewController belongs to the Authentication Flow, or not.
+    ///
+    public class func isAuthenticationViewController(_ viewController: UIViewController) ->  Bool {
+        return viewController is LoginPrologueViewController || viewController is NUXViewControllerBase
+    }
+
     // MARK: - Helpers for presenting the login flow
 
     /// Used to present the new login flow from the app delegate
     @objc public class func showLoginFromPresenter(_ presenter: UIViewController, animated: Bool) {
         showLogin(from: presenter, animated: animated)
-    }
-
-    class var bundle: Bundle {
-        return Bundle(for: WordPressAuthenticator.self)
     }
 
     public class func showLogin(from presenter: UIViewController, animated: Bool, showCancel: Bool = false, restrictToWPCom: Bool = false) {
@@ -515,6 +517,11 @@ public struct WordPressAuthenticatorConfiguration {
         UIApplication.shared.open(forgotPasswordURL)
     }
 
+    /// Returns the WordPressAuthenticator Bundle
+    ///
+    class var bundle: Bundle {
+        return Bundle(for: WordPressAuthenticator.self)
+    }
 
 
     // MARK: - 1Password Helper
