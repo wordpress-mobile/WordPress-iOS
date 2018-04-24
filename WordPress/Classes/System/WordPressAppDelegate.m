@@ -184,9 +184,9 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
         returnValue = YES;
     }
 
-    if ([[GIDSignIn sharedInstance] handleURL:url
-                            sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
-                                   annotation:options[UIApplicationOpenURLOptionsAnnotationKey]]) {
+    if ([WordPressAuthenticator isGoogleAuthURLWithUrl:url
+                                     sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+                                            annotation:options[UIApplicationOpenURLOptionsAnnotationKey]]) {
         returnValue = YES;
     }
 

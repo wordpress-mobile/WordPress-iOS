@@ -233,6 +233,13 @@ public struct WordPressAuthenticatorConfiguration {
         return viewController is LoginPrologueViewController || viewController is NUXViewControllerBase
     }
 
+    /// Indicates if the specified URL is a Google Authentication Link.
+    ///
+    @objc public class func isGoogleAuthURL(url: URL, sourceApplication: String, annotation: Any) -> Bool {
+        return GIDSignIn.sharedInstance().handle(url, sourceApplication: sourceApplication, annotation: annotation)
+    }
+
+
     // MARK: - Helpers for presenting the login flow
 
     /// Used to present the new login flow from the app delegate
