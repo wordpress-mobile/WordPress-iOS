@@ -136,7 +136,8 @@ public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
             let emailPendingChange = response["user_email_change_pending"] as? Bool,
             let primarySiteID = response["primary_site_ID"] as? Int,
             let webAddress = response["user_URL"] as? String,
-            let language = response["language"] as? String else {
+            let language = response["language"] as? String,
+            let tracksOptOut = response["tracks_opt_out"] as? Bool else {
                 DDLogError("Error decoding me/settings response: \(responseObject)")
                 throw ResponseError.decodingFailure
             }
@@ -153,7 +154,8 @@ public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
                                emailPendingChange: emailPendingChange,
                                primarySiteID: primarySiteID,
                                webAddress: webAddress,
-                               language: language)
+                               language: language,
+                               tracksOptOut: tracksOptOut)
     }
 
     fileprivate func fieldNameForChange(_ change: AccountSettingsChange) -> String {
@@ -176,6 +178,8 @@ public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
             return "user_URL"
         case .language:
             return "language"
+        case .tracksOptOut:
+            return "tracks_opt_out"
         }
     }
 
