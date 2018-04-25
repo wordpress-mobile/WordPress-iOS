@@ -7,6 +7,7 @@ import CoreTelephony
     // MARK: - Properties
 
     static var sharedInstance: ZendeskUtils = ZendeskUtils()
+    private override init() {}
 
     var zendeskEnabled: Bool = false
 
@@ -38,51 +39,10 @@ import CoreTelephony
         ZendeskUtils.enableZendesk(true)
     }
 
-    func createIdentity() {
-
-        /*
-         Steps to selecting which account to use:
-         1. If there is a WordPress.com account, use that.
-         2. If not, check if we’ve saved user information in User Defaults. If so, use that.
-         3. If not, get user information from the selected site, save it to User Defaults, and use it.
-         */
-
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
-
-        if let defaultAccount = accountService.defaultWordPressComAccount() {
-            ZendeskUtils.getUserInformationFrom(wpAccount: defaultAccount)
-        } else if let savedProfile = UserDefaults.standard.dictionary(forKey: Constants.zendeskProfileUDKey) {
-            ZendeskUtils.getUserInformationFrom(savedProfile: savedProfile)
-        } else {
-            let blogService = BlogService(managedObjectContext: context)
-
-            guard let blog = blogService.lastUsedBlog() else {
-                return
-            }
-
-            if let jetpackState = blog.jetpack, jetpackState.isConnected {
-                ZendeskUtils.getUserInformationFrom(jetpackState: jetpackState)
-                ZendeskUtils.saveProfileToUD()
-            }
-            else {
-                ZendeskUtils.getUserInformationFrom(blog: blog)
-                ZendeskUtils.saveProfileToUD()
-            }
-        }
-
-        // Create ZD Identity with user information.
-        let zendeskIdentity = ZDKAnonymousIdentity()
-        zendeskIdentity.email = userEmail
-        zendeskIdentity.name = userName
-        ZDKConfig.instance().userIdentity = zendeskIdentity
-        ZendeskUtils.sharedInstance.identityCreated = true
-    }
-
     func showHelpCenter(from controller: UIViewController) {
 
         if !ZendeskUtils.sharedInstance.identityCreated {
-            return
+            ZendeskUtils.createIdentity()
         }
 
         guard let helpCenterContentModel = ZDKHelpCenterOverviewContentModel.defaultContent() else {
@@ -100,7 +60,7 @@ import CoreTelephony
     func showNewRequest(from controller: UIViewController) {
 
         if !ZendeskUtils.sharedInstance.identityCreated {
-            return
+            ZendeskUtils.createIdentity()
         }
 
         let presentInController = ZendeskUtils.configureViewController(controller)
@@ -110,7 +70,7 @@ import CoreTelephony
     func showTicketList(from controller: UIViewController) {
 
         if !ZendeskUtils.sharedInstance.identityCreated {
-            return
+            ZendeskUtils.createIdentity()
         }
 
         let presentInController = ZendeskUtils.configureViewController(controller)
@@ -120,7 +80,7 @@ import CoreTelephony
     func createRequest() {
 
         if !ZendeskUtils.sharedInstance.identityCreated {
-            return
+            ZendeskUtils.createIdentity()
         }
 
         ZDKRequests.configure { (account, requestCreationConfig) in
@@ -158,6 +118,47 @@ private extension ZendeskUtils {
     static func enableZendesk(_ enabled: Bool) {
         ZendeskUtils.sharedInstance.zendeskEnabled = enabled
         DDLogInfo("Zendesk Enabled: \(enabled)")
+    }
+
+    static func createIdentity() {
+
+        /*
+         Steps to selecting which account to use:
+         1. If there is a WordPress.com account, use that.
+         2. If not, check if we’ve saved user information in User Defaults. If so, use that.
+         3. If not, get user information from the selected site, save it to User Defaults, and use it.
+         */
+
+        let context = ContextManager.sharedInstance().mainContext
+        let accountService = AccountService(managedObjectContext: context)
+
+        if let defaultAccount = accountService.defaultWordPressComAccount() {
+            ZendeskUtils.getUserInformationFrom(wpAccount: defaultAccount)
+        } else if let savedProfile = UserDefaults.standard.dictionary(forKey: Constants.zendeskProfileUDKey) {
+            ZendeskUtils.getUserInformationFrom(savedProfile: savedProfile)
+        } else {
+            let blogService = BlogService(managedObjectContext: context)
+
+            guard let blog = blogService.lastUsedBlog() else {
+                return
+            }
+
+            if let jetpackState = blog.jetpack, jetpackState.isConnected {
+                ZendeskUtils.getUserInformationFrom(jetpackState: jetpackState)
+                ZendeskUtils.saveProfileToUD()
+            }
+            else {
+                ZendeskUtils.getUserInformationFrom(blog: blog)
+                ZendeskUtils.saveProfileToUD()
+            }
+        }
+
+        // Create ZD Identity with user information.
+        let zendeskIdentity = ZDKAnonymousIdentity()
+        zendeskIdentity.email = ZendeskUtils.sharedInstance.userEmail
+        zendeskIdentity.name = ZendeskUtils.sharedInstance.userName
+        ZDKConfig.instance().userIdentity = zendeskIdentity
+        ZendeskUtils.sharedInstance.identityCreated = true
     }
 
     static func configureViewController(_ controller: UIViewController) -> UIViewController {
