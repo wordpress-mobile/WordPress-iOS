@@ -152,8 +152,9 @@ extension StockPhotosDataSource {
 
 extension StockPhotosDataSource: StockPhotosDataLoaderDelegate {
     func didLoad(media: [StockPhotosMedia], reset: Bool) {
-        
-        onStopLoading?()
+        defer {
+            onStopLoading?()
+        }
 
         guard media.count > 0 && searchQuery.count > 0 else {
             clearSearch(notifyObservers: true)
