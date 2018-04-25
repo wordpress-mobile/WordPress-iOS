@@ -1153,6 +1153,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatSiteSettingsStartOverContactSupportClicked:
             eventName = @"site_settings_start_over_contact_support_clicked";
             break;
+        case WPAnalyticsStatSpotlightSearchOpenedApp:
+            eventName = @"spotlight_search_opened_app";
+            break;
         case WPAnalyticsStatSpotlightSearchOpenedPost:
             eventName = @"spotlight_search_opened_post";
             break;
@@ -1326,7 +1329,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
-        case WPAnalyticsStatSpotlightSearchOpenedApp:
         case WPAnalyticsStatMaxValue:
             return nil;
     }
