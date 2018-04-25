@@ -1883,7 +1883,7 @@ extension AztecPostViewController {
                 return
             }
 
-            self?.richTextView.setLink(url, title: title, inRange: range)
+            self?.richTextView.setLink(url.normalizedURLForWordPressLink(), title: title, inRange: range)
         }
 
         // Disabled until url is entered into field
