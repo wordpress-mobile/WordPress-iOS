@@ -83,7 +83,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
         [[PushNotificationsManager shared] registerForRemoteNotifications];
         if (![Feature enabled:FeatureFlagPrimeForPush]) {
-            [[InteractiveNotificationsManager shared] requestAuthorization];
+            [[InteractiveNotificationsManager shared] requestAuthorizationWithCompletion:^(BOOL granted) {}];
         }
     };
     if ([NSThread isMainThread]) {
