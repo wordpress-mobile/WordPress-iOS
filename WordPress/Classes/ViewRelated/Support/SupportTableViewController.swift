@@ -32,7 +32,6 @@ class SupportTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        ZendeskUtils.sharedInstance.createIdentity()
         setupNavBar()
         setupTable()
     }
