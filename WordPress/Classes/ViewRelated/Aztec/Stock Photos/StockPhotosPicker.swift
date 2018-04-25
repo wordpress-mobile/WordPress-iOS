@@ -89,6 +89,10 @@ extension StockPhotosPicker: WPMediaPickerViewControllerDelegate {
         return searchHint
     }
 
+    func cancelButtonTitle(forMediaPickerController picker: WPMediaPickerViewController) -> String {
+        return .closePicker
+    }
+
     func mediaPickerControllerDidEndLoadingData(_ picker: WPMediaPickerViewController) {
         if let searchBar = picker.searchBar {
             WPStyleGuide.configureSearchBar(searchBar)
