@@ -73,8 +73,6 @@ target 'WordPress' do
     inherit! :search_paths
 
     shared_test_pods
-    pod 'Specta', '1.0.7'
-    pod 'Expecta', '1.0.6'
     pod 'Nimble', '~> 7.0.3'
   end
 
@@ -126,10 +124,29 @@ end
 target 'WordPressAuthenticator' do
   project 'WordPressAuthenticator/WordPressAuthenticator.xcodeproj'
 
-  pod 'CocoaLumberjack', '3.4.1'
+  shared_with_all_pods
+  shared_with_networking_pods
+
+  ## Automattic libraries
+  ## ====================
+  ##
+  pod 'Gridicons', '0.15'
+
+  ## Third party libraries
+  ## =====================
+  ##
+  pod '1PasswordExtension', '1.8.5'
+  pod 'GoogleSignIn', '4.1.2'
+  pod 'lottie-ios', '1.5.1'
+  pod 'NSURL+IDN', '0.3'
+  pod 'SVProgressHUD', '2.2.5'
 
   target 'WordPressAuthenticatorTests' do
     inherit! :search_paths
+
+    shared_test_pods
+    pod 'Expecta', '1.0.6'
+    pod 'Specta', '1.0.7'
   end
 end
 

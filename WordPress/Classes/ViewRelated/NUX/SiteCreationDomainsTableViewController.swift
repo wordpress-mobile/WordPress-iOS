@@ -1,5 +1,7 @@
 import UIKit
 import SVProgressHUD
+import WordPressAuthenticator
+
 
 protocol SiteCreationDomainsTableViewControllerDelegate {
     func domainSelected(_ domain: String)

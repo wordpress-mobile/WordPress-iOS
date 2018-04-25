@@ -24,6 +24,7 @@
 #import "WPLogger.h"
 #import <AutomatticTracks/TracksLogging.h>
 #import <WordPressComStatsiOS/WPStatsLogging.h>
+#import <WordPressAuthenticator/WPAuthenticatorLogging.h>
 
 // Misc managers, helpers, utilities
 #import "ContextManager.h"
@@ -183,9 +184,9 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
         returnValue = YES;
     }
 
-    if ([[GIDSignIn sharedInstance] handleURL:url
-                            sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
-                                   annotation:options[UIApplicationOpenURLOptionsAnnotationKey]]) {
+    if ([WordPressAuthenticator isGoogleAuthURLWithUrl:url
+                                     sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+                                            annotation:options[UIApplicationOpenURLOptionsAnnotationKey]]) {
         returnValue = YES;
     }
 
@@ -629,6 +630,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     WPSharedSetLoggingLevel(logLevelInt);
     TracksSetLoggingLevel(logLevelInt);
     WPStatsSetLoggingLevel(logLevelInt);
+    WPAuthenticatorSetLoggingLevel(logLevelInt);
 }
 
 @end
