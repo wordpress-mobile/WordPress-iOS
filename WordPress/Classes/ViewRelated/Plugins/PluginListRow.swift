@@ -24,7 +24,7 @@ struct PluginListRow: ImmuTableRow {
 
         let iconPlaceholder = Gridicon.iconOfType(.plugins, withSize: iconSize)
         cell.iconImageView?.cancelImageDownloadTask()
-        cell.iconImageView?.downloadResizedImage(iconURL, placeholderImage: iconPlaceholder, pointSize: iconSize)
+        cell.iconImageView?.downloadResizedImage(from: iconURL, placeholderImage: iconPlaceholder, pointSize: iconSize)
 
         cell.selectionStyle = .default
         cell.pluginAccessoryView = accessoryView

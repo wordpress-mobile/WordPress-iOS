@@ -30,7 +30,7 @@ public class DomainsServiceRemote: ServiceRemoteWordPressComREST {
         let endpoint = "sites/\(siteID)/domains"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
-        wordPressComRestApi.GET(path!, parameters: nil,
+        wordPressComRestApi.GET(path, parameters: nil,
             success: {
                 response, _ in
                 do {
@@ -137,7 +137,7 @@ public class DomainsServiceRemote: ServiceRemoteWordPressComREST {
                                                "include_wordpressdotcom": true as AnyObject,
                                                "only_wordpressdotcom": true as AnyObject]
 
-        wordPressComRestApi.GET(servicePath!,
+        wordPressComRestApi.GET(servicePath,
                                 parameters: parameters,
                                 success: {
                                     response, _ in

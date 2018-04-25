@@ -9,13 +9,11 @@
 #import "BlogService.h"
 #import "TodayExtensionService.h"
 #import "WPTabBarController.h"
-#import "UILabel+SuggestSize.h"
 #import "WordPress-Swift.h"
 #import "WPGUIConstants.h"
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPTableViewCell.h>
 #import <WordPressUI/WordPressUI.h>
-
 
 
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
@@ -172,6 +170,12 @@ static NSInteger HideSearchMinSites = 3;
     [self syncBlogs];
     [self setAddSiteBarButtonItem];
     [self updateCurrentBlogSelection];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self createUserActivity];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

@@ -2,7 +2,7 @@ import UIKit
 
 class SiteCreationSiteDetailsViewController: NUXViewController, NUXKeyboardResponder {
 
-    // MARK: - SigninKeyboardResponder Properties
+    // MARK: - NUXKeyboardResponder Properties
 
     @IBOutlet weak var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet weak var verticalCenterConstraint: NSLayoutConstraint?

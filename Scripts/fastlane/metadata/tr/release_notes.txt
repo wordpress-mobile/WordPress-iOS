@@ -1,1 +1,3 @@
-Bu dağıtım için bir kaç pikseli cilaladık, bir kaç hataya elveda dedik ve uygulama kullanıcılarımız için WordPress deneyimini iyileştirecek arka plan geliştirmeleri yaptık.
+Yüklemeler artık eş zamanlı değil!
+Yüklenemeyen sayfalar artık kırmızıyla işaretlenecek.
+Yorum yazılan giriş alanı artık 5 satıra kadar çıkabilir.

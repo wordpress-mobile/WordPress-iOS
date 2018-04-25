@@ -21,6 +21,8 @@ class SignupEpilogueTableViewController: NUXTableViewController {
 
     open var dataSource: SignupEpilogueTableViewControllerDataSource?
     open var delegate: SignupEpilogueTableViewControllerDelegate?
+    open var credentials: WordPressCredentials?
+    open var socialService: SocialService?
 
     private var epilogueUserInfo: LoginEpilogueUserInfo?
     private var userInfoCell: EpilogueUserInfoCell?
@@ -188,12 +190,11 @@ private extension SignupEpilogueTableViewController {
             return
         }
 
-        var userInfo: LoginEpilogueUserInfo
-        if loginFields.meta.socialService == .google {
+        var userInfo = LoginEpilogueUserInfo(account: account)
+        if let socialservice = socialService {
             showPassword = false
-            userInfo = LoginEpilogueUserInfo(account: account, loginFields: loginFields)
+            userInfo.update(with: socialservice)
         } else {
-            userInfo = LoginEpilogueUserInfo(account: account)
             if let customDisplayName = dataSource?.customDisplayName {
                 userInfo.fullName = customDisplayName
             } else {
