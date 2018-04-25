@@ -21,7 +21,7 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
         return loginFields.meta.emailMagicLinkSource == .signup
     }
 
-    private var authenticationDelegate: WordPressAuthenticatorDelegate {
+    var authenticationDelegate: WordPressAuthenticatorDelegate {
         guard let delegate = WordPressAuthenticator.shared.delegate else {
             fatalError()
         }

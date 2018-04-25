@@ -38,11 +38,12 @@ msgctxt "app_store_keywords"
 msgid "social networking, blogging, blogs, photos, writing, geotagging, media, blog, wordpress\n"
 msgstr ""
 
-msgctxt "v9.8-whats-new"
+msgctxt "v9.9-whats-new"
 msgid ""
-"Uploads are now asynchronous!\n"
-"Pages that fail to upload will now be marked red.\n"
-"The input field for writing comments can now grow up to 5 lines.\n"
+"Free Stock Photos are now available in the App!\n"
+"Spotlight now indexes key sections of the App!\n"
+"Setting up Jetpack within the app now allows a new WP.com account to be created at the same time.\n"
+"Enabled multiple selection in the document picker.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
