@@ -185,3 +185,17 @@ target 'WordPressKit' do
     shared_test_pods
   end
 end
+
+
+## Remove Duplicate GoogleSignIn References. Nuke this whenever WordPressAuthenticator is brought in via Pods.
+## This is one of the reasons why we **deeply**... DEEPLY dislike CocoaPods, and it's parasitic nature.
+##
+## Based On: https://github.com/CocoaPods/CocoaPods/issues/7155
+##
+pre_install do |installer|
+  embedded_target = installer.aggregate_targets.find { |aggregate_target| aggregate_target.name == 'Pods-WordPressAuthenticator' }
+  host_target = installer.aggregate_targets.find { |aggregate_target| aggregate_target.name == 'Pods-WordPress' }
+
+  duplicated_framework = embedded_target.pod_targets.select { |dependency| dependency.name == 'GoogleSignIn' }
+  host_target.pod_targets = host_target.pod_targets - duplicated_framework
+end
