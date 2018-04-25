@@ -202,8 +202,8 @@ private extension FancyButton {
             var bounds = renderer.format.bounds
             bounds.origin.x += lineWidthInPixels
             bounds.origin.y += lineWidthInPixels
-            bounds.size.height -= lineWidthInPixels * 2
-            bounds.size.width -= lineWidthInPixels * 2
+            bounds.size.height -= lineWidthInPixels * 2 + shadowOffset.height
+            bounds.size.width -= lineWidthInPixels * 2 + shadowOffset.width
 
             let path = UIBezierPath(roundedRect: bounds, cornerRadius: cornerRadius)
 
