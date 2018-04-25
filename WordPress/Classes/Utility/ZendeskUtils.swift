@@ -8,9 +8,11 @@ import CoreTelephony
 
     static var sharedInstance: ZendeskUtils = ZendeskUtils()
 
-    static var zendeskEnabled: Bool = false
+    var zendeskEnabled: Bool = false
 
-    private static var identityCreated = false
+    private var identityCreated = false
+    private var userName: String?
+    private var userEmail: String?
 
     private static var appVersion: String {
         return Bundle.main.shortVersionString() ?? Constants.unknownValue
@@ -25,7 +27,7 @@ import CoreTelephony
             appId.count > 0,
             url.count > 0,
             clientId.count > 0 else {
-                ZendeskUtils.sharedInstance.enableZendesk(false)
+                ZendeskUtils.enableZendesk(false)
                 return
         }
 
@@ -33,26 +35,53 @@ import CoreTelephony
                                         zendeskUrl: url,
                                         clientId: clientId)
 
-        ZendeskUtils.sharedInstance.enableZendesk(true)
+        ZendeskUtils.enableZendesk(true)
     }
 
-    static func createIdentity(with accountSettings: AccountSettings) {
-        let zendeskIdentity = ZDKAnonymousIdentity()
+    func createIdentity() {
 
-        var userName = accountSettings.username
-        if accountSettings.firstName.count > 0 || accountSettings.lastName.count > 0 {
-            userName = (accountSettings.firstName + " " + accountSettings.lastName).trim()
+        /*
+         Steps to selecting which account to use:
+         1. If there is a WordPress.com account, use that.
+         2. If not, check if we’ve saved user information in User Defaults. If so, use that.
+         3. If not, get user information from the selected site, save it to User Defaults, and use it.
+         */
+
+        let context = ContextManager.sharedInstance().mainContext
+        let accountService = AccountService(managedObjectContext: context)
+
+        if let defaultAccount = accountService.defaultWordPressComAccount() {
+            ZendeskUtils.getUserInformationFrom(wpAccount: defaultAccount)
+        } else if let savedProfile = UserDefaults.standard.dictionary(forKey: Constants.zendeskProfileUDKey) {
+            ZendeskUtils.getUserInformationFrom(savedProfile: savedProfile)
+        } else {
+            let blogService = BlogService(managedObjectContext: context)
+
+            guard let blog = blogService.lastUsedBlog() else {
+                return
+            }
+
+            if let jetpackState = blog.jetpack, jetpackState.isConnected {
+                ZendeskUtils.getUserInformationFrom(jetpackState: jetpackState)
+                ZendeskUtils.saveProfileToUD()
+            }
+            else {
+                ZendeskUtils.getUserInformationFrom(blog: blog)
+                ZendeskUtils.saveProfileToUD()
+            }
         }
 
-        zendeskIdentity.email = accountSettings.email
+        // Create ZD Identity with user information.
+        let zendeskIdentity = ZDKAnonymousIdentity()
+        zendeskIdentity.email = userEmail
         zendeskIdentity.name = userName
         ZDKConfig.instance().userIdentity = zendeskIdentity
-        ZendeskUtils.identityCreated = true
+        ZendeskUtils.sharedInstance.identityCreated = true
     }
 
-    static func showHelpCenter(from controller: UIViewController) {
+    func showHelpCenter(from controller: UIViewController) {
 
-        if !ZendeskUtils.identityCreated {
+        if !ZendeskUtils.sharedInstance.identityCreated {
             return
         }
 
@@ -64,33 +93,33 @@ import CoreTelephony
         helpCenterContentModel.groupIds = [Constants.mobileCategoryID]
         helpCenterContentModel.labels = [Constants.articleLabel]
 
-        let presentInController = ZendeskUtils.sharedInstance.configureViewController(controller)
+        let presentInController = ZendeskUtils.configureViewController(controller)
         ZDKHelpCenter.presentOverview(presentInController, with: helpCenterContentModel)
     }
 
-    static func showNewRequest(from controller: UIViewController) {
+    func showNewRequest(from controller: UIViewController) {
 
-        if !ZendeskUtils.identityCreated {
+        if !ZendeskUtils.sharedInstance.identityCreated {
             return
         }
 
-        let presentInController = ZendeskUtils.sharedInstance.configureViewController(controller)
+        let presentInController = ZendeskUtils.configureViewController(controller)
         ZDKRequests.presentRequestCreation(with: presentInController)
     }
 
-    static func showTicketList(from controller: UIViewController) {
+    func showTicketList(from controller: UIViewController) {
 
-        if !ZendeskUtils.identityCreated {
+        if !ZendeskUtils.sharedInstance.identityCreated {
             return
         }
 
-        let presentInController = ZendeskUtils.sharedInstance.configureViewController(controller)
+        let presentInController = ZendeskUtils.configureViewController(controller)
         ZDKRequests.presentRequestList(with: presentInController)
     }
 
-    static func createRequest() {
+    func createRequest() {
 
-        if !ZendeskUtils.identityCreated {
+        if !ZendeskUtils.sharedInstance.identityCreated {
             return
         }
 
@@ -104,17 +133,16 @@ import CoreTelephony
             ZDKConfig.instance().ticketFormId = TicketFieldIDs.form as NSNumber
 
             // Set form field values
-            let zdUtilsInstance = ZendeskUtils.sharedInstance
             var ticketFields = [ZDKCustomField]()
             ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.appVersion as NSNumber, andValue: ZendeskUtils.appVersion))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.allBlogs as NSNumber, andValue: zdUtilsInstance.getBlogInformation()))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.deviceFreeSpace as NSNumber, andValue: zdUtilsInstance.getDeviceFreeSpace()))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.networkInformation as NSNumber, andValue: zdUtilsInstance.getNetworkInformation()))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.logs as NSNumber, andValue: zdUtilsInstance.getLogFile()))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.allBlogs as NSNumber, andValue: ZendeskUtils.getBlogInformation()))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.deviceFreeSpace as NSNumber, andValue: ZendeskUtils.getDeviceFreeSpace()))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.networkInformation as NSNumber, andValue: ZendeskUtils.getNetworkInformation()))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.logs as NSNumber, andValue: ZendeskUtils.getLogFile()))
             ZDKConfig.instance().customTicketFields = ticketFields
 
             // Set tags
-            requestCreationConfig.tags = zdUtilsInstance.getTags()
+            requestCreationConfig.tags = ZendeskUtils.getTags()
 
             // Set the ticket subject
             requestCreationConfig.subject = Constants.ticketSubject
@@ -127,12 +155,12 @@ import CoreTelephony
 
 private extension ZendeskUtils {
 
-    func enableZendesk(_ enabled: Bool) {
-        ZendeskUtils.zendeskEnabled = enabled
+    static func enableZendesk(_ enabled: Bool) {
+        ZendeskUtils.sharedInstance.zendeskEnabled = enabled
         DDLogInfo("Zendesk Enabled: \(enabled)")
     }
 
-    func configureViewController(_ controller: UIViewController) -> UIViewController {
+    static func configureViewController(_ controller: UIViewController) -> UIViewController {
         // If the controller is a UIViewController, set the modal display for iPad.
         // If the controller is a UINavigationController, do nothing as the ZD views will inherit from that.
         if !controller.isKind(of: UINavigationController.self) && WPDeviceIdentification.isiPad() {
@@ -142,9 +170,62 @@ private extension ZendeskUtils {
         return controller
     }
 
+    // MARK: - Get User Information
+
+    static func getUserInformationFrom(jetpackState: JetpackState) {
+        ZendeskUtils.sharedInstance.userName = jetpackState.connectedUsername
+        ZendeskUtils.sharedInstance.userEmail = jetpackState.connectedEmail
+    }
+
+    static func getUserInformationFrom(blog: Blog) {
+        ZendeskUtils.sharedInstance.userName = blog.username
+        // TODO - get email
+    }
+
+    static func getUserInformationFrom(wpAccount: WPAccount) {
+
+        guard let api = wpAccount.wordPressComRestApi else {
+            return
+        }
+
+        let service = AccountSettingsService(userID: wpAccount.userID.intValue, api: api)
+
+        guard let accountSettings = service.settings else {
+            return
+        }
+
+        ZendeskUtils.sharedInstance.userEmail = wpAccount.email
+        ZendeskUtils.sharedInstance.userName = wpAccount.username
+        if accountSettings.firstName.count > 0 || accountSettings.lastName.count > 0 {
+            ZendeskUtils.sharedInstance.userName = (accountSettings.firstName + " " + accountSettings.lastName).trim()
+        }
+    }
+
+    static func getUserInformationFrom(savedProfile: [String: Any]) {
+
+        if let savedEmail = savedProfile[Constants.profileEmailKey] as? String {
+            ZendeskUtils.sharedInstance.userEmail = savedEmail
+        }
+
+        if let savedName = savedProfile[Constants.profileNameKey] as? String {
+            ZendeskUtils.sharedInstance.userName = savedName
+        }
+    }
+
+    // MARK: - Save to User Defaults
+
+    static func saveProfileToUD() {
+        var userProfile = [String: String]()
+        userProfile[Constants.profileEmailKey] = ZendeskUtils.sharedInstance.userEmail
+        userProfile[Constants.profileNameKey] = ZendeskUtils.sharedInstance.userName
+
+        UserDefaults.standard.set(userProfile, forKey: Constants.zendeskProfileUDKey)
+        UserDefaults.standard.synchronize()
+    }
+
     // MARK: - Data Helpers
 
-    func getDeviceFreeSpace() -> String {
+    static func getDeviceFreeSpace() -> String {
 
         guard let resourceValues = try? URL(fileURLWithPath: "/").resourceValues(forKeys: [.volumeAvailableCapacityKey]),
             let capacity = resourceValues.volumeAvailableCapacity else {
@@ -155,7 +236,7 @@ private extension ZendeskUtils {
         return ByteCountFormatter.string(fromByteCount: Int64(capacity), countStyle: .binary)
     }
 
-    func getLogFile() -> String {
+    static func getLogFile() -> String {
 
         guard let appDelegate = UIApplication.shared.delegate as? WordPressAppDelegate,
             let fileLogger = appDelegate.logger.fileLogger,
@@ -168,7 +249,7 @@ private extension ZendeskUtils {
         return logText
     }
 
-    func getBlogInformation() -> String {
+    static func getBlogInformation() -> String {
 
         let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
@@ -179,12 +260,11 @@ private extension ZendeskUtils {
         return (allBlogs.map { $0.logDescription() }).joined(separator: Constants.blogSeperator)
     }
 
-    func getTags() -> [String] {
+    static func getTags() -> [String] {
 
         var tags = [String]()
 
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService.init(managedObjectContext: context)
+        let accountService = AccountService.init(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         if let defaultAccount = accountService.defaultWordPressComAccount() {
 
@@ -203,7 +283,7 @@ private extension ZendeskUtils {
         return tags
     }
 
-    func getNetworkInformation() -> String {
+    static func getNetworkInformation() -> String {
 
         var networkInformation = [String]()
 
@@ -247,6 +327,9 @@ private extension ZendeskUtils {
         static let networkTypeLabel = "Network Type:"
         static let networkCarrierLabel = "Carrier:"
         static let networkCountryCodeLabel = "Country Code:"
+        static let zendeskProfileUDKey = "wp_zendesk_profile"
+        static let profileEmailKey = "email"
+        static let profileNameKey = "name"
     }
 
     struct TicketFieldIDs {
