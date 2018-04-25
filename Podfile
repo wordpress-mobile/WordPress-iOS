@@ -188,8 +188,6 @@ end
 
 
 ## Remove Duplicate GoogleSignIn References. Nuke this whenever WordPressAuthenticator is brought in via Pods.
-## This is one of the reasons why we **deeply**... DEEPLY dislike CocoaPods, and it's parasitic nature.
-##
 ## Based On: https://github.com/CocoaPods/CocoaPods/issues/7155
 ##
 pre_install do |installer|
