@@ -9,6 +9,7 @@
 #import "WordPress-Swift.h"
 @import WordPressKit;
 
+
 NSString * const ReaderTopicDidChangeViaUserInteractionNotification = @"ReaderTopicDidChangeViaUserInteractionNotification";
 NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
 NSString * const ReaderTopicFreshlyPressedPathCommponent = @"freshly-pressed";
@@ -839,8 +840,46 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.title = siteInfo.siteName;
     topic.type = ReaderSiteTopic.TopicType;
     topic.path = siteInfo.postsEndpoint;
+    
+    topic.postSubscription = [self postSubscriptionFor:siteInfo topic:topic];
+    topic.emailSubscription = [self emailSubscriptionFor:siteInfo topic:topic];
 
     return topic;
+}
+
+- (ReaderSiteInfoSubscriptionPost *)postSubscriptionFor:(RemoteReaderSiteInfo *)siteInfo topic:(ReaderSiteTopic *)topic
+{
+    if (![siteInfo.postSubscription wp_isValidObject]) {
+        return nil;
+    }
+    
+    ReaderSiteInfoSubscriptionPost *postSubscription = topic.postSubscription;
+    
+    if (![postSubscription wp_isValidObject]) {
+        postSubscription = [NSEntityDescription insertNewObjectForEntityForName:[ReaderSiteInfoSubscriptionPost classNameWithoutNamespaces]
+                                                         inManagedObjectContext:self.managedObjectContext];
+    }
+    postSubscription.siteTopic = topic;
+    postSubscription.sendPosts = siteInfo.postSubscription.sendPosts;
+    return postSubscription;
+}
+
+- (ReaderSiteInfoSubscriptionEmail *)emailSubscriptionFor:(RemoteReaderSiteInfo *)siteInfo topic:(ReaderSiteTopic *)topic
+{
+    if (![siteInfo.emailSubscription wp_isValidObject]) {
+        return nil;
+    }
+    
+    ReaderSiteInfoSubscriptionEmail *emailSubscription = topic.emailSubscription;
+    if (![emailSubscription wp_isValidObject]) {
+        emailSubscription = [NSEntityDescription insertNewObjectForEntityForName:[ReaderSiteInfoSubscriptionEmail classNameWithoutNamespaces]
+                                                          inManagedObjectContext:self.managedObjectContext];
+    }
+    emailSubscription.sendPosts = siteInfo.emailSubscription.sendPosts;
+    emailSubscription.sendComments = siteInfo.emailSubscription.sendComments;
+    emailSubscription.postDeliveryFrequency = siteInfo.emailSubscription.postDeliveryFrequency;
+    emailSubscription.siteTopic = topic;
+    return emailSubscription;
 }
 
 - (NSString *)formatTitle:(NSString *)str
