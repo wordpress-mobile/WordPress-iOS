@@ -263,22 +263,32 @@ private extension ZendeskUtils {
 
     static func getTags() -> [String] {
 
-        var tags = [String]()
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
 
-        let accountService = AccountService.init(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        // If there are no sites, then the user has an empty WP account.
+        guard let allBlogs = blogService.blogsForAllAccounts() as? [Blog], allBlogs.count > 0 else {
+            return [Constants.wpComTag]
+        }
 
-        if let defaultAccount = accountService.defaultWordPressComAccount() {
+        // Get all unique site plans
+        var tags = allBlogs.filter {
+            $0.planTitle != nil
+            }.map {
+                $0.planTitle!
+            }.unique
 
-            tags = defaultAccount.blogs.filter {
-                $0.planTitle != nil
-                }.map {
-                    $0.planTitle!
-                }.unique
-
-            tags.append(Constants.wpComTag)
-
-        } else {
+        // If any of the sites have jetpack installed, add jetpack tag.
+        let jetpackInstalled = allBlogs.map { $0.jetpack?.isInstalled }
+        if jetpackInstalled.contains(true) {
             tags.append(Constants.jetpackTag)
+        }
+
+
+        // If there is a WP account, add wpcom tag.
+        let accountService = AccountService.init(managedObjectContext: context)
+        if let _ = accountService.defaultWordPressComAccount() {
+            tags.append(Constants.wpComTag)
         }
 
         return tags
