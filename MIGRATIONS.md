@@ -5,6 +5,11 @@ data model as well as any custom migrations.
 
 ## WordPress 74
 
+- @frosty 2018-04-25
+- `AccountSettings` added `tracksOptOut` property, used to store the user's current preference for opting out of analytics tracking.
+
+## WordPress 74
+
 - @sergioestevao 2018-04-18
 - ``AbstractPost` added `featuredImage` a relationship to Media for the media featured in a post  and removed 'post_thumbnail' that used to store a Int with the mediaID information.
 
