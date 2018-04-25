@@ -194,7 +194,7 @@ extension ActivityListViewController: ActivityRewindPresenter {
 
     func presentRewindFor(activity: Activity) {
         guard activity.isRewindable, let rewindID = activity.rewindID else {
-                return
+            return
         }
 
         let title = NSLocalizedString("Rewind Site",
