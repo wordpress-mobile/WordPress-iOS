@@ -586,6 +586,7 @@
 				B560913F208A563800399AE4 /* Login.storyboard in Resources */,
 				B5E07FF4208FD13800657A9A /* Assets.xcassets in Resources */,
 				B5609137208A563800399AE4 /* EmailMagicLink.storyboard in Resources */,
+				B5E07FF4208FD13800657A9A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
