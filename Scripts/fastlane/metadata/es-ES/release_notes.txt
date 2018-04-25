@@ -1,1 +1,3 @@
-Para esta versión, pulimos algunos pixeles, nos deshicimos de algunos errores y trabajamos entre bambalinas para hacer la experiencia de WordPress más fluida para los usuarios de nuestras aplicaciones.
+¡Las subidas son ahora asíncronas!
+Las páginas que fallen en la subida serán marcadas en rojo.
+El campo de entrada para escribir comentarios puede llegar ahora hasta las 5 líneas.

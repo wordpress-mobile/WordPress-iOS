@@ -281,7 +281,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: abstractPostWindowlessCellIdenfitier)
     }
 
-    fileprivate func refreshResults() {
+    fileprivate func refreshResults(forcingNetworkAlerts: Bool = true) {
         guard isViewLoaded == true else {
             return
         }
@@ -292,7 +292,9 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         if tableViewHandler.resultsController.fetchedObjects?.count > 0 {
             hideNoResultsView()
-            presentNoNetworkAlert()
+            if forcingNetworkAlerts {
+                presentNoNetworkAlert()
+            }
         } else {
             showNoResultsView()
         }
@@ -603,9 +605,13 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         }
     }
 
+    func shouldPresentAlert() -> Bool {
+        return !connectionAvailable() && !contentIsEmpty() && !isViewOnScreen()
+    }
+
     @objc func syncItemsWithUserInteraction(_ userInteraction: Bool) {
         syncHelper.syncContentWithUserInteraction(userInteraction)
-        refreshResults()
+        refreshResults(forcingNetworkAlerts: userInteraction)
     }
 
     @objc func updateFilter(_ filter: PostListFilter, withSyncedPosts posts: [AbstractPost], syncOptions options: PostServiceSyncOptions) {
@@ -873,6 +879,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             apost.date_created_gmt = Date()
             apost.status = .publish
             self.uploadPost(apost)
+            self.updateFilterWithPostStatus(.publish)
         }
 
         present(alertController, animated: true, completion: nil)
@@ -883,26 +890,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         apost.status = .scheduled
         uploadPost(apost)
+        updateFilterWithPostStatus(.scheduled)
     }
 
     fileprivate func uploadPost(_ apost: AbstractPost) {
-        let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-
-        postService.uploadPost(apost, success: nil) { [weak self] (error: Error?) in
-
-            let error = error as NSError?
-            guard let strongSelf = self else {
-                return
-            }
-
-            if error?.code == type(of: strongSelf).HTTPErrorCodeForbidden {
-                strongSelf.promptForPassword()
-            } else {
-                WPError.showXMLRPCErrorAlert(error)
-            }
-
-            strongSelf.syncItemsWithUserInteraction(false)
-        }
+        PostCoordinator.shared.save(post: apost)
     }
 
     @objc func viewPost(_ apost: AbstractPost) {

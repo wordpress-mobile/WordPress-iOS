@@ -9,7 +9,7 @@ class PluginDirectoryViewController: UITableViewController {
     private var tableViewModel: ImmuTable!
     private var searchWrapperView: SearchWrapperView!
 
-    private let searchThrottle = Throttle(seconds: 0.5)
+    private let searchThrottle = Scheduler(seconds: 0.5)
 
     init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         viewModel = PluginDirectoryViewModel(site: site, store: store)

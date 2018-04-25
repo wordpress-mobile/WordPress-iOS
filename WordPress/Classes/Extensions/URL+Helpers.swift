@@ -5,12 +5,15 @@ extension URL {
 
     /// The URLResource fileSize of the file at the URL in bytes, if available.
     ///
-    var fileSize: Int? {
+    var fileSize: Int64? {
         guard isFileURL else {
             return nil
         }
         let values = try? resourceValues(forKeys: [.fileSizeKey])
-        return values?.fileSize
+        guard let fileSize = values?.allValues[.fileSizeKey] as? NSNumber else {
+            return nil
+        }
+        return fileSize.int64Value
     }
 
     /// The URLResource uniform type identifier for the file at the URL, if available.

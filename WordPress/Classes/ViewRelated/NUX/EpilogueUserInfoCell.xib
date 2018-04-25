@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -58,6 +58,9 @@
                         <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="xGK-LG-0cx">
+                        <rect key="frame" x="181" y="101" width="20" height="20"/>
+                    </activityIndicatorView>
                 </subviews>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 <constraints>
@@ -66,8 +69,10 @@
                     <constraint firstItem="m3s-Kz-bOH" firstAttribute="leading" secondItem="HfW-Dl-Z89" secondAttribute="leading" id="3RW-aO-2xM"/>
                     <constraint firstAttribute="trailing" secondItem="Ddl-7i-jhj" secondAttribute="trailing" id="5hU-nQ-buv"/>
                     <constraint firstAttribute="bottom" secondItem="m3s-Kz-bOH" secondAttribute="bottom" id="9jv-Kv-ip5"/>
+                    <constraint firstItem="xGK-LG-0cx" firstAttribute="top" secondItem="SqA-Tm-XVX" secondAttribute="bottom" constant="21" id="Acl-tc-kbv"/>
                     <constraint firstItem="SqA-Tm-XVX" firstAttribute="centerX" secondItem="HfW-Dl-Z89" secondAttribute="centerX" id="FIj-Nh-OhB"/>
                     <constraint firstItem="MbK-Ns-TbF" firstAttribute="centerX" secondItem="HfW-Dl-Z89" secondAttribute="centerX" id="FOE-Sh-cNK"/>
+                    <constraint firstItem="xGK-LG-0cx" firstAttribute="centerX" secondItem="HfW-Dl-Z89" secondAttribute="centerX" id="Mwp-7z-bUJ"/>
                     <constraint firstItem="89f-vg-HlI" firstAttribute="width" secondItem="HfW-Dl-Z89" secondAttribute="width" id="ZdQ-N7-B5U"/>
                     <constraint firstItem="89f-vg-HlI" firstAttribute="top" secondItem="MbK-Ns-TbF" secondAttribute="bottom" id="hGl-uc-uSH"/>
                     <constraint firstItem="Ddl-7i-jhj" firstAttribute="top" secondItem="HfW-Dl-Z89" secondAttribute="top" id="jCf-sF-Hsj"/>
@@ -79,6 +84,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="activityIndicator" destination="xGK-LG-0cx" id="cvq-jE-eTh"/>
                 <outlet property="fullNameLabel" destination="MbK-Ns-TbF" id="V0e-0h-jX6"/>
                 <outlet property="gravatarView" destination="SqA-Tm-XVX" id="ag5-hS-Y5D"/>
                 <outlet property="usernameLabel" destination="89f-vg-HlI" id="u0g-9B-dLf"/>

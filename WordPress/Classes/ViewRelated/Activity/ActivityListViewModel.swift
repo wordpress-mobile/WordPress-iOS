@@ -1,5 +1,9 @@
-protocol ActivityRewindPresenter {
+protocol ActivityRewindPresenter: class {
     func presentRewindFor(activity: Activity)
+}
+
+protocol ActivityDetailPresenter: class {
+    func presentDetailsFor(activity: Activity)
 }
 
 enum ActivityListViewModel {
@@ -35,18 +39,16 @@ enum ActivityListViewModel {
         }
     }
 
-    func tableViewModel(presenter: ActivityRewindPresenter) -> ImmuTable {
+    func tableViewModel(presenter: ActivityDetailPresenter) -> ImmuTable {
         switch self {
         case .loading, .error:
             return .Empty
         case .ready(let activities):
-            let rows = activities.filter({ activity in
-                !activity.isDiscarded
-            }).map({ activity in
+            let rows = activities.map({ activity in
                 return ActivityListRow(
                     activity: activity,
                     action: { (row) in
-                        presenter.presentRewindFor(activity: activity)
+                        presenter.presentDetailsFor(activity: activity)
                     }
                 )
             })

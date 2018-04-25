@@ -7,6 +7,7 @@
 
 // WordPress Module
 
+#import "ActivityLogViewController.h"
 #import "AccountService.h"
 #import "ApiCredentials.h"
 
@@ -15,6 +16,8 @@
 #import "BlogService.h"
 #import "BlogSyncFacade.h"
 #import "BlogSelectorViewController.h"
+#import "BlogListViewController.h"
+#import "BlogDetailsViewController.h"
 
 #import "Comment.h"
 #import "CommentService.h"
@@ -61,6 +64,8 @@
 #import "PostService.h"
 #import "PostServiceOptions.h"
 #import "PostSettingsViewController.h"
+#import "PostSettingsViewController_Internal.h"
+#import "WPProgressTableViewCell.h"
 #import "PostTag.h"
 #import "PostTagService.h"
 #import "PrivateSiteURLProtocol.h"
@@ -125,6 +130,8 @@
 #import "WPWalkthroughTextField.h"
 #import "WPUserAgent.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
+#import "WPLogger.h"
+
 
 // Pods
 #import <SVProgressHUD/SVProgressHUD.h>

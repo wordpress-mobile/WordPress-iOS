@@ -5,6 +5,5 @@
 @interface NSMutableAttributedString (Util)
 
 - (void)applyAttributesToQuotes:(NSDictionary *)attributes;
-- (void)applyForegroundColor:(UIColor *)color;
 
 @end

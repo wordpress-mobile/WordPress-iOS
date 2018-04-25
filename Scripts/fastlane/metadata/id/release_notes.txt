@@ -1,1 +1,3 @@
-Untuk rilis ini, kami menyempurnakan piksel, menyingkirkan bug, dan bekerja di balik layar untuk memastikan pengalaman WordPress yang lebih lancar bagi pengguna aplikasi kami.
+Pengunggahan sekarang tidak disinkronkan!
+Halaman yang gagal diunggah akan diberi tanda merah.
+Bidang input untuk menulis komentar sekarang bisa sampai 5 baris.

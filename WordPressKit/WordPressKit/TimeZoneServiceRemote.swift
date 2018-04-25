@@ -11,7 +11,7 @@ public class TimeZoneServiceRemote: ServiceRemoteWordPressComREST {
         let path = self.path(forEndpoint: endpoint, withVersion: ._2_0)
         let locale = WordPressComLanguageDatabase().deviceLanguage.slug
         let parameters: [String: AnyObject] = ["_locale": locale as AnyObject]
-        wordPressComRestApi.GET(path!, parameters: parameters, success: { (response, _) in
+        wordPressComRestApi.GET(path, parameters: parameters, success: { (response, _) in
             do {
                 let groups = try self.timezoneGroupsFromResponse(response)
                 success(groups)

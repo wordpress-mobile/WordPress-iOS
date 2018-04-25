@@ -70,7 +70,7 @@ class SiteCreationCreateSiteViewController: NUXViewController {
         }
 
         if let vc = segue.destination as? NoResultsViewController {
-            let title = NSLocalizedString("Something went wrong...", comment: "Primary message on site creation error page.")
+            let title = NSLocalizedString("Something went wrong…", comment: "Primary message on site creation error page.")
             let errorButtonTitle = NSLocalizedString("Try again", comment: "Button text on site creation error page.")
             let imageName = "site-creation-error"
 
@@ -138,7 +138,7 @@ private extension SiteCreationCreateSiteViewController {
         if let validationError = SiteCreationFields.validateFields() {
             setErrorMessage(for: validationError)
             DDLogError("Error while creating site: \(String(describing: errorMessage))")
-            self.performSegue(withIdentifier: .showSiteCreationError, sender: self)
+            performSegue(withIdentifier: Constants.errorSegueIdentifier, sender: self)
             return
         }
 
@@ -159,12 +159,12 @@ private extension SiteCreationCreateSiteViewController {
             }
 
             self.newSite = blog
-            self.performSegue(withIdentifier: .showSiteCreationEpilogue, sender: self)
+            self.performSegue(withIdentifier: Constants.epilogueSegueIdentifier, sender: self)
         }
 
         let failureBlock = { (error: Error?) in
             self.setErrorMessageForLastStatus()
-            self.performSegue(withIdentifier: .showSiteCreationError, sender: self)
+            self.performSegue(withIdentifier: Constants.errorSegueIdentifier, sender: self)
         }
 
         // Start the site creation process
@@ -305,6 +305,7 @@ private extension SiteCreationCreateSiteViewController {
     }
 }
 
+
 // MARK: - NoResultsViewControllerDelegate
 
 extension SiteCreationCreateSiteViewController: NoResultsViewControllerDelegate {
@@ -319,5 +320,14 @@ extension SiteCreationCreateSiteViewController: NoResultsViewControllerDelegate 
     func dismissButtonPressed() {
         navigationController?.dismiss(animated: true, completion: nil)
     }
+}
 
+
+// MARK: - Constants
+
+private extension SiteCreationCreateSiteViewController {
+    enum Constants {
+        static let epilogueSegueIdentifier = "showSiteCreationEpilogue"
+        static let errorSegueIdentifier = "showSiteCreationError"
+    }
 }

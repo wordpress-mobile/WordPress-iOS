@@ -7,8 +7,8 @@
 
 
 @interface WPNoResultsView ()
-@property (nonatomic, strong) UILabel   *titleLabel;
-@property (nonatomic, strong) UILabel   *messageLabel;
+@property (nonatomic, strong) UILabel       *titleLabel;
+@property (nonatomic, strong) UITextView    *messageTextView;
 @end
 
 @implementation WPNoResultsView
@@ -75,13 +75,17 @@
 
 - (void)configureMessageLabel
 {
-    _messageLabel               = [[UILabel alloc] init];
-    _messageLabel.font          = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-    _messageLabel.textColor     = [WPStyleGuide allTAllShadeGrey];
-    _messageLabel.numberOfLines = 0;
-    _messageLabel.textAlignment = NSTextAlignmentCenter;
-    _messageLabel.adjustsFontForContentSizeCategory = YES;
-    [self addSubview:_messageLabel];
+    _messageTextView                 = [[UITextView alloc] init];
+    _messageTextView.font            = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+    _messageTextView.textColor       = [WPStyleGuide allTAllShadeGrey];
+    _messageTextView.backgroundColor = [UIColor clearColor];
+    _messageTextView.textAlignment   = NSTextAlignmentCenter;
+    _messageTextView.adjustsFontForContentSizeCategory = YES;
+    _messageTextView.editable = NO;
+    _messageTextView.selectable = NO;
+    _messageTextView.textContainerInset = UIEdgeInsetsZero;
+    _messageTextView.textContainer.lineFragmentPadding = 0;
+    [self addSubview:_messageTextView];
 }
 
 - (void)configureButton
@@ -116,25 +120,25 @@
 
     _titleLabel.frame = CGRectMake(0.0f, (CGRectGetMaxY(_accessoryView.frame) > 0 && _accessoryView.hidden != YES ? CGRectGetMaxY(_accessoryView.frame) + 10.0 : 0) , width, titleSize.height);
     
-    CGSize messageSize = [_messageLabel.text boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+    CGSize messageSize = [_messageTextView.text boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
                                                           options:NSStringDrawingUsesLineFragmentOrigin
-                                                       attributes:@{NSFontAttributeName: _messageLabel.font}
+                                                       attributes:@{NSFontAttributeName: _messageTextView.font}
                                                           context:nil].size;
 
-    _messageLabel.frame = CGRectMake(0.0f, CGRectGetMaxY(_titleLabel.frame) + 8.0, width, messageSize.height);
+    _messageTextView.frame = CGRectMake(0.0f, CGRectGetMaxY(_titleLabel.frame) + 8.0, width, messageSize.height);
     
     [_button sizeToFit];
     CGSize buttonSize = _button.frame.size;
     buttonSize.width += 40.0;
-    CGFloat buttonYOrigin = (CGRectGetHeight(_messageLabel.frame) > 0 ? CGRectGetMaxY(_messageLabel.frame) : CGRectGetMaxY(_titleLabel.frame)) + 17.0 ;
+    CGFloat buttonYOrigin = (CGRectGetHeight(_messageTextView.frame) > 0 ? CGRectGetMaxY(_messageTextView.frame) : CGRectGetMaxY(_titleLabel.frame)) + 17.0 ;
     _button.frame = CGRectMake((width - buttonSize.width) / 2, buttonYOrigin, MIN(buttonSize.width, width), buttonSize.height);
     
     
     CGRect bottomViewRect;
     if (_button != nil) {
         bottomViewRect = _button.frame;
-    } else if (_messageLabel.text.length > 0) {
-        bottomViewRect = _messageLabel.frame;
+    } else if (_messageTextView.text.length > 0) {
+        bottomViewRect = _messageTextView.frame;
     } else if (_titleLabel.text.length > 0) {
         bottomViewRect = _titleLabel.frame;
     } else {
@@ -201,12 +205,39 @@
 }
 
 - (NSString *)messageText {
-    return _messageLabel.text;
+    return _messageTextView.text;
 }
 
 - (void)setMessageText:(NSString *)message {
-    _messageLabel.text = message;
+    _messageTextView.text = message;
     [self setNeedsLayout];
+}
+
+- (NSAttributedString *)attributedMessageText
+{
+    return self.messageTextView.attributedText;
+}
+
+- (void)setAttributedMessageText:(NSAttributedString *)attributedMessageText
+{
+    NSAttributedString * finalAttributedText = [self applyMessageStylesToAttributedString:attributedMessageText];
+    self.messageTextView.attributedText = finalAttributedText;
+    self.messageTextView.selectable = YES;
+}
+
+- (NSAttributedString *)applyMessageStylesToAttributedString:(NSAttributedString *)attributedString
+{
+    NSRange fullTextRange = NSMakeRange(0, attributedString.string.length);
+    NSMutableAttributedString *mutableAttributedText = [attributedString mutableCopy];
+
+    [mutableAttributedText addAttribute:NSFontAttributeName value:self.messageTextView.font range:fullTextRange];
+    [mutableAttributedText addAttribute:NSForegroundColorAttributeName value:self.messageTextView.textColor range:fullTextRange];
+
+    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
+    paragraphStyle.alignment = self.messageTextView.textAlignment;
+    [mutableAttributedText addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:fullTextRange];
+
+    return mutableAttributedText;
 }
 
 - (void)setAccessoryView:(UIView *)accessoryView {
