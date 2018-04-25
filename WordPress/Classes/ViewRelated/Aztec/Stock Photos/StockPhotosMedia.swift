@@ -54,11 +54,11 @@ final class StockPhotosMedia: NSObject {
 
 extension StockPhotosMedia: WPMediaAsset {
     func image(with size: CGSize, completionHandler: @escaping WPMediaImageBlock) -> WPMediaRequestID {
+        let thumb = thumbURL(with: size)
 
-        //Temporary loading image from URL
         DispatchQueue.global().async {
             do {
-                let data = try Data(contentsOf: self.thumbnails.postThumbnailURL)
+                let data = try Data(contentsOf: thumb)
                 let image = UIImage(data: data)
                 completionHandler(image, nil)
             } catch {
@@ -68,6 +68,11 @@ extension StockPhotosMedia: WPMediaAsset {
 
         let number = Int32(id) ?? 0
         return number as WPMediaRequestID
+    }
+
+    // We assume that if the size passed is .zero, we want the largest possible image
+    private func thumbURL(with size: CGSize) -> URL {
+        return size == .zero ? thumbnails.largeURL : thumbnails.postThumbnailURL
     }
 
     func cancelImageRequest(_ requestID: WPMediaRequestID) {
