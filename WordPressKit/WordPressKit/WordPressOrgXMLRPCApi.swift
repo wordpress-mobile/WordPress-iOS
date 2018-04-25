@@ -171,6 +171,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
                                  success: @escaping SuccessResponseBlock,
                                  failure: @escaping FailureReponseBlock) -> Progress? {
         let progress: Progress = Progress.discreteProgress(totalUnitCount: 1)
+        progress.isCancellable = true
         DispatchQueue.global().async {
             let fileURL = self.URLForTemporaryFile()
             //Encode request
@@ -182,7 +183,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
                 return
             }
 
-            self.uploadSessionManager.upload(fileURL, with: request)
+            let uploadRequest = self.uploadSessionManager.upload(fileURL, with: request)
                 .uploadProgress { (requestProgress) in
                     progress.totalUnitCount = requestProgress.totalUnitCount + 1
                     progress.completedUnitCount = requestProgress.completedUnitCount
@@ -199,6 +200,9 @@ open class WordPressOrgXMLRPCApi: NSObject {
                         }
                         return
                     }
+              }
+            progress.cancellationHandler = {
+              uploadRequest.cancel()
             }
         }
 
