@@ -5,6 +5,6 @@ extension String {
     }
 
     static var importFromPhotoLibrary: String {
-        return NSLocalizedString("Photo Library", comment: "Menu option for selecting media from the device's photo library.")
+        return NSLocalizedString("Choose from My Device", comment: "Menu option for selecting media from the device's photo library.")
     }
 }
