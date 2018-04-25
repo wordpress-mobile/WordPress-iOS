@@ -49,6 +49,15 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     var supportBadgeCount: Int { get }
 
+    /// Signals the Host App that a new WordPress.com account has just been created.
+    ///
+    /// - Parameters:
+    ///     - username: WordPress.com Username.
+    ///     - authToken: WordPress.com Bearer Token.
+    ///     - onCompletion: Closure to be executed on completion.
+    ///
+    func createdWordPressComAccount(username: String, authToken: String)
+
     /// Presents the Livechat Interface, from a given ViewController, with a specified SourceTag, and additional metadata,
     /// such as all of the User's Login details.
     ///
@@ -86,7 +95,7 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///     - credentials: WordPress Site Credentials.
     ///     - onCompletion: Closure to be executed on completion.
     ///
-    func sync(credentials: WordPressCredentials, onCompletion: @escaping (Error?) -> ())
+    func sync(credentials: WordPressCredentials, onCompletion: @escaping (Error?) -> Void)
 
     /// Signals the Host App that a given Analytics Event has occurred.
     ///

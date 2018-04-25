@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		050FFF3AF877DD64C5795011 /* Pods_WordPressAuthenticatorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8735AAC66C7015A0B684D4B /* Pods_WordPressAuthenticatorTests.framework */; };
+		B5E07FF4208FD13800657A9A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5E07FF3208FD13800657A9A /* Assets.xcassets */; };
 		B5ED78FE207E976500A8FD8C /* WordPressAuthenticator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ED78F4207E976500A8FD8C /* WordPressAuthenticator.framework */; };
 		B5ED7905207E976500A8FD8C /* WordPressAuthenticator.h in Headers */ = {isa = PBXBuildFile; fileRef = B5ED78F7207E976500A8FD8C /* WordPressAuthenticator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B5ED7912207E981400A8FD8C /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ED7911207E981400A8FD8C /* WordPressKit.framework */; };
@@ -37,6 +38,7 @@
 		5585A7E9820611F0B738272C /* Pods_WordPressAuthenticator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressAuthenticator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		75342E9B15CCDC942D18777A /* Pods-WordPressAuthenticator.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressAuthenticator.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressAuthenticator/Pods-WordPressAuthenticator.debug.xcconfig"; sourceTree = "<group>"; };
 		ABBD3BD7BE3EBAF47AAB478A /* Pods-WordPressAuthenticatorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressAuthenticatorTests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressAuthenticatorTests/Pods-WordPressAuthenticatorTests.release.xcconfig"; sourceTree = "<group>"; };
+		B5E07FF3208FD13800657A9A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B5ED78F4207E976500A8FD8C /* WordPressAuthenticator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WordPressAuthenticator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B5ED78F7207E976500A8FD8C /* WordPressAuthenticator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WordPressAuthenticator.h; sourceTree = "<group>"; };
 		B5ED78F8207E976500A8FD8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				B5ED7917207E993E00A8FD8C /* Logging */,
+				B5E07FF3208FD13800657A9A /* Assets.xcassets */,
 				B5ED78F7207E976500A8FD8C /* WordPressAuthenticator.h */,
 				B5ED78F8207E976500A8FD8C /* Info.plist */,
 			);
@@ -256,6 +259,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5E07FF4208FD13800657A9A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
