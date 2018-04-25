@@ -6,7 +6,7 @@
 
 static void *ProgressObserverContext = &ProgressObserverContext;
 
-NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
+NSProgressUserInfoKey const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
 @interface WPProgressTableViewCell ()
 
 @property (nonatomic, strong) IBOutlet MRActivityIndicatorView * progressView;
@@ -71,14 +71,13 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
 
 - (void)updateProgress
 {
-    if (_progress.fractionCompleted < 1 && !_progress.isCancelled
-        && !(_progress.totalUnitCount == 0 && _progress.completedUnitCount == 0)) {
+    if (_progress.fractionCompleted < 1 && !_progress.isCancelled) {
         [_progressView startAnimating];
     } else {
         [_progressView stopAnimating];
     }
 
-    self.progressView.mayStop = _progress.isCancellable;
+    _progressView.mayStop = _progress.isCancellable;
     if ([_progress isCancelled]) {
         self.textLabel.text = NSLocalizedString(@"Cancelled", @"The action was cancelled");
         self.detailTextLabel.text = @"";

@@ -7,7 +7,6 @@ protocol SignupUsernameViewControllerDelegate {
 class SignupUsernameViewController: NUXViewController {
     // MARK: - Properties
     open var currentUsername: String?
-    private var newUsername: String?
     open var displayName: String?
     open var delegate: SignupUsernameViewControllerDelegate?
 
@@ -51,8 +50,6 @@ class SignupUsernameViewController: NUXViewController {
 
 extension SignupUsernameViewController: SignupUsernameViewControllerDelegate {
     func usernameSelected(_ username: String) {
-        newUsername = username
-
         delegate?.usernameSelected(username)
     }
 }

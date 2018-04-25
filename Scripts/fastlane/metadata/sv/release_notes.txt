@@ -1,1 +1,3 @@
-I denna utgåva har vi fixat till några pixlar, sagt hejdå till några programfel och bakom kulisserna arbetat på att ge ett smidigare WordPress för dem som använder vår app.
+Nu görs uppladdningar asynkront!
+Sidor som inte kunnat laddas upp markeras nu med rött.
+Inmatningsfältet där man skriver kommentarer kan nu utvidgas upp till 5 rader.

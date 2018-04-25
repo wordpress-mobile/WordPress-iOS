@@ -1,1 +1,3 @@
-Per questo rilascio, abbiamo raffinato alcuni pixel, salutato alcuni bug e lavorato dietro le quinte per rendere più agevole l'esperienza su WordPress ai nostri utenti.
+I caricamenti ora sono asincroni!
+Le pagine non caricate ora sono contrassegnate in rosso.
+Il campo di inserimento per i commenti ora contiene fino a 5 righe.

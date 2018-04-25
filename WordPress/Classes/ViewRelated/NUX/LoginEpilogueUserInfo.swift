@@ -1,6 +1,7 @@
 import Foundation
 import GoogleSignIn
 
+
 /// A simple container for the user info shown on the login epilogue screen.
 ///
 public struct LoginEpilogueUserInfo {
@@ -10,6 +11,8 @@ public struct LoginEpilogueUserInfo {
     var gravatarUrl: String?
     var credentials: WordPressCredentials?
 
+    /// Initializes the EpilogueUserInfo with all of the metadata contained within WPAccount.
+    ///
     init(account: WPAccount) {
         if let name = account.username {
             username = name
@@ -22,19 +25,34 @@ public struct LoginEpilogueUserInfo {
         }
     }
 
-    init(account: WPAccount, loginFields: LoginFields) {
-        email = loginFields.emailAddress
+    /// Initializes the EpilogueUserInfo with all of the metadata contained within UserProfile.
+    ///
+    init(profile: UserProfile) {
+        username = profile.username
+        fullName = profile.displayName
+        email = profile.email
+    }
+}
 
-        if let name = account.username {
-            username = name
-        }
 
-        if let googleFullName = loginFields.meta.googleUser?.profile.name {
-            fullName = googleFullName
-        }
+// MARK: - LoginEpilogueUserInfo
+//
+extension LoginEpilogueUserInfo {
+
+    /// Updates the Epilogue properties, given a GravatarProfile instance.
+    ///
+    mutating func update(with profile: GravatarProfile) {
+        gravatarUrl = profile.thumbnailUrl
+        fullName = profile.displayName
     }
 
-    init() {
+    /// Updates the Epilogue properties, given a SocialService instance.
+    ///
+    mutating func update(with service: SocialService) {
+        switch service {
+        case .google(let user):
+            fullName = user.profile.name
+            email = user.profile.email
+        }
     }
-
 }

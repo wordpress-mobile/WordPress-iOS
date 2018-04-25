@@ -68,14 +68,6 @@ class SiteCreationDomainsViewController: NUXViewController {
             showButtonView(show: false, withAnimation: false)
         }
     }
-
-    // MARK: - Misc
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 }
 
 // MARK: - SiteCreationDomainsTableViewControllerDelegate
@@ -95,6 +87,16 @@ extension SiteCreationDomainsViewController: SiteCreationDomainsTableViewControl
 
 extension SiteCreationDomainsViewController: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
-        performSegue(withIdentifier: .showCreateSite, sender: self)
+        performSegue(withIdentifier: Constants.createSiteSegueIdentifier, sender: self)
+    }
+}
+
+
+// MARK: - Constants
+
+private extension SiteCreationDomainsViewController {
+
+    enum Constants {
+        static let createSiteSegueIdentifier = "showCreateSite"
     }
 }

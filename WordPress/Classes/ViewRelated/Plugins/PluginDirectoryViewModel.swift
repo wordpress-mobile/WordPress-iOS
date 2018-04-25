@@ -24,7 +24,7 @@ class PluginDirectoryViewModel: Observable {
     private var storeReceipt: Receipt?
     private var actionReceipt: Receipt?
 
-    private let throttle = Throttle(seconds: 1)
+    private let throttle = Scheduler(seconds: 1)
 
     public init(site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         self.store = store
