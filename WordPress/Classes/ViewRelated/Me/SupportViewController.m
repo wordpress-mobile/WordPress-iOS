@@ -134,6 +134,12 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     [WPAnalytics track:WPAnalyticsStatOpenedSupport];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self createUserActivity];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];

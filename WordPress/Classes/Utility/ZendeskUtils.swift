@@ -50,7 +50,7 @@ import CoreTelephony
         ZendeskUtils.identityCreated = true
     }
 
-    static func showHelpCenter(from navController: UINavigationController) {
+    static func showHelpCenter(from controller: UIViewController) {
 
         if !ZendeskUtils.identityCreated {
             return
@@ -64,25 +64,28 @@ import CoreTelephony
         helpCenterContentModel.groupIds = [Constants.mobileCategoryID]
         helpCenterContentModel.labels = [Constants.articleLabel]
 
-        ZDKHelpCenter.pushOverview(navController, with: helpCenterContentModel)
+        let presentInController = ZendeskUtils.sharedInstance.configureViewController(controller)
+        ZDKHelpCenter.presentOverview(presentInController, with: helpCenterContentModel)
     }
 
-    static func showNewRequest(from navController: UINavigationController) {
+    static func showNewRequest(from controller: UIViewController) {
 
         if !ZendeskUtils.identityCreated {
             return
         }
 
-        ZDKRequests.presentRequestCreation(with: navController)
+        let presentInController = ZendeskUtils.sharedInstance.configureViewController(controller)
+        ZDKRequests.presentRequestCreation(with: presentInController)
     }
 
-    static func showTicketList(from navController: UINavigationController) {
+    static func showTicketList(from controller: UIViewController) {
 
         if !ZendeskUtils.identityCreated {
             return
         }
 
-        ZDKRequests.pushRequestList(with: navController, layoutGuide: ZDKLayoutRespectTop)
+        let presentInController = ZendeskUtils.sharedInstance.configureViewController(controller)
+        ZDKRequests.presentRequestList(with: presentInController)
     }
 
     static func createRequest() {
@@ -98,16 +101,16 @@ import CoreTelephony
             }
 
             // Set Zendesk ticket form to use
-            ZDKConfig.instance().ticketFormId = TicketFieldIDs.form
+            ZDKConfig.instance().ticketFormId = TicketFieldIDs.form as NSNumber
 
             // Set form field values
             let zdUtilsInstance = ZendeskUtils.sharedInstance
             var ticketFields = [ZDKCustomField]()
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.appVersion, andValue: ZendeskUtils.appVersion))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.allBlogs, andValue: zdUtilsInstance.getBlogInformation()))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.deviceFreeSpace, andValue: zdUtilsInstance.getDeviceFreeSpace()))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.networkInformation, andValue: zdUtilsInstance.getNetworkInformation()))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.logs, andValue: zdUtilsInstance.getLogFile()))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.appVersion as NSNumber, andValue: ZendeskUtils.appVersion))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.allBlogs as NSNumber, andValue: zdUtilsInstance.getBlogInformation()))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.deviceFreeSpace as NSNumber, andValue: zdUtilsInstance.getDeviceFreeSpace()))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.networkInformation as NSNumber, andValue: zdUtilsInstance.getNetworkInformation()))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.logs as NSNumber, andValue: zdUtilsInstance.getLogFile()))
             ZDKConfig.instance().customTicketFields = ticketFields
 
             // Set tags
@@ -127,6 +130,16 @@ private extension ZendeskUtils {
     func enableZendesk(_ enabled: Bool) {
         ZendeskUtils.zendeskEnabled = enabled
         DDLogInfo("Zendesk Enabled: \(enabled)")
+    }
+
+    func configureViewController(_ controller: UIViewController) -> UIViewController {
+        // If the controller is a UIViewController, set the modal display for iPad.
+        // If the controller is a UINavigationController, do nothing as the ZD views will inherit from that.
+        if !controller.isKind(of: UINavigationController.self) && WPDeviceIdentification.isiPad() {
+            controller.modalPresentationStyle = .formSheet
+            controller.modalTransitionStyle = .crossDissolve
+        }
+        return controller
     }
 
     // MARK: - Data Helpers
@@ -237,12 +250,12 @@ private extension ZendeskUtils {
     }
 
     struct TicketFieldIDs {
-        static let form: NSNumber = 360000010286
-        static let appVersion: NSNumber = 360000086866
-        static let allBlogs: NSNumber = 360000087183
-        static let deviceFreeSpace: NSNumber = 360000089123
-        static let networkInformation: NSNumber = 360000086966
-        static let logs: NSNumber = 22871957
+        static let form: UInt64 = 360000010286
+        static let appVersion: UInt64 = 360000086866
+        static let allBlogs: UInt64 = 360000087183
+        static let deviceFreeSpace: UInt64 = 360000089123
+        static let networkInformation: UInt64 = 360000086966
+        static let logs: UInt64 = 22871957
     }
 
 }
