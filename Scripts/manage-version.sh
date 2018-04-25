@@ -17,20 +17,9 @@ OUTPUT_RED="\033[31m"
 OUTPUT_GREEN="\033[32m"
 OUTPUT_BOLD="\033[1m"
 
-# PList files
-buildPLists=("Info.plist" 
-    "WordPressDraftActionExtension/Info.plist"
-    "WordPressShareExtension/Info.plist"
-    "WordPressTodayWidget/Info.plist")
-
-intPLists=("WordPress-Internal-Info.plist" \
-    "WordPressDraftActionExtension/Info-Alpha.plist" \
-    "WordPressDraftActionExtension/Info-Internal.plist" \
-    "WordPressShareExtension/Info-Alpha.plist" \
-    "WordPressShareExtension/Info-Internal.plist" \
-    "WordPressTodayWidget/Info-Alpha.plist" \
-    "WordPressTodayWidget/Info-Internal.plist" \
-    "Wordpress-Alpha-Info.plist")
+# Config files
+publicConfig=("Version.public.xcconfig") 
+internalConfig=("Version.internal.xcconfig")
 
 
 ### Function definitions
@@ -225,31 +214,31 @@ function updateFastlaneDeliver() {
     fi
 }
 
-# Updates a list of plist files with the provided version 
-function updatePlistArray() {
+# Updates a list of config files with the provided version 
+function updateConfigFiles() {
     declare -a fileList=("${!1}")
     updateVer=$2
 
     for i in "${fileList[@]}"
     do
-        cFile="../WordPress/$i"
+        cFile="../config/$i"
         if [ -f "$cFile" ]; then
             echo "Updating $cFile to version $2" >> $logFile 2>&1
-            sed -i '' "$(awk '/CFBundleShortVersionString/{ print NR + 1; exit }' "$cFile")s/<string>.*/<string>$newMainVer<\/string>/" "$cFile" >> $logFile 2>&1 || stopOnError
-            sed -i '' "$(awk '/CFBundleVersion/{ print NR + 1; exit }' "$cFile")s/<string>.*/<string>$updateVer<\/string>/" "$cFile" >> $logFile 2>&1 || stopOnError
+            sed -i '' "$(awk '/^VERSION_SHORT/{ print NR; exit }' "$cFile")s/=.*/=$newMainVer/" "$cFile" >> $logFile 2>&1 || stopOnError
+            sed -i '' "$(awk '/^VERSION_LONG/{ print NR; exit }' "$cFile")s/=.*/=$updateVer/" "$cFile" >> $logFile 2>&1 || stopOnError
         else
             stopOnError "$cFile  not found"
         fi
     done
 }
 
-# Updates the pList files
-function updatePLists() {
-    updatePlistArray buildPLists[@] "$newVer"
-    updatePlistArray intPLists[@] "$newIntVer"
+# Updates the config files
+function updateXcConfigs() {
+    updateConfigFiles publicConfig[@] "$newVer"
+    updateConfigFiles internalConfig[@] "$newIntVer"
 }
 
-# Updates pLists files and fastlane deliver on the current branch
+# Updates config files and fastlane deliver on the current branch
 function updateBranch() {
     if [ $cmd == $CMD_UPDATE ]; then
         startLog
@@ -258,8 +247,8 @@ function updateBranch() {
         showConfig
     fi
 
-    showMessage "Updating pLists..."
-    updatePLists
+    showMessage "Updating XcConfig..."
+    updateXcConfigs
     showMessage "Done!"
 
     if [ $cmd == $CMD_UPDATE ]; then
@@ -291,11 +280,11 @@ function createBranch() {
     stopLog
 }
 
-# Reads a version from a Plist file
+# Reads a version from a config file
 function readVersion() {
-    cFile="../WordPress/$1"
+    cFile="../config/$1"
     if [ -f "$cFile" ]; then
-        tmp=$(sed -n "$(awk '/CFBundleVersion/{ print NR + 1; exit }' "$cFile")p" "$cFile" | cut -d'>' -f 2 | cut -d'<' -f 1)
+        tmp=$(sed -n "$(awk '/^VERSION_LONG/{ print NR; exit }' "$cFile")p" "$cFile" | cut -d'=' -f 2)
     else
         showErrorMessage "$cFile not found. Can't read version. Are you in the correct branch/folder?"
         exit 1
@@ -305,10 +294,10 @@ function readVersion() {
 # Reads the current internal and external versions
 function getCurrentVersions() {
     printf "Reading current version in this branch..."
-    readVersion ${buildPLists[0]}
+    readVersion ${publicConfig[0]}
     currentVer=$tmp
 
-    readVersion ${intPLists[0]}
+    readVersion ${internalConfig[0]}
     currentIntVer=$tmp 
     echo "Done."
 }
