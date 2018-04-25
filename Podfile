@@ -144,7 +144,7 @@ target 'WordPressAuthenticator' do
   target 'WordPressAuthenticatorTests' do
     inherit! :search_paths
 
-	shared_test_pods
+    shared_test_pods
     pod 'Expecta', '1.0.6'
     pod 'Specta', '1.0.7'
   end
