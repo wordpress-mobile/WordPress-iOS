@@ -9,6 +9,9 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
     var observers = [String: WPMediaChangesBlock]()
     private var dataLoader: StockPhotosDataLoader?
 
+    var onStartLoading: (() -> Void)?
+    var onStopLoading: (() -> Void)?
+
     private let scheduler = Scheduler(seconds: 0.5)
 
     private(set) var searchQuery: String = ""
@@ -41,6 +44,7 @@ final class StockPhotosDataSource: NSObject, WPMediaCollectionDataSource {
         scheduler.debounce { [weak self] in
             let params = StockPhotosSearchParams(text: searchText, pageable: StockPhotosPageable.first())
             self?.search(params)
+            self?.onStartLoading?()
         }
     }
 
@@ -148,6 +152,9 @@ extension StockPhotosDataSource {
 
 extension StockPhotosDataSource: StockPhotosDataLoaderDelegate {
     func didLoad(media: [StockPhotosMedia], reset: Bool) {
+        
+        onStopLoading?()
+
         guard media.count > 0 && searchQuery.count > 0 else {
             clearSearch(notifyObservers: true)
             return
