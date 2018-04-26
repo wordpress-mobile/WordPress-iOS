@@ -4,7 +4,7 @@ import Aztec
 
 // MARK: - CalypsoProcessorIn
 //
-class CalypsoProcessorIn: Processor {
+class CalypsoProcessorIn: CalypsoProcessor {
 
     /// Converts a Calypso-Generated string into Valid HTML that can actually be edited by Aztec.
     ///
@@ -14,9 +14,7 @@ class CalypsoProcessorIn: Processor {
     ///
     func process(_ text: String) -> String {
 
-        // This is awful, but our APIs don't offer any flag to know if the content is Gutenberg content or not.
-        // Directly copied from here: https://github.com/WordPress/gutenberg/blob/5a6693589285363341bebad15bd56d9371cf8ecc/lib/register.php#L343
-        guard !text.contains("<!-- wp:") else {
+        guard !wasWrittenWithGutenberg(text) else {
             return text
         }
 
