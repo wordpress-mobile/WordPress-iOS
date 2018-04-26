@@ -32,7 +32,6 @@ class SupportTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        createZendeskIdentity()
         setupNavBar()
         setupTable()
     }
@@ -64,24 +63,6 @@ class SupportTableViewController: UITableViewController {
 // MARK: - Private Extension
 
 private extension SupportTableViewController {
-
-    func createZendeskIdentity() {
-
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
-
-        guard let defaultAccount = accountService.defaultWordPressComAccount(),
-        let api = defaultAccount.wordPressComRestApi else {
-            return
-        }
-
-        let service = AccountSettingsService(userID: defaultAccount.userID.intValue, api: api)
-        guard let accountSettings = service.settings else {
-            return
-        }
-
-        ZendeskUtils.createIdentity(with: accountSettings)
-    }
 
     func setupNavBar() {
         title = LocalizedText.viewTitle
@@ -115,7 +96,7 @@ private extension SupportTableViewController {
         var helpSectionRows = [HelpRow]()
         helpSectionRows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected()))
 
-        if ZendeskUtils.zendeskEnabled {
+        if ZendeskUtils.sharedInstance.zendeskEnabled {
             helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected()))
             helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected()))
         } else {
@@ -148,12 +129,12 @@ private extension SupportTableViewController {
     func helpCenterSelected() -> ImmuTableAction {
         return { [unowned self] row in
             self.tableView.deselectSelectedRowWithAnimation(true)
-            if ZendeskUtils.zendeskEnabled {
+            if ZendeskUtils.sharedInstance.zendeskEnabled {
                 guard let controllerToShowFrom = self.controllerToShowFrom() else {
                     return
                 }
 
-                ZendeskUtils.showHelpCenter(from: controllerToShowFrom)
+                ZendeskUtils.sharedInstance.showHelpCenter(from: controllerToShowFrom)
             } else {
                 guard let url = Constants.appSupportURL else {
                     return
@@ -166,14 +147,14 @@ private extension SupportTableViewController {
     func contactUsSelected() -> ImmuTableAction {
         return { [unowned self] row in
             self.tableView.deselectSelectedRowWithAnimation(true)
-            if ZendeskUtils.zendeskEnabled {
+            if ZendeskUtils.sharedInstance.zendeskEnabled {
 
                 guard let controllerToShowFrom = self.controllerToShowFrom() else {
                     return
                 }
 
-                ZendeskUtils.showNewRequest(from: controllerToShowFrom)
-                ZendeskUtils.createRequest()
+                ZendeskUtils.sharedInstance.showNewRequest(from: controllerToShowFrom)
+                ZendeskUtils.sharedInstance.createRequest()
             } else {
                 guard let url = Constants.forumsURL else {
                     return
@@ -189,7 +170,7 @@ private extension SupportTableViewController {
             guard let controllerToShowFrom = self.controllerToShowFrom() else {
                 return
             }
-            ZendeskUtils.showTicketList(from: controllerToShowFrom)
+            ZendeskUtils.sharedInstance.showTicketList(from: controllerToShowFrom)
         }
     }
 
