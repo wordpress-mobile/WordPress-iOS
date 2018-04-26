@@ -22,7 +22,7 @@ extension FancyAlertViewController {
             controller.dismiss(animated: true, completion: nil)
         }
 
-        let image = UIImage(named: "wp-illustration-easy-async")
+        let image = UIImage(named: "wp-illustration-stay-in-the-loop")
 
         let config = FancyAlertViewController.Config(titleText: Strings.titleText,
                                                      bodyText: Strings.bodyText,
