@@ -66,6 +66,7 @@ import CoreTelephony
 
         let presentInController = ZendeskUtils.configureViewController(controller)
         ZDKRequests.presentRequestCreation(with: presentInController)
+        createRequest()
     }
 
     func showTicketList(from controller: UIViewController) {
