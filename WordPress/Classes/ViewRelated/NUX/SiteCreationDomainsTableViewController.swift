@@ -37,7 +37,9 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        tableView.register(UINib(nibName: "SearchTableViewCell", bundle: nil), forCellReuseIdentifier: SearchTableViewCell.reuseIdentifier)
+
+        let bundle = Bundle(for: WordPressAuthenticator.self)
+        tableView.register(UINib(nibName: "SearchTableViewCell", bundle: bundle), forCellReuseIdentifier: SearchTableViewCell.reuseIdentifier)
         setupBackgroundTapGestureRecognizer()
     }
 
