@@ -25,11 +25,11 @@ class CalypsoProcessorOutTests: XCTestCase {
 
         XCTAssertEqual(output, expected)
     }
-    
+
     func testGutenbergPostDoesNotStripParagraphs() {
         let input = "<!-- wp:someblock --><p>Hello there</p><!-- /wp:someblock -->"
         let expected = input
-        
+
         let output = processor.process(input)
         XCTAssertEqual(output, expected)
     }
