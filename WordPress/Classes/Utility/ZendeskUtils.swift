@@ -42,7 +42,7 @@ import CoreTelephony
 
     func showHelpCenter(from controller: UIViewController) {
 
-        if !ZendeskUtils.sharedInstance.identityCreated {
+        if !identityCreated {
             return
         }
 
@@ -60,7 +60,7 @@ import CoreTelephony
 
     func showNewRequest(from controller: UIViewController) {
 
-        if !ZendeskUtils.sharedInstance.identityCreated {
+        if !identityCreated {
             return
         }
 
@@ -70,7 +70,7 @@ import CoreTelephony
 
     func showTicketList(from controller: UIViewController) {
 
-        if !ZendeskUtils.sharedInstance.identityCreated {
+        if !identityCreated {
             return
         }
 
@@ -80,7 +80,7 @@ import CoreTelephony
 
     func createRequest() {
 
-        if !ZendeskUtils.sharedInstance.identityCreated {
+        if !identityCreated {
             return
         }
 
