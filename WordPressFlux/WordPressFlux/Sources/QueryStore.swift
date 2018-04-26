@@ -17,11 +17,11 @@ private struct QueryRef<Query> {
 /// Subclasses need to implement queriesChanged() and look at activeQueries and
 /// their internal state to decide if they need to act.
 ///
-/// If your `State` type confrorms to the `CachableState` protocol, the `QueryStore`
-/// will transparently persist/load cached State and purge in-memory State when there are no
+/// If your `State` type confrorms to the `Codable` protocol, the `QueryStore`
+/// will transparently persist/load State and purge in-memory State when there are no
 /// longer any active `Queries` associated with the `Store`.
 ////
-/// You can also manually force writing of the cache file by calling `storeCachedState()`.
+/// You can also manually force writing out the state to disk by calling `persistState()`.
 ///
 
 open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
@@ -29,11 +29,15 @@ open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
 
     fileprivate var activeQueryReferences = [QueryRef<Query>]() {
         didSet {
-            if activeQueryReferences.isEmpty, let encodableState = state as? Encodable, let url = try? type(of: self).cacheFileURL() {
+            if activeQueryReferences.isEmpty, let encodableState = state as? Encodable, let url = try? type(of: self).persistenceURL() {
                 // If we don't have any active queries, and the `state` conforms to `Encodable`, let's use this as our cue to persist the data
                 // to disk and get rid of the in-memory cache.
-                inMemoryState = nil
-                encodableState.storeCachedState(at: url)
+                do {
+                try encodableState.saveJSON(at: url)
+                    inMemoryState = nil
+                } catch {
+                    NSLog("[PluginStore Error] \(error)")
+                }
             }
 
             queriesChanged()
@@ -45,7 +49,7 @@ open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
 
     /// Facade for the `state`.
     ///
-    /// It allows for the lazy-loading of `state` from cache, when `State` conforms to `Codable`.
+    /// It allows for the lazy-loading of `state` from disk, when `State` conforms to `Codable`.
     override public final var state: State {
         get {
             // If the in-memory State is populated, just return that.
@@ -54,17 +58,17 @@ open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
             }
 
             // If we purged the in-memory `State` and the `Store` is being asked to do
-            // work again, let's try to reinitialise it from cache.
+            // work again, let's try to reinitialise it from disk.
             guard let codableInitialState = initialState as? Codable,
-                let cacheFileURL = try? type(of: self).cacheFileURL(),
-                let cachedState = type(of: codableInitialState).cachedState(from: cacheFileURL) as? State else {
+                let persistenceURL = try? type(of: self).persistenceURL(),
+                let persistedState = type(of: codableInitialState).loadJSON(from: persistenceURL) as? State else {
                     // If reading persisted state fails, let's just fail over to `initialState`.
                     return initialState
             }
 
             // When reading from disk has succeeded, set the result as `inMemoryState` and return it.
-            inMemoryState = cachedState
-            return cachedState
+            inMemoryState = persistedState
+            return persistedState
         }
         set {
             inMemoryState = newValue
@@ -116,59 +120,50 @@ open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
 
 }
 
-// In ideal world, those wouldn't be extensions on `Encodable`/`Codable`, but rather refinements of
-// `QueryStore` in which `Store` conforms to `Codable` — then we would just change behavior _inside_ the `QueryStore`,
-// based on whether the type conforms to `Codable` or not.
-// Regretfully, Swift type system (or my Swift skills) does't allow to express that —
-// you can't just do `let codableSelf = self as? QueryStore<Codable, Query>` because
-// _Codable itself doesn't conform to Codable_.
-private extension Encodable {
-    func storeCachedState(at url: URL) {
-        do {
-            let jsonEncoder = JSONEncoder.init()
-            let encodedStore = try jsonEncoder.encode(self)
-
-            try encodedStore.write(to: url, options: [.atomic])
-        } catch {
-            NSLog("[PluginStore Error] \(error)")
-        }
+public extension Encodable {
+    func saveJSON(at url: URL, using encoder: JSONEncoder = JSONEncoder()) throws {
+        let encodedStore = try encoder.encode(self)
+        try encodedStore.write(to: url, options: [.atomic])
     }
 }
 
-private extension Decodable {
-    static func cachedState(from cachedURL: URL) -> Self? {
+public extension Decodable {
+    static func loadJSON(from url: URL, using decoder: JSONDecoder = JSONDecoder()) -> Self? {
+        guard let data = try? Data(contentsOf: url) else {
+            return nil
+        }
+
         do {
-            let data = try Data(contentsOf: cachedURL)
-            let state = try JSONDecoder().decode(Self.self, from: data)
+            let state = try decoder.decode(Self.self, from: data)
 
             return state
         } catch {
-            NSLog("[PluginStore Error] \(error)")
+            NSLog("[Decoding error] Error while decoding file at \(url): \(error)")
             return nil
         }
     }
 }
 
 private extension QueryStore {
-    private static func cacheFileURL() throws -> URL {
-        let cacheFilename =  "\(String(describing: self)).json"
+    private static func persistenceURL() throws -> URL {
+        let filename =  "\(String(describing: self)).json"
         let documentsPath = try FileManager.default.url(for: .cachesDirectory,
                                                         in: .userDomainMask,
                                                         appropriateFor: nil,
                                                         create: true)
 
-        let targetURL = documentsPath.appendingPathComponent(cacheFilename)
+        let targetURL = documentsPath.appendingPathComponent(filename)
 
         return targetURL
     }
 }
 
 extension QueryStore where State: Encodable {
-    public func storeCachedState() {
-        guard let url = try? type(of: self).cacheFileURL() else {
+    public func persistState() throws {
+        guard let url = try? type(of: self).persistenceURL() else {
             return
         }
 
-        state.storeCachedState(at: url)
+        try state.saveJSON(at: url)
     }
 }
