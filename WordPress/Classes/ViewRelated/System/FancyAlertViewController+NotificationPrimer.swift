@@ -6,6 +6,11 @@ extension FancyAlertViewController {
         static let notNowText = NSLocalizedString("Not now", comment: "Not now button title shown in alert preparing users to grant permission for us to send them push notifications.")
     }
 
+    private struct Analytics {
+        static let locationKey = "location"
+        static let alertKey = "alert"
+    }
+
     /// Create the fancy alert controller for the notification primer
     ///
     /// - Parameter approveAction: block to call when approve is tapped
@@ -14,9 +19,13 @@ extension FancyAlertViewController {
 
         let publishButton = ButtonConfig(Strings.allowButtonText) { controller, _ in
             approveAction(controller)
+            WPAnalytics.track(.pushNotificationPrimerAllowTapped, withProperties: [Analytics.locationKey: Analytics.alertKey])
         }
 
         let dismissButton = ButtonConfig(Strings.notNowText) { controller, _ in
+            defer {
+                WPAnalytics.track(.pushNotificationPrimerNoTapped, withProperties: [Analytics.locationKey: Analytics.alertKey])
+            }
             controller.dismiss(animated: true, completion: nil)
         }
 
@@ -28,8 +37,9 @@ extension FancyAlertViewController {
                                                      dividerPosition: .bottom,
                                                      defaultButton: publishButton,
                                                      cancelButton: dismissButton,
-                                                     moreInfoButton: nil,
-                                                     titleAccessoryButton: nil,
+                                                     appearAction: {
+                                                        WPAnalytics.track(.pushNotificationPrimerSeen, withProperties: [Analytics.locationKey: Analytics.alertKey])
+                                                     },
                                                      dismissAction: {})
 
         let controller = FancyAlertViewController.controllerWithConfiguration(configuration: config)
