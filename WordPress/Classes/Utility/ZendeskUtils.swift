@@ -37,12 +37,13 @@ import CoreTelephony
                                         clientId: clientId)
 
         ZendeskUtils.enableZendesk(true)
+        ZendeskUtils.createIdentity()
     }
 
     func showHelpCenter(from controller: UIViewController) {
 
         if !ZendeskUtils.sharedInstance.identityCreated {
-            ZendeskUtils.createIdentity()
+            return
         }
 
         guard let helpCenterContentModel = ZDKHelpCenterOverviewContentModel.defaultContent() else {
@@ -60,7 +61,7 @@ import CoreTelephony
     func showNewRequest(from controller: UIViewController) {
 
         if !ZendeskUtils.sharedInstance.identityCreated {
-            ZendeskUtils.createIdentity()
+            return
         }
 
         let presentInController = ZendeskUtils.configureViewController(controller)
@@ -70,7 +71,7 @@ import CoreTelephony
     func showTicketList(from controller: UIViewController) {
 
         if !ZendeskUtils.sharedInstance.identityCreated {
-            ZendeskUtils.createIdentity()
+            return
         }
 
         let presentInController = ZendeskUtils.configureViewController(controller)
@@ -80,7 +81,7 @@ import CoreTelephony
     func createRequest() {
 
         if !ZendeskUtils.sharedInstance.identityCreated {
-            ZendeskUtils.createIdentity()
+            return
         }
 
         ZDKRequests.configure { (account, requestCreationConfig) in
