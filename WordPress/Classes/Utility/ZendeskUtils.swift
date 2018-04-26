@@ -28,7 +28,7 @@ import CoreTelephony
             appId.count > 0,
             url.count > 0,
             clientId.count > 0 else {
-                ZendeskUtils.enableZendesk(false)
+                ZendeskUtils.toggleZendesk(enabled: false)
                 return
         }
 
@@ -36,7 +36,7 @@ import CoreTelephony
                                         zendeskUrl: url,
                                         clientId: clientId)
 
-        ZendeskUtils.enableZendesk(true)
+        ZendeskUtils.toggleZendesk(enabled: true)
         ZendeskUtils.createIdentity()
     }
 
@@ -116,7 +116,7 @@ import CoreTelephony
 
 private extension ZendeskUtils {
 
-    static func enableZendesk(_ enabled: Bool) {
+    static func toggleZendesk(enabled: Bool) {
         ZendeskUtils.sharedInstance.zendeskEnabled = enabled
         DDLogInfo("Zendesk Enabled: \(enabled)")
     }
