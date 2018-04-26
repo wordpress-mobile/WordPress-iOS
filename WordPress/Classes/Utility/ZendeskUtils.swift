@@ -130,30 +130,46 @@ private extension ZendeskUtils {
          */
 
         let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
 
+        // 1. Check for WP account
+        let accountService = AccountService(managedObjectContext: context)
         if let defaultAccount = accountService.defaultWordPressComAccount() {
             ZendeskUtils.getUserInformationFrom(wpAccount: defaultAccount)
-        } else if let savedProfile = UserDefaults.standard.dictionary(forKey: Constants.zendeskProfileUDKey) {
-            ZendeskUtils.getUserInformationFrom(savedProfile: savedProfile)
-        } else {
-            let blogService = BlogService(managedObjectContext: context)
-
-            guard let blog = blogService.lastUsedBlog() else {
-                return
-            }
-
-            if let jetpackState = blog.jetpack, jetpackState.isConnected {
-                ZendeskUtils.getUserInformationFrom(jetpackState: jetpackState)
-                ZendeskUtils.saveProfileToUD()
-            }
-            else {
-                ZendeskUtils.getUserInformationFrom(blog: blog)
-                ZendeskUtils.saveProfileToUD()
-            }
+            ZendeskUtils.createZendeskIdentity()
+            return
         }
 
-        // Create ZD Identity with user information.
+        // 2. Check User Defaults
+        if let savedProfile = UserDefaults.standard.dictionary(forKey: Constants.zendeskProfileUDKey) {
+            ZendeskUtils.getUserInformationFrom(savedProfile: savedProfile)
+            ZendeskUtils.createZendeskIdentity()
+            return
+        }
+
+        // 3. Use information from selected site.
+        let blogService = BlogService(managedObjectContext: context)
+
+        guard let blog = blogService.lastUsedBlog() else {
+            return
+        }
+
+        // 3a. Jetpack site
+        if let jetpackState = blog.jetpack, jetpackState.isConnected {
+            ZendeskUtils.getUserInformationFrom(jetpackState: jetpackState)
+            ZendeskUtils.createZendeskIdentity()
+            ZendeskUtils.saveProfileToUD()
+            return
+
+        }
+
+        // 3b. self-hosted site
+        ZendeskUtils.getUserInformationFrom(blog: blog) {
+            ZendeskUtils.createZendeskIdentity()
+            ZendeskUtils.saveProfileToUD()
+        }
+    }
+
+    static func createZendeskIdentity() {
         let zendeskIdentity = ZDKAnonymousIdentity()
         zendeskIdentity.email = ZendeskUtils.sharedInstance.userEmail
         zendeskIdentity.name = ZendeskUtils.sharedInstance.userName
@@ -178,9 +194,26 @@ private extension ZendeskUtils {
         ZendeskUtils.sharedInstance.userEmail = jetpackState.connectedEmail
     }
 
-    static func getUserInformationFrom(blog: Blog) {
+    static func getUserInformationFrom(blog: Blog, completion: @escaping () -> ()) {
+
         ZendeskUtils.sharedInstance.userName = blog.username
-        // TODO - get email
+
+        // Get email address from remote profile
+        guard let username = blog.username,
+            let password = blog.password,
+            let xmlrpc = blog.xmlrpc,
+            let service = UsersService(username: username, password: password, xmlrpc: xmlrpc) else {
+                return
+        }
+
+        service.fetchProfile { userProfile in
+            guard let userProfile = userProfile else {
+                completion()
+                return
+            }
+            ZendeskUtils.sharedInstance.userEmail = userProfile.email
+            completion()
+        }
     }
 
     static func getUserInformationFrom(wpAccount: WPAccount) {
