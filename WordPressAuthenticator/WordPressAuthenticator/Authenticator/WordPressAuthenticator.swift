@@ -235,7 +235,7 @@ public struct WordPressAuthenticatorConfiguration {
 
     /// Indicates if the specified URL is a Google Authentication Link.
     ///
-    @objc public class func isGoogleAuthURL(url: URL, sourceApplication: String, annotation: Any) -> Bool {
+    @objc public class func isGoogleAuthURL(url: URL, sourceApplication: String?, annotation: Any?) -> Bool {
         return GIDSignIn.sharedInstance().handle(url, sourceApplication: sourceApplication, annotation: annotation)
     }
 
