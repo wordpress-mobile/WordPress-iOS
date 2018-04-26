@@ -307,13 +307,12 @@ private extension ZendeskUtils {
 
         // Get all unique site plans
         var tags = allBlogs.compactMap { $0.planTitle }.unique
-        
+
         // If any of the sites have jetpack installed, add jetpack tag.
-        let jetpackInstalled = allBlogs.map { $0.jetpack?.isInstalled }
-        if jetpackInstalled.contains(true) {
+        let jetpackBlog = allBlogs.first { $0.jetpack?.isInstalled == true }
+        if let _ = jetpackBlog {
             tags.append(Constants.jetpackTag)
         }
-
 
         // If there is a WP account, add wpcom tag.
         let accountService = AccountService.init(managedObjectContext: context)
