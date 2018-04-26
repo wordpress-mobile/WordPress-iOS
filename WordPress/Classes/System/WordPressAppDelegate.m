@@ -544,6 +544,8 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setPlaceholderTintColor:[WPStyleGuide greyLighten30]];
     [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setCellTintColor:[WPStyleGuide wordPressBlue]];
 
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[ [WPActionBar class] ]] setTintColor:[WPStyleGuide wordPressBlue]];
+
     // Customize the appearence of the text elements
     [self customizeAppearanceForTextElements];
 }
