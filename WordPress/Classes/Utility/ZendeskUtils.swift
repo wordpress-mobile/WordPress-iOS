@@ -315,7 +315,7 @@ private extension ZendeskUtils {
         }
 
         // If there is a WP account, add wpcom tag.
-        let accountService = AccountService.init(managedObjectContext: context)
+        let accountService = AccountService(managedObjectContext: context)
         if let _ = accountService.defaultWordPressComAccount() {
             tags.append(Constants.wpComTag)
         }
