@@ -12,7 +12,7 @@ class StoreContainer {
     }
 
     @objc fileprivate func applicationWillResignActive() {
-        plugin.storeCachedState()
+        try? plugin.persistState()
     }
 
     let plugin = PluginStore()
