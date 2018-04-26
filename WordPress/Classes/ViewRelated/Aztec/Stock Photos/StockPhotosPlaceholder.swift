@@ -21,12 +21,29 @@ final class StockPhotosPlaceholder: WPNoResultsView {
         configureSubtitle()
     }
 
+    func configureAsLoading() {
+        configureLoadingIndicator()
+        titleText = " " // empty strings are ignored.
+        messageText = ""
+    }
+
     func configureAsNoSearchResults(for string: String) {
+        configureImage()
+        configureSearchResultTitle(for: string)
+        messageText = ""
+    }
+
+    private func configureSearchResultTitle(for string: String) {
         //Translators could add an empty space at the end of this phrase.
         let sanitizedNoResultString = String.freePhotosSearchNoResult.trimmingCharacters(in: .whitespaces)
-
         titleText = sanitizedNoResultString + " " + string
-        messageText = ""
+    }
+
+    private func configureLoadingIndicator() {
+        let activity = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        activity.color = UIColor.gray
+        accessoryView = activity
+        activity.startAnimating()
     }
 
     private func configureImage() {
