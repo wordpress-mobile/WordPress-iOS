@@ -10,12 +10,10 @@ extension FancyAlertViewController {
     ///
     /// - Parameter approveAction: block to call when approve is tapped
     /// - Returns: FancyAlertViewController of the primer
-    @objc static func makeNotificationPrimerAlertController(approveAction: @escaping (() -> Void)) -> FancyAlertViewController {
+    @objc static func makeNotificationPrimerAlertController(approveAction: @escaping ((_ controller: FancyAlertViewController) -> Void)) -> FancyAlertViewController {
 
         let publishButton = ButtonConfig(Strings.allowButtonText) { controller, _ in
-            controller.dismiss(animated: true, completion: {
-                approveAction()
-            })
+            approveAction(controller)
         }
 
         let dismissButton = ButtonConfig(Strings.notNowText) { controller, _ in
