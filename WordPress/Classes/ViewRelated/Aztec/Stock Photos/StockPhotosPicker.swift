@@ -26,22 +26,29 @@ final class StockPhotosPicker: NSObject {
 
     private let searchHint = StockPhotosPlaceholder()
 
-    func presentPicker(origin: UIViewController, blog: Blog) {
-        self.blog = blog
+    private var pickerOptions: WPMediaPickerOptions = {
         let options = WPMediaPickerOptions()
         options.showMostRecentFirst = true
         options.filter = [.all]
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
+        return options
+    }()
 
-        let picker = WPNavigationMediaPickerViewController(options: options)
+    private lazy var picker: WPNavigationMediaPickerViewController = {
+        let picker = WPNavigationMediaPickerViewController(options: pickerOptions)
         picker.delegate = self
         picker.startOnGroupSelector = false
         picker.showGroupSelector = false
         picker.dataSource = dataSource
+        return picker
+    }()
+
+    func presentPicker(origin: UIViewController, blog: Blog) {
+        self.blog = blog
 
         origin.present(picker, animated: true) {
-            picker.mediaPicker.searchBar?.becomeFirstResponder()
+            self.picker.mediaPicker.searchBar?.becomeFirstResponder()
         }
 
         observeDataSource()
@@ -50,6 +57,12 @@ final class StockPhotosPicker: NSObject {
 
     private func observeDataSource() {
         observerToken = dataSource.registerChangeObserverBlock { [weak self] (_, _, _, _, assets) in
+            self?.updateHintView()
+        }
+        dataSource.onStartLoading = { [weak self] in
+            self?.searchHint.configureAsLoading()
+        }
+        dataSource.onStopLoading = { [weak self] in
             self?.updateHintView()
         }
     }
