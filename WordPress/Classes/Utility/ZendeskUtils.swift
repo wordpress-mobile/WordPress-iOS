@@ -9,7 +9,7 @@ import CoreTelephony
     static var sharedInstance: ZendeskUtils = ZendeskUtils()
     private override init() {}
 
-    var zendeskEnabled: Bool = false
+    var zendeskEnabled = false
 
     private var identityCreated = false
     private var userName: String?
