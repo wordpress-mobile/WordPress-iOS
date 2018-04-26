@@ -306,12 +306,8 @@ private extension ZendeskUtils {
         }
 
         // Get all unique site plans
-        var tags = allBlogs.filter {
-            $0.planTitle != nil
-            }.map {
-                $0.planTitle!
-            }.unique
-
+        var tags = allBlogs.compactMap { $0.planTitle }.unique
+        
         // If any of the sites have jetpack installed, add jetpack tag.
         let jetpackInstalled = allBlogs.map { $0.jetpack?.isInstalled }
         if jetpackInstalled.contains(true) {
