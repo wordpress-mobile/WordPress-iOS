@@ -20,6 +20,7 @@ extension FancyAlertViewController {
 
         let dismissButton = ButtonConfig(Strings.keepEditing) { controller, _ in
             controller.dismiss(animated: true, completion: nil)
+            WPAnalytics.track(.createdAccount, withProperties: ["test": "yes"])
         }
 
         let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
