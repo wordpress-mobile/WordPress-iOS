@@ -10,8 +10,8 @@ class AztecAttachmentViewController: UITableViewController {
         didSet {
             if let attachment = attachment {
                 alignment = attachment.alignment
-                size = attachment.size
                 alt = attachment.alt
+                size = attachment.size
             }
         }
     }
@@ -20,8 +20,9 @@ class AztecAttachmentViewController: UITableViewController {
     var linkURL: URL?
     var size = ImageAttachment.Size.none
     @objc var alt: String?
+    var caption: NSAttributedString?
 
-    var onUpdate: ((_ alignment: ImageAttachment.Alignment, _ size: ImageAttachment.Size, _ linkURL: URL?, _ altText: String?) -> Void)?
+    var onUpdate: ((_ alignment: ImageAttachment.Alignment, _ size: ImageAttachment.Size, _ linkURL: URL?, _ altText: String?, _ caption: NSAttributedString?) -> Void)?
     @objc var onCancel: (() -> Void)?
 
     fileprivate var handler: ImmuTableViewHandler!
@@ -91,6 +92,11 @@ class AztecAttachmentViewController: UITableViewController {
             value: alt ?? "",
             action: displayAltTextfield)
 
+        let captionRow = EditableAttributedTextRow(
+            title: NSLocalizedString("Caption", comment: "Image caption field label (for editing)"),
+            value: caption ?? NSAttributedString(),
+            action: displayCaptionTextfield)
+
         return ImmuTable(sections: [
             ImmuTableSection(
                 headerText: displaySettingsHeader,
@@ -98,7 +104,8 @@ class AztecAttachmentViewController: UITableViewController {
                     alignmentRow,
                     linkToRow,
                     sizeRow,
-                    altRow
+                    altRow,
+                    captionRow
                 ],
                 footerText: nil)
             ])
@@ -110,8 +117,27 @@ class AztecAttachmentViewController: UITableViewController {
     private func displayAltTextfield(row: ImmuTableRow) {
         let editableRow = row as! EditableTextRow
         let hint = NSLocalizedString("Image Alt", comment: "Hint for image alt on image settings.")
-        self.pushSettingsController(for: editableRow, hint: hint, settingsTextMode: .text) { value in
+
+        pushSettingsController(for: editableRow, hint: hint, settingsTextMode: .text) { [weak self] value in
+            guard let `self` = self else {
+                return
+            }
+
             self.alt = value
+            self.tableView.reloadData()
+        }
+    }
+
+    private func displayCaptionTextfield(row: ImmuTableRow) {
+        let editableRow = row as! EditableAttributedTextRow
+        let hint = NSLocalizedString("Image Caption", comment: "Hint for image caption on image settings.")
+
+        pushSettingsController(for: editableRow, hint: hint) { [weak self] value in
+            guard let `self` = self else {
+                return
+            }
+
+            self.caption = value
             self.tableView.reloadData()
         }
     }
@@ -119,7 +145,12 @@ class AztecAttachmentViewController: UITableViewController {
     private func displayLinkTextfield(row: ImmuTableRow) {
         let editableRow = row as! EditableTextRow
         let hint = NSLocalizedString("Image Link", comment: "Hint for image link on image settings.")
-        self.pushSettingsController(for: editableRow, hint: hint, settingsTextMode: .URL) { value in
+
+        pushSettingsController(for: editableRow, hint: hint, settingsTextMode: .URL) { [weak self] value in
+            guard let `self` = self else {
+                return
+            }
+
             self.linkURL = URL(string: value)
             self.tableView.reloadData()
         }
@@ -199,7 +230,7 @@ class AztecAttachmentViewController: UITableViewController {
 
     @objc func handleDoneButtonTapped(sender: UIBarButtonItem) {
         let checkedAlt = alt == "" ? nil : alt
-        onUpdate?(alignment, size, linkURL, checkedAlt)
+        onUpdate?(alignment, size, linkURL, checkedAlt, caption)
         dismiss(animated: true, completion: nil)
     }
 
@@ -214,6 +245,26 @@ class AztecAttachmentViewController: UITableViewController {
         controller.title = title
         controller.mode = settingsTextMode
         controller.onValueChanged = onValueChanged
+
+        navigationController?.pushViewController(controller, animated: true)
+    }
+
+    private func pushSettingsController(for row: EditableAttributedTextRow,
+                                        hint: String? = nil,
+                                        onValueChanged: @escaping SettingsAttributedTextChanged) {
+
+        // TODO: This shouldn't duplicate the styling from the Figcaption formatter.  Try to unify.
+        let defaultAttributes: [NSAttributedStringKey: Any] = [
+            .font: WPFontManager.notoRegularFont(ofSize: 14),
+            .foregroundColor: UIColor.gray,
+        ]
+
+        let title = row.title
+        let value = row.value
+        let controller = SettingsTextViewController(attributedText: value, defaultAttributes: defaultAttributes, placeholder: "\(title)...", hint: hint)
+
+        controller.title = title
+        controller.onAttributedValueChanged = onValueChanged
 
         navigationController?.pushViewController(controller, animated: true)
     }
