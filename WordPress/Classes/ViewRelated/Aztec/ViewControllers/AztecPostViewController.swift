@@ -49,11 +49,13 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         let textView = Aztec.TextView(defaultFont: Fonts.regular, defaultParagraphStyle: paragraphStyle, defaultMissingImage: Assets.defaultMissingImage)
 
-        textView.inputProcessor = PipelineProcessor([VideoShortcodeProcessor.videoPressPreProcessor,
+        textView.inputProcessor = PipelineProcessor([CaptionShortcodePreProcessor(),
+                                                     VideoShortcodeProcessor.videoPressPreProcessor,
                                                      VideoShortcodeProcessor.wordPressVideoPreProcessor,
                                                      CalypsoProcessorIn()])
 
-        textView.outputProcessor = PipelineProcessor([VideoShortcodeProcessor.videoPressPostProcessor,
+        textView.outputProcessor = PipelineProcessor([CaptionShortcodePostProcessor(),
+                                                      VideoShortcodeProcessor.videoPressPostProcessor,
                                                       VideoShortcodeProcessor.wordPressVideoPostProcessor,
                                                       CalypsoProcessorOut()])
 
@@ -1002,7 +1004,7 @@ extension AztecPostViewController {
             return
         }
 
-        var identifiers = [FormattingIdentifier]()
+        var identifiers = Set<FormattingIdentifier>()
 
         if richTextView.selectedRange.length > 0 {
             identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
@@ -1686,6 +1688,8 @@ extension AztecPostViewController {
                 insertHorizontalRuler()
             case .more:
                 insertMore()
+            case .code:
+                toggleCode()
             }
 
             updateFormatBar()
@@ -1725,6 +1729,9 @@ extension AztecPostViewController {
         richTextView.toggleBold(range: richTextView.selectedRange)
     }
 
+    @objc func toggleCode() {
+        richTextView.toggleCode(range: richTextView.selectedRange)
+    }
 
     @objc func toggleItalic() {
         trackFormatBarAnalytics(stat: .editorTappedItalic)
@@ -1789,7 +1796,7 @@ extension AztecPostViewController {
 
 
     func listTypeForSelectedText() -> TextList.Style? {
-        var identifiers = [FormattingIdentifier]()
+        var identifiers = Set<FormattingIdentifier>()
         if richTextView.selectedRange.length > 0 {
             identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
         } else {
@@ -2120,7 +2127,7 @@ extension AztecPostViewController {
     }
 
     func headerLevelForSelectedText() -> Header.HeaderType {
-        var identifiers = [FormattingIdentifier]()
+        var identifiers = Set<FormattingIdentifier>()
         if richTextView.selectedRange.length > 0 {
             identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
         } else {
@@ -3188,8 +3195,12 @@ extension AztecPostViewController {
         guard let attachmentRange = richTextView.textStorage.ranges(forAttachment: attachment).first else {
             return
         }
+
+        let caption = richTextView.caption(for: attachment)
+
         let controller = AztecAttachmentViewController()
         controller.attachment = attachment
+        controller.caption = caption
         var oldURL: URL?
 
         if let linkRange = richTextView.linkFullRange(forRange: attachmentRange),
@@ -3199,17 +3210,29 @@ extension AztecPostViewController {
             controller.linkURL = url
         }
 
-        controller.onUpdate = { [weak self] (alignment, size, linkURL, alt) in
-            self?.richTextView.edit(attachment) { updated in
-                updated.alignment = alignment
-                updated.size = size
-                updated.alt = alt
+        controller.onUpdate = { [weak self] (alignment, size, linkURL, alt, caption) in
+
+            guard let `self` = self else {
+                return
             }
+
+            let attachment = self.richTextView.edit(attachment) { attachment in
+                attachment.alignment = alignment
+                attachment.size = size
+                attachment.alt = alt
+            }
+
+            if let caption = caption, caption.length > 0 {
+                self.richTextView.replaceCaption(for: attachment, with: caption)
+            } else {
+                self.richTextView.removeCaption(for: attachment)
+            }
+
             // Update associated link
             if let updatedURL = linkURL {
-                self?.richTextView.setLink(updatedURL, inRange: attachmentRange)
+                self.richTextView.setLink(updatedURL, inRange: attachmentRange)
             } else if oldURL != nil && linkURL == nil {
-                self?.richTextView.removeLink(inRange: attachmentRange)
+                self.richTextView.removeLink(inRange: attachmentRange)
             }
         }
 
