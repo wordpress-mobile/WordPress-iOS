@@ -13,6 +13,7 @@
 @dynamic metaIsLocal;
 @dynamic metaPublishImmediately;
 @dynamic comments;
+@dynamic featuredImage;
 
 @synthesize restorableStatus;
 
@@ -168,29 +169,6 @@
     return [AbstractPost titleForRemoteStatus:self.remoteStatusNumber];
 }
 
-- (void)setFeaturedImage:(Media *)featuredImage
-{
-    self.post_thumbnail = featuredImage.mediaID;
-}
-
-- (Media *)featuredImage
-{
-    if (!self.post_thumbnail) {
-        return nil;
-    }
-
-    Media *featuredMedia = [[self.blog.media objectsPassingTest:^BOOL(id obj, BOOL *stop) {
-        Media *media = (Media *)obj;
-        if (media.mediaID) {
-            *stop = [self.post_thumbnail isEqualToNumber:media.mediaID];
-        }
-        return *stop;
-    }] anyObject];
-
-    return featuredMedia;
-}
-
-
 #pragma mark -
 #pragma mark Revision management
 
@@ -330,7 +308,7 @@
     AbstractPost *original = (AbstractPost *)self.original;
 
     //Do not move the Featured Image check below in the code.
-    if ((self.post_thumbnail != original.post_thumbnail) && (![self.post_thumbnail isEqual:original.post_thumbnail])) {
+    if ((self.featuredImage != original.featuredImage) && (![self.featuredImage isEqual:original.featuredImage])) {
         self.isFeaturedImageChanged = YES;
         return YES;
     }

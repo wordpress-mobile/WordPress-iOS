@@ -32,8 +32,14 @@ class MediaThumbnailService: LocalCoreDataService {
     ///
     @objc func thumbnailURL(forMedia media: Media, preferredSize: CGSize, onCompletion: @escaping OnThumbnailURL, onError: OnError?) {
         managedObjectContext.perform {
-            guard let objectInContext = try? self.managedObjectContext.existingObject(with: media.objectID),
-                let mediaInContext =  objectInContext as? Media else {
+            var objectInContext: NSManagedObject?
+            do {
+                objectInContext = try self.managedObjectContext.existingObject(with: media.objectID)
+            } catch {
+                onError?(error)
+                return
+            }
+            guard let mediaInContext = objectInContext as? Media else {
                 return
             }
             // Configure a thumbnail exporter.
@@ -93,11 +99,13 @@ class MediaThumbnailService: LocalCoreDataService {
             }
 
             // If the Media asset is available locally, export thumbnails from the local asset.
-            if let localAssetURL = mediaInContext.absoluteLocalURL, exporter.supportsThumbnailExport(forFile: localAssetURL) {
-                self.exportQueue.async {
-                    exporter.exportThumbnail(forFile: localAssetURL,
-                                             onCompletion: onThumbnailExport,
-                                             onError: onThumbnailExportError)
+            if let localAssetURL = mediaInContext.absoluteLocalURL {
+                if exporter.supportsThumbnailExport(forFile: localAssetURL) {
+                    self.exportQueue.async {
+                        exporter.exportThumbnail(forFile: localAssetURL,
+                                                 onCompletion: onThumbnailExport,
+                                                 onError: onThumbnailExportError)
+                    }
                 }
                 return
             }

@@ -168,7 +168,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
 
     /// Configure the site header to show the BlogDetailsHeaderView
     ///
-    @objc func configureBlogDetailHeaderView(siteInfo: SiteInfo) {
+    func configureBlogDetailHeaderView(siteInfo: WordPressComSiteInfo) {
         let siteAddress = sanitizedSiteAddress(siteAddress: siteInfo.url)
         siteHeaderView.title = siteInfo.name
         siteHeaderView.subtitle = siteAddress

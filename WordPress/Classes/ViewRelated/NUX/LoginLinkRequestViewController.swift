@@ -96,8 +96,8 @@ class LoginLinkRequestViewController: LoginViewController {
         }
 
         configureLoading(true)
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.requestAuthenticationLink(email,
+        let service = WordPressComAccountService()
+        service.requestAuthenticationLink(for: email,
                                           success: { [weak self] in
                                             self?.didRequestAuthenticationLink()
                                             self?.configureLoading(false)
