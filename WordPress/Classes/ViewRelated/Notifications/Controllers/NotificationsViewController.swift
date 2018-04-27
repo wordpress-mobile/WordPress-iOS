@@ -1403,7 +1403,7 @@ extension NotificationsViewController: AppFeedbackPromptViewDelegate {
         hideRatingViewWithDelay(0.0)
 
         if FeatureFlag.zendeskMobile.enabled {
-            if ZendeskUtils.sharedInstance.zendeskEnabled {
+            if ZendeskUtils.zendeskEnabled {
                 ZendeskUtils.sharedInstance.showNewRequest(from: self)
             } else {
                 if let contact = URL(string: NotificationsViewController.contactURL) {
