@@ -1136,7 +1136,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             [NSUserDefaults standardUserDefaults].notificationPrimerAlertWasDisplayed = YES;
 
             FancyAlertViewController *alert = [FancyAlertViewController makeNotificationPrimerAlertControllerWithApproveAction:^(FancyAlertViewController* controller) {
-                [[InteractiveNotificationsManager shared] requestAuthorizationWithCompletion:^(BOOL granted) {
+                [[InteractiveNotificationsManager shared] requestAuthorizationWithCompletion:^() {
                     [controller dismissViewControllerAnimated:true completion:^{}];
                 }];
             }];
