@@ -25,6 +25,9 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 @property (nonatomic, strong) UITextField       *textField;
 @property (nonatomic, assign) BOOL              doneButtonEnabled;
 @property (nonatomic, assign) BOOL              shouldNotifyValue;
+@property (nonatomic, strong) NSString          *originalString;
+@property (nonatomic, strong) NSAttributedString *originalAttributedString;
+@property (nonatomic, copy) NSDictionary<NSAttributedStringKey, id> *defaultAttributes;
 @end
 
 
@@ -46,11 +49,26 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        _text = text;
-        _placeholder = placeholder;
-        _hint = hint;
+        [self commonInitWithPlaceholder:placeholder hint:hint];
+        
+        _originalString = text;
+        _originalAttributedString = [[NSAttributedString alloc] initWithString:text];
+        _textField.text = text;
+    }
+    return self;
+}
 
-        [self configureInstance];
+- (instancetype)initWithAttributedText:(NSAttributedString *)text defaultAttributes:(NSDictionary<NSAttributedStringKey, id> *)defaultAttributes placeholder:(NSString *)placeholder hint:(NSString *)hint
+{
+    self = [super initWithStyle:UITableViewStyleGrouped];
+    if (self) {
+        [self commonInitWithPlaceholder:placeholder hint:hint];
+        
+        _originalString = text.string;
+        _originalAttributedString = text;
+        _textField.attributedText = text;
+        _textField.allowsEditingTextAttributes = true;
+        _textField.defaultTextAttributes = defaultAttributes;
     }
     return self;
 }
@@ -72,16 +90,22 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     _validatesInput = YES;
 }
 
-
+- (void)commonInitWithPlaceholder:(NSString *)placeholder hint:(NSString *)hint
+{
+    [self createTextField];
+    
+    _textField.placeholder = placeholder;
+    _hint = hint;
+    
+    [self configureInstance];
+}
 
 #pragma mark - View Lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.shouldNotifyValue = YES;
-
+    
     // Don't auto-size rows
     self.tableView.estimatedRowHeight = 0;
 
@@ -107,7 +131,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     [self.view endEditing:YES];
     
     if (self.shouldNotifyValue) {
-        [self notifyValueDidChangeIfNeeded];
+        [self notifyValueChangedIfNecessary];
     }
 }
 
@@ -209,26 +233,53 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     return _actionCell;
 }
 
-- (UITextField *)textField
+- (void)createTextField
 {
-    if (_textField) {
-        return _textField;
-    }
+    NSAssert(_textField == nil, @"The text field has already been created.");
     
     _textField = [[UITextField alloc] initWithFrame:CGRectZero];
     _textField.clearButtonMode = UITextFieldViewModeAlways;
     _textField.font = [WPStyleGuide tableviewTextFont];
     _textField.textColor = [WPStyleGuide darkGrey];
-    _textField.text = self.text;
-    _textField.placeholder = self.placeholder;
     _textField.returnKeyType = UIReturnKeyDone;
     _textField.keyboardType = UIKeyboardTypeDefault;
     _textField.delegate = self;
     _textField.autocorrectionType = self.autocorrectionType;
-    
-    return _textField;
 }
 
+#pragma mark - Getters
+
+- (NSAttributedString *)attributedText
+{
+    return self.textField.attributedText;
+}
+
+- (NSString *)placeholder
+{
+    return self.textField.placeholder;
+}
+
+- (NSString *)text
+{
+    return self.textField.text;
+}
+
+#pragma mark - Setters
+
+- (void)setAttributedText:(NSAttributedString *)text
+{
+    self.textField.attributedText = text;
+}
+
+- (void)setPlaceholder:(NSString *)placeholder
+{
+    self.textField.placeholder = placeholder;
+}
+
+- (void)setText:(NSString *)text
+{
+    self.textField.text = text;
+}
 
 #pragma mark - UITableViewDelegate
 
@@ -286,13 +337,15 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     }
 }
 
-- (void)notifyValueDidChangeIfNeeded
+- (void)notifyValueChangedIfNecessary
 {
-    if (self.onValueChanged == nil || [self.textField.text isEqualToString:self.text]) {
-        return;
+    if (self.onValueChanged != nil && ![_originalString isEqual:self.textField.text]) {
+        self.onValueChanged(self.textField.text);
     }
     
-    self.onValueChanged(self.textField.text);
+    if (self.onAttributedValueChanged != nil && ![_originalAttributedString isEqual:self.textField.attributedText]) {
+        self.onAttributedValueChanged(self.textField.attributedText);
+    }
 }
 
 
