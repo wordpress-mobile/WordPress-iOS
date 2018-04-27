@@ -25,6 +25,13 @@ private struct QueryRef<Query> {
 ///
 
 open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
+
+    /// Closure used to log errors. Default implementation calls `NSLog`, clients may find it useful
+    /// to override it to use a custom logging method.
+    var logError: (String) -> Void = { error in
+        NSLog(error)
+    }
+
     private let initialState: State
 
     fileprivate var activeQueryReferences = [QueryRef<Query>]() {
@@ -33,10 +40,10 @@ open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
                 // If we don't have any active queries, and the `state` conforms to `Encodable`, let's use this as our cue to persist the data
                 // to disk and get rid of the in-memory cache.
                 do {
-                try encodableState.saveJSON(at: url)
+                    try encodableState.saveJSON(at: url)
                     inMemoryState = nil
                 } catch {
-                    NSLog("[PluginStore Error] \(error)")
+                    logError("[QueryStore Error] \(error)")
                 }
             }
 
@@ -59,16 +66,28 @@ open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
 
             // If we purged the in-memory `State` and the `Store` is being asked to do
             // work again, let's try to reinitialise it from disk.
-            guard let codableInitialState = initialState as? Codable,
-                let persistenceURL = try? type(of: self).persistenceURL(),
-                let persistedState = type(of: codableInitialState).loadJSON(from: persistenceURL) as? State else {
-                    // If reading persisted state fails, let's just fail over to `initialState`.
-                    return initialState
+            guard let codableInitialState = initialState as? Codable else {
+                // If it's not `Codable`, there's nothing we can do.
+                return initialState
             }
 
-            // When reading from disk has succeeded, set the result as `inMemoryState` and return it.
-            inMemoryState = persistedState
-            return persistedState
+            do {
+                let persistenceURL = try type(of: self).persistenceURL()
+
+                if let persistedState = try type(of: codableInitialState).loadJSON(from: persistenceURL) as? State {
+                    // When reading from disk has succeeded, set the result as `inMemoryState` and return it.
+                    inMemoryState = persistedState
+                    return persistedState
+                } else {
+                    // If there isn't a state for us to read from disk, but there wasn't any error thrown,
+                    // let's just return the initial state too.
+                    return initialState
+                }
+            } catch {
+                // If reading persisted state fails, let's just fail over to `initialState`.
+                logError("[QueryStore Error] \(error)")
+                return initialState
+            }
         }
         set {
             inMemoryState = newValue
@@ -118,30 +137,6 @@ open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
         // Subclasses should implement this
     }
 
-}
-
-public extension Encodable {
-    func saveJSON(at url: URL, using encoder: JSONEncoder = JSONEncoder()) throws {
-        let encodedStore = try encoder.encode(self)
-        try encodedStore.write(to: url, options: [.atomic])
-    }
-}
-
-public extension Decodable {
-    static func loadJSON(from url: URL, using decoder: JSONDecoder = JSONDecoder()) -> Self? {
-        guard let data = try? Data(contentsOf: url) else {
-            return nil
-        }
-
-        do {
-            let state = try decoder.decode(Self.self, from: data)
-
-            return state
-        } catch {
-            NSLog("[Decoding error] Error while decoding file at \(url): \(error)")
-            return nil
-        }
-    }
 }
 
 private extension QueryStore {
