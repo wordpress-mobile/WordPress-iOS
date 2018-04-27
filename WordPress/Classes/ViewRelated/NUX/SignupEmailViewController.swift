@@ -4,7 +4,7 @@ import WordPressShared
 
 class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
 
-    // MARK: - SigninKeyboardResponder Properties
+    // MARK: - NUXKeyboardResponder Properties
 
     @IBOutlet weak var bottomContentConstraint: NSLayoutConstraint?
     @IBOutlet weak var verticalCenterConstraint: NSLayoutConstraint?
@@ -139,16 +139,13 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
 
     private func checkEmailAvailability(completion:@escaping (Bool) -> ()) {
 
-        // If cannot get Remote, display generic error message.
-        guard let remote = AccountServiceRemoteREST(wordPressComRestApi: WordPressComRestApi()) else {
-            DDLogError("Error creating AccountServiceRemoteREST instance.")
-            self.displayError(message: ErrorMessage.availabilityCheckFail.description())
-            completion(false)
-            return
-        }
+        let remote = AccountServiceRemoteREST(wordPressComRestApi: WordPressComRestApi())
 
         remote.isEmailAvailable(loginFields.emailAddress, success: { available in
             if !available {
+                defer {
+                    WPAppAnalytics.track(.signupEmailToLogin)
+                }
                 // If the user has already signed up redirect to the Login flow
                 self.performSegue(withIdentifier: .showEmailLogin, sender: self)
             }
@@ -180,8 +177,8 @@ class SignupEmailViewController: LoginViewController, NUXKeyboardResponder {
 
         configureSubmitButton(animating: true)
 
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.requestSignupLink(loginFields.username,
+        let service = WordPressComAccountService()
+        service.requestSignupLink(for: loginFields.username,
                                   success: { [weak self] in
                                     self?.didRequestSignupLink()
                                     self?.configureSubmitButton(animating: false)

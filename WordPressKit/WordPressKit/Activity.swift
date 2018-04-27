@@ -8,16 +8,16 @@ public class Activity {
     public let type: String
     public let gridicon: String
     public let status: String
-    public let rewindable: Bool
     public let rewindID: String?
     public let published: Date
-    public var isDiscarded: Bool
     public let actor: ActivityActor?
     public let object: ActivityObject?
     public let target: ActivityObject?
     public let items: [ActivityObject]?
 
-    init(dictionary: [String: AnyObject]) throws {
+    private let rewindable: Bool
+
+    public init(dictionary: [String: AnyObject]) throws {
         guard let id = dictionary["activity_id"] as? String else {
             throw Error.missingActivityId
         }
@@ -43,7 +43,6 @@ public class Activity {
         gridicon = dictionary["gridicon"] as? String ?? ""
         status = dictionary["status"] as? String ?? ""
         rewindable = dictionary["is_rewindable"] as? Bool ?? false
-        isDiscarded = dictionary["is_discarded"] as? Bool ?? false
         rewindID = dictionary["rewind_id"] as? String
         if let actorData = dictionary["actor"] as? [String: AnyObject] {
             actor = ActivityActor(dictionary: actorData)
@@ -79,6 +78,10 @@ public class Activity {
 
     public lazy var publishedDateUTCWithoutTime: String = {
         return self.published.longUTCStringWithoutTime()
+    }()
+
+    public lazy var isRewindable: Bool = {
+        return rewindID != nil && rewindable
     }()
 
 }

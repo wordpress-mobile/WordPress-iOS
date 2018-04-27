@@ -13,6 +13,10 @@ open class WordPressOrgXMLRPCApi: NSObject {
     fileprivate var backgroundSessionIdentifier: String
     @objc open static let defaultBackgroundSessionIdentifier = "org.wordpress.wporgxmlrpcapi"
 
+    /// Minimum WordPress.org Supported Version.
+    ///
+    @objc open static let minimumSupportedVersion = "4.0"
+
     fileprivate lazy var sessionManager: Alamofire.SessionManager = {
         let sessionConfiguration = URLSessionConfiguration.default
         let sessionManager = self.makeSessionManager(configuration: sessionConfiguration)
@@ -167,6 +171,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
                                  success: @escaping SuccessResponseBlock,
                                  failure: @escaping FailureReponseBlock) -> Progress? {
         let progress: Progress = Progress.discreteProgress(totalUnitCount: 1)
+        progress.isCancellable = true
         DispatchQueue.global().async {
             let fileURL = self.URLForTemporaryFile()
             //Encode request
@@ -178,7 +183,7 @@ open class WordPressOrgXMLRPCApi: NSObject {
                 return
             }
 
-            self.uploadSessionManager.upload(fileURL, with: request)
+            let uploadRequest = self.uploadSessionManager.upload(fileURL, with: request)
                 .uploadProgress { (requestProgress) in
                     progress.totalUnitCount = requestProgress.totalUnitCount + 1
                     progress.completedUnitCount = requestProgress.completedUnitCount
@@ -195,6 +200,9 @@ open class WordPressOrgXMLRPCApi: NSObject {
                         }
                         return
                     }
+              }
+            progress.cancellationHandler = {
+              uploadRequest.cancel()
             }
         }
 

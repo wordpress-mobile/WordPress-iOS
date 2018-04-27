@@ -86,7 +86,7 @@ public class PlanFeatureServiceRemote: ServiceRemoteWordPressComREST {
         let locale = languageDatabase.deviceLanguage.slug
         let parameters = ["locale": locale]
 
-        wordPressComRestApi.GET(path!,
+        wordPressComRestApi.GET(path,
                 parameters: parameters as [String : AnyObject]?,
                 success: {
                     [weak self] responseObject, _ in

@@ -98,7 +98,7 @@ extension PlanService {
         let remote = PlanServiceRemote(wordPressComRestApi: api)
         let featuresRemote = PlanFeatureServiceRemote(wordPressComRestApi: api)
 
-        self.init(store: store, remote: remote!, featuresRemote: featuresRemote!)
+        self.init(store: store, remote: remote, featuresRemote: featuresRemote)
     }
 }
 

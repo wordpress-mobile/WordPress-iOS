@@ -455,6 +455,12 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
 
 
+    /// Presents whatever happens when FormatBar's more button is selected
+    fileprivate lazy var moreCoordinator: AztecMediaPickingCoordinator = {
+        return AztecMediaPickingCoordinator(delegate: self)
+    }()
+
+
     // MARK: - Initializers
 
     /// Initializer
@@ -767,13 +773,14 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func rememberFirstResponder() {
-        lastFirstResponder = view.findFirstResponder()
+        lastFirstResponder = view.findFirstResponder() ?? lastFirstResponder
         lastFirstResponder?.resignFirstResponder()
     }
 
     func restoreFirstResponder() {
         let nextFirstResponder = lastFirstResponder ?? titleTextField
         nextFirstResponder.becomeFirstResponder()
+        lastFirstResponder = nil
     }
 
     func refreshInterface() {
@@ -1179,24 +1186,22 @@ extension AztecPostViewController {
         }
 
         let promoBlock = { [unowned self] in
-            if action.isAsync && !UserDefaults.standard.asyncPromoWasDisplayed {
-                UserDefaults.standard.asyncPromoWasDisplayed = true
+            UserDefaults.standard.asyncPromoWasDisplayed = true
 
-                let controller = FancyAlertViewController.makeAsyncPostingAlertController(publishAction: publishBlock)
-                controller.modalPresentationStyle = .custom
-                controller.transitioningDelegate = self
-                self.present(controller, animated: true, completion: nil)
-
-                return
-            } else {
-                publishBlock()
-            }
+            let controller = FancyAlertViewController.makeAsyncPostingAlertController(publishAction: publishBlock)
+            controller.modalPresentationStyle = .custom
+            controller.transitioningDelegate = self
+            self.present(controller, animated: true, completion: nil)
         }
 
         if action.isAsync {
-            displayPublishConfirmationAlert(onPublish: promoBlock)
+            if !UserDefaults.standard.asyncPromoWasDisplayed {
+                promoBlock()
+            } else {
+                displayPublishConfirmationAlert(onPublish: publishBlock)
+            }
         } else {
-            promoBlock()
+            publishBlock()
         }
     }
 
@@ -1702,7 +1707,7 @@ extension AztecPostViewController {
                 presentMediaPickerFullScreen(animated: true, dataSourceType: .mediaLibrary)
             case .otherApplications:
                 trackFormatBarAnalytics(stat: .editorMediaPickerTappedOtherApps)
-                showDocumentPicker()
+                showMore(from: barItem)
             }
         }
     }
@@ -2144,12 +2149,11 @@ extension AztecPostViewController {
         return .none
     }
 
-    private func showDocumentPicker() {
-        let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
-        let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
-        docPicker.delegate = self
-        WPStyleGuide.configureDocumentPickerNavBarAppearance()
-        present(docPicker, animated: true, completion: nil)
+    private func showMore(from: FormatBarItem) {
+        rememberFirstResponder()
+
+        let moreCoordinatorContext = MediaPickingContext(origin: self, view: view, blog: post.blog)
+        moreCoordinator.present(context: moreCoordinatorContext)
     }
 
     // MARK: - Present Toolbar related VC
@@ -2806,6 +2810,10 @@ extension AztecPostViewController {
 
     fileprivate func insertDeviceMedia(phAsset: PHAsset) {
         insert(exportableAsset: phAsset, source: .deviceLibrary)
+    }
+
+    private func insertStockPhotosMedia(_ media: StockPhotosMedia) {
+        insert(exportableAsset: media, source: .stockPhotos)
     }
 
     /// Insert media to the post from the site's media library.
@@ -3617,6 +3625,20 @@ extension AztecPostViewController: UIDocumentPickerDelegate {
         mediaSelectionMethod = .documentPicker
         for documentURL in urls {
             insertExternalMediaWithURL(documentURL)
+        }
+    }
+}
+
+extension AztecPostViewController: MediaPickingOptionsDelegate {
+    func didCancel() {
+        restoreFirstResponder()
+    }
+}
+
+extension AztecPostViewController: StockPhotosPickerDelegate {
+    func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
+        assets.forEach {
+            insert(exportableAsset: $0, source: .stockPhotos)
         }
     }
 }

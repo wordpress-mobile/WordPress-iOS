@@ -155,8 +155,8 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         // Configure all the things and sign in.
         GIDSignIn.sharedInstance().delegate = self
         GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().clientID = ApiCredentials.googleLoginClientId()
-        GIDSignIn.sharedInstance().serverClientID = ApiCredentials.googleLoginServerClientId()
+        GIDSignIn.sharedInstance().clientID = WordPressAuthenticator.shared.configuration.googleLoginClientId
+        GIDSignIn.sharedInstance().serverClientID = WordPressAuthenticator.shared.configuration.googleLoginServerClientId
 
         GIDSignIn.sharedInstance().signIn()
 
@@ -188,10 +188,6 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     /// Note: This is only used during Jetpack setup, not the normal flows
     ///
     func addSignupButton() {
-        guard Feature.enabled(.jetpackSignup) else {
-            return
-        }
-
         guard let instructionLabel = instructionLabel,
             let stackView = inputStack else {
                 return
@@ -200,7 +196,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         let button = WPStyleGuide.wpcomSignupButton()
         stackView.addArrangedSubview(button)
         button.on(.touchUpInside) { [weak self] (button) in
-            self?.performSegue(withIdentifier: .showSignupEmail, sender: self)
+            self?.performSegue(withIdentifier: .showSignupMethod, sender: self)
         }
 
         stackView.addConstraints([
@@ -340,14 +336,14 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         }
 
         configureViewLoading(true)
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.isPasswordlessAccount(loginFields.username,
-                                      success: { [weak self] (passwordless: Bool) in
+        let service = WordPressComAccountService()
+        service.isPasswordlessAccount(username: loginFields.username,
+                                      success: { [weak self] passwordless in
                                         self?.configureViewLoading(false)
                                         self?.loginFields.meta.passwordless = passwordless
                                         self?.requestLink()
             },
-                                      failure: { [weak self] (error: Error) in
+                                      failure: { [weak self] error in
                                         WordPressAuthenticator.track(.loginFailed, error: error)
                                         DDLogError(error.localizedDescription)
                                         guard let strongSelf = self else {
@@ -401,6 +397,23 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         return EmailFormatValidator.validate(string: loginFields.username)
     }
 
+
+    // MARK: - Segue
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+
+        if let vc = segue.destination as? LoginPrologueSignupMethodViewController {
+            vc.transitioningDelegate = self
+            vc.emailTapped = { [weak self] in
+                self?.performSegue(withIdentifier: NUXViewController.SegueIdentifier.showSigninV2.rawValue, sender: self)
+            }
+            vc.googleTapped = { [weak self] in
+                self?.performSegue(withIdentifier: NUXViewController.SegueIdentifier.showGoogle.rawValue, sender: self)
+            }
+            vc.modalPresentationStyle = .custom
+        }
+    }
 
     // MARK: - Actions
 
@@ -551,18 +564,10 @@ extension LoginEmailViewController: LoginSocialErrorViewControllerDelegate {
     func retryAsSignup() {
         cleanupAfterSocialErrors()
 
-        if FeatureFlag.socialSignup.enabled {
-            let storyboard = UIStoryboard(name: "Signup", bundle: nil)
-            if let controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? SignupEmailViewController {
-                controller.loginFields = loginFields
-                navigationController?.pushViewController(controller, animated: true)
-            }
-        } else {
-            let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            if let controller = storyboard.instantiateViewController(withIdentifier: "SignupViewController") as? NUXAbstractViewController {
-                controller.loginFields = loginFields
-                navigationController?.pushViewController(controller, animated: true)
-            }
+        let storyboard = UIStoryboard(name: "Signup", bundle: nil)
+        if let controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? SignupEmailViewController {
+            controller.loginFields = loginFields
+            navigationController?.pushViewController(controller, animated: true)
         }
     }
 }

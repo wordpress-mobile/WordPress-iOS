@@ -52,6 +52,12 @@ class AppSettingsViewController: UITableViewController {
         updateMediaCacheSize()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        registerUserActivity()
+    }
+
     // MARK: - Model mapping
 
     fileprivate func reloadViewModel() {
@@ -303,6 +309,32 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 }
+
+// MARK: - SearchableActivity Conformance
+
+extension AppSettingsViewController: SearchableActivityConvertable {
+    var activityType: String {
+        return WPActivityType.appSettings.rawValue
+    }
+
+    var activityTitle: String {
+        return NSLocalizedString("App Settings", comment: "Title of the 'App Settings' screen within the 'Me' tab - used for spotlight indexing on iOS.")
+    }
+
+    var activityKeywords: Set<String>? {
+        let keyWordString = NSLocalizedString("wordpress, me, app settings, settings, cache, media, about, upload, usage, statistics",
+                                              comment: "This is a comma separated list of keywords used for spotlight indexing of the 'Me' tab.")
+        let keywordArray = keyWordString.arrayOfTags()
+
+        guard !keywordArray.isEmpty else {
+            return nil
+        }
+
+        return Set(keywordArray)
+    }
+}
+
+// MARK: - Private ImmuTableRow Definitions
 
 fileprivate struct ImageSizingRow: ImmuTableRow {
     typealias CellType = MediaSizeSliderCell
