@@ -58,11 +58,6 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     func createdWordPressComAccount(username: String, authToken: String)
 
-    /// Presents the Livechat Interface, from a given ViewController, with a specified SourceTag, and additional metadata,
-    /// such as all of the User's Login details.
-    ///
-    func presentLivechat(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
-
     /// Presents the Support new request, from a given ViewController, with a specified SourceTag, and additional metadata,
     /// such as all of the User's Login details.
     ///
