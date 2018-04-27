@@ -10,11 +10,8 @@ open class NotificationSettingsServiceRemote: ServiceRemoteWordPressComREST {
     ///
     /// - Parameter wordPressComRestApi: A Reference to the WordPressComRestApi that should be used to interact with WordPress.com
     ///
-    public override init?(wordPressComRestApi: WordPressComRestApi!) {
+    public override init(wordPressComRestApi: WordPressComRestApi) {
         super.init(wordPressComRestApi: wordPressComRestApi)
-        if wordPressComRestApi == nil {
-            return nil
-        }
     }
 
 
@@ -29,7 +26,7 @@ open class NotificationSettingsServiceRemote: ServiceRemoteWordPressComREST {
         let path = String(format: "me/notifications/settings/?device_id=%@", deviceId)
         let requestUrl = self.path(forEndpoint: path, withVersion: ._1_1)
 
-        wordPressComRestApi.GET(requestUrl!,
+        wordPressComRestApi.GET(requestUrl,
             parameters: nil,
             success: { (response: AnyObject, httpResponse: HTTPURLResponse?) -> Void in
                 let settings = RemoteNotificationSettings.fromDictionary(response as? NSDictionary)
@@ -54,7 +51,7 @@ open class NotificationSettingsServiceRemote: ServiceRemoteWordPressComREST {
 
         let parameters = settings
 
-        wordPressComRestApi.POST(requestUrl!,
+        wordPressComRestApi.POST(requestUrl,
             parameters: parameters,
             success: { (response: AnyObject, httpResponse: HTTPURLResponse?) -> Void in
                 success?()
@@ -89,7 +86,7 @@ open class NotificationSettingsServiceRemote: ServiceRemoteWordPressComREST {
             "device_uuid": device.wordPressIdentifier()
         ]
 
-        wordPressComRestApi.POST(requestUrl!,
+        wordPressComRestApi.POST(requestUrl,
             parameters: parameters as [String : AnyObject]?,
             success: { (response: AnyObject, httpResponse: HTTPURLResponse?) -> Void in
                 if let responseDict = response as? NSDictionary,
@@ -121,7 +118,7 @@ open class NotificationSettingsServiceRemote: ServiceRemoteWordPressComREST {
         let endpoint = String(format: "devices/%@/delete", deviceId)
         let requestUrl = path(forEndpoint: endpoint, withVersion: ._1_1)
 
-        wordPressComRestApi.POST(requestUrl!,
+        wordPressComRestApi.POST(requestUrl,
             parameters: nil,
             success: { (response: AnyObject!, httpResponse: HTTPURLResponse?) -> Void in
                 success?()

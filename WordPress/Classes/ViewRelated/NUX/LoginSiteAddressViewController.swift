@@ -180,8 +180,8 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
         let baseSiteUrl = WordPressAuthenticator.baseSiteURL(string: loginFields.siteAddress) as NSString
         if let siteAddress = baseSiteUrl.components(separatedBy: "://").last {
 
-            let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            service.fetchSiteInfo(forAddress: siteAddress, success: { [weak self] (siteInfo) in
+            let service = WordPressComBlogService()
+            service.fetchSiteInfo(for: siteAddress, success: { [weak self] siteInfo in
                 self?.loginFields.meta.siteInfo = siteInfo
                 self?.showSelfHostedUsernamePassword()
             }, failure: { [weak self] (error) in

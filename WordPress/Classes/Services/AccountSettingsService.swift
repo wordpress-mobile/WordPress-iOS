@@ -101,12 +101,12 @@ class AccountSettingsService {
         status = .stalled
     }
 
-    func saveChange(_ change: AccountSettingsChange, finished: (() -> ())? = nil) {
+    func saveChange(_ change: AccountSettingsChange, finished: ((Bool) -> ())? = nil) {
         guard let reverse = try? applyChange(change) else {
             return
         }
         remote.updateSetting(change, success: {
-            finished?()
+            finished?(true)
         }) { (error) -> Void in
             do {
                 // revert change
@@ -119,18 +119,18 @@ class AccountSettingsService {
             // What should be showing the error? Let's post a notification for now so something else can handle it
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: AccountSettingsServiceChangeSaveFailedNotification), object: error as NSError)
 
-            finished?()
+            finished?(false)
         }
     }
 
-    func updatePassword(_ password: String, finished: (() -> ())? = nil) {
+    func updatePassword(_ password: String, finished: ((Bool) -> ())? = nil) {
         remote.updatePassword(password, success: {
-            finished?()
+            finished?(true)
         }) { (error) -> Void in
             DDLogError("Error saving account settings change \(error)")
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: AccountSettingsServiceChangeSaveFailedNotification), object: error as NSError)
 
-            finished?()
+            finished?(false)
         }
     }
 

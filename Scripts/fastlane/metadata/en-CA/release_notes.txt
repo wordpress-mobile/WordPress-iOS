@@ -1,7 +1,3 @@
-List of Posts, Accessibility: The list of post now handles Dynamic Type fonts better.
-List of Posts: New post status and author filter bar!
-List of Posts, Accessibility: The new post status and author filter bar offers Voiceover support.
-Login, Accessibility: The login flow now handles Dynamic Type better.
-Menus, Accessibility: The Menu section of your sites now supports Dynamic Type.
-My Profile: You now have a more explicit option for editing your Gravatar icon.
-Spotlight: Now indexes posts and pages!
+Uploads are now asynchronous!
+Pages that fail to upload will now be marked red.
+The input field for writing comments can now grow up to 5 lines.

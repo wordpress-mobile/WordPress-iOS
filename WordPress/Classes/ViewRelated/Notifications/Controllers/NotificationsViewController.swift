@@ -164,6 +164,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         if !AccountHelper.isDotcomAvailable() {
             promptForJetpackCredentials()
         }
+
+        registerUserActivity()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -1399,15 +1401,26 @@ extension NotificationsViewController: AppFeedbackPromptViewDelegate {
         WPAnalytics.track(.appReviewsOpenedFeedbackScreen)
         AppRatingUtility.shared.gaveFeedbackForCurrentVersion()
         hideRatingViewWithDelay(0.0)
-        if HelpshiftUtils.isHelpshiftEnabled() {
-            let presenter = HelpshiftPresenter.init()
-            presenter.sourceTag = SupportSourceTag.inAppFeedback
-            presenter.presentHelpshiftConversationWindowFromViewController(self,
-                                                                           refreshUserDetails: true,
-                                                                           completion: nil)
+
+        if FeatureFlag.zendeskMobile.enabled {
+            if ZendeskUtils.sharedInstance.zendeskEnabled {
+                ZendeskUtils.sharedInstance.showNewRequest(from: self)
+            } else {
+                if let contact = URL(string: NotificationsViewController.contactURL) {
+                    UIApplication.shared.open(contact)
+                }
+            }
         } else {
-            if let contact = URL(string: NotificationsViewController.contactURL) {
-                UIApplication.shared.open(contact)
+            if HelpshiftUtils.isHelpshiftEnabled() {
+                let presenter = HelpshiftPresenter.init()
+                presenter.sourceTag = SupportSourceTag.inAppFeedback
+                presenter.presentHelpshiftConversationWindowFromViewController(self,
+                                                                               refreshUserDetails: true,
+                                                                               completion: nil)
+            } else {
+                if let contact = URL(string: NotificationsViewController.contactURL) {
+                    UIApplication.shared.open(contact)
+                }
             }
         }
     }
@@ -1428,6 +1441,31 @@ extension NotificationsViewController: NotificationsNavigationDataSource {
 
     @objc func notification(preceding note: Notification) -> Notification? {
         return loadNotification(near: note, withIndexDelta: +1)
+    }
+}
+
+
+// MARK: - SearchableActivity Conformance
+//
+extension NotificationsViewController: SearchableActivityConvertable {
+    var activityType: String {
+        return WPActivityType.notifications.rawValue
+    }
+
+    var activityTitle: String {
+        return NSLocalizedString("Notifications", comment: "Title of the 'Notifications' tab - used for spotlight indexing on iOS.")
+    }
+
+    var activityKeywords: Set<String>? {
+        let keyWordString = NSLocalizedString("wordpress, notifications, alerts, updates",
+                                              comment: "This is a comma separated list of keywords used for spotlight indexing of the 'Notifications' tab.")
+        let keywordArray = keyWordString.arrayOfTags()
+
+        guard !keywordArray.isEmpty else {
+            return nil
+        }
+
+        return Set(keywordArray)
     }
 }
 

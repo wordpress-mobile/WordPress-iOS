@@ -12,6 +12,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def shared_with_all_pods
+  pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => 'f7051f3b32fae3dadda267e725288d9f212fcc55'
   pod 'CocoaLumberjack', '3.4.1'
   pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
   pod 'NSObject-SafeExpectations', '0.0.2'
@@ -56,7 +57,7 @@ target 'WordPress' do
   pod 'lottie-ios', '1.5.1'
   pod 'Starscream', '3.0.4'
   pod 'GoogleSignIn', '4.1.2'
-  pod 'ZendeskSDK', '1.11.0.1'
+  pod 'ZendeskSDK', '1.11.2.1'
 
 
   ## Automattic libraries
@@ -65,8 +66,8 @@ target 'WordPress' do
   pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.3'
   pod 'Gridicons', '0.15'
   pod 'NSURL+IDN', '0.3'
-  pod 'WPMediaPicker', '0.27'
-  pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'f6e0e800f8fa3a9173a3927c6e914b2a154e8299'
+  pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '177e6773395a77ba01e3851c38372b8bff8723c0'
+  pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'52849f1be62bc6a6316f3828d56e8fc32f5fa8e4'
 
   target 'WordPressTest' do
     inherit! :search_paths
@@ -87,7 +88,7 @@ target 'WordPress' do
     shared_with_all_pods
     shared_with_networking_pods
 
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'f6e0e800f8fa3a9173a3927c6e914b2a154e8299'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'52849f1be62bc6a6316f3828d56e8fc32f5fa8e4'
     pod 'Gridicons', '0.15'
   end
 
@@ -101,7 +102,7 @@ target 'WordPress' do
     shared_with_all_pods
     shared_with_networking_pods
 
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'f6e0e800f8fa3a9173a3927c6e914b2a154e8299'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'52849f1be62bc6a6316f3828d56e8fc32f5fa8e4'
     pod 'Gridicons', '0.15'
   end
 
@@ -165,24 +166,5 @@ target 'WordPressKit' do
     inherit! :search_paths
 
     shared_test_pods
-  end
-end
-
-
-
-## WordPress Shared
-## ================
-##
-target 'WordPressShared' do
-  project 'WordPressShared/WordPressShared.xcodeproj'
-
-  shared_with_all_pods
-
-  target 'WordPressSharedTests' do
-    inherit! :search_paths
-
-    shared_test_pods
-    pod 'Specta', '1.0.7'
-    pod 'Expecta', '1.0.6'
   end
 end

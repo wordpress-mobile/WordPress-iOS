@@ -4,7 +4,7 @@ import Aztec
 
 // MARK: - CalypsoProcessorIn
 //
-class CalypsoProcessorIn: Processor {
+class CalypsoProcessorIn: CalypsoProcessor {
 
     /// Converts a Calypso-Generated string into Valid HTML that can actually be edited by Aztec.
     ///
@@ -13,6 +13,11 @@ class CalypsoProcessorIn: Processor {
     /// Current as of 2017/08/08
     ///
     func process(_ text: String) -> String {
+
+        guard !wasWrittenWithGutenberg(text) else {
+            return text
+        }
+
         var preserveLinebreaks = false
         var preserveBR = false
         let blocklist = "table|thead|tfoot|caption|col|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre" +

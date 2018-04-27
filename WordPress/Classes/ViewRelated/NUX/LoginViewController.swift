@@ -5,7 +5,10 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
     var restrictToWPCom = false
 
     lazy var loginFacade: LoginFacade = {
-        let facade = LoginFacade()
+        let configuration = WordPressAuthenticator.shared.configuration
+        let facade = LoginFacade(dotcomClientID: configuration.wpcomClientId,
+                                 dotcomSecret: configuration.wpcomSecret,
+                                 userAgent: configuration.userAgent)
         facade.delegate = self
         return facade
     }()
@@ -18,7 +21,7 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
         return loginFields.meta.emailMagicLinkSource == .signup
     }
 
-    private var authenticationDelegate: WordPressAuthenticatorDelegate {
+    var authenticationDelegate: WordPressAuthenticatorDelegate {
         guard let delegate = WordPressAuthenticator.shared.delegate else {
             fatalError()
         }
@@ -84,6 +87,18 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
 
     // MARK: - Epilogue
 
+    func showSignupEpilogue(for credentials: WordPressCredentials) {
+        guard let navigationController = navigationController else {
+            fatalError()
+        }
+
+        let service = loginFields.meta.googleUser.flatMap {
+            return SocialService.google(user: $0)
+        }
+
+        authenticationDelegate.presentSignupEpilogue(in: navigationController, for: credentials, service: service)
+    }
+
     func showLoginEpilogue(for credentials: WordPressCredentials) {
         guard let navigationController = navigationController else {
             fatalError()
@@ -133,7 +148,8 @@ class LoginViewController: NUXViewController, LoginFacadeDelegate {
         let credentials = WordPressCredentials.wpcom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin, multifactor: requiredMultifactorCode)
 
         syncWPComAndPresentEpilogue(credentials: credentials)
-        linkSocialServiceIfNeeded(with: loginFields)
+
+        linkSocialServiceIfNeeded(loginFields: loginFields, wpcomAuthToken: authToken)
     }
 
     func configureStatusLabel(_ message: String) {
@@ -184,7 +200,7 @@ extension LoginViewController {
             }
 
             if self.mustShowSignupEpilogue() {
-                self.performSegue(withIdentifier: .showSignupEpilogue, sender: self)
+                self.showSignupEpilogue(for: credentials)
             } else if self.mustShowLoginEpilogue() {
                 self.showLoginEpilogue(for: credentials)
             } else {
@@ -230,21 +246,30 @@ extension LoginViewController {
         WordPressAuthenticator.track(.signedIn, properties: properties)
     }
 
-    /// Links the current WordPress Account to a Social Service, if needed.
+    /// Links the current WordPress Account to a Social Service (if possible!!).
     ///
-    func linkSocialServiceIfNeeded(with loginFields: LoginFields) {
-        guard let socialService = loginFields.meta.socialService, socialService == SocialServiceName.google,
-            let token = loginFields.meta.socialServiceIDToken else {
-                return
+    func linkSocialServiceIfNeeded(loginFields: LoginFields, wpcomAuthToken: String) {
+        guard let serviceName = loginFields.meta.socialService, let serviceToken = loginFields.meta.socialServiceIDToken else {
+            return
         }
 
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        service.connectToSocialService(socialService, serviceIDToken: token, success: {
+        linkSocialService(serviceName: serviceName, serviceToken: serviceToken, wpcomAuthToken: wpcomAuthToken)
+    }
+
+    /// Links the current WordPress Account to a Social Service.
+    ///
+    func linkSocialService(serviceName: SocialServiceName, serviceToken: String, wpcomAuthToken: String) {
+        guard serviceName == .google else {
+            DDLogError("Error: Unsupported Social Service")
+            return
+        }
+
+        let service = WordPressComAccountService()
+        service.connect(wpcomAuthToken: wpcomAuthToken, serviceName: serviceName, serviceToken: serviceToken, success: {
             WordPressAuthenticator.track(.loginSocialConnectSuccess)
             WordPressAuthenticator.track(.loginSocialSuccess)
         }, failure: { error in
-            DDLogError(error.description)
+            DDLogError("Social Link Error: \(error)")
             WordPressAuthenticator.track(.loginSocialConnectFailure, error: error)
             // We're opting to let this call fail silently.
             // Our user has already successfully authenticated and can use the app --

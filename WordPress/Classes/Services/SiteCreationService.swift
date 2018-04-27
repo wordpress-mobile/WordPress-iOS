@@ -211,7 +211,7 @@ open class SiteCreationService: LocalCoreDataService {
                   WordPressComRestApi(userAgent: WPUserAgent.wordPress())
 
         let remote = WordPressComServiceRemote(wordPressComRestApi: api)
-        remote?.validateWPComBlog(withUrl: params.siteUrl,
+        remote.validateWPComBlog(withUrl: params.siteUrl,
                                   andBlogTitle: params.siteTitle,
                                   andLanguageId: languageId,
                                   andClientID: ApiCredentials.client(),
@@ -251,7 +251,7 @@ open class SiteCreationService: LocalCoreDataService {
         let languageId = currentLanguage.stringValue
 
         let remote = WordPressComServiceRemote(wordPressComRestApi: api)
-        remote?.createWPComBlog(withUrl: params.siteUrl,
+        remote.createWPComBlog(withUrl: params.siteUrl,
                                 andBlogTitle: params.siteTitle,
                                 andLanguageId: languageId,
                                 andBlogVisibility: .public,

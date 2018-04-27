@@ -3,9 +3,7 @@
 @objc
 enum FeatureFlag: Int {
     case exampleFeature
-    case socialSignup
     case jetpackDisconnect
-    case jetpackSignup
     case activity
     case usernameChanging
     case zendeskMobile
@@ -15,11 +13,7 @@ enum FeatureFlag: Int {
         switch self {
         case .exampleFeature:
             return true
-        case .socialSignup:
-            return true
         case .jetpackDisconnect:
-            return BuildConfiguration.current == .localDeveloper
-        case .jetpackSignup:
             return BuildConfiguration.current == .localDeveloper
         case .activity:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
