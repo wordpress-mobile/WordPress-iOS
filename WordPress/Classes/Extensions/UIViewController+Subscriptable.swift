@@ -41,7 +41,7 @@ extension Subscriptable where Self: UIViewController {
     /// - Parameters:
     ///   - siteTitle: Title to display
     ///   - siteID: Site id to be used
-    func dispatchNoticeWith(siteTitle: String?, siteID: NSNumber?) {
+    func dispatchNotice(with siteTitle: String?, siteID: NSNumber?) {
         guard let siteTitle = siteTitle, let siteID = siteID else {
             return
         }
@@ -56,7 +56,7 @@ extension Subscriptable where Self: UIViewController {
                             feedbackType: .success,
                             notificationInfo: nil,
                             actionTitle: buttonTitle) { [weak self] in
-                                self?.toggleSubscribingNotificationsFor(siteID: siteID, subscribe: true)
+                                self?.toggleSubscribingNotifications(for: siteID, subscribe: true)
         }
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
@@ -66,7 +66,7 @@ extension Subscriptable where Self: UIViewController {
     /// - Parameters:
     ///   - siteID: Site id to be used
     ///   - subscribe: Flag to define is subscribe or unsubscribe the site notifications
-    func toggleSubscribingNotificationsFor(siteID: NSNumber?, subscribe: Bool) {
+    func toggleSubscribingNotifications(for siteID: NSNumber?, subscribe: Bool) {
         guard let siteID = siteID else {
             return
         }

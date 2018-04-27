@@ -712,14 +712,14 @@ import WordPressFlux
 
         // Notification
         if let topic = topic, isLoggedIn, post.isFollowing {
-            let isSubscribedForPostNotifications = topic.isSubscribedForPostNotifications()
+            let isSubscribedForPostNotifications = topic.isSubscribedForPostNotifications
             let buttonTitle = isSubscribedForPostNotifications ? ReaderPostMenuButtonTitles.unsubscribe : ReaderPostMenuButtonTitles.subscribe
             alertController.addActionWithTitle(buttonTitle,
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
                                                 if let topic: ReaderSiteTopic = self.existingObjectFor(objectID: topic.objectID) {
-                                                    self.toggleSubscribingNotificationsFor(siteID: topic.siteID,
-                                                                                           subscribe: !topic.isSubscribedForPostNotifications())
+                                                    self.toggleSubscribingNotifications(for: topic.siteID,
+                                                                                        subscribe: !topic.isSubscribedForPostNotifications)
                                                 }
             })
         }
@@ -790,7 +790,7 @@ import WordPressFlux
         let toFollow = !post.isFollowing
 
         if !toFollow {
-            toggleSubscribingNotificationsFor(siteID: siteID, subscribe: false)
+            toggleSubscribingNotifications(for: siteID, subscribe: false)
         }
 
         postService.toggleFollowing(for: post,
@@ -798,7 +798,7 @@ import WordPressFlux
                                                 self?.syncHelper.syncContent()
                                                 self?.updateStreamHeaderIfNeeded()
                                                 if toFollow {
-                                                    self?.dispatchNoticeWith(siteTitle: siteTitle, siteID: siteID)
+                                                    self?.dispatchNotice(with: siteTitle, siteID: siteID)
                                                 }
                                             },
                                             failure: { (error: Error?) in
@@ -1479,17 +1479,17 @@ import WordPressFlux
 
         let toFollow = !topic.following
         let siteID = topic.siteID
-        let siteTitle = topic.blogNameToDisplay()
+        let siteTitle = topic.blogNameToDisplay
 
         if !toFollow {
-            toggleSubscribingNotificationsFor(siteID: siteID, subscribe: false)
+            toggleSubscribingNotifications(for: siteID, subscribe: false)
         }
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
         service.toggleFollowing(forSite: topic, success: { [weak self] in
             self?.syncHelper.syncContent()
             if toFollow {
-                self?.dispatchNoticeWith(siteTitle: siteTitle, siteID: siteID)
+                self?.dispatchNotice(with: siteTitle, siteID: siteID)
             }
         }, failure: { [weak self] (error: Error?) in
             generator.notificationOccurred(.error)

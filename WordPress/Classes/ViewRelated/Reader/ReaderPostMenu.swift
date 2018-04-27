@@ -41,14 +41,14 @@ open class ReaderPostMenu {
         // Notification
         if let topic = topic,
             post.isFollowing {
-            let isSubscribedForPostNotifications = topic.isSubscribedForPostNotifications()
+            let isSubscribedForPostNotifications = topic.isSubscribedForPostNotifications
             let buttonTitle = isSubscribedForPostNotifications ? ReaderPostMenuButtonTitles.unsubscribe : ReaderPostMenuButtonTitles.subscribe
             alertController.addActionWithTitle(buttonTitle,
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
                                                 if let topic: ReaderSiteTopic = viewController.existingObjectFor(objectID: topic.objectID) {
-                                                    viewController.toggleSubscribingNotificationsFor(siteID: topic.siteID,
-                                                                                                     subscribe: !topic.isSubscribedForPostNotifications())
+                                                    viewController.toggleSubscribingNotifications(for: topic.siteID,
+                                                                                                  subscribe: !topic.isSubscribedForPostNotifications)
                                                 }
             })
         }
@@ -132,13 +132,13 @@ open class ReaderPostMenu {
         let toFollow = !post.isFollowing
 
         if !toFollow {
-            viewController.toggleSubscribingNotificationsFor(siteID: siteID, subscribe: false)
+            viewController.toggleSubscribingNotifications(for: siteID, subscribe: false)
         }
 
         let postService = ReaderPostService(managedObjectContext: post.managedObjectContext!)
         postService.toggleFollowing(for: post, success: { () in
             if toFollow {
-                viewController.dispatchNoticeWith(siteTitle: siteTitle, siteID: siteID)
+                viewController.dispatchNotice(with: siteTitle, siteID: siteID)
             }
         }, failure: { (error: Error?) in
                 generator.notificationOccurred(.error)
