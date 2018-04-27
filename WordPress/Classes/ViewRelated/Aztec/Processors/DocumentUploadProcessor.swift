@@ -12,6 +12,11 @@ class DocumentUploadProcessor: Processor {
     private let title: String
 
     private lazy var processor = HTMLProcessor(tag: "img", replacer: { [remoteURLString, title] img in
+        guard
+            let imageUploadIdentifier = img.attributes.named[MediaAttachment.uploadKey],
+            self.mediaUploadID == imageUploadIdentifier
+            else { return nil }
+
         var html = "<a href=\"\(remoteURLString)\">\(title)</a>"
         return html
     })
