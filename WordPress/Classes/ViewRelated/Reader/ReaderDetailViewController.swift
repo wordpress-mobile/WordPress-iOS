@@ -1000,20 +1000,6 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             ReaderPostMenu.showMenuForPost(post, topic: topic, fromView: menuButton, inViewController: self)
             return
         }
-
-        SVProgressHUD.show()
-        service.siteTopicForSite(withID: post.siteID,
-                                 isFeed: false,
-                                 success: { [weak self] (objectID: NSManagedObjectID?, isFollowing: Bool) in
-                                    SVProgressHUD.dismiss()
-                                    if let topic: ReaderSiteTopic = self?.existingObjectFor(objectID: objectID),
-                                        let post: ReaderPost = self?.existingObjectFor(objectID: post.objectID),
-                                        let menuButton = self?.menuButton {
-                                        ReaderPostMenu.showMenuForPost(post, topic: topic, fromView: menuButton, inViewController: self)
-                                    }
-            }, failure: {_ in
-                SVProgressHUD.dismiss()
-        })
     }
 
 
