@@ -10,6 +10,34 @@ private enum SubscriptionAction {
 }
 
 extension ReaderTopicService {
+    /// Toggle subscription action for site notifications
+    ///
+    /// - Parameters:
+    ///   - siteID: Site id to be used
+    ///   - subscribe: Flag to define is subscribe or unsubscribe the site notifications
+    func toggleSubscribingNotifications(for siteID: NSNumber?, subscribe: Bool) {
+        guard let siteID = siteID else {
+            return
+        }
+
+        let success = {
+            DDLogInfo("Success turn notifications \(subscribe ? "on" : "off")")
+        }
+
+        let failure = { (error: NSError?) in
+            DDLogError("Error turn on notifications: \(error?.localizedDescription ?? "unknown error")")
+        }
+
+        if subscribe {
+            subscribeSiteNotifications(with: siteID, success, failure)
+        } else {
+            unsubscribeSiteNotifications(with: siteID, success, failure)
+        }
+    }
+
+
+    // MARK: Private methods
+
     private func apiRequest() -> WordPressComRestApi {
         let accountService = AccountService(managedObjectContext: managedObjectContext)
         let defaultAccount = accountService.defaultWordPressComAccount()

@@ -15,13 +15,11 @@ struct ReaderPostMenuButtonTitles {
 
 
 open class ReaderPostMenu {
-    fileprivate typealias ViewController = Subscriptable & UIViewController
-
     open static let BlockSiteNotification = "ReaderPostMenuBlockSiteNotification"
 
     open class func showMenuForPost(_ post: ReaderPost, topic: ReaderSiteTopic? = nil, fromView anchorView: UIView, inViewController viewController: UIViewController?) {
 
-        guard let viewController = viewController as? ViewController else {
+        guard let viewController = viewController else {
             return
         }
 
@@ -46,9 +44,8 @@ open class ReaderPostMenu {
             alertController.addActionWithTitle(buttonTitle,
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
-                                                if let topic: ReaderSiteTopic = viewController.existingObjectFor(objectID: topic.objectID) {
-                                                    viewController.toggleSubscribingNotifications(for: topic.siteID,
-                                                                                                  subscribe: !topic.isSubscribedForPostNotifications)
+                                                if let topic: ReaderSiteTopic = self.existingObject(for: topic.objectID, context: topic.managedObjectContext) {
+                                                    self.toggleSubscribingNotifications(for: topic)
                                                 }
             })
         }
@@ -58,7 +55,7 @@ open class ReaderPostMenu {
         alertController.addActionWithTitle(buttonTitle,
             style: .default,
             handler: { (action: UIAlertAction) in
-                if let post: ReaderPost = viewController.existingObjectFor(objectID: post.objectID) {
+                if let post: ReaderPost = self.existingObject(for: post.objectID, context: post.managedObjectContext) {
                     self.toggleFollowingForPost(post, viewController)
                 }
         })
@@ -93,6 +90,26 @@ open class ReaderPostMenu {
         }
     }
 
+    fileprivate class func existingObject<T>(for objectID: NSManagedObjectID?, context: NSManagedObjectContext?) -> T? {
+        guard let objectID = objectID, let context = context else {
+            return nil
+        }
+
+        do {
+            return (try context.existingObject(with: objectID)) as? T
+        } catch let error as NSError {
+            DDLogError(error.localizedDescription)
+            return nil
+        }
+    }
+
+    fileprivate class func toggleSubscribingNotifications(for topic: ReaderSiteTopic) {
+        if let context = topic.managedObjectContext {
+            let service = ReaderTopicService(managedObjectContext: context)
+            service.toggleSubscribingNotifications(for: topic.siteID,
+                                                   subscribe: !topic.isSubscribedForPostNotifications)
+        }
+    }
 
     fileprivate class func shouldShowBlockSiteMenuItemForPost(_ post: ReaderPost) -> Bool {
         if let topic = post.topic {
@@ -111,7 +128,7 @@ open class ReaderPostMenu {
     }
 
 
-    fileprivate class func toggleFollowingForPost(_ post: ReaderPost, _ viewController: ViewController) {
+    fileprivate class func toggleFollowingForPost(_ post: ReaderPost, _ viewController: UIViewController) {
         let generator = UINotificationFeedbackGenerator()
         generator.prepare()
 
@@ -131,14 +148,17 @@ open class ReaderPostMenu {
         let siteID = post.siteID
         let toFollow = !post.isFollowing
 
+        let postService = ReaderPostService(managedObjectContext: post.managedObjectContext!)
+        let topicService = ReaderTopicService(managedObjectContext: postService.managedObjectContext)
+
         if !toFollow {
-            viewController.toggleSubscribingNotifications(for: siteID, subscribe: false)
+            topicService.toggleSubscribingNotifications(for: siteID, subscribe: false)
         }
 
-        let postService = ReaderPostService(managedObjectContext: post.managedObjectContext!)
+
         postService.toggleFollowing(for: post, success: { () in
             if toFollow {
-                viewController.dispatchNotice(with: siteTitle, siteID: siteID)
+                viewController.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
             }
         }, failure: { (error: Error?) in
                 generator.notificationOccurred(.error)

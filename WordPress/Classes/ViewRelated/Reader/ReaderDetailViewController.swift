@@ -3,7 +3,7 @@ import CocoaLumberjack
 import WordPressShared
 import QuartzCore
 
-open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration, Subscriptable {
+open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration {
     @objc static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"
 
     // Structs for Constants
@@ -96,10 +96,6 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         return post != nil
     }
 
-
-    func managedObjectContext() -> NSManagedObjectContext {
-        return ContextManager.sharedInstance().mainContext
-    }
 
     // MARK: - Convenience Factories
 
