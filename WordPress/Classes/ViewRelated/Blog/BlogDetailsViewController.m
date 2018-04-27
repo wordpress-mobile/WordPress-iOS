@@ -1128,7 +1128,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)showNotificationPrimerAlert
 {
-    if (false || [[NSUserDefaults standardUserDefaults] notificationPrimerAlertWasDisplayed]) {
+    if ([[NSUserDefaults standardUserDefaults] notificationPrimerAlertWasDisplayed]) {
         return;
     }
     [[PushNotificationsManager shared] loadAuthorizationStatusWithCompletion:^(UNAuthorizationStatus enabled) {
