@@ -46,10 +46,10 @@ extension Subscriptable where Self: UIViewController {
             return
         }
 
-        let localizedTitle = NSLocalizedString("Following %@", comment: "Localized title for the Notice to prompt")
+        let localizedTitle = NSLocalizedString("Following %@", comment: "Title for a notice informing the user that they've successfully followed a site. %@ is a placeholder for the name of the site.")
         let title = String(format: localizedTitle, siteTitle)
-        let message = NSLocalizedString("Enable site notifications?", comment: "Notice message text")
-        let buttonTitle = NSLocalizedString("Enable", comment: "Notice button title text")
+        let message = NSLocalizedString("Enable site notifications?", comment: "Message informing the user about the enable notifications action")
+        let buttonTitle = NSLocalizedString("Enable", comment: "Button title about the enable notifications action")
 
         let notice = Notice(title: title,
                             message: message,
