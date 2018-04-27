@@ -98,9 +98,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         return true
     }
 
-    /// Indicates if Helpshift is Enabled.
+    /// Indicates if Support is Enabled.
     ///
-    var livechatActionEnabled: Bool {
+    var supportEnabled: Bool {
+        if FeatureFlag.zendeskMobile.enabled {
+            return ZendeskUtils.zendeskEnabled
+        }
         return HelpshiftUtils.isHelpshiftEnabled()
     }
 
@@ -150,6 +153,23 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         presenter.presentHelpshiftConversationWindowFromViewController(sourceViewController,
                                                                        refreshUserDetails: true,
                                                                        completion: nil)
+    }
+
+    /// Presents Support new request, with the specified ViewController as a source.
+    /// Additional metadata is supplied, such as the sourceTag and Login details.
+    ///
+    func presentSupportRequest(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any]) {
+
+        if FeatureFlag.zendeskMobile.enabled {
+            ZendeskUtils.sharedInstance.showNewRequest(from: sourceViewController)
+        } else {
+            let presenter = HelpshiftPresenter()
+            presenter.sourceTag = sourceTag.toSupportSourceTag()
+            presenter.optionsDictionary = options
+            presenter.presentHelpshiftConversationWindowFromViewController(sourceViewController,
+                                                                           refreshUserDetails: true,
+                                                                           completion: nil)
+        }
     }
 
     /// Presents the Login Epilogue, in the specified NavigationController.
