@@ -1,8 +1,8 @@
 extension FancyAlertViewController {
     private struct Strings {
         static let titleText = NSLocalizedString("Stay in the loop", comment: "Title of alert preparing users to grant permission for us to send them push notifications.")
-        static let bodyText = NSLocalizedString("We’ll notify you when you get followers, comments and likes. Would you like to enable push notifications?", comment: "Body text of alert preparing users to grant permission for us to send them push notifications.")
-        static let allowButtonText = NSLocalizedString("Allow push notifications", comment: "Allow button title shown in alert preparing users to grant permission for us to send them push notifications.")
+        static let bodyText = NSLocalizedString("We’ll notify you when you get followers, comments and likes. Would you like to allow push notifications?", comment: "Body text of alert preparing users to grant permission for us to send them push notifications.")
+        static let allowButtonText = NSLocalizedString("Allow notifications", comment: "Allow button title shown in alert preparing users to grant permission for us to send them push notifications.")
         static let notNowText = NSLocalizedString("Not now", comment: "Not now button title shown in alert preparing users to grant permission for us to send them push notifications.")
     }
 
