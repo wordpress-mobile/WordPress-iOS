@@ -15,13 +15,13 @@ struct ReaderPostMenuButtonTitles {
 
 
 open class ReaderPostMenu {
-    fileprivate typealias Dispatcher = Subscriptable & UIViewController
+    fileprivate typealias ViewController = Subscriptable & UIViewController
 
     open static let BlockSiteNotification = "ReaderPostMenuBlockSiteNotification"
 
     open class func showMenuForPost(_ post: ReaderPost, topic: ReaderSiteTopic? = nil, fromView anchorView: UIView, inViewController viewController: UIViewController?) {
 
-        guard let viewController = viewController as? Dispatcher else {
+        guard let viewController = viewController as? ViewController else {
             return
         }
 
@@ -111,7 +111,7 @@ open class ReaderPostMenu {
     }
 
 
-    fileprivate class func toggleFollowingForPost(_ post: ReaderPost, _ viewController: Dispatcher) {
+    fileprivate class func toggleFollowingForPost(_ post: ReaderPost, _ viewController: ViewController) {
         let generator = UINotificationFeedbackGenerator()
         generator.prepare()
 
