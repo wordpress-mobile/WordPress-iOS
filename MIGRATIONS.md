@@ -3,7 +3,7 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress 74
+## WordPress 75
 
 - @danielebogo 2018-04-23
 - `ReaderSiteInfoSubscriptionPost` and `ReaderSiteInfoSubscriptionEmail` added to store site notifications subscription data.
