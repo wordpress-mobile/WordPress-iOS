@@ -210,6 +210,10 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
         super.init(initialState: PluginStoreState())
     }
 
+    var logError: (String) -> Void = { error in
+        DDLogError(error)
+    }
+
     func processQueries() {
         // Fetching installed Plugins.
          sitesToFetch
