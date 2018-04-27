@@ -144,17 +144,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         }
     }
 
-    /// Presents Helpshift, with the specified ViewController as a source. Additional metadata is supplied, such as the sourceTag and Login details.
-    ///
-    func presentLivechat(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any]) {
-        let presenter = HelpshiftPresenter()
-        presenter.sourceTag = sourceTag.toSupportSourceTag()
-        presenter.optionsDictionary = options
-        presenter.presentHelpshiftConversationWindowFromViewController(sourceViewController,
-                                                                       refreshUserDetails: true,
-                                                                       completion: nil)
-    }
-
     /// Presents Support new request, with the specified ViewController as a source.
     /// Additional metadata is supplied, such as the sourceTag and Login details.
     ///
