@@ -41,6 +41,7 @@ final class StockPhotosPicker: NSObject {
         picker.startOnGroupSelector = false
         picker.showGroupSelector = false
         picker.dataSource = dataSource
+        picker.cancelButtonTitle = .closePicker
         return picker
     }()
 
@@ -100,10 +101,6 @@ extension StockPhotosPicker: WPMediaPickerViewControllerDelegate {
 
     func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
         return searchHint
-    }
-
-    func cancelButtonTitle(forMediaPickerController picker: WPMediaPickerViewController) -> String {
-        return .closePicker
     }
 
     func mediaPickerControllerDidEndLoadingData(_ picker: WPMediaPickerViewController) {
