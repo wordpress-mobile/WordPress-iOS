@@ -157,7 +157,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `52849f1be62bc6a6316f3828d56e8fc32f5fa8e4`)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `f7051f3b32fae3dadda267e725288d9f212fcc55`)
-  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, commit `f43beccdbdee1dbba9d9e7e66f31d846520dd478`)
+  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, commit `8be55e66fd9bd584bcdb566a1d4adbc58391771a`)
   - wpxmlrpc (= 0.8.3)
   - ZendeskSDK (= 1.11.2.1)
 
@@ -172,7 +172,7 @@ EXTERNAL SOURCES:
     :commit: f7051f3b32fae3dadda267e725288d9f212fcc55
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   WPMediaPicker:
-    :commit: f43beccdbdee1dbba9d9e7e66f31d846520dd478
+    :commit: 8be55e66fd9bd584bcdb566a1d4adbc58391771a
     :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 CHECKOUT OPTIONS:
@@ -186,7 +186,7 @@ CHECKOUT OPTIONS:
     :commit: f7051f3b32fae3dadda267e725288d9f212fcc55
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   WPMediaPicker:
-    :commit: f43beccdbdee1dbba9d9e7e66f31d846520dd478
+    :commit: 8be55e66fd9bd584bcdb566a1d4adbc58391771a
     :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 SPEC CHECKSUMS:
@@ -226,6 +226,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: 26e8ecd69c91a18185ed79007f4bf2c2a2b73c4d
+PODFILE CHECKSUM: a54f38ddbfbcdc1e3821f3c02e42a10506917d2d
 
 COCOAPODS: 1.4.0
