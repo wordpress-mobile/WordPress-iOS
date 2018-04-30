@@ -1507,7 +1507,7 @@ import WordPressFlux
 
         let toFollow = !topic.following
         let siteID = topic.siteID
-        let siteTitle = topic.blogNameToDisplay
+        let siteTitle = topic.title
 
         if !toFollow {
             toggleSubscribingNotifications(for: topic.siteID,
