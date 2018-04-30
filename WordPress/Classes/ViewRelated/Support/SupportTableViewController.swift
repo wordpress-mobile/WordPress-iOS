@@ -148,13 +148,10 @@ private extension SupportTableViewController {
         return { [unowned self] row in
             self.tableView.deselectSelectedRowWithAnimation(true)
             if ZendeskUtils.sharedInstance.zendeskEnabled {
-
                 guard let controllerToShowFrom = self.controllerToShowFrom() else {
                     return
                 }
-
                 ZendeskUtils.sharedInstance.showNewRequest(from: controllerToShowFrom)
-                ZendeskUtils.sharedInstance.createRequest()
             } else {
                 guard let url = Constants.forumsURL else {
                     return
