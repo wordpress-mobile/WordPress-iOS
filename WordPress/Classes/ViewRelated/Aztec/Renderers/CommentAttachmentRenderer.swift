@@ -98,8 +98,8 @@ private extension CommentAttachmentRenderer {
 
     func isGutenbergComment(_ comment: CommentAttachment) -> Bool {
 
-        let openingGutenbergTag = "wp:core/"
-        let closingGutenbergTag = "/wp:core/"
+        let openingGutenbergTag = "wp:"
+        let closingGutenbergTag = "/wp:"
 
         let text = comment.text.trimmingCharacters(in: .whitespacesAndNewlines)
 
