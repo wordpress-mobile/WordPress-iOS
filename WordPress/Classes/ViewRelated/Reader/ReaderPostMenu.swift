@@ -129,6 +129,10 @@ open class ReaderPostMenu {
 
 
     fileprivate class func toggleFollowingForPost(_ post: ReaderPost, _ viewController: UIViewController) {
+        guard let context = post.managedObjectContext else {
+            return
+        }
+
         let generator = UINotificationFeedbackGenerator()
         generator.prepare()
 
@@ -148,7 +152,7 @@ open class ReaderPostMenu {
         let siteID = post.siteID
         let toFollow = !post.isFollowing
 
-        let postService = ReaderPostService(managedObjectContext: post.managedObjectContext!)
+        let postService = ReaderPostService(managedObjectContext: context)
         let topicService = ReaderTopicService(managedObjectContext: postService.managedObjectContext)
 
         if !toFollow {
