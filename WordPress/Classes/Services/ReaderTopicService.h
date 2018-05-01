@@ -198,6 +198,13 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 
 
 /**
+ Fetch all saved Site topics
+
+ @return A list of site topic
+ */
+- (NSArray <ReaderSiteTopic *>*)allSiteTopics;
+
+/**
  Find a topic by its path.
  
  @param path The path of the topic
