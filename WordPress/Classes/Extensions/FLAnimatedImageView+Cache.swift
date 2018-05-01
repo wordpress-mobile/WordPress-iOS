@@ -1,29 +1,41 @@
 import Foundation
-import FLAnimatedImage
+import Gifu
 
-open class CachedAnimatedImageView: FLAnimatedImageView {
+public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
-    @objc var currentTask: URLSessionTask?
+    public lazy var animator: Gifu.Animator? = {
+        return Gifu.Animator(withDelegate: self)
+    }()
+
+    override public func display(_ layer: CALayer) {
+        updateImageIfNeeded()
+    }
 
     @objc func setAnimatedImage(_ urlRequest: URLRequest,
-                          placeholderImage: UIImage?,
-                          success: ((FLAnimatedImage) -> ())? ,
-                          failure: ((NSError?) -> ())? ) {
+                       placeholderImage: UIImage?,
+                       success: ((FLAnimatedImage) -> ())? ,
+                       failure: ((NSError?) -> ())? ) {
+
         if let ongoingTask = currentTask {
             ongoingTask.cancel()
         }
-        currentTask = AnimatedImageCache.shared.animatedImage(urlRequest,
-                                                placeholderImage: placeholderImage,
-                                                success: { [weak self](animatedImage) in
-                                                    guard let strongSelf = self else {
-                                                        return
-                                                    }
-                                                    DispatchQueue.main.async(execute: {
-                                                        strongSelf.animatedImage = animatedImage
-                                                    })
-                                                },
-                                                failure: failure)
+
+        currentTask = AnimatedImageCache.shared.animatedImage(
+            urlRequest,
+            placeholderImage: placeholderImage,
+            success: { [weak self] (animatedImageData) in
+                guard let strongSelf = self else {
+                    return
+                }
+                DispatchQueue.main.async(execute: {
+                    strongSelf.animate(withGIFData: animatedImageData)
+                })
+            },
+            failure: failure)
     }
+
+
+    @objc var currentTask: URLSessionTask?
 }
 
 class AnimatedImageCache {
@@ -42,10 +54,10 @@ class AnimatedImageCache {
 
     func animatedImage(_ urlRequest: URLRequest,
                        placeholderImage: UIImage?,
-                       success: ((FLAnimatedImage) -> ())? ,
+                       success: ((Data) -> ())? ,
                        failure: ((NSError?) -> ())? ) -> URLSessionTask? {
         if  let key = urlRequest.url,
-            let animatedImage = cache.object(forKey: key as AnyObject) as? FLAnimatedImage {
+            let animatedImage = cache.object(forKey: key as AnyObject) as? Data {
             success?(animatedImage)
             return nil
         }
@@ -60,18 +72,15 @@ class AnimatedImageCache {
                 return
             }
             // check if data is here and is animated gif
-            guard
-                let data = data,
-                let animatedImage = FLAnimatedImage(animatedGIFData: data)
-                else {
+            guard let data = data else {
                     failure?(nil)
                     return
             }
 
             if  let key = urlRequest.url {
-                strongSelf.cache.setObject(animatedImage, forKey: key as AnyObject)
+                strongSelf.cache.setObject(data as NSData, forKey: key as AnyObject)
             }
-            success?(animatedImage)
+            success?(data)
 
             })
         task.resume()
