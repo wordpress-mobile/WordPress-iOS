@@ -112,6 +112,16 @@
                ReferencedContainer = "container:../WordPressUIKit/WordPressUIKit.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B5ED78FC207E976500A8FD8C"
+               BuildableName = "WordPressAuthenticatorTests.xctest"
+               BlueprintName = "WordPressAuthenticatorTests"
+               ReferencedContainer = "container:../WordPressAuthenticator/WordPressAuthenticator.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
