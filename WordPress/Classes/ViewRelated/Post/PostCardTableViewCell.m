@@ -164,6 +164,14 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
                      } completion:nil];
 }
 
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    if (self.postCardAnimatedImageView) {
+        [self.postCardAnimatedImageView prepForReuse];
+    }
+    [self setNeedsDisplay];
+}
 
 #pragma mark - Configuration
 

@@ -3,6 +3,8 @@ import Gifu
 
 public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
+    @objc var currentTask: URLSessionTask?
+    
     public lazy var animator: Gifu.Animator? = {
         return Gifu.Animator(withDelegate: self)
     }()
@@ -37,8 +39,9 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
                                                               failure: failure)
     }
 
-
-    @objc var currentTask: URLSessionTask?
+    @objc func prepForReuse() {
+        self.prepareForReuse()
+    }
 }
 
 class AnimatedImageCache {
