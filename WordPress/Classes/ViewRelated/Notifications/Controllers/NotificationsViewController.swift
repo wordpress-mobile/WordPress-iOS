@@ -1404,7 +1404,7 @@ extension NotificationsViewController: AppFeedbackPromptViewDelegate {
 
         if FeatureFlag.zendeskMobile.enabled {
             if ZendeskUtils.zendeskEnabled {
-                ZendeskUtils.sharedInstance.showNewRequest(from: self)
+                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self)
             } else {
                 if let contact = URL(string: NotificationsViewController.contactURL) {
                     UIApplication.shared.open(contact)
