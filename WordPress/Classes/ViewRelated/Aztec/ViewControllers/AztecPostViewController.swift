@@ -2795,7 +2795,7 @@ extension AztecPostViewController {
             case .video:
                 attachment = insertVideoAttachmentWithPlaceholder()
             default:
-                return
+                attachment = insertDocumentLinkPlaceholder()
             }
         }
 
@@ -2836,6 +2836,42 @@ extension AztecPostViewController {
         let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: url, placeHolderImage: Assets.defaultMissingImage)
         attachment.size = .full
         return attachment
+    }
+
+
+    /// Returns an `ImageAttachent` for use as a placeholder until the related document has been
+    /// uploaded.
+    ///
+    /// NB: Use of an `ImageAttachment` here was influenced by visibility of some functions in
+    /// `TextView`. See: `storage` & `replace(at:with:)`
+    ///
+    /// - Returns: `ImageAttachment` configured with an attachment placeholder image
+    private func insertDocumentLinkPlaceholder() -> ImageAttachment? {
+        let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: Constants.placeholderDocumentLink, placeHolderImage: Assets.linkPlaceholderImage)
+        attachment.size = .thumbnail
+        return attachment
+    }
+
+    /// Replaces the document link placeholder with the link to the actual uploaded document.
+    ///
+    /// - Parameters:
+    ///   - attachment: the attachment to replact
+    ///   - urlString: the URL string for the uploaded document
+    private func replacePlaceholder(attachment: ImageAttachment, with urlString: String) {
+        let attachmentID = attachment.identifier
+
+        guard
+            // NB: TextStorage unwrapping on TextView is internal
+            let textViewStorage = richTextView.textStorage as? TextStorage,
+            let placeholderRange = textViewStorage.rangeFor(attachmentID: attachmentID),
+            let documentURL = URL(string: urlString)
+            else { return }
+
+        richTextView.remove(attachmentID: attachmentID)
+
+        let linkTitle = documentURL.lastPathComponent
+        let linkRange = NSMakeRange(placeholderRange.location, 0)
+        richTextView.setLink(documentURL, title: linkTitle, inRange: linkRange)
     }
 
     private func insertVideoAttachmentWithPlaceholder() -> VideoAttachment {
@@ -2927,17 +2963,22 @@ extension AztecPostViewController {
             attachment.uploadID = nil
             attachment.progress = nil
             if let imageAttachment = attachment as? ImageAttachment {
-                if let width = media.width?.intValue {
-                    imageAttachment.width = width
+                if media.mediaType == .image {
+                    if let width = media.width?.intValue {
+                        imageAttachment.width = width
+                    }
+                    if let height = media.height?.intValue {
+                        imageAttachment.height = height
+                    }
+                    if let mediaID = media.mediaID?.intValue {
+                        imageAttachment.imageID = mediaID
+                    }
+                    imageAttachment.updateURL(remoteURL, refreshAsset: false)
+                    richTextView.refresh(attachment, overlayUpdateOnly: true)
+                } else {
+                    guard let documentURLString = media.remoteURL else { return }
+                    replacePlaceholder(attachment: imageAttachment, with: documentURLString)
                 }
-                if let height = media.height?.intValue {
-                    imageAttachment.height = height
-                }
-                if let mediaID = media.mediaID?.intValue {
-                    imageAttachment.imageID = mediaID
-                }
-                imageAttachment.updateURL(remoteURL, refreshAsset: false)
-                richTextView.refresh(attachment, overlayUpdateOnly: true)
             } else if let videoAttachment = attachment as? VideoAttachment, let videoURLString = media.remoteURL {
                 videoAttachment.srcURL = URL(string: videoURLString)
                 var posterChange = false
@@ -2957,6 +2998,10 @@ extension AztecPostViewController {
             } else if media.mediaType == .video {
                 let videoPostUploadProcessor = VideoUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, videoPressID: media.videopressGUID)
                 htmlTextView.text = videoPostUploadProcessor.process(htmlTextView.text)
+            } else {
+                let documentTitle = remoteURL.lastPathComponent
+                let documentUploadProcessor = DocumentUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, title: documentTitle)
+                htmlTextView.text = documentUploadProcessor.process(htmlTextView.text)
             }
         }
     }
@@ -3302,8 +3347,12 @@ extension AztecPostViewController {
     func placeholderImage(for attachment: NSTextAttachment) -> UIImage {
         let icon: UIImage
         switch attachment {
-        case _ as ImageAttachment:
-            icon = Gridicon.iconOfType(.image, withSize: Constants.mediaPlaceholderImageSize)
+        case let imageAttachment as ImageAttachment:
+            if imageAttachment.url == Constants.placeholderDocumentLink {
+                icon = Gridicon.iconOfType(.pages, withSize: Constants.mediaPlaceholderImageSize)
+            } else {
+                icon = Gridicon.iconOfType(.image, withSize: Constants.mediaPlaceholderImageSize)
+            }
         case _ as VideoAttachment:
             icon = Gridicon.iconOfType(.video, withSize: Constants.mediaPlaceholderImageSize)
         default:
@@ -3656,6 +3705,7 @@ extension AztecPostViewController {
         static let closeButtonModalImage    = Gridicon.iconOfType(.cross)
         static let closeButtonRegularImage  = UIImage(named: "icon-posts-editor-chevron")
         static let defaultMissingImage      = Gridicon.iconOfType(.image)
+        static let linkPlaceholderImage     = Gridicon.iconOfType(.pages)
     }
 
     struct Constants {
@@ -3684,6 +3734,7 @@ extension AztecPostViewController {
                     .foregroundColor: UIColor.white]
         }()
         static let placeholderMediaLink = URL(string: "placeholder://")!
+        static let placeholderDocumentLink = URL(string: "documentUploading://")!
 
         struct Animations {
             static let formatBarMediaButtonRotationDuration: TimeInterval = 0.3
