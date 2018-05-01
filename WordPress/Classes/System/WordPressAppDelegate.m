@@ -410,7 +410,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self customizeAppearance];
 
     // Push notifications
-    // This is silent (the user is prompted) so we can do it on launch.
+    // This is silent (the user isn't prompted) so we can do it on launch.
     // We'll ask for user notification permission after signin.
     [[PushNotificationsManager shared] registerForRemoteNotifications];
     
