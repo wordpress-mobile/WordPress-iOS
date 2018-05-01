@@ -268,6 +268,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewDidAppear:animated];
     [self createUserActivity];
+    if ([Feature enabled:FeatureFlagPrimeForPush]) {
+        [self showNotificationPrimerAlert];
+    }
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
@@ -1121,6 +1124,28 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         dashboardUrl = [self.blog adminUrlWithPath:@""];
     }
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl] options:nil completionHandler:nil];
+}
+
+- (void)showNotificationPrimerAlert
+{
+    if ([[NSUserDefaults standardUserDefaults] notificationPrimerAlertWasDisplayed]) {
+        return;
+    }
+    [[PushNotificationsManager shared] loadAuthorizationStatusWithCompletion:^(UNAuthorizationStatus enabled) {
+        if (enabled == UNAuthorizationStatusNotDetermined) {
+            [NSUserDefaults standardUserDefaults].notificationPrimerAlertWasDisplayed = YES;
+
+            FancyAlertViewController *alert = [FancyAlertViewController makeNotificationPrimerAlertControllerWithApproveAction:^(FancyAlertViewController* controller) {
+                [[InteractiveNotificationsManager shared] requestAuthorizationWithCompletion:^() {
+                    [controller dismissViewControllerAnimated:true completion:^{}];
+                }];
+            }];
+            alert.modalPresentationStyle = UIModalPresentationCustom;
+            alert.transitioningDelegate = self;
+
+            [self.tabBarController presentViewController:alert animated:YES completion:nil];
+        }
+    }];
 }
 
 #pragma mark - Remove Site
