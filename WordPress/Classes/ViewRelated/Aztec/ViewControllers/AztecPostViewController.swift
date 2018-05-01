@@ -2847,7 +2847,7 @@ extension AztecPostViewController {
     ///
     /// - Returns: `ImageAttachment` configured with an attachment placeholder image
     private func insertDocumentLinkPlaceholder() -> ImageAttachment? {
-        let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: Constants.placeholderMediaLink, placeHolderImage: Assets.linkPlaceholderImage)
+        let attachment = richTextView.replaceWithImage(at: self.richTextView.selectedRange, sourceURL: Constants.placeholderDocumentLink, placeHolderImage: Assets.linkPlaceholderImage)
         attachment.size = .thumbnail
         return attachment
     }
@@ -3347,8 +3347,12 @@ extension AztecPostViewController {
     func placeholderImage(for attachment: NSTextAttachment) -> UIImage {
         let icon: UIImage
         switch attachment {
-        case _ as ImageAttachment:
-            icon = Gridicon.iconOfType(.image, withSize: Constants.mediaPlaceholderImageSize)
+        case let imageAttachment as ImageAttachment:
+            if imageAttachment.url == Constants.placeholderDocumentLink {
+                icon = Gridicon.iconOfType(.pages, withSize: Constants.mediaPlaceholderImageSize)
+            } else {
+                icon = Gridicon.iconOfType(.image, withSize: Constants.mediaPlaceholderImageSize)
+            }
         case _ as VideoAttachment:
             icon = Gridicon.iconOfType(.video, withSize: Constants.mediaPlaceholderImageSize)
         default:
@@ -3730,6 +3734,7 @@ extension AztecPostViewController {
                     .foregroundColor: UIColor.white]
         }()
         static let placeholderMediaLink = URL(string: "placeholder://")!
+        static let placeholderDocumentLink = URL(string: "documentUploading://")!
 
         struct Animations {
             static let formatBarMediaButtonRotationDuration: TimeInterval = 0.3
