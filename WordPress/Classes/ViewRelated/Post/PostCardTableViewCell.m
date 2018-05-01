@@ -6,7 +6,6 @@
 #import <WordPressUI/WordPressUI.h>
 #import "WPStyleGuide+Posts.h"
 #import "WordPress-Swift.h"
-#import "FLAnimatedImage.h"
 
 @import Gridicons;
 
