@@ -1,4 +1,6 @@
 import UIKit
+import WordPressAuthenticator
+
 
 protocol SignupEpilogueTableViewControllerDelegate {
     func displayNameUpdated(newDisplayName: String)
