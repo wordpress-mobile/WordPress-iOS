@@ -131,6 +131,10 @@ class PostCoordinator: NSObject {
         } else if media.mediaType == .video {
             let videoPostUploadProcessor = VideoUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, videoPressID: media.videopressGUID)
             postContent = videoPostUploadProcessor.process(postContent)
+        } else if let remoteURL = URL(string: remoteURLStr) {
+            let documentTitle = remoteURL.lastPathComponent
+            let documentUploadProcessor = DocumentUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, title: documentTitle)
+            postContent = documentUploadProcessor.process(postContent)
         }
 
         post.content = postContent
