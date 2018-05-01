@@ -210,7 +210,7 @@ class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
         super.init(initialState: PluginStoreState())
     }
 
-    var logError: (String) -> Void = { error in
+    override func logError(_ error: String) {
         DDLogError(error)
     }
 
@@ -791,8 +791,8 @@ private extension PluginStore {
     }
 
     func notifyRemoteError(message: String, error: Error) {
-        DDLogError("[PluginStore Error] \(message)")
-        DDLogError("[PluginStore Error] \(error)")
+        logError(message)
+        logError(error.localizedDescription)
         ActionDispatcher.dispatch(NoticeAction.post(Notice(title: message)))
     }
 
