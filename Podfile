@@ -52,7 +52,6 @@ target 'WordPress' do
   pod 'SVProgressHUD', '2.2.5'
   pod 'Crashlytics', '3.10.1'
   pod 'BuddyBuildSDK', '1.0.17', :configurations => ['Release-Alpha']
-  pod 'FLAnimatedImage', '1.0.12'
   pod 'Gifu', '3.0.0'
   pod 'MGSwipeTableCell', '1.6.6'
   pod 'lottie-ios', '1.5.1'
