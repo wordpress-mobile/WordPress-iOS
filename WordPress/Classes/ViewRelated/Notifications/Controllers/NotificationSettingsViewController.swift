@@ -9,6 +9,7 @@ import WordPressShared.WPStyleGuide
 ///
 open class NotificationSettingsViewController: UIViewController {
     // MARK: - View Lifecycle
+
     open override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -36,8 +37,8 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
 
-
     // MARK: - Setup Helpers
+
     fileprivate func setupNavigationItem() {
         title = NSLocalizedString("Notifications", comment: "Title displayed in the Notification settings")
         navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .plain, target: nil, action: nil)
@@ -57,8 +58,8 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
 
-
     // MARK: - Service Helpers
+
     fileprivate func reloadSettings() {
         let service = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
@@ -126,8 +127,8 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
 
-
     // MARK: - Error Handling
+
     fileprivate func handleLoadError() {
         let title       = NSLocalizedString("Oops!", comment: "")
         let message     = NSLocalizedString("There has been a problem while loading your Notification Settings",
@@ -149,9 +150,8 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
 
-
-
     // MARK: - UITableView Datasource Methods
+
     @objc open func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
         return (groupedSettings?.count ?? emptyCount) + (!followedSites.isEmpty ? 1 : 0)
     }
@@ -164,7 +164,7 @@ open class NotificationSettingsViewController: UIViewController {
         case .followedSites where requiresFollowedSitesPagination:
             return displayMoreWasAccepted ? rowCountForFollowedSite + 1 : loadMoreRowCount
         default:
-            return groupedSettings![section]?.count ?? 0
+            return groupedSettings?[section]?.count ?? 0
         }
     }
 
@@ -206,8 +206,8 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
 
-
     // MARK: - UITableView Delegate Methods
+
     @objc open func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: IndexPath) {
         if isPaginationRow(indexPath) {
             toggleDisplayMore(at: indexPath)
@@ -221,8 +221,8 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
 
-
     // MARK: - UITableView Helpers
+
     fileprivate func reusableIdentifierForIndexPath(_ indexPath: IndexPath) -> String {
         switch Section(rawValue: indexPath.section)! {
         case .blog where !isPaginationRow(indexPath), .followedSites where !isPaginationRow(indexPath):
@@ -261,6 +261,7 @@ open class NotificationSettingsViewController: UIViewController {
         guard let settings = settingsForRowAtIndexPath(indexPath) else {
             return
         }
+
         switch settings.channel {
         case .blog:
             cell.textLabel?.text            = settings.blog?.settings?.name ?? settings.channel.description()
@@ -317,8 +318,8 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
 
-
     // MARK: - Load More Helpers
+
     fileprivate var rowCountForFollowedSite: Int {
         return followedSites.count
     }
@@ -389,6 +390,7 @@ open class NotificationSettingsViewController: UIViewController {
 
 
     // MARK: - Segue Helpers
+
     fileprivate func displayDetails(for siteId: Int) {
 
     }
@@ -407,8 +409,8 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
 
-
     // MARK: - Table Sections
+
     fileprivate enum Section: Int {
         case blog
         case followedSites
@@ -445,7 +447,9 @@ open class NotificationSettingsViewController: UIViewController {
             }
         }
 
+
         // MARK: - Private Constants
+
         fileprivate static let paddingZero      = CGFloat(0)
         fileprivate static let paddingWordPress = CGFloat(40)
     }
@@ -453,10 +457,13 @@ open class NotificationSettingsViewController: UIViewController {
 
 
     // MARK: - Private Outlets
+
     @IBOutlet fileprivate var tableView: UITableView!
     @IBOutlet fileprivate var activityIndicatorView: UIActivityIndicatorView!
 
+
     // MARK: - Private Constants
+
     fileprivate let blogReuseIdentifier             = WPBlogTableViewCell.classNameWithoutNamespaces()
     fileprivate let blogRowHeight                   = CGFloat(54.0)
 
@@ -466,11 +473,14 @@ open class NotificationSettingsViewController: UIViewController {
     fileprivate let loadMoreRowIndex                = 3
     fileprivate let loadMoreRowCount                = 4
 
+
     // MARK: - Private Properties
+
     fileprivate var groupedSettings: [Section: [NotificationSettings]]?
     fileprivate var displayMoreWasAccepted          = false
     fileprivate var followedSites: [ReaderSiteTopic] = []
 }
+
 
 // MARK: - SearchableActivity Conformance
 
