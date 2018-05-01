@@ -3701,7 +3701,7 @@ extension AztecPostViewController {
         static let closeButtonModalImage    = Gridicon.iconOfType(.cross)
         static let closeButtonRegularImage  = UIImage(named: "icon-posts-editor-chevron")
         static let defaultMissingImage      = Gridicon.iconOfType(.image)
-        static let linkPlaceholderImage     = Gridicon.iconOfType(.attachment)
+        static let linkPlaceholderImage     = Gridicon.iconOfType(.pages)
     }
 
     struct Constants {
