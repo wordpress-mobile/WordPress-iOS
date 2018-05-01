@@ -16,7 +16,7 @@ import WordPressFlux
 ///   - Row heights are auto-calculated via UITableViewAutomaticDimension and estimated heights
 ///         are cached via willDisplayCell.
 ///
-@objc open class ReaderStreamViewController: UIViewController, UIViewControllerRestoration, Subscriptable {
+@objc open class ReaderStreamViewController: UIViewController, UIViewControllerRestoration {
     @objc static let restorationClassIdentifier = "ReaderStreamViewControllerRestorationIdentifier"
     @objc static let restorableTopicPathKey: String = "RestorableTopicPathKey"
 
@@ -704,7 +704,7 @@ import WordPressFlux
             alertController.addActionWithTitle(ReaderPostMenuButtonTitles.blockSite,
                 style: .destructive,
                 handler: { (action: UIAlertAction) in
-                    if let post: ReaderPost = self.existingObjectFor(objectID: post.objectID) {
+                    if let post: ReaderPost = self.existingObject(for: post.objectID) {
                         self.blockSiteForPost(post)
                     }
                 })
@@ -712,14 +712,14 @@ import WordPressFlux
 
         // Notification
         if let topic = topic, isLoggedIn, post.isFollowing {
-            let isSubscribedForPostNotifications = topic.isSubscribedForPostNotifications()
+            let isSubscribedForPostNotifications = topic.isSubscribedForPostNotifications
             let buttonTitle = isSubscribedForPostNotifications ? ReaderPostMenuButtonTitles.unsubscribe : ReaderPostMenuButtonTitles.subscribe
             alertController.addActionWithTitle(buttonTitle,
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
-                                                if let topic: ReaderSiteTopic = self.existingObjectFor(objectID: topic.objectID) {
-                                                    self.toggleSubscribingNotificationsFor(siteID: topic.siteID,
-                                                                                           subscribe: !topic.isSubscribedForPostNotifications())
+                                                if let topic: ReaderSiteTopic = self.existingObject(for: topic.objectID) {
+                                                    self.toggleSubscribingNotifications(for: topic.siteID,
+                                                                                        subscribe: !topic.isSubscribedForPostNotifications)
                                                 }
             })
         }
@@ -730,7 +730,7 @@ import WordPressFlux
             alertController.addActionWithTitle(buttonTitle,
                 style: .default,
                 handler: { (action: UIAlertAction) in
-                    if let post: ReaderPost = self.existingObjectFor(objectID: post.objectID) {
+                    if let post: ReaderPost = self.existingObject(for: post.objectID) {
                         self.toggleFollowingForPost(post)
                     }
                 })
@@ -765,13 +765,41 @@ import WordPressFlux
     ///     - fromView: The view to present the sharing controller as a popover.
     ///
     fileprivate func sharePost(_ postID: NSManagedObjectID, fromView anchorView: UIView) {
-        if let post: ReaderPost = existingObjectFor(objectID: postID) {
+        if let post: ReaderPost = existingObject(for: postID) {
             let sharingController = PostSharingController()
 
             sharingController.shareReaderPost(post, fromView: anchorView, inViewController: self)
         }
     }
 
+    /// Retrieves an existing object for the specified object ID from the display context.
+    ///
+    /// - Parameters:
+    ///     - objectID: The object ID of the post.
+    ///
+    /// - Return: The matching post or nil if there is no match.
+    ///
+    fileprivate func existingObject<T>(for objectID: NSManagedObjectID?) -> T? {
+        guard let objectID = objectID else {
+            return nil
+        }
+
+        do {
+            return (try managedObjectContext().existingObject(with: objectID)) as? T
+        } catch let error as NSError {
+            DDLogError(error.localizedDescription)
+            return nil
+        }
+    }
+
+    fileprivate func toggleSubscribingNotifications(for siteID: NSNumber?, subscribe: Bool) {
+        guard let siteID = siteID else {
+            return
+        }
+
+        let service = ReaderTopicService(managedObjectContext: managedObjectContext())
+        service.toggleSubscribingNotifications(for: siteID, subscribe: subscribe)
+    }
 
     fileprivate func toggleFollowingForPost(_ post: ReaderPost) {
         var errorMessage: String
@@ -790,7 +818,7 @@ import WordPressFlux
         let toFollow = !post.isFollowing
 
         if !toFollow {
-            toggleSubscribingNotificationsFor(siteID: siteID, subscribe: false)
+            toggleSubscribingNotifications(for: siteID, subscribe: false)
         }
 
         postService.toggleFollowing(for: post,
@@ -798,7 +826,7 @@ import WordPressFlux
                                                 self?.syncHelper.syncContent()
                                                 self?.updateStreamHeaderIfNeeded()
                                                 if toFollow {
-                                                    self?.dispatchNoticeWith(siteTitle: siteTitle, siteID: siteID)
+                                                    self?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
                                                 }
                                             },
                                             failure: { (error: Error?) in
@@ -1479,17 +1507,18 @@ import WordPressFlux
 
         let toFollow = !topic.following
         let siteID = topic.siteID
-        let siteTitle = topic.blogNameToDisplay()
+        let siteTitle = topic.title
 
         if !toFollow {
-            toggleSubscribingNotificationsFor(siteID: siteID, subscribe: false)
+            toggleSubscribingNotifications(for: topic.siteID,
+                                           subscribe: !topic.isSubscribedForPostNotifications)
         }
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
         service.toggleFollowing(forSite: topic, success: { [weak self] in
             self?.syncHelper.syncContent()
             if toFollow {
-                self?.dispatchNoticeWith(siteTitle: siteTitle, siteID: siteID)
+                self?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
             }
         }, failure: { [weak self] (error: Error?) in
             generator.notificationOccurred(.error)
