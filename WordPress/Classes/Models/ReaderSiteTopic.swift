@@ -28,14 +28,11 @@ import Foundation
         }
     }
 
-
-    // MARK: - Public methods
-
-    @objc public func blogNameToDisplay() -> String {
+    @objc open var blogNameToDisplay: String {
         return posts.first?.blogNameForDisplay() ?? title
     }
 
-    @objc public func isSubscribedForPostNotifications() -> Bool {
+    @objc open var isSubscribedForPostNotifications: Bool {
         return postSubscription?.sendPosts ?? false
     }
 }

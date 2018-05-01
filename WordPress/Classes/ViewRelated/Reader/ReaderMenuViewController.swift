@@ -265,7 +265,6 @@ import WordPressShared
         })
 
         dispatchGroup.notify(queue: .main) { [weak self] in
-            DDLogInfo("Both functions complete 👍")
             self?.cleanupAfterSync()
         }
     }
