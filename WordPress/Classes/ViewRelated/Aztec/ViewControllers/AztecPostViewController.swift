@@ -1419,11 +1419,9 @@ private extension AztecPostViewController {
     ///     - dismissWhenDone: if `true`, the VC will be dismissed if the user picks "Publish".
     ///
     func displayPublishConfirmationAlert(onPublish publishAction: @escaping () -> ()) {
-        let title = NSLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing.")
-
+        let title = postEditorStateContext.publishQuestionTitleText
         let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
-        let publishTitle = NSLocalizedString("Publish", comment: "Button shown when the author is asked for publishing confirmation.")
-
+        let publishTitle = postEditorStateContext.publishButtonText
         let style: UIAlertControllerStyle = UIDevice.isPad() ? .alert : .actionSheet
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
 
@@ -1431,7 +1429,6 @@ private extension AztecPostViewController {
         alertController.addDefaultActionWithTitle(publishTitle) { _ in
             publishAction()
         }
-
         present(alertController, animated: true, completion: nil)
     }
 }
