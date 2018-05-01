@@ -1,3 +1,12 @@
+//
+// Previously, we were using FLAnimatedImage to show gifs. (https://github.com/Flipboard/FLAnimatedImage)
+// It's a good, battle-tested component written in Obj-c with a good solution for memory usage on big files.
+// We decided to look for other alternatives and we got to Gifu. (https://github.com/kaishin/Gifu)
+// - It has a similar approach to be memory efficient. Tests showed that is more memory efficient than FLAnimatedImage.
+// - It's written in Swift, in a protocol oriented approach. That make it easier to implement it in a Swift code base.
+// - It has extra features, like stopping and plying gifs, and a special `prepareForReuse` for table/collection views.
+// - It seems to be more active, being updated few months ago, in contrast to a couple of years ago of FLAnimatedImage
+
 import Foundation
 import Gifu
 
