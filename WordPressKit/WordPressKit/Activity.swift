@@ -10,7 +10,6 @@ public class Activity {
     public let status: String
     public let rewindID: String?
     public let published: Date
-    public var isDiscarded: Bool
     public let actor: ActivityActor?
     public let object: ActivityObject?
     public let target: ActivityObject?
@@ -44,7 +43,6 @@ public class Activity {
         gridicon = dictionary["gridicon"] as? String ?? ""
         status = dictionary["status"] as? String ?? ""
         rewindable = dictionary["is_rewindable"] as? Bool ?? false
-        isDiscarded = dictionary["is_discarded"] as? Bool ?? false
         rewindID = dictionary["rewind_id"] as? String
         if let actorData = dictionary["actor"] as? [String: AnyObject] {
             actor = ActivityActor(dictionary: actorData)
@@ -83,7 +81,7 @@ public class Activity {
     }()
 
     public lazy var isRewindable: Bool = {
-        return rewindID != nil && !isDiscarded && rewindable
+        return rewindID != nil && rewindable
     }()
 
 }
