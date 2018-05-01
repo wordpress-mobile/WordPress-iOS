@@ -85,6 +85,34 @@ import CoreTelephony
         })
     }
 
+    static func registerDevice(_ identifier: String) {
+        if ZDKConfig.instance().userIdentity == nil {
+            ZendeskUtils.createZendeskIdentity(withUser: false)
+        }
+
+        ZDKConfig.instance().enablePush(withDeviceID: identifier) { pushResponse, error in
+            if let error = error {
+                DDLogInfo("Zendesk couldn't register device: \(identifier). Error: \(error)")
+            } else {
+                DDLogDebug("Zendesk successfully registered device: \(identifier)")
+            }
+        }
+    }
+
+    static func unregisterDevice(_ identifier: String) {
+        if ZDKConfig.instance().userIdentity == nil {
+            ZendeskUtils.createZendeskIdentity(withUser: false)
+        }
+
+        ZDKConfig.instance().disablePush(identifier) { status, error in
+            if let error = error {
+                print("Zendesk couldn't unregistered device: \(identifier). Error: \(error)")
+            } else {
+                print("Zendesk successfully unregistered device: \(identifier)")
+            }
+        }
+    }
+
 }
 
 // MARK: - Private Extension
@@ -156,10 +184,12 @@ private extension ZendeskUtils {
         }
     }
 
-    static func createZendeskIdentity() {
+    static func createZendeskIdentity(withUser: Bool = true) {
         let zendeskIdentity = ZDKAnonymousIdentity()
-        zendeskIdentity.email = ZendeskUtils.sharedInstance.userEmail
-        zendeskIdentity.name = ZendeskUtils.sharedInstance.userName
+        if withUser {
+            zendeskIdentity.email = ZendeskUtils.sharedInstance.userEmail
+            zendeskIdentity.name = ZendeskUtils.sharedInstance.userName
+        }
         ZDKConfig.instance().userIdentity = zendeskIdentity
         DDLogDebug("Zendesk identity created with email '\(zendeskIdentity.email)' and name '\(zendeskIdentity.name)'.")
     }
