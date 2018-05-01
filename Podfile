@@ -66,8 +66,8 @@ target 'WordPress' do
   pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.3'
   pod 'Gridicons', '0.15'
   pod 'NSURL+IDN', '0.3'
-  pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '5c487e4e4a7a42ae9d6999613e6e5195351fddf4'
-  pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'52849f1be62bc6a6316f3828d56e8fc32f5fa8e4'
+  pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '177e6773395a77ba01e3851c38372b8bff8723c0'
+  pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'f8021013ee7df63e1c469ad550944c213888faaf'
 
   target 'WordPressTest' do
     inherit! :search_paths
@@ -88,7 +88,7 @@ target 'WordPress' do
     shared_with_all_pods
     shared_with_networking_pods
 
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'52849f1be62bc6a6316f3828d56e8fc32f5fa8e4'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'f8021013ee7df63e1c469ad550944c213888faaf'
     pod 'Gridicons', '0.15'
   end
 
@@ -102,7 +102,7 @@ target 'WordPress' do
     shared_with_all_pods
     shared_with_networking_pods
 
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'52849f1be62bc6a6316f3828d56e8fc32f5fa8e4'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'f8021013ee7df63e1c469ad550944c213888faaf'
     pod 'Gridicons', '0.15'
   end
 
