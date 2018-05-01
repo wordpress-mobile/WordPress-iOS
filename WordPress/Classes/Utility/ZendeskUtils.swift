@@ -38,8 +38,12 @@ import CoreTelephony
         ZendeskUtils.toggleZendesk(enabled: true)
     }
 
-    func showHelpCenter(from controller: UIViewController) {
-        ZendeskUtils.createIdentity(success: {
+    func showHelpCenterIfPossible(from controller: UIViewController) {
+        ZendeskUtils.createIdentity(completion: { success in
+            guard success else {
+                // TODO: show error
+                return
+            }
 
             guard let helpCenterContentModel = ZDKHelpCenterOverviewContentModel.defaultContent() else {
                 DDLogInfo("Zendesk helpCenterContentModel creation failed.")
@@ -52,22 +56,33 @@ import CoreTelephony
 
             let presentInController = ZendeskUtils.configureViewController(controller)
             ZDKHelpCenter.presentOverview(presentInController, with: helpCenterContentModel)
-        }, failure: nil)
+        })
     }
 
-    func showNewRequest(from controller: UIViewController) {
-        ZendeskUtils.createIdentity(success: {
+    func showNewRequestIfPossible(from controller: UIViewController) {
+        ZendeskUtils.createIdentity(completion: { success in
+            guard success else {
+                // TODO: show error
+                return
+            }
+
             let presentInController = ZendeskUtils.configureViewController(controller)
             ZDKRequests.presentRequestCreation(with: presentInController)
             self.createRequest()
-        }, failure: nil)
+        })
     }
 
-    func showTicketList(from controller: UIViewController) {
-        ZendeskUtils.createIdentity(success: {
+
+    func showTicketListIfPossible(from controller: UIViewController) {
+        ZendeskUtils.createIdentity(completion: { success in
+            guard success else {
+                // TODO: show error
+                return
+            }
+
             let presentInController = ZendeskUtils.configureViewController(controller)
             ZDKRequests.presentRequestList(with: presentInController)
-        }, failure: nil)
+        })
     }
 
 }
@@ -81,8 +96,7 @@ private extension ZendeskUtils {
         DDLogInfo("Zendesk Enabled: \(enabled)")
     }
 
-    static func createIdentity(success: @escaping (() -> ()),
-                               failure: (() -> ())? ) {
+    static func createIdentity(completion: @escaping (Bool) -> Void) {
 
         /*
          Steps to selecting which account to use:
@@ -99,7 +113,7 @@ private extension ZendeskUtils {
             DDLogDebug("Using defaultAccount for Zendesk identity.")
             ZendeskUtils.getUserInformationFrom(wpAccount: defaultAccount)
             ZendeskUtils.createZendeskIdentity()
-            success()
+            completion(true)
             return
         }
 
@@ -108,7 +122,7 @@ private extension ZendeskUtils {
             DDLogDebug("Using User Defaults for Zendesk identity.")
             ZendeskUtils.getUserInformationFrom(savedProfile: savedProfile)
             ZendeskUtils.createZendeskIdentity()
-            success()
+            completion(true)
             return
         }
 
@@ -117,7 +131,7 @@ private extension ZendeskUtils {
 
         guard let blog = blogService.lastUsedBlog() else {
             DDLogInfo("No Blog to create Zendesk identity with.")
-            failure?()
+            completion(false)
             return
         }
 
@@ -127,7 +141,7 @@ private extension ZendeskUtils {
             ZendeskUtils.getUserInformationFrom(jetpackState: jetpackState)
             ZendeskUtils.createZendeskIdentity()
             ZendeskUtils.saveProfileToUD()
-            success()
+            completion(true)
             return
 
         }
@@ -137,7 +151,7 @@ private extension ZendeskUtils {
             DDLogDebug("Using self-hosted for Zendesk identity.")
             ZendeskUtils.createZendeskIdentity()
             ZendeskUtils.saveProfileToUD()
-            success()
+            completion(true)
             return
         }
     }
