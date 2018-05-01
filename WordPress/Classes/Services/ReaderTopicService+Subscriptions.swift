@@ -10,6 +10,34 @@ private enum SubscriptionAction {
 }
 
 extension ReaderTopicService {
+    /// Toggle subscription action for site notifications
+    ///
+    /// - Parameters:
+    ///   - siteID: Site id to be used
+    ///   - subscribe: Flag to define is subscribe or unsubscribe the site notifications
+    func toggleSubscribingNotifications(for siteID: NSNumber?, subscribe: Bool) {
+        guard let siteID = siteID else {
+            return
+        }
+
+        let success = {
+            DDLogInfo("Success turn notifications \(subscribe ? "on" : "off")")
+        }
+
+        let failure = { (error: NSError?) in
+            DDLogError("Error turn on notifications: \(error?.localizedDescription ?? "unknown error")")
+        }
+
+        if subscribe {
+            subscribeSiteNotifications(with: siteID, success, failure)
+        } else {
+            unsubscribeSiteNotifications(with: siteID, success, failure)
+        }
+    }
+
+
+    // MARK: Private methods
+
     private func apiRequest() -> WordPressComRestApi {
         let accountService = AccountService(managedObjectContext: managedObjectContext)
         let defaultAccount = accountService.defaultWordPressComAccount()
@@ -91,12 +119,13 @@ extension ReaderTopicService {
     // MARK: Private methods
 
     private func toggleSiteNotifications(with siteId: NSNumber, subscribe: Bool = false, _ success: @escaping () -> Void, _ failure: @escaping (NSError?) -> Void) {
-        guard let siteTopic = fetchSiteTopic(with: siteId, failure) else {
+        guard let siteTopic = fetchSiteTopic(with: siteId, failure),
+            let postSubscription = siteTopic.postSubscription else {
             return
         }
 
-        let oldValue = !subscribe
-        siteTopic.postSubscription?.sendPosts = subscribe
+        let oldValue = postSubscription.sendPosts
+        postSubscription.sendPosts = subscribe
 
         let failureBlock = { (error: NSError?) in
             guard let siteTopic = self.findSiteTopic(withSiteID: siteId) else {
@@ -127,12 +156,13 @@ extension ReaderTopicService {
     // MARK: Private methods
 
     private func toggleSiteComments(with siteId: NSNumber, subscribe: Bool = false, _ success: @escaping () -> Void, _ failure: @escaping (NSError?) -> Void) {
-        guard let siteTopic = fetchSiteTopic(with: siteId, failure) else {
+        guard let siteTopic = fetchSiteTopic(with: siteId, failure),
+            let emailSubscription = siteTopic.emailSubscription else {
             return
         }
 
-        let oldValue = !subscribe
-        siteTopic.emailSubscription?.sendComments = subscribe
+        let oldValue = emailSubscription.sendComments
+        emailSubscription.sendComments = subscribe
 
         let failureBlock = { (error: NSError?) in
             guard let siteTopic = self.findSiteTopic(withSiteID: siteId) else {
@@ -167,12 +197,13 @@ extension ReaderTopicService {
     // MARK: Private methods
 
     private func togglePostsEmail(with siteId: NSNumber, subscribe: Bool = false, _ success: @escaping () -> Void, _ failure: @escaping (NSError?) -> Void) {
-        guard let siteTopic = fetchSiteTopic(with: siteId, failure) else {
+        guard let siteTopic = fetchSiteTopic(with: siteId, failure),
+            let emailSubscription = siteTopic.emailSubscription else {
             return
         }
 
-        let oldValue = !subscribe
-        siteTopic.emailSubscription?.sendPosts = subscribe
+        let oldValue = emailSubscription.sendPosts
+        emailSubscription.sendPosts = subscribe
 
         let failureBlock = { (error: NSError?) in
             guard let siteTopic = self.findSiteTopic(withSiteID: siteId) else {
