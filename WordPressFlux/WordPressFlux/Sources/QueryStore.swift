@@ -26,12 +26,6 @@ private struct QueryRef<Query> {
 
 open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
 
-    /// Closure used to log errors. Default implementation calls `NSLog`, clients may find it useful
-    /// to override it to use a custom logging method.
-    var logError: (String) -> Void = { error in
-        NSLog(error)
-    }
-
     private let initialState: State
 
     fileprivate var activeQueryReferences = [QueryRef<Query>]() {
@@ -43,7 +37,7 @@ open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
                     try encodableState.saveJSON(at: url)
                     inMemoryState = nil
                 } catch {
-                    logError("[QueryStore Error] \(error)")
+                    logError("[\(type(of: self)) Error] \(error)")
                 }
             }
 
@@ -85,7 +79,7 @@ open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
                 }
             } catch {
                 // If reading persisted state fails, let's just fail over to `initialState`.
-                logError("[QueryStore Error] \(error)")
+                logError("[\(type(of: self)) Error] \(error)")
                 return initialState
             }
         }
@@ -136,6 +130,16 @@ open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
     open func queriesChanged() {
         // Subclasses should implement this
     }
+
+    /// Closure used to log errors.
+
+    /// Default implementation calls `NSLog`, subclasses may find it useful
+    /// to override it to use a custom logging method.
+    open func logError(_ error: String) {
+        NSLog(error)
+    }
+
+
 
 }
 
