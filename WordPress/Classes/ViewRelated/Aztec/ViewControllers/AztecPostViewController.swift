@@ -517,6 +517,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         refreshInterface()
 
         // Setup Autolayout
+        configureConstraints()
         view.setNeedsUpdateConstraints()
 
         if isOpenedDirectlyForPhotoPost {
@@ -636,8 +637,12 @@ class AztecPostViewController: UIViewController, PostEditor {
     // MARK: - Configuration Methods
 
     override func updateViewConstraints() {
-
+        refreshTitlePosition()
+        updateTitleHeight()
         super.updateViewConstraints()
+    }
+
+    func configureConstraints() {
 
         titleHeightConstraint = titleTextField.heightAnchor.constraint(equalToConstant: titleTextField.font!.lineHeight)
         titleTopConstraint = titleTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: -richTextView.contentOffset.y)
