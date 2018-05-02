@@ -10,7 +10,7 @@ final class SavedForLaterMenuItemCreator: ReaderMenuItemCreator {
         //TODO. Update with the proper icon
         var item = ReaderMenuItem(title: topic.title,
                                   type: .topic,
-                                  icon: nil,
+                                  icon: Gridicon.iconOfType(.star),
                                   topic: topic)
         item.order = ReaderDefaultMenuItemOrder.savedForLater.rawValue
 
