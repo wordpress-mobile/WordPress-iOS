@@ -913,6 +913,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatPushNotificationReceived:
             eventName = @"push_notification_received";
             break;
+        case WPAnalyticsStatPushNotificationPrimerSeen:
+            eventName = @"notifications_primer_seen";
+            break;
+        case WPAnalyticsStatPushNotificationPrimerAllowTapped:
+            eventName = @"notifications_primer_allow_tapped";
+            break;
+        case WPAnalyticsStatPushNotificationPrimerNoTapped:
+            eventName = @"notifications_primer_no_tapped";
+            break;
         case WPAnalyticsStatReaderAccessed:
             eventName = @"reader_accessed";
             break;
