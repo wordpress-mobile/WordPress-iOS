@@ -118,7 +118,7 @@ PODS:
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
     - NSObject-SafeExpectations (= 0.0.2)
-  - WPMediaPicker (0.27)
+  - WPMediaPicker (0.28)
   - wpxmlrpc (0.8.3)
   - ZendeskSDK (1.11.2.1):
     - ZendeskSDK/Providers (= 1.11.2.1)
@@ -157,7 +157,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `52849f1be62bc6a6316f3828d56e8fc32f5fa8e4`)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `f7051f3b32fae3dadda267e725288d9f212fcc55`)
-  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, commit `8be55e66fd9bd584bcdb566a1d4adbc58391771a`)
+  - WPMediaPicker (= 0.28)
   - wpxmlrpc (= 0.8.3)
   - ZendeskSDK (= 1.11.2.1)
 
@@ -171,9 +171,6 @@ EXTERNAL SOURCES:
   WordPressShared:
     :commit: f7051f3b32fae3dadda267e725288d9f212fcc55
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
-  WPMediaPicker:
-    :commit: 8be55e66fd9bd584bcdb566a1d4adbc58391771a
-    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -185,9 +182,6 @@ CHECKOUT OPTIONS:
   WordPressShared:
     :commit: f7051f3b32fae3dadda267e725288d9f212fcc55
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
-  WPMediaPicker:
-    :commit: 8be55e66fd9bd584bcdb566a1d4adbc58391771a
-    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -222,10 +216,10 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 2d8c58f68f422ce521db689fb582122220e77f8d
   WordPressShared: b1bed3aa4db4438fd9fe78ccd0be58c8fee19c17
-  WPMediaPicker: 1fe532b4ff215a9dd259f08439376fc0dbab1039
+  WPMediaPicker: fb71c0e4fb720f04f7ff7496572ed1005a4e7e12
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: a54f38ddbfbcdc1e3821f3c02e42a10506917d2d
+PODFILE CHECKSUM: 66597bfb0156e46eab4bf35cda373b01a8b51752
 
 COCOAPODS: 1.4.0
