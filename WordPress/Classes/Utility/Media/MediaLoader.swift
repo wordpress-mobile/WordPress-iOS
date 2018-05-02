@@ -6,7 +6,7 @@
     /// The post is private and hosted on WPcom.
     /// Redundant name due to naming conflict.
     ///
-    var isPostPrivate: Bool { get }
+    var isPrivateOnWPCom: Bool { get }
 
     /// The blog is self-hosted and there is already a basic auth credential stored.
     ///
@@ -51,7 +51,7 @@
 
     private func loadGif(with url: URL, from post: PostInformation) {
         let request: URLRequest
-        if post.isPostPrivate {
+        if post.isPrivateOnWPCom {
             request = PrivateSiteURLProtocol.requestForPrivateSite(from: url)
         } else {
             request = URLRequest(url: url)
@@ -63,7 +63,7 @@
     private func loadStillImage(with url: URL, from post: PostInformation, preferedSize size: CGSize) {
         if url.isFileURL {
             imageView.setImageWith(url)
-        } else if post.isPostPrivate {
+        } else if post.isPrivateOnWPCom {
             loadImage(with: url, fromPrivatePost: post, preferedSize: size)
         } else if post.isBlogSelfHostedWithCredentials {
             imageView.setImageWith(url)
