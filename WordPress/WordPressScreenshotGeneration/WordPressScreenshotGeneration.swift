@@ -33,7 +33,7 @@ class WordPressScreenshotGeneration: XCTestCase {
     func testGenerateScreenshots() {
         let app = XCUIApplication()
 
-        let logInExists = app.buttons["Log In"].exists
+        let logInExists = app.buttons["Log In Button"].exists
 
         // Logout first if needed
         if !logInExists {
@@ -42,26 +42,41 @@ class WordPressScreenshotGeneration: XCTestCase {
             app.alerts.element(boundBy: 0).buttons.element(boundBy: 1).tap() // Tap disconnect
         }
 
-        app.buttons["Log In"].tap()
+        // Handle Notifications Permissions alert that appears after login
+        addUIInterruptionMonitor(withDescription: "Notifications Permissions Alert") { element in
+            element.buttons.firstMatch.tap()
+            return true
+        }
 
-        let email = ""
+
+        app.buttons["Log In Button"].tap()
+        app.buttons["Self Hosted Login Button"].tap()
+
+        let username = ""
         let password = ""
 
-        // Login step 1: email
-        let emailTextField =  app.textFields["Email address"]
-        emailTextField.tap()
-        emailTextField.typeText(email)
+        // We have to login by site address, due to security issues with the
+        // shared testing account which prevent us from signing in by email address.
+        app.textFields["usernameField"].tap()
+        app.textFields["usernameField"].typeText("WordPress.com")
         app.buttons["Next Button"].tap()
 
-        // Login step 2: ignore magic link
-        app.buttons["Use Password"].tap()
+        guard app.secureTextFields["passwordField"].waitForExistence(timeout: 3.0) else {
+            XCTFail("The password field couldn't be found.")
+            return
+        }
 
-        // Login step 3: password
-        let passwordTextField = app.secureTextFields["Password"]
-        passwordTextField.typeText(password)
-        app.buttons["Log In Button"].tap()
+        app.textFields["usernameField"].tap()
+        app.textFields["usernameField"].typeText(username)
+        app.secureTextFields["passwordField"].tap()
+        app.secureTextFields["passwordField"].typeText(password)
 
-        // Login step 4: epilogue, continue
+        app.buttons["submitButton"].tap()
+
+        // Handle the Notifications permission alert
+        sleep(2)
+        app.tap()   // Tap required for the interruption monitor to be triggered
+
         app.buttons["Continue"].tap()
 
         // Get Reader Screenshot
@@ -78,13 +93,14 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         // Get Posts screenshot
         app.tabBars["Main Navigation"].buttons["mySitesTabButton"].tap()
-        app.tables.cells.element(boundBy: 2).tap() // tap Blog Posts
+        app.tables.cells["Blog Post Row"].tap() // tap Blog Posts
         sleep(2)
         snapshot("3-BlogPosts")
 
         // Get Editor screenshot
         // Tap on the first post to bring up the editor
         app.tables["PostsTable"].tap()
+
         // The title field gets focus automatically
         sleep(2)
         snapshot("4-PostEditor")
@@ -92,7 +108,8 @@ class WordPressScreenshotGeneration: XCTestCase {
         app.navigationBars["Azctec Editor Navigation Bar"].buttons["Close"].tap()
         // Dismiss Unsaved Changes Alert if it shows up
         if app.sheets.element(boundBy: 0).exists {
-            app.sheets.element(boundBy: 0).buttons.element(boundBy: 0).tap()
+            // Tap discard
+            app.sheets.element(boundBy: 0).buttons.element(boundBy: 1).tap()
         }
 
         // Get Stats screenshot
