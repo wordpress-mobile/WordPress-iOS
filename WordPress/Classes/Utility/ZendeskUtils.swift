@@ -9,7 +9,7 @@ import CoreTelephony
     static var sharedInstance: ZendeskUtils = ZendeskUtils()
     private override init() {}
 
-    var zendeskEnabled = false
+    static var zendeskEnabled = false
 
     private var userName: String?
     private var userEmail: String?
@@ -92,7 +92,7 @@ import CoreTelephony
 private extension ZendeskUtils {
 
     static func toggleZendesk(enabled: Bool) {
-        ZendeskUtils.sharedInstance.zendeskEnabled = enabled
+        ZendeskUtils.zendeskEnabled = enabled
         DDLogInfo("Zendesk Enabled: \(enabled)")
     }
 
