@@ -107,6 +107,10 @@ extension URL {
 
         return UTTypeConformsTo(uti as CFString, kUTTypeImage)
     }
+
+    var isGif: Bool {
+        return pathExtension == "gif"
+    }
 }
 
 extension NSURL {
