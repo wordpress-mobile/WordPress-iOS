@@ -28,7 +28,13 @@ import WordPressShared
     fileprivate var restorableSelectedIndexPath: IndexPath?
 
     @objc lazy var viewModel: ReaderMenuViewModel = {
-        let vm = ReaderMenuViewModel()
+        let sectionCreators: [ReaderMenuItemCreator] = [
+            FollowingMenuItemCreator(),
+            DiscoverMenuItemCreator(),
+            LikedMenuItemCreator(),
+            OtherMenuItemCreator()
+        ]
+        let vm = ReaderMenuViewModel(sectionCreators: sectionCreators)
         vm.delegate = self
         return vm
     }()
