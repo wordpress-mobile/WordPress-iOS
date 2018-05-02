@@ -1,2 +1,2 @@
-int WPSharedGetLoggingLevel(void);
-void WPSharedSetLoggingLevel(int level);
+int WPAuthenticatorGetLoggingLevel(void);
+void WPAuthenticatorSetLoggingLevel(int level);

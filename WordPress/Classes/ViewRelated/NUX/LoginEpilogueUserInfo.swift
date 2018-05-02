@@ -1,5 +1,5 @@
 import Foundation
-import GoogleSignIn
+import WordPressAuthenticator
 
 
 /// A simple container for the user info shown on the login epilogue screen.

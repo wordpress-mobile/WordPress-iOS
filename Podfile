@@ -12,7 +12,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def shared_with_all_pods
-  pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => 'f7051f3b32fae3dadda267e725288d9f212fcc55'
+  pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '1d657ac0ddb002712803721da8ee5752e7069637'
   pod 'CocoaLumberjack', '3.4.1'
   pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
   pod 'NSObject-SafeExpectations', '0.0.2'
@@ -66,15 +66,13 @@ target 'WordPress' do
   pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.3'
   pod 'Gridicons', '0.15'
   pod 'NSURL+IDN', '0.3'
-  pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '5c487e4e4a7a42ae9d6999613e6e5195351fddf4'
-  pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'52849f1be62bc6a6316f3828d56e8fc32f5fa8e4'
+  pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '177e6773395a77ba01e3851c38372b8bff8723c0'
+  pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'f8021013ee7df63e1c469ad550944c213888faaf'
 
   target 'WordPressTest' do
     inherit! :search_paths
 
     shared_test_pods
-    pod 'Specta', '1.0.7'
-    pod 'Expecta', '1.0.6'
     pod 'Nimble', '~> 7.0.3'
   end
 
@@ -88,7 +86,7 @@ target 'WordPress' do
     shared_with_all_pods
     shared_with_networking_pods
 
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'52849f1be62bc6a6316f3828d56e8fc32f5fa8e4'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'f8021013ee7df63e1c469ad550944c213888faaf'
     pod 'Gridicons', '0.15'
   end
 
@@ -102,7 +100,7 @@ target 'WordPress' do
     shared_with_all_pods
     shared_with_networking_pods
 
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'52849f1be62bc6a6316f3828d56e8fc32f5fa8e4'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'f8021013ee7df63e1c469ad550944c213888faaf'
     pod 'Gridicons', '0.15'
   end
 
@@ -126,10 +124,29 @@ end
 target 'WordPressAuthenticator' do
   project 'WordPressAuthenticator/WordPressAuthenticator.xcodeproj'
 
-  pod 'CocoaLumberjack', '3.4.1'
+  shared_with_all_pods
+  shared_with_networking_pods
+
+  ## Automattic libraries
+  ## ====================
+  ##
+  pod 'Gridicons', '0.15'
+
+  ## Third party libraries
+  ## =====================
+  ##
+  pod '1PasswordExtension', '1.8.5'
+  pod 'GoogleSignIn', '4.1.2'
+  pod 'lottie-ios', '1.5.1'
+  pod 'NSURL+IDN', '0.3'
+  pod 'SVProgressHUD', '2.2.5'
 
   target 'WordPressAuthenticatorTests' do
     inherit! :search_paths
+
+    shared_test_pods
+    pod 'Expecta', '1.0.6'
+    pod 'Specta', '1.0.7'
   end
 end
 
@@ -167,4 +184,16 @@ target 'WordPressKit' do
 
     shared_test_pods
   end
+end
+
+
+## Remove Duplicate GoogleSignIn References. Nuke this whenever WordPressAuthenticator is brought in via Pods.
+## Based On: https://github.com/CocoaPods/CocoaPods/issues/7155
+##
+pre_install do |installer|
+  embedded_target = installer.aggregate_targets.find { |aggregate_target| aggregate_target.name == 'Pods-WordPressAuthenticator' }
+  host_target = installer.aggregate_targets.find { |aggregate_target| aggregate_target.name == 'Pods-WordPress' }
+
+  duplicated_framework = embedded_target.pod_targets.select { |dependency| dependency.name == 'GoogleSignIn' }
+  host_target.pod_targets = host_target.pod_targets - duplicated_framework
 end
