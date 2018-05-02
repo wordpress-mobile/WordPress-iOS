@@ -13,6 +13,9 @@
     var isBlogSelfHostedWithCredentials: Bool { get }
 }
 
+/// Class used together with `CachedAnimatedImageView` to facilitate the loading of both
+/// still images and animated gifs.
+///
 @objc class ImageLoader: NSObject {
 
     private let imageView: CachedAnimatedImageView
