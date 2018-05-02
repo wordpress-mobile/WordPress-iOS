@@ -1,11 +1,9 @@
 /// Plese do not review this class. This is basically a mock at the moment. It models a mock topic, so that I can test that the topic gets rendered in the UI
 final class ReaderSaveForLaterTopic: ReaderAbstractTopic {
-    init(title: String) {
+    init() {
         let managedObjectContext = ReaderSaveForLaterTopic.setUpInMemoryManagedObjectContext()
-        let entity = NSEntityDescription.entity(forEntityName: "ReaderListTopic", in: managedObjectContext)
+        let entity = NSEntityDescription.entity(forEntityName: "ReaderDefaultTopic", in: managedObjectContext)
         super.init(entity: entity!, insertInto: managedObjectContext)
-        self.title = title
-        self.path = "/read/saved"
     }
 
     override open class var TopicType: String {
