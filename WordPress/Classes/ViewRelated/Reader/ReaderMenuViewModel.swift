@@ -268,23 +268,8 @@ enum ReaderDefaultMenuItemOrder: Int {
         // Append a menu item for search
         defaultSectionItems.append(searchMenuItem())
 
-        // Sort the items into the desired order.
+        // Sort the items ascending.
         defaultSectionItems.sort(by: <)
-//        defaultSectionItems.sort { (menuItem1, menuItem2) -> Bool in
-//            if menuItem1.order < menuItem2.order {
-//                return true
-//            }
-//
-//            if menuItem1.order > menuItem2.order {
-//                return false
-//            }
-//
-//            if menuItem1.title < menuItem2.title {
-//                return true
-//            }
-//
-//            return false
-//        }
     }
 
 
