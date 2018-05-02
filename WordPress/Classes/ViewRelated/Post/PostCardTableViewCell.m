@@ -30,8 +30,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, strong) IBOutlet UILabel *authorBlogLabel;
 @property (nonatomic, strong) IBOutlet UILabel *authorNameLabel;
-@property (nonatomic, strong) IBOutlet UIImageView *postCardImageView;
-@property (nonatomic, strong) IBOutlet CachedAnimatedImageView *postCardAnimatedImageView;
+@property (nonatomic, strong) IBOutlet CachedAnimatedImageView *postCardImageView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *snippetLabel;
 @property (nonatomic, strong) IBOutlet UIView *dateView;
@@ -167,8 +166,8 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    if (self.postCardAnimatedImageView) {
-        [self.postCardAnimatedImageView prepForReuse];
+    if (self.postCardImageView) {
+        [self.postCardImageView prepForReuse];
     }
     [self setNeedsDisplay];
 }
@@ -273,8 +272,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     AbstractPost *post = [self.post latest];
     // Clear the image so we know its not stale.
     self.postCardImageView.image = nil;
-    self.postCardAnimatedImageView.image = nil;
-    self.postCardAnimatedImageView.image = nil;
     NSURL *url = [post featuredImageURLForDisplay];
     if (url == nil) {
         // no feature image available.
@@ -282,15 +279,13 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     }
 
     BOOL isAnimatedGIF = [[url pathExtension] isEqual:@"gif"];
-    self.postCardAnimatedImageView.hidden = !isAnimatedGIF;
-    self.postCardImageView.hidden = isAnimatedGIF;
 
     if (isAnimatedGIF) {
         NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
         if ([post isPrivate] && [post.blog isHostedAtWPcom]) {
             request = [PrivateSiteURLProtocol requestForPrivateSiteFromURL:url];
         }
-        [self.postCardAnimatedImageView setAnimatedImage:request
+        [self.postCardImageView setAnimatedImage:request
                                         placeholderImage:nil
                                                  success:nil
                                                  failure:nil];
