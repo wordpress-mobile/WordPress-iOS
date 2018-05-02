@@ -237,18 +237,14 @@ enum ReaderDefaultMenuItemOrder: Int {
                     continue
                 }
 
-                let creator = sectionCreator(for: abstractTopic)
-                let item = creator.menuItem(with: abstractTopic)
+                let item = sectionCreator(for: abstractTopic).menuItem(with: abstractTopic)
 
                 defaultSectionItems.append(item)
             }
         }
 
-        // Create a menu item for search
-        var searchItem = searchMenuItem()
-        searchItem.order = ReaderDefaultMenuItemOrder.search.rawValue
-        searchItem.icon = Gridicon.iconOfType(.search)
-        defaultSectionItems.append(searchItem)
+        // Append a menu item for search
+        defaultSectionItems.append(searchMenuItem())
 
         // Sort the items into the desired order.
         defaultSectionItems.sort { (menuItem1, menuItem2) -> Bool in
@@ -268,18 +264,19 @@ enum ReaderDefaultMenuItemOrder: Int {
         }
     }
 
+
+    /// Selects and returns the entity responsible for creating a menu item for a given topic
+    ///
     private func sectionCreator(for topic: ReaderAbstractTopic) -> ReaderMenuItemCreator {
         return sectionCreators.filter {
             $0.supports(topic)
             }.first ?? OtherMenuItemCreator()
     }
 
-
     /// Returns the menu item to use for the reader search
     ///
     func searchMenuItem() -> ReaderMenuItem {
-        let title = NSLocalizedString("Search", comment: "Title of the reader's Search menu item.")
-        return ReaderMenuItem(title: title, type: .search)
+        return SearchMenuItemCreator().menuItem()
     }
 
 
