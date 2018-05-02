@@ -613,6 +613,19 @@ class AztecPostViewController: UIViewController, PostEditor {
         contentInset.top = (titleHeightConstraint.constant + separatorView.frame.height)
         referenceView.contentInset = contentInset
         referenceView.setContentOffset(CGPoint(x: 0, y: -contentInset.top), animated: false)
+
+        updateScrollInsets()
+    }
+
+    func updateScrollInsets() {
+        let referenceView: UITextView = mode == .richText ? richTextView : htmlTextView
+        var scrollInsets = referenceView.contentInset
+        var rightMargin = (view.frame.maxX - referenceView.frame.maxX)
+        if #available(iOS 11.0, *) {
+            rightMargin -= view.safeAreaInsets.right
+        }
+        scrollInsets.right = -rightMargin
+        referenceView.scrollIndicatorInsets = scrollInsets
     }
 
 
@@ -967,14 +980,12 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
         let referenceView: UIScrollView = mode == .richText ? richTextView : htmlTextView
 
-        let scrollInsets = UIEdgeInsets(top: referenceView.scrollIndicatorInsets.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: referenceView.frame.maxX - view.frame.maxX)
         let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
 
-        htmlTextView.scrollIndicatorInsets = scrollInsets
         htmlTextView.contentInset = contentInsets
-
-        richTextView.scrollIndicatorInsets = scrollInsets
         richTextView.contentInset = contentInsets
+
+        updateScrollInsets()
     }
 }
 
