@@ -835,6 +835,7 @@
 		D800D86A20997E0C00E7C7E5 /* LikedMenuItemCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800D86920997E0C00E7C7E5 /* LikedMenuItemCreator.swift */; };
 		D800D86C20997EB400E7C7E5 /* OtherMenuItemCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800D86B20997EB400E7C7E5 /* OtherMenuItemCreator.swift */; };
 		D800D86E2099857000E7C7E5 /* SearchMenuItemCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800D86D2099857000E7C7E5 /* SearchMenuItemCreator.swift */; };
+		D800D87020998A7300E7C7E5 /* SavedForLaterMenuItemCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800D86F20998A7300E7C7E5 /* SavedForLaterMenuItemCreator.swift */; };
 		D8071631203DA23700B32FD9 /* Accessible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8071630203DA23700B32FD9 /* Accessible.swift */; };
 		D809E686203F0215001AA0DE /* ReaderPostCardCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D809E685203F0215001AA0DE /* ReaderPostCardCellTests.swift */; };
 		D80BC79C207464D200614A59 /* MediaLibraryMediaPickingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BC79B207464D200614A59 /* MediaLibraryMediaPickingCoordinator.swift */; };
@@ -2338,6 +2339,7 @@
 		D800D86920997E0C00E7C7E5 /* LikedMenuItemCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedMenuItemCreator.swift; sourceTree = "<group>"; };
 		D800D86B20997EB400E7C7E5 /* OtherMenuItemCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherMenuItemCreator.swift; sourceTree = "<group>"; };
 		D800D86D2099857000E7C7E5 /* SearchMenuItemCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMenuItemCreator.swift; sourceTree = "<group>"; };
+		D800D86F20998A7300E7C7E5 /* SavedForLaterMenuItemCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedForLaterMenuItemCreator.swift; sourceTree = "<group>"; };
 		D8071630203DA23700B32FD9 /* Accessible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accessible.swift; sourceTree = "<group>"; };
 		D809E685203F0215001AA0DE /* ReaderPostCardCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderPostCardCellTests.swift; sourceTree = "<group>"; };
 		D80BC79B207464D200614A59 /* MediaLibraryMediaPickingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaLibraryMediaPickingCoordinator.swift; sourceTree = "<group>"; };
@@ -5486,6 +5488,7 @@
 				D800D86920997E0C00E7C7E5 /* LikedMenuItemCreator.swift */,
 				D800D86B20997EB400E7C7E5 /* OtherMenuItemCreator.swift */,
 				D800D86D2099857000E7C7E5 /* SearchMenuItemCreator.swift */,
+				D800D86F20998A7300E7C7E5 /* SavedForLaterMenuItemCreator.swift */,
 			);
 			name = ReaderMenuItems;
 			sourceTree = "<group>";
@@ -7217,6 +7220,7 @@
 				B532D4EB199D4357006E4DF6 /* NoteBlockTableViewCell.swift in Sources */,
 				74FA4BED1FBFA2350031EAAD /* SharedCoreDataStack.swift in Sources */,
 				E11000991CDB5F1E00E33887 /* KeychainTools.swift in Sources */,
+				D800D87020998A7300E7C7E5 /* SavedForLaterMenuItemCreator.swift in Sources */,
 				E6D2E1671B8AAD8C0000ED14 /* ReaderTagStreamHeader.swift in Sources */,
 				85D239B61AE5A6170074768D /* ReachabilityFacade.m in Sources */,
 				E6D3B1431D1C702600008D4B /* ReaderFollowedSitesViewController.swift in Sources */,

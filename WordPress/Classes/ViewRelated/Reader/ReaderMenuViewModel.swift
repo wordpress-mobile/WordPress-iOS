@@ -132,6 +132,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     case search
     case recommendations
     case likes
+    case savedForLater
     case other
 }
 
