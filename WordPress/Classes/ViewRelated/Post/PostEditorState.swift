@@ -53,16 +53,16 @@ public enum PostEditorAction {
 
     fileprivate var publishingActionQuestionLabel: String {
         switch self {
-        case .publish, .publishNow:
+        case .publish:
             return NSLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing.")
-        case .save, .saveAsDraft:
-            return NSLocalizedString("Are you sure you want to save?", comment: "Title of message shown when user taps save or saveAsDraft.")
+        case .publishNow:
+            return NSLocalizedString("Are you sure you want to publish now?", comment: "Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing.")
         case .schedule:
             return NSLocalizedString("Are you sure you want to schedule?", comment: "Title of message shown when the user taps Schedule while editing a post. Options will be Schedule and Keep Editing")
         case .submitForReview:
             return NSLocalizedString("Are you sure you want to submit for review?", comment: "Title of message shown when user taps submit for review.")
-        case .update:
-            return NSLocalizedString("Are you sure you want to update?", comment: "Title of message shown when user taps update.")
+        default:
+            return ""
         }
     }
 
