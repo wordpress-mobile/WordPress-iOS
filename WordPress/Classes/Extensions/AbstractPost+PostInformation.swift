@@ -1,6 +1,6 @@
 
 extension AbstractPost: PostInformation {
-    var isPostPrivate: Bool {
+    var isPrivateOnWPCom: Bool {
         return isPrivate() && blog.isHostedAtWPcom
     }
 
