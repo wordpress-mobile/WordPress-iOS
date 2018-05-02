@@ -39,7 +39,7 @@ import CoreTelephony
     }
 
     func showHelpCenterIfPossible(from controller: UIViewController) {
-        ZendeskUtils.createIdentity(completion: { success in
+        ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
                 return
@@ -56,11 +56,11 @@ import CoreTelephony
 
             let presentInController = ZendeskUtils.configureViewController(controller)
             ZDKHelpCenter.presentOverview(presentInController, with: helpCenterContentModel)
-        })
+        }
     }
 
     func showNewRequestIfPossible(from controller: UIViewController) {
-        ZendeskUtils.createIdentity(completion: { success in
+        ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
                 return
@@ -69,12 +69,12 @@ import CoreTelephony
             let presentInController = ZendeskUtils.configureViewController(controller)
             ZDKRequests.presentRequestCreation(with: presentInController)
             self.createRequest()
-        })
+        }
     }
 
 
     func showTicketListIfPossible(from controller: UIViewController) {
-        ZendeskUtils.createIdentity(completion: { success in
+        ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
                 return
@@ -82,7 +82,7 @@ import CoreTelephony
 
             let presentInController = ZendeskUtils.configureViewController(controller)
             ZDKRequests.presentRequestList(with: presentInController)
-        })
+        }
     }
 
     static func registerDevice(_ identifier: String) {
@@ -322,7 +322,7 @@ private extension ZendeskUtils {
             let fileLogger = appDelegate.logger.fileLogger,
             let logFileInformation = fileLogger.logFileManager.sortedLogFileInfos.first,
             let logData = try? Data(contentsOf: URL(fileURLWithPath: logFileInformation.filePath)),
-            let logText = String.init(data: logData, encoding: .utf8) else {
+            let logText = String(data: logData, encoding: .utf8) else {
                 return ""
         }
 
