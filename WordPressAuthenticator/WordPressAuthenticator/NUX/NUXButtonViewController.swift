@@ -11,7 +11,15 @@ private struct NUXButtonConfig {
 
     let title: String
     let isPrimary: Bool
+    let accessibilityIdentifier: String?
     let callback: CallBackType?
+
+    init(title: String, isPrimary: Bool, accessibilityIdentifier: String? = nil, callback: CallBackType?) {
+        self.title = title
+        self.isPrimary = isPrimary
+        self.accessibilityIdentifier = accessibilityIdentifier
+        self.callback = callback
+    }
 }
 
 open class NUXButtonViewController: UIViewController {
@@ -54,7 +62,7 @@ open class NUXButtonViewController: UIViewController {
     private func configure(button: NUXButton?, withConfig buttonConfig: NUXButtonConfig?) {
         if let buttonConfig = buttonConfig, let button = button {
             button.setTitle(buttonConfig.title, for: UIControlState())
-            button.accessibilityIdentifier = accessibilityIdentifier(for: buttonConfig.title)
+            button.accessibilityIdentifier = buttonConfig.accessibilityIdentifier ?? accessibilityIdentifier(for: buttonConfig.title)
             button.isPrimary = buttonConfig.isPrimary
             button.isHidden = false
         } else {
@@ -81,24 +89,23 @@ open class NUXButtonViewController: UIViewController {
         }
     }
 
-    func setupTopButton(title: String, isPrimary: Bool = false, onTap callback: @escaping CallBackType) {
-        topButtonConfig = NUXButtonConfig(title: title, isPrimary: isPrimary, callback: callback)
+    func setupTopButton(title: String, isPrimary: Bool = false, accessibilityIdentifier: String? = nil, onTap callback: @escaping CallBackType) {
+        topButtonConfig = NUXButtonConfig(title: title, isPrimary: isPrimary, accessibilityIdentifier: accessibilityIdentifier, callback: callback)
     }
 
-    func setupButtomButton(title: String, isPrimary: Bool = false, onTap callback: @escaping CallBackType) {
-        bottomButtonConfig = NUXButtonConfig(title: title, isPrimary: isPrimary, callback: callback)
+    func setupBottomButton(title: String, isPrimary: Bool = false, accessibilityIdentifier: String? = nil, onTap callback: @escaping CallBackType) {
+        bottomButtonConfig = NUXButtonConfig(title: title, isPrimary: isPrimary, accessibilityIdentifier: accessibilityIdentifier, callback: callback)
     }
 
-    func setupTertiaryButton(title: String, isPrimary: Bool = false, onTap callback: @escaping CallBackType) {
+    func setupTertiaryButton(title: String, isPrimary: Bool = false, accessibilityIdentifier: String? = nil, onTap callback: @escaping CallBackType) {
         tertiaryButton?.isHidden = false
-        tertiaryButtonConfig = NUXButtonConfig(title: title, isPrimary: isPrimary, callback: callback)
+        tertiaryButtonConfig = NUXButtonConfig(title: title, isPrimary: isPrimary, accessibilityIdentifier: accessibilityIdentifier, callback: callback)
     }
 
     // MARK: - Helpers
 
     private func accessibilityIdentifier(for string: String?) -> String {
-        let buttonId = NSLocalizedString("Button", comment: "Appended accessibility identifier for buttons.")
-        return "\(string ?? "") \(buttonId)"
+        return "\(string ?? "") Button"
     }
 
     // MARK: - Button Handling
