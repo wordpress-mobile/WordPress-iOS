@@ -116,6 +116,18 @@ import WordPressShared
         return topic.path.hasSuffix("/read/liked")
     }
 
+    /// Check if the specified topic is for Posts Saved for Later
+    ///
+    /// - Parameters:
+    ///     - topic: A ReaderAbstractTopic
+    ///
+    /// - Returns: True if the topic is for Discover
+    ///
+    @objc open class func topicIsSavedForLater(_ topic: ReaderAbstractTopic) -> Bool {
+        //TODO. Update this logic with the right one. I am not sure how this is going to be modeeled now.
+        return topic.path.hasSuffix("/read/saved")
+    }
+
 
     // MARK: Analytics Helpers
 
