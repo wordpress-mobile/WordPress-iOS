@@ -183,6 +183,7 @@ class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
             ])
 
         selfHostedLoginButton = button
+        selfHostedLoginButton?.accessibilityIdentifier = "Self Hosted Login Button"
     }
 
     /// Add the sign up button
