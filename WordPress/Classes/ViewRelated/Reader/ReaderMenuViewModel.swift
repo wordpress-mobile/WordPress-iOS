@@ -269,6 +269,13 @@ enum ReaderDefaultMenuItemOrder: Int {
         // Append a menu item for search
         defaultSectionItems.append(searchMenuItem())
 
+        if FeatureFlag.saveForLater.enabled {
+            // This is a mock. That's why I am not localising it yet
+            let topic = ReaderSaveForLaterTopic(title: "Bookmarked - mock")
+            let menuItem = SavedForLaterMenuItemCreator().menuItem(with: topic)
+            defaultSectionItems.append(menuItem)
+        }
+
         // Sort the items ascending.
         defaultSectionItems.sort(by: <)
     }
