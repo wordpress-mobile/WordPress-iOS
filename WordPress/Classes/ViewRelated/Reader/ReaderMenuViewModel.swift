@@ -89,7 +89,7 @@ extension ReaderMenuItem: Comparable {
     }
 
     static func < (lhs: ReaderMenuItem, rhs: ReaderMenuItem) -> Bool {
-        if lhs.order < lhs.order {
+        if lhs.order < rhs.order {
             return true
         }
 
