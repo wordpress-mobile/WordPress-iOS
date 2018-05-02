@@ -126,6 +126,8 @@ enum ReaderDefaultMenuItemOrder: Int {
     var defaultSectionItems = [ReaderMenuItem]()
     weak var delegate: ReaderMenuViewModelDelegate?
 
+    private let sectionCreators: [ReaderMenuItemCreator]
+
 
     // MARK: - Lifecycle Methods
 
@@ -135,7 +137,8 @@ enum ReaderDefaultMenuItemOrder: Int {
     }
 
 
-    override init() {
+    init(sectionCreators: [ReaderMenuItemCreator]) {
+        self.sectionCreators = sectionCreators
         super.init()
         listenForWordPressAccountChanged()
         setupResultsControllers()
