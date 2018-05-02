@@ -1,5 +1,6 @@
 import Gridicons
 
+/// Encapsulates creating of a ReaderMenuItem for Following
 final class FollowingMenuItemCreator: ReaderMenuItemCreator {
     func supports(_ topic: ReaderAbstractTopic) -> Bool {
         return ReaderHelpers.topicIsFollowing(topic)
