@@ -2,7 +2,7 @@
 /// Encapsulates creating of a ReaderMenuItem for Other
 final class OtherMenuItemCreator: ReaderMenuItemCreator {
     func supports(_ topic: ReaderAbstractTopic) -> Bool {
-        return true
+        return false
     }
 
     func menuItem(with topic: ReaderAbstractTopic) -> ReaderMenuItem {
