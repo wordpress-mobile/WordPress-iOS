@@ -1,5 +1,6 @@
 import Gridicons
 
+/// Encapsulates creating of a ReaderMenuItem for Discover
 final class DiscoverMenuItemCreator: ReaderMenuItemCreator {
     func supports(_ topic: ReaderAbstractTopic) -> Bool {
         return ReaderHelpers.topicIsDiscover(topic)
