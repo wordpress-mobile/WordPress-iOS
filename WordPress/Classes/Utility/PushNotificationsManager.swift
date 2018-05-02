@@ -138,6 +138,12 @@ final public class PushNotificationsManager: NSObject {
             return
         }
 
+        // Unregister device with Zendesk
+        if FeatureFlag.zendeskMobile.enabled,
+            let deviceToken = deviceToken {
+            ZendeskUtils.unregisterDevice(deviceToken)
+        }
+
         let noteService = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
         noteService.unregisterDeviceForPushNotifications(knownDeviceId, success: {
