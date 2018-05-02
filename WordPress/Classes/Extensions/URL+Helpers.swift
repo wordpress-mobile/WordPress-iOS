@@ -109,7 +109,11 @@ extension URL {
     }
 
     var isGif: Bool {
-        return pathExtension == "gif"
+        if let uti = typeIdentifier {
+            return UTTypeConformsTo(uti as CFString, kUTTypeGIF)
+        } else {
+            return pathExtension.lowercased() == "gif"
+        }
     }
 }
 
