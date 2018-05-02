@@ -237,12 +237,8 @@ enum ReaderDefaultMenuItemOrder: Int {
                     continue
                 }
 
-                let item = sectionCreators.filter {
-                    $0.supports(abstractTopic)
-                    }.first.map {
-                        return $0.menuItem(with: abstractTopic)
-
-                    } ?? OtherMenuItemCreator().menuItem(with: abstractTopic)
+                let creator = sectionCreator(for: abstractTopic)
+                let item = creator.menuItem(with: abstractTopic)
 
                 defaultSectionItems.append(item)
             }
@@ -272,11 +268,11 @@ enum ReaderDefaultMenuItemOrder: Int {
         }
     }
 
-//    private func sectionCreator(for topic: ReaderAbstractTopic) -> ReaderMenuItemCreator {
-//        return sectionCreators.filter {
-//            $0.supports(abstractTopic)
-//            }.first ?? OtherMenuItemCreator()
-//    }
+    private func sectionCreator(for topic: ReaderAbstractTopic) -> ReaderMenuItemCreator {
+        return sectionCreators.filter {
+            $0.supports(topic)
+            }.first ?? OtherMenuItemCreator()
+    }
 
 
     /// Returns the menu item to use for the reader search
