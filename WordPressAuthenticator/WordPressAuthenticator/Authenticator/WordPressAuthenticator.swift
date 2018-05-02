@@ -41,9 +41,9 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     var supportActionEnabled: Bool { get }
 
-    /// Indicates if the Livechat Action should be enabled, or not.
+    /// Indicates if Support is available or not.
     ///
-    var livechatActionEnabled: Bool { get }
+    var supportEnabled: Bool { get }
 
     /// Returns the Support's Badge Count.
     ///
@@ -58,10 +58,10 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     func createdWordPressComAccount(username: String, authToken: String)
 
-    /// Presents the Livechat Interface, from a given ViewController, with a specified SourceTag, and additional metadata,
+    /// Presents the Support new request, from a given ViewController, with a specified SourceTag, and additional metadata,
     /// such as all of the User's Login details.
     ///
-    func presentLivechat(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
+    func presentSupportRequest(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
 
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
