@@ -1,23 +1,15 @@
 
+/// Protocol used to abstract the information needed to load post related images
+///
 @objc protocol PostInformation {
+
+    /// The post is privated, and hosted in WPcom
+    ///
     var isPrivateSite: Bool { get }
+
+    /// The blog is self-hosted and there is already a basic auth credential stored.
+    ///
     var isBlogSelfHostedWithCredentials: Bool { get }
-}
-
-extension AbstractPost: PostInformation {
-    var isPrivateSite: Bool {
-        return isPrivate() && blog.isHostedAtWPcom
-    }
-
-    var isBlogSelfHostedWithCredentials: Bool {
-        return !blog.isHostedAtWPcom && blog.isBasicAuthCredentialStored()
-    }
-}
-
-extension URL {
-    var isGif: Bool {
-        return pathExtension == "gif"
-    }
 }
 
 @objc class MediaLoader: NSObject {
@@ -29,12 +21,23 @@ extension URL {
         super.init()
     }
 
+
+    /// Call this in a table/collection cell's `prepareForReuse()`
+    ///
     @objc func prepareForReuse() {
         imageView.image = nil
         imageView.prepForReuse()
     }
 
+
     @objc(loadImageWithURL:fromPost:andPreferedSize:)
+    /// Load an image from a specific post, using the given URL. Supports animated images (gifs) as well.
+    ///
+    /// - Parameters:
+    ///   - url: The URL to load the image from.
+    ///   - post: The post where the image is loaded from.
+    ///   - size: The prefered size of the image to load.
+    ///
     func loadImage(with url: URL, from post: PostInformation, preferedSize size: CGSize = .zero) {
         if url.isGif {
             loadGif(with: url, from: post)
