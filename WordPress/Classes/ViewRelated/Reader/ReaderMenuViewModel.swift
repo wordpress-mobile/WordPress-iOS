@@ -269,10 +269,13 @@ enum ReaderDefaultMenuItemOrder: Int {
         // Append a menu item for search
         defaultSectionItems.append(searchMenuItem())
 
+        // To be removed as soon as the topic is provided by the coredata store. This is here just to prove visually that the view model can handle this topic
         if FeatureFlag.saveForLater.enabled {
-            // This is a mock. That's why I am not localising it yet
-            let topic = ReaderSaveForLaterTopic(title: "Bookmarked - mock")
-            let menuItem = SavedForLaterMenuItemCreator().menuItem(with: topic)
+            var topic = ReaderSaveForLaterTopic()
+            topic.title = "Bookmarked - mock"
+            topic.path = "/mock"
+            let menuItem = sectionCreator(for: topic).menuItem(with: topic)
+
             defaultSectionItems.append(menuItem)
         }
 

@@ -125,7 +125,7 @@ import WordPressShared
     ///
     @objc open class func topicIsSavedForLater(_ topic: ReaderAbstractTopic) -> Bool {
         //TODO. Update this logic with the right one. I am not sure how this is going to be modeeled now.
-        return topic.path.hasSuffix("/read/saved")
+        return topic.path.hasSuffix("/mock")
     }
 
 
