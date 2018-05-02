@@ -1,5 +1,6 @@
 import Gridicons
 
+/// Encapsulates creating of a ReaderMenuItem for Bookmarks / Saved for Later
 final class SavedForLaterMenuItemCreator: ReaderMenuItemCreator {
     func supports(_ topic: ReaderAbstractTopic) -> Bool {
         return ReaderHelpers.topicIsSavedForLater(topic)

@@ -1,5 +1,6 @@
 import Gridicons
 
+/// Encapsulates creating of a ReaderMenuItem for Liked
 final class LikedMenuItemCreator: ReaderMenuItemCreator {
     func supports(_ topic: ReaderAbstractTopic) -> Bool {
         return ReaderHelpers.topicIsLiked(topic)
