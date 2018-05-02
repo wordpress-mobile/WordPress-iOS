@@ -32,8 +32,6 @@
 
 #import "EditCommentViewController.h"
 
-#import <FLAnimatedImage/FLAnimatedImage.h>
-
 #import "HelpshiftUtils.h"
 #import "HockeyManager.h"
 
