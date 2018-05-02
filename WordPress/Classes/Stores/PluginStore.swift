@@ -57,7 +57,7 @@ enum PluginQuery {
     }
 }
 
-enum PluginDirectoryEntryState {
+enum PluginDirectoryEntryState: Codable {
     case unknown
     case missing(Date)
     case present(PluginDirectoryEntry)
@@ -107,6 +107,50 @@ enum PluginDirectoryEntryState {
             return left
         }
     }
+
+    private enum CodingKeys: String, CodingKey {
+        case unknown
+        case missing
+        case present
+        case partial
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        switch self {
+        case .unknown:
+            try container.encode(true, forKey: .unknown)
+        case .missing(let value):
+            try container.encode(value, forKey: .missing)
+        case .present(let value):
+            try container.encode(value, forKey: .present)
+        case .partial(let value):
+            try container.encode(value, forKey: .partial)
+        }
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        if let date = try container.decodeIfPresent(Date.self, forKey: .missing) {
+            self = .missing(date)
+            return
+        }
+
+        if let entry = try container.decodeIfPresent(PluginDirectoryEntry.self, forKey: .present) {
+            self = .present(entry)
+            return
+        }
+
+        if let entry = try container.decodeIfPresent(PluginDirectoryEntry.self, forKey: .partial) {
+            self = .partial(entry)
+            return
+        }
+
+        self = .unknown
+    }
+
 }
 
 struct PluginStoreState {
@@ -125,6 +169,10 @@ struct PluginStoreState {
 
     var directoryEntries = [String: PluginDirectoryEntryState]()
     var fetchingDirectoryEntry = [String: Bool]()
+
+    static func emptyState() -> PluginStoreState {
+        return PluginStoreState()
+    }
 }
 
 extension PluginStoreState {
@@ -153,24 +201,17 @@ extension PluginStoreState {
 class PluginStore: QueryStore<PluginStoreState, PluginQuery> {
     fileprivate let refreshInterval: TimeInterval = 60 // seconds
 
-    init(dispatcher: ActionDispatcher = .global) {
-        super.init(initialState: PluginStoreState(), dispatcher: dispatcher)
+    override func queriesChanged() {
+        super.queriesChanged()
+        processQueries()
     }
 
-    override func queriesChanged() {
-        guard !activeQueries.isEmpty else {
-            // Remove plugins from memory if nothing is listening for changes
-            transaction({ (state) in
-                state.plugins = [:]
-                state.lastFetch = [:]
-                state.directoryEntries = [:]
-                state.directoryFeeds = [:]
-                state.lastDirectoryFeedFetch = [:]
-                state.featuredPluginsSlugs = []
-            })
-            return
-        }
-        processQueries()
+    init() {
+        super.init(initialState: PluginStoreState())
+    }
+
+    override func logError(_ error: String) {
+        DDLogError(error)
     }
 
     func processQueries() {
@@ -353,7 +394,7 @@ extension PluginStore {
     func shouldFetchDirectory(feed: PluginDirectoryFeedType) -> Bool {
         let isFetching = state.fetchingDirectoryFeed[feed.slug, default: false]
 
-        if case .search = feed {
+        if case .search(let term) = feed, term.count > 0 {
             return !isFetching
         }
 
@@ -750,8 +791,8 @@ private extension PluginStore {
     }
 
     func notifyRemoteError(message: String, error: Error) {
-        DDLogError("[PluginStore Error] \(message)")
-        DDLogError("[PluginStore Error] \(error)")
+        logError(message)
+        logError(error.localizedDescription)
         ActionDispatcher.dispatch(NoticeAction.post(Notice(title: message)))
     }
 
