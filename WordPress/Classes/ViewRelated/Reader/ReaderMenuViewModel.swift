@@ -83,6 +83,28 @@ struct ReaderMenuItem {
     }
 }
 
+extension ReaderMenuItem: Comparable {
+    static func == (lhs: ReaderMenuItem, rhs: ReaderMenuItem) -> Bool {
+        return lhs.order == rhs.order && lhs.title == rhs.title
+    }
+
+    static func < (lhs: ReaderMenuItem, rhs: ReaderMenuItem) -> Bool {
+        if lhs.order < lhs.order {
+            return true
+        }
+
+        if lhs.order > rhs.order {
+            return false
+        }
+
+        if lhs.title < rhs.title {
+            return true
+        }
+
+        return false
+    }
+}
+
 
 /// Protocol allowing a reader menu view model to notify content changes.
 ///
@@ -247,21 +269,22 @@ enum ReaderDefaultMenuItemOrder: Int {
         defaultSectionItems.append(searchMenuItem())
 
         // Sort the items into the desired order.
-        defaultSectionItems.sort { (menuItem1, menuItem2) -> Bool in
-            if menuItem1.order < menuItem2.order {
-                return true
-            }
-
-            if menuItem1.order > menuItem2.order {
-                return false
-            }
-
-            if menuItem1.title < menuItem2.title {
-                return true
-            }
-
-            return false
-        }
+        defaultSectionItems.sort(by: <)
+//        defaultSectionItems.sort { (menuItem1, menuItem2) -> Bool in
+//            if menuItem1.order < menuItem2.order {
+//                return true
+//            }
+//
+//            if menuItem1.order > menuItem2.order {
+//                return false
+//            }
+//
+//            if menuItem1.title < menuItem2.title {
+//                return true
+//            }
+//
+//            return false
+//        }
     }
 
 
