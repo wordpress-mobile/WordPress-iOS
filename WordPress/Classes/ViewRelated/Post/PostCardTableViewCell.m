@@ -274,7 +274,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     // Clear the image so we know its not stale.
     self.postCardImageView.image = nil;
     self.postCardAnimatedImageView.image = nil;
-    self.postCardAnimatedImageView.image = nil;
     NSURL *url = [post featuredImageURLForDisplay];
     if (url == nil) {
         // no feature image available.
