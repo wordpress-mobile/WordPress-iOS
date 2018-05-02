@@ -31,8 +31,7 @@ import WordPressShared
         let sectionCreators: [ReaderMenuItemCreator] = [
             FollowingMenuItemCreator(),
             DiscoverMenuItemCreator(),
-            LikedMenuItemCreator(),
-            OtherMenuItemCreator()
+            LikedMenuItemCreator()
         ]
         let vm = ReaderMenuViewModel(sectionCreators: sectionCreators)
         vm.delegate = self
