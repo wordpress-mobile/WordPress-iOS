@@ -63,11 +63,11 @@
 
     private func loadStillImage(with url: URL, from post: PostInformation, preferedSize size: CGSize) {
         if url.isFileURL {
-            imageView.downloadImage(from:url)
+            imageView.downloadImage(from: url)
         } else if post.isPrivateOnWPCom {
             loadImage(with: url, fromPrivatePost: post, preferedSize: size)
         } else if post.isBlogSelfHostedWithCredentials {
-            imageView.downloadImage(from:url)
+            imageView.downloadImage(from: url)
         } else {
             loadProtonUrl(with: url, preferedSize: size)
         }
@@ -77,7 +77,7 @@
         let scale = UIScreen.main.scale
         let scaledSize = CGSize(width: size.width * scale, height: size.height * scale)
         let scaledURL = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: url)
-        imageView.downloadImage(from:scaledURL)
+        imageView.downloadImage(from: scaledURL)
     }
 
     private func loadProtonUrl(with url: URL, preferedSize size: CGSize) {
@@ -85,6 +85,6 @@
             imageView.setImageWith(url)
             return
         }
-        imageView.downloadImage(from:protonURL)
+        imageView.downloadImage(from: protonURL)
     }
 }
