@@ -59,7 +59,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, weak) id<InteractivePostViewDelegate> delegate;
 @property (nonatomic, strong) Post *post;
 @property (nonatomic, strong) PostCardStatusViewModel *viewModel;
-@property (nonatomic, strong) MediaLoader *mediaLoader;
+@property (nonatomic, strong) ImageLoader *imageLoader;
 @property (nonatomic) CGFloat headerViewHeight;
 @property (nonatomic) CGFloat headerViewLowerMargin;
 @property (nonatomic) CGFloat titleViewLowerMargin;
@@ -164,20 +164,20 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
                      } completion:nil];
 }
 
-- (MediaLoader *)mediaLoader
+- (ImageLoader *)imageLoader
 {
-    if (!_mediaLoader && self.postCardImageView) {
-        _mediaLoader = [[MediaLoader alloc] initWithImageView:self.postCardImageView];
+    if (!_imageLoader && self.postCardImageView) {
+        _imageLoader = [[ImageLoader alloc] initWithImageView:self.postCardImageView];
     }
 
-    return _mediaLoader;
+    return _imageLoader;
 }
 
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    if (self.mediaLoader) {
-        [self.mediaLoader prepareForReuse];
+    if (self.imageLoader) {
+        [self.imageLoader prepareForReuse];
     }
     [self setNeedsDisplay];
 }
@@ -275,7 +275,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureCardImage
 {
-    if (!self.mediaLoader) {
+    if (!self.imageLoader) {
         return;
     }
 
@@ -290,7 +290,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     CGFloat desiredHeight = self.postCardImageViewHeightConstraint.constant;
     CGSize imageSize = CGSizeMake(desiredWidth, desiredHeight);
 
-    [self.mediaLoader loadImageWithURL:url fromPost:post andPreferedSize:imageSize];
+    [self.imageLoader loadImageWithURL:url fromPost:post andPreferedSize:imageSize];
 }
 
 - (void)configureTitle

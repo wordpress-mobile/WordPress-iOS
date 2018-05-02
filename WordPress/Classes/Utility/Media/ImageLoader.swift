@@ -13,7 +13,7 @@
     var isBlogSelfHostedWithCredentials: Bool { get }
 }
 
-@objc class MediaLoader: NSObject {
+@objc class ImageLoader: NSObject {
 
     private let imageView: CachedAnimatedImageView
 
@@ -22,14 +22,12 @@
         super.init()
     }
 
-
     /// Call this in a table/collection cell's `prepareForReuse()`
     ///
     @objc func prepareForReuse() {
         imageView.image = nil
         imageView.prepForReuse()
     }
-
 
     @objc(loadImageWithURL:fromPost:andPreferedSize:)
     /// Load an image from a specific post, using the given URL. Supports animated images (gifs) as well.
