@@ -3,7 +3,7 @@
 ///
 @objc protocol PostInformation {
 
-    /// The post is privated, and hosted in WPcom.
+    /// The post is private and hosted on WPcom.
     /// Redundant name due to naming conflict.
     ///
     var isPostPrivate: Bool { get }
