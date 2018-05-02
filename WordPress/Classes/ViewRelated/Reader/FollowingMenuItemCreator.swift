@@ -2,7 +2,7 @@ import Gridicons
 
 final class FollowingMenuItemCreator: ReaderMenuItemCreator {
     func supports(_ topic: ReaderAbstractTopic) -> Bool {
-        return topic.path.hasSuffix("/read/following")
+        return ReaderHelpers.topicIsFollowing(topic)
     }
 
     func menuItem(with topic: ReaderAbstractTopic) -> ReaderMenuItem {

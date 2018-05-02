@@ -2,7 +2,7 @@ import Gridicons
 
 final class DiscoverMenuItemCreator: ReaderMenuItemCreator {
     func supports(_ topic: ReaderAbstractTopic) -> Bool {
-        return topic.path.contains("/read/sites/53424024/posts")
+        return ReaderHelpers.topicIsDiscover(topic)
     }
 
     func menuItem(with topic: ReaderAbstractTopic) -> ReaderMenuItem {

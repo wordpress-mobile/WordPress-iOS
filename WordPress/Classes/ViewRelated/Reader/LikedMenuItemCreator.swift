@@ -2,7 +2,7 @@ import Gridicons
 
 final class LikedMenuItemCreator: ReaderMenuItemCreator {
     func supports(_ topic: ReaderAbstractTopic) -> Bool {
-        return topic.path.hasSuffix("/read/liked")
+        return ReaderHelpers.topicIsLiked(topic)
     }
 
     func menuItem(with topic: ReaderAbstractTopic) -> ReaderMenuItem {
