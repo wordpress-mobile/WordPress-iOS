@@ -499,6 +499,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        richTextView.isScrollEnabled = false
+        htmlTextView.isScrollEnabled = false
         // This needs to called first
         configureMediaAppearance()
 
@@ -542,6 +544,9 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         // Handles refreshing controls with state context after options screen is dismissed
         editorContentWasUpdated()
+
+        richTextView.isScrollEnabled = true
+        htmlTextView.isScrollEnabled = true
     }
 
 
