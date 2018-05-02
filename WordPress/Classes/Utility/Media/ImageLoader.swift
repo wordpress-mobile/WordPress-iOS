@@ -82,7 +82,7 @@
 
     private func loadProtonUrl(with url: URL, preferedSize size: CGSize) {
         guard let protonURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: url) else {
-            imageView.setImageWith(url)
+            imageView.downloadImage(from: url)
             return
         }
         imageView.downloadImage(from: protonURL)
