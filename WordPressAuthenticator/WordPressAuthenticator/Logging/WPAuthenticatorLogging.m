@@ -1,10 +1,10 @@
 #import "WPAuthenticatorLogging.h"
 #import "WPAuthenticatorLoggingPrivate.h"
 
-int WPSharedGetLoggingLevel() {
+int WPAuthenticatorGetLoggingLevel() {
     return ddLogLevel;
 }
 
-void WPSharedSetLoggingLevel(int level) {
+void WPAuthenticatorSetLoggingLevel(int level) {
     ddLogLevel = level;
 }
