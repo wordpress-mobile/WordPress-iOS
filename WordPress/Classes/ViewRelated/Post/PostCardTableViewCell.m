@@ -6,7 +6,6 @@
 #import <WordPressUI/WordPressUI.h>
 #import "WPStyleGuide+Posts.h"
 #import "WordPress-Swift.h"
-#import "FLAnimatedImage.h"
 
 @import Gridicons;
 
@@ -165,6 +164,14 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
                      } completion:nil];
 }
 
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    if (self.postCardAnimatedImageView) {
+        [self.postCardAnimatedImageView prepForReuse];
+    }
+    [self setNeedsDisplay];
+}
 
 #pragma mark - Configuration
 
@@ -267,7 +274,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     // Clear the image so we know its not stale.
     self.postCardImageView.image = nil;
     self.postCardAnimatedImageView.image = nil;
-    self.postCardAnimatedImageView.animatedImage = nil;
     NSURL *url = [post featuredImageURLForDisplay];
     if (url == nil) {
         // no feature image available.
