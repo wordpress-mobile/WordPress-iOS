@@ -4,6 +4,17 @@ import MobileCoreServices
 // MARK: - Support for Files-based functionality
 
 extension Blog {
+    /// Returns the UTI for a given file extension
+    ///
+    /// - Parameter fileExtension: the path extension to characterize
+    /// - Returns: the corresponding UTI (if it exists); `nil` otherwise
+    static func typeIdentifier(for fileExtension: String) -> String? {
+        return UTTypeCreatePreferredIdentifierForTag(
+            kUTTagClassFilenameExtension,
+            fileExtension as CFString,
+            nil)?.takeUnretainedValue() as String?
+    }
+
     /// In conjunction with `allowedFileExtensions`, reports the
     /// [Uniform Type Identifiers](https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/understanding_utis/understand_utis_intro/understand_utis_intro.html#//apple_ref/doc/uid/TP40001319-CH201-SW1)
     /// supported by this particular `Blog` instance. Supported files differ between
@@ -25,10 +36,7 @@ extension Blog {
 
         var typeIdentifiers = [String]()
         for pathExtension in allowedFileExtensions {
-            let uti = UTTypeCreatePreferredIdentifierForTag(
-                kUTTagClassFilenameExtension,
-                pathExtension as CFString,
-                nil)?.takeUnretainedValue() as String?
+            let uti = type(of: self).typeIdentifier(for: pathExtension)
 
             if let validUTI = uti {
                 typeIdentifiers.append(validUTI)
