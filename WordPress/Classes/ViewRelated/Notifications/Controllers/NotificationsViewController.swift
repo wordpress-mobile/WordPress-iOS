@@ -152,6 +152,13 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             reloadTableViewPreservingSelection()
         }
 
+        if !AccountHelper.isDotcomAvailable() {
+            promptForJetpackCredentials()
+        } else {
+            jetpackLoginViewController?.view.removeFromSuperview()
+            jetpackLoginViewController?.removeFromParentViewController()
+        }
+
         showNoResultsViewIfNeeded()
     }
 
@@ -160,10 +167,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         showRatingViewIfApplicable()
         syncNewNotifications()
         markSelectedNotificationAsRead()
-
-        if !AccountHelper.isDotcomAvailable() {
-            promptForJetpackCredentials()
-        }
 
         registerUserActivity()
     }
