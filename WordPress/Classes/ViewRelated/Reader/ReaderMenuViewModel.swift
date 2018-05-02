@@ -237,19 +237,13 @@ enum ReaderDefaultMenuItemOrder: Int {
                     continue
                 }
 
-                var item = ReaderMenuItem(title: abstractTopic.title, type: .topic, icon: nil, topic: abstractTopic)
-                if ReaderHelpers.topicIsFollowing(abstractTopic) {
-                    item.order = ReaderDefaultMenuItemOrder.followed.rawValue
-                    item.icon = Gridicon.iconOfType(.checkmarkCircle)
-                } else if ReaderHelpers.topicIsDiscover(abstractTopic) {
-                    item.order = ReaderDefaultMenuItemOrder.discover.rawValue
-                    item.icon = Gridicon.iconOfType(.mySites)
-                } else if ReaderHelpers.topicIsLiked(abstractTopic) {
-                    item.order = ReaderDefaultMenuItemOrder.likes.rawValue
-                    item.icon = Gridicon.iconOfType(.star)
-                } else {
-                    item.order = ReaderDefaultMenuItemOrder.other.rawValue
-                }
+                let item = sectionCreators.filter {
+                    $0.supports(abstractTopic)
+                    }.first.map {
+                        return $0.menuItem(with: abstractTopic)
+
+                    } ?? OtherMenuItemCreator().menuItem(with: abstractTopic)
+
                 defaultSectionItems.append(item)
             }
         }
@@ -277,6 +271,12 @@ enum ReaderDefaultMenuItemOrder: Int {
             return false
         }
     }
+
+//    private func sectionCreator(for topic: ReaderAbstractTopic) -> ReaderMenuItemCreator {
+//        return sectionCreators.filter {
+//            $0.supports(abstractTopic)
+//            }.first ?? OtherMenuItemCreator()
+//    }
 
 
     /// Returns the menu item to use for the reader search
