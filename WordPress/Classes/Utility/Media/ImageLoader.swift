@@ -77,7 +77,8 @@
         let scale = UIScreen.main.scale
         let scaledSize = CGSize(width: size.width * scale, height: size.height * scale)
         let scaledURL = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: url)
-        imageView.downloadImage(from: scaledURL)
+        let request = PrivateSiteURLProtocol.requestForPrivateSite(from: scaledURL)
+        imageView.setImageWith(request, placeholderImage: nil, success: nil, failure: nil)
     }
 
     private func loadProtonUrl(with url: URL, preferedSize size: CGSize) {
