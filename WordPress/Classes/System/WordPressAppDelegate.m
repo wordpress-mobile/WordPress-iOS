@@ -78,6 +78,9 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
     [WordPressAppDelegate fixKeychainAccess];
 
+    // Authentication Framework
+    [self configureWordPressAuthenticator];
+
     // Basic networking setup
     [self configureReachability];
     
@@ -105,7 +108,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
 
     [[InteractiveNotificationsManager shared] registerForUserNotifications];
-    [self configureWordPressAuthenticator];
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupBuddyBuild];
     [self setupPingHub];
