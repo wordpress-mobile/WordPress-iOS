@@ -45,7 +45,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     @IBOutlet fileprivate weak var menuButton: UIButton!
 
     // Content views
-    @IBOutlet fileprivate weak var featuredImageView: UIImageView!
+    @IBOutlet fileprivate weak var featuredImageView: CachedAnimatedImageView!
     @IBOutlet fileprivate weak var titleLabel: UILabel!
     @IBOutlet fileprivate weak var bylineView: UIView!
     @IBOutlet fileprivate weak var avatarImageView: CircularImageView!
@@ -223,6 +223,14 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
+    open override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+
+        updateContentInsets()
+        updateTextViewMargins()
+    }
+
+
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
@@ -230,6 +238,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         // split screen multitasking on the iPad.
         view.layoutIfNeeded()
     }
+
 
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
@@ -499,47 +508,77 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             request = URLRequest(url: url!)
         }
 
-        // Define a success block to make the image visible and update its aspect ratio constraint
-        let successBlock: ((URLRequest, HTTPURLResponse?, UIImage) -> Void) = { [weak self] (request: URLRequest, response: HTTPURLResponse?, image: UIImage) in
-            guard self != nil else {
-                return
+        let isAnimatedGIF = url?.pathExtension.lowercased() == "gif"
+        if isAnimatedGIF {
+            let successBlock: ((UIImage?, Data?) -> Void) = { [weak self] currentFrame, animatedImageData in
+                guard let strongSelf = self else {
+                    return
+                }
+                DispatchQueue.main.async {
+                    strongSelf.configureFeaturedImage(currentFrame: currentFrame, animatedImageData: animatedImageData)
+                }
             }
+            featuredImageView.setAnimatedImage(request, placeholderImage: nil, success: successBlock, failure: nil)
+        } else {
+            let successBlock: ((URLRequest, HTTPURLResponse?, UIImage) -> Void) = { [weak self] (request: URLRequest, response: HTTPURLResponse?, image: UIImage) in
+                guard let strongSelf = self else {
+                    return
+                }
+                DispatchQueue.main.async {
+                    strongSelf.configureFeaturedImage(image: image)
+                }
+            }
+            featuredImageView.setImageWith(request, placeholderImage: nil, success: successBlock, failure: nil)
+        }
+    }
 
-            self!.configureFeaturedImageWithImage(image)
+
+    fileprivate func configureFeaturedImage(currentFrame: UIImage?, animatedImageData: Data?) {
+        var imageSize: CGSize = .zero
+        if let currentFrame = currentFrame {
+            imageSize = currentFrame.size
+        } else if let animatedImageData = animatedImageData {
+            let staticImage = UIImage(data: animatedImageData)
+            imageSize = staticImage?.size ?? .zero
         }
 
-        featuredImageView.setImageWith(request, placeholderImage: nil, success: successBlock, failure: nil)
+        guard imageSize != .zero else {
+            return
+        }
+        configureFeaturedImageConstraints(with: imageSize)
+        configureFeaturedImageGestures()
     }
 
 
-    open override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-
-        updateContentInsets()
-        updateTextViewMargins()
+    fileprivate func configureFeaturedImage(image: UIImage) {
+        configureFeaturedImageConstraints(with: image.size)
+        featuredImageView.image = image
+        configureFeaturedImageGestures()
     }
 
 
-    fileprivate func configureFeaturedImageWithImage(_ image: UIImage) {
+    fileprivate func configureFeaturedImageConstraints(with size: CGSize) {
         // Unhide the views
         featuredImageView.isHidden = false
         featuredImageBottomPaddingView.isHidden = false
 
         // Now that we have the image, create an aspect ratio constraint for
         // the featuredImageView
-        let ratio = image.size.height / image.size.width
+        let ratio = size.height / size.width
         let constraint = NSLayoutConstraint(item: featuredImageView,
-            attribute: .height,
-            relatedBy: .equal,
-            toItem: featuredImageView,
-            attribute: .width,
-            multiplier: ratio,
-            constant: 0)
+                                            attribute: .height,
+                                            relatedBy: .equal,
+                                            toItem: featuredImageView,
+                                            attribute: .width,
+                                            multiplier: ratio,
+                                            constant: 0)
         constraint.priority = .defaultHigh
         featuredImageView.addConstraint(constraint)
         featuredImageView.setNeedsUpdateConstraints()
-        featuredImageView.image = image
+    }
 
+
+    fileprivate func configureFeaturedImageGestures() {
         // Listen for taps so we can display the image detail
         let tgr = UITapGestureRecognizer(target: self, action: #selector(ReaderDetailViewController.didTapFeaturedImage(_:)))
         featuredImageView.addGestureRecognizer(tgr)
