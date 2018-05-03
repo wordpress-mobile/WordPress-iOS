@@ -206,6 +206,15 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  */
 - (ReaderAbstractTopic *)findWithPath:(NSString *)path;
 
+
+/**
+ Find a site topic by its site id
+
+ @param siteID The site id of the topic
+ @return A matched site topic
+ */
+- (ReaderSiteTopic *)findSiteTopicWithSiteID:(NSNumber *)siteID;
+
 @end
 
 @interface ReaderTopicService (Tests)
