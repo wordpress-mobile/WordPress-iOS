@@ -32,7 +32,8 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
         }
 
         let successBlock: (Data) -> Void = { [weak self] animatedImageData in
-            guard let strongSelf = self else {
+            guard let strongSelf = self, strongSelf.sanityCheckGifDataSize(animatedImageData) else {
+                // FIXME: default to static image if something goes wrong with the sanity check
                 return
             }
             DispatchQueue.main.async(execute: {
@@ -52,6 +53,28 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
         self.prepareForReuse()
     }
 }
+
+// MARK: - CachedAnimatedImageView: Private Helpers
+
+private extension CachedAnimatedImageView {
+    func sanityCheckGifDataSize(_ data: Data) -> Bool {
+        let animatedMaxSize = Settings.animatedMaxFileSize
+        guard data.count <= animatedMaxSize else {
+            return false
+        }
+        return true
+    }
+}
+
+// MARK: - CachedAnimatedImageView: Private Internal Constants
+
+private extension CachedAnimatedImageView {
+    enum Settings {
+        static let animatedMaxFileSize = 20_000_000  // in MB
+    }
+}
+
+// MARK: - AnimatedImageCache
 
 class AnimatedImageCache {
 
