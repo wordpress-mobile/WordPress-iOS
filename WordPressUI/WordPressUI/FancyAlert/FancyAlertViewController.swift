@@ -53,6 +53,9 @@ open class FancyAlertViewController: UIViewController {
         /// Title handler for a small 'tag' style button displayed next to the title
         let titleAccessoryButton: ButtonConfig?
 
+        /// A block to execute when the view has appeared
+        let appearAction: (() -> Void)?
+
         /// A block to execute after this view controller has been dismissed
         let dismissAction: (() -> Void)?
 
@@ -64,9 +67,10 @@ open class FancyAlertViewController: UIViewController {
                     dividerPosition: DividerPosition?,
                     defaultButton: ButtonConfig?,
                     cancelButton: ButtonConfig?,
-                    moreInfoButton: ButtonConfig?,
-                    titleAccessoryButton: ButtonConfig?,
-                    dismissAction: (() ->  Void)?) {
+                    moreInfoButton: ButtonConfig? = nil,
+                    titleAccessoryButton: ButtonConfig? = nil,
+                    appearAction: (() -> Void)? = nil,
+                    dismissAction: (() -> Void)? = nil) {
 
             self.titleText = titleText
             self.bodyText = bodyText
@@ -76,6 +80,7 @@ open class FancyAlertViewController: UIViewController {
             self.cancelButton = cancelButton
             self.moreInfoButton = moreInfoButton
             self.titleAccessoryButton = titleAccessoryButton
+            self.appearAction = appearAction
             self.dismissAction = dismissAction
         }
     }
@@ -177,6 +182,8 @@ open class FancyAlertViewController: UIViewController {
         super.viewDidAppear(animated)
 
         updateFlingableViewHandler()
+
+        self.configuration?.appearAction?()
     }
 
     override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
