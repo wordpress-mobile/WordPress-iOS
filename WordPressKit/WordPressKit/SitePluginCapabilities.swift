@@ -1,6 +1,6 @@
 import Foundation
 
-public struct SitePluginCapabilities: Equatable {
+public struct SitePluginCapabilities: Equatable, Codable {
     public let modify: Bool
     public let autoupdate: Bool
 

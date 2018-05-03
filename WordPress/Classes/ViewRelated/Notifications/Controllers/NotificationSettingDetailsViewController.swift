@@ -250,8 +250,8 @@ class NotificationSettingDetailsViewController: UITableViewController {
     }
 
     @objc func refreshPushAuthorizationStatus() {
-        PushNotificationsManager.shared.loadAuthorizationStatus { authorized in
-            self.pushNotificationsAuthorized = authorized
+        PushNotificationsManager.shared.loadAuthorizationStatus { status in
+            self.pushNotificationsAuthorized = status == .authorized
         }
     }
 
