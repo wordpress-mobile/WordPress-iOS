@@ -47,9 +47,11 @@ final class InteractiveNotificationsManager: NSObject {
     /// The first time this method is called it will ask the user for permission to show notifications.
     /// Because of this, this should be called only when we know we will need to show notifications (for instance, after login).
     ///
-    @objc func requestAuthorization() {
+    @objc func requestAuthorization(completion: @escaping () -> ()) {
         let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.requestAuthorization(options: [.badge, .sound, .alert], completionHandler: { (_, _)  in })
+        notificationCenter.requestAuthorization(options: [.badge, .sound, .alert]) { (_, _)  in
+            completion()
+        }
     }
 
     /// Handle an action taken from a remote notification
