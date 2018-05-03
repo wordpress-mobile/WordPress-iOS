@@ -83,7 +83,8 @@ extension Blog {
     /// - Returns: true if the site is able to support the URL file size.
     @objc func isAbleToHandleFileSizeOf(url: URL) -> Bool {
         guard let fileSize = url.fileSize,
-            let maxUploadSize = maxUploadSize?.int64Value
+            let maxUploadSize = maxUploadSize?.int64Value,
+            maxUploadSize > 0
             else {
                 // let's assume the site can handle it.
                 return true
