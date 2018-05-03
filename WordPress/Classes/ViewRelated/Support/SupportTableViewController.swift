@@ -96,7 +96,7 @@ private extension SupportTableViewController {
         var helpSectionRows = [HelpRow]()
         helpSectionRows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected()))
 
-        if ZendeskUtils.sharedInstance.zendeskEnabled {
+        if ZendeskUtils.zendeskEnabled {
             helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected()))
             helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected()))
         } else {
@@ -129,12 +129,12 @@ private extension SupportTableViewController {
     func helpCenterSelected() -> ImmuTableAction {
         return { [unowned self] row in
             self.tableView.deselectSelectedRowWithAnimation(true)
-            if ZendeskUtils.sharedInstance.zendeskEnabled {
+            if ZendeskUtils.zendeskEnabled {
                 guard let controllerToShowFrom = self.controllerToShowFrom() else {
                     return
                 }
 
-                ZendeskUtils.sharedInstance.showHelpCenter(from: controllerToShowFrom)
+                ZendeskUtils.sharedInstance.showHelpCenterIfPossible(from: controllerToShowFrom)
             } else {
                 guard let url = Constants.appSupportURL else {
                     return
@@ -147,11 +147,11 @@ private extension SupportTableViewController {
     func contactUsSelected() -> ImmuTableAction {
         return { [unowned self] row in
             self.tableView.deselectSelectedRowWithAnimation(true)
-            if ZendeskUtils.sharedInstance.zendeskEnabled {
+            if ZendeskUtils.zendeskEnabled {
                 guard let controllerToShowFrom = self.controllerToShowFrom() else {
                     return
                 }
-                ZendeskUtils.sharedInstance.showNewRequest(from: controllerToShowFrom)
+                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom)
             } else {
                 guard let url = Constants.forumsURL else {
                     return
@@ -167,7 +167,7 @@ private extension SupportTableViewController {
             guard let controllerToShowFrom = self.controllerToShowFrom() else {
                 return
             }
-            ZendeskUtils.sharedInstance.showTicketList(from: controllerToShowFrom)
+            ZendeskUtils.sharedInstance.showTicketListIfPossible(from: controllerToShowFrom)
         }
     }
 

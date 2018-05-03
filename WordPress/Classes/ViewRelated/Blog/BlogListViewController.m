@@ -270,8 +270,10 @@ static NSInteger HideSearchMinSites = 3;
     if (!self.noResultsViewController) {
         [self instantiateNoResultsViewController];
     }
-    
+
+    [self.view layoutIfNeeded];
     [self addChildViewController:self.noResultsViewController];
+
     [self.tableView addSubview:self.noResultsViewController.view];
     self.noResultsViewController.view.frame = self.tableView.bounds;
     [self.noResultsViewController didMoveToParentViewController:self];
