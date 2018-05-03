@@ -24,20 +24,20 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     @objc func setAnimatedImage(_ urlRequest: URLRequest,
                        placeholderImage: UIImage?,
-                       success: (() -> Void)? ,
+                       success: ((UIImage?, Data) -> Void)? ,
                        failure: ((NSError?) -> Void)? ) {
 
         if let ongoingTask = currentTask {
             ongoingTask.cancel()
         }
 
-        let successBlock: (Data) -> Void = { [weak self] animatedImageData in
+        let successBlock: ((Data) -> Void) = { [weak self] animatedImageData in
             guard let strongSelf = self else {
                 return
             }
             DispatchQueue.main.async(execute: {
                 strongSelf.animate(withGIFData: animatedImageData, loopCount: 0, completionHandler: {
-                    success?()
+                    success?(strongSelf.activeFrame, animatedImageData)
                 })
             })
         }
