@@ -32,7 +32,10 @@ final class MediaLibraryMediaPickingCoordinator {
         }
 
         menuAlert.addAction(photoLibraryAction(origin: origin, blog: blog))
-        menuAlert.addAction(freePhotoAction(origin: origin, blog: blog))
+
+        if blog.supports(.stockPhotos) {
+            menuAlert.addAction(freePhotoAction(origin: origin, blog: blog))
+        }
 
         if #available(iOS 11.0, *) {
             menuAlert.addAction(otherAppsAction(origin: origin))
