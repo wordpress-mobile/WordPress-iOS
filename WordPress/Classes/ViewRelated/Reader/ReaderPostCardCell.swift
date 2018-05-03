@@ -41,7 +41,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     @IBOutlet fileprivate weak var followButton: UIButton!
 
     // Card views
-    @IBOutlet fileprivate weak var featuredImageView: UIImageView!
+    @IBOutlet fileprivate weak var featuredImageView: CachedAnimatedImageView!
     @IBOutlet fileprivate weak var titleLabel: ReaderPostCardContentLabel!
     @IBOutlet fileprivate weak var summaryLabel: ReaderPostCardContentLabel!
     @IBOutlet fileprivate weak var attributionView: ReaderCardDiscoverAttributionView!
@@ -108,6 +108,10 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
     }
 
+    fileprivate lazy var imageLoader: ImageLoader = {
+        return ImageLoader(imageView: featuredImageView)
+    }()
+
     fileprivate lazy var readerCardTitleAttributes: [NSAttributedStringKey: Any] = {
         return WPStyleGuide.readerCardTitleAttributes()
     }()
@@ -152,6 +156,12 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         super.traitCollectionDidChange(previousTraitCollection)
         configureFeaturedImageIfNeeded()
         configureButtonTitles()
+    }
+
+    open override func prepareForReuse() {
+        super.prepareForReuse()
+        imageLoader.prepareForReuse()
+        setNeedsDisplay()
     }
 
 
@@ -315,6 +325,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             return
         }
         guard let featuredImageURL = content.featuredImageURLForDisplay?() else {
+            featuredImageView.prepareForReuse()
             featuredImageView.image = nil
             currentLoadedCardImageURL = nil
             featuredImageView.isHidden = true
@@ -322,56 +333,23 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
 
         featuredImageView.layoutIfNeeded()
-        if featuredImageView.image == nil || featuredImageDesiredWidth != featuredImageView.frame.size.width || featuredImageURL.absoluteString != currentLoadedCardImageURL {
+        if (featuredImageView.image == nil || featuredImageView.animationImages == nil) || featuredImageDesiredWidth != featuredImageView.frame.size.width || featuredImageURL.absoluteString != currentLoadedCardImageURL {
             configureFeaturedImage(featuredImageURL)
         }
     }
 
     fileprivate func configureFeaturedImage(_ featuredImageURL: URL) {
-        featuredImageView.isHidden = false
-
+        guard let content = contentProvider else {
+            return
+        }
         // Always clear the previous image so there is no stale or unexpected image
         // momentarily visible.
         featuredImageView.image = nil
-        var url = featuredImageURL
-        featuredImageDesiredWidth = featuredImageView.frame.width
-        let size = CGSize(width: featuredImageDesiredWidth, height: featuredMediaHeightConstraintConstant)
-        if !(contentProvider!.isPrivate()) {
-            url = PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
-            featuredImageView.setImageWith(url, placeholderImage: nil)
 
-        } else if (url.host != nil) && url.host!.hasSuffix("wordpress.com") {
-            // private wpcom image needs special handling.
-            let scale = UIScreen.main.scale
-            let scaledSize = CGSize(width: size.width * scale, height: size.height * scale)
-            url = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: url)
-            let request = requestForURL(url)
-            featuredImageView.setImageWith(request, placeholderImage: nil, success: nil, failure: nil)
-
-        } else {
-            // private but not a wpcom hosted image
-            featuredImageView.setImageWith(url, placeholderImage: nil)
-        }
+        featuredImageView.isHidden = false
         currentLoadedCardImageURL = featuredImageURL.absoluteString
-    }
-
-    fileprivate func requestForURL(_ url: URL) -> URLRequest {
-
-        var requestURL = url
-
-        let absoluteString = requestURL.absoluteString
-        if !absoluteString.hasPrefix("https") {
-            let sslURL = absoluteString.replacingOccurrences(of: "http", with: "https")
-            requestURL = URL(string: sslURL)!
-        }
-
-        let request = NSMutableURLRequest(url: requestURL)
-        guard let token = delegate?.readerCellImageRequestAuthToken(self) else {
-            return request as URLRequest
-        }
-        let headerValue = String(format: "Bearer %@", token)
-        request.addValue(headerValue, forHTTPHeaderField: "Authorization")
-        return request as URLRequest
+        let postInfo = ReaderCardContent(provider: content)
+        imageLoader.loadImage(with: featuredImageURL, from: postInfo)
     }
 
     fileprivate func configureTitle() {
