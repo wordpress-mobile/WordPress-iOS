@@ -98,7 +98,7 @@ final public class PushNotificationsManager: NSObject {
 
         // Register device with Zendesk
         if FeatureFlag.zendeskMobile.enabled {
-            ZendeskUtils.registerDevice(newToken)
+            ZendeskUtils.setNeedToRegisterDevice(newToken)
         }
 
         if deviceToken != newToken {

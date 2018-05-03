@@ -13,6 +13,8 @@ import CoreTelephony
 
     private var userName: String?
     private var userEmail: String?
+    private var needToRegisterDevice = false
+    private var deviceID: String?
 
     private static var appVersion: String {
         return Bundle.main.shortVersionString() ?? Constants.unknownValue
@@ -85,14 +87,9 @@ import CoreTelephony
         }
     }
 
-    static func registerDevice(_ identifier: String) {
-        ZDKConfig.instance().enablePush(withDeviceID: identifier) { pushResponse, error in
-            if let error = error {
-                DDLogInfo("Zendesk couldn't register device: \(identifier). Error: \(error)")
-            } else {
-                DDLogDebug("Zendesk successfully registered device: \(identifier)")
-            }
-        }
+    static func setNeedToRegisterDevice(_ identifier: String) {
+        ZendeskUtils.sharedInstance.needToRegisterDevice = true
+        ZendeskUtils.sharedInstance.deviceID = identifier
     }
 
     static func unregisterDevice(_ identifier: String) {
@@ -177,11 +174,36 @@ private extension ZendeskUtils {
     }
 
     static func createZendeskIdentity() {
+
+        guard let userEmail = ZendeskUtils.sharedInstance.userEmail else {
+            DDLogInfo("No user email to create Zendesk identity with.")
+            ZDKConfig.instance().userIdentity = nil
+            return
+        }
+
         let zendeskIdentity = ZDKAnonymousIdentity()
-        zendeskIdentity.email = ZendeskUtils.sharedInstance.userEmail
+        zendeskIdentity.email = userEmail
         zendeskIdentity.name = ZendeskUtils.sharedInstance.userName
         ZDKConfig.instance().userIdentity = zendeskIdentity
         DDLogDebug("Zendesk identity created with email '\(zendeskIdentity.email)' and name '\(zendeskIdentity.name)'.")
+        ZendeskUtils.registerDeviceIfNeeded()
+    }
+
+    static func registerDeviceIfNeeded() {
+
+        guard ZendeskUtils.sharedInstance.needToRegisterDevice,
+            let deviceID = ZendeskUtils.sharedInstance.deviceID else {
+                return
+        }
+
+        ZDKConfig.instance().enablePush(withDeviceID: deviceID) { pushResponse, error in
+            if let error = error {
+                DDLogInfo("Zendesk couldn't register device: \(deviceID). Error: \(error)")
+            } else {
+                ZendeskUtils.sharedInstance.needToRegisterDevice = false
+                DDLogDebug("Zendesk successfully registered device: \(deviceID)")
+            }
+        }
     }
 
     func createRequest() {
@@ -255,12 +277,14 @@ private extension ZendeskUtils {
     static func getUserInformationFrom(wpAccount: WPAccount) {
 
         guard let api = wpAccount.wordPressComRestApi else {
+            DDLogInfo("Zendesk: No wordPressComRestApi.")
             return
         }
 
         let service = AccountSettingsService(userID: wpAccount.userID.intValue, api: api)
 
         guard let accountSettings = service.settings else {
+            DDLogInfo("Zendesk: No accountSettings.")
             return
         }
 
