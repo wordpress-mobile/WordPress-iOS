@@ -7,8 +7,7 @@ final class SaveForLaterAction: PostAction {
     }
 
     func execute(with post: ReaderPost) {
-        markAsSaved(post)
-        save(post)
+        toggleSavedForLater(post)
         presentNotice()
     }
 
@@ -22,12 +21,18 @@ final class SaveForLaterAction: PostAction {
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
-    private func markAsSaved(_ post: ReaderPost) {
-        //post.markAsSaved
+    private func toggleSavedForLater(_ post: ReaderPost) {
+        // TODO. We are still dealing with mocks, this will have to be updated when the coredata model is updated
+        post.isSavedForLater() ? remove(post) : save(post)
     }
 
     private func save(_ post: ReaderPost) {
         let savedForLaterService = MockSaveForLaterService()
         savedForLaterService.add(post)
+    }
+
+    private func remove(_ post: ReaderPost) {
+        let savedForLaterService = MockSaveForLaterService()
+        savedForLaterService.remove(post)
     }
 }
