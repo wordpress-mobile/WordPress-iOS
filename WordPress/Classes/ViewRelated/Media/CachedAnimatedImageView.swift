@@ -54,6 +54,10 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
     }
 
     @objc func prepForReuse() {
+        if let ongoingTask = currentTask {
+            ongoingTask.cancel()
+        }
+        originalURLRequest = nil
         prepareForReuse()
     }
 
