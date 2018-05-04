@@ -200,7 +200,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
     fileprivate func setupSaveForLaterButton() {
         let size = CGSize(width: 20, height: 20)
-        let icon = Gridicon.iconOfType(.share, withSize: size)
+        let icon = FeatureFlag.saveForLater.enabled ? Gridicon.iconOfType(.bookmark, withSize: size) : Gridicon.iconOfType(.share, withSize: size)
         let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
         let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
 
