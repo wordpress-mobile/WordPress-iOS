@@ -4,7 +4,7 @@ import Aztec
 
 // MARK: - CalypsoProcessorIn
 //
-class CalypsoProcessorOut: Processor {
+class CalypsoProcessorOut: CalypsoProcessor {
 
     /// Converts the standard-HTML output of Aztec into the hybrid-HTML that WordPress uses to store
     /// posts.
@@ -14,6 +14,10 @@ class CalypsoProcessorOut: Processor {
     /// Current as of 2017/08/08
     ///
     func process(_ text: String) -> String {
+
+        guard !wasWrittenWithGutenberg(text) else {
+            return text
+        }
 
         guard text.count > 0 else {
             return ""

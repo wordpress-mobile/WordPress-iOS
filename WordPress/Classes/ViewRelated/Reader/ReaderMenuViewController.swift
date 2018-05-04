@@ -28,7 +28,23 @@ import WordPressShared
     fileprivate var restorableSelectedIndexPath: IndexPath?
 
     @objc lazy var viewModel: ReaderMenuViewModel = {
-        let vm = ReaderMenuViewModel()
+        let sectionCreators: [ReaderMenuItemCreator]
+
+        if FeatureFlag.saveForLater.enabled {
+            sectionCreators = [
+                FollowingMenuItemCreator(),
+                DiscoverMenuItemCreator(),
+                LikedMenuItemCreator(),
+                SavedForLaterMenuItemCreator()
+            ]
+        } else {
+            sectionCreators = [
+            FollowingMenuItemCreator(),
+            DiscoverMenuItemCreator(),
+            LikedMenuItemCreator()
+            ]
+        }
+        let vm = ReaderMenuViewModel(sectionCreators: sectionCreators)
         vm.delegate = self
         return vm
     }()
@@ -235,7 +251,7 @@ import WordPressShared
         syncTopics()
     }
 
-    /// Sync the Reader's menu
+    /// Sync the Reader's menu and fetch followed site list
     ///
     @objc func syncTopics() {
         if isSyncing {
@@ -243,14 +259,30 @@ import WordPressShared
         }
 
         isSyncing = true
+
+        let dispatchGroup = DispatchGroup()
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+
+        dispatchGroup.enter()
         service.fetchReaderMenu(success: { [weak self] in
                 self?.didSyncTopics = true
-                self?.cleanupAfterSync()
-            }, failure: { [weak self] (error) in
-                self?.cleanupAfterSync()
+                dispatchGroup.leave()
+            }, failure: { (error) in
+                dispatchGroup.leave()
                 DDLogError("Error syncing menu: \(String(describing: error))")
         })
+
+        dispatchGroup.enter()
+        service.fetchFollowedSites(success: {
+            dispatchGroup.leave()
+        }, failure: { (error) in
+            dispatchGroup.leave()
+            DDLogError("Could not sync sites: \(String(describing: error))")
+        })
+
+        dispatchGroup.notify(queue: .main) { [weak self] in
+            self?.cleanupAfterSync()
+        }
     }
 
 
