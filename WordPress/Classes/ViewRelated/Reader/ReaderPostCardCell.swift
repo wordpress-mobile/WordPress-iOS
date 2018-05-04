@@ -52,7 +52,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     @IBOutlet fileprivate weak var interfaceVerticalSizingHelperView: UIView!
 
     // Action buttons
-    @IBOutlet fileprivate weak var shareButton: UIButton!
+    @IBOutlet fileprivate weak var saveForLaterButton: UIButton!
     @IBOutlet fileprivate weak var visitButton: UIButton!
     @IBOutlet fileprivate weak var likeActionButton: UIButton!
     @IBOutlet fileprivate weak var commentActionButton: UIButton!
@@ -204,8 +204,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
         let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
 
-        shareButton.setImage(tintedIcon, for: .normal)
-        shareButton.setImage(highlightIcon, for: .highlighted)
+        saveForLaterButton.setImage(tintedIcon, for: .normal)
+        saveForLaterButton.setImage(highlightIcon, for: .highlighted)
     }
 
     fileprivate func setupMenuButton() {
@@ -223,7 +223,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             visitButton,
             likeActionButton,
             commentActionButton,
-            shareButton]
+            saveForLaterButton]
         for button in buttonsToAdjust {
             button.flipInsetsForRightToLeftLayoutDirection()
         }
@@ -246,7 +246,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         WPStyleGuide.applyReaderCardActionButtonStyle(commentActionButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(likeActionButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(visitButton)
-        WPStyleGuide.applyReaderCardActionButtonStyle(shareButton)
+        WPStyleGuide.applyReaderCardActionButtonStyle(saveForLaterButton)
     }
 
 
@@ -466,7 +466,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             let commentTitle = commentCount > 0 ? String(commentCount) : ""
             likeActionButton.setTitle(likeTitle, for: .normal)
             commentActionButton.setTitle(commentTitle, for: .normal)
-            shareButton.setTitle("", for: .normal)
+            saveForLaterButton.setTitle("", for: .normal)
             followButton.setTitle("", for: .normal)
             followButton.setTitle("", for: .selected)
             followButton.setTitle("", for: .highlighted)
@@ -483,7 +483,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
             likeActionButton.setTitle(likeTitle, for: .normal)
             commentActionButton.setTitle(commentTitle, for: .normal)
-            shareButton.setTitle(shareTitle, for: .normal)
+            saveForLaterButton.setTitle(shareTitle, for: .normal)
 
             followButton.setTitle(followTitle, for: .normal)
             followButton.setTitle(followingTitle, for: .selected)
@@ -660,9 +660,9 @@ extension ReaderPostCardCell: Accessible {
     }
 
     private func prepareShareForVoiceOver() {
-        shareButton.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
-        shareButton.accessibilityHint = NSLocalizedString("Shares this post", comment: "Spoken accessibility hint for Share buttons")
-        shareButton.accessibilityTraits = UIAccessibilityTraitButton
+        saveForLaterButton.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
+        saveForLaterButton.accessibilityHint = NSLocalizedString("Shares this post", comment: "Spoken accessibility hint for Share buttons")
+        saveForLaterButton.accessibilityTraits = UIAccessibilityTraitButton
     }
 
     private func prepareCommentsForVoiceOver() {
@@ -818,7 +818,7 @@ extension ReaderPostCardCell {
     }
 
     func getShareButtonForTesting() -> UIButton {
-        return shareButton
+        return saveForLaterButton
     }
 
     func getCommentsButtonForTesting() -> UIButton {
