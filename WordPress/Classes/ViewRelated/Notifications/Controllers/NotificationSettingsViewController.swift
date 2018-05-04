@@ -392,7 +392,8 @@ open class NotificationSettingsViewController: UIViewController {
     // MARK: - Segue Helpers
 
     fileprivate func displayDetails(for siteId: Int) {
-
+        let siteSubscriptionsViewController = NotificationSiteSubscriptionViewController(siteId: siteId)
+        navigationController?.pushViewController(siteSubscriptionsViewController, animated: true)
     }
 
     fileprivate func displayDetailsForSettings(_ settings: NotificationSettings) {
