@@ -71,16 +71,10 @@ static NSString * const GetUsersBlogsApiPath = @"https://public-api.wordpress.co
                     success:(void (^)(BOOL isJetpack))success
                     failure:(void (^)(NSError *error))failure
 {
-    NSString *siteStr = [NSString stringWithFormat:@"%@%@", siteURL.host, siteURL.path];
-    siteStr = [siteStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
-    siteStr = [siteStr stringByReplacingOccurrencesOfString:@"/" withString:@"::"];
-    NSString *scheme = siteURL.scheme ?: @"http";
-
-    NSString *endpoint = [NSString stringWithFormat:@"connect/site-info/%@/%@", scheme, siteStr];
-    NSString *path = [self pathForEndpoint:endpoint withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
+    NSString *path = [self pathForEndpoint:@"connect/site-info" withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
 
     [self.wordPressComRestApi GET:path
-                       parameters:nil
+                       parameters:@{ @"url": siteURL.absoluteString }
                           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                               NSDictionary *dict = (NSDictionary *)responseObject;
                               BOOL hasJetpack = [[dict numberForKey:@"hasJetpack"] boolValue];
