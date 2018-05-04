@@ -10,7 +10,7 @@ extension ReaderPost {
 }
 
 final class SaveForLaterAction: PostAction {
-    private struct Strings {
+    private enum Strings {
         static let postSaved = NSLocalizedString("Post saved.", comment: "Title of the notification presented in Reader when a post is saved for later")
         static let viewAll = NSLocalizedString("View All", comment: "Button in the notification presented in Reader when a post is saved for later")
         static let addToSavedError = NSLocalizedString("Could not save post for later", comment: "Title of a prompt.")
