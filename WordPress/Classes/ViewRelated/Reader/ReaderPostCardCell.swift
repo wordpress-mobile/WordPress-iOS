@@ -161,7 +161,6 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     open override func prepareForReuse() {
         super.prepareForReuse()
         imageLoader.prepareForReuse()
-        setNeedsDisplay()
     }
 
 
@@ -325,8 +324,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             return
         }
         guard let featuredImageURL = content.featuredImageURLForDisplay?() else {
-            featuredImageView.prepareForReuse()
-            featuredImageView.image = nil
+            imageLoader.prepareForReuse()
             currentLoadedCardImageURL = nil
             featuredImageView.isHidden = true
             return
