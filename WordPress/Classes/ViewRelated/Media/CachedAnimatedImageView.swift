@@ -118,7 +118,11 @@ class AnimatedImageCache {
             }
             // check if there is an error
             if let error = error {
-                failure?(error as NSError)
+                let nsError = error as NSError
+                // task.cancel() triggers an error that we don't want to send to the error handler.
+                if nsError.code != NSURLErrorCancelled {
+                    failure?(nsError)
+                }
                 return
             }
             // check if data is here and is animated gif
