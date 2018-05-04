@@ -7,11 +7,9 @@ final class SaveForLaterAction: PostAction {
     }
 
     func execute(with post: ReaderPost) {
-        //1.- Present notice
+        markAsSaved(post)
+        save(post)
         presentNotice()
-        //2.- Mark post as saved for later (boolean flag in ReaderPost)
-        //3.- Send post to the SaveForLaterService
-        //4.- Present toast
     }
 
     private func presentNotice() {
@@ -22,5 +20,14 @@ final class SaveForLaterAction: PostAction {
         })
 
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    private func markAsSaved(_ post: ReaderPost) {
+        //post.markAsSaved
+    }
+
+    private func save(_ post: ReaderPost) {
+        let savedForLaterService = MockSaveForLaterService()
+        savedForLaterService.add(post)
     }
 }
