@@ -254,12 +254,12 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
     */
     fileprivate func applyOpaqueBackgroundColors() {
-        blogNameLabel.backgroundColor = UIColor.white
-        bylineLabel.backgroundColor = UIColor.white
-        titleLabel.backgroundColor = UIColor.white
-        summaryLabel.backgroundColor = UIColor.white
-        commentActionButton.titleLabel?.backgroundColor = UIColor.white
-        likeActionButton.titleLabel?.backgroundColor = UIColor.white
+        blogNameLabel.backgroundColor = .white
+        bylineLabel.backgroundColor = .white
+        titleLabel.backgroundColor = .white
+        summaryLabel.backgroundColor = .white
+        commentActionButton.titleLabel?.backgroundColor = .white
+        likeActionButton.titleLabel?.backgroundColor = .white
     }
 
     @objc open func configureCell(_ contentProvider: ReaderPostContentProvider) {
