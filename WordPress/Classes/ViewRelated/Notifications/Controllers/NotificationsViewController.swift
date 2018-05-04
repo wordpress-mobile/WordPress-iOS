@@ -152,6 +152,13 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             reloadTableViewPreservingSelection()
         }
 
+        if !AccountHelper.isDotcomAvailable() {
+            promptForJetpackCredentials()
+        } else {
+            jetpackLoginViewController?.view.removeFromSuperview()
+            jetpackLoginViewController?.removeFromParentViewController()
+        }
+
         showNoResultsViewIfNeeded()
     }
 
@@ -160,10 +167,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         showRatingViewIfApplicable()
         syncNewNotifications()
         markSelectedNotificationAsRead()
-
-        if !AccountHelper.isDotcomAvailable() {
-            promptForJetpackCredentials()
-        }
 
         registerUserActivity()
     }
@@ -1403,8 +1406,8 @@ extension NotificationsViewController: AppFeedbackPromptViewDelegate {
         hideRatingViewWithDelay(0.0)
 
         if FeatureFlag.zendeskMobile.enabled {
-            if ZendeskUtils.sharedInstance.zendeskEnabled {
-                ZendeskUtils.sharedInstance.showNewRequest(from: self)
+            if ZendeskUtils.zendeskEnabled {
+                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self)
             } else {
                 if let contact = URL(string: NotificationsViewController.contactURL) {
                     UIApplication.shared.open(contact)
