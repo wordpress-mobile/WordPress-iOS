@@ -1,10 +1,18 @@
 import WordPressFlux
 
+fileprivate final class ReaderPostSerialiser {
+    func serialise(_ post: ReaderPost) -> ReaderSavedForLaterPost {
+        return ReaderSavedForLaterPost()
+    }
+}
+
 final class SaveForLaterAction: PostAction {
     private struct Strings {
         static let postSaved = NSLocalizedString("Post saved.", comment: "Title of the notification presented in Reader when a post is saved for later")
         static let viewAll = NSLocalizedString("View All", comment: "Button in the notification presented in Reader when a post is saved for later")
     }
+
+    private let serialiser = ReaderPostSerialiser()
 
     func execute(with post: ReaderPost, context: NSManagedObjectContext ) {
         toggleSavedForLater(post, context: context)
@@ -30,7 +38,7 @@ final class SaveForLaterAction: PostAction {
         let readerPostService = ReaderPostService(managedObjectContext: context)
         //readerPostService.toggleSavedForLater(post)
         let savedForLaterService = MockSaveForLaterService()
-        savedForLaterService.add(post)
+        savedForLaterService.add(serialiser.serialise(post))
     }
 
     private func remove(_ post: ReaderPost, context: NSManagedObjectContext) {
