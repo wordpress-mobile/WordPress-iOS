@@ -75,6 +75,7 @@
 
         _fetchController = nil;
         [self.fetchController performFetch:nil];
+        [self notifyObserversReloadData];
     }
 }
 
@@ -148,6 +149,15 @@
     for ( WPMediaChangesBlock callback in [self.observers allValues]) {
         callback(incrementalChanges, removed, inserted, changed, moved);
     }
+}
+
+- (void)notifyObserversReloadData
+{
+    [self notifyObserversWithIncrementalChanges:NO
+                                        removed:[NSIndexSet new]
+                                       inserted:[NSIndexSet new]
+                                        changed:[NSIndexSet new]
+                                          moved:@[]];
 }
 
 -(id<NSObject>)registerChangeObserverBlock:(WPMediaChangesBlock)callback
