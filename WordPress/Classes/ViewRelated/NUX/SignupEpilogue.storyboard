@@ -126,7 +126,7 @@
         <!--ButtonView-->
         <scene sceneID="Lwz-51-8gb">
             <objects>
-                <viewControllerPlaceholder storyboardName="NUXButtonView" referencedIdentifier="ButtonView" id="Ssr-Ju-yvl" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="NUXButtonView" bundleIdentifier="com.automattic.WordPressAuthenticator" referencedIdentifier="ButtonView" id="Ssr-Ju-yvl" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SWf-JM-jZ7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="128" y="830"/>
