@@ -12,19 +12,23 @@ fileprivate final class ReaderPostSerialiser {
 
 
 final class MockSaveForLaterService: SaveForLaterService {
+    private let serialiser = ReaderPostSerialiser()
+
     func add(_ post: ReaderPost) {
-        print("=== adding post to the service ====")
-        //1.- Transform ReaderPost into SavedForLaterPost
-        //2.- Save SavedForLaterPost to coredata
+        let serialisedPost = serialiser.serialize(post: post)
+        commit(serialisedPost)
     }
 
     func remove(_ post: ReaderPost) {
-        print("=== remove post to the service ====")
-        //1.- Transform ReaderPost into SavedForLaterPost
-        //2.- Remove SavedForLaterPost from coredata
+        //1.- Fetch ReaderSavedForLaterPost from cd store
+        //2.- Remove it
     }
 
     func all() -> [ReaderSavedForLaterPost] {
         return [ReaderSavedForLaterPost()]
+    }
+
+    private func commit(_ serializedPost: ReaderSavedForLaterPost) {
+        // Actually save to coredata
     }
 }
