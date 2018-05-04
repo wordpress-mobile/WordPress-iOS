@@ -2,13 +2,13 @@ import UIKit
 
 @IBDesignable
 class RoundedButton: UIButton {
-    @IBInspectable var cornerRadius: CGFloat = 3.0 {
+    @IBInspectable var cornerRadius: CGFloat = 4.0 {
         didSet {
             updateAppearance()
         }
     }
 
-    @IBInspectable var borderWidth: CGFloat = 1.0 {
+    @IBInspectable var borderWidth: CGFloat = 0.0 {
         didSet {
             updateAppearance()
         }
@@ -20,7 +20,7 @@ class RoundedButton: UIButton {
         }
     }
 
-    @IBInspectable var verticalEdgeInset: CGFloat = 10.0 {
+    @IBInspectable var verticalEdgeInset: CGFloat = 5.0 {
         didSet {
             updateAppearance()
         }
@@ -53,12 +53,21 @@ class RoundedButton: UIButton {
         layer.borderColor = tintColor.cgColor
 
         setTitleColor(tintColor, for: UIControlState())
+        setBackgroundImage(UIImage(color: tintColor), for: .highlighted)
 
         if reversesTitleShadowWhenHighlighted {
             setTitleColor(backgroundColor, for: [.highlighted])
             setBackgroundImage(UIImage(color: tintColor), for: .highlighted)
         } else {
-            setTitleColor(tintColor.withAlphaComponent(0.3), for: .highlighted)
+            setTitleColor(tintColor.withAlphaComponent(0.5), for: .highlighted)
+            setBackgroundImage(UIImage(color: backgroundColor), for: .highlighted)
+        }
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
         }
     }
 }
