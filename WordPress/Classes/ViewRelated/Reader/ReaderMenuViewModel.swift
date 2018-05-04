@@ -151,7 +151,7 @@ enum ReaderDefaultMenuItemOrder: Int {
 
     private let sectionCreators: [ReaderMenuItemCreator]
 
-    private struct Strings {
+    private enum Strings {
         static let savedForLaterMenuTitle = NSLocalizedString("Saved Posts", comment: "Section title for Saved Posts in Reader")
     }
 
