@@ -4,6 +4,12 @@ protocol SaveForLaterService {
     func all() -> [ReaderSavedForLaterPost]
 }
 
+fileprivate final class ReaderPostSerialiser {
+    func serialize(post: ReaderPost) -> ReaderSavedForLaterPost {
+        return ReaderSavedForLaterPost()
+    }
+}
+
 
 final class MockSaveForLaterService: SaveForLaterService {
     func add(_ post: ReaderPost) {
