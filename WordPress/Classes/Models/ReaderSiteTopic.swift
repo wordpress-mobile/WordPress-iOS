@@ -1,6 +1,11 @@
 import Foundation
 
 @objc open class ReaderSiteTopic: ReaderAbstractTopic {
+    // Relations
+    @NSManaged open var postSubscription: ReaderSiteInfoSubscriptionPost?
+    @NSManaged open var emailSubscription: ReaderSiteInfoSubscriptionEmail?
+
+    // Properties
     @NSManaged open var feedID: NSNumber
     @NSManaged open var feedURL: String
     @NSManaged open var isJetpack: Bool
@@ -21,5 +26,13 @@ import Foundation
         get {
             return siteID.intValue == 0
         }
+    }
+
+    @objc open var blogNameToDisplay: String {
+        return posts.first?.blogNameForDisplay() ?? title
+    }
+
+    @objc open var isSubscribedForPostNotifications: Bool {
+        return postSubscription?.sendPosts ?? false
     }
 }

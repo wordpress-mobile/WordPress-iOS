@@ -2,6 +2,8 @@ import UIKit
 import CocoaLumberjack
 import WordPressShared
 import Gridicons
+import WordPressAuthenticator
+
 
 class MeViewController: UITableViewController, UIViewControllerRestoration {
     @objc static let restorationIdentifier = "WPMeRestorationID"
@@ -294,8 +296,14 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     func pushHelp() -> ImmuTableAction {
         return { [unowned self] row in
-            let controller = SupportViewController()
-            self.showDetailViewController(controller, sender: self)
+            if FeatureFlag.zendeskMobile.enabled {
+                let controller = SupportTableViewController()
+                controller.showHelpFromViewController = self
+                self.showDetailViewController(controller, sender: self)
+            } else {
+                let controller = SupportViewController()
+                self.showDetailViewController(controller, sender: self)
+            }
         }
     }
 

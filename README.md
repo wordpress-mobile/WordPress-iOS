@@ -23,9 +23,13 @@ Trying to build the project by itself (WordPress.xcproj) after launching will re
 
 #### SwiftLint
 
-We use [SwiftLint](https://github.com/realm/SwiftLint) to enforce a common style for Swift code. Xcode will show a warning if you don't have it installed. The app should build and work without it, but if you plan to write code, you are encouraged to install it. No commit should have lint warnings or errors.
+We use [SwiftLint](https://github.com/realm/SwiftLint) to enforce a common style for Swift code. The app should build and work without it, but if you plan to write code, you are encouraged to install it. No commit should have lint warnings or errors.
 
-SwiftLint runs automatically when you build the project, but you can run it manually from the command line with: 
+SwiftLint is well-suited to run via [pre-commit hook](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks).
+
+Alternately, a SwiftLint scheme is exposed within the project; Xcode will show a warning if you don't have SwiftLint installed.
+
+Finally, you can also run SwiftLint manually from the command line with:
 
 `rake lint`
 
