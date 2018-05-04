@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol GIFDownloadStrategy {
+public protocol GIFPlaybackStrategy {
     /// Maximum size GIF data can be in order to be animated.
     ///
     var maxSize: Int { get }
@@ -29,7 +29,7 @@ public protocol GIFDownloadStrategy {
     func verifyNumberOfFrames(_ frames: Int) -> Bool
 }
 
-extension GIFDownloadStrategy {
+extension GIFPlaybackStrategy {
     func verifyDataSize(_ data: Data) -> Bool {
         guard data.count <= maxSize else {
             DDLogWarn("⚠️ Maximum GIF data size exceeded \(maxSize) with \(data.count)")
@@ -47,19 +47,19 @@ extension GIFDownloadStrategy {
     }
 }
 
-class SmallGIFDownloadStrategy: GIFDownloadStrategy {
+class SmallGIFPlaybackStrategy: GIFPlaybackStrategy {
     var maxSize = 8_000_000  // in MB
     var maxNumberOfFrames = 100
-    var frameBufferCount = 20
-}
-
-class MediumGIFDownloadStrategy: GIFDownloadStrategy {
-    var maxSize = 16_000_000  // in MB
-    var maxNumberOfFrames = 200
     var frameBufferCount = 40
 }
 
-class LargeGIFDownloadStrategy: GIFDownloadStrategy {
+class MediumGIFPlaybackStrategy: GIFPlaybackStrategy {
+    var maxSize = 16_000_000  // in MB
+    var maxNumberOfFrames = 200
+    var frameBufferCount = 50
+}
+
+class LargeGIFPlaybackStrategy: GIFPlaybackStrategy {
     var maxSize = 32_000_000  // in MB
     var maxNumberOfFrames = 500
     var frameBufferCount = 60
