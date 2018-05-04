@@ -13,7 +13,7 @@ import Gifu
 public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     @objc var currentTask: URLSessionTask?
-    public var gifCheck: GIFDownloadStrategy = MediumGIFDownloadStrategy()
+    public var downloadStrategy: GIFDownloadStrategy = MediumGIFDownloadStrategy()
 
     public lazy var animator: Gifu.Animator? = {
         return Gifu.Animator(withDelegate: self)
@@ -33,15 +33,17 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
         }
 
         let successBlock: (Data) -> Void = { [weak self] animatedImageData in
-            guard let strongSelf = self, strongSelf.gifCheck.verifyDataSize(animatedImageData) else {
-                // FIXME: default to static image if something goes wrong with the sanity check
+            guard let strongSelf = self else {
                 return
             }
-            DispatchQueue.main.async(execute: {
-                strongSelf.animate(withGIFData: animatedImageData, loopCount: 0, completionHandler: {
-                    success?()
-                })
-            })
+
+            strongSelf.prepForReuse()
+            if strongSelf.downloadStrategy.verifyDataSize(animatedImageData) {
+                strongSelf.showGif(with: animatedImageData, completionHandler: success)
+            } else {
+                // The file size is too big, let's just show a static image instead
+                strongSelf.showStaticImage(with: animatedImageData, completionHandler: success)
+            }
         }
 
         currentTask = AnimatedImageCache.shared.animatedImage(urlRequest,
@@ -51,7 +53,35 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
     }
 
     @objc func prepForReuse() {
-        self.prepareForReuse()
+        prepareForReuse()
+    }
+
+    private func showStaticImage(with data: Data, completionHandler: (() -> Void)? = nil) {
+        DispatchQueue.main.async(execute: {
+            // Set as a static image
+            self.image = UIImage(data: data)
+            completionHandler?()
+        })
+    }
+
+    private func showGif(with data: Data, completionHandler: (() -> Void)? = nil) {
+        DispatchQueue.main.async(execute: {
+            self.setFrameBufferCount(self.downloadStrategy.frameBufferCount)
+            self.animate(withGIFData: data, loopCount: 0, completionHandler: {
+                if self.downloadStrategy.verifyNumberOfFrames(self.frameCount) {
+                    completionHandler?()
+                } else {
+                    // May-4-2018: There is currently a bug in Gifu where calling `startAnimating()` or `stopAnimating()` after
+                    // `prepareForAnimation()` and `animate()` does not work. In a perfect world, we would prepare for the animation,
+                    // check the frame count, and then start the animation (or stop it if `animate()` was used). So, for now, we
+                    /// are simply showing a static image instead.
+                    // See: https://github.com/kaishin/Gifu/issues/123
+                    //
+                    self.prepForReuse()
+                    self.showStaticImage(with: data, completionHandler: completionHandler)
+                }
+            })
+        })
     }
 }
 
