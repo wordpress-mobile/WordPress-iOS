@@ -47,8 +47,8 @@ class PostAttachmentTests: XCTestCase {
         let controller = AztecAttachmentViewController()
         controller.attachment = attachment
         controller.alt = altValue
-        controller.onUpdate = { (_, _, _, alt) in
-        richTextView.edit(attachment) { updated in
+        controller.onUpdate = { (_, _, _, alt, _) in
+            richTextView.edit(attachment) { updated in
                 if let alt = alt {
                     updated.alt = alt
                 }
@@ -60,7 +60,7 @@ class PostAttachmentTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         let html = richTextView.getHTML()
-        XCTAssert(html == "<p>\(prefixString)<img src=\"\(imageName)\" alt=\"\(altValue)\"></p>")
+        XCTAssert(html == "<p>\(prefixString)<img src=\"\(imageName)\" class=\"alignnone\" alt=\"\(altValue)\"></p>")
     }
 
     func testIfAltValueWasLeftEmptyForImageAttachment() {
@@ -81,8 +81,8 @@ class PostAttachmentTests: XCTestCase {
         let controller = AztecAttachmentViewController()
         controller.attachment = attachment
         controller.alt = altValue
-        controller.onUpdate = { (_, _, _, alt) in
-        richTextView.edit(attachment) { updated in
+        controller.onUpdate = { (_, _, _, alt, _) in
+            richTextView.edit(attachment) { updated in
                 if let alt = alt {
                     updated.alt = alt
                 }
@@ -94,7 +94,7 @@ class PostAttachmentTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         let html = richTextView.getHTML()
-        XCTAssert(html == "<p>\(prefixString)<img src=\"\(imageName)\"></p>")
+        XCTAssert(html == "<p>\(prefixString)<img src=\"\(imageName)\" class=\"alignnone\"></p>")
     }
 
     func testIfLinkURLValueWasAddedToImageAttachment() {
@@ -115,7 +115,7 @@ class PostAttachmentTests: XCTestCase {
         let controller = AztecAttachmentViewController()
         controller.attachment = attachment
         controller.linkURL = linkURLValue
-        controller.onUpdate = { (_, _, linkURL, _) in
+        controller.onUpdate = { (_, _, linkURL, _, _) in
             if let url = linkURL, let range = richTextView.textStorage.ranges(forAttachment: attachment).first {
                 richTextView.setLink(url, inRange: range)
             }
@@ -126,6 +126,6 @@ class PostAttachmentTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         let html = richTextView.getHTML()
-        XCTAssertEqual(html, "<p>Image with link: <a href=\"https://wordpress.com/\"><img src=\"\(imageName)\"></a></p>")
+        XCTAssertEqual(html, "<p>Image with link: <a href=\"https://wordpress.com/\"><img src=\"\(imageName)\" class=\"alignnone\"></a></p>")
     }
 }

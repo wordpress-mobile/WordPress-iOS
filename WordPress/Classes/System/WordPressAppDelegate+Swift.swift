@@ -2,6 +2,8 @@ import Foundation
 import CocoaLumberjack
 import Reachability
 import UIDeviceIdentifier
+import WordPressAuthenticator
+
 
 // MARK: - Utility Configuration
 
@@ -161,7 +163,7 @@ extension WordPressAppDelegate {
                 return false
             }
 
-            return visibleViewController is LoginPrologueViewController || visibleViewController is NUXViewControllerBase
+            return WordPressAuthenticator.isAuthenticationViewController(visibleViewController)
         }
     }
 }
