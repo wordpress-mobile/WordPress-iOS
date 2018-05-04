@@ -151,10 +151,11 @@ enum ReaderDefaultMenuItemOrder: Int {
 
     private let sectionCreators: [ReaderMenuItemCreator]
 
+    private struct Strings {
+        static let savedForLaterMenuTitle = NSLocalizedString("Saved Posts", comment: "Section title for Saved Posts in Reader")
+    }
 
     // MARK: - Lifecycle Methods
-
-
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -272,7 +273,7 @@ enum ReaderDefaultMenuItemOrder: Int {
         // To be removed as soon as the topic is provided by the coredata store. This is here just to prove visually that the view model can handle this topic
         if FeatureFlag.saveForLater.enabled {
             let topic = ReaderSaveForLaterTopic()
-            topic.title = .savedForLaterMenuTitle
+            topic.title = Strings.savedForLaterMenuTitle
             topic.path = "/mock"
             let menuItem = sectionCreator(for: topic).menuItem(with: topic)
 
