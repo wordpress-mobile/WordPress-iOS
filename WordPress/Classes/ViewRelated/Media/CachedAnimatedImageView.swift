@@ -13,7 +13,7 @@ import Gifu
 public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     @objc var currentTask: URLSessionTask?
-    public var downloadStrategy: GIFDownloadStrategy = MediumGIFDownloadStrategy()
+    public var gifPlaybackStrategy: GIFPlaybackStrategy = MediumGIFPlaybackStrategy()
 
     public lazy var animator: Gifu.Animator? = {
         return Gifu.Animator(withDelegate: self)
@@ -37,7 +37,7 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
                 return
             }
 
-            if strongSelf.downloadStrategy.verifyDataSize(animatedImageData) {
+            if strongSelf.gifPlaybackStrategy.verifyDataSize(animatedImageData) {
                 strongSelf.showGif(with: animatedImageData, completionHandler: success)
             } else {
                 // The file size is too big, let's just show a static image instead
@@ -65,9 +65,9 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     private func showGif(with data: Data, completionHandler: (() -> Void)? = nil) {
         DispatchQueue.main.async(execute: {
-            self.setFrameBufferCount(self.downloadStrategy.frameBufferCount)
+            self.setFrameBufferCount(self.gifPlaybackStrategy.frameBufferCount)
             self.animate(withGIFData: data, loopCount: 0, completionHandler: {
-                if self.downloadStrategy.verifyNumberOfFrames(self.frameCount) {
+                if self.gifPlaybackStrategy.verifyNumberOfFrames(self.frameCount) {
                     completionHandler?()
                 } else {
                     // May-4-2018: There is currently a bug in Gifu where calling `startAnimating()` or `stopAnimating()` after
