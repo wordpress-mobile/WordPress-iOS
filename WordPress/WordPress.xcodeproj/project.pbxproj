@@ -859,7 +859,6 @@
 		D81322B32050F9110067714D /* NotificationName+Names.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81322B22050F9110067714D /* NotificationName+Names.swift */; };
 		D8160440209C1AE600ABAFFA /* PostAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816043F209C1AE600ABAFFA /* PostAction.swift */; };
 		D8160442209C1B0F00ABAFFA /* SaveForLaterAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8160441209C1B0F00ABAFFA /* SaveForLaterAction.swift */; };
-		D8160444209C1BB600ABAFFA /* SaveForLaterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8160443209C1BB600ABAFFA /* SaveForLaterService.swift */; };
 		D8160446209C1C8100ABAFFA /* ReaderSavedForLaterPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8160445209C1C8100ABAFFA /* ReaderSavedForLaterPost.swift */; };
 		D83CA3A520842CAF0060E310 /* Pageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A420842CAF0060E310 /* Pageable.swift */; };
 		D83CA3A720842CD90060E310 /* ResultsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A620842CD90060E310 /* ResultsPage.swift */; };
@@ -2380,7 +2379,6 @@
 		D81322B22050F9110067714D /* NotificationName+Names.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Names.swift"; sourceTree = "<group>"; };
 		D816043F209C1AE600ABAFFA /* PostAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAction.swift; sourceTree = "<group>"; };
 		D8160441209C1B0F00ABAFFA /* SaveForLaterAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveForLaterAction.swift; sourceTree = "<group>"; };
-		D8160443209C1BB600ABAFFA /* SaveForLaterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveForLaterService.swift; sourceTree = "<group>"; };
 		D8160445209C1C8100ABAFFA /* ReaderSavedForLaterPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSavedForLaterPost.swift; sourceTree = "<group>"; };
 		D83CA3A420842CAF0060E310 /* Pageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pageable.swift; sourceTree = "<group>"; };
 		D83CA3A620842CD90060E310 /* ResultsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsPage.swift; sourceTree = "<group>"; };
@@ -4496,7 +4494,6 @@
 				B543D2B420570B5A00D3D4CC /* WordPressComSyncService.swift */,
 				FF4C069E206560E500E0B2BC /* MediaThumbnailCoordinator.swift */,
 				FF0D8145205809C8000EE505 /* PostCoordinator.swift */,
-				D8160443209C1BB600ABAFFA /* SaveForLaterService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -7326,7 +7323,6 @@
 				D8B43E70206B439F00DDAFAA /* MediaPickingOptionsDelegate.swift in Sources */,
 				83FEFC7611FF6C5A0078B462 /* SiteSettingsViewController.m in Sources */,
 				B56994451B7A7EF200FF26FA /* WPStyleGuide+Comments.swift in Sources */,
-				D8160444209C1BB600ABAFFA /* SaveForLaterService.swift in Sources */,
 				74AF4D741FE417D200E3EBFE /* MediaUploadOperation.swift in Sources */,
 				E15644ED1CE0E4FE00D96E64 /* PlanListRow.swift in Sources */,
 				98656BD82037A1770079DE67 /* SignupEpilogueViewController.swift in Sources */,
