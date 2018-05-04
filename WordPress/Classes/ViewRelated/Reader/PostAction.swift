@@ -1,3 +1,3 @@
 protocol PostAction {
-    func execute(with post: ReaderPost)
+    func execute(with post: ReaderPost, context: NSManagedObjectContext)
 }
