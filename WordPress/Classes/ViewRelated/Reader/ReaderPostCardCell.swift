@@ -19,6 +19,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(_ cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
     func readerCell(_ cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
@@ -551,11 +552,11 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         delegate?.readerCell(self, visitActionForProvider: provider)
     }
 
-    @IBAction func didTapShareButton(_ sender: UIButton) {
+    @IBAction func didTapSaveForLaterButton(_ sender: UIButton) {
         guard let provider = contentProvider else {
             return
         }
-        delegate?.readerCell(self, shareActionForProvider: provider, fromView: sender)
+        delegate?.readerCell(self, saveActionForProvider: provider)
     }
 
     @IBAction func didTapActionButton(_ sender: UIButton) {

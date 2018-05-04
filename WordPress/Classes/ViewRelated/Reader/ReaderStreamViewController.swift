@@ -1627,6 +1627,12 @@ extension ReaderStreamViewController: ReaderPostCellDelegate {
         sharePost(post.objectID, fromView: sender)
     }
 
+    public func readerCell(_ cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider) {
+        guard let post = provider as? ReaderPost else {
+            return
+        }
+        //visitSiteForPost(post)
+    }
 
     public func readerCell(_ cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider) {
         guard let post = provider as? ReaderPost else {
