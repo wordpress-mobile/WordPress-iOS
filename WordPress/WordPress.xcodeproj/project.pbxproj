@@ -857,6 +857,10 @@
 		D80BC7A4207487F200614A59 /* MediaLibraryPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BC7A3207487F200614A59 /* MediaLibraryPicker.swift */; };
 		D80EE63A203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80EE639203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift */; };
 		D81322B32050F9110067714D /* NotificationName+Names.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81322B22050F9110067714D /* NotificationName+Names.swift */; };
+		D8160440209C1AE600ABAFFA /* PostAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816043F209C1AE600ABAFFA /* PostAction.swift */; };
+		D8160442209C1B0F00ABAFFA /* SaveForLaterAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8160441209C1B0F00ABAFFA /* SaveForLaterAction.swift */; };
+		D8160444209C1BB600ABAFFA /* SaveForLaterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8160443209C1BB600ABAFFA /* SaveForLaterService.swift */; };
+		D8160446209C1C8100ABAFFA /* ReaderSavedForLaterPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8160445209C1C8100ABAFFA /* ReaderSavedForLaterPost.swift */; };
 		D83CA3A520842CAF0060E310 /* Pageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A420842CAF0060E310 /* Pageable.swift */; };
 		D83CA3A720842CD90060E310 /* ResultsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A620842CD90060E310 /* ResultsPage.swift */; };
 		D83CA3A920842D190060E310 /* StockPhotosPageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A820842D190060E310 /* StockPhotosPageable.swift */; };
@@ -2374,6 +2378,10 @@
 		D80BC7A3207487F200614A59 /* MediaLibraryPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaLibraryPicker.swift; sourceTree = "<group>"; };
 		D80EE639203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderFollowedSitesStreamHeaderTests.swift; sourceTree = "<group>"; };
 		D81322B22050F9110067714D /* NotificationName+Names.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Names.swift"; sourceTree = "<group>"; };
+		D816043F209C1AE600ABAFFA /* PostAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostAction.swift; sourceTree = "<group>"; };
+		D8160441209C1B0F00ABAFFA /* SaveForLaterAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveForLaterAction.swift; sourceTree = "<group>"; };
+		D8160443209C1BB600ABAFFA /* SaveForLaterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveForLaterService.swift; sourceTree = "<group>"; };
+		D8160445209C1C8100ABAFFA /* ReaderSavedForLaterPost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSavedForLaterPost.swift; sourceTree = "<group>"; };
 		D83CA3A420842CAF0060E310 /* Pageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pageable.swift; sourceTree = "<group>"; };
 		D83CA3A620842CD90060E310 /* ResultsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsPage.swift; sourceTree = "<group>"; };
 		D83CA3A820842D190060E310 /* StockPhotosPageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosPageable.swift; sourceTree = "<group>"; };
@@ -3500,6 +3508,7 @@
 				E125F1E61E8E59C800320B67 /* SharePost+UIActivityItemSource.swift */,
 				E6311C421ECA017E00122529 /* UserProfile.swift */,
 				E6FACB1D1EC675E300284AC7 /* GravatarProfile.swift */,
+				D8160445209C1C8100ABAFFA /* ReaderSavedForLaterPost.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3623,6 +3632,7 @@
 		5D08B8FD19647C0800D5B381 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D816043E209C1AD300ABAFFA /* ReaderPostActions */,
 				D800D86220997B6400E7C7E5 /* ReaderMenuItems */,
 				E6A2158D1D10627500DE5270 /* ReaderMenuViewModel.swift */,
 				E6E57CD41D0F08B200C22E3E /* ReaderMenuViewController.swift */,
@@ -4486,6 +4496,7 @@
 				B543D2B420570B5A00D3D4CC /* WordPressComSyncService.swift */,
 				FF4C069E206560E500E0B2BC /* MediaThumbnailCoordinator.swift */,
 				FF0D8145205809C8000EE505 /* PostCoordinator.swift */,
+				D8160443209C1BB600ABAFFA /* SaveForLaterService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -5535,6 +5546,15 @@
 				D8071630203DA23700B32FD9 /* Accessible.swift */,
 			);
 			path = Accessibility;
+			sourceTree = "<group>";
+		};
+		D816043E209C1AD300ABAFFA /* ReaderPostActions */ = {
+			isa = PBXGroup;
+			children = (
+				D816043F209C1AE600ABAFFA /* PostAction.swift */,
+				D8160441209C1B0F00ABAFFA /* SaveForLaterAction.swift */,
+			);
+			name = ReaderPostActions;
 			sourceTree = "<group>";
 		};
 		D88A6490208D79F1008AE9BC /* Stock Photos */ = {
@@ -6953,21 +6973,6 @@
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CEAFB620C7C0319097DF75AE /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		E00F6488DE2D86BDC84FBB0B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -7034,21 +7039,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "[ -f ~/.wpcom_app_credentials ] && source ~/.wpcom_app_credentials\n \nif [[ \"Debug\" == \"${CONFIGURATION}\" ]]; then\n  echo \"Skipping Fabric\";\n  exit 0;\nfi\n \nif [ \"x$FABRIC_SCRIPT_KEY\" != \"x\" ]; then\n  \"${PODS_ROOT}/Fabric/run\" $FABRIC_SCRIPT_KEY\nelse\n  echo \"warning: Fabric API Key not found\"\nfi";
-			showEnvVarsInLog = 0;
-		};
-		EDE7CBC307936CBCE96B1707 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FFA8E2301F94E3EF0002170F /* ShellScript */ = {
@@ -7165,6 +7155,7 @@
 				E1A6DBE519DC7D230071AC1E /* PostService.m in Sources */,
 				E62AFB6E1DC8E593007484FC /* WPTextAttachmentManager.swift in Sources */,
 				9F3EFC9E208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift in Sources */,
+				D8160442209C1B0F00ABAFFA /* SaveForLaterAction.swift in Sources */,
 				E68580F61E0D91470090EE63 /* WPHorizontalRuleAttachment.swift in Sources */,
 				E12FE0741FA0CEE000F28710 /* ImmuTable+Optional.swift in Sources */,
 				C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */,
@@ -7335,6 +7326,7 @@
 				D8B43E70206B439F00DDAFAA /* MediaPickingOptionsDelegate.swift in Sources */,
 				83FEFC7611FF6C5A0078B462 /* SiteSettingsViewController.m in Sources */,
 				B56994451B7A7EF200FF26FA /* WPStyleGuide+Comments.swift in Sources */,
+				D8160444209C1BB600ABAFFA /* SaveForLaterService.swift in Sources */,
 				74AF4D741FE417D200E3EBFE /* MediaUploadOperation.swift in Sources */,
 				E15644ED1CE0E4FE00D96E64 /* PlanListRow.swift in Sources */,
 				98656BD82037A1770079DE67 /* SignupEpilogueViewController.swift in Sources */,
@@ -7552,6 +7544,7 @@
 				930F09171C7D110E00995926 /* ShareExtensionService.swift in Sources */,
 				177E7DAD1DD0D1E600890467 /* UINavigationController+SplitViewFullscreen.swift in Sources */,
 				17AD36D51D36C1A60044B10D /* WPStyleGuide+Search.swift in Sources */,
+				D8160440209C1AE600ABAFFA /* PostAction.swift in Sources */,
 				FF0148E51DFABBC9001AD265 /* NSFileManager+FolderSize.swift in Sources */,
 				BE87E1A01BD4054F0075D45B /* WP3DTouchShortcutCreator.swift in Sources */,
 				D800D86C20997EB400E7C7E5 /* OtherMenuItemCreator.swift in Sources */,
@@ -7670,6 +7663,7 @@
 				403269922027719C00608441 /* PluginDirectoryAccessoryItem.swift in Sources */,
 				FFB1FAA01BF0EC4E0090C761 /* PHAsset+Exporters.swift in Sources */,
 				8298F38F1EEF2B15008EB7F0 /* AppFeedbackPromptView.swift in Sources */,
+				D8160446209C1C8100ABAFFA /* ReaderSavedForLaterPost.swift in Sources */,
 				E1823E6C1E42231C00C19F53 /* UIEdgeInsets.swift in Sources */,
 				5D18FE9F1AFBB17400EFEED0 /* RestorePageTableViewCell.m in Sources */,
 				B54C02241F38F50100574572 /* String+RegEx.swift in Sources */,
