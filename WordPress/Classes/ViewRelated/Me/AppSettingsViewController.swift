@@ -45,6 +45,8 @@ class AppSettingsViewController: UITableViewController {
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
+
+        addAccountSettingsChangedObserver()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -56,6 +58,15 @@ class AppSettingsViewController: UITableViewController {
         super.viewDidAppear(animated)
 
         registerUserActivity()
+    }
+
+    private func addAccountSettingsChangedObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(accountSettingsDidChange(_:)), name: NSNotification.Name.AccountSettingsChanged, object: nil)
+    }
+
+    @objc
+    private func accountSettingsDidChange(_ notification: Notification) {
+        reloadViewModel()
     }
 
     // MARK: - Model mapping
@@ -106,7 +117,7 @@ class AppSettingsViewController: UITableViewController {
         let usageTrackingHeader = NSLocalizedString("Usage Statistics", comment: "App usage data settings section header")
         let usageTrackingRow = SwitchRow(
             title: NSLocalizedString("Send Statistics", comment: "Label for switch to turn on/off sending app usage data"),
-            value: WPAppAnalytics.isTrackingUsage(),
+            value: !WPAppAnalytics.userHasOptedOut(),
             onChange: usageTrackingChanged())
         let usageTrackingFooter = NSLocalizedString("Automatically send usage statistics to help us improve WordPress for iOS", comment: "App usage data settings section footer describing what the setting does.")
 
@@ -275,7 +286,10 @@ class AppSettingsViewController: UITableViewController {
     @objc func usageTrackingChanged() -> (Bool) -> Void {
         return { enabled in
             let appAnalytics = WordPressAppDelegate.sharedInstance().analytics
-            appAnalytics?.setTrackingUsage(enabled)
+            appAnalytics?.setUserHasOptedOut(!enabled)
+
+            let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            AccountSettingsHelper(accountService: accountService).updateTracksOptOutSetting(!enabled)
         }
     }
 
