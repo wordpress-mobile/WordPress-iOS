@@ -8,6 +8,10 @@ data model as well as any custom migrations.
 - @frosty 2018-04-25
 - `AccountSettings` added `tracksOptOut` property, used to store the user's current preference for opting out of analytics tracking.
 
+- @danielebogo 2018-04-23
+- `ReaderSiteInfoSubscriptionPost` and `ReaderSiteInfoSubscriptionEmail` added to store site notifications subscription data.
+- `ReaderSiteTopic` added `postSubscription` and `emailSubscription` properties as relationships to `ReaderSiteInfoSubscriptionPost` and `ReaderSiteInfoSubscriptionEmail`.
+
 ## WordPress 74
 
 - @sergioestevao 2018-04-18
@@ -47,9 +51,9 @@ data model as well as any custom migrations.
 
 ## WordPress 66
 - @elibud 2017-08-17
-- `BlogSettings` added the following Jetpack security settings properties: 
-    `jetpackMonitorEnabled`, `jetpackMonitorEmailNotifications`, `jetpackMonitorPushNotifications`, 
-    `jetpackBlockMaliciousLoginAttempts`, `jetpackSSOEnabled`, `jetpackSSOMatchAccountsByEmail`, 
+- `BlogSettings` added the following Jetpack security settings properties:
+    `jetpackMonitorEnabled`, `jetpackMonitorEmailNotifications`, `jetpackMonitorPushNotifications`,
+    `jetpackBlockMaliciousLoginAttempts`, `jetpackSSOEnabled`, `jetpackSSOMatchAccountsByEmail`,
     `jetpackSSORequireTwoStepAuthentication` boolean, default `NO` and
     `jetpackLoginWhiteListedIPAddresses` string set property.
 
@@ -174,7 +178,7 @@ data model as well as any custom migrations.
 - @jleandroperez 2016-04-22
  - `Blog` added transformable `capabilities`.
 
-## WordPress 48 
+## WordPress 48
 
 - @sergioestevao 2016-04-05
  - `Media` added new integer attribute `postID` to store the post to where the media is attached to.
@@ -195,11 +199,11 @@ data model as well as any custom migrations.
 ## WordPress 46 (@aerych 2016-01-29)
 
 - `BlogSettings` added string `sharingButtonStyle`. Stores style to use for sharing buttons.
-- `BlogSettings` added string `sharingLabel`. Stores the text to show in the sharing label. 
+- `BlogSettings` added string `sharingLabel`. Stores the text to show in the sharing label.
 - `BlogSettings` added string `sharingTwitterName`. Stores the username used when sharing to Twitter.
 - `BlogSettings` added bool `sharingCommentLikesEnabled`. Whether comments display a like button.
-- `BlogSettings` added bool `sharingDisabledLikes`.  Whether posts display a like button. 
-- `BlogSettings` added bool `sharingDisabledReblogs`. Whether posts display a reblog button. 
+- `BlogSettings` added bool `sharingDisabledLikes`.  Whether posts display a like button.
+- `BlogSettings` added bool `sharingDisabledReblogs`. Whether posts display a reblog button.
 - `BlogSettings` added integer `languageID`. Stores the Blog's Language ID.
 - Added `SharingButton` entity. Represents a buton for sharing content to a third-party service.
 - `Blog` added new relationship `sharingButtons`. An unordered set of `ShareButton`s for the blog.
@@ -304,7 +308,7 @@ Changes to the data model:
 
 - `Blog` added a new attribute called `blogTagline` to store the tagline of a site
 - `Abstract Post` se the default value for `metaPublishImmediately` attribute to yes
-- `BasePost` set the default value for the `status` attribute to "publish" 
+- `BasePost` set the default value for the `status` attribute to "publish"
 - `Account` added a `displayName` attribute (@koke)
 
 ## WordPress 35 (@sergioestevao 2015-07-08)

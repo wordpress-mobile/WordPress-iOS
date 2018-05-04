@@ -523,7 +523,7 @@ extension ShareExtensionEditorViewController {
             return
         }
 
-        var identifiers = [FormattingIdentifier]()
+        var identifiers = Set<FormattingIdentifier>()
 
         if richTextView.selectedRange.length > 0 {
             identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
@@ -567,6 +567,8 @@ extension ShareExtensionEditorViewController {
                 break  // Not used here
             case .sourcecode:
                 break // Not used here
+            case .code:
+                toggleCode()
             }
 
             updateFormatBar()
@@ -575,6 +577,10 @@ extension ShareExtensionEditorViewController {
 
     @objc func toggleBold() {
         richTextView.toggleBold(range: richTextView.selectedRange)
+    }
+
+    @objc func toggleCode() {
+        richTextView.toggleCode(range: richTextView.selectedRange)
     }
 
     @objc func toggleItalic() {
@@ -632,7 +638,7 @@ extension ShareExtensionEditorViewController {
 
 
     func listTypeForSelectedText() -> TextList.Style? {
-        var identifiers = [FormattingIdentifier]()
+        var identifiers = Set<FormattingIdentifier>()
         if richTextView.selectedRange.length > 0 {
             identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
         } else {
@@ -788,7 +794,7 @@ extension ShareExtensionEditorViewController {
     }
 
     func headerLevelForSelectedText() -> Header.HeaderType {
-        var identifiers = [FormattingIdentifier]()
+        var identifiers = Set<FormattingIdentifier>()
         if richTextView.selectedRange.length > 0 {
             identifiers = richTextView.formatIdentifiersSpanningRange(richTextView.selectedRange)
         } else {
