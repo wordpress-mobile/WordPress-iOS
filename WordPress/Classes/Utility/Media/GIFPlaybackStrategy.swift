@@ -32,7 +32,7 @@ public protocol GIFPlaybackStrategy {
 extension GIFPlaybackStrategy {
     func verifyDataSize(_ data: Data) -> Bool {
         guard data.count <= maxSize else {
-            DDLogWarn("⚠️ Maximum GIF data size exceeded \(maxSize) with \(data.count)")
+            DDLogDebug("⚠️ Maximum GIF data size exceeded \(maxSize) with \(data.count)")
             return false
         }
         return true
@@ -40,7 +40,7 @@ extension GIFPlaybackStrategy {
 
     func verifyNumberOfFrames(_ frames: Int) -> Bool {
         guard frames <= maxNumberOfFrames else {
-            DDLogWarn("⚠️ Maximum number of GIF frames exceeded \(maxNumberOfFrames) with \(frames)")
+            DDLogDebug("⚠️ Maximum number of GIF frames exceeded \(maxNumberOfFrames) with \(frames)")
             return false
         }
         return true
