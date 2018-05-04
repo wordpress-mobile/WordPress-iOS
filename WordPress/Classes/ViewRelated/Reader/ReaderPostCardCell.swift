@@ -345,6 +345,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         // Always clear the previous image so there is no stale or unexpected image
         // momentarily visible.
         featuredImageView.image = nil
+        featuredImageView.prepForReuse()
 
         featuredImageView.isHidden = false
         currentLoadedCardImageURL = featuredImageURL.absoluteString

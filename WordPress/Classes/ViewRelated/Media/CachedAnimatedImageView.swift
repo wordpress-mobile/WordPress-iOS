@@ -13,6 +13,7 @@ import Gifu
 public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     @objc var currentTask: URLSessionTask?
+    public var gifCheck: GIFDownloadStrategy = MediumGIFDownloadStrategy()
 
     public lazy var animator: Gifu.Animator? = {
         return Gifu.Animator(withDelegate: self)
@@ -32,7 +33,7 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
         }
 
         let successBlock: (Data) -> Void = { [weak self] animatedImageData in
-            guard let strongSelf = self, strongSelf.sanityCheckGifDataSize(animatedImageData) else {
+            guard let strongSelf = self, strongSelf.gifCheck.verifyDataSize(animatedImageData) else {
                 // FIXME: default to static image if something goes wrong with the sanity check
                 return
             }
@@ -51,26 +52,6 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     @objc func prepForReuse() {
         self.prepareForReuse()
-    }
-}
-
-// MARK: - CachedAnimatedImageView: Private Helpers
-
-private extension CachedAnimatedImageView {
-    func sanityCheckGifDataSize(_ data: Data) -> Bool {
-        let animatedMaxSize = Settings.animatedMaxFileSize
-        guard data.count <= animatedMaxSize else {
-            return false
-        }
-        return true
-    }
-}
-
-// MARK: - CachedAnimatedImageView: Private Internal Constants
-
-private extension CachedAnimatedImageView {
-    enum Settings {
-        static let animatedMaxFileSize = 20_000_000  // in MB
     }
 }
 
