@@ -43,6 +43,8 @@ final class SaveForLaterAction: PostAction {
 
     private func remove(_ post: ReaderPost, context: NSManagedObjectContext) {
         let savedForLaterService = MockSaveForLaterService()
-        savedForLaterService.remove(post)
+        if let postId = post.postID {
+            savedForLaterService.remove(postId)
+        }
     }
 }

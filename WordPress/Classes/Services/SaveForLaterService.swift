@@ -1,6 +1,6 @@
 protocol SaveForLaterService {
     func add(_ post: ReaderSavedForLaterPost)
-    func remove(_ post: ReaderPost)
+    func remove(_ postId: NSNumber)
     func all() -> [ReaderSavedForLaterPost]
 }
 
@@ -17,7 +17,7 @@ final class MockSaveForLaterService: SaveForLaterService {
         commit(post)
     }
 
-    func remove(_ post: ReaderPost) {
+    func remove(_ postId: NSNumber) {
         //1.- Fetch ReaderSavedForLaterPost from cd store
         //2.- Remove it
     }
