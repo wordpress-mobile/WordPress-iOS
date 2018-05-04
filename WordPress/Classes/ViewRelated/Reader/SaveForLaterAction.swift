@@ -16,11 +16,13 @@ final class SaveForLaterAction: PostAction {
 
     func execute(with post: ReaderPost, context: NSManagedObjectContext ) {
         toggleSavedForLater(post, context: context)
+        //Should be presented only after save is successfull.
         presentNotice()
     }
 
     private func presentNotice() {
         let notice = Notice(title: Strings.postSaved,
+                            feedbackType: .success,
                             actionTitle: Strings.viewAll,
                             actionHandler: {
                                 self.showAll()
