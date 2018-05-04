@@ -839,6 +839,10 @@ import WordPressFlux
                                         })
     }
 
+    fileprivate func toggleSavedForLater(for post: ReaderPost) {
+
+    }
+
     fileprivate func visitSiteForPost(_ post: ReaderPost) {
         guard
             let permalink = post.permaLink,
@@ -1631,7 +1635,7 @@ extension ReaderStreamViewController: ReaderPostCellDelegate {
         guard let post = provider as? ReaderPost else {
             return
         }
-        //visitSiteForPost(post)
+        toggleSavedForLater(for: post)
     }
 
     public func readerCell(_ cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider) {
