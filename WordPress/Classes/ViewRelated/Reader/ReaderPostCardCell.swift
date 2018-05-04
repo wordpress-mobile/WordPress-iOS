@@ -139,7 +139,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         applyOpaqueBackgroundColors()
         setupFeaturedImageView()
         setupVisitButton()
-        setupShareButton()
+        setupSaveForLaterButton()
         setupMenuButton()
         setupSummaryLabel()
         setupAttributionView()
@@ -198,7 +198,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         visitButton.setImage(highlightIcon, for: .highlighted)
     }
 
-    fileprivate func setupShareButton() {
+    fileprivate func setupSaveForLaterButton() {
         let size = CGSize(width: 20, height: 20)
         let icon = Gridicon.iconOfType(.share, withSize: size)
         let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
