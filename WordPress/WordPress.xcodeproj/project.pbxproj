@@ -842,7 +842,6 @@
 		D800D87820999B6D00E7C7E5 /* LikedMenuItemCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800D87720999B6D00E7C7E5 /* LikedMenuItemCreatorTests.swift */; };
 		D800D87A20999C0500E7C7E5 /* OtherMenuItemCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800D87920999C0500E7C7E5 /* OtherMenuItemCreatorTests.swift */; };
 		D800D87C20999CA200E7C7E5 /* SearchMenuItemCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800D87B20999CA200E7C7E5 /* SearchMenuItemCreatorTests.swift */; };
-		D800D882209ABB2600E7C7E5 /* ReaderStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800D881209ABB2600E7C7E5 /* ReaderStrings.swift */; };
 		D8071631203DA23700B32FD9 /* Accessible.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8071630203DA23700B32FD9 /* Accessible.swift */; };
 		D809E686203F0215001AA0DE /* ReaderPostCardCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D809E685203F0215001AA0DE /* ReaderPostCardCellTests.swift */; };
 		D80BC79C207464D200614A59 /* MediaLibraryMediaPickingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80BC79B207464D200614A59 /* MediaLibraryMediaPickingCoordinator.swift */; };
@@ -2353,7 +2352,6 @@
 		D800D87720999B6D00E7C7E5 /* LikedMenuItemCreatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedMenuItemCreatorTests.swift; sourceTree = "<group>"; };
 		D800D87920999C0500E7C7E5 /* OtherMenuItemCreatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherMenuItemCreatorTests.swift; sourceTree = "<group>"; };
 		D800D87B20999CA200E7C7E5 /* SearchMenuItemCreatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMenuItemCreatorTests.swift; sourceTree = "<group>"; };
-		D800D881209ABB2600E7C7E5 /* ReaderStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderStrings.swift; sourceTree = "<group>"; };
 		D8071630203DA23700B32FD9 /* Accessible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Accessible.swift; sourceTree = "<group>"; };
 		D809E685203F0215001AA0DE /* ReaderPostCardCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderPostCardCellTests.swift; sourceTree = "<group>"; };
 		D80BC79B207464D200614A59 /* MediaLibraryMediaPickingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaLibraryMediaPickingCoordinator.swift; sourceTree = "<group>"; };
@@ -5509,7 +5507,6 @@
 				D800D86B20997EB400E7C7E5 /* OtherMenuItemCreator.swift */,
 				D800D86D2099857000E7C7E5 /* SearchMenuItemCreator.swift */,
 				D800D86F20998A7300E7C7E5 /* SavedForLaterMenuItemCreator.swift */,
-				D800D881209ABB2600E7C7E5 /* ReaderStrings.swift */,
 			);
 			name = ReaderMenuItems;
 			sourceTree = "<group>";
@@ -7141,7 +7138,6 @@
 				5D2C05561AD2F56200A753FE /* NavBarTitleDropdownButton.m in Sources */,
 				FF0F722C206E5345000DAAB5 /* PostService+RefreshStatus.swift in Sources */,
 				98EDB5FB2016627C00E2D25A /* SiteCreationCreateSiteViewController.swift in Sources */,
-				D800D882209ABB2600E7C7E5 /* ReaderStrings.swift in Sources */,
 				8236EB4B20248FF1007C7CF9 /* JetpackSpeedUpSiteSettingsViewController.swift in Sources */,
 				E66969DC1B9E55C300EC9C00 /* ReaderTopicToReaderListTopic37to38.swift in Sources */,
 				B5AB733D19901F85005F5044 /* WPNoResultsView+AnimatedBox.m in Sources */,
