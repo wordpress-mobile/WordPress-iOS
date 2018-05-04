@@ -23,10 +23,14 @@ final class SaveForLaterAction: PostAction {
         let notice = Notice(title: Strings.postSaved,
                             actionTitle: Strings.viewAll,
                             actionHandler: {
-                                print("Howdy!")
+                                self.showAll()
         })
 
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    private func showAll() {
+        //Navigate to all saved for later
     }
 
     private func toggleSavedForLater(_ post: ReaderPost, context: NSManagedObjectContext) {
