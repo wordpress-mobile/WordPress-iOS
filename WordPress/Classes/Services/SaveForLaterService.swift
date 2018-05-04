@@ -1,13 +1,7 @@
 protocol SaveForLaterService {
-    func add(_ post: ReaderPost)
+    func add(_ post: ReaderSavedForLaterPost)
     func remove(_ post: ReaderPost)
     func all() -> [ReaderSavedForLaterPost]
-}
-
-fileprivate final class ReaderPostSerialiser {
-    func serialize(post: ReaderPost) -> ReaderSavedForLaterPost {
-        return ReaderSavedForLaterPost()
-    }
 }
 
 // MARK: - Mock. We make all the posts marked as saved for later just to keep going. This will be a property in the coredata model
@@ -19,11 +13,8 @@ extension ReaderPost {
 }
 
 final class MockSaveForLaterService: SaveForLaterService {
-    private let serialiser = ReaderPostSerialiser()
-
-    func add(_ post: ReaderPost) {
-        let serialisedPost = serialiser.serialize(post: post)
-        commit(serialisedPost)
+    func add(_ post: ReaderSavedForLaterPost) {
+        commit(post)
     }
 
     func remove(_ post: ReaderPost) {
