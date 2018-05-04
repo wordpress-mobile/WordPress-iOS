@@ -1,10 +1,20 @@
 import WordPressFlux
 
+
+// MARK: - Mock extension. Will have to be removed when the coredata entity is updated. Marked as deprecated so it triggers a warning and we don't forget to remove it
+extension ReaderPost {
+    @available(*, deprecated)
+    func isSavedForLater() -> Bool {
+        return true
+    }
+}
+
 final class SaveForLaterAction: PostAction {
     private struct Strings {
         static let postSaved = NSLocalizedString("Post saved.", comment: "Title of the notification presented in Reader when a post is saved for later")
         static let viewAll = NSLocalizedString("View All", comment: "Button in the notification presented in Reader when a post is saved for later")
-        static let toggleError = NSLocalizedString("Could not unfollow site", comment: "Title of a prompt.")
+        static let addToSavedError = NSLocalizedString("Could not save post for later", comment: "Title of a prompt.")
+        static let removeFromSavedError = NSLocalizedString("Could not remove post from Saved for Later", comment: "Title of a prompt.")
     }
 
     func execute(with post: ReaderPost, context: NSManagedObjectContext ) {
@@ -16,7 +26,7 @@ final class SaveForLaterAction: PostAction {
         readerPostService.toggleSavedForLater(for: post, success: { [weak self] in
                 self?.presentSuccessNotice()
         }, failure: { [weak self] error in
-            self?.presentErrorNotice(error)
+            self?.presentErrorNotice(error, activating: !post.isSavedForLater())
         })
     }
 
@@ -31,9 +41,12 @@ final class SaveForLaterAction: PostAction {
         post(notice)
     }
 
-    private func presentErrorNotice(_ error: Error?) {
+    private func presentErrorNotice(_ error: Error?, activating: Bool) {
         DDLogError("Could not toggle save for later: \(String(describing: error))")
-        let notice = Notice(title: Strings.toggleError,
+
+        let title = activating ? Strings.addToSavedError : Strings.removeFromSavedError
+
+        let notice = Notice(title: title,
                             message: error?.localizedDescription,
                             feedbackType: .error)
 
