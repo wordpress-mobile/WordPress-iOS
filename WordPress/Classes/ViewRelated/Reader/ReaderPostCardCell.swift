@@ -345,12 +345,13 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         // Always clear the previous image so there is no stale or unexpected image
         // momentarily visible.
         featuredImageView.image = nil
-        featuredImageView.prepForReuse()
 
         featuredImageView.isHidden = false
         currentLoadedCardImageURL = featuredImageURL.absoluteString
+        featuredImageDesiredWidth = featuredImageView.frame.width
+        let size = CGSize(width: featuredImageDesiredWidth, height: featuredMediaHeightConstraintConstant)
         let postInfo = ReaderCardContent(provider: content)
-        imageLoader.loadImage(with: featuredImageURL, from: postInfo)
+        imageLoader.loadImage(with: featuredImageURL, from: postInfo, preferedSize: size)
     }
 
     fileprivate func configureTitle() {
