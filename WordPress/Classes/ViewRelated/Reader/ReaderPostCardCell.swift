@@ -331,7 +331,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
 
         featuredImageView.layoutIfNeeded()
-        if (featuredImageView.image == nil || featuredImageView.animationImages == nil) || featuredImageDesiredWidth != featuredImageView.frame.size.width || featuredImageURL.absoluteString != currentLoadedCardImageURL {
+        if (featuredImageView.image == nil && featuredImageView.animationImages == nil) || featuredImageDesiredWidth != featuredImageView.frame.size.width || featuredImageURL.absoluteString != currentLoadedCardImageURL {
             configureFeaturedImage(featuredImageURL)
         }
     }
@@ -342,7 +342,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
         // Always clear the previous image so there is no stale or unexpected image
         // momentarily visible.
-        imageLoader.prepareForReuse()
+        featuredImageView.animationImages = nil
+        featuredImageView.image = nil
 
         featuredImageView.isHidden = false
         currentLoadedCardImageURL = featuredImageURL.absoluteString

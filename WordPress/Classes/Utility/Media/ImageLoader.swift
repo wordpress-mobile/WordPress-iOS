@@ -31,7 +31,6 @@
     /// Call this in a table/collection cell's `prepareForReuse()`.
     ///
     @objc func prepareForReuse() {
-        imageView.image = nil
         imageView.prepForReuse()
     }
 
