@@ -10,6 +10,13 @@ fileprivate final class ReaderPostSerialiser {
     }
 }
 
+// MARK: - Mock. We make all the posts marked as saved for later just to keep going. This will be a property in the coredata model
+extension ReaderPost {
+    @available(*, deprecated: 1.0, message: "will soon become unavailable.")
+    func isSavedForLater() -> Bool {
+        return true
+    }
+}
 
 final class MockSaveForLaterService: SaveForLaterService {
     private let serialiser = ReaderPostSerialiser()
