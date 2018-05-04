@@ -13,7 +13,8 @@ import Gifu
 public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     @objc var currentTask: URLSessionTask?
-    public var gifPlaybackStrategy: GIFPlaybackStrategy = MediumGIFPlaybackStrategy()
+    var originalURLRequest: URLRequest?
+    var gifPlaybackStrategy: GIFPlaybackStrategy = MediumGIFPlaybackStrategy()
 
     public lazy var animator: Gifu.Animator? = {
         return Gifu.Animator(withDelegate: self)
@@ -41,10 +42,11 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
                 strongSelf.showGif(with: animatedImageData, completionHandler: success)
             } else {
                 // The file size is too big, let's just show a static image instead
-                strongSelf.showStaticImage(with: animatedImageData, completionHandler: success)
+                strongSelf.showStaticImage(completionHandler: success)
             }
         }
 
+        originalURLRequest = urlRequest
         currentTask = AnimatedImageCache.shared.animatedImage(urlRequest,
                                                               placeholderImage: placeholderImage,
                                                               success: successBlock,
@@ -55,11 +57,18 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
         prepareForReuse()
     }
 
-    private func showStaticImage(with data: Data, completionHandler: (() -> Void)? = nil) {
-        DispatchQueue.main.async(execute: {
-            // Set as a static image
-            self.image = UIImage(data: data)
+    private func showStaticImage(completionHandler: (() -> Void)? = nil) {
+        guard let request = originalURLRequest else {
             completionHandler?()
+            return
+        }
+
+        DispatchQueue.main.async(execute: {
+            // Set as a static image (using AFNetworking's cache)
+            self.setImageWith(request, placeholderImage: nil, success: { (_, _, image) in
+                self.image = image
+                completionHandler?()
+            }, failure: nil)
         })
     }
 
@@ -76,7 +85,7 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
                     /// are simply showing a static image instead.
                     // See: https://github.com/kaishin/Gifu/issues/123
                     //
-                    self.showStaticImage(with: data, completionHandler: completionHandler)
+                    self.showStaticImage(completionHandler: completionHandler)
                 }
             })
         })
