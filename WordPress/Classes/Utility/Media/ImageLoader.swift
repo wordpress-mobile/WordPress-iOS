@@ -131,7 +131,9 @@
     /// Downloads the image from the given URL Request.
     ///
     private func downloadImage(from request: URLRequest) {
-        imageView.setImageWith(request, placeholderImage: placeholder, success: { [weak self] (_, _, _) in
+        imageView.setImageWith(request, placeholderImage: placeholder, success: { [weak self] (_, _, image) in
+            // Since a success block is specified, we need to set the image manually.
+            self?.imageView.image = image
             self?.successHandler?()
         }) { [weak self] (_, _, error) in
             self?.errorHandler?(error)
