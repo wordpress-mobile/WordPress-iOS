@@ -371,6 +371,13 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 }
 
+- (void)toggleSavedForLaterForPost:(ReaderPost *)post
+                           success:(void (^)(void))success
+                           failure:(void (^)(NSError *error))failure
+{
+    
+}
+
 - (void)deletePostsWithNoTopic
 {
     NSError *error;
