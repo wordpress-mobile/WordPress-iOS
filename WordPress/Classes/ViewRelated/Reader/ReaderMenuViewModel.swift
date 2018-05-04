@@ -83,6 +83,28 @@ struct ReaderMenuItem {
     }
 }
 
+extension ReaderMenuItem: Comparable {
+    static func == (lhs: ReaderMenuItem, rhs: ReaderMenuItem) -> Bool {
+        return lhs.order == rhs.order && lhs.title == rhs.title
+    }
+
+    static func < (lhs: ReaderMenuItem, rhs: ReaderMenuItem) -> Bool {
+        if lhs.order < rhs.order {
+            return true
+        }
+
+        if lhs.order > rhs.order {
+            return false
+        }
+
+        if lhs.title < rhs.title {
+            return true
+        }
+
+        return false
+    }
+}
+
 
 /// Protocol allowing a reader menu view model to notify content changes.
 ///
@@ -110,6 +132,7 @@ enum ReaderDefaultMenuItemOrder: Int {
     case search
     case recommendations
     case likes
+    case savedForLater
     case other
 }
 
@@ -126,16 +149,20 @@ enum ReaderDefaultMenuItemOrder: Int {
     var defaultSectionItems = [ReaderMenuItem]()
     weak var delegate: ReaderMenuViewModelDelegate?
 
+    private let sectionCreators: [ReaderMenuItemCreator]
+
+    private enum Strings {
+        static let savedForLaterMenuTitle = NSLocalizedString("Saved Posts", comment: "Section title for Saved Posts in Reader")
+    }
 
     // MARK: - Lifecycle Methods
-
-
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
 
 
-    override init() {
+    init(sectionCreators: [ReaderMenuItemCreator]) {
+        self.sectionCreators = sectionCreators
         super.init()
         listenForWordPressAccountChanged()
         setupResultsControllers()
@@ -234,53 +261,42 @@ enum ReaderDefaultMenuItemOrder: Int {
                     continue
                 }
 
-                var item = ReaderMenuItem(title: abstractTopic.title, type: .topic, icon: nil, topic: abstractTopic)
-                if ReaderHelpers.topicIsFollowing(abstractTopic) {
-                    item.order = ReaderDefaultMenuItemOrder.followed.rawValue
-                    item.icon = Gridicon.iconOfType(.checkmarkCircle)
-                } else if ReaderHelpers.topicIsDiscover(abstractTopic) {
-                    item.order = ReaderDefaultMenuItemOrder.discover.rawValue
-                    item.icon = Gridicon.iconOfType(.mySites)
-                } else if ReaderHelpers.topicIsLiked(abstractTopic) {
-                    item.order = ReaderDefaultMenuItemOrder.likes.rawValue
-                    item.icon = Gridicon.iconOfType(.star)
-                } else {
-                    item.order = ReaderDefaultMenuItemOrder.other.rawValue
-                }
+                let item = sectionCreator(for: abstractTopic).menuItem(with: abstractTopic)
+
                 defaultSectionItems.append(item)
             }
         }
 
-        // Create a menu item for search
-        var searchItem = searchMenuItem()
-        searchItem.order = ReaderDefaultMenuItemOrder.search.rawValue
-        searchItem.icon = Gridicon.iconOfType(.search)
-        defaultSectionItems.append(searchItem)
+        // Append a menu item for search
+        defaultSectionItems.append(searchMenuItem())
 
-        // Sort the items into the desired order.
-        defaultSectionItems.sort { (menuItem1, menuItem2) -> Bool in
-            if menuItem1.order < menuItem2.order {
-                return true
-            }
+        // To be removed as soon as the topic is provided by the coredata store. This is here just to prove visually that the view model can handle this topic
+        if FeatureFlag.saveForLater.enabled {
+            let topic = ReaderSaveForLaterTopic()
+            topic.title = Strings.savedForLaterMenuTitle
+            topic.path = "/mock"
+            let menuItem = sectionCreator(for: topic).menuItem(with: topic)
 
-            if menuItem1.order > menuItem2.order {
-                return false
-            }
-
-            if menuItem1.title < menuItem2.title {
-                return true
-            }
-
-            return false
+            defaultSectionItems.append(menuItem)
         }
+
+        // Sort the items ascending.
+        defaultSectionItems.sort(by: <)
     }
 
+
+    /// Selects and returns the entity responsible for creating a menu item for a given topic
+    ///
+    private func sectionCreator(for topic: ReaderAbstractTopic) -> ReaderMenuItemCreator {
+        return sectionCreators.filter {
+            $0.supports(topic)
+            }.first ?? OtherMenuItemCreator()
+    }
 
     /// Returns the menu item to use for the reader search
     ///
     func searchMenuItem() -> ReaderMenuItem {
-        let title = NSLocalizedString("Search", comment: "Title of the reader's Search menu item.")
-        return ReaderMenuItem(title: title, type: .search)
+        return SearchMenuItemCreator().menuItem()
     }
 
 
