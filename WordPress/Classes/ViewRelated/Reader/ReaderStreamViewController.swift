@@ -840,7 +840,7 @@ import WordPressFlux
     }
 
     fileprivate func toggleSavedForLater(for post: ReaderPost) {
-
+        SaveForLaterAction().execute(with: post)
     }
 
     fileprivate func visitSiteForPost(_ post: ReaderPost) {
