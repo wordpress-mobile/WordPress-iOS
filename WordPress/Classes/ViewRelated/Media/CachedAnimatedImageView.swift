@@ -37,7 +37,6 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
                 return
             }
 
-            strongSelf.prepForReuse()
             if strongSelf.downloadStrategy.verifyDataSize(animatedImageData) {
                 strongSelf.showGif(with: animatedImageData, completionHandler: success)
             } else {
@@ -77,7 +76,6 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
                     /// are simply showing a static image instead.
                     // See: https://github.com/kaishin/Gifu/issues/123
                     //
-                    self.prepForReuse()
                     self.showStaticImage(with: data, completionHandler: completionHandler)
                 }
             })
