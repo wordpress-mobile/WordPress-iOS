@@ -181,6 +181,9 @@ function doBranching() {
         git checkout $releaseBranch >> $logFile 2>&1 || stopOnError
     else
         git checkout -b $releaseBranch >> $logFile 2>&1 || stopOnError
+
+        # Push to origin
+        git push -u origin $releaseBranch >> $logFile 2>&1 || stopOnError
     fi 
 }
 
