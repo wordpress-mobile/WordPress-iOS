@@ -80,7 +80,7 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
     }
 
     deinit {
-//        stopListeningToNotifications()
+        stopListeningToNotifications()
     }
 
     override func viewDidLoad() {
@@ -89,6 +89,8 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
         setupData()
         setupTitle()
         setupTableView()
+
+        startListeningToNotifications()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -212,6 +214,21 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
         return cell
     }
 
+    private func startListeningToNotifications() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(followingSiteStateToggled), name: NSNotification.Name(rawValue: ReaderPostServiceToggleSiteFollowingState), object: nil)
+    }
+
+    private func stopListeningToNotifications() {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    @objc func followingSiteStateToggled() {
+        if let siteTopic = service.findSiteTopic(withSiteID: NSNumber(value: siteId)), !siteTopic.following {
+            popViewController()
+        }
+    }
+
 
     // MARK: - Table view data source
 
@@ -232,11 +249,8 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
         let row = section.rows[indexPath.row]
 
         switch row.kind {
-        case .checkmark:
-            return checkmarkCell(for: section, row: row, at: indexPath)
-
-        case .setting:
-            return switchCell(for: section, row: row, at: indexPath)
+        case .checkmark: return checkmarkCell(for: section, row: row, at: indexPath)
+        case .setting: return switchCell(for: section, row: row, at: indexPath)
         }
     }
 
