@@ -25,7 +25,7 @@ extension UIViewController {
                             actionTitle: buttonTitle) {
                                 let context = ContextManager.sharedInstance().mainContext
                                 let service = ReaderTopicService(managedObjectContext: context)
-                                service.toggleSubscribingNotifications(for: siteID, subscribe: true)
+                                service.toggleSubscribingNotifications(for: siteID.intValue, subscribe: true)
         }
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
