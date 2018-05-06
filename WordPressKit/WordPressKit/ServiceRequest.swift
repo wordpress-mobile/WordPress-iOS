@@ -24,17 +24,6 @@ enum ReaderTopicServiceSubscriptionsRequest {
     case notifications(siteId: NSNumber, action: ServiceRequestAction)
     case postsEmail(siteId: NSNumber, action: ServiceRequestAction)
     case comments(siteId: NSNumber, action: ServiceRequestAction)
-    
-    
-    // MARK: Private methods
-    
-    /// Private method to build a base URL string
-    ///
-    /// - Parameter siteId: A site id
-    /// - Returns: A valid base URL string
-    private func baseUrlPath(with siteId: NSNumber) -> String {
-        return "read/sites/\(siteId.stringValue)/"
-    }
 }
 
 
@@ -50,13 +39,13 @@ extension ReaderTopicServiceSubscriptionsRequest: ServiceRequest {
     var path: String {
         switch self {
         case .notifications(let siteId, let action):
-            return baseUrlPath(with: siteId) + "notification-subscriptions/\(action.rawValue)/"
+            return "read/sites/\(siteId.stringValue)/notification-subscriptions/\(action.rawValue)/"
             
         case .postsEmail(let siteId, let action):
-            return baseUrlPath(with: siteId) + "post_email_subscriptions/\(action.rawValue)/"
+            return "read/site/\(siteId.stringValue)/post_email_subscriptions/\(action.rawValue)/"
             
         case .comments(let siteId, let action):
-            return baseUrlPath(with: siteId) + "comment_email_subscriptions/\(action.rawValue)/"
+            return "read/site/\(siteId.stringValue)/comment_email_subscriptions/\(action.rawValue)/"
         }
     }
 }
