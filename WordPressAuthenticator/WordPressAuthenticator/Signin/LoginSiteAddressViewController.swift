@@ -160,11 +160,11 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
 
             let err = strongSelf.originalErrorOrError(error: error as NSError)
 
-            if let xmlrpcValidatorError = err as? WordPressOrgXMLRPCValidatorError {
-                strongSelf.displayError(message: xmlrpcValidatorError.localizedDescription)
-
-            } else if strongSelf.errorDiscoveringJetpackSite(error: err) {
+            if strongSelf.errorDiscoveringJetpackSite(error: err) {
                 strongSelf.displayError(error as NSError, sourceTag: .jetpackLogin)
+
+            } else if let xmlrpcValidatorError = err as? WordPressOrgXMLRPCValidatorError {
+                strongSelf.displayError(message: xmlrpcValidatorError.localizedDescription)
 
             } else if (err.domain == NSURLErrorDomain && err.code == NSURLErrorCannotFindHost) ||
                 (err.domain == NSURLErrorDomain && err.code == NSURLErrorNetworkConnectionLost) {
