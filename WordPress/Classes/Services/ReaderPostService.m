@@ -21,6 +21,7 @@ NSUInteger const ReaderPostServiceNumberToSyncForSearch = 10;
 NSUInteger const ReaderPostServiceMaxSearchPosts = 200;
 NSUInteger const ReaderPostServiceMaxPosts = 300;
 NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
+NSString * const ReaderPostServiceToggleSiteFollowingState = @"kReaderPostServiceToggleSiteFollowingState";
 
 static NSString * const ReaderPostGlobalIDKey = @"globalID";
 static NSString * const SourceAttributionSiteTaxonomy = @"site-pick";
@@ -337,6 +338,11 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         if (success) {
             success();
         }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //Notifiy Settings view controller a site's following state has changed
+            [[NSNotificationCenter defaultCenter] postNotificationName:ReaderPostServiceToggleSiteFollowingState object:nil];
+        });
     };
 
     // Define failure block

@@ -5,6 +5,7 @@
 @class ReaderAbstractTopic;
 
 extern NSString * const ReaderPostServiceErrorDomain;
+extern NSString * const ReaderPostServiceToggleSiteFollowingState;
 
 @interface ReaderPostService : LocalCoreDataService
 
