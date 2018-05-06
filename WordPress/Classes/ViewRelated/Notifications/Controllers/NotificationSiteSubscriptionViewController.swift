@@ -93,12 +93,6 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
         startListeningToNotifications()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        saveSettingsIfNeeded()
-    }
-
 
     // MARK: - Private methods
 
@@ -154,13 +148,16 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
             switch section.type {
             case .posts:
                 self?.siteSubscription.postsNotification = newValue
+                self?.service.toggleSubscribingNotifications(for: self?.siteId, subscribe: newValue)
 
             case .emails:
                 self?.siteSubscription.emailsNotification = newValue
                 self?.reloadData(at: index.section, animation: .fade)
+                self?.service.toggleSubscribingEmail(for: self?.siteId, subscribe: newValue)
 
             case .comments:
                 self?.siteSubscription.commentsNotification = newValue
+                self?.service.toggleSubscribingComments(for: self?.siteId, subscribe: newValue)
             }
         }
         return cell
@@ -176,34 +173,6 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
     private func reloadData(at section: Int, animation: UITableViewRowAnimation = .none) {
         let sections = IndexSet(integer: section)
         tableView.reloadSections(sections, with: animation)
-    }
-
-    private func saveSettingsIfNeeded() {
-//        service.updateSettings(settings!,
-//                               stream: stream!,
-//                               newValues: newValues,
-//                               success: {
-//                                WPAnalytics.track(.notificationsSettingsUpdated, withProperties: ["success": true])
-//        },
-//                               failure: { (error: Error?) in
-//                                WPAnalytics.track(.notificationsSettingsUpdated, withProperties: ["success": false])
-//                                self.handleUpdateError()
-//        })
-    }
-
-    private func handleUpdateError() {
-        let title = NSLocalizedString("Oops!", comment: "")
-        let message = NSLocalizedString("There has been an unexpected error while updating your followed sites Notification Settings",
-                                            comment: "Displayed after a failed Notification Settings call")
-        let cancelText = NSLocalizedString("Cancel", comment: "Cancel. Action.")
-        let retryText = NSLocalizedString("Retry", comment: "Retry. Action")
-
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(cancelText, handler: nil)
-        alertController.addDefaultActionWithTitle(retryText) { (action: UIAlertAction) in
-            self.saveSettingsIfNeeded()
-        }
-        alertController.presentFromRootViewController()
     }
 
     private func cell<T: UITableViewCell>(for tableView: UITableView, at indexPath: IndexPath, identifier: String) -> T {
@@ -254,6 +223,7 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
         }
     }
 
+
     // MARK: - Table view delegate
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -273,10 +243,15 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
 
         let section = sections[indexPath.section]
         let row = section.rows[indexPath.row]
+
+        guard let frequency = row.frequency else {
+            return
+        }
+
         if row.kind == .checkmark {
-            let row = section.rows[indexPath.row]
             siteSubscription.frequency = row.frequency
             reloadData(at: indexPath.section)
+            service.updateFrequencyPostsEmail(with: siteId, frequency: frequency)
         }
     }
 }
