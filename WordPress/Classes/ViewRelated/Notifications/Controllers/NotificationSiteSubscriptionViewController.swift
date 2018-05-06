@@ -225,7 +225,7 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
 
     @objc func followingSiteStateToggled() {
         if let siteTopic = service.findSiteTopic(withSiteID: NSNumber(value: siteId)), !siteTopic.following {
-            navigationController?.popViewController(animated: true)
+            navigationController?.popToRootViewController(animated: true)
         }
     }
 
