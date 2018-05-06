@@ -134,7 +134,7 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
     private func setupTableView() {
         // Register the cells
         tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: Row.Kind.setting.rawValue)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: Row.Kind.checkmark.rawValue)
+        tableView.register(CheckmarkTableViewCell.self, forCellReuseIdentifier: Row.Kind.checkmark.rawValue)
 
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
@@ -161,6 +161,13 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
                 self?.siteSubscription.commentsNotification = newValue
             }
         }
+        return cell
+    }
+
+    private func checkmarkCell(for section: Section, row: Row, at index: IndexPath) -> CheckmarkTableViewCell {
+        let cell: CheckmarkTableViewCell = self.cell(for: tableView, at: index, identifier: row.kind.rawValue)
+        cell.title = row.title
+        cell.on = siteSubscription.frequency == row.frequency
         return cell
     }
 
@@ -226,11 +233,7 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
 
         switch row.kind {
         case .checkmark:
-            let cell: UITableViewCell = self.cell(for: tableView, at: indexPath, identifier: row.kind.rawValue)
-            cell.accessoryType = siteSubscription.frequency == row.frequency ? .checkmark : .none
-            cell.textLabel?.text = row.title
-            WPStyleGuide.configureTableViewCell(cell)
-            return cell
+            return checkmarkCell(for: section, row: row, at: indexPath)
 
         case .setting:
             return switchCell(for: section, row: row, at: indexPath)
