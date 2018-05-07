@@ -307,7 +307,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 /// These getter and setter will be removed when the property is made dynamic, after the coredata model is updated
 - (BOOL)isSavedForLater
 {
-    return YES;
+    return NO;
 }
 
 - (void)setIsSavedForLater:(BOOL)isSavedForLater
