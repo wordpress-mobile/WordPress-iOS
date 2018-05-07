@@ -1,3 +1,4 @@
-Uploads zijn nu asynchroon!
-Pagina's waarvan upload mislukt is, worden rood gemarkeerd.
-Het invoerveld om reacties te schrijven kan nu groeien naar 5 regels.
+Gratis stockfoto's zijn nu beschikbaar in de app!
+Spotlight indexeert nu de voornaamste secties van de app!
+Jetpack instellen vanuit de app staat je toe een nieuw WP.com account direct aan te maken.
+Meervoudige selectie in de document picker ingeschakeld.

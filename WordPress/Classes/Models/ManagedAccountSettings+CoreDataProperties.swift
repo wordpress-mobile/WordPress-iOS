@@ -16,6 +16,7 @@ extension ManagedAccountSettings {
     @NSManaged var primarySiteID: NSNumber
     @NSManaged var webAddress: String
     @NSManaged var language: String
+    @NSManaged var tracksOptOut: Bool
 
     @NSManaged var account: WPAccount
 }
