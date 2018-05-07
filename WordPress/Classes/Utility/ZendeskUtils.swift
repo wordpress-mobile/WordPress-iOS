@@ -11,6 +11,8 @@ import CoreTelephony
 
     static var zendeskEnabled = false
 
+    private var sourceTag: SupportSourceTag?
+
     private var userName: String?
     private var userEmail: String?
     private var needToRegisterDevice = false
@@ -40,12 +42,14 @@ import CoreTelephony
         ZendeskUtils.toggleZendesk(enabled: true)
     }
 
-    func showHelpCenterIfPossible(from controller: UIViewController) {
+    func showHelpCenterIfPossible(from controller: UIViewController, withSourceTag sourceTag: SupportSourceTag? = nil) {
         ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
                 return
             }
+
+            self.sourceTag = sourceTag
 
             guard let helpCenterContentModel = ZDKHelpCenterOverviewContentModel.defaultContent() else {
                 DDLogInfo("Zendesk helpCenterContentModel creation failed.")
@@ -61,12 +65,14 @@ import CoreTelephony
         }
     }
 
-    func showNewRequestIfPossible(from controller: UIViewController) {
+    func showNewRequestIfPossible(from controller: UIViewController, withSourceTag sourceTag: SupportSourceTag? = nil) {
         ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
                 return
             }
+
+            self.sourceTag = sourceTag
 
             let presentInController = ZendeskUtils.configureViewController(controller)
             ZDKRequests.presentRequestCreation(with: presentInController)
@@ -75,12 +81,14 @@ import CoreTelephony
     }
 
 
-    func showTicketListIfPossible(from controller: UIViewController) {
+    func showTicketListIfPossible(from controller: UIViewController, withSourceTag sourceTag: SupportSourceTag? = nil) {
         ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
                 return
             }
+
+            self.sourceTag = sourceTag
 
             let presentInController = ZendeskUtils.configureViewController(controller)
             ZDKRequests.presentRequestList(with: presentInController)
@@ -377,6 +385,12 @@ private extension ZendeskUtils {
         let accountService = AccountService(managedObjectContext: context)
         if let _ = accountService.defaultWordPressComAccount() {
             tags.append(Constants.wpComTag)
+        }
+
+        // Add sourceTag
+        if let sourceTag = ZendeskUtils.sharedInstance.sourceTag {
+            tags.append(sourceTag.rawValue)
+
         }
 
         return tags
