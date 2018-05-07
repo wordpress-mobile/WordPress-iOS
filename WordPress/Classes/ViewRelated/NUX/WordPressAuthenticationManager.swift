@@ -1,4 +1,6 @@
 import Foundation
+import WordPressAuthenticator
+
 
 
 // MARK: - WordPressAuthenticationManager
@@ -98,9 +100,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         return true
     }
 
-    /// Indicates if Helpshift is Enabled.
+    /// Indicates if Support is Enabled.
     ///
-    var livechatActionEnabled: Bool {
+    var supportEnabled: Bool {
+        if FeatureFlag.zendeskMobile.enabled {
+            return ZendeskUtils.zendeskEnabled
+        }
         return HelpshiftUtils.isHelpshiftEnabled()
     }
 
@@ -141,15 +146,21 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         }
     }
 
-    /// Presents Helpshift, with the specified ViewController as a source. Additional metadata is supplied, such as the sourceTag and Login details.
+    /// Presents Support new request, with the specified ViewController as a source.
+    /// Additional metadata is supplied, such as the sourceTag and Login details.
     ///
-    func presentLivechat(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any]) {
-        let presenter = HelpshiftPresenter()
-        presenter.sourceTag = sourceTag.toSupportSourceTag()
-        presenter.optionsDictionary = options
-        presenter.presentHelpshiftConversationWindowFromViewController(sourceViewController,
-                                                                       refreshUserDetails: true,
-                                                                       completion: nil)
+    func presentSupportRequest(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any]) {
+
+        if FeatureFlag.zendeskMobile.enabled {
+            ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: sourceViewController)
+        } else {
+            let presenter = HelpshiftPresenter()
+            presenter.sourceTag = sourceTag.toSupportSourceTag()
+            presenter.optionsDictionary = options
+            presenter.presentHelpshiftConversationWindowFromViewController(sourceViewController,
+                                                                           refreshUserDetails: true,
+                                                                           completion: nil)
+        }
     }
 
     /// Presents the Login Epilogue, in the specified NavigationController.
@@ -201,9 +212,22 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         return true
     }
 
+    /// Whenever a WordPress.com acocunt has been created during the Auth flow, we'll add a new local WPCOM Account, and set it as
+    /// the new DefaultWordPressComAccount.
+    ///
+    func createdWordPressComAccount(username: String, authToken: String) {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+
+        let account = service.createOrUpdateAccount(withUsername: username, authToken: authToken)
+        if service.defaultWordPressComAccount() == nil {
+            service.setDefaultWordPressComAccount(account)
+        }
+    }
+
     /// Synchronizes the specified WordPress Account.
     ///
-    func sync(credentials: WordPressCredentials, onCompletion: @escaping (Error?) -> ()) {
+    func sync(credentials: WordPressCredentials, onCompletion: @escaping (Error?) -> Void) {
         switch credentials {
         case .wpcom(let username, let authToken, let isJetpackLogin, _):
             syncWPCom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin, onCompletion: onCompletion)

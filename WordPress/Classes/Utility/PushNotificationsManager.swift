@@ -65,11 +65,10 @@ final public class PushNotificationsManager: NSObject {
 
     /// Checks asynchronously if Notifications are enabled in the Device's Settings, or not.
     ///
-    @objc func loadAuthorizationStatus(completion: @escaping ((_ authorized: Bool) -> Void)) {
+    @objc func loadAuthorizationStatus(completion: @escaping ((_ authorized: UNAuthorizationStatus) -> Void)) {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             DispatchQueue.main.async {
-                let enabled = settings.authorizationStatus == .authorized
-                completion(enabled)
+                completion(settings.authorizationStatus)
             }
         }
     }

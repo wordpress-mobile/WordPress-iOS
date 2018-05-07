@@ -1,4 +1,6 @@
 import SVProgressHUD
+import WordPressAuthenticator
+
 
 class SignupEpilogueViewController: NUXViewController {
 
