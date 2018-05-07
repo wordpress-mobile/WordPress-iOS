@@ -41,6 +41,7 @@ final class StockPhotosPicker: NSObject {
         picker.startOnGroupSelector = false
         picker.showGroupSelector = false
         picker.dataSource = dataSource
+        picker.cancelButtonTitle = .closePicker
         return picker
     }()
 

@@ -2,6 +2,7 @@
 #import <XCTest/XCTest.h>
 
 #import "WordPressAppDelegate.h"
+#import "AccountService.h"
 #import "ApiCredentials.h"
 #import "WPAppAnalytics.h"
 #import "WPAnalyticsTrackerWPCom.h"
@@ -20,10 +21,11 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
 
 - (void)testInitializationWithWPComTracker
 {
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:WPAppAnalyticsDefaultsKeyUsageTracking];
-    
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:WPAppAnalyticsDefaultsUserOptedOut];
+
     id analyticsMock = [OCMockObject mockForClass:[WPAnalytics class]];
     id apiCredentialsMock = [OCMockObject mockForClass:[ApiCredentials class]];
+    id accountServiceMock = [OCMockObject mockForClass:[AccountService class]];
     
     OCMockInvocationBlock registerTrackerInvocationBlock = ^(NSInvocation *invocation) {
         __unsafe_unretained id<WPAnalyticsTracker> tracker = nil;
@@ -41,7 +43,8 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
         return @"TEST";
     };
     
-    XCTAssertNoThrow(analytics = [[WPAppAnalytics alloc] initWithLastVisibleScreenBlock:lastVisibleScreenCallback],
+    XCTAssertNoThrow(analytics = [[WPAppAnalytics alloc] initWithAccountService:accountServiceMock
+                                                         lastVisibleScreenBlock:lastVisibleScreenCallback],
                      @"Allocating or initializing this object shouldn't throw an exception");
     XCTAssert([analytics isKindOfClass:[WPAppAnalytics class]]);
     
@@ -49,13 +52,14 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
     [analyticsMock verify];
 }
 
-- (void)testInitializationWithWPComTrackerButNoUsageTracking
+- (void)testInitializationWithWPComTrackerButUserOptedOut
 {
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:WPAppAnalyticsDefaultsKeyUsageTracking];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:WPAppAnalyticsDefaultsUserOptedOut];
     
     id analyticsMock = [OCMockObject mockForClass:[WPAnalytics class]];
     id apiCredentialsMock = [OCMockObject mockForClass:[ApiCredentials class]];
-    
+    id accountServiceMock = [OCMockObject mockForClass:[AccountService class]];
+
     [[analyticsMock reject] beginSession];
     
     WPAppAnalytics *analytics = nil;
@@ -63,7 +67,8 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
         return @"TEST";
     };
     
-    XCTAssertNoThrow(analytics = [[WPAppAnalytics alloc] initWithLastVisibleScreenBlock:lastVisibleScreenCallback],
+    XCTAssertNoThrow(analytics = [[WPAppAnalytics alloc] initWithAccountService:accountServiceMock
+                                                         lastVisibleScreenBlock:lastVisibleScreenCallback],
                      @"Allocating or initializing this object shouldn't throw an exception");
     XCTAssert([analytics isKindOfClass:[WPAppAnalytics class]]);
 
@@ -74,26 +79,82 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
     [analyticsMock stopMocking];
 }
 
-- (void)testIsTrackingUsage
+- (void)testUserOptedOut
 {
-    WPAppAnalytics* analytics = [[WPAppAnalytics alloc] initWithLastVisibleScreenBlock:^NSString *{
-        return nil;
-    }];
+    id accountServiceMock = [OCMockObject mockForClass:[AccountService class]];
+
+    WPAppAnalytics *analytics = nil;
+    WPAppAnalyticsLastVisibleScreenCallback lastVisibleScreenCallback = ^NSString*{
+        return @"TEST";
+    };
+
+    XCTAssertNoThrow(analytics = [[WPAppAnalytics alloc] initWithAccountService:accountServiceMock
+                                                         lastVisibleScreenBlock:lastVisibleScreenCallback],
+                     @"Allocating or initializing this object shouldn't throw an exception");
+    XCTAssert([analytics isKindOfClass:[WPAppAnalytics class]]);
+
+    [analytics setUserHasOptedOut:YES];
     
-    [analytics setTrackingUsage:YES];
-    
-    XCTAssertTrue([WPAppAnalytics isTrackingUsage]);
+    XCTAssertTrue([WPAppAnalytics userHasOptedOut]);
 }
 
-- (void)testIsNotTrackingUsage
+- (void)testUserHasNotOptedOut
 {
-    WPAppAnalytics* analytics = [[WPAppAnalytics alloc] initWithLastVisibleScreenBlock:^NSString *{
-        return nil;
-    }];
+    id accountServiceMock = [OCMockObject mockForClass:[AccountService class]];
+
+    WPAppAnalytics *analytics = nil;
+    WPAppAnalyticsLastVisibleScreenCallback lastVisibleScreenCallback = ^NSString*{
+        return @"TEST";
+    };
+
+    XCTAssertNoThrow(analytics = [[WPAppAnalytics alloc] initWithAccountService:accountServiceMock
+                                                         lastVisibleScreenBlock:lastVisibleScreenCallback],
+                     @"Allocating or initializing this object shouldn't throw an exception");
+    XCTAssert([analytics isKindOfClass:[WPAppAnalytics class]]);
+
+    [analytics setUserHasOptedOut:NO];
     
-    [analytics setTrackingUsage:NO];
-    
-    XCTAssertFalse([WPAppAnalytics isTrackingUsage]);
+    XCTAssertFalse([WPAppAnalytics userHasOptedOut]);
+}
+
+- (void)testOptOutMigrationWhenTrackingWasEnabled
+{
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:WPAppAnalyticsDefaultsUserOptedOut];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated];
+
+    id accountServiceMock = [OCMockObject mockForClass:[AccountService class]];
+
+    WPAppAnalytics *analytics = nil;
+    WPAppAnalyticsLastVisibleScreenCallback lastVisibleScreenCallback = ^NSString*{
+        return @"TEST";
+    };
+
+    XCTAssertNoThrow(analytics = [[WPAppAnalytics alloc] initWithAccountService:accountServiceMock
+                                                         lastVisibleScreenBlock:lastVisibleScreenCallback],
+                     @"Allocating or initializing this object shouldn't throw an exception");
+    XCTAssert([analytics isKindOfClass:[WPAppAnalytics class]]);
+
+    XCTAssertFalse([WPAppAnalytics userHasOptedOut]);
+}
+
+- (void)testOptOutMigrationWhenTrackingWasDisabled
+{
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:WPAppAnalyticsDefaultsUserOptedOut];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated];
+
+    id accountServiceMock = [OCMockObject mockForClass:[AccountService class]];
+
+    WPAppAnalytics *analytics = nil;
+    WPAppAnalyticsLastVisibleScreenCallback lastVisibleScreenCallback = ^NSString*{
+        return @"TEST";
+    };
+
+    XCTAssertNoThrow(analytics = [[WPAppAnalytics alloc] initWithAccountService:accountServiceMock
+                                                         lastVisibleScreenBlock:lastVisibleScreenCallback],
+                     @"Allocating or initializing this object shouldn't throw an exception");
+    XCTAssert([analytics isKindOfClass:[WPAppAnalytics class]]);
+
+    XCTAssertTrue([WPAppAnalytics userHasOptedOut]);
 }
 
 @end
