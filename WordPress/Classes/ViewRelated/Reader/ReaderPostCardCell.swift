@@ -478,13 +478,13 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
             let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
             let commentTitle = WPStyleGuide.commentCountForDisplay(commentCount)
-            let shareTitle = NSLocalizedString("Share", comment: "Verb. Button title.  Tap to share a post.")
+            let saveForLaterTitle = NSLocalizedString("Save for Later", comment: "Verb. Button title.  Tap to save a post for later.")
             let followTitle = WPStyleGuide.followStringForDisplay(false)
             let followingTitle = WPStyleGuide.followStringForDisplay(true)
 
             likeActionButton.setTitle(likeTitle, for: .normal)
             commentActionButton.setTitle(commentTitle, for: .normal)
-            saveForLaterButton.setTitle(shareTitle, for: .normal)
+            saveForLaterButton.setTitle(saveForLaterTitle, for: .normal)
 
             followButton.setTitle(followTitle, for: .normal)
             followButton.setTitle(followingTitle, for: .selected)
