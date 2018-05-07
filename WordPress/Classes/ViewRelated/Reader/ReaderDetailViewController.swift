@@ -923,7 +923,13 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     // MARK: - Actions
 
     @IBAction func didTapSaveForLaterButton(_ sender: UIButton) {
-        print("save for later tapped")
+        guard let readerPost = post, let context = readerPost.managedObjectContext else {
+            return
+        }
+
+        SaveForLaterAction().execute(with: readerPost, context: context) {
+            // update button status
+        }
     }
 
     @IBAction func didTapTagButton(_ sender: UIButton) {
