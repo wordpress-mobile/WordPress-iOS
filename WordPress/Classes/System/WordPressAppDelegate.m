@@ -24,6 +24,7 @@
 #import "WPLogger.h"
 #import <AutomatticTracks/TracksLogging.h>
 #import <WordPressComStatsiOS/WPStatsLogging.h>
+#import <WordPressAuthenticator/WPAuthenticatorLogging.h>
 
 // Misc managers, helpers, utilities
 #import "ContextManager.h"
@@ -83,7 +84,10 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
     // Basic networking setup
     [self configureReachability];
-    
+
+    // Setup the Authenticator!
+    [self configureWordPressAuthenticator];
+
     // Set the main window up
     [self.window makeKeyAndVisible];
 
@@ -185,9 +189,9 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
         returnValue = YES;
     }
 
-    if ([[GIDSignIn sharedInstance] handleURL:url
-                            sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
-                                   annotation:options[UIApplicationOpenURLOptionsAnnotationKey]]) {
+    if ([WordPressAuthenticator isGoogleAuthURLWithUrl:url
+                                     sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
+                                            annotation:options[UIApplicationOpenURLOptionsAnnotationKey]]) {
         returnValue = YES;
     }
 
@@ -409,7 +413,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self customizeAppearance];
 
     // Push notifications
-    // This is silent (the user is prompted) so we can do it on launch.
+    // This is silent (the user isn't prompted) so we can do it on launch.
     // We'll ask for user notification permission after signin.
     [[PushNotificationsManager shared] registerForRemoteNotifications];
     
@@ -633,6 +637,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     WPSharedSetLoggingLevel(logLevelInt);
     TracksSetLoggingLevel(logLevelInt);
     WPStatsSetLoggingLevel(logLevelInt);
+    WPAuthenticatorSetLoggingLevel(logLevelInt);
 }
 
 @end

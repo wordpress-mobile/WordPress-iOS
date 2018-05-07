@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -61,11 +61,7 @@
                                     <constraint firstItem="DWo-S7-Yu2" firstAttribute="leading" secondItem="rIp-IY-Ng4" secondAttribute="leading" id="xwc-7q-5QP"/>
                                 </constraints>
                             </view>
-                            <view clipsSubviews="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Kf-3e-Bni" customClass="CachedAnimatedImageView" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="61" width="308" height="196"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Y9d-Yk-F4X">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Y9d-Yk-F4X" customClass="CachedAnimatedImageView" customModule="WordPress" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="61" width="308" height="196"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="196" id="0wl-TX-0Ed">
@@ -218,13 +214,11 @@
                             <constraint firstItem="zle-VU-ygo" firstAttribute="top" secondItem="Cbe-bm-gnv" secondAttribute="bottom" constant="9" id="54w-4V-wCw">
                                 <variation key="heightClass=regular-widthClass=regular" constant="9"/>
                             </constraint>
-                            <constraint firstItem="9Kf-3e-Bni" firstAttribute="width" secondItem="Y9d-Yk-F4X" secondAttribute="width" id="7Pe-Cy-fJL"/>
                             <constraint firstItem="Cbe-bm-gnv" firstAttribute="leading" secondItem="b5E-yQ-veP" secondAttribute="leading" constant="16" id="AAS-zA-QSN">
                                 <variation key="heightClass=regular-widthClass=regular" constant="24"/>
                             </constraint>
                             <constraint firstItem="rIp-IY-Ng4" firstAttribute="top" secondItem="b5E-yQ-veP" secondAttribute="top" constant="15" id="Af8-lU-jWg"/>
                             <constraint firstAttribute="bottom" secondItem="s3z-0r-RPP" secondAttribute="bottom" id="Gdq-0f-ujY"/>
-                            <constraint firstItem="9Kf-3e-Bni" firstAttribute="height" secondItem="Y9d-Yk-F4X" secondAttribute="height" id="Ik5-0h-Hzq"/>
                             <constraint firstItem="Y9d-Yk-F4X" firstAttribute="leading" secondItem="b5E-yQ-veP" secondAttribute="leading" id="JnV-Io-ZDa"/>
                             <constraint firstAttribute="trailing" secondItem="E9Y-IT-TUt" secondAttribute="trailing" constant="16" id="Ll1-Y8-bQN">
                                 <variation key="heightClass=regular-widthClass=regular" constant="24"/>
@@ -254,7 +248,6 @@
                                 <variation key="heightClass=regular-widthClass=regular" constant="8"/>
                             </constraint>
                             <constraint firstItem="s3z-0r-RPP" firstAttribute="leading" secondItem="b5E-yQ-veP" secondAttribute="leading" id="gOy-hI-5zc"/>
-                            <constraint firstItem="9Kf-3e-Bni" firstAttribute="centerY" secondItem="Y9d-Yk-F4X" secondAttribute="centerY" id="gtR-TW-HUc"/>
                             <constraint firstItem="Cbe-bm-gnv" firstAttribute="top" secondItem="E9Y-IT-TUt" secondAttribute="bottom" constant="9" id="hdt-ZQ-dHo">
                                 <variation key="heightClass=regular-widthClass=regular" constant="7"/>
                             </constraint>
@@ -264,7 +257,6 @@
                             <constraint firstAttribute="trailing" secondItem="Y9d-Yk-F4X" secondAttribute="trailing" id="rWg-Oz-OEh"/>
                             <constraint firstAttribute="trailing" secondItem="s3z-0r-RPP" secondAttribute="trailing" id="sqT-If-FB1"/>
                             <constraint firstItem="U6E-MB-03K" firstAttribute="leading" secondItem="zle-VU-ygo" secondAttribute="trailing" id="wYq-9R-DJF"/>
-                            <constraint firstItem="9Kf-3e-Bni" firstAttribute="centerX" secondItem="Y9d-Yk-F4X" secondAttribute="centerX" id="wiK-lq-Dtf"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -303,7 +295,6 @@
                 <outlet property="metaButtonLeft" destination="f2K-8g-nnA" id="6Rd-TT-m9U"/>
                 <outlet property="metaButtonRight" destination="U4X-fn-9uf" id="SHw-FM-KL3"/>
                 <outlet property="metaView" destination="U6E-MB-03K" id="XZt-Fn-PJ2"/>
-                <outlet property="postCardAnimatedImageView" destination="9Kf-3e-Bni" id="5tx-iw-O8J"/>
                 <outlet property="postCardImageView" destination="Y9d-Yk-F4X" id="ftE-Cm-xPY"/>
                 <outlet property="postCardImageViewBottomConstraint" destination="N8M-5Y-cWJ" id="lhh-cM-CR0"/>
                 <outlet property="postCardImageViewHeightConstraint" destination="0wl-TX-0Ed" id="lHP-O3-pox"/>
