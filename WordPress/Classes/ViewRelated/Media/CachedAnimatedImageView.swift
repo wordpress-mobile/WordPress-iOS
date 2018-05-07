@@ -40,11 +40,14 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
             image = placeholderImage
         }
 
-        let successBlock: (Data) -> Void = { [weak self] animatedImageData in
+        if let imageData = AnimatedImageCache.shared.cachedData(url: urlRequest.url) {
             //Load momentary image to show while gif is loading to avoid flashing.
-            if let image = UIImage(data: animatedImageData) {
-                self?.image = image
-            }
+            self.image = UIImage(data: imageData)
+            animate(data: imageData, success: success)
+            return
+        }
+
+        let successBlock: (Data) -> Void = { [weak self] animatedImageData in
             self?.animate(data: animatedImageData, success: success)
         }
 
@@ -82,14 +85,19 @@ class AnimatedImageCache {
         return NSCache<NSURL, NSData>()
     }()
 
+    func cachedData(url: URL?) -> Data? {
+        guard let key = url else {
+            return nil
+        }
+        return cache.object(forKey: key as NSURL) as Data?
+    }
+
     func animatedImage(_ urlRequest: URLRequest,
                        placeholderImage: UIImage?,
                        success: ((Data) -> Void)? ,
                        failure: ((NSError?) -> Void)? ) -> URLSessionTask? {
 
-        if  let key = urlRequest.url,
-            let animatedImageData = cache.object(forKey: key as NSURL) {
-
+        if let animatedImageData = cachedData(url: urlRequest.url) {
             success?(animatedImageData as Data)
             return nil
         }
