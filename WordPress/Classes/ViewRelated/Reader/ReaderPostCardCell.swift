@@ -340,10 +340,6 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         guard let content = contentProvider else {
             return
         }
-        // Always clear the previous image so there is no stale or unexpected image
-        // momentarily visible.
-        featuredImageView.animationImages = nil
-        featuredImageView.image = nil
 
         featuredImageView.isHidden = false
         currentLoadedCardImageURL = featuredImageURL.absoluteString
