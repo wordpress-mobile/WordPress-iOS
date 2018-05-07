@@ -15,6 +15,7 @@ public struct AccountSettings {
     public let primarySiteID: Int  // primary_site_ID
     public let webAddress: String  // user_URL
     public let language: String    // language
+    public let tracksOptOut: Bool
 
     public init(firstName: String,
                 lastName: String,
@@ -26,7 +27,8 @@ public struct AccountSettings {
                 emailPendingChange: Bool,
                 primarySiteID: Int,
                 webAddress: String,
-                language: String) {
+                language: String,
+                tracksOptOut: Bool) {
         self.firstName = firstName
         self.lastName = lastName
         self.displayName = displayName
@@ -38,6 +40,7 @@ public struct AccountSettings {
         self.primarySiteID = primarySiteID
         self.webAddress = webAddress
         self.language = language
+        self.tracksOptOut = tracksOptOut
     }
 }
 
@@ -51,6 +54,7 @@ public enum AccountSettingsChange {
     case primarySite(Int)
     case webAddress(String)
     case language(String)
+    case tracksOptOut(Bool)
 
     var stringValue: String {
         switch self {
@@ -72,6 +76,8 @@ public enum AccountSettingsChange {
             return value
         case .language(let value):
             return value
+        case .tracksOptOut(let value):
+            return String(value)
         }
     }
 }
