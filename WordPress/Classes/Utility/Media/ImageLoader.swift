@@ -31,7 +31,6 @@
     /// Call this in a table/collection cell's `prepareForReuse()`.
     ///
     @objc func prepareForReuse() {
-        imageView.image = nil
         imageView.prepForReuse()
     }
 
@@ -47,6 +46,7 @@
         if url.isGif {
             loadGif(with: url, from: post)
         } else {
+            imageView.clean()
             loadStillImage(with: url, from: post, preferedSize: size)
         }
     }
