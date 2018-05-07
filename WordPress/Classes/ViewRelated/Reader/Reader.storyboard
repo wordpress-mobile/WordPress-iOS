@@ -330,6 +330,9 @@
                                         <state key="normal" title="0" image="icon-reader-comment">
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="didTapSaveForLaterButton:" destination="p0j-e1-c0h" eventType="touchUpInside" id="Y38-px-Mw0"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -383,6 +386,7 @@
                         <outlet property="headerView" destination="A1K-ZI-1wr" id="yu0-A1-s21"/>
                         <outlet property="likeButton" destination="2yJ-O3-UEu" id="bB9-Wv-BHT"/>
                         <outlet property="menuButton" destination="Sz9-nP-NnE" id="xCl-dG-HXD"/>
+                        <outlet property="saveForLaterButton" destination="168-Gh-oaD" id="on8-nx-5m3"/>
                         <outlet property="tagButton" destination="mBC-NT-IsJ" id="fV5-hf-glc"/>
                         <outlet property="textFooterStackView" destination="fO8-Q5-Boc" id="wu2-Zu-2kO"/>
                         <outlet property="textHeaderStackView" destination="LMp-cd-vT3" id="yIB-Sr-eeU"/>
