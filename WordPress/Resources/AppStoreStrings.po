@@ -38,7 +38,7 @@ msgctxt "app_store_keywords"
 msgid "social networking, blogging, blogs, photos, writing, geotagging, media, blog, wordpress\n"
 msgstr ""
 
-msgctxt "v9.9-whats-new"
+msgctxt "v10.0-whats-new"
 msgid ""
 "Free Stock Photos are now available in the App!\n"
 "Spotlight now indexes key sections of the App!\n"
