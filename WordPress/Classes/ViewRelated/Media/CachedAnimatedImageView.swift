@@ -41,10 +41,11 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
         }
 
         let successBlock: (Data) -> Void = { [weak self] animatedImageData in
-            guard let strongSelf = self else {
-                return
+            //Load momentary image to show while gif is loading to avoid flashing.
+            if let image = UIImage(data: animatedImageData) {
+                self?.image = image
             }
-            strongSelf.animate(data: animatedImageData, success: success)
+            self?.animate(data: animatedImageData, success: success)
         }
 
         originalURLRequest = urlRequest
