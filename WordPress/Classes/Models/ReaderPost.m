@@ -316,8 +316,8 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 /// These getter and setter will be removed when the property is made dynamic, after the coredata model is updated
 - (BOOL)isSavedForLater
 {
-    if (!_mockIsSavedForLater) {
-        _mockIsSavedForLater = [NSNumber numberWithBool:YES];
+    if (_mockIsSavedForLater == nil) {
+        _mockIsSavedForLater = [NSNumber numberWithBool:NO];
     }
 
     return _mockIsSavedForLater;
