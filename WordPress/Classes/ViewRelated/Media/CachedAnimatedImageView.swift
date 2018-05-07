@@ -15,6 +15,14 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
     @objc var currentTask: URLSessionTask?
     var gifPlaybackStrategy: GIFPlaybackStrategy = MediumGIFPlaybackStrategy()
 
+    lazy var loadingIndicator: UIActivityIndicatorView = {
+        let loadingIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        loadingIndicator.hidesWhenStopped = true
+        layoutLoadingIndicator(loadingIndicator)
+        return loadingIndicator
+    }()
+
     public lazy var animator: Gifu.Animator? = {
         return Gifu.Animator(withDelegate: self)
     }()
@@ -59,6 +67,18 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
         self.prepareForReuse()
     }
 
+    func startLoadingAnimation() {
+        DispatchQueue.main.async() {
+            self.loadingIndicator.startAnimating()
+        }
+    }
+
+    func stopLoadingAnimation() {
+        DispatchQueue.main.async() {
+            self.loadingIndicator.stopAnimating()
+        }
+    }
+
     // MARK: - Helpers
 
     private func animate(data: Data, success: (() -> Void)?) {
@@ -74,6 +94,14 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
                 success?()
             }
         }
+    }
+
+    private func layoutLoadingIndicator(_ loadingIndicator: UIView) {
+        addSubview(loadingIndicator)
+        NSLayoutConstraint.activate([
+            loadingIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+        ])
     }
 }
 
