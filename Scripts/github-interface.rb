@@ -84,12 +84,24 @@ class GitHubInterface
       raise "Release #{release} not found."
     end 
 
-    puts "Release #{release} has #{mile[:open_issues]} issues still open" unless mile[:open_issues] == 0
-
-    open_prs = get_open_prs(mile[:number])
+    open_prs = get_open_prs(mile[:number]) # TODO: Returning an array with PR titles and URL here... can be used. 
+    puts "Release #{release} has"
+    puts " - #{mile[:open_issues]} open issues" 
+    puts " - #{open_prs.length} open PRs" 
+    puts "   link: https://github.com/wordpress-mobile/WordPress-iOS/pulls?q=is%3Aopen+is%3Apr+milestone%3A#{release}" unless open_prs.length == 0
   end
 
   def get_open_prs(milestone_number)
+    @client.auto_paginate = true
+    prs = @client.pull_requests(@repository, :state => 'open')
+    res = []
+    prs&.each do |pr|
+      if (pr[:milestone] != nil) && (pr[:milestone][:number] == milestone_number)
+        res.push(pr)
+      end
+    end
+    @client.auto_paginate = false
+    res
   end
 end
 
