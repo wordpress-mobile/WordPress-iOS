@@ -17,7 +17,7 @@ final class SaveForLaterAction {
     private func toggleSavedForLater(_ post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
         let readerPostService = ReaderPostService(managedObjectContext: context)
         readerPostService.toggleSavedForLater(for: post, success: { [weak self] in
-            self?.presentSuccessNotice(for: post)
+            self?.presentSuccessNotice(for: post, context: context, completion: completion)
             completion()
             }, failure: { [weak self] error in
                 self?.presentErrorNotice(error, activating: !post.isSavedForLater)
@@ -25,11 +25,11 @@ final class SaveForLaterAction {
         })
     }
 
-    private func presentSuccessNotice(for post: ReaderPost) {
+    private func presentSuccessNotice(for post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
         if post.isSavedForLater {
             presentPostSavedNotice()
         } else {
-            presentPostRemovedNotice(for: post)
+            presentPostRemovedNotice(for: post, context: context, completion: completion)
         }
     }
 
@@ -44,12 +44,12 @@ final class SaveForLaterAction {
         present(notice)
     }
 
-    private func presentPostRemovedNotice(for post: ReaderPost) {
+    private func presentPostRemovedNotice(for post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
         let notice = Notice(title: Strings.postRemoved,
                             feedbackType: .success,
                             actionTitle: Strings.undo,
                             actionHandler: {
-                                // undo change
+                                self.toggleSavedForLater(post, context: context, completion: completion)
         })
 
         present(notice)
