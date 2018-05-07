@@ -28,6 +28,10 @@ extension WordPressSupportSourceTag {
             return .loginWPComPassword
         case .wpComCreateSiteCreation:
             return .wpComCreateSiteCreation
+        case .wpComCreateSiteCategory:
+            return .wpComCreateSiteCategory
+        case .wpComCreateSiteTheme:
+            return .wpComCreateSiteTheme
         case .wpComCreateSiteDomain:
             return .wpComCreateSiteDomain
         case .wpComCreateSiteDetails:
