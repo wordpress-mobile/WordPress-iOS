@@ -1,3 +1,4 @@
-I caricamenti ora sono asincroni!
-Le pagine non caricate ora sono contrassegnate in rosso.
-Il campo di inserimento per i commenti ora contiene fino a 5 righe.
+Ora sono disponibili delle foto stock nell'app!
+Spotlight adesso indicizza le sezioni chiave dell'app!
+L'impostazione di Jetpack nell'app ora permette di creare contemporaneamente un nuovo account WP.com.
+Nel selezionatore di documenti si possono effettuare scelte multiple.

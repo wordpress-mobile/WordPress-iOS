@@ -1,3 +1,4 @@
-Les chargements sont désormais asynchrones !
-Les pages dont le chargement a échoué sont désormais indiquées en rouge.
-Le champ de saisie des commentaires peut désormais contenir jusqu'à 5 lignes.
+Des photos gratuites type « Stock » sont disponibles dans l’App !
+Spotlight indexe à présent les sections clés de l’App !
+En activant Jetpack au sein de l’app, un nouveau compte WP.com sera créé au même moment.
+Activation des sélections multiples dans le sélecteur de document.
