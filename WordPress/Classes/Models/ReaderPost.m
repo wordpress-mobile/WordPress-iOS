@@ -304,7 +304,13 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     return nil;
 }
 
-- (BOOL)isSavedForLater {
+- (BOOL)isSavedForLater
+{
     return YES;
+}
+
+- (void)setIsSavedForLater:(BOOL)isSavedForLater
+{
+    
 }
 @end
