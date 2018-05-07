@@ -2,6 +2,7 @@ import Foundation
 import CocoaLumberjack
 import WordPressShared
 import QuartzCore
+import Gridicons
 
 open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration {
     @objc static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"
@@ -644,6 +645,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     fileprivate func configureActionButtons() {
         resetActionButton(likeButton)
         resetActionButton(commentButton)
+        resetActionButton(saveForLaterButton)
 
         guard let post = post else {
             assertionFailure()
@@ -664,6 +666,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                 configureCommentActionButton()
             }
         }
+
+        configureSaveForLaterButton()
     }
 
 
@@ -776,6 +780,21 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         let image = UIImage(named: "icon-reader-comment")
         let highlightImage = UIImage(named: "icon-reader-comment-highlight")
         configureActionButton(commentButton, title: title, image: image, highlightedImage: highlightImage, selected: false)
+    }
+
+    fileprivate func configureSaveForLaterButton() {
+        guard FeatureFlag.saveForLater.enabled else {
+            saveForLaterButton.isHidden = true
+            return
+        }
+
+        let size = CGSize(width: 20, height: 20)
+        let icon = Gridicon.iconOfType(.bookmark, withSize: size)
+        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
+        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
+
+        saveForLaterButton.setImage(tintedIcon, for: .normal)
+        saveForLaterButton.setImage(highlightIcon, for: .highlighted)
     }
 
 
