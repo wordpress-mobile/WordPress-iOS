@@ -13,6 +13,7 @@ import Gifu
 public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     @objc var currentTask: URLSessionTask?
+    var originalURLRequest: URLRequest?
 
     public lazy var animator: Gifu.Animator? = {
         return Gifu.Animator(withDelegate: self)
@@ -20,6 +21,10 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     override public func display(_ layer: CALayer) {
         updateImageIfNeeded()
+    }
+
+    @objc var isGif: Bool {
+        return frameCount != 0
     }
 
     @objc func setAnimatedImage(_ urlRequest: URLRequest,
@@ -31,21 +36,30 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
             ongoingTask.cancel()
         }
 
+        if originalURLRequest != urlRequest {
+            image = placeholderImage
+        }
+
         let successBlock: (Data) -> Void = { [weak self] animatedImageData in
             guard let strongSelf = self else {
                 return
             }
-            DispatchQueue.main.async(execute: {
-                strongSelf.animate(withGIFData: animatedImageData, loopCount: 0, completionHandler: {
-                    success?()
-                })
-            })
+            strongSelf.animate(data: animatedImageData, success: success)
         }
 
+        originalURLRequest = urlRequest
         currentTask = AnimatedImageCache.shared.animatedImage(urlRequest,
                                                               placeholderImage: placeholderImage,
                                                               success: successBlock,
                                                               failure: failure)
+    }
+
+    private func animate(data: Data, success: (() -> Void)?) {
+        DispatchQueue.main.async() {
+            self.animate(withGIFData: data) {
+                success?()
+            }
+        }
     }
 
     @objc func prepForReuse() {

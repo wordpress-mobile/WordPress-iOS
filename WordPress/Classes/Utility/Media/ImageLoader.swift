@@ -31,7 +31,9 @@
     /// Call this in a table/collection cell's `prepareForReuse()`.
     ///
     @objc func prepareForReuse() {
-        imageView.image = nil
+        if !imageView.isGif {
+            imageView.image = nil
+        }
         imageView.prepForReuse()
     }
 
