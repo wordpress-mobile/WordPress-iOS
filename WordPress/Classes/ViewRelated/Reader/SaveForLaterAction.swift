@@ -29,7 +29,9 @@ final class SaveForLaterAction {
         if post.isSavedForLater {
             presentPostSavedNotice()
         } else {
-            presentPostRemovedNotice(for: post, context: context, completion: completion)
+            presentPostRemovedNotice(for: post,
+                                     context: context,
+                                     completion: completion)
         }
     }
 
@@ -45,6 +47,7 @@ final class SaveForLaterAction {
     }
 
     private func presentPostRemovedNotice(for post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
+        /// I am not sure if this could just be solved by invoking undo in the context's undo manager. Does ReaderStreamViewController observe the context in any way? In the meantime, here is a very imperative implementation of the undo
         let notice = Notice(title: Strings.postRemoved,
                             feedbackType: .success,
                             actionTitle: Strings.undo,
