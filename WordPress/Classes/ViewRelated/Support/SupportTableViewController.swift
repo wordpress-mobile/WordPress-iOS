@@ -133,8 +133,7 @@ private extension SupportTableViewController {
                 guard let controllerToShowFrom = self.controllerToShowFrom() else {
                     return
                 }
-
-                ZendeskUtils.sharedInstance.showHelpCenterIfPossible(from: controllerToShowFrom)
+                ZendeskUtils.sharedInstance.showHelpCenterIfPossible(from: controllerToShowFrom, withSourceTag: self.sourceTag)
             } else {
                 guard let url = Constants.appSupportURL else {
                     return
@@ -151,7 +150,7 @@ private extension SupportTableViewController {
                 guard let controllerToShowFrom = self.controllerToShowFrom() else {
                     return
                 }
-                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom)
+                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom, withSourceTag: self.sourceTag)
             } else {
                 guard let url = Constants.forumsURL else {
                     return
@@ -167,7 +166,7 @@ private extension SupportTableViewController {
             guard let controllerToShowFrom = self.controllerToShowFrom() else {
                 return
             }
-            ZendeskUtils.sharedInstance.showTicketListIfPossible(from: controllerToShowFrom)
+            ZendeskUtils.sharedInstance.showTicketListIfPossible(from: controllerToShowFrom, withSourceTag: self.sourceTag)
         }
     }
 
