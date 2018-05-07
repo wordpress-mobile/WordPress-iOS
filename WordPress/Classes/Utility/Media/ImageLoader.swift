@@ -121,9 +121,12 @@
     /// Download the animated image from the given URL Request.
     ///
     private func downloadGif(from request: URLRequest) {
+        imageView.startLoadingAnimation()
         imageView.setAnimatedImage(request, placeholderImage: placeholder, success: { [weak self] in
+            self?.imageView.stopLoadingAnimation()
             self?.callSuccessHandler()
         }) { [weak self] (error) in
+            self?.imageView.stopLoadingAnimation()
             self?.callErrorHandler(with: error)
         }
     }
@@ -131,18 +134,20 @@
     /// Downloads the image from the given URL Request.
     ///
     private func downloadImage(from request: URLRequest) {
+        imageView.startLoadingAnimation()
         imageView.setImageWith(request, placeholderImage: placeholder, success: { [weak self] (_, _, image) in
             // Since a success block is specified, we need to set the image manually.
             self?.imageView.image = image
-            self?.successHandler?()
+            self?.callSuccessHandler()
         }) { [weak self] (_, _, error) in
-            self?.errorHandler?(error)
+            self?.callErrorHandler(with: error)
         }
     }
 
     /// Downloads the image from the given URL.
     ///
     private func downloadImage(from url: URL) {
+        imageView.startLoadingAnimation()
         imageView.downloadImage(from: url, placeholderImage: placeholder, success: { [weak self] (_) in
             self?.callSuccessHandler()
         }) { [weak self] (error) in
@@ -151,6 +156,7 @@
     }
 
     private func callSuccessHandler() {
+        imageView.stopLoadingAnimation()
         guard successHandler != nil else {
             return
         }
@@ -160,6 +166,7 @@
     }
 
     private func callErrorHandler(with error: Error?) {
+        imageView.stopLoadingAnimation()
         guard errorHandler != nil else {
             return
         }
