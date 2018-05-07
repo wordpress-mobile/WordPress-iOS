@@ -456,10 +456,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
     fileprivate func configureSaveForLaterButton() {
         // Show as selected if the post has been marked as saved for later
-        // HERE
-        //aa
         let postIsSavedForLater = contentProvider?.isSavedForLater() ?? false
-        saveForLaterButton.isSelected = postIsSavedForLater
+        saveForLaterButton.isHighlighted = postIsSavedForLater
     }
 
     fileprivate func configureButtonTitles() {
