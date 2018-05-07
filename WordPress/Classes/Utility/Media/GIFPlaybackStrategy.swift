@@ -21,7 +21,7 @@ public protocol GIFPlaybackStrategy {
 extension GIFPlaybackStrategy {
     func verifyDataSize(_ data: Data) -> Bool {
         guard data.count <= maxSize else {
-            //DDLogDebug("⚠️ Maximum GIF data size exceeded \(maxSize) with \(data.count)")
+            DDLogDebug("⚠️ Maximum GIF data size exceeded \(maxSize) with \(data.count)")
             return false
         }
         return true
