@@ -3,7 +3,9 @@ import WordPressFlux
 final class SaveForLaterAction {
     private enum Strings {
         static let postSaved = NSLocalizedString("Post saved.", comment: "Title of the notification presented in Reader when a post is saved for later")
+        static let postRemoved = NSLocalizedString("Post removed.", comment: "Title of the notification presented in Reader when a post is removed from save for later")
         static let viewAll = NSLocalizedString("View All", comment: "Button in the notification presented in Reader when a post is saved for later")
+        static let undo = NSLocalizedString("Undo", comment: "Button in the notification presented in Reader when a post removed from saved for later")
         static let addToSavedError = NSLocalizedString("Could not save post for later", comment: "Title of a prompt.")
         static let removeFromSavedError = NSLocalizedString("Could not remove post from Saved for Later", comment: "Title of a prompt.")
     }
@@ -15,15 +17,23 @@ final class SaveForLaterAction {
     private func toggleSavedForLater(_ post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
         let readerPostService = ReaderPostService(managedObjectContext: context)
         readerPostService.toggleSavedForLater(for: post, success: { [weak self] in
-                self?.presentSuccessNotice()
-                completion()
-        }, failure: { [weak self] error in
-            self?.presentErrorNotice(error, activating: !post.isSavedForLater)
+            self?.presentSuccessNotice(for: post)
             completion()
+            }, failure: { [weak self] error in
+                self?.presentErrorNotice(error, activating: !post.isSavedForLater)
+                completion()
         })
     }
 
-    private func presentSuccessNotice() {
+    private func presentSuccessNotice(for post: ReaderPost) {
+        if post.isSavedForLater {
+            presentPostSavedNotice()
+        } else {
+            presentPostRemovedNotice(for: post)
+        }
+    }
+
+    private func presentPostSavedNotice() {
         let notice = Notice(title: Strings.postSaved,
                             feedbackType: .success,
                             actionTitle: Strings.viewAll,
@@ -31,7 +41,18 @@ final class SaveForLaterAction {
                                 self.showAll()
         })
 
-        post(notice)
+        present(notice)
+    }
+
+    private func presentPostRemovedNotice(for post: ReaderPost) {
+        let notice = Notice(title: Strings.postRemoved,
+                            feedbackType: .success,
+                            actionTitle: Strings.undo,
+                            actionHandler: {
+                                // undo change
+        })
+
+        present(notice)
     }
 
     private func presentErrorNotice(_ error: Error?, activating: Bool) {
@@ -43,10 +64,10 @@ final class SaveForLaterAction {
                             message: error?.localizedDescription,
                             feedbackType: .error)
 
-        post(notice)
+        present(notice)
     }
 
-    private func post(_ notice: Notice) {
+    private func present(_ notice: Notice) {
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
