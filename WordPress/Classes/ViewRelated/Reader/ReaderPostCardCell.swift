@@ -409,6 +409,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         if contentProvider == nil || contentProvider?.sourceAttributionStyle() != SourceAttributionStyle.none {
             resetActionButton(commentActionButton)
             resetActionButton(likeActionButton)
+            resetActionButton(saveForLaterButton)
             return
         }
 
