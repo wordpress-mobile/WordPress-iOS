@@ -1,6 +1,7 @@
 import Foundation
 import ZendeskSDK
 import CoreTelephony
+import WordPressAuthenticator
 
 @objc class ZendeskUtils: NSObject {
 
@@ -11,7 +12,7 @@ import CoreTelephony
 
     static var zendeskEnabled = false
 
-    private var sourceTag: SupportSourceTag?
+    private var sourceTag: WordPressSupportSourceTag?
 
     private var userName: String?
     private var userEmail: String?
@@ -42,7 +43,7 @@ import CoreTelephony
         ZendeskUtils.toggleZendesk(enabled: true)
     }
 
-    func showHelpCenterIfPossible(from controller: UIViewController, withSourceTag sourceTag: SupportSourceTag? = nil) {
+    func showHelpCenterIfPossible(from controller: UIViewController, withSourceTag sourceTag: WordPressSupportSourceTag? = nil) {
         ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
@@ -65,7 +66,7 @@ import CoreTelephony
         }
     }
 
-    func showNewRequestIfPossible(from controller: UIViewController, withSourceTag sourceTag: SupportSourceTag? = nil) {
+    func showNewRequestIfPossible(from controller: UIViewController, withSourceTag sourceTag: WordPressSupportSourceTag? = nil) {
         ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
@@ -81,7 +82,7 @@ import CoreTelephony
     }
 
 
-    func showTicketListIfPossible(from controller: UIViewController, withSourceTag sourceTag: SupportSourceTag? = nil) {
+    func showTicketListIfPossible(from controller: UIViewController, withSourceTag sourceTag: WordPressSupportSourceTag? = nil) {
         ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
@@ -389,7 +390,7 @@ private extension ZendeskUtils {
 
         // Add sourceTag
         if let sourceTag = ZendeskUtils.sharedInstance.sourceTag {
-            tags.append(sourceTag.rawValue)
+            tags.append(sourceTag.description)
 
         }
 

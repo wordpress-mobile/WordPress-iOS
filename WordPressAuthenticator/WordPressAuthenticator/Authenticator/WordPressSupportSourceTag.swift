@@ -22,4 +22,7 @@ public enum WordPressSupportSourceTag {
     case wpComSignup
     case wpComSignupWaitingForGoogle
     case wpComSignupMagicLink
+    case wpComLogin
+    case wpOrgLogin
+    case inAppFeedback
 }

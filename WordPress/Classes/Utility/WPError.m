@@ -178,7 +178,6 @@ NSString * const WPErrorSupportSourceKey = @"helpshift-support-source";
                                                                
                                                                if ([Feature enabled:FeatureFlagZendeskMobile]) {
                                                                    SupportTableViewController *supportVC = [SupportTableViewController new];
-                                                                   supportVC.sourceTag = sourceTag;
                                                                    [supportVC showFromTabBar];
                                                                }
                                                                else {
