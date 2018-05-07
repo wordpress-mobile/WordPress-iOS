@@ -376,6 +376,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                            failure:(void (^)(NSError *error))failure
 {
     NSLog(@"==== Toggling save for later for post %", post);
+    post.isSavedForLater = !post.isSavedForLater;
     success();
 }
 
