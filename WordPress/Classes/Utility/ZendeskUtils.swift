@@ -14,6 +14,9 @@ import WordPressAuthenticator
 
     private var sourceTag: WordPressSupportSourceTag?
 
+    // Specifically for WPError, which has the sourceTag as a String.
+    var sourceTagDescription: String?
+
     private var userName: String?
     private var userEmail: String?
     private var needToRegisterDevice = false
@@ -389,9 +392,8 @@ private extension ZendeskUtils {
         }
 
         // Add sourceTag
-        if let sourceTag = ZendeskUtils.sharedInstance.sourceTag {
-            tags.append(sourceTag.description)
-
+        if let sourceTag = ZendeskUtils.sharedInstance.sourceTag?.description ?? ZendeskUtils.sharedInstance.sourceTagDescription {
+            tags.append(sourceTag)
         }
 
         return tags
