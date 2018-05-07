@@ -565,7 +565,11 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         guard let provider = contentProvider else {
             return
         }
-        delegate?.readerCell(self, saveActionForProvider: provider)
+        if FeatureFlag.saveForLater.enabled {
+            delegate?.readerCell(self, saveActionForProvider: provider)
+        } else {
+            delegate?.readerCell(self, shareActionForProvider: provider, fromView: sender)
+        }
     }
 
     @IBAction func didTapActionButton(_ sender: UIButton) {
