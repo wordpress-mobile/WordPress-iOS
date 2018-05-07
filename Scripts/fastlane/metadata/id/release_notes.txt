@@ -1,3 +1,4 @@
-Pengunggahan sekarang tidak disinkronkan!
-Halaman yang gagal diunggah akan diberi tanda merah.
-Bidang input untuk menulis komentar sekarang bisa sampai 5 baris.
+Foto Stok Gratis sekarang tersedia dalam Aplikasi!
+Spotlight sekarang mengindeks bagian kunci dari Aplikasi!
+Menyiapkan Jetpack dalam aplikasi sekarang memungkinkan akun WP.com baru dibuat secara bersamaan.
+Mengaktifkan pilihan ganda dalam pemilih dokumen.
