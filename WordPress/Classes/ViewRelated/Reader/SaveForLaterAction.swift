@@ -1,14 +1,5 @@
 import WordPressFlux
 
-
-// MARK: - Mock extension. Will have to be removed when the coredata entity is updated. Marked as deprecated so it triggers a warning and we don't forget to remove it
-extension ReaderPost {
-    @available(*, deprecated)
-    func isSavedForLater() -> Bool {
-        return true
-    }
-}
-
 final class SaveForLaterAction: PostAction {
     private enum Strings {
         static let postSaved = NSLocalizedString("Post saved.", comment: "Title of the notification presented in Reader when a post is saved for later")
@@ -26,7 +17,7 @@ final class SaveForLaterAction: PostAction {
         readerPostService.toggleSavedForLater(for: post, success: { [weak self] in
                 self?.presentSuccessNotice()
         }, failure: { [weak self] error in
-            self?.presentErrorNotice(error, activating: !post.isSavedForLater())
+            self?.presentErrorNotice(error, activating: !post.isSavedForLater)
         })
     }
 
