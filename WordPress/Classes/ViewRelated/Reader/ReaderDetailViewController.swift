@@ -31,7 +31,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     @IBOutlet fileprivate weak var commentButton: UIButton!
     @IBOutlet fileprivate weak var likeButton: UIButton!
     @IBOutlet fileprivate weak var footerViewHeightConstraint: NSLayoutConstraint!
-
+    @IBOutlet weak var saveForLaterButton: PostMetaButton!
     // Wrapper views
     @IBOutlet fileprivate weak var textHeaderStackView: UIStackView!
     @IBOutlet fileprivate weak var textFooterStackView: UIStackView!
@@ -921,6 +921,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 
     // MARK: - Actions
+
+    @IBAction func didTapSaveForLaterButton(_ sender: UIButton) {
+        print("save for later tapped")
+    }
 
     @IBAction func didTapTagButton(_ sender: UIButton) {
         if !isLoaded {
