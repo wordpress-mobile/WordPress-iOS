@@ -1,5 +1,3 @@
-import Foundation
-
 extension NotificationsViewController {
 
     func promptForJetpackCredentials() {
