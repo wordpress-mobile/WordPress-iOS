@@ -487,7 +487,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
             let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
             let commentTitle = WPStyleGuide.commentCountForDisplay(commentCount)
-            let saveForLaterTitle = NSLocalizedString("Save for Later", comment: "Verb. Button title.  Tap to save a post for later.")
+            let saveForLaterTitle = FeatureFlag.saveForLater.enabled ? NSLocalizedString("Save for Later", comment: "Verb. Button title.  Tap to save a post for later.") : NSLocalizedString("Share", comment: "Verb. Button title.  Tap to share a post.")
             let followTitle = WPStyleGuide.followStringForDisplay(false)
             let followingTitle = WPStyleGuide.followStringForDisplay(true)
 
