@@ -841,7 +841,7 @@ import WordPressFlux
 
     fileprivate func toggleSavedForLater(for post: ReaderPost) {
         SaveForLaterAction().execute(with: post, context: managedObjectContext(), completion: { [weak self] in
-            self?.syncHelper.syncContentWithUserInteraction(false)
+            self?.syncHelper.syncContent()
         })
     }
 
