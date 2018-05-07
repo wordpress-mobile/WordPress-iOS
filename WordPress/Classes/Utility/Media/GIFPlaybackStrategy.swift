@@ -29,16 +29,16 @@ extension GIFPlaybackStrategy {
 }
 
 class SmallGIFPlaybackStrategy: GIFPlaybackStrategy {
-    var maxSize = 8_000_000  // in MB
-    var frameBufferCount = 40
+    var maxSize = 10_000_000  // in MB
+    var frameBufferCount = 50
 }
 
 class MediumGIFPlaybackStrategy: GIFPlaybackStrategy {
-    var maxSize = 16_000_000  // in MB
+    var maxSize = 20_000_000  // in MB
     var frameBufferCount = 50
 }
 
 class LargeGIFPlaybackStrategy: GIFPlaybackStrategy {
-    var maxSize = 32_000_000  // in MB
+    var maxSize = 40_000_000  // in MB
     var frameBufferCount = 60
 }
