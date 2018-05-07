@@ -320,7 +320,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
         _mockIsSavedForLater = [NSNumber numberWithBool:NO];
     }
 
-    return _mockIsSavedForLater;
+    return [_mockIsSavedForLater boolValue];
 }
 
 - (void)setIsSavedForLater:(BOOL)isSavedForLater
