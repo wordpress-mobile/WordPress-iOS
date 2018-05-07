@@ -414,6 +414,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
         configureCommentActionButton()
         configureLikeActionButton()
+        configureSaveForLaterButton()
     }
 
     fileprivate func resetActionButton(_ button: UIButton) {
@@ -451,6 +452,14 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             }
         }
         resetActionButton(commentActionButton)
+    }
+
+    fileprivate func configureSaveForLaterButton() {
+        // Show as selected if the post has been marked as saved for later
+        // HERE
+        //aa
+        let postIsSavedForLater = contentProvider?.isSavedForLater() ?? false
+        saveForLaterButton.isSelected = postIsSavedForLater
     }
 
     fileprivate func configureButtonTitles() {
