@@ -13,7 +13,6 @@ import Gifu
 public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     @objc var currentTask: URLSessionTask?
-    var originalURLRequest: URLRequest?
 
     public lazy var animator: Gifu.Animator? = {
         return Gifu.Animator(withDelegate: self)
@@ -23,22 +22,13 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
         updateImageIfNeeded()
     }
 
-    @objc var isGif: Bool {
-        return frameCount != 0
-    }
-
     @objc func setAnimatedImage(_ urlRequest: URLRequest,
                        placeholderImage: UIImage?,
-                       success: (() -> Void)? ,
-                       failure: ((NSError?) -> Void)? ) {
+                       success: (() -> Void)?,
+                       failure: ((NSError?) -> Void)?) {
 
-        if let ongoingTask = currentTask {
-            ongoingTask.cancel()
-        }
-
-        if originalURLRequest != urlRequest {
-            image = placeholderImage
-        }
+        currentTask?.cancel()
+        image = placeholderImage
 
         if let imageData = AnimatedImageCache.shared.cachedData(url: urlRequest.url) {
             //Load momentary image to show while gif is loading to avoid flashing.
@@ -51,12 +41,24 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
             self?.animate(data: animatedImageData, success: success)
         }
 
-        originalURLRequest = urlRequest
         currentTask = AnimatedImageCache.shared.animatedImage(urlRequest,
                                                               placeholderImage: placeholderImage,
                                                               success: successBlock,
                                                               failure: failure)
     }
+
+    /// Clean the image view from previous images and ongoing data tasks.
+    ///
+    @objc func clean() {
+        currentTask?.cancel()
+        image = nil
+    }
+
+    @objc func prepForReuse() {
+        self.prepareForReuse()
+    }
+
+    // MARK: - Helpers
 
     private func animate(data: Data, success: (() -> Void)?) {
         DispatchQueue.main.async() {
@@ -65,11 +67,9 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
             }
         }
     }
-
-    @objc func prepForReuse() {
-        self.prepareForReuse()
-    }
 }
+
+// MARK: - AnimatedImageCache
 
 class AnimatedImageCache {
 
@@ -102,7 +102,7 @@ class AnimatedImageCache {
             return nil
         }
 
-        let task = session.dataTask(with: urlRequest, completionHandler: { [weak self](data, response, error) in
+        let task = session.dataTask(with: urlRequest, completionHandler: { [weak self] (data, response, error) in
             //check if view is still here
             guard let strongSelf = self else {
                 return
