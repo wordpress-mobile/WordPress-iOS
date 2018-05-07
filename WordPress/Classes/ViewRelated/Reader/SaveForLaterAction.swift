@@ -1,6 +1,6 @@
 import WordPressFlux
 
-final class SaveForLaterAction: PostAction {
+final class SaveForLaterAction {
     private enum Strings {
         static let postSaved = NSLocalizedString("Post saved.", comment: "Title of the notification presented in Reader when a post is saved for later")
         static let viewAll = NSLocalizedString("View All", comment: "Button in the notification presented in Reader when a post is saved for later")
@@ -8,16 +8,18 @@ final class SaveForLaterAction: PostAction {
         static let removeFromSavedError = NSLocalizedString("Could not remove post from Saved for Later", comment: "Title of a prompt.")
     }
 
-    func execute(with post: ReaderPost, context: NSManagedObjectContext ) {
-        toggleSavedForLater(post, context: context)
+    func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
+        toggleSavedForLater(post, context: context, completion: completion)
     }
 
-    private func toggleSavedForLater(_ post: ReaderPost, context: NSManagedObjectContext) {
+    private func toggleSavedForLater(_ post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
         let readerPostService = ReaderPostService(managedObjectContext: context)
         readerPostService.toggleSavedForLater(for: post, success: { [weak self] in
                 self?.presentSuccessNotice()
+                completion()
         }, failure: { [weak self] error in
             self?.presentErrorNotice(error, activating: !post.isSavedForLater)
+            completion()
         })
     }
 
