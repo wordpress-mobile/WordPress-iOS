@@ -85,9 +85,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     // Basic networking setup
     [self configureReachability];
 
-    // Setup the Authenticator!
-    [self configureWordPressAuthenticator];
-
     // Set the main window up
     [self.window makeKeyAndVisible];
 
