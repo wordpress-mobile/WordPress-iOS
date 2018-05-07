@@ -31,17 +31,7 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
         currentTask?.cancel()
         image = placeholderImage
 
-        if let cachedData = AnimatedImageCache.shared.cachedData(url: urlRequest.url) {
-            // Always attempt to load momentary image to show while gif is loading to avoid flashing.
-            if let cachedStaticImage = AnimatedImageCache.shared.cachedImage(url: urlRequest.url) {
-                image = cachedStaticImage
-            } else {
-                image = UIImage(data: cachedData)
-            }
-
-            if gifPlaybackStrategy.verifyDataSize(cachedData) {
-                animate(data: cachedData, success: success)
-            }
+        if checkCache(urlRequest, success) {
             return
         }
 
@@ -83,6 +73,28 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
             }
         }
     }
+
+    private func checkCache(_ urlRequest: URLRequest, _ success: (() -> Void)?) -> Bool {
+        if let cachedData = AnimatedImageCache.shared.cachedData(url: urlRequest.url) {
+            // Always attempt to load momentary image to show while gif is loading to avoid flashing.
+            if let cachedStaticImage = AnimatedImageCache.shared.cachedStaticImage(url: urlRequest.url) {
+                image = cachedStaticImage
+            } else {
+                let staticImage = UIImage(data: cachedData)
+                image = staticImage
+                AnimatedImageCache.shared.cacheStaticImage(url: urlRequest.url, image: staticImage)
+            }
+
+            if gifPlaybackStrategy.verifyDataSize(cachedData) {
+                animate(data: cachedData, success: success)
+            }
+
+            return true
+        }
+
+        return false
+    }
+
 }
 
 // MARK: - AnimatedImageCache
@@ -108,7 +120,16 @@ class AnimatedImageCache {
         return cache.object(forKey: key as AnyObject) as? Data
     }
 
-    func cachedImage(url: URL?) -> UIImage? {
+    func cacheStaticImage(url: URL?, image: UIImage?) {
+        guard let url = url,
+            let image = image else {
+                return
+        }
+        let key = url.absoluteString + Constants.keyStaticImageSuffix
+        cache.setObject(image as AnyObject, forKey: key as AnyObject)
+    }
+
+    func cachedStaticImage(url: URL?) -> UIImage? {
         guard let url = url else {
             return nil
         }
@@ -122,7 +143,7 @@ class AnimatedImageCache {
                        failure: ((NSError?) -> Void)? ) -> URLSessionTask? {
 
         if let cachedImageData = cachedData(url: urlRequest.url) {
-            success?(cachedImageData, cachedImage(url: urlRequest.url))
+            success?(cachedImageData, cachedStaticImage(url: urlRequest.url))
             return nil
         }
 
