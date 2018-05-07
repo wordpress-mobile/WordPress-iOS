@@ -40,10 +40,8 @@ msgstr ""
 
 msgctxt "v10.0-whats-new"
 msgid ""
-"Free Stock Photos are now available in the App!\n"
-"Spotlight now indexes key sections of the App!\n"
-"Setting up Jetpack within the app now allows a new WP.com account to be created at the same time.\n"
-"Enabled multiple selection in the document picker.\n"
+"Multiple document types are now selectable in the editor!\n"
+"More Image types can be uploaded, included animated GIFs!\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
