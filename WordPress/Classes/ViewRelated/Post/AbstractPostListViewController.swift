@@ -281,7 +281,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: abstractPostWindowlessCellIdenfitier)
     }
 
-    fileprivate func refreshResults(forcingNetworkAlerts: Bool = true) {
+    fileprivate func refreshResults(forcingNetworkAlerts: Bool = false) {
         guard isViewLoaded == true else {
             return
         }
@@ -606,7 +606,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     func shouldPresentAlert() -> Bool {
-        return !connectionAvailable() && !contentIsEmpty() && !isViewOnScreen()
+        return !connectionAvailable() && !contentIsEmpty() && isViewOnScreen()
     }
 
     @objc func syncItemsWithUserInteraction(_ userInteraction: Bool) {
