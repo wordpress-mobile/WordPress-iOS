@@ -501,6 +501,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        richTextView.isScrollEnabled = false
+        htmlTextView.isScrollEnabled = false
         // This needs to called first
         configureMediaAppearance()
 
@@ -519,6 +521,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         refreshInterface()
 
         // Setup Autolayout
+        configureConstraints()
         view.setNeedsUpdateConstraints()
 
         if isOpenedDirectlyForPhotoPost {
@@ -543,6 +546,9 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         // Handles refreshing controls with state context after options screen is dismissed
         editorContentWasUpdated()
+
+        richTextView.isScrollEnabled = true
+        htmlTextView.isScrollEnabled = true
     }
 
 
@@ -609,6 +615,19 @@ class AztecPostViewController: UIViewController, PostEditor {
         contentInset.top = (titleHeightConstraint.constant + separatorView.frame.height)
         referenceView.contentInset = contentInset
         referenceView.setContentOffset(CGPoint(x: 0, y: -contentInset.top), animated: false)
+
+        updateScrollInsets()
+    }
+
+    func updateScrollInsets() {
+        let referenceView: UITextView = mode == .richText ? richTextView : htmlTextView
+        var scrollInsets = referenceView.contentInset
+        var rightMargin = (view.frame.maxX - referenceView.frame.maxX)
+        if #available(iOS 11.0, *) {
+            rightMargin -= view.safeAreaInsets.right
+        }
+        scrollInsets.right = -rightMargin
+        referenceView.scrollIndicatorInsets = scrollInsets
     }
 
 
@@ -638,8 +657,12 @@ class AztecPostViewController: UIViewController, PostEditor {
     // MARK: - Configuration Methods
 
     override func updateViewConstraints() {
-
+        refreshTitlePosition()
+        updateTitleHeight()
         super.updateViewConstraints()
+    }
+
+    func configureConstraints() {
 
         titleHeightConstraint = titleTextField.heightAnchor.constraint(equalToConstant: titleTextField.font!.lineHeight)
         titleTopConstraint = titleTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: -richTextView.contentOffset.y)
@@ -959,14 +982,12 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
         let referenceView: UIScrollView = mode == .richText ? richTextView : htmlTextView
 
-        let scrollInsets = UIEdgeInsets(top: referenceView.scrollIndicatorInsets.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: referenceView.frame.maxX - view.frame.maxX)
         let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
 
-        htmlTextView.scrollIndicatorInsets = scrollInsets
         htmlTextView.contentInset = contentInsets
-
-        richTextView.scrollIndicatorInsets = scrollInsets
         richTextView.contentInset = contentInsets
+
+        updateScrollInsets()
     }
 }
 
@@ -1890,7 +1911,7 @@ extension AztecPostViewController {
                 return
             }
 
-            self?.richTextView.setLink(url, title: title, inRange: range)
+            self?.richTextView.setLink(url.normalizedURLForWordPressLink(), title: title, inRange: range)
         }
 
         // Disabled until url is entered into field
