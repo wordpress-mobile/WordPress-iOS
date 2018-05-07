@@ -5,6 +5,9 @@ data model as well as any custom migrations.
 
 ## WordPress 75
 
+- @frosty 2018-04-25
+- `AccountSettings` added `tracksOptOut` property, used to store the user's current preference for opting out of analytics tracking.
+
 - @danielebogo 2018-04-23
 - `ReaderSiteInfoSubscriptionPost` and `ReaderSiteInfoSubscriptionEmail` added to store site notifications subscription data.
 - `ReaderSiteTopic` added `postSubscription` and `emailSubscription` properties as relationships to `ReaderSiteInfoSubscriptionPost` and `ReaderSiteInfoSubscriptionEmail`.
