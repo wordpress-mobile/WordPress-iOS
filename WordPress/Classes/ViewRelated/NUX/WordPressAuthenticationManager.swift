@@ -127,7 +127,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
         if FeatureFlag.zendeskMobile.enabled {
             let controller = SupportTableViewController()
-            controller.sourceTag = sourceTag.toSupportSourceTag()
+            controller.sourceTag = sourceTag
 
             let navController = UINavigationController(rootViewController: controller)
             navController.modalPresentationStyle = .formSheet
@@ -152,7 +152,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     func presentSupportRequest(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any]) {
 
         if FeatureFlag.zendeskMobile.enabled {
-            ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: sourceViewController)
+            ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: sourceViewController, withSourceTag: sourceTag)
         } else {
             let presenter = HelpshiftPresenter()
             presenter.sourceTag = sourceTag.toSupportSourceTag()
