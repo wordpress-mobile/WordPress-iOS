@@ -1,0 +1,4 @@
+Fotos grátis agora estão disponíveis no aplicativo!
+O spotlight agora indexa seções-chave do aplicativo!
+Agora é possível criar uma nova conta WP.com ao mesmo tempo em que se configura o Jetpack pelo aplicativo.
+Habilitada seleção múltipla no seletor de documentos.
