@@ -59,6 +59,11 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 @synthesize rendered;
 
+/**
+ To be removed
+ */
+@synthesize isSavedForLater = _isSavedForLater;
+
 
 - (BOOL)isCrossPost
 {
@@ -307,11 +312,14 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 /// These getter and setter will be removed when the property is made dynamic, after the coredata model is updated
 - (BOOL)isSavedForLater
 {
-    return NO;
+    if (!_isSavedForLater) {
+        _isSavedForLater = YES;
+    }
+    return _isSavedForLater;
 }
 
 - (void)setIsSavedForLater:(BOOL)isSavedForLater
 {
-
+    _isSavedForLater = isSavedForLater;
 }
 @end
