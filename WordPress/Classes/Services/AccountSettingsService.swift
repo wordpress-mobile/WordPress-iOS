@@ -3,7 +3,16 @@ import CocoaLumberjack
 import Reachability
 import WordPressKit
 
-let AccountSettingsServiceChangeSaveFailedNotification = "AccountSettingsServiceChangeSaveFailed"
+extension NSNotification.Name {
+    static let AccountSettingsServiceChangeSaveFailed = NSNotification.Name(rawValue: "AccountSettingsServiceChangeSaveFailed")
+    static let AccountSettingsChanged = NSNotification.Name(rawValue: "AccountSettingsServiceSettingsChanged")
+    static let AccountSettingsServiceRefreshStatusChanged = NSNotification.Name(rawValue: "AccountSettingsServiceRefreshStatusChanged")
+}
+
+@objc
+extension NSNotification {
+    public static let AccountSettingsChanged = NSNotification.Name.AccountSettingsChanged
+}
 
 protocol AccountSettingsRemoteInterface {
     func getSettings(success: @escaping (AccountSettings) -> Void, failure: @escaping (Error) -> Void)
@@ -15,16 +24,12 @@ protocol AccountSettingsRemoteInterface {
 
 extension AccountSettingsRemote: AccountSettingsRemoteInterface {}
 
+
 class AccountSettingsService {
     struct Defaults {
         static let stallTimeout = 4.0
         static let maxRetries = 3
         static let pollingInterval = 60.0
-    }
-
-    enum Notifications {
-        static let accountSettingsChanged = "AccountSettingsServiceSettingsChanged"
-        static let refreshStatusChanged = "AccountSettingsServiceRefreshStatusChanged"
     }
 
     let remote: AccountSettingsRemoteInterface
@@ -34,12 +39,12 @@ class AccountSettingsService {
         didSet {
             stallTimer?.invalidate()
             stallTimer = nil
-            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: Notifications.refreshStatusChanged), object: nil)
+            NotificationCenter.default.post(name: NSNotification.Name.AccountSettingsServiceRefreshStatusChanged, object: nil)
         }
     }
     var settings: AccountSettings? = nil {
         didSet {
-            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: Notifications.accountSettingsChanged), object: nil)
+            NotificationCenter.default.post(name: NSNotification.Name.AccountSettingsChanged, object: nil)
         }
     }
 
@@ -117,7 +122,7 @@ class AccountSettingsService {
             DDLogError("Error saving account settings change \(error)")
             // TODO: show/return error to the user (@koke 2015-11-24)
             // What should be showing the error? Let's post a notification for now so something else can handle it
-            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: AccountSettingsServiceChangeSaveFailedNotification), object: error as NSError)
+            NotificationCenter.default.post(name: NSNotification.Name.AccountSettingsServiceChangeSaveFailed, object: error as NSError)
 
             finished?(false)
         }
@@ -128,7 +133,7 @@ class AccountSettingsService {
             finished?(true)
         }) { (error) -> Void in
             DDLogError("Error saving account settings change \(error)")
-            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: AccountSettingsServiceChangeSaveFailedNotification), object: error as NSError)
+            NotificationCenter.default.post(name: NSNotification.Name.AccountSettingsServiceChangeSaveFailed, object: error as NSError)
 
             finished?(false)
         }
@@ -237,5 +242,22 @@ class AccountSettingsService {
                 return nil
             }
         }
+    }
+}
+
+struct AccountSettingsHelper {
+    let accountService: AccountService
+
+    init(accountService: AccountService) {
+        self.accountService = accountService
+    }
+
+    func updateTracksOptOutSetting(_ optOut: Bool) {
+        guard let account = accountService.defaultWordPressComAccount() else {
+            return
+        }
+
+        let change = AccountSettingsChange.tracksOptOut(optOut)
+        AccountSettingsService(userID: account.userID.intValue, api: account.wordPressComRestApi).saveChange(change)
     }
 }

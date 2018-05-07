@@ -13,7 +13,6 @@ import Gifu
 public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     @objc var currentTask: URLSessionTask?
-    var originalURLRequest: URLRequest?
     var gifPlaybackStrategy: GIFPlaybackStrategy = MediumGIFPlaybackStrategy()
 
     public lazy var animator: Gifu.Animator? = {
@@ -26,73 +25,55 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     @objc func setAnimatedImage(_ urlRequest: URLRequest,
                        placeholderImage: UIImage?,
-                       success: (() -> Void)? ,
-                       failure: ((NSError?) -> Void)? ) {
+                       success: (() -> Void)?,
+                       failure: ((NSError?) -> Void)?) {
 
-        if let ongoingTask = currentTask {
-            ongoingTask.cancel()
+        currentTask?.cancel()
+        image = placeholderImage
+
+        if let imageData = AnimatedImageCache.shared.cachedData(url: urlRequest.url) {
+            //Load momentary image to show while gif is loading to avoid flashing.
+            self.image = UIImage(data: imageData)
+            animate(data: imageData, success: success)
+            return
         }
 
         let successBlock: (Data) -> Void = { [weak self] animatedImageData in
-            guard let strongSelf = self else {
-                return
-            }
-
-            if strongSelf.gifPlaybackStrategy.verifyDataSize(animatedImageData) {
-                strongSelf.showGif(with: animatedImageData, completionHandler: success)
-            } else {
-                // The file size is too big, let's just show a static image instead
-                strongSelf.showStaticImage(completionHandler: success)
-            }
+            self?.animate(data: animatedImageData, success: success)
         }
 
-        originalURLRequest = urlRequest
         currentTask = AnimatedImageCache.shared.animatedImage(urlRequest,
                                                               placeholderImage: placeholderImage,
                                                               success: successBlock,
                                                               failure: failure)
     }
 
+    /// Clean the image view from previous images and ongoing data tasks.
+    ///
+    @objc func clean() {
+        currentTask?.cancel()
+        image = nil
+    }
+
     @objc func prepForReuse() {
-        if let ongoingTask = currentTask {
-            ongoingTask.cancel()
-        }
-        originalURLRequest = nil
-        prepareForReuse()
+        self.prepareForReuse()
     }
 
-    private func showStaticImage(completionHandler: (() -> Void)? = nil) {
-        guard let request = originalURLRequest else {
-            completionHandler?()
-            return
-        }
+    // MARK: - Helpers
 
-        DispatchQueue.main.async(execute: {
-            // Set as a static image (using AFNetworking's cache)
-            self.setImageWith(request, placeholderImage: nil, success: { (_, _, image) in
-                self.image = image
-                completionHandler?()
-            }, failure: nil)
-        })
-    }
-
-    private func showGif(with data: Data, completionHandler: (() -> Void)? = nil) {
-        DispatchQueue.main.async(execute: {
-            self.setFrameBufferCount(self.gifPlaybackStrategy.frameBufferCount)
-            self.animate(withGIFData: data, loopCount: 0, completionHandler: {
-                if self.gifPlaybackStrategy.verifyNumberOfFrames(self.frameCount) {
-                    completionHandler?()
-                } else {
-                    // May-4-2018: There is currently a bug in Gifu where calling `startAnimating()` or `stopAnimating()` after
-                    // `prepareForAnimation()` and `animate()` does not work. In a perfect world, we would prepare for the animation,
-                    // check the frame count, and then start the animation (or stop it if `animate()` was used). So, for now, we
-                    /// are simply showing a static image instead.
-                    // See: https://github.com/kaishin/Gifu/issues/123
-                    //
-                    self.showStaticImage(completionHandler: completionHandler)
+    private func animate(data: Data, success: (() -> Void)?) {
+        if gifPlaybackStrategy.verifyDataSize(data) {
+            DispatchQueue.main.async() {
+                self.animate(withGIFData: data) {
+                    success?()
                 }
-            })
-        })
+            }
+        } else {
+            DispatchQueue.main.async() {
+                self.image = UIImage(data: data)
+                success?()
+            }
+        }
     }
 }
 
@@ -112,19 +93,24 @@ class AnimatedImageCache {
         return NSCache<NSURL, NSData>()
     }()
 
+    func cachedData(url: URL?) -> Data? {
+        guard let key = url else {
+            return nil
+        }
+        return cache.object(forKey: key as NSURL) as Data?
+    }
+
     func animatedImage(_ urlRequest: URLRequest,
                        placeholderImage: UIImage?,
                        success: ((Data) -> Void)? ,
                        failure: ((NSError?) -> Void)? ) -> URLSessionTask? {
 
-        if  let key = urlRequest.url,
-            let animatedImageData = cache.object(forKey: key as NSURL) {
-
+        if let animatedImageData = cachedData(url: urlRequest.url) {
             success?(animatedImageData as Data)
             return nil
         }
 
-        let task = session.dataTask(with: urlRequest, completionHandler: { [weak self](data, response, error) in
+        let task = session.dataTask(with: urlRequest, completionHandler: { [weak self] (data, response, error) in
             //check if view is still here
             guard let strongSelf = self else {
                 return

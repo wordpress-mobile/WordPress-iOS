@@ -46,6 +46,7 @@
         if url.isGif {
             loadGif(with: url, from: post)
         } else {
+            imageView.clean()
             loadStillImage(with: url, from: post, preferedSize: size)
         }
     }
