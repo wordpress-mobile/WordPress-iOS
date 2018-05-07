@@ -113,6 +113,8 @@ PODS:
   - Starscream (3.0.4)
   - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (0.5.0)
+  - WordPress-Aztec-iOS (1.0.0-beta.18.1):
+    - WordPress-Aztec-iOS/WordPressEditor (= 1.0.0-beta.18.1)
   - WordPress-Aztec-iOS/WordPressEditor (1.0.0-beta.18.1)
   - WordPressShared (1.0.0):
     - CocoaLumberjack (~> 3.4)
@@ -155,6 +157,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.4)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `fece069bd295948760f372f1edfa28e730dc9bc0`)
   - WordPress-Aztec-iOS/WordPressEditor (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `fece069bd295948760f372f1edfa28e730dc9bc0`)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `1d657ac0ddb002712803721da8ee5752e7069637`)
   - WPMediaPicker (= 0.28)
@@ -220,6 +223,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: fc494633a85a995f6b3ca453be4ae651dbd9dee3
+PODFILE CHECKSUM: a8172b2a42ff295f2b6ebbb1ec8865bb5a780eab
 
 COCOAPODS: 1.4.0
