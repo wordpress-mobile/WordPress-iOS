@@ -1,10 +1,11 @@
 import UIKit
+import WordPressAuthenticator
 
 class SupportTableViewController: UITableViewController {
 
     // MARK: - Properties
 
-    @objc var sourceTag: SupportSourceTag?
+    var sourceTag: WordPressSupportSourceTag?
 
     // If set, the Zendesk views will be shown from this view instead of in the navigation controller.
     // Specifically for Me > Help & Support on the iPad.
