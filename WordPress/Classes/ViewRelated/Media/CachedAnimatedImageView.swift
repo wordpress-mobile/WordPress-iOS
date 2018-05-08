@@ -23,28 +23,17 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
     @objc var currentTask: URLSessionTask?
     var gifPlaybackStrategy: GIFPlaybackStrategy = MediumGIFPlaybackStrategy()
 
-    var customLoadingIndicator: ActivityIndicatorType? {
-        didSet {
-            if let oldIndicator = oldValue as? UIView {
-                oldIndicator.removeFromSuperview()
-            }
-        }
-    }
+    private var customLoadingIndicator: ActivityIndicatorType?
 
     private lazy var defaultLoadingIndicator: UIActivityIndicatorView = {
         let loadingIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
-        loadingIndicator.hidesWhenStopped = true
-        layoutLoadingIndicator(loadingIndicator)
+        addLoadingIndicatorCentered(loadingIndicator)
         return loadingIndicator
     }()
 
     private var loadingIndicator: ActivityIndicatorType {
         guard let custom = customLoadingIndicator else {
             return defaultLoadingIndicator
-        }
-        if let customView = custom as? UIView, customView.superview == nil {
-            layoutLoadingIndicator(customView)
         }
         return custom
     }
@@ -121,11 +110,51 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
         }
     }
 
-    private func layoutLoadingIndicator(_ loadingIndicator: UIView) {
-        addSubview(loadingIndicator)
+    enum Position {
+        case centered
+        case fullView
+    }
+
+    func addLoadingIndicator(_ loadingIndicator: ActivityIndicatorType, position: Position) {
+        if let oldLoadingIndicator = customLoadingIndicator as? UIView {
+            oldLoadingIndicator.removeFromSuperview()
+        }
+        customLoadingIndicator = loadingIndicator
+        switch position {
+        case .centered:
+            addLoadingIndicatorCentered(loadingIndicator)
+        default:
+            addLoadingIndicatorFullView(loadingIndicator)
+        }
+    }
+
+    private func addLoadingIndicatorCentered(_ loadingIndicator: ActivityIndicatorType) {
+        guard let loadingView = loadingIndicator as? UIView else {
+            return
+        }
+        if loadingView.superview == nil {
+            addSubview(loadingView)
+        }
+        loadingView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            loadingIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            loadingIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            loadingView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            loadingView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+        ])
+    }
+
+    private func addLoadingIndicatorFullView(_ loadingIndicator: ActivityIndicatorType) {
+        guard let loadingView = loadingIndicator as? UIView else {
+            return
+        }
+        if loadingView.superview == nil {
+            addSubview(loadingView)
+        }
+        loadingView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            loadingView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            loadingView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            loadingView.topAnchor.constraint(equalTo: topAnchor),
+            loadingView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
 
