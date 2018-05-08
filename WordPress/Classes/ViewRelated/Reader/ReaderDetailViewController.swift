@@ -91,10 +91,14 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
     }
 
-
     fileprivate var isLoaded: Bool {
         return post != nil
     }
+
+    fileprivate lazy var featuredImageLoader: ImageLoader = {
+        // Allow for large GIFs to animate on the detail page
+        return ImageLoader(imageView: featuredImageView, gifStrategy: .largeGIFs)
+    }()
 
 
     // MARK: - Convenience Factories
@@ -481,81 +485,25 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 
     fileprivate func configureFeaturedImage() {
-        var url = post!.featuredImageURLForDisplay()
-
-        guard url != nil else {
-            return
+        guard let post = post,
+            !post.contentIncludesFeaturedImage(),
+            let featuredImageURL = post.featuredImageURLForDisplay() else {
+                return
         }
 
-        // Do not display the featured image if it exists in the content.
-        if post!.contentIncludesFeaturedImage() {
-            return
-        }
-
-        var request: URLRequest
-
-        if !(post!.isPrivate()) {
-            let size = CGSize(width: featuredImageView.frame.width, height: 0)
-            url = PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
-            request = URLRequest(url: url!)
-
-        } else if (url?.host != nil) && (url?.host!.hasSuffix("wordpress.com"))! {
-            // private wpcom image needs special handling.
-            request = requestForURL(url!)
-
-        } else {
-            // private but not a wpcom hosted image
-            request = URLRequest(url: url!)
-        }
-
-        let isAnimatedGIF = url?.pathExtension.lowercased() == "gif"
-        if isAnimatedGIF {
-            let successBlock: ((UIImage?, Data?) -> Void) = { [weak self] currentFrame, animatedImageData in
-                guard let strongSelf = self else {
-                    return
-                }
-                DispatchQueue.main.async {
-                    strongSelf.configureFeaturedImage(currentFrame: currentFrame, animatedImageData: animatedImageData)
-                }
+        let postInfo = ReaderCardContent(provider: post)
+        featuredImageLoader.loadImage(with: featuredImageURL, from: postInfo, placeholder: nil, success: { [weak self] in
+            guard let strongSelf = self, let size = strongSelf.featuredImageView.image?.size else {
+                return
             }
-            featuredImageView.setAnimatedImage(request, placeholderImage: nil, success: successBlock, failure: nil)
-        } else {
-            let successBlock: ((URLRequest, HTTPURLResponse?, UIImage) -> Void) = { [weak self] (request: URLRequest, response: HTTPURLResponse?, image: UIImage) in
-                guard let strongSelf = self else {
-                    return
-                }
-                DispatchQueue.main.async {
-                    strongSelf.configureFeaturedImage(image: image)
-                }
+            DispatchQueue.main.async {
+                strongSelf.configureFeaturedImageConstraints(with: size)
+                strongSelf.configureFeaturedImageGestures()
             }
-            featuredImageView.setImageWith(request, placeholderImage: nil, success: successBlock, failure: nil)
+        }) { error in
+            DDLogError("Error loading featured image in reader detail: \(String(describing: error))")
         }
     }
-
-
-    fileprivate func configureFeaturedImage(currentFrame: UIImage?, animatedImageData: Data?) {
-        var imageSize: CGSize = .zero
-        if let currentFrame = currentFrame {
-            imageSize = currentFrame.size
-        } else if let animatedImageData = animatedImageData {
-            let staticImage = UIImage(data: animatedImageData)
-            imageSize = staticImage?.size ?? .zero
-        }
-
-        guard imageSize != .zero else {
-            return
-        }
-        configureFeaturedImageConstraints(with: imageSize)
-        configureFeaturedImageGestures()
-    }
-
-
-    fileprivate func configureFeaturedImage(image: UIImage) {
-        configureFeaturedImageConstraints(with: image.size)
-        featuredImageView.image = image
-        configureFeaturedImageGestures()
-    }
-
 
     fileprivate func configureFeaturedImageConstraints(with size: CGSize) {
         // Unhide the views
