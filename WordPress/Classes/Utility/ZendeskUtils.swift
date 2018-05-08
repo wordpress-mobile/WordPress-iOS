@@ -197,6 +197,7 @@ private extension ZendeskUtils {
             if let error = error {
                 DDLogInfo("Zendesk couldn't register device: \(deviceID). Error: \(error)")
             } else {
+                ZendeskUtils.sharedInstance.deviceID = nil
                 DDLogDebug("Zendesk successfully registered device: \(deviceID)")
             }
         }
