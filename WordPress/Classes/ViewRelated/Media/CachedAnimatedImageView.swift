@@ -13,6 +13,7 @@ import Gifu
 public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     @objc var currentTask: URLSessionTask?
+    var gifPlaybackStrategy: GIFPlaybackStrategy = MediumGIFPlaybackStrategy()
 
     public lazy var animator: Gifu.Animator? = {
         return Gifu.Animator(withDelegate: self)
@@ -30,15 +31,19 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
         currentTask?.cancel()
         image = placeholderImage
 
-        if let imageData = AnimatedImageCache.shared.cachedData(url: urlRequest.url) {
-            //Load momentary image to show while gif is loading to avoid flashing.
-            self.image = UIImage(data: imageData)
-            animate(data: imageData, success: success)
+        if checkCache(urlRequest, success) {
             return
         }
 
-        let successBlock: (Data) -> Void = { [weak self] animatedImageData in
-            self?.animate(data: animatedImageData, success: success)
+        let successBlock: (Data, UIImage?) -> Void = { [weak self] animatedImageData, staticImage in
+            let didVerifyDataSize = self?.gifPlaybackStrategy.verifyDataSize(animatedImageData) ?? true
+            if didVerifyDataSize {
+                self?.animate(data: animatedImageData, success: success)
+            } else {
+                DispatchQueue.main.async() {
+                    self?.image = staticImage
+                }
+            }
         }
 
         currentTask = AnimatedImageCache.shared.animatedImage(urlRequest,
@@ -62,11 +67,34 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     private func animate(data: Data, success: (() -> Void)?) {
         DispatchQueue.main.async() {
+            self.setFrameBufferCount(self.gifPlaybackStrategy.frameBufferCount)
             self.animate(withGIFData: data) {
                 success?()
             }
         }
     }
+
+    private func checkCache(_ urlRequest: URLRequest, _ success: (() -> Void)?) -> Bool {
+        if let cachedData = AnimatedImageCache.shared.cachedData(url: urlRequest.url) {
+            // Always attempt to load momentary image to show while gif is loading to avoid flashing.
+            if let cachedStaticImage = AnimatedImageCache.shared.cachedStaticImage(url: urlRequest.url) {
+                image = cachedStaticImage
+            } else {
+                let staticImage = UIImage(data: cachedData)
+                image = staticImage
+                AnimatedImageCache.shared.cacheStaticImage(url: urlRequest.url, image: staticImage)
+            }
+
+            if gifPlaybackStrategy.verifyDataSize(cachedData) {
+                animate(data: cachedData, success: success)
+            }
+
+            return true
+        }
+
+        return false
+    }
+
 }
 
 // MARK: - AnimatedImageCache
@@ -81,24 +109,41 @@ class AnimatedImageCache {
         return session
     }()
 
-    fileprivate lazy var cache: NSCache<NSURL, NSData> = {
-        return NSCache<NSURL, NSData>()
+    fileprivate lazy var cache: NSCache<AnyObject, AnyObject> = {
+        return NSCache<AnyObject, AnyObject>()
     }()
 
     func cachedData(url: URL?) -> Data? {
         guard let key = url else {
             return nil
         }
-        return cache.object(forKey: key as NSURL) as Data?
+        return cache.object(forKey: key as AnyObject) as? Data
+    }
+
+    func cacheStaticImage(url: URL?, image: UIImage?) {
+        guard let url = url,
+            let image = image else {
+                return
+        }
+        let key = url.absoluteString + Constants.keyStaticImageSuffix
+        cache.setObject(image as AnyObject, forKey: key as AnyObject)
+    }
+
+    func cachedStaticImage(url: URL?) -> UIImage? {
+        guard let url = url else {
+            return nil
+        }
+        let key = url.absoluteString + Constants.keyStaticImageSuffix
+        return cache.object(forKey: key as AnyObject) as? UIImage
     }
 
     func animatedImage(_ urlRequest: URLRequest,
                        placeholderImage: UIImage?,
-                       success: ((Data) -> Void)? ,
+                       success: ((Data, UIImage?) -> Void)? ,
                        failure: ((NSError?) -> Void)? ) -> URLSessionTask? {
 
-        if let animatedImageData = cachedData(url: urlRequest.url) {
-            success?(animatedImageData as Data)
+        if let cachedImageData = cachedData(url: urlRequest.url) {
+            success?(cachedImageData, cachedStaticImage(url: urlRequest.url))
             return nil
         }
 
@@ -122,13 +167,26 @@ class AnimatedImageCache {
                 return
             }
 
-            if  let key = urlRequest.url {
+            let staticImage = UIImage(data: data)
+            if let key = urlRequest.url {
                 strongSelf.cache.setObject(data as NSData, forKey: key as NSURL)
+
+                // Creating a static image from GIF data is an expensive op, so let's try to do it once...
+                let imageKey = key.absoluteString + Constants.keyStaticImageSuffix
+                strongSelf.cache.setObject(staticImage as AnyObject, forKey: imageKey as AnyObject)
             }
-            success?(data)
+            success?(data, staticImage)
         })
 
         task.resume()
         return task
+    }
+}
+
+// MARK: - Constants
+
+extension AnimatedImageCache {
+    struct Constants {
+        static let keyStaticImageSuffix = "_static_image"
     }
 }
