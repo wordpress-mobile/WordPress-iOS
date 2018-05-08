@@ -4,21 +4,12 @@ import Foundation
 /// current feelings regarding the app.
 /// This class is based on ABXPromptView of [AppBotX](https://github.com/appbot/appbotx)
 ///
-protocol AppFeedbackPromptViewDelegate: class {
-    func likedApp()
-    func dislikedApp()
-    func gatherFeedback()
-    func dismissPrompt()
-}
-
 class AppFeedbackPromptView: UIView {
     private let label = UILabel()
     private let leftButton = RoundedButton()
     private let rightButton = RoundedButton()
     private let buttonStack = UIStackView()
     private var onRequestingFeedback = false
-
-    weak var delegate: AppFeedbackPromptViewDelegate?
 
     /// MARK: - UIView's Methods
 
@@ -46,8 +37,7 @@ class AppFeedbackPromptView: UIView {
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         label.font = textFont
-        label.text = NSLocalizedString("What do you think about WordPress?",
-                                       comment: "This is the string we display when prompting the user to review the app")
+
         addSubview(label)
 
         // Stack O'Buttons
@@ -60,27 +50,35 @@ class AppFeedbackPromptView: UIView {
         leftButton.translatesAutoresizingMaskIntoConstraints = false
         leftButton.backgroundColor = UIColor(red: 0.0, green: 170/255.0, blue: 220/255.0, alpha: 1.0)
         leftButton.tintColor = .white
-        leftButton.setTitle(NSLocalizedString("I Like It",
-                                              comment: "This is one of the buttons we display inside of the prompt to review the app"),
-                            for: .normal)
         leftButton.setTitleColor(UIColor.white, for: .normal)
         leftButton.titleLabel?.font = textFont
-        leftButton.addTarget(self, action: #selector(self.leftButtonTouched), for: .touchUpInside)
         buttonStack.addArrangedSubview(leftButton)
 
         // Could be Better Button
         rightButton.translatesAutoresizingMaskIntoConstraints = false
         rightButton.backgroundColor = UIColor(red: 144/255.0, green: 174/255.0, blue: 194/255.0, alpha: 1.0)
         rightButton.tintColor = .white
-        rightButton.setTitle(NSLocalizedString("Could Be Better",
-                                               comment: "This is one of the buttons we display inside of the prompt to review the app"),
-                             for: .normal)
         rightButton.setTitleColor(UIColor.white, for: .normal)
         rightButton.titleLabel?.font = textFont
-        rightButton.addTarget(self, action: #selector(self.rightButtonTouched), for: .touchUpInside)
         buttonStack.addArrangedSubview(rightButton)
 
         setupConstraints()
+    }
+
+    func setupHeading(_ title: String) {
+        label.text = title
+    }
+
+    func setupYesButton(title: String, tapHandler: @escaping (UIControl) -> Void) {
+        leftButton.removeTarget(nil, action: nil, for: .touchUpInside)
+        leftButton.setTitle(title, for: .normal)
+        leftButton.on(.touchUpInside, call: tapHandler)
+    }
+
+    func setupNoButton(title: String, tapHandler: @escaping (UIControl) -> Void) {
+        rightButton.removeTarget(nil, action: nil, for: .touchUpInside)
+        rightButton.setTitle(title, for: .normal)
+        rightButton.on(.touchUpInside, call: tapHandler)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -127,36 +125,34 @@ class AppFeedbackPromptView: UIView {
         ])
     }
 
-    @objc func leftButtonTouched() {
-        if onRequestingFeedback {
-            delegate?.gatherFeedback()
-        } else {
-            delegate?.likedApp()
-            leftButton.isHidden = true
-            rightButton.isHidden = true
-            UIView.animate(withDuration: 0.3, animations: {() -> Void in
-                self.label.text = NSLocalizedString("Great!\n We love to hear from happy users \n😁",
-                                                    comment: "This is the text we display to the user after they've indicated they like the app")
-            })
+    override func layoutSubviews() {
+        let buttonsSize = buttonStack.frame.size //systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        DispatchQueue.main.async {
+            if buttonsSize.width > self.bounds.size.width - 30.0 {
+                self.buttonStack.axis = .vertical
+            } else {
+                self.buttonStack.axis = .horizontal
+            }
         }
+        super.layoutSubviews()
     }
 
-    @objc func rightButtonTouched() {
-        if onRequestingFeedback {
-            delegate?.dismissPrompt()
-        } else {
-            delegate?.dislikedApp()
-            onRequestingFeedback = true
-            UIView.animate(withDuration: 0.3, animations: {() -> Void in
-                self.label.text = NSLocalizedString("Could you tell us how we could improve?",
-                                                    comment: "This is the text we display to the user when we ask them for a review and they've indicated they don't like the app")
-                self.leftButton.setTitle(NSLocalizedString("Send Feedback",
-                                                           comment: "This is one of the buttons we display when prompting the user for a review"),
-                                         for: .normal)
-                self.rightButton.setTitle(NSLocalizedString("No Thanks",
-                                                            comment: "This is one of the buttons we display when prompting the user for a review"),
-                                          for: .normal)
-            })
+//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+//        self.buttonStack.axis = .horizontal
+//        let buttonsSize = systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+////        DispatchQueue.main.async {
+//            if buttonsSize.width > self.bounds.size.width - 30.0 {
+//                self.buttonStack.axis = .vertical
+//                self.setNeedsLayout()
+//            }
+////        }
+//    }
+
+    func showBigHeading(title: String) {
+        leftButton.isHidden = true
+        rightButton.isHidden = true
+        UIView.animate(withDuration: 0.3) {
+            self.label.text = title
         }
     }
 
