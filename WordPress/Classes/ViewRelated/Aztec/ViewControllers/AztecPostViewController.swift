@@ -1335,7 +1335,7 @@ private extension AztecPostViewController {
     func displayInsertionOpensAlertIfNeeded(for documentURL: URL) {
         let documentType = documentURL.pathExtension
         guard
-            let uti = Blog.typeIdentifier(for: documentType),
+            let uti = String.typeIdentifier(for: documentType),
             uti == String(kUTTypePDF) || uti == String(kUTTypePlainText)
         else {
             insertExternalMediaWithURL(documentURL)
