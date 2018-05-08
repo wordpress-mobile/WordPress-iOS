@@ -182,7 +182,7 @@ open class NotificationSettingsViewController: UIViewController {
         case .blog where requiresBlogsPagination:
             return displayBlogMoreWasAccepted ? rowCountForBlogSection + 1 : loadMoreRowCount
         case .followedSites:
-            return displayFollowedMoreWasAccepted ? rowCountForFollowedSite + 1 : rowCountForFollowedSite
+            return displayFollowedMoreWasAccepted ? rowCountForFollowedSite + 1 : loadMoreRowCount
         default:
             return groupedSettings[section]?.count ?? 0
         }
