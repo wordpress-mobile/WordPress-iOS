@@ -2906,13 +2906,16 @@ extension AztecPostViewController {
             let textViewStorage = richTextView.textStorage as? TextStorage,
             let placeholderRange = textViewStorage.rangeFor(attachmentID: attachmentID),
             let documentURL = URL(string: urlString)
-            else { return }
+        else {
+            return
+        }
 
         richTextView.remove(attachmentID: attachmentID)
 
         let linkTitle = documentURL.lastPathComponent
         let linkRange = NSMakeRange(placeholderRange.location, 0)
         richTextView.setLink(documentURL, title: linkTitle, inRange: linkRange)
+        richTextView.insertText(String(Character(.carriageReturn)))
     }
 
     private func insertVideoAttachmentWithPlaceholder() -> VideoAttachment {

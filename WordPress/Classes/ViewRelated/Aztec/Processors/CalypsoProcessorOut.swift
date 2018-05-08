@@ -44,11 +44,11 @@ class CalypsoProcessorOut: CalypsoProcessor {
             })
         }
 
-        // Protect pre tags.
+        // Protect pre and a tags.
         if output.contains("<pre") {
             preserveLinebreaks = true
 
-            output = output.replacingMatches(of: "<pre[^>]*>[\\s\\S]+?<\\/pre>", using: { (match, _) -> String in
+            output = output.replacingMatches(of: "<(pre|a)[^>]*>[\\s\\S]+?<\\/pre>", using: { (match, _) -> String in
                 var string = match.replacingMatches(of: "<br ?\\/?>(\r\n|\n)?", with: lineBreakMarker)
 
                 string = string.replacingMatches(of: "<\\/?p( [^>]*)?>(\r\n|\n)?", with: lineBreakMarker)
@@ -151,7 +151,6 @@ class CalypsoProcessorOut: CalypsoProcessor {
             })
         }
 
-        //                return html;
         return output
     }
 }
