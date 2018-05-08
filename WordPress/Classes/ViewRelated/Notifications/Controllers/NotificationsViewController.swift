@@ -407,7 +407,11 @@ private extension NotificationsViewController {
 
         // this allows the selector to move to the top
         ratingsSpaceConstraint.isActive = false
-        setupForAppRatings()
+        if (true) {
+            setupPrimeForPush()
+        } else {
+            setupForAppRatings()
+        }
     }
 
     func setupRefreshControl() {
@@ -1422,8 +1426,29 @@ extension NotificationsViewController: SearchableActivityConvertable {
     }
 }
 
-// MARK: - App Ratings
-//
+/// MARK: - Push Notification Primer
+///
+extension NotificationsViewController {
+    func setupPrimeForPush() {
+        ratingsView.setupHeading(NSLocalizedString("We'll notify you when you get followers, comments, and likes.",
+                                                   comment: "This is the string we display when asking the user to approve push notifications"))
+        let yesTitle = NSLocalizedString("Allow notifications",
+                                         comment: "Button label for approving our request to allow push notifications")
+        let noTitle = NSLocalizedString("Not now",
+                                        comment: "Button label for denying our request to allow push notifications")
+
+        ratingsView.setupYesButton(title: yesTitle) { [weak self] button in
+            // TODO
+        }
+
+        ratingsView.setupNoButton(title: noTitle) { [weak self] button in
+            // TODO
+        }
+    }
+}
+
+/// MARK: - App Ratings
+///
 extension NotificationsViewController {
     func setupForAppRatings() {
         ratingsView.setupHeading(NSLocalizedString("What do you think about WordPress?",
