@@ -21,7 +21,7 @@ NSUInteger const ReaderPostServiceNumberToSyncForSearch = 10;
 NSUInteger const ReaderPostServiceMaxSearchPosts = 200;
 NSUInteger const ReaderPostServiceMaxPosts = 300;
 NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
-NSString * const ReaderPostServiceToggleSiteFollowingState = @"kReaderPostServiceToggleSiteFollowingState";
+NSString * const ReaderPostServiceToggleSiteFollowingState = @"ReaderPostServiceToggleSiteFollowingState";
 
 static NSString * const ReaderPostGlobalIDKey = @"globalID";
 static NSString * const SourceAttributionSiteTaxonomy = @"site-pick";
