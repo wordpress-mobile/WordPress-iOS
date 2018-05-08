@@ -10,7 +10,7 @@
 import Foundation
 import Gifu
 
-@objc public protocol ActivityIndicatorType where Self: UIView  {
+@objc public protocol ActivityIndicatorType where Self: UIView {
     func startAnimating()
     func stopAnimating()
 }
@@ -26,7 +26,7 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
     }
 
     // MARK: Public fields
-    
+
     public var gifPlaybackStrategy: GIFPlaybackStrategy = MediumGIFPlaybackStrategy()
 
     public lazy var animator: Gifu.Animator? = {
