@@ -40,14 +40,14 @@ PODS:
     - GoogleToolboxForMac/NSString+URLArguments (~> 2.1)
     - GTMOAuth2 (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleToolboxForMac/DebugUtils (2.1.3):
-    - GoogleToolboxForMac/Defines (= 2.1.3)
-  - GoogleToolboxForMac/Defines (2.1.3)
-  - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.3):
-    - GoogleToolboxForMac/DebugUtils (= 2.1.3)
-    - GoogleToolboxForMac/Defines (= 2.1.3)
-    - GoogleToolboxForMac/NSString+URLArguments (= 2.1.3)
-  - GoogleToolboxForMac/NSString+URLArguments (2.1.3)
+  - GoogleToolboxForMac/DebugUtils (2.1.4):
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - GoogleToolboxForMac/Defines (2.1.4)
+  - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.4):
+    - GoogleToolboxForMac/DebugUtils (= 2.1.4)
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+    - GoogleToolboxForMac/NSString+URLArguments (= 2.1.4)
+  - GoogleToolboxForMac/NSString+URLArguments (2.1.4)
   - Gridicons (0.15)
   - GTMOAuth2 (1.1.6):
     - GTMSessionFetcher (~> 1.1)
@@ -118,7 +118,7 @@ PODS:
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
     - NSObject-SafeExpectations (= 0.0.2)
-  - WPMediaPicker (0.27)
+  - WPMediaPicker (0.28)
   - wpxmlrpc (0.8.3)
   - ZendeskSDK (1.11.2.1):
     - ZendeskSDK/Providers (= 1.11.2.1)
@@ -157,7 +157,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `f8021013ee7df63e1c469ad550944c213888faaf`)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `1d657ac0ddb002712803721da8ee5752e7069637`)
-  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, commit `177e6773395a77ba01e3851c38372b8bff8723c0`)
+  - WPMediaPicker (= 0.28)
   - wpxmlrpc (= 0.8.3)
   - ZendeskSDK (= 1.11.2.1)
 
@@ -171,9 +171,6 @@ EXTERNAL SOURCES:
   WordPressShared:
     :commit: 1d657ac0ddb002712803721da8ee5752e7069637
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
-  WPMediaPicker:
-    :commit: 177e6773395a77ba01e3851c38372b8bff8723c0
-    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -185,9 +182,6 @@ CHECKOUT OPTIONS:
   WordPressShared:
     :commit: 1d657ac0ddb002712803721da8ee5752e7069637
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
-  WPMediaPicker:
-    :commit: 177e6773395a77ba01e3851c38372b8bff8723c0
-    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -202,7 +196,7 @@ SPEC CHECKSUMS:
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   Gifu: 6543ca2056a3d697097c09fe543ef49348ccc892
   GoogleSignIn: d9ef55b10f0aa401a5de2747f59b725e4b9732ac
-  GoogleToolboxForMac: 2501e2ad72a52eb3dfe7bd9aee7dad11b858bd20
+  GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
   Gridicons: 0e5e76ad9fc6f7cbc3da137a9751ef516c5aef73
   GTMOAuth2: c77fe325e4acd453837e72d91e3b5f13116857b2
   GTMSessionFetcher: 5fa5b80fd20e439ef5f545fb2cb3ca6c6714caa2
@@ -222,10 +216,10 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 2d8c58f68f422ce521db689fb582122220e77f8d
   WordPressShared: b1bed3aa4db4438fd9fe78ccd0be58c8fee19c17
-  WPMediaPicker: 1fe532b4ff215a9dd259f08439376fc0dbab1039
+  WPMediaPicker: fb71c0e4fb720f04f7ff7496572ed1005a4e7e12
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: 789cb7cf2890f09f753ffc9d98ac29af45f0ec13
+PODFILE CHECKSUM: 854725567ce10f9d274700a5b26e8e04e12bcf86
 
 COCOAPODS: 1.4.0

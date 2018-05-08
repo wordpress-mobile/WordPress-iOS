@@ -19,7 +19,9 @@ final class AztecMediaPickingCoordinator {
 
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        alertController.addAction(freePhotoAction(origin: origin, blog: blog))
+        if blog.supports(.stockPhotos) {
+            alertController.addAction(freePhotoAction(origin: origin, blog: blog))
+        }
         alertController.addAction(otherAppsAction(origin: origin, blog: blog))
         alertController.addAction(cancelAction())
 
