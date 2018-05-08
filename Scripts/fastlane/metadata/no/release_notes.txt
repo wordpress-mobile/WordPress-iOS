@@ -1,3 +1,0 @@
-Opplastninger er nå asynkrone!
-Sider som ikke ble opplastet vil nå markeres med rødt.
-Tekstfeltet for å skrive inn kommentarer kan nå vokse med opp til 5 linjer.
