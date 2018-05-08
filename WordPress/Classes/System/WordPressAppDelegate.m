@@ -79,11 +79,11 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
     [WordPressAppDelegate fixKeychainAccess];
 
+    // Authentication Framework
+    [self configureWordPressAuthenticator];
+
     // Basic networking setup
     [self configureReachability];
-
-    // Setup the Authenticator!
-    [self configureWordPressAuthenticator];
 
     // Set the main window up
     [self.window makeKeyAndVisible];
