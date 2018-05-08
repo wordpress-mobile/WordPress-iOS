@@ -43,11 +43,11 @@ class CalypsoProcessorIn: CalypsoProcessor {
             return match.replacingMatches(of: "[\n\t ]+", with: " ")
         })
 
-        // Preserve line breaks in <pre> and <script> and <a> tags.
-        if output.contains("<pre") || output.contains("<script") || output.contains("<a") {
+        // Preserve line breaks in <pre> and <script> tags.
+        if output.contains("<pre") || output.contains("<script") {
             preserveLinebreaks = true
 
-            output = output.replacingMatches(of: "<(pre|script|a)[^>]*>[\\s\\S]*?<\\/\\1>", using: { (match, _) in
+            output = output.replacingMatches(of: "<(pre|script)[^>]*>[\\s\\S]*?<\\/\\1>", using: { (match, _) in
                 return match.replacingMatches(of: "\n", with: "<wp-line-break>")
             })
         }
@@ -125,7 +125,7 @@ class CalypsoProcessorIn: CalypsoProcessor {
             return submatches[0] + "<p>" + submatches[1] + "</p>"
         })
 
-        // Restore the line breaks in <pre> and <script> and <a> tags.
+        // Restore the line breaks in <pre> and <script> tags.
         if preserveLinebreaks {
             output = output.replacingOccurrences(of: "<wp-line-break>", with: "\n")
         }
