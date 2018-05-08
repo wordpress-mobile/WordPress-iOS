@@ -24,22 +24,21 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     @objc func setAnimatedImage(_ urlRequest: URLRequest,
                        placeholderImage: UIImage?,
-                       success: (() -> Void)? ,
-                       failure: ((NSError?) -> Void)? ) {
+                       success: (() -> Void)?,
+                       failure: ((NSError?) -> Void)?) {
 
-        if let ongoingTask = currentTask {
-            ongoingTask.cancel()
+        currentTask?.cancel()
+        image = placeholderImage
+
+        if let imageData = AnimatedImageCache.shared.cachedData(url: urlRequest.url) {
+            //Load momentary image to show while gif is loading to avoid flashing.
+            self.image = UIImage(data: imageData)
+            animate(data: imageData, success: success)
+            return
         }
 
         let successBlock: (Data) -> Void = { [weak self] animatedImageData in
-            guard let strongSelf = self else {
-                return
-            }
-            DispatchQueue.main.async(execute: {
-                strongSelf.animate(withGIFData: animatedImageData, loopCount: 0, completionHandler: {
-                    success?()
-                })
-            })
+            self?.animate(data: animatedImageData, success: success)
         }
 
         currentTask = AnimatedImageCache.shared.animatedImage(urlRequest,
@@ -48,10 +47,29 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
                                                               failure: failure)
     }
 
+    /// Clean the image view from previous images and ongoing data tasks.
+    ///
+    @objc func clean() {
+        currentTask?.cancel()
+        image = nil
+    }
+
     @objc func prepForReuse() {
         self.prepareForReuse()
     }
+
+    // MARK: - Helpers
+
+    private func animate(data: Data, success: (() -> Void)?) {
+        DispatchQueue.main.async() {
+            self.animate(withGIFData: data) {
+                success?()
+            }
+        }
+    }
 }
+
+// MARK: - AnimatedImageCache
 
 class AnimatedImageCache {
 
@@ -67,19 +85,24 @@ class AnimatedImageCache {
         return NSCache<NSURL, NSData>()
     }()
 
+    func cachedData(url: URL?) -> Data? {
+        guard let key = url else {
+            return nil
+        }
+        return cache.object(forKey: key as NSURL) as Data?
+    }
+
     func animatedImage(_ urlRequest: URLRequest,
                        placeholderImage: UIImage?,
                        success: ((Data) -> Void)? ,
                        failure: ((NSError?) -> Void)? ) -> URLSessionTask? {
 
-        if  let key = urlRequest.url,
-            let animatedImageData = cache.object(forKey: key as NSURL) {
-
+        if let animatedImageData = cachedData(url: urlRequest.url) {
             success?(animatedImageData as Data)
             return nil
         }
 
-        let task = session.dataTask(with: urlRequest, completionHandler: { [weak self](data, response, error) in
+        let task = session.dataTask(with: urlRequest, completionHandler: { [weak self] (data, response, error) in
             //check if view is still here
             guard let strongSelf = self else {
                 return
