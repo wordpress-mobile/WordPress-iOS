@@ -447,6 +447,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         case BlogFeatureWPComRESTAPI:
         case BlogFeatureCommentLikes:
         case BlogFeatureStats:
+        case BlogFeatureStockPhotos:
             return [self supportsRestApi];
         case BlogFeatureSharing:
             return [self supportsSharing];
