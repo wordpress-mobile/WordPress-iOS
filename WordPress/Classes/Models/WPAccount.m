@@ -23,7 +23,7 @@ static NSString * const WordPressComOAuthKeychainServiceName = @"public-api.word
 @dynamic displayName;
 @dynamic userID;
 @dynamic avatarURL;
-@dynamic managedSettings;
+@dynamic settings;
 @synthesize wordPressComRestApi = _wordPressComRestApi;
 
 #pragma mark - NSManagedObject subclass methods
