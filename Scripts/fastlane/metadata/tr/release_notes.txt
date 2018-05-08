@@ -1,3 +1,4 @@
-Yüklemeler artık eş zamanlı değil!
-Yüklenemeyen sayfalar artık kırmızıyla işaretlenecek.
-Yorum yazılan giriş alanı artık 5 satıra kadar çıkabilir.
+Artık uygulama içinde ücretsiz stok fotoğraflar mevcut.
+Spotlight artık uygulamanın anahtar kısımlarını indeksliyor.
+Uygulama içinden Jetpack'i ayarlamak artık aynı zamanda WP.com hesabının oluşturulmasını da sağlıyor.
+Belge seçicide çoklu seçim etkinleştirildi.
