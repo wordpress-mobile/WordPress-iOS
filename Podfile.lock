@@ -157,8 +157,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.4)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `fece069bd295948760f372f1edfa28e730dc9bc0`)
-  - WordPress-Aztec-iOS/WordPressEditor (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `fece069bd295948760f372f1edfa28e730dc9bc0`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `1b380d53be904e33dca4f996130880c3a412df98`)
+  - WordPress-Aztec-iOS/WordPressEditor (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `1b380d53be904e33dca4f996130880c3a412df98`)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `1d657ac0ddb002712803721da8ee5752e7069637`)
   - WPMediaPicker (= 0.28)
   - wpxmlrpc (= 0.8.3)
@@ -169,7 +169,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   WordPress-Aztec-iOS:
-    :commit: fece069bd295948760f372f1edfa28e730dc9bc0
+    :commit: 1b380d53be904e33dca4f996130880c3a412df98
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressShared:
     :commit: 1d657ac0ddb002712803721da8ee5752e7069637
@@ -180,7 +180,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   WordPress-Aztec-iOS:
-    :commit: fece069bd295948760f372f1edfa28e730dc9bc0
+    :commit: 1b380d53be904e33dca4f996130880c3a412df98
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressShared:
     :commit: 1d657ac0ddb002712803721da8ee5752e7069637
@@ -217,12 +217,12 @@ SPEC CHECKSUMS:
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: 4c1073590d79e1240839888522c83eedfaadc499
+  WordPress-Aztec-iOS: 448c4ba1c7d748e9ed881f328963ccdc8977e0d8
   WordPressShared: b1bed3aa4db4438fd9fe78ccd0be58c8fee19c17
   WPMediaPicker: fb71c0e4fb720f04f7ff7496572ed1005a4e7e12
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: a8172b2a42ff295f2b6ebbb1ec8865bb5a780eab
+PODFILE CHECKSUM: 552e9ce0d162421597e26551ce9daaf1f1facd1f
 
 COCOAPODS: 1.4.0
