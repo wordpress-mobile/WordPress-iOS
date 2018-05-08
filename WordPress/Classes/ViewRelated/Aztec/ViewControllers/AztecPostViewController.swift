@@ -1342,29 +1342,21 @@ private extension AztecPostViewController {
             return
         }
 
-        let title = NSLocalizedString(
-            "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?",
-            comment: "Title displayed via UIAlertController when a user inserts a document into a post.")
+        let title = NSLocalizedString("What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?", comment: "Title displayed via UIAlertController when a user inserts a document into a post.")
 
         let style: UIAlertControllerStyle = UIDevice.isPad() ? .alert : .actionSheet
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
 
-        let cancelTitle = NSLocalizedString(
-            "Cancel",
-            comment: "UIAlertController cancellation option.")
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancels an alert.")
         alertController.addCancelActionWithTitle(cancelTitle)
 
-        let attachAsLinkTitle = NSLocalizedString(
-            "Attach File as Link",
-            comment: "UIAlertController option to embed a link to the document into a post.")
+        let attachAsLinkTitle = NSLocalizedString("Attach File as Link", comment: "Alert option to embed a doc link into a blog post.")
         alertController.addDefaultActionWithTitle(attachAsLinkTitle) { [weak self] _ in
             guard let strongSelf = self else { return }
             strongSelf.insertExternalMediaWithURL(documentURL)
         }
 
-        let addContentsToPostTitle = NSLocalizedString(
-            "Add Contents to Post",
-            comment: "UIAlertController option to add document contents into a post.")
+        let addContentsToPostTitle = NSLocalizedString("Add Contents to Post", comment: "Alert option to add document contents into a blog post.")
 
         let addContentsActionHandler: (() -> Void)
         if #available(iOS 11.0, *), uti == String(kUTTypePDF) {
