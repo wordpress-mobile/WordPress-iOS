@@ -10,18 +10,44 @@
 import Foundation
 import Gifu
 
+@objc protocol ActivityIndicatorType where Self: UIView  {
+    func startAnimating()
+    func stopAnimating()
+}
+
+extension UIActivityIndicatorView: ActivityIndicatorType {
+}
+
 public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     @objc var currentTask: URLSessionTask?
     var gifPlaybackStrategy: GIFPlaybackStrategy = MediumGIFPlaybackStrategy()
 
-    lazy var loadingIndicator: UIActivityIndicatorView = {
+    var customLoadingIndicator: ActivityIndicatorType? {
+        didSet {
+            if let oldIndicator = oldValue as? UIView {
+                oldIndicator.removeFromSuperview()
+            }
+        }
+    }
+
+    private lazy var defaultLoadingIndicator: UIActivityIndicatorView = {
         let loadingIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
         loadingIndicator.hidesWhenStopped = true
         layoutLoadingIndicator(loadingIndicator)
         return loadingIndicator
     }()
+
+    private var loadingIndicator: ActivityIndicatorType {
+        guard let custom = customLoadingIndicator else {
+            return defaultLoadingIndicator
+        }
+        if let customView = custom as? UIView, customView.superview == nil {
+            layoutLoadingIndicator(customView)
+        }
+        return custom
+    }
 
     public lazy var animator: Gifu.Animator? = {
         return Gifu.Animator(withDelegate: self)
@@ -50,6 +76,7 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
             } else {
                 DispatchQueue.main.async() {
                     self?.image = staticImage
+                    success?()
                 }
             }
         }
@@ -115,6 +142,8 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
             if gifPlaybackStrategy.verifyDataSize(cachedData) {
                 animate(data: cachedData, success: success)
+            } else {
+                success?()
             }
 
             return true
