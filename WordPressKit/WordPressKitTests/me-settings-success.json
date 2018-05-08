@@ -42,5 +42,6 @@
     },
     "jetpack_connect": [],
     "is_desktop_app_user": true,
-    "locale_variant": false
+    "locale_variant": false,
+    "tracks_opt_out": false
 }
