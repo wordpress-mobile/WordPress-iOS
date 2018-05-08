@@ -1361,7 +1361,9 @@ private extension AztecPostViewController {
         let addContentsActionHandler: (() -> Void)
         if #available(iOS 11.0, *), uti == String(kUTTypePDF) {
             addContentsActionHandler = { [weak self] in
-                guard let strongSelf = self else { return }
+                guard let strongSelf = self else {
+                    return
+                }
 
                 var text = ""
                 if let document = PDFDocument(url: documentURL) {
