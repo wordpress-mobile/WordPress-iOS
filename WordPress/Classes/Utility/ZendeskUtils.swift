@@ -19,7 +19,6 @@ import WordPressAuthenticator
 
     private var userName: String?
     private var userEmail: String?
-    private var needToRegisterDevice = false
     private var deviceID: String?
 
     private static var appVersion: String {
@@ -100,7 +99,6 @@ import WordPressAuthenticator
     }
 
     static func setNeedToRegisterDevice(_ identifier: String) {
-        ZendeskUtils.sharedInstance.needToRegisterDevice = true
         ZendeskUtils.sharedInstance.deviceID = identifier
     }
 
@@ -203,8 +201,7 @@ private extension ZendeskUtils {
 
     static func registerDeviceIfNeeded() {
 
-        guard ZendeskUtils.sharedInstance.needToRegisterDevice,
-            let deviceID = ZendeskUtils.sharedInstance.deviceID else {
+        guard let deviceID = ZendeskUtils.sharedInstance.deviceID else {
                 return
         }
 
@@ -212,7 +209,6 @@ private extension ZendeskUtils {
             if let error = error {
                 DDLogInfo("Zendesk couldn't register device: \(deviceID). Error: \(error)")
             } else {
-                ZendeskUtils.sharedInstance.needToRegisterDevice = false
                 DDLogDebug("Zendesk successfully registered device: \(deviceID)")
             }
         }
