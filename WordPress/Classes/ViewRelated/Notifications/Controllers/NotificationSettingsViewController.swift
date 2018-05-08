@@ -78,15 +78,16 @@ open class NotificationSettingsViewController: UIViewController {
 
         dispatchGroup.enter()
         service.getAllSettings({ [weak self] (settings: [NotificationSettings]) in
-            self?.groupedSettings = self?.groupSettings(settings)
+            self?.groupedSettings = self?.groupSettings(settings) ?? [:]
             dispatchGroup.leave()
         }, failure: { [weak self] (error: NSError?) in
-                dispatchGroup.leave()
-                self?.handleLoadError()
+            dispatchGroup.leave()
+            self?.handleLoadError()
         })
 
         dispatchGroup.notify(queue: .main) { [weak self] in
-            self?.followedSites = siteService.allSiteTopics()
+            self?.followedSites = siteService.allSiteTopics() ?? []
+            self?.setupSections()
             self?.activityIndicatorView.stopAnimating()
             self?.tableView.reloadData()
         }
@@ -126,6 +127,25 @@ open class NotificationSettingsViewController: UIViewController {
         return [.blog: blogSettings, .other: otherSettings, .wordPressCom: wpcomSettings]
     }
 
+    // Setup the table sections using the Section enumeration
+    //
+    fileprivate func setupSections() {
+        var section: [Section] = groupedSettings.isEmpty ? [] : [.blog, .other, .wordPressCom]
+        if !followedSites.isEmpty && !section.isEmpty {
+            section.insert(.followedSites, at: 1)
+        } else if !followedSites.isEmpty && section.isEmpty {
+            section.append(.followedSites)
+        }
+
+        tableSections = section
+    }
+
+    // Get a valid Section from a setion index
+    //
+    fileprivate func section(at index: Int) -> Section {
+        return tableSections[index]
+    }
+
 
     // MARK: - Error Handling
 
@@ -153,18 +173,18 @@ open class NotificationSettingsViewController: UIViewController {
     // MARK: - UITableView Datasource Methods
 
     @objc open func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
-        return (groupedSettings?.count ?? emptyCount) + (!followedSites.isEmpty ? 1 : 0)
+        return tableSections.count
     }
 
     @objc open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let section = Section(rawValue: section)!
+        let section = self.section(at: section)
         switch section {
         case .blog where requiresBlogsPagination:
-            return displayMoreWasAccepted ? rowCountForBlogSection + 1 : loadMoreRowCount
+            return displayBlogMoreWasAccepted ? rowCountForBlogSection + 1 : loadMoreRowCount
         case .followedSites:
-            return displayMoreWasAccepted ? rowCountForFollowedSite + 1 : rowCountForFollowedSite
+            return displayFollowedMoreWasAccepted ? rowCountForFollowedSite + 1 : rowCountForFollowedSite
         default:
-            return groupedSettings?[section]?.count ?? 0
+            return groupedSettings[section]?.count ?? 0
         }
     }
 
@@ -183,7 +203,7 @@ open class NotificationSettingsViewController: UIViewController {
             return nil
         }
 
-        let theSection      = Section(rawValue: section)!
+        let theSection = self.section(at: section)
         return theSection.headerText()
     }
 
@@ -197,7 +217,7 @@ open class NotificationSettingsViewController: UIViewController {
             return nil
         }
 
-        let theSection      = Section(rawValue: section)!
+        let theSection = self.section(at: section)
         return theSection.footerText()
     }
 
@@ -224,7 +244,7 @@ open class NotificationSettingsViewController: UIViewController {
     // MARK: - UITableView Helpers
 
     fileprivate func reusableIdentifierForIndexPath(_ indexPath: IndexPath) -> String {
-        switch Section(rawValue: indexPath.section)! {
+        switch section(at: indexPath.section) {
         case .blog where !isPaginationRow(indexPath), .followedSites where !isPaginationRow(indexPath):
             return blogReuseIdentifier
         default:
@@ -285,21 +305,20 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
     fileprivate func siteTopic(at index: IndexPath) -> ReaderSiteTopic? {
-        guard let section = Section(rawValue: index.section),
-            !followedSites.isEmpty,
+        guard !followedSites.isEmpty,
             index.row <= (followedSites.count - 1) else {
             return nil
         }
 
-        switch section {
+        switch section(at: index.section) {
         case .followedSites: return followedSites[index.row]
         default: return nil
         }
     }
 
     fileprivate func settingsForRowAtIndexPath(_ indexPath: IndexPath) -> NotificationSettings? {
-        guard let section = Section(rawValue: indexPath.section),
-            let settings = groupedSettings?[section] else {
+        let section = self.section(at: indexPath.section)
+        guard let settings = groupedSettings[section] else {
             return nil
         }
 
@@ -307,13 +326,10 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
     fileprivate func isSectionEmpty(_ sectionIndex: Int) -> Bool {
-        guard let section = Section(rawValue: sectionIndex) else {
-            return true
-        }
-
+        let section = self.section(at: sectionIndex)
         switch section {
         case .followedSites: return followedSites.isEmpty
-        default: return groupedSettings?[section]?.count == 0
+        default: return groupedSettings[section]?.count == 0
         }
     }
 
@@ -329,7 +345,7 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
     fileprivate var rowCountForBlogSection: Int {
-        return groupedSettings?[.blog]?.count ?? 0
+        return groupedSettings[.blog]?.count ?? 0
     }
 
     fileprivate var requiresBlogsPagination: Bool {
@@ -337,31 +353,32 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
     fileprivate func isDisplayMoreRow(_ path: IndexPath) -> Bool {
-        guard let section = Section(rawValue: path.section) else {
-            return false
-        }
-
+        let section = self.section(at: path.section)
         switch section {
-        case .blog, .followedSites:
+        case .blog:
             let isDisplayMoreRow = path.row == loadMoreRowIndex
-            let requiresPagination = section == .blog ? requiresBlogsPagination : requiresFollowedSitesPagination
-            return requiresPagination && !displayMoreWasAccepted && isDisplayMoreRow
+            return requiresFollowedSitesPagination && !displayBlogMoreWasAccepted && isDisplayMoreRow
+
+        case .followedSites:
+            let isDisplayMoreRow = path.row == loadMoreRowIndex
+            return requiresFollowedSitesPagination && !displayFollowedMoreWasAccepted && isDisplayMoreRow
 
         default: return false
         }
     }
 
     fileprivate func isDisplayLessRow(_ path: IndexPath) -> Bool {
-        guard let section = Section(rawValue: path.section) else {
-            return false
-        }
-
+        let section = self.section(at: path.section)
         switch section {
-        case .blog, .followedSites:
-            let rowCount = section == .blog ? rowCountForBlogSection : rowCountForFollowedSite
+        case .blog:
+            let rowCount = rowCountForBlogSection
             let isDisplayLessRow = path.row == rowCount
-            let requiresPagination = section == .blog ? requiresBlogsPagination : requiresFollowedSitesPagination
-            return requiresPagination && displayMoreWasAccepted && isDisplayLessRow
+            return requiresBlogsPagination && displayBlogMoreWasAccepted && isDisplayLessRow
+
+        case .followedSites:
+            let rowCount = rowCountForFollowedSite
+            let isDisplayLessRow = path.row == rowCount
+            return requiresFollowedSitesPagination && displayFollowedMoreWasAccepted && isDisplayLessRow
 
         default: return false
         }
@@ -380,8 +397,17 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
     fileprivate func toggleDisplayMore(at index: IndexPath) {
-        // Remember this action!
-        displayMoreWasAccepted = !displayMoreWasAccepted
+        let section = self.section(at: index.section)
+        switch section {
+        case .blog:
+            displayBlogMoreWasAccepted = !displayBlogMoreWasAccepted
+
+        case .followedSites:
+            displayFollowedMoreWasAccepted = !displayFollowedMoreWasAccepted
+
+        default:
+            return
+        }
 
         // And refresh the section
         let sections = IndexSet(integer: index.section)
@@ -477,9 +503,11 @@ open class NotificationSettingsViewController: UIViewController {
 
     // MARK: - Private Properties
 
-    fileprivate var groupedSettings: [Section: [NotificationSettings]]?
-    fileprivate var displayMoreWasAccepted          = false
+    fileprivate var groupedSettings: [Section: [NotificationSettings]] = [:]
+    fileprivate var displayBlogMoreWasAccepted          = false
+    fileprivate var displayFollowedMoreWasAccepted      = false
     fileprivate var followedSites: [ReaderSiteTopic] = []
+    fileprivate var tableSections: [Section] = []
 }
 
 
