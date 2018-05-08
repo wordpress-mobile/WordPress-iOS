@@ -311,8 +311,11 @@ open class NotificationSettingsViewController: UIViewController {
         }
 
         switch section(at: index.section) {
-        case .followedSites: return followedSites[index.row]
-        default: return nil
+        case .followedSites:
+            return followedSites[index.row]
+
+        default:
+            return nil
         }
     }
 
@@ -328,8 +331,11 @@ open class NotificationSettingsViewController: UIViewController {
     fileprivate func isSectionEmpty(_ sectionIndex: Int) -> Bool {
         let section = self.section(at: sectionIndex)
         switch section {
-        case .followedSites: return followedSites.isEmpty
-        default: return groupedSettings[section]?.count == 0
+        case .followedSites:
+            return followedSites.isEmpty
+
+        default:
+            return groupedSettings[section]?.count == 0
         }
     }
 
