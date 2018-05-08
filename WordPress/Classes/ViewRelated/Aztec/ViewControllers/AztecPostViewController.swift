@@ -931,6 +931,12 @@ class AztecPostViewController: UIViewController, PostEditor {
     // MARK: - Keyboard Handling
 
     override var keyCommands: [UIKeyCommand] {
+        if titleTextField.isFirstResponder {
+            return [
+                UIKeyCommand(input: "\t", modifierFlags: [], action: #selector(tabOnTitle))
+            ]
+        }
+
         if richTextView.isFirstResponder {
             return [
                 UIKeyCommand(input: "B", modifierFlags: .command, action: #selector(toggleBold), discoverabilityTitle: NSLocalizedString("Bold", comment: "Discoverability title for bold formatting keyboard shortcut.")),
@@ -2012,6 +2018,20 @@ extension AztecPostViewController {
         richTextView.inputAssistantItem.trailingBarButtonGroups = originalTrailingBarButtonGroup
         richTextView.autocorrectionType = .yes
         richTextView.reloadInputViews()
+    }
+
+    @objc func tabOnTitle() {
+        let activeTextView: UITextView = {
+            switch mode {
+            case .html:
+                return htmlTextView
+            case .richText:
+                return richTextView
+            }
+        }()
+
+        activeTextView.becomeFirstResponder()
+        activeTextView.selectedTextRange = activeTextView.textRange(from: activeTextView.endOfDocument, to: activeTextView.endOfDocument)
     }
 
     @IBAction @objc func presentMediaPickerWasPressed() {
