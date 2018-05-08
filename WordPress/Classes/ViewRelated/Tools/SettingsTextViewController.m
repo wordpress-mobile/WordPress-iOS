@@ -50,9 +50,9 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         [self commonInitWithPlaceholder:placeholder hint:hint];
-        
-        _originalString = text;
-        _originalAttributedString = [[NSAttributedString alloc] initWithString:text];
+
+        _originalString = (text && !text.isEmpty) ? text : @"";
+        _originalAttributedString = [[NSAttributedString alloc] initWithString:_originalString];
         _textField.text = text;
     }
     return self;
