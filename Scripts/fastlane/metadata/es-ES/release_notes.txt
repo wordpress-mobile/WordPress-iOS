@@ -1,3 +1,4 @@
-¡Las subidas son ahora asíncronas!
-Las páginas que fallen en la subida serán marcadas en rojo.
-El campo de entrada para escribir comentarios puede llegar ahora hasta las 5 líneas.
+¡Fotos gratis de stock ahora disponibles en la aplicación!
+¡Spotlight ahora indexa las secciones clave de la aplicación!
+Configurando Jetpack dentro de la aplicación ahora permite crear al mismo tiempo una nueva cuenta de WP.com.
+Activada la selección múltiple en el selector de documentos.

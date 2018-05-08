@@ -53,6 +53,9 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     page.blog = blog;
     page.date_created_gmt = [NSDate date];
     page.remoteStatus = AbstractPostRemoteStatusSync;
+
+    [[ContextManager sharedInstance] obtainPermanentIDForObject:page];
+
     return page;
 }
 
