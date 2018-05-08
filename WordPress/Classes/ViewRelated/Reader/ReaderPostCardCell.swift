@@ -331,7 +331,10 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
 
         featuredImageView.layoutIfNeeded()
-        if featuredImageView.image == nil || featuredImageDesiredWidth != featuredImageView.frame.size.width || featuredImageURL.absoluteString != currentLoadedCardImageURL {
+        if (!featuredImageURL.isGif && featuredImageView.image == nil) ||
+            (featuredImageURL.isGif && featuredImageView.animationImages == nil) ||
+            featuredImageDesiredWidth != featuredImageView.frame.size.width ||
+            featuredImageURL.absoluteString != currentLoadedCardImageURL {
             configureFeaturedImage(featuredImageURL)
         }
     }
