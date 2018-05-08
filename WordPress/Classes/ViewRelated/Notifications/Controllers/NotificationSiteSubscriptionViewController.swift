@@ -26,8 +26,8 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
 
     private class Row {
         enum Kind: String {
-            case setting = "kSwitchCellIdentifier"
-            case checkmark = "kCheckmarkCellIdentifier"
+            case setting = "SwitchCellIdentifier"
+            case checkmark = "CheckmarkCellIdentifier"
         }
 
         let title: String
