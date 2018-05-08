@@ -78,12 +78,13 @@ final public class PushNotificationsManager: NSObject {
 
     /// Registers the Device Token agains WordPress.com backend, if there's a default account.
     ///
-    /// - Note: Helpshift will also be initialized. The token will be persisted across App Sessions.
+    /// - Note: Support will also be initialized. The token will be persisted across App Sessions.
     ///
     @objc func registerDeviceToken(_ tokenData: Data) {
-        if HelpshiftUtils.isHelpshiftEnabled() {
-            // We want to register Helpshift regardless so that way if a user isn't logged in
-            // they can still get push notifications that we replied to their support ticket.
+
+        // We want to register with Support regardless so that way if a user isn't logged in
+        // they can still get push notifications that we replied to their support ticket.
+        if !FeatureFlag.zendeskMobile.enabled && HelpshiftUtils.isHelpshiftEnabled() {
             HelpshiftCore.registerDeviceToken(tokenData)
         }
 
@@ -94,6 +95,11 @@ final public class PushNotificationsManager: NSObject {
 
         // Token Cleanup
         let newToken = tokenData.hexString
+
+        // Register device with Zendesk
+        if FeatureFlag.zendeskMobile.enabled {
+            ZendeskUtils.setNeedToRegisterDevice(newToken)
+        }
 
         if deviceToken != newToken {
             DDLogInfo("Device Token has changed! OLD Value: \(String(describing: deviceToken)), NEW value: \(newToken)")
@@ -130,6 +136,12 @@ final public class PushNotificationsManager: NSObject {
     @objc func unregisterDeviceToken() {
         guard let knownDeviceId = deviceId else {
             return
+        }
+
+        // Unregister device with Zendesk
+        if FeatureFlag.zendeskMobile.enabled,
+            let deviceToken = deviceToken {
+            ZendeskUtils.unregisterDevice(deviceToken)
         }
 
         let noteService = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
