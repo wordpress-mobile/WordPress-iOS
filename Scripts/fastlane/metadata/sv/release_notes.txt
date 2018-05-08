@@ -1,3 +1,4 @@
-Nu görs uppladdningar asynkront!
-Sidor som inte kunnat laddas upp markeras nu med rött.
-Inmatningsfältet där man skriver kommentarer kan nu utvidgas upp till 5 rader.
+Nu finns ett fritt bildarkiv tillgängligt inuti appen!
+Nu indexerar Spotlight viktiga delar av appen!
+När man konfigurerar Jetpack inuti appen går det nu att samtidigt skapa ett nytt användarkonto på WP.com.
+I dokumentväljaren går det nu att välja flera objekt på samma gång.
