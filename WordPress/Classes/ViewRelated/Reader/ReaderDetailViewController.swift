@@ -32,7 +32,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     @IBOutlet fileprivate weak var commentButton: UIButton!
     @IBOutlet fileprivate weak var likeButton: UIButton!
     @IBOutlet fileprivate weak var footerViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var saveForLaterButton: UIButton!
+    @IBOutlet fileprivate weak var saveForLaterButton: UIButton!
     // Wrapper views
     @IBOutlet fileprivate weak var textHeaderStackView: UIStackView!
     @IBOutlet fileprivate weak var textFooterStackView: UIStackView!
