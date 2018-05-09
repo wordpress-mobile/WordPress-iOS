@@ -217,7 +217,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         let tintedHighlightedIcon = highlightedIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
 
         saveForLaterButton.setImage(tintedIcon, for: .normal)
-        saveForLaterButton.setImage(tintedHighlightedIcon, for: .highlighted)
+        saveForLaterButton.setImage(tintedHighlightedIcon, for: .selected)
     }
 
     fileprivate func setupMenuButton() {
@@ -440,7 +440,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
     fileprivate func configureSaveForLaterButton() {
         let postIsSavedForLater = contentProvider?.isSavedForLater() ?? false
-        saveForLaterButton.isHighlighted = postIsSavedForLater
+        saveForLaterButton.isSelected = postIsSavedForLater
     }
 
     fileprivate func configureButtonTitles() {
@@ -548,6 +548,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
         if FeatureFlag.saveForLater.enabled {
             delegate?.readerCell(self, saveActionForProvider: provider)
+            configureSaveForLaterButton()
         } else {
             delegate?.readerCell(self, shareActionForProvider: provider, fromView: sender)
         }
