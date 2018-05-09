@@ -987,14 +987,19 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 
     @objc func didTapFeaturedImage(_ gesture: UITapGestureRecognizer) {
-        if gesture.state != .ended {
+        guard gesture.state == .ended, let post = post else {
             return
         }
 
-        let controller = WPImageViewController(image: featuredImageView.image)
-        controller?.modalTransitionStyle = .crossDissolve
-        controller?.modalPresentationStyle = .fullScreen
-        present(controller!, animated: true, completion: nil)
+        var controller: WPImageViewController
+        if post.featuredImageURL.isGif {
+            controller = WPImageViewController(gifData: featuredImageView.animatedGifData)
+        } else {
+            controller = WPImageViewController(image: featuredImageView.image)
+        }
+        controller.modalTransitionStyle = .crossDissolve
+        controller.modalPresentationStyle = .fullScreen
+        present(controller, animated: true, completion: nil)
     }
 
 

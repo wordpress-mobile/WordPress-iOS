@@ -12,10 +12,11 @@ static CGFloat const MinimumZoomScale = 0.1;
 @property (nonatomic, strong) NSURL *url;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) Media *media;
+@property (nonatomic, strong) NSData *data;
 
 @property (nonatomic, assign) BOOL isLoadingImage;
 @property (nonatomic, strong) UIScrollView *scrollView;
-@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) CachedAnimatedImageView *imageView;
 @property (nonatomic, assign) BOOL shouldHideStatusBar;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 
@@ -40,6 +41,15 @@ static CGFloat const MinimumZoomScale = 0.1;
 - (instancetype)initWithMedia:(Media *)media
 {
     return [self initWithImage:nil andMedia:media];
+}
+
+- (instancetype)initWithGifData:(NSData *)data
+{
+    self = [super init];
+    if (self) {
+        _data = data;
+    }
+    return self;
 }
 
 - (instancetype)initWithImage:(UIImage *)image andURL:(NSURL *)url
@@ -89,7 +99,8 @@ static CGFloat const MinimumZoomScale = 0.1;
     self.scrollView.delegate = self;
     [self.view addSubview:self.scrollView];
 
-    self.imageView = [[UIImageView alloc] initWithFrame:frame];
+    self.imageView = [[CachedAnimatedImageView alloc] initWithFrame:frame];
+    self.imageView.gifStrategy = GIFStrategyLargeGIFs;
     self.imageView.userInteractionEnabled = YES;
     [self.scrollView addSubview:self.imageView];
 
@@ -127,6 +138,8 @@ static CGFloat const MinimumZoomScale = 0.1;
         [self loadImageFromURL];
     } else if (self.media) {
         [self loadImageFromMedia];
+    } else if (self.data) {
+        [self loadImageFromGifData];
     }
 }
 
@@ -171,6 +184,22 @@ static CGFloat const MinimumZoomScale = 0.1;
                 [weakSelf updateImageView];
                 weakSelf.isLoadingImage = NO;
             }
+        });
+    }];
+}
+
+- (void)loadImageFromGifData
+{
+    self.isLoadingImage = YES;
+
+    __weak __typeof__(self) weakSelf = self;
+    [self.imageView setAnimatedImage:_data success:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // FIXME: Make these work!
+//            [weakSelf.imageView sizeToFit];
+//            weakSelf.scrollView.contentSize = weakSelf.imageView.image.size;
+//            [weakSelf centerImage];
+            weakSelf.isLoadingImage = NO;
         });
     }];
 }
