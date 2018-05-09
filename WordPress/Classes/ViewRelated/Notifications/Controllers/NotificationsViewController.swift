@@ -164,7 +164,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        showRatingViewIfApplicable()
+//        showRatingViewIfApplicable()
         syncNewNotifications()
         markSelectedNotificationAsRead()
 
@@ -407,10 +407,17 @@ private extension NotificationsViewController {
 
         // this allows the selector to move to the top
         ratingsSpaceConstraint.isActive = false
-        if (true) {
-            setupPrimeForPush()
-        } else {
-            setupForAppRatings()
+
+        if !userDefaults.notificationPrimerInlineWasAcknowledged {
+            PushNotificationsManager.shared.loadAuthorizationStatus { [weak self] (status) in
+                if status == .notDetermined {
+                    self?.setupPrimeForPush()
+                    self?.showRatingViewIfApplicable()
+                }
+            }
+        } else if AppRatingUtility.shared.shouldPromptForAppReview(section: Ratings.section) {
+            setupAppRatings()
+            showRatingViewIfApplicable()
         }
     }
 
@@ -1211,10 +1218,6 @@ extension NotificationsViewController: WPNoResultsViewDelegate {
 //
 private extension NotificationsViewController {
     func showRatingViewIfApplicable() {
-//        guard AppRatingUtility.shared.shouldPromptForAppReview(section: Ratings.section) else {
-//            return
-//        }
-
         guard ratingsView.alpha != WPAlphaFull else {
             return
         }
@@ -1426,10 +1429,19 @@ extension NotificationsViewController: SearchableActivityConvertable {
     }
 }
 
-/// MARK: - Push Notification Primer
-///
+// MARK: - Push Notification Primer
+//
 extension NotificationsViewController {
+    private struct Analytics {
+        static let locationKey = "location"
+        static let inlineKey = "inline"
+    }
+
     func setupPrimeForPush() {
+        defer {
+            WPAnalytics.track(.pushNotificationPrimerSeen, withProperties: [Analytics.locationKey: Analytics.inlineKey])
+        }
+
         ratingsView.setupHeading(NSLocalizedString("We'll notify you when you get followers, comments, and likes.",
                                                    comment: "This is the string we display when asking the user to approve push notifications"))
         let yesTitle = NSLocalizedString("Allow notifications",
@@ -1438,19 +1450,48 @@ extension NotificationsViewController {
                                         comment: "Button label for denying our request to allow push notifications")
 
         ratingsView.setupYesButton(title: yesTitle) { [weak self] button in
-            // TODO
+            defer {
+                WPAnalytics.track(.pushNotificationPrimerAllowTapped, withProperties: [Analytics.locationKey: Analytics.inlineKey])
+            }
+            InteractiveNotificationsManager.shared.requestAuthorization {
+                DispatchQueue.main.async {
+                    self?.hideRatingViewWithDelay(0.0)
+                    UserDefaults.standard.notificationPrimerInlineWasAcknowledged = true
+                }
+            }
         }
 
         ratingsView.setupNoButton(title: noTitle) { [weak self] button in
-            // TODO
+            defer {
+                WPAnalytics.track(.pushNotificationPrimerNoTapped, withProperties: [Analytics.locationKey: Analytics.inlineKey])
+            }
+            self?.hideRatingViewWithDelay(0.0)
+            UserDefaults.standard.notificationPrimerInlineWasAcknowledged = true
         }
     }
 }
 
-/// MARK: - App Ratings
-///
+// MARK: - User Defaults
+
+extension UserDefaults {
+    private enum Keys: String {
+        case notificationPrimerInlineWasAcknowledged = "notificationPrimerInlineWasAcknowledged"
+    }
+
+    var notificationPrimerInlineWasAcknowledged: Bool {
+        get {
+            return bool(forKey: Keys.notificationPrimerInlineWasAcknowledged.rawValue)
+        }
+        set {
+            set(newValue, forKey: Keys.notificationPrimerInlineWasAcknowledged.rawValue)
+        }
+    }
+}
+
+// MARK: - App Ratings
+//
 extension NotificationsViewController {
-    func setupForAppRatings() {
+    func setupAppRatings() {
         ratingsView.setupHeading(NSLocalizedString("What do you think about WordPress?",
                                                    comment: "This is the string we display when prompting the user to review the app"))
         let yesTitle = NSLocalizedString("I Like It",
@@ -1510,7 +1551,7 @@ extension NotificationsViewController {
                 self?.gatherFeedback()
             }
             self?.ratingsView.setupNoButton(title: noTitle) { [weak self] button in
-                self?.dismissPrompt()
+                self?.dismissRatingsPrompt()
             }
         }
     }
@@ -1543,7 +1584,7 @@ extension NotificationsViewController {
         }
     }
 
-    private func dismissPrompt() {
+    private func dismissRatingsPrompt() {
         WPAnalytics.track(.appReviewsDeclinedToRateApp)
         AppRatingUtility.shared.declinedToRateCurrentVersion()
         hideRatingViewWithDelay(0.0)
