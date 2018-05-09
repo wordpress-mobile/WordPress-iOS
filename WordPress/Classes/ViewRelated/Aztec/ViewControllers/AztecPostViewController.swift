@@ -1201,6 +1201,7 @@ extension AztecPostViewController {
                 }
             }
 
+
             if let analyticsStat = analyticsStat {
                 self.trackPostSave(stat: analyticsStat)
             }
@@ -1225,7 +1226,7 @@ extension AztecPostViewController {
             if !UserDefaults.standard.asyncPromoWasDisplayed {
                 promoBlock()
             } else {
-                displayPublishConfirmationAlert(onPublish: publishBlock)
+                displayPublishConfirmationAlert(for: action, onPublish: publishBlock)
             }
         } else {
             publishBlock()
@@ -1413,15 +1414,16 @@ private extension AztecPostViewController {
         return
     }
 
-    /// Displays a publish confirmation alert with two options: "Keep Editing" and "Publish".
+    /// Displays a publish confirmation alert with two options: "Keep Editing" and String for Action.
     ///
     /// - Parameters:
+    ///     - action: Publishing action being performed
     ///     - dismissWhenDone: if `true`, the VC will be dismissed if the user picks "Publish".
     ///
-    func displayPublishConfirmationAlert(onPublish publishAction: @escaping () -> ()) {
-        let title = postEditorStateContext.publishQuestionTitleText
+    func displayPublishConfirmationAlert(for action: PostEditorAction, onPublish publishAction: @escaping () -> ()) {
+        let title = action.publishingActionQuestionLabel
         let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
-        let publishTitle = postEditorStateContext.publishButtonText
+        let publishTitle = action.publishActionLabel
         let style: UIAlertControllerStyle = UIDevice.isPad() ? .alert : .actionSheet
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
 
