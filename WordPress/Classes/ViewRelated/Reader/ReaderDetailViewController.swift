@@ -796,7 +796,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         let tintedHighlightedIcon = highlightedIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
 
         saveForLaterButton.setImage(tintedIcon, for: .normal)
-        saveForLaterButton.setImage(tintedHighlightedIcon, for: .highlighted)
+        saveForLaterButton.setImage(tintedHighlightedIcon, for: .selected)
 
         saveForLaterButton.isHidden = false
         saveForLaterButton.isHighlighted = post?.isSavedForLater ?? false
