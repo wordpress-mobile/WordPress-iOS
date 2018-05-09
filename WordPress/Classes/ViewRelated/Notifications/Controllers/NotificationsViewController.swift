@@ -1407,7 +1407,7 @@ extension NotificationsViewController: AppFeedbackPromptViewDelegate {
 
         if FeatureFlag.zendeskMobile.enabled {
             if ZendeskUtils.zendeskEnabled {
-                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self, with: WordPressSupportSourceTag.inAppFeedback)
+                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self, with: .inAppFeedback)
             } else {
                 if let contact = URL(string: NotificationsViewController.contactURL) {
                     UIApplication.shared.open(contact)
