@@ -677,8 +677,9 @@ extension ReaderPostCardCell: Accessible {
     }
 
     private func prepareShareForVoiceOver() {
-        saveForLaterButton.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
-        saveForLaterButton.accessibilityHint = NSLocalizedString("Shares this post", comment: "Spoken accessibility hint for Share buttons")
+        let saveForLaterFlag = FeatureFlag.saveForLater.enabled
+        saveForLaterButton.accessibilityLabel = saveForLaterFlag ? NSLocalizedString("Save for Later", comment: "Spoken accessibility label") :  NSLocalizedString("Share", comment: "Spoken accessibility label")
+        saveForLaterButton.accessibilityHint = saveForLaterFlag ? NSLocalizedString("Saves this post for later", comment: "Spoken accessibility save for later buttons") : NSLocalizedString("Shares this post", comment: "Spoken accessibility hint for Share buttons")
         saveForLaterButton.accessibilityTraits = UIAccessibilityTraitButton
     }
 
