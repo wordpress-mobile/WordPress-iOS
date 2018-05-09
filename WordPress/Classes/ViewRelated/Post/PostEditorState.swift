@@ -32,7 +32,7 @@ public enum PostEditorAction {
         }
     }
 
-    fileprivate var publishActionLabel: String {
+    var publishActionLabel: String {
         switch self {
         case .publish:
             return NSLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post.")
@@ -51,18 +51,22 @@ public enum PostEditorAction {
         }
     }
 
-    fileprivate var publishingActionQuestionLabel: String {
+    var publishingActionQuestionLabel: String {
         switch self {
         case .publish:
             return NSLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing.")
         case .publishNow:
             return NSLocalizedString("Are you sure you want to publish now?", comment: "Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing.")
+        case .save:
+            return NSLocalizedString("Are you sure you want to save?", comment: "Title of the message shown when the user taps Save while editing a post.  Options will be Save Now and Keep Editing.")
+        case .saveAsDraft:
+            return NSLocalizedString("Are you sure you want to save as draft?", comment: "Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing.")
         case .schedule:
             return NSLocalizedString("Are you sure you want to schedule?", comment: "Title of message shown when the user taps Schedule while editing a post. Options will be Schedule and Keep Editing")
         case .submitForReview:
             return NSLocalizedString("Are you sure you want to submit for review?", comment: "Title of message shown when user taps submit for review.")
-        default:
-            return ""
+        case .update:
+            return NSLocalizedString("Are you sure you want to update?", comment: "Title of message shown when user taps update.")
         }
     }
 
