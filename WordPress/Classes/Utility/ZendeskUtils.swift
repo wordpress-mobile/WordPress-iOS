@@ -15,7 +15,7 @@ import WordPressAuthenticator
     private var sourceTag: WordPressSupportSourceTag?
 
     // Specifically for WPError, which has the sourceTag as a String.
-    var sourceTagDescription: String?
+    private var sourceTagDescription: String?
 
     private var userName: String?
     private var userEmail: String?
@@ -44,6 +44,8 @@ import WordPressAuthenticator
 
         ZendeskUtils.toggleZendesk(enabled: true)
     }
+
+    // MARK: - Show Zendesk Views
 
     func showHelpCenterIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
         ZendeskUtils.createIdentity { success in
@@ -83,7 +85,6 @@ import WordPressAuthenticator
         }
     }
 
-
     func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
         ZendeskUtils.createIdentity { success in
             guard success else {
@@ -98,6 +99,8 @@ import WordPressAuthenticator
         }
     }
 
+    // MARK: - Device Registration
+
     static func setNeedToRegisterDevice(_ identifier: String) {
         ZendeskUtils.sharedInstance.deviceID = identifier
     }
@@ -110,6 +113,13 @@ import WordPressAuthenticator
                 print("Zendesk successfully unregistered device: \(identifier)")
             }
         }
+    }
+
+    // MARK: - Helpers
+
+    // Specifically for WPError, which is ObjC & has the sourceTag as a String.
+    static func updateSourceTag(with description: String) {
+        ZendeskUtils.sharedInstance.sourceTagDescription = description
     }
 
 }
