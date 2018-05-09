@@ -387,11 +387,12 @@ private extension ZendeskUtils {
         if let _ = accountService.defaultWordPressComAccount() {
             tags.append(Constants.wpComTag)
         }
+        print("🔴 sourceTag: ", ZendeskUtils.sharedInstance.sourceTag)
 
         // Add sourceTag
-        if let sourceTag = ZendeskUtils.sharedInstance.sourceTag?.description ?? ZendeskUtils.sharedInstance.sourceTagDescription {
-            tags.append(sourceTag)
-        }
+//        if let sourceTag = ZendeskUtils.sharedInstance.sourceTag?.description ?? ZendeskUtils.sharedInstance.sourceTagDescription {
+//            tags.append(sourceTag)
+//        }
 
         return tags
     }
