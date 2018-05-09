@@ -51,7 +51,7 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
 };
 
 static CGFloat CellHeight = 44.0f;
-static CGFloat LoadingCellHeight = 50.0f;
+static CGFloat LoadingIndicatorHeight = 20.0f;
 
 static NSInteger RowIndexForDatePicker = 0;
 static NSInteger RowIndexForPassword = 3;
@@ -59,6 +59,7 @@ static CGFloat LocationCellHeightToWidthAspectRatio = 0.5f;
 
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
 static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCellIdentifier";
+static NSString *const TableViewFeaturedImageCellIdentifier = @"TableViewFeaturedImageCellIdentifier";
 
 @interface PostSettingsViewController () <UITextFieldDelegate, WPPickerViewDelegate,
 UIImagePickerControllerDelegate, UINavigationControllerDelegate,
@@ -140,8 +141,9 @@ PostCategoriesViewControllerDelegate, PostFeaturedImageCellDelegate>
     [self setupPublicizeConnections];
 
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
-
     [self.tableView registerClass:[WPProgressTableViewCell class] forCellReuseIdentifier:TableViewProgressCellIdentifier];
+    [self.tableView registerClass:[PostFeaturedImageCell class] forCellReuseIdentifier:TableViewFeaturedImageCellIdentifier];
+
 
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 44.0)]; // add some vertical padding
 
@@ -503,11 +505,11 @@ PostCategoriesViewControllerDelegate, PostFeaturedImageCellDelegate>
 
     if (sectionId == PostSettingsSectionFeaturedImage) {
         if ([self isUploadingMedia]) {
-            return CellHeight + (2.0 * PostFeaturedImageCellMargin);
+            return CellHeight + (2.f * PostFeaturedImageCellMargin);
         } else if (self.featuredImage) {
-            return self.featuredImageSize.height;
+            return self.featuredImageSize.height + 2.f * PostFeaturedImageCellMargin;
         } else {
-            return LoadingCellHeight;
+            return LoadingIndicatorHeight + 2.f * PostFeaturedImageCellMargin;
         }
     }
 
@@ -745,13 +747,9 @@ PostCategoriesViewControllerDelegate, PostFeaturedImageCellDelegate>
         activityCell.tag = PostSettingsRowFeaturedImageRemove;
         cell = activityCell;
     } else {
-        static NSString *FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
-        PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:FeaturedImageCellIdentifier];
-        if (!cell) {
-            featuredImageCell = [[PostFeaturedImageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:FeaturedImageCellIdentifier];
-            featuredImageCell.delegate = self;
-            [WPStyleGuide configureTableViewCell:featuredImageCell];
-        }
+        PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewFeaturedImageCellIdentifier forIndexPath:indexPath];
+        featuredImageCell.delegate = self;
+        [WPStyleGuide configureTableViewCell:featuredImageCell];
 
         NSURL *featuredURL = [NSURL URLWithString:self.apost.featuredImage.remoteURL];
         if (!featuredURL) {
