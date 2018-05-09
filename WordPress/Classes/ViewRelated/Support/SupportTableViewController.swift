@@ -7,13 +7,6 @@ class SupportTableViewController: UITableViewController {
 
     var sourceTag: WordPressSupportSourceTag?
 
-    // Specifically for WPError, which has the sourceTag as a String.
-    @objc var sourceTagDescription: String? {
-        didSet {
-            ZendeskUtils.sharedInstance.sourceTagDescription = sourceTagDescription
-        }
-    }
-
     // If set, the Zendesk views will be shown from this view instead of in the navigation controller.
     // Specifically for Me > Help & Support on the iPad.
     var showHelpFromViewController: UIViewController?
@@ -64,6 +57,13 @@ class SupportTableViewController: UITableViewController {
 
     @IBAction func dismissPressed(_ sender: AnyObject) {
         dismiss(animated: true, completion: nil)
+    }
+
+    // MARK: - Helpers
+
+    // Specifically for WPError, which is ObjC & has the sourceTag as a String.
+    @objc func updateSourceTag(with description: String) {
+        ZendeskUtils.updateSourceTag(with: description)
     }
 
 }
