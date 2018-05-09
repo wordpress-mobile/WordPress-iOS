@@ -9,39 +9,24 @@ extension WordPressSupportSourceTag {
     /// Returns the matching SupportSourceTag enum case, matching for the current WordPressSupportSourceTag (Auth Framework) enum case.
     ///
     func toSupportSourceTag() -> SupportSourceTag {
-        switch self {
-        case .generalLogin:
-            return .generalLogin
-        case .jetpackLogin:
-            return  .jetpackLogin
-        case .loginEmail:
-            return .loginEmail
-        case .login2FA:
-            return .login2FA
-        case .loginMagicLink:
-            return .loginMagicLink
-        case .loginSiteAddress:
-            return .loginSiteAddress
-        case .loginUsernamePassword:
-            return .loginUsernamePassword
-        case .loginWPComPassword:
-            return .loginWPComPassword
-        case .wpComCreateSiteCreation:
-            return .wpComCreateSiteCreation
-        case .wpComCreateSiteDomain:
-            return .wpComCreateSiteDomain
-        case .wpComCreateSiteDetails:
-            return .wpComCreateSiteDetails
-        case .wpComCreateSiteUsername:
-            return .wpComCreateSiteUsername
-        case .wpComSignupEmail:
-            return .wpComSignupEmail
-        case .wpComSignup:
-            return .wpComSignup
-        case .wpComSignupWaitingForGoogle:
-            return .signupWaitingForGoogle
-        case .wpComSignupMagicLink:
-            return .signupMagicLink
-        }
+        return SupportSourceTag(rawValue: rawValue)
+    }
+}
+
+
+/// WordPress-Specific SupportSourceTag(s). (Extensible Enum Technique!)
+///
+extension WordPressSupportSourceTag {
+    public static var wpComCreateSiteCreation: WordPressSupportSourceTag {
+        return WordPressSupportSourceTag(rawValue: "wpComCreateSiteCreation")
+    }
+    public static var wpComCreateSiteDomain: WordPressSupportSourceTag {
+        return WordPressSupportSourceTag(rawValue: "wpComCreateSiteDomain")
+    }
+    public static var wpComCreateSiteDetails: WordPressSupportSourceTag {
+        return WordPressSupportSourceTag(rawValue: "wpComCreateSiteDetails")
+    }
+    public static var wpComCreateSiteUsername: WordPressSupportSourceTag {
+        return WordPressSupportSourceTag(rawValue: "wpComCreateSiteUsername")
     }
 }
