@@ -32,7 +32,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     ///
     @IBOutlet var ratingsView: AppFeedbackPromptView!
 
-    /// Defines the Height of the Ratings View
+    /// Ensures the segmented control is below the feedback prompt
     ///
     @IBOutlet var ratingsSpaceConstraint: NSLayoutConstraint!
 
@@ -181,6 +181,9 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+
+        // table header views are a special kind of broken. This dispatch forces the table header to get a new layout
+        // on the next redraw tick, which seems to be required.
         DispatchQueue.main.async {
             self.setupTableHeaderView()
         }
