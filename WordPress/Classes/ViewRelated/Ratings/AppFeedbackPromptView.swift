@@ -84,6 +84,23 @@ class AppFeedbackPromptView: UIView {
         setNeedsUpdateConstraints()
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        self.buttonStack.axis = .horizontal
+        self.buttonStack.isLayoutMarginsRelativeArrangement = true
+
+        // measure the width of the view with the new font sizes to see if the buttons are too wide.
+        leftButton.updateFontSizeToMatchSystem()
+        rightButton.updateFontSizeToMatchSystem()
+        let newLayoutSize = systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+
+        // if the new width is too wide, change the axis of the stack view
+        if newLayoutSize.width > UIScreen.main.bounds.size.width {
+            self.buttonStack.axis = .vertical
+            self.setNeedsLayout()
+        }
+
+    }
+
     override func updateConstraints() {
         setupConstraints()
         super.updateConstraints()
@@ -97,14 +114,22 @@ class AppFeedbackPromptView: UIView {
 
         addConstraints([
             label.centerXAnchor.constraint(equalTo: centerXAnchor),
-            label.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstants.verticalPadding),
-            label.bottomAnchor.constraint(equalTo: buttonStack.topAnchor, constant: -LayoutConstants.verticalPadding),
+            label.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstants.basePadding),
+            label.bottomAnchor.constraint(equalTo: buttonStack.topAnchor, constant: -LayoutConstants.basePadding),
             label.heightAnchor.constraint(greaterThanOrEqualToConstant: LayoutConstants.labelMinimumHeight),
-            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: LayoutConstants.horizontalPadding),
-            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutConstants.horizontalPadding),
-            bottomAnchor.constraint(greaterThanOrEqualTo: buttonStack.bottomAnchor, constant: LayoutConstants.verticalPadding),
+            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: LayoutConstants.labelHorizontalPadding),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutConstants.labelHorizontalPadding),
+
+            // position the button stack view
+            bottomAnchor.constraint(greaterThanOrEqualTo: buttonStack.bottomAnchor, constant: LayoutConstants.basePadding),
             buttonStack.centerXAnchor.constraint(equalTo: centerXAnchor),
-            leftButton.widthAnchor.constraint(greaterThanOrEqualTo: rightButton.widthAnchor)
+
+            // make sure the primary/yes button is always at least as big as the cancel/no button
+            leftButton.widthAnchor.constraint(greaterThanOrEqualTo: rightButton.widthAnchor),
+
+            // ensure the buttons have horizontal padding from the sides of the view
+            leftButton.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: LayoutConstants.basePadding),
+            trailingAnchor.constraint(greaterThanOrEqualTo: rightButton.trailingAnchor, constant: LayoutConstants.basePadding)
         ])
     }
 
@@ -146,7 +171,7 @@ class AppFeedbackPromptView: UIView {
     // these values based on Zeplin mockups
     private struct LayoutConstants {
         static let labelMinimumHeight: CGFloat = 18.0
-        static let verticalPadding: CGFloat = 15.0
-        static let horizontalPadding: CGFloat = 37.0
+        static let basePadding: CGFloat = 15.0
+        static let labelHorizontalPadding: CGFloat = 37.0
     }
 }

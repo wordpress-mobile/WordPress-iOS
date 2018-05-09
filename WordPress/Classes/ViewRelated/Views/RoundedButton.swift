@@ -67,7 +67,11 @@ class RoundedButton: UIButton {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
+            updateFontSizeToMatchSystem()
         }
+    }
+
+    public func updateFontSizeToMatchSystem() {
+        titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline)
     }
 }
