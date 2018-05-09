@@ -576,6 +576,29 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     return (ReaderAbstractTopic *)[results firstObject];
 }
 
+- (ReaderAbstractTopic *)topicForSaveForLater
+{
+    NSError *error;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderAbstractTopic classNameWithoutNamespaces]];
+    NSString *topicPath = @"*/read/savedforlater";
+    request.predicate = [NSPredicate predicateWithFormat:@"path LIKE %@", topicPath];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"Failed to fetch topic for save for later: %@", error);
+        return nil;
+    }
+
+    ReaderAbstractTopic *firstResult = [results firstObject];
+    if (!firstResult || ![firstResult isKindOfClass:[ReaderSaveForLaterTopic class]]) {
+        firstResult = [NSEntityDescription insertNewObjectForEntityForName:[ReaderSaveForLaterTopic classNameWithoutNamespaces]
+                                                    inManagedObjectContext:self.managedObjectContext];
+    }
+
+    firstResult.path = topicPath;
+    firstResult.showInMenu = YES;
+    return firstResult;
+}
+
 - (void)siteTopicForSiteWithID:(NSNumber *)siteID
                         isFeed:(BOOL)isFeed
                        success:(void (^)(NSManagedObjectID *objectID, BOOL isFollowing))success

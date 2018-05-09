@@ -183,6 +183,13 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (ReaderAbstractTopic *)topicForDiscover;
 
 /**
+ Fetch the topic for 'Save for Later' if it exists.
+
+ @return A `ReaderAbstractTopic` instance or nil.
+ */
+- (ReaderAbstractTopic *)topicForSaveForLater;
+
+/**
  Fetch a tag topic for a tag with the specified slug.
 
  @param slug The slug for the tag.
