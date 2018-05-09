@@ -29,6 +29,17 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     public var gifPlaybackStrategy: GIFPlaybackStrategy = MediumGIFPlaybackStrategy()
 
+    @objc public var gifStrategy: GIFStrategy {
+        get {
+            return gifPlaybackStrategy.gifStrategy
+        }
+        set(newGifStrategy) {
+            gifPlaybackStrategy = newGifStrategy.playbackStrategy
+        }
+    }
+
+    @objc public private(set) var animatedGifData: Data?
+
     public lazy var animator: Gifu.Animator? = {
         return Gifu.Animator(withDelegate: self)
     }()
@@ -76,6 +87,7 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
                 self?.animate(data: animatedImageData, success: success)
             } else {
                 DispatchQueue.main.async() {
+                    self?.animatedGifData = nil
                     self?.image = staticImage
                     success?()
                 }
@@ -86,6 +98,21 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
                                                               placeholderImage: placeholderImage,
                                                               success: successBlock,
                                                               failure: failure)
+    }
+
+    @objc public func setAnimatedImage(_ animatedImageData: Data,
+                                       success: (() -> Void)? = nil) {
+        currentTask?.cancel()
+        let didVerifyDataSize = gifPlaybackStrategy.verifyDataSize(animatedImageData)
+        if didVerifyDataSize {
+            animate(data: animatedImageData, success: success)
+        } else {
+            DispatchQueue.main.async() {
+                self.animatedGifData = nil
+                self.image = UIImage(data: animatedImageData)
+                success?()
+            }
+        }
     }
 
     /// Clean the image view from previous images and ongoing data tasks.
@@ -131,6 +158,7 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
             if let cachedStaticImage = AnimatedImageCache.shared.cachedStaticImage(url: urlRequest.url) {
                 image = cachedStaticImage
             } else {
+                animatedGifData = nil
                 let staticImage = UIImage(data: cachedData)
                 image = staticImage
                 AnimatedImageCache.shared.cacheStaticImage(url: urlRequest.url, image: staticImage)
@@ -149,6 +177,7 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
     }
 
     private func animate(data: Data, success: (() -> Void)?) {
+        animatedGifData = data
         DispatchQueue.main.async() {
             self.setFrameBufferCount(self.gifPlaybackStrategy.frameBufferCount)
             self.animate(withGIFData: data) {
