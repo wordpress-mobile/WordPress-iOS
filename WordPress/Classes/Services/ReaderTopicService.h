@@ -143,6 +143,15 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (void)toggleFollowingForSite:(ReaderSiteTopic *)topic success:(void (^)(void))success failure:(void (^)(NSError *error))failure;
 
 /**
+ Toggle the save for later status of the site for the specified site topic
+
+ @param topic The site topic to toggle following status
+ @param success block called on a successful change.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)toggleSaveForLaterForPost:(ReaderSaveForLaterTopic *)topic success:(void (^)(void))success failure:(void (^)(NSError *error))failure;
+
+/**
  Mark a site topic as unfollowed in core data only. Should be called after unfollowing
  a post to ensure that any existing site topics reflect the correct following status.
 

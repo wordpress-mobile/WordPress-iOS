@@ -416,6 +416,11 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
 }
 
+- (void)toggleSaveForLaterForPost:(ReaderSaveForLaterTopic *)topic success:(void (^)(void))success failure:(void (^)(NSError *error))failure
+{
+
+}
+
 - (void)tagTopicForTagWithSlug:(NSString *)slug success:(void(^)(NSManagedObjectID *objectID))success failure:(void (^)(NSError *error))failure
 {
     if (!success) {
