@@ -13,6 +13,7 @@ import CoreTelephony
 
     private var userName: String?
     private var userEmail: String?
+    private var deviceID: String?
 
     private static var appVersion: String {
         return Bundle.main.shortVersionString() ?? Constants.unknownValue
@@ -39,7 +40,7 @@ import CoreTelephony
     }
 
     func showHelpCenterIfPossible(from controller: UIViewController) {
-        ZendeskUtils.createIdentity(completion: { success in
+        ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
                 return
@@ -56,11 +57,11 @@ import CoreTelephony
 
             let presentInController = ZendeskUtils.configureViewController(controller)
             ZDKHelpCenter.presentOverview(presentInController, with: helpCenterContentModel)
-        })
+        }
     }
 
     func showNewRequestIfPossible(from controller: UIViewController) {
-        ZendeskUtils.createIdentity(completion: { success in
+        ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
                 return
@@ -69,12 +70,12 @@ import CoreTelephony
             let presentInController = ZendeskUtils.configureViewController(controller)
             ZDKRequests.presentRequestCreation(with: presentInController)
             self.createRequest()
-        })
+        }
     }
 
 
     func showTicketListIfPossible(from controller: UIViewController) {
-        ZendeskUtils.createIdentity(completion: { success in
+        ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
                 return
@@ -82,7 +83,21 @@ import CoreTelephony
 
             let presentInController = ZendeskUtils.configureViewController(controller)
             ZDKRequests.presentRequestList(with: presentInController)
-        })
+        }
+    }
+
+    static func setNeedToRegisterDevice(_ identifier: String) {
+        ZendeskUtils.sharedInstance.deviceID = identifier
+    }
+
+    static func unregisterDevice(_ identifier: String) {
+        ZDKConfig.instance().disablePush(identifier) { status, error in
+            if let error = error {
+                print("Zendesk couldn't unregistered device: \(identifier). Error: \(error)")
+            } else {
+                print("Zendesk successfully unregistered device: \(identifier)")
+            }
+        }
     }
 
 }
@@ -157,11 +172,35 @@ private extension ZendeskUtils {
     }
 
     static func createZendeskIdentity() {
+
+        guard let userEmail = ZendeskUtils.sharedInstance.userEmail else {
+            DDLogInfo("No user email to create Zendesk identity with.")
+            ZDKConfig.instance().userIdentity = nil
+            return
+        }
+
         let zendeskIdentity = ZDKAnonymousIdentity()
-        zendeskIdentity.email = ZendeskUtils.sharedInstance.userEmail
+        zendeskIdentity.email = userEmail
         zendeskIdentity.name = ZendeskUtils.sharedInstance.userName
         ZDKConfig.instance().userIdentity = zendeskIdentity
         DDLogDebug("Zendesk identity created with email '\(zendeskIdentity.email)' and name '\(zendeskIdentity.name)'.")
+        ZendeskUtils.registerDeviceIfNeeded()
+    }
+
+    static func registerDeviceIfNeeded() {
+
+        guard let deviceID = ZendeskUtils.sharedInstance.deviceID else {
+                return
+        }
+
+        ZDKConfig.instance().enablePush(withDeviceID: deviceID) { pushResponse, error in
+            if let error = error {
+                DDLogInfo("Zendesk couldn't register device: \(deviceID). Error: \(error)")
+            } else {
+                ZendeskUtils.sharedInstance.deviceID = nil
+                DDLogDebug("Zendesk successfully registered device: \(deviceID)")
+            }
+        }
     }
 
     func createRequest() {
@@ -235,12 +274,14 @@ private extension ZendeskUtils {
     static func getUserInformationFrom(wpAccount: WPAccount) {
 
         guard let api = wpAccount.wordPressComRestApi else {
+            DDLogInfo("Zendesk: No wordPressComRestApi.")
             return
         }
 
         let service = AccountSettingsService(userID: wpAccount.userID.intValue, api: api)
 
         guard let accountSettings = service.settings else {
+            DDLogInfo("Zendesk: No accountSettings.")
             return
         }
 
@@ -292,7 +333,7 @@ private extension ZendeskUtils {
             let fileLogger = appDelegate.logger.fileLogger,
             let logFileInformation = fileLogger.logFileManager.sortedLogFileInfos.first,
             let logData = try? Data(contentsOf: URL(fileURLWithPath: logFileInformation.filePath)),
-            let logText = String.init(data: logData, encoding: .utf8) else {
+            let logText = String(data: logData, encoding: .utf8) else {
                 return ""
         }
 
