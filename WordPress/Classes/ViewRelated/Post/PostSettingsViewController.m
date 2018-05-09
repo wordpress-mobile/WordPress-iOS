@@ -1476,6 +1476,7 @@ PostCategoriesViewControllerDelegate, PostFeaturedImageCellDelegate>
 {
     if (!self.featuredImage) {
         self.featuredImage = cell.image;
+        cell.accessibilityIdentifier = @"Current Featured Image";
         NSInteger featuredImageSection = [self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)];
         NSIndexSet *featuredImageSectionSet = [NSIndexSet indexSetWithIndex:featuredImageSection];
         [self.tableView reloadSections:featuredImageSectionSet withRowAnimation:UITableViewRowAnimationNone];
