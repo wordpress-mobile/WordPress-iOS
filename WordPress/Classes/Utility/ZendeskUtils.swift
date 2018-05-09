@@ -1,6 +1,7 @@
 import Foundation
 import ZendeskSDK
 import CoreTelephony
+import WordPressAuthenticator
 
 @objc class ZendeskUtils: NSObject {
 
@@ -10,6 +11,11 @@ import CoreTelephony
     private override init() {}
 
     static var zendeskEnabled = false
+
+    private var sourceTag: WordPressSupportSourceTag?
+
+    // Specifically for WPError, which has the sourceTag as a String.
+    private var sourceTagDescription: String?
 
     private var userName: String?
     private var userEmail: String?
@@ -39,12 +45,16 @@ import CoreTelephony
         ZendeskUtils.toggleZendesk(enabled: true)
     }
 
-    func showHelpCenterIfPossible(from controller: UIViewController) {
+    // MARK: - Show Zendesk Views
+
+    func showHelpCenterIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
         ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
                 return
             }
+
+            self.sourceTag = sourceTag
 
             guard let helpCenterContentModel = ZDKHelpCenterOverviewContentModel.defaultContent() else {
                 DDLogInfo("Zendesk helpCenterContentModel creation failed.")
@@ -60,12 +70,14 @@ import CoreTelephony
         }
     }
 
-    func showNewRequestIfPossible(from controller: UIViewController) {
+    func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
         ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
                 return
             }
+
+            self.sourceTag = sourceTag
 
             let presentInController = ZendeskUtils.configureViewController(controller)
             ZDKRequests.presentRequestCreation(with: presentInController)
@@ -73,18 +85,21 @@ import CoreTelephony
         }
     }
 
-
-    func showTicketListIfPossible(from controller: UIViewController) {
+    func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
         ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
                 return
             }
 
+            self.sourceTag = sourceTag
+
             let presentInController = ZendeskUtils.configureViewController(controller)
             ZDKRequests.presentRequestList(with: presentInController)
         }
     }
+
+    // MARK: - Device Registration
 
     static func setNeedToRegisterDevice(_ identifier: String) {
         ZendeskUtils.sharedInstance.deviceID = identifier
@@ -98,6 +113,13 @@ import CoreTelephony
                 print("Zendesk successfully unregistered device: \(identifier)")
             }
         }
+    }
+
+    // MARK: - Helpers
+
+    // Specifically for WPError, which is ObjC & has the sourceTag as a String.
+    static func updateSourceTag(with description: String) {
+        ZendeskUtils.sharedInstance.sourceTagDescription = description
     }
 
 }
@@ -374,6 +396,11 @@ private extension ZendeskUtils {
         let accountService = AccountService(managedObjectContext: context)
         if let _ = accountService.defaultWordPressComAccount() {
             tags.append(Constants.wpComTag)
+        }
+
+        // Add sourceTag
+        if let sourceTagOrigin = ZendeskUtils.sharedInstance.sourceTag?.origin ?? ZendeskUtils.sharedInstance.sourceTagDescription {
+            tags.append(sourceTagOrigin)
         }
 
         return tags
