@@ -788,13 +788,15 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             return
         }
 
-        let size = CGSize(width: 20, height: 20)
-        let icon = Gridicon.iconOfType(.bookmark, withSize: size)
+        let size = Gridicon.defaultSize
+        let icon = Gridicon.iconOfType(.bookmarkOutline, withSize: size)
+        let highlightedIcon = Gridicon.iconOfType(.bookmark, withSize: size)
+
         let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
-        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
+        let tintedHighlightedIcon = highlightedIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
 
         saveForLaterButton.setImage(tintedIcon, for: .normal)
-        saveForLaterButton.setImage(highlightIcon, for: .highlighted)
+        saveForLaterButton.setImage(tintedHighlightedIcon, for: .highlighted)
 
         saveForLaterButton.isHidden = false
         saveForLaterButton.isHighlighted = post?.isSavedForLater ?? false
