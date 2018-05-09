@@ -152,7 +152,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     func presentSupportRequest(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any]) {
 
         if FeatureFlag.zendeskMobile.enabled {
-            ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: sourceViewController, withSourceTag: sourceTag)
+            ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: sourceViewController, with: sourceTag)
         } else {
             let presenter = HelpshiftPresenter()
             presenter.sourceTag = sourceTag.toSupportSourceTag()

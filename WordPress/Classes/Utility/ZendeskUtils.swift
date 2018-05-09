@@ -45,7 +45,7 @@ import WordPressAuthenticator
         ZendeskUtils.toggleZendesk(enabled: true)
     }
 
-    func showHelpCenterIfPossible(from controller: UIViewController, withSourceTag sourceTag: WordPressSupportSourceTag? = nil) {
+    func showHelpCenterIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
         ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
@@ -68,7 +68,7 @@ import WordPressAuthenticator
         }
     }
 
-    func showNewRequestIfPossible(from controller: UIViewController, withSourceTag sourceTag: WordPressSupportSourceTag? = nil) {
+    func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
         ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
@@ -84,7 +84,7 @@ import WordPressAuthenticator
     }
 
 
-    func showTicketListIfPossible(from controller: UIViewController, withSourceTag sourceTag: WordPressSupportSourceTag? = nil) {
+    func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
         ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
