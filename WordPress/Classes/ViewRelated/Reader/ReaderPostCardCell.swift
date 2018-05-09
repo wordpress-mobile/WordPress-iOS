@@ -200,13 +200,15 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     fileprivate func setupSaveForLaterButton() {
-        let size = Gridicon.defaultSize
+        let size = FeatureFlag.saveForLater.enabled ? Gridicon.defaultSize : CGSize(width: 20, height: 20)
         let icon = FeatureFlag.saveForLater.enabled ? Gridicon.iconOfType(.bookmarkOutline, withSize: size) : Gridicon.iconOfType(.share, withSize: size)
+        let highlightedIcon = FeatureFlag.saveForLater.enabled ? Gridicon.iconOfType(.bookmarkOutline, withSize: size) : icon
+
         let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
-        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.mediumBlue())
+        let tintedHighlightedIcon = highlightedIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
 
         saveForLaterButton.setImage(tintedIcon, for: .normal)
-        saveForLaterButton.setImage(highlightIcon, for: .highlighted)
+        saveForLaterButton.setImage(tintedHighlightedIcon, for: .highlighted)
     }
 
     fileprivate func setupMenuButton() {
