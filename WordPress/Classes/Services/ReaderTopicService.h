@@ -9,6 +9,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 @class ReaderTagTopic;
 @class ReaderSiteTopic;
 @class ReaderSearchTopic;
+@class ReaderSaveForLaterTopic;
 
 @interface ReaderTopicService : LocalCoreDataService
 
