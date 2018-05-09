@@ -21,26 +21,29 @@ import WordPressAuthenticator
     private var userEmail: String?
     private var deviceID: String?
 
+    private static var zdAppID: String?
+    private static var zdUrl: String?
+    private static var zdClientId: String?
+
     private static var appVersion: String {
         return Bundle.main.shortVersionString() ?? Constants.unknownValue
+    }
+
+    struct PushNotificationIdentifiers {
+        static let key = "type"
+        static let type = "zendesk"
     }
 
     // MARK: - Public Methods
 
     @objc static func setup() {
-        guard let appId = ApiCredentials.zendeskAppId(),
-            let url = ApiCredentials.zendeskUrl(),
-            let clientId = ApiCredentials.zendeskClientId(),
-            appId.count > 0,
-            url.count > 0,
-            clientId.count > 0 else {
-                ZendeskUtils.toggleZendesk(enabled: false)
-                return
+        guard getZendeskCredentials() == true else {
+            return
         }
 
-        ZDKConfig.instance().initialize(withAppId: appId,
-                                        zendeskUrl: url,
-                                        clientId: clientId)
+        ZDKConfig.instance().initialize(withAppId: zdAppID,
+                                        zendeskUrl: zdUrl,
+                                        clientId: zdClientId)
 
         ZendeskUtils.toggleZendesk(enabled: true)
     }
@@ -108,11 +111,30 @@ import WordPressAuthenticator
     static func unregisterDevice(_ identifier: String) {
         ZDKConfig.instance().disablePush(identifier) { status, error in
             if let error = error {
-                print("Zendesk couldn't unregistered device: \(identifier). Error: \(error)")
+                DDLogInfo("Zendesk couldn't unregistered device: \(identifier). Error: \(error)")
             } else {
-                print("Zendesk successfully unregistered device: \(identifier)")
+                DDLogDebug("Zendesk successfully unregistered device: \(identifier)")
             }
         }
+    }
+
+    // MARK: - Push Notifications
+
+    static func handlePushNotification(_ userInfo: NSDictionary) {
+
+        guard zendeskEnabled == true,
+            let payload = userInfo as? [AnyHashable: Any] else {
+                DDLogInfo("Zendesk push notification payload invalid.")
+                return
+        }
+
+        ZDKPushUtil.handlePush(payload,
+                               for: UIApplication.shared,
+                               presentationStyle: .formSheet,
+                               layoutGuide: ZDKLayoutRespectTop,
+                               withAppId: zdAppID,
+                               zendeskUrl: zdUrl,
+                               clientId: zdClientId)
     }
 
     // MARK: - Helpers
@@ -127,6 +149,24 @@ import WordPressAuthenticator
 // MARK: - Private Extension
 
 private extension ZendeskUtils {
+
+    static func getZendeskCredentials() -> Bool {
+        guard let appId = ApiCredentials.zendeskAppId(),
+            let url = ApiCredentials.zendeskUrl(),
+            let clientId = ApiCredentials.zendeskClientId(),
+            appId.count > 0,
+            url.count > 0,
+            clientId.count > 0 else {
+                DDLogInfo("Unable to get Zendesk credentials.")
+                ZendeskUtils.toggleZendesk(enabled: false)
+                return false
+        }
+
+        zdAppID = appId
+        zdUrl = url
+        zdClientId = clientId
+        return true
+    }
 
     static func toggleZendesk(enabled: Bool) {
         ZendeskUtils.zendeskEnabled = enabled
