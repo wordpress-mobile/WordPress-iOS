@@ -23,8 +23,9 @@
     private var errorHandler: ((Error?) -> Void)?
     private var placeholder: UIImage?
 
-    @objc init(imageView: CachedAnimatedImageView) {
+    @objc init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs) {
         self.imageView = imageView
+        imageView.gifPlaybackStrategy = gifStrategy.playbackStrategy
         super.init()
     }
 
