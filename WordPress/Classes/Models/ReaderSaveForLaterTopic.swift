@@ -1,5 +1,5 @@
 /// Plese do not review this class. This is basically a mock at the moment. It models a mock topic, so that I can test that the topic gets rendered in the UI
-final class ReaderSaveForLaterTopic: ReaderAbstractTopic {
+@objc final class ReaderSaveForLaterTopic: ReaderAbstractTopic {
     init() {
         let managedObjectContext = ReaderSaveForLaterTopic.setUpInMemoryManagedObjectContext()
         let entity = NSEntityDescription.entity(forEntityName: "ReaderDefaultTopic", in: managedObjectContext)
