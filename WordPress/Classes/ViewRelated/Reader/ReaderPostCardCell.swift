@@ -417,7 +417,10 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
         configureCommentActionButton()
         configureLikeActionButton()
-        configureSaveForLaterButton()
+
+        if FeatureFlag.saveForLater.enabled {
+            configureSaveForLaterButton()
+        }
     }
 
     fileprivate func resetActionButton(_ button: UIButton) {
