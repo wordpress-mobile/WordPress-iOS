@@ -375,27 +375,60 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                            success:(void (^)(void))success
                            failure:(void (^)(NSError *error))failure
 {
-    // Get a the post in our own context
-    NSError *error;
-    ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
-    if (error) {
-        if (failure) {
-            failure(error);
+
+    [self.managedObjectContext performBlock:^{
+
+        // Get a the post in our own context
+        NSError *error;
+        ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
+        if (error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (failure) {
+                    failure(error);
+                }
+            });
+            return;
         }
-        return;
-    }
 
-    readerPost.isSavedForLater = !readerPost.isSavedForLater;
+        // Keep previous values in case of failure
+        BOOL oldValue = readerPost.isSavedForLater;
+        BOOL saveForLater = !oldValue;
 
-    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        // Optimistically update
+        readerPost.isSavedForLater = saveForLater;
 
-    if ([readerPost.topic isKindOfClass:[ReaderSaveForLaterTopic class]]) {
-        ReaderSaveForLaterTopic *saveForLaterTopic = (ReaderSaveForLaterTopic *)readerPost.topic;
-        [topicService toggleSaveForLaterForPost:saveForLaterTopic success:success failure:failure];
-        return;
-    }
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        void (^successBlock)(void) = ^void() {
+            if (success) {
+                success();
+            }
+        };
+
+        // Define failure block. Make sure rollback happens in the moc's queue,
+        void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+            [self.managedObjectContext performBlockAndWait:^{
+                // Revert changes on failure
+                readerPost.isSavedForLater = oldValue;
+
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                    if (failure) {
+                        failure(error);
+                    }
+                }];
+            }];
+        };
+
+        ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+
+        if ([readerPost.topic isKindOfClass:[ReaderSaveForLaterTopic class]]) {
+            ReaderSaveForLaterTopic *saveForLaterTopic = (ReaderSaveForLaterTopic *)readerPost.topic;
+            [topicService toggleSaveForLaterForPost:saveForLaterTopic success:successBlock failure:failureBlock];
+            return;
+        }
+
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
 }
 
 - (void)deletePostsWithNoTopic
