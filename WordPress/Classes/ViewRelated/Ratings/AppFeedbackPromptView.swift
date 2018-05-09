@@ -12,12 +12,11 @@ protocol AppFeedbackPromptViewDelegate: class {
 }
 
 class AppFeedbackPromptView: UIView {
-    let label = UILabel()
-    let leftButton = RoundedButton()
-    let rightButton = RoundedButton()
-    let buttonStack = UIStackView()
-    var onRequestingFeedback = false
-    var constraintsAdded = false
+    private let label = UILabel()
+    private let leftButton = RoundedButton()
+    private let rightButton = RoundedButton()
+    private let buttonStack = UIStackView()
+    private var onRequestingFeedback = false
 
     weak var delegate: AppFeedbackPromptViewDelegate?
 
@@ -54,7 +53,7 @@ class AppFeedbackPromptView: UIView {
         // Stack O'Buttons
         buttonStack.translatesAutoresizingMaskIntoConstraints = false
         buttonStack.axis = .horizontal
-        buttonStack.spacing = 10.0
+        buttonStack.spacing = LayoutConstants.buttonSpacing
         addSubview(buttonStack)
 
         // Yes Button
@@ -81,7 +80,7 @@ class AppFeedbackPromptView: UIView {
         rightButton.addTarget(self, action: #selector(self.rightButtonTouched), for: .touchUpInside)
         buttonStack.addArrangedSubview(rightButton)
 
-        setNeedsUpdateConstraints()
+        setupConstraints()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -98,20 +97,9 @@ class AppFeedbackPromptView: UIView {
             self.buttonStack.axis = .vertical
             self.setNeedsLayout()
         }
-
-    }
-
-    override func updateConstraints() {
-        setupConstraints()
-        super.updateConstraints()
     }
 
     func setupConstraints() {
-        guard constraintsAdded == false else {
-            return
-        }
-        constraintsAdded = true
-
         addConstraints([
             label.centerXAnchor.constraint(equalTo: centerXAnchor),
             label.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstants.basePadding),
@@ -173,5 +161,6 @@ class AppFeedbackPromptView: UIView {
         static let labelMinimumHeight: CGFloat = 18.0
         static let basePadding: CGFloat = 15.0
         static let labelHorizontalPadding: CGFloat = 37.0
+        static let buttonSpacing: CGFloat = 10.0
     }
 }
