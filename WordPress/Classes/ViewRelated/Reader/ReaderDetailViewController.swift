@@ -799,7 +799,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         saveForLaterButton.setImage(tintedHighlightedIcon, for: .selected)
 
         saveForLaterButton.isHidden = false
-        saveForLaterButton.isHighlighted = post?.isSavedForLater ?? false
+        saveForLaterButton.isSelected = post?.isSavedForLater ?? false
     }
 
 
@@ -954,6 +954,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         SaveForLaterAction().execute(with: readerPost, context: context) {
 
         }
+
+        saveForLaterButton.isSelected = readerPost.isSavedForLater
     }
 
     @IBAction func didTapTagButton(_ sender: UIButton) {
