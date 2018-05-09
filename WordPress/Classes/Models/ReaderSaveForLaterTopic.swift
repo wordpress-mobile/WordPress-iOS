@@ -22,7 +22,7 @@ final class ReaderSaveForLaterTopic: ReaderAbstractTopic {
             print("Adding in-memory persistent store failed")
         }
 
-        let managedObjectContext = NSManagedObjectContext()
+        let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
 
         return managedObjectContext

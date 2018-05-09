@@ -7,13 +7,6 @@ class SupportTableViewController: UITableViewController {
 
     var sourceTag: WordPressSupportSourceTag?
 
-    // Specifically for WPError, which has the sourceTag as a String.
-    @objc var sourceTagDescription: String? {
-        didSet {
-            ZendeskUtils.sharedInstance.sourceTagDescription = sourceTagDescription
-        }
-    }
-
     // If set, the Zendesk views will be shown from this view instead of in the navigation controller.
     // Specifically for Me > Help & Support on the iPad.
     var showHelpFromViewController: UIViewController?
@@ -64,6 +57,13 @@ class SupportTableViewController: UITableViewController {
 
     @IBAction func dismissPressed(_ sender: AnyObject) {
         dismiss(animated: true, completion: nil)
+    }
+
+    // MARK: - Helpers
+
+    // Specifically for WPError, which is ObjC & has the sourceTag as a String.
+    @objc func updateSourceTag(with description: String) {
+        ZendeskUtils.updateSourceTag(with: description)
     }
 
 }
@@ -141,7 +141,7 @@ private extension SupportTableViewController {
                 guard let controllerToShowFrom = self.controllerToShowFrom() else {
                     return
                 }
-                ZendeskUtils.sharedInstance.showHelpCenterIfPossible(from: controllerToShowFrom, withSourceTag: self.sourceTag)
+                ZendeskUtils.sharedInstance.showHelpCenterIfPossible(from: controllerToShowFrom, with: self.sourceTag)
             } else {
                 guard let url = Constants.appSupportURL else {
                     return
@@ -158,7 +158,7 @@ private extension SupportTableViewController {
                 guard let controllerToShowFrom = self.controllerToShowFrom() else {
                     return
                 }
-                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom, withSourceTag: self.sourceTag)
+                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom, with: self.sourceTag)
             } else {
                 guard let url = Constants.forumsURL else {
                     return
@@ -174,7 +174,7 @@ private extension SupportTableViewController {
             guard let controllerToShowFrom = self.controllerToShowFrom() else {
                 return
             }
-            ZendeskUtils.sharedInstance.showTicketListIfPossible(from: controllerToShowFrom, withSourceTag: self.sourceTag)
+            ZendeskUtils.sharedInstance.showTicketListIfPossible(from: controllerToShowFrom, with: self.sourceTag)
         }
     }
 
