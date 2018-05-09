@@ -1,10 +1,11 @@
 import UIKit
+import WordPressAuthenticator
 
 class SupportTableViewController: UITableViewController {
 
     // MARK: - Properties
 
-    @objc var sourceTag: SupportSourceTag?
+    var sourceTag: WordPressSupportSourceTag?
 
     // If set, the Zendesk views will be shown from this view instead of in the navigation controller.
     // Specifically for Me > Help & Support on the iPad.
@@ -56,6 +57,13 @@ class SupportTableViewController: UITableViewController {
 
     @IBAction func dismissPressed(_ sender: AnyObject) {
         dismiss(animated: true, completion: nil)
+    }
+
+    // MARK: - Helpers
+
+    // Specifically for WPError, which is ObjC & has the sourceTag as a String.
+    @objc func updateSourceTag(with description: String) {
+        ZendeskUtils.updateSourceTag(with: description)
     }
 
 }
@@ -133,8 +141,7 @@ private extension SupportTableViewController {
                 guard let controllerToShowFrom = self.controllerToShowFrom() else {
                     return
                 }
-
-                ZendeskUtils.sharedInstance.showHelpCenterIfPossible(from: controllerToShowFrom)
+                ZendeskUtils.sharedInstance.showHelpCenterIfPossible(from: controllerToShowFrom, with: self.sourceTag)
             } else {
                 guard let url = Constants.appSupportURL else {
                     return
@@ -151,7 +158,7 @@ private extension SupportTableViewController {
                 guard let controllerToShowFrom = self.controllerToShowFrom() else {
                     return
                 }
-                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom)
+                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: controllerToShowFrom, with: self.sourceTag)
             } else {
                 guard let url = Constants.forumsURL else {
                     return
@@ -167,7 +174,7 @@ private extension SupportTableViewController {
             guard let controllerToShowFrom = self.controllerToShowFrom() else {
                 return
             }
-            ZendeskUtils.sharedInstance.showTicketListIfPossible(from: controllerToShowFrom)
+            ZendeskUtils.sharedInstance.showTicketListIfPossible(from: controllerToShowFrom, with: self.sourceTag)
         }
     }
 
