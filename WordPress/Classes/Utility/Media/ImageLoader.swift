@@ -167,7 +167,7 @@
     }
 
     private func callErrorHandler(with error: Error?) {
-        if let error = error, (error as NSError).code == NSURLErrorCancelled {
+        guard let error = error, (error as NSError).code != NSURLErrorCancelled else {
             return
         }
         imageView.stopLoadingAnimation()
