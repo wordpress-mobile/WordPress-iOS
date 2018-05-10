@@ -404,7 +404,6 @@
 		935647161EBCFB9A00604C6C /* WPStatsServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9356470D1EBCFB9A00604C6C /* WPStatsServiceTests.m */; };
 		9356FC4C1EEB0F1200C65113 /* DynamicLibMissingFix.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9356FC4B1EEB0F1200C65113 /* DynamicLibMissingFix.swift */; };
 		938CF3DA1EF1BE4F00AF838E /* CocoaLumberjack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938CF3D91EF1BE4F00AF838E /* CocoaLumberjack.swift */; };
-		B56D96B1202C9B8800485233 /* WordPressUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56D96B2202C9B8800485233 /* WordPressUI.framework */; };
 		B7D18EC1D923DC8756B1D0C7 /* Pods_WordPressComStatsiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D45E28F40E228D9470012BC9 /* Pods_WordPressComStatsiOS.framework */; };
 		CE5B0CB02F912C1BE0EF196F /* Pods_WordPressComStatsiOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08D90DD39153D26BDC947404 /* Pods_WordPressComStatsiOSTests.framework */; };
 /* End PBXBuildFile section */
@@ -841,7 +840,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B56D96B1202C9B8800485233 /* WordPressUI.framework in Frameworks */,
 				930F52BD1ECF8AF8002F921B /* WordPressKit.framework in Frameworks */,
 				B7D18EC1D923DC8756B1D0C7 /* Pods_WordPressComStatsiOS.framework in Frameworks */,
 			);
