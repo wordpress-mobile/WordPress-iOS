@@ -197,7 +197,7 @@ static CGFloat const MinimumZoomScale = 0.1;
         self.image = [[UIImage alloc] initWithData: self.data];
         [weakSelf updateImageView];
     });
-    [self.imageView setAnimatedImage:_data success:^{
+    [self.imageView setAnimatedImage:self.data success:^{
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.isLoadingImage = NO;
         });
