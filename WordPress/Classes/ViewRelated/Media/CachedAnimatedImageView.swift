@@ -10,20 +10,55 @@
 import Foundation
 import Gifu
 
+@objc public protocol ActivityIndicatorType where Self: UIView {
+    func startAnimating()
+    func stopAnimating()
+}
+
+extension UIActivityIndicatorView: ActivityIndicatorType {
+}
+
 public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
-    @objc var currentTask: URLSessionTask?
-    var gifPlaybackStrategy: GIFPlaybackStrategy = MediumGIFPlaybackStrategy()
+    public enum LoadingIndicatorStyle {
+        case centered(withSize: CGSize?)
+        case fullView
+    }
+
+    // MARK: Public fields
+
+    public var gifPlaybackStrategy: GIFPlaybackStrategy = MediumGIFPlaybackStrategy()
 
     public lazy var animator: Gifu.Animator? = {
         return Gifu.Animator(withDelegate: self)
     }()
 
+    // MARK: Private fields
+
+    @objc private var currentTask: URLSessionTask?
+
+    private var customLoadingIndicator: ActivityIndicatorType?
+
+    private lazy var defaultLoadingIndicator: UIActivityIndicatorView = {
+        let loadingIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        layoutViewCentered(loadingIndicator, size: nil)
+        return loadingIndicator
+    }()
+
+    private var loadingIndicator: ActivityIndicatorType {
+        guard let custom = customLoadingIndicator else {
+            return defaultLoadingIndicator
+        }
+        return custom
+    }
+
+    // MARK: - Public methods
+
     override public func display(_ layer: CALayer) {
         updateImageIfNeeded()
     }
 
-    @objc func setAnimatedImage(_ urlRequest: URLRequest,
+    @objc public func setAnimatedImage(_ urlRequest: URLRequest,
                        placeholderImage: UIImage?,
                        success: (() -> Void)?,
                        failure: ((NSError?) -> Void)?) {
@@ -42,6 +77,7 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
             } else {
                 DispatchQueue.main.async() {
                     self?.image = staticImage
+                    success?()
                 }
             }
         }
@@ -54,25 +90,40 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     /// Clean the image view from previous images and ongoing data tasks.
     ///
-    @objc func clean() {
+    @objc public func clean() {
         currentTask?.cancel()
         image = nil
     }
 
-    @objc func prepForReuse() {
+    @objc public func prepForReuse() {
         self.prepareForReuse()
     }
 
-    // MARK: - Helpers
-
-    private func animate(data: Data, success: (() -> Void)?) {
+    public func startLoadingAnimation() {
         DispatchQueue.main.async() {
-            self.setFrameBufferCount(self.gifPlaybackStrategy.frameBufferCount)
-            self.animate(withGIFData: data) {
-                success?()
-            }
+            self.loadingIndicator.startAnimating()
         }
     }
+
+    public func stopLoadingAnimation() {
+        DispatchQueue.main.async() {
+            self.loadingIndicator.stopAnimating()
+        }
+    }
+
+    public func addLoadingIndicator(_ loadingIndicator: ActivityIndicatorType, style: LoadingIndicatorStyle) {
+
+        guard let loadingView = loadingIndicator as? UIView else {
+            assertionFailure("Loading indicator must be a UIView subclass")
+            return
+        }
+
+        removeCustomLoadingIndicator()
+        customLoadingIndicator = loadingIndicator
+        addCustomLoadingIndicator(loadingView, style: style)
+    }
+
+    // MARK: - Private methods
 
     private func checkCache(_ urlRequest: URLRequest, _ success: (() -> Void)?) -> Bool {
         if let cachedData = AnimatedImageCache.shared.cachedData(url: urlRequest.url) {
@@ -87,12 +138,72 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
             if gifPlaybackStrategy.verifyDataSize(cachedData) {
                 animate(data: cachedData, success: success)
+            } else {
+                success?()
             }
 
             return true
         }
 
         return false
+    }
+
+    private func animate(data: Data, success: (() -> Void)?) {
+        DispatchQueue.main.async() {
+            self.setFrameBufferCount(self.gifPlaybackStrategy.frameBufferCount)
+            self.animate(withGIFData: data) {
+                success?()
+            }
+        }
+    }
+
+    // MARK: Loading indicator
+
+    private func removeCustomLoadingIndicator() {
+        if let oldLoadingIndicator = customLoadingIndicator as? UIView {
+            oldLoadingIndicator.removeFromSuperview()
+        }
+    }
+
+    private func addCustomLoadingIndicator(_ loadingView: UIView, style: LoadingIndicatorStyle) {
+        switch style {
+        case .centered(let size):
+            layoutViewCentered(loadingView, size: size)
+        default:
+            layoutViewFullView(loadingView)
+        }
+    }
+
+    // MARK: Layout
+
+    private func prepareViewForLayout(_ view: UIView) {
+        if view.superview == nil {
+            addSubview(view)
+        }
+        view.translatesAutoresizingMaskIntoConstraints = false
+    }
+
+    private func layoutViewCentered(_ view: UIView, size: CGSize?) {
+        prepareViewForLayout(view)
+        var constraints: [NSLayoutConstraint] = [
+            view.centerXAnchor.constraint(equalTo: centerXAnchor),
+            view.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ]
+        if let size = size {
+            constraints.append(view.heightAnchor.constraint(equalToConstant: size.height))
+            constraints.append(view.widthAnchor.constraint(equalToConstant: size.width))
+        }
+        NSLayoutConstraint.activate(constraints)
+    }
+
+    private func layoutViewFullView(_ view: UIView) {
+        prepareViewForLayout(view)
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: trailingAnchor),
+            view.topAnchor.constraint(equalTo: topAnchor),
+            view.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
     }
 
 }
