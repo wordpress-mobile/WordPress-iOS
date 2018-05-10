@@ -120,6 +120,7 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
     @objc public func clean() {
         currentTask?.cancel()
         image = nil
+        animatedGifData = nil
     }
 
     @objc public func prepForReuse() {
