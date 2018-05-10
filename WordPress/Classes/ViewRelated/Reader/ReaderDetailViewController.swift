@@ -992,7 +992,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
 
         var controller: WPImageViewController
-        if post.featuredImageURL.isGif {
+        if post.featuredImageURL.isGif && featuredImageView.animatedGifData != nil {
             controller = WPImageViewController(gifData: featuredImageView.animatedGifData)
         } else {
             controller = WPImageViewController(image: featuredImageView.image)
