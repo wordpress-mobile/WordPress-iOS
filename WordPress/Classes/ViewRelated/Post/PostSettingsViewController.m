@@ -51,16 +51,20 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
 };
 
 static CGFloat CellHeight = 44.0f;
+static CGFloat LoadingIndicatorHeight = 20.0f;
+
 static NSInteger RowIndexForDatePicker = 0;
 static NSInteger RowIndexForPassword = 3;
 static CGFloat LocationCellHeightToWidthAspectRatio = 0.5f;
 
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
 static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCellIdentifier";
+static NSString *const TableViewFeaturedImageCellIdentifier = @"TableViewFeaturedImageCellIdentifier";
 
 @interface PostSettingsViewController () <UITextFieldDelegate, WPPickerViewDelegate,
 UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategoriesViewControllerDelegate>
+UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate,
+PostCategoriesViewControllerDelegate, PostFeaturedImageCellDelegate>
 
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UITextField *passwordTextField;
@@ -69,6 +73,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 @property (nonatomic, strong) NSArray *formatsList;
 @property (nonatomic, strong) WPTableImageSource *imageSource;
 @property (nonatomic, strong) UIImage *featuredImage;
+@property (nonatomic, readonly) CGSize featuredImageSize;
 @property (nonatomic, strong) PublishDatePickerView *datePicker;
 @property (assign) BOOL textFieldDidHaveFocusBeforeOrientationChange;
 
@@ -136,8 +141,9 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     [self setupPublicizeConnections];
 
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
-
     [self.tableView registerClass:[WPProgressTableViewCell class] forCellReuseIdentifier:TableViewProgressCellIdentifier];
+    [self.tableView registerClass:[PostFeaturedImageCell class] forCellReuseIdentifier:TableViewFeaturedImageCellIdentifier];
+
 
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 44.0)]; // add some vertical padding
 
@@ -498,15 +504,12 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     }
 
     if (sectionId == PostSettingsSectionFeaturedImage) {
-        if (self.featuredImage) {
-            CGFloat cellMargins = (2 * PostFeaturedImageCellMargin);
-            CGFloat imageWidth = self.featuredImage.size.width;
-            CGFloat imageHeight = self.featuredImage.size.height;
-            width = width - cellMargins;
-            CGFloat height = ceilf((width / imageWidth) * imageHeight);
-            return height + cellMargins;
-        } else if ([self isUploadingMedia]) {
-            return CellHeight + (2.0 * PostFeaturedImageCellMargin);
+        if ([self isUploadingMedia]) {
+            return CellHeight + (2.f * PostFeaturedImageCellMargin);
+        } else if (self.featuredImage) {
+            return self.featuredImageSize.height + 2.f * PostFeaturedImageCellMargin;
+        } else {
+            return LoadingIndicatorHeight + 2.f * PostFeaturedImageCellMargin;
         }
     }
 
@@ -732,7 +735,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
             self.isUploadingMedia = YES;
             [self setupObservingOfMedia: self.apost.featuredImage];
         }
-
+        self.featuredImage = nil;
         self.progressCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewProgressCellIdentifier forIndexPath:indexPath];
         [WPStyleGuide configureTableViewCell:self.progressCell];        
         [self.progressCell setProgress:self.featuredImageProgress];
@@ -744,22 +747,15 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         activityCell.tag = PostSettingsRowFeaturedImageRemove;
         cell = activityCell;
     } else {
-        static NSString *FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
-        PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:FeaturedImageCellIdentifier];
-        if (!cell) {
-            featuredImageCell = [[PostFeaturedImageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:FeaturedImageCellIdentifier];
-            [WPStyleGuide configureTableViewCell:featuredImageCell];
-        }
+        PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewFeaturedImageCellIdentifier forIndexPath:indexPath];
+        featuredImageCell.delegate = self;
+        [WPStyleGuide configureTableViewCell:featuredImageCell];
 
-        if (self.featuredImage) {
-            [featuredImageCell setImage:self.featuredImage];
-            featuredImageCell.accessibilityIdentifier = @"Current Featured Image";
-        } else {
-            [featuredImageCell showLoadingSpinner:YES];
-            if (!self.isUploadingMedia){
-                [self loadFeaturedImage:indexPath];
-            }
+        NSURL *featuredURL = [NSURL URLWithString:self.apost.featuredImage.remoteURL];
+        if (!featuredURL) {
+            featuredURL = self.apost.featuredImageURLForDisplay;
         }
+        [featuredImageCell setImageWithURL:featuredURL inPost:self.apost withSize:self.featuredImageSize];
 
         cell = featuredImageCell;
         cell.tag = PostSettingsRowFeaturedImage;
@@ -1282,31 +1278,18 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     [self.navigationController pushViewController:tagsPicker animated:YES];
 }
 
-- (void)loadFeaturedImage:(NSIndexPath *)indexPath
+- (CGSize)featuredImageSize
 {
-    Media *media = self.apost.featuredImage;
-    if (!media) {
-        return;
-    }
     CGFloat width = CGRectGetWidth(self.view.frame);
     width = width - (PostFeaturedImageCellMargin * 2); // left and right cell margins
     CGFloat height = ceilf(width * 0.66);
-    CGSize imageSize = CGSizeMake(width, height);
-    [MediaThumbnailCoordinator.shared thumbnailFor:media with:imageSize onCompletion:^(UIImage * image, NSError * error) {
-        if (error) {
-            [self featuredImageFailedLoading:indexPath withError:error];
-            return;
-        }
-        self.featuredImage = image;
-        [self.tableView reloadData];
-    }];
+    return CGSizeMake(width, height);
 }
 
-- (void) featuredImageFailedLoading:(NSIndexPath *)indexPath withError:(NSError *)error
+- (void)featuredImageFailedLoading:(NSIndexPath *)indexPath withError:(NSError *)error
 {
     DDLogError(@"Error loading featured image: %@", error);
-    PostFeaturedImageCell *cell = (PostFeaturedImageCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    [cell showLoadingSpinner:NO];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     cell.textLabel.text = NSLocalizedString(@"Featured Image did not load", @"");
 }
 
@@ -1485,6 +1468,28 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     // Save changes.
     self.post.categories = [categories mutableCopy];
     [self.post save];
+}
+
+#pragma mark - PostFeaturedImageCellDelegate
+
+- (void)postFeatureImageCellDidFinishLoadingImage:(PostFeaturedImageCell *)cell
+{
+    if (!self.featuredImage) {
+        self.featuredImage = cell.image;
+        cell.accessibilityIdentifier = @"Current Featured Image";
+        NSInteger featuredImageSection = [self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)];
+        NSIndexSet *featuredImageSectionSet = [NSIndexSet indexSetWithIndex:featuredImageSection];
+        [self.tableView reloadSections:featuredImageSectionSet withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
+
+- (void)postFeatureImageCell:(PostFeaturedImageCell *)cell didFinishLoadingImageWithError:(NSError *)error
+{
+    self.featuredImage = nil;
+    if (error) {
+        NSIndexPath *featureImageCellPath = [NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]];
+        [self featuredImageFailedLoading:featureImageCellPath withError:error];
+    }
 }
 
 @end
