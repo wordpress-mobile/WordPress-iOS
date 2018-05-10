@@ -4,7 +4,7 @@ import StoreKit
 import CocoaLumberjack
 import MGSwipeTableCell
 import WordPressShared
-
+import WordPressAuthenticator
 
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
@@ -1407,7 +1407,7 @@ extension NotificationsViewController: AppFeedbackPromptViewDelegate {
 
         if FeatureFlag.zendeskMobile.enabled {
             if ZendeskUtils.zendeskEnabled {
-                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self)
+                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self, with: .inAppFeedback)
             } else {
                 if let contact = URL(string: NotificationsViewController.contactURL) {
                     UIApplication.shared.open(contact)
