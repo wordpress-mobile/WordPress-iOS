@@ -28,13 +28,13 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     ///
     @IBOutlet var filtersSegmentedControl: UISegmentedControl!
 
-    /// Ratings View
+    /// Inline Prompt Header View
     ///
-    @IBOutlet var ratingsView: AppFeedbackPromptView!
+    @IBOutlet var inlinePromptView: AppFeedbackPromptView!
 
     /// Ensures the segmented control is below the feedback prompt
     ///
-    @IBOutlet var ratingsSpaceConstraint: NSLayoutConstraint!
+    @IBOutlet var inlinePromptSpaceConstraint: NSLayoutConstraint!
 
     /// TableView Handler: Our commander in chief!
     ///
@@ -109,7 +109,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         setupNavigationBar()
         setupTableView()
-        setupRatingsView()
+        setupInlinePrompt()
         setupTableHeaderView()
         setupTableFooterView()
         setupConstraints()
@@ -164,7 +164,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        showRatingViewIfApplicable()
         syncNewNotifications()
         markSelectedNotificationAsRead()
 
@@ -348,11 +347,11 @@ private extension NotificationsViewController {
     }
 
     func setupConstraints() {
-        precondition(ratingsSpaceConstraint != nil)
+        precondition(inlinePromptSpaceConstraint != nil)
 
-        // Ratings is initially hidden!
+        // Inline prompt is initially hidden!
         tableHeaderView.translatesAutoresizingMaskIntoConstraints = false
-        ratingsView.translatesAutoresizingMaskIntoConstraints = false
+        inlinePromptView.translatesAutoresizingMaskIntoConstraints = false
 
         tableHeaderView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
         tableHeaderView.topAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
@@ -400,24 +399,24 @@ private extension NotificationsViewController {
         tableViewHandler = handler
     }
 
-    func setupRatingsView() {
-        precondition(ratingsView != nil)
+    func setupInlinePrompt() {
+        precondition(inlinePromptView != nil)
 
-        ratingsView.alpha = WPAlphaZero
+        inlinePromptView.alpha = WPAlphaZero
 
         // this allows the selector to move to the top
-        ratingsSpaceConstraint.isActive = false
+        inlinePromptSpaceConstraint.isActive = false
 
         if !userDefaults.notificationPrimerInlineWasAcknowledged {
             PushNotificationsManager.shared.loadAuthorizationStatus { [weak self] (status) in
                 if status == .notDetermined {
                     self?.setupPrimeForPush()
-                    self?.showRatingViewIfApplicable()
+                    self?.showInlinePrompt()
                 }
             }
-        } else if AppRatingUtility.shared.shouldPromptForAppReview(section: Ratings.section) {
+        } else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
             setupAppRatings()
-            showRatingViewIfApplicable()
+            showInlinePrompt()
         }
     }
 
@@ -1214,30 +1213,30 @@ extension NotificationsViewController: WPNoResultsViewDelegate {
 }
 
 
-// MARK: - RatingsView Helpers
+// MARK: - Inline Prompt Helpers
 //
 private extension NotificationsViewController {
-    func showRatingViewIfApplicable() {
-        guard ratingsView.alpha != WPAlphaFull else {
+    func showInlinePrompt() {
+        guard inlinePromptView.alpha != WPAlphaFull else {
             return
         }
 
-        // allows the ratings view to push the selector down
-        self.ratingsSpaceConstraint.isActive = true
-        UIView.animate(withDuration: WPAnimationDurationDefault, delay: Ratings.animationDelay, options: .curveEaseIn, animations: {
-            self.ratingsView.alpha = WPAlphaFull
+        // allows the inline prompt to push the selector down
+        self.inlinePromptSpaceConstraint.isActive = true
+        UIView.animate(withDuration: WPAnimationDurationDefault, delay: InlinePrompt.animationDelay, options: .curveEaseIn, animations: {
+            self.inlinePromptView.alpha = WPAlphaFull
             self.setupTableHeaderView()
         }, completion: nil)
 
         WPAnalytics.track(.appReviewsSawPrompt)
     }
 
-    func hideRatingViewWithDelay(_ delay: TimeInterval) {
-        self.ratingsSpaceConstraint.isActive = false
+    func hideInlinePrompt(delay: TimeInterval) {
+        self.inlinePromptSpaceConstraint.isActive = false
         UIView.animate(withDuration: WPAnimationDurationDefault,
                        delay: delay,
                        animations: {
-            self.ratingsView.alpha = WPAlphaZero
+            self.inlinePromptView.alpha = WPAlphaZero
             self.setupTableHeaderView()
         })
     }
@@ -1442,36 +1441,36 @@ extension NotificationsViewController {
             WPAnalytics.track(.pushNotificationPrimerSeen, withProperties: [Analytics.locationKey: Analytics.inlineKey])
         }
 
-        ratingsView.setupHeading(NSLocalizedString("We'll notify you when you get followers, comments, and likes.",
+        inlinePromptView.setupHeading(NSLocalizedString("We'll notify you when you get followers, comments, and likes.",
                                                    comment: "This is the string we display when asking the user to approve push notifications"))
         let yesTitle = NSLocalizedString("Allow notifications",
                                          comment: "Button label for approving our request to allow push notifications")
         let noTitle = NSLocalizedString("Not now",
                                         comment: "Button label for denying our request to allow push notifications")
 
-        ratingsView.setupYesButton(title: yesTitle) { [weak self] button in
+        inlinePromptView.setupYesButton(title: yesTitle) { [weak self] button in
             defer {
                 WPAnalytics.track(.pushNotificationPrimerAllowTapped, withProperties: [Analytics.locationKey: Analytics.inlineKey])
             }
             InteractiveNotificationsManager.shared.requestAuthorization {
                 DispatchQueue.main.async {
-                    self?.hideRatingViewWithDelay(0.0)
+                    self?.hideInlinePrompt(delay: 0.0)
                     UserDefaults.standard.notificationPrimerInlineWasAcknowledged = true
                 }
             }
         }
 
-        ratingsView.setupNoButton(title: noTitle) { [weak self] button in
+        inlinePromptView.setupNoButton(title: noTitle) { [weak self] button in
             defer {
                 WPAnalytics.track(.pushNotificationPrimerNoTapped, withProperties: [Analytics.locationKey: Analytics.inlineKey])
             }
-            self?.hideRatingViewWithDelay(0.0)
+            self?.hideInlinePrompt(delay: 0.0)
             UserDefaults.standard.notificationPrimerInlineWasAcknowledged = true
         }
     }
 }
 
-// MARK: - User Defaults
+// MARK: - User Defaults for Push Notifications
 
 extension UserDefaults {
     private enum Keys: String {
@@ -1492,18 +1491,18 @@ extension UserDefaults {
 //
 extension NotificationsViewController {
     func setupAppRatings() {
-        ratingsView.setupHeading(NSLocalizedString("What do you think about WordPress?",
+        inlinePromptView.setupHeading(NSLocalizedString("What do you think about WordPress?",
                                                    comment: "This is the string we display when prompting the user to review the app"))
         let yesTitle = NSLocalizedString("I Like It",
                                          comment: "This is one of the buttons we display inside of the prompt to review the app")
         let noTitle = NSLocalizedString("Could Be Better",
                                         comment: "This is one of the buttons we display inside of the prompt to review the app")
 
-        ratingsView.setupYesButton(title: yesTitle) { [weak self] button in
+        inlinePromptView.setupYesButton(title: yesTitle) { [weak self] button in
             self?.likedApp()
         }
 
-        ratingsView.setupNoButton(title: noTitle) { [weak self] button in
+        inlinePromptView.setupNoButton(title: noTitle) { [weak self] button in
             self?.dislikedApp()
         }
     }
@@ -1515,8 +1514,8 @@ extension NotificationsViewController {
         AppRatingUtility.shared.likedCurrentVersion()
 
         // 1. Show the thank-you, then hide it after a few seconds
-        hideRatingViewWithDelay(3.0)
-        ratingsView.showBigHeading(title: NSLocalizedString("Great!\n We love to hear from happy users \n😁",
+        hideInlinePrompt(delay: 3.0)
+        inlinePromptView.showBigHeading(title: NSLocalizedString("Great!\n We love to hear from happy users \n😁",
                                                                   comment: "This is the text we display to the user after they've indicated they like the app"))
 
         // 2. Show the app store ratings alert
@@ -1541,16 +1540,16 @@ extension NotificationsViewController {
 
         // Let's try to find out why they don't like the app
         UIView.animate(withDuration: 0.3) { [weak self] in
-            self?.ratingsView.setupHeading(NSLocalizedString("Could you tell us how we could improve?",
+            self?.inlinePromptView.setupHeading(NSLocalizedString("Could you tell us how we could improve?",
                                                              comment: "This is the text we display to the user when we ask them for a review and they've indicated they don't like the app"))
             let yesTitle = NSLocalizedString("Send Feedback",
                                              comment: "This is one of the buttons we display when prompting the user for a review")
             let noTitle = NSLocalizedString("No Thanks",
                                             comment: "This is one of the buttons we display when prompting the user for a review")
-            self?.ratingsView.setupYesButton(title: yesTitle) { [weak self] button in
+            self?.inlinePromptView.setupYesButton(title: yesTitle) { [weak self] button in
                 self?.gatherFeedback()
             }
-            self?.ratingsView.setupNoButton(title: noTitle) { [weak self] button in
+            self?.inlinePromptView.setupNoButton(title: noTitle) { [weak self] button in
                 self?.dismissRatingsPrompt()
             }
         }
@@ -1559,7 +1558,7 @@ extension NotificationsViewController {
     private func gatherFeedback() {
         WPAnalytics.track(.appReviewsOpenedFeedbackScreen)
         AppRatingUtility.shared.gaveFeedbackForCurrentVersion()
-        hideRatingViewWithDelay(0.0)
+        hideInlinePrompt(delay: 0.0)
 
         if FeatureFlag.zendeskMobile.enabled {
             if ZendeskUtils.zendeskEnabled {
@@ -1587,7 +1586,7 @@ extension NotificationsViewController {
     private func dismissRatingsPrompt() {
         WPAnalytics.track(.appReviewsDeclinedToRateApp)
         AppRatingUtility.shared.declinedToRateCurrentVersion()
-        hideRatingViewWithDelay(0.0)
+        hideInlinePrompt(delay: 0.0)
     }
 }
 
@@ -1728,10 +1727,8 @@ private extension NotificationsViewController {
         static let undoTimeout = TimeInterval(4)
     }
 
-    enum Ratings {
+    enum InlinePrompt {
         static let section = "notifications"
-        static let heightFull = CGFloat(100)
-        static let heightZero = CGFloat(0)
         static let animationDelay = TimeInterval(0.5)
     }
 }
