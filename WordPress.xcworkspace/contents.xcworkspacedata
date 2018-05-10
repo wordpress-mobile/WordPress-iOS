@@ -11,9 +11,6 @@
       location = "group:WordPressKit/WordPressKit.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:WordPressUI/WordPressUI.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:WordPressFlux/WordPressFlux.xcodeproj">
    </FileRef>
    <FileRef
