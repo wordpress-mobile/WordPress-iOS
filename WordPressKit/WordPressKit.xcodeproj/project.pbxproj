@@ -359,7 +359,9 @@
 		9F3E0BAE20873836009CB5BA /* ReaderTopicServiceRemoteTest+Subscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3E0BAD20873835009CB5BA /* ReaderTopicServiceRemoteTest+Subscriptions.swift */; };
 		9F4E52002088E38200424676 /* ObjectValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4E51FF2088E38200424676 /* ObjectValidation.swift */; };
 		AFEFF3378CD0A507125E5019 /* Pods_WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF1A37C8C9E463E3B9F6B61A /* Pods_WordPressKit.framework */; };
-		B56D96AF202C9B7500485233 /* WordPressUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B56D96B0202C9B7500485233 /* WordPressUI.framework */; };
+		B5969E1B20A49AC4005E9DF1 /* UIAlertController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5969E1820A49AC4005E9DF1 /* UIAlertController+Helpers.swift */; };
+		B5969E1C20A49AC4005E9DF1 /* NSString+MD5.h in Headers */ = {isa = PBXBuildFile; fileRef = B5969E1920A49AC4005E9DF1 /* NSString+MD5.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B5969E1D20A49AC4005E9DF1 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = B5969E1A20A49AC4005E9DF1 /* NSString+MD5.m */; };
 		E11C2AD21FA77FB90023BDE2 /* SitePlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11C2AD11FA77FB90023BDE2 /* SitePlugin.swift */; };
 		E13EE1471F33258E00C15787 /* PluginServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13EE1461F33258E00C15787 /* PluginServiceRemote.swift */; };
 		E13EE1491F332B8500C15787 /* site-plugins-success.json in Resources */ = {isa = PBXBuildFile; fileRef = E13EE1481F332B8500C15787 /* site-plugins-success.json */; };
@@ -758,6 +760,9 @@
 		A2CE6797F9E45AE059B28690 /* Pods-WordPressKit.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKit.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKit/Pods-WordPressKit.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		B459C2F3F70D7C971B441F04 /* Pods-WordPressKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressKit.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressKit/Pods-WordPressKit.debug.xcconfig"; sourceTree = "<group>"; };
 		B56D96B0202C9B7500485233 /* WordPressUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5969E1820A49AC4005E9DF1 /* UIAlertController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Helpers.swift"; sourceTree = "<group>"; };
+		B5969E1920A49AC4005E9DF1 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
+		B5969E1A20A49AC4005E9DF1 /* NSString+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5.m"; sourceTree = "<group>"; };
 		B5A78828202B421B007874FB /* WordPressUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF1A37C8C9E463E3B9F6B61A /* Pods_WordPressKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E11C2AD11FA77FB90023BDE2 /* SitePlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SitePlugin.swift; sourceTree = "<group>"; };
@@ -790,7 +795,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B56D96AF202C9B7500485233 /* WordPressUI.framework in Frameworks */,
 				AFEFF3378CD0A507125E5019 /* Pods_WordPressKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1419,9 +1423,12 @@
 		93BD27871EE829B4002BB00B /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				B5969E1920A49AC4005E9DF1 /* NSString+MD5.h */,
+				B5969E1A20A49AC4005E9DF1 /* NSString+MD5.m */,
 				93C674EF1EE8351E00BFAF05 /* NSMutableDictionary+Helpers.h */,
 				93C674F01EE8351E00BFAF05 /* NSMutableDictionary+Helpers.m */,
 				9F4E51FF2088E38200424676 /* ObjectValidation.swift */,
+				B5969E1820A49AC4005E9DF1 /* UIAlertController+Helpers.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -1524,6 +1531,7 @@
 				93188D1E1F2262BF0028ED4D /* RemotePostTag.h in Headers */,
 				9311A6871F22625A00704AC9 /* TaxonomyServiceRemote.h in Headers */,
 				9309994D1F1657C600F006A1 /* ThemeServiceRemote.h in Headers */,
+				B5969E1C20A49AC4005E9DF1 /* NSString+MD5.h in Headers */,
 				740B23C41F17EE8000067A2A /* RemotePost.h in Headers */,
 				740B23C21F17EE8000067A2A /* RemotePostCategory.h in Headers */,
 				9309995B1F16616A00F006A1 /* RemoteTheme.h in Headers */,
@@ -1546,7 +1554,6 @@
 				9368C7771EC5EF1B0092CE8E /* Frameworks */,
 				9368C7781EC5EF1B0092CE8E /* Headers */,
 				9368C7791EC5EF1B0092CE8E /* Resources */,
-				20EB5542FEFC724801950F81 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1566,7 +1573,6 @@
 				9368C7811EC5EF1B0092CE8E /* Frameworks */,
 				9368C7821EC5EF1B0092CE8E /* Resources */,
 				51BC587D714120E93EA4BE5E /* [CP] Embed Pods Frameworks */,
-				F6C2E44F0CDDA2180AB2B4CD /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1795,21 +1801,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		20EB5542FEFC724801950F81 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressKit/Pods-WordPressKit-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		51BC587D714120E93EA4BE5E /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1882,21 +1873,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F6C2E44F0CDDA2180AB2B4CD /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressKitTests/Pods-WordPressKitTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1931,6 +1907,7 @@
 				93BD277C1EE73944002BB00B /* HTTPAuthenticationAlertController.swift in Sources */,
 				7433BC011EFC4505002D9E92 /* PlanServiceRemote.swift in Sources */,
 				74650F721F0EA1A700188EDB /* GravatarServiceRemote.swift in Sources */,
+				B5969E1D20A49AC4005E9DF1 /* NSString+MD5.m in Sources */,
 				8236EB4D2024B9F8007C7CF9 /* RemoteBlogJetpackModulesSettings.swift in Sources */,
 				740B23BB1F17EC7300067A2A /* PostServiceRemoteXMLRPC.m in Sources */,
 				74B5F0E31EF82D2100B411E7 /* SiteServiceRemoteWordPressComREST.m in Sources */,
@@ -1976,6 +1953,7 @@
 				74D67F081F15BEB70010C5ED /* RemotePerson.swift in Sources */,
 				40AB1ADA200FED25009B533D /* PluginDirectoryFeedPage.swift in Sources */,
 				74A44DCB1F13C533006CD8F4 /* NotificationSettingsServiceRemote.swift in Sources */,
+				B5969E1B20A49AC4005E9DF1 /* UIAlertController+Helpers.swift in Sources */,
 				E182BF6A1FD961810001D850 /* Endpoint.swift in Sources */,
 				74BA04F41F06DC0A00ED5CD8 /* CommentServiceRemoteREST.m in Sources */,
 				74C473AC1EF2F75E009918F2 /* SiteManagementServiceRemote.swift in Sources */,
