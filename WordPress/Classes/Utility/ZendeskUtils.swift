@@ -3,6 +3,14 @@ import ZendeskSDK
 import CoreTelephony
 import WordPressAuthenticator
 
+extension NSNotification.Name {
+    static let ZendeskPushNotificationReceivedNotification = NSNotification.Name(rawValue: "ZendeskPushNotificationReceivedNotification")
+}
+
+@objc extension NSNotification {
+    public static let ZendeskPushNotificationReceivedNotification = NSNotification.Name.ZendeskPushNotificationReceivedNotification
+}
+
 @objc class ZendeskUtils: NSObject {
 
     // MARK: - Properties
@@ -135,6 +143,13 @@ import WordPressAuthenticator
                                withAppId: zdAppID,
                                zendeskUrl: zdUrl,
                                clientId: zdClientId)
+    }
+
+    static func pushNotificationReceived() {
+        // Updating unread indicators should trigger UI updates, so send notification in main thread.
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .ZendeskPushNotificationReceivedNotification, object: nil)
+        }
     }
 
     // MARK: - Helpers
