@@ -951,11 +951,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             return
         }
 
-        SaveForLaterAction().execute(with: readerPost, context: context) {
-
+        SaveForLaterAction().execute(with: readerPost, context: context) { [weak self] in
+            self?.saveForLaterButton.isSelected = readerPost.isSavedForLater
         }
-
-        saveForLaterButton.isSelected = readerPost.isSavedForLater
     }
 
     @IBAction func didTapTagButton(_ sender: UIButton) {
