@@ -32,9 +32,9 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     ///
     @IBOutlet var ratingsView: AppFeedbackPromptView!
 
-    /// Defines the Height of the Ratings View
+    /// Ensures the segmented control is below the feedback prompt
     ///
-    @IBOutlet var ratingsHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var ratingsSpaceConstraint: NSLayoutConstraint!
 
     /// TableView Handler: Our commander in chief!
     ///
@@ -108,12 +108,12 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         super.viewDidLoad()
 
         setupNavigationBar()
-        setupConstraints()
         setupTableView()
+        setupRatingsView()
         setupTableHeaderView()
         setupTableFooterView()
+        setupConstraints()
         setupTableHandler()
-        setupRatingsView()
         setupRefreshControl()
         setupNoResultsView()
         setupFiltersSegmentedControl()
@@ -181,6 +181,12 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+
+        // table header views are a special kind of broken. This dispatch forces the table header to get a new layout
+        // on the next redraw tick, which seems to be required.
+        DispatchQueue.main.async {
+            self.setupTableHeaderView()
+        }
 
         if splitViewControllerIsHorizontallyCompact {
             tableView.deselectSelectedRowWithAnimation(true)
@@ -342,10 +348,15 @@ private extension NotificationsViewController {
     }
 
     func setupConstraints() {
-        precondition(ratingsHeightConstraint != nil)
+        precondition(ratingsSpaceConstraint != nil)
 
         // Ratings is initially hidden!
-        ratingsHeightConstraint.constant = 0
+        tableHeaderView.translatesAutoresizingMaskIntoConstraints = false
+        ratingsView.translatesAutoresizingMaskIntoConstraints = false
+
+        tableHeaderView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
+        tableHeaderView.topAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
+        tableHeaderView.widthAnchor.constraint(equalTo: tableView.widthAnchor).isActive = true
     }
 
     func setupTableView() {
@@ -365,14 +376,14 @@ private extension NotificationsViewController {
         precondition(tableHeaderView != nil)
 
         // Fix: Update the Frame manually: Autolayout doesn't really help us, when it comes to Table Headers
-        let requiredSize        = tableHeaderView.systemLayoutSizeFitting(view.bounds.size)
-        var headerFrame         = tableHeaderView.frame
+        let requiredSize = tableHeaderView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        var headerFrame = tableHeaderView.frame
         headerFrame.size.height = requiredSize.height
+        tableHeaderView.frame = headerFrame
 
-        tableHeaderView.frame  = headerFrame
         tableHeaderView.layoutIfNeeded()
 
-        // Due to iOS awesomeness, unless we re-assign the tableHeaderView, iOS might never refresh the UI
+        // We reassign the tableHeaderView to force the UI to refresh. Yes, really.
         tableView.tableHeaderView = tableHeaderView
         tableView.setNeedsLayout()
     }
@@ -394,6 +405,9 @@ private extension NotificationsViewController {
 
         ratingsView.delegate = self
         ratingsView.alpha = WPAlphaZero
+
+        // this allows the selector to move to the top
+        ratingsSpaceConstraint.isActive = false
     }
 
     func setupRefreshControl() {
@@ -1197,16 +1211,14 @@ private extension NotificationsViewController {
             return
         }
 
-        guard ratingsHeightConstraint.constant != Ratings.heightFull && ratingsView.alpha != WPAlphaFull else {
+        guard ratingsView.alpha != WPAlphaFull else {
             return
         }
 
-        ratingsView.alpha = WPAlphaZero
-
+        // allows the ratings view to push the selector down
+        self.ratingsSpaceConstraint.isActive = true
         UIView.animate(withDuration: WPAnimationDurationDefault, delay: Ratings.animationDelay, options: .curveEaseIn, animations: {
             self.ratingsView.alpha = WPAlphaFull
-            self.ratingsHeightConstraint.constant = Ratings.heightFull
-
             self.setupTableHeaderView()
         }, completion: nil)
 
@@ -1214,12 +1226,11 @@ private extension NotificationsViewController {
     }
 
     func hideRatingViewWithDelay(_ delay: TimeInterval) {
+        self.ratingsSpaceConstraint.isActive = false
         UIView.animate(withDuration: WPAnimationDurationDefault,
                        delay: delay,
                        animations: {
             self.ratingsView.alpha = WPAlphaZero
-            self.ratingsHeightConstraint.constant = Ratings.heightZero
-
             self.setupTableHeaderView()
         })
     }
