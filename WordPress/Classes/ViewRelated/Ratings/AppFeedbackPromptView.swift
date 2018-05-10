@@ -84,8 +84,10 @@ class AppFeedbackPromptView: UIView {
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        self.buttonStack.axis = .horizontal
-        self.buttonStack.isLayoutMarginsRelativeArrangement = true
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        buttonStack.axis = .horizontal
+        buttonStack.isLayoutMarginsRelativeArrangement = true
 
         // measure the width of the view with the new font sizes to see if the buttons are too wide.
         leftButton.updateFontSizeToMatchSystem()
@@ -94,8 +96,8 @@ class AppFeedbackPromptView: UIView {
 
         // if the new width is too wide, change the axis of the stack view
         if newLayoutSize.width > UIScreen.main.bounds.size.width {
-            self.buttonStack.axis = .vertical
-            self.setNeedsLayout()
+            buttonStack.axis = .vertical
+            setNeedsLayout()
         }
     }
 
