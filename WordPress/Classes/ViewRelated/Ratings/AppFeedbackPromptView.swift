@@ -95,7 +95,11 @@ class AppFeedbackPromptView: UIView {
         let newLayoutSize = systemLayoutSizeFitting(UILayoutFittingCompressedSize)
 
         // if the new width is too wide, change the axis of the stack view
-        if newLayoutSize.width > UIScreen.main.bounds.size.width {
+        guard let superviewSize = superview?.bounds.size else {
+            return
+        }
+
+        if newLayoutSize.width > superviewSize.width {
             buttonStack.axis = .vertical
             setNeedsLayout()
         }
