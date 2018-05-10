@@ -183,7 +183,7 @@ final public class PushNotificationsManager: NSObject {
         trackNotification(with: userInfo)
 
         // Handling!
-        let handlers = [ handleHelpshiftNotification,
+        let handlers = [ handleSupportNotification,
                          handleAuthenticationNotification,
                          handleInactiveNotification,
                          handleBackgroundNotification ]
@@ -201,7 +201,7 @@ final public class PushNotificationsManager: NSObject {
 //
 extension PushNotificationsManager {
 
-    /// Handles a Helpshift Remote Notification
+    /// Handles a Support Remote Notification
     ///
     /// - Note: This should actually be *private*. BUT: for unit testing purposes (within ObjC code, because of OCMock),
     ///         we'll temporarily keep it as public. Sorry.
@@ -212,18 +212,28 @@ extension PushNotificationsManager {
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    @objc func handleHelpshiftNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
-        guard let origin = userInfo.string(forKey: Notification.originKey), origin == Helpshift.originValue else {
-            return false
+    @objc func handleSupportNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
+        if FeatureFlag.zendeskMobile.enabled {
+            guard let type = userInfo.string(forKey: ZendeskUtils.PushNotificationIdentifiers.key),
+                type == ZendeskUtils.PushNotificationIdentifiers.type else {
+                    return false
+            }
+            DispatchQueue.main.async {
+                ZendeskUtils.pushNotificationReceived()
+            }
+        } else {
+            guard let origin = userInfo.string(forKey: Notification.originKey), origin == Helpshift.originValue else {
+                return false
+            }
+
+            let rootViewController = sharedApplication.keyWindow?.rootViewController
+            let payload = userInfo as! [AnyHashable: Any]
+            DispatchQueue.main.async {
+                HelpshiftCore.handleRemoteNotification(payload, with: rootViewController)
+            }
         }
 
-        let rootViewController = sharedApplication.keyWindow?.rootViewController
-        let payload = userInfo as! [AnyHashable: Any]
-        DispatchQueue.main.async {
-            HelpshiftCore.handleRemoteNotification(payload, with: rootViewController)
-        }
         WPAnalytics.track(.supportReceivedResponseFromSupport)
-
         completionHandler?(.newData)
 
         return true
