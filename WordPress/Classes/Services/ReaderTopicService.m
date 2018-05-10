@@ -769,6 +769,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         return [self listTopicForRemoteTopic:remoteTopic];
     } else if ([remoteTopic.type isEqualToString:@"team"]) {
         return [self teamTopicForRemoteTopic:remoteTopic];
+    } else if ([remoteTopic.type isEqualToString:@"saveForLater"]) {
+        return [self topicForSaveForLater];
     }
 
     return [self defaultTopicForRemoteTopic:remoteTopic];
