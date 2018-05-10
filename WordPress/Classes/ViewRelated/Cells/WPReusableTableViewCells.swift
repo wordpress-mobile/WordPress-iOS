@@ -89,3 +89,24 @@ class WPTableViewCellBadge: WPTableViewCellDefault {
         return badgeSize.height / 2
     }
 }
+
+class WPTableViewCellIndicator: WPTableViewCellDefault {
+    @objc var showIndicator: Bool = false {
+        didSet {
+            if showIndicator {
+                accessoryView = badgeLabel
+                accessoryType = .none
+            } else {
+                accessoryView = nil
+            }
+        }
+    }
+
+    fileprivate lazy var badgeLabel: UILabel = {
+        let label = UILabel(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 20, height: 20)))
+        label.layer.masksToBounds = true
+        label.layer.cornerRadius =  label.frame.height / 2
+        label.backgroundColor = WPStyleGuide.jazzyOrange()
+        return label
+    }()
+}
