@@ -25,10 +25,7 @@ extension Blog {
 
         var typeIdentifiers = [String]()
         for pathExtension in allowedFileExtensions {
-            let uti = UTTypeCreatePreferredIdentifierForTag(
-                kUTTagClassFilenameExtension,
-                pathExtension as CFString,
-                nil)?.takeUnretainedValue() as String?
+            let uti = String.typeIdentifier(for: pathExtension)
 
             if let validUTI = uti {
                 typeIdentifiers.append(validUTI)
