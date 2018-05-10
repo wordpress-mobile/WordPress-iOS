@@ -68,7 +68,8 @@ target 'WordPress' do
   pod 'NSURL+IDN', '0.3'
   pod 'WPMediaPicker', '0.28'
   pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'f8021013ee7df63e1c469ad550944c213888faaf'
-
+  pod 'WordPressUI', '1.0'
+  
   target 'WordPressTest' do
     inherit! :search_paths
 
@@ -87,6 +88,7 @@ target 'WordPress' do
     shared_with_networking_pods
 
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'f8021013ee7df63e1c469ad550944c213888faaf'
+    pod 'WordPressUI', '1.0'
     pod 'Gridicons', '0.15'
   end
 
@@ -101,6 +103,7 @@ target 'WordPress' do
     shared_with_networking_pods
 
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'f8021013ee7df63e1c469ad550944c213888faaf'
+    pod 'WordPressUI', '1.0'
     pod 'Gridicons', '0.15'
   end
 
@@ -131,6 +134,7 @@ target 'WordPressAuthenticator' do
   ## ====================
   ##
   pod 'Gridicons', '0.15'
+  pod 'WordPressUI', '1.0'
 
   ## Third party libraries
   ## =====================
@@ -160,6 +164,11 @@ target 'WordPressComStatsiOS' do
 
   shared_with_all_pods
   shared_with_networking_pods
+
+  ## Automattic libraries
+  ## ====================
+  ##
+  pod 'WordPressUI', '1.0'
 
   target 'WordPressComStatsiOSTests' do
     inherit! :search_paths
