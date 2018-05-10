@@ -125,29 +125,6 @@ class AppFeedbackPromptView: UIView {
         ])
     }
 
-    override func layoutSubviews() {
-        let buttonsSize = buttonStack.frame.size //systemLayoutSizeFitting(UILayoutFittingCompressedSize)
-        DispatchQueue.main.async {
-            if buttonsSize.width > self.bounds.size.width - 30.0 {
-                self.buttonStack.axis = .vertical
-            } else {
-                self.buttonStack.axis = .horizontal
-            }
-        }
-        super.layoutSubviews()
-    }
-
-//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-//        self.buttonStack.axis = .horizontal
-//        let buttonsSize = systemLayoutSizeFitting(UILayoutFittingCompressedSize)
-////        DispatchQueue.main.async {
-//            if buttonsSize.width > self.bounds.size.width - 30.0 {
-//                self.buttonStack.axis = .vertical
-//                self.setNeedsLayout()
-//            }
-////        }
-//    }
-
     func showBigHeading(title: String) {
         leftButton.isHidden = true
         rightButton.isHidden = true
