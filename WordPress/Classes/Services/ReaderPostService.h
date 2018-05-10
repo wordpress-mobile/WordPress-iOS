@@ -106,6 +106,17 @@ extern NSString * const ReaderPostServiceErrorDomain;
                        failure:(void (^)(NSError *error))failure;
 
 /**
+ Toggle the saved for later status of the specified post.
+
+ @param post The reader post to like/unlike.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)toggleSavedForLaterForPost:(ReaderPost *)post
+                           success:(void (^)(void))success
+                           failure:(void (^)(NSError *error))failure;
+
+/**
  Deletes all posts that do not belong to a `ReaderAbstractTopic`
  Saves the NSManagedObjectContext.
  */
