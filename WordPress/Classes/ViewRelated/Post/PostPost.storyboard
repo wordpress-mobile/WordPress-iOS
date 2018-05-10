@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -29,16 +30,16 @@
                                 <rect key="frame" x="29" y="52" width="349" height="646"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="JGq-VA-WZT">
-                                        <rect key="frame" x="0.0" y="0.0" width="650" height="650"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="636" height="650"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FbN-Zr-116">
-                                                <rect key="frame" x="0.0" y="0.0" width="650" height="474"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="636" height="474"/>
                                                 <subviews>
                                                     <stackView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="IBk-Np-qMf">
-                                                        <rect key="frame" x="0.0" y="180.33333333333331" width="650" height="113.99999999999994"/>
+                                                        <rect key="frame" x="0.0" y="179.33333333333334" width="636" height="116.00000000000003"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Post Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5kn-tC-4Xg">
-                                                                <rect key="frame" x="0.0" y="0.0" width="650" height="28"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="636" height="30"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="28" id="GcR-J5-grU"/>
                                                                 </constraints>
@@ -47,13 +48,13 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Published just now on" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IEW-y3-Pzp">
-                                                                <rect key="frame" x="0.0" y="40" width="650" height="17.999999999999972"/>
+                                                                <rect key="frame" x="0.0" y="42" width="636" height="18"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                 <color key="textColor" red="0.47058823529999999" green="0.86274509799999999" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="rKW-qs-6cA">
-                                                                <rect key="frame" x="0.0" y="69.999999999999972" width="650" height="44"/>
+                                                                <rect key="frame" x="0.0" y="71.999999999999972" width="636" height="44"/>
                                                                 <subviews>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yOQ-OH-S9P">
                                                                         <rect key="frame" x="0.0" y="4" width="36" height="36"/>
@@ -75,10 +76,10 @@
                                                                         </constraints>
                                                                     </view>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Tsp-9N-9v1">
-                                                                        <rect key="frame" x="48" y="0.0" width="602" height="44"/>
+                                                                        <rect key="frame" x="48" y="0.0" width="588" height="44"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blog Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bGL-0c-A6z">
-                                                                                <rect key="frame" x="0.0" y="0.0" width="602" height="22"/>
+                                                                                <rect key="frame" x="0.0" y="0.0" width="588" height="22"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="w6b-ZM-JsE"/>
                                                                                 </constraints>
@@ -87,7 +88,7 @@
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blog Url" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B9s-7Y-oQQ">
-                                                                                <rect key="frame" x="0.0" y="22" width="602" height="22"/>
+                                                                                <rect key="frame" x="0.0" y="22" width="588" height="22"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="yos-Ix-MsU"/>
                                                                                 </constraints>
@@ -118,10 +119,10 @@
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="22" translatesAutoresizingMaskIntoConstraints="NO" id="LUm-wG-tAL">
-                                                <rect key="frame" x="0.0" y="474" width="650" height="176"/>
+                                                <rect key="frame" x="0.0" y="474" width="636" height="176"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mew-dP-u74" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="650" height="44"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mew-dP-u74" customClass="NUXSubmitButton" customModule="WordPressAuthenticator">
+                                                        <rect key="frame" x="0.0" y="0.0" width="636" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="J1M-dU-b8B"/>
                                                         </constraints>
@@ -135,8 +136,8 @@
                                                             <action selector="shareTapped" destination="0ZV-gF-7z9" eventType="touchUpInside" id="qhf-Zm-wdL"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wfC-rz-tLa" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="66" width="650" height="44"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wfC-rz-tLa" customClass="NUXSubmitButton" customModule="WordPressAuthenticator">
+                                                        <rect key="frame" x="0.0" y="66" width="636" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="vDI-tK-HOm"/>
                                                         </constraints>
@@ -147,8 +148,8 @@
                                                             <action selector="editTapped" destination="0ZV-gF-7z9" eventType="touchUpInside" id="nBy-5P-2fK"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WGH-Vv-Uun" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="132" width="650" height="44"/>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WGH-Vv-Uun" customClass="NUXSubmitButton" customModule="WordPressAuthenticator">
+                                                        <rect key="frame" x="0.0" y="132" width="636" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="r9K-HZ-toB"/>
                                                         </constraints>
