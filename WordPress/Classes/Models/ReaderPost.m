@@ -13,6 +13,10 @@
 NSString * const ReaderPostStoredCommentIDKey = @"commentID";
 NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
+@interface ReaderPost ()
+@property (nonatomic, strong) NSNumber *mockIsSavedForLater;
+@end
+
 @implementation ReaderPost
 
 @dynamic authorDisplayName;
@@ -58,6 +62,11 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic inUse;
 
 @synthesize rendered;
+
+/**
+ To be removed
+ */
+@synthesize mockIsSavedForLater = _mockIsSavedForLater;
 
 
 - (BOOL)isCrossPost
@@ -304,5 +313,18 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     return nil;
 }
 
+/// These getter and setter will be removed when the property is made dynamic, after the coredata model is updated
+- (BOOL)isSavedForLater
+{
+    if (_mockIsSavedForLater == nil) {
+        _mockIsSavedForLater = [NSNumber numberWithBool:NO];
+    }
 
+    return [_mockIsSavedForLater boolValue];
+}
+
+- (void)setIsSavedForLater:(BOOL)isSavedForLater
+{
+    _mockIsSavedForLater = [NSNumber numberWithBool:isSavedForLater];
+}
 @end
