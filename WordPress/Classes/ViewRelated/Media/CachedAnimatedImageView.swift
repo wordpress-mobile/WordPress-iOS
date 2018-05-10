@@ -27,8 +27,6 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     // MARK: Public fields
 
-    public var gifPlaybackStrategy: GIFPlaybackStrategy = MediumGIFPlaybackStrategy()
-
     @objc public var gifStrategy: GIFStrategy {
         get {
             return gifPlaybackStrategy.gifStrategy
@@ -45,6 +43,8 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
     }()
 
     // MARK: Private fields
+
+    private var gifPlaybackStrategy: GIFPlaybackStrategy = MediumGIFPlaybackStrategy()
 
     @objc private var currentTask: URLSessionTask?
 
