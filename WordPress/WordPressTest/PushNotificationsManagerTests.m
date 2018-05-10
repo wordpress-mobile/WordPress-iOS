@@ -82,23 +82,6 @@
     OCMVerify(mockManager);
 }
 
-- (void)testHelpshiftNotificationIsProperlyHandled
-{
-    NSDictionary *userInfo = @{ @"origin" : @"helpshift" };
-    [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
-    PushNotificationsManager *manager = [PushNotificationsManager new];
-    id mockManager = OCMPartialMock(manager);
-
-    XCTAssertTrue([mockManager handleSupportNotification:userInfo completionHandler:nil], @"Error handling Helpshift");
-    XCTAssertFalse([mockManager handleAuthenticationNotification:userInfo completionHandler:nil], @"Error handling Helpshift");
-    XCTAssertFalse([mockManager handleInactiveNotification:userInfo completionHandler:nil], @"Error handling Helpshift");
-    XCTAssertFalse([mockManager handleBackgroundNotification:userInfo completionHandler:nil], @"Error handling Helpshift");
-
-    OCMExpect([manager handleSupportNotification:userInfo completionHandler:nil]);
-    [mockManager handleNotification:userInfo completionHandler:nil];
-    OCMVerify(mockManager);
-}
-
 - (void)testAuthenticationNotificationIsProperlyHandled
 {
     NSDictionary *userInfo = @{ @"type" : @"push_auth" };
