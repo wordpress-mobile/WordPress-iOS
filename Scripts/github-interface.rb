@@ -85,7 +85,7 @@ class GitHubInterface
     end 
 
     open_prs = get_open_prs(mile[:number]) # TODO: Returning an array with PR titles and URL here... can be used. 
-    puts "Release #{release} has"
+    puts "Release #{mile[:title]} has"
     puts " - #{mile[:open_issues]} open issues" 
     puts " - #{open_prs.length} open PRs" 
     puts "   link: https://github.com/wordpress-mobile/WordPress-iOS/pulls?q=is%3Aopen+is%3Apr+milestone%3A#{release}" unless open_prs.length == 0
