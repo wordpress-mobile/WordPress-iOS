@@ -65,7 +65,12 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         refreshAccountDetails()
 
-        HelpshiftUtils.refreshUnreadNotificationCount()
+        if FeatureFlag.zendeskMobile.enabled {
+            resetApplicationBadge()
+            startListeningToNotifications()
+        } else {
+            HelpshiftUtils.refreshUnreadNotificationCount()
+        }
 
         if splitViewControllerIsHorizontallyCompact {
             animateDeselectionInteractively()
@@ -76,6 +81,10 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         super.viewDidAppear(animated)
 
         registerUserActivity()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        stopListeningToNotifications()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -390,14 +399,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
-
-    // MARK: - Notification observers
-
-    @objc func refreshModelWithNotification(_ notification: Foundation.Notification) {
-        reloadViewModel()
-    }
-
-
     // MARK: - Gravatar Helpers
 
     fileprivate func uploadGravatarImage(_ newGravatar: UIImage) {
@@ -544,5 +545,42 @@ extension MeViewController {
 
     struct HeaderTitles {
         static let wpAccount = NSLocalizedString("WordPress.com Account", comment: "WordPress.com sign-in/sign-out section header title")
+    }
+}
+
+// MARK: - Private Extension for Notification handling
+
+private extension MeViewController {
+
+    // MARK: Helpshift
+
+    @objc func refreshModelWithNotification(_ notification: Foundation.Notification) {
+        reloadViewModel()
+    }
+
+    // MARK: Zendesk
+
+    func resetApplicationBadge() {
+        UIApplication.shared.applicationIconBadgeNumber = 0
+    }
+
+    func startListeningToNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(applicationDidBecomeActive),
+                                               name: NSNotification.Name.UIApplicationDidBecomeActive,
+                                               object: nil)
+    }
+
+    @objc func applicationDidBecomeActive(_ note: Foundation.Notification) {
+        // Let's reset the badge, whenever the app comes back to FG, and this view was upfront!
+        guard isViewLoaded == true && view.window != nil else {
+            return
+        }
+
+        resetApplicationBadge()
+    }
+
+    func stopListeningToNotifications() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
     }
 }
