@@ -16,6 +16,12 @@ class SiteCreationThemeSelectionViewController: NUXCollectionViewController, UIC
     private var themes: [Theme]?
     private var themeCount: NSInteger = 0
 
+    override var sourceTag: WordPressSupportSourceTag {
+        get {
+            return .wpComCreateSiteTheme
+        }
+    }
+
     // MARK: - View
 
     override func viewDidLoad() {
