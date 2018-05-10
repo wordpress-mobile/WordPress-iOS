@@ -406,7 +406,7 @@ private extension NotificationsViewController {
         // this allows the selector to move to the top
         inlinePromptSpaceConstraint.isActive = false
 
-        if !userDefaults.notificationPrimerInlineWasAcknowledged {
+        if Feature.enabled(.primeForPush) && !userDefaults.notificationPrimerInlineWasAcknowledged {
             PushNotificationsManager.shared.loadAuthorizationStatus { [weak self] (status) in
                 if status == .notDetermined {
                     self?.setupPrimeForPush()
