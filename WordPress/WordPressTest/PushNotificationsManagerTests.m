@@ -73,7 +73,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-result"
     [[mockManager reject] handleAuthenticationNotification:OCMOCK_ANY completionHandler:OCMOCK_ANY];
-    [[mockManager reject] handleHelpshiftNotification:OCMOCK_ANY completionHandler:OCMOCK_ANY];
+    [[mockManager reject] handleSupportNotification:OCMOCK_ANY completionHandler:OCMOCK_ANY];
     [[mockManager reject] handleInactiveNotification:OCMOCK_ANY completionHandler:OCMOCK_ANY];
     [[mockManager reject] handleBackgroundNotification:OCMOCK_ANY completionHandler:OCMOCK_ANY];
 #pragma clang diagnostic pop
@@ -89,12 +89,12 @@
     PushNotificationsManager *manager = [PushNotificationsManager new];
     id mockManager = OCMPartialMock(manager);
 
-    XCTAssertTrue([mockManager handleHelpshiftNotification:userInfo completionHandler:nil], @"Error handling Helpshift");
+    XCTAssertTrue([mockManager handleSupportNotification:userInfo completionHandler:nil], @"Error handling Helpshift");
     XCTAssertFalse([mockManager handleAuthenticationNotification:userInfo completionHandler:nil], @"Error handling Helpshift");
     XCTAssertFalse([mockManager handleInactiveNotification:userInfo completionHandler:nil], @"Error handling Helpshift");
     XCTAssertFalse([mockManager handleBackgroundNotification:userInfo completionHandler:nil], @"Error handling Helpshift");
 
-    OCMExpect([manager handleHelpshiftNotification:userInfo completionHandler:nil]);
+    OCMExpect([manager handleSupportNotification:userInfo completionHandler:nil]);
     [mockManager handleNotification:userInfo completionHandler:nil];
     OCMVerify(mockManager);
 }
@@ -106,7 +106,7 @@
     id mockManager = OCMPartialMock(manager);
     
     XCTAssertTrue([mockManager handleAuthenticationNotification:userInfo completionHandler:nil], @"Error handling PushAuth");
-    XCTAssertFalse([mockManager handleHelpshiftNotification:userInfo completionHandler:nil], @"Error handling PushAuth");
+    XCTAssertFalse([mockManager handleSupportNotification:userInfo completionHandler:nil], @"Error handling PushAuth");
     XCTAssertFalse([mockManager handleInactiveNotification:userInfo completionHandler:nil], @"Error handling PushAuth");
     XCTAssertFalse([mockManager handleBackgroundNotification:userInfo completionHandler:nil], @"Error handling PushAuth");
     
@@ -129,7 +129,7 @@
     XCTAssert([mockManager applicationState] == UIApplicationStateInactive);
     XCTAssertTrue([mockManager handleInactiveNotification:userInfo completionHandler:nil], @"Error handling Note");
     XCTAssertFalse([mockManager handleAuthenticationNotification:userInfo completionHandler:nil], @"Error handling Note");
-    XCTAssertFalse([mockManager handleHelpshiftNotification:userInfo completionHandler:nil], @"Error handling Note");
+    XCTAssertFalse([mockManager handleSupportNotification:userInfo completionHandler:nil], @"Error handling Note");
     XCTAssertFalse([mockManager handleBackgroundNotification:userInfo completionHandler:nil], @"Error handling Note");
     
     OCMExpect([manager handleInactiveNotification:userInfo completionHandler:nil]);
@@ -153,7 +153,7 @@
     XCTAssertTrue([mockManager handleBackgroundNotification:userInfo completionHandler:nil], @"Error handling Note");
     XCTAssertFalse([mockManager handleInactiveNotification:userInfo completionHandler:nil], @"Error handling Note");
     XCTAssertFalse([mockManager handleAuthenticationNotification:userInfo completionHandler:nil], @"Error handling Note");
-    XCTAssertFalse([mockManager handleHelpshiftNotification:userInfo completionHandler:nil], @"Error handling Note");
+    XCTAssertFalse([mockManager handleSupportNotification:userInfo completionHandler:nil], @"Error handling Note");
     
     OCMExpect([manager handleBackgroundNotification:userInfo completionHandler:nil]);
     [mockManager handleNotification:userInfo completionHandler:nil];
