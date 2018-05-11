@@ -3,8 +3,11 @@ import UIKit
 class NoticeView: UIView {
     private let contentStackView = UIStackView()
 
+    private let backgroundContainerView = UIView()
     private let backgroundView =  UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
     private let actionBackgroundView = UIView()
+    private let shadowLayer = CAShapeLayer()
+    private let shadowMaskLayer = CAShapeLayer()
 
     private let titleLabel = UILabel()
     private let messageLabel = UILabel()
@@ -19,10 +22,8 @@ class NoticeView: UIView {
 
         super.init(frame: .zero)
 
-        layer.cornerRadius = Appearance.cornerRadius
-        layer.masksToBounds = true
-
         configureBackgroundViews()
+        configureShadow()
         configureContentStackView()
         configureLabels()
         configureActionButton()
@@ -36,9 +37,46 @@ class NoticeView: UIView {
     }
 
     private func configureBackgroundViews() {
-        addSubview(backgroundView)
+        addSubview(backgroundContainerView)
+        backgroundContainerView.translatesAutoresizingMaskIntoConstraints = false
+        pinSubviewToAllEdges(backgroundContainerView)
+
+        backgroundContainerView.addSubview(backgroundView)
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         pinSubviewToAllEdges(backgroundView)
+
+        backgroundContainerView.layer.cornerRadius = Metrics.cornerRadius
+        backgroundContainerView.layer.masksToBounds = true
+    }
+
+    private func configureShadow() {
+        shadowLayer.shadowPath = UIBezierPath(roundedRect: layer.bounds, cornerRadius: Metrics.cornerRadius).cgPath
+        shadowLayer.shadowColor = Appearance.shadowColor.cgColor
+        shadowLayer.shadowOpacity = Appearance.shadowOpacity
+        shadowLayer.shadowRadius = Appearance.shadowRadius
+        shadowLayer.shadowOffset = Appearance.shadowOffset
+        layer.insertSublayer(shadowLayer, at: 0)
+
+        shadowMaskLayer.fillRule = kCAFillRuleEvenOdd
+        shadowLayer.mask = shadowMaskLayer
+
+        updateShadowPath()
+    }
+
+    private func updateShadowPath() {
+        let shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: Metrics.cornerRadius).cgPath
+        shadowLayer.shadowPath = shadowPath
+
+        // Construct a mask path with the notice's roundrect cut out of a larger padding rect.
+        // This, combined with the `kCAFillRuleEvenOdd` gives us an inverted mask, so
+        // the shadow only appears _outside_ of the notice roundrect, and doesn't appear underneath
+        // and obscure the blur visual effect view. 
+        let maskPath = CGMutablePath()
+        let leftInset = Metrics.layoutMargins.left * 2
+        let topInset = Metrics.layoutMargins.top * 2
+        maskPath.addRect(bounds.insetBy(dx: -leftInset, dy: -topInset))
+        maskPath.addPath(shadowPath)
+        shadowMaskLayer.path = maskPath
     }
 
     private func configureContentStackView() {
@@ -53,10 +91,10 @@ class NoticeView: UIView {
         labelStackView.translatesAutoresizingMaskIntoConstraints = false
         labelStackView.alignment = .leading
         labelStackView.axis = .vertical
-        labelStackView.spacing = Appearance.labelLineSpacing
+        labelStackView.spacing = Metrics.labelLineSpacing
         labelStackView.isBaselineRelativeArrangement = true
         labelStackView.isLayoutMarginsRelativeArrangement = true
-        labelStackView.layoutMargins = Appearance.layoutMargins
+        labelStackView.layoutMargins = Metrics.layoutMargins
 
         labelStackView.addArrangedSubview(titleLabel)
         labelStackView.addArrangedSubview(messageLabel)
@@ -68,8 +106,8 @@ class NoticeView: UIView {
             labelStackView.bottomAnchor.constraint(equalTo: backgroundView.contentView.bottomAnchor)
             ])
 
-        titleLabel.font = Appearance.titleLabelFont
-        messageLabel.font = Appearance.messageLabelFont
+        titleLabel.font = Fonts.titleLabelFont
+        messageLabel.font = Fonts.messageLabelFont
 
         titleLabel.textColor = WPStyleGuide.darkGrey()
         messageLabel.textColor = WPStyleGuide.darkGrey()
@@ -79,7 +117,7 @@ class NoticeView: UIView {
         contentStackView.addArrangedSubview(actionBackgroundView)
         actionBackgroundView.translatesAutoresizingMaskIntoConstraints = false
 
-        actionBackgroundView.layoutMargins = Appearance.layoutMargins
+        actionBackgroundView.layoutMargins = Metrics.layoutMargins
         actionBackgroundView.backgroundColor = Appearance.actionBackgroundColor
 
         actionBackgroundView.addSubview(actionButton)
@@ -92,7 +130,7 @@ class NoticeView: UIView {
 
         actionBackgroundView.pinSubviewToAllEdgeMargins(actionButton)
 
-        actionButton.titleLabel?.font = Appearance.actionButtonFont
+        actionButton.titleLabel?.font = Fonts.actionButtonFont
         actionButton.setTitleColor(WPStyleGuide.mediumBlue(), for: .normal)
         actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
         actionButton.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -119,6 +157,12 @@ class NoticeView: UIView {
         }
     }
 
+    override var bounds: CGRect {
+        didSet {
+            updateShadowPath()
+        }
+    }
+
     // MARK: - Action handlers
 
     @objc private func viewTapped() {
@@ -130,13 +174,23 @@ class NoticeView: UIView {
         dismissHandler?()
     }
 
-    enum Appearance {
+    enum Metrics {
         static let cornerRadius: CGFloat = 13.0
         static let layoutMargins = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
-        static let actionBackgroundColor = UIColor.white.withAlphaComponent(0.5)
+        static let labelLineSpacing: CGFloat = 18.0
+    }
+
+    enum Fonts {
         static let actionButtonFont = UIFont.systemFont(ofSize: 14.0)
         static let titleLabelFont = UIFont.boldSystemFont(ofSize: 14.0)
         static let messageLabelFont = UIFont.systemFont(ofSize: 14.0)
-        static let labelLineSpacing: CGFloat = 18.0
+    }
+
+    enum Appearance {
+        static let actionBackgroundColor = UIColor.white.withAlphaComponent(0.5)
+        static let shadowColor: UIColor = .black
+        static let shadowOpacity: Float = 0.25
+        static let shadowRadius: CGFloat = 8.0
+        static let shadowOffset = CGSize(width: 0.0, height: 2.0)
     }
 }

@@ -70,9 +70,8 @@ extension WordPressAppDelegate {
 
     @objc func configureWordPressAuthenticator() {
         authManager = WordPressAuthenticationManager()
-        authTracker = WordPressAuthenticationTracker()
 
-        authTracker.startListeningToAuthenticationEvents()
+        authManager.initializeWordPressAuthenticator()
         authManager.startRelayingHelpshiftNotifications()
 
         WordPressAuthenticator.shared.delegate = authManager
@@ -158,9 +157,7 @@ extension WordPressAppDelegate {
                 return false
             }
 
-            return visibleViewController is NUXAbstractViewController
-                || visibleViewController is LoginPrologueViewController
-                || visibleViewController is NUXViewControllerBase
+            return visibleViewController is LoginPrologueViewController || visibleViewController is NUXViewControllerBase
         }
     }
 }

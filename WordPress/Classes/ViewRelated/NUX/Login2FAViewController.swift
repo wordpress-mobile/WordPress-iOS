@@ -19,6 +19,9 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
         }
     }
 
+    private enum Constants {
+        static let headsUpDismissDelay = TimeInterval(1)
+    }
 
     // MARK: - Lifecycle Methods
 
@@ -49,7 +52,7 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
         nc.addObserver(self, selector: #selector(applicationBecameInactive), name: .UIApplicationWillResignActive, object: nil)
         nc.addObserver(self, selector: #selector(applicationBecameActive), name: .UIApplicationDidBecomeActive, object: nil)
 
-        WordPressAuthenticator.post(event: .loginTwoFactorFormViewed)
+        WordPressAuthenticator.track(.loginTwoFactorFormViewed)
     }
 
 
@@ -167,7 +170,7 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
 
         // Disconnect now that we're done with Google.
         GIDSignIn.sharedInstance().disconnect()
-        WordPressAuthenticator.post(event: .loginSocialSuccess)
+        WordPressAuthenticator.track(.loginSocialSuccess)
     }
 
     /// Only allow digits in the 2FA text field
@@ -240,7 +243,8 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
 
     @IBAction func handleSendVerificationButtonTapped(_ sender: UIButton) {
         let message = NSLocalizedString("SMS Sent", comment: "One Time Code has been sent via SMS")
-        SVProgressHUD.showDismissibleSuccess(withStatus: message)
+        SVProgressHUD.showSuccess(withStatus: message)
+        SVProgressHUD.dismiss(withDelay: Constants.headsUpDismissDelay)
 
         if let _ = loginFields.nonceInfo {
             // social login

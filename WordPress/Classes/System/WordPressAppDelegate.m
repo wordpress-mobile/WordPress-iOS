@@ -78,6 +78,9 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
     [WordPressAppDelegate fixKeychainAccess];
 
+    // Authentication Framework
+    [self configureWordPressAuthenticator];
+
     // Basic networking setup
     [self configureReachability];
     
@@ -105,7 +108,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
 
     [[InteractiveNotificationsManager shared] registerForUserNotifications];
-    [self configureWordPressAuthenticator];
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupBuddyBuild];
     [self setupPingHub];
@@ -540,6 +542,8 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setPlaceholderBackgroundColor:[WPStyleGuide darkGrey]];
     [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setPlaceholderTintColor:[WPStyleGuide greyLighten30]];
     [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setCellTintColor:[WPStyleGuide wordPressBlue]];
+
+    [[UIButton appearanceWhenContainedInInstancesOfClasses:@[ [WPActionBar class] ]] setTintColor:[WPStyleGuide wordPressBlue]];
 
     // Customize the appearence of the text elements
     [self customizeAppearanceForTextElements];

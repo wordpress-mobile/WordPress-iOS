@@ -11,6 +11,7 @@
 
 @property (nonatomic, strong) NSString                      *titleText;
 @property (nonatomic, strong) NSString                      *messageText;
+@property (nonatomic, strong) NSAttributedString            *attributedMessageText;
 @property (nonatomic, strong) NSString                      *buttonTitle;
 @property (nonatomic, strong) UIView                        *accessoryView;
 @property (nonatomic, strong) UIButton                      *button;

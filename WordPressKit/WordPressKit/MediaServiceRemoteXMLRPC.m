@@ -30,14 +30,37 @@
 - (void)getMediaLibraryWithSuccess:(void (^)(NSArray *))success
                            failure:(void (^)(NSError *))failure
 {
-    NSArray *parameters = [self defaultXMLRPCArguments];
+    [self getMediaLibraryStartOffset:0 media:@[] success:success failure:failure];
+}
+
+- (void)getMediaLibraryStartOffset:(NSUInteger)offset
+                             media:(NSArray *)media
+                           success:(void (^)(NSArray *))success
+                           failure:(void (^)(NSError *))failure
+{
+    NSInteger pageSize = 100;
+    NSDictionary *filter = @{
+                                @"number": @(pageSize),
+                                @"offset": @(offset)
+                            };
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:filter];
+
     [self.api callMethod:@"wp.getMediaLibrary"
               parameters:parameters
                  success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
                      NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
-                     if (success) {
-                         success([self remoteMediaFromXMLRPCArray:responseObject]);
+                     if (!success) {
+                         return;
                      }
+                     NSArray *pageMedia = [self remoteMediaFromXMLRPCArray:responseObject];
+                     NSArray *resultMedia = [media arrayByAddingObjectsFromArray:pageMedia];
+                     // Did we got all the items we requested or it's finished?
+                     if (pageMedia.count < pageSize) {
+                         success(resultMedia);
+                         return;
+                     }
+                     NSUInteger newOffset = offset + pageSize;
+                     [self getMediaLibraryStartOffset:newOffset media:resultMedia success: success failure: failure];                     
                  }
                  failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
                      if (failure) {

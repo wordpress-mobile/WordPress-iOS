@@ -453,6 +453,12 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
 
 
+    /// Presents whatever happens when FormatBar's more button is selected
+    fileprivate lazy var moreCoordinator: AztecMediaPickingCoordinator = {
+        return AztecMediaPickingCoordinator(delegate: self)
+    }()
+
+
     // MARK: - Initializers
 
     /// Initializer
@@ -493,6 +499,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        richTextView.isScrollEnabled = false
+        htmlTextView.isScrollEnabled = false
         // This needs to called first
         configureMediaAppearance()
 
@@ -511,6 +519,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         refreshInterface()
 
         // Setup Autolayout
+        configureConstraints()
         view.setNeedsUpdateConstraints()
 
         if isOpenedDirectlyForPhotoPost {
@@ -535,6 +544,9 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         // Handles refreshing controls with state context after options screen is dismissed
         editorContentWasUpdated()
+
+        richTextView.isScrollEnabled = true
+        htmlTextView.isScrollEnabled = true
     }
 
 
@@ -601,6 +613,19 @@ class AztecPostViewController: UIViewController, PostEditor {
         contentInset.top = (titleHeightConstraint.constant + separatorView.frame.height)
         referenceView.contentInset = contentInset
         referenceView.setContentOffset(CGPoint(x: 0, y: -contentInset.top), animated: false)
+
+        updateScrollInsets()
+    }
+
+    func updateScrollInsets() {
+        let referenceView: UITextView = mode == .richText ? richTextView : htmlTextView
+        var scrollInsets = referenceView.contentInset
+        var rightMargin = (view.frame.maxX - referenceView.frame.maxX)
+        if #available(iOS 11.0, *) {
+            rightMargin -= view.safeAreaInsets.right
+        }
+        scrollInsets.right = -rightMargin
+        referenceView.scrollIndicatorInsets = scrollInsets
     }
 
 
@@ -630,8 +655,12 @@ class AztecPostViewController: UIViewController, PostEditor {
     // MARK: - Configuration Methods
 
     override func updateViewConstraints() {
-
+        refreshTitlePosition()
+        updateTitleHeight()
         super.updateViewConstraints()
+    }
+
+    func configureConstraints() {
 
         titleHeightConstraint = titleTextField.heightAnchor.constraint(equalToConstant: titleTextField.font!.lineHeight)
         titleTopConstraint = titleTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: -richTextView.contentOffset.y)
@@ -765,13 +794,14 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 
     func rememberFirstResponder() {
-        lastFirstResponder = view.findFirstResponder()
+        lastFirstResponder = view.findFirstResponder() ?? lastFirstResponder
         lastFirstResponder?.resignFirstResponder()
     }
 
     func restoreFirstResponder() {
         let nextFirstResponder = lastFirstResponder ?? titleTextField
         nextFirstResponder.becomeFirstResponder()
+        lastFirstResponder = nil
     }
 
     func refreshInterface() {
@@ -899,6 +929,12 @@ class AztecPostViewController: UIViewController, PostEditor {
     // MARK: - Keyboard Handling
 
     override var keyCommands: [UIKeyCommand] {
+        if titleTextField.isFirstResponder {
+            return [
+                UIKeyCommand(input: "\t", modifierFlags: [], action: #selector(tabOnTitle))
+            ]
+        }
+
         if richTextView.isFirstResponder {
             return [
                 UIKeyCommand(input: "B", modifierFlags: .command, action: #selector(toggleBold), discoverabilityTitle: NSLocalizedString("Bold", comment: "Discoverability title for bold formatting keyboard shortcut.")),
@@ -950,14 +986,12 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate func refreshInsets(forKeyboardFrame keyboardFrame: CGRect) {
         let referenceView: UIScrollView = mode == .richText ? richTextView : htmlTextView
 
-        let scrollInsets = UIEdgeInsets(top: referenceView.scrollIndicatorInsets.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: referenceView.frame.maxX - view.frame.maxX)
         let contentInsets  = UIEdgeInsets(top: referenceView.contentInset.top, left: 0, bottom: view.frame.maxY - (keyboardFrame.minY + self.view.layoutMargins.bottom), right: 0)
 
-        htmlTextView.scrollIndicatorInsets = scrollInsets
         htmlTextView.contentInset = contentInsets
-
-        richTextView.scrollIndicatorInsets = scrollInsets
         richTextView.contentInset = contentInsets
+
+        updateScrollInsets()
     }
 }
 
@@ -1696,7 +1730,7 @@ extension AztecPostViewController {
                 presentMediaPickerFullScreen(animated: true, dataSourceType: .mediaLibrary)
             case .otherApplications:
                 trackFormatBarAnalytics(stat: .editorMediaPickerTappedOtherApps)
-                showDocumentPicker()
+                showMore(from: barItem)
             }
         }
     }
@@ -1876,7 +1910,7 @@ extension AztecPostViewController {
                 return
             }
 
-            self?.richTextView.setLink(url, title: title, inRange: range)
+            self?.richTextView.setLink(url.normalizedURLForWordPressLink(), title: title, inRange: range)
         }
 
         // Disabled until url is entered into field
@@ -1977,6 +2011,20 @@ extension AztecPostViewController {
         richTextView.inputAssistantItem.trailingBarButtonGroups = originalTrailingBarButtonGroup
         richTextView.autocorrectionType = .yes
         richTextView.reloadInputViews()
+    }
+
+    @objc func tabOnTitle() {
+        let activeTextView: UITextView = {
+            switch mode {
+            case .html:
+                return htmlTextView
+            case .richText:
+                return richTextView
+            }
+        }()
+
+        activeTextView.becomeFirstResponder()
+        activeTextView.selectedTextRange = activeTextView.textRange(from: activeTextView.endOfDocument, to: activeTextView.endOfDocument)
     }
 
     @IBAction @objc func presentMediaPickerWasPressed() {
@@ -2135,12 +2183,11 @@ extension AztecPostViewController {
         return .none
     }
 
-    private func showDocumentPicker() {
-        let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
-        let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
-        docPicker.delegate = self
-        WPStyleGuide.configureDocumentPickerNavBarAppearance()
-        present(docPicker, animated: true, completion: nil)
+    private func showMore(from: FormatBarItem) {
+        rememberFirstResponder()
+
+        let moreCoordinatorContext = MediaPickingContext(origin: self, view: view, blog: post.blog)
+        moreCoordinator.present(context: moreCoordinatorContext)
     }
 
     // MARK: - Present Toolbar related VC
@@ -2797,6 +2844,10 @@ extension AztecPostViewController {
 
     fileprivate func insertDeviceMedia(phAsset: PHAsset) {
         insert(exportableAsset: phAsset, source: .deviceLibrary)
+    }
+
+    private func insertStockPhotosMedia(_ media: StockPhotosMedia) {
+        insert(exportableAsset: media, source: .stockPhotos)
     }
 
     /// Insert media to the post from the site's media library.
@@ -3592,6 +3643,20 @@ extension AztecPostViewController: UIDocumentPickerDelegate {
         mediaSelectionMethod = .documentPicker
         for documentURL in urls {
             insertExternalMediaWithURL(documentURL)
+        }
+    }
+}
+
+extension AztecPostViewController: MediaPickingOptionsDelegate {
+    func didCancel() {
+        restoreFirstResponder()
+    }
+}
+
+extension AztecPostViewController: StockPhotosPickerDelegate {
+    func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
+        assets.forEach {
+            insert(exportableAsset: $0, source: .stockPhotos)
         }
     }
 }
