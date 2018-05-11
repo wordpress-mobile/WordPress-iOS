@@ -32,7 +32,7 @@ CGFloat const PostFeaturedImageCellMargin = 15.0f;
 {
     __weak PostFeaturedImageCell *weakSelf = self;
     [self.imageLoader loadImageWithURL:url fromPost:postInformation preferedSize:size placeholder:nil success:^{
-        [weakSelf informDelegateSuccess];
+        [weakSelf informDelegateImageLoaded];
     } error:^(NSError * _Nullable error) {
         if (weakSelf && weakSelf.delegate) {
             [weakSelf.delegate postFeatureImageCell:weakSelf didFinishLoadingImageWithError:error];
@@ -40,7 +40,7 @@ CGFloat const PostFeaturedImageCellMargin = 15.0f;
     }];
 }
 
-- (void)informDelegateSuccess
+- (void)informDelegateImageLoaded
 {
     if (self.delegate == nil) {
         return;
