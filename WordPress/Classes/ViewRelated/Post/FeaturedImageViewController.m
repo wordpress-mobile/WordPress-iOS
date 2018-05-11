@@ -32,7 +32,6 @@
 {
     self = [super initWithImage:nil andURL:[NSURL URLWithString:post.featuredImage.remoteURL]];
     if (self) {
-        self.title = NSLocalizedString(@"Featured Image", @"Title for the Featured Image view");
         self.post = post;
     }
     return self;
@@ -41,6 +40,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = NSLocalizedString(@"Featured Image", @"Title for the Featured Image view");
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.leftBarButtonItems = @[self.doneButton];
     self.navigationItem.rightBarButtonItems = @[self.removeButton];
@@ -140,8 +140,11 @@
     [alertController addActionWithTitle:NSLocalizedString(@"Remove", @"Remove an image/posts/etc")
                                   style:UIAlertActionStyleDestructive
                                 handler:^(UIAlertAction *alertAction) {
-                                    [self.post setFeaturedImage:nil];
-                                    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                                    if (self.delegate) {
+                                        [self.delegate FeaturedImageViewControllerOnRemoveImageButtonPressed:self];
+                                    }
+//                                    [self.post setFeaturedImage:nil];
+//                                    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
                                 }];
     alertController.popoverPresentationController.barButtonItem = self.removeButton;
     [self presentViewController:alertController animated:YES completion:nil];
