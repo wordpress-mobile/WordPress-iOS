@@ -1,12 +1,12 @@
 import Foundation
 
 @objc
-enum GIFStrategy: Int {
+public enum GIFStrategy: Int {
     case smallGIFs
     case mediumGIFs
     case largeGIFs
 
-    /// Returns the corresponding playback strategy
+    /// Returns the corresponding playback strategy instance
     ///
     var playbackStrategy: GIFPlaybackStrategy {
         switch self {
@@ -30,6 +30,10 @@ public protocol GIFPlaybackStrategy {
     ///
     var frameBufferCount: Int { get }
 
+    /// Returns the coresponding GIFStrategy enum value.
+    ///
+    var gifStrategy: GIFStrategy { get }
+
     /// Verifies the GIF data against the `maxSize` var.
     ///
     /// - Parameter data: object containg the GIF
@@ -51,14 +55,17 @@ extension GIFPlaybackStrategy {
 class SmallGIFPlaybackStrategy: GIFPlaybackStrategy {
     var maxSize = 10_000_000  // in MB
     var frameBufferCount = 50
+    var gifStrategy: GIFStrategy = .smallGIFs
 }
 
 class MediumGIFPlaybackStrategy: GIFPlaybackStrategy {
     var maxSize = 20_000_000  // in MB
     var frameBufferCount = 50
+    var gifStrategy: GIFStrategy = .mediumGIFs
 }
 
 class LargeGIFPlaybackStrategy: GIFPlaybackStrategy {
-    var maxSize = 40_000_000  // in MB
+    var maxSize = 50_000_000  // in MB
     var frameBufferCount = 60
+    var gifStrategy: GIFStrategy = .largeGIFs
 }
