@@ -20,7 +20,7 @@ class AppRatingUtility: NSObject {
 
     /// Sets the number of days that have to pass between AppReview prompts
     /// Since Apple only allows 3 prompts per year, we are settings this number to 122
-    @objc var numberOfDaysToWaitBetweenPrompts: Int = 122
+    @objc var numberOfDaysToWaitBetweenPrompts: Int = 183
 
     private let defaults: UserDefaults
     private var sections = [String: Section]()
