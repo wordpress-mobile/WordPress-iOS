@@ -19,7 +19,8 @@ class AppRatingUtility: NSObject {
     @objc var appReviewUrl: URL = Constants.defaultAppReviewURL
 
     /// Sets the number of days that have to pass between AppReview prompts
-    /// Since Apple only allows 3 prompts per year, we are settings this number to 122
+    /// Apple only allows 3 prompts per year. We're trying to be a bit more conservative and are doing
+    /// up to 2 times a year (183 = round(365/2)).
     @objc var numberOfDaysToWaitBetweenPrompts: Int = 183
 
     private let defaults: UserDefaults
