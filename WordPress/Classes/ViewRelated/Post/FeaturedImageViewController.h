@@ -1,6 +1,5 @@
 #import "WPImageViewController.h"
 
-@class AbstractPost;
 @class FeaturedImageViewController;
 
 @protocol FeaturedImageViewControllerDelegate <NSObject>
