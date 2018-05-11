@@ -12,11 +12,11 @@ protocol AppFeedbackPromptViewDelegate: class {
 }
 
 class AppFeedbackPromptView: UIView {
-    @objc let container = UIView(frame: containerFrame)
-    @objc let label = UILabel(frame: labelFrame)
-    @objc let leftButton = UIButton(type: .custom)
-    @objc let rightButton = UIButton(type: .custom)
-    @objc var onRequestingFeedback: Bool = false
+    private let label = UILabel()
+    private let leftButton = RoundedButton()
+    private let rightButton = RoundedButton()
+    private let buttonStack = UIStackView()
+    private var onRequestingFeedback = false
 
     weak var delegate: AppFeedbackPromptViewDelegate?
 
@@ -35,13 +35,12 @@ class AppFeedbackPromptView: UIView {
     /// MARK: - Helpers
 
     fileprivate func setupSubviews() {
-        container.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin]
-        container.backgroundColor = UIColor.clear
-        addSubview(container)
-        container.center = CGPoint(x: bounds.midX, y: bounds.midY)
+        translatesAutoresizingMaskIntoConstraints = false
+        backgroundColor = UIColor.clear
 
         let textFont = WPStyleGuide.fontForTextStyle(.subheadline)
 
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor(red: 50/255.0, green: 65/255.0, blue: 85/255.0, alpha: 1.0)
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -49,31 +48,83 @@ class AppFeedbackPromptView: UIView {
         label.font = textFont
         label.text = NSLocalizedString("What do you think about WordPress?",
                                        comment: "This is the string we display when prompting the user to review the app")
-        container.addSubview(label)
+        addSubview(label)
 
-        leftButton.frame = CGRect(x: container.bounds.midX - 135.0, y: 50.0, width: 130.0, height: 30.0)
+        // Stack O'Buttons
+        buttonStack.translatesAutoresizingMaskIntoConstraints = false
+        buttonStack.axis = .horizontal
+        buttonStack.spacing = LayoutConstants.buttonSpacing
+        addSubview(buttonStack)
+
+        // Yes Button
+        leftButton.translatesAutoresizingMaskIntoConstraints = false
         leftButton.backgroundColor = UIColor(red: 0.0, green: 170/255.0, blue: 220/255.0, alpha: 1.0)
-        leftButton.layer.cornerRadius = 4
-        leftButton.layer.masksToBounds = true
+        leftButton.tintColor = .white
         leftButton.setTitle(NSLocalizedString("I Like It",
                                               comment: "This is one of the buttons we display inside of the prompt to review the app"),
                             for: .normal)
         leftButton.setTitleColor(UIColor.white, for: .normal)
         leftButton.titleLabel?.font = textFont
         leftButton.addTarget(self, action: #selector(self.leftButtonTouched), for: .touchUpInside)
-        container.addSubview(leftButton)
+        buttonStack.addArrangedSubview(leftButton)
 
-        rightButton.frame = CGRect(x: container.bounds.midX + 5, y: 50.0, width: 130.0, height: 30.0)
+        // Could be Better Button
+        rightButton.translatesAutoresizingMaskIntoConstraints = false
         rightButton.backgroundColor = UIColor(red: 144/255.0, green: 174/255.0, blue: 194/255.0, alpha: 1.0)
-        rightButton.layer.cornerRadius = 4
-        rightButton.layer.masksToBounds = true
+        rightButton.tintColor = .white
         rightButton.setTitle(NSLocalizedString("Could Be Better",
                                                comment: "This is one of the buttons we display inside of the prompt to review the app"),
                              for: .normal)
         rightButton.setTitleColor(UIColor.white, for: .normal)
         rightButton.titleLabel?.font = textFont
         rightButton.addTarget(self, action: #selector(self.rightButtonTouched), for: .touchUpInside)
-        container.addSubview(rightButton)
+        buttonStack.addArrangedSubview(rightButton)
+
+        setupConstraints()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        buttonStack.axis = .horizontal
+        buttonStack.isLayoutMarginsRelativeArrangement = true
+
+        // measure the width of the view with the new font sizes to see if the buttons are too wide.
+        leftButton.updateFontSizeToMatchSystem()
+        rightButton.updateFontSizeToMatchSystem()
+        let newLayoutSize = systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+
+        // if the new width is too wide, change the axis of the stack view
+        guard let superviewSize = superview?.bounds.size else {
+            return
+        }
+
+        if newLayoutSize.width > superviewSize.width {
+            buttonStack.axis = .vertical
+            setNeedsLayout()
+        }
+    }
+
+    func setupConstraints() {
+        addConstraints([
+            label.centerXAnchor.constraint(equalTo: centerXAnchor),
+            label.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstants.basePadding),
+            label.bottomAnchor.constraint(equalTo: buttonStack.topAnchor, constant: -LayoutConstants.basePadding),
+            label.heightAnchor.constraint(greaterThanOrEqualToConstant: LayoutConstants.labelMinimumHeight),
+            label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: LayoutConstants.labelHorizontalPadding),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutConstants.labelHorizontalPadding),
+
+            // position the button stack view
+            bottomAnchor.constraint(greaterThanOrEqualTo: buttonStack.bottomAnchor, constant: LayoutConstants.basePadding),
+            buttonStack.centerXAnchor.constraint(equalTo: centerXAnchor),
+
+            // make sure the primary/yes button is always at least as big as the cancel/no button
+            leftButton.widthAnchor.constraint(greaterThanOrEqualTo: rightButton.widthAnchor),
+
+            // ensure the buttons have horizontal padding from the sides of the view
+            leftButton.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor, constant: LayoutConstants.basePadding),
+            trailingAnchor.constraint(greaterThanOrEqualTo: rightButton.trailingAnchor, constant: LayoutConstants.basePadding)
+        ])
     }
 
     @objc func leftButtonTouched() {
@@ -83,7 +134,6 @@ class AppFeedbackPromptView: UIView {
             delegate?.likedApp()
             leftButton.isHidden = true
             rightButton.isHidden = true
-            label.frame = AppFeedbackPromptView.labelBigFrame
             UIView.animate(withDuration: 0.3, animations: {() -> Void in
                 self.label.text = NSLocalizedString("Great!\n We love to hear from happy users \n😁",
                                                     comment: "This is the text we display to the user after they've indicated they like the app")
@@ -112,7 +162,11 @@ class AppFeedbackPromptView: UIView {
 
     /// MARK: - Static Constants
 
-    fileprivate static let containerFrame = CGRect(x: 0.0, y: 0.0, width: 280.0, height: 100.0)
-    fileprivate static let labelFrame = CGRect(x: 0.0, y: 0.0, width: containerFrame.width, height: 52.0)
-    fileprivate static let labelBigFrame = CGRect(x: 0.0, y: 0.0, width: containerFrame.width, height: containerFrame.height)
+    // these values based on Zeplin mockups
+    private struct LayoutConstants {
+        static let labelMinimumHeight: CGFloat = 18.0
+        static let basePadding: CGFloat = 15.0
+        static let labelHorizontalPadding: CGFloat = 37.0
+        static let buttonSpacing: CGFloat = 10.0
+    }
 }
