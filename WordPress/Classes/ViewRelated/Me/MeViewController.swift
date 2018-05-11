@@ -328,6 +328,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         return { [unowned self] row in
             if FeatureFlag.zendeskMobile.enabled {
                 let controller = SupportTableViewController()
+                controller.delegate = self
                 controller.showHelpFromViewController = self
                 controller.showSupportNotificationIndicator = self.showSupportNotificationIndicator
                 self.showDetailViewController(controller, sender: self)
@@ -608,5 +609,14 @@ private extension MeViewController {
 
     func stopListeningToNotifications() {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+    }
+}
+
+// MARK: - SupportTableViewControllerDelegate
+
+extension MeViewController: SupportTableViewControllerDelegate {
+    func notificationsCleared() {
+        showSupportNotificationIndicator = false
+        reloadViewModel()
     }
 }

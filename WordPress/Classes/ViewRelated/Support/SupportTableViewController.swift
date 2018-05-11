@@ -1,12 +1,17 @@
 import UIKit
 import WordPressAuthenticator
 
+protocol SupportTableViewControllerDelegate {
+    func notificationsCleared()
+}
+
 class SupportTableViewController: UITableViewController {
 
     // MARK: - Properties
 
     var sourceTag: WordPressSupportSourceTag?
     var showSupportNotificationIndicator = false
+    var delegate: SupportTableViewControllerDelegate?
 
     // If set, the Zendesk views will be shown from this view instead of in the navigation controller.
     // Specifically for Me > Help & Support on the iPad.
@@ -97,7 +102,7 @@ private extension SupportTableViewController {
                                 HelpRow.self],
                                tableView: tableView)
         tableHandler = ImmuTableViewHandler(takeOver: self)
-        tableHandler.viewModel = tableViewModel()
+        reloadViewModel()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         // remove empty cells
         tableView.tableFooterView = UIView()
@@ -187,6 +192,9 @@ private extension SupportTableViewController {
     func myTicketsSelected() -> ImmuTableAction {
         return { [unowned self] row in
             self.tableView.deselectSelectedRowWithAnimation(true)
+            self.showSupportNotificationIndicator = false
+            self.reloadViewModel()
+            self.delegate?.notificationsCleared()
             guard let controllerToShowFrom = self.controllerToShowFrom() else {
                 return
             }
