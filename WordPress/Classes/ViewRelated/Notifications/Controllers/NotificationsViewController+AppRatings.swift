@@ -20,6 +20,8 @@ extension NotificationsViewController {
         inlinePromptView.setupNoButton(title: noTitle) { [weak self] button in
             self?.dislikedApp()
         }
+
+        AppRatingUtility.shared.userWasPromptedToReview()
     }
 
     private func likedApp() {
@@ -35,9 +37,8 @@ extension NotificationsViewController {
 
         // 2. Show the app store ratings alert
         // Note: Optimistically assuming our prompting succeeds since we try to stay
-        // in line and not prompt more than three times a year
+        // in line and not prompt more than two times a year
         AppRatingUtility.shared.ratedCurrentVersion()
-        AppRatingUtility.shared.userWasPromptedToReview()
         DispatchQueue.main.async {
             if #available(iOS 10.3, *) {
                 SKStoreReviewController.requestReview()
