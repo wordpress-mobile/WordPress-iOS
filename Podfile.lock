@@ -59,7 +59,7 @@ PODS:
   - HockeySDK (5.1.2):
     - HockeySDK/DefaultLib (= 5.1.2)
   - HockeySDK/DefaultLib (5.1.2)
-  - lottie-ios (1.5.1)
+  - lottie-ios (2.5.0)
   - MGSwipeTableCell (1.6.6)
   - MRProgress (0.8.3):
     - MRProgress/ActivityIndicator (= 0.8.3)
@@ -143,7 +143,7 @@ DEPENDENCIES:
   - GoogleSignIn (= 4.1.2)
   - Gridicons (= 0.15)
   - HockeySDK (= 5.1.2)
-  - lottie-ios (= 1.5.1)
+  - lottie-ios (= 2.5.0)
   - MGSwipeTableCell (= 1.6.6)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.0.3)
@@ -204,7 +204,7 @@ SPEC CHECKSUMS:
   GTMOAuth2: c77fe325e4acd453837e72d91e3b5f13116857b2
   GTMSessionFetcher: 5fa5b80fd20e439ef5f545fb2cb3ca6c6714caa2
   HockeySDK: 38b7e2726af1ea86ae97ce4b5de33ab0817e3500
-  lottie-ios: f680a7c4cb7a567ecf258fde0f967913aff111b8
+  lottie-ios: d699fdee68d7b63e721d949388b015fef1aaa4ac
   MGSwipeTableCell: c3bc6e261e7bc06c112909fe3fb8205de286082c
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
@@ -223,6 +223,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: 2adbc2a8ab914a39cf1eefb6cccf03259d2db04e
+PODFILE CHECKSUM: c8459b3b8d153d72b84e8c4bf36f6bfe13443b2b
 
 COCOAPODS: 1.4.0
