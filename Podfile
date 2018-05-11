@@ -54,7 +54,7 @@ target 'WordPress' do
   pod 'BuddyBuildSDK', '1.0.17', :configurations => ['Release-Alpha']
   pod 'Gifu', '3.0.0'
   pod 'MGSwipeTableCell', '1.6.6'
-  pod 'lottie-ios', '1.5.1'
+  pod 'lottie-ios', '2.5.0'
   pod 'Starscream', '3.0.4'
   pod 'GoogleSignIn', '4.1.2'
   pod 'ZendeskSDK', '1.11.2.1'
@@ -140,7 +140,7 @@ target 'WordPressAuthenticator' do
   ##
   pod '1PasswordExtension', '1.8.5'
   pod 'GoogleSignIn', '4.1.2'
-  pod 'lottie-ios', '1.5.1'
+  pod 'lottie-ios', '2.5.0'
   pod 'NSURL+IDN', '0.3'
   pod 'SVProgressHUD', '2.2.5'
 
