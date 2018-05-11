@@ -9,6 +9,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     @objc static let restorationIdentifier = "WPMeRestorationID"
     @objc var handler: ImmuTableViewHandler!
 
+    private var showSupportNotificationIndicator = false
+
     static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
         return WPTabBarController.sharedInstance().meViewController
     }
@@ -30,9 +32,9 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         let notificationCenter = NotificationCenter.default
 
         if FeatureFlag.zendeskMobile.enabled {
-            notificationCenter.addObserver(self, selector: #selector(MeViewController.refreshModelWithNotification(_:)), name: .ZendeskPushNotificationReceivedNotification, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .ZendeskPushNotificationReceivedNotification, object: nil)
         } else {
-            notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: NSNotification.Name.HelpshiftUnreadCountUpdated, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .HelpshiftUnreadCountUpdated, object: nil)
         }
     }
 
@@ -190,7 +192,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         let helpAndSupportIndicator = IndicatorNavigationItemRow(
             title: RowTitles.support,
             icon: Gridicon.iconOfType(.help),
-            showIndicator: false,
+            showIndicator: showSupportNotificationIndicator,
             accessoryType: accessoryType,
             action: pushHelp())
 
@@ -327,6 +329,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             if FeatureFlag.zendeskMobile.enabled {
                 let controller = SupportTableViewController()
                 controller.showHelpFromViewController = self
+                controller.showSupportNotificationIndicator = self.showSupportNotificationIndicator
                 self.showDetailViewController(controller, sender: self)
             } else {
                 let controller = SupportViewController()
@@ -401,7 +404,11 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         let matchRow: ((ImmuTableRow) -> Bool) = { row in
             if let row = row as? NavigationItemRow {
                 return row.title == rowTitle
+            // Helpshift
             } else if let row = row as? BadgeNavigationItemRow {
+                return row.title == rowTitle
+            // Zendesk
+            } else if let row = row as? IndicatorNavigationItemRow {
                 return row.title == rowTitle
             }
             return false
@@ -571,13 +578,13 @@ extension MeViewController {
 
 private extension MeViewController {
 
-    // MARK: Helpshift
-
     @objc func refreshModelWithNotification(_ notification: Foundation.Notification) {
+        if notification.name == .ZendeskPushNotificationReceivedNotification {
+            showSupportNotificationIndicator = true
+        }
+
         reloadViewModel()
     }
-
-    // MARK: Zendesk
 
     func resetApplicationBadge() {
         UIApplication.shared.applicationIconBadgeNumber = 0
