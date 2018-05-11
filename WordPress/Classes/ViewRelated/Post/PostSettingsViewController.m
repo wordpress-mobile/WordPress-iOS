@@ -1483,15 +1483,6 @@ FeaturedImageViewControllerDelegate>
 
 #pragma mark - PostFeaturedImageCellDelegate
 
-- (void)updateFeaturedImageCell:(PostFeaturedImageCell *)cell
-{
-    self.featuredImage = cell.image;
-    cell.accessibilityIdentifier = @"Current Featured Image";
-    NSInteger featuredImageSection = [self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)];
-    NSIndexSet *featuredImageSectionSet = [NSIndexSet indexSetWithIndex:featuredImageSection];
-    [self.tableView reloadSections:featuredImageSectionSet withRowAnimation:UITableViewRowAnimationNone];
-}
-
 - (void)postFeatureImageCell:(PostFeaturedImageCell *)cell didFinishLoadingAnimatedImageWithData:(NSData *)animationData
 {
     if (self.animatedFeaturedImageData == nil) {
@@ -1515,6 +1506,15 @@ FeaturedImageViewControllerDelegate>
         NSIndexPath *featureImageCellPath = [NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]];
         [self featuredImageFailedLoading:featureImageCellPath withError:error];
     }
+}
+
+- (void)updateFeaturedImageCell:(PostFeaturedImageCell *)cell
+{
+    self.featuredImage = cell.image;
+    cell.accessibilityIdentifier = @"Current Featured Image";
+    NSInteger featuredImageSection = [self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)];
+    NSIndexSet *featuredImageSectionSet = [NSIndexSet indexSetWithIndex:featuredImageSection];
+    [self.tableView reloadSections:featuredImageSectionSet withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma mark - FeaturedImageViewControllerDelegate
