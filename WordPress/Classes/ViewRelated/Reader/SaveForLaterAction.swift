@@ -10,6 +10,12 @@ final class SaveForLaterAction {
         static let removeFromSavedError = NSLocalizedString("Could not remove post from Saved for Later", comment: "Title of a prompt.")
     }
 
+    private let notices: Bool
+
+    init(notices: Bool = false) {
+        self.notices = notices
+    }
+
     func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
         toggleSavedForLater(post, context: context, completion: completion)
     }
@@ -26,6 +32,10 @@ final class SaveForLaterAction {
     }
 
     private func presentSuccessNotice(for post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
+        guard notices else {
+            return
+        }
+
         if post.isSavedForLater {
             presentPostSavedNotice()
         } else {
@@ -47,7 +57,10 @@ final class SaveForLaterAction {
     }
 
     private func presentPostRemovedNotice(for post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
-        /// I am not sure if this could just be solved by invoking undo in the context's undo manager. Does ReaderStreamViewController observe the context in any way? In the meantime, here is a very imperative implementation of the undo
+        guard notices else {
+            return
+        }
+
         let notice = Notice(title: Strings.postRemoved,
                             feedbackType: .success,
                             actionTitle: Strings.undo,
