@@ -3,10 +3,10 @@ import WordPressKit
 
 
 private enum SubscriptionAction {
-    case notifications(siteId: NSNumber)
-    case postsEmail(siteId: NSNumber)
-    case updatePostsEmail(siteId: NSNumber, frequency: ReaderServiceDeliveryFrequency)
-    case comments(siteId: NSNumber)
+    case notifications(siteId: Int)
+    case postsEmail(siteId: Int)
+    case updatePostsEmail(siteId: Int, frequency: ReaderServiceDeliveryFrequency)
+    case comments(siteId: Int)
 }
 
 extension ReaderTopicService {
@@ -22,10 +22,9 @@ extension ReaderTopicService {
         return WordPressComRestApi(oAuthToken: nil, userAgent: WPUserAgent.wordPress())
     }
 
-    private func fetchSiteTopic(with siteId: Int, _ failure: @escaping (NSError?) -> Void) -> ReaderSiteTopic? {
+    private func fetchSiteTopic(with siteId: Int, _ failure: @escaping (ReaderTopicServiceError?) -> Void) -> ReaderSiteTopic? {
         guard let siteTopic = findSiteTopic(withSiteID: NSNumber(value: siteId)) else {
-            let error = NSError(domain: "ReaderTopicService", code: 0, userInfo: [NSLocalizedDescriptionKey: "No topic found"])
-            failure(error)
+            failure(.topicNotfound(id: siteId))
             return nil
         }
 
@@ -44,7 +43,7 @@ extension ReaderTopicService {
         return siteTopic
     }
 
-    private func remoteAction(for action: SubscriptionAction, _ subscribe: Bool, _ success: @escaping () -> Void, _ failure: @escaping (NSError?) -> Void) {
+    private func remoteAction(for action: SubscriptionAction, _ subscribe: Bool, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
         let service = ReaderTopicServiceRemote(wordPressComRestApi: apiRequest())
 
         let successBlock = {
@@ -88,10 +87,9 @@ extension ReaderTopicService {
     ///   - subscribe: Flag to define is subscribe or unsubscribe
     ///   - success: Success block
     ///   - failure: Failure block
-    func toggleSubscribingNotifications(for siteId: Int?, subscribe: Bool, _ success: (() -> Void)? = nil, _ failure: ((NSError?) -> Void)? = nil) {
+    func toggleSubscribingNotifications(for siteId: Int?, subscribe: Bool, _ success: (() -> Void)? = nil, _ failure: ((ReaderTopicServiceError?) -> Void)? = nil) {
         guard let siteId = siteId else {
-            let error = NSError(domain: "ReaderTopicService", code: 0, userInfo: [NSLocalizedDescriptionKey: "The site id is nil"])
-            failure?(error)
+            failure?(.invalidId)
             return
         }
 
@@ -100,9 +98,9 @@ extension ReaderTopicService {
             DDLogInfo("Success turn notifications \(subscribe ? "on" : "off")")
         }
 
-        let failureBlock = { (error: NSError?) in
+        let failureBlock = { (error: ReaderTopicServiceError?) in
             failure?(error)
-            DDLogError("Error turn on notifications: \(error?.localizedDescription ?? "unknown error")")
+            DDLogError("Error turn on notifications: \(error?.description ?? "unknown error")")
         }
 
         toggleSiteNotifications(with: siteId, subscribe: subscribe, successBlock, failureBlock)
@@ -111,7 +109,7 @@ extension ReaderTopicService {
 
     // MARK: Private methods
 
-    private func toggleSiteNotifications(with siteId: Int, subscribe: Bool = false, _ success: @escaping () -> Void, _ failure: @escaping (NSError?) -> Void) {
+    private func toggleSiteNotifications(with siteId: Int, subscribe: Bool = false, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
         guard let siteTopic = fetchSiteTopic(with: siteId, failure),
             let postSubscription = siteTopic.postSubscription else {
             return
@@ -120,9 +118,9 @@ extension ReaderTopicService {
         let oldValue = postSubscription.sendPosts
         postSubscription.sendPosts = subscribe
 
-        let failureBlock = { (error: NSError?) in
+        let failureBlock = { (error: ReaderTopicServiceError?) in
             guard let siteTopic = self.findSiteTopic(withSiteID: NSNumber(value: siteId)) else {
-                failure(nil)
+                failure(.topicNotfound(id: siteId))
                 return
             }
             siteTopic.postSubscription?.sendPosts = oldValue
@@ -131,7 +129,7 @@ extension ReaderTopicService {
             }
         }
 
-        remoteAction(for: .notifications(siteId: NSNumber(value: siteId)), subscribe, success, failureBlock)
+        remoteAction(for: .notifications(siteId: siteId), subscribe, success, failureBlock)
     }
 }
 
@@ -144,10 +142,9 @@ extension ReaderTopicService {
     ///   - subscribe: Flag to define is subscribe or unsubscribe
     ///   - success: Success block
     ///   - failure: Failure block
-    func toggleSubscribingComments(for siteId: Int?, subscribe: Bool, _ success: (() -> Void)? = nil, _ failure: ((NSError?) -> Void)? = nil) {
+    func toggleSubscribingComments(for siteId: Int?, subscribe: Bool, _ success: (() -> Void)? = nil, _ failure: ((ReaderTopicServiceError?) -> Void)? = nil) {
         guard let siteId = siteId else {
-            let error = NSError(domain: "ReaderTopicService", code: 0, userInfo: [NSLocalizedDescriptionKey: "The site id is nil"])
-            failure?(error)
+            failure?(.invalidId)
             return
         }
 
@@ -156,9 +153,9 @@ extension ReaderTopicService {
             DDLogInfo("Success turn notifications \(subscribe ? "on" : "off")")
         }
 
-        let failureBlock = { (error: NSError?) in
+        let failureBlock = { (error: ReaderTopicServiceError?) in
             failure?(error)
-            DDLogError("Error turn on notifications: \(error?.localizedDescription ?? "unknown error")")
+            DDLogError("Error turn on notifications: \(error?.description ?? "unknown error")")
         }
 
         togglePostComments(with: siteId, subscribe: subscribe, successBlock, failureBlock)
@@ -167,7 +164,7 @@ extension ReaderTopicService {
 
     // MARK: Private methods
 
-    private func togglePostComments(with siteId: Int, subscribe: Bool = false, _ success: @escaping () -> Void, _ failure: @escaping (NSError?) -> Void) {
+    private func togglePostComments(with siteId: Int, subscribe: Bool = false, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
         guard let siteTopic = fetchSiteTopic(with: siteId, failure),
             let emailSubscription = siteTopic.emailSubscription else {
             return
@@ -176,9 +173,9 @@ extension ReaderTopicService {
         let oldValue = emailSubscription.sendComments
         emailSubscription.sendComments = subscribe
 
-        let failureBlock = { (error: NSError?) in
+        let failureBlock = { (error: ReaderTopicServiceError?) in
             guard let siteTopic = self.findSiteTopic(withSiteID: NSNumber(value: siteId)) else {
-                failure(nil)
+                failure(.topicNotfound(id: siteId))
                 return
             }
             siteTopic.emailSubscription?.sendComments = oldValue
@@ -187,7 +184,7 @@ extension ReaderTopicService {
             }
         }
 
-        remoteAction(for: .comments(siteId: NSNumber(value: siteId)), subscribe, success, failureBlock)
+        remoteAction(for: .comments(siteId: siteId), subscribe, success, failureBlock)
     }
 }
 
@@ -200,10 +197,9 @@ extension ReaderTopicService {
     ///   - subscribe: Flag to define is subscribe or unsubscribe
     ///   - success: Success block
     ///   - failure: Failure block
-    func toggleSubscribingEmail(for siteId: Int?, subscribe: Bool, _ success: (() -> Void)? = nil, _ failure: ((NSError?) -> Void)? = nil) {
+    func toggleSubscribingEmail(for siteId: Int?, subscribe: Bool, _ success: (() -> Void)? = nil, _ failure: ((ReaderTopicServiceError?) -> Void)? = nil) {
         guard let siteId = siteId else {
-            let error = NSError(domain: "ReaderTopicService", code: 0, userInfo: [NSLocalizedDescriptionKey: "The site id is nil"])
-            failure?(error)
+            failure?(.invalidId)
             return
         }
 
@@ -212,9 +208,9 @@ extension ReaderTopicService {
             DDLogInfo("Success turn notifications \(subscribe ? "on" : "off")")
         }
 
-        let failureBlock = { (error: NSError?) in
+        let failureBlock = { (error: ReaderTopicServiceError?) in
             failure?(error)
-            DDLogError("Error turn on notifications: \(error?.localizedDescription ?? "unknown error")")
+            DDLogError("Error turn on notifications: \(error?.description ?? "unknown error")")
         }
 
         togglePostsEmail(with: siteId, subscribe: subscribe, successBlock, failureBlock)
@@ -228,15 +224,15 @@ extension ReaderTopicService {
     ///   - frequency: The frequency value
     ///   - success: Success block
     ///   - failure: Failure block
-    func updateFrequencyPostsEmail(with siteId: Int, frequency: ReaderServiceDeliveryFrequency, _ success: (() -> Void)? = nil, _ failure: ((NSError?) -> Void)? = nil) {
+    func updateFrequencyPostsEmail(with siteId: Int, frequency: ReaderServiceDeliveryFrequency, _ success: (() -> Void)? = nil, _ failure: ((ReaderTopicServiceError?) -> Void)? = nil) {
         let successBlock = {
             success?()
             DDLogInfo("Success update frequency \(frequency.rawValue)")
         }
 
-        let failureBlock = { (error: NSError?) in
+        let failureBlock = { (error: ReaderTopicServiceError?) in
             failure?(error)
-            DDLogError("Error turn on notifications: \(error?.localizedDescription ?? "unknown error")")
+            DDLogError("Error turn on notifications: \(error?.description ?? "unknown error")")
         }
         updatePostsEmail(with: siteId, frequency: frequency, successBlock, failureBlock)
     }
@@ -244,7 +240,7 @@ extension ReaderTopicService {
 
     // MARK: Private methods
 
-    private func togglePostsEmail(with siteId: Int, subscribe: Bool = false, _ success: @escaping () -> Void, _ failure: @escaping (NSError?) -> Void) {
+    private func togglePostsEmail(with siteId: Int, subscribe: Bool = false, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
         guard let siteTopic = fetchSiteTopic(with: siteId, failure),
             let emailSubscription = siteTopic.emailSubscription else {
             return
@@ -253,7 +249,7 @@ extension ReaderTopicService {
         let oldValue = emailSubscription.sendPosts
         emailSubscription.sendPosts = subscribe
 
-        let failureBlock = { (error: NSError?) in
+        let failureBlock = { (error: ReaderTopicServiceError?) in
             guard let siteTopic = self.findSiteTopic(withSiteID: NSNumber(value: siteId)) else {
                 failure(nil)
                 return
@@ -264,10 +260,10 @@ extension ReaderTopicService {
             }
         }
 
-        remoteAction(for: .postsEmail(siteId: NSNumber(value: siteId)), subscribe, success, failureBlock)
+        remoteAction(for: .postsEmail(siteId: siteId), subscribe, success, failureBlock)
     }
 
-    private func updatePostsEmail(with siteId: Int, frequency: ReaderServiceDeliveryFrequency, _ success: @escaping () -> Void, _ failure: @escaping (NSError?) -> Void) {
+    private func updatePostsEmail(with siteId: Int, frequency: ReaderServiceDeliveryFrequency, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
         guard let siteTopic = fetchSiteTopic(with: siteId, failure),
             let emailSubscription = siteTopic.emailSubscription else {
             return
@@ -276,9 +272,9 @@ extension ReaderTopicService {
         let oldValue = emailSubscription.postDeliveryFrequency
         emailSubscription.postDeliveryFrequency = frequency.rawValue
 
-        let failureBlock = { (error: NSError?) in
+        let failureBlock = { (error: ReaderTopicServiceError?) in
             guard let siteTopic = self.findSiteTopic(withSiteID: NSNumber(value: siteId)) else {
-                failure(nil)
+                failure(.topicNotfound(id: siteId))
                 return
             }
             siteTopic.emailSubscription?.postDeliveryFrequency = oldValue
@@ -287,6 +283,6 @@ extension ReaderTopicService {
             }
         }
 
-        remoteAction(for: .updatePostsEmail(siteId: NSNumber(value: siteId), frequency: frequency), false, success, failureBlock)
+        remoteAction(for: .updatePostsEmail(siteId: siteId, frequency: frequency), false, success, failureBlock)
     }
 }
