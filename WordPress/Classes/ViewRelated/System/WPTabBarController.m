@@ -65,6 +65,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 @property (nonatomic, strong) UIImage *notificationsTabBarImage;
 @property (nonatomic, strong) UIImage *notificationsTabBarImageUnread;
+@property (nonatomic, strong) UIImage *meTabBarImage;
+@property (nonatomic, strong) UIImage *meTabBarImageUnread;
 
 @end
 
@@ -116,10 +118,17 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
         [self setSelectedViewController:self.blogListSplitViewController];
 
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(helpshiftUnreadCountUpdated:)
-                                                     name:HelpshiftUnreadCountUpdatedNotification
-                                                   object:nil];
+        if ([Feature enabled:FeatureFlagZendeskMobile]) {
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(zendeskPushNotificationReceived:)
+                                                         name:NSNotification.ZendeskPushNotificationReceivedNotification
+                                                       object:nil];
+        } else {
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(helpshiftUnreadCountUpdated:)
+                                                         name:HelpshiftUnreadCountUpdatedNotification
+                                                       object:nil];
+        }
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(defaultAccountDidChange:)
@@ -257,15 +266,19 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     if (!_meNavigationController) {
         _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
-        UIImage *meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
-        _meNavigationController.tabBarItem.image = meTabBarImage;
-        _meNavigationController.tabBarItem.selectedImage = meTabBarImage;
+        self.meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
+
+        // TODO: replace this with real image
+        self.meTabBarImageUnread = [UIImage imageNamed:@"notifications-liked"];
+
+        _meNavigationController.tabBarItem.image = self.meTabBarImage;
+        _meNavigationController.tabBarItem.selectedImage = self.meTabBarImage;
         _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
         _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
         _meNavigationController.tabBarItem.accessibilityIdentifier = @"meTabButton";
         _meNavigationController.tabBarItem.title = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
     }
-
+    
     return _meNavigationController;
 }
 
@@ -719,6 +732,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
             }
             case WPTabMe: {
                 [WPAppAnalytics track:WPAnalyticsStatMeTabAccessed];
+                [self showMeBadge:NO];
                 break;
             }
             default: break;
@@ -763,6 +777,13 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     return (self.selectedIndex == WPTabMySites && [self.blogListViewController.navigationController.viewControllers count] > 1);
 }
 
+#pragma mark - Zendesk Notifications
+
+- (void)zendeskPushNotificationReceived:(NSNotification *)notification
+{
+    [self showMeBadge:YES];
+}
+
 #pragma mark - Helpshift Notifications
 
 - (void)helpshiftUnreadCountUpdated:(NSNotification *)notification
@@ -805,6 +826,17 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     } else {
         notificationsTabBarItem.image = self.notificationsTabBarImageUnread;
         notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");
+    }
+}
+
+- (void)showMeBadge:(BOOL)show
+{
+    UITabBarItem *meTabBarItem = self.tabBar.items[WPTabMe];
+    meTabBarItem.image = self.meTabBarImageUnread;
+    if (show) {
+        meTabBarItem.image = self.meTabBarImageUnread;
+    } else {
+        meTabBarItem.image = self.meTabBarImage;
     }
 }
 

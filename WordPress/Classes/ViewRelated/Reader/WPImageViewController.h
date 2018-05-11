@@ -7,6 +7,7 @@
 - (instancetype)initWithImage:(UIImage *)image;
 - (instancetype)initWithURL:(NSURL *)url;
 - (instancetype)initWithMedia:(Media *)media;
+- (instancetype)initWithGifData:(NSData *)data;
 
 - (instancetype)initWithImage:(UIImage *)image andURL:(NSURL *)url;
 - (instancetype)initWithImage:(UIImage *)image andMedia:(Media *)media;
