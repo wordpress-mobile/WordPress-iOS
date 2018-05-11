@@ -91,10 +91,10 @@ class WPTableViewCellBadge: WPTableViewCellDefault {
 }
 
 class WPTableViewCellIndicator: WPTableViewCellDefault {
-    @objc var showIndicator: Bool = false {
+    var showIndicator: Bool = false {
         didSet {
             if showIndicator {
-                accessoryView = badgeLabel
+                accessoryView = indicatorLabel
                 accessoryType = .none
             } else {
                 accessoryView = nil
@@ -102,7 +102,7 @@ class WPTableViewCellIndicator: WPTableViewCellDefault {
         }
     }
 
-    fileprivate lazy var badgeLabel: UILabel = {
+    fileprivate lazy var indicatorLabel: UILabel = {
         let label = UILabel(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 10, height: 10)))
         label.layer.masksToBounds = true
         label.layer.cornerRadius =  label.frame.height / 2
