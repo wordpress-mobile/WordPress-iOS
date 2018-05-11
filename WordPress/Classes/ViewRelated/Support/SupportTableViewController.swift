@@ -6,6 +6,7 @@ class SupportTableViewController: UITableViewController {
     // MARK: - Properties
 
     var sourceTag: WordPressSupportSourceTag?
+    var showSupportNotificationIndicator = false
 
     // If set, the Zendesk views will be shown from this view instead of in the navigation controller.
     // Specifically for Me > Help & Support on the iPad.
@@ -26,6 +27,7 @@ class SupportTableViewController: UITableViewController {
 
     required convenience init() {
         self.init(style: .grouped)
+        NotificationCenter.default.addObserver(self, selector: #selector(showNotificationIndicator(_:)), name: .ZendeskPushNotificationReceivedNotification, object: nil)
     }
 
     // MARK: - View
@@ -35,6 +37,11 @@ class SupportTableViewController: UITableViewController {
 
         setupNavBar()
         setupTable()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
     }
 
     @objc func showFromTabBar() {
@@ -130,6 +137,15 @@ private extension SupportTableViewController {
 
         // Create and return table
         return ImmuTable(sections: [helpSection, informationSection])
+    }
+
+    @objc func showNotificationIndicator(_ notification: Foundation.Notification) {
+        showSupportNotificationIndicator = true
+        reloadViewModel()
+    }
+
+    func reloadViewModel() {
+        tableHandler.viewModel = tableViewModel()
     }
 
     // MARK: - Row Handlers
