@@ -35,6 +35,10 @@ class SupportTableViewController: UITableViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(showNotificationIndicator(_:)), name: .ZendeskPushNotificationReceivedNotification, object: nil)
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     // MARK: - View
 
     override func viewDidLoad() {
@@ -42,11 +46,6 @@ class SupportTableViewController: UITableViewController {
 
         setupNavBar()
         setupTable()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self)
     }
 
     @objc func showFromTabBar() {
