@@ -103,7 +103,7 @@ class WPTableViewCellIndicator: WPTableViewCellDefault {
     }
 
     fileprivate lazy var badgeLabel: UILabel = {
-        let label = UILabel(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 20, height: 20)))
+        let label = UILabel(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 10, height: 10)))
         label.layer.masksToBounds = true
         label.layer.cornerRadius =  label.frame.height / 2
         label.backgroundColor = WPStyleGuide.jazzyOrange()
