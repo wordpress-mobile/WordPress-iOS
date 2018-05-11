@@ -1,1 +1,4 @@
-Para esta versão, nós polimos alguns píxeis, demos adeus a alguns bugs, e trabalhamos nos bastidores para tornar a experiência de WordPress mais suave para nossos usuários do app.
+Fotos grátis agora estão disponíveis no aplicativo!
+O spotlight agora indexa seções-chave do aplicativo!
+Agora é possível criar uma nova conta WP.com ao mesmo tempo em que se configura o Jetpack pelo aplicativo.
+Habilitada seleção múltipla no seletor de documentos.

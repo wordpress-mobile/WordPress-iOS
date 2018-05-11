@@ -1,6 +1,7 @@
 import UIKit
 import CocoaLumberjack
 import NSURL_IDN
+import GoogleSignIn
 import WordPressShared
 import WordPressUI
 
@@ -19,6 +20,14 @@ public enum WordPressCredentials {
     case wpcom(username: String, authToken: String, isJetpackLogin: Bool, multifactor: Bool)
 }
 
+// MARK: - Social Services Metadata
+//
+public enum SocialService {
+
+    /// Google's Signup Linked Account
+    ///
+    case google(user: GIDGoogleUser)
+}
 
 // MARK: - WordPressAuthenticator Delegate Protocol
 //
@@ -49,6 +58,10 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: WordPressCredentials, onDismiss: @escaping () -> Void)
 
+    /// Presents the Login Epilogue, in the specified NavigationController.
+    ///
+    func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: WordPressCredentials, service: SocialService?)
+
     /// Presents the Support Interface from a given ViewController, with a specified SourceTag.
     ///
     func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any])
@@ -74,20 +87,80 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///     - onCompletion: Closure to be executed on completion.
     ///
     func sync(credentials: WordPressCredentials, onCompletion: @escaping (Error?) -> ())
+
+    /// Signals the Host App that a given Analytics Event has occurred.
+    ///
+    func track(event: WPAnalyticsStat)
+
+    /// Signals the Host App that a given Analytics Event (with the specified properties) has occurred.
+    ///
+    func track(event: WPAnalyticsStat, properties: [AnyHashable: Any])
+
+    /// Signals the Host App that a given Analytics Event (with an associated Error) has occurred.
+    ///
+    func track(event: WPAnalyticsStat, error: Error)
 }
 
 
-// MARK: - A collection of helper methods for NUX.
+// MARK: - WordPressAuthenticator Configuration
+//
+public struct WordPressAuthenticatorConfiguration {
+
+    /// WordPress.com Client ID
+    ///
+    let wpcomClientId: String
+
+    /// WordPress.com Secret
+    ///
+    let wpcomSecret: String
+
+    /// Client App: Used for Magic Link purposes.
+    ///
+    let wpcomScheme: String
+
+    /// WordPress.com Terms of Service URL
+    ///
+    let wpcomTermsOfServiceURL: String
+
+    /// GoogleLogin Client ID
+    ///
+    let googleLoginClientId: String
+
+    /// GoogleLogin ServerClient ID
+    ///
+    let googleLoginServerClientId: String
+
+    /// UserAgent
+    ///
+    let userAgent: String
+}
+
+
+// MARK: - WordPressAuthenticator: Public API to deal with WordPress.com and WordPress.org authentication.
 //
 @objc public class WordPressAuthenticator: NSObject {
+
+    /// (Private) Shared Instance.
+    ///
+    private static var privateInstance: WordPressAuthenticator?
+
+    /// Shared Instance.
+    ///
+    @objc public static var shared: WordPressAuthenticator {
+        guard let privateInstance = privateInstance else {
+            fatalError("WordPressAuthenticator wasn't initialized")
+        }
+
+        return privateInstance
+    }
 
     /// Authenticator's Delegate.
     ///
     public weak var delegate: WordPressAuthenticatorDelegate?
 
-    /// Shared Instance.
+    /// Authenticator's Configuration.
     ///
-    public static let shared = WordPressAuthenticator()
+    public let configuration: WordPressAuthenticatorConfiguration
 
     /// Notification to be posted whenever the signing flow completes.
     ///
@@ -103,6 +176,23 @@ public protocol WordPressAuthenticatorDelegate: class {
         static let emailMagicLinkSource     = "emailMagicLinkSource"
     }
 
+    // MARK: - Initialization
+
+    /// Designated Initializer
+    ///
+    private init(configuration: WordPressAuthenticatorConfiguration) {
+        self.configuration = configuration
+    }
+
+    /// Initializes the WordPressAuthenticator with the specified Configuration.
+    ///
+    public static func initialize(configuration: WordPressAuthenticatorConfiguration) {
+        guard privateInstance == nil else {
+            fatalError("WordPressAuthenticator is already initialized")
+        }
+
+        privateInstance = WordPressAuthenticator(configuration: configuration)
+    }
 
     // MARK: - Public Methods
 
@@ -193,7 +283,7 @@ public protocol WordPressAuthenticatorDelegate: class {
     }
 
     private class func trackOpenedLogin() {
-        WordPressAuthenticator.post(event: .openedLogin)
+        WordPressAuthenticator.track(.openedLogin)
     }
 
 
@@ -239,9 +329,9 @@ public protocol WordPressAuthenticatorDelegate: class {
         if let linkSource = loginFields.meta.emailMagicLinkSource {
             switch linkSource {
             case .signup:
-                WordPressAuthenticator.post(event: .signupMagicLinkOpened)
+                WordPressAuthenticator.track(.signupMagicLinkOpened)
             case .login:
-                WordPressAuthenticator.post(event: .loginMagicLinkOpened)
+                WordPressAuthenticator.track(.loginMagicLinkOpened)
             }
         }
 
@@ -404,7 +494,7 @@ public protocol WordPressAuthenticatorDelegate: class {
             loginFields.password = password
             loginFields.multifactorCode = otp ?? String()
 
-            WordPressAuthenticator.post(event: .onePasswordLogin)
+            WordPressAuthenticator.track(.onePasswordLogin)
             success(loginFields)
 
         }, failure: { error in
@@ -413,7 +503,7 @@ public protocol WordPressAuthenticatorDelegate: class {
             }
 
             DDLogError("OnePassword Error: \(error.localizedDescription)")
-            WordPressAuthenticator.post(event: .onePasswordFailed)
+            WordPressAuthenticator.track(.onePasswordFailed)
         })
     }
 }

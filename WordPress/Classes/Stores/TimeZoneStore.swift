@@ -72,7 +72,7 @@ private extension TimeZoneStore {
     func fetchTimeZones() {
         state = .loading
         let remote = TimeZoneServiceRemote(wordPressComRestApi: .anonymousApi(userAgent: WPUserAgent.wordPress()))
-        remote?.getTimezones(
+        remote.getTimezones(
             success: { [weak self] (groups) in
                 self?.state = .loaded(groups)
             },

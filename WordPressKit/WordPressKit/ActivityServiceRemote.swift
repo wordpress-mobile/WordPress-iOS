@@ -34,7 +34,7 @@ public class ActivityServiceRemote: ServiceRemoteWordPressComREST {
             "page": pageNumber as AnyObject
         ]
 
-        wordPressComRestApi.GET(path!,
+        wordPressComRestApi.GET(path,
                                 parameters: parameters,
                                 success: { response, _ in
                                     do {
@@ -69,7 +69,7 @@ public class ActivityServiceRemote: ServiceRemoteWordPressComREST {
             "locale": locale as AnyObject
         ]
 
-        wordPressComRestApi.GET(path!,
+        wordPressComRestApi.GET(path,
                                 parameters: parameters,
                                 success: { response, _ in
                                     guard let rewindStatus = response as? [String: AnyObject] else {
@@ -107,7 +107,7 @@ public class ActivityServiceRemote: ServiceRemoteWordPressComREST {
         let endpoint = "activity-log/\(siteID)/rewind/to/\(rewindID)"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_0)
 
-        wordPressComRestApi.POST(path!,
+        wordPressComRestApi.POST(path,
                                  parameters: nil,
                                  success: { response, _ in
                                      guard let restoreID = response["restore_id"] as? Int else {

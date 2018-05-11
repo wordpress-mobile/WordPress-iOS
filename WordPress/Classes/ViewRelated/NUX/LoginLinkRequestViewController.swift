@@ -43,7 +43,7 @@ class LoginLinkRequestViewController: LoginViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        WordPressAuthenticator.post(event: .loginMagicLinkRequestFormViewed)
+        WordPressAuthenticator.track(.loginMagicLinkRequestFormViewed)
     }
 
     // MARK: - Configuration
@@ -96,15 +96,15 @@ class LoginLinkRequestViewController: LoginViewController {
         }
 
         configureLoading(true)
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.requestAuthenticationLink(email,
+        let service = WordPressComAccountService()
+        service.requestAuthenticationLink(for: email,
                                           success: { [weak self] in
                                             self?.didRequestAuthenticationLink()
                                             self?.configureLoading(false)
 
             }, failure: { [weak self] (error: Error) in
-                WordPressAuthenticator.post(event: .loginMagicLinkFailed)
-                WordPressAuthenticator.post(event: .loginFailed(error: error))
+                WordPressAuthenticator.track(.loginMagicLinkFailed)
+                WordPressAuthenticator.track(.loginFailed, error: error)
                 guard let strongSelf = self else {
                     return
                 }
@@ -125,13 +125,13 @@ class LoginLinkRequestViewController: LoginViewController {
     }
 
     @objc func didRequestAuthenticationLink() {
-        WordPressAuthenticator.post(event: .loginMagicLinkRequested)
+        WordPressAuthenticator.track(.loginMagicLinkRequested)
         WordPressAuthenticator.storeLoginInfoForTokenAuth(loginFields)
         performSegue(withIdentifier: .showLinkMailView, sender: self)
     }
 
     @IBAction func handleUsePasswordTapped(_ sender: UIButton) {
-        WordPressAuthenticator.post(event: .loginMagicLinkExited)
+        WordPressAuthenticator.track(.loginMagicLinkExited)
     }
 }
 

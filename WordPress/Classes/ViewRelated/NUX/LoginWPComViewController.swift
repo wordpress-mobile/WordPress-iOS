@@ -54,7 +54,7 @@ class LoginWPComViewController: LoginViewController, NUXKeyboardResponder {
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
 
         passwordField?.becomeFirstResponder()
-        WordPressAuthenticator.post(event: .loginPasswordFormViewed)
+        WordPressAuthenticator.track(.loginPasswordFormViewed)
     }
 
 
@@ -166,7 +166,7 @@ class LoginWPComViewController: LoginViewController, NUXKeyboardResponder {
 
     @IBAction func handleForgotPasswordButtonTapped(_ sender: UIButton) {
         WordPressAuthenticator.openForgotPasswordURL(loginFields)
-        WordPressAuthenticator.post(event: .loginForgotPasswordClicked)
+        WordPressAuthenticator.track(.loginForgotPasswordClicked)
     }
 
     @objc func handleOnePasswordButtonTapped(_ sender: UIButton) {

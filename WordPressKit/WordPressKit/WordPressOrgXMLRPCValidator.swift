@@ -131,23 +131,19 @@ open class WordPressOrgXMLRPCValidator: NSObject {
                 self.guessXMLRPCURLFromHTMLURL(originalXMLRPCURL, success: success, failure: { (error) in
                     DDLogError(error.localizedDescription)
                     // See if this is a Jetpack site that's having problems.
-                    if let service = JetpackServiceRemote(wordPressComRestApi: WordPressComRestApi.anonymousApi(userAgent: userAgent)) {
-                        service.checkSiteHasJetpack(originalXMLRPCURL, success: { (hasJetpack) in
-                            var err = error
-                            if hasJetpack {
-                                var userInfo = err.userInfo
-                                userInfo[WordPressOrgXMLRPCValidator.UserInfoHasJetpackKey] = true
-                                err = NSError(domain: err.domain, code: err.code, userInfo: userInfo)
-                            }
-                            errorHandler(err)
-                        }, failure: { (_) in
-                            // Return the previous error, not an error when checking for jp.
-                            errorHandler(error)
-                        })
-                    } else {
-                        // JetpackServiceRemote didn't init properly, just call failure with the existing error
-                         errorHandler(error)
-                    }
+                    let service = JetpackServiceRemote(wordPressComRestApi: WordPressComRestApi.anonymousApi(userAgent: userAgent))
+                    service.checkSiteHasJetpack(originalXMLRPCURL, success: { (hasJetpack) in
+                        var err = error
+                        if hasJetpack {
+                            var userInfo = err.userInfo
+                            userInfo[WordPressOrgXMLRPCValidator.UserInfoHasJetpackKey] = true
+                            err = NSError(domain: err.domain, code: err.code, userInfo: userInfo)
+                        }
+                        errorHandler(err)
+                    }, failure: { (_) in
+                        // Return the previous error, not an error when checking for jp.
+                        errorHandler(error)
+                    })
                 })
             })
         })

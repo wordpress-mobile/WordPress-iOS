@@ -164,6 +164,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         if !AccountHelper.isDotcomAvailable() {
             promptForJetpackCredentials()
         }
+
+        registerUserActivity()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -1428,6 +1430,31 @@ extension NotificationsViewController: NotificationsNavigationDataSource {
 
     @objc func notification(preceding note: Notification) -> Notification? {
         return loadNotification(near: note, withIndexDelta: +1)
+    }
+}
+
+
+// MARK: - SearchableActivity Conformance
+//
+extension NotificationsViewController: SearchableActivityConvertable {
+    var activityType: String {
+        return WPActivityType.notifications.rawValue
+    }
+
+    var activityTitle: String {
+        return NSLocalizedString("Notifications", comment: "Title of the 'Notifications' tab - used for spotlight indexing on iOS.")
+    }
+
+    var activityKeywords: Set<String>? {
+        let keyWordString = NSLocalizedString("wordpress, notifications, alerts, updates",
+                                              comment: "This is a comma separated list of keywords used for spotlight indexing of the 'Notifications' tab.")
+        let keywordArray = keyWordString.arrayOfTags()
+
+        guard !keywordArray.isEmpty else {
+            return nil
+        }
+
+        return Set(keywordArray)
     }
 }
 

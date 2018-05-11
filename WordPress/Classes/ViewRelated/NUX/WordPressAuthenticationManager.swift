@@ -16,6 +16,20 @@ class WordPressAuthenticationManager: NSObject {
     func startRelayingHelpshiftNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(helpshiftUnreadCountWasUpdated), name: .HelpshiftUnreadCountUpdated, object: nil)
     }
+
+    /// Initializes WordPressAuthenticator with all of the paramteres that will be needed during the login flow.
+    ///
+    func initializeWordPressAuthenticator() {
+        let configuration = WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client(),
+                                                                wpcomSecret: ApiCredentials.secret(),
+                                                                wpcomScheme: WPComScheme,
+                                                                wpcomTermsOfServiceURL: WPAutomatticTermsOfServiceURL,
+                                                                googleLoginClientId: ApiCredentials.googleLoginClientId(),
+                                                                googleLoginServerClientId: ApiCredentials.googleLoginServerClientId(),
+                                                                userAgent: WPUserAgent.wordPress())
+
+        WordPressAuthenticator.initialize(configuration: configuration)
+    }
 }
 
 
@@ -152,6 +166,20 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         navigationController.pushViewController(epilogueViewController, animated: true)
     }
 
+    /// Presents the Signup Epilogue, in the specified NavigationController.
+    ///
+    func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: WordPressCredentials, service: SocialService?) {
+        let storyboard = UIStoryboard(name: "SignupEpilogue", bundle: .main)
+        guard let epilogueViewController = storyboard.instantiateInitialViewController() as? SignupEpilogueViewController else {
+            fatalError()
+        }
+
+        epilogueViewController.credentials = credentials
+        epilogueViewController.socialService = service
+
+        navigationController.pushViewController(epilogueViewController, animated: true)
+    }
+
     /// Indicates if the Login Epilogue should be presented. This is false only when we're doing a Jetpack Connect, and the new
     /// WordPress.com account has no sites. Capicci?
     ///
@@ -182,6 +210,24 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         case .wporg(let username, let password, let xmlrpc, let options):
             syncWPOrg(username: username, password: password, xmlrpc: xmlrpc, options: options, onCompletion: onCompletion)
         }
+    }
+
+    /// Tracks a given Analytics Event.
+    ///
+    func track(event: WPAnalyticsStat) {
+        WPAppAnalytics.track(event)
+    }
+
+    /// Tracks a given Analytics Event, with the specified properties.
+    ///
+    func track(event: WPAnalyticsStat, properties: [AnyHashable: Any]) {
+        WPAppAnalytics.track(event, withProperties: properties)
+    }
+
+    /// Tracks a given Analytics Event, with the specified error.
+    ///
+    func track(event: WPAnalyticsStat, error: Error) {
+        WPAppAnalytics.track(event, error: error)
     }
 }
 

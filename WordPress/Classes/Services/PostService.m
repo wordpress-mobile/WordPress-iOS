@@ -53,6 +53,9 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     page.blog = blog;
     page.date_created_gmt = [NSDate date];
     page.remoteStatus = AbstractPostRemoteStatusSync;
+
+    [[ContextManager sharedInstance] obtainPermanentIDForObject:page];
+
     return page;
 }
 
@@ -526,8 +529,13 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     post.permaLink = [remotePost.URL absoluteString];
     post.content = remotePost.content;
     post.status = remotePost.status;
-    post.password = remotePost.password;
-    post.post_thumbnail = remotePost.postThumbnailID;
+    post.password = remotePost.password;    
+    if (remotePost.postThumbnailID != nil) {        
+        post.featuredImage = [Media existingOrStubMediaWithMediaID: remotePost.postThumbnailID inBlog:post.blog];
+    } else {
+        post.featuredImage = nil;
+    }
+    
     post.pathForDisplayImage = remotePost.pathForDisplayImage;
     if (post.pathForDisplayImage.length == 0) {
         [post updatePathForDisplayImageBasedOnContent];
@@ -610,7 +618,9 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     remotePost.title = post.postTitle ?: @"";
     remotePost.content = post.content;
     remotePost.status = post.status;
-    remotePost.postThumbnailID = post.post_thumbnail;
+    if (post.featuredImage) {
+        remotePost.postThumbnailID = post.featuredImage.mediaID;
+    }
     remotePost.password = post.password;
     remotePost.type = @"post";
     remotePost.authorAvatarURL = post.authorAvatarURL;

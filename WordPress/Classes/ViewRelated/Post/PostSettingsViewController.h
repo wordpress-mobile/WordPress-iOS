@@ -7,4 +7,5 @@
 - (void)endEditingAction:(nullable id)sender;
 
 @property (nonnull, nonatomic, strong, readonly) AbstractPost *apost;
+
 @end

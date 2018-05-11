@@ -16,6 +16,8 @@
 #import "BlogService.h"
 #import "BlogSyncFacade.h"
 #import "BlogSelectorViewController.h"
+#import "BlogListViewController.h"
+#import "BlogDetailsViewController.h"
 
 #import "Comment.h"
 #import "CommentService.h"
@@ -62,6 +64,8 @@
 #import "PostService.h"
 #import "PostServiceOptions.h"
 #import "PostSettingsViewController.h"
+#import "PostSettingsViewController_Internal.h"
+#import "WPProgressTableViewCell.h"
 #import "PostTag.h"
 #import "PostTagService.h"
 #import "PrivateSiteURLProtocol.h"

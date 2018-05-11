@@ -9,10 +9,6 @@ extension NSNotification.Name {
     ///
     static let wordpressLoginFinishedJetpackLogin = Foundation.Notification.Name(rawValue: "WordPressLoginFinishedJetpackLogin")
 
-    /// Posted when an internal Event took place. Useful for Analytics purposes.
-    ///
-    static let wordpressAuthenticationFlowEvent = NSNotification.Name(rawValue: "WordPressAuthenticationFlowEvent")
-
     /// Posted whenever the Support Badge needs to be updated.
     ///
     static let wordpressSupportBadgeUpdated = NSNotification.Name(rawValue: "WordPressSupportBadgeUpdated")

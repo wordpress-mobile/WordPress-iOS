@@ -29,6 +29,12 @@ open class NotificationSettingsViewController: UIViewController {
         tableView.deselectSelectedRowWithAnimation(true)
     }
 
+    open override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        registerUserActivity()
+    }
+
 
 
     // MARK: - Setup Helpers
@@ -361,4 +367,28 @@ open class NotificationSettingsViewController: UIViewController {
     // MARK: - Private Properties
     fileprivate var groupedSettings: [[NotificationSettings]]?
     fileprivate var displayMoreWasAccepted          = false
+}
+
+// MARK: - SearchableActivity Conformance
+
+extension NotificationSettingsViewController: SearchableActivityConvertable {
+    var activityType: String {
+        return WPActivityType.notificationSettings.rawValue
+    }
+
+    var activityTitle: String {
+        return NSLocalizedString("Notification Settings", comment: "Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS.")
+    }
+
+    var activityKeywords: Set<String>? {
+        let keyWordString = NSLocalizedString("wordpress, me, notification, notification settings, settings, comments, email, ping, follow, customize, customise",
+                                              comment: "This is a comma separated list of keywords used for spotlight indexing of the 'Notification Settings' screen within the 'Me' tab.")
+        let keywordArray = keyWordString.arrayOfTags()
+
+        guard !keywordArray.isEmpty else {
+            return nil
+        }
+
+        return Set(keywordArray)
+    }
 }
