@@ -113,7 +113,9 @@ PODS:
   - Starscream (3.0.4)
   - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (0.5.0)
-  - WordPress-Aztec-iOS (1.0.0-beta.18.1)
+  - WordPress-Aztec-iOS (1.0.0-beta.18.1):
+    - WordPress-Aztec-iOS/WordPressEditor (= 1.0.0-beta.18.1)
+  - WordPress-Aztec-iOS/WordPressEditor (1.0.0-beta.18.1)
   - WordPressShared (1.0.0):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
@@ -155,7 +157,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.4)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `f8021013ee7df63e1c469ad550944c213888faaf`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `2a25da7b9b687b5e05ce128423d99f771673a6c4`)
+  - WordPress-Aztec-iOS/WordPressEditor (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `2a25da7b9b687b5e05ce128423d99f771673a6c4`)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `1d657ac0ddb002712803721da8ee5752e7069637`)
   - WPMediaPicker (= 0.28)
   - wpxmlrpc (= 0.8.3)
@@ -166,7 +169,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   WordPress-Aztec-iOS:
-    :commit: f8021013ee7df63e1c469ad550944c213888faaf
+    :commit: 2a25da7b9b687b5e05ce128423d99f771673a6c4
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressShared:
     :commit: 1d657ac0ddb002712803721da8ee5752e7069637
@@ -177,7 +180,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   WordPress-Aztec-iOS:
-    :commit: f8021013ee7df63e1c469ad550944c213888faaf
+    :commit: 2a25da7b9b687b5e05ce128423d99f771673a6c4
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressShared:
     :commit: 1d657ac0ddb002712803721da8ee5752e7069637
@@ -214,12 +217,12 @@ SPEC CHECKSUMS:
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: 2d8c58f68f422ce521db689fb582122220e77f8d
+  WordPress-Aztec-iOS: 448c4ba1c7d748e9ed881f328963ccdc8977e0d8
   WordPressShared: b1bed3aa4db4438fd9fe78ccd0be58c8fee19c17
   WPMediaPicker: fb71c0e4fb720f04f7ff7496572ed1005a4e7e12
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: 854725567ce10f9d274700a5b26e8e04e12bcf86
+PODFILE CHECKSUM: 2adbc2a8ab914a39cf1eefb6cccf03259d2db04e
 
 COCOAPODS: 1.4.0
