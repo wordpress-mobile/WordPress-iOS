@@ -12,7 +12,6 @@
 
 @property (nonatomic, strong) UIBarButtonItem *doneButton;
 @property (nonatomic, strong) UIBarButtonItem *removeButton;
-@property (nonatomic, strong) AbstractPost *post;
 
 @end
 
@@ -23,23 +22,10 @@
 
 #pragma mark - Life Cycle Methods
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (id)initWithPost:(AbstractPost *)post
-{
-    self = [super initWithImage:nil andURL:[NSURL URLWithString:post.featuredImage.remoteURL]];
-    if (self) {
-        self.post = post;
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     self.title = NSLocalizedString(@"Featured Image", @"Title for the Featured Image view");
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.leftBarButtonItems = @[self.doneButton];
@@ -53,13 +39,6 @@
     // Super class will hide the status bar by default
     [self hideBars:NO animated:NO];
 
-    if (self.url) {
-        if (![self.url.absoluteString isEqualToString:self.post.featuredImage.remoteURL]) {
-            self.image = nil;
-            self.url = [NSURL URLWithString:self.post.featuredImage.remoteURL];
-        }
-    }
-
     // Called here to be sure the view is complete in case we need to present a popover from the toolbar.
     [self loadImage];
 }
@@ -68,7 +47,6 @@
 {
     [super viewWillDisappear:animated];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.toolbar.translucent = NO;
 }
@@ -143,8 +121,6 @@
                                     if (self.delegate) {
                                         [self.delegate FeaturedImageViewControllerOnRemoveImageButtonPressed:self];
                                     }
-//                                    [self.post setFeaturedImage:nil];
-//                                    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
                                 }];
     alertController.popoverPresentationController.barButtonItem = self.removeButton;
     [self presentViewController:alertController animated:YES completion:nil];

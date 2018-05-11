@@ -11,6 +11,4 @@
 
 @property (weak, nonatomic) id<FeaturedImageViewControllerDelegate> delegate;
 
-- (id)initWithPost:(AbstractPost *)post;
-
 @end
