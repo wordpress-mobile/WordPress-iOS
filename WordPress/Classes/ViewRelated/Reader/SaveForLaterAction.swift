@@ -10,10 +10,10 @@ final class SaveForLaterAction {
         static let removeFromSavedError = NSLocalizedString("Could not remove post from Saved for Later", comment: "Title of a prompt.")
     }
 
-    private let notices: Bool
+    private let visibleConfirmation: Bool
 
-    init(notices: Bool = false) {
-        self.notices = notices
+    init(visibleConfirmation: Bool = false) {
+        self.visibleConfirmation = visibleConfirmation
     }
 
     func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
@@ -32,7 +32,7 @@ final class SaveForLaterAction {
     }
 
     private func presentSuccessNotice(for post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
-        guard notices else {
+        guard visibleConfirmation else {
             return
         }
 
@@ -57,7 +57,7 @@ final class SaveForLaterAction {
     }
 
     private func presentPostRemovedNotice(for post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
-        guard notices else {
+        guard visibleConfirmation else {
             return
         }
 
