@@ -135,7 +135,7 @@
                                             <constraint firstItem="RfN-yk-yXb" firstAttribute="leading" secondItem="y56-tB-S9Z" secondAttribute="trailing" constant="10" id="wg9-9P-WGd"/>
                                         </constraints>
                                     </view>
-                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="cAC-kN-MLi">
+                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="cAC-kN-MLi" customClass="CachedAnimatedImageView" customModule="WordPress" customModuleProvider="target">
                                         <rect key="frame" x="16" y="66" width="351" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" placeholder="YES" id="X1F-jr-yxm"/>
