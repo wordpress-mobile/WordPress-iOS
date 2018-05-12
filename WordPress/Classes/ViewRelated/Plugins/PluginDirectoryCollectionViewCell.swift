@@ -36,6 +36,7 @@ class PluginDirectoryCollectionViewCell: UICollectionViewCell {
 
         accessoryView?.removeFromSuperview()
         logoImageView.cancelImageDownloadTask()
+        logoImageView.image = nil
     }
 
     func configure(with directoryEntry: PluginDirectoryEntry) {
