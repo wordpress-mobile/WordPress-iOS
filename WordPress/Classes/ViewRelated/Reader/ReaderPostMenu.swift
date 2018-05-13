@@ -106,7 +106,7 @@ open class ReaderPostMenu {
     fileprivate class func toggleSubscribingNotifications(for topic: ReaderSiteTopic) {
         if let context = topic.managedObjectContext {
             let service = ReaderTopicService(managedObjectContext: context)
-            service.toggleSubscribingNotifications(for: topic.siteID,
+            service.toggleSubscribingNotifications(for: topic.siteID.intValue,
                                                    subscribe: !topic.isSubscribedForPostNotifications)
         }
     }
@@ -156,7 +156,7 @@ open class ReaderPostMenu {
         let topicService = ReaderTopicService(managedObjectContext: postService.managedObjectContext)
 
         if !toFollow {
-            topicService.toggleSubscribingNotifications(for: siteID, subscribe: false)
+            topicService.toggleSubscribingNotifications(for: siteID?.intValue, subscribe: false)
         }
 
 

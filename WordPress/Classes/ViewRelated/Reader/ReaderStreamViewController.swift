@@ -798,7 +798,7 @@ import WordPressFlux
         }
 
         let service = ReaderTopicService(managedObjectContext: managedObjectContext())
-        service.toggleSubscribingNotifications(for: siteID, subscribe: subscribe)
+        service.toggleSubscribingNotifications(for: siteID.intValue, subscribe: subscribe)
     }
 
     fileprivate func toggleFollowingForPost(_ post: ReaderPost) {
