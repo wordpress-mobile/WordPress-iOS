@@ -121,6 +121,7 @@
 		08F8CD3B1EBD2D020049D0C0 /* MediaURLExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8CD3A1EBD2D020049D0C0 /* MediaURLExporterTests.swift */; };
 		1702BBDC1CEDEA6B00766A33 /* BadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */; };
 		1702BBE01CF3034E00766A33 /* DomainsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1702BBDF1CF3034E00766A33 /* DomainsService.swift */; };
+		1705E55020A5DA5700EF1C9D /* ReaderSavedPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1705E54F20A5DA5700EF1C9D /* ReaderSavedPostsViewController.swift */; };
 		1707CE421F3121750020B7FE /* UICollectionViewCell+Tint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1707CE411F3121750020B7FE /* UICollectionViewCell+Tint.swift */; };
 		170CE7402064478600A48191 /* PostNoticeNavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170CE73F2064478600A48191 /* PostNoticeNavigationCoordinator.swift */; };
 		171909E4206CFFCD0054DF0B /* FancyAlertViewController+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171909E3206CFFCD0054DF0B /* FancyAlertViewController+Async.swift */; };
@@ -846,7 +847,6 @@
 		D800D86C20997EB400E7C7E5 /* OtherMenuItemCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800D86B20997EB400E7C7E5 /* OtherMenuItemCreator.swift */; };
 		D800D86E2099857000E7C7E5 /* SearchMenuItemCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800D86D2099857000E7C7E5 /* SearchMenuItemCreator.swift */; };
 		D800D87020998A7300E7C7E5 /* SavedForLaterMenuItemCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800D86F20998A7300E7C7E5 /* SavedForLaterMenuItemCreator.swift */; };
-		D800D87220998C4F00E7C7E5 /* ReaderSaveForLaterTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800D87120998C4F00E7C7E5 /* ReaderSaveForLaterTopic.swift */; };
 		D800D874209997DB00E7C7E5 /* FollowingMenuItemCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800D873209997DB00E7C7E5 /* FollowingMenuItemCreatorTests.swift */; };
 		D800D87620999AE700E7C7E5 /* DiscoverMenuItemCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800D87520999AE700E7C7E5 /* DiscoverMenuItemCreatorTests.swift */; };
 		D800D87820999B6D00E7C7E5 /* LikedMenuItemCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800D87720999B6D00E7C7E5 /* LikedMenuItemCreatorTests.swift */; };
@@ -1451,6 +1451,7 @@
 		1702BBDB1CEDEA6B00766A33 /* BadgeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BadgeLabel.swift; sourceTree = "<group>"; };
 		1702BBDF1CF3034E00766A33 /* DomainsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsService.swift; sourceTree = "<group>"; };
 		1705E54E20A5B7C600EF1C9D /* WordPress 76.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 76.xcdatamodel"; sourceTree = "<group>"; };
+		1705E54F20A5DA5700EF1C9D /* ReaderSavedPostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSavedPostsViewController.swift; sourceTree = "<group>"; };
 		1707CE411F3121750020B7FE /* UICollectionViewCell+Tint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionViewCell+Tint.swift"; sourceTree = "<group>"; };
 		170CE73F2064478600A48191 /* PostNoticeNavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNoticeNavigationCoordinator.swift; sourceTree = "<group>"; };
 		171909E3206CFFCD0054DF0B /* FancyAlertViewController+Async.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FancyAlertViewController+Async.swift"; sourceTree = "<group>"; };
@@ -2371,7 +2372,6 @@
 		D800D86B20997EB400E7C7E5 /* OtherMenuItemCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherMenuItemCreator.swift; sourceTree = "<group>"; };
 		D800D86D2099857000E7C7E5 /* SearchMenuItemCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMenuItemCreator.swift; sourceTree = "<group>"; };
 		D800D86F20998A7300E7C7E5 /* SavedForLaterMenuItemCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedForLaterMenuItemCreator.swift; sourceTree = "<group>"; };
-		D800D87120998C4F00E7C7E5 /* ReaderSaveForLaterTopic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSaveForLaterTopic.swift; sourceTree = "<group>"; };
 		D800D873209997DB00E7C7E5 /* FollowingMenuItemCreatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingMenuItemCreatorTests.swift; sourceTree = "<group>"; };
 		D800D87520999AE700E7C7E5 /* DiscoverMenuItemCreatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverMenuItemCreatorTests.swift; sourceTree = "<group>"; };
 		D800D87720999B6D00E7C7E5 /* LikedMenuItemCreatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedMenuItemCreatorTests.swift; sourceTree = "<group>"; };
@@ -3492,7 +3492,6 @@
 				E62079DE1CF79FC200F5CD46 /* ReaderSearchSuggestion.swift */,
 				E61084BA1B9B47BA008050C5 /* ReaderDefaultTopic.swift */,
 				E61084BB1B9B47BA008050C5 /* ReaderListTopic.swift */,
-				D800D87120998C4F00E7C7E5 /* ReaderSaveForLaterTopic.swift */,
 				E6BDEA721CE4824300682885 /* ReaderSearchTopic.swift */,
 				E61084BC1B9B47BA008050C5 /* ReaderSiteTopic.swift */,
 				9F3EFC9D208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift */,
@@ -3645,6 +3644,7 @@
 				E6A2158D1D10627500DE5270 /* ReaderMenuViewModel.swift */,
 				E6E57CD41D0F08B200C22E3E /* ReaderMenuViewController.swift */,
 				5D1D04741B7A50B100CDE646 /* ReaderStreamViewController.swift */,
+				1705E54F20A5DA5700EF1C9D /* ReaderSavedPostsViewController.swift */,
 				E69551F51B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift */,
 				E69EF9D21BFA539F00ED0554 /* ReaderDetailViewController.swift */,
 				E64ECA4C1CE62041000188A0 /* ReaderSearchViewController.swift */,
@@ -7186,6 +7186,7 @@
 				5D5A6E931B613CA400DAF819 /* ReaderPostCardCell.swift in Sources */,
 				E10520581F2B1CC900A948F6 /* WordPress-61-62.xcmappingmodel in Sources */,
 				B5772AC41C9C7A070031F97E /* GravatarService.swift in Sources */,
+				1705E55020A5DA5700EF1C9D /* ReaderSavedPostsViewController.swift in Sources */,
 				5D2C05561AD2F56200A753FE /* NavBarTitleDropdownButton.m in Sources */,
 				FF0F722C206E5345000DAAB5 /* PostService+RefreshStatus.swift in Sources */,
 				98EDB5FB2016627C00E2D25A /* SiteCreationCreateSiteViewController.swift in Sources */,
@@ -7480,7 +7481,6 @@
 				E1A8CACB1C22FF7C0038689E /* MeViewController.swift in Sources */,
 				17A28DC52050404C00EA6D9E /* AuthorFilterButton.swift in Sources */,
 				08216FD31CDBF96000304BA7 /* MenuItemTagsViewController.m in Sources */,
-				D800D87220998C4F00E7C7E5 /* ReaderSaveForLaterTopic.swift in Sources */,
 				5D3E334E15EEBB6B005FC6F2 /* ReachabilityUtils.m in Sources */,
 				9F3EFCA1208E305E00268758 /* ReaderTopicService+Subscriptions.swift in Sources */,
 				E14DFAFB1E07E7C400494688 /* Data.swift in Sources */,
