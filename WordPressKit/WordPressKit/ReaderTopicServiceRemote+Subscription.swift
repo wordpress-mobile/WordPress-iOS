@@ -87,11 +87,12 @@ extension ReaderTopicServiceRemote {
         DDLogInfo("URL: \(urlRequest)")
         
         wordPressComRestApi.POST(urlRequest, parameters: parameters, success: { (_, response) in
-            DDLogInfo("Success \(response?.url?.absoluteString ?? "unknown response url")")
+            DDLogInfo("Success \(response?.url?.absoluteString ?? "unknown url")")
             success()
         }) { (error, response) in
             DDLogError("Error: \(error.localizedDescription)")
-            failure(ReaderTopicServiceError.remoteResponse(message: error.localizedDescription, url: response?.url?.absoluteString ?? "unknown response url"))
+            let urlAbsoluteString = response?.url?.absoluteString ?? NSLocalizedString("unknown url", comment: "Used when the response doesn't have a valid url to display")
+            failure(ReaderTopicServiceError.remoteResponse(message: error.localizedDescription, url: urlAbsoluteString))
         }
     }
 }
