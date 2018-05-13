@@ -375,8 +375,31 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                            success:(void (^)(void))success
                            failure:(void (^)(NSError *error))failure
 {
-    post.isSavedForLater = !post.isSavedForLater;
-    success();
+    [self.managedObjectContext performBlock:^{
+
+        // Get a the post in our own context
+        NSError *error;
+        ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
+        if (error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (failure) {
+                    failure(error);
+                }
+            });
+            return;
+        }
+
+        // Keep previous values in case of failure
+        BOOL oldValue = readerPost.isSavedForLater;
+        BOOL saveForLater = !oldValue;
+
+        // Optimistically update
+        readerPost.isSavedForLater = saveForLater;
+
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+        success();
+    }];
 }
 
 - (void)deletePostsWithNoTopic
