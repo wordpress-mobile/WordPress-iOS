@@ -3,7 +3,7 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress 75
+## WordPress 76
 
 - @frosty 2018-05-12
 - `ReaderPost` added `isSavedForLater` property, used to track posts that the user wants to save to read later.
