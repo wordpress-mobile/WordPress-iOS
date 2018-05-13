@@ -28,22 +28,12 @@ import WordPressShared
     fileprivate var restorableSelectedIndexPath: IndexPath?
 
     @objc lazy var viewModel: ReaderMenuViewModel = {
-        let sectionCreators: [ReaderMenuItemCreator]
-
-        if FeatureFlag.saveForLater.enabled {
-            sectionCreators = [
-                FollowingMenuItemCreator(),
-                DiscoverMenuItemCreator(),
-                LikedMenuItemCreator(),
-                SavedForLaterMenuItemCreator()
-            ]
-        } else {
-            sectionCreators = [
+        let sectionCreators: [ReaderMenuItemCreator] = [
             FollowingMenuItemCreator(),
             DiscoverMenuItemCreator(),
             LikedMenuItemCreator()
-            ]
-        }
+        ]
+
         let vm = ReaderMenuViewModel(sectionCreators: sectionCreators)
         vm.delegate = self
         return vm
