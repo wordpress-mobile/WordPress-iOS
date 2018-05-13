@@ -5,8 +5,8 @@ import XCTest
 class ReaderTopicServiceRemoteTestSubscriptions: XCTestCase {
     let mockRemoteApi = MockWordPressComRestApi()
     let response = [String: AnyObject]()
-    let siteId = NSNumber(value: 0)
-    var failure: ((NSError?) -> Void)!
+    let siteId = 0
+    var failure: ((ReaderTopicServiceError?) -> Void)!
     var readerTopicServiceRemote: ReaderTopicServiceRemote!
     
     override func setUp() {
@@ -43,7 +43,7 @@ class ReaderTopicServiceRemoteTestSubscriptions: XCTestCase {
     
     func testSubscribeComments() {
         var success = false
-        let expectedPath = "rest/v1.2/read/sites/0/comment_email_subscriptions/new/"
+        let expectedPath = "rest/v1.2/read/site/0/comment_email_subscriptions/new/"
         readerTopicServiceRemote.subscribeSiteComments(with: siteId, {
             success = true
         }, failure)
@@ -55,7 +55,7 @@ class ReaderTopicServiceRemoteTestSubscriptions: XCTestCase {
     
     func testUnsubscribeComments() {
         var success = false
-        let expectedPath = "rest/v1.2/read/sites/0/comment_email_subscriptions/delete/"
+        let expectedPath = "rest/v1.2/read/site/0/comment_email_subscriptions/delete/"
         readerTopicServiceRemote.unsubscribeSiteComments(with: siteId, {
             success = true
         }, failure)
@@ -67,7 +67,7 @@ class ReaderTopicServiceRemoteTestSubscriptions: XCTestCase {
     
     func testSubscribePostsEmail() {
         var success = false
-        let expectedPath = "rest/v1.2/read/sites/0/post_email_subscriptions/new/"
+        let expectedPath = "rest/v1.2/read/site/0/post_email_subscriptions/new/"
         readerTopicServiceRemote.subscribePostsEmail(with: siteId, {
             success = true
         }, failure)
@@ -79,7 +79,7 @@ class ReaderTopicServiceRemoteTestSubscriptions: XCTestCase {
     
     func testUnsubscribePostsEmail() {
         var success = false
-        let expectedPath = "rest/v1.2/read/sites/0/post_email_subscriptions/delete/"
+        let expectedPath = "rest/v1.2/read/site/0/post_email_subscriptions/delete/"
         readerTopicServiceRemote.unsubscribePostsEmail(with: siteId, {
             success = true
         }, failure)
@@ -91,7 +91,7 @@ class ReaderTopicServiceRemoteTestSubscriptions: XCTestCase {
     
     func testUdatePostsEmail() {
         var success = false
-        let expectedPath = "rest/v1.2/read/sites/0/post_email_subscriptions/update/"
+        let expectedPath = "rest/v1.2/read/site/0/post_email_subscriptions/update/"
         
         readerTopicServiceRemote.updateFrequencyPostsEmail(with: siteId, frequency: .weekly, {
             success = true
