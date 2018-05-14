@@ -4,7 +4,7 @@ require 'Octokit'
 # TODO: Add proper logging
 # A helper interface for performing some actions on GitHub
 # It relies on GitHub's Octokit wrapper
-class GitHubInterface
+class GitHubHelper
   attr_reader :repository   # The repository on which we work
 
   def initialize(repository)
@@ -136,7 +136,7 @@ end
 # Local helpers
 def show_usage
   puts "Usage:"
-  puts " github-interface <command> <branch name> [optionals]"
+  puts " github-helper <command> <branch name> [optionals]"
   puts ""
   puts " Available commands:"
   puts " - list_open: lists the open issue and PRs set for the given milestone"
@@ -152,7 +152,7 @@ if (ARGV.length < 2)
   exit
 end
 begin
-  gi = GitHubInterface.new('wordpress-mobile/wordpress-iOS')
+  gi = GitHubHelper.new('wordpress-mobile/wordpress-iOS')
   release = ARGV[1]
   puts release
 
