@@ -187,7 +187,7 @@ function doBranching() {
         git push -u origin $releaseBranch >> $logFile 2>&1 || stopOnError
 
         # Set branch protection
-        ./github-interface.rb set_prot $newMainVer
+        ./github-helper.rb set_prot $newMainVer
     fi 
 }
 
