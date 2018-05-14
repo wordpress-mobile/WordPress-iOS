@@ -1,17 +1,11 @@
 import UIKit
 import WordPressAuthenticator
 
-protocol SupportTableViewControllerDelegate {
-    func notificationsCleared()
-}
-
 class SupportTableViewController: UITableViewController {
 
     // MARK: - Properties
 
     var sourceTag: WordPressSupportSourceTag?
-    var showSupportNotificationIndicator = false
-    var delegate: SupportTableViewControllerDelegate?
 
     // If set, the Zendesk views will be shown from this view instead of in the navigation controller.
     // Specifically for Me > Help & Support on the iPad.
@@ -24,7 +18,8 @@ class SupportTableViewController: UITableViewController {
 
     override init(style: UITableViewStyle) {
         super.init(style: style)
-        NotificationCenter.default.addObserver(self, selector: #selector(showNotificationIndicator(_:)), name: .ZendeskPushNotificationReceivedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshNotificationIndicator(_:)), name: .ZendeskPushNotificationReceivedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshNotificationIndicator(_:)), name: .ZendeskPushNotificationClearedNotification, object: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -117,7 +112,7 @@ private extension SupportTableViewController {
 
         if ZendeskUtils.zendeskEnabled {
             helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected()))
-            helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected(), showIndicator: showSupportNotificationIndicator))
+            helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator))
         } else {
             helpSectionRows.append(HelpRow(title: LocalizedText.wpForums, action: contactUsSelected()))
         }
@@ -143,8 +138,7 @@ private extension SupportTableViewController {
         return ImmuTable(sections: [helpSection, informationSection])
     }
 
-    @objc func showNotificationIndicator(_ notification: Foundation.Notification) {
-        showSupportNotificationIndicator = true
+    @objc func refreshNotificationIndicator(_ notification: Foundation.Notification) {
         reloadViewModel()
     }
 
@@ -190,11 +184,9 @@ private extension SupportTableViewController {
 
     func myTicketsSelected() -> ImmuTableAction {
         return { [unowned self] row in
-            self.tableView.deselectSelectedRowWithAnimation(true)
-            self.showSupportNotificationIndicator = false
-            self.reloadViewModel()
-            self.delegate?.notificationsCleared()
             ZendeskUtils.pushNotificationRead()
+            self.tableView.deselectSelectedRowWithAnimation(true)
+
             guard let controllerToShowFrom = self.controllerToShowFrom() else {
                 return
             }
