@@ -41,6 +41,10 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     var supportActionEnabled: Bool { get }
 
+    /// Indicates if the Support notification indicator should be displayed.
+    ///
+    var showSupportNotificationIndicator: Bool { get }
+    
     /// Indicates if Support is available or not.
     ///
     var supportEnabled: Bool { get }
@@ -225,6 +229,10 @@ public struct WordPressAuthenticatorConfiguration {
 
     public func supportBadgeCountWasUpdated() {
         NotificationCenter.default.post(name: .wordpressSupportBadgeUpdated, object: nil)
+    }
+    
+    public func zendeskPushNotificationReceived() {
+        NotificationCenter.default.post(name: .wordpressSupportNotificationReceived, object: nil)
     }
 
     /// Indicates if the specified ViewController belongs to the Authentication Flow, or not.

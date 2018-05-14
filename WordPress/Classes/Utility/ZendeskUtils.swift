@@ -19,6 +19,7 @@ extension NSNotification.Name {
     private override init() {}
 
     static var zendeskEnabled = false
+    static var showSupportNotificationIndicator = false
 
     private var sourceTag: WordPressSupportSourceTag?
 
@@ -146,6 +147,8 @@ extension NSNotification.Name {
     }
 
     static func pushNotificationReceived() {
+        ZendeskUtils.showSupportNotificationIndicator = true
+
         // Updating unread indicators should trigger UI updates, so send notification in main thread.
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: .ZendeskPushNotificationReceivedNotification, object: nil)
