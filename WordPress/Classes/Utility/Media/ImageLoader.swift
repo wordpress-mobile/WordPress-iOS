@@ -1,7 +1,7 @@
 
 /// Protocol used to abstract the information needed to load post related images.
 ///
-@objc protocol PostInformation {
+@objc protocol ImageSourceInformation {
 
     /// The post is private and hosted on WPcom.
     /// Redundant name due to naming conflict.
@@ -10,16 +10,16 @@
 
     /// The blog is self-hosted and there is already a basic auth credential stored.
     ///
-    var isBlogSelfHostedWithCredentials: Bool { get }
+    var isSelfHostedWithCredentials: Bool { get }
 }
 
 
-extension Blog: PostInformation {
+extension Blog: ImageSourceInformation {
     var isPrivateOnWPCom: Bool {
         return self.isHostedAtWPcom && self.isPrivate()
     }
 
-    var isBlogSelfHostedWithCredentials: Bool {
+    var isSelfHostedWithCredentials: Bool {
         return !self.isHostedAtWPcom && self.isBasicAuthCredentialStored()
     }
 }
@@ -54,7 +54,7 @@ extension Blog: PostInformation {
     ///   - post: The post where the image is loaded from.
     ///   - size: The prefered size of the image to load.
     ///
-    func loadImage(with url: URL, from post: PostInformation, preferedSize size: CGSize = .zero) {
+    func loadImage(with url: URL, from post: ImageSourceInformation, preferedSize size: CGSize = .zero) {
         if url.isGif {
             loadGif(with: url, from: post)
         } else {
@@ -73,7 +73,7 @@ extension Blog: PostInformation {
     ///   - placeholder: A placeholder to show while the image is loading.
     ///   - success: A closure to be called if the image was loaded successfully.
     ///   - error: A closure to be called if there was an error loading the image.
-    func loadImage(with url: URL, from post: PostInformation, preferedSize size: CGSize = .zero, placeholder: UIImage?, success: (() -> Void)?, error: ((Error?) -> Void)?) {
+    func loadImage(with url: URL, from post: ImageSourceInformation, preferedSize size: CGSize = .zero, placeholder: UIImage?, success: (() -> Void)?, error: ((Error?) -> Void)?) {
         self.placeholder = placeholder
         successHandler = success
         errorHandler = error
@@ -85,7 +85,7 @@ extension Blog: PostInformation {
 
     /// Load an animated image from the given URL.
     ///
-    private func loadGif(with url: URL, from post: PostInformation) {
+    private func loadGif(with url: URL, from post: ImageSourceInformation) {
         let request: URLRequest
         if post.isPrivateOnWPCom {
             request = PrivateSiteURLProtocol.requestForPrivateSite(from: url)
@@ -97,12 +97,12 @@ extension Blog: PostInformation {
 
     /// Load a static image from the given URL.
     ///
-    private func loadStillImage(with url: URL, from post: PostInformation, preferedSize size: CGSize) {
+    private func loadStillImage(with url: URL, from post: ImageSourceInformation, preferedSize size: CGSize) {
         if url.isFileURL {
             downloadImage(from: url)
         } else if post.isPrivateOnWPCom {
             loadPrivateImage(with: url, from: post, preferedSize: size)
-        } else if post.isBlogSelfHostedWithCredentials {
+        } else if post.isSelfHostedWithCredentials {
             downloadImage(from: url)
         } else {
             loadProtonUrl(with: url, preferedSize: size)
@@ -111,7 +111,7 @@ extension Blog: PostInformation {
 
     /// Loads the image from a private post hosted in WPCom.
     ///
-    private func loadPrivateImage(with url: URL, from post: PostInformation, preferedSize size: CGSize) {
+    private func loadPrivateImage(with url: URL, from post: ImageSourceInformation, preferedSize size: CGSize) {
         let scale = UIScreen.main.scale
         let scaledSize = CGSize(width: size.width * scale, height: size.height * scale)
         let scaledURL = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: url)
