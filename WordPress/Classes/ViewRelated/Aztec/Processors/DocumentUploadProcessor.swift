@@ -15,9 +15,11 @@ class DocumentUploadProcessor: Processor {
         guard
             let imageUploadIdentifier = img.attributes.named[MediaAttachment.uploadKey],
             mediaUploadID == imageUploadIdentifier
-            else { return nil }
+        else {
+            return nil
+        }
 
-        var html = "<a href=\"\(remoteURLString)\">\(title)</a>"
+        var html = "<a href=\"\(remoteURLString)\">\(title)</a><br />"
         return html
     })
 

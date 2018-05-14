@@ -1,3 +1,4 @@
-Uploads erfolgen jetzt asynchron!
-Seiten, die nicht hochgeladen werden können, werden jetzt rot markiert.
-Das Eingabefeld für Kommentare kann jetzt bis auf fünf Zeilen erweitert werden.
+Kostenfreie Stockfotos jetzt in der App verfügbar!
+Spotlight indiziert jetzt wichtige Bereiche der App!
+Das Einrichten von Jetpack in der App ermöglicht es, dass zur selben Zeit ein neues WP.com-Konto eingerichtet werden kann.
+Mehrfachauswahl in der Dokumenten-Auswahl wurde aktiviert.

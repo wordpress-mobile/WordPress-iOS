@@ -19,6 +19,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(_ cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
     func readerCell(_ cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider)
     func readerCell(_ cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
@@ -41,7 +42,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     @IBOutlet fileprivate weak var followButton: UIButton!
 
     // Card views
-    @IBOutlet fileprivate weak var featuredImageView: UIImageView!
+    @IBOutlet fileprivate weak var featuredImageView: CachedAnimatedImageView!
     @IBOutlet fileprivate weak var titleLabel: ReaderPostCardContentLabel!
     @IBOutlet fileprivate weak var summaryLabel: ReaderPostCardContentLabel!
     @IBOutlet fileprivate weak var attributionView: ReaderCardDiscoverAttributionView!
@@ -52,7 +53,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     @IBOutlet fileprivate weak var interfaceVerticalSizingHelperView: UIView!
 
     // Action buttons
-    @IBOutlet fileprivate weak var shareButton: UIButton!
+    @IBOutlet fileprivate weak var saveForLaterButton: UIButton!
     @IBOutlet fileprivate weak var visitButton: UIButton!
     @IBOutlet fileprivate weak var likeActionButton: UIButton!
     @IBOutlet fileprivate weak var commentActionButton: UIButton!
@@ -108,6 +109,10 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
     }
 
+    fileprivate lazy var imageLoader: ImageLoader = {
+        return ImageLoader(imageView: featuredImageView)
+    }()
+
     fileprivate lazy var readerCardTitleAttributes: [NSAttributedStringKey: Any] = {
         return WPStyleGuide.readerCardTitleAttributes()
     }()
@@ -139,7 +144,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         applyOpaqueBackgroundColors()
         setupFeaturedImageView()
         setupVisitButton()
-        setupShareButton()
+        setupSaveForLaterButton()
         setupMenuButton()
         setupSummaryLabel()
         setupAttributionView()
@@ -152,6 +157,11 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         super.traitCollectionDidChange(previousTraitCollection)
         configureFeaturedImageIfNeeded()
         configureButtonTitles()
+    }
+
+    open override func prepareForReuse() {
+        super.prepareForReuse()
+        imageLoader.prepareForReuse()
     }
 
 
@@ -198,14 +208,16 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         visitButton.setImage(highlightIcon, for: .highlighted)
     }
 
-    fileprivate func setupShareButton() {
-        let size = CGSize(width: 20, height: 20)
-        let icon = Gridicon.iconOfType(.share, withSize: size)
-        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
-        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
+    fileprivate func setupSaveForLaterButton() {
+        let size = FeatureFlag.saveForLater.enabled ? Gridicon.defaultSize : CGSize(width: 20, height: 20)
+        let icon = FeatureFlag.saveForLater.enabled ? Gridicon.iconOfType(.bookmarkOutline, withSize: size) : Gridicon.iconOfType(.share, withSize: size)
+        let highlightedIcon = FeatureFlag.saveForLater.enabled ? Gridicon.iconOfType(.bookmark, withSize: size) : icon
 
-        shareButton.setImage(tintedIcon, for: .normal)
-        shareButton.setImage(highlightIcon, for: .highlighted)
+        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
+        let tintedHighlightedIcon = highlightedIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
+
+        saveForLaterButton.setImage(tintedIcon, for: .normal)
+        saveForLaterButton.setImage(tintedHighlightedIcon, for: .selected)
     }
 
     fileprivate func setupMenuButton() {
@@ -223,7 +235,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             visitButton,
             likeActionButton,
             commentActionButton,
-            shareButton]
+            saveForLaterButton]
         for button in buttonsToAdjust {
             button.flipInsetsForRightToLeftLayoutDirection()
         }
@@ -246,7 +258,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         WPStyleGuide.applyReaderCardActionButtonStyle(commentActionButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(likeActionButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(visitButton)
-        WPStyleGuide.applyReaderCardActionButtonStyle(shareButton)
+        WPStyleGuide.applyReaderCardActionButtonStyle(saveForLaterButton)
     }
 
 
@@ -254,12 +266,12 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         Applies opaque backgroundColors to all subViews to avoid blending, for optimized drawing.
     */
     fileprivate func applyOpaqueBackgroundColors() {
-        blogNameLabel.backgroundColor = UIColor.white
-        bylineLabel.backgroundColor = UIColor.white
-        titleLabel.backgroundColor = UIColor.white
-        summaryLabel.backgroundColor = UIColor.white
-        commentActionButton.titleLabel?.backgroundColor = UIColor.white
-        likeActionButton.titleLabel?.backgroundColor = UIColor.white
+        blogNameLabel.backgroundColor = .white
+        bylineLabel.backgroundColor = .white
+        titleLabel.backgroundColor = .white
+        summaryLabel.backgroundColor = .white
+        commentActionButton.titleLabel?.backgroundColor = .white
+        likeActionButton.titleLabel?.backgroundColor = .white
     }
 
     @objc open func configureCell(_ contentProvider: ReaderPostContentProvider) {
@@ -315,63 +327,32 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             return
         }
         guard let featuredImageURL = content.featuredImageURLForDisplay?() else {
-            featuredImageView.image = nil
+            imageLoader.prepareForReuse()
             currentLoadedCardImageURL = nil
             featuredImageView.isHidden = true
             return
         }
 
         featuredImageView.layoutIfNeeded()
-        if featuredImageView.image == nil || featuredImageDesiredWidth != featuredImageView.frame.size.width || featuredImageURL.absoluteString != currentLoadedCardImageURL {
+        if (!featuredImageURL.isGif && featuredImageView.image == nil) ||
+            (featuredImageURL.isGif && featuredImageView.animationImages == nil) ||
+            featuredImageDesiredWidth != featuredImageView.frame.size.width ||
+            featuredImageURL.absoluteString != currentLoadedCardImageURL {
             configureFeaturedImage(featuredImageURL)
         }
     }
 
     fileprivate func configureFeaturedImage(_ featuredImageURL: URL) {
-        featuredImageView.isHidden = false
+        guard let content = contentProvider else {
+            return
+        }
 
-        // Always clear the previous image so there is no stale or unexpected image
-        // momentarily visible.
-        featuredImageView.image = nil
-        var url = featuredImageURL
+        featuredImageView.isHidden = false
+        currentLoadedCardImageURL = featuredImageURL.absoluteString
         featuredImageDesiredWidth = featuredImageView.frame.width
         let size = CGSize(width: featuredImageDesiredWidth, height: featuredMediaHeightConstraintConstant)
-        if !(contentProvider!.isPrivate()) {
-            url = PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
-            featuredImageView.setImageWith(url, placeholderImage: nil)
-
-        } else if (url.host != nil) && url.host!.hasSuffix("wordpress.com") {
-            // private wpcom image needs special handling.
-            let scale = UIScreen.main.scale
-            let scaledSize = CGSize(width: size.width * scale, height: size.height * scale)
-            url = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: url)
-            let request = requestForURL(url)
-            featuredImageView.setImageWith(request, placeholderImage: nil, success: nil, failure: nil)
-
-        } else {
-            // private but not a wpcom hosted image
-            featuredImageView.setImageWith(url, placeholderImage: nil)
-        }
-        currentLoadedCardImageURL = featuredImageURL.absoluteString
-    }
-
-    fileprivate func requestForURL(_ url: URL) -> URLRequest {
-
-        var requestURL = url
-
-        let absoluteString = requestURL.absoluteString
-        if !absoluteString.hasPrefix("https") {
-            let sslURL = absoluteString.replacingOccurrences(of: "http", with: "https")
-            requestURL = URL(string: sslURL)!
-        }
-
-        let request = NSMutableURLRequest(url: requestURL)
-        guard let token = delegate?.readerCellImageRequestAuthToken(self) else {
-            return request as URLRequest
-        }
-        let headerValue = String(format: "Bearer %@", token)
-        request.addValue(headerValue, forHTTPHeaderField: "Authorization")
-        return request as URLRequest
+        let postInfo = ReaderCardContent(provider: content)
+        imageLoader.loadImage(with: featuredImageURL, from: postInfo, preferedSize: size)
     }
 
     fileprivate func configureTitle() {
@@ -408,11 +389,16 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         if contentProvider == nil || contentProvider?.sourceAttributionStyle() != SourceAttributionStyle.none {
             resetActionButton(commentActionButton)
             resetActionButton(likeActionButton)
+            resetActionButton(saveForLaterButton)
             return
         }
 
         configureCommentActionButton()
         configureLikeActionButton()
+
+        if FeatureFlag.saveForLater.enabled {
+            configureSaveForLaterButton()
+        }
     }
 
     fileprivate func resetActionButton(_ button: UIButton) {
@@ -452,6 +438,11 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         resetActionButton(commentActionButton)
     }
 
+    fileprivate func configureSaveForLaterButton() {
+        let postIsSavedForLater = contentProvider?.isSavedForLater() ?? false
+        saveForLaterButton.isSelected = postIsSavedForLater
+    }
+
     fileprivate func configureButtonTitles() {
         guard let provider = contentProvider else {
             return
@@ -466,7 +457,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             let commentTitle = commentCount > 0 ? String(commentCount) : ""
             likeActionButton.setTitle(likeTitle, for: .normal)
             commentActionButton.setTitle(commentTitle, for: .normal)
-            shareButton.setTitle("", for: .normal)
+            saveForLaterButton.setTitle("", for: .normal)
             followButton.setTitle("", for: .normal)
             followButton.setTitle("", for: .selected)
             followButton.setTitle("", for: .highlighted)
@@ -477,13 +468,13 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
             let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
             let commentTitle = WPStyleGuide.commentCountForDisplay(commentCount)
-            let shareTitle = NSLocalizedString("Share", comment: "Verb. Button title.  Tap to share a post.")
+            let saveForLaterTitle = FeatureFlag.saveForLater.enabled ? NSLocalizedString("Save for Later", comment: "Verb. Button title.  Tap to save a post for later.") : NSLocalizedString("Share", comment: "Verb. Button title.  Tap to share a post.")
             let followTitle = WPStyleGuide.followStringForDisplay(false)
             let followingTitle = WPStyleGuide.followStringForDisplay(true)
 
             likeActionButton.setTitle(likeTitle, for: .normal)
             commentActionButton.setTitle(commentTitle, for: .normal)
-            shareButton.setTitle(shareTitle, for: .normal)
+            saveForLaterButton.setTitle(saveForLaterTitle, for: .normal)
 
             followButton.setTitle(followTitle, for: .normal)
             followButton.setTitle(followingTitle, for: .selected)
@@ -551,11 +542,16 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         delegate?.readerCell(self, visitActionForProvider: provider)
     }
 
-    @IBAction func didTapShareButton(_ sender: UIButton) {
+    @IBAction func didTapSaveForLaterButton(_ sender: UIButton) {
         guard let provider = contentProvider else {
             return
         }
-        delegate?.readerCell(self, shareActionForProvider: provider, fromView: sender)
+        if FeatureFlag.saveForLater.enabled {
+            delegate?.readerCell(self, saveActionForProvider: provider)
+            configureSaveForLaterButton()
+        } else {
+            delegate?.readerCell(self, shareActionForProvider: provider, fromView: sender)
+        }
     }
 
     @IBAction func didTapActionButton(_ sender: UIButton) {
@@ -660,9 +656,10 @@ extension ReaderPostCardCell: Accessible {
     }
 
     private func prepareShareForVoiceOver() {
-        shareButton.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
-        shareButton.accessibilityHint = NSLocalizedString("Shares this post", comment: "Spoken accessibility hint for Share buttons")
-        shareButton.accessibilityTraits = UIAccessibilityTraitButton
+        let saveForLaterFlag = FeatureFlag.saveForLater.enabled
+        saveForLaterButton.accessibilityLabel = saveForLaterFlag ? NSLocalizedString("Save for Later", comment: "Spoken accessibility label") :  NSLocalizedString("Share", comment: "Spoken accessibility label")
+        saveForLaterButton.accessibilityHint = saveForLaterFlag ? NSLocalizedString("Saves this post for later", comment: "Spoken accessibility save for later buttons") : NSLocalizedString("Shares this post", comment: "Spoken accessibility hint for Share buttons")
+        saveForLaterButton.accessibilityTraits = UIAccessibilityTraitButton
     }
 
     private func prepareCommentsForVoiceOver() {
@@ -818,7 +815,7 @@ extension ReaderPostCardCell {
     }
 
     func getShareButtonForTesting() -> UIButton {
-        return shareButton
+        return saveForLaterButton
     }
 
     func getCommentsButtonForTesting() -> UIButton {
