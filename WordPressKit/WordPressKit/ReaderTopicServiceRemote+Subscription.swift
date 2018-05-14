@@ -12,7 +12,7 @@ extension ReaderTopicServiceRemote {
     ///   - siteId: A site id
     ///   - success: Success block
     ///   - failure: Failure block
-    @nonobjc public func subscribeSiteNotifications(with siteId: NSNumber, _ success: @escaping () -> Void, _ failure: @escaping (NSError?) -> Void) {
+    @nonobjc public func subscribeSiteNotifications(with siteId: Int, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
         POST(with: .notifications(siteId: siteId, action: .subscribe), success: success, failure: failure)
     }
     
@@ -22,7 +22,7 @@ extension ReaderTopicServiceRemote {
     ///   - siteId: A site id
     ///   - success: Success block
     ///   - failure: Failure block
-    @nonobjc public func unsubscribeSiteNotifications(with siteId: NSNumber, _ success: @escaping () -> Void, _ failure: @escaping (NSError?) -> Void) {
+    @nonobjc public func unsubscribeSiteNotifications(with siteId: Int, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
         POST(with: .notifications(siteId: siteId, action: .unsubscribe), success: success, failure: failure)
     }
     
@@ -32,7 +32,7 @@ extension ReaderTopicServiceRemote {
     ///   - siteId: A site id
     ///   - success: Success block
     ///   - failure: Failure block
-    @nonobjc public func subscribeSiteComments(with siteId: NSNumber, _ success: @escaping () -> Void, _ failure: @escaping (NSError?) -> Void) {
+    @nonobjc public func subscribeSiteComments(with siteId: Int, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
         POST(with: .comments(siteId: siteId, action: .subscribe), success: success, failure: failure)
     }
     
@@ -42,7 +42,7 @@ extension ReaderTopicServiceRemote {
     ///   - siteId: A site id
     ///   - success: Success block
     ///   - failure: Failure block
-    @nonobjc public func unsubscribeSiteComments(with siteId: NSNumber, _ success: @escaping () -> Void, _ failure: @escaping (NSError?) -> Void) {
+    @nonobjc public func unsubscribeSiteComments(with siteId: Int, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
         POST(with: .comments(siteId: siteId, action: .unsubscribe), success: success, failure: failure)
     }
 
@@ -52,7 +52,7 @@ extension ReaderTopicServiceRemote {
     ///   - siteId: A site id
     ///   - success: Success block
     ///   - failure: Failure block
-    @nonobjc public func subscribePostsEmail(with siteId: NSNumber, _ success: @escaping () -> Void, _ failure: @escaping (NSError?) -> Void) {
+    @nonobjc public func subscribePostsEmail(with siteId: Int, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
         POST(with: .postsEmail(siteId: siteId, action: .subscribe), success: success, failure: failure)
     }
     
@@ -62,7 +62,7 @@ extension ReaderTopicServiceRemote {
     ///   - siteId: A site id
     ///   - success: Success block
     ///   - failure: Failure block
-    @nonobjc public func unsubscribePostsEmail(with siteId: NSNumber, _ success: @escaping () -> Void, _ failure: @escaping (NSError?) -> Void) {
+    @nonobjc public func unsubscribePostsEmail(with siteId: Int, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
         POST(with: .postsEmail(siteId: siteId, action: .unsubscribe), success: success, failure: failure)
     }
     
@@ -73,7 +73,7 @@ extension ReaderTopicServiceRemote {
     ///   - frequency: The frequency value
     ///   - success: Success block
     ///   - failure: Failure block
-    @nonobjc public func updateFrequencyPostsEmail(with siteId: NSNumber, frequency: ReaderServiceDeliveryFrequency, _ success: @escaping () -> Void, _ failure: @escaping (NSError?) -> Void) {
+    @nonobjc public func updateFrequencyPostsEmail(with siteId: Int, frequency: ReaderServiceDeliveryFrequency, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
         let parameters = [Delivery.frequency: NSString(string: frequency.rawValue)]
         POST(with: .postsEmail(siteId: siteId, action: .update), parameters: parameters, success: success, failure: failure)
     }
@@ -81,17 +81,18 @@ extension ReaderTopicServiceRemote {
     
     // MARK: Private methods
     
-    private func POST(with request: ReaderTopicServiceSubscriptionsRequest, parameters: [String: AnyObject]? = nil, success: @escaping () -> Void, failure: @escaping (NSError?) -> Void) {
+    private func POST(with request: ReaderTopicServiceSubscriptionsRequest, parameters: [String: AnyObject]? = nil, success: @escaping () -> Void, failure: @escaping (ReaderTopicServiceError?) -> Void) {
         let urlRequest = path(forEndpoint: request.path, withVersion: request.apiVersion)
         
         DDLogInfo("URL: \(urlRequest)")
         
         wordPressComRestApi.POST(urlRequest, parameters: parameters, success: { (_, response) in
-            DDLogInfo("Success \(response?.url?.absoluteString ?? "unknown response url")")
+            DDLogInfo("Success \(response?.url?.absoluteString ?? "unknown url")")
             success()
-        }) { (error, _) in
+        }) { (error, response) in
             DDLogError("Error: \(error.localizedDescription)")
-            failure(error)
+            let urlAbsoluteString = response?.url?.absoluteString ?? NSLocalizedString("unknown url", comment: "Used when the response doesn't have a valid url to display")
+            failure(ReaderTopicServiceError.remoteResponse(message: error.localizedDescription, url: urlAbsoluteString))
         }
     }
 }
