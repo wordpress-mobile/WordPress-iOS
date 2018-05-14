@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 require 'Octokit'
 
-# TODO: Add proper logging
 # A helper interface for performing some actions on GitHub
 # It relies on GitHub's Octokit wrapper
 class GitHubHelper
@@ -46,7 +45,7 @@ class GitHubHelper
       return nil
     end 
 
-    open_prs = get_open_prs(mile[:number]) # TODO: Returning an array with PR titles and URL here... can be used. 
+    open_prs = get_open_prs(mile[:number]) 
     return {:milestone_title => mile[:title], :is_frozen => is_frozen(mile), :open_issues => mile[:open_issues], :open_prs => open_prs, :open_prs_link => "https://github.com/#{@repository}/pulls?q=is%3Aopen+is%3Apr+milestone%3A#{milestone}"}
   end
 
