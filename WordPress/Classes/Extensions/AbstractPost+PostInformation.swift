@@ -5,6 +5,6 @@ extension AbstractPost: ImageSourceInformation {
     }
 
     var isSelfHostedWithCredentials: Bool {
-        return !blog.isHostedAtWPcom && blog.isBasicAuthCredentialStored()
+        return blog.isSelfHostedWithCredentials
     }
 }
