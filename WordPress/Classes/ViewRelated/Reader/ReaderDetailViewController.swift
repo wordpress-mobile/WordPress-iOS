@@ -2,6 +2,7 @@ import Foundation
 import CocoaLumberjack
 import WordPressShared
 import QuartzCore
+import Gridicons
 
 open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration {
     @objc static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"
@@ -31,7 +32,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     @IBOutlet fileprivate weak var commentButton: UIButton!
     @IBOutlet fileprivate weak var likeButton: UIButton!
     @IBOutlet fileprivate weak var footerViewHeightConstraint: NSLayoutConstraint!
-
+    @IBOutlet fileprivate weak var saveForLaterButton: UIButton!
     // Wrapper views
     @IBOutlet fileprivate weak var textHeaderStackView: UIStackView!
     @IBOutlet fileprivate weak var textFooterStackView: UIStackView!
@@ -631,6 +632,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     fileprivate func configureActionButtons() {
         resetActionButton(likeButton)
         resetActionButton(commentButton)
+        resetActionButton(saveForLaterButton)
 
         guard let post = post else {
             assertionFailure()
@@ -651,6 +653,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                 configureCommentActionButton()
             }
         }
+
+        configureSaveForLaterButton()
     }
 
 
@@ -763,6 +767,26 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         let image = UIImage(named: "icon-reader-comment")
         let highlightImage = UIImage(named: "icon-reader-comment-highlight")
         configureActionButton(commentButton, title: title, image: image, highlightedImage: highlightImage, selected: false)
+    }
+
+    fileprivate func configureSaveForLaterButton() {
+        guard FeatureFlag.saveForLater.enabled else {
+            saveForLaterButton.isHidden = true
+            return
+        }
+
+        let size = Gridicon.defaultSize
+        let icon = Gridicon.iconOfType(.bookmarkOutline, withSize: size)
+        let highlightedIcon = Gridicon.iconOfType(.bookmark, withSize: size)
+
+        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
+        let tintedHighlightedIcon = highlightedIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
+
+        saveForLaterButton.setImage(tintedIcon, for: .normal)
+        saveForLaterButton.setImage(tintedHighlightedIcon, for: .selected)
+
+        saveForLaterButton.isHidden = false
+        saveForLaterButton.isSelected = post?.isSavedForLater ?? false
     }
 
 
@@ -908,6 +932,16 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 
     // MARK: - Actions
+
+    @IBAction func didTapSaveForLaterButton(_ sender: UIButton) {
+        guard let readerPost = post, let context = readerPost.managedObjectContext else {
+            return
+        }
+
+        SaveForLaterAction().execute(with: readerPost, context: context) { [weak self] in
+            self?.saveForLaterButton.isSelected = readerPost.isSavedForLater
+        }
+    }
 
     @IBAction func didTapTagButton(_ sender: UIButton) {
         if !isLoaded {
