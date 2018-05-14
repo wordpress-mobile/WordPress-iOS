@@ -1123,6 +1123,27 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatSignupTermsButtonTapped:
             eventName = @"signup_terms_of_service_tapped";
             break;
+        case WPAnalyticsStatSiteSettingsSiteIconTapped:
+            eventName = @"my_site_icon_tapped";
+            break;
+        case WPAnalyticsStatSiteSettingsSiteIconRemoved:
+            eventName = @"my_site_icon_removed";
+            break;
+        case WPAnalyticsStatSiteSettingsSiteIconShotNew:
+            eventName = @"my_site_icon_shot_new";
+            break;
+        case WPAnalyticsStatSiteSettingsSiteIconGalleryPicked:
+            eventName = @"my_site_icon_gallery_picked";
+            break;
+        case WPAnalyticsStatSiteSettingsSiteIconCropped:
+            eventName = @"my_site_icon_cropped";
+            break;
+        case WPAnalyticsStatSiteSettingsSiteIconUploaded:
+            eventName = @"my_site_icon_uploaded";
+            break;
+        case WPAnalyticsStatSiteSettingsSiteIconUploadFailed:
+            eventName = @"my_site_icon_upload_unsuccessful";
+            break;
         case WPAnalyticsStatSiteSettingsDeleteSiteAccessed:
             eventName = @"site_settings_delete_site_accessed";
             break;
@@ -1339,6 +1360,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
         case WPAnalyticsStatMaxValue:
+        case WPAnalyticsStatNotificationsSettingsBlogNotificationsOn:
+        case WPAnalyticsStatNotificationsSettingsBlogNotificationsOff:
+        case WPAnalyticsStatNotificationsSettingsEmailNotificationsOn:
+        case WPAnalyticsStatNotificationsSettingsEmailNotificationsOff:
+        case WPAnalyticsStatNotificationsSettingsEmailDeliveryInstantly:
+        case WPAnalyticsStatNotificationsSettingsEmailDeliveryDaily:
+        case WPAnalyticsStatNotificationsSettingsEmailDeliveryWeekly:
+        case WPAnalyticsStatNotificationsSettingsCommentsNotificationsOn:
+        case WPAnalyticsStatNotificationsSettingsCommentsNotificationsOff:
+        case WPAnalyticsStatReaderListNotificationMenuOn:
+        case WPAnalyticsStatReaderListNotificationMenuOff:
+        case WPAnalyticsStatReaderListNotificationEnabled:
             return nil;
     }
 
