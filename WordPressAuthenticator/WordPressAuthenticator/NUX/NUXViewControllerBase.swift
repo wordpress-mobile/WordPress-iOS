@@ -171,6 +171,10 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
             self?.refreshSupportNotificationIndicator()
         }
         
+        NotificationCenter.default.addObserver(forName: .wordpressSupportNotificationCleared, object: nil, queue: nil) { [weak self] _ in
+            self?.refreshSupportNotificationIndicator()
+        }
+        
         // Helpshift
         NotificationCenter.default.addObserver(forName: .wordpressSupportBadgeUpdated, object: nil, queue: nil) { [weak self] _ in
             self?.refreshSupportBadge()

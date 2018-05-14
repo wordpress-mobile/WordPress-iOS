@@ -16,4 +16,8 @@ extension NSNotification.Name {
     /// Posted whenever a Support notification is received.
     ///
     public static let wordpressSupportNotificationReceived = NSNotification.Name(rawValue: "WordPressSupportNotificationReceived")
+    
+    /// Posted whenever a Support notification has been viewed.
+    ///
+    public static let wordpressSupportNotificationCleared = NSNotification.Name(rawValue: "WordPressSupportNotificationCleared")
 }
