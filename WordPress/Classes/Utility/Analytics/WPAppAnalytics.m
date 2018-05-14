@@ -347,7 +347,7 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 #pragma mark - Tracks Opt Out
 
 - (void)initializeOptOutTracking {
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:WPAppAnalyticsDefaultsUserOptedOut] != nil) {
+    if ([WPAppAnalytics userHasOptedOutIsSet]) {
         // We've already configured the opt out setting
         return;
     }
@@ -363,6 +363,10 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
     }
 }
 
++ (BOOL)userHasOptedOutIsSet {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:WPAppAnalyticsDefaultsUserOptedOut] != nil;
+}
+
 + (BOOL)userHasOptedOut {
     return [[NSUserDefaults standardUserDefaults] boolForKey:WPAppAnalyticsDefaultsUserOptedOut];
 }
@@ -370,6 +374,16 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 - (void)setUserHasOptedOut:(BOOL)optedOut
 {
     [[NSUserDefaults standardUserDefaults] setBool:optedOut forKey:WPAppAnalyticsDefaultsUserOptedOut];
+}
+
+- (void)setUserHasOptedOut:(BOOL)optedOut
+{
+    if ([WPAppAnalytics userHasOptedOutIsSet]) {
+        BOOL currentValue = [WPAppAnalytics userHasOptedOut];
+        if (currentValue == optedOut) {
+            return;
+        }
+    }
 
     if (optedOut) {
         [self endSession];
