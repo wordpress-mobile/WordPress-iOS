@@ -5,10 +5,12 @@ import WordPressAuthenticator
 
 extension NSNotification.Name {
     static let ZendeskPushNotificationReceivedNotification = NSNotification.Name(rawValue: "ZendeskPushNotificationReceivedNotification")
+    static let ZendeskPushNotificationClearedNotification = NSNotification.Name(rawValue: "ZendeskPushNotificationClearedNotification")
 }
 
 @objc extension NSNotification {
     public static let ZendeskPushNotificationReceivedNotification = NSNotification.Name.ZendeskPushNotificationReceivedNotification
+    public static let ZendeskPushNotificationClearedNotification = NSNotification.Name.ZendeskPushNotificationClearedNotification
 }
 
 @objc class ZendeskUtils: NSObject {
@@ -152,6 +154,15 @@ extension NSNotification.Name {
         // Updating unread indicators should trigger UI updates, so send notification in main thread.
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: .ZendeskPushNotificationReceivedNotification, object: nil)
+        }
+    }
+
+    static func pushNotificationRead() {
+        ZendeskUtils.showSupportNotificationIndicator = false
+
+        // Updating unread indicators should trigger UI updates, so send notification in main thread.
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .ZendeskPushNotificationClearedNotification, object: nil)
         }
     }
 

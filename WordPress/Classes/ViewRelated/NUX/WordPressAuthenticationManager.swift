@@ -17,7 +17,8 @@ class WordPressAuthenticationManager: NSObject {
     ///
     func startRelayingSupportNotifications() {
         if FeatureFlag.zendeskMobile.enabled {
-            NotificationCenter.default.addObserver(self, selector: #selector(zendeskPushNotificationReceived), name: .ZendeskPushNotificationReceivedNotification, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(supportPushNotificationReceived), name: .ZendeskPushNotificationReceivedNotification, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(supportPushNotificationCleared), name: .ZendeskPushNotificationClearedNotification, object: nil)
         } else {
             NotificationCenter.default.addObserver(self, selector: #selector(helpshiftUnreadCountWasUpdated), name: .HelpshiftUnreadCountUpdated, object: nil)
         }
@@ -82,8 +83,12 @@ extension WordPressAuthenticationManager {
         WordPressAuthenticator.shared.supportBadgeCountWasUpdated()
     }
 
-    @objc func zendeskPushNotificationReceived(_ notification: Foundation.Notification) {
-        WordPressAuthenticator.shared.zendeskPushNotificationReceived()
+    @objc func supportPushNotificationReceived(_ notification: Foundation.Notification) {
+        WordPressAuthenticator.shared.supportPushNotificationReceived()
+    }
+
+    @objc func supportPushNotificationCleared(_ notification: Foundation.Notification) {
+        WordPressAuthenticator.shared.supportPushNotificationCleared()
     }
 
 }

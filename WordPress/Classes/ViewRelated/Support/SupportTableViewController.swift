@@ -194,6 +194,7 @@ private extension SupportTableViewController {
             self.showSupportNotificationIndicator = false
             self.reloadViewModel()
             self.delegate?.notificationsCleared()
+            ZendeskUtils.pushNotificationRead()
             guard let controllerToShowFrom = self.controllerToShowFrom() else {
                 return
             }
