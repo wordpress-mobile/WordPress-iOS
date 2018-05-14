@@ -12,4 +12,8 @@ extension NSNotification.Name {
     /// Posted whenever the Support Badge needs to be updated.
     ///
     public static let wordpressSupportBadgeUpdated = NSNotification.Name(rawValue: "WordPressSupportBadgeUpdated")
+    
+    /// Posted whenever a Support notification is received.
+    ///
+    public static let wordpressSupportNotificationReceived = NSNotification.Name(rawValue: "WordPressSupportNotificationReceived")
 }

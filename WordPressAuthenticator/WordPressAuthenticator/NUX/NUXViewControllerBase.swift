@@ -104,6 +104,11 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         helpBadge.isHidden = (count == 0)
     }
 
+    func refreshSupportNotificationIndicator() {
+        let showIndicator = WordPressAuthenticator.shared.delegate?.showSupportNotificationIndicator ?? false
+        helpBadge.text = nil
+        helpBadge.isHidden = !showIndicator
+    }
 
     // MARK: - Actions
 
@@ -151,6 +156,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
 
         addHelpButtonToNavController()
         refreshSupportBadge()
+        refreshSupportNotificationIndicator()
     }
 
     /// Adds the Help Button to the nav controller
@@ -160,6 +166,12 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         let helpBadgeSize = CGSize(width: 12, height: 12)
         let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
 
+        // Zendesk
+        NotificationCenter.default.addObserver(forName: .wordpressSupportNotificationReceived, object: nil, queue: nil) { [weak self] _ in
+            self?.refreshSupportNotificationIndicator()
+        }
+        
+        // Helpshift
         NotificationCenter.default.addObserver(forName: .wordpressSupportBadgeUpdated, object: nil, queue: nil) { [weak self] _ in
             self?.refreshSupportBadge()
         }

@@ -12,11 +12,15 @@ class WordPressAuthenticationManager: NSObject {
         NotificationCenter.default.removeObserver(self)
     }
 
-    /// Helpshift is only available to the WordPress iOS App. Our Authentication Framework doesn't have direct access.
-    /// We'll setup a mechanism to relay the `helpshiftUnreadCountWasUpdated` event back to the Authenticator.
+    /// Support is only available to the WordPress iOS App. Our Authentication Framework doesn't have direct access.
+    /// We'll setup a mechanism to relay the Support event back to the Authenticator.
     ///
-    func startRelayingHelpshiftNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(helpshiftUnreadCountWasUpdated), name: .HelpshiftUnreadCountUpdated, object: nil)
+    func startRelayingSupportNotifications() {
+        if FeatureFlag.zendeskMobile.enabled {
+            NotificationCenter.default.addObserver(self, selector: #selector(zendeskPushNotificationReceived), name: .ZendeskPushNotificationReceivedNotification, object: nil)
+        } else {
+            NotificationCenter.default.addObserver(self, selector: #selector(helpshiftUnreadCountWasUpdated), name: .HelpshiftUnreadCountUpdated, object: nil)
+        }
     }
 
     /// Initializes WordPressAuthenticator with all of the paramteres that will be needed during the login flow.
@@ -77,6 +81,11 @@ extension WordPressAuthenticationManager {
     func helpshiftUnreadCountWasUpdated(_ notification: Foundation.Notification) {
         WordPressAuthenticator.shared.supportBadgeCountWasUpdated()
     }
+
+    @objc func zendeskPushNotificationReceived(_ notification: Foundation.Notification) {
+        WordPressAuthenticator.shared.zendeskPushNotificationReceived()
+    }
+
 }
 
 
@@ -107,6 +116,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             return ZendeskUtils.zendeskEnabled
         }
         return HelpshiftUtils.isHelpshiftEnabled()
+    }
+
+    /// Indicates if the Support notification indicator should be displayed.
+    ///
+    var showSupportNotificationIndicator: Bool {
+        return ZendeskUtils.showSupportNotificationIndicator
     }
 
     /// Returns Helpshift's Unread Messages Count.
