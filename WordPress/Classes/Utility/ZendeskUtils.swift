@@ -21,7 +21,7 @@ extension NSNotification.Name {
     private override init() {}
 
     static var zendeskEnabled = false
-    static var showSupportNotificationIndicator = false
+    @objc static var showSupportNotificationIndicator = false
 
     private var sourceTag: WordPressSupportSourceTag?
 
