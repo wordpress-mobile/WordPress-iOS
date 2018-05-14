@@ -22,7 +22,7 @@
 @property (nonatomic, strong)   NSSet<Blog *>       *blogs;
 @property (nonatomic, readonly) NSArray<Blog *>     *visibleBlogs;
 @property (nonatomic, strong)   Blog        *defaultBlog;
-@property (nonatomic, strong)   ManagedAccountSettings *managedSettings;
+@property (nonatomic, strong)   ManagedAccountSettings *settings;
 
 /**
  The OAuth2 auth token for WordPress.com accounts

@@ -8,6 +8,12 @@ class SiteCreationCategoryTableViewController: NUXTableViewController {
 
     fileprivate var tableHandler: ImmuTableViewHandler!
 
+    override var sourceTag: WordPressSupportSourceTag {
+        get {
+            return .wpComCreateSiteCategory
+        }
+    }
+
     // MARK: - View
 
     override func viewWillAppear(_ animated: Bool) {

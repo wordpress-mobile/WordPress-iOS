@@ -6,11 +6,13 @@
 #import "WPTabBarController.h"
 #import "ApiCredentials.h"
 #import "WordPressAppDelegate.h"
+#import "AccountService.h"
 #import "Blog.h"
 #import "AbstractPost.h"
 #import "WordPress-Swift.h"
 
-NSString * const WPAppAnalyticsDefaultsKeyUsageTracking = @"usage_tracking_enabled";
+NSString * const WPAppAnalyticsDefaultsUserOptedOut = @"tracks_opt_out";
+NSString * const WPAppAnalyticsDefaultsKeyUsageTracking_deprecated = @"usage_tracking_enabled";
 NSString * const WPAppAnalyticsKeyBlogID = @"blog_id";
 NSString * const WPAppAnalyticsKeyPostID = @"post_id";
 NSString * const WPAppAnalyticsKeyFeedID = @"feed_id";
@@ -27,6 +29,8 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
  *  @brief      Timestamp of the app's opening time.
  */
 @property (nonatomic, strong, readwrite) NSDate* applicationOpenedTime;
+
+@property (nonatomic, strong, readwrite) AccountService *accountService;
 
 /**
  *  @brief      If set, this block will be called whenever this object needs to know what the last
@@ -52,15 +56,18 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
     return nil;
 }
 
-- (instancetype)initWithLastVisibleScreenBlock:(WPAppAnalyticsLastVisibleScreenCallback)lastVisibleScreenCallback
+- (instancetype)initWithAccountService:(AccountService *)accountService
+                lastVisibleScreenBlock:(WPAppAnalyticsLastVisibleScreenCallback)lastVisibleScreenCallback
 {
+    NSParameterAssert(accountService);
     NSParameterAssert(lastVisibleScreenCallback);
     
     self = [super init];
     
     if (self) {
+        _accountService = accountService;
         _lastVisibleScreenCallback = lastVisibleScreenCallback;
-        
+
         [self initializeAppTracking];
         [self startObservingNotifications];
     }
@@ -75,10 +82,10 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
  */
 - (void)initializeAppTracking
 {
-    [self initializeUsageTrackingIfNecessary];
+    [self initializeOptOutTracking];
 
-    BOOL trackingEnabled = [WPAppAnalytics isTrackingUsage];
-    if (trackingEnabled) {
+    BOOL userHasOptedOut = [WPAppAnalytics userHasOptedOut];
+    if (!userHasOptedOut) {
         [self registerTrackers];
         [self beginSession];
     }
@@ -108,6 +115,11 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
                                              selector:@selector(applicationDidEnterBackground:)
                                                  name:UIApplicationDidEnterBackgroundNotification
                                                object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(accountSettingsDidChange:)
+                                                 name:NSNotification.AccountSettingsChanged
+                                               object:nil];
 }
 
 - (void)stopObservingNotifications
@@ -127,6 +139,16 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 - (void)applicationDidEnterBackground:(NSNotification*)notification
 {
     [self trackApplicationClosed];
+}
+
+- (void)accountSettingsDidChange:(NSNotification*)notification
+{
+    WPAccount *defaultAccount = [self.accountService defaultWordPressComAccount];
+    if (!defaultAccount.settings) {
+        return;
+    }
+
+    [self setUserHasOptedOut:defaultAccount.settings.tracksOptOut];
 }
 
 #pragma mark - Session
@@ -305,43 +327,56 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
     return error;
 }
 
-
-#pragma mark - Usage tracking initialization
-
-- (void)initializeUsageTrackingIfNecessary
-{
-    if (![self isUsageTrackingInitialized]) {
-        [self setTrackingUsage:YES];
-        [NSUserDefaults resetStandardUserDefaults];
-    }
-}
-
-- (BOOL)isUsageTrackingInitialized
-{
-    return [[NSUserDefaults standardUserDefaults] valueForKey:WPAppAnalyticsDefaultsKeyUsageTracking] != nil;
-}
-
 #pragma mark - Usage tracking
 
 + (BOOL)isTrackingUsage
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:WPAppAnalyticsDefaultsKeyUsageTracking];
+    return [[NSUserDefaults standardUserDefaults] boolForKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated];
 }
 
 - (void)setTrackingUsage:(BOOL)trackingUsage
 {
     if (trackingUsage != [WPAppAnalytics isTrackingUsage]) {
         [[NSUserDefaults standardUserDefaults] setBool:trackingUsage
-                                                forKey:WPAppAnalyticsDefaultsKeyUsageTracking];
+                                                forKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated];
         [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        if (trackingUsage) {
-            [self registerTrackers];
-            [self beginSession];
-        } else {
-            [self endSession];
-            [self clearTrackers];
-        }
+
+    }
+}
+
+#pragma mark - Tracks Opt Out
+
+- (void)initializeOptOutTracking {
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:WPAppAnalyticsDefaultsUserOptedOut] != nil) {
+        // We've already configured the opt out setting
+        return;
+    }
+
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated] == nil) {
+        [self setUserHasOptedOut:NO];
+    } else if ([[NSUserDefaults standardUserDefaults] boolForKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated] == NO) {
+        // If the user has already explicitly disabled tracking,
+        // then we should mirror that to the new setting
+        [self setUserHasOptedOut:YES];
+    } else {
+        [self setUserHasOptedOut:NO];
+    }
+}
+
++ (BOOL)userHasOptedOut {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:WPAppAnalyticsDefaultsUserOptedOut];
+}
+
+- (void)setUserHasOptedOut:(BOOL)optedOut
+{
+    [[NSUserDefaults standardUserDefaults] setBool:optedOut forKey:WPAppAnalyticsDefaultsUserOptedOut];
+
+    if (optedOut) {
+        [self endSession];
+        [self clearTrackers];
+    } else {
+        [self registerTrackers];
+        [self beginSession];
     }
 }
 

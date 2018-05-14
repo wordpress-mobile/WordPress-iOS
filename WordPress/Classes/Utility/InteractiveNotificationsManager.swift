@@ -398,6 +398,10 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Swift.Void) {
         let userInfo = notification.request.content.userInfo as NSDictionary
+
+        // If the app is open, and a Zendesk view is being shown, Zendesk will display an alert allowing the user to view the updated ticket.
+        handleZendeskNotification(userInfo: userInfo)
+
         let category = notification.request.content.categoryIdentifier
 
         guard (category == ShareNoticeConstants.categorySuccessIdentifier || category == ShareNoticeConstants.categoryFailureIdentifier),
@@ -409,6 +413,17 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
         // If the notification orginated from the share extension, disregard this current notification and resend a new one.
         ShareExtensionSessionManager.fireUserNotificationIfNeeded(postUploadOpID)
         completionHandler([])
+    }
+
+    private func handleZendeskNotification(userInfo: NSDictionary) {
+        if FeatureFlag.zendeskMobile.enabled {
+            if let type = userInfo.string(forKey: ZendeskUtils.PushNotificationIdentifiers.key),
+                type == ZendeskUtils.PushNotificationIdentifiers.type {
+                ZendeskUtils.handlePushNotification(userInfo)
+                // Since the notification has been handled, clear the badge count.
+                UIApplication.shared.applicationIconBadgeNumber = 0
+            }
+        }
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter,
