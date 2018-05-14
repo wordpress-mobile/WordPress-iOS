@@ -51,7 +51,7 @@ class PluginDirectoryCollectionViewCell: UICollectionViewCell {
         let iconPlaceholder = Gridicon.iconOfType(.plugins, withSize: CGSize(width: 98, height: 98))
 
         if let imageURL = image {
-            logoImageView?.downloadImage(from: image, placeholderImage: iconPlaceholder)
+            logoImageView?.downloadImage(from: imageURL, placeholderImage: iconPlaceholder)
         } else {
             logoImageView.image = iconPlaceholder
         }
