@@ -165,19 +165,22 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         let helpButtonMarginSpacerWidth = CGFloat(-8)
         let helpBadgeSize = CGSize(width: 12, height: 12)
         let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
-
-        // Zendesk
-        NotificationCenter.default.addObserver(forName: .wordpressSupportNotificationReceived, object: nil, queue: nil) { [weak self] _ in
-            self?.refreshSupportNotificationIndicator()
-        }
         
-        NotificationCenter.default.addObserver(forName: .wordpressSupportNotificationCleared, object: nil, queue: nil) { [weak self] _ in
-            self?.refreshSupportNotificationIndicator()
-        }
         
-        // Helpshift
-        NotificationCenter.default.addObserver(forName: .wordpressSupportBadgeUpdated, object: nil, queue: nil) { [weak self] _ in
-            self?.refreshSupportBadge()
+        if WordPressAuthenticator.shared.configuration.supportNotificationIndicatorFeatureFlag == true {
+            // Zendesk
+            NotificationCenter.default.addObserver(forName: .wordpressSupportNotificationReceived, object: nil, queue: nil) { [weak self] _ in
+                self?.refreshSupportNotificationIndicator()
+            }
+            
+            NotificationCenter.default.addObserver(forName: .wordpressSupportNotificationCleared, object: nil, queue: nil) { [weak self] _ in
+                self?.refreshSupportNotificationIndicator()
+            }
+        } else {
+            // Helpshift
+            NotificationCenter.default.addObserver(forName: .wordpressSupportBadgeUpdated, object: nil, queue: nil) { [weak self] _ in
+                self?.refreshSupportBadge()
+            }
         }
 
         let customView = UIView(frame: helpButtonContainerFrame)
