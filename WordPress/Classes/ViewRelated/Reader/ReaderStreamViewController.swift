@@ -798,7 +798,7 @@ import WordPressFlux
         }
 
         let service = ReaderTopicService(managedObjectContext: managedObjectContext())
-        service.toggleSubscribingNotifications(for: siteID, subscribe: subscribe)
+        service.toggleSubscribingNotifications(for: siteID.intValue, subscribe: subscribe)
     }
 
     fileprivate func toggleFollowingForPost(_ post: ReaderPost) {
@@ -840,7 +840,7 @@ import WordPressFlux
     }
 
     fileprivate func toggleSavedForLater(for post: ReaderPost) {
-        SaveForLaterAction().execute(with: post, context: managedObjectContext(), completion: {})
+        SaveForLaterAction(visibleConfirmation: true).execute(with: post, context: managedObjectContext(), completion: {})
     }
 
     fileprivate func visitSiteForPost(_ post: ReaderPost) {
