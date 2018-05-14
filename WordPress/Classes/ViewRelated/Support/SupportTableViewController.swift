@@ -24,6 +24,7 @@ class SupportTableViewController: UITableViewController {
 
     override init(style: UITableViewStyle) {
         super.init(style: style)
+        NotificationCenter.default.addObserver(self, selector: #selector(showNotificationIndicator(_:)), name: .ZendeskPushNotificationReceivedNotification, object: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -32,7 +33,6 @@ class SupportTableViewController: UITableViewController {
 
     required convenience init() {
         self.init(style: .grouped)
-        NotificationCenter.default.addObserver(self, selector: #selector(showNotificationIndicator(_:)), name: .ZendeskPushNotificationReceivedNotification, object: nil)
     }
 
     deinit {
