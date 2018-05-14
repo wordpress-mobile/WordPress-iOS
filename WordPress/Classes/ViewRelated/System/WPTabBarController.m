@@ -737,7 +737,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
             }
             case WPTabMe: {
                 [WPAppAnalytics track:WPAnalyticsStatMeTabAccessed];
-                [self showMeNotificationIcon:NO];
                 break;
             }
             default: break;
@@ -786,7 +785,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)refreshMeIconIndicator:(NSNotification *)notification
 {
-    [self showMeNotificationIcon:notification.name == NSNotification.ZendeskPushNotificationReceivedNotification];
+    [self updateMeNotificationIcon];
 }
 
 #pragma mark - Helpshift Notifications
@@ -834,14 +833,15 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 }
 
-- (void)showMeNotificationIcon:(BOOL)show
+- (void)updateMeNotificationIcon
 {
     UITabBarItem *meTabBarItem = self.tabBar.items[WPTabMe];
-    meTabBarItem.image = self.meTabBarImageUnread;
-    if (show) {
+    if ([ZendeskUtils showSupportNotificationIndicator]) {
         meTabBarItem.image = self.meTabBarImageUnread;
+        meTabBarItem.selectedImage = self.meTabBarImageUnread;
     } else {
         meTabBarItem.image = self.meTabBarImage;
+        meTabBarItem.selectedImage = self.meTabBarImage;
     }
 }
 
