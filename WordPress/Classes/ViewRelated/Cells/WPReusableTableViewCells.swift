@@ -94,7 +94,7 @@ class WPTableViewCellIndicator: WPTableViewCellDefault {
     var showIndicator: Bool = false {
         didSet {
             if showIndicator {
-                accessoryView = indicatorLabel
+                accessoryView = indicatorView
                 accessoryType = .none
             } else {
                 accessoryView = nil
@@ -102,11 +102,11 @@ class WPTableViewCellIndicator: WPTableViewCellDefault {
         }
     }
 
-    fileprivate lazy var indicatorLabel: UILabel = {
-        let label = UILabel(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 10, height: 10)))
-        label.layer.masksToBounds = true
-        label.layer.cornerRadius =  label.frame.height / 2
-        label.backgroundColor = WPStyleGuide.jazzyOrange()
-        return label
+    fileprivate lazy var indicatorView: UIView = {
+        let view = UIView(frame: CGRect(origin: CGPoint.zero, size: CGSize(width: 10, height: 10)))
+        view.layer.masksToBounds = true
+        view.layer.cornerRadius =  view.frame.height / 2
+        view.backgroundColor = WPStyleGuide.jazzyOrange()
+        return view
     }()
 }
