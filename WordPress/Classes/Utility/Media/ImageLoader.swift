@@ -13,6 +13,17 @@
     var isBlogSelfHostedWithCredentials: Bool { get }
 }
 
+
+extension Blog: PostInformation {
+    var isPrivateOnWPCom: Bool {
+        return self.isHostedAtWPcom && self.isPrivate()
+    }
+
+    var isBlogSelfHostedWithCredentials: Bool {
+        return !self.isHostedAtWPcom && self.isBasicAuthCredentialStored()
+    }
+}
+
 /// Class used together with `CachedAnimatedImageView` to facilitate the loading of both
 /// still images and animated gifs.
 ///

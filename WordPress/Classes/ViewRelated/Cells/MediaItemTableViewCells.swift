@@ -3,10 +3,15 @@ import Gridicons
 import WordPressShared
 
 class MediaItemImageTableViewCell: WPTableViewCell {
-    @objc let customImageView = UIImageView()
+
+    @objc let customImageView = CachedAnimatedImageView()
     @objc let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
     @objc let activityMaskView = UIView()
     @objc let videoIconView = PlayIconView()
+
+    @objc lazy var imageLoader: ImageLoader = {
+        return ImageLoader(imageView: customImageView)
+    }()
 
     @objc var isVideo: Bool {
         set {
@@ -238,22 +243,37 @@ struct MediaImageRow: ImmuTableRow {
         }
     }
 
+    private var placeholderImage: UIImage? {
+        if let url = media.absoluteLocalURL {
+            return UIImage(contentsOfFile: url.path)
+        } else if let url = media.absoluteThumbnailLocalURL {
+            return UIImage(contentsOfFile: url.path)
+        }
+        return nil
+    }
+
+    private var imageURL: URL? {
+        if let url = media.absoluteLocalURL {
+            return url
+        } else if let urlString = media.remoteURL, let url = URL(string: urlString)  {
+            return url
+        }
+        return nil
+    }
+
     private func loadImageFor(_ cell: MediaItemImageTableViewCell) {
         if !cell.isLoading && cell.customImageView.image == nil {
-            addPlaceholderImageFor(cell)
+//            addPlaceholderImageFor(cell)
+            guard let url = imageURL else {
+                return
+            }
+            cell.imageLoader.loadImage(with: url, from: media.blog, placeholder: placeholderImage, success: {
 
-            cell.isLoading = true
-            media.image(with: .zero,
-                        completionHandler: { image, error in
-                            DispatchQueue.main.async {
-                                if let error = error, image == nil {
-                                    cell.isLoading = false
-                                    self.show(error)
-                                } else if let image = image {
-                                    self.animateImageChange(image: image, for: cell)
-                                }
-                            }
-            })
+            }) { (error) in
+                if let error = error {
+                    self.show(error)
+                }
+            }
         }
     }
 
