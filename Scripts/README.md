@@ -1,6 +1,6 @@
 # WPiOS Scripts #
 
-This folder contains some helper scripts that can be used to automate those boring repetitive tasks. 
+This folder contains some helper scripts that can be used to automate some tasks. 
 
 ## github-helper.rb
 This script wraps some interfaces to the GitHub API and exposes some helpers for app release related tasks. 
