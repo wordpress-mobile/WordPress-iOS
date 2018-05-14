@@ -23,24 +23,28 @@ The script exposes the following commands:
 Lists the open issue and PRs set for the given milestone.
 
 Usage: `github-helper.rb list_open <milestone>`
+
 Example: `github-helper.rb list_open 10.0` 
 
 #### set_prot
 Sets the standard branch protection options that this project uses for release branches.
 
 Usage: `github-helper.rb set_prot <milestone>`
+
 Example: `github-helper.rb set_prot 10.0`
 
 #### set_frozen
 Sets the frozen flag for the given milestone.
 
 Usage: `github-helper.rb set_frozen <milestone>`
+
 Example: `github-helper.rb set_frozen 10.0`
 
 #### get_frozen
 Returns the state of the frozen flag for the given milestone
 
 Usage: `github-helper.rb get_frozen <milestone>`
+
 Example: `github-helper.rb get_frozen 10.0`
 
 
