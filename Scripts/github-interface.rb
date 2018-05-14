@@ -23,7 +23,7 @@ class GitHubInterface
   def set_branch_protection(branch_name)
     branch_prot = {}
 
-    branch_url = "https://api.github.com/repos/wordpress-mobile/WordPress-iOS/branches/" + branch_name
+    branch_url = "https://api.github.com/repos/#{@repository}/branches/" + branch_name
     branch_prot[:required_status_checks] = {:url=>branch_url + "/protection/required_status_checks", :strict=>true, :contexts=>["Buddybuild : WordPress/57a120bbe0f5520100e11c19"], :contexts_url=>branch_url + "/protection/required_status_checks/contexts"}
     branch_prot[:restrictions] = {:url=>branch_url + "/protection/restrictions", :users_url=>branch_url + "/protection/restrictions/users", :teams_url=>branch_url + "/protection/restrictions/teams", :users=>[], :teams=>[]}
     branch_prot[:enforce_admins] = nil
@@ -47,7 +47,7 @@ class GitHubInterface
     end 
 
     open_prs = get_open_prs(mile[:number]) # TODO: Returning an array with PR titles and URL here... can be used. 
-    return {:milestone_title => mile[:title], :is_frozen => is_frozen(mile), :open_issues => mile[:open_issues], :open_prs => open_prs, :open_prs_link => "https://github.com/wordpress-mobile/WordPress-iOS/pulls?q=is%3Aopen+is%3Apr+milestone%3A#{milestone}"}
+    return {:milestone_title => mile[:title], :is_frozen => is_frozen(mile), :open_issues => mile[:open_issues], :open_prs => open_prs, :open_prs_link => "https://github.com/#{@repository}/pulls?q=is%3Aopen+is%3Apr+milestone%3A#{milestone}"}
   end
 
   # True if the milestone has the frozen flag
@@ -56,24 +56,28 @@ class GitHubInterface
   end
 
   # Sets the milestone's frozen flag
-  def set_milestone_frozen_flag(milestone, freeze = true)
-    milestone = get_milestone(milestone)
+  def set_milestone_frozen_flag(milestone_title, freeze = true)
+    milestone = get_milestone(milestone_title)
     if (milestone.nil?)
       raise "Milestone #{milestone} not found."
     end
 
     mile_title = milestone[:title]
+    puts freeze
     if freeze
       # Check if the state needs changes 
       if (is_frozen(milestone))
+        puts "Milestone #{mile_title} is already frozen. Nothing to do"
         return  # Already frozen: nothing to do
       end
 
       mile_title = mile_title + " ❄️"
     else
+      mile_title = milestone_title
     end
 
-    @client.update_milestone(@repository, milestone[:id], {:title => mile_title})
+    puts "New milestone: #{mile_title}"
+    @client.update_milestone(@repository, milestone[:number], {:title => mile_title})
   end 
 
 
@@ -189,7 +193,7 @@ begin
     if (ARGV.length == 2)
       gi.set_milestone_frozen_flag(release)
     else
-      gi.set_milestone_frozen_flag(release, ARGV[2])
+      gi.set_milestone_frozen_flag(release, ARGV[2] == "false" ? false : true)
     end
   else
     exit
