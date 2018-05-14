@@ -353,13 +353,13 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
     }
 
     if ([[NSUserDefaults standardUserDefaults] objectForKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated] == nil) {
-        [self setUserHasOptedOut:NO];
+        [self setUserHasOptedOutValue:NO];
     } else if ([[NSUserDefaults standardUserDefaults] boolForKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated] == NO) {
         // If the user has already explicitly disabled tracking,
         // then we should mirror that to the new setting
-        [self setUserHasOptedOut:YES];
+        [self setUserHasOptedOutValue:YES];
     } else {
-        [self setUserHasOptedOut:NO];
+        [self setUserHasOptedOutValue:NO];
     }
 }
 
@@ -371,7 +371,9 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
     return [[NSUserDefaults standardUserDefaults] boolForKey:WPAppAnalyticsDefaultsUserOptedOut];
 }
 
-- (void)setUserHasOptedOut:(BOOL)optedOut
+/// This method just sets the user defaults value for UserOptedOut, and doesn't
+/// do any additional configuration of sessions or trackers.
+- (void)setUserHasOptedOutValue:(BOOL)optedOut
 {
     [[NSUserDefaults standardUserDefaults] setBool:optedOut forKey:WPAppAnalyticsDefaultsUserOptedOut];
 }
@@ -384,6 +386,8 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
             return;
         }
     }
+
+    [self setUserHasOptedOutValue:optedOut];
 
     if (optedOut) {
         [self endSession];
