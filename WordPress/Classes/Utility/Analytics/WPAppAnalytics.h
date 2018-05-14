@@ -1,11 +1,12 @@
 #import <Foundation/Foundation.h>
 #import <WordPressShared/WPAnalytics.h>
 
-@class Blog, AbstractPost;
+@class Blog, AbstractPost, AccountService;
 
 typedef NSString*(^WPAppAnalyticsLastVisibleScreenCallback)(void);
 
-extern NSString * const WPAppAnalyticsDefaultsKeyUsageTracking;
+extern NSString * const WPAppAnalyticsDefaultsUserOptedOut;
+extern NSString * const WPAppAnalyticsDefaultsKeyUsageTracking_deprecated;
 extern NSString * const WPAppAnalyticsKeyBlogID;
 extern NSString * const WPAppAnalyticsKeyPostID;
 extern NSString * const WPAppAnalyticsKeyFeedID;
@@ -29,18 +30,40 @@ extern NSString * const WPAppAnalyticsKeyEditorSource;
 /**
  *  @brief      Default initializer.
  *
+ *  @param      accountService                  An instance of AccountService, used to fetch
+ *                                              the default wpcom account (if available) and
+ *                                              update settings relating to analytics.
  *  @param      lastVisibleScreenCallback       This block will be executed whenever this object
  *                                              needs to know the last visible screen for tracking
  *                                              purposes.
  *
  *  @returns    The initialized object.
  */
-- (instancetype)initWithLastVisibleScreenBlock:(WPAppAnalyticsLastVisibleScreenCallback)lastVisibleScreenCallback;
+- (instancetype)initWithAccountService:(AccountService *)accountService
+                lastVisibleScreenBlock:(WPAppAnalyticsLastVisibleScreenCallback)lastVisibleScreenCallback;
+
+@property (nonatomic, readonly) AccountService *accountService;
 
 /**
  *  @brief      The current session count.
  */
 + (NSInteger)sessionCount;
+
+#pragma mark - User Opt Out
+
+/**
+ *  @brief      Call this method to know if the user has opted out of tracking.
+ *
+ *  @returns    YES if the user has opted out, NO otherwise.
+ */
++ (BOOL)userHasOptedOut;
+
+/**
+ *  @brief      Sets user opt out ON or OFF
+ *
+ *  @param      optedOut   The new status for user opt out.
+ */
+- (void)setUserHasOptedOut:(BOOL)optedOut;
 
 #pragma mark - Usage tracking
 
@@ -49,14 +72,14 @@ extern NSString * const WPAppAnalyticsKeyEditorSource;
  *
  *  @returns    YES if usage is being tracked, NO otherwise.
  */
-+ (BOOL)isTrackingUsage;
++ (BOOL)isTrackingUsage __attribute__((deprecated("Use userHasOptedOut instead.")));
 
 /**
  *  @brief      Sets usage tracking ON or OFF
  *
  *  @param      trackingUsage   The new status for usage tracking.
  */
-- (void)setTrackingUsage:(BOOL)trackingUsage;
+- (void)setTrackingUsage:(BOOL)trackingUsage __attribute__((deprecated("Use setUserHasOptedOut instead.")));
 
 /**
  *  @brief      Tracks stats with the blog details when available
