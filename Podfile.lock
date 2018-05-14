@@ -159,7 +159,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `2a25da7b9b687b5e05ce128423d99f771673a6c4`)
   - WordPress-Aztec-iOS/WordPressEditor (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `2a25da7b9b687b5e05ce128423d99f771673a6c4`)
-  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `1d657ac0ddb002712803721da8ee5752e7069637`)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `e2c991c69a80e8d25124426900fc8d7cf1b62307`)
   - WPMediaPicker (= 0.28)
   - wpxmlrpc (= 0.8.3)
   - ZendeskSDK (= 1.11.2.1)
@@ -172,7 +172,7 @@ EXTERNAL SOURCES:
     :commit: 2a25da7b9b687b5e05ce128423d99f771673a6c4
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressShared:
-    :commit: 1d657ac0ddb002712803721da8ee5752e7069637
+    :commit: e2c991c69a80e8d25124426900fc8d7cf1b62307
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 CHECKOUT OPTIONS:
@@ -183,7 +183,7 @@ CHECKOUT OPTIONS:
     :commit: 2a25da7b9b687b5e05ce128423d99f771673a6c4
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressShared:
-    :commit: 1d657ac0ddb002712803721da8ee5752e7069637
+    :commit: e2c991c69a80e8d25124426900fc8d7cf1b62307
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
@@ -223,6 +223,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: 24e87470b5f62cce7ad2b2e682fc7ab55dc51e2a
+PODFILE CHECKSUM: da3e837615c4a714482559eca654592262254222
 
 COCOAPODS: 1.4.0
