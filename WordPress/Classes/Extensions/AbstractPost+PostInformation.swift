@@ -1,10 +1,10 @@
 
-extension AbstractPost: PostInformation {
+extension AbstractPost: ImageSourceInformation {
     var isPrivateOnWPCom: Bool {
         return isPrivate() && blog.isHostedAtWPcom
     }
 
-    var isBlogSelfHostedWithCredentials: Bool {
+    var isSelfHostedWithCredentials: Bool {
         return !blog.isHostedAtWPcom && blog.isBasicAuthCredentialStored()
     }
 }
