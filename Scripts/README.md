@@ -10,9 +10,11 @@ The script requires the Octokit.rb library. If you don't have it, you can instal
 
 The script requires login credentials for connecting the API. Administrator privileges are required for some operations.
 The script expects a `~/.netrc` file with the following content: 
-```machine api.github.com
+```
+machine api.github.com
   login <username>
-  password <password>```
+  password <password>
+```
 
 If you use two factor authentication, you can substitute the password with an App key code. 
 
