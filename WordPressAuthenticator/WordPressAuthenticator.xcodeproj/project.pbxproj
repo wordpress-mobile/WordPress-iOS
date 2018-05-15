@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		050FFF3AF877DD64C5795011 /* Pods_WordPressAuthenticatorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8735AAC66C7015A0B684D4B /* Pods_WordPressAuthenticatorTests.framework */; };
+		98AA5A5720AA1A7000A5958A /* WPHelpIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98AA5A5620AA1A7000A5958A /* WPHelpIndicatorView.swift */; };
 		B501C045208FC68700D1E58F /* LoginFieldsValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B501C03C208FC52400D1E58F /* LoginFieldsValidationTests.swift */; };
 		B501C046208FC6A700D1E58F /* WordPressAuthenticatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B501C03E208FC52500D1E58F /* WordPressAuthenticatorTests.swift */; };
 		B501C048208FC79C00D1E58F /* LoginFacadeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B501C040208FC52500D1E58F /* LoginFacadeTests.m */; };
@@ -111,6 +112,7 @@
 		507363A502FE93136182BBF6 /* Pods-WordPressAuthenticator.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressAuthenticator.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressAuthenticator/Pods-WordPressAuthenticator.release-alpha.xcconfig"; sourceTree = "<group>"; };
 		5585A7E9820611F0B738272C /* Pods_WordPressAuthenticator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WordPressAuthenticator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		75342E9B15CCDC942D18777A /* Pods-WordPressAuthenticator.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressAuthenticator.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressAuthenticator/Pods-WordPressAuthenticator.debug.xcconfig"; sourceTree = "<group>"; };
+		98AA5A5620AA1A7000A5958A /* WPHelpIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPHelpIndicatorView.swift; sourceTree = "<group>"; };
 		ABBD3BD7BE3EBAF47AAB478A /* Pods-WordPressAuthenticatorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressAuthenticatorTests.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressAuthenticatorTests/Pods-WordPressAuthenticatorTests.release.xcconfig"; sourceTree = "<group>"; };
 		B501C03C208FC52400D1E58F /* LoginFieldsValidationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFieldsValidationTests.swift; sourceTree = "<group>"; };
 		B501C03E208FC52500D1E58F /* WordPressAuthenticatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordPressAuthenticatorTests.swift; sourceTree = "<group>"; };
@@ -332,6 +334,7 @@
 				B56090BE208A4F5400399AE4 /* NUXTableViewController.swift */,
 				B56090C3208A4F5400399AE4 /* NUXViewController.swift */,
 				B56090C2208A4F5400399AE4 /* NUXViewControllerBase.swift */,
+				98AA5A5620AA1A7000A5958A /* WPHelpIndicatorView.swift */,
 				B56090D9208A4F9C00399AE4 /* WPNUXMainButton.h */,
 				B56090DA208A4F9C00399AE4 /* WPNUXMainButton.m */,
 				B56090D5208A4F9B00399AE4 /* WPNUXPrimaryButton.h */,
@@ -746,6 +749,7 @@
 				B5609143208A563800399AE4 /* LoginSocialErrorViewController.swift in Sources */,
 				B56090F8208A533200399AE4 /* WordPressAuthenticator+Notifications.swift in Sources */,
 				B56090EA208A51D000399AE4 /* LoginFields+Validation.swift in Sources */,
+				98AA5A5720AA1A7000A5958A /* WPHelpIndicatorView.swift in Sources */,
 				B560913C208A563800399AE4 /* LoginProloguePromoViewController.swift in Sources */,
 				B560910F208A54F800399AE4 /* SafariCredentialsService.swift in Sources */,
 				B5609116208A555600399AE4 /* LoginTextField.swift in Sources */,
