@@ -6,7 +6,7 @@ class PrivacySettingsViewController: UITableViewController {
 
     override init(style: UITableViewStyle) {
         super.init(style: style)
-        navigationItem.title = NSLocalizedString("App Settings", comment: "App Settings Title")
+        navigationItem.title = NSLocalizedString("Privacy Settings", comment: "Privacy Settings Title")
     }
 
     required init?(coder aDecoder: NSCoder) {
