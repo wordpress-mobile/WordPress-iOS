@@ -138,8 +138,20 @@ class PrivacySettingsViewController: UITableViewController {
 
 }
 
+private class InfoCell: WPTableViewCellDefault {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        guard var imageFrame = imageView?.frame,
+            let textFrame = textLabel?.frame else {
+                return
+        }
+        imageFrame.origin.y = textFrame.origin.y + layoutMargins.top
+        imageView?.frame = imageFrame
+    }
+}
+
 private struct InfoRow: ImmuTableRow {
-    static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
+    static let cell = ImmuTableCell.class(InfoCell.self)
 
     let title: String
     let icon: UIImage
