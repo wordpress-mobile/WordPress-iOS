@@ -5,6 +5,7 @@
 
 @protocol PostFeaturedImageCellDelegate <NSObject>
 - (void)postFeatureImageCellDidFinishLoadingImage:(PostFeaturedImageCell *)cell;
+- (void)postFeatureImageCell:(PostFeaturedImageCell *)cell didFinishLoadingAnimatedImageWithData:(NSData *)animationData;
 - (void)postFeatureImageCell:(PostFeaturedImageCell *)cell didFinishLoadingImageWithError:(NSError *)error;
 @end
 
