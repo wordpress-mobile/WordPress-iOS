@@ -871,6 +871,7 @@
 		D8212CBF20AA7B7F008E8AE8 /* ShowAttributionAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CBE20AA7B7F008E8AE8 /* ShowAttributionAction.swift */; };
 		D8212CC120AA7C58008E8AE8 /* ShowMenuAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CC020AA7C58008E8AE8 /* ShowMenuAction.swift */; };
 		D8212CC320AA7F57008E8AE8 /* BlockSiteAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CC220AA7F57008E8AE8 /* BlockSiteAction.swift */; };
+		D8212CC520AA83F9008E8AE8 /* CommentAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CC420AA83F9008E8AE8 /* CommentAction.swift */; };
 		D83CA3A520842CAF0060E310 /* Pageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A420842CAF0060E310 /* Pageable.swift */; };
 		D83CA3A720842CD90060E310 /* ResultsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A620842CD90060E310 /* ResultsPage.swift */; };
 		D83CA3A920842D190060E310 /* StockPhotosPageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A820842D190060E310 /* StockPhotosPageable.swift */; };
@@ -2405,6 +2406,7 @@
 		D8212CBE20AA7B7F008E8AE8 /* ShowAttributionAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowAttributionAction.swift; sourceTree = "<group>"; };
 		D8212CC020AA7C58008E8AE8 /* ShowMenuAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMenuAction.swift; sourceTree = "<group>"; };
 		D8212CC220AA7F57008E8AE8 /* BlockSiteAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockSiteAction.swift; sourceTree = "<group>"; };
+		D8212CC420AA83F9008E8AE8 /* CommentAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentAction.swift; sourceTree = "<group>"; };
 		D83CA3A420842CAF0060E310 /* Pageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pageable.swift; sourceTree = "<group>"; };
 		D83CA3A620842CD90060E310 /* ResultsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsPage.swift; sourceTree = "<group>"; };
 		D83CA3A820842D190060E310 /* StockPhotosPageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosPageable.swift; sourceTree = "<group>"; };
@@ -5589,6 +5591,7 @@
 				D8212CBE20AA7B7F008E8AE8 /* ShowAttributionAction.swift */,
 				D8212CC020AA7C58008E8AE8 /* ShowMenuAction.swift */,
 				D8212CC220AA7F57008E8AE8 /* BlockSiteAction.swift */,
+				D8212CC420AA83F9008E8AE8 /* CommentAction.swift */,
 			);
 			name = ReaderPostActions;
 			sourceTree = "<group>";
@@ -7592,6 +7595,7 @@
 				BE87E1A01BD4054F0075D45B /* WP3DTouchShortcutCreator.swift in Sources */,
 				D800D86C20997EB400E7C7E5 /* OtherMenuItemCreator.swift in Sources */,
 				742B7F3A209CB2B6002E3CC9 /* GIFPlaybackStrategy.swift in Sources */,
+				D8212CC520AA83F9008E8AE8 /* CommentAction.swift in Sources */,
 				37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */,
 				B50C0C501EF429E900372C65 /* CommentAttachmentRenderer.swift in Sources */,
 				7EBB4126206C388100012D98 /* StockPhotosService.swift in Sources */,

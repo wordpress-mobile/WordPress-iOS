@@ -126,7 +126,7 @@ import WordPressUI
         let postCell = cell as! ReaderPostCardCell
 
         // TODO: Enable post cell delegate / implement delegate methods in a helper
-        //        postCell.delegate = self
+        //postCell.delegate = self
         postCell.hidesFollowButton = ReaderHelpers.topicIsFollowing(topic)
         // TODO: Allow logged in features
         //        postCell.enableLoggedInFeatures = isLoggedIn
@@ -226,11 +226,11 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
         let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
         let post = posts[indexPath.row]
 
-//        if recentlyBlockedSitePostObjectIDs.contains(post.objectID) {
-//            let cell = tableView.dequeueReusableCell(withIdentifier: readerBlockedCellReuseIdentifier) as! ReaderBlockedSiteCell
-//            configureBlockedCell(cell, atIndexPath: indexPath)
-//            return cell
-//        }
+        //        if recentlyBlockedSitePostObjectIDs.contains(post.objectID) {
+        //            let cell = tableView.dequeueReusableCell(withIdentifier: readerBlockedCellReuseIdentifier) as! ReaderBlockedSiteCell
+        //            configureBlockedCell(cell, atIndexPath: indexPath)
+        //            return cell
+        //        }
 
         if post.isCross() {
             let cell = tableView.dequeueReusableCell(withIdentifier: readerCrossPostCellReuseIdentifier) as! ReaderCrossPostCell
@@ -287,10 +287,10 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
             return
         }
 
-//        if recentlyBlockedSitePostObjectIDs.contains(apost.objectID) {
-//            unblockSiteForPost(apost)
-//            return
-//        }
+        //        if recentlyBlockedSitePostObjectIDs.contains(apost.objectID) {
+        //            unblockSiteForPost(apost)
+        //            return
+        //        }
 
         if let topic = post.topic, ReaderHelpers.isTopicSearchTopic(topic) {
             WPAppAnalytics.track(.readerSearchResultTapped)
@@ -327,3 +327,47 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
         // Do nothing
     }
 }
+
+//extension ReaderSavedPostsViewController: ReaderPostCellDelegate {
+//    func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider) {
+//        <#code#>
+//    }
+//
+//    func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider) {
+//        <#code#>
+//    }
+//
+//    func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider) {
+//        <#code#>
+//    }
+//
+//    func readerCell(_ cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider) {
+//        <#code#>
+//    }
+//
+//    func readerCell(_ cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
+//        <#code#>
+//    }
+//
+//    func readerCell(_ cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider) {
+//        <#code#>
+//    }
+//
+//    func readerCell(_ cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider) {
+//        <#code#>
+//    }
+//
+//    func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
+//        <#code#>
+//    }
+//
+//    func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider) {
+//        <#code#>
+//    }
+//
+//    func readerCellImageRequestAuthToken(_ cell: ReaderPostCardCell) -> String? {
+//        <#code#>
+//    }
+//
+//
+//}
