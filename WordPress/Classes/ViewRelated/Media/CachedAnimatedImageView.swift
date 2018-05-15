@@ -136,17 +136,20 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
 
     private func validateAndSetGifData(_ animatedImageData: Data, alternateStaticImage: UIImage? = nil, success: (() -> Void)? = nil) {
         let didVerifyDataSize = gifPlaybackStrategy.verifyDataSize(animatedImageData)
-        if didVerifyDataSize {
-            animate(data: animatedImageData, success: success)
-        } else {
-            DispatchQueue.main.async() {
-                self.animatedGifData = nil
-                if let staticImage = alternateStaticImage {
-                    self.image = staticImage
+        DispatchQueue.main.async() {
+            if let staticImage = alternateStaticImage {
+                self.image = staticImage
+            } else {
+                self.image = UIImage(data: animatedImageData)
+            }
+
+            DispatchQueue.global().async {
+                if didVerifyDataSize {
+                    self.animate(data: animatedImageData, success: success)
                 } else {
-                    self.image = UIImage(data: animatedImageData)
+                    self.animatedGifData = nil
+                    success?()
                 }
-                success?()
             }
         }
     }
