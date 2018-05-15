@@ -212,27 +212,13 @@ struct MediaImageRow: ImmuTableRow {
         return nil
     }
 
-    private var imageURL: URL? {
-        if let url = media.absoluteLocalURL {
-            return url
-        } else if let urlString = media.remoteURL, let url = URL(string: urlString)  {
-            return url
-        }
-        return nil
-    }
-
     private func loadImageFor(_ cell: MediaItemImageTableViewCell) {
-        guard let url = imageURL else {
-            return
-        }
-        cell.imageLoader.loadImage(with: url, from: media.blog, placeholder: placeholderImage, success: nil) { (error) in
-            if let error = error {
-                self.show(error)
-            }
+        cell.imageLoader.loadImage(media: media, placeholder: placeholderImage, success: nil) { (error) in
+            self.show(error)
         }
     }
 
-    private func show(_ error: Error) {
+    private func show(_ error: Error?) {
         let alertController = UIAlertController(title: nil, message: NSLocalizedString("There was a problem loading the media item.",
                                                                                        comment: "Error message displayed when the Media Library is unable to load a full sized preview of an item."), preferredStyle: .alert)
         alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: "Verb. User action to dismiss error alert when failing to load media item."))
