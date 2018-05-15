@@ -865,6 +865,8 @@
 		D8212CB120AA64E1008E8AE8 /* LikeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CB020AA64E1008E8AE8 /* LikeAction.swift */; };
 		D8212CB320AA6861008E8AE8 /* FollowAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CB220AA6861008E8AE8 /* FollowAction.swift */; };
 		D8212CB520AA68D5008E8AE8 /* SubscribingNotificationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CB420AA68D5008E8AE8 /* SubscribingNotificationAction.swift */; };
+		D8212CB720AA7703008E8AE8 /* ShareAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CB620AA7703008E8AE8 /* ShareAction.swift */; };
+		D8212CB920AA77AD008E8AE8 /* ActionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CB820AA77AD008E8AE8 /* ActionHelpers.swift */; };
 		D83CA3A520842CAF0060E310 /* Pageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A420842CAF0060E310 /* Pageable.swift */; };
 		D83CA3A720842CD90060E310 /* ResultsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A620842CD90060E310 /* ResultsPage.swift */; };
 		D83CA3A920842D190060E310 /* StockPhotosPageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A820842D190060E310 /* StockPhotosPageable.swift */; };
@@ -2393,6 +2395,8 @@
 		D8212CB020AA64E1008E8AE8 /* LikeAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeAction.swift; sourceTree = "<group>"; };
 		D8212CB220AA6861008E8AE8 /* FollowAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowAction.swift; sourceTree = "<group>"; };
 		D8212CB420AA68D5008E8AE8 /* SubscribingNotificationAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribingNotificationAction.swift; sourceTree = "<group>"; };
+		D8212CB620AA7703008E8AE8 /* ShareAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAction.swift; sourceTree = "<group>"; };
+		D8212CB820AA77AD008E8AE8 /* ActionHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionHelpers.swift; sourceTree = "<group>"; };
 		D83CA3A420842CAF0060E310 /* Pageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pageable.swift; sourceTree = "<group>"; };
 		D83CA3A620842CD90060E310 /* ResultsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsPage.swift; sourceTree = "<group>"; };
 		D83CA3A820842D190060E310 /* StockPhotosPageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosPageable.swift; sourceTree = "<group>"; };
@@ -5571,6 +5575,8 @@
 				D8212CB020AA64E1008E8AE8 /* LikeAction.swift */,
 				D8212CB220AA6861008E8AE8 /* FollowAction.swift */,
 				D8212CB420AA68D5008E8AE8 /* SubscribingNotificationAction.swift */,
+				D8212CB620AA7703008E8AE8 /* ShareAction.swift */,
+				D8212CB820AA77AD008E8AE8 /* ActionHelpers.swift */,
 			);
 			name = ReaderPostActions;
 			sourceTree = "<group>";
@@ -7287,6 +7293,7 @@
 				40A2777F20191AA500D078D5 /* PluginDirectoryCollectionViewCell.swift in Sources */,
 				B55FFCFA1F034F1A0070812C /* String+Ranges.swift in Sources */,
 				FF8791BB1FBAF4B500AD86E6 /* MediaService+Swift.swift in Sources */,
+				D8212CB920AA77AD008E8AE8 /* ActionHelpers.swift in Sources */,
 				B52C4C7D199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift in Sources */,
 				E64384831C628FCC0052ADB5 /* WPStyleGuide+Sharing.swift in Sources */,
 				177074851FB209F100951A4A /* MediaCellProgressView.swift in Sources */,
@@ -7792,6 +7799,7 @@
 				B59B18751CC7FB8D0055EB7C /* PersonViewController.swift in Sources */,
 				40D7823A206AEA880015A3A1 /* Scheduler.swift in Sources */,
 				E6FACB1E1EC675E300284AC7 /* GravatarProfile.swift in Sources */,
+				D8212CB720AA7703008E8AE8 /* ShareAction.swift in Sources */,
 				827704F11F607C0E002E8A03 /* JetpackConnectionViewController.swift in Sources */,
 				5D839AAB187F0D8000811F4A /* PostGeolocationCell.m in Sources */,
 				7E729C2A209A241100F76599 /* AbstractPost+PostInformation.swift in Sources */,

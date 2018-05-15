@@ -699,12 +699,14 @@ import WordPressFlux
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addCancelActionWithTitle(ReaderPostMenuButtonTitles.cancel, handler: nil)
 
+        let context = managedObjectContext()
+
         // Block button
         if shouldShowBlockSiteMenuItem() {
             alertController.addActionWithTitle(ReaderPostMenuButtonTitles.blockSite,
                 style: .destructive,
                 handler: { (action: UIAlertAction) in
-                    if let post: ReaderPost = self.existingObject(for: post.objectID) {
+                    if let post: ReaderPost = ActionHelpers.existingObject(for: post.objectID, in: context) {
                         self.blockSiteForPost(post)
                     }
                 })
@@ -717,7 +719,7 @@ import WordPressFlux
             alertController.addActionWithTitle(buttonTitle,
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
-                                                if let topic: ReaderSiteTopic = self.existingObject(for: topic.objectID) {
+                                                if let topic: ReaderSiteTopic = ActionHelpers.existingObject(for: topic.objectID, in: context) {
                                                     SubscribingNotificationAction().execute(for: topic.siteID, context: self.managedObjectContext(), value: !topic.isSubscribedForPostNotifications)
                                                 }
             })
@@ -729,7 +731,7 @@ import WordPressFlux
             alertController.addActionWithTitle(buttonTitle,
                 style: .default,
                 handler: { (action: UIAlertAction) in
-                    if let post: ReaderPost = self.existingObject(for: post.objectID) {
+                    if let post: ReaderPost = ActionHelpers.existingObject(for: post.objectID, in: context) {
                         self.toggleFollowingForPost(post)
                     }
                 })
@@ -739,7 +741,7 @@ import WordPressFlux
         alertController.addActionWithTitle(ReaderPostMenuButtonTitles.share,
             style: .default,
             handler: { [weak self] (action: UIAlertAction) in
-                self?.sharePost(post.objectID, fromView: anchorView)
+                self?.sharePost(post, fromView: anchorView)
         })
 
         if WPDeviceIdentification.isiPad() {
@@ -763,32 +765,8 @@ import WordPressFlux
     ///     - postID: Object ID for the post.
     ///     - fromView: The view to present the sharing controller as a popover.
     ///
-    fileprivate func sharePost(_ postID: NSManagedObjectID, fromView anchorView: UIView) {
-        if let post: ReaderPost = existingObject(for: postID) {
-            let sharingController = PostSharingController()
-
-            sharingController.shareReaderPost(post, fromView: anchorView, inViewController: self)
-        }
-    }
-
-    /// Retrieves an existing object for the specified object ID from the display context.
-    ///
-    /// - Parameters:
-    ///     - objectID: The object ID of the post.
-    ///
-    /// - Return: The matching post or nil if there is no match.
-    ///
-    fileprivate func existingObject<T>(for objectID: NSManagedObjectID?) -> T? {
-        guard let objectID = objectID else {
-            return nil
-        }
-
-        do {
-            return (try managedObjectContext().existingObject(with: objectID)) as? T
-        } catch let error as NSError {
-            DDLogError(error.localizedDescription)
-            return nil
-        }
+    fileprivate func sharePost(_ post: ReaderPost, fromView anchorView: UIView) {
+        ShareAction().execute(with: post, context: managedObjectContext(), anchor: anchorView, vc: self)
     }
 
     fileprivate func toggleFollowingForPost(_ post: ReaderPost) {
@@ -1581,7 +1559,7 @@ extension ReaderStreamViewController: ReaderPostCellDelegate {
         guard let post = provider as? ReaderPost else {
             return
         }
-        sharePost(post.objectID, fromView: sender)
+        sharePost(post, fromView: sender)
     }
 
     public func readerCell(_ cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider) {
