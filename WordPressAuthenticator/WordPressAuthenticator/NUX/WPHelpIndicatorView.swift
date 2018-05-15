@@ -4,7 +4,7 @@ import WordPressShared
 open class WPHelpIndicatorView: UIView {
 
     struct Constants {
-        static let defaultInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        static let defaultInsets = UIEdgeInsets.zero
         static let defaultBackgroundColor = WPStyleGuide.jazzyOrange()
     }
     
