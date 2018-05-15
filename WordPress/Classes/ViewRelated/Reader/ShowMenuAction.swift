@@ -16,8 +16,7 @@ final class ShowMenuAction {
                                                style: .destructive,
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ActionHelpers.existingObject(for: post.objectID, in: context) {
-                                                    //TODO
-                                                    //self.blockSiteForPost(post)
+                                                    BlockSiteAction().execute(with: post, context: context, completion: {})
                                                 }
             })
         }
@@ -42,7 +41,6 @@ final class ShowMenuAction {
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ActionHelpers.existingObject(for: post.objectID, in: context) {
-                                                    //self.toggleFollowingForPost(post)
                                                     FollowAction().execute(with: post, context: context, completion: {})
                                                 }
             })
