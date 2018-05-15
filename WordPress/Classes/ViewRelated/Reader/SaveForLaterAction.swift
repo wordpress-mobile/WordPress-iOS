@@ -16,22 +16,23 @@ final class SaveForLaterAction {
         self.visibleConfirmation = visibleConfirmation
     }
 
-    func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
+    func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)? = nil) {
         toggleSavedForLater(post, context: context, completion: completion)
     }
 
-    private func toggleSavedForLater(_ post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
+    private func toggleSavedForLater(_ post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)?) {
         let readerPostService = ReaderPostService(managedObjectContext: context)
+
         readerPostService.toggleSavedForLater(for: post, success: {
             self.presentSuccessNotice(for: post, context: context, completion: completion)
-            completion()
+            completion?()
             }, failure: { error in
                 self.presentErrorNotice(error, activating: !post.isSavedForLater)
-                completion()
+                completion?()
         })
     }
 
-    private func presentSuccessNotice(for post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
+    private func presentSuccessNotice(for post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)?) {
         guard visibleConfirmation else {
             return
         }
@@ -56,7 +57,7 @@ final class SaveForLaterAction {
         present(notice)
     }
 
-    private func presentPostRemovedNotice(for post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
+    private func presentPostRemovedNotice(for post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)?) {
         guard visibleConfirmation else {
             return
         }

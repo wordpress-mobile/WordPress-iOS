@@ -408,7 +408,7 @@ extension ReaderSavedPostsViewController: ReaderPostCellDelegate {
     }
 
     fileprivate func toggleSavedForLater(for post: ReaderPost) {
-        SaveForLaterAction(visibleConfirmation: true).execute(with: post, context: managedObjectContext(), completion: {})
+        SaveForLaterAction(visibleConfirmation: false).execute(with: post, context: managedObjectContext(), completion: {})
     }
 
     fileprivate func visitSiteForPost(_ post: ReaderPost) {
