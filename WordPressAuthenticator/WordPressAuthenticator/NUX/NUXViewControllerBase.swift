@@ -167,6 +167,8 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         
         var helpNotificationSize: CGSize
         var notificationView: UIView
+        var notificationViewCenterXConstraint: NSLayoutConstraint
+        var notificationViewCenterYConstraint: NSLayoutConstraint
         
         if WordPressAuthenticator.shared.configuration.supportNotificationIndicatorFeatureFlag == true {
             // Zendesk
@@ -180,6 +182,11 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
 
             notificationView = helpIndicator
             helpNotificationSize = CGSize(width: 10, height: 10)
+            let notificationCenterOffset = CGPoint(x: -5, y: 3)
+            notificationViewCenterXConstraint = notificationView.centerXAnchor.constraint(equalTo: helpButton.trailingAnchor,
+                                                                                          constant: helpButton.contentEdgeInsets.top + notificationCenterOffset.x)
+            notificationViewCenterYConstraint = notificationView.centerYAnchor.constraint(equalTo: helpButton.topAnchor,
+                                                                                          constant: helpButton.contentEdgeInsets.top + notificationCenterOffset.y)
         } else {
             // Helpshift
             NotificationCenter.default.addObserver(forName: .wordpressSupportBadgeUpdated, object: nil, queue: nil) { [weak self] _ in
@@ -188,6 +195,8 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
             
             notificationView = helpBadge
             helpNotificationSize = CGSize(width: 12, height: 12)
+            notificationViewCenterXConstraint = notificationView.centerXAnchor.constraint(equalTo: helpButton.trailingAnchor)
+            notificationViewCenterYConstraint = notificationView.centerYAnchor.constraint(equalTo: helpButton.topAnchor)
         }
 
         let customView = UIView(frame: helpButtonContainerFrame)
@@ -211,8 +220,8 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         notificationView.translatesAutoresizingMaskIntoConstraints = false
         notificationView.isHidden = true
         customView.addSubview(notificationView)
-        notificationView.centerXAnchor.constraint(equalTo: helpButton.trailingAnchor).isActive = true
-        notificationView.centerYAnchor.constraint(equalTo: helpButton.topAnchor).isActive = true
+        notificationViewCenterXConstraint.isActive = true
+        notificationViewCenterYConstraint.isActive = true
         notificationView.widthAnchor.constraint(equalToConstant: helpNotificationSize.width).isActive = true
         notificationView.heightAnchor.constraint(equalToConstant: helpNotificationSize.height).isActive = true
 
