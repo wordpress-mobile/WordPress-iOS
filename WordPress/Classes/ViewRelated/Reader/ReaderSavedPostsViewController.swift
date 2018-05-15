@@ -408,7 +408,7 @@ extension ReaderSavedPostsViewController: ReaderPostCellDelegate {
     }
 
     fileprivate func toggleSavedForLater(for post: ReaderPost) {
-        SaveForLaterAction(visibleConfirmation: false).execute(with: post, context: managedObjectContext(), completion: {})
+        SaveForLaterAction(visibleConfirmation: false).execute(with: post, context: managedObjectContext())
     }
 
     fileprivate func visitSiteForPost(_ post: ReaderPost) {
@@ -421,7 +421,7 @@ extension ReaderSavedPostsViewController: ReaderPostCellDelegate {
 
 
     fileprivate func toggleLikeForPost(_ post: ReaderPost) {
-        LikeAction().execute(with: post, context: managedObjectContext(), completion: {})
+        LikeAction().execute(with: post, context: managedObjectContext())
     }
 
     fileprivate func sharePost(_ post: ReaderPost, fromView anchorView: UIView) {

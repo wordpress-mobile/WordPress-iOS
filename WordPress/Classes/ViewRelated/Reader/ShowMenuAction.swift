@@ -41,7 +41,7 @@ final class ShowMenuAction {
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ActionHelpers.existingObject(for: post.objectID, in: context) {
-                                                    FollowAction().execute(with: post, context: context, completion: {})
+                                                    FollowAction().execute(with: post, context: context)
                                                 }
             })
         }

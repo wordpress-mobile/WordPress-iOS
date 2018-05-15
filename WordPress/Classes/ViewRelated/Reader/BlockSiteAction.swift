@@ -5,13 +5,13 @@ final class BlockSiteAction {
         self.asBlocked = asBlocked
     }
 
-    func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
+    func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)? = nil) {
         let service = ReaderSiteService(managedObjectContext: context)
         service.flagSite(withID: post.siteID,
                          asBlocked: asBlocked,
                          success: nil,
                          failure: { (error: Error?) in
-                            completion()
+                            completion?()
 
                             let message = error?.localizedDescription ?? ""
                             let errorTitle = NSLocalizedString("Error Blocking Site", comment: "Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader.")
