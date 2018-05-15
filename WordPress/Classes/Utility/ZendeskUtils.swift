@@ -57,6 +57,10 @@ extension NSNotification.Name {
                                         clientId: zdClientId)
 
         ZendeskUtils.toggleZendesk(enabled: true)
+
+        // User has accessed a single ticket view, typically via the Zendesk Push Notification alert.
+        // In this case, we'll clear the Push Notification indicators.
+        NotificationCenter.default.addObserver(self, selector: #selector(ZendeskUtils.ticketViewed(_:)), name: NSNotification.Name(rawValue: ZDKAPI_CommentListStarting), object: nil)
     }
 
     // MARK: - Show Zendesk Views
@@ -166,6 +170,9 @@ extension NSNotification.Name {
         }
     }
 
+    @objc static func ticketViewed(_ notification: Foundation.Notification) {
+        pushNotificationRead()
+    }
     // MARK: - Helpers
 
     // Specifically for WPError, which is ObjC & has the sourceTag as a String.
