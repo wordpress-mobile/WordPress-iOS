@@ -126,7 +126,7 @@ import WordPressUI
         let postCell = cell as! ReaderPostCardCell
 
         // TODO: Enable post cell delegate / implement delegate methods in a helper
-        //postCell.delegate = self
+        postCell.delegate = self
         postCell.hidesFollowButton = ReaderHelpers.topicIsFollowing(topic)
         // TODO: Allow logged in features
         //        postCell.enableLoggedInFeatures = isLoggedIn
@@ -328,46 +328,104 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
     }
 }
 
-//extension ReaderSavedPostsViewController: ReaderPostCellDelegate {
-//    func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider) {
-//        <#code#>
-//    }
-//
-//    func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider) {
-//        <#code#>
-//    }
-//
-//    func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider) {
-//        <#code#>
-//    }
-//
-//    func readerCell(_ cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider) {
-//        <#code#>
-//    }
-//
-//    func readerCell(_ cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
-//        <#code#>
-//    }
-//
-//    func readerCell(_ cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider) {
-//        <#code#>
-//    }
-//
-//    func readerCell(_ cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider) {
-//        <#code#>
-//    }
-//
-//    func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
-//        <#code#>
-//    }
-//
-//    func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider) {
-//        <#code#>
-//    }
-//
-//    func readerCellImageRequestAuthToken(_ cell: ReaderPostCardCell) -> String? {
-//        <#code#>
-//    }
-//
-//
-//}
+extension ReaderSavedPostsViewController: ReaderPostCellDelegate {
+    func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider) {
+        guard let post = provider as? ReaderPost else {
+            return
+        }
+        HeaderAction().execute(post: post, origin: self)
+    }
+
+    func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider) {
+        guard let post = provider as? ReaderPost else {
+            return
+        }
+        CommentAction().execute(post: post, origin: self)
+    }
+
+    func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider) {
+        guard let post = provider as? ReaderPost else {
+            return
+        }
+        toggleFollowingForPost(post)
+    }
+
+    func readerCell(_ cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider) {
+        guard let post = provider as? ReaderPost else {
+            return
+        }
+        toggleSavedForLater(for: post)
+    }
+
+    func readerCell(_ cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
+        guard let post = provider as? ReaderPost else {
+            return
+        }
+        sharePost(post, fromView: sender)
+    }
+
+    func readerCell(_ cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider) {
+        guard let post = provider as? ReaderPost else {
+            return
+        }
+        visitSiteForPost(post)
+    }
+
+    func readerCell(_ cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider) {
+        guard let post = provider as? ReaderPost else {
+            return
+        }
+        toggleLikeForPost(post)
+    }
+
+    func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
+        //TODO
+    }
+
+    func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider) {
+        guard let post = provider as? ReaderPost else {
+            return
+        }
+        showAttributionForPost(post)
+    }
+
+    func readerCellImageRequestAuthToken(_ cell: ReaderPostCardCell) -> String? {
+        //TODO
+        //return imageRequestAuthToken
+        return nil
+    }
+
+    fileprivate func toggleFollowingForPost(_ post: ReaderPost) {
+        let siteTitle = post.blogNameForDisplay()
+        let siteID = post.siteID
+        let toFollow = !post.isFollowing
+
+        FollowAction().execute(with: post, context: managedObjectContext()) { [weak self] in
+            if toFollow {
+                self?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
+            }
+        }
+    }
+
+    fileprivate func toggleSavedForLater(for post: ReaderPost) {
+        SaveForLaterAction(visibleConfirmation: true).execute(with: post, context: managedObjectContext(), completion: {})
+    }
+
+    fileprivate func visitSiteForPost(_ post: ReaderPost) {
+        VisitSiteAction().execute(with: post, context: ContextManager.sharedInstance().mainContext, origin: self)
+    }
+
+    fileprivate func showAttributionForPost(_ post: ReaderPost) {
+        ShowAttributionAction().execute(with: post, context: managedObjectContext(), origin: self)
+    }
+
+
+    fileprivate func toggleLikeForPost(_ post: ReaderPost) {
+        LikeAction().execute(with: post, context: managedObjectContext(), completion: {})
+    }
+
+    fileprivate func sharePost(_ post: ReaderPost, fromView anchorView: UIView) {
+        ShareAction().execute(with: post, context: managedObjectContext(), anchor: anchorView, vc: self)
+    }
+
+}
