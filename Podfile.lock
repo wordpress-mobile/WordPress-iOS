@@ -36,18 +36,18 @@ PODS:
     - FormatterKit/Resources
   - Gifu (3.0.0)
   - GoogleSignIn (4.1.2):
-    - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
-    - GoogleToolboxForMac/NSString+URLArguments (~> 2.1)
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
+    - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
     - GTMOAuth2 (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
   - GoogleToolboxForMac/DebugUtils (2.1.4):
     - GoogleToolboxForMac/Defines (= 2.1.4)
   - GoogleToolboxForMac/Defines (2.1.4)
-  - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.4):
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.1.4)":
     - GoogleToolboxForMac/DebugUtils (= 2.1.4)
     - GoogleToolboxForMac/Defines (= 2.1.4)
-    - GoogleToolboxForMac/NSString+URLArguments (= 2.1.4)
-  - GoogleToolboxForMac/NSString+URLArguments (2.1.4)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.1.4)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.1.4)"
   - Gridicons (0.15)
   - GTMOAuth2 (1.1.6):
     - GTMSessionFetcher (~> 1.1)
@@ -91,7 +91,7 @@ PODS:
     - MRProgress/Helper
   - Nimble (7.1.1)
   - NSObject-SafeExpectations (0.0.2)
-  - NSURL+IDN (0.3)
+  - "NSURL+IDN (0.3)"
   - OCMock (3.4.1)
   - OHHTTPStubs (6.1.0):
     - OHHTTPStubs/Default (= 6.1.0)
@@ -120,6 +120,7 @@ PODS:
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
     - NSObject-SafeExpectations (= 0.0.2)
+  - WordPressUI (1.0)
   - WPMediaPicker (0.28)
   - wpxmlrpc (0.8.3)
   - ZendeskSDK (1.11.2.1):
@@ -148,7 +149,7 @@ DEPENDENCIES:
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.1.1)
   - NSObject-SafeExpectations (= 0.0.2)
-  - NSURL+IDN (= 0.3)
+  - "NSURL+IDN (= 0.3)"
   - OCMock (~> 3.4)
   - OHHTTPStubs (= 6.1.0)
   - OHHTTPStubs/Swift (= 6.1.0)
@@ -160,9 +161,46 @@ DEPENDENCIES:
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `2a25da7b9b687b5e05ce128423d99f771673a6c4`)
   - WordPress-Aztec-iOS/WordPressEditor (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `2a25da7b9b687b5e05ce128423d99f771673a6c4`)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `e2c991c69a80e8d25124426900fc8d7cf1b62307`)
+  - WordPressUI (= 1.0)
   - WPMediaPicker (= 0.28)
   - wpxmlrpc (= 0.8.3)
   - ZendeskSDK (= 1.11.2.1)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - 1PasswordExtension
+    - AFNetworking
+    - Alamofire
+    - BuddyBuildSDK
+    - CocoaLumberjack
+    - Crashlytics
+    - Expecta
+    - Fabric
+    - FormatterKit
+    - Gifu
+    - GoogleSignIn
+    - GoogleToolboxForMac
+    - Gridicons
+    - GTMOAuth2
+    - GTMSessionFetcher
+    - HockeySDK
+    - lottie-ios
+    - MGSwipeTableCell
+    - MRProgress
+    - Nimble
+    - NSObject-SafeExpectations
+    - "NSURL+IDN"
+    - OCMock
+    - OHHTTPStubs
+    - Reachability
+    - Specta
+    - Starscream
+    - SVProgressHUD
+    - UIDeviceIdentifier
+    - WordPressUI
+    - WPMediaPicker
+    - wpxmlrpc
+    - ZendeskSDK
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
@@ -209,7 +247,7 @@ SPEC CHECKSUMS:
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   Nimble: 391f07782af4b37914f9bd7b2ffbb952731b8202
   NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
-  NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
+  "NSURL+IDN": 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: 2cd0716969bab32a2283ff3a46fd26a8c8b4c5e3
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
@@ -219,10 +257,11 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 448c4ba1c7d748e9ed881f328963ccdc8977e0d8
   WordPressShared: b1bed3aa4db4438fd9fe78ccd0be58c8fee19c17
+  WordPressUI: 17ea58d8b73d9f6683fe1fa71b31a7734d215e39
   WPMediaPicker: fb71c0e4fb720f04f7ff7496572ed1005a4e7e12
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: da3e837615c4a714482559eca654592262254222
+PODFILE CHECKSUM: 327c1229c44513c08d2a96def4da76d418ef488b
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.0
