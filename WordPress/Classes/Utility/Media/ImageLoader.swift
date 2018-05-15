@@ -29,14 +29,15 @@
         super.init()
     }
 
+    /// Removes the gif animation and prevents it from animate again.
     /// Call this in a table/collection cell's `prepareForReuse()`.
     ///
     @objc func prepareForReuse() {
         imageView.prepForReuse()
     }
 
-
-    /// Load an image from the specific Media object. If it's a gif, it will animate it.
+    @objc(loadImageFromMedia:preferredSize:placeholder:success:error:)
+    /// Load an image from the given Media object. If it's a gif, it will animate it.
     /// For any other type of media, this will load the corresponding static image.
     ///
     /// - Parameters:
@@ -45,6 +46,7 @@
     ///   - size: The prefered size of the image to load.
     ///   - success: A closure to be called if the image was loaded successfully.
     ///   - error: A closure to be called if there was an error loading the image.
+    ///
     func loadImage(media: Media, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: (() -> Void)?, error: ((Error?) -> Void)?) {
 
         self.placeholder = placeholder
@@ -78,7 +80,7 @@
             loadGif(with: url, from: post)
         } else {
             imageView.clean()
-            loadStillImage(with: url, from: post, preferedSize: size)
+            loadStaticImage(with: url, from: post, preferedSize: size)
         }
     }
 
@@ -117,7 +119,7 @@
 
     /// Load a static image from the given URL.
     ///
-    private func loadStillImage(with url: URL, from post: ImageSourceInformation, preferedSize size: CGSize) {
+    private func loadStaticImage(with url: URL, from post: ImageSourceInformation, preferedSize size: CGSize) {
         if url.isFileURL {
             downloadImage(from: url)
         } else if post.isPrivateOnWPCom {
@@ -221,8 +223,6 @@
             self.errorHandler?(error)
         }
     }
-
-
 
     private func url(from media: Media) -> URL? {
         if let localUrl = media.absoluteLocalURL {
