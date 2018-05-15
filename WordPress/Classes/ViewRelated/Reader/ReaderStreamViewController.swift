@@ -780,23 +780,10 @@ import WordPressFlux
 
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
 
-        let service = ReaderSiteService(managedObjectContext: managedObjectContext())
-        service.flagSite(withID: post.siteID,
-            asBlocked: true,
-            success: nil,
-            failure: { [weak self] (error: Error?) in
-                self?.recentlyBlockedSitePostObjectIDs.remove(objectID)
-                self?.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
-
-                let message = error?.localizedDescription ?? ""
-                let errorTitle = NSLocalizedString("Error Blocking Site", comment: "Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader.")
-                let cancelTitle = NSLocalizedString("OK", comment: "Text for an alert's dismissal button.")
-                let alertController = UIAlertController(title: errorTitle,
-                    message: message,
-                    preferredStyle: .alert)
-                alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
-                alertController.presentFromRootViewController()
-            })
+        BlockSiteAction().execute(with: post, context: managedObjectContext()) { [weak self] in
+            self?.recentlyBlockedSitePostObjectIDs.remove(objectID)
+            self?.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+        }
     }
 
 
