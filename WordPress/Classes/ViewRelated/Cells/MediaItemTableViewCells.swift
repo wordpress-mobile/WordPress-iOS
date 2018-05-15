@@ -8,7 +8,7 @@ class MediaItemImageTableViewCell: WPTableViewCell {
     @objc let videoIconView = PlayIconView()
 
     @objc lazy var imageLoader: ImageLoader = {
-        return ImageLoader(imageView: customImageView)
+        return ImageLoader(imageView: customImageView, gifStrategy: .largeGIFs)
     }()
 
     @objc var isVideo: Bool {
