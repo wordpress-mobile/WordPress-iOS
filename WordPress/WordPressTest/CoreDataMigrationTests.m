@@ -897,15 +897,8 @@
 
 - (void)testMigrate74to75
 {
-    // There was an issue with model 75 where the `featuredOnPosts` relationship on Media accidentally
-    // had its its destination reverted to point to Post instead of AbstractPost.
-    // (Using Post instead of AbstractPost had previously contributed towards a crash related
-    //  to pages, detailed here: https://github.com/wordpress-mobile/WordPress-iOS/issues/9182)
-    // Model 76 reverts this change, and this test verifies that any featuredOnPosts -> Page relationships
-    // created against model 74 correctly survive the migration to model 76.
-
     NSURL *model74Url = [self urlForModelName:@"WordPress 74" inDirectory:nil];
-    NSURL *model76Url = [self urlForModelName:@"WordPress 76" inDirectory:nil];
+    NSURL *model75Url = [self urlForModelName:@"WordPress 75" inDirectory:nil];
     NSURL *storeUrl = [self urlForStoreWithName:@"WordPress74.sqlite"];
 
     // Load a Model 74 Stack
@@ -940,14 +933,6 @@
     [blog1 setValue:@"https://test1.wordpress.com/xmlrpc.php" forKey:@"xmlrpc"];
     [blog1 setValue:account1 forKey:@"account"];
 
-    NSManagedObject *page1 = [NSEntityDescription insertNewObjectForEntityForName:@"Page" inManagedObjectContext:context];
-    NSManagedObject *media1 = [NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:context];
-    [media1 setValue:blog1 forKey:@"blog"];
-    [page1 setValue:blog1 forKey:@"blog"];
-
-    // This is the relationship we want to verify survives the migration
-    [media1 setValue:[NSSet setWithObject:page1] forKey:@"featuredOnPosts"];
-
     [context save:&error];
     XCTAssertNil(error, @"Error while saving context");
 
@@ -955,20 +940,20 @@
     XCTAssertNotNil(ps);
     psc = nil;
 
-    // Migrate to Model 76
-    NSManagedObjectModel *model76 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model76Url];
+    // Migrate to Model 75
+    NSManagedObjectModel *model75 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model75Url];
     BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:storeUrl
                                                            ofType:NSSQLiteStoreType
-                                                          toModel:model76
-                                                orderedModelNames:@[@"WordPress 74", @"WordPress 75", @"WordPress 76"]
+                                                          toModel:model75
+                                                orderedModelNames:@[@"WordPress 74", @"WordPress 75"]
                                                             error:&error];
     if (!migrateResult) {
         NSLog(@"Error while migrating: %@", error);
     }
     XCTAssertTrue(migrateResult);
 
-    // Load a Model 76 Stack
-    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model76];
+    // Load a Model 75 Stack
+    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model75];
     ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
                            configuration:nil
                                      URL:storeUrl
@@ -978,19 +963,8 @@
     context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
     context.persistentStoreCoordinator = psc;
 
-    XCTAssertNil(error, @"Error while loading the PSC for Model 76");
+    XCTAssertNil(error, @"Error while loading the PSC for Model 75");
     XCTAssertNotNil(ps);
-
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Media"];
-    NSArray *allMedia = [context executeFetchRequest:request error:&error];
-    Media *savedMedia = allMedia.firstObject;
-    NSManagedObject *featuredPage = [[savedMedia featuredOnPosts] anyObject];
-
-    request = [NSFetchRequest fetchRequestWithEntityName:@"Page"];
-    NSArray *allPages = [context executeFetchRequest:request error:&error];
-    NSManagedObject *savedPage = allPages.firstObject;
-
-    XCTAssertEqualObjects(savedPage, featuredPage);
 }
 
 #pragma mark - Private Helpers
