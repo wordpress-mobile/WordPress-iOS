@@ -35,6 +35,36 @@
         imageView.prepForReuse()
     }
 
+
+    /// Load an image from the specific Media object. If it's a gif, it will animate it.
+    /// For any other type of media, this will load the corresponding static image.
+    ///
+    /// - Parameters:
+    ///   - media: The media object
+    ///   - placeholder: A placeholder to show while the image is loading.
+    ///   - size: The prefered size of the image to load.
+    ///   - success: A closure to be called if the image was loaded successfully.
+    ///   - error: A closure to be called if there was an error loading the image.
+    func loadImage(media: Media, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: (() -> Void)?, error: ((Error?) -> Void)?) {
+
+        self.placeholder = placeholder
+        successHandler = success
+        errorHandler = error
+
+        guard let url = url(from: media) else {
+            let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL, userInfo: nil)
+            callErrorHandler(with: error)
+            return
+        }
+
+        if url.isGif {
+            loadGif(with: url, from: media.blog)
+        } else if imageView.image == nil {
+            imageView.clean()
+            loadImage(from: media, preferredSize: size)
+        }
+    }
+
     @objc(loadImageWithURL:fromPost:andPreferedSize:)
     /// Load an image from a specific post, using the given URL. Supports animated images (gifs) as well.
     ///
@@ -63,6 +93,7 @@
     ///   - success: A closure to be called if the image was loaded successfully.
     ///   - error: A closure to be called if there was an error loading the image.
     func loadImage(with url: URL, from post: ImageSourceInformation, preferedSize size: CGSize = .zero, placeholder: UIImage?, success: (() -> Void)?, error: ((Error?) -> Void)?) {
+
         self.placeholder = placeholder
         successHandler = success
         errorHandler = error
@@ -117,6 +148,18 @@
             return
         }
         downloadImage(from: protonURL)
+    }
+
+    private func loadImage(from media: Media, preferredSize size: CGSize) {
+        imageView.image = placeholder
+        media.image(with: size) {  [weak self] (image, error) in
+            if let image = image {
+                self?.imageView.image = image
+                self?.callSuccessHandler()
+            } else {
+                self?.callErrorHandler(with: error)
+            }
+        }
     }
 
     /// Download the animated image from the given URL Request.
@@ -177,5 +220,16 @@
         DispatchQueue.main.async {
             self.errorHandler?(error)
         }
+    }
+
+
+
+    private func url(from media: Media) -> URL? {
+        if let localUrl = media.absoluteLocalURL {
+            return localUrl
+        } else if let urlString = media.remoteURL, let remoteUrl = URL(string: urlString) {
+            return remoteUrl
+        }
+        return nil
     }
 }
