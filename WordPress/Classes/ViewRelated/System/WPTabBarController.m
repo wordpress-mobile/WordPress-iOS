@@ -120,12 +120,12 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
         if ([Feature enabled:FeatureFlagZendeskMobile]) {
             [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(refreshMeIconIndicator:)
+                                                     selector:@selector(updateIconIndicators:)
                                                          name:NSNotification.ZendeskPushNotificationReceivedNotification
                                                        object:nil];
             
             [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(refreshMeIconIndicator:)
+                                                     selector:@selector(updateIconIndicators:)
                                                          name:NSNotification.ZendeskPushNotificationClearedNotification
                                                        object:nil];
         } else {
@@ -783,9 +783,10 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 #pragma mark - Zendesk Notifications
 
-- (void)refreshMeIconIndicator:(NSNotification *)notification
+- (void)updateIconIndicators:(NSNotification *)notification
 {
     [self updateMeNotificationIcon];
+    [self updateNotificationBadgeVisibility];
 }
 
 #pragma mark - Helpshift Notifications
@@ -822,14 +823,15 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)updateNotificationBadgeVisibility
 {
-    NSInteger count = [[UIApplication sharedApplication] applicationIconBadgeNumber];
+    // Discount Zendesk unread notifications when determining if we need to show the notificationsTabBarImageUnread.
+    NSInteger count = [[UIApplication sharedApplication] applicationIconBadgeNumber] - [ZendeskUtils unreadNotificationsCount];
     UITabBarItem *notificationsTabBarItem = self.notificationsNavigationController.tabBarItem;
-    if (count == 0) {
-        notificationsTabBarItem.image = self.notificationsTabBarImage;
-        notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
-    } else {
+    if (count > 0) {
         notificationsTabBarItem.image = self.notificationsTabBarImageUnread;
         notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");
+    } else {
+        notificationsTabBarItem.image = self.notificationsTabBarImage;
+        notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
     }
 }
 
