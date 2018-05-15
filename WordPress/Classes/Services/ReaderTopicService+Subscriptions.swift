@@ -151,6 +151,9 @@ extension ReaderTopicService {
         let successBlock = {
             success?()
             DDLogInfo("Success turn notifications \(subscribe ? "on" : "off")")
+
+            let event: WPAnalyticsStat = subscribe ? .notificationsSettingsCommentsNotificationsOn : .notificationsSettingsCommentsNotificationsOff
+            WPAnalytics.track(event)
         }
 
         let failureBlock = { (error: ReaderTopicServiceError?) in
@@ -206,6 +209,9 @@ extension ReaderTopicService {
         let successBlock = {
             success?()
             DDLogInfo("Success turn notifications \(subscribe ? "on" : "off")")
+
+            let event: WPAnalyticsStat = subscribe ? .notificationsSettingsEmailNotificationsOn : .notificationsSettingsEmailNotificationsOff
+            WPAnalytics.track(event)
         }
 
         let failureBlock = { (error: ReaderTopicServiceError?) in
@@ -225,9 +231,13 @@ extension ReaderTopicService {
     ///   - success: Success block
     ///   - failure: Failure block
     func updateFrequencyPostsEmail(with siteId: Int, frequency: ReaderServiceDeliveryFrequency, _ success: (() -> Void)? = nil, _ failure: ((ReaderTopicServiceError?) -> Void)? = nil) {
-        let successBlock = {
+        let successBlock = { [weak self] in
             success?()
             DDLogInfo("Success update frequency \(frequency.rawValue)")
+
+            if let event = self?.frequencyPostsEmailTrackEvent(for: frequency) {
+                WPAnalytics.track(event)
+            }
         }
 
         let failureBlock = { (error: ReaderTopicServiceError?) in
@@ -239,6 +249,19 @@ extension ReaderTopicService {
 
 
     // MARK: Private methods
+
+    private func frequencyPostsEmailTrackEvent(for frequency: ReaderServiceDeliveryFrequency) -> WPAnalyticsStat {
+        switch frequency {
+        case .daily:
+            return .notificationsSettingsEmailDeliveryDaily
+
+        case .instantly:
+            return .notificationsSettingsEmailDeliveryInstantly
+
+        case .weekly:
+            return .notificationsSettingsEmailDeliveryWeekly
+        }
+    }
 
     private func togglePostsEmail(with siteId: Int, subscribe: Bool = false, _ success: @escaping () -> Void, _ failure: @escaping (ReaderTopicServiceError?) -> Void) {
         guard let siteTopic = fetchSiteTopic(with: siteId, failure),
