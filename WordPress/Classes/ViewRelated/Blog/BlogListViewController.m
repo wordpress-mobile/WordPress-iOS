@@ -347,12 +347,13 @@ static NSInteger HideSearchMinSites = 3;
 - (void)syncBlogs
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+
+    __weak __typeof(self) weakSelf = self;
     [context performBlock:^{
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-        __weak __typeof(self) weakSelf = self;
         if (defaultAccount) {
             [blogService syncBlogsForAccount:defaultAccount success:^{
                 [weakSelf.tableView.refreshControl endRefreshing];
