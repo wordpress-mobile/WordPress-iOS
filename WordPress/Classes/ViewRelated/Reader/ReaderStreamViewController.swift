@@ -780,7 +780,7 @@ import WordPressFlux
 
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
 
-        BlockSiteAction().execute(with: post, context: managedObjectContext()) { [weak self] in
+        BlockSiteAction(asBlocked: true).execute(with: post, context: managedObjectContext()) { [weak self] in
             self?.recentlyBlockedSitePostObjectIDs.remove(objectID)
             self?.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
         }
@@ -797,23 +797,10 @@ import WordPressFlux
 
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
 
-        let service = ReaderSiteService(managedObjectContext: managedObjectContext())
-        service.flagSite(withID: post.siteID,
-            asBlocked: false,
-            success: nil,
-            failure: { [weak self] (error: Error?) in
-                self?.recentlyBlockedSitePostObjectIDs.add(objectID)
-                self?.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
-
-                let message = error?.localizedDescription ?? ""
-                let errorTitle = NSLocalizedString("Error Unblocking Site", comment: "Title of a prompt letting the user know there was an error trying to unblock a site from appearing in the reader.")
-                let cancelTitle = NSLocalizedString("OK", comment: "Text for an alert's dismissal button.")
-                let alertController = UIAlertController(title: errorTitle,
-                    message: message,
-                    preferredStyle: .alert)
-                alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
-                alertController.presentFromRootViewController()
-            })
+        BlockSiteAction(asBlocked: false).execute(with: post, context: managedObjectContext()) { [weak self] in
+            self?.recentlyBlockedSitePostObjectIDs.add(objectID)
+            self?.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+        }
     }
 
 

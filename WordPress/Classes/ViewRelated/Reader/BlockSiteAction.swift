@@ -1,8 +1,14 @@
 final class BlockSiteAction {
+    private let asBlocked: Bool
+
+    init(asBlocked: Bool) {
+        self.asBlocked = asBlocked
+    }
+
     func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
         let service = ReaderSiteService(managedObjectContext: context)
         service.flagSite(withID: post.siteID,
-                         asBlocked: true,
+                         asBlocked: asBlocked,
                          success: nil,
                          failure: { (error: Error?) in
                             completion()
