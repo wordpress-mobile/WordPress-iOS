@@ -1,5 +1,5 @@
 final class FollowAction {
-    func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
+    func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)? = nil) {
         let siteID = post.siteID
         var errorMessage: String
         var errorTitle: String
@@ -21,7 +21,7 @@ final class FollowAction {
 
         postService.toggleFollowing(for: post,
                                     success: {
-                                        completion()
+                                        completion?()
             },
                                     failure: { (error: Error?) in
                                         let cancelTitle = NSLocalizedString("OK", comment: "Text of an OK button to dismiss a prompt.")

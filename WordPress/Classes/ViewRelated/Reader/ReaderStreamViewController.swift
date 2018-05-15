@@ -717,7 +717,7 @@ import WordPressFlux
 
 
     fileprivate func toggleLikeForPost(_ post: ReaderPost) {
-        LikeAction().execute(with: post, context: managedObjectContext(), completion: {})
+        LikeAction().execute(with: post, context: managedObjectContext())
     }
 
 
