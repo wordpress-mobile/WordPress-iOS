@@ -348,29 +348,47 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 #pragma mark - Tracks Opt Out
 
 - (void)initializeOptOutTracking {
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:WPAppAnalyticsDefaultsUserOptedOut] != nil) {
+    if ([WPAppAnalytics userHasOptedOutIsSet]) {
         // We've already configured the opt out setting
         return;
     }
 
     if ([[NSUserDefaults standardUserDefaults] objectForKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated] == nil) {
-        [self setUserHasOptedOut:NO];
+        [self setUserHasOptedOutValue:NO];
     } else if ([[NSUserDefaults standardUserDefaults] boolForKey:WPAppAnalyticsDefaultsKeyUsageTracking_deprecated] == NO) {
         // If the user has already explicitly disabled tracking,
         // then we should mirror that to the new setting
-        [self setUserHasOptedOut:YES];
+        [self setUserHasOptedOutValue:YES];
     } else {
-        [self setUserHasOptedOut:NO];
+        [self setUserHasOptedOutValue:NO];
     }
+}
+
++ (BOOL)userHasOptedOutIsSet {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:WPAppAnalyticsDefaultsUserOptedOut] != nil;
 }
 
 + (BOOL)userHasOptedOut {
     return [[NSUserDefaults standardUserDefaults] boolForKey:WPAppAnalyticsDefaultsUserOptedOut];
 }
 
-- (void)setUserHasOptedOut:(BOOL)optedOut
+/// This method just sets the user defaults value for UserOptedOut, and doesn't
+/// do any additional configuration of sessions or trackers.
+- (void)setUserHasOptedOutValue:(BOOL)optedOut
 {
     [[NSUserDefaults standardUserDefaults] setBool:optedOut forKey:WPAppAnalyticsDefaultsUserOptedOut];
+}
+
+- (void)setUserHasOptedOut:(BOOL)optedOut
+{
+    if ([WPAppAnalytics userHasOptedOutIsSet]) {
+        BOOL currentValue = [WPAppAnalytics userHasOptedOut];
+        if (currentValue == optedOut) {
+            return;
+        }
+    }
+
+    [self setUserHasOptedOutValue:optedOut];
 
     if (optedOut) {
         [self endSession];
