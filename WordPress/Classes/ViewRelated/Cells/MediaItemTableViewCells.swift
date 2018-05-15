@@ -222,14 +222,12 @@ struct MediaImageRow: ImmuTableRow {
     }
 
     private func loadImageFor(_ cell: MediaItemImageTableViewCell) {
-        if cell.customImageView.image == nil {
-            guard let url = imageURL else {
-                return
-            }
-            cell.imageLoader.loadImage(with: url, from: media.blog, placeholder: placeholderImage, success: nil) { (error) in
-                if let error = error {
-                    self.show(error)
-                }
+        guard let url = imageURL else {
+            return
+        }
+        cell.imageLoader.loadImage(with: url, from: media.blog, placeholder: placeholderImage, success: nil) { (error) in
+            if let error = error {
+                self.show(error)
             }
         }
     }
