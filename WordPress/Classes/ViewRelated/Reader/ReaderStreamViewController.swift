@@ -1388,13 +1388,10 @@ extension ReaderStreamViewController: ReaderPostCellDelegate {
 
 
     public func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider) {
-        let post = provider as! ReaderPost
-
-        let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID, isFeed: post.isExternal)
-        navigationController?.pushViewController(controller, animated: true)
-
-        let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.blogURL as AnyObject?, forKey: "url")
-        WPAppAnalytics.track(.readerSitePreviewed, withProperties: properties)
+        guard let post = provider as? ReaderPost else {
+            return
+        }
+        HeaderAction().execute(post: post, origin: self)
     }
 
 
@@ -1407,7 +1404,9 @@ extension ReaderStreamViewController: ReaderPostCellDelegate {
 
 
     public func readerCell(_ cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider) {
-        let post = provider as! ReaderPost
+        guard let post = provider as? ReaderPost else {
+            return
+        }
         toggleLikeForPost(post)
     }
 
