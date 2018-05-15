@@ -718,8 +718,7 @@ import WordPressFlux
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
                                                 if let topic: ReaderSiteTopic = self.existingObject(for: topic.objectID) {
-                                                    self.toggleSubscribingNotifications(for: topic.siteID,
-                                                                                        subscribe: !topic.isSubscribedForPostNotifications)
+                                                    SubscribingNotificationAction().execute(for: topic.siteID, context: self.managedObjectContext(), value: !topic.isSubscribedForPostNotifications)
                                                 }
             })
         }
@@ -792,51 +791,18 @@ import WordPressFlux
         }
     }
 
-    fileprivate func toggleSubscribingNotifications(for siteID: NSNumber?, subscribe: Bool) {
-        guard let siteID = siteID else {
-            return
-        }
-
-        let service = ReaderTopicService(managedObjectContext: managedObjectContext())
-        service.toggleSubscribingNotifications(for: siteID, subscribe: subscribe)
-    }
-
     fileprivate func toggleFollowingForPost(_ post: ReaderPost) {
-        var errorMessage: String
-        var errorTitle: String
-        if post.isFollowing {
-            errorTitle = NSLocalizedString("Problem Unfollowing Site", comment: "Title of a prompt")
-            errorMessage = NSLocalizedString("There was a problem unfollowing the site. If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Short notice that there was a problem unfollowing a site and instructions on how to notify us of the problem.")
-        } else {
-            errorTitle = NSLocalizedString("Problem Following Site", comment: "Title of a prompt")
-            errorMessage = NSLocalizedString("There was a problem following the site.  If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Short notice that there was a problem following a site and instructions on how to notify us of the problem.")
-        }
-
-        let postService = ReaderPostService(managedObjectContext: managedObjectContext())
         let siteTitle = post.blogNameForDisplay()
         let siteID = post.siteID
         let toFollow = !post.isFollowing
 
-        if !toFollow {
-            toggleSubscribingNotifications(for: siteID, subscribe: false)
+        FollowAction().execute(with: post, context: managedObjectContext()) { [weak self] in
+            self?.syncHelper.syncContent()
+            self?.updateStreamHeaderIfNeeded()
+            if toFollow {
+                self?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
+            }
         }
-
-        postService.toggleFollowing(for: post,
-                                            success: { [weak self] in
-                                                self?.syncHelper.syncContent()
-                                                self?.updateStreamHeaderIfNeeded()
-                                                if toFollow {
-                                                    self?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
-                                                }
-                                            },
-                                            failure: { (error: Error?) in
-                                                let cancelTitle = NSLocalizedString("OK", comment: "Text of an OK button to dismiss a prompt.")
-                                                let alertController = UIAlertController(title: errorTitle,
-                                                    message: errorMessage,
-                                                    preferredStyle: .alert)
-                                                alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
-                                                alertController.presentFromRootViewController()
-                                        })
     }
 
     fileprivate func toggleSavedForLater(for post: ReaderPost) {
@@ -1502,8 +1468,7 @@ import WordPressFlux
         let siteTitle = topic.title
 
         if !toFollow {
-            toggleSubscribingNotifications(for: topic.siteID,
-                                           subscribe: !topic.isSubscribedForPostNotifications)
+            SubscribingNotificationAction().execute(for: siteID, context: managedObjectContext(), value: !topic.isSubscribedForPostNotifications)
         }
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
