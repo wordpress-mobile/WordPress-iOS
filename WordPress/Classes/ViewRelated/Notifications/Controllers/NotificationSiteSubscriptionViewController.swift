@@ -148,7 +148,10 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
             switch section.type {
             case .posts:
                 self?.siteSubscription.postsNotification = newValue
-                self?.service.toggleSubscribingNotifications(for: self?.siteId, subscribe: newValue)
+                self?.service.toggleSubscribingNotifications(for: self?.siteId, subscribe: newValue, {
+                    let event: WPAnalyticsStat = newValue ? .notificationsSettingsBlogNotificationsOn : .notificationsSettingsBlogNotificationsOff
+                    WPAnalytics.track(event)
+                })
 
             case .emails:
                 self?.siteSubscription.emailsNotification = newValue
