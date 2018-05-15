@@ -146,6 +146,12 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
         return NO;
     }
 
+    // Remove any query string params if needed (e.g. resize values)
+    NSUInteger questionMarkLocation = [featuredImage rangeOfString:@"?" options:NSBackwardsSearch].location;
+    if (questionMarkLocation != NSNotFound) {
+        featuredImage = [featuredImage substringToIndex:questionMarkLocation];
+    }
+
     // One URL might be http and the other https, so don't include the protocol in the check.
     NSString *scheme = [featuredImageURL scheme];
     if ([scheme length]) {

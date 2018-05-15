@@ -25,7 +25,7 @@
 
     @objc init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs) {
         self.imageView = imageView
-        imageView.gifPlaybackStrategy = gifStrategy.playbackStrategy
+        imageView.gifStrategy = gifStrategy
         super.init()
     }
 
