@@ -22,11 +22,11 @@ final class SaveForLaterAction {
 
     private func toggleSavedForLater(_ post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
         let readerPostService = ReaderPostService(managedObjectContext: context)
-        readerPostService.toggleSavedForLater(for: post, success: { [weak self] in
-            self?.presentSuccessNotice(for: post, context: context, completion: completion)
+        readerPostService.toggleSavedForLater(for: post, success: {
+            self.presentSuccessNotice(for: post, context: context, completion: completion)
             completion()
-            }, failure: { [weak self] error in
-                self?.presentErrorNotice(error, activating: !post.isSavedForLater)
+            }, failure: { error in
+                self.presentErrorNotice(error, activating: !post.isSavedForLater)
                 completion()
         })
     }
