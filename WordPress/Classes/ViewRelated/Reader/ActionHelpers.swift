@@ -11,4 +11,12 @@ struct ActionHelpers {
             return nil
         }
     }
+
+    static func postInMainContext(_ post: ReaderPost) -> ReaderPost? {
+        guard let post = (try? ContextManager.sharedInstance().mainContext.existingObject(with: post.objectID)) as? ReaderPost else {
+            DDLogError("Error retrieving an exsting post from the main context by its object ID.")
+            return nil
+        }
+        return post
+    }
 }
