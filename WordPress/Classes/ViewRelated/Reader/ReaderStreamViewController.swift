@@ -676,17 +676,6 @@ import WordPressFlux
     }
 
 
-    fileprivate func shouldShowBlockSiteMenuItem() -> Bool {
-        guard let topic = readerTopic else {
-            return false
-        }
-        if isLoggedIn {
-            return ReaderHelpers.isTopicTag(topic) || ReaderHelpers.topicIsFreshlyPressed(topic)
-        }
-        return false
-    }
-
-
     /// Displays the options menu for the specifed post.  On the iPad the menu
     /// is displayed as a popover from the anchorview.
     ///
@@ -695,69 +684,8 @@ import WordPressFlux
     ///     - fromView: The view to anchor a popover.
     ///
     fileprivate func showMenuForPost(_ post: ReaderPost, topic: ReaderSiteTopic? = nil, fromView anchorView: UIView) {
-        // Create the action sheet
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addCancelActionWithTitle(ReaderPostMenuButtonTitles.cancel, handler: nil)
-
-        let context = managedObjectContext()
-
-        // Block button
-        if shouldShowBlockSiteMenuItem() {
-            alertController.addActionWithTitle(ReaderPostMenuButtonTitles.blockSite,
-                style: .destructive,
-                handler: { (action: UIAlertAction) in
-                    if let post: ReaderPost = ActionHelpers.existingObject(for: post.objectID, in: context) {
-                        self.blockSiteForPost(post)
-                    }
-                })
-        }
-
-        // Notification
-        if let topic = topic, isLoggedIn, post.isFollowing {
-            let isSubscribedForPostNotifications = topic.isSubscribedForPostNotifications
-            let buttonTitle = isSubscribedForPostNotifications ? ReaderPostMenuButtonTitles.unsubscribe : ReaderPostMenuButtonTitles.subscribe
-            alertController.addActionWithTitle(buttonTitle,
-                                               style: .default,
-                                               handler: { (action: UIAlertAction) in
-                                                if let topic: ReaderSiteTopic = ActionHelpers.existingObject(for: topic.objectID, in: context) {
-                                                    SubscribingNotificationAction().execute(for: topic.siteID, context: self.managedObjectContext(), value: !topic.isSubscribedForPostNotifications)
-                                                }
-            })
-        }
-
-        // Following
-        if isLoggedIn {
-            let buttonTitle = post.isFollowing ? ReaderPostMenuButtonTitles.unfollow : ReaderPostMenuButtonTitles.follow
-            alertController.addActionWithTitle(buttonTitle,
-                style: .default,
-                handler: { (action: UIAlertAction) in
-                    if let post: ReaderPost = ActionHelpers.existingObject(for: post.objectID, in: context) {
-                        self.toggleFollowingForPost(post)
-                    }
-                })
-        }
-
-        // Share
-        alertController.addActionWithTitle(ReaderPostMenuButtonTitles.share,
-            style: .default,
-            handler: { [weak self] (action: UIAlertAction) in
-                self?.sharePost(post, fromView: anchorView)
-        })
-
-        if WPDeviceIdentification.isiPad() {
-            alertController.modalPresentationStyle = .popover
-            present(alertController, animated: true, completion: nil)
-            if let presentationController = alertController.popoverPresentationController {
-                presentationController.permittedArrowDirections = .any
-                presentationController.sourceView = anchorView
-                presentationController.sourceRect = anchorView.bounds
-            }
-
-        } else {
-            present(alertController, animated: true, completion: nil)
-        }
+        ShowMenuAction(loggedIn: isLoggedIn).execute(with: post, context: managedObjectContext(), topic: topic, readerTopic: readerTopic, anchor: anchorView, vc: self)
     }
-
 
     /// Shares a post from the share controller.
     ///
