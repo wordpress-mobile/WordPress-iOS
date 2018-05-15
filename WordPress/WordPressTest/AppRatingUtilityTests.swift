@@ -273,7 +273,8 @@ class AppRatingUtilityTests: XCTestCase {
     }
 
     func testAppReviewPromptedAfterEnoughTime() {
-        let fourMonthsAgo = Calendar.current.date(byAdding: .day, value: -123, to: Date())
+        let magicValue = -(Int(ceil(365 / 2)) + 1)
+        let fourMonthsAgo = Calendar.current.date(byAdding: .day, value: magicValue, to: Date())
         self.utility._overrideLastPromptToRateDate(fourMonthsAgo!)
         self.utility.systemWideSignificantEventCountRequiredForPrompt = 1
         self.utility.incrementSignificantEvent()
