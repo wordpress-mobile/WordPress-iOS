@@ -788,21 +788,7 @@ import WordPressFlux
     }
 
     fileprivate func visitSiteForPost(_ post: ReaderPost) {
-        guard
-            let permalink = post.permaLink,
-            let siteURL = URL(string: permalink) else {
-                return
-        }
-
-        let configuration = WebViewControllerConfiguration(url: siteURL)
-        configuration.addsWPComReferrer = true
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        if let account = service.defaultWordPressComAccount() {
-            configuration.authenticate(account: account)
-        }
-        let controller = WebViewControllerFactory.controller(configuration: configuration)
-        let navController = UINavigationController(rootViewController: controller)
-        present(navController, animated: true, completion: nil)
+        VisitSiteAction().execute(with: post, context: ContextManager.sharedInstance().mainContext, origin: self)
     }
 
 
