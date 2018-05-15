@@ -676,17 +676,6 @@ import WordPressFlux
     }
 
 
-    /// Displays the options menu for the specifed post.  On the iPad the menu
-    /// is displayed as a popover from the anchorview.
-    ///
-    /// - Parameters:
-    ///     - post: The post in question.
-    ///     - fromView: The view to anchor a popover.
-    ///
-    fileprivate func showMenuForPost(_ post: ReaderPost, topic: ReaderSiteTopic? = nil, fromView anchorView: UIView) {
-        ShowMenuAction(loggedIn: isLoggedIn).execute(with: post, context: managedObjectContext(), topic: topic, readerTopic: readerTopic, anchor: anchorView, vc: self)
-    }
-
     /// Shares a post from the share controller.
     ///
     /// - Parameters:
@@ -1446,21 +1435,14 @@ extension ReaderStreamViewController: ReaderPostCellDelegate {
             return
         }
 
-        guard post.isFollowing else {
-            showMenuForPost(post, fromView: sender)
-            return
-        }
-
-        let service = ReaderTopicService(managedObjectContext: managedObjectContext())
-        if let topic = service.findSiteTopic(withSiteID: post.siteID) {
-            showMenuForPost(post, topic: topic, fromView: sender)
-            return
-        }
+        MenuAction(logged: isLoggedIn).execute(post: post, context: managedObjectContext(), readerTopic: readerTopic, anchor: sender, vc: self)
     }
 
 
     public func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider) {
-        let post = provider as! ReaderPost
+        guard let post = provider as? ReaderPost else {
+            return
+        }
         showAttributionForPost(post)
     }
 
