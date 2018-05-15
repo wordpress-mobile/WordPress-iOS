@@ -8,7 +8,7 @@ open class NUXTableViewController: UITableViewController, NUXViewControllerBase,
     public var helpButton: UIButton = UIButton(type: .custom)
     public var dismissBlock: ((_ cancelled: Bool) -> Void)?
     public var loginFields = LoginFields()
-    public var sourceTag: WordPressSupportSourceTag {
+    open var sourceTag: WordPressSupportSourceTag {
         get {
             return .generalLogin
         }
