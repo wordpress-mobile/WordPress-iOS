@@ -5,10 +5,12 @@ import WordPressAuthenticator
 
 extension NSNotification.Name {
     static let ZendeskPushNotificationReceivedNotification = NSNotification.Name(rawValue: "ZendeskPushNotificationReceivedNotification")
+    static let ZendeskPushNotificationClearedNotification = NSNotification.Name(rawValue: "ZendeskPushNotificationClearedNotification")
 }
 
 @objc extension NSNotification {
     public static let ZendeskPushNotificationReceivedNotification = NSNotification.Name.ZendeskPushNotificationReceivedNotification
+    public static let ZendeskPushNotificationClearedNotification = NSNotification.Name.ZendeskPushNotificationClearedNotification
 }
 
 @objc class ZendeskUtils: NSObject {
@@ -19,6 +21,7 @@ extension NSNotification.Name {
     private override init() {}
 
     static var zendeskEnabled = false
+    @objc static var showSupportNotificationIndicator = false
 
     private var sourceTag: WordPressSupportSourceTag?
 
@@ -54,6 +57,10 @@ extension NSNotification.Name {
                                         clientId: zdClientId)
 
         ZendeskUtils.toggleZendesk(enabled: true)
+
+        // User has accessed a single ticket view, typically via the Zendesk Push Notification alert.
+        // In this case, we'll clear the Push Notification indicators.
+        NotificationCenter.default.addObserver(self, selector: #selector(ZendeskUtils.ticketViewed(_:)), name: NSNotification.Name(rawValue: ZDKAPI_CommentListStarting), object: nil)
     }
 
     // MARK: - Show Zendesk Views
@@ -146,12 +153,26 @@ extension NSNotification.Name {
     }
 
     static func pushNotificationReceived() {
+        ZendeskUtils.showSupportNotificationIndicator = true
+
         // Updating unread indicators should trigger UI updates, so send notification in main thread.
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: .ZendeskPushNotificationReceivedNotification, object: nil)
         }
     }
 
+    static func pushNotificationRead() {
+        ZendeskUtils.showSupportNotificationIndicator = false
+
+        // Updating unread indicators should trigger UI updates, so send notification in main thread.
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .ZendeskPushNotificationClearedNotification, object: nil)
+        }
+    }
+
+    @objc static func ticketViewed(_ notification: Foundation.Notification) {
+        pushNotificationRead()
+    }
     // MARK: - Helpers
 
     // Specifically for WPError, which is ObjC & has the sourceTag as a String.
