@@ -175,6 +175,7 @@ private struct PaddedLinkRow: ImmuTableRow {
 
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = title
+        cell.imageView?.image = UIImage(color: .clear, havingSize: Gridicon.defaultSize)
 
         WPStyleGuide.configureTableViewActionCell(cell)
     }
