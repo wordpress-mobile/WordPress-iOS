@@ -17,6 +17,7 @@ static CGFloat const MinimumZoomScale = 0.1;
 @property (nonatomic, assign) BOOL isLoadingImage;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) CachedAnimatedImageView *imageView;
+@property (nonatomic, strong) ImageLoader *imageLoader;
 @property (nonatomic, assign) BOOL shouldHideStatusBar;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 
@@ -104,6 +105,8 @@ static CGFloat const MinimumZoomScale = 0.1;
     self.imageView.userInteractionEnabled = YES;
     [self.scrollView addSubview:self.imageView];
 
+    self.imageLoader = [[ImageLoader alloc] initWithImageView:self.imageView gifStrategy:GIFStrategyLargeGIFs];
+
     UITapGestureRecognizer *tgr2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageDoubleTapped:)];
     [tgr2 setNumberOfTapsRequired:2];
     [self.imageView addGestureRecognizer:tgr2];
@@ -170,21 +173,16 @@ static CGFloat const MinimumZoomScale = 0.1;
 
 - (void)loadImageFromMedia
 {
-    self.isLoadingImage = YES;
-
     __weak __typeof__(self) weakSelf = self;
     self.imageView.image = self.image;
-    [self.media imageWithSize:CGSizeZero completionHandler:^(UIImage *result, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (error) {
-                DDLogError(@"Error loading image: %@", error);
-                weakSelf.isLoadingImage = NO;
-            } else {
-                weakSelf.image = result;
-                [weakSelf updateImageView];
-                weakSelf.isLoadingImage = NO;
-            }
-        });
+    self.isLoadingImage = YES;
+    [self.imageLoader loadImageFromMedia:self.media preferredSize:CGSizeZero placeholder:self.image success:^{
+        self.isLoadingImage = NO;
+        weakSelf.image = weakSelf.imageView.image;
+        [weakSelf updateImageView];
+    } error:^(NSError * _Nullable error) {
+        self.isLoadingImage = NO;
+        DDLogError(@"Error loading image: %@", error);
     }];
 }
 
