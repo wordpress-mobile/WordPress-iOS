@@ -154,6 +154,7 @@
 
     private func loadImage(from media: Media, preferredSize size: CGSize) {
         imageView.image = placeholder
+        imageView.startLoadingAnimation()
         media.image(with: size) {  [weak self] (image, error) in
             if let image = image {
                 self?.imageView.image = image
