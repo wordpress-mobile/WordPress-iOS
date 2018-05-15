@@ -12,9 +12,9 @@ class ServiceRequestTest: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        notificationsRequest = ReaderTopicServiceSubscriptionsRequest.notifications(siteId: NSNumber(value: 0), action: .subscribe)
-        postsEmailRequest = ReaderTopicServiceSubscriptionsRequest.postsEmail(siteId: NSNumber(value: 0), action: .unsubscribe)
-        commentsRequest = ReaderTopicServiceSubscriptionsRequest.comments(siteId: NSNumber(value: 0), action: .update)
+        notificationsRequest = .notifications(siteId: 0, action: .subscribe)
+        postsEmailRequest = .postsEmail(siteId: 0, action: .unsubscribe)
+        commentsRequest = .comments(siteId: 0, action: .update)
     }
     
     func testMockServiceRequest() {
@@ -29,11 +29,11 @@ class ServiceRequestTest: XCTestCase {
     
     func testPostsEmailRequest() {
         XCTAssertEqual(postsEmailRequest.apiVersion, ._1_2)
-        XCTAssertEqual(postsEmailRequest.path, "read/sites/0/post_email_subscriptions/delete/")
+        XCTAssertEqual(postsEmailRequest.path, "read/site/0/post_email_subscriptions/delete/")
     }
     
     func testCommentsRequest() {
         XCTAssertEqual(commentsRequest.apiVersion, ._1_2)
-        XCTAssertEqual(commentsRequest.path, "read/sites/0/comment_email_subscriptions/update/")
+        XCTAssertEqual(commentsRequest.path, "read/site/0/comment_email_subscriptions/update/")
     }
 }

@@ -27,6 +27,7 @@ class PluginListCell: UITableViewCell {
         super.prepareForReuse()
 
         iconImageView.cancelImageDownloadTask()
+        iconImageView.image = nil
     }
 
 }

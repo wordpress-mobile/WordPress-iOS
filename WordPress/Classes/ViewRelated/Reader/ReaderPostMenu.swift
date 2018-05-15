@@ -105,9 +105,12 @@ open class ReaderPostMenu {
 
     fileprivate class func toggleSubscribingNotifications(for topic: ReaderSiteTopic) {
         if let context = topic.managedObjectContext {
+            let subscribe = !topic.isSubscribedForPostNotifications
+            let event: WPAnalyticsStat = subscribe ? .readerListNotificationMenuOn : .readerListNotificationMenuOff
             let service = ReaderTopicService(managedObjectContext: context)
-            service.toggleSubscribingNotifications(for: topic.siteID,
-                                                   subscribe: !topic.isSubscribedForPostNotifications)
+            service.toggleSubscribingNotifications(for: topic.siteID.intValue, subscribe: subscribe, {
+                WPAnalytics.track(event)
+            })
         }
     }
 
@@ -156,7 +159,9 @@ open class ReaderPostMenu {
         let topicService = ReaderTopicService(managedObjectContext: postService.managedObjectContext)
 
         if !toFollow {
-            topicService.toggleSubscribingNotifications(for: siteID, subscribe: false)
+            topicService.toggleSubscribingNotifications(for: siteID?.intValue, subscribe: false, {
+                WPAnalytics.track(.readerListNotificationMenuOff)
+            })
         }
 
 
