@@ -111,7 +111,7 @@ class NUXLinkMailViewController: LoginViewController {
                                                  preferredStyle: .alert)
         alertController.addCancelActionWithTitle(NSLocalizedString("OK",
                                                                    comment: "Button title. An acknowledgement of the message displayed in a prompt."))
-        alertController.presentFromRootViewController()
+        self.present(alertController, animated: true, completion: nil)
     }
 
 
