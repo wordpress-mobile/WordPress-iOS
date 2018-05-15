@@ -88,7 +88,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     [self refreshMetadata];
 }
 
-- (void)endSession
+- (void)clearQueuedEvents
 {
     [self.tracksService clearQueuedEvents];
 }
@@ -1338,6 +1338,25 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
+        case WPAnalyticsStatNotificationsSettingsBlogNotificationsOn:
+        case WPAnalyticsStatNotificationsSettingsBlogNotificationsOff:
+        case WPAnalyticsStatNotificationsSettingsEmailNotificationsOn:
+        case WPAnalyticsStatNotificationsSettingsEmailNotificationsOff:
+        case WPAnalyticsStatNotificationsSettingsEmailDeliveryInstantly:
+        case WPAnalyticsStatNotificationsSettingsEmailDeliveryDaily:
+        case WPAnalyticsStatNotificationsSettingsEmailDeliveryWeekly:
+        case WPAnalyticsStatNotificationsSettingsCommentsNotificationsOn:
+        case WPAnalyticsStatNotificationsSettingsCommentsNotificationsOff:
+        case WPAnalyticsStatReaderListNotificationMenuOn:
+        case WPAnalyticsStatReaderListNotificationMenuOff:
+        case WPAnalyticsStatReaderListNotificationEnabled:
+        case WPAnalyticsStatSiteSettingsSiteIconTapped:
+        case WPAnalyticsStatSiteSettingsSiteIconRemoved:
+        case WPAnalyticsStatSiteSettingsSiteIconShotNew:
+        case WPAnalyticsStatSiteSettingsSiteIconGalleryPicked:
+        case WPAnalyticsStatSiteSettingsSiteIconCropped:
+        case WPAnalyticsStatSiteSettingsSiteIconUploaded:
+        case WPAnalyticsStatSiteSettingsSiteIconUploadFailed:
         case WPAnalyticsStatMaxValue:
             return nil;
     }

@@ -99,6 +99,7 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 
 - (void)clearTrackers
 {
+    [WPAnalytics clearQueuedEvents];
     [WPAnalytics clearTrackers];
 }
 
