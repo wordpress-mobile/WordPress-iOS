@@ -1399,10 +1399,10 @@ extension ReaderStreamViewController: ReaderPostCellDelegate {
 
 
     public func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider) {
-        var post = provider as! ReaderPost
-        post = postInMainContext(post)!
-        let controller = ReaderCommentsViewController(post: post)
-        navigationController?.pushViewController(controller!, animated: true)
+        guard let post = provider as? ReaderPost else {
+            return
+        }
+        CommentAction().execute(post: post, origin: self)
     }
 
 
