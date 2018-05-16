@@ -23,7 +23,7 @@ final class ReaderTableContent {
         }
     }
 
-    func isEmpty() -> Bool {
+    func isNull() -> Bool {
         return content() == nil
     }
 
@@ -31,7 +31,7 @@ final class ReaderTableContent {
         return tableViewHandler?.resultsController.fetchedObjects
     }
 
-    func noContent() -> Bool {
+    func isEmpty() -> Bool {
         return content()?.count == 0
     }
 }

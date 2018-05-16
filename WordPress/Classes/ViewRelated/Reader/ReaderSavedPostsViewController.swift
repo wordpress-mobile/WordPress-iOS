@@ -112,7 +112,7 @@ import WordPressUI
 
 
     @objc open func configureCrossPostCell(_ cell: ReaderCrossPostCell, atIndexPath indexPath: IndexPath) {
-        if content.isEmpty() {
+        if content.isNull() {
             return
         }
         cell.accessoryType = .none
@@ -128,7 +128,7 @@ import WordPressUI
 
 
     @objc open func configureBlockedCell(_ cell: ReaderBlockedSiteCell, atIndexPath indexPath: IndexPath) {
-        if content.isEmpty() {
+        if content.isNull() {
             return
         }
         cell.accessoryType = .none
@@ -162,7 +162,7 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
 
 
     public func tableViewDidChangeContent(_ tableView: UITableView) {
-        if content.noContent() {
+        if content.isEmpty() {
             // TODO: Implement no results view
             //            displayNoResultsView()
         }
