@@ -3,10 +3,13 @@ import Gridicons
 import WordPressShared
 
 class MediaItemImageTableViewCell: WPTableViewCell {
-    @objc let customImageView = UIImageView()
-    @objc let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
-    @objc let activityMaskView = UIView()
+
+    @objc let customImageView = CachedAnimatedImageView()
     @objc let videoIconView = PlayIconView()
+
+    @objc lazy var imageLoader: ImageLoader = {
+        return ImageLoader(imageView: customImageView, gifStrategy: .largeGIFs)
+    }()
 
     @objc var isVideo: Bool {
         set {
@@ -34,7 +37,6 @@ class MediaItemImageTableViewCell: WPTableViewCell {
 
     @objc func commonInit() {
         setupImageView()
-        setupLoadingViews()
         setupVideoIconView()
     }
 
@@ -51,27 +53,6 @@ class MediaItemImageTableViewCell: WPTableViewCell {
             ])
 
         customImageView.setContentHuggingPriority(.defaultLow, for: .horizontal)
-    }
-
-    private func setupLoadingViews() {
-        contentView.addSubview(activityMaskView)
-        activityMaskView.translatesAutoresizingMaskIntoConstraints = false
-        activityMaskView.backgroundColor = .black
-        activityMaskView.alpha = 0.5
-
-        contentView.addSubview(activityIndicator)
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        activityIndicator.hidesWhenStopped = true
-
-        NSLayoutConstraint.activate([
-            activityIndicator.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            activityIndicator.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-
-            activityMaskView.leadingAnchor.constraint(equalTo: customImageView.leadingAnchor),
-            activityMaskView.trailingAnchor.constraint(equalTo: customImageView.trailingAnchor),
-            activityMaskView.topAnchor.constraint(equalTo: customImageView.topAnchor),
-            activityMaskView.bottomAnchor.constraint(equalTo: customImageView.bottomAnchor)
-            ])
     }
 
     private func setupVideoIconView() {
@@ -117,7 +98,6 @@ class MediaItemImageTableViewCell: WPTableViewCell {
     }
 
     private func resetBackgroundColors() {
-        customImageView.backgroundColor = .black
         contentView.backgroundColor = .white
     }
 
@@ -127,18 +107,9 @@ class MediaItemImageTableViewCell: WPTableViewCell {
         videoIconView.center = contentView.center
     }
 
-    // MARK: - Loading
-
-    @objc var isLoading: Bool = false {
-        didSet {
-            if isLoading {
-                activityMaskView.alpha = 0.5
-                activityIndicator.startAnimating()
-            } else {
-                activityMaskView.alpha = 0
-                activityIndicator.stopAnimating()
-            }
-        }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageLoader.prepareForReuse()
     }
 }
 
@@ -207,12 +178,6 @@ struct MediaImageRow: ImmuTableRow {
         }
     }
 
-    func willDisplay(_ cell: UITableViewCell) {
-        if let cell = cell as? MediaItemImageTableViewCell {
-            cell.customImageView.backgroundColor = .black
-        }
-    }
-
     private func setAspectRatioFor(_ cell: MediaItemImageTableViewCell) {
         guard let width = media.width, let height = media.height, width.floatValue > 0 else {
             return
@@ -238,37 +203,26 @@ struct MediaImageRow: ImmuTableRow {
         }
     }
 
-    private func loadImageFor(_ cell: MediaItemImageTableViewCell) {
-        if !cell.isLoading && cell.customImageView.image == nil {
-            addPlaceholderImageFor(cell)
+    private var placeholderImage: UIImage? {
+        if let url = media.absoluteLocalURL {
+            return UIImage(contentsOfFile: url.path)
+        } else if let url = media.absoluteThumbnailLocalURL {
+            return UIImage(contentsOfFile: url.path)
+        }
+        return nil
+    }
 
-            cell.isLoading = true
-            media.image(with: .zero,
-                        completionHandler: { image, error in
-                            DispatchQueue.main.async {
-                                if let error = error, image == nil {
-                                    cell.isLoading = false
-                                    self.show(error)
-                                } else if let image = image {
-                                    self.animateImageChange(image: image, for: cell)
-                                }
-                            }
-            })
+    private func loadImageFor(_ cell: MediaItemImageTableViewCell) {
+        cell.imageLoader.loadImage(media: media, placeholder: placeholderImage, success: nil) { (error) in
+            self.show(error)
         }
     }
 
-    private func show(_ error: Error) {
+    private func show(_ error: Error?) {
         let alertController = UIAlertController(title: nil, message: NSLocalizedString("There was a problem loading the media item.",
                                                                                        comment: "Error message displayed when the Media Library is unable to load a full sized preview of an item."), preferredStyle: .alert)
         alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: "Verb. User action to dismiss error alert when failing to load media item."))
         alertController.presentFromRootViewController()
-    }
-
-    private func animateImageChange(image: UIImage, for cell: MediaItemImageTableViewCell) {
-        UIView.transition(with: cell.customImageView, duration: 0.2, options: .transitionCrossDissolve, animations: {
-            cell.isLoading = false
-            cell.customImageView.image = image
-        }, completion: nil)
     }
 }
 

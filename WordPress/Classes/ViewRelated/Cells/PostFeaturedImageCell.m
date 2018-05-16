@@ -28,13 +28,11 @@ CGFloat const PostFeaturedImageCellMargin = 15.0f;
     _imageLoader = [[ImageLoader alloc] initWithImageView:self.featuredImageView gifStrategy:GIFStrategyLargeGIFs];
 }
 
-- (void)setImageWithURL:(NSURL *)url inPost:(id<PostInformation>)postInformation withSize:(CGSize)size
+- (void)setImageWithURL:(NSURL *)url inPost:(id<ImageSourceInformation>)postInformation withSize:(CGSize)size
 {
     __weak PostFeaturedImageCell *weakSelf = self;
     [self.imageLoader loadImageWithURL:url fromPost:postInformation preferedSize:size placeholder:nil success:^{
-        if (weakSelf && weakSelf.delegate) {
-            [weakSelf.delegate postFeatureImageCellDidFinishLoadingImage:weakSelf];
-        }
+        [weakSelf informDelegateImageLoaded];
     } error:^(NSError * _Nullable error) {
         if (weakSelf && weakSelf.delegate) {
             [weakSelf.delegate postFeatureImageCell:weakSelf didFinishLoadingImageWithError:error];
@@ -42,9 +40,28 @@ CGFloat const PostFeaturedImageCellMargin = 15.0f;
     }];
 }
 
+- (void)informDelegateImageLoaded
+{
+    if (self.delegate == nil) {
+        return;
+    }
+
+    if (self.featuredImageView.animatedGifData) {
+        [self.delegate postFeatureImageCell:self didFinishLoadingAnimatedImageWithData:self.featuredImageView.animatedGifData];
+    } else {
+        [self.delegate postFeatureImageCellDidFinishLoadingImage:self];
+    }
+}
+
 - (UIImage *)image
 {
     return self.featuredImageView.image;
+}
+
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    [self.featuredImageView prepForReuse];
 }
 
 #pragma mark - Helpers

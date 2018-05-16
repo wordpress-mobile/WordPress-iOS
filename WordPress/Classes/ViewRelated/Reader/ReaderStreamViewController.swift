@@ -797,8 +797,11 @@ import WordPressFlux
             return
         }
 
+        let event: WPAnalyticsStat = subscribe ? .readerListNotificationMenuOn : .readerListNotificationMenuOff
         let service = ReaderTopicService(managedObjectContext: managedObjectContext())
-        service.toggleSubscribingNotifications(for: siteID, subscribe: subscribe)
+        service.toggleSubscribingNotifications(for: siteID.intValue, subscribe: subscribe, {
+            WPAnalytics.track(event)
+        })
     }
 
     fileprivate func toggleFollowingForPost(_ post: ReaderPost) {
