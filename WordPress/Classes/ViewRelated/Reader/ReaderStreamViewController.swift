@@ -1197,18 +1197,9 @@ import WordPressFlux
 
 
     @objc open func configureCrossPostCell(_ cell: ReaderCrossPostCell, atIndexPath indexPath: IndexPath) {
-        if content.isNull() {
-            return
-        }
-        cell.accessoryType = .none
-        cell.selectionStyle = .none
-
-        guard let posts = content.content() as? [ReaderPost] else {
-            return
-        }
-
-        let post = posts[indexPath.row]
-        cell.configureCell(post)
+        cellConfiguration.configureCrossPostCell(cell,
+                                                 withContent: content,
+                                                 atIndexPath: indexPath)
     }
 
 
