@@ -98,20 +98,6 @@ import WordPressUI
                                                 delegate: self,
                                                 loggedIn: false)
     }
-
-
-    @objc open func configureCrossPostCell(_ cell: ReaderCrossPostCell, atIndexPath indexPath: IndexPath) {
-        cellConfiguration.configureCrossPostCell(cell,
-                                                 withContent: content,
-                                                 atIndexPath: indexPath)
-    }
-
-
-    @objc open func configureBlockedCell(_ cell: ReaderBlockedSiteCell, atIndexPath indexPath: IndexPath) {
-        cellConfiguration.configureBlockedCell(cell,
-                                               withContent: content,
-                                               atIndexPath: indexPath)
-    }
 }
 
 // MARK: - WPTableViewHandlerDelegate
@@ -179,13 +165,17 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
 
         //        if recentlyBlockedSitePostObjectIDs.contains(post.objectID) {
         //            let cell = tableView.dequeueReusableCell(withIdentifier: readerBlockedCellReuseIdentifier) as! ReaderBlockedSiteCell
-        //            configureBlockedCell(cell, atIndexPath: indexPath)
+//        cellConfiguration.configureBlockedCell(cell,
+//                                               withContent: content,
+//                                               atIndexPath: indexPath)
         //            return cell
         //        }
 
         if post.isCross() {
             let cell = tableConfiguration.crossPostCell(tableView)
-            configureCrossPostCell(cell, atIndexPath: indexPath)
+            cellConfiguration.configureCrossPostCell(cell,
+                                                     withContent: content,
+                                                     atIndexPath: indexPath)
             return cell
         }
 
