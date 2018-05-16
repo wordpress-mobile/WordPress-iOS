@@ -895,6 +895,77 @@
     XCTAssertEqualObjects([migratedNote valueForKey:@"read"], @(true), @"Oops?");
 }
 
+- (void)testMigrate74to75
+{
+    NSURL *model74Url = [self urlForModelName:@"WordPress 74" inDirectory:nil];
+    NSURL *model75Url = [self urlForModelName:@"WordPress 75" inDirectory:nil];
+    NSURL *storeUrl = [self urlForStoreWithName:@"WordPress74.sqlite"];
+
+    // Load a Model 74 Stack
+    NSManagedObjectModel *model74 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model74Url];
+    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model74];
+
+    NSDictionary *options = @{
+                              NSInferMappingModelAutomaticallyOption          : @(YES),
+                              NSMigratePersistentStoresAutomaticallyOption    : @(YES)
+                              };
+
+    NSError *error = nil;
+    NSPersistentStore *ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                                              configuration:nil
+                                                        URL:storeUrl
+                                                    options:options
+                                                      error:&error];
+
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+
+    XCTAssertNil(error, @"Error while loading the PSC for Model 74");
+    XCTAssertNotNil(context, @"Invalid NSManagedObjectContext");
+
+    // Pages and Media require a Blog, which requires an Account
+    NSManagedObject *account1 = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:context];
+    [account1 setValue:@"dotcomuser1" forKey:@"username"];
+
+    NSManagedObject *blog1 = [NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:context];
+    [blog1 setValue:@(1001) forKey:@"blogID"];
+    [blog1 setValue:@"https://test1.wordpress.com" forKey:@"url"];
+    [blog1 setValue:@"https://test1.wordpress.com/xmlrpc.php" forKey:@"xmlrpc"];
+    [blog1 setValue:account1 forKey:@"account"];
+
+    [context save:&error];
+    XCTAssertNil(error, @"Error while saving context");
+
+    // Cleanup
+    XCTAssertNotNil(ps);
+    psc = nil;
+
+    // Migrate to Model 75
+    NSManagedObjectModel *model75 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model75Url];
+    BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:storeUrl
+                                                           ofType:NSSQLiteStoreType
+                                                          toModel:model75
+                                                orderedModelNames:@[@"WordPress 74", @"WordPress 75"]
+                                                            error:&error];
+    if (!migrateResult) {
+        NSLog(@"Error while migrating: %@", error);
+    }
+    XCTAssertTrue(migrateResult);
+
+    // Load a Model 75 Stack
+    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model75];
+    ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                           configuration:nil
+                                     URL:storeUrl
+                                 options:options
+                                   error:&error];
+
+    context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+
+    XCTAssertNil(error, @"Error while loading the PSC for Model 75");
+    XCTAssertNotNil(ps);
+}
 
 #pragma mark - Private Helpers
 
