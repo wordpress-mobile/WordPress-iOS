@@ -1211,7 +1211,7 @@ import WordPressFlux
 
 
     @objc open func configureGapMarker(_ cell: ReaderGapMarkerCell) {
-        cell.animateActivityView(syncIsFillingGap)
+        cellConfiguration.configureGapMarker(cell, filling: syncIsFillingGap)
     }
 
 
