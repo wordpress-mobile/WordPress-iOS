@@ -1,0 +1,34 @@
+import XCTest
+@testable import WordPress
+@testable import Gridicons
+
+final class SearchMenuItemCreatorTests: XCTestCase {
+    private var creator: SearchMenuItemCreator?
+
+    private struct TestConstants {
+        static let title = "Search"
+        static let icon = Gridicon.iconOfType(.search)
+    }
+
+    override func setUp() {
+        super.setUp()
+        creator = SearchMenuItemCreator()
+    }
+
+    override func tearDown() {
+        creator = nil
+        super.tearDown()
+    }
+
+    func testItemCreatorReturnsItemWithExpectedTitle() {
+        let item = creator!.menuItem()
+
+        XCTAssertEqual(item.title, TestConstants.title)
+    }
+
+    func testItemCreatorReturnsItemWithExpectedIcon() {
+        let item = creator!.menuItem()
+
+        XCTAssertEqual(item.icon, TestConstants.icon)
+    }
+}

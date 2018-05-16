@@ -98,12 +98,16 @@ class SiteIconPickerPresenter: NSObject {
                         self?.onCompletion?(nil, nil)
                         return
                     }
+
+                    WPAnalytics.track(.siteSettingsSiteIconCropped)
+
                     mediaService.createMedia(with: image,
                                              objectID: blogId,
                                              progress: nil,
                                              thumbnailCallback: nil,
                                              completion: { (media, error) in
                         guard let media = media, error == nil else {
+                            WPAnalytics.track(.siteSettingsSiteIconUploadFailed)
                             self?.onCompletion?(nil, error)
                             return
                         }
@@ -111,8 +115,10 @@ class SiteIconPickerPresenter: NSObject {
                         mediaService.uploadMedia(media,
                                                  progress: &uploadProgress,
                                                  success: {
+                            WPAnalytics.track(.siteSettingsSiteIconUploaded)
                             self?.onCompletion?(media, nil)
                         }, failure: { (error) in
+                            WPAnalytics.track(.siteSettingsSiteIconUploadFailed)
                             self?.onCompletion?(nil, error)
                         })
                     })
@@ -195,6 +201,9 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
         }
 
         let asset = assets.first
+
+        WPAnalytics.track(.siteSettingsSiteIconGalleryPicked)
+
         switch asset {
         case let phAsset as PHAsset:
             showLoadingMessage()

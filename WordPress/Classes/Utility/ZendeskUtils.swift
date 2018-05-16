@@ -1,6 +1,17 @@
 import Foundation
 import ZendeskSDK
 import CoreTelephony
+import WordPressAuthenticator
+
+extension NSNotification.Name {
+    static let ZendeskPushNotificationReceivedNotification = NSNotification.Name(rawValue: "ZendeskPushNotificationReceivedNotification")
+    static let ZendeskPushNotificationClearedNotification = NSNotification.Name(rawValue: "ZendeskPushNotificationClearedNotification")
+}
+
+@objc extension NSNotification {
+    public static let ZendeskPushNotificationReceivedNotification = NSNotification.Name.ZendeskPushNotificationReceivedNotification
+    public static let ZendeskPushNotificationClearedNotification = NSNotification.Name.ZendeskPushNotificationClearedNotification
+}
 
 @objc class ZendeskUtils: NSObject {
 
@@ -10,40 +21,58 @@ import CoreTelephony
     private override init() {}
 
     static var zendeskEnabled = false
+    @objc static var showSupportNotificationIndicator = false
+
+    private var sourceTag: WordPressSupportSourceTag?
+
+    // Specifically for WPError, which has the sourceTag as a String.
+    private var sourceTagDescription: String?
 
     private var userName: String?
     private var userEmail: String?
+    private var deviceID: String?
+
+    private static var zdAppID: String?
+    private static var zdUrl: String?
+    private static var zdClientId: String?
 
     private static var appVersion: String {
         return Bundle.main.shortVersionString() ?? Constants.unknownValue
     }
 
+    struct PushNotificationIdentifiers {
+        static let key = "type"
+        static let type = "zendesk"
+    }
+
     // MARK: - Public Methods
 
     @objc static func setup() {
-        guard let appId = ApiCredentials.zendeskAppId(),
-            let url = ApiCredentials.zendeskUrl(),
-            let clientId = ApiCredentials.zendeskClientId(),
-            appId.count > 0,
-            url.count > 0,
-            clientId.count > 0 else {
-                ZendeskUtils.toggleZendesk(enabled: false)
-                return
+        guard getZendeskCredentials() == true else {
+            return
         }
 
-        ZDKConfig.instance().initialize(withAppId: appId,
-                                        zendeskUrl: url,
-                                        clientId: clientId)
+        ZDKConfig.instance().initialize(withAppId: zdAppID,
+                                        zendeskUrl: zdUrl,
+                                        clientId: zdClientId)
 
         ZendeskUtils.toggleZendesk(enabled: true)
+
+        // User has accessed a single ticket view, typically via the Zendesk Push Notification alert.
+        // In this case, we'll clear the Push Notification indicators.
+        NotificationCenter.default.addObserver(self, selector: #selector(ZendeskUtils.ticketViewed(_:)), name: NSNotification.Name(rawValue: ZDKAPI_CommentListStarting), object: nil)
     }
 
-    func showHelpCenterIfPossible(from controller: UIViewController) {
-        ZendeskUtils.createIdentity(completion: { success in
+    // MARK: - Show Zendesk Views
+
+    func showHelpCenterIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
+        ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
                 return
             }
+
+            self.sourceTag = sourceTag
 
             guard let helpCenterContentModel = ZDKHelpCenterOverviewContentModel.defaultContent() else {
                 DDLogInfo("Zendesk helpCenterContentModel creation failed.")
@@ -56,33 +85,99 @@ import CoreTelephony
 
             let presentInController = ZendeskUtils.configureViewController(controller)
             ZDKHelpCenter.presentOverview(presentInController, with: helpCenterContentModel)
-        })
+        }
     }
 
-    func showNewRequestIfPossible(from controller: UIViewController) {
-        ZendeskUtils.createIdentity(completion: { success in
+    func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
+        ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
                 return
             }
+
+            self.sourceTag = sourceTag
 
             let presentInController = ZendeskUtils.configureViewController(controller)
             ZDKRequests.presentRequestCreation(with: presentInController)
             self.createRequest()
-        })
+        }
     }
 
-
-    func showTicketListIfPossible(from controller: UIViewController) {
-        ZendeskUtils.createIdentity(completion: { success in
+    func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
+        ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
                 return
             }
 
+            self.sourceTag = sourceTag
+
             let presentInController = ZendeskUtils.configureViewController(controller)
             ZDKRequests.presentRequestList(with: presentInController)
-        })
+        }
+    }
+
+    // MARK: - Device Registration
+
+    static func setNeedToRegisterDevice(_ identifier: String) {
+        ZendeskUtils.sharedInstance.deviceID = identifier
+    }
+
+    static func unregisterDevice(_ identifier: String) {
+        ZDKConfig.instance().disablePush(identifier) { status, error in
+            if let error = error {
+                DDLogInfo("Zendesk couldn't unregistered device: \(identifier). Error: \(error)")
+            } else {
+                DDLogDebug("Zendesk successfully unregistered device: \(identifier)")
+            }
+        }
+    }
+
+    // MARK: - Push Notifications
+
+    static func handlePushNotification(_ userInfo: NSDictionary) {
+
+        guard zendeskEnabled == true,
+            let payload = userInfo as? [AnyHashable: Any] else {
+                DDLogInfo("Zendesk push notification payload invalid.")
+                return
+        }
+
+        ZDKPushUtil.handlePush(payload,
+                               for: UIApplication.shared,
+                               presentationStyle: .formSheet,
+                               layoutGuide: ZDKLayoutRespectTop,
+                               withAppId: zdAppID,
+                               zendeskUrl: zdUrl,
+                               clientId: zdClientId)
+    }
+
+    static func pushNotificationReceived() {
+        ZendeskUtils.showSupportNotificationIndicator = true
+
+        // Updating unread indicators should trigger UI updates, so send notification in main thread.
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .ZendeskPushNotificationReceivedNotification, object: nil)
+        }
+    }
+
+    static func pushNotificationRead() {
+        ZendeskUtils.showSupportNotificationIndicator = false
+
+        // Updating unread indicators should trigger UI updates, so send notification in main thread.
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .ZendeskPushNotificationClearedNotification, object: nil)
+        }
+    }
+
+    @objc static func ticketViewed(_ notification: Foundation.Notification) {
+        pushNotificationRead()
+    }
+    // MARK: - Helpers
+
+    // Specifically for WPError, which is ObjC & has the sourceTag as a String.
+    static func updateSourceTag(with description: String) {
+        ZendeskUtils.sharedInstance.sourceTagDescription = description
     }
 
 }
@@ -90,6 +185,24 @@ import CoreTelephony
 // MARK: - Private Extension
 
 private extension ZendeskUtils {
+
+    static func getZendeskCredentials() -> Bool {
+        guard let appId = ApiCredentials.zendeskAppId(),
+            let url = ApiCredentials.zendeskUrl(),
+            let clientId = ApiCredentials.zendeskClientId(),
+            appId.count > 0,
+            url.count > 0,
+            clientId.count > 0 else {
+                DDLogInfo("Unable to get Zendesk credentials.")
+                ZendeskUtils.toggleZendesk(enabled: false)
+                return false
+        }
+
+        zdAppID = appId
+        zdUrl = url
+        zdClientId = clientId
+        return true
+    }
 
     static func toggleZendesk(enabled: Bool) {
         ZendeskUtils.zendeskEnabled = enabled
@@ -157,11 +270,35 @@ private extension ZendeskUtils {
     }
 
     static func createZendeskIdentity() {
+
+        guard let userEmail = ZendeskUtils.sharedInstance.userEmail else {
+            DDLogInfo("No user email to create Zendesk identity with.")
+            ZDKConfig.instance().userIdentity = nil
+            return
+        }
+
         let zendeskIdentity = ZDKAnonymousIdentity()
-        zendeskIdentity.email = ZendeskUtils.sharedInstance.userEmail
+        zendeskIdentity.email = userEmail
         zendeskIdentity.name = ZendeskUtils.sharedInstance.userName
         ZDKConfig.instance().userIdentity = zendeskIdentity
         DDLogDebug("Zendesk identity created with email '\(zendeskIdentity.email)' and name '\(zendeskIdentity.name)'.")
+        ZendeskUtils.registerDeviceIfNeeded()
+    }
+
+    static func registerDeviceIfNeeded() {
+
+        guard let deviceID = ZendeskUtils.sharedInstance.deviceID else {
+                return
+        }
+
+        ZDKConfig.instance().enablePush(withDeviceID: deviceID) { pushResponse, error in
+            if let error = error {
+                DDLogInfo("Zendesk couldn't register device: \(deviceID). Error: \(error)")
+            } else {
+                ZendeskUtils.sharedInstance.deviceID = nil
+                DDLogDebug("Zendesk successfully registered device: \(deviceID)")
+            }
+        }
     }
 
     func createRequest() {
@@ -235,12 +372,14 @@ private extension ZendeskUtils {
     static func getUserInformationFrom(wpAccount: WPAccount) {
 
         guard let api = wpAccount.wordPressComRestApi else {
+            DDLogInfo("Zendesk: No wordPressComRestApi.")
             return
         }
 
         let service = AccountSettingsService(userID: wpAccount.userID.intValue, api: api)
 
         guard let accountSettings = service.settings else {
+            DDLogInfo("Zendesk: No accountSettings.")
             return
         }
 
@@ -292,7 +431,7 @@ private extension ZendeskUtils {
             let fileLogger = appDelegate.logger.fileLogger,
             let logFileInformation = fileLogger.logFileManager.sortedLogFileInfos.first,
             let logData = try? Data(contentsOf: URL(fileURLWithPath: logFileInformation.filePath)),
-            let logText = String.init(data: logData, encoding: .utf8) else {
+            let logText = String(data: logData, encoding: .utf8) else {
                 return ""
         }
 
@@ -333,6 +472,11 @@ private extension ZendeskUtils {
         let accountService = AccountService(managedObjectContext: context)
         if let _ = accountService.defaultWordPressComAccount() {
             tags.append(Constants.wpComTag)
+        }
+
+        // Add sourceTag
+        if let sourceTagOrigin = ZendeskUtils.sharedInstance.sourceTag?.origin ?? ZendeskUtils.sharedInstance.sourceTagDescription {
+            tags.append(sourceTagOrigin)
         }
 
         return tags

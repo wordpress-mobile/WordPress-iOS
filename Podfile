@@ -12,17 +12,17 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def shared_with_all_pods
-  pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '1d657ac0ddb002712803721da8ee5752e7069637'
-  pod 'CocoaLumberjack', '3.4.1'
+  pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => 'eb742da'
+  pod 'CocoaLumberjack', '3.4.2'
   pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
   pod 'NSObject-SafeExpectations', '0.0.2'
   pod 'UIDeviceIdentifier', '~> 0.4'
 end
 
 def shared_with_networking_pods
-  pod 'AFNetworking', '3.1.0'
+  pod 'AFNetworking', '3.2.1'
   pod 'wpxmlrpc', '0.8.3'
-  pod 'Alamofire', '4.7.0'
+  pod 'Alamofire', '4.7.2'
 end
 
 def shared_test_pods
@@ -53,8 +53,8 @@ target 'WordPress' do
   pod 'Crashlytics', '3.10.1'
   pod 'BuddyBuildSDK', '1.0.17', :configurations => ['Release-Alpha']
   pod 'Gifu', '3.0.0'
-  pod 'MGSwipeTableCell', '1.6.6'
-  pod 'lottie-ios', '1.5.1'
+  pod 'MGSwipeTableCell', '1.6.7'
+  pod 'lottie-ios', '2.5.0'
   pod 'Starscream', '3.0.4'
   pod 'GoogleSignIn', '4.1.2'
   pod 'ZendeskSDK', '1.11.2.1'
@@ -66,14 +66,16 @@ target 'WordPress' do
   pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.3'
   pod 'Gridicons', '0.15'
   pod 'NSURL+IDN', '0.3'
-  pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '177e6773395a77ba01e3851c38372b8bff8723c0'
-  pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'f8021013ee7df63e1c469ad550944c213888faaf'
+  pod 'WPMediaPicker', '1.0'
+  pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'2a25da7b9b687b5e05ce128423d99f771673a6c4'
+  pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '2a25da7b9b687b5e05ce128423d99f771673a6c4'
+  pod 'WordPressUI', '1.0'
 
   target 'WordPressTest' do
     inherit! :search_paths
 
     shared_test_pods
-    pod 'Nimble', '~> 7.0.3'
+    pod 'Nimble', '~> 7.1.1'
   end
 
 
@@ -86,7 +88,9 @@ target 'WordPress' do
     shared_with_all_pods
     shared_with_networking_pods
 
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'f8021013ee7df63e1c469ad550944c213888faaf'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'2a25da7b9b687b5e05ce128423d99f771673a6c4'
+    pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '2a25da7b9b687b5e05ce128423d99f771673a6c4'
+    pod 'WordPressUI', '1.0'
     pod 'Gridicons', '0.15'
   end
 
@@ -100,7 +104,9 @@ target 'WordPress' do
     shared_with_all_pods
     shared_with_networking_pods
 
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'f8021013ee7df63e1c469ad550944c213888faaf'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'2a25da7b9b687b5e05ce128423d99f771673a6c4'
+    pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '2a25da7b9b687b5e05ce128423d99f771673a6c4'
+    pod 'WordPressUI', '1.0'
     pod 'Gridicons', '0.15'
   end
 
@@ -131,13 +137,14 @@ target 'WordPressAuthenticator' do
   ## ====================
   ##
   pod 'Gridicons', '0.15'
+  pod 'WordPressUI', '1.0'
 
   ## Third party libraries
   ## =====================
   ##
   pod '1PasswordExtension', '1.8.5'
   pod 'GoogleSignIn', '4.1.2'
-  pod 'lottie-ios', '1.5.1'
+  pod 'lottie-ios', '2.5.0'
   pod 'NSURL+IDN', '0.3'
   pod 'SVProgressHUD', '2.2.5'
 
@@ -160,6 +167,11 @@ target 'WordPressComStatsiOS' do
 
   shared_with_all_pods
   shared_with_networking_pods
+
+  ## Automattic libraries
+  ## ====================
+  ##
+  pod 'WordPressUI', '1.0'
 
   target 'WordPressComStatsiOSTests' do
     inherit! :search_paths

@@ -65,7 +65,9 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     /// Does the blog support editing media metadata?
     BlogFeatureMediaMetadataEditing,
     /// Does the blog support deleting media?
-    BlogFeatureMediaDeletion
+    BlogFeatureMediaDeletion,
+    /// Does the blog support Stock Photos feature (free photos library)
+    BlogFeatureStockPhotos
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
