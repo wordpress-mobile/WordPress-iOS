@@ -43,12 +43,12 @@ import WordPressFlux
     fileprivate var indexPathForGapMarker: IndexPath?
     fileprivate var didSetupView = false
     fileprivate var listentingForBlockedSiteNotification = false
-    fileprivate var imageRequestAuthToken: String?
     fileprivate var didBumpStats = false
 
     private let content = ReaderTableContent()
     private let tableConfiguration = ReaderTableConfiguration()
     private let cellConfiguration = ReaderCellConfiguration()
+    private var postCellActions: ReaderPostCellActions?
 
     /// Used for fetching content.
     fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
@@ -525,6 +525,7 @@ import WordPressFlux
 
         // Rather than repeatedly creating a service to check if the user is logged in, cache it here.
         isLoggedIn = AccountHelper.isDotcomAvailable()
+        postCellActions?.isLoggedIn = isLoggedIn
 
         // Reset our display context to ensure its current.
         managedObjectContext().reset()
@@ -571,7 +572,7 @@ import WordPressFlux
     /// Fetch and cache the current defaultAccount authtoken, if available.
     fileprivate func refreshImageRequestAuthToken() {
         let acctServ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        imageRequestAuthToken = acctServ.defaultWordPressComAccount()?.authToken
+        postCellActions?.imageRequestAuthToken = acctServ.defaultWordPressComAccount()?.authToken
     }
 
 
@@ -1188,10 +1189,13 @@ import WordPressFlux
             return
         }
 
+        if postCellActions == nil {
+            postCellActions = ReaderPostCellActions(context: managedObjectContext(), origin: self, topic: readerTopic)
+        }
         cellConfiguration.configurePostCardCell(cell,
                                                 withPost: post,
                                                 topic: topic,
-                                                delegate: self,
+                                                delegate: postCellActions,
                                                 loggedIn: true)
     }
 
@@ -1305,89 +1309,6 @@ extension ReaderStreamViewController: WPContentSyncHelperDelegate {
         cleanupAfterSync(refresh: false)
     }
 }
-
-
-// MARK: - ReaderPostCellDelegate
-
-extension ReaderStreamViewController: ReaderPostCellDelegate {
-
-
-    public func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider) {
-        guard let post = provider as? ReaderPost else {
-            return
-        }
-        HeaderAction().execute(post: post, origin: self)
-    }
-
-
-    public func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider) {
-        guard let post = provider as? ReaderPost else {
-            return
-        }
-        CommentAction().execute(post: post, origin: self)
-    }
-
-
-    public func readerCell(_ cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider) {
-        guard let post = provider as? ReaderPost else {
-            return
-        }
-        toggleLikeForPost(post)
-    }
-
-
-    public func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider) {
-        guard let post = provider as? ReaderPost else {
-            return
-        }
-        toggleFollowingForPost(post)
-    }
-
-
-    public func readerCell(_ cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
-        guard let post = provider as? ReaderPost else {
-            return
-        }
-        sharePost(post, fromView: sender)
-    }
-
-    public func readerCell(_ cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider) {
-        guard let post = provider as? ReaderPost else {
-            return
-        }
-        toggleSavedForLater(for: post)
-    }
-
-    public func readerCell(_ cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider) {
-        guard let post = provider as? ReaderPost else {
-            return
-        }
-        visitSiteForPost(post)
-    }
-
-
-    public func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
-        guard let post = provider as? ReaderPost else {
-            return
-        }
-
-        MenuAction(logged: isLoggedIn).execute(post: post, context: managedObjectContext(), readerTopic: readerTopic, anchor: sender, vc: self)
-    }
-
-
-    public func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider) {
-        guard let post = provider as? ReaderPost else {
-            return
-        }
-        showAttributionForPost(post)
-    }
-
-
-    public func readerCellImageRequestAuthToken(_ cell: ReaderPostCardCell) -> String? {
-        return imageRequestAuthToken
-    }
-}
-
 
 // MARK: - WPTableViewHandlerDelegate
 
