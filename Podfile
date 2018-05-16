@@ -21,8 +21,9 @@ end
 
 def shared_with_networking_pods
   pod 'AFNetworking', '3.2.1'
-  pod 'wpxmlrpc', '0.8.3'
   pod 'Alamofire', '4.7.2'
+  pod 'wpxmlrpc', '0.8.3'
+  pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => 'bc508783faea476d2ad373cfe306cc1a95581c27'
 end
 
 def shared_test_pods
@@ -69,7 +70,6 @@ target 'WordPress' do
   pod 'WPMediaPicker', '1.0'
   pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'2a25da7b9b687b5e05ce128423d99f771673a6c4'
   pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '2a25da7b9b687b5e05ce128423d99f771673a6c4'
-  pod 'WordPressKit', '1.0.1'
   pod 'WordPressUI', '1.0'
 
   target 'WordPressTest' do
@@ -91,7 +91,6 @@ target 'WordPress' do
 
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'2a25da7b9b687b5e05ce128423d99f771673a6c4'
     pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '2a25da7b9b687b5e05ce128423d99f771673a6c4'
-    pod 'WordPressKit', '1.0.1'
     pod 'WordPressUI', '1.0'
     pod 'Gridicons', '0.15'
   end
@@ -108,7 +107,6 @@ target 'WordPress' do
 
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'2a25da7b9b687b5e05ce128423d99f771673a6c4'
     pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '2a25da7b9b687b5e05ce128423d99f771673a6c4'
-    pod 'WordPressKit', '1.0.1'
     pod 'WordPressUI', '1.0'
     pod 'Gridicons', '0.15'
   end
@@ -140,7 +138,6 @@ target 'WordPressAuthenticator' do
   ## ====================
   ##
   pod 'Gridicons', '0.15'
-  pod 'WordPressKit', '1.0.1'
   pod 'WordPressUI', '1.0'
 
   ## Third party libraries
@@ -175,7 +172,6 @@ target 'WordPressComStatsiOS' do
   ## Automattic libraries
   ## ====================
   ##
-  pod 'WordPressKit', '1.0.1'
   pod 'WordPressUI', '1.0'
 
   target 'WordPressComStatsiOSTests' do
