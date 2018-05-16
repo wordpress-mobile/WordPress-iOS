@@ -42,4 +42,8 @@ final class ReaderCellConfiguration {
         postCell.headerBlogButtonIsEnabled = !ReaderHelpers.isTopicSite(topic)
         postCell.configureCell(post)
     }
+
+    func configureGapMarker(_ cell: ReaderGapMarkerCell, filling: Bool) {
+        cell.animateActivityView(filling)
+    }
 }
