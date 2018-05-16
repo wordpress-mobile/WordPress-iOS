@@ -3,6 +3,9 @@ import WordPressShared
 import WordPressUI
 
 @objc class ReaderSavedPostsViewController: UITableViewController {
+    private enum Strings {
+        static let title = NSLocalizedString("Saved Posts", comment: "Title for list of posts saved for later")
+    }
     fileprivate var noResultsView: WPNoResultsView!
     fileprivate var tableViewHandler: WPTableViewHandler!
     fileprivate var footerView: PostListFooterView!
@@ -27,7 +30,7 @@ import WordPressUI
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "Saved Posts"
+        title = Strings.title
 
         setupTableView()
         setupFooterView()
