@@ -416,12 +416,6 @@ extension MediaItemViewController {
         return tableView.rowHeight
     }
 
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if let row = viewModel.rowAtIndexPath(indexPath) as? MediaImageRow {
-            row.willDisplay(cell)
-        }
-    }
-
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionHeader(view)
     }

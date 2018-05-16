@@ -1,6 +1,6 @@
 import Foundation
 
-class ReaderCardContent: PostInformation {
+class ReaderCardContent: ImageSourceInformation {
     private let originalProvider: ReaderPostContentProvider
 
     init(provider: ReaderPostContentProvider) {
@@ -11,7 +11,7 @@ class ReaderCardContent: PostInformation {
         return originalProvider.isPrivate() && originalProvider.isWPCom()
     }
 
-    var isBlogSelfHostedWithCredentials: Bool {
+    var isSelfHostedWithCredentials: Bool {
         return !originalProvider.isWPCom() && !originalProvider.isJetpack()
     }
 }
