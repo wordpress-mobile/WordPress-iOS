@@ -395,12 +395,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
             return;
         }
 
-        // Keep previous values in case of failure
-        BOOL oldValue = readerPost.isSavedForLater;
-        BOOL saveForLater = !oldValue;
-
-        // Optimistically update
-        readerPost.isSavedForLater = saveForLater;
+        readerPost.isSavedForLater = !readerPost.isSavedForLater;
 
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
