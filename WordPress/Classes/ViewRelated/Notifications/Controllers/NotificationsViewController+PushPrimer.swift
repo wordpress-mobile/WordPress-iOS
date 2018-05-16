@@ -6,6 +6,12 @@ extension NotificationsViewController {
         static let inlineKey = "inline"
     }
 
+    var shouldShowPrimeForPush: Bool {
+        get {
+            return Feature.enabled(.primeForPush) && !UserDefaults.standard.notificationPrimerInlineWasAcknowledged
+        }
+    }
+
     func setupPrimeForPush() {
         defer {
             WPAnalytics.track(.pushNotificationPrimerSeen, withProperties: [Analytics.locationKey: Analytics.inlineKey])
