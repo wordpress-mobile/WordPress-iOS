@@ -14,9 +14,6 @@ class SupportTableViewController: UITableViewController {
     private var tableHandler: ImmuTableViewHandler!
     private let userDefaults = UserDefaults.standard
 
-    private var userEnteredEmail: String?
-    private var userEnteredName: String?
-
     // MARK: - Init
 
     override init(style: UITableViewStyle) {
@@ -294,8 +291,11 @@ private extension SupportTableViewController {
 
         // Done Action
         let doneAction = alertController.addDefaultActionWithTitle(LocalizedText.alertDone) { [weak alertController] (_) in
-            self.userEnteredEmail = alertController?.textFields?.first?.text
-            self.userEnteredName = alertController?.textFields?.last?.text ?? self.generateDisplayName(from: self.userEnteredEmail!)
+            guard let email = alertController?.textFields?.first?.text else {
+                    return
+            }
+            let name = alertController?.textFields?.last?.text ?? self.generateDisplayName(from: email)
+            ZendeskUtils.sharedInstance.createIdentityFor(email: email, name: name)
         }
 
         // Disable Done until a valid Email is entered.
