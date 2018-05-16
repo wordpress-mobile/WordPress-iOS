@@ -5,11 +5,6 @@ data model as well as any custom migrations.
 
 ## WordPress 76
 
-- @frosty 2018-05-12
-- `ReaderPost` added `isSavedForLater` property, used to track posts that the user wants to save to read later.
-
-## WordPress 75
-
 - @frosty 2018-04-25
 - `AccountSettings` added `tracksOptOut` property, used to store the user's current preference for opting out of analytics tracking.
 
