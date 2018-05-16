@@ -48,6 +48,7 @@ import WordPressFlux
     fileprivate var didBumpStats = false
 
     private let tableConfiguration = ReaderTableConfiguration()
+    private let content = ReaderTableContent()
 
     /// Used for fetching content.
     fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
