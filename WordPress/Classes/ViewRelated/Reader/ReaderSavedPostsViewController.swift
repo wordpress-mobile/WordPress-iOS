@@ -9,16 +9,16 @@ import WordPressUI
     fileprivate let heightForFooterView = CGFloat(34.0)
     fileprivate let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
 
-    fileprivate let footerViewNibName = "PostListFooterView"
-    fileprivate let readerCardCellNibName = "ReaderPostCardCell"
-    fileprivate let readerCardCellReuseIdentifier = "ReaderCardCellReuseIdentifier"
-    fileprivate let readerBlockedCellNibName = "ReaderBlockedSiteCell"
-    fileprivate let readerBlockedCellReuseIdentifier = "ReaderBlockedCellReuseIdentifier"
-    fileprivate let readerGapMarkerCellNibName = "ReaderGapMarkerCell"
-    fileprivate let readerGapMarkerCellReuseIdentifier = "ReaderGapMarkerCellReuseIdentifier"
-    fileprivate let readerCrossPostCellNibName = "ReaderCrossPostCell"
-    fileprivate let readerCrossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
-    fileprivate let estimatedRowHeight = CGFloat(300.0)
+//    fileprivate let footerViewNibName = "PostListFooterView"
+//    fileprivate let readerCardCellNibName = "ReaderPostCardCell"
+//    fileprivate let readerCardCellReuseIdentifier = "ReaderCardCellReuseIdentifier"
+//    fileprivate let readerBlockedCellNibName = "ReaderBlockedSiteCell"
+//    fileprivate let readerBlockedCellReuseIdentifier = "ReaderBlockedCellReuseIdentifier"
+//    fileprivate let readerGapMarkerCellNibName = "ReaderGapMarkerCell"
+//    fileprivate let readerGapMarkerCellReuseIdentifier = "ReaderGapMarkerCellReuseIdentifier"
+//    fileprivate let readerCrossPostCellNibName = "ReaderCrossPostCell"
+//    fileprivate let readerCrossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
+//    fileprivate let estimatedRowHeight = CGFloat(300.0)
 
     fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
 
@@ -71,7 +71,7 @@ import WordPressUI
     }
 
     fileprivate func setupFooterView() {
-        guard let footer = Bundle.main.loadNibNamed(footerViewNibName, owner: nil, options: nil)!.first as? PostListFooterView else {
+        guard let footer = ReaderTableConfiguration().footer() as? PostListFooterView else {
             assertionFailure()
             return
         }
@@ -193,7 +193,7 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
             // Return the previously known height as it was cached via willDisplayCell.
             return height
         }
-        return estimatedRowHeight
+        return ReaderTableConfiguration().estimatedRowHeight()
     }
 
 
@@ -220,12 +220,12 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
         //        }
 
         if post.isCross() {
-            let cell = tableView.dequeueReusableCell(withIdentifier: readerCrossPostCellReuseIdentifier) as! ReaderCrossPostCell
+            let cell = ReaderTableConfiguration().crossPostCell(tableView)
             configureCrossPostCell(cell, atIndexPath: indexPath)
             return cell
         }
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: readerCardCellReuseIdentifier) as! ReaderPostCardCell
+        let cell = ReaderTableConfiguration().postCardCell(tableView)
         configurePostCardCell(cell, post: post)
         return cell
     }
@@ -367,6 +367,12 @@ extension ReaderSavedPostsViewController: ReaderPostCellDelegate {
 
     func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
         //TODO
+        //TO BE IMPLEMENTED WHEN LOGGED IN FEATURES ARE ALLOWED
+//        guard let post = provider as? ReaderPost else {
+//            return
+//        }
+//
+//        MenuAction(logged: isLoggedIn).execute(post: post, context: managedObjectContext(), readerTopic: readerTopic, anchor: sender, vc: self)
     }
 
     func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider) {
