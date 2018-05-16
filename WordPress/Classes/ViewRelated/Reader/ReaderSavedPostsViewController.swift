@@ -199,7 +199,10 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
     }
 
     override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let posts = content.content() as! [ReaderPost]
+        guard let posts = content.content() as? [ReaderPost] else {
+            DDLogError("[ReaderStreamViewController tableView:cellForRowAtIndexPath:] fetchedObjects was nil.")
+            return UITableViewCell()
+        }
         let post = posts[indexPath.row]
 
         //        if recentlyBlockedSitePostObjectIDs.contains(post.objectID) {
@@ -227,8 +230,12 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
         guard cell.isKind(of: ReaderPostCardCell.self) || cell.isKind(of: ReaderCrossPostCell.self) else {
             return
         }
+
+        guard let posts = content.content() as? [ReaderPost] else {
+            DDLogError("[ReaderStreamViewController tableView:willDisplayCell:] fetchedObjects was nil.")
+            return
+        }
         // Bump the render tracker if necessary.
-        let posts = content.content() as! [ReaderPost]
         let post = posts[indexPath.row]
         if !post.rendered, let railcar = post.railcarDictionary() {
             post.rendered = true
