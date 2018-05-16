@@ -1,4 +1,4 @@
-struct ReaderTableConfiguration {
+final class ReaderTableConfiguration {
     private let footerViewNibName = "PostListFooterView"
     private let readerCardCellNibName = "ReaderPostCardCell"
     private let readerCardCellReuseIdentifier = "ReaderCardCellReuseIdentifier"
