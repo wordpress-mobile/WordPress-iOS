@@ -161,7 +161,7 @@ DEPENDENCIES:
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `2a25da7b9b687b5e05ce128423d99f771673a6c4`)
   - WordPress-Aztec-iOS/WordPressEditor (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `2a25da7b9b687b5e05ce128423d99f771673a6c4`)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `eb742da`)
-  - WordPressUI (= 1.0)
+  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, branch `add-gradient-view`)
   - WPMediaPicker (= 1.0)
   - wpxmlrpc (= 0.8.3)
   - ZendeskSDK (= 1.11.2.1)
@@ -197,7 +197,6 @@ SPEC REPOS:
     - Starscream
     - SVProgressHUD
     - UIDeviceIdentifier
-    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskSDK
@@ -212,6 +211,9 @@ EXTERNAL SOURCES:
   WordPressShared:
     :commit: eb742da
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
+  WordPressUI:
+    :branch: add-gradient-view
+    :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -223,6 +225,9 @@ CHECKOUT OPTIONS:
   WordPressShared:
     :commit: eb742da
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
+  WordPressUI:
+    :commit: e6a2fb8f74edc09171a1a6046300c7803ea4d1df
+    :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -262,6 +267,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: 6f9992e4e9c975b84ebd7c7ed9deba3c19d2a625
+PODFILE CHECKSUM: 924abe52d711d87432c077c1bdcc738ab2c4643d
 
 COCOAPODS: 1.5.2

@@ -48,7 +48,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     // Content views
     @IBOutlet fileprivate weak var featuredImageView: CachedAnimatedImageView!
     @IBOutlet fileprivate weak var titleLabel: UILabel!
-    @IBOutlet fileprivate weak var bylineView: UIView!
+    @IBOutlet fileprivate weak var bylineView: UIScrollView!
     @IBOutlet fileprivate weak var avatarImageView: CircularImageView!
     @IBOutlet fileprivate weak var bylineLabel: UILabel!
     @IBOutlet fileprivate weak var textView: WPRichContentView!
