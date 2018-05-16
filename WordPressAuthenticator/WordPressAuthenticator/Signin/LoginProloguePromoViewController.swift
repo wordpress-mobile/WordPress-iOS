@@ -60,10 +60,7 @@ class LoginProloguePromoViewController: UIViewController {
         stackView = UIStackView()
         headingLabel = UILabel()
         animationHolder = UIView()
-        guard let animation = Lottie.LOTAnimationView(name: type.animationKey) else {
-            fatalError("animation could not be created for promo screen \(promoType)")
-        }
-        animationView = animation
+        animationView = Lottie.LOTAnimationView(name: type.animationKey)
 
         super.init(nibName: nil, bundle: nil)
     }
