@@ -88,7 +88,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     [self refreshMetadata];
 }
 
-- (void)endSession
+- (void)clearQueuedEvents
 {
     [self.tracksService clearQueuedEvents];
 }
@@ -705,6 +705,33 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatNotificationsSettingsUpdated:
             eventName = @"notification_settings_updated";
             break;
+        case WPAnalyticsStatNotificationsSettingsBlogNotificationsOn:
+            eventName = @"followed_blog_notifications_settings_on";
+            break;
+        case WPAnalyticsStatNotificationsSettingsBlogNotificationsOff:
+            eventName = @"followed_blog_notifications_settings_off";
+            break;
+        case WPAnalyticsStatNotificationsSettingsEmailNotificationsOn:
+            eventName = @"followed_blog_notifications_settings_email_on";
+            break;
+        case WPAnalyticsStatNotificationsSettingsEmailNotificationsOff:
+            eventName = @"followed_blog_notifications_settings_email_off";
+            break;
+        case WPAnalyticsStatNotificationsSettingsEmailDeliveryInstantly:
+            eventName = @"followed_blog_notifications_settings_email_instantly";
+            break;
+        case WPAnalyticsStatNotificationsSettingsEmailDeliveryDaily:
+            eventName = @"followed_blog_notifications_settings_email_daily";
+            break;
+        case WPAnalyticsStatNotificationsSettingsEmailDeliveryWeekly:
+            eventName = @"followed_blog_notifications_settings_email_weekly";
+            break;
+        case WPAnalyticsStatNotificationsSettingsCommentsNotificationsOn:
+            eventName = @"followed_blog_notifications_settings_comments_on";
+            break;
+        case WPAnalyticsStatNotificationsSettingsCommentsNotificationsOff:
+            eventName = @"followed_blog_notifications_settings_comments_off";
+            break;
         case WPAnalyticsStatNotificationsTappedNewPost:
             eventName = @"notification_tapped_new_post";
             break;
@@ -960,6 +987,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatReaderListUnfollowed:
             eventName = @"reader_list_unfollowed";
+            break;
+        case WPAnalyticsStatReaderListNotificationMenuOn:
+            eventName = @"followed_blog_notifications_reader_menu_on";
+            break;
+        case WPAnalyticsStatReaderListNotificationMenuOff:
+            eventName = @"followed_blog_notifications_reader_menu_off";
+            break;
+        case WPAnalyticsStatReaderListNotificationEnabled:
+            eventName = @"followed_blog_notifications_reader_enabled";
             break;
         case WPAnalyticsStatReaderSearchLoaded:
             eventName = @"reader_search_loaded";
@@ -1360,18 +1396,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
         case WPAnalyticsStatMaxValue:
-        case WPAnalyticsStatNotificationsSettingsBlogNotificationsOn:
-        case WPAnalyticsStatNotificationsSettingsBlogNotificationsOff:
-        case WPAnalyticsStatNotificationsSettingsEmailNotificationsOn:
-        case WPAnalyticsStatNotificationsSettingsEmailNotificationsOff:
-        case WPAnalyticsStatNotificationsSettingsEmailDeliveryInstantly:
-        case WPAnalyticsStatNotificationsSettingsEmailDeliveryDaily:
-        case WPAnalyticsStatNotificationsSettingsEmailDeliveryWeekly:
-        case WPAnalyticsStatNotificationsSettingsCommentsNotificationsOn:
-        case WPAnalyticsStatNotificationsSettingsCommentsNotificationsOff:
-        case WPAnalyticsStatReaderListNotificationMenuOn:
-        case WPAnalyticsStatReaderListNotificationMenuOff:
-        case WPAnalyticsStatReaderListNotificationEnabled:
             return nil;
     }
 

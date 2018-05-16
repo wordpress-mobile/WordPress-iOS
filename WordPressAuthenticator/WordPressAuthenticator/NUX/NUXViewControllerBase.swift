@@ -6,6 +6,7 @@ import WordPressUI
 public protocol NUXViewControllerBase {
     var sourceTag: WordPressSupportSourceTag { get }
     var helpBadge: NUXHelpBadgeLabel { get }
+    var helpIndicator: WPHelpIndicatorView { get }
     var helpButton: UIButton { get }
     var loginFields: LoginFields { get }
     var dismissBlock: ((_ cancelled: Bool) -> Void)? { get }
@@ -104,6 +105,10 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         helpBadge.isHidden = (count == 0)
     }
 
+    func refreshSupportNotificationIndicator() {
+        let showIndicator = WordPressAuthenticator.shared.delegate?.showSupportNotificationIndicator ?? false
+        helpIndicator.isHidden = !showIndicator
+    }
 
     // MARK: - Actions
 
@@ -151,17 +156,47 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
 
         addHelpButtonToNavController()
         refreshSupportBadge()
+        refreshSupportNotificationIndicator()
     }
 
     /// Adds the Help Button to the nav controller
     ///
     public func addHelpButtonToNavController() {
         let helpButtonMarginSpacerWidth = CGFloat(-8)
-        let helpBadgeSize = CGSize(width: 12, height: 12)
         let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
+        
+        var helpNotificationSize: CGSize
+        var notificationView: UIView
+        var notificationViewCenterXConstraint: NSLayoutConstraint
+        var notificationViewCenterYConstraint: NSLayoutConstraint
+        
+        if WordPressAuthenticator.shared.configuration.supportNotificationIndicatorFeatureFlag == true {
+            // Zendesk
+            NotificationCenter.default.addObserver(forName: .wordpressSupportNotificationReceived, object: nil, queue: nil) { [weak self] _ in
+                self?.refreshSupportNotificationIndicator()
+            }
+            
+            NotificationCenter.default.addObserver(forName: .wordpressSupportNotificationCleared, object: nil, queue: nil) { [weak self] _ in
+                self?.refreshSupportNotificationIndicator()
+            }
 
-        NotificationCenter.default.addObserver(forName: .wordpressSupportBadgeUpdated, object: nil, queue: nil) { [weak self] _ in
-            self?.refreshSupportBadge()
+            notificationView = helpIndicator
+            helpNotificationSize = CGSize(width: 10, height: 10)
+            let notificationCenterOffset = CGPoint(x: -5, y: 3)
+            notificationViewCenterXConstraint = notificationView.centerXAnchor.constraint(equalTo: helpButton.trailingAnchor,
+                                                                                          constant: helpButton.contentEdgeInsets.top + notificationCenterOffset.x)
+            notificationViewCenterYConstraint = notificationView.centerYAnchor.constraint(equalTo: helpButton.topAnchor,
+                                                                                          constant: helpButton.contentEdgeInsets.top + notificationCenterOffset.y)
+        } else {
+            // Helpshift
+            NotificationCenter.default.addObserver(forName: .wordpressSupportBadgeUpdated, object: nil, queue: nil) { [weak self] _ in
+                self?.refreshSupportBadge()
+            }
+            
+            notificationView = helpBadge
+            helpNotificationSize = CGSize(width: 12, height: 12)
+            notificationViewCenterXConstraint = notificationView.centerXAnchor.constraint(equalTo: helpButton.trailingAnchor)
+            notificationViewCenterYConstraint = notificationView.centerYAnchor.constraint(equalTo: helpButton.topAnchor)
         }
 
         let customView = UIView(frame: helpButtonContainerFrame)
@@ -182,13 +217,13 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         helpButton.topAnchor.constraint(equalTo: customView.topAnchor).isActive = true
         helpButton.bottomAnchor.constraint(equalTo: customView.bottomAnchor).isActive = true
 
-        helpBadge.translatesAutoresizingMaskIntoConstraints = false
-        helpBadge.isHidden = true
-        customView.addSubview(helpBadge)
-        helpBadge.centerXAnchor.constraint(equalTo: helpButton.trailingAnchor).isActive = true
-        helpBadge.centerYAnchor.constraint(equalTo: helpButton.topAnchor).isActive = true
-        helpBadge.widthAnchor.constraint(equalToConstant: helpBadgeSize.width).isActive = true
-        helpBadge.heightAnchor.constraint(equalToConstant: helpBadgeSize.height).isActive = true
+        notificationView.translatesAutoresizingMaskIntoConstraints = false
+        notificationView.isHidden = true
+        customView.addSubview(notificationView)
+        notificationViewCenterXConstraint.isActive = true
+        notificationViewCenterYConstraint.isActive = true
+        notificationView.widthAnchor.constraint(equalToConstant: helpNotificationSize.width).isActive = true
+        notificationView.heightAnchor.constraint(equalToConstant: helpNotificationSize.height).isActive = true
 
         let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         spacer.width = helpButtonMarginSpacerWidth
