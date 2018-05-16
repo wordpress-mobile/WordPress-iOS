@@ -30,6 +30,36 @@ struct NavigationItemRow: ImmuTableRow {
     }
 }
 
+struct IndicatorNavigationItemRow: ImmuTableRow {
+    static let cell = ImmuTableCell.class(WPTableViewCellIndicator.self)
+
+    let title: String
+    let icon: UIImage?
+    let showIndicator: Bool
+    let accessoryType: UITableViewCellAccessoryType
+    let action: ImmuTableAction?
+
+
+    init(title: String, icon: UIImage? = nil, showIndicator: Bool = false, accessoryType: UITableViewCellAccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction) {
+        self.title = title
+        self.icon = icon
+        self.showIndicator = showIndicator
+        self.accessoryType = accessoryType
+        self.action = action
+    }
+
+    func configureCell(_ cell: UITableViewCell) {
+        let cell = cell as! WPTableViewCellIndicator
+
+        cell.textLabel?.text = title
+        cell.accessoryType = accessoryType
+        cell.imageView?.image = icon
+        cell.showIndicator = showIndicator
+
+        WPStyleGuide.configureTableViewCell(cell)
+    }
+}
+
 struct BadgeNavigationItemRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellBadge.self)
 

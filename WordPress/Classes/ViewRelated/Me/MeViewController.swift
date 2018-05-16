@@ -28,7 +28,13 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     required convenience init() {
         self.init(style: .grouped)
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(MeViewController.refreshModelWithNotification(_:)), name: NSNotification.Name.HelpshiftUnreadCountUpdated, object: nil)
+
+        if FeatureFlag.zendeskMobile.enabled {
+            notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .ZendeskPushNotificationReceivedNotification, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .ZendeskPushNotificationClearedNotification, object: nil)
+        } else {
+            notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .HelpshiftUnreadCountUpdated, object: nil)
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -47,7 +53,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         ImmuTable.registerRows([
             NavigationItemRow.self,
-            BadgeNavigationItemRow.self,
+            BadgeNavigationItemRow.self, // Helpshift
+            IndicatorNavigationItemRow.self, // Zendesk
             ButtonRow.self,
             DestructiveButtonRow.self
             ], tableView: self.tableView)
@@ -65,7 +72,12 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         refreshAccountDetails()
 
-        HelpshiftUtils.refreshUnreadNotificationCount()
+        if FeatureFlag.zendeskMobile.enabled {
+            resetApplicationBadge()
+            startListeningToNotifications()
+        } else {
+            HelpshiftUtils.refreshUnreadNotificationCount()
+        }
 
         if splitViewControllerIsHorizontallyCompact {
             animateDeselectionInteractively()
@@ -76,6 +88,10 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         super.viewDidAppear(animated)
 
         registerUserActivity()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        stopListeningToNotifications()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -98,7 +114,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     @objc fileprivate func reloadViewModel() {
         let account = defaultAccount()
         let loggedIn = account != nil
-        let badgeCount = HelpshiftUtils.isHelpshiftEnabled() ? HelpshiftUtils.unreadNotificationCount() : 0
 
         // Warning: If you set the header view after the table model, the
         // table's top margin will be wrong.
@@ -116,7 +131,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         let selectedIndexPath = tableView.indexPathForSelectedRow ?? IndexPath(row: 0, section: 0)
 
         // Then we'll reload the table view model (prompting a table reload)
-        handler.viewModel = tableViewModel(loggedIn, helpshiftBadgeCount: badgeCount)
+        handler.viewModel = tableViewModel(loggedIn)
 
         if !splitViewControllerIsHorizontallyCompact {
             // And finally we'll reselect the selected row, if there is one
@@ -142,7 +157,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             action: pushAppSettings())
     }
 
-    fileprivate func tableViewModel(_ loggedIn: Bool, helpshiftBadgeCount: Int) -> ImmuTable {
+    fileprivate func tableViewModel(_ loggedIn: Bool) -> ImmuTable {
         let accessoryType: UITableViewCellAccessoryType = (splitViewControllerIsHorizontallyCompact) ? .disclosureIndicator : .none
 
         let myProfile = NavigationItemRow(
@@ -163,12 +178,30 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             accessoryType: accessoryType,
             action: pushNotificationSettings())
 
-        let helpAndSupport = BadgeNavigationItemRow(
+        // Helpshift
+        let helpshiftBadgeCount = HelpshiftUtils.isHelpshiftEnabled() ? HelpshiftUtils.unreadNotificationCount() : 0
+        let helpAndSupportBadge = BadgeNavigationItemRow(
             title: RowTitles.support,
             icon: Gridicon.iconOfType(.help),
             badgeCount: helpshiftBadgeCount,
             accessoryType: accessoryType,
             action: pushHelp())
+
+        // Zendesk
+        let helpAndSupportIndicator = IndicatorNavigationItemRow(
+            title: RowTitles.support,
+            icon: Gridicon.iconOfType(.help),
+            showIndicator: ZendeskUtils.showSupportNotificationIndicator,
+            accessoryType: accessoryType,
+            action: pushHelp())
+
+        let helpAndSupportSection: ImmuTableSection = {
+            if FeatureFlag.zendeskMobile.enabled {
+                return ImmuTableSection(rows: [helpAndSupportIndicator])
+            } else {
+                return ImmuTableSection(rows: [helpAndSupportBadge])
+            }
+        }()
 
         let logIn = ButtonRow(
             title: RowTitles.logIn,
@@ -190,9 +223,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                         appSettingsRow,
                         notificationSettings
                         ]),
-                    ImmuTableSection(rows: [
-                        helpAndSupport
-                        ]),
+                    helpAndSupportSection,
                     ImmuTableSection(
                         headerText: wordPressComAccount,
                         rows: [
@@ -205,9 +236,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                     ImmuTableSection(rows: [
                         appSettingsRow,
                         ]),
-                    ImmuTableSection(rows: [
-                        helpAndSupport
-                        ]),
+                    helpAndSupportSection,
                     ImmuTableSection(
                         headerText: wordPressComAccount,
                         rows: [
@@ -373,7 +402,11 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         let matchRow: ((ImmuTableRow) -> Bool) = { row in
             if let row = row as? NavigationItemRow {
                 return row.title == rowTitle
+            // Helpshift
             } else if let row = row as? BadgeNavigationItemRow {
+                return row.title == rowTitle
+            // Zendesk
+            } else if let row = row as? IndicatorNavigationItemRow {
                 return row.title == rowTitle
             }
             return false
@@ -389,14 +422,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             handler.tableView(self.tableView, didSelectRowAt: indexPath)
         }
     }
-
-
-    // MARK: - Notification observers
-
-    @objc func refreshModelWithNotification(_ notification: Foundation.Notification) {
-        reloadViewModel()
-    }
-
 
     // MARK: - Gravatar Helpers
 
@@ -544,5 +569,38 @@ extension MeViewController {
 
     struct HeaderTitles {
         static let wpAccount = NSLocalizedString("WordPress.com Account", comment: "WordPress.com sign-in/sign-out section header title")
+    }
+}
+
+// MARK: - Private Extension for Notification handling
+
+private extension MeViewController {
+
+    @objc func refreshModelWithNotification(_ notification: Foundation.Notification) {
+        reloadViewModel()
+    }
+
+    func resetApplicationBadge() {
+        UIApplication.shared.applicationIconBadgeNumber = 0
+    }
+
+    func startListeningToNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(applicationDidBecomeActive),
+                                               name: NSNotification.Name.UIApplicationDidBecomeActive,
+                                               object: nil)
+    }
+
+    @objc func applicationDidBecomeActive(_ note: Foundation.Notification) {
+        // Let's reset the badge, whenever the app comes back to FG, and this view was upfront!
+        guard isViewLoaded == true && view.window != nil else {
+            return
+        }
+
+        resetApplicationBadge()
+    }
+
+    func stopListeningToNotifications() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
     }
 }
