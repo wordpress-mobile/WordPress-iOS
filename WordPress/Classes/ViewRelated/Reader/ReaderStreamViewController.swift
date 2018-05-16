@@ -346,22 +346,10 @@ import WordPressFlux
         assert(tableViewController != nil, "The tableViewController must be assigned before configuring the tableView")
 
         tableView = tableViewController.tableView
-        tableView.accessibilityIdentifier = "Reader"
-        tableView.separatorStyle = .none
         refreshControl = tableViewController.refreshControl!
         refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), for: .valueChanged)
 
-        var nib = UINib(nibName: readerCardCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: readerCardCellReuseIdentifier)
-
-        nib = UINib(nibName: readerBlockedCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: readerBlockedCellReuseIdentifier)
-
-        nib = UINib(nibName: readerGapMarkerCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: readerGapMarkerCellReuseIdentifier)
-
-        nib = UINib(nibName: readerCrossPostCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: readerCrossPostCellReuseIdentifier)
+        ReaderTableConfiguration().setup(tableView)
     }
 
 

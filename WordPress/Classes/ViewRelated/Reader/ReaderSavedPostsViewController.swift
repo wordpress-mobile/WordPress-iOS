@@ -40,20 +40,7 @@ import WordPressUI
     // MARK: - Setup
 
     fileprivate func setupTableView() {
-        tableView.accessibilityIdentifier = "Reader"
-        tableView.separatorStyle = .none
-
-        var nib = UINib(nibName: readerCardCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: readerCardCellReuseIdentifier)
-
-        nib = UINib(nibName: readerBlockedCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: readerBlockedCellReuseIdentifier)
-
-        nib = UINib(nibName: readerGapMarkerCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: readerGapMarkerCellReuseIdentifier)
-
-        nib = UINib(nibName: readerCrossPostCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: readerCrossPostCellReuseIdentifier)
+        ReaderTableConfiguration().setup(tableView)
     }
 
 
