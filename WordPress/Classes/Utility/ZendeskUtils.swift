@@ -46,8 +46,6 @@ protocol ZendeskUtilsDelegate {
     private static var zdUrl: String?
     private static var zdClientId: String?
 
-    private var userLoggedIn = true
-
     private static var appVersion: String {
         return Bundle.main.shortVersionString() ?? Constants.unknownValue
     }
@@ -136,6 +134,16 @@ protocol ZendeskUtilsDelegate {
             ZDKRequests.presentRequestList(with: presentInController)
         }
     }
+
+    // MARK: - Manually entered user information
+
+    func createIdentityFor(email: String, name: String) {
+        userEmail = email
+        userName = name
+        ZendeskUtils.saveNoAccountProfileToUD()
+        ZendeskUtils.createZendeskIdentity()
+    }
+
 
     // MARK: - Device Registration
 
@@ -228,6 +236,10 @@ private extension ZendeskUtils {
          1. If there is a WordPress.com account, use that.
          2. If not, check if we’ve saved user information in User Defaults. If so, use that.
          3. If not, get user information from the selected site, save it to User Defaults, and use it.
+         
+         If the user is not logged in:
+         1. Check if we’ve saved user information in User Defaults. If so, use that.
+         2. If not, we don't have any user information. Bail out.
          */
 
         let context = ContextManager.sharedInstance().mainContext
@@ -255,8 +267,18 @@ private extension ZendeskUtils {
         let blogService = BlogService(managedObjectContext: context)
 
         guard let blog = blogService.lastUsedBlog() else {
-            DDLogInfo("No Blog to create Zendesk identity with.")
-            ZendeskUtils.sharedInstance.userLoggedIn = false
+
+            // The user is not logged in. Check User Defaults for manually entered information.
+            if let savedProfile = UserDefaults.standard.dictionary(forKey: Constants.zendeskNoAccountProfileUDKey) {
+                DDLogDebug("Using manually entered information from User Defaults for Zendesk identity.")
+                ZendeskUtils.getUserInformationFrom(savedProfile: savedProfile)
+                ZendeskUtils.createZendeskIdentity()
+                completion(true)
+                return
+            }
+
+            // We have no user information period. Bail out.
+            DDLogInfo("No user information to create Zendesk identity with.")
             ZendeskUtils.delegate?.userNotLoggedIn()
             completion(false)
             return
@@ -267,7 +289,7 @@ private extension ZendeskUtils {
             DDLogDebug("Using Jetpack site for Zendesk identity.")
             ZendeskUtils.getUserInformationFrom(jetpackState: jetpackState)
             ZendeskUtils.createZendeskIdentity()
-            ZendeskUtils.saveProfileToUD()
+            ZendeskUtils.saveAccountProfileToUD()
             completion(true)
             return
 
@@ -277,7 +299,7 @@ private extension ZendeskUtils {
         ZendeskUtils.getUserInformationFrom(blog: blog) {
             DDLogDebug("Using self-hosted for Zendesk identity.")
             ZendeskUtils.createZendeskIdentity()
-            ZendeskUtils.saveProfileToUD()
+            ZendeskUtils.saveAccountProfileToUD()
             completion(true)
             return
         }
@@ -417,12 +439,23 @@ private extension ZendeskUtils {
 
     // MARK: - Save to User Defaults
 
-    static func saveProfileToUD() {
+    static func saveAccountProfileToUD() {
+        saveProfileToUDFor(key: Constants.zendeskProfileUDKey)
+
+        // Since we have account information, remove no account information.
+        UserDefaults.standard.removeObject(forKey: Constants.zendeskNoAccountProfileUDKey)
+    }
+
+    static func saveNoAccountProfileToUD() {
+        saveProfileToUDFor(key: Constants.zendeskNoAccountProfileUDKey)
+    }
+
+    static func saveProfileToUDFor(key: String) {
         var userProfile = [String: String]()
         userProfile[Constants.profileEmailKey] = ZendeskUtils.sharedInstance.userEmail
         userProfile[Constants.profileNameKey] = ZendeskUtils.sharedInstance.userName
 
-        UserDefaults.standard.set(userProfile, forKey: Constants.zendeskProfileUDKey)
+        UserDefaults.standard.set(userProfile, forKey: key)
         UserDefaults.standard.synchronize()
     }
 
@@ -566,6 +599,7 @@ private extension ZendeskUtils {
         static let networkCarrierLabel = "Carrier:"
         static let networkCountryCodeLabel = "Country Code:"
         static let zendeskProfileUDKey = "wp_zendesk_profile"
+        static let zendeskNoAccountProfileUDKey = "wp_zendesk_profile_no_account"
         static let profileEmailKey = "email"
         static let profileNameKey = "name"
         static let userDefaultsZendeskUnreadNotifications = "wp_zendesk_unread_notifications"
