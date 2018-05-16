@@ -31,7 +31,31 @@ final class ReaderTableContent {
         return tableViewHandler?.resultsController.fetchedObjects
     }
 
+    func contentCount() -> Int {
+        return content()?.count ?? 0
+    }
+
     func isEmpty() -> Bool {
-        return content()?.count == 0
+        return contentCount() == 0
+    }
+
+    func refresh() {
+        tableViewHandler?.refreshTableView()
+    }
+
+    func refreshPreservingOffset() {
+        tableViewHandler?.refreshTableViewPreservingOffset()
+    }
+
+    func indexPath<T: NSFetchRequestResult>(forObject object: T) -> IndexPath? {
+        return tableViewHandler?.resultsController.indexPath(forObject: object)
+    }
+
+    func object<T: NSFetchRequestResult>(at indexPath: IndexPath) -> T? {
+        return tableViewHandler?.resultsController.object(at: indexPath) as? T
+    }
+
+    func isScrolling() -> Bool {
+        return tableViewHandler?.isScrolling ?? false
     }
 }
