@@ -41,10 +41,6 @@ import WordPressUI
 
     fileprivate func setupContentHandler() {
         content.initializeContent(tableView: tableView, delegate: self)
-//        tableViewHandler = WPTableViewHandler(tableView: tableView)
-//        tableViewHandler.cacheRowHeights = false
-//        tableViewHandler.updateRowAnimation = .none
-//        tableViewHandler.delegate = self
     }
 
     /// The fetch request can need a different predicate depending on how the content

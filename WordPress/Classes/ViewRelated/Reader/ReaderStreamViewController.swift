@@ -24,7 +24,6 @@ import WordPressFlux
 
     fileprivate var tableView: UITableView!
     fileprivate var refreshControl: UIRefreshControl!
-    //fileprivate var tableViewHandler: WPTableViewHandler!
     fileprivate var syncHelper: WPContentSyncHelper!
     fileprivate var tableViewController: UITableViewController!
     fileprivate var resultsStatusView: WPNoResultsView!
