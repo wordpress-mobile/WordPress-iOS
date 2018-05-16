@@ -32,9 +32,7 @@ CGFloat const PostFeaturedImageCellMargin = 15.0f;
 {
     __weak PostFeaturedImageCell *weakSelf = self;
     [self.imageLoader loadImageWithURL:url fromPost:postInformation preferedSize:size placeholder:nil success:^{
-        if (weakSelf && weakSelf.delegate) {
-            [weakSelf.delegate postFeatureImageCellDidFinishLoadingImage:weakSelf];
-        }
+        [weakSelf informDelegateImageLoaded];
     } error:^(NSError * _Nullable error) {
         if (weakSelf && weakSelf.delegate) {
             [weakSelf.delegate postFeatureImageCell:weakSelf didFinishLoadingImageWithError:error];
@@ -42,9 +40,28 @@ CGFloat const PostFeaturedImageCellMargin = 15.0f;
     }];
 }
 
+- (void)informDelegateImageLoaded
+{
+    if (self.delegate == nil) {
+        return;
+    }
+
+    if (self.featuredImageView.animatedGifData) {
+        [self.delegate postFeatureImageCell:self didFinishLoadingAnimatedImageWithData:self.featuredImageView.animatedGifData];
+    } else {
+        [self.delegate postFeatureImageCellDidFinishLoadingImage:self];
+    }
+}
+
 - (UIImage *)image
 {
     return self.featuredImageView.image;
+}
+
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    [self.featuredImageView prepForReuse];
 }
 
 #pragma mark - Helpers

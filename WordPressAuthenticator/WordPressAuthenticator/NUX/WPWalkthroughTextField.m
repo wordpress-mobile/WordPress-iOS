@@ -1,6 +1,5 @@
 #import "WPWalkthroughTextField.h"
 #import <WordPressShared/WordPressShared.h>
-#import <WordPressUI/WordPressUI.h>
 
 
 
@@ -199,7 +198,7 @@ NSInteger const LeftImageSpacing = 8;
 
 - (BOOL)isLayoutLeftToRight
 {
-    return [self userInterfaceLayoutDirection] == UIUserInterfaceLayoutDirectionLeftToRight;
+    return [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:self.semanticContentAttribute] == UIUserInterfaceLayoutDirectionLeftToRight;
 }
 
 /// Returns the rectangle in which both editable text and the placeholder can be displayed.

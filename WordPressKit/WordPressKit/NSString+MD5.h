@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@interface NSString (Gravatar)
+@interface NSString (MD5)
 
 - (NSString *)md5;
 

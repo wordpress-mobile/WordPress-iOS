@@ -64,7 +64,8 @@ static NSString *const TableViewFeaturedImageCellIdentifier = @"TableViewFeature
 @interface PostSettingsViewController () <UITextFieldDelegate, WPPickerViewDelegate,
 UIImagePickerControllerDelegate, UINavigationControllerDelegate,
 UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate,
-PostCategoriesViewControllerDelegate, PostFeaturedImageCellDelegate>
+PostCategoriesViewControllerDelegate, PostFeaturedImageCellDelegate,
+FeaturedImageViewControllerDelegate>
 
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UITextField *passwordTextField;
@@ -73,6 +74,8 @@ PostCategoriesViewControllerDelegate, PostFeaturedImageCellDelegate>
 @property (nonatomic, strong) NSArray *formatsList;
 @property (nonatomic, strong) WPTableImageSource *imageSource;
 @property (nonatomic, strong) UIImage *featuredImage;
+@property (nonatomic, strong) NSData *animatedFeaturedImageData;
+
 @property (nonatomic, readonly) CGSize featuredImageSize;
 @property (nonatomic, strong) PublishDatePickerView *datePicker;
 @property (assign) BOOL textFieldDidHaveFocusBeforeOrientationChange;
@@ -1201,7 +1204,15 @@ PostCategoriesViewControllerDelegate, PostFeaturedImageCellDelegate>
     if (self.apost.featuredImage) {
         // Check if the featured image is set, otherwise we don't want to do anything while it's still loading.
         if (self.featuredImage) {
-            FeaturedImageViewController *featuredImageVC = [[FeaturedImageViewController alloc] initWithPost:self.apost];
+            FeaturedImageViewController *featuredImageVC;
+            if (self.animatedFeaturedImageData) {
+                featuredImageVC = [[FeaturedImageViewController alloc] initWithGifData:self.animatedFeaturedImageData];
+            } else {
+                featuredImageVC = [[FeaturedImageViewController alloc] initWithImage:self.featuredImage];
+            }
+
+            featuredImageVC.delegate = self;
+
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:featuredImageVC];
             [self presentViewController:navigationController animated:YES completion:nil];
         }
@@ -1472,14 +1483,19 @@ PostCategoriesViewControllerDelegate, PostFeaturedImageCellDelegate>
 
 #pragma mark - PostFeaturedImageCellDelegate
 
+- (void)postFeatureImageCell:(PostFeaturedImageCell *)cell didFinishLoadingAnimatedImageWithData:(NSData *)animationData
+{
+    if (self.animatedFeaturedImageData == nil) {
+        self.animatedFeaturedImageData = animationData;
+        [self updateFeaturedImageCell:cell];
+    }
+}
+
 - (void)postFeatureImageCellDidFinishLoadingImage:(PostFeaturedImageCell *)cell
 {
+    self.animatedFeaturedImageData = nil;
     if (!self.featuredImage) {
-        self.featuredImage = cell.image;
-        cell.accessibilityIdentifier = @"Current Featured Image";
-        NSInteger featuredImageSection = [self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)];
-        NSIndexSet *featuredImageSectionSet = [NSIndexSet indexSetWithIndex:featuredImageSection];
-        [self.tableView reloadSections:featuredImageSectionSet withRowAnimation:UITableViewRowAnimationNone];
+        [self updateFeaturedImageCell:cell];
     }
 }
 
@@ -1490,6 +1506,25 @@ PostCategoriesViewControllerDelegate, PostFeaturedImageCellDelegate>
         NSIndexPath *featureImageCellPath = [NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]];
         [self featuredImageFailedLoading:featureImageCellPath withError:error];
     }
+}
+
+- (void)updateFeaturedImageCell:(PostFeaturedImageCell *)cell
+{
+    self.featuredImage = cell.image;
+    cell.accessibilityIdentifier = @"Current Featured Image";
+    NSInteger featuredImageSection = [self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)];
+    NSIndexSet *featuredImageSectionSet = [NSIndexSet indexSetWithIndex:featuredImageSection];
+    [self.tableView reloadSections:featuredImageSectionSet withRowAnimation:UITableViewRowAnimationNone];
+}
+
+#pragma mark - FeaturedImageViewControllerDelegate
+
+- (void)FeaturedImageViewControllerOnRemoveImageButtonPressed:(FeaturedImageViewController *)controller
+{
+    self.featuredImage = nil;
+    self.animatedFeaturedImageData = nil;
+    [self.apost setFeaturedImage:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
