@@ -13,6 +13,7 @@ import WordPressUI
     fileprivate let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
 
     private let tableConfiguration = ReaderTableConfiguration()
+    private let content = ReaderTableContent()
 
     fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
 
@@ -24,7 +25,7 @@ import WordPressUI
         setupTableView()
         setupFooterView()
         setupNoResultsView()
-        setupTableViewHandler()
+        setupContentViewHandler()
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
@@ -38,7 +39,8 @@ import WordPressUI
     }
 
 
-    fileprivate func setupTableViewHandler() {
+    fileprivate func setupContentViewHandler() {
+        content.initializeContent(tableView: tableViewHandler, delegate: self)
         tableViewHandler = WPTableViewHandler(tableView: tableView)
         tableViewHandler.cacheRowHeights = false
         tableViewHandler.updateRowAnimation = .none
