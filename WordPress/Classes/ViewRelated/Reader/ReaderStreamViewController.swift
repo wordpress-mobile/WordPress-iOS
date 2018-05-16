@@ -57,6 +57,8 @@ import WordPressFlux
     fileprivate var imageRequestAuthToken: String?
     fileprivate var didBumpStats = false
 
+    private let tableConfiguration = ReaderTableConfiguration()
+
     /// Used for fetching content.
     fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
 
@@ -349,7 +351,7 @@ import WordPressFlux
         refreshControl = tableViewController.refreshControl!
         refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), for: .valueChanged)
 
-        ReaderTableConfiguration().setup(tableView)
+        tableConfiguration.setup(tableView)
     }
 
 
@@ -373,7 +375,7 @@ import WordPressFlux
     }
 
     fileprivate func setupFooterView() {
-        guard let footer = Bundle.main.loadNibNamed(footerViewNibName, owner: nil, options: nil)!.first as? PostListFooterView else {
+        guard let footer = tableConfiguration.footer() as? PostListFooterView else {
             assertionFailure()
             return
         }
@@ -1529,7 +1531,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             // Return the previously known height as it was cached via willDisplayCell.
             return height
         }
-        return estimatedRowHeight
+        return tableConfiguration.estimatedRowHeight()
     }
 
 
@@ -1554,12 +1556,12 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         }
 
         if post.isCross() {
-            let cell = ReaderTableConfiguration().crossPostCell(tableView)
+            let cell = tableConfiguration.crossPostCell(tableView)
             configureCrossPostCell(cell, atIndexPath: indexPath)
             return cell
         }
 
-        let cell = ReaderTableConfiguration().postCardCell(tableView)
+        let cell = tableConfiguration.postCardCell(tableView)
         configurePostCardCell(cell, post: post)
         return cell
     }
