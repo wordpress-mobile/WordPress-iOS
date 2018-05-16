@@ -13,10 +13,15 @@ extension NSNotification.Name {
     public static let ZendeskPushNotificationClearedNotification = NSNotification.Name.ZendeskPushNotificationClearedNotification
 }
 
+protocol ZendeskUtilsDelegate {
+    func userNotLoggedIn()
+}
+
 @objc class ZendeskUtils: NSObject {
 
     // MARK: - Properties
 
+    static var delegate: ZendeskUtilsDelegate?
     static var sharedInstance: ZendeskUtils = ZendeskUtils()
     private override init() {}
 
@@ -40,6 +45,8 @@ extension NSNotification.Name {
     private static var zdAppID: String?
     private static var zdUrl: String?
     private static var zdClientId: String?
+
+    private var userLoggedIn = true
 
     private static var appVersion: String {
         return Bundle.main.shortVersionString() ?? Constants.unknownValue
@@ -249,6 +256,8 @@ private extension ZendeskUtils {
 
         guard let blog = blogService.lastUsedBlog() else {
             DDLogInfo("No Blog to create Zendesk identity with.")
+            ZendeskUtils.sharedInstance.userLoggedIn = false
+            ZendeskUtils.delegate?.userNotLoggedIn()
             completion(false)
             return
         }
