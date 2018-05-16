@@ -191,6 +191,9 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     NSString *requestUrl = [self pathForEndpoint:apiPath
                                      withVersion:ServiceRemoteWordPressComRESTApiVersion_1_1];
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{}];
+    if (media.caption != nil) {
+        parameters[@"attrs[0][caption]"] = media.caption;
+    }
     if (media.postID != nil && [media.postID compare:@(0)] == NSOrderedDescending) {
         parameters[@"attrs[0][parent_id]"] = media.postID;
     }
