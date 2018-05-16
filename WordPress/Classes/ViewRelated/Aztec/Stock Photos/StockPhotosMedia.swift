@@ -2,25 +2,26 @@ import Foundation
 import WPMediaPicker
 
 /*** JSON Structure of a StockPhoto object coming from the API ***
-{
-    "ID": "PEXELS-710916",
-    "URL": "https://images.pexels.com/photos/710916/pexels-photo-710916.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-    "title": "pexels-photo-710916.jpeg",
-    "date": "2018-03-28 00:00:00",
-    "name": "pexels-photo-710916.jpeg",
-    "file": "pexels-photo-710916.jpeg",
-    "guid": "{\"url\":\"https:\\/\\/images.pexels.com\\/photos\\/710916\\/pexels-photo-710916.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940\",\"name\":\"pexels-photo-710916.jpeg\",\"title\":\"pexels-photo-710916.jpeg\"}",
-    "height": 1253,
-    "width": 1880,
-    "thumbnails": {
-        "large": "https://images.pexels.com/photos/710916/pexels-photo-710916.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-        "medium": "https://images.pexels.com/photos/710916/pexels-photo-710916.jpeg?auto=compress&cs=tinysrgb&h=350",
-        "post-thumbnail": "https://images.pexels.com/photos/710916/pexels-photo-710916.jpeg?auto=compress&cs=tinysrgb&h=130",
-        "thumbnail": "https://images.pexels.com/photos/710916/pexels-photo-710916.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=200&w=280"
-    },
-    "type": "image",
-    "extension": "jpeg"
-}
+ {
+     "ID": "PEXELS-924676",
+     "URL": "https://images.pexels.com/photos/924676/pexels-photo-924676.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+     "date": "2018-05-16 00:00:00",
+     "name": "pexels-photo-924676.jpeg",
+     "file": "pexels-photo-924676.jpeg",
+     "title": "shallow focus photography of magnifying glass with black frame",
+     "caption": "Photo by Shane Aldendorff on <a href=\"https://www.pexels.com/\" rel=\"nofollow\">Pexels.com</a>",
+     "guid": "{\"url\":\"https:\\/\\/images.pexels.com\\/photos\\/924676\\/pexels-photo-924676.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940\",\"name\":\"pexels-photo-924676.jpeg\",\"title\":\"shallow focus photography of magnifying glass with black frame\",\"caption\":\"Photo by Shane Aldendorff on <a href=\\\\\\\"https:\\/\\/www.pexels.com\\/\\\\\\\" rel=\\\\\\\"nofollow\\\\\\\">Pexels.com<\\/a>\"}",
+     "height": 1253,
+     "width": 1880,
+     "thumbnails": {
+     "large": "https://images.pexels.com/photos/924676/pexels-photo-924676.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+     "medium": "https://images.pexels.com/photos/924676/pexels-photo-924676.jpeg?auto=compress&cs=tinysrgb&h=350",
+     "post-thumbnail": "https://images.pexels.com/photos/924676/pexels-photo-924676.jpeg?auto=compress&cs=tinysrgb&h=130",
+     "thumbnail": "https://images.pexels.com/photos/924676/pexels-photo-924676.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=200&w=280"
+     },
+     "type": "image",
+     "extension": "jpeg"
+ }
 */
 
 struct ThumbnailCollection {
@@ -37,14 +38,16 @@ final class StockPhotosMedia: NSObject {
     private(set) var URL: URL
     private(set) var title: String
     private(set) var name: String
+    private(set) var caption: String
     private(set) var size: CGSize
     private(set) var thumbnails: ThumbnailCollection
 
-    init(id: String, URL: URL, title: String, name: String, size: CGSize, thumbnails: ThumbnailCollection) {
+    init(id: String, URL: URL, title: String, name: String, caption: String, size: CGSize, thumbnails: ThumbnailCollection) {
         self.id = id
         self.URL = URL
         self.title = title
         self.name = name
+        self.caption = caption
         self.size = size
         self.thumbnails = thumbnails
     }
@@ -148,6 +151,7 @@ extension StockPhotosMedia: Decodable {
         case title
         case name
         case thumbnails
+        case caption
     }
 
     convenience init(from decoder: Decoder) throws {
@@ -156,9 +160,10 @@ extension StockPhotosMedia: Decodable {
         let URL = try values.decode(String.self, forKey: .URL).asURL()
         let title = try values.decode(String.self, forKey: .title)
         let name = try values.decode(String.self, forKey: .name)
+        let caption = try values.decode(String.self, forKey: .caption)
         let size: CGSize = .zero
         let thumbnails = try values.decode(ThumbnailCollection.self, forKey: .thumbnails)
 
-        self.init(id: id, URL: URL, title: title, name: name, size: size, thumbnails: thumbnails)
+        self.init(id: id, URL: URL, title: title, name: name, caption: caption, size: size, thumbnails: thumbnails)
     }
 }
