@@ -7,7 +7,7 @@ import WordPressUI
         static let title = NSLocalizedString("Saved Posts", comment: "Title for list of posts saved for later")
     }
     fileprivate var noResultsView: WPNoResultsView!
-    fileprivate var tableViewHandler: WPTableViewHandler!
+    //fileprivate var tableViewHandler: WPTableViewHandler!
     fileprivate var footerView: PostListFooterView!
     fileprivate let heightForFooterView = CGFloat(34.0)
     fileprivate let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
@@ -41,10 +41,10 @@ import WordPressUI
 
     fileprivate func setupContentViewHandler() {
         content.initializeContent(tableView: tableView, delegate: self)
-        tableViewHandler = WPTableViewHandler(tableView: tableView)
-        tableViewHandler.cacheRowHeights = false
-        tableViewHandler.updateRowAnimation = .none
-        tableViewHandler.delegate = self
+//        tableViewHandler = WPTableViewHandler(tableView: tableView)
+//        tableViewHandler.cacheRowHeights = false
+//        tableViewHandler.updateRowAnimation = .none
+//        tableViewHandler.delegate = self
     }
 
     /// The fetch request can need a different predicate depending on how the content
@@ -52,14 +52,7 @@ import WordPressUI
     /// update the fetch request predicate and then perform a new fetch.
     ///
     fileprivate func updateAndPerformFetchRequest() {
-        assert(Thread.isMainThread, "ReaderStreamViewController Error: updating fetch request on a background thread.")
-
-        tableViewHandler.resultsController.fetchRequest.predicate = predicateForFetchRequest()
-        do {
-            try tableViewHandler.resultsController.performFetch()
-        } catch let error as NSError {
-            DDLogError("Error fetching posts after updating the fetch reqeust predicate: \(error.localizedDescription)")
-        }
+        content.updateAndPerformFetchRequest(predicate: predicateForFetchRequest())
     }
 
     fileprivate func setupNoResultsView() {
@@ -119,13 +112,13 @@ import WordPressUI
 
 
     @objc open func configureCrossPostCell(_ cell: ReaderCrossPostCell, atIndexPath indexPath: IndexPath) {
-        if tableViewHandler.resultsController.fetchedObjects == nil {
+        if content.isEmpty() {
             return
         }
         cell.accessoryType = .none
         cell.selectionStyle = .none
 
-        guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
+        guard let posts = content.content() as? [ReaderPost] else {
             return
         }
 
@@ -135,13 +128,13 @@ import WordPressUI
 
 
     @objc open func configureBlockedCell(_ cell: ReaderBlockedSiteCell, atIndexPath indexPath: IndexPath) {
-        if tableViewHandler.resultsController.fetchedObjects == nil {
+        if content.isEmpty() {
             return
         }
         cell.accessoryType = .none
         cell.selectionStyle = .none
 
-        guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
+        guard let posts = content.content() as? [ReaderPost] else {
             return
         }
         let post = posts[indexPath.row]
@@ -169,7 +162,7 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
 
 
     public func tableViewDidChangeContent(_ tableView: UITableView) {
-        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+        if content.noContent() {
             // TODO: Implement no results view
             //            displayNoResultsView()
         }
@@ -206,7 +199,7 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
     }
 
     override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
+        let posts = content.content() as! [ReaderPost]
         let post = posts[indexPath.row]
 
         //        if recentlyBlockedSitePostObjectIDs.contains(post.objectID) {
@@ -235,7 +228,7 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
             return
         }
         // Bump the render tracker if necessary.
-        let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
+        let posts = content.content() as! [ReaderPost]
         let post = posts[indexPath.row]
         if !post.rendered, let railcar = post.railcarDictionary() {
             post.rendered = true
@@ -260,7 +253,7 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
     }
 
     override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
+        guard let posts = content.content() as? [ReaderPost] else {
             DDLogError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
             return
         }
