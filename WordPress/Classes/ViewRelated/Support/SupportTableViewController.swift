@@ -18,6 +18,8 @@ class SupportTableViewController: UITableViewController {
 
     override init(style: UITableViewStyle) {
         super.init(style: style)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshNotificationIndicator(_:)), name: .ZendeskPushNotificationReceivedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshNotificationIndicator(_:)), name: .ZendeskPushNotificationClearedNotification, object: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -26,6 +28,10 @@ class SupportTableViewController: UITableViewController {
 
     required convenience init() {
         self.init(style: .grouped)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - View
@@ -90,7 +96,7 @@ private extension SupportTableViewController {
                                 HelpRow.self],
                                tableView: tableView)
         tableHandler = ImmuTableViewHandler(takeOver: self)
-        tableHandler.viewModel = tableViewModel()
+        reloadViewModel()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         // remove empty cells
         tableView.tableFooterView = UIView()
@@ -106,7 +112,7 @@ private extension SupportTableViewController {
 
         if ZendeskUtils.zendeskEnabled {
             helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected()))
-            helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected()))
+            helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator))
         } else {
             helpSectionRows.append(HelpRow(title: LocalizedText.wpForums, action: contactUsSelected()))
         }
@@ -130,6 +136,14 @@ private extension SupportTableViewController {
 
         // Create and return table
         return ImmuTable(sections: [helpSection, informationSection])
+    }
+
+    @objc func refreshNotificationIndicator(_ notification: Foundation.Notification) {
+        reloadViewModel()
+    }
+
+    func reloadViewModel() {
+        tableHandler.viewModel = tableViewModel()
     }
 
     // MARK: - Row Handlers
@@ -170,7 +184,9 @@ private extension SupportTableViewController {
 
     func myTicketsSelected() -> ImmuTableAction {
         return { [unowned self] row in
+            ZendeskUtils.pushNotificationRead()
             self.tableView.deselectSelectedRowWithAnimation(true)
+
             guard let controllerToShowFrom = self.controllerToShowFrom() else {
                 return
             }
@@ -196,20 +212,24 @@ private extension SupportTableViewController {
     // MARK: - ImmuTableRow Struct
 
     struct HelpRow: ImmuTableRow {
-        static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
+        static let cell = ImmuTableCell.class(WPTableViewCellIndicator.self)
 
         let title: String
+        let showIndicator: Bool
         let action: ImmuTableAction?
 
-        init(title: String, action: @escaping ImmuTableAction) {
+        init(title: String, action: @escaping ImmuTableAction, showIndicator: Bool = false) {
             self.title = title
+            self.showIndicator = showIndicator
             self.action = action
         }
 
         func configureCell(_ cell: UITableViewCell) {
+            let cell = cell as! WPTableViewCellIndicator
             cell.textLabel?.text = title
             WPStyleGuide.configureTableViewCell(cell)
             cell.textLabel?.textColor = WPStyleGuide.wordPressBlue()
+            cell.showIndicator = showIndicator
         }
     }
 

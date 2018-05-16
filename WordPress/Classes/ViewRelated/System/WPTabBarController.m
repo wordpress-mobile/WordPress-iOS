@@ -120,8 +120,13 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
         if ([Feature enabled:FeatureFlagZendeskMobile]) {
             [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(zendeskPushNotificationReceived:)
+                                                     selector:@selector(refreshMeIconIndicator:)
                                                          name:NSNotification.ZendeskPushNotificationReceivedNotification
+                                                       object:nil];
+            
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(refreshMeIconIndicator:)
+                                                         name:NSNotification.ZendeskPushNotificationClearedNotification
                                                        object:nil];
         } else {
             [[NSNotificationCenter defaultCenter] addObserver:self
@@ -732,7 +737,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
             }
             case WPTabMe: {
                 [WPAppAnalytics track:WPAnalyticsStatMeTabAccessed];
-                [self showMeBadge:NO];
                 break;
             }
             default: break;
@@ -779,9 +783,9 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 #pragma mark - Zendesk Notifications
 
-- (void)zendeskPushNotificationReceived:(NSNotification *)notification
+- (void)refreshMeIconIndicator:(NSNotification *)notification
 {
-    [self showMeBadge:YES];
+    [self updateMeNotificationIcon];
 }
 
 #pragma mark - Helpshift Notifications
@@ -829,14 +833,15 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 }
 
-- (void)showMeBadge:(BOOL)show
+- (void)updateMeNotificationIcon
 {
     UITabBarItem *meTabBarItem = self.tabBar.items[WPTabMe];
-    meTabBarItem.image = self.meTabBarImageUnread;
-    if (show) {
+    if ([ZendeskUtils showSupportNotificationIndicator]) {
         meTabBarItem.image = self.meTabBarImageUnread;
+        meTabBarItem.selectedImage = self.meTabBarImageUnread;
     } else {
         meTabBarItem.image = self.meTabBarImage;
+        meTabBarItem.selectedImage = self.meTabBarImage;
     }
 }
 
