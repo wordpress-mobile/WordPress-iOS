@@ -12,8 +12,9 @@ import WordPressUI
     fileprivate let heightForFooterView = CGFloat(34.0)
     fileprivate let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
 
-    private let tableConfiguration = ReaderTableConfiguration()
     private let content = ReaderTableContent()
+    private let tableConfiguration = ReaderTableConfiguration()
+    private let cellConfiguration = ReaderCellConfiguration()
 
     fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
 
@@ -90,36 +91,29 @@ import WordPressUI
             return
         }
 
-        // To help avoid potential crash: https://github.com/wordpress-mobile/WordPress-iOS/issues/6757
-        guard !post.isDeleted else {
-            return
-        }
-
-        let postCell = cell as! ReaderPostCardCell
-
-        // TODO: Enable post cell delegate / implement delegate methods in a helper
-        postCell.delegate = self
-        postCell.hidesFollowButton = ReaderHelpers.topicIsFollowing(topic)
         // TODO: Allow logged in features
-        //        postCell.enableLoggedInFeatures = isLoggedIn
-        postCell.headerBlogButtonIsEnabled = !ReaderHelpers.isTopicSite(topic)
-        postCell.configureCell(post)
+        cellConfiguration.configurePostCardCell(cell,
+                                                withPost: post,
+                                                topic: topic,
+                                                delegate: self,
+                                                loggedIn: false)
     }
 
 
     @objc open func configureCrossPostCell(_ cell: ReaderCrossPostCell, atIndexPath indexPath: IndexPath) {
-        if content.isNull() {
-            return
-        }
-        cell.accessoryType = .none
-        cell.selectionStyle = .none
-
-        guard let posts = content.content() as? [ReaderPost] else {
-            return
-        }
-
-        let post = posts[indexPath.row]
-        cell.configureCell(post)
+        cellConfiguration.configureCrossPostCell(cell, withContent: content, atIndexPath: indexPath)
+//        if content.isNull() {
+//            return
+//        }
+//        cell.accessoryType = .none
+//        cell.selectionStyle = .none
+//
+//        guard let posts = content.content() as? [ReaderPost] else {
+//            return
+//        }
+//
+//        let post = posts[indexPath.row]
+//        cell.configureCell(post)
     }
 
 

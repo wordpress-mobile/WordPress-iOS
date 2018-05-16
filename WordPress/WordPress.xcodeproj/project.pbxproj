@@ -862,6 +862,7 @@
 		D80EE63A203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80EE639203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift */; };
 		D81322B32050F9110067714D /* NotificationName+Names.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81322B22050F9110067714D /* NotificationName+Names.swift */; };
 		D8160442209C1B0F00ABAFFA /* SaveForLaterAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8160441209C1B0F00ABAFFA /* SaveForLaterAction.swift */; };
+		D817799020ABF26800330998 /* ReaderCellConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D817798F20ABF26800330998 /* ReaderCellConfiguration.swift */; };
 		D81879D920ABC647000CFA95 /* ReaderTableConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81879D820ABC647000CFA95 /* ReaderTableConfiguration.swift */; };
 		D8212CB120AA64E1008E8AE8 /* LikeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CB020AA64E1008E8AE8 /* LikeAction.swift */; };
 		D8212CB320AA6861008E8AE8 /* FollowAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CB220AA6861008E8AE8 /* FollowAction.swift */; };
@@ -2401,6 +2402,7 @@
 		D80EE639203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderFollowedSitesStreamHeaderTests.swift; sourceTree = "<group>"; };
 		D81322B22050F9110067714D /* NotificationName+Names.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Names.swift"; sourceTree = "<group>"; };
 		D8160441209C1B0F00ABAFFA /* SaveForLaterAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveForLaterAction.swift; sourceTree = "<group>"; };
+		D817798F20ABF26800330998 /* ReaderCellConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCellConfiguration.swift; sourceTree = "<group>"; };
 		D81879D820ABC647000CFA95 /* ReaderTableConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTableConfiguration.swift; sourceTree = "<group>"; };
 		D8212CB020AA64E1008E8AE8 /* LikeAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeAction.swift; sourceTree = "<group>"; };
 		D8212CB220AA6861008E8AE8 /* FollowAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowAction.swift; sourceTree = "<group>"; };
@@ -3686,6 +3688,7 @@
 				5D42A402175E76A2005CFF05 /* WPImageViewController.m */,
 				D81879D820ABC647000CFA95 /* ReaderTableConfiguration.swift */,
 				D87A329520ABD60700F4726F /* ReaderTableContent.swift */,
+				D817798F20ABF26800330998 /* ReaderCellConfiguration.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -7623,6 +7626,7 @@
 				B5CC05F61962150600975CAC /* Constants.m in Sources */,
 				7E729C28209A087300F76599 /* ImageLoader.swift in Sources */,
 				5D146EBB189857ED0068FDC6 /* FeaturedImageViewController.m in Sources */,
+				D817799020ABF26800330998 /* ReaderCellConfiguration.swift in Sources */,
 				31EC15081A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m in Sources */,
 				FF5371631FDFF64F00619A3F /* MediaService.swift in Sources */,
 				5DAFEAB81AF2CA6E00B3E1D7 /* PostMetaButton.m in Sources */,
