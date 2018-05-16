@@ -797,8 +797,11 @@ import WordPressFlux
             return
         }
 
+        let event: WPAnalyticsStat = subscribe ? .readerListNotificationMenuOn : .readerListNotificationMenuOff
         let service = ReaderTopicService(managedObjectContext: managedObjectContext())
-        service.toggleSubscribingNotifications(for: siteID, subscribe: subscribe)
+        service.toggleSubscribingNotifications(for: siteID.intValue, subscribe: subscribe, {
+            WPAnalytics.track(event)
+        })
     }
 
     fileprivate func toggleFollowingForPost(_ post: ReaderPost) {
@@ -837,6 +840,10 @@ import WordPressFlux
                                                 alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
                                                 alertController.presentFromRootViewController()
                                         })
+    }
+
+    fileprivate func toggleSavedForLater(for post: ReaderPost) {
+        SaveForLaterAction(visibleConfirmation: true).execute(with: post, context: managedObjectContext(), completion: {})
     }
 
     fileprivate func visitSiteForPost(_ post: ReaderPost) {
@@ -1627,6 +1634,12 @@ extension ReaderStreamViewController: ReaderPostCellDelegate {
         sharePost(post.objectID, fromView: sender)
     }
 
+    public func readerCell(_ cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider) {
+        guard let post = provider as? ReaderPost else {
+            return
+        }
+        toggleSavedForLater(for: post)
+    }
 
     public func readerCell(_ cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider) {
         guard let post = provider as? ReaderPost else {

@@ -25,6 +25,7 @@ class ManagedAccountSettings: NSManagedObject {
         primarySiteID = NSNumber(value: accountSettings.primarySiteID)
         webAddress = accountSettings.webAddress
         language = accountSettings.language
+        tracksOptOut = accountSettings.tracksOptOut
     }
 
     /// Applies a change to the account settings
@@ -58,6 +59,8 @@ class ManagedAccountSettings: NSManagedObject {
             self.webAddress = value
         case .language(let value):
             self.language = value
+        case .tracksOptOut(let value):
+            self.tracksOptOut = value
         }
 
         return reverse
@@ -83,6 +86,8 @@ class ManagedAccountSettings: NSManagedObject {
             return .webAddress(self.webAddress)
         case .language:
             return .language(self.language)
+        case .tracksOptOut:
+            return .tracksOptOut(self.tracksOptOut)
         }
     }
 }
@@ -99,7 +104,8 @@ extension AccountSettings {
                   emailPendingChange: managed.emailPendingChange,
                   primarySiteID: managed.primarySiteID.intValue,
                   webAddress: managed.webAddress,
-                  language: managed.language)
+                  language: managed.language,
+                  tracksOptOut: managed.tracksOptOut)
     }
 
     var emailForDisplay: String {

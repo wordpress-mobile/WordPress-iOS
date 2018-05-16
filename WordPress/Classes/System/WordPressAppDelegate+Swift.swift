@@ -9,7 +9,11 @@ import WordPressAuthenticator
 
 extension WordPressAppDelegate {
     @objc func configureAnalytics() {
-        analytics = WPAppAnalytics(lastVisibleScreenBlock: { [weak self] in
+        let context = ContextManager.sharedInstance().mainContext
+        let accountService = AccountService(managedObjectContext: context)
+
+        analytics = WPAppAnalytics(accountService: accountService,
+                                   lastVisibleScreenBlock: { [weak self] in
             return self?.currentlySelectedScreen
         })
     }
@@ -74,7 +78,7 @@ extension WordPressAppDelegate {
         authManager = WordPressAuthenticationManager()
 
         authManager.initializeWordPressAuthenticator()
-        authManager.startRelayingHelpshiftNotifications()
+        authManager.startRelayingSupportNotifications()
 
         WordPressAuthenticator.shared.delegate = authManager
     }

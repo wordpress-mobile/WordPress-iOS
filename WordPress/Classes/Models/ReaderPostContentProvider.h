@@ -27,6 +27,7 @@ typedef NS_ENUM(NSUInteger, SourceAttributionStyle) {
 - (BOOL)isExternal;
 - (BOOL)isJetpack;
 - (BOOL)isWPCom;
+- (BOOL)isSavedForLater;
 - (NSString *)primaryTag;
 - (NSNumber *)readingTime;
 - (NSNumber *)wordCount;

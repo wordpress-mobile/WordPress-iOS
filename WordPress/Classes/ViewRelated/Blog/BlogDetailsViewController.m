@@ -680,6 +680,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         // blogs that do not have capabilities since those will not support the REST API icon update
         return;
     }
+    [WPAnalytics track:WPAnalyticsStatSiteSettingsSiteIconTapped];
     [self showUpdateSiteIconAlert];
 }
 
@@ -806,6 +807,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.headerView.updatingIcon = YES;
     self.blog.settings.iconMediaID = @0;
     [self updateBlogSettingsAndRefreshIcon];
+    [WPAnalytics track:WPAnalyticsStatSiteSettingsSiteIconRemoved];
 }
 
 - (void)updateBlogIconWithMedia:(Media *)media
