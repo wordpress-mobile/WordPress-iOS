@@ -46,8 +46,9 @@ import WordPressFlux
     fileprivate var imageRequestAuthToken: String?
     fileprivate var didBumpStats = false
 
-    private let tableConfiguration = ReaderTableConfiguration()
     private let content = ReaderTableContent()
+    private let tableConfiguration = ReaderTableConfiguration()
+    private let cellConfiguration = ReaderCellConfiguration()
 
     /// Used for fetching content.
     fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
@@ -1187,18 +1188,11 @@ import WordPressFlux
             return
         }
 
-        // To help avoid potential crash: https://github.com/wordpress-mobile/WordPress-iOS/issues/6757
-        guard !post.isDeleted else {
-            return
-        }
-
-        let postCell = cell as! ReaderPostCardCell
-
-        postCell.delegate = self
-        postCell.hidesFollowButton = ReaderHelpers.topicIsFollowing(topic)
-        postCell.enableLoggedInFeatures = isLoggedIn
-        postCell.headerBlogButtonIsEnabled = !ReaderHelpers.isTopicSite(readerTopic!)
-        postCell.configureCell(post)
+        cellConfiguration.configurePostCardCell(cell,
+                                                withPost: post,
+                                                topic: topic,
+                                                delegate: self,
+                                                loggedIn: true)
     }
 
 
