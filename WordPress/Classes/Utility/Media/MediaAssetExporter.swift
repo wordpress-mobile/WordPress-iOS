@@ -225,14 +225,12 @@ class MediaAssetExporter: MediaExporter {
         options.isNetworkAccessAllowed = true
         let progress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         progress.isCancellable = false
-        options.progressHandler = { (progressValue) in
-            progress.completedUnitCount = Int64(progressValue * Double(MediaExportProgressUnits.done))
-        }
         let manager = PHAssetResourceManager.default()
         manager.writeData(for: resource,
                           toFile: url,
                           options: options,
                           completionHandler: { (error) in
+                            progress.completedUnitCount = progress.totalUnitCount
                             if let error = error {
                                 onError(self.exporterErrorWith(error: error))
                                 return
