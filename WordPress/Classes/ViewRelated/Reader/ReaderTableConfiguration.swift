@@ -63,4 +63,12 @@ struct ReaderTableConfiguration {
     func postCardCell(_ tableView: UITableView) -> ReaderPostCardCell {
         return tableView.dequeueReusableCell(withIdentifier: readerCardCellReuseIdentifier) as! ReaderPostCardCell
     }
+
+    func gapMarkerCell(_ tableView: UITableView) -> ReaderGapMarkerCell {
+        return tableView.dequeueReusableCell(withIdentifier: readerGapMarkerCellReuseIdentifier) as! ReaderGapMarkerCell
+    }
+
+    func blockedSiteCell(_ tableView: UITableView) -> ReaderBlockedSiteCell {
+        return tableView.dequeueReusableCell(withIdentifier: readerBlockedCellReuseIdentifier) as! ReaderBlockedSiteCell
+    }
 }

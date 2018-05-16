@@ -1544,13 +1544,13 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         let post = posts[indexPath.row]
 
         if post.isKind(of: ReaderGapMarker.self) {
-            let cell = tableView.dequeueReusableCell(withIdentifier: readerGapMarkerCellReuseIdentifier) as! ReaderGapMarkerCell
+            let cell = tableConfiguration.gapMarkerCell(tableView)
             configureGapMarker(cell)
             return cell
         }
 
         if recentlyBlockedSitePostObjectIDs.contains(post.objectID) {
-            let cell = tableView.dequeueReusableCell(withIdentifier: readerBlockedCellReuseIdentifier) as! ReaderBlockedSiteCell
+            let cell = tableConfiguration.blockedSiteCell(tableView)
             configureBlockedCell(cell, atIndexPath: indexPath)
             return cell
         }
