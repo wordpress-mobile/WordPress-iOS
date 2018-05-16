@@ -25,7 +25,7 @@ import WordPressUI
         setupTableView()
         setupFooterView()
         setupNoResultsView()
-        setupContentViewHandler()
+        setupContentHandler()
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
@@ -39,7 +39,7 @@ import WordPressUI
     }
 
 
-    fileprivate func setupContentViewHandler() {
+    fileprivate func setupContentHandler() {
         content.initializeContent(tableView: tableView, delegate: self)
 //        tableViewHandler = WPTableViewHandler(tableView: tableView)
 //        tableViewHandler.cacheRowHeights = false

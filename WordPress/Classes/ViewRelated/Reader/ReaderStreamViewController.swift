@@ -24,7 +24,7 @@ import WordPressFlux
 
     fileprivate var tableView: UITableView!
     fileprivate var refreshControl: UIRefreshControl!
-    fileprivate var tableViewHandler: WPTableViewHandler!
+    //fileprivate var tableViewHandler: WPTableViewHandler!
     fileprivate var syncHelper: WPContentSyncHelper!
     fileprivate var tableViewController: UITableViewController!
     fileprivate var resultsStatusView: WPNoResultsView!
@@ -214,7 +214,7 @@ import WordPressFlux
 
         setupTableView()
         setupFooterView()
-        setupTableViewHandler()
+        setupContentHandler()
         setupSyncHelper()
         setupResultsStatusView()
 
@@ -346,13 +346,10 @@ import WordPressFlux
     }
 
 
-    fileprivate func setupTableViewHandler() {
+    fileprivate func setupContentHandler() {
         assert(tableView != nil, "A tableView must be assigned before configuring a handler")
 
-        tableViewHandler = WPTableViewHandler(tableView: tableView)
-        tableViewHandler.cacheRowHeights = false
-        tableViewHandler.updateRowAnimation = .none
-        tableViewHandler.delegate = self
+        content.initializeContent(tableView: tableView, delegate: self)
     }
 
 
@@ -398,7 +395,7 @@ import WordPressFlux
 
 
     @objc func displayLoadingViewIfNeeded() {
-        let count = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
+        let count = content.contentCount()
         if count > 0 {
             return
         }
@@ -538,13 +535,13 @@ import WordPressFlux
         updateAndPerformFetchRequest()
         configureStreamHeader()
         tableView.setContentOffset(CGPoint.zero, animated: false)
-        tableViewHandler.refreshTableView()
+        content.refresh()
         refreshTableViewHeaderLayout()
         syncIfAppropriate()
 
         bumpStats()
 
-        let count = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
+        let count = content.contentCount()
 
         // Make sure we're showing the no results view if appropriate
         if !syncHelper.isSyncing && count == 0 {
@@ -709,12 +706,14 @@ import WordPressFlux
     fileprivate func updateAndPerformFetchRequest() {
         assert(Thread.isMainThread, "ReaderStreamViewController Error: updating fetch request on a background thread.")
 
-        tableViewHandler.resultsController.fetchRequest.predicate = predicateForFetchRequest()
-        do {
-            try tableViewHandler.resultsController.performFetch()
-        } catch let error as NSError {
-            DDLogError("Error fetching posts after updating the fetch reqeust predicate: \(error.localizedDescription)")
-        }
+        content.updateAndPerformFetchRequest(predicate: predicateForFetchRequest())
+
+//        tableViewHandler.resultsController.fetchRequest.predicate = predicateForFetchRequest()
+//        do {
+//            try tableViewHandler.resultsController.performFetch()
+//        } catch let error as NSError {
+//            DDLogError("Error fetching posts after updating the fetch reqeust predicate: \(error.localizedDescription)")
+//        }
     }
 
 
@@ -740,7 +739,7 @@ import WordPressFlux
 
 
     fileprivate func blockSiteForPost(_ post: ReaderPost) {
-        guard let indexPath = tableViewHandler.resultsController.indexPath(forObject: post) else {
+        guard let indexPath = content.indexPath(forObject: post) else {
             return
         }
 
@@ -758,7 +757,7 @@ import WordPressFlux
 
 
     fileprivate func unblockSiteForPost(_ post: ReaderPost) {
-        guard let indexPath = tableViewHandler.resultsController.indexPath(forObject: post) else {
+        guard let indexPath = content.indexPath(forObject: post) else {
             return
         }
 
@@ -788,7 +787,7 @@ import WordPressFlux
             return
         }
 
-        if let _ = tableViewHandler.resultsController.indexPath(forObject: post) {
+        if let _ = content.indexPath(forObject: post) {
             blockSiteForPost(post)
         }
     }
@@ -870,8 +869,7 @@ import WordPressFlux
     }
 
     @objc func canLoadMore() -> Bool {
-        let fetchedObjects = tableViewHandler.resultsController.fetchedObjects ?? []
-        if fetchedObjects.count == 0 {
+        if content.contentCount() == 0 {
             return false
         }
         return canSync()
@@ -921,10 +919,10 @@ import WordPressFlux
     /// Not intended for use as part of a user interaction. See syncIfAppropriate instead.
     ///
     @objc func backgroundFetch(_ completionHandler: @escaping ((UIBackgroundFetchResult) -> Void)) {
-        let lastSeenPostID = (tableViewHandler?.resultsController.fetchedObjects?.first as? ReaderPost)?.postID ?? -1
+        let lastSeenPostID = (content.content()?.first as? ReaderPost)?.postID ?? -1
 
         syncHelper?.backgroundSync(success: { [weak self, weak lastSeenPostID] in
-            let newestFetchedPostID = (self?.tableViewHandler?.resultsController.fetchedObjects?.first as? ReaderPost)?.postID ?? -1
+            let newestFetchedPostID = (self?.content.content()?.first as? ReaderPost)?.postID ?? -1
             if lastSeenPostID == newestFetchedPostID {
                 completionHandler(.noData)
             } else {
@@ -1028,7 +1026,8 @@ import WordPressFlux
             return
         }
 
-        guard let post = tableViewHandler.resultsController.object(at: indexPath) as? ReaderGapMarker else {
+        //guard let post = tableViewHandler.resultsController.object(at: indexPath) as? ReaderGapMarker
+        guard let post: ReaderGapMarker = content.object(at: indexPath) else {
             DDLogError("Error: Unable to retrieve an existing reader gap marker.")
             return
         }
@@ -1085,7 +1084,7 @@ import WordPressFlux
             return
         }
 
-        guard let post = tableViewHandler.resultsController.fetchedObjects?.last as? ReaderPost else {
+        guard let post = content.content()?.last as? ReaderPost else {
             DDLogError("Error: Unable to retrieve an existing reader gap marker.")
             return
         }
@@ -1095,7 +1094,7 @@ import WordPressFlux
         let earlierThan = post.sortDate
         let syncContext = ContextManager.sharedInstance().newDerivedContext()
         let service =  ReaderPostService(managedObjectContext: syncContext)
-        let offset = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
+        let offset = content.contentCount()
         syncContext.perform {
             guard let topicInContext = (try? syncContext.existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
                 DDLogError("Error: Could not retrieve an existing topic via its objectID")
@@ -1136,7 +1135,7 @@ import WordPressFlux
         indexPathForGapMarker = nil
         cleanupAndRefreshAfterScrolling = false
         if refresh {
-            tableViewHandler.refreshTableViewPreservingOffset()
+            content.refreshPreservingOffset()
         }
         refreshControl.endRefreshing()
         footerView.showSpinner(false)
@@ -1205,13 +1204,13 @@ import WordPressFlux
 
 
     @objc open func configureCrossPostCell(_ cell: ReaderCrossPostCell, atIndexPath indexPath: IndexPath) {
-        if tableViewHandler.resultsController.fetchedObjects == nil {
+        if content.isNull() {
             return
         }
         cell.accessoryType = .none
         cell.selectionStyle = .none
 
-        guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
+        guard let posts = content.content() as? [ReaderPost] else {
             return
         }
 
@@ -1221,13 +1220,13 @@ import WordPressFlux
 
 
     @objc open func configureBlockedCell(_ cell: ReaderBlockedSiteCell, atIndexPath indexPath: IndexPath) {
-        if tableViewHandler.resultsController.fetchedObjects == nil {
+        if content.isNull() {
             return
         }
         cell.accessoryType = .none
         cell.selectionStyle = .none
 
-        guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
+        guard let posts = content.content() as? [ReaderPost] else {
             return
         }
         let post = posts[indexPath.row]
@@ -1338,7 +1337,7 @@ extension ReaderStreamViewController: WPContentSyncHelperDelegate {
 
 
     func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
-        if tableViewHandler.isScrolling {
+        if content.isScrolling() {
             cleanupAndRefreshAfterScrolling = true
             return
         }
@@ -1480,7 +1479,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
 
     public func tableViewDidChangeContent(_ tableView: UITableView) {
-        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+        if content.contentCount() == 0 {
             displayNoResultsView()
         }
     }
@@ -1531,7 +1530,10 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
+        guard let posts = content.content() as? [ReaderPost] else {
+            return UITableViewCell()
+        }
+
         let post = posts[indexPath.row]
 
         if post.isKind(of: ReaderGapMarker.self) {
@@ -1576,8 +1578,11 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         guard cell.isKind(of: ReaderPostCardCell.self) || cell.isKind(of: ReaderCrossPostCell.self) else {
             return
         }
+
+        guard let posts = content.content() as? [ReaderPost] else {
+            return
+        }
         // Bump the render tracker if necessary.
-        let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
         let post = posts[indexPath.row]
         if !post.rendered, let railcar = post.railcarDictionary() {
             post.rendered = true
@@ -1587,7 +1592,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
+        guard let posts = content.content() as? [ReaderPost] else {
             DDLogError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
             return
         }
@@ -1680,7 +1685,7 @@ extension ReaderStreamViewController: WPNoResultsViewDelegate {
 
 extension ReaderStreamViewController: NetworkAwareUI {
     func contentIsEmpty() -> Bool {
-        return tableViewHandler.resultsController.isEmpty()
+        return content.contentCount() == 0
     }
 }
 
