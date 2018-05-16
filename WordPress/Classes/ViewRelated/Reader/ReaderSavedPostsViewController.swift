@@ -101,19 +101,9 @@ import WordPressUI
 
 
     @objc open func configureCrossPostCell(_ cell: ReaderCrossPostCell, atIndexPath indexPath: IndexPath) {
-        cellConfiguration.configureCrossPostCell(cell, withContent: content, atIndexPath: indexPath)
-//        if content.isNull() {
-//            return
-//        }
-//        cell.accessoryType = .none
-//        cell.selectionStyle = .none
-//
-//        guard let posts = content.content() as? [ReaderPost] else {
-//            return
-//        }
-//
-//        let post = posts[indexPath.row]
-//        cell.configureCell(post)
+        cellConfiguration.configureCrossPostCell(cell,
+                                                 withContent: content,
+                                                 atIndexPath: indexPath)
     }
 
 
