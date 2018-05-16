@@ -30,16 +30,6 @@ import WordPressFlux
     fileprivate var resultsStatusView: WPNoResultsView!
     fileprivate var footerView: PostListFooterView!
 
-    fileprivate let footerViewNibName = "PostListFooterView"
-    fileprivate let readerCardCellNibName = "ReaderPostCardCell"
-    fileprivate let readerCardCellReuseIdentifier = "ReaderCardCellReuseIdentifier"
-    fileprivate let readerBlockedCellNibName = "ReaderBlockedSiteCell"
-    fileprivate let readerBlockedCellReuseIdentifier = "ReaderBlockedCellReuseIdentifier"
-    fileprivate let readerGapMarkerCellNibName = "ReaderGapMarkerCell"
-    fileprivate let readerGapMarkerCellReuseIdentifier = "ReaderGapMarkerCellReuseIdentifier"
-    fileprivate let readerCrossPostCellNibName = "ReaderCrossPostCell"
-    fileprivate let readerCrossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
-    fileprivate let estimatedRowHeight = CGFloat(300.0)
     fileprivate let loadMoreThreashold = 4
 
     fileprivate let refreshInterval = 300
