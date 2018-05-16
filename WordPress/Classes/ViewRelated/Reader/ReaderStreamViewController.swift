@@ -525,7 +525,6 @@ import WordPressFlux
 
         // Rather than repeatedly creating a service to check if the user is logged in, cache it here.
         isLoggedIn = AccountHelper.isDotcomAvailable()
-        postCellActions?.isLoggedIn = isLoggedIn
 
         // Reset our display context to ensure its current.
         managedObjectContext().reset()
@@ -1192,6 +1191,8 @@ import WordPressFlux
         if postCellActions == nil {
             postCellActions = ReaderPostCellActions(context: managedObjectContext(), origin: self, topic: readerTopic)
         }
+        postCellActions?.isLoggedIn = isLoggedIn
+
         cellConfiguration.configurePostCardCell(cell,
                                                 withPost: post,
                                                 topic: topic,
