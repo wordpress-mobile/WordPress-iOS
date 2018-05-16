@@ -9,6 +9,8 @@ import WordPressUI
     fileprivate let heightForFooterView = CGFloat(34.0)
     fileprivate let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
 
+    private let tableConfiguration = ReaderTableConfiguration()
+
 //    fileprivate let footerViewNibName = "PostListFooterView"
 //    fileprivate let readerCardCellNibName = "ReaderPostCardCell"
 //    fileprivate let readerCardCellReuseIdentifier = "ReaderCardCellReuseIdentifier"
@@ -40,7 +42,7 @@ import WordPressUI
     // MARK: - Setup
 
     fileprivate func setupTableView() {
-        ReaderTableConfiguration().setup(tableView)
+        tableConfiguration.setup(tableView)
     }
 
 
@@ -71,7 +73,7 @@ import WordPressUI
     }
 
     fileprivate func setupFooterView() {
-        guard let footer = ReaderTableConfiguration().footer() as? PostListFooterView else {
+        guard let footer = tableConfiguration.footer() as? PostListFooterView else {
             assertionFailure()
             return
         }
@@ -193,7 +195,7 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
             // Return the previously known height as it was cached via willDisplayCell.
             return height
         }
-        return ReaderTableConfiguration().estimatedRowHeight()
+        return tableConfiguration.estimatedRowHeight()
     }
 
 
@@ -220,12 +222,12 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
         //        }
 
         if post.isCross() {
-            let cell = ReaderTableConfiguration().crossPostCell(tableView)
+            let cell = tableConfiguration.crossPostCell(tableView)
             configureCrossPostCell(cell, atIndexPath: indexPath)
             return cell
         }
 
-        let cell = ReaderTableConfiguration().postCardCell(tableView)
+        let cell = tableConfiguration.postCardCell(tableView)
         configurePostCardCell(cell, post: post)
         return cell
     }
