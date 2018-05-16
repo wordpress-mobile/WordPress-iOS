@@ -145,7 +145,12 @@ private class InfoCell: WPTableViewCellDefault {
             let textFrame = textLabel?.frame else {
                 return
         }
-        imageFrame.origin.y = textFrame.origin.y + layoutMargins.top
+        // The layout margins of the text label are 2px lower than we'd like
+        // for our image to look centered vertically against the text.
+        // Ultimately we probably need a custom cell with auto layout
+        // constraints, but for now we'll just manually adjust the position.
+        let offset: CGFloat = 2.0
+        imageFrame.origin.y = textFrame.origin.y + layoutMargins.top - offset
         imageView?.frame = imageFrame
     }
 }
