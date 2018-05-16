@@ -14,6 +14,20 @@ final class ReaderCellConfiguration {
         cell.configureCell(post)
     }
 
+    func configureBlockedCell(_ cell: ReaderBlockedSiteCell, withContent content: ReaderTableContent, atIndexPath indexPath: IndexPath) {
+        if content.isNull() {
+            return
+        }
+        cell.accessoryType = .none
+        cell.selectionStyle = .none
+
+        guard let posts = content.content() as? [ReaderPost] else {
+            return
+        }
+        let post = posts[indexPath.row]
+        cell.setSiteName(post.blogName)
+    }
+
     func configurePostCardCell(_ cell: UITableViewCell, withPost post: ReaderPost, topic: ReaderAbstractTopic, delegate: ReaderPostCellDelegate, loggedIn: Bool) {
         // To help avoid potential crash: https://github.com/wordpress-mobile/WordPress-iOS/issues/6757
         guard !post.isDeleted else {
