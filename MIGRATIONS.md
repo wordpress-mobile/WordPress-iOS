@@ -5,6 +5,10 @@ data model as well as any custom migrations.
 
 ## WordPress 75
 
+- @astralbodies 2018-05-15
+- `Media` corrected `featuredOnPosts` relationship to reference `AbstractPost` instead of `Post`.
+
+
 - @frosty 2018-04-25
 - `AccountSettings` added `tracksOptOut` property, used to store the user's current preference for opting out of analytics tracking.
 

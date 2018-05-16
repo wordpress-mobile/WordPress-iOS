@@ -88,7 +88,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
     [self refreshMetadata];
 }
 
-- (void)endSession
+- (void)clearQueuedEvents
 {
     [self.tracksService clearQueuedEvents];
 }
