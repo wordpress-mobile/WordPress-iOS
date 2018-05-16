@@ -1195,26 +1195,6 @@ import WordPressFlux
                                                 loggedIn: true)
     }
 
-
-    @objc open func configureCrossPostCell(_ cell: ReaderCrossPostCell, atIndexPath indexPath: IndexPath) {
-        cellConfiguration.configureCrossPostCell(cell,
-                                                 withContent: content,
-                                                 atIndexPath: indexPath)
-    }
-
-
-    @objc open func configureBlockedCell(_ cell: ReaderBlockedSiteCell, atIndexPath indexPath: IndexPath) {
-        cellConfiguration.configureBlockedCell(cell,
-                                               withContent: content,
-                                               atIndexPath: indexPath)
-    }
-
-
-    @objc open func configureGapMarker(_ cell: ReaderGapMarkerCell) {
-        cellConfiguration.configureGapMarker(cell, filling: syncIsFillingGap)
-    }
-
-
     @objc func handleContextDidSaveNotification(_ notification: Foundation.Notification) {
         ContextManager.sharedInstance().mergeChanges(displayContext, fromContextDidSave: notification)
     }
@@ -1514,19 +1494,23 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
         if post.isKind(of: ReaderGapMarker.self) {
             let cell = tableConfiguration.gapMarkerCell(tableView)
-            configureGapMarker(cell)
+            cellConfiguration.configureGapMarker(cell, filling: syncIsFillingGap)
             return cell
         }
 
         if recentlyBlockedSitePostObjectIDs.contains(post.objectID) {
             let cell = tableConfiguration.blockedSiteCell(tableView)
-            configureBlockedCell(cell, atIndexPath: indexPath)
+            cellConfiguration.configureBlockedCell(cell,
+                                                   withContent: content,
+                                                   atIndexPath: indexPath)
             return cell
         }
 
         if post.isCross() {
             let cell = tableConfiguration.crossPostCell(tableView)
-            configureCrossPostCell(cell, atIndexPath: indexPath)
+            cellConfiguration.configureCrossPostCell(cell,
+                                                     withContent: content,
+                                                     atIndexPath: indexPath)
             return cell
         }
 
