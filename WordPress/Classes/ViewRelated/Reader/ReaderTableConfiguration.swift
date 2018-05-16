@@ -9,6 +9,8 @@ struct ReaderTableConfiguration {
     private let readerCrossPostCellNibName = "ReaderCrossPostCell"
     private let readerCrossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
 
+    private let rowHeight = CGFloat(300.0)
+
     func setup(_ tableView: UITableView) {
         setUpAccesibility(tableView)
         setUpSeparator(tableView)
@@ -44,5 +46,21 @@ struct ReaderTableConfiguration {
     private func setUpCrossPostCell(_ tableView: UITableView) {
         let nib = UINib(nibName: readerCrossPostCellNibName, bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: readerCrossPostCellReuseIdentifier)
+    }
+
+    func footer() -> Any? {
+        return Bundle.main.loadNibNamed(footerViewNibName, owner: nil, options: nil)?.first
+    }
+
+    func estimatedRowHeight() -> CGFloat {
+        return rowHeight
+    }
+
+    func crossPostCell(_ tableView: UITableView) -> ReaderCrossPostCell {
+        return tableView.dequeueReusableCell(withIdentifier: readerCrossPostCellReuseIdentifier) as! ReaderCrossPostCell
+    }
+
+    func postCardCell(_ tableView: UITableView) -> ReaderPostCardCell {
+        return tableView.dequeueReusableCell(withIdentifier: readerCardCellReuseIdentifier) as! ReaderPostCardCell
     }
 }

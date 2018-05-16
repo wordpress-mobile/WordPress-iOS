@@ -1554,12 +1554,12 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         }
 
         if post.isCross() {
-            let cell = tableView.dequeueReusableCell(withIdentifier: readerCrossPostCellReuseIdentifier) as! ReaderCrossPostCell
+            let cell = ReaderTableConfiguration().crossPostCell(tableView)
             configureCrossPostCell(cell, atIndexPath: indexPath)
             return cell
         }
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: readerCardCellReuseIdentifier) as! ReaderPostCardCell
+        let cell = ReaderTableConfiguration().postCardCell(tableView)
         configurePostCardCell(cell, post: post)
         return cell
     }
