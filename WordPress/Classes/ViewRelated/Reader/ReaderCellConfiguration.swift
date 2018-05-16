@@ -28,7 +28,7 @@ final class ReaderCellConfiguration {
         cell.setSiteName(post.blogName)
     }
 
-    func configurePostCardCell(_ cell: UITableViewCell, withPost post: ReaderPost, topic: ReaderAbstractTopic, delegate: ReaderPostCellDelegate, loggedIn: Bool) {
+    func configurePostCardCell(_ cell: UITableViewCell, withPost post: ReaderPost, topic: ReaderAbstractTopic, delegate: ReaderPostCellDelegate?, loggedIn: Bool) {
         // To help avoid potential crash: https://github.com/wordpress-mobile/WordPress-iOS/issues/6757
         guard !post.isDeleted else {
             return
