@@ -12,7 +12,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def shared_with_all_pods
-  pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => 'eb742da'
+  pod 'WordPressShared', '1.0.1'
   pod 'CocoaLumberjack', '3.4.2'
   pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
   pod 'NSObject-SafeExpectations', '0.0.2'
@@ -69,6 +69,7 @@ target 'WordPress' do
   pod 'WPMediaPicker', '1.0'
   pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'2a25da7b9b687b5e05ce128423d99f771673a6c4'
   pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '2a25da7b9b687b5e05ce128423d99f771673a6c4'
+  pod 'WordPressKit', '1.0.1'
   pod 'WordPressUI', '1.0'
 
   target 'WordPressTest' do
@@ -90,6 +91,7 @@ target 'WordPress' do
 
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'2a25da7b9b687b5e05ce128423d99f771673a6c4'
     pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '2a25da7b9b687b5e05ce128423d99f771673a6c4'
+    pod 'WordPressKit', '1.0.1'
     pod 'WordPressUI', '1.0'
     pod 'Gridicons', '0.15'
   end
@@ -106,6 +108,7 @@ target 'WordPress' do
 
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'2a25da7b9b687b5e05ce128423d99f771673a6c4'
     pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '2a25da7b9b687b5e05ce128423d99f771673a6c4'
+    pod 'WordPressKit', '1.0.1'
     pod 'WordPressUI', '1.0'
     pod 'Gridicons', '0.15'
   end
@@ -137,6 +140,7 @@ target 'WordPressAuthenticator' do
   ## ====================
   ##
   pod 'Gridicons', '0.15'
+  pod 'WordPressKit', '1.0.1'
   pod 'WordPressUI', '1.0'
 
   ## Third party libraries
@@ -171,6 +175,7 @@ target 'WordPressComStatsiOS' do
   ## Automattic libraries
   ## ====================
   ##
+  pod 'WordPressKit', '1.0.1'
   pod 'WordPressUI', '1.0'
 
   target 'WordPressComStatsiOSTests' do
@@ -180,23 +185,6 @@ target 'WordPressComStatsiOS' do
   end
 end
 
-
-
-## WordPress Kit
-## =============
-##
-target 'WordPressKit' do
-  project 'WordPressKit/WordPressKit.xcodeproj'
-
-  shared_with_networking_pods
-  shared_with_all_pods
-
-  target 'WordPressKitTests' do
-    inherit! :search_paths
-
-    shared_test_pods
-  end
-end
 
 
 ## Remove Duplicate GoogleSignIn References. Nuke this whenever WordPressAuthenticator is brought in via Pods.
