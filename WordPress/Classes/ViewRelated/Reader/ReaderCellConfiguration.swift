@@ -1,0 +1,31 @@
+final class ReaderCellConfiguration {
+    func configureCrossPostCell(_ cell: ReaderCrossPostCell, withContent content: ReaderTableContent, atIndexPath indexPath: IndexPath) {
+        if content.isNull() {
+            return
+        }
+        cell.accessoryType = .none
+        cell.selectionStyle = .none
+
+        guard let posts = content.content() as? [ReaderPost] else {
+            return
+        }
+
+        let post = posts[indexPath.row]
+        cell.configureCell(post)
+    }
+
+    func configurePostCardCell(_ cell: UITableViewCell, withPost post: ReaderPost, topic: ReaderAbstractTopic, delegate: ReaderPostCellDelegate, loggedIn: Bool) {
+        // To help avoid potential crash: https://github.com/wordpress-mobile/WordPress-iOS/issues/6757
+        guard !post.isDeleted else {
+            return
+        }
+
+        let postCell = cell as! ReaderPostCardCell
+
+        postCell.delegate = delegate
+        postCell.hidesFollowButton = ReaderHelpers.topicIsFollowing(topic)
+        postCell.enableLoggedInFeatures = loggedIn
+        postCell.headerBlogButtonIsEnabled = !ReaderHelpers.isTopicSite(topic)
+        postCell.configureCell(post)
+    }
+}
