@@ -9,8 +9,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     @objc static let restorationIdentifier = "WPMeRestorationID"
     @objc var handler: ImmuTableViewHandler!
 
-    private var showSupportNotificationIndicator = false
-
     static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
         return WPTabBarController.sharedInstance().meViewController
     }
@@ -33,6 +31,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         if FeatureFlag.zendeskMobile.enabled {
             notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .ZendeskPushNotificationReceivedNotification, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .ZendeskPushNotificationClearedNotification, object: nil)
         } else {
             notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .HelpshiftUnreadCountUpdated, object: nil)
         }
@@ -192,7 +191,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         let helpAndSupportIndicator = IndicatorNavigationItemRow(
             title: RowTitles.support,
             icon: Gridicon.iconOfType(.help),
-            showIndicator: showSupportNotificationIndicator,
+            showIndicator: ZendeskUtils.showSupportNotificationIndicator,
             accessoryType: accessoryType,
             action: pushHelp())
 
@@ -328,9 +327,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         return { [unowned self] row in
             if FeatureFlag.zendeskMobile.enabled {
                 let controller = SupportTableViewController()
-                controller.delegate = self
                 controller.showHelpFromViewController = self
-                controller.showSupportNotificationIndicator = self.showSupportNotificationIndicator
                 self.showDetailViewController(controller, sender: self)
             } else {
                 let controller = SupportViewController()
@@ -580,10 +577,6 @@ extension MeViewController {
 private extension MeViewController {
 
     @objc func refreshModelWithNotification(_ notification: Foundation.Notification) {
-        if notification.name == .ZendeskPushNotificationReceivedNotification {
-            showSupportNotificationIndicator = true
-        }
-
         reloadViewModel()
     }
 
@@ -609,14 +602,5 @@ private extension MeViewController {
 
     func stopListeningToNotifications() {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-    }
-}
-
-// MARK: - SupportTableViewControllerDelegate
-
-extension MeViewController: SupportTableViewControllerDelegate {
-    func notificationsCleared() {
-        showSupportNotificationIndicator = false
-        reloadViewModel()
     }
 }
