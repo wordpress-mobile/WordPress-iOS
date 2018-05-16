@@ -40,7 +40,7 @@ import WordPressUI
 
 
     fileprivate func setupContentViewHandler() {
-        content.initializeContent(tableView: tableViewHandler, delegate: self)
+        content.initializeContent(tableView: tableView, delegate: self)
         tableViewHandler = WPTableViewHandler(tableView: tableView)
         tableViewHandler.cacheRowHeights = false
         tableViewHandler.updateRowAnimation = .none
