@@ -1204,17 +1204,9 @@ import WordPressFlux
 
 
     @objc open func configureBlockedCell(_ cell: ReaderBlockedSiteCell, atIndexPath indexPath: IndexPath) {
-        if content.isNull() {
-            return
-        }
-        cell.accessoryType = .none
-        cell.selectionStyle = .none
-
-        guard let posts = content.content() as? [ReaderPost] else {
-            return
-        }
-        let post = posts[indexPath.row]
-        cell.setSiteName(post.blogName)
+        cellConfiguration.configureBlockedCell(cell,
+                                               withContent: content,
+                                               atIndexPath: indexPath)
     }
 
 
