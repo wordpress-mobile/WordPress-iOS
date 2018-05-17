@@ -66,7 +66,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 @property (nonatomic, strong) UIImage *notificationsTabBarImage;
 @property (nonatomic, strong) UIImage *notificationsTabBarImageUnread;
 @property (nonatomic, strong) UIImage *meTabBarImage;
-@property (nonatomic, strong) UIImage *meTabBarImageUnread;
+@property (nonatomic, strong) UIImage *meTabBarImageUnreadUnselected;
+@property (nonatomic, strong) UIImage *meTabBarImageUnreadSelected;
 
 @end
 
@@ -272,7 +273,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if (!_meNavigationController) {
         _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
         self.meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
-        self.meTabBarImageUnread = [UIImage imageNamed:@"icon-tab-me-unread"];
+        self.meTabBarImageUnreadUnselected = [UIImage imageNamed:@"icon-tab-me-unread-unselected"];
+        self.meTabBarImageUnreadSelected = [UIImage imageNamed:@"icon-tab-me-unread-selected"];
         _meNavigationController.tabBarItem.image = self.meTabBarImage;
         _meNavigationController.tabBarItem.selectedImage = self.meTabBarImage;
         _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
@@ -840,13 +842,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     UITabBarItem *meTabBarItem = self.tabBar.items[WPTabMe];
 
     if ([ZendeskUtils showSupportNotificationIndicator]) {
-        
-        UIImageRenderingMode renderMode = (self.selectedIndex == WPTabMe) ?
-        UIImageRenderingModeAlwaysTemplate : // this allows the icon to be blue when selected
-        UIImageRenderingModeAlwaysOriginal;  // this allows the indicator to be orange when not selected
-        
-        meTabBarItem.image = [self.meTabBarImageUnread imageWithRenderingMode:renderMode];
-        meTabBarItem.selectedImage = [self.meTabBarImageUnread imageWithRenderingMode:renderMode];
+        meTabBarItem.image = self.meTabBarImageUnreadUnselected;
+        meTabBarItem.selectedImage = self.meTabBarImageUnreadSelected;
     } else {
         meTabBarItem.image = self.meTabBarImage;
         meTabBarItem.selectedImage = self.meTabBarImage;
