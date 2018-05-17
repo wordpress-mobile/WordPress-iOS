@@ -1,3 +1,4 @@
+/// Encapsulates a command to create and handle the extended menu for each post in Reader
 final class ShowMenuAction {
     private let isLoggedIn: Bool
 
