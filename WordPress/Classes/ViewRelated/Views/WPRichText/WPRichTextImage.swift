@@ -10,7 +10,7 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
     @objc fileprivate(set) var imageView: CachedAnimatedImageView
 
     fileprivate lazy var imageLoader: ImageLoader = {
-        return ImageLoader(imageView: imageView, gifStrategy: .mediumGIFs)
+        return ImageLoader(imageView: imageView, gifStrategy: .smallGIFs)
     }()
 
     override open var frame: CGRect {
