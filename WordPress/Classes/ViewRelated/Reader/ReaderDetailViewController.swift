@@ -851,6 +851,29 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         present(navController, animated: true, completion: nil)
     }
 
+    @objc func presentFullScreenGif(with animatedGifData: Data?) {
+        guard let animatedGifData = animatedGifData,
+            let controller = WPImageViewController(gifData: animatedGifData) else {
+                return
+        }
+
+        controller.modalTransitionStyle = .crossDissolve
+        controller.modalPresentationStyle = .fullScreen
+        present(controller, animated: true, completion: nil)
+    }
+
+    @objc func presentFullScreenImage(with image: UIImage?, linkURL: URL? = nil) {
+        var controller: WPImageViewController
+
+        if let linkURL = linkURL {
+            controller = WPImageViewController(image: image, andURL: linkURL)
+        } else {
+            controller = WPImageViewController(image: image)
+        }
+        controller.modalTransitionStyle = .crossDissolve
+        controller.modalPresentationStyle = .fullScreen
+        present(controller, animated: true, completion: nil)
+    }
 
     @objc func previewSite() {
         let controller = ReaderStreamViewController.controllerWithSiteID(post!.siteID, isFeed: post!.isExternal)
@@ -1134,23 +1157,15 @@ extension ReaderDetailViewController: WPRichContentViewDelegate {
 
 
     func richContentView(_ richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage) {
-        var controller: WPImageViewController
-
-        if let linkURL = image.linkURL, WPImageViewController.isUrlSupported(linkURL) {
-            controller = WPImageViewController(image: image.imageView.image, andURL: linkURL)
-
+        if let animatedGifData = image.imageView.animatedGifData {
+            presentFullScreenGif(with: animatedGifData)
+        } else if let linkURL = image.linkURL, WPImageViewController.isUrlSupported(linkURL) {
+            presentFullScreenImage(with: image.imageView.image, linkURL: linkURL)
         } else if let linkURL = image.linkURL {
             presentWebViewControllerWithURL(linkURL as URL)
-            return
-
         } else {
-            controller = WPImageViewController(image: image.imageView.image)
+            presentFullScreenImage(with: image.imageView.image)
         }
-
-        controller.modalTransitionStyle = .crossDissolve
-        controller.modalPresentationStyle = .fullScreen
-
-        present(controller, animated: true, completion: nil)
     }
 }
 
