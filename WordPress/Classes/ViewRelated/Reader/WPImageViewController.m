@@ -105,7 +105,7 @@ static CGFloat const MinimumZoomScale = 0.1;
     self.imageView.userInteractionEnabled = YES;
     [self.scrollView addSubview:self.imageView];
 
-    self.imageLoader = [[ImageLoader alloc] initWithImageView:self.imageView gifStrategy:GIFStrategyLargeGIFs];
+    self.imageLoader = [[ImageLoader alloc] initWithImageView:self.imageView gifStrategy:GIFStrategyLargeGIFs loaderStyle:LoaderStyleWhite];
 
     UITapGestureRecognizer *tgr2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageDoubleTapped:)];
     [tgr2 setNumberOfTapsRequired:2];
