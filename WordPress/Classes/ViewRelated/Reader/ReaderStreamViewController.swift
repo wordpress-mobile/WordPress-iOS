@@ -45,9 +45,13 @@ import WordPressFlux
     fileprivate var listentingForBlockedSiteNotification = false
     fileprivate var didBumpStats = false
 
+    /// Content management
     private let content = ReaderTableContent()
+    /// Configuration of table view and registration of cells
     private let tableConfiguration = ReaderTableConfiguration()
+    /// Configuration of cells
     private let cellConfiguration = ReaderCellConfiguration()
+    /// Actions
     private var postCellActions: ReaderPostCellActions?
 
     /// Used for fetching content.

@@ -1,3 +1,4 @@
+/// Registration and dequeuing of cells for table views in Reader
 final class ReaderTableConfiguration {
     private let footerViewNibName = "PostListFooterView"
     private let readerCardCellNibName = "ReaderPostCardCell"

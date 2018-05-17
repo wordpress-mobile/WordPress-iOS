@@ -1,3 +1,4 @@
+/// Configuration and population of cells in Reader
 final class ReaderCellConfiguration {
     func configureCrossPostCell(_ cell: ReaderCrossPostCell, withContent content: ReaderTableContent, atIndexPath indexPath: IndexPath) {
         if content.isNull() {
