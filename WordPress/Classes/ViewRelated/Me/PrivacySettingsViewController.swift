@@ -142,15 +142,36 @@ private class InfoCell: WPTableViewCellDefault {
     override func layoutSubviews() {
         super.layoutSubviews()
         guard var imageFrame = imageView?.frame,
-            let textFrame = textLabel?.frame else {
+            let textLabel = textLabel,
+            let text = textLabel.text else {
                 return
         }
-        // The layout margins of the text label are 2px lower than we'd like
-        // for our image to look centered vertically against the text.
-        // Ultimately we probably need a custom cell with auto layout
-        // constraints, but for now we'll just manually adjust the position.
-        let offset: CGFloat = 2.0
-        imageFrame.origin.y = textFrame.origin.y + layoutMargins.top - offset
+
+        // Determine the smallest size of text constrained to the width of the label
+        let size = CGSize(width: textLabel.bounds.width, height: .greatestFiniteMagnitude)
+
+        // First a single line of text, so we can center against the first line of text
+        let singleLineRect = "Text".boundingRect(with: size,
+                                                 options: [ .usesLineFragmentOrigin, .usesFontLeading],
+                                                 attributes: [NSAttributedStringKey.font: textLabel.font],
+                                                 context: nil)
+
+        // And then the whole text, so we can calculate padding in the label above and below the text
+        let textRect = text.boundingRect(with: size,
+                                         options: [ .usesLineFragmentOrigin, .usesFontLeading],
+                                         attributes: [NSAttributedStringKey.font: textLabel.font],
+                                         context: nil)
+
+        // Calculate the vertical padding in the label.
+        // At very large accessibility sizing, the total rect size is coming out larger
+        // than the label size. I'm unsure why, so we'll work around it by not allowing
+        // values lower than zero.
+        let padding = max(textLabel.bounds.height - textRect.height, 0)
+        let topPadding = padding / 2.0
+
+        // Calculate the center point of the first line of text, and center the image against it
+        let imageCenterX = imageFrame.size.height / 2.0
+        imageFrame.origin.y = floor(topPadding + singleLineRect.midY - imageCenterX)
         imageView?.frame = imageFrame
     }
 }
