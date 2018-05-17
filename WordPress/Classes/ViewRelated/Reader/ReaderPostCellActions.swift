@@ -1,6 +1,6 @@
 final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     private let context: NSManagedObjectContext
-    private let origin: UIViewController
+    private weak var origin: UIViewController?
     private let topic: ReaderAbstractTopic?
 
     var imageRequestAuthToken: String? = nil
@@ -16,14 +16,14 @@ final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     }
 
     func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider) {
-        guard let post = provider as? ReaderPost else {
+        guard let post = provider as? ReaderPost, let origin = origin else {
             return
         }
         HeaderAction().execute(post: post, origin: origin)
     }
 
     func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider) {
-        guard let post = provider as? ReaderPost else {
+        guard let post = provider as? ReaderPost, let origin = origin else {
             return
         }
         CommentAction().execute(post: post, origin: origin)
@@ -65,7 +65,7 @@ final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     }
 
     func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
-        guard let post = provider as? ReaderPost else {
+        guard let post = provider as? ReaderPost, let origin = origin else {
             return
         }
 
@@ -90,7 +90,7 @@ final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
 
         FollowAction().execute(with: post, context: context) { [weak self] in
             if toFollow {
-                self?.origin.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
+                self?.origin?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
             }
         }
     }
@@ -100,10 +100,16 @@ final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     }
 
     fileprivate func visitSiteForPost(_ post: ReaderPost) {
+        guard let origin = origin else {
+            return
+        }
         VisitSiteAction().execute(with: post, context: ContextManager.sharedInstance().mainContext, origin: origin)
     }
 
     fileprivate func showAttributionForPost(_ post: ReaderPost) {
+        guard let origin = origin else {
+            return
+        }
         ShowAttributionAction().execute(with: post, context: context, origin: origin)
     }
 
@@ -113,6 +119,9 @@ final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     }
 
     fileprivate func sharePost(_ post: ReaderPost, fromView anchorView: UIView) {
+        guard let origin = origin else {
+            return
+        }
         ShareAction().execute(with: post, context: context, anchor: anchorView, vc: origin)
     }
 }
