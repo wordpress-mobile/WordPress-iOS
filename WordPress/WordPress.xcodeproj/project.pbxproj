@@ -205,7 +205,6 @@
 		40ADB15520686870009A9161 /* PluginStore+Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ADB15420686870009A9161 /* PluginStore+Persistence.swift */; };
 		40D7823A206AEA880015A3A1 /* Scheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D78238206ABD970015A3A1 /* Scheduler.swift */; };
 		40E4698F2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E4698E2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift */; };
-		40E469912017EAB10030DB5F /* plugin-directory-jetpack.json in Resources */ = {isa = PBXBuildFile; fileRef = 40E469902017EAB10030DB5F /* plugin-directory-jetpack.json */; };
 		40E469932017F4070030DB5F /* PluginDirectoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E469922017F3D20030DB5F /* PluginDirectoryViewController.swift */; };
 		40E469952017FB1F0030DB5F /* PluginDirectoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E469942017FB1F0030DB5F /* PluginDirectoryViewModel.swift */; };
 		40E728851FF3D9070010E7C9 /* PluginDetailViewHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40E728841FF3D9070010E7C9 /* PluginDetailViewHeaderCell.swift */; };
@@ -766,6 +765,7 @@
 		B5CEEB8E1B7920BE00E7B7B0 /* CommentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CEEB8D1B7920BE00E7B7B0 /* CommentsTableViewCell.swift */; };
 		B5CEEB901B79244D00E7B7B0 /* CommentsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5CEEB8F1B79244D00E7B7B0 /* CommentsTableViewCell.xib */; };
 		B5D889411BEBE30A007C4684 /* BlogSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D889401BEBE30A007C4684 /* BlogSettings.swift */; };
+		B5DA8A5F20ADAA1D00D5BDE1 /* plugin-directory-jetpack.json in Resources */ = {isa = PBXBuildFile; fileRef = B5DA8A5E20ADAA1C00D5BDE1 /* plugin-directory-jetpack.json */; };
 		B5DB8AF41C949DC20059196A /* WPImmuTableRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DB8AF31C949DC20059196A /* WPImmuTableRows.swift */; };
 		B5DBE4FE1D21A700002E81D3 /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DBE4FD1D21A700002E81D3 /* NotificationsViewController.swift */; };
 		B5DD04741CD3DAB00003DF89 /* NSFetchedResultsController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DD04731CD3DAB00003DF89 /* NSFetchedResultsController+Helpers.swift */; };
@@ -1537,7 +1537,6 @@
 		40ADB15420686870009A9161 /* PluginStore+Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PluginStore+Persistence.swift"; sourceTree = "<group>"; };
 		40D78238206ABD970015A3A1 /* Scheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scheduler.swift; sourceTree = "<group>"; };
 		40E4698E2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryEntryStateTests.swift; sourceTree = "<group>"; };
-		40E469902017EAB10030DB5F /* plugin-directory-jetpack.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "plugin-directory-jetpack.json"; path = "../../../WordPressKit/WordPressKitTests/Mock Data/plugin-directory-jetpack.json"; sourceTree = "<group>"; };
 		40E469922017F3D20030DB5F /* PluginDirectoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryViewController.swift; sourceTree = "<group>"; };
 		40E469942017FB1F0030DB5F /* PluginDirectoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryViewModel.swift; sourceTree = "<group>"; };
 		40E728841FF3D9070010E7C9 /* PluginDetailViewHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDetailViewHeaderCell.swift; sourceTree = "<group>"; };
@@ -2262,6 +2261,7 @@
 		B5CEEB8F1B79244D00E7B7B0 /* CommentsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentsTableViewCell.xib; sourceTree = "<group>"; };
 		B5D607D71B55E1E900C65DF9 /* WordPress 35.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 35.xcdatamodel"; sourceTree = "<group>"; };
 		B5D889401BEBE30A007C4684 /* BlogSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogSettings.swift; sourceTree = "<group>"; };
+		B5DA8A5E20ADAA1C00D5BDE1 /* plugin-directory-jetpack.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "plugin-directory-jetpack.json"; sourceTree = "<group>"; };
 		B5DB8AF31C949DC20059196A /* WPImmuTableRows.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPImmuTableRows.swift; sourceTree = "<group>"; };
 		B5DBE4FD1D21A700002E81D3 /* NotificationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NotificationsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		B5DD04731CD3DAB00003DF89 /* NSFetchedResultsController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSFetchedResultsController+Helpers.swift"; sourceTree = "<group>"; };
@@ -5755,7 +5755,7 @@
 		E16AB94414D9A13A0047A2E5 /* Mock Data */ = {
 			isa = PBXGroup;
 			children = (
-				40E469902017EAB10030DB5F /* plugin-directory-jetpack.json */,
+				B5DA8A5E20ADAA1C00D5BDE1 /* plugin-directory-jetpack.json */,
 				855408851A6F105700DDBD79 /* app-review-prompt-all-enabled.json */,
 				855408891A6F107D00DDBD79 /* app-review-prompt-global-disable.json */,
 				855408871A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json */,
@@ -6627,11 +6627,11 @@
 				74585B9D1F0D591D00E7E667 /* domain-service-all-domain-types.json in Resources */,
 				E131CB5616CACF1E004B0314 /* get-user-blogs_has-blog.json in Resources */,
 				93C882A31EEB18D700227A59 /* plugin_redirect.html in Resources */,
+				B5DA8A5F20ADAA1D00D5BDE1 /* plugin-directory-jetpack.json in Resources */,
 				084D94AF1EDF842F00C385A6 /* test-video-device-gps.m4v in Resources */,
 				933D1F6E1EA7A402009FB462 /* TestAssets.xcassets in Resources */,
 				B5EFB1D11B33630C007608A3 /* notifications-settings.json in Resources */,
 				E15027611E03E51500B847E3 /* notes-action-delete.json in Resources */,
-				40E469912017EAB10030DB5F /* plugin-directory-jetpack.json in Resources */,
 				08F8CD361EBD2AA80049D0C0 /* test-image-device-photo-gps-portrait.jpg in Resources */,
 				FF9839AF1CD3FBCA00E85258 /* WordPressOAuthClientNeed2FAFail.json in Resources */,
 				B5AEEC7D1ACACFDA008BF2A4 /* notifications-replied-comment.json in Resources */,
