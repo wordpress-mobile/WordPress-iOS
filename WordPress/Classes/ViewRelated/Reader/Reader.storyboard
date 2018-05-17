@@ -443,6 +443,7 @@
                         <outlet property="blogURLLabel" destination="RfN-yk-yXb" id="Ser-b8-2Jz"/>
                         <outlet property="bylineBottomPaddingView" destination="aER-Yk-oAm" id="LDA-Je-t0o"/>
                         <outlet property="bylineLabel" destination="QjI-iE-tIM" id="OGE-13-jl5"/>
+                        <outlet property="bylineScrollView" destination="BGT-ob-j9p" id="Uc4-OD-fBI"/>
                         <outlet property="bylineView" destination="JFE-Nr-imf" id="7jN-00-W1S"/>
                         <outlet property="commentButton" destination="XmB-eN-d59" id="nAO-lB-cA3"/>
                         <outlet property="featuredImageBottomPaddingView" destination="H39-2a-c92" id="T3d-Hz-kcK"/>
@@ -459,6 +460,8 @@
                         <outlet property="textView" destination="Ix7-KK-iap" id="QgD-HL-wLx"/>
                         <outlet property="titleBottomPaddingView" destination="MYy-Lu-AaC" id="Law-vf-rPU"/>
                         <outlet property="titleLabel" destination="ut9-jn-WNM" id="4Rg-AX-Wgl"/>
+                        <outletCollection property="bylineGradientViews" destination="OvZ-NX-X1v" collectionClass="NSMutableArray" id="yKE-rH-Nnk"/>
+                        <outletCollection property="bylineGradientViews" destination="zWO-Ks-c1z" collectionClass="NSMutableArray" id="YTC-WO-6ZX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pqZ-Qi-sAl" userLabel="First Responder" sceneMemberID="firstResponder"/>
