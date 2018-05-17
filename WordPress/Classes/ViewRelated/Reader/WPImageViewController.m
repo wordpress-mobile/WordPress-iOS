@@ -19,7 +19,7 @@ static CGFloat const MinimumZoomScale = 0.1;
 @property (nonatomic, strong) CachedAnimatedImageView *imageView;
 @property (nonatomic, strong) ImageLoader *imageLoader;
 @property (nonatomic, assign) BOOL shouldHideStatusBar;
-@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
+@property (nonatomic, strong) MediaCellProgressView *activityIndicatorView;
 
 @property (nonatomic) FlingableViewHandler *flingableViewHandler;
 
@@ -105,7 +105,7 @@ static CGFloat const MinimumZoomScale = 0.1;
     self.imageView.userInteractionEnabled = YES;
     [self.scrollView addSubview:self.imageView];
 
-    self.imageLoader = [[ImageLoader alloc] initWithImageView:self.imageView gifStrategy:GIFStrategyLargeGIFs loaderStyle:LoaderStyleWhite];
+    self.imageLoader = [[ImageLoader alloc] initWithImageView:self.imageView gifStrategy:GIFStrategyLargeGIFs];
 
     UITapGestureRecognizer *tgr2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageDoubleTapped:)];
     [tgr2 setNumberOfTapsRequired:2];
@@ -119,12 +119,19 @@ static CGFloat const MinimumZoomScale = 0.1;
     self.flingableViewHandler = [[FlingableViewHandler alloc] initWithTargetView:self.scrollView];
     self.flingableViewHandler.delegate = self;
 
-    self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    self.activityIndicatorView.color = [WPStyleGuide greyDarken30];
-    self.activityIndicatorView.hidesWhenStopped = YES;
-    self.activityIndicatorView.center = self.view.center;
-    self.activityIndicatorView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin;
+    self.activityIndicatorView = [[MediaCellProgressView alloc] initWithStyle:LoaderStyleBlack animationSpeed:0.7];
+    self.activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
+
     [self.view addSubview:self.activityIndicatorView];
+    NSArray *constraints = @[
+                             [self.activityIndicatorView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
+                             [self.activityIndicatorView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
+                             [self.activityIndicatorView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
+                             [self.activityIndicatorView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
+                             ];
+
+    [NSLayoutConstraint activateConstraints:constraints];
+
 
     [self loadImage];
 }

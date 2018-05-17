@@ -35,12 +35,34 @@ extension MediaCellProgressView: ActivityIndicatorType {
     private var errorHandler: ((Error?) -> Void)?
     private var placeholder: UIImage?
 
-    @objc init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs, loaderStyle: MediaCellProgressView.LoaderStyle = .white) {
+    private let shouldShowLoadingIndicator: Bool
+
+    @objc(initWithImageView:)
+    convenience init(objc_imageView imageView: CachedAnimatedImageView) {
+        self.init(imageView: imageView, gifStrategy: .mediumGIFs, loaderStyle: nil)
+    }
+
+    @objc(initWithImageView:gifStrategy:)
+    convenience init(objc_imageView imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs) {
+        self.init(imageView: imageView, gifStrategy: gifStrategy, loaderStyle: nil)
+    }
+
+    @objc(initWithImageView:gifStrategy:loaderStyle:)
+    convenience init(objc_imageView imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy, loaderStyle: MediaCellProgressView.LoaderStyle) {
+        self.init(imageView: imageView, gifStrategy: gifStrategy, loaderStyle: loaderStyle)
+    }
+
+    init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs, loaderStyle: MediaCellProgressView.LoaderStyle? = .white) {
         self.imageView = imageView
         imageView.gifStrategy = gifStrategy
+        shouldShowLoadingIndicator = loaderStyle != nil
+
         super.init()
-        let loadingView = MediaCellProgressView(style: loaderStyle, animationSpeed: 0.7)
-        imageView.addLoadingIndicator(loadingView, style: .fullView)
+
+        if let loaderStyle = loaderStyle {
+            let loadingView = MediaCellProgressView(style: loaderStyle, animationSpeed: 0.7)
+            imageView.addLoadingIndicator(loadingView, style: .fullView)
+        }
     }
 
     /// Removes the gif animation and prevents it from animate again.
@@ -168,7 +190,7 @@ extension MediaCellProgressView: ActivityIndicatorType {
 
     private func loadImage(from media: Media, preferredSize size: CGSize) {
         imageView.image = placeholder
-        imageView.startLoadingAnimation()
+        startLoadingAnimation()
         media.image(with: size) {  [weak self] (image, error) in
             if let image = image {
                 self?.imageView.image = image
@@ -182,7 +204,7 @@ extension MediaCellProgressView: ActivityIndicatorType {
     /// Download the animated image from the given URL Request.
     ///
     private func downloadGif(from request: URLRequest) {
-        imageView.startLoadingAnimation()
+        startLoadingAnimation()
         imageView.setAnimatedImage(request, placeholderImage: placeholder, success: { [weak self] in
             self?.callSuccessHandler()
         }) { [weak self] (error) in
@@ -193,7 +215,7 @@ extension MediaCellProgressView: ActivityIndicatorType {
     /// Downloads the image from the given URL Request.
     ///
     private func downloadImage(from request: URLRequest) {
-        imageView.startLoadingAnimation()
+        startLoadingAnimation()
         imageView.setImageWith(request, placeholderImage: placeholder, success: { [weak self] (_, _, image) in
             // Since a success block is specified, we need to set the image manually.
             self?.imageView.image = image
@@ -206,7 +228,7 @@ extension MediaCellProgressView: ActivityIndicatorType {
     /// Downloads the image from the given URL.
     ///
     private func downloadImage(from url: URL) {
-        imageView.startLoadingAnimation()
+        startLoadingAnimation()
         imageView.downloadImage(from: url, placeholderImage: placeholder, success: { [weak self] (_) in
             self?.callSuccessHandler()
         }) { [weak self] (error) in
@@ -234,6 +256,12 @@ extension MediaCellProgressView: ActivityIndicatorType {
         }
         DispatchQueue.main.async {
             self.errorHandler?(error)
+        }
+    }
+
+    private func startLoadingAnimation() {
+        if shouldShowLoadingIndicator {
+            imageView.startLoadingAnimation()
         }
     }
 

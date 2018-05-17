@@ -22,7 +22,7 @@ class MediaCellProgressView: UIView {
             case .gray:
                 return ProgressIndicatorView.Appearance(lineColor: .white)
             case .black:
-                return ProgressIndicatorView.Appearance(lineColor: WPStyleGuide.mediumBlue())
+                return ProgressIndicatorView.Appearance(lineColor: .white)
             }
         }
 
@@ -86,7 +86,7 @@ class MediaCellProgressView: UIView {
         return ProgressIndicatorView.Appearance(lineColor: .white)
     }
 
-    init(style: LoaderStyle = .white, animationSpeed: Float = 1) {
+    @objc init(style: LoaderStyle = .white, animationSpeed: Float = 1) {
         progressIndicator = ProgressIndicatorView(appearance: style.appearance, animationSpeed: animationSpeed)
         super.init(frame: .zero)
         setup(style)
