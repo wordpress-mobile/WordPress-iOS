@@ -420,8 +420,6 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
             if let type = userInfo.string(forKey: ZendeskUtils.PushNotificationIdentifiers.key),
                 type == ZendeskUtils.PushNotificationIdentifiers.type {
                 ZendeskUtils.handlePushNotification(userInfo)
-                // Since the notification has been handled, clear the badge count.
-                UIApplication.shared.applicationIconBadgeNumber = 0
             }
         }
     }
