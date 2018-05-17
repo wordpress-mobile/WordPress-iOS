@@ -9,6 +9,7 @@ import WordPressShared.WPStyleGuide
 ///
 open class NotificationSettingsViewController: UIViewController {
     // MARK: - View Lifecycle
+
     open override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -36,8 +37,8 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
 
-
     // MARK: - Setup Helpers
+
     fileprivate func setupNavigationItem() {
         title = NSLocalizedString("Notifications", comment: "Title displayed in the Notification settings")
         navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .plain, target: nil, action: nil)
@@ -57,24 +58,42 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
 
-
     // MARK: - Service Helpers
+
     fileprivate func reloadSettings() {
         let service = NotificationSettingsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
 
+        let dispatchGroup = DispatchGroup()
+        let siteService = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+
         activityIndicatorView.startAnimating()
 
+        dispatchGroup.enter()
+        siteService.fetchFollowedSites(success: {
+            dispatchGroup.leave()
+        }, failure: { (error) in
+            dispatchGroup.leave()
+            DDLogError("Could not sync sites: \(String(describing: error))")
+        })
+
+        dispatchGroup.enter()
         service.getAllSettings({ [weak self] (settings: [NotificationSettings]) in
-                self?.groupedSettings = self?.groupSettings(settings)
-                self?.activityIndicatorView.stopAnimating()
-                self?.tableView.reloadData()
-            },
-            failure: { [weak self] (error: NSError?) in
-                self?.handleLoadError()
-            })
+            self?.groupedSettings = self?.groupSettings(settings) ?? [:]
+            dispatchGroup.leave()
+        }, failure: { [weak self] (error: NSError?) in
+            dispatchGroup.leave()
+            self?.handleLoadError()
+        })
+
+        dispatchGroup.notify(queue: .main) { [weak self] in
+            self?.followedSites = siteService.allSiteTopics() ?? []
+            self?.setupSections()
+            self?.activityIndicatorView.stopAnimating()
+            self?.tableView.reloadData()
+        }
     }
 
-    fileprivate func groupSettings(_ settings: [NotificationSettings]) -> [[NotificationSettings]] {
+    fileprivate func groupSettings(_ settings: [NotificationSettings]) -> [Section: [NotificationSettings]] {
         // Find the Default Blog ID
         let service         = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         let defaultAccount  = service.defaultWordPressComAccount()
@@ -105,12 +124,31 @@ open class NotificationSettingsViewController: UIViewController {
         assert(wpcomSettings.count == 1)
 
         // Sections: Blogs + Other + WpCom
-        return [blogSettings, otherSettings, wpcomSettings]
+        return [.blog: blogSettings, .other: otherSettings, .wordPressCom: wpcomSettings]
+    }
+
+    // Setup the table sections using the Section enumeration
+    //
+    fileprivate func setupSections() {
+        var section: [Section] = groupedSettings.isEmpty ? [] : [.blog, .other, .wordPressCom]
+        if !followedSites.isEmpty && !section.isEmpty {
+            section.insert(.followedSites, at: 1)
+        } else if !followedSites.isEmpty && section.isEmpty {
+            section.append(.followedSites)
+        }
+
+        tableSections = section
+    }
+
+    // Get a valid Section from a setion index
+    //
+    fileprivate func section(at index: Int) -> Section {
+        return tableSections[index]
     }
 
 
-
     // MARK: - Error Handling
+
     fileprivate func handleLoadError() {
         let title       = NSLocalizedString("Oops!", comment: "")
         let message     = NSLocalizedString("There has been a problem while loading your Notification Settings",
@@ -132,19 +170,21 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
 
-
-
     // MARK: - UITableView Datasource Methods
+
     @objc open func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
-        return groupedSettings?.count ?? emptyCount
+        return tableSections.count
     }
 
     @objc open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch Section(rawValue: section)! {
+        let section = self.section(at: section)
+        switch section {
         case .blog where requiresBlogsPagination:
-            return displayMoreWasAccepted ? rowCountForBlogSection + 1 : loadMoreRowCount
+            return displayBlogMoreWasAccepted ? rowCountForBlogSection + 1 : loadMoreRowCount
+        case .followedSites:
+            return displayFollowedMoreWasAccepted ? rowCountForFollowedSite + 1 : loadMoreRowCount
         default:
-            return groupedSettings![section].count
+            return groupedSettings[section]?.count ?? 0
         }
     }
 
@@ -163,7 +203,7 @@ open class NotificationSettingsViewController: UIViewController {
             return nil
         }
 
-        let theSection      = Section(rawValue: section)!
+        let theSection = self.section(at: section)
         return theSection.headerText()
     }
 
@@ -177,7 +217,7 @@ open class NotificationSettingsViewController: UIViewController {
             return nil
         }
 
-        let theSection      = Section(rawValue: section)!
+        let theSection = self.section(at: section)
         return theSection.footerText()
     }
 
@@ -186,11 +226,13 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
 
-
     // MARK: - UITableView Delegate Methods
+
     @objc open func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: IndexPath) {
         if isPaginationRow(indexPath) {
-            toggleDisplayMoreBlogs()
+            toggleDisplayMore(at: indexPath)
+        } else if let siteTopic = siteTopic(at: indexPath) {
+            displayDetails(for: siteTopic.siteID.intValue)
         } else if let settings = settingsForRowAtIndexPath(indexPath) {
             displayDetailsForSettings(settings)
         } else {
@@ -199,11 +241,11 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
 
-
     // MARK: - UITableView Helpers
+
     fileprivate func reusableIdentifierForIndexPath(_ indexPath: IndexPath) -> String {
-        switch Section(rawValue: indexPath.section)! {
-        case .blog where !isPaginationRow(indexPath):
+        switch section(at: indexPath.section) {
+        case .blog where !isPaginationRow(indexPath), .followedSites where !isPaginationRow(indexPath):
             return blogReuseIdentifier
         default:
             return defaultReuseIdentifier
@@ -220,8 +262,26 @@ open class NotificationSettingsViewController: UIViewController {
             return
         }
 
+        if let site = siteTopic(at: indexPath) {
+            cell.imageView?.image = .siteIconPlaceholderImage
+
+            cell.accessoryType = .disclosureIndicator
+            cell.imageView?.backgroundColor = WPStyleGuide.greyLighten30()
+
+            cell.textLabel?.text = site.title
+            cell.detailTextLabel?.text = URL(string: site.siteURL)?.host
+            cell.imageView?.downloadSiteIcon(at: site.siteBlavatar)
+
+            WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
+            cell.layoutSubviews()
+            return
+        }
+
         // Proceed rendering the settings
-        let settings = settingsForRowAtIndexPath(indexPath)!
+        guard let settings = settingsForRowAtIndexPath(indexPath) else {
+            return
+        }
+
         switch settings.channel {
         case .blog:
             cell.textLabel?.text            = settings.blog?.settings?.name ?? settings.channel.description()
@@ -244,19 +304,54 @@ open class NotificationSettingsViewController: UIViewController {
         }
     }
 
+    fileprivate func siteTopic(at index: IndexPath) -> ReaderSiteTopic? {
+        guard !followedSites.isEmpty,
+            index.row <= (followedSites.count - 1) else {
+            return nil
+        }
+
+        switch section(at: index.section) {
+        case .followedSites:
+            return followedSites[index.row]
+
+        default:
+            return nil
+        }
+    }
+
     fileprivate func settingsForRowAtIndexPath(_ indexPath: IndexPath) -> NotificationSettings? {
-        return groupedSettings?[indexPath.section][indexPath.row]
+        let section = self.section(at: indexPath.section)
+        guard let settings = groupedSettings[section] else {
+            return nil
+        }
+
+        return settings[indexPath.row]
     }
 
     fileprivate func isSectionEmpty(_ sectionIndex: Int) -> Bool {
-        return groupedSettings == nil || groupedSettings?[sectionIndex].count == 0
+        let section = self.section(at: sectionIndex)
+        switch section {
+        case .followedSites:
+            return followedSites.isEmpty
+
+        default:
+            return groupedSettings[section]?.count == 0
+        }
     }
 
 
-
     // MARK: - Load More Helpers
+
+    fileprivate var rowCountForFollowedSite: Int {
+        return followedSites.count
+    }
+
+    fileprivate var requiresFollowedSitesPagination: Bool {
+        return rowCountForFollowedSite > loadMoreRowIndex
+    }
+
     fileprivate var rowCountForBlogSection: Int {
-        return groupedSettings?[Section.blog.rawValue].count ?? 0
+        return groupedSettings[.blog]?.count ?? 0
     }
 
     fileprivate var requiresBlogsPagination: Bool {
@@ -264,13 +359,35 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
     fileprivate func isDisplayMoreRow(_ path: IndexPath) -> Bool {
-        let isDisplayMoreRow = path.section == Section.blog.rawValue && path.row == loadMoreRowIndex
-        return requiresBlogsPagination && !displayMoreWasAccepted && isDisplayMoreRow
+        let section = self.section(at: path.section)
+        switch section {
+        case .blog:
+            let isDisplayMoreRow = path.row == loadMoreRowIndex
+            return requiresFollowedSitesPagination && !displayBlogMoreWasAccepted && isDisplayMoreRow
+
+        case .followedSites:
+            let isDisplayMoreRow = path.row == loadMoreRowIndex
+            return requiresFollowedSitesPagination && !displayFollowedMoreWasAccepted && isDisplayMoreRow
+
+        default: return false
+        }
     }
 
     fileprivate func isDisplayLessRow(_ path: IndexPath) -> Bool {
-        let isDisplayLessRow = path.section == Section.blog.rawValue && path.row == rowCountForBlogSection
-        return requiresBlogsPagination && displayMoreWasAccepted && isDisplayLessRow
+        let section = self.section(at: path.section)
+        switch section {
+        case .blog:
+            let rowCount = rowCountForBlogSection
+            let isDisplayLessRow = path.row == rowCount
+            return requiresBlogsPagination && displayBlogMoreWasAccepted && isDisplayLessRow
+
+        case .followedSites:
+            let rowCount = rowCountForFollowedSite
+            let isDisplayLessRow = path.row == rowCount
+            return requiresFollowedSitesPagination && displayFollowedMoreWasAccepted && isDisplayLessRow
+
+        default: return false
+        }
     }
 
     fileprivate func isPaginationRow(_ path: IndexPath) -> Bool {
@@ -285,18 +402,32 @@ open class NotificationSettingsViewController: UIViewController {
         return NSLocalizedString("View less…", comment: "Displays Less Rows")
     }
 
-    fileprivate func toggleDisplayMoreBlogs() {
-        // Remember this action!
-        displayMoreWasAccepted = !displayMoreWasAccepted
+    fileprivate func toggleDisplayMore(at index: IndexPath) {
+        let section = self.section(at: index.section)
+        switch section {
+        case .blog:
+            displayBlogMoreWasAccepted = !displayBlogMoreWasAccepted
+
+        case .followedSites:
+            displayFollowedMoreWasAccepted = !displayFollowedMoreWasAccepted
+
+        default:
+            return
+        }
 
         // And refresh the section
-        let sections = IndexSet(integer: Section.blog.rawValue)
+        let sections = IndexSet(integer: index.section)
         tableView.reloadSections(sections, with: .fade)
     }
 
 
-
     // MARK: - Segue Helpers
+
+    fileprivate func displayDetails(for siteId: Int) {
+        let siteSubscriptionsViewController = NotificationSiteSubscriptionViewController(siteId: siteId)
+        navigationController?.pushViewController(siteSubscriptionsViewController, animated: true)
+    }
+
     fileprivate func displayDetailsForSettings(_ settings: NotificationSettings) {
         switch settings.channel {
         case .wordPressCom:
@@ -311,17 +442,20 @@ open class NotificationSettingsViewController: UIViewController {
     }
 
 
-
     // MARK: - Table Sections
+
     fileprivate enum Section: Int {
-        case blog           = 0
-        case other          = 1
-        case wordPressCom   = 2
+        case blog
+        case followedSites
+        case other
+        case wordPressCom
 
         func headerText() -> String {
             switch self {
             case .blog:
                 return NSLocalizedString("Your Sites", comment: "Displayed in the Notification Settings View")
+            case .followedSites:
+                return NSLocalizedString("Followed Sites", comment: "Displayed in the Notification Settings View")
             case .other:
                 return NSLocalizedString("Other", comment: "Displayed in the Notification Settings View")
             case .wordPressCom:
@@ -333,7 +467,10 @@ open class NotificationSettingsViewController: UIViewController {
             switch self {
             case .blog:
                 return NSLocalizedString("Customize your site settings for Likes, Comments, Follows, and more.",
-                    comment: "Notification Settings for your own blogs")
+                                         comment: "Notification Settings for your own blogs")
+            case .followedSites:
+                return NSLocalizedString("Customize your followed site settings for New Posts and Comments",
+                                         comment: "Notification Settings for your followed sites")
             case .other:
                 return String()
             case .wordPressCom:
@@ -343,7 +480,9 @@ open class NotificationSettingsViewController: UIViewController {
             }
         }
 
+
         // MARK: - Private Constants
+
         fileprivate static let paddingZero      = CGFloat(0)
         fileprivate static let paddingWordPress = CGFloat(40)
     }
@@ -351,10 +490,13 @@ open class NotificationSettingsViewController: UIViewController {
 
 
     // MARK: - Private Outlets
+
     @IBOutlet fileprivate var tableView: UITableView!
     @IBOutlet fileprivate var activityIndicatorView: UIActivityIndicatorView!
 
+
     // MARK: - Private Constants
+
     fileprivate let blogReuseIdentifier             = WPBlogTableViewCell.classNameWithoutNamespaces()
     fileprivate let blogRowHeight                   = CGFloat(54.0)
 
@@ -364,10 +506,16 @@ open class NotificationSettingsViewController: UIViewController {
     fileprivate let loadMoreRowIndex                = 3
     fileprivate let loadMoreRowCount                = 4
 
+
     // MARK: - Private Properties
-    fileprivate var groupedSettings: [[NotificationSettings]]?
-    fileprivate var displayMoreWasAccepted          = false
+
+    fileprivate var groupedSettings: [Section: [NotificationSettings]] = [:]
+    fileprivate var displayBlogMoreWasAccepted          = false
+    fileprivate var displayFollowedMoreWasAccepted      = false
+    fileprivate var followedSites: [ReaderSiteTopic] = []
+    fileprivate var tableSections: [Section] = []
 }
+
 
 // MARK: - SearchableActivity Conformance
 

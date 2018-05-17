@@ -13,7 +13,6 @@
 NSString * const ReaderPostStoredCommentIDKey = @"commentID";
 NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
-
 @implementation ReaderPost
 
 @dynamic authorDisplayName;
@@ -46,8 +45,8 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic isLikesEnabled;
 @dynamic isSharingEnabled;
 @dynamic isSiteBlocked;
-@dynamic isSavedForLater;
 @dynamic sourceAttribution;
+@dynamic isSavedForLater;
 
 @dynamic primaryTag;
 @dynamic primaryTagSlug;
