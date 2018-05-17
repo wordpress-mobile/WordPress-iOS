@@ -45,6 +45,7 @@ enum ReaderMenuItemType: Int {
     case search
     case recommended
     case addItem
+    case savedPosts
 }
 
 
@@ -267,17 +268,10 @@ enum ReaderDefaultMenuItemOrder: Int {
             }
         }
 
-        // Append a menu item for search
         defaultSectionItems.append(searchMenuItem())
 
-        // To be removed as soon as the topic is provided by the coredata store. This is here just to prove visually that the view model can handle this topic
         if FeatureFlag.saveForLater.enabled {
-            let topic = ReaderSaveForLaterTopic()
-            topic.title = Strings.savedForLaterMenuTitle
-            topic.path = "/mock"
-            let menuItem = sectionCreator(for: topic).menuItem(with: topic)
-
-            defaultSectionItems.append(menuItem)
+            defaultSectionItems.append(savedPostsMenuItem())
         }
 
         // Sort the items ascending.
@@ -297,6 +291,12 @@ enum ReaderDefaultMenuItemOrder: Int {
     ///
     func searchMenuItem() -> ReaderMenuItem {
         return SearchMenuItemCreator().menuItem()
+    }
+
+    /// Returns the menu item to use for the reader search
+    ///
+    func savedPostsMenuItem() -> ReaderMenuItem {
+        return SavedForLaterMenuItemCreator().menuItem()
     }
 
 
