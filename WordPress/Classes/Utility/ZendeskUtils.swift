@@ -84,26 +84,26 @@ protocol ZendeskUtilsDelegate {
     // MARK: - Show Zendesk Views
 
     func showHelpCenterIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
-        ZendeskUtils.createIdentity { success in
-            guard success else {
-                // TODO: show error
-                return
-            }
-
-            self.sourceTag = sourceTag
-
-            guard let helpCenterContentModel = ZDKHelpCenterOverviewContentModel.defaultContent() else {
-                DDLogInfo("Zendesk helpCenterContentModel creation failed.")
-                return
-            }
-
-            helpCenterContentModel.groupType = .category
-            helpCenterContentModel.groupIds = [Constants.mobileCategoryID]
-            helpCenterContentModel.labels = [Constants.articleLabel]
-
-            let presentInController = ZendeskUtils.configureViewController(controller)
-            ZDKHelpCenter.presentOverview(presentInController, with: helpCenterContentModel)
+        // Since user information is not needed to display the Help Center,
+        // if a user identity has not been created, create an empty identity.
+        if ZDKConfig.instance().userIdentity == nil {
+            let zendeskIdentity = ZDKAnonymousIdentity()
+            ZDKConfig.instance().userIdentity = zendeskIdentity
         }
+
+        self.sourceTag = sourceTag
+
+        guard let helpCenterContentModel = ZDKHelpCenterOverviewContentModel.defaultContent() else {
+            DDLogInfo("Zendesk helpCenterContentModel creation failed.")
+            return
+        }
+
+        helpCenterContentModel.groupType = .category
+        helpCenterContentModel.groupIds = [Constants.mobileCategoryID]
+        helpCenterContentModel.labels = [Constants.articleLabel]
+
+        let presentInController = ZendeskUtils.configureViewController(controller)
+        ZDKHelpCenter.presentOverview(presentInController, with: helpCenterContentModel)
     }
 
     func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
