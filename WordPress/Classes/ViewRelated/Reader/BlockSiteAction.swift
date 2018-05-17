@@ -1,3 +1,4 @@
+/// Encapsulates a command to flag a site
 final class BlockSiteAction {
     private let asBlocked: Bool
 

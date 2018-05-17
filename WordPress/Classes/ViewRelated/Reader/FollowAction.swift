@@ -1,3 +1,4 @@
+/// Encapsulates a command to toggle following a post
 final class FollowAction {
     func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)? = nil) {
         let siteID = post.siteID

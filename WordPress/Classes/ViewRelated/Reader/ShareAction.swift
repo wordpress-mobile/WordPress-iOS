@@ -1,3 +1,4 @@
+/// Encapsulates a command share a post
 final class ShareAction {
     func execute(with post: ReaderPost, context: NSManagedObjectContext, anchor: UIView, vc: UIViewController) {
         let postID = post.objectID

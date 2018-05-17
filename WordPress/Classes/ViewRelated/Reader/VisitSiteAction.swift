@@ -1,3 +1,4 @@
+/// Encapsulates a command to visit a site
 final class VisitSiteAction {
     func execute(with post: ReaderPost, context: NSManagedObjectContext, origin: UIViewController) {
         guard
