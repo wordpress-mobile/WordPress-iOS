@@ -1,3 +1,4 @@
+/// Encapsulates a command to toggle a post's liked status
 final class LikeAction {
     func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)? = nil) {
         if !post.isLiked {

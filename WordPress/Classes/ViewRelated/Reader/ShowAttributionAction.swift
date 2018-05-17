@@ -1,3 +1,4 @@
+/// Encapsulates a command show a post's attribution
 final class ShowAttributionAction {
     func execute(with post: ReaderPost, context: NSManagedObjectContext, origin: UIViewController) {
         // Fail safe. If there is no attribution exit.
