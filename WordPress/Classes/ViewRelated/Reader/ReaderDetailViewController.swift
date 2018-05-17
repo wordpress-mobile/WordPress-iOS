@@ -1,6 +1,7 @@
 import Foundation
 import CocoaLumberjack
 import WordPressShared
+import WordPressUI
 import QuartzCore
 import Gridicons
 
@@ -48,7 +49,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     // Content views
     @IBOutlet fileprivate weak var featuredImageView: CachedAnimatedImageView!
     @IBOutlet fileprivate weak var titleLabel: UILabel!
-    @IBOutlet fileprivate weak var bylineView: UIScrollView!
+    @IBOutlet fileprivate weak var bylineView: UIView!
+    @IBOutlet fileprivate weak var bylineScrollView: UIScrollView!
+    @IBOutlet fileprivate var bylineGradientViews: [GradientView]!
     @IBOutlet fileprivate weak var avatarImageView: CircularImageView!
     @IBOutlet fileprivate weak var bylineLabel: UILabel!
     @IBOutlet fileprivate weak var textView: WPRichContentView!
@@ -101,6 +104,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         return ImageLoader(imageView: featuredImageView, gifStrategy: .largeGIFs)
     }()
 
+    /// The user interface direction for the view's semantic content attribute.
+    ///
+    private var layoutDirection: UIUserInterfaceLayoutDirection {
+        return UIView.userInterfaceLayoutDirection(for: self.view.semanticContentAttribute)
+    }
 
     // MARK: - Convenience Factories
 
@@ -592,6 +600,23 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
 
         bylineLabel.text = byline
+
+        flipBylineViewIfNeeded()
+    }
+
+    private func flipBylineViewIfNeeded() {
+        if layoutDirection == .rightToLeft {
+            bylineScrollView.transform = CGAffineTransform(scaleX: -1, y: 1)
+            bylineScrollView.subviews.first?.transform = CGAffineTransform(scaleX: -1, y: 1)
+
+            for gradientView in bylineGradientViews {
+                let start = gradientView.startPoint
+                let end = gradientView.endPoint
+
+                gradientView.startPoint = end
+                gradientView.endPoint = start
+            }
+        }
     }
 
 
