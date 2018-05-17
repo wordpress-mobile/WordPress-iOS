@@ -9,6 +9,6 @@ final class SubscribingNotificationAction {
         }
 
         let service = ReaderTopicService(managedObjectContext: context)
-        service.toggleSubscribingNotifications(for: siteID, subscribe: subscribe)
+        service.toggleSubscribingNotifications(for: siteID.intValue, subscribe: subscribe)
     }
 }
