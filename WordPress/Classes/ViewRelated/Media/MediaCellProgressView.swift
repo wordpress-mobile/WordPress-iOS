@@ -6,9 +6,37 @@ import WordPressShared
 /// asset is currently being processed, uploaded, or has failed to upload.
 ///
 class MediaCellProgressView: UIView {
-    let progressIndicator = ProgressIndicatorView()
+    let progressIndicator: ProgressIndicatorView
 
     private let retryContainer = UIStackView()
+
+    @objc enum LoaderStyle: Int {
+        case white
+        case gray
+        case black
+
+        var appearance: ProgressIndicatorView.Appearance {
+            switch self {
+            case .white:
+                return ProgressIndicatorView.Appearance(lineColor: WPStyleGuide.mediumBlue())
+            case .gray:
+                return ProgressIndicatorView.Appearance(lineColor: .white)
+            case .black:
+                return ProgressIndicatorView.Appearance(lineColor: WPStyleGuide.mediumBlue())
+            }
+        }
+
+        var backgroundColor: UIColor {
+            switch self {
+            case .white:
+                return .clear
+            case .gray:
+                return WPStyleGuide.darkGrey()
+            case .black:
+                return .black
+            }
+        }
+    }
 
     enum State: Equatable {
         case stopped
@@ -46,17 +74,40 @@ class MediaCellProgressView: UIView {
         }
     }
 
+    var whiteStyle: ProgressIndicatorView.Appearance {
+        return ProgressIndicatorView.Appearance(lineColor: WPStyleGuide.mediumBlue())
+    }
+
+    var grayStyle: ProgressIndicatorView.Appearance {
+        return ProgressIndicatorView.Appearance(lineColor: .white)
+    }
+
+    var blackStyle: ProgressIndicatorView.Appearance {
+        return ProgressIndicatorView.Appearance(lineColor: .white)
+    }
+
+    init(style: LoaderStyle = .white, animationSpeed: Float = 1) {
+        progressIndicator = ProgressIndicatorView(appearance: style.appearance, animationSpeed: animationSpeed)
+        super.init(frame: .zero)
+        setup(style)
+    }
+
     override init(frame: CGRect) {
+        let style = LoaderStyle.gray
+        progressIndicator = ProgressIndicatorView(appearance: style.appearance)
         super.init(frame: frame)
-
-        addProgressIndicator()
-        addRetryViews()
-
-        backgroundColor = WPStyleGuide.darkGrey()
+        setup(style)
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    fileprivate func setup(_ style: LoaderStyle) {
+        addProgressIndicator()
+        addRetryViews()
+
+        backgroundColor = style.backgroundColor
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -132,19 +183,35 @@ class ProgressIndicatorView: UIView {
     private let progressTrackLayer = CAShapeLayer()
     private let progressLayer = CAShapeLayer()
 
-    private enum Appearance {
-        static let defaultSize: CGFloat = 25.0
-        static let lineWidth: CGFloat = 3.0
-        static let lineColor: UIColor = .white
-        static let trackColor: UIColor = WPStyleGuide.grey()
+    struct Appearance {
+        let defaultSize: CGFloat
+        let lineWidth: CGFloat
+        let lineColor: UIColor
+        let trackColor: UIColor
+
+        init(size: CGFloat = 25.0,
+             lineWidth: CGFloat = 3.0,
+             lineColor: UIColor = WPStyleGuide.mediumBlue(),
+             trackColor: UIColor = WPStyleGuide.grey()) {
+
+            defaultSize = size
+            self.lineWidth = lineWidth
+            self.lineColor = lineColor
+            self.trackColor = trackColor
+        }
     }
 
-    private enum Animations {
-        static let rotationAmount = Float.pi * 2.0
-        static let rotationDuration: TimeInterval = 1.2
-        static let strokeDuration: TimeInterval = 0.8
-        static let strokeSlowdownPoint: Float = 0.8
-        static let strokeBeginTime: TimeInterval = 0.5
+    private struct Animations {
+        let speed: Float
+        let rotationAmount = Float.pi * 2.0
+        lazy var rotationDuration: TimeInterval = 1.2 / TimeInterval(speed)
+        lazy var strokeDuration: TimeInterval = 0.8 / TimeInterval(speed)
+        let strokeSlowdownPoint: Float = 0.8
+        lazy var strokeBeginTime: TimeInterval = 0.5 / TimeInterval(speed)
+
+        init(speed: Float) {
+            self.speed = speed
+        }
     }
 
     var state: MediaCellProgressView.State = .stopped {
@@ -153,20 +220,24 @@ class ProgressIndicatorView: UIView {
         }
     }
 
+    private let appearance: Appearance
+    private var animations: Animations
+
     private var isAnimating = false
 
-    convenience init() {
-        self.init(frame: CGRect(x: 0, y: 0, width: Appearance.defaultSize, height: Appearance.defaultSize))
+    init(appearance: Appearance = Appearance(), animationSpeed: Float = 1) {
+        self.appearance = appearance
+        self.animations = Animations(speed: animationSpeed)
+        super.init(frame: CGRect(x: 0, y: 0, width: appearance.defaultSize, height: appearance.defaultSize))
+        setup()
     }
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
+    private func setup () {
         configureLayer(indeterminateLayer)
         layer.addSublayer(indeterminateLayer)
 
         configureLayer(progressTrackLayer)
-        progressTrackLayer.strokeColor = Appearance.trackColor.cgColor
+        progressTrackLayer.strokeColor = appearance.trackColor.cgColor
         layer.addSublayer(progressTrackLayer)
 
         configureLayer(progressLayer)
@@ -178,8 +249,8 @@ class ProgressIndicatorView: UIView {
     func configureLayer(_ layer: CAShapeLayer) {
         layer.frame = bounds
 
-        layer.lineWidth = Appearance.lineWidth
-        layer.strokeColor = Appearance.lineColor.cgColor
+        layer.lineWidth = appearance.lineWidth
+        layer.strokeColor = appearance.lineColor.cgColor
         layer.fillColor = UIColor.clear.cgColor
         layer.path = UIBezierPath(roundedRect: bounds, cornerRadius: bounds.width / 2.0).cgPath
 
@@ -234,23 +305,23 @@ class ProgressIndicatorView: UIView {
         indeterminateLayer.isHidden = false
 
         let strokeEnd = CAKeyframeAnimation(keyPath: "strokeEnd")
-        strokeEnd.duration = Animations.strokeDuration
+        strokeEnd.duration = animations.strokeDuration
         strokeEnd.values = [0.0, 1.0]
 
         let strokeStart = CAKeyframeAnimation(keyPath: "strokeStart")
-        strokeStart.duration = Animations.strokeDuration
-        strokeStart.values = [0.0, Animations.strokeSlowdownPoint, 1.0]
-        strokeStart.beginTime = Animations.strokeBeginTime
+        strokeStart.duration = animations.strokeDuration
+        strokeStart.values = [0.0, animations.strokeSlowdownPoint, 1.0]
+        strokeStart.beginTime = animations.strokeBeginTime
 
         let group = CAAnimationGroup()
         group.animations = [strokeEnd, strokeStart]
-        group.duration = Animations.strokeDuration + strokeStart.beginTime
+        group.duration = animations.strokeDuration + strokeStart.beginTime
         group.repeatCount = Float.infinity
 
         let animation = CABasicAnimation(keyPath: "transform.rotation.z")
         animation.fromValue = 0
-        animation.toValue = Animations.rotationAmount
-        animation.duration = Animations.rotationDuration
+        animation.toValue = animations.rotationAmount
+        animation.duration = animations.rotationDuration
         animation.repeatCount = Float.infinity
 
         indeterminateLayer.add(animation, forKey: "rotation")
