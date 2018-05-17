@@ -347,8 +347,8 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     ///     - sender: The WPRichTextImage that was tapped.
     ///
     @objc func handleImageTapped(_ sender: WPRichTextImage) {
-        guard (sender.contentURL?.isGif == true && sender.imageView.isAnimatingGIF == true) || sender.contentURL?.isGif == false else {
-            // If the tapped image is a gif AND is NOT animating...start it up on the first tap
+        guard (sender.contentURL?.isGif == true && sender.imageView.frameCount > 1 && sender.imageView.isAnimatingGIF == true) || sender.contentURL?.isGif == false else {
+            // If the tapped image is an animated gif AND is NOT animating...start it up on the first tap
             sender.imageView.startAnimatingGIF()
             return
         }
