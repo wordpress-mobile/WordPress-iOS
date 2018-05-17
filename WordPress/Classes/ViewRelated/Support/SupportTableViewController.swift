@@ -41,7 +41,6 @@ class SupportTableViewController: UITableViewController {
 
         setupNavBar()
         setupTable()
-        ZendeskUtils.delegate = self
     }
 
     @objc func showFromTabBar() {
@@ -254,11 +253,6 @@ private extension SupportTableViewController {
         static let extraDebug = NSLocalizedString("Extra Debug", comment: "Option in Support view to enable/disable adding extra information to support ticket.")
         static let activityLogs = NSLocalizedString("Activity Logs", comment: "Option in Support view to see activity logs.")
         static let informationFooter = NSLocalizedString("The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app.", comment: "Support screen footer text explaining the Extra Debug feature.")
-        static let alertMessage = NSLocalizedString("To continue please enter your email address and name.", comment: "Instructions for alert asking for email and name.")
-        static let alertDone = NSLocalizedString("Done", comment: "Submit button on prompt for user information.")
-        static let alertCancel = NSLocalizedString("Cancel", comment: "Cancel prompt for user information.")
-        static let emailPlaceholder = NSLocalizedString("Email", comment: "Email address text field placeholder")
-        static let namePlaceholder = NSLocalizedString("Name", comment: "Name text field placeholder")
     }
 
     // MARK: - User Defaults Keys
@@ -274,101 +268,4 @@ private extension SupportTableViewController {
         static let forumsURL = URL(string: "https://ios.forums.wordpress.org")
     }
 
-}
-
-// MARK: - Private Extension for Alert handling
-
-private extension SupportTableViewController {
-
-    func promptUserForInformation() {
-        let alertController = UIAlertController(title: nil,
-                                                message: nil,
-                                                preferredStyle: .alert)
-
-        alertController.setValue(NSAttributedString(string: LocalizedText.alertMessage, attributes: [.font: WPStyleGuide.subtitleFont()]),
-                                 forKey: "attributedMessage")
-
-        // Cancel Action
-        alertController.addCancelActionWithTitle(LocalizedText.alertCancel)
-
-        // Done Action
-        let doneAction = alertController.addDefaultActionWithTitle(LocalizedText.alertDone) { [weak alertController] (_) in
-            guard let email = alertController?.textFields?.first?.text else {
-                    return
-            }
-            let name = alertController?.textFields?.last?.text ?? self.generateDisplayName(from: email)
-            ZendeskUtils.sharedInstance.createIdentityFor(email: email, name: name)
-        }
-
-        // Disable Done until a valid Email is entered.
-        doneAction.isEnabled = false
-
-        // Email Text Field
-        alertController.addTextField(configurationHandler: { [weak self] textField in
-            textField.clearButtonMode = .always
-            textField.placeholder = LocalizedText.emailPlaceholder
-
-            textField.addTarget(self,
-                                action: #selector(self?.emailTextFieldDidChange),
-                                for: UIControlEvents.editingChanged)
-        })
-
-        // Name Text Field
-        alertController.addTextField { textField in
-            textField.clearButtonMode = .always
-            textField.placeholder = LocalizedText.namePlaceholder
-        }
-
-        // Show alert
-        self.present(alertController, animated: true, completion: nil)
-
-    }
-
-    @objc func emailTextFieldDidChange(_ textField: UITextField) {
-        guard let alertController = presentedViewController as? UIAlertController,
-            let email = alertController.textFields?.first?.text,
-            let doneAction = alertController.actions.last else {
-                return
-        }
-
-        doneAction.isEnabled = EmailFormatValidator.validate(string: email)
-
-        updateNameFieldForEmail(email)
-    }
-
-    func updateNameFieldForEmail(_ email: String) {
-        guard let alertController = presentedViewController as? UIAlertController,
-            let nameField = alertController.textFields?.last else {
-                return
-        }
-
-        nameField.text = generateDisplayName(from: email)
-    }
-
-    func generateDisplayName(from rawEmail: String) -> String {
-
-        // Generate Name, using the same format as Signup.
-
-        // step 1: lower case
-        let email = rawEmail.lowercased()
-        // step 2: remove the @ and everything after
-        let localPart = email.split(separator: "@")[0]
-        // step 3: remove all non-alpha characters
-        let localCleaned = localPart.replacingOccurrences(of: "[^A-Za-z/.]", with: "", options: .regularExpression)
-        // step 4: turn periods into spaces
-        let nameLowercased = localCleaned.replacingOccurrences(of: ".", with: " ")
-        // step 5: capitalize
-        let autoDisplayName = nameLowercased.capitalized
-
-        return autoDisplayName
-    }
-
-}
-
-// MARK: - ZendeskUtilsDelegate
-
-extension SupportTableViewController: ZendeskUtilsDelegate {
-    func userNotLoggedIn() {
-        promptUserForInformation()
-    }
 }

@@ -13,15 +13,10 @@ extension NSNotification.Name {
     public static let ZendeskPushNotificationClearedNotification = NSNotification.Name.ZendeskPushNotificationClearedNotification
 }
 
-protocol ZendeskUtilsDelegate {
-    func userNotLoggedIn()
-}
-
 @objc class ZendeskUtils: NSObject {
 
     // MARK: - Properties
 
-    static var delegate: ZendeskUtilsDelegate?
     static var sharedInstance: ZendeskUtils = ZendeskUtils()
     private override init() {}
 
@@ -45,6 +40,8 @@ protocol ZendeskUtilsDelegate {
     private static var zdAppID: String?
     private static var zdUrl: String?
     private static var zdClientId: String?
+
+    private static var presentInController: UIViewController?
 
     private static var appVersion: String {
         return Bundle.main.shortVersionString() ?? Constants.unknownValue
@@ -84,6 +81,9 @@ protocol ZendeskUtilsDelegate {
     // MARK: - Show Zendesk Views
 
     func showHelpCenterIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
+
+        ZendeskUtils.configureViewController(controller)
+
         // Since user information is not needed to display the Help Center,
         // if a user identity has not been created, create an empty identity.
         if ZDKConfig.instance().userIdentity == nil {
@@ -102,11 +102,13 @@ protocol ZendeskUtilsDelegate {
         helpCenterContentModel.groupIds = [Constants.mobileCategoryID]
         helpCenterContentModel.labels = [Constants.articleLabel]
 
-        let presentInController = ZendeskUtils.configureViewController(controller)
-        ZDKHelpCenter.presentOverview(presentInController, with: helpCenterContentModel)
+        ZDKHelpCenter.presentOverview(ZendeskUtils.presentInController, with: helpCenterContentModel)
     }
 
     func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
+
+        ZendeskUtils.configureViewController(controller)
+
         ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
@@ -115,13 +117,15 @@ protocol ZendeskUtilsDelegate {
 
             self.sourceTag = sourceTag
 
-            let presentInController = ZendeskUtils.configureViewController(controller)
-            ZDKRequests.presentRequestCreation(with: presentInController)
+            ZDKRequests.presentRequestCreation(with: ZendeskUtils.presentInController)
             self.createRequest()
         }
     }
 
     func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
+
+        ZendeskUtils.configureViewController(controller)
+
         ZendeskUtils.createIdentity { success in
             guard success else {
                 // TODO: show error
@@ -130,20 +134,9 @@ protocol ZendeskUtilsDelegate {
 
             self.sourceTag = sourceTag
 
-            let presentInController = ZendeskUtils.configureViewController(controller)
-            ZDKRequests.presentRequestList(with: presentInController)
+            ZDKRequests.presentRequestList(with: ZendeskUtils.presentInController)
         }
     }
-
-    // MARK: - Manually entered user information
-
-    func createIdentityFor(email: String, name: String) {
-        userEmail = email
-        userName = name
-        ZendeskUtils.saveNoAccountProfileToUD()
-        ZendeskUtils.createZendeskIdentity()
-    }
-
 
     // MARK: - Device Registration
 
@@ -239,7 +232,7 @@ private extension ZendeskUtils {
          
          If the user is not logged in:
          1. Check if we’ve saved user information in User Defaults. If so, use that.
-         2. If not, we don't have any user information. Bail out.
+         2. If not, we don't have any user information. Prompt the user for it.
          */
 
         let context = ContextManager.sharedInstance().mainContext
@@ -277,10 +270,20 @@ private extension ZendeskUtils {
                 return
             }
 
-            // We have no user information period. Bail out.
-            DDLogInfo("No user information to create Zendesk identity with.")
-            ZendeskUtils.delegate?.userNotLoggedIn()
-            completion(false)
+            // We have no user information. Prompt user for it.
+            ZendeskUtils.promptUserForInformation { success in
+                guard success else {
+                    DDLogInfo("No user information to create Zendesk identity with.")
+                    completion(false)
+                    return
+                }
+
+                DDLogDebug("Using manually entered information for Zendesk identity.")
+                ZendeskUtils.saveNoAccountProfileToUD()
+                ZendeskUtils.createZendeskIdentity()
+                completion(true)
+                return
+            }
             return
         }
 
@@ -366,14 +369,14 @@ private extension ZendeskUtils {
         }
     }
 
-    static func configureViewController(_ controller: UIViewController) -> UIViewController {
+    static func configureViewController(_ controller: UIViewController) {
         // If the controller is a UIViewController, set the modal display for iPad.
         // If the controller is a UINavigationController, do nothing as the ZD views will inherit from that.
         if !controller.isKind(of: UINavigationController.self) && WPDeviceIdentification.isiPad() {
             controller.modalPresentationStyle = .formSheet
             controller.modalTransitionStyle = .crossDissolve
         }
-        return controller
+        ZendeskUtils.presentInController = controller
     }
 
     // MARK: - Get User Information
@@ -582,7 +585,98 @@ private extension ZendeskUtils {
         pushNotificationRead()
     }
 
-    // MARK: - Contants
+    // MARK: - User Information Prompt
+
+    static func promptUserForInformation(completion: @escaping (Bool) -> Void) {
+
+        let alertController = UIAlertController(title: nil,
+                                                message: nil,
+                                                preferredStyle: .alert)
+
+        alertController.setValue(NSAttributedString(string: LocalizedText.alertMessage, attributes: [.font: WPStyleGuide.subtitleFont()]),
+                                 forKey: "attributedMessage")
+
+        // Cancel Action
+        alertController.addCancelActionWithTitle(LocalizedText.alertCancel) { (_) in
+            completion(false)
+            return
+        }
+
+        // Done Action
+        let doneAction = alertController.addDefaultActionWithTitle(LocalizedText.alertDone) { [weak alertController] (_) in
+            guard let email = alertController?.textFields?.first?.text else {
+                completion(false)
+                return
+            }
+
+            ZendeskUtils.sharedInstance.userEmail = email
+            ZendeskUtils.sharedInstance.userName = alertController?.textFields?.last?.text ?? generateDisplayName(from: email)
+            completion(true)
+            return
+        }
+
+        // Disable Done until a valid Email is entered.
+        doneAction.isEnabled = false
+
+        // Email Text Field
+        alertController.addTextField(configurationHandler: { textField in
+            textField.clearButtonMode = .always
+            textField.placeholder = LocalizedText.emailPlaceholder
+
+            textField.addTarget(ZendeskUtils.self,
+                                action: #selector(emailTextFieldDidChange),
+                                for: UIControlEvents.editingChanged)
+        })
+
+        // Name Text Field
+        alertController.addTextField { textField in
+            textField.clearButtonMode = .always
+            textField.placeholder = LocalizedText.namePlaceholder
+        }
+
+        // Show alert
+        presentInController?.present(alertController, animated: true, completion: nil)
+    }
+
+    @objc static func emailTextFieldDidChange(_ textField: UITextField) {
+        guard let alertController = presentInController?.presentedViewController as? UIAlertController,
+            let email = alertController.textFields?.first?.text,
+            let doneAction = alertController.actions.last else {
+                return
+        }
+
+        doneAction.isEnabled = EmailFormatValidator.validate(string: email)
+        updateNameFieldForEmail(email)
+    }
+
+    static func updateNameFieldForEmail(_ email: String) {
+        guard let alertController = presentInController?.presentedViewController as? UIAlertController,
+            let nameField = alertController.textFields?.last else {
+                return
+        }
+
+        nameField.text = generateDisplayName(from: email)
+    }
+
+    static func generateDisplayName(from rawEmail: String) -> String {
+
+        // Generate Name, using the same format as Signup.
+
+        // step 1: lower case
+        let email = rawEmail.lowercased()
+        // step 2: remove the @ and everything after
+        let localPart = email.split(separator: "@")[0]
+        // step 3: remove all non-alpha characters
+        let localCleaned = localPart.replacingOccurrences(of: "[^A-Za-z/.]", with: "", options: .regularExpression)
+        // step 4: turn periods into spaces
+        let nameLowercased = localCleaned.replacingOccurrences(of: ".", with: " ")
+        // step 5: capitalize
+        let autoDisplayName = nameLowercased.capitalized
+
+        return autoDisplayName
+    }
+
+    // MARK: - Constants
 
     struct Constants {
         static let unknownValue = "unknown"
@@ -612,6 +706,14 @@ private extension ZendeskUtils {
         static let deviceFreeSpace: UInt64 = 360000089123
         static let networkInformation: UInt64 = 360000086966
         static let logs: UInt64 = 22871957
+    }
+
+    struct LocalizedText {
+        static let alertMessage = NSLocalizedString("To continue please enter your email address and name.", comment: "Instructions for alert asking for email and name.")
+        static let alertDone = NSLocalizedString("Done", comment: "Submit button on prompt for user information.")
+        static let alertCancel = NSLocalizedString("Cancel", comment: "Cancel prompt for user information.")
+        static let emailPlaceholder = NSLocalizedString("Email", comment: "Email address text field placeholder")
+        static let namePlaceholder = NSLocalizedString("Name", comment: "Name text field placeholder")
     }
 
 }
