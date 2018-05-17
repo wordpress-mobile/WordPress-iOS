@@ -13,6 +13,18 @@
     var isSelfHostedWithCredentials: Bool { get }
 }
 
+extension MediaCellProgressView: ActivityIndicatorType {
+    func startAnimating() {
+        isHidden = false
+        state = .indeterminate
+    }
+
+    func stopAnimating() {
+        isHidden = true
+        state = .stopped
+    }
+}
+
 /// Class used together with `CachedAnimatedImageView` to facilitate the loading of both
 /// still images and animated gifs.
 ///
@@ -23,10 +35,12 @@
     private var errorHandler: ((Error?) -> Void)?
     private var placeholder: UIImage?
 
-    @objc init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs) {
+    @objc init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs, loaderStyle: MediaCellProgressView.LoaderStyle = .white) {
         self.imageView = imageView
         imageView.gifStrategy = gifStrategy
         super.init()
+        let loadingView = MediaCellProgressView(style: loaderStyle, animationSpeed: 0.7)
+        imageView.addLoadingIndicator(loadingView, style: .fullView)
     }
 
     /// Removes the gif animation and prevents it from animate again.
