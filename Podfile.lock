@@ -175,7 +175,7 @@ DEPENDENCIES:
   - ZendeskSDK (= 1.11.2.1)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - 1PasswordExtension
     - AFNetworking
     - Alamofire
@@ -274,4 +274,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 2395b82e93e6acd063655260daafff664f577084
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.2
