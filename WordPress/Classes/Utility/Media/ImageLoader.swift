@@ -170,10 +170,8 @@
     private func downloadGif(from request: URLRequest) {
         imageView.startLoadingAnimation()
         imageView.setAnimatedImage(request, placeholderImage: placeholder, success: { [weak self] in
-            self?.imageView.stopLoadingAnimation()
             self?.callSuccessHandler()
         }) { [weak self] (error) in
-            self?.imageView.stopLoadingAnimation()
             self?.callErrorHandler(with: error)
         }
     }
