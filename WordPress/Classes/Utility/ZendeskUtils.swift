@@ -42,6 +42,7 @@ extension NSNotification.Name {
     private static var zdClientId: String?
 
     private static var presentInController: UIViewController?
+    private var usingAnonymousIDForHelpCenter = false
 
     private static var appVersion: String {
         return Bundle.main.shortVersionString() ?? Constants.unknownValue
@@ -89,6 +90,9 @@ extension NSNotification.Name {
         if ZDKConfig.instance().userIdentity == nil {
             let zendeskIdentity = ZDKAnonymousIdentity()
             ZDKConfig.instance().userIdentity = zendeskIdentity
+            ZendeskUtils.sharedInstance.usingAnonymousIDForHelpCenter = true
+        } else {
+            ZendeskUtils.sharedInstance.usingAnonymousIDForHelpCenter = false
         }
 
         self.sourceTag = sourceTag
@@ -101,6 +105,10 @@ extension NSNotification.Name {
         helpCenterContentModel.groupType = .category
         helpCenterContentModel.groupIds = [Constants.mobileCategoryID]
         helpCenterContentModel.labels = [Constants.articleLabel]
+
+        // Set the ability to 'Contact Us' from the Help Center according to usingAnonymousIDForHelpCenter.
+        ZDKHelpCenter.setUIDelegate(ZendeskUtils.sharedInstance)
+        _ = ZendeskUtils.sharedInstance.active()
 
         ZDKHelpCenter.presentOverview(ZendeskUtils.presentInController, with: helpCenterContentModel)
     }
@@ -714,6 +722,31 @@ private extension ZendeskUtils {
         static let alertCancel = NSLocalizedString("Cancel", comment: "Cancel prompt for user information.")
         static let emailPlaceholder = NSLocalizedString("Email", comment: "Email address text field placeholder")
         static let namePlaceholder = NSLocalizedString("Name", comment: "Name text field placeholder")
+    }
+
+}
+
+// MARK: - ZDKHelpCenterConversationsUIDelegate
+
+extension ZendeskUtils: ZDKHelpCenterConversationsUIDelegate {
+
+    func navBarConversationsUIType() -> ZDKNavBarConversationsUIType {
+        // When ZDKContactUsVisibility is on, use the default right nav bar label.
+        return .localizedLabel
+    }
+
+    func active() -> ZDKContactUsVisibility {
+        // If the user is not logged in, disable 'Contact Us' via the Help Center and Article view.
+        if ZendeskUtils.sharedInstance.usingAnonymousIDForHelpCenter {
+            return .off
+        }
+
+        return .articleListAndArticle
+    }
+
+    func conversationsBarButtonImage() -> UIImage! {
+        // Nothing to do here, but this method is required for ZDKHelpCenterConversationsUIDelegate.
+        return UIImage()
     }
 
 }
