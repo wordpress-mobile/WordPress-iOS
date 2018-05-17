@@ -1,3 +1,4 @@
+/// Action commands in Reader cells
 final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     private let context: NSManagedObjectContext
     private weak var origin: UIViewController?
