@@ -254,7 +254,7 @@ private extension SupportTableViewController {
         static let extraDebug = NSLocalizedString("Extra Debug", comment: "Option in Support view to enable/disable adding extra information to support ticket.")
         static let activityLogs = NSLocalizedString("Activity Logs", comment: "Option in Support view to see activity logs.")
         static let informationFooter = NSLocalizedString("The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app.", comment: "Support screen footer text explaining the Extra Debug feature.")
-        static let alertMessage = NSLocalizedString("To continue please enter your email address and name.", comment: "XXX")
+        static let alertMessage = NSLocalizedString("To continue please enter your email address and name.", comment: "Instructions for alert asking for email and name.")
         static let alertDone = NSLocalizedString("Done", comment: "Submit button on prompt for user information.")
         static let alertCancel = NSLocalizedString("Cancel", comment: "Cancel prompt for user information.")
         static let emailPlaceholder = NSLocalizedString("Email", comment: "Email address text field placeholder")
@@ -281,10 +281,12 @@ private extension SupportTableViewController {
 private extension SupportTableViewController {
 
     func promptUserForInformation() {
-
         let alertController = UIAlertController(title: nil,
-                                                message: LocalizedText.alertMessage,
+                                                message: nil,
                                                 preferredStyle: .alert)
+
+        alertController.setValue(NSAttributedString(string: LocalizedText.alertMessage, attributes: [.font: WPStyleGuide.subtitleFont()]),
+                                 forKey: "attributedMessage")
 
         // Cancel Action
         alertController.addCancelActionWithTitle(LocalizedText.alertCancel)
