@@ -1,16 +1,12 @@
 import Gridicons
 
 /// Encapsulates creating of a ReaderMenuItem for Bookmarks / Saved for Later
-final class SavedForLaterMenuItemCreator: ReaderMenuItemCreator {
-    func supports(_ topic: ReaderAbstractTopic) -> Bool {
-        return ReaderHelpers.topicIsSavedForLater(topic)
-    }
-
-    func menuItem(with topic: ReaderAbstractTopic) -> ReaderMenuItem {
-        var item = ReaderMenuItem(title: topic.title,
-                                  type: .topic,
-                                  icon: Gridicon.iconOfType(.bookmark),
-                                  topic: topic)
+final class SavedForLaterMenuItemCreator {
+    func menuItem() -> ReaderMenuItem {
+        let title = NSLocalizedString("Saved Posts", comment: "Title of the reader's Saved Posts menu item.")
+        var item = ReaderMenuItem(title: title,
+                                  type: .savedPosts)
+        item.icon = Gridicon.iconOfType(.bookmark)
         item.order = ReaderDefaultMenuItemOrder.savedForLater.rawValue
 
         return item
