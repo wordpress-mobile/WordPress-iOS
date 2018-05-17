@@ -653,52 +653,6 @@ import WordPressFlux
         return [key: title]
     }
 
-
-    /// Shares a post from the share controller.
-    ///
-    /// - Parameters:
-    ///     - postID: Object ID for the post.
-    ///     - fromView: The view to present the sharing controller as a popover.
-    ///
-    fileprivate func sharePost(_ post: ReaderPost, fromView anchorView: UIView) {
-        ShareAction().execute(with: post, context: managedObjectContext(), anchor: anchorView, vc: self)
-    }
-
-    fileprivate func toggleFollowingForPost(_ post: ReaderPost) {
-        let siteTitle = post.blogNameForDisplay()
-        let siteID = post.siteID
-        let toFollow = !post.isFollowing
-
-        FollowAction().execute(with: post, context: managedObjectContext()) { [weak self] in
-            self?.syncHelper.syncContent()
-            self?.updateStreamHeaderIfNeeded()
-            if toFollow {
-                self?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
-            }
-        }
-    }
-
-    fileprivate func toggleSavedForLater(for post: ReaderPost) {
-        SaveForLaterAction(visibleConfirmation: true).execute(with: post, context: managedObjectContext(), completion: {})
-    }
-
-    fileprivate func visitSiteForPost(_ post: ReaderPost) {
-        VisitSiteAction().execute(with: post, context: ContextManager.sharedInstance().mainContext, origin: self)
-    }
-
-
-    /// Shows the attribution for a Discover post.
-    ///
-    fileprivate func showAttributionForPost(_ post: ReaderPost) {
-        ShowAttributionAction().execute(with: post, context: managedObjectContext(), origin: self)
-    }
-
-
-    fileprivate func toggleLikeForPost(_ post: ReaderPost) {
-        LikeAction().execute(with: post, context: managedObjectContext())
-    }
-
-
     /// The fetch request can need a different predicate depending on how the content
     /// being displayed has changed (blocking sites for instance).  Call this method to
     /// update the fetch request predicate and then perform a new fetch.
@@ -707,13 +661,6 @@ import WordPressFlux
         assert(Thread.isMainThread, "ReaderStreamViewController Error: updating fetch request on a background thread.")
 
         content.updateAndPerformFetchRequest(predicate: predicateForFetchRequest())
-
-//        tableViewHandler.resultsController.fetchRequest.predicate = predicateForFetchRequest()
-//        do {
-//            try tableViewHandler.resultsController.performFetch()
-//        } catch let error as NSError {
-//            DDLogError("Error fetching posts after updating the fetch reqeust predicate: \(error.localizedDescription)")
-//        }
     }
 
 
