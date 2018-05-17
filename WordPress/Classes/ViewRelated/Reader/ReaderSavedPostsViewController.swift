@@ -2,7 +2,7 @@ import UIKit
 import WordPressShared
 import WordPressUI
 
-@objc class ReaderSavedPostsViewController: UITableViewController {
+final class ReaderSavedPostsViewController: UITableViewController {
     private enum Strings {
         static let title = NSLocalizedString("Saved Posts", comment: "Title for list of posts saved for later")
     }
@@ -11,9 +11,13 @@ import WordPressUI
     fileprivate let heightForFooterView = CGFloat(34.0)
     fileprivate let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
 
+    /// Content management
     private let content = ReaderTableContent()
+    /// Configuration of table view and registration of cells
     private let tableConfiguration = ReaderTableConfiguration()
+    /// Configuration of cells
     private let cellConfiguration = ReaderCellConfiguration()
+    /// Actions
     private var postCellActions: ReaderPostCellActions?
 
     fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
