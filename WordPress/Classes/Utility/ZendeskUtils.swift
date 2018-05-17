@@ -21,7 +21,12 @@ extension NSNotification.Name {
     private override init() {}
 
     static var zendeskEnabled = false
-    @objc static var showSupportNotificationIndicator = false
+
+    @objc static var showSupportNotificationIndicator: Bool {
+        return unreadNotificationsCount > 0
+    }
+
+    @objc static var unreadNotificationsCount = 0
 
     private var sourceTag: WordPressSupportSourceTag?
 
@@ -61,6 +66,14 @@ extension NSNotification.Name {
         // User has accessed a single ticket view, typically via the Zendesk Push Notification alert.
         // In this case, we'll clear the Push Notification indicators.
         NotificationCenter.default.addObserver(self, selector: #selector(ZendeskUtils.ticketViewed(_:)), name: NSNotification.Name(rawValue: ZDKAPI_CommentListStarting), object: nil)
+
+        // Get unread notification count from User Defaults.
+        unreadNotificationsCount = UserDefaults.standard.integer(forKey: Constants.userDefaultsZendeskUnreadNotifications)
+
+        //If there are any, post NSNotification so the unread indicators are displayed.
+        if unreadNotificationsCount > 0 {
+            postNotificationReceived()
+        }
     }
 
     // MARK: - Show Zendesk Views
@@ -153,26 +166,18 @@ extension NSNotification.Name {
     }
 
     static func pushNotificationReceived() {
-        ZendeskUtils.showSupportNotificationIndicator = true
-
-        // Updating unread indicators should trigger UI updates, so send notification in main thread.
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .ZendeskPushNotificationReceivedNotification, object: nil)
-        }
+        unreadNotificationsCount += 1
+        saveUnreadCountToUD()
+        postNotificationReceived()
     }
 
     static func pushNotificationRead() {
-        ZendeskUtils.showSupportNotificationIndicator = false
-
-        // Updating unread indicators should trigger UI updates, so send notification in main thread.
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .ZendeskPushNotificationClearedNotification, object: nil)
-        }
+        UIApplication.shared.applicationIconBadgeNumber -= unreadNotificationsCount
+        unreadNotificationsCount = 0
+        saveUnreadCountToUD()
+        postNotificationRead()
     }
 
-    @objc static func ticketViewed(_ notification: Foundation.Notification) {
-        pushNotificationRead()
-    }
     // MARK: - Helpers
 
     // Specifically for WPError, which is ObjC & has the sourceTag as a String.
@@ -412,6 +417,11 @@ private extension ZendeskUtils {
         UserDefaults.standard.synchronize()
     }
 
+    static func saveUnreadCountToUD() {
+        UserDefaults.standard.set(unreadNotificationsCount, forKey: Constants.userDefaultsZendeskUnreadNotifications)
+        UserDefaults.standard.synchronize()
+    }
+
     // MARK: - Data Helpers
 
     static func getDeviceFreeSpace() -> String {
@@ -510,6 +520,26 @@ private extension ZendeskUtils {
         return networkInformation.joined(separator: "\n")
     }
 
+    // MARK: - NSNotification Helpers
+
+    static func postNotificationReceived() {
+        // Updating unread indicators should trigger UI updates, so send notification in main thread.
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .ZendeskPushNotificationReceivedNotification, object: nil)
+        }
+    }
+
+    static func postNotificationRead() {
+        // Updating unread indicators should trigger UI updates, so send notification in main thread.
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .ZendeskPushNotificationClearedNotification, object: nil)
+        }
+    }
+
+    @objc static func ticketViewed(_ notification: Foundation.Notification) {
+        pushNotificationRead()
+    }
+
     // MARK: - Contants
 
     struct Constants {
@@ -529,6 +559,7 @@ private extension ZendeskUtils {
         static let zendeskProfileUDKey = "wp_zendesk_profile"
         static let profileEmailKey = "email"
         static let profileNameKey = "name"
+        static let userDefaultsZendeskUnreadNotifications = "wp_zendesk_unread_notifications"
     }
 
     struct TicketFieldIDs {

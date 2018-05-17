@@ -234,6 +234,11 @@ extension PushNotificationsManager {
         }
 
         WPAnalytics.track(.supportReceivedResponseFromSupport)
+
+        if applicationState == .background {
+            WPTabBarController.sharedInstance().showMeTab()
+        }
+
         completionHandler?(.newData)
 
         return true
