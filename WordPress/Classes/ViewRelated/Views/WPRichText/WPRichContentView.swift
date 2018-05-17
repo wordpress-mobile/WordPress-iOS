@@ -30,16 +30,6 @@ class WPRichContentView: UITextView {
         return WPTextAttachmentManager(textView: self, delegate: self)
     }()
 
-    /// Used to load images for attachments.
-    ///
-    @objc lazy var imageSource: WPTableImageSource = {
-        let source = WPTableImageSource(maxSize: self.maxDisplaySize)
-        source?.delegate = self
-        source?.forceLargerSizeWhenFetching = false
-        source?.photonQuality = Constants.photonQuality
-        return source!
-    }()
-
     /// The maximum size for images.
     ///
     @objc lazy var maxDisplaySize: CGSize = {
@@ -268,14 +258,23 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
         img.contentURL = url
         img.linkURL = linkURLForImageAttachment(attachment)
 
-        if let cachedImage = imageSource.image(for: url, with: maxDisplaySize) {
-            img.imageView.image = cachedImage
-            attachment.maxSize = cachedImage.size
-        } else {
-            let index = mediaArray.count
-            let indexPath = IndexPath(row: index, section: 1)
-            imageSource.fetchImage(for: url, with: maxDisplaySize, indexPath: indexPath, isPrivate: isPrivate)
-        }
+        let contentInformation = ContentInformation(isPrivateOnWPCom: isPrivate, isSelfHostedWithCredentials: false)
+        let index = mediaArray.count
+        let indexPath = IndexPath(row: index, section: 1)
+        DDLogDebug("🐶 Started loading reader detail image at url: \(url) and indexPath: \(indexPath)")
+        img.loadImage(from: contentInformation, preferedSize: maxDisplaySize, indexPath: indexPath, onSuccess: { [weak self] indexPath in
+            guard let richMedia = self?.mediaArray[indexPath.row] else {
+                return
+            }
+
+            richMedia.attachment.maxSize = img.contentSize()
+            richMedia.image.imageView.stopAnimatingGIF() // Don't let the GIFs animate immediately.
+            self?.layoutAttachmentViews()
+            DDLogDebug("🖼 Finished loading reader detail image at url: \(url) and indexPath: \(indexPath)")
+        }, onError: { (indexPath, error) in
+            DDLogDebug("⚠️ Error loading reader detail image at url: \(url) and indexPath: \(indexPath)")
+            DDLogError("\(String(describing: error))")
+        })
 
         let media = RichMedia(image: img, attachment: attachment)
         mediaArray.append(media)
@@ -348,10 +347,15 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     ///     - sender: The WPRichTextImage that was tapped.
     ///
     @objc func handleImageTapped(_ sender: WPRichTextImage) {
-        guard let delegate = delegate else {
+        guard (sender.contentURL?.isGif == true && sender.imageView.isAnimatingGIF == true) || sender.contentURL?.isGif == false else {
+            // If the tapped image is a gif AND is NOT animating...start it up on the first tap
+            sender.imageView.startAnimatingGIF()
             return
         }
 
+        guard let delegate = delegate else {
+            return
+        }
         if let url = sender.linkURL,
             let range = attachmentRangeForRichTextImage(sender) {
 
@@ -367,28 +371,19 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
 }
 
 
-extension WPRichContentView: WPTableImageSourceDelegate {
-
-    func tableImageSource(_ tableImageSource: WPTableImageSource!, imageReady image: UIImage!, for indexPath: IndexPath!) {
-        let richMedia = mediaArray[indexPath.row]
-
-        richMedia.image.imageView.image = image
-        richMedia.attachment.maxSize = image.size
-
-        layoutAttachmentViews()
-    }
-
-    func tableImageSource(_ tableImageSource: WPTableImageSource!, imageFailedforIndexPath indexPath: IndexPath!, error: Error!) {
-        let richMedia = mediaArray[indexPath.row]
-        DDLogError("Error loading image: \(richMedia.attachment.src)")
-        DDLogError("\(error)")
-    }
-}
-
-
 /// A simple struct used to keep references to a rich text image and its associated attachment.
 ///
 struct RichMedia {
     let image: WPRichTextImage
     let attachment: WPTextAttachment
+}
+
+class ContentInformation: ImageSourceInformation {
+    var isPrivateOnWPCom: Bool
+    var isSelfHostedWithCredentials: Bool
+
+    init(isPrivateOnWPCom: Bool, isSelfHostedWithCredentials: Bool) {
+        self.isPrivateOnWPCom = isPrivateOnWPCom
+        self.isSelfHostedWithCredentials = isSelfHostedWithCredentials
+    }
 }

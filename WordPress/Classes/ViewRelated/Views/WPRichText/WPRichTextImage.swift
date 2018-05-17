@@ -6,7 +6,12 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
 
     var contentURL: URL?
     var linkURL: URL?
-    @objc fileprivate(set) var imageView: UIImageView
+
+    @objc fileprivate(set) var imageView: CachedAnimatedImageView
+
+    fileprivate lazy var imageLoader: ImageLoader = {
+        return ImageLoader(imageView: imageView, gifStrategy: .mediumGIFs)
+    }()
 
     override open var frame: CGRect {
         didSet {
@@ -22,9 +27,10 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
     // MARK: Lifecycle
 
     override init(frame: CGRect) {
-        imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
+        imageView = CachedAnimatedImageView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
         imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         imageView.contentMode = .scaleAspectFit
+        imageView.disableLoadingIndicator = true // Since we auto-expand images as they are loaded, the indicator is not used in this context.
 
         super.init(frame: frame)
 
@@ -32,7 +38,7 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
     }
 
     required public init?(coder aDecoder: NSCoder) {
-        imageView = aDecoder.decodeObject(forKey: UIImage.classNameWithoutNamespaces()) as! UIImageView
+        imageView = aDecoder.decodeObject(forKey: UIImage.classNameWithoutNamespaces()) as! CachedAnimatedImageView
         contentURL = aDecoder.decodeObject(forKey: "contentURL") as! URL?
         linkURL = aDecoder.decodeObject(forKey: "linkURL") as! URL?
 
@@ -56,18 +62,42 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
 
     // MARK: Public Methods
 
-    func contentSize() -> CGSize {
-        if let size = imageView.image?.size {
-            return size
+    /// Load an image with the already-set contentURL property. Supports animated images (gifs) as well.
+    ///
+    /// - Parameters:
+    ///   - contentInformation: The corresponding ImageSourceInformation for the contentURL
+    ///   - preferedSize: The prefered size of the image to load.
+    ///   - indexPath: The IndexPath where this view is located — returned as a param in success and error blocks.
+    ///   - onSuccess: A closure to be called if the image was loaded successfully.
+    ///   - onError: A closure to be called if there was an error loading the image.
+    func loadImage(from contentInformation: ImageSourceInformation,
+                   preferedSize size: CGSize = .zero,
+                   indexPath: IndexPath,
+                   onSuccess: ((IndexPath) -> Void)?,
+                   onError: ((IndexPath, Error?) -> Void)?) {
+        guard let contentURL = self.contentURL else {
+            onError?(indexPath, nil)
+            return
         }
-        return CGSize(width: 1.0, height: 1.0)
+
+        imageLoader.loadImage(with: contentURL, from: contentInformation, preferedSize: size, placeholder: nil, success: {
+            onSuccess?(indexPath)
+        }) { error in
+            onError?(indexPath, error)
+        }
+    }
+
+    func contentSize() -> CGSize {
+        guard imageView.intrinsicContentSize != .zero else {
+            return CGSize(width: 1.0, height: 1.0)
+        }
+        return imageView.intrinsicContentSize
     }
 
     func contentRatio() -> CGFloat {
-        if let size = imageView.image?.size {
-            return size.width / size.height
+        guard imageView.intrinsicContentSize != .zero else {
+            return 0.0
         }
-        return 0.0
+        return imageView.intrinsicContentSize.width / imageView.intrinsicContentSize.height
     }
-
 }
