@@ -97,7 +97,7 @@ final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     }
 
     fileprivate func toggleSavedForLater(for post: ReaderPost) {
-        SaveForLaterAction(visibleConfirmation: visibleConfirmation).execute(with: post, context: context)
+        ReaderSaveForLaterAction(visibleConfirmation: visibleConfirmation).execute(with: post, context: context)
     }
 
     fileprivate func visitSiteForPost(_ post: ReaderPost) {
