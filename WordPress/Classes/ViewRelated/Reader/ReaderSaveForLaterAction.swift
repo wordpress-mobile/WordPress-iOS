@@ -1,7 +1,7 @@
 import WordPressFlux
 
 /// Encapsulates saving a post for later
-final class SaveForLaterAction {
+final class ReaderSaveForLaterAction {
     private enum Strings {
         static let postSaved = NSLocalizedString("Post saved.", comment: "Title of the notification presented in Reader when a post is saved for later")
         static let postRemoved = NSLocalizedString("Post removed.", comment: "Title of the notification presented in Reader when a post is removed from save for later")
