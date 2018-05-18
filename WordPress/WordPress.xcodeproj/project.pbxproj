@@ -861,7 +861,7 @@
 		D8212CB720AA7703008E8AE8 /* ReaderShareAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CB620AA7703008E8AE8 /* ReaderShareAction.swift */; };
 		D8212CB920AA77AD008E8AE8 /* ReaderActionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CB820AA77AD008E8AE8 /* ReaderActionHelpers.swift */; };
 		D8212CBD20AA7A7A008E8AE8 /* ReaderVisitSiteAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CBC20AA7A7A008E8AE8 /* ReaderVisitSiteAction.swift */; };
-		D8212CBF20AA7B7F008E8AE8 /* ShowAttributionAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CBE20AA7B7F008E8AE8 /* ShowAttributionAction.swift */; };
+		D8212CBF20AA7B7F008E8AE8 /* ReaderShowAttributionAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CBE20AA7B7F008E8AE8 /* ReaderShowAttributionAction.swift */; };
 		D8212CC120AA7C58008E8AE8 /* ShowMenuAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CC020AA7C58008E8AE8 /* ShowMenuAction.swift */; };
 		D8212CC320AA7F57008E8AE8 /* BlockSiteAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CC220AA7F57008E8AE8 /* BlockSiteAction.swift */; };
 		D8212CC520AA83F9008E8AE8 /* CommentAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CC420AA83F9008E8AE8 /* CommentAction.swift */; };
@@ -2397,7 +2397,7 @@
 		D8212CB620AA7703008E8AE8 /* ReaderShareAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderShareAction.swift; sourceTree = "<group>"; };
 		D8212CB820AA77AD008E8AE8 /* ReaderActionHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderActionHelpers.swift; sourceTree = "<group>"; };
 		D8212CBC20AA7A7A008E8AE8 /* ReaderVisitSiteAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderVisitSiteAction.swift; sourceTree = "<group>"; };
-		D8212CBE20AA7B7F008E8AE8 /* ShowAttributionAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowAttributionAction.swift; sourceTree = "<group>"; };
+		D8212CBE20AA7B7F008E8AE8 /* ReaderShowAttributionAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderShowAttributionAction.swift; sourceTree = "<group>"; };
 		D8212CC020AA7C58008E8AE8 /* ShowMenuAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowMenuAction.swift; sourceTree = "<group>"; };
 		D8212CC220AA7F57008E8AE8 /* BlockSiteAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockSiteAction.swift; sourceTree = "<group>"; };
 		D8212CC420AA83F9008E8AE8 /* CommentAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentAction.swift; sourceTree = "<group>"; };
@@ -5571,7 +5571,7 @@
 				D8212CB620AA7703008E8AE8 /* ReaderShareAction.swift */,
 				D8212CB820AA77AD008E8AE8 /* ReaderActionHelpers.swift */,
 				D8212CBC20AA7A7A008E8AE8 /* ReaderVisitSiteAction.swift */,
-				D8212CBE20AA7B7F008E8AE8 /* ShowAttributionAction.swift */,
+				D8212CBE20AA7B7F008E8AE8 /* ReaderShowAttributionAction.swift */,
 				D8212CC020AA7C58008E8AE8 /* ShowMenuAction.swift */,
 				D8212CC220AA7F57008E8AE8 /* BlockSiteAction.swift */,
 				D8212CC420AA83F9008E8AE8 /* CommentAction.swift */,
@@ -7131,7 +7131,7 @@
 				D8160442209C1B0F00ABAFFA /* ReaderSaveForLaterAction.swift in Sources */,
 				E68580F61E0D91470090EE63 /* WPHorizontalRuleAttachment.swift in Sources */,
 				E12FE0741FA0CEE000F28710 /* ImmuTable+Optional.swift in Sources */,
-				D8212CBF20AA7B7F008E8AE8 /* ShowAttributionAction.swift in Sources */,
+				D8212CBF20AA7B7F008E8AE8 /* ReaderShowAttributionAction.swift in Sources */,
 				C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */,
 				E15644F11CE0E56600D96E64 /* FeatureItemCell.swift in Sources */,
 				E62AFB6B1DC8E593007484FC /* WPRichContentView.swift in Sources */,

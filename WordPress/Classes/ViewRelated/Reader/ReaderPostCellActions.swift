@@ -111,7 +111,7 @@ final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         guard let origin = origin else {
             return
         }
-        ShowAttributionAction().execute(with: post, context: context, origin: origin)
+        ReaderShowAttributionAction().execute(with: post, context: context, origin: origin)
     }
 
 
