@@ -22,7 +22,7 @@ enum FeatureFlag: Int {
         case .usernameChanging:
             return BuildConfiguration.current == .localDeveloper
         case .zendeskMobile:
-            return BuildConfiguration.current == .localDeveloper
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .saveForLater:
             return false
         case .primeForPush:
