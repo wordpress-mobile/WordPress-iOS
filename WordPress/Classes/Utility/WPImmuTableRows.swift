@@ -277,13 +277,22 @@ struct SwitchRow: ImmuTableRow {
 
     let title: String
     let value: Bool
+    let icon: UIImage?
     let action: ImmuTableAction? = nil
     let onChange: (Bool) -> Void
+
+    init(title: String, value: Bool, icon: UIImage? = nil, onChange: @escaping (Bool) -> Void) {
+        self.title = title
+        self.value = value
+        self.icon = icon
+        self.onChange = onChange
+    }
 
     func configureCell(_ cell: UITableViewCell) {
         let cell = cell as! SwitchTableViewCell
 
         cell.textLabel?.text = title
+        cell.imageView?.image = icon
         cell.selectionStyle = .none
         cell.on = value
         cell.onChange = onChange

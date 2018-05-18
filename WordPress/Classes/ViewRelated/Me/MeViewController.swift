@@ -72,10 +72,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         refreshAccountDetails()
 
-        if FeatureFlag.zendeskMobile.enabled {
-            resetApplicationBadge()
-            startListeningToNotifications()
-        } else {
+        if !FeatureFlag.zendeskMobile.enabled {
             HelpshiftUtils.refreshUnreadNotificationCount()
         }
 
@@ -88,10 +85,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         super.viewDidAppear(animated)
 
         registerUserActivity()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        stopListeningToNotifications()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -578,29 +571,5 @@ private extension MeViewController {
 
     @objc func refreshModelWithNotification(_ notification: Foundation.Notification) {
         reloadViewModel()
-    }
-
-    func resetApplicationBadge() {
-        UIApplication.shared.applicationIconBadgeNumber = 0
-    }
-
-    func startListeningToNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(applicationDidBecomeActive),
-                                               name: NSNotification.Name.UIApplicationDidBecomeActive,
-                                               object: nil)
-    }
-
-    @objc func applicationDidBecomeActive(_ note: Foundation.Notification) {
-        // Let's reset the badge, whenever the app comes back to FG, and this view was upfront!
-        guard isViewLoaded == true && view.window != nil else {
-            return
-        }
-
-        resetApplicationBadge()
-    }
-
-    func stopListeningToNotifications() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
     }
 }

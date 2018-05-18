@@ -28,22 +28,12 @@ import WordPressShared
     fileprivate var restorableSelectedIndexPath: IndexPath?
 
     @objc lazy var viewModel: ReaderMenuViewModel = {
-        let sectionCreators: [ReaderMenuItemCreator]
-
-        if FeatureFlag.saveForLater.enabled {
-            sectionCreators = [
-                FollowingMenuItemCreator(),
-                DiscoverMenuItemCreator(),
-                LikedMenuItemCreator(),
-                SavedForLaterMenuItemCreator()
-            ]
-        } else {
-            sectionCreators = [
+        let sectionCreators: [ReaderMenuItemCreator] = [
             FollowingMenuItemCreator(),
             DiscoverMenuItemCreator(),
             LikedMenuItemCreator()
-            ]
-        }
+        ]
+
         let vm = ReaderMenuViewModel(sectionCreators: sectionCreators)
         vm.delegate = self
         return vm
@@ -332,6 +322,10 @@ import WordPressShared
         return ReaderSearchViewController.controller()
     }
 
+    fileprivate func viewControllerForSavedPosts() -> ReaderSavedPostsViewController {
+        return ReaderSavedPostsViewController()
+    }
+
     /// Presents a new view controller for subscribing to a new tag.
     ///
     @objc func showAddTag() {
@@ -520,6 +514,11 @@ import WordPressShared
         if menuItem.type == .search {
             currentReaderStream = nil
             return viewControllerForSearch()
+        }
+
+        if menuItem.type == .savedPosts {
+            currentReaderStream = nil
+            return viewControllerForSavedPosts()
         }
 
         return nil
