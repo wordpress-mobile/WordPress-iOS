@@ -1,7 +1,8 @@
 #import "WordPressComOAuthClientFacade.h"
-#import <WordPressKit/WordPressKit.h>
-#import <WordPressKit/WordPressKit-Swift.h>
 #import <WordPressAuthenticator/WordPressAuthenticator-Swift.h>
+
+@import WordPressKit;
+
 
 
 @interface WordPressComOAuthClientFacade ()
