@@ -118,7 +118,13 @@ class NotificationSettingDetailsViewController: UITableViewController {
     }
 
     @IBAction func reloadTable() {
-        sections = isDeviceStreamDisabled() ? sectionsForDisabledDeviceStream() : sectionsForSettings(settings!, stream: stream!)
+        if isDeviceStreamDisabled() {
+            sections = sectionsForDisabledDeviceStream()
+        } else if isDeviceStreamUnknown() {
+            sections = sectionsForUnkownDeviceStream()
+        } else {
+            sections = sectionsForSettings(settings!, stream: stream!)
+        }
         tableView.reloadData()
     }
 
@@ -165,6 +171,17 @@ class NotificationSettingDetailsViewController: UITableViewController {
         let footerText      = NSLocalizedString("Push Notifications have been turned off in iOS Settings App. " +
                                                 "Toggle \"Allow Notifications\" to turn them back on.",
                                                 comment: "Suggests to enable Push Notification Settings in Settings.app")
+        let section         = Section(rows: [row], footerText: footerText)
+
+        return [section]
+    }
+
+    private func sectionsForUnkownDeviceStream() -> [Section] {
+        let description     = NSLocalizedString("Allow push notifications", comment: "Shown to the user in settings when they haven't yet allowed or denied push notifications")
+        let row             = Row(kind: .Text, description: description, key: nil, value: nil)
+
+        let footerText      = NSLocalizedString("Allow WordPress to send you push notifications",
+                                                comment: "Suggests the user allow push notifications. Appears within app settings.")
         let section         = Section(rows: [row], footerText: footerText)
 
         return [section]
@@ -219,6 +236,8 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
         if isDeviceStreamDisabled() {
             openApplicationSettings()
+        } else if isDeviceStreamUnknown() {
+            // TODO: show notification request
         }
     }
 
@@ -243,6 +262,10 @@ class NotificationSettingDetailsViewController: UITableViewController {
     // MARK: - Disabled Push Notifications Handling
     private func isDeviceStreamDisabled() -> Bool {
         return stream?.kind == .Device && pushNotificationsAuthorized == .denied
+    }
+
+    private func isDeviceStreamUnknown() -> Bool {
+        return stream?.kind == .Device && pushNotificationsAuthorized == .notDetermined
     }
 
     private func openApplicationSettings() {
