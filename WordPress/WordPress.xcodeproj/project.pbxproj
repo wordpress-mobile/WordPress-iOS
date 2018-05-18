@@ -864,9 +864,9 @@
 		D8212CBF20AA7B7F008E8AE8 /* ReaderShowAttributionAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CBE20AA7B7F008E8AE8 /* ReaderShowAttributionAction.swift */; };
 		D8212CC120AA7C58008E8AE8 /* ReaderShowMenuAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CC020AA7C58008E8AE8 /* ReaderShowMenuAction.swift */; };
 		D8212CC320AA7F57008E8AE8 /* ReaderBlockSiteAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CC220AA7F57008E8AE8 /* ReaderBlockSiteAction.swift */; };
-		D8212CC520AA83F9008E8AE8 /* CommentAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CC420AA83F9008E8AE8 /* CommentAction.swift */; };
-		D8212CC720AA85C1008E8AE8 /* HeaderAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CC620AA85C1008E8AE8 /* HeaderAction.swift */; };
-		D8212CC920AA87E5008E8AE8 /* MenuAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CC820AA87E5008E8AE8 /* MenuAction.swift */; };
+		D8212CC520AA83F9008E8AE8 /* ReaderCommentAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CC420AA83F9008E8AE8 /* ReaderCommentAction.swift */; };
+		D8212CC720AA85C1008E8AE8 /* ReaderHeaderAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CC620AA85C1008E8AE8 /* ReaderHeaderAction.swift */; };
+		D8212CC920AA87E5008E8AE8 /* ReaderMenuAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CC820AA87E5008E8AE8 /* ReaderMenuAction.swift */; };
 		D83CA3A520842CAF0060E310 /* Pageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A420842CAF0060E310 /* Pageable.swift */; };
 		D83CA3A720842CD90060E310 /* ResultsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A620842CD90060E310 /* ResultsPage.swift */; };
 		D83CA3A920842D190060E310 /* StockPhotosPageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A820842D190060E310 /* StockPhotosPageable.swift */; };
@@ -2400,9 +2400,9 @@
 		D8212CBE20AA7B7F008E8AE8 /* ReaderShowAttributionAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderShowAttributionAction.swift; sourceTree = "<group>"; };
 		D8212CC020AA7C58008E8AE8 /* ReaderShowMenuAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderShowMenuAction.swift; sourceTree = "<group>"; };
 		D8212CC220AA7F57008E8AE8 /* ReaderBlockSiteAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderBlockSiteAction.swift; sourceTree = "<group>"; };
-		D8212CC420AA83F9008E8AE8 /* CommentAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentAction.swift; sourceTree = "<group>"; };
-		D8212CC620AA85C1008E8AE8 /* HeaderAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderAction.swift; sourceTree = "<group>"; };
-		D8212CC820AA87E5008E8AE8 /* MenuAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuAction.swift; sourceTree = "<group>"; };
+		D8212CC420AA83F9008E8AE8 /* ReaderCommentAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCommentAction.swift; sourceTree = "<group>"; };
+		D8212CC620AA85C1008E8AE8 /* ReaderHeaderAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderHeaderAction.swift; sourceTree = "<group>"; };
+		D8212CC820AA87E5008E8AE8 /* ReaderMenuAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderMenuAction.swift; sourceTree = "<group>"; };
 		D83CA3A420842CAF0060E310 /* Pageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pageable.swift; sourceTree = "<group>"; };
 		D83CA3A620842CD90060E310 /* ResultsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsPage.swift; sourceTree = "<group>"; };
 		D83CA3A820842D190060E310 /* StockPhotosPageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosPageable.swift; sourceTree = "<group>"; };
@@ -5574,9 +5574,9 @@
 				D8212CBE20AA7B7F008E8AE8 /* ReaderShowAttributionAction.swift */,
 				D8212CC020AA7C58008E8AE8 /* ReaderShowMenuAction.swift */,
 				D8212CC220AA7F57008E8AE8 /* ReaderBlockSiteAction.swift */,
-				D8212CC420AA83F9008E8AE8 /* CommentAction.swift */,
-				D8212CC620AA85C1008E8AE8 /* HeaderAction.swift */,
-				D8212CC820AA87E5008E8AE8 /* MenuAction.swift */,
+				D8212CC420AA83F9008E8AE8 /* ReaderCommentAction.swift */,
+				D8212CC620AA85C1008E8AE8 /* ReaderHeaderAction.swift */,
+				D8212CC820AA87E5008E8AE8 /* ReaderMenuAction.swift */,
 			);
 			name = ReaderPostActions;
 			sourceTree = "<group>";
@@ -7292,7 +7292,7 @@
 				8370D10A11FA499A009D650F /* WPTableViewActivityCell.m in Sources */,
 				173BCE731CEB368A00AE8817 /* DomainsListViewController.swift in Sources */,
 				E1B912891BB01288003C25B9 /* PeopleViewController.swift in Sources */,
-				D8212CC720AA85C1008E8AE8 /* HeaderAction.swift in Sources */,
+				D8212CC720AA85C1008E8AE8 /* ReaderHeaderAction.swift in Sources */,
 				405B53FB1F83C369002E19BF /* FancyAlerts+VerificationPrompt.swift in Sources */,
 				93C486501810442200A24725 /* SupportViewController.m in Sources */,
 				E6D2E1651B8AAD7E0000ED14 /* ReaderSiteStreamHeader.swift in Sources */,
@@ -7389,7 +7389,7 @@
 				462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */,
 				FFEECFFC2084DE2B009B8CDB /* PostSettingsViewController+FeaturedImageUpload.swift in Sources */,
 				D8212CB120AA64E1008E8AE8 /* ReaderLikeAction.swift in Sources */,
-				D8212CC920AA87E5008E8AE8 /* MenuAction.swift in Sources */,
+				D8212CC920AA87E5008E8AE8 /* ReaderMenuAction.swift in Sources */,
 				593F26611CAB00CA00F14073 /* PostSharingController.swift in Sources */,
 				7360018F20A265C7001E5E31 /* String+Files.swift in Sources */,
 				FF70A3231FD5840500BC270D /* UIImage+Export.swift in Sources */,
@@ -7530,7 +7530,7 @@
 				BE87E1A01BD4054F0075D45B /* WP3DTouchShortcutCreator.swift in Sources */,
 				D800D86C20997EB400E7C7E5 /* OtherMenuItemCreator.swift in Sources */,
 				742B7F3A209CB2B6002E3CC9 /* GIFPlaybackStrategy.swift in Sources */,
-				D8212CC520AA83F9008E8AE8 /* CommentAction.swift in Sources */,
+				D8212CC520AA83F9008E8AE8 /* ReaderCommentAction.swift in Sources */,
 				37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */,
 				B50C0C501EF429E900372C65 /* CommentAttachmentRenderer.swift in Sources */,
 				7EBB4126206C388100012D98 /* StockPhotosService.swift in Sources */,
