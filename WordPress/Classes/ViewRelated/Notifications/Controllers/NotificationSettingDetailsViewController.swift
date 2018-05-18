@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import UserNotifications
 
 
 /// The purpose of this class is to render a collection of NotificationSettings for a given Stream,
@@ -30,7 +31,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
     /// Indicates whether push notifications have been disabled, in the device, or not.
     ///
-    private var pushNotificationsAuthorized = true {
+    private var pushNotificationsAuthorized: UNAuthorizationStatus = .notDetermined {
         didSet {
             reloadTable()
         }
@@ -241,7 +242,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
     // MARK: - Disabled Push Notifications Handling
     private func isDeviceStreamDisabled() -> Bool {
-        return stream?.kind == .Device && pushNotificationsAuthorized == false
+        return stream?.kind == .Device && pushNotificationsAuthorized == .denied
     }
 
     private func openApplicationSettings() {
@@ -251,7 +252,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
     @objc func refreshPushAuthorizationStatus() {
         PushNotificationsManager.shared.loadAuthorizationStatus { status in
-            self.pushNotificationsAuthorized = status == .authorized
+            self.pushNotificationsAuthorized = status
         }
     }
 
