@@ -700,7 +700,7 @@ import WordPressFlux
 
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
 
-        BlockSiteAction(asBlocked: true).execute(with: post, context: managedObjectContext()) { [weak self] in
+        ReaderBlockSiteAction(asBlocked: true).execute(with: post, context: managedObjectContext()) { [weak self] in
             self?.recentlyBlockedSitePostObjectIDs.remove(objectID)
             self?.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
         }
@@ -717,7 +717,7 @@ import WordPressFlux
 
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
 
-        BlockSiteAction(asBlocked: false).execute(with: post, context: managedObjectContext()) { [weak self] in
+        ReaderBlockSiteAction(asBlocked: false).execute(with: post, context: managedObjectContext()) { [weak self] in
             self?.recentlyBlockedSitePostObjectIDs.add(objectID)
             self?.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
         }

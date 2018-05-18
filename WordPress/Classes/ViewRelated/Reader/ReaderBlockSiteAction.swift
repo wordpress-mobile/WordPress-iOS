@@ -1,5 +1,5 @@
 /// Encapsulates a command to flag a site
-final class BlockSiteAction {
+final class ReaderBlockSiteAction {
     private let asBlocked: Bool
 
     init(asBlocked: Bool) {
