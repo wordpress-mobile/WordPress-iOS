@@ -9,6 +9,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 @class ReaderTagTopic;
 @class ReaderSiteTopic;
 @class ReaderSearchTopic;
+@class ReaderSaveForLaterTopic;
 
 @interface ReaderTopicService : LocalCoreDataService
 
@@ -143,6 +144,15 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (void)toggleFollowingForSite:(ReaderSiteTopic *)topic success:(void (^)(void))success failure:(void (^)(NSError *error))failure;
 
 /**
+ Toggle the save for later status of the site for the specified site topic
+
+ @param topic The site topic to toggle following status
+ @param success block called on a successful change.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)toggleSaveForLaterForPost:(ReaderSaveForLaterTopic *)topic success:(void (^)(void))success failure:(void (^)(NSError *error))failure;
+
+/**
  Mark a site topic as unfollowed in core data only. Should be called after unfollowing
  a post to ensure that any existing site topics reflect the correct following status.
 
@@ -171,6 +181,13 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  @return A `ReaderAbstractTopic` instance or nil.
  */
 - (ReaderAbstractTopic *)topicForDiscover;
+
+/**
+ Fetch the topic for 'Save for Later' if it exists.
+
+ @return A `ReaderAbstractTopic` instance or nil.
+ */
+- (ReaderAbstractTopic *)topicForSaveForLater;
 
 /**
  Fetch a tag topic for a tag with the specified slug.

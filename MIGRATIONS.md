@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 76
+
+- @ctarda 2018-05-09
+- `ReaderPost` added `isSavedForLater` property, used to store mark a post as saved for later.
+- `ReaderSaveForLaterTopic`. A subclass of  `ReaderAbstractTopic` to group posts saved for later. 
+
 ## WordPress 75
 
 - @frosty 2018-04-25

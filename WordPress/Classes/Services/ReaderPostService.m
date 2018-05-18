@@ -375,8 +375,60 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                            success:(void (^)(void))success
                            failure:(void (^)(NSError *error))failure
 {
-    post.isSavedForLater = !post.isSavedForLater;
-    success();
+
+    [self.managedObjectContext performBlock:^{
+
+        // Get a the post in our own context
+        NSError *error;
+        ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
+        if (error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (failure) {
+                    failure(error);
+                }
+            });
+            return;
+        }
+
+        // Keep previous values in case of failure
+        BOOL oldValue = readerPost.isSavedForLater;
+        BOOL saveForLater = !oldValue;
+
+        // Optimistically update
+        readerPost.isSavedForLater = saveForLater;
+
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+        void (^successBlock)(void) = ^void() {
+            if (success) {
+                success();
+            }
+        };
+
+        // Define failure block. Make sure rollback happens in the moc's queue,
+        void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+            [self.managedObjectContext performBlockAndWait:^{
+                // Revert changes on failure
+                readerPost.isSavedForLater = oldValue;
+
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                    if (failure) {
+                        failure(error);
+                    }
+                }];
+            }];
+        };
+
+        ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
+
+        if ([readerPost.topic isKindOfClass:[ReaderSaveForLaterTopic class]]) {
+            ReaderSaveForLaterTopic *saveForLaterTopic = (ReaderSaveForLaterTopic *)readerPost.topic;
+            [topicService toggleSaveForLaterForPost:saveForLaterTopic success:successBlock failure:failureBlock];
+            return;
+        }
+
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
 }
 
 - (void)deletePostsWithNoTopic
@@ -447,7 +499,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSError *error;
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
     NSString *likeSiteURL = [NSString stringWithFormat:@"%@*", siteURL];
-    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@ AND permaLink LIKE %@ AND topic = %@", siteID, likeSiteURL, topic];
+    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@ AND permaLink LIKE %@ AND topic = %@ AND isSavedForLater = NO", siteID, likeSiteURL, topic];
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
     if (error) {
         DDLogError(@"%@, error (un)following posts with siteID %@ and URL @%: %@", NSStringFromSelector(_cmd), siteID, siteURL, error);
@@ -471,7 +523,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 {
     NSError *error;
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
-    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@ AND isWPCom = YES", siteID];
+    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@ AND isWPCom = YES AND isSavedForLater = NO", siteID];
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
     if (error) {
         DDLogError(@"%@, error deleting posts belonging to siteID %@: %@", NSStringFromSelector(_cmd), siteID, error);

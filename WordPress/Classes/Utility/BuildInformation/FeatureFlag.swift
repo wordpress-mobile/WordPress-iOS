@@ -24,7 +24,7 @@ enum FeatureFlag: Int {
         case .zendeskMobile:
             return BuildConfiguration.current == .localDeveloper
         case .saveForLater:
-            return false
+            return BuildConfiguration.current == .localDeveloper
         case .primeForPush:
             return BuildConfiguration.current == .localDeveloper
         }

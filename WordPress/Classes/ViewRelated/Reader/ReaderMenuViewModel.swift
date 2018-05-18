@@ -270,16 +270,6 @@ enum ReaderDefaultMenuItemOrder: Int {
         // Append a menu item for search
         defaultSectionItems.append(searchMenuItem())
 
-        // To be removed as soon as the topic is provided by the coredata store. This is here just to prove visually that the view model can handle this topic
-        if FeatureFlag.saveForLater.enabled {
-            let topic = ReaderSaveForLaterTopic()
-            topic.title = Strings.savedForLaterMenuTitle
-            topic.path = "/mock"
-            let menuItem = sectionCreator(for: topic).menuItem(with: topic)
-
-            defaultSectionItems.append(menuItem)
-        }
-
         // Sort the items ascending.
         defaultSectionItems.sort(by: <)
     }

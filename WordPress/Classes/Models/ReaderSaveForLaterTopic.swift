@@ -1,30 +1,22 @@
-/// Plese do not review this class. This is basically a mock at the moment. It models a mock topic, so that I can test that the topic gets rendered in the UI
-final class ReaderSaveForLaterTopic: ReaderAbstractTopic {
-    init() {
-        let managedObjectContext = ReaderSaveForLaterTopic.setUpInMemoryManagedObjectContext()
-        let entity = NSEntityDescription.entity(forEntityName: "ReaderDefaultTopic", in: managedObjectContext)
-        super.init(entity: entity!, insertInto: managedObjectContext)
-    }
-
+@objc class ReaderSaveForLaterTopic: ReaderAbstractTopic {
     override open class var TopicType: String {
         return "saveForLater"
     }
 
-    /// TODO. This function will have to go away
-    static func setUpInMemoryManagedObjectContext() -> NSManagedObjectContext {
-        let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.main])!
+    open override var posts: [ReaderPost] {
+        set {}
+        get {
+            if let context = managedObjectContext {
+                let savedPostsRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderPost.classNameWithoutNamespaces())
+                savedPostsRequest.predicate = NSPredicate(format: "isSavedForLater = %@", NSNumber(value: true))
+                guard let results = (try? context.fetch(savedPostsRequest)) as? [ReaderPost] else {
+                    return []
+                }
 
-        let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
+                return results
+            }
 
-        do {
-            try persistentStoreCoordinator.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil, at: nil, options: nil)
-        } catch {
-            print("Adding in-memory persistent store failed")
+            return []
         }
-
-        let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
-
-        return managedObjectContext
     }
 }

@@ -416,6 +416,11 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
 }
 
+- (void)toggleSaveForLaterForPost:(ReaderSaveForLaterTopic *)topic success:(void (^)(void))success failure:(void (^)(NSError *error))failure
+{
+
+}
+
 - (void)tagTopicForTagWithSlug:(NSString *)slug success:(void(^)(NSManagedObjectID *objectID))success failure:(void (^)(NSError *error))failure
 {
     if (!success) {
@@ -569,6 +574,29 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         return nil;
     }
     return (ReaderAbstractTopic *)[results firstObject];
+}
+
+- (ReaderAbstractTopic *)topicForSaveForLater
+{
+    NSError *error;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderAbstractTopic classNameWithoutNamespaces]];
+    NSString *topicPath = @"*/read/savedforlater";
+    request.predicate = [NSPredicate predicateWithFormat:@"path LIKE %@", topicPath];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"Failed to fetch topic for save for later: %@", error);
+        return nil;
+    }
+
+    ReaderAbstractTopic *firstResult = [results firstObject];
+    if (!firstResult || ![firstResult isKindOfClass:[ReaderSaveForLaterTopic class]]) {
+        firstResult = [NSEntityDescription insertNewObjectForEntityForName:[ReaderSaveForLaterTopic classNameWithoutNamespaces]
+                                                    inManagedObjectContext:self.managedObjectContext];
+    }
+
+    firstResult.path = topicPath;
+    firstResult.showInMenu = YES;
+    return firstResult;
 }
 
 - (void)siteTopicForSiteWithID:(NSNumber *)siteID
@@ -741,6 +769,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         return [self listTopicForRemoteTopic:remoteTopic];
     } else if ([remoteTopic.type isEqualToString:@"team"]) {
         return [self teamTopicForRemoteTopic:remoteTopic];
+    } else if ([remoteTopic.type isEqualToString:@"saveForLater"]) {
+        return [self topicForSaveForLater];
     }
 
     return [self defaultTopicForRemoteTopic:remoteTopic];
