@@ -1,8 +1,10 @@
 #import "WordPressXMLRPCAPIFacade.h"
 #import <wpxmlrpc/WPXMLRPC.h>
 #import <WordPressAuthenticator/WordPressAuthenticator-Swift.h>
-#import <WordPressKit/WordPressKit.h>
 #import "WPAuthenticatorLoggingPrivate.h"
+
+@import WordPressKit;
+
 
 
 @interface WordPressXMLRPCAPIFacade ()
