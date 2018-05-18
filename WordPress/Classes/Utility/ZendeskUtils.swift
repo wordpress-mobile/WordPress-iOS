@@ -610,8 +610,8 @@ private extension ZendeskUtils {
             return
         }
 
-        // Done Action
-        let doneAction = alertController.addDefaultActionWithTitle(LocalizedText.alertDone) { [weak alertController] (_) in
+        // Submit Action
+        let submitAction = alertController.addDefaultActionWithTitle(LocalizedText.alertSubmit) { [weak alertController] (_) in
             guard let email = alertController?.textFields?.first?.text else {
                 completion(false)
                 return
@@ -623,8 +623,10 @@ private extension ZendeskUtils {
             return
         }
 
-        // Disable Done until a valid Email is entered.
-        doneAction.isEnabled = false
+        // Disable Submit until a valid Email is entered.
+        submitAction.isEnabled = false
+        // Make Submit button bold.
+        alertController.preferredAction = submitAction
 
         // Email Text Field
         alertController.addTextField(configurationHandler: { textField in
@@ -649,11 +651,11 @@ private extension ZendeskUtils {
     @objc static func emailTextFieldDidChange(_ textField: UITextField) {
         guard let alertController = presentInController?.presentedViewController as? UIAlertController,
             let email = alertController.textFields?.first?.text,
-            let doneAction = alertController.actions.last else {
+            let submitAction = alertController.actions.last else {
                 return
         }
 
-        doneAction.isEnabled = EmailFormatValidator.validate(string: email)
+        submitAction.isEnabled = EmailFormatValidator.validate(string: email)
         updateNameFieldForEmail(email)
     }
 
@@ -661,6 +663,10 @@ private extension ZendeskUtils {
         guard let alertController = presentInController?.presentedViewController as? UIAlertController,
             let nameField = alertController.textFields?.last else {
                 return
+        }
+
+        guard !email.isEmpty else {
+            return
         }
 
         nameField.text = generateDisplayName(from: email)
@@ -718,7 +724,7 @@ private extension ZendeskUtils {
 
     struct LocalizedText {
         static let alertMessage = NSLocalizedString("To continue please enter your email address and name.", comment: "Instructions for alert asking for email and name.")
-        static let alertDone = NSLocalizedString("Done", comment: "Submit button on prompt for user information.")
+        static let alertSubmit = NSLocalizedString("OK", comment: "Submit button on prompt for user information.")
         static let alertCancel = NSLocalizedString("Cancel", comment: "Cancel prompt for user information.")
         static let emailPlaceholder = NSLocalizedString("Email", comment: "Email address text field placeholder")
         static let namePlaceholder = NSLocalizedString("Name", comment: "Name text field placeholder")
