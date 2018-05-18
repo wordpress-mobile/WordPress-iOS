@@ -24,20 +24,24 @@ final class ReaderTableContent {
         }
     }
 
-    func isNull() -> Bool {
-        return content() == nil
+    var isNull: Bool {
+        return content == nil
     }
 
-    func content() -> [NSFetchRequestResult]? {
+    var content: [NSFetchRequestResult]? {
         return tableViewHandler?.resultsController.fetchedObjects
     }
 
-    func contentCount() -> Int {
-        return content()?.count ?? 0
+    var contentCount: Int {
+        return content?.count ?? 0
     }
 
-    func isEmpty() -> Bool {
-        return contentCount() == 0
+    var isEmpty: Bool {
+        return contentCount == 0
+    }
+
+    var isScrolling: Bool {
+        return tableViewHandler?.isScrolling ?? false
     }
 
     func refresh() {
@@ -54,9 +58,5 @@ final class ReaderTableContent {
 
     func object<T: NSFetchRequestResult>(at indexPath: IndexPath) -> T? {
         return tableViewHandler?.resultsController.object(at: indexPath) as? T
-    }
-
-    func isScrolling() -> Bool {
-        return tableViewHandler?.isScrolling ?? false
     }
 }
