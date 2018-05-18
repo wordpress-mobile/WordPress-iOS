@@ -127,7 +127,7 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
 
 
     public func tableViewDidChangeContent(_ tableView: UITableView) {
-        if content.isEmpty() {
+        if content.isEmpty {
             // TODO: Implement no results view
             //            displayNoResultsView()
         }
@@ -164,7 +164,7 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
     }
 
     override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let posts = content.content() as? [ReaderPost] else {
+        guard let posts = content.content as? [ReaderPost] else {
             DDLogError("[ReaderStreamViewController tableView:cellForRowAtIndexPath:] fetchedObjects was nil.")
             return UITableViewCell()
         }
@@ -200,7 +200,7 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
             return
         }
 
-        guard let posts = content.content() as? [ReaderPost] else {
+        guard let posts = content.content as? [ReaderPost] else {
             DDLogError("[ReaderStreamViewController tableView:willDisplayCell:] fetchedObjects was nil.")
             return
         }
@@ -229,7 +229,7 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
     }
 
     override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let posts = content.content() as? [ReaderPost] else {
+        guard let posts = content.content as? [ReaderPost] else {
             DDLogError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
             return
         }
