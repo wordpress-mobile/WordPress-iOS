@@ -10,7 +10,9 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
     @objc fileprivate(set) var imageView: CachedAnimatedImageView
 
     fileprivate lazy var imageLoader: ImageLoader = {
-        return ImageLoader(imageView: imageView, gifStrategy: .smallGIFs)
+        let imageLoader = ImageLoader(imageView: imageView, gifStrategy: .smallGIFs)
+        imageLoader.photonQuality = Constants.readerPhotonQuality
+        return imageLoader
     }()
 
     override open var frame: CGRect {
@@ -104,5 +106,11 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
     func clean() {
         imageView.clean()
         imageView.prepForReuse()
+    }
+}
+
+private extension WPRichTextImage {
+    enum Constants {
+        static let readerPhotonQuality: UInt = 65
     }
 }
