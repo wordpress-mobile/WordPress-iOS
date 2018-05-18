@@ -977,7 +977,6 @@ import WordPressFlux
             return
         }
 
-        //guard let post = tableViewHandler.resultsController.object(at: indexPath) as? ReaderGapMarker
         guard let post: ReaderGapMarker = content.object(at: indexPath) else {
             DDLogError("Error: Unable to retrieve an existing reader gap marker.")
             return
