@@ -116,7 +116,7 @@ final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
 
 
     fileprivate func toggleLikeForPost(_ post: ReaderPost) {
-        LikeAction().execute(with: post, context: context)
+        ReaderLikeAction().execute(with: post, context: context)
     }
 
     fileprivate func sharePost(_ post: ReaderPost, fromView anchorView: UIView) {
