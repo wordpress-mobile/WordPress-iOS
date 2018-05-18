@@ -159,6 +159,9 @@ class WPRichContentView: UITextView {
         setupView()
     }
 
+    deinit {
+        mediaArray.forEach { $0.image.clean() }
+    }
 
     /// A convenience method for one-time, common setup that should be done in init.
     ///
