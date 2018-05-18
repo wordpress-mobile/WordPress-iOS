@@ -24,22 +24,11 @@ import WordPressFlux
 
     fileprivate var tableView: UITableView!
     fileprivate var refreshControl: UIRefreshControl!
-    fileprivate var tableViewHandler: WPTableViewHandler!
     fileprivate var syncHelper: WPContentSyncHelper!
     fileprivate var tableViewController: UITableViewController!
     fileprivate var resultsStatusView: WPNoResultsView!
     fileprivate var footerView: PostListFooterView!
 
-    fileprivate let footerViewNibName = "PostListFooterView"
-    fileprivate let readerCardCellNibName = "ReaderPostCardCell"
-    fileprivate let readerCardCellReuseIdentifier = "ReaderCardCellReuseIdentifier"
-    fileprivate let readerBlockedCellNibName = "ReaderBlockedSiteCell"
-    fileprivate let readerBlockedCellReuseIdentifier = "ReaderBlockedCellReuseIdentifier"
-    fileprivate let readerGapMarkerCellNibName = "ReaderGapMarkerCell"
-    fileprivate let readerGapMarkerCellReuseIdentifier = "ReaderGapMarkerCellReuseIdentifier"
-    fileprivate let readerCrossPostCellNibName = "ReaderCrossPostCell"
-    fileprivate let readerCrossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
-    fileprivate let estimatedRowHeight = CGFloat(300.0)
     fileprivate let loadMoreThreashold = 4
 
     fileprivate let refreshInterval = 300
@@ -54,8 +43,16 @@ import WordPressFlux
     fileprivate var indexPathForGapMarker: IndexPath?
     fileprivate var didSetupView = false
     fileprivate var listentingForBlockedSiteNotification = false
-    fileprivate var imageRequestAuthToken: String?
     fileprivate var didBumpStats = false
+
+    /// Content management
+    private let content = ReaderTableContent()
+    /// Configuration of table view and registration of cells
+    private let tableConfiguration = ReaderTableConfiguration()
+    /// Configuration of cells
+    private let cellConfiguration = ReaderCellConfiguration()
+    /// Actions
+    private var postCellActions: ReaderPostCellActions?
 
     /// Used for fetching content.
     fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
@@ -221,7 +218,7 @@ import WordPressFlux
 
         setupTableView()
         setupFooterView()
-        setupTableViewHandler()
+        setupContentHandler()
         setupSyncHelper()
         setupResultsStatusView()
 
@@ -346,32 +343,17 @@ import WordPressFlux
         assert(tableViewController != nil, "The tableViewController must be assigned before configuring the tableView")
 
         tableView = tableViewController.tableView
-        tableView.accessibilityIdentifier = "Reader"
-        tableView.separatorStyle = .none
         refreshControl = tableViewController.refreshControl!
         refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), for: .valueChanged)
 
-        var nib = UINib(nibName: readerCardCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: readerCardCellReuseIdentifier)
-
-        nib = UINib(nibName: readerBlockedCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: readerBlockedCellReuseIdentifier)
-
-        nib = UINib(nibName: readerGapMarkerCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: readerGapMarkerCellReuseIdentifier)
-
-        nib = UINib(nibName: readerCrossPostCellNibName, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: readerCrossPostCellReuseIdentifier)
+        tableConfiguration.setup(tableView)
     }
 
 
-    fileprivate func setupTableViewHandler() {
+    fileprivate func setupContentHandler() {
         assert(tableView != nil, "A tableView must be assigned before configuring a handler")
 
-        tableViewHandler = WPTableViewHandler(tableView: tableView)
-        tableViewHandler.cacheRowHeights = false
-        tableViewHandler.updateRowAnimation = .none
-        tableViewHandler.delegate = self
+        content.initializeContent(tableView: tableView, delegate: self)
     }
 
 
@@ -385,7 +367,7 @@ import WordPressFlux
     }
 
     fileprivate func setupFooterView() {
-        guard let footer = Bundle.main.loadNibNamed(footerViewNibName, owner: nil, options: nil)!.first as? PostListFooterView else {
+        guard let footer = tableConfiguration.footer() as? PostListFooterView else {
             assertionFailure()
             return
         }
@@ -417,7 +399,7 @@ import WordPressFlux
 
 
     @objc func displayLoadingViewIfNeeded() {
-        let count = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
+        let count = content.contentCount
         if count > 0 {
             return
         }
@@ -557,13 +539,13 @@ import WordPressFlux
         updateAndPerformFetchRequest()
         configureStreamHeader()
         tableView.setContentOffset(CGPoint.zero, animated: false)
-        tableViewHandler.refreshTableView()
+        content.refresh()
         refreshTableViewHeaderLayout()
         syncIfAppropriate()
 
         bumpStats()
 
-        let count = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
+        let count = content.contentCount
 
         // Make sure we're showing the no results view if appropriate
         if !syncHelper.isSyncing && count == 0 {
@@ -593,7 +575,7 @@ import WordPressFlux
     /// Fetch and cache the current defaultAccount authtoken, if available.
     fileprivate func refreshImageRequestAuthToken() {
         let acctServ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        imageRequestAuthToken = acctServ.defaultWordPressComAccount()?.authToken
+        postCellActions?.imageRequestAuthToken = acctServ.defaultWordPressComAccount()?.authToken
     }
 
 
@@ -675,243 +657,6 @@ import WordPressFlux
         return [key: title]
     }
 
-
-    fileprivate func shouldShowBlockSiteMenuItem() -> Bool {
-        guard let topic = readerTopic else {
-            return false
-        }
-        if isLoggedIn {
-            return ReaderHelpers.isTopicTag(topic) || ReaderHelpers.topicIsFreshlyPressed(topic)
-        }
-        return false
-    }
-
-
-    /// Displays the options menu for the specifed post.  On the iPad the menu
-    /// is displayed as a popover from the anchorview.
-    ///
-    /// - Parameters:
-    ///     - post: The post in question.
-    ///     - fromView: The view to anchor a popover.
-    ///
-    fileprivate func showMenuForPost(_ post: ReaderPost, topic: ReaderSiteTopic? = nil, fromView anchorView: UIView) {
-        // Create the action sheet
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addCancelActionWithTitle(ReaderPostMenuButtonTitles.cancel, handler: nil)
-
-        // Block button
-        if shouldShowBlockSiteMenuItem() {
-            alertController.addActionWithTitle(ReaderPostMenuButtonTitles.blockSite,
-                style: .destructive,
-                handler: { (action: UIAlertAction) in
-                    if let post: ReaderPost = self.existingObject(for: post.objectID) {
-                        self.blockSiteForPost(post)
-                    }
-                })
-        }
-
-        // Notification
-        if let topic = topic, isLoggedIn, post.isFollowing {
-            let isSubscribedForPostNotifications = topic.isSubscribedForPostNotifications
-            let buttonTitle = isSubscribedForPostNotifications ? ReaderPostMenuButtonTitles.unsubscribe : ReaderPostMenuButtonTitles.subscribe
-            alertController.addActionWithTitle(buttonTitle,
-                                               style: .default,
-                                               handler: { (action: UIAlertAction) in
-                                                if let topic: ReaderSiteTopic = self.existingObject(for: topic.objectID) {
-                                                    self.toggleSubscribingNotifications(for: topic.siteID,
-                                                                                        subscribe: !topic.isSubscribedForPostNotifications)
-                                                }
-            })
-        }
-
-        // Following
-        if isLoggedIn {
-            let buttonTitle = post.isFollowing ? ReaderPostMenuButtonTitles.unfollow : ReaderPostMenuButtonTitles.follow
-            alertController.addActionWithTitle(buttonTitle,
-                style: .default,
-                handler: { (action: UIAlertAction) in
-                    if let post: ReaderPost = self.existingObject(for: post.objectID) {
-                        self.toggleFollowingForPost(post)
-                    }
-                })
-        }
-
-        // Share
-        alertController.addActionWithTitle(ReaderPostMenuButtonTitles.share,
-            style: .default,
-            handler: { [weak self] (action: UIAlertAction) in
-                self?.sharePost(post.objectID, fromView: anchorView)
-        })
-
-        if WPDeviceIdentification.isiPad() {
-            alertController.modalPresentationStyle = .popover
-            present(alertController, animated: true, completion: nil)
-            if let presentationController = alertController.popoverPresentationController {
-                presentationController.permittedArrowDirections = .any
-                presentationController.sourceView = anchorView
-                presentationController.sourceRect = anchorView.bounds
-            }
-
-        } else {
-            present(alertController, animated: true, completion: nil)
-        }
-    }
-
-
-    /// Shares a post from the share controller.
-    ///
-    /// - Parameters:
-    ///     - postID: Object ID for the post.
-    ///     - fromView: The view to present the sharing controller as a popover.
-    ///
-    fileprivate func sharePost(_ postID: NSManagedObjectID, fromView anchorView: UIView) {
-        if let post: ReaderPost = existingObject(for: postID) {
-            let sharingController = PostSharingController()
-
-            sharingController.shareReaderPost(post, fromView: anchorView, inViewController: self)
-        }
-    }
-
-    /// Retrieves an existing object for the specified object ID from the display context.
-    ///
-    /// - Parameters:
-    ///     - objectID: The object ID of the post.
-    ///
-    /// - Return: The matching post or nil if there is no match.
-    ///
-    fileprivate func existingObject<T>(for objectID: NSManagedObjectID?) -> T? {
-        guard let objectID = objectID else {
-            return nil
-        }
-
-        do {
-            return (try managedObjectContext().existingObject(with: objectID)) as? T
-        } catch let error as NSError {
-            DDLogError(error.localizedDescription)
-            return nil
-        }
-    }
-
-    fileprivate func toggleSubscribingNotifications(for siteID: NSNumber?, subscribe: Bool) {
-        guard let siteID = siteID else {
-            return
-        }
-
-        let event: WPAnalyticsStat = subscribe ? .readerListNotificationMenuOn : .readerListNotificationMenuOff
-        let service = ReaderTopicService(managedObjectContext: managedObjectContext())
-        service.toggleSubscribingNotifications(for: siteID.intValue, subscribe: subscribe, {
-            WPAnalytics.track(event)
-        })
-    }
-
-    fileprivate func toggleFollowingForPost(_ post: ReaderPost) {
-        var errorMessage: String
-        var errorTitle: String
-        if post.isFollowing {
-            errorTitle = NSLocalizedString("Problem Unfollowing Site", comment: "Title of a prompt")
-            errorMessage = NSLocalizedString("There was a problem unfollowing the site. If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Short notice that there was a problem unfollowing a site and instructions on how to notify us of the problem.")
-        } else {
-            errorTitle = NSLocalizedString("Problem Following Site", comment: "Title of a prompt")
-            errorMessage = NSLocalizedString("There was a problem following the site.  If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Short notice that there was a problem following a site and instructions on how to notify us of the problem.")
-        }
-
-        let postService = ReaderPostService(managedObjectContext: managedObjectContext())
-        let siteTitle = post.blogNameForDisplay()
-        let siteID = post.siteID
-        let toFollow = !post.isFollowing
-
-        if !toFollow {
-            toggleSubscribingNotifications(for: siteID, subscribe: false)
-        }
-
-        postService.toggleFollowing(for: post,
-                                            success: { [weak self] in
-                                                self?.syncHelper.syncContent()
-                                                self?.updateStreamHeaderIfNeeded()
-                                                if toFollow {
-                                                    self?.dispatchSubscribingNotificationNotice(with: siteTitle, siteID: siteID)
-                                                }
-                                            },
-                                            failure: { (error: Error?) in
-                                                let cancelTitle = NSLocalizedString("OK", comment: "Text of an OK button to dismiss a prompt.")
-                                                let alertController = UIAlertController(title: errorTitle,
-                                                    message: errorMessage,
-                                                    preferredStyle: .alert)
-                                                alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
-                                                alertController.presentFromRootViewController()
-                                        })
-    }
-
-    fileprivate func toggleSavedForLater(for post: ReaderPost) {
-        SaveForLaterAction(visibleConfirmation: true).execute(with: post, context: managedObjectContext(), completion: {})
-    }
-
-    fileprivate func visitSiteForPost(_ post: ReaderPost) {
-        guard
-            let permalink = post.permaLink,
-            let siteURL = URL(string: permalink) else {
-                return
-        }
-
-        let configuration = WebViewControllerConfiguration(url: siteURL)
-        configuration.addsWPComReferrer = true
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        if let account = service.defaultWordPressComAccount() {
-            configuration.authenticate(account: account)
-        }
-        let controller = WebViewControllerFactory.controller(configuration: configuration)
-        let navController = UINavigationController(rootViewController: controller)
-        present(navController, animated: true, completion: nil)
-    }
-
-
-    /// Shows the attribution for a Discover post.
-    ///
-    fileprivate func showAttributionForPost(_ post: ReaderPost) {
-        // Fail safe. If there is no attribution exit.
-        guard let sourceAttribution = post.sourceAttribution else {
-            return
-        }
-
-        // If there is a blogID preview the site
-        if let blogID = sourceAttribution.blogID {
-            let controller = ReaderStreamViewController.controllerWithSiteID(blogID, isFeed: false)
-            navigationController?.pushViewController(controller, animated: true)
-            return
-        }
-
-        if sourceAttribution.attributionType != SourcePostAttributionTypeSite {
-            return
-        }
-
-        guard let linkURL = URL(string: sourceAttribution.blogURL) else {
-            return
-        }
-        let configuration = WebViewControllerConfiguration(url: linkURL)
-        configuration.addsWPComReferrer = true
-        let controller = WebViewControllerFactory.controller(configuration: configuration)
-        let navController = UINavigationController(rootViewController: controller)
-        present(navController, animated: true, completion: nil)
-    }
-
-
-    fileprivate func toggleLikeForPost(_ post: ReaderPost) {
-        if !post.isLiked {
-            // Consider a like from the list to be enough to push a page view.
-            // Solves a long-standing question from folks who ask 'why do I
-            // have more likes than page views?'.
-            ReaderHelpers.bumpPageViewForPost(post)
-            UINotificationFeedbackGenerator().notificationOccurred(.success)
-        }
-        let service = ReaderPostService(managedObjectContext: managedObjectContext())
-        service.toggleLiked(for: post, success: nil, failure: { (error: Error?) in
-            if let anError = error {
-                DDLogError("Error (un)liking post: \(anError.localizedDescription)")
-            }
-        })
-    }
-
-
     /// The fetch request can need a different predicate depending on how the content
     /// being displayed has changed (blocking sites for instance).  Call this method to
     /// update the fetch request predicate and then perform a new fetch.
@@ -919,12 +664,7 @@ import WordPressFlux
     fileprivate func updateAndPerformFetchRequest() {
         assert(Thread.isMainThread, "ReaderStreamViewController Error: updating fetch request on a background thread.")
 
-        tableViewHandler.resultsController.fetchRequest.predicate = predicateForFetchRequest()
-        do {
-            try tableViewHandler.resultsController.performFetch()
-        } catch let error as NSError {
-            DDLogError("Error fetching posts after updating the fetch reqeust predicate: \(error.localizedDescription)")
-        }
+        content.updateAndPerformFetchRequest(predicate: predicateForFetchRequest())
     }
 
 
@@ -950,7 +690,7 @@ import WordPressFlux
 
 
     fileprivate func blockSiteForPost(_ post: ReaderPost) {
-        guard let indexPath = tableViewHandler.resultsController.indexPath(forObject: post) else {
+        guard let indexPath = content.indexPath(forObject: post) else {
             return
         }
 
@@ -960,28 +700,15 @@ import WordPressFlux
 
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
 
-        let service = ReaderSiteService(managedObjectContext: managedObjectContext())
-        service.flagSite(withID: post.siteID,
-            asBlocked: true,
-            success: nil,
-            failure: { [weak self] (error: Error?) in
-                self?.recentlyBlockedSitePostObjectIDs.remove(objectID)
-                self?.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
-
-                let message = error?.localizedDescription ?? ""
-                let errorTitle = NSLocalizedString("Error Blocking Site", comment: "Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader.")
-                let cancelTitle = NSLocalizedString("OK", comment: "Text for an alert's dismissal button.")
-                let alertController = UIAlertController(title: errorTitle,
-                    message: message,
-                    preferredStyle: .alert)
-                alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
-                alertController.presentFromRootViewController()
-            })
+        ReaderBlockSiteAction(asBlocked: true).execute(with: post, context: managedObjectContext()) { [weak self] in
+            self?.recentlyBlockedSitePostObjectIDs.remove(objectID)
+            self?.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+        }
     }
 
 
     fileprivate func unblockSiteForPost(_ post: ReaderPost) {
-        guard let indexPath = tableViewHandler.resultsController.indexPath(forObject: post) else {
+        guard let indexPath = content.indexPath(forObject: post) else {
             return
         }
 
@@ -990,23 +717,10 @@ import WordPressFlux
 
         tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
 
-        let service = ReaderSiteService(managedObjectContext: managedObjectContext())
-        service.flagSite(withID: post.siteID,
-            asBlocked: false,
-            success: nil,
-            failure: { [weak self] (error: Error?) in
-                self?.recentlyBlockedSitePostObjectIDs.add(objectID)
-                self?.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
-
-                let message = error?.localizedDescription ?? ""
-                let errorTitle = NSLocalizedString("Error Unblocking Site", comment: "Title of a prompt letting the user know there was an error trying to unblock a site from appearing in the reader.")
-                let cancelTitle = NSLocalizedString("OK", comment: "Text for an alert's dismissal button.")
-                let alertController = UIAlertController(title: errorTitle,
-                    message: message,
-                    preferredStyle: .alert)
-                alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
-                alertController.presentFromRootViewController()
-            })
+        ReaderBlockSiteAction(asBlocked: false).execute(with: post, context: managedObjectContext()) { [weak self] in
+            self?.recentlyBlockedSitePostObjectIDs.add(objectID)
+            self?.tableView.reloadRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+        }
     }
 
 
@@ -1024,7 +738,7 @@ import WordPressFlux
             return
         }
 
-        if let _ = tableViewHandler.resultsController.indexPath(forObject: post) {
+        if let _ = content.indexPath(forObject: post) {
             blockSiteForPost(post)
         }
     }
@@ -1106,8 +820,7 @@ import WordPressFlux
     }
 
     @objc func canLoadMore() -> Bool {
-        let fetchedObjects = tableViewHandler.resultsController.fetchedObjects ?? []
-        if fetchedObjects.count == 0 {
+        if content.contentCount == 0 {
             return false
         }
         return canSync()
@@ -1157,10 +870,10 @@ import WordPressFlux
     /// Not intended for use as part of a user interaction. See syncIfAppropriate instead.
     ///
     @objc func backgroundFetch(_ completionHandler: @escaping ((UIBackgroundFetchResult) -> Void)) {
-        let lastSeenPostID = (tableViewHandler?.resultsController.fetchedObjects?.first as? ReaderPost)?.postID ?? -1
+        let lastSeenPostID = (content.content?.first as? ReaderPost)?.postID ?? -1
 
         syncHelper?.backgroundSync(success: { [weak self, weak lastSeenPostID] in
-            let newestFetchedPostID = (self?.tableViewHandler?.resultsController.fetchedObjects?.first as? ReaderPost)?.postID ?? -1
+            let newestFetchedPostID = (self?.content.content?.first as? ReaderPost)?.postID ?? -1
             if lastSeenPostID == newestFetchedPostID {
                 completionHandler(.noData)
             } else {
@@ -1264,7 +977,7 @@ import WordPressFlux
             return
         }
 
-        guard let post = tableViewHandler.resultsController.object(at: indexPath) as? ReaderGapMarker else {
+        guard let post: ReaderGapMarker = content.object(at: indexPath) else {
             DDLogError("Error: Unable to retrieve an existing reader gap marker.")
             return
         }
@@ -1321,7 +1034,7 @@ import WordPressFlux
             return
         }
 
-        guard let post = tableViewHandler.resultsController.fetchedObjects?.last as? ReaderPost else {
+        guard let post = content.content?.last as? ReaderPost else {
             DDLogError("Error: Unable to retrieve an existing reader gap marker.")
             return
         }
@@ -1331,7 +1044,7 @@ import WordPressFlux
         let earlierThan = post.sortDate
         let syncContext = ContextManager.sharedInstance().newDerivedContext()
         let service =  ReaderPostService(managedObjectContext: syncContext)
-        let offset = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
+        let offset = content.contentCount
         syncContext.perform {
             guard let topicInContext = (try? syncContext.existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
                 DDLogError("Error: Could not retrieve an existing topic via its objectID")
@@ -1372,7 +1085,7 @@ import WordPressFlux
         indexPathForGapMarker = nil
         cleanupAndRefreshAfterScrolling = false
         if refresh {
-            tableViewHandler.refreshTableViewPreservingOffset()
+            content.refreshPreservingOffset()
         }
         refreshControl.endRefreshing()
         footerView.showSpinner(false)
@@ -1425,56 +1138,17 @@ import WordPressFlux
             return
         }
 
-        // To help avoid potential crash: https://github.com/wordpress-mobile/WordPress-iOS/issues/6757
-        guard !post.isDeleted else {
-            return
+        if postCellActions == nil {
+            postCellActions = ReaderPostCellActions(context: managedObjectContext(), origin: self, topic: readerTopic)
         }
+        postCellActions?.isLoggedIn = isLoggedIn
 
-        let postCell = cell as! ReaderPostCardCell
-
-        postCell.delegate = self
-        postCell.hidesFollowButton = ReaderHelpers.topicIsFollowing(topic)
-        postCell.enableLoggedInFeatures = isLoggedIn
-        postCell.headerBlogButtonIsEnabled = !ReaderHelpers.isTopicSite(readerTopic!)
-        postCell.configureCell(post)
+        cellConfiguration.configurePostCardCell(cell,
+                                                withPost: post,
+                                                topic: topic,
+                                                delegate: postCellActions,
+                                                loggedIn: true)
     }
-
-
-    @objc open func configureCrossPostCell(_ cell: ReaderCrossPostCell, atIndexPath indexPath: IndexPath) {
-        if tableViewHandler.resultsController.fetchedObjects == nil {
-            return
-        }
-        cell.accessoryType = .none
-        cell.selectionStyle = .none
-
-        guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
-            return
-        }
-
-        let post = posts[indexPath.row]
-        cell.configureCell(post)
-    }
-
-
-    @objc open func configureBlockedCell(_ cell: ReaderBlockedSiteCell, atIndexPath indexPath: IndexPath) {
-        if tableViewHandler.resultsController.fetchedObjects == nil {
-            return
-        }
-        cell.accessoryType = .none
-        cell.selectionStyle = .none
-
-        guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
-            return
-        }
-        let post = posts[indexPath.row]
-        cell.setSiteName(post.blogName)
-    }
-
-
-    @objc open func configureGapMarker(_ cell: ReaderGapMarkerCell) {
-        cell.animateActivityView(syncIsFillingGap)
-    }
-
 
     @objc func handleContextDidSaveNotification(_ notification: Foundation.Notification) {
         ContextManager.sharedInstance().mergeChanges(displayContext, fromContextDidSave: notification)
@@ -1517,8 +1191,7 @@ import WordPressFlux
         let siteTitle = topic.title
 
         if !toFollow {
-            toggleSubscribingNotifications(for: topic.siteID,
-                                           subscribe: !topic.isSubscribedForPostNotifications)
+            ReaderSubscribingNotificationAction().execute(for: siteID, context: managedObjectContext(), value: !topic.isSubscribedForPostNotifications)
         }
 
         let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext!)
@@ -1575,7 +1248,7 @@ extension ReaderStreamViewController: WPContentSyncHelperDelegate {
 
 
     func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
-        if tableViewHandler.isScrolling {
+        if content.isScrolling {
             cleanupAndRefreshAfterScrolling = true
             return
         }
@@ -1587,97 +1260,6 @@ extension ReaderStreamViewController: WPContentSyncHelperDelegate {
         cleanupAfterSync(refresh: false)
     }
 }
-
-
-// MARK: - ReaderPostCellDelegate
-
-extension ReaderStreamViewController: ReaderPostCellDelegate {
-
-
-    public func readerCell(_ cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider) {
-        let post = provider as! ReaderPost
-
-        let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID, isFeed: post.isExternal)
-        navigationController?.pushViewController(controller, animated: true)
-
-        let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.blogURL as AnyObject?, forKey: "url")
-        WPAppAnalytics.track(.readerSitePreviewed, withProperties: properties)
-    }
-
-
-    public func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider) {
-        var post = provider as! ReaderPost
-        post = postInMainContext(post)!
-        let controller = ReaderCommentsViewController(post: post)
-        navigationController?.pushViewController(controller!, animated: true)
-    }
-
-
-    public func readerCell(_ cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider) {
-        let post = provider as! ReaderPost
-        toggleLikeForPost(post)
-    }
-
-
-    public func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider) {
-        guard let post = provider as? ReaderPost else {
-            return
-        }
-        toggleFollowingForPost(post)
-    }
-
-
-    public func readerCell(_ cell: ReaderPostCardCell, shareActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
-        guard let post = provider as? ReaderPost else {
-            return
-        }
-        sharePost(post.objectID, fromView: sender)
-    }
-
-    public func readerCell(_ cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider) {
-        guard let post = provider as? ReaderPost else {
-            return
-        }
-        toggleSavedForLater(for: post)
-    }
-
-    public func readerCell(_ cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider) {
-        guard let post = provider as? ReaderPost else {
-            return
-        }
-        visitSiteForPost(post)
-    }
-
-
-    public func readerCell(_ cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
-        guard let post = provider as? ReaderPost else {
-            return
-        }
-
-        guard post.isFollowing else {
-            showMenuForPost(post, fromView: sender)
-            return
-        }
-
-        let service = ReaderTopicService(managedObjectContext: managedObjectContext())
-        if let topic = service.findSiteTopic(withSiteID: post.siteID) {
-            showMenuForPost(post, topic: topic, fromView: sender)
-            return
-        }
-    }
-
-
-    public func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider) {
-        let post = provider as! ReaderPost
-        showAttributionForPost(post)
-    }
-
-
-    public func readerCellImageRequestAuthToken(_ cell: ReaderPostCardCell) -> String? {
-        return imageRequestAuthToken
-    }
-}
-
 
 // MARK: - WPTableViewHandlerDelegate
 
@@ -1725,7 +1307,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
 
     public func tableViewDidChangeContent(_ tableView: UITableView) {
-        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+        if content.contentCount == 0 {
             displayNoResultsView()
         }
     }
@@ -1767,7 +1349,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             // Return the previously known height as it was cached via willDisplayCell.
             return height
         }
-        return estimatedRowHeight
+        return tableConfiguration.estimatedRowHeight()
     }
 
 
@@ -1776,28 +1358,35 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
+        guard let posts = content.content as? [ReaderPost] else {
+            return UITableViewCell()
+        }
+
         let post = posts[indexPath.row]
 
         if post.isKind(of: ReaderGapMarker.self) {
-            let cell = tableView.dequeueReusableCell(withIdentifier: readerGapMarkerCellReuseIdentifier) as! ReaderGapMarkerCell
-            configureGapMarker(cell)
+            let cell = tableConfiguration.gapMarkerCell(tableView)
+            cellConfiguration.configureGapMarker(cell, filling: syncIsFillingGap)
             return cell
         }
 
         if recentlyBlockedSitePostObjectIDs.contains(post.objectID) {
-            let cell = tableView.dequeueReusableCell(withIdentifier: readerBlockedCellReuseIdentifier) as! ReaderBlockedSiteCell
-            configureBlockedCell(cell, atIndexPath: indexPath)
+            let cell = tableConfiguration.blockedSiteCell(tableView)
+            cellConfiguration.configureBlockedCell(cell,
+                                                   withContent: content,
+                                                   atIndexPath: indexPath)
             return cell
         }
 
         if post.isCross() {
-            let cell = tableView.dequeueReusableCell(withIdentifier: readerCrossPostCellReuseIdentifier) as! ReaderCrossPostCell
-            configureCrossPostCell(cell, atIndexPath: indexPath)
+            let cell = tableConfiguration.crossPostCell(tableView)
+            cellConfiguration.configureCrossPostCell(cell,
+                                                     withContent: content,
+                                                     atIndexPath: indexPath)
             return cell
         }
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: readerCardCellReuseIdentifier) as! ReaderPostCardCell
+        let cell = tableConfiguration.postCardCell(tableView)
         configurePostCardCell(cell, post: post)
         return cell
     }
@@ -1821,8 +1410,11 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         guard cell.isKind(of: ReaderPostCardCell.self) || cell.isKind(of: ReaderCrossPostCell.self) else {
             return
         }
+
+        guard let posts = content.content as? [ReaderPost] else {
+            return
+        }
         // Bump the render tracker if necessary.
-        let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
         let post = posts[indexPath.row]
         if !post.rendered, let railcar = post.railcarDictionary() {
             post.rendered = true
@@ -1832,7 +1424,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
+        guard let posts = content.content as? [ReaderPost] else {
             DDLogError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
             return
         }
@@ -1925,7 +1517,7 @@ extension ReaderStreamViewController: WPNoResultsViewDelegate {
 
 extension ReaderStreamViewController: NetworkAwareUI {
     func contentIsEmpty() -> Bool {
-        return tableViewHandler.resultsController.isEmpty()
+        return content.contentCount == 0
     }
 }
 
