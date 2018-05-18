@@ -1,4 +1,4 @@
-final class MenuAction {
+final class ReaderMenuAction {
     private let isLoggedIn: Bool
 
     init(logged: Bool) {

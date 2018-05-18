@@ -20,14 +20,14 @@ final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         guard let post = provider as? ReaderPost, let origin = origin else {
             return
         }
-        HeaderAction().execute(post: post, origin: origin)
+        ReaderHeaderAction().execute(post: post, origin: origin)
     }
 
     func readerCell(_ cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider) {
         guard let post = provider as? ReaderPost, let origin = origin else {
             return
         }
-        CommentAction().execute(post: post, origin: origin)
+        ReaderCommentAction().execute(post: post, origin: origin)
     }
 
     func readerCell(_ cell: ReaderPostCardCell, followActionForProvider provider: ReaderPostContentProvider) {
@@ -70,7 +70,7 @@ final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
             return
         }
 
-        MenuAction(logged: isLoggedIn).execute(post: post, context: context, readerTopic: topic, anchor: sender, vc: origin)
+        ReaderMenuAction(logged: isLoggedIn).execute(post: post, context: context, readerTopic: topic, anchor: sender, vc: origin)
     }
 
     func readerCell(_ cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider) {
