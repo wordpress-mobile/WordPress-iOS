@@ -1348,7 +1348,9 @@ private extension NotificationsViewController {
     }
 
     func resetApplicationBadge() {
-        UIApplication.shared.applicationIconBadgeNumber = 0
+        // These notifications are cleared, so we just need to take Zendesk unread notifications
+        // into account when setting the app icon count.
+        UIApplication.shared.applicationIconBadgeNumber = ZendeskUtils.unreadNotificationsCount
     }
 }
 
