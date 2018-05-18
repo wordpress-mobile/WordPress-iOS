@@ -87,12 +87,6 @@ class AppSettingsViewController: UITableViewController {
             detail: MediaSettings().maxVideoSizeSetting.description,
             action: pushVideoResolutionSettings())
 
-        let mediaRemoveLocation = SwitchRow(
-            title: NSLocalizedString("Remove Location From Media", comment: "Option to enable the removal of location information/gps from photos and videos"),
-            value: Bool(MediaSettings().removeLocationSetting),
-            onChange: mediaRemoveLocationChanged()
-        )
-
         let mediaCacheRow = TextRow(title: NSLocalizedString("Media Cache Size", comment: "Label for size of media cache in the app."),
                                     value: mediaCacheRowDescription)
 
@@ -114,12 +108,16 @@ class AppSettingsViewController: UITableViewController {
         )
         editorRows.append(nativeEditor)
 
-        let usageTrackingHeader = NSLocalizedString("Usage Statistics", comment: "App usage data settings section header")
-        let usageTrackingRow = SwitchRow(
-            title: NSLocalizedString("Send Statistics", comment: "Label for switch to turn on/off sending app usage data"),
-            value: !WPAppAnalytics.userHasOptedOut(),
-            onChange: usageTrackingChanged())
-        let usageTrackingFooter = NSLocalizedString("Automatically send usage statistics to help us improve WordPress for iOS", comment: "App usage data settings section footer describing what the setting does.")
+        let privacyHeader = NSLocalizedString("Privacy", comment: "Privacy settings section header")
+        let mediaRemoveLocation = SwitchRow(
+            title: NSLocalizedString("Remove Location From Media", comment: "Option to enable the removal of location information/gps from photos and videos"),
+            value: Bool(MediaSettings().removeLocationSetting),
+            onChange: mediaRemoveLocationChanged()
+        )
+        let privacySettings = NavigationItemRow(
+            title: NSLocalizedString("Privacy Settings", comment: "Link to privacy settings page"),
+            action: openPrivacySettings()
+        )
 
         let otherHeader = NSLocalizedString("Other", comment: "Link to About section (contains info about the app)")
         let spotlightClearCacheRow = DestructiveButtonRow(
@@ -143,15 +141,16 @@ class AppSettingsViewController: UITableViewController {
                 rows: [
                     imageSizingRow,
                     videoSizingRow,
-                    mediaRemoveLocation,
                     mediaCacheRow,
                     mediaClearCacheRow
                 ],
                 footerText: nil),
             ImmuTableSection(
-                headerText: usageTrackingHeader,
-                rows: [usageTrackingRow],
-                footerText: usageTrackingFooter
+                headerText: privacyHeader,
+                rows: [
+                    mediaRemoveLocation,
+                    privacySettings
+                ]
             ),
             ImmuTableSection(
                 headerText: otherHeader,
@@ -283,19 +282,16 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
-    @objc func usageTrackingChanged() -> (Bool) -> Void {
-        return { enabled in
-            let appAnalytics = WordPressAppDelegate.sharedInstance().analytics
-            appAnalytics?.setUserHasOptedOut(!enabled)
-
-            let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-            AccountSettingsHelper(accountService: accountService).updateTracksOptOutSetting(!enabled)
-        }
-    }
-
     func pushAbout() -> ImmuTableAction {
         return { [weak self] row in
             let controller = AboutViewController()
+            self?.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+
+    func openPrivacySettings() -> ImmuTableAction {
+        return { [weak self] _ in
+            let controller = PrivacySettingsViewController()
             self?.navigationController?.pushViewController(controller, animated: true)
         }
     }

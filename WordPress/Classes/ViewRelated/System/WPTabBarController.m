@@ -66,7 +66,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 @property (nonatomic, strong) UIImage *notificationsTabBarImage;
 @property (nonatomic, strong) UIImage *notificationsTabBarImageUnread;
 @property (nonatomic, strong) UIImage *meTabBarImage;
-@property (nonatomic, strong) UIImage *meTabBarImageUnread;
+@property (nonatomic, strong) UIImage *meTabBarImageUnreadUnselected;
+@property (nonatomic, strong) UIImage *meTabBarImageUnreadSelected;
 
 @end
 
@@ -120,12 +121,12 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
         if ([Feature enabled:FeatureFlagZendeskMobile]) {
             [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(refreshMeIconIndicator:)
+                                                     selector:@selector(updateIconIndicators:)
                                                          name:NSNotification.ZendeskPushNotificationReceivedNotification
                                                        object:nil];
             
             [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(refreshMeIconIndicator:)
+                                                     selector:@selector(updateIconIndicators:)
                                                          name:NSNotification.ZendeskPushNotificationClearedNotification
                                                        object:nil];
         } else {
@@ -272,10 +273,8 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if (!_meNavigationController) {
         _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
         self.meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
-
-        // TODO: replace this with real image
-        self.meTabBarImageUnread = [UIImage imageNamed:@"notifications-liked"];
-
+        self.meTabBarImageUnreadUnselected = [UIImage imageNamed:@"icon-tab-me-unread-unselected"];
+        self.meTabBarImageUnreadSelected = [UIImage imageNamed:@"icon-tab-me-unread-selected"];
         _meNavigationController.tabBarItem.image = self.meTabBarImage;
         _meNavigationController.tabBarItem.selectedImage = self.meTabBarImage;
         _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
@@ -755,6 +754,11 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     return YES;
 }
 
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+    [self updateMeNotificationIcon];
+}
+
 - (void)bypassBlogListViewControllerIfNecessary
 {
     // If the user has one blog then we don't want to present them with the main "My Sites"
@@ -783,9 +787,10 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 #pragma mark - Zendesk Notifications
 
-- (void)refreshMeIconIndicator:(NSNotification *)notification
+- (void)updateIconIndicators:(NSNotification *)notification
 {
     [self updateMeNotificationIcon];
+    [self updateNotificationBadgeVisibility];
 }
 
 #pragma mark - Helpshift Notifications
@@ -822,23 +827,25 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)updateNotificationBadgeVisibility
 {
-    NSInteger count = [[UIApplication sharedApplication] applicationIconBadgeNumber];
+    // Discount Zendesk unread notifications when determining if we need to show the notificationsTabBarImageUnread.
+    NSInteger count = [[UIApplication sharedApplication] applicationIconBadgeNumber] - [ZendeskUtils unreadNotificationsCount];
     UITabBarItem *notificationsTabBarItem = self.notificationsNavigationController.tabBarItem;
-    if (count == 0) {
-        notificationsTabBarItem.image = self.notificationsTabBarImage;
-        notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
-    } else {
+    if (count > 0) {
         notificationsTabBarItem.image = self.notificationsTabBarImageUnread;
         notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");
+    } else {
+        notificationsTabBarItem.image = self.notificationsTabBarImage;
+        notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
     }
 }
 
 - (void)updateMeNotificationIcon
 {
     UITabBarItem *meTabBarItem = self.tabBar.items[WPTabMe];
+
     if ([ZendeskUtils showSupportNotificationIndicator]) {
-        meTabBarItem.image = self.meTabBarImageUnread;
-        meTabBarItem.selectedImage = self.meTabBarImageUnread;
+        meTabBarItem.image = self.meTabBarImageUnreadUnselected;
+        meTabBarItem.selectedImage = self.meTabBarImageUnreadSelected;
     } else {
         meTabBarItem.image = self.meTabBarImage;
         meTabBarItem.selectedImage = self.meTabBarImage;

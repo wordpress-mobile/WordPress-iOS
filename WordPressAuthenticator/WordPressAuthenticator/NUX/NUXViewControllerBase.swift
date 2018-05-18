@@ -182,7 +182,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
 
             notificationView = helpIndicator
             helpNotificationSize = CGSize(width: 10, height: 10)
-            let notificationCenterOffset = CGPoint(x: -5, y: 3)
+            let notificationCenterOffset = CGPoint(x: 5, y: 8)
             notificationViewCenterXConstraint = notificationView.centerXAnchor.constraint(equalTo: helpButton.trailingAnchor,
                                                                                           constant: helpButton.contentEdgeInsets.top + notificationCenterOffset.x)
             notificationViewCenterYConstraint = notificationView.centerYAnchor.constraint(equalTo: helpButton.topAnchor,
