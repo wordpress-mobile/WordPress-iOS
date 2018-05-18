@@ -1,5 +1,5 @@
 /// Encapsulates a command to toggle following a post
-final class FollowAction {
+final class ReaderFollowAction {
     func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)? = nil) {
         let siteID = post.siteID
         var errorMessage: String
