@@ -1,29 +1,6 @@
 import Foundation
 import WPMediaPicker
 
-/*** JSON Structure of a StockPhoto object coming from the API ***
- {
-     "ID": "PEXELS-924676",
-     "URL": "https://images.pexels.com/photos/924676/pexels-photo-924676.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-     "date": "2018-05-16 00:00:00",
-     "name": "pexels-photo-924676.jpeg",
-     "file": "pexels-photo-924676.jpeg",
-     "title": "shallow focus photography of magnifying glass with black frame",
-     "caption": "Photo by Shane Aldendorff on <a href=\"https://www.pexels.com/\" rel=\"nofollow\">Pexels.com</a>",
-     "guid": "{\"url\":\"https:\\/\\/images.pexels.com\\/photos\\/924676\\/pexels-photo-924676.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940\",\"name\":\"pexels-photo-924676.jpeg\",\"title\":\"shallow focus photography of magnifying glass with black frame\",\"caption\":\"Photo by Shane Aldendorff on <a href=\\\\\\\"https:\\/\\/www.pexels.com\\/\\\\\\\" rel=\\\\\\\"nofollow\\\\\\\">Pexels.com<\\/a>\"}",
-     "height": 1253,
-     "width": 1880,
-     "thumbnails": {
-     "large": "https://images.pexels.com/photos/924676/pexels-photo-924676.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-     "medium": "https://images.pexels.com/photos/924676/pexels-photo-924676.jpeg?auto=compress&cs=tinysrgb&h=350",
-     "post-thumbnail": "https://images.pexels.com/photos/924676/pexels-photo-924676.jpeg?auto=compress&cs=tinysrgb&h=130",
-     "thumbnail": "https://images.pexels.com/photos/924676/pexels-photo-924676.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=200&w=280"
-     },
-     "type": "image",
-     "extension": "jpeg"
- }
-*/
-
 struct ThumbnailCollection {
     private(set) var largeURL: URL
     private(set) var mediumURL: URL
