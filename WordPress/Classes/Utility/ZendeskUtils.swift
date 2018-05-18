@@ -480,6 +480,7 @@ private extension ZendeskUtils {
         
         // Since we have account information, remove no account information.
         UserDefaults.standard.removeObject(forKey: Constants.zendeskNoAccountProfileUDKey)
+        UserDefaults.standard.synchronize()
     }
     
     static func saveNoAccountProfileToUD() {
@@ -598,7 +599,7 @@ private extension ZendeskUtils {
         return networkInformation.joined(separator: "\n")
     }
     
-    // MARK: - NSNotification Helpers
+    // MARK: - Push Notification Helpers
     
     static func postNotificationReceived() {
         // Updating unread indicators should trigger UI updates, so send notification in main thread.
