@@ -1,5 +1,5 @@
 /// Static helpers for Reader actions
-struct ActionHelpers {
+struct ReaderActionHelpers {
     static func existingObject<T>(for objectID: NSManagedObjectID?, in context: NSManagedObjectContext) -> T? {
         guard let objectID = objectID else {
             return nil
