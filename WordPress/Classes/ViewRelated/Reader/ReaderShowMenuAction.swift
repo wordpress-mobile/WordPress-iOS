@@ -1,5 +1,5 @@
 /// Encapsulates a command to create and handle the extended menu for each post in Reader
-final class ShowMenuAction {
+final class ReaderShowMenuAction {
     private let isLoggedIn: Bool
 
     init(loggedIn: Bool) {
