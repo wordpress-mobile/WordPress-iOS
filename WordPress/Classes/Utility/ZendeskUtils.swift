@@ -13,6 +13,9 @@ extension NSNotification.Name {
     public static let ZendeskPushNotificationClearedNotification = NSNotification.Name.ZendeskPushNotificationClearedNotification
 }
 
+/// This class provides the functionality to communicate with Zendesk for Help Center and support ticket interaction,
+/// as well as displaying views for the Help Center, new tickets, and ticket list.
+///
 @objc class ZendeskUtils: NSObject {
     
     // MARK: - Public Properties
@@ -80,6 +83,8 @@ extension NSNotification.Name {
     
     // MARK: - Show Zendesk Views
     
+    /// Displays the Zendesk Help Center from the given controller, filtered by the mobile category and articles labelled as iOS.
+    ///
     func showHelpCenterIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
         
         ZendeskUtils.configureViewController(controller)
@@ -112,6 +117,8 @@ extension NSNotification.Name {
         ZDKHelpCenter.presentOverview(ZendeskUtils.presentInController, with: helpCenterContentModel)
     }
     
+    /// Displays the Zendesk New Request view from the given controller, for users to submit new tickets.
+    ///
     func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
         
         ZendeskUtils.configureViewController(controller)
@@ -128,6 +135,8 @@ extension NSNotification.Name {
         }
     }
     
+    /// Displays the Zendesk Request List view from the given controller, allowing user to access their tickets.
+    ///
     func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
         
         ZendeskUtils.configureViewController(controller)
@@ -145,10 +154,15 @@ extension NSNotification.Name {
     
     // MARK: - Device Registration
     
+    /// Sets the device ID to be registered with Zendesk for push notifications.
+    /// Actual registration is done when a user selects one of the Zendesk views.
+    ///
     static func setNeedToRegisterDevice(_ identifier: String) {
         ZendeskUtils.sharedInstance.deviceID = identifier
     }
     
+    /// Unregisters the device ID from Zendesk for push notifications.
+    ///
     static func unregisterDevice(_ identifier: String) {
         ZDKConfig.instance().disablePush(identifier) { status, error in
             if let error = error {
@@ -161,6 +175,10 @@ extension NSNotification.Name {
     
     // MARK: - Push Notifications
     
+    /// This handles in-app Zendesk push notifications.
+    /// If a Zendesk view is being displayed, an alert will appear allowing
+    /// the user to view the updated ticket.
+    ///
     static func handlePushNotification(_ userInfo: NSDictionary) {
         
         guard zendeskEnabled == true,
@@ -178,12 +196,21 @@ extension NSNotification.Name {
                                clientId: zdClientId)
     }
     
+    /// This handles all Zendesk push notifications. (The in-app flow goes through here as well.)
+    /// When a notification is received, an NSNotification is posted to allow
+    /// the various indicators to be displayed.
+    ///
     static func pushNotificationReceived() {
         unreadNotificationsCount += 1
         saveUnreadCountToUD()
         postNotificationReceived()
     }
     
+    /// When a user views the Ticket List, this is called to:
+    /// - clear the notification count
+    /// - update the application badge count
+    /// - post an NSNotification so the various indicators can be cleared.
+    ///
     static func pushNotificationRead() {
         UIApplication.shared.applicationIconBadgeNumber -= unreadNotificationsCount
         unreadNotificationsCount = 0
@@ -193,7 +220,8 @@ extension NSNotification.Name {
     
     // MARK: - Helpers
     
-    // Specifically for WPError, which is ObjC & has the sourceTag as a String.
+    /// Specifically for WPError, which is ObjC & has the sourceTag as a String.
+    ///
     static func updateSourceTag(with description: String) {
         ZendeskUtils.sharedInstance.sourceTagDescription = description
     }
