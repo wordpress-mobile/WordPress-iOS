@@ -1,5 +1,5 @@
 /// Encapsulates a command show a post's attribution
-final class ShowAttributionAction {
+final class ReaderShowAttributionAction {
     func execute(with post: ReaderPost, context: NSManagedObjectContext, origin: UIViewController) {
         // Fail safe. If there is no attribution exit.
         guard let sourceAttribution = post.sourceAttribution else {
