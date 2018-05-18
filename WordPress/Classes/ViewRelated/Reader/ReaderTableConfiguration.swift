@@ -13,7 +13,7 @@ final class ReaderTableConfiguration {
     private let rowHeight = CGFloat(300.0)
 
     func setup(_ tableView: UITableView) {
-        setUpAccesibility(tableView)
+        setupAccessibility(tableView)
         setUpSeparator(tableView)
         setUpCardCell(tableView)
         setUpBlockerCell(tableView)
@@ -21,7 +21,7 @@ final class ReaderTableConfiguration {
         setUpCrossPostCell(tableView)
     }
 
-    private func setUpAccesibility(_ tableView: UITableView) {
+    private func setupAccessibility(_ tableView: UITableView) {
         tableView.accessibilityIdentifier = "Reader"
     }
 
