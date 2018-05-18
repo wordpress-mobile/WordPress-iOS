@@ -8,7 +8,13 @@ class AnimatedImageCache {
     // MARK: Singleton
 
     static let shared: AnimatedImageCache = AnimatedImageCache()
-    private init() {}
+    private init() {
+        NotificationCenter.default.addObserver(self, selector: #selector(AnimatedImageCache.handleMemoryWarning), name: .UIApplicationDidReceiveMemoryWarning, object: nil)
+    }
+
+    @objc func handleMemoryWarning() {
+        clearCache()
+    }
 
     // MARK: Private fields
 
