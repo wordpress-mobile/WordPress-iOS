@@ -1161,6 +1161,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     if ([[NSUserDefaults standardUserDefaults] notificationPrimerAlertWasDisplayed]) {
         return;
     }
+    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:mainContext];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    if (defaultAccount == nil) {
+        return;
+    }
     [[PushNotificationsManager shared] loadAuthorizationStatusWithCompletion:^(UNAuthorizationStatus enabled) {
         if (enabled == UNAuthorizationStatusNotDetermined) {
             [NSUserDefaults standardUserDefaults].notificationPrimerAlertWasDisplayed = YES;
