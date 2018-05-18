@@ -18,10 +18,24 @@
 ///
 @objc class ImageLoader: NSObject {
 
+    // MARK: Public Fields
+
+    public var photonQuality: UInt {
+        get {
+            return selectedPhotonQuality
+        }
+        set(newPhotonQuality) {
+            selectedPhotonQuality = min(max(newPhotonQuality, Constants.minPhotonQuality), Constants.maxPhotonQuality)
+        }
+    }
+
+    // MARK: Private Fields
+
     private unowned let imageView: CachedAnimatedImageView
     private var successHandler: (() -> Void)?
     private var errorHandler: ((Error?) -> Void)?
     private var placeholder: UIImage?
+    private var selectedPhotonQuality: UInt = Constants.defaultPhotonQuality
 
     @objc init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs) {
         self.imageView = imageView
@@ -127,7 +141,7 @@
         } else if post.isSelfHostedWithCredentials {
             downloadImage(from: url)
         } else {
-            loadProtonUrl(with: url, preferedSize: size)
+            loadPhotonUrl(with: url, preferedSize: size)
         }
     }
 
@@ -142,14 +156,18 @@
         downloadImage(from: request)
     }
 
-    /// Loads the image from the Proton API with the given size.
+    /// Loads the image from the Photon API with the given size.
     ///
-    private func loadProtonUrl(with url: URL, preferedSize size: CGSize) {
-        guard let protonURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: url) else {
+    private func loadPhotonUrl(with url: URL, preferedSize size: CGSize) {
+        guard let photonURL = PhotonImageURLHelper.photonURL(with: size,
+                                                             forImageURL: url,
+                                                             forceResize: true,
+                                                             imageQuality: selectedPhotonQuality) else {
             downloadImage(from: url)
             return
         }
-        downloadImage(from: protonURL)
+
+        downloadImage(from: photonURL)
     }
 
     private func loadImage(from media: Media, preferredSize size: CGSize) {
@@ -230,5 +248,15 @@
             return remoteUrl
         }
         return nil
+    }
+}
+
+// MARK: - Constants
+
+private extension ImageLoader {
+    enum Constants {
+        static let minPhotonQuality: UInt = 1
+        static let maxPhotonQuality: UInt = 100
+        static let defaultPhotonQuality: UInt = 80
     }
 }
