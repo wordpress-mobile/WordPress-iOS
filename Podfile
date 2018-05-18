@@ -23,7 +23,7 @@ def shared_with_networking_pods
   pod 'AFNetworking', '3.2.1'
   pod 'Alamofire', '4.7.2'
   pod 'wpxmlrpc', '0.8.3'
-  pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit =>'6889c150c34a2081f92fd58876ee3dbb3a70160b'
+  pod 'WordPressKit', '1.0.3'
 end
 
 def shared_test_pods
