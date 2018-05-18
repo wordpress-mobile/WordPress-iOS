@@ -100,4 +100,9 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
         }
         return imageView.intrinsicContentSize.width / imageView.intrinsicContentSize.height
     }
+
+    func clean() {
+        imageView.clean()
+        imageView.prepForReuse()
+    }
 }
