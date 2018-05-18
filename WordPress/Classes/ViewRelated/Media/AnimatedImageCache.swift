@@ -12,8 +12,8 @@ class AnimatedImageCache {
         NotificationCenter.default.addObserver(self, selector: #selector(AnimatedImageCache.handleMemoryWarning), name: .UIApplicationDidReceiveMemoryWarning, object: nil)
     }
 
-    @objc func handleMemoryWarning() {
-        clearCache()
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: Private fields
@@ -26,7 +26,11 @@ class AnimatedImageCache {
 
     fileprivate static let cache = NSCache<AnyObject, AnyObject>()
 
-    // MARK: - Instance methods
+    // MARK: Instance methods
+
+    @objc func handleMemoryWarning() {
+        clearCache()
+    }
 
     func clearCache() {
         AnimatedImageCache.cache.removeAllObjects()
