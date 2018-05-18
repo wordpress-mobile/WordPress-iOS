@@ -69,7 +69,7 @@ target 'WordPress' do
   pod 'WPMediaPicker', '1.0'
   pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'2a25da7b9b687b5e05ce128423d99f771673a6c4'
   pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '2a25da7b9b687b5e05ce128423d99f771673a6c4'
-  pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '8b8732049aeefe0863519e9efbd88affd1e13a19'
+  pod 'WordPressUI', '1.0.1'
 
   target 'WordPressTest' do
     inherit! :search_paths
@@ -90,7 +90,7 @@ target 'WordPress' do
 
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'2a25da7b9b687b5e05ce128423d99f771673a6c4'
     pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '2a25da7b9b687b5e05ce128423d99f771673a6c4'
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '8b8732049aeefe0863519e9efbd88affd1e13a19'
+    pod 'WordPressUI', '1.0.1'
     pod 'Gridicons', '0.15'
   end
 
@@ -106,7 +106,7 @@ target 'WordPress' do
 
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'2a25da7b9b687b5e05ce128423d99f771673a6c4'
     pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '2a25da7b9b687b5e05ce128423d99f771673a6c4'
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '8b8732049aeefe0863519e9efbd88affd1e13a19'
+    pod 'WordPressUI', '1.0.1'
     pod 'Gridicons', '0.15'
   end
 
@@ -137,7 +137,7 @@ target 'WordPressAuthenticator' do
   ## ====================
   ##
   pod 'Gridicons', '0.15'
-  pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '8b8732049aeefe0863519e9efbd88affd1e13a19'
+  pod 'WordPressUI', '1.0.1'
 
   ## Third party libraries
   ## =====================
@@ -171,7 +171,7 @@ target 'WordPressComStatsiOS' do
   ## Automattic libraries
   ## ====================
   ##
-  pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '8b8732049aeefe0863519e9efbd88affd1e13a19'
+  pod 'WordPressUI', '1.0.1'
 
   target 'WordPressComStatsiOSTests' do
     inherit! :search_paths
