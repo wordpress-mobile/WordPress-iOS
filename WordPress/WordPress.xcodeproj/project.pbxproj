@@ -856,7 +856,7 @@
 		D817799420ABFDB300330998 /* ReaderPostCellActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D817799320ABFDB300330998 /* ReaderPostCellActions.swift */; };
 		D81879D920ABC647000CFA95 /* ReaderTableConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81879D820ABC647000CFA95 /* ReaderTableConfiguration.swift */; };
 		D8212CB120AA64E1008E8AE8 /* ReaderLikeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CB020AA64E1008E8AE8 /* ReaderLikeAction.swift */; };
-		D8212CB320AA6861008E8AE8 /* FollowAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CB220AA6861008E8AE8 /* FollowAction.swift */; };
+		D8212CB320AA6861008E8AE8 /* ReaderFollowAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CB220AA6861008E8AE8 /* ReaderFollowAction.swift */; };
 		D8212CB520AA68D5008E8AE8 /* SubscribingNotificationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CB420AA68D5008E8AE8 /* SubscribingNotificationAction.swift */; };
 		D8212CB720AA7703008E8AE8 /* ShareAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CB620AA7703008E8AE8 /* ShareAction.swift */; };
 		D8212CB920AA77AD008E8AE8 /* ReaderActionHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CB820AA77AD008E8AE8 /* ReaderActionHelpers.swift */; };
@@ -2392,7 +2392,7 @@
 		D817799320ABFDB300330998 /* ReaderPostCellActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderPostCellActions.swift; sourceTree = "<group>"; };
 		D81879D820ABC647000CFA95 /* ReaderTableConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTableConfiguration.swift; sourceTree = "<group>"; };
 		D8212CB020AA64E1008E8AE8 /* ReaderLikeAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderLikeAction.swift; sourceTree = "<group>"; };
-		D8212CB220AA6861008E8AE8 /* FollowAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowAction.swift; sourceTree = "<group>"; };
+		D8212CB220AA6861008E8AE8 /* ReaderFollowAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderFollowAction.swift; sourceTree = "<group>"; };
 		D8212CB420AA68D5008E8AE8 /* SubscribingNotificationAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribingNotificationAction.swift; sourceTree = "<group>"; };
 		D8212CB620AA7703008E8AE8 /* ShareAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAction.swift; sourceTree = "<group>"; };
 		D8212CB820AA77AD008E8AE8 /* ReaderActionHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderActionHelpers.swift; sourceTree = "<group>"; };
@@ -5566,7 +5566,7 @@
 			children = (
 				D8160441209C1B0F00ABAFFA /* ReaderSaveForLaterAction.swift */,
 				D8212CB020AA64E1008E8AE8 /* ReaderLikeAction.swift */,
-				D8212CB220AA6861008E8AE8 /* FollowAction.swift */,
+				D8212CB220AA6861008E8AE8 /* ReaderFollowAction.swift */,
 				D8212CB420AA68D5008E8AE8 /* SubscribingNotificationAction.swift */,
 				D8212CB620AA7703008E8AE8 /* ShareAction.swift */,
 				D8212CB820AA77AD008E8AE8 /* ReaderActionHelpers.swift */,
@@ -7347,7 +7347,7 @@
 				17A28DC3205001A900EA6D9E /* FilterBar.swift in Sources */,
 				B538F3891EF46EC8001003D5 /* UnknownEditorViewController.swift in Sources */,
 				937D9A1119F838C2007B9D5F /* AccountToAccount22to23.swift in Sources */,
-				D8212CB320AA6861008E8AE8 /* FollowAction.swift in Sources */,
+				D8212CB320AA6861008E8AE8 /* ReaderFollowAction.swift in Sources */,
 				D8A3A5AF206A442800992576 /* StockPhotosDataSource.swift in Sources */,
 				E6F058021C1A122B008000F9 /* ReaderPostMenu.swift in Sources */,
 				B5B410B61B1772B000CFCF8D /* NavigationTitleView.swift in Sources */,
