@@ -17,7 +17,7 @@ final class ReaderShowMenuAction {
                                                style: .destructive,
                                                handler: { (action: UIAlertAction) in
                                                 if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
-                                                    BlockSiteAction(asBlocked: true).execute(with: post, context: context, completion: {})
+                                                    ReaderBlockSiteAction(asBlocked: true).execute(with: post, context: context, completion: {})
                                                 }
             })
         }
