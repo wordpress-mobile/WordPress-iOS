@@ -104,7 +104,7 @@ final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         guard let origin = origin else {
             return
         }
-        VisitSiteAction().execute(with: post, context: ContextManager.sharedInstance().mainContext, origin: origin)
+        ReaderVisitSiteAction().execute(with: post, context: ContextManager.sharedInstance().mainContext, origin: origin)
     }
 
     fileprivate func showAttributionForPost(_ post: ReaderPost) {
@@ -123,6 +123,6 @@ final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         guard let origin = origin else {
             return
         }
-        ShareAction().execute(with: post, context: context, anchor: anchorView, vc: origin)
+        ReaderShareAction().execute(with: post, context: context, anchor: anchorView, vc: origin)
     }
 }

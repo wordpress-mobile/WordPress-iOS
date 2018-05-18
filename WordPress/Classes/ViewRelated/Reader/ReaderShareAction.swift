@@ -1,5 +1,5 @@
 /// Encapsulates a command share a post
-final class ShareAction {
+final class ReaderShareAction {
     func execute(with post: ReaderPost, context: NSManagedObjectContext, anchor: UIView, vc: UIViewController) {
         let postID = post.objectID
         if let post: ReaderPost = ReaderActionHelpers.existingObject(for: postID, in: context) {
