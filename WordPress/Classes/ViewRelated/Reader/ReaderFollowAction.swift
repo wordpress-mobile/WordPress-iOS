@@ -24,7 +24,7 @@ final class ReaderFollowAction {
                                     success: {
                                         completion?()
             },
-                                    failure: { (error: Error?) in
+                                    failure: { _ in
                                         let cancelTitle = NSLocalizedString("OK", comment: "Text of an OK button to dismiss a prompt.")
                                         let alertController = UIAlertController(title: errorTitle,
                                                                                 message: errorMessage,
