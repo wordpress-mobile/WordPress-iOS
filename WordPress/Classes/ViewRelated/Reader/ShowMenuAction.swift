@@ -16,7 +16,7 @@ final class ShowMenuAction {
             alertController.addActionWithTitle(ReaderPostMenuButtonTitles.blockSite,
                                                style: .destructive,
                                                handler: { (action: UIAlertAction) in
-                                                if let post: ReaderPost = ActionHelpers.existingObject(for: post.objectID, in: context) {
+                                                if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
                                                     BlockSiteAction(asBlocked: true).execute(with: post, context: context, completion: {})
                                                 }
             })
@@ -29,7 +29,7 @@ final class ShowMenuAction {
             alertController.addActionWithTitle(buttonTitle,
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
-                                                if let topic: ReaderSiteTopic = ActionHelpers.existingObject(for: topic.objectID, in: context) {
+                                                if let topic: ReaderSiteTopic = ReaderActionHelpers.existingObject(for: topic.objectID, in: context) {
                                                     SubscribingNotificationAction().execute(for: topic.siteID, context: context, value: !topic.isSubscribedForPostNotifications)
                                                 }
             })
@@ -41,7 +41,7 @@ final class ShowMenuAction {
             alertController.addActionWithTitle(buttonTitle,
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
-                                                if let post: ReaderPost = ActionHelpers.existingObject(for: post.objectID, in: context) {
+                                                if let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) {
                                                     FollowAction().execute(with: post, context: context)
                                                 }
             })
