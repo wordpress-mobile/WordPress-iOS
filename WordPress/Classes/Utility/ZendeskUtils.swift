@@ -15,19 +15,24 @@ extension NSNotification.Name {
 
 @objc class ZendeskUtils: NSObject {
 
-    // MARK: - Properties
+    // MARK: - Public Properties
 
     static var sharedInstance: ZendeskUtils = ZendeskUtils()
-    private override init() {}
-
     static var zendeskEnabled = false
+    @objc static var unreadNotificationsCount = 0
 
     @objc static var showSupportNotificationIndicator: Bool {
         return unreadNotificationsCount > 0
     }
 
-    @objc static var unreadNotificationsCount = 0
+    struct PushNotificationIdentifiers {
+        static let key = "type"
+        static let type = "zendesk"
+    }
 
+    // MARK: - Private Properties
+
+    private override init() {}
     private var sourceTag: WordPressSupportSourceTag?
 
     // Specifically for WPError, which has the sourceTag as a String.
@@ -36,21 +41,15 @@ extension NSNotification.Name {
     private var userName: String?
     private var userEmail: String?
     private var deviceID: String?
+    private var usingAnonymousIDForHelpCenter = false
 
     private static var zdAppID: String?
     private static var zdUrl: String?
     private static var zdClientId: String?
-
     private static var presentInController: UIViewController?
-    private var usingAnonymousIDForHelpCenter = false
 
     private static var appVersion: String {
         return Bundle.main.shortVersionString() ?? Constants.unknownValue
-    }
-
-    struct PushNotificationIdentifiers {
-        static let key = "type"
-        static let type = "zendesk"
     }
 
     // MARK: - Public Methods
