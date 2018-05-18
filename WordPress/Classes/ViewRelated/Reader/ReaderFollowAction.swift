@@ -16,7 +16,7 @@ final class ReaderFollowAction {
         let toFollow = !post.isFollowing
 
         if !toFollow {
-            SubscribingNotificationAction().execute(for: siteID, context: context, value: false)
+            ReaderSubscribingNotificationAction().execute(for: siteID, context: context, value: false)
 
         }
 

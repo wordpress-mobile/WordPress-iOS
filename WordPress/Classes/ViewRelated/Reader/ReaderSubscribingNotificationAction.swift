@@ -1,5 +1,5 @@
 /// Encapsulates a command to toggle subscribing to notifications for a site
-final class SubscribingNotificationAction {
+final class ReaderSubscribingNotificationAction {
     func execute(for siteID: NSNumber?, context: NSManagedObjectContext, value: Bool) {
         toggleSubscribingNotifications(for: siteID, subscribe: value, context: context)
     }
