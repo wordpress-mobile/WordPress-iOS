@@ -84,6 +84,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
     // Basic networking setup
     [self configureReachability];
+    [self configureSelfHostedChallengeHandler];
 
     // Set the main window up
     [self.window makeKeyAndVisible];
