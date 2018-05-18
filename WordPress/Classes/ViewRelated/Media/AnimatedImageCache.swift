@@ -24,7 +24,17 @@ class AnimatedImageCache {
         return session
     }()
 
-    fileprivate static let cache = NSCache<AnyObject, AnyObject>()
+    fileprivate static var cache: NSCache<AnyObject, AnyObject> = {
+        let cache = NSCache<AnyObject, AnyObject>()
+        cache.totalCostLimit = totalCostLimit()
+
+        let bcf = ByteCountFormatter()
+        bcf.allowedUnits = [.useMB]
+        bcf.countStyle = .file
+        let cacheSizeinMB = bcf.string(fromByteCount: Int64(totalCostLimit()))
+        DDLogDebug("🗄 AnimatedImageCache initialized with total cost limit of \(cacheSizeinMB)")
+        return cache
+    }()
 
     // MARK: Instance methods
 
@@ -92,11 +102,15 @@ class AnimatedImageCache {
 
             let staticImage = UIImage(data: data)
             if let key = urlRequest.url {
-                AnimatedImageCache.cache.setObject(data as NSData, forKey: key as NSURL)
+                let dataByteCost = AnimatedImageCache.byteCost(for: data)
+                AnimatedImageCache.cache.setObject(data as NSData, forKey: key as NSURL, cost: dataByteCost)
+                DDLogDebug("🗄 Cached gif data for \(key) with byteCost of \(dataByteCost). Cache total cost limit is: \(AnimatedImageCache.cache.totalCostLimit) bytes.")
 
                 // Creating a static image from GIF data is an expensive op, so let's try to do it once...
+                let imageByteCost = AnimatedImageCache.byteCost(for: staticImage)
                 let imageKey = key.absoluteString + Constants.keyStaticImageSuffix
-                AnimatedImageCache.cache.setObject(staticImage as AnyObject, forKey: imageKey as AnyObject)
+                AnimatedImageCache.cache.setObject(staticImage as AnyObject, forKey: imageKey as AnyObject, cost: imageByteCost)
+                DDLogDebug("🗄 Cached static image for \(key) with byteCost of \(imageByteCost). Cache total cost limit is: \(AnimatedImageCache.cache.totalCostLimit) bytes.")
             }
             success?(data, staticImage)
         })
@@ -106,9 +120,34 @@ class AnimatedImageCache {
     }
 }
 
+// MARK: - Private Helpers
+
+private extension AnimatedImageCache {
+    static func byteCost(for image: UIImage?) -> Int {
+        guard let image = image, let imageRef = image.cgImage else {
+            return 0
+        }
+        return imageRef.bytesPerRow * imageRef.height // Cost in bytes
+    }
+
+    static func byteCost(for data: Data?) -> Int {
+        guard let data = data else {
+            return 0
+        }
+        return data.count // Cost in bytes
+    }
+
+    static func totalCostLimit() -> Int {
+        let physicalMemory = ProcessInfo.processInfo.physicalMemory
+        let ratio = physicalMemory <= (1024 * 1024 * 512 /* 512 Mb */) ? 0.1 : 0.2
+        let limit = physicalMemory / UInt64(1 / ratio)
+        return limit > UInt64(Int.max) ? Int.max : Int(limit)
+    }
+}
+
 // MARK: - Constants
 
-extension AnimatedImageCache {
+private extension AnimatedImageCache {
     struct Constants {
         static let keyStaticImageSuffix = "_static_image"
     }
