@@ -963,7 +963,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             return
         }
 
-        SaveForLaterAction().execute(with: readerPost, context: context) { [weak self] in
+        ReaderSaveForLaterAction().execute(with: readerPost, context: context) { [weak self] in
             self?.saveForLaterButton.isSelected = readerPost.isSavedForLater
         }
     }

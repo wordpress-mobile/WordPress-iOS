@@ -1,6 +1,7 @@
 import WordPressFlux
 
-final class SaveForLaterAction {
+/// Encapsulates saving a post for later
+final class ReaderSaveForLaterAction {
     private enum Strings {
         static let postSaved = NSLocalizedString("Post saved.", comment: "Title of the notification presented in Reader when a post is saved for later")
         static let postRemoved = NSLocalizedString("Post removed.", comment: "Title of the notification presented in Reader when a post is removed from save for later")
@@ -16,22 +17,23 @@ final class SaveForLaterAction {
         self.visibleConfirmation = visibleConfirmation
     }
 
-    func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
+    func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)? = nil) {
         toggleSavedForLater(post, context: context, completion: completion)
     }
 
-    private func toggleSavedForLater(_ post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
+    private func toggleSavedForLater(_ post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)?) {
         let readerPostService = ReaderPostService(managedObjectContext: context)
-        readerPostService.toggleSavedForLater(for: post, success: { [weak self] in
-            self?.presentSuccessNotice(for: post, context: context, completion: completion)
-            completion()
-            }, failure: { [weak self] error in
-                self?.presentErrorNotice(error, activating: !post.isSavedForLater)
-                completion()
+
+        readerPostService.toggleSavedForLater(for: post, success: {
+            self.presentSuccessNotice(for: post, context: context, completion: completion)
+            completion?()
+            }, failure: { error in
+                self.presentErrorNotice(error, activating: !post.isSavedForLater)
+                completion?()
         })
     }
 
-    private func presentSuccessNotice(for post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
+    private func presentSuccessNotice(for post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)?) {
         guard visibleConfirmation else {
             return
         }
@@ -56,7 +58,7 @@ final class SaveForLaterAction {
         present(notice)
     }
 
-    private func presentPostRemovedNotice(for post: ReaderPost, context: NSManagedObjectContext, completion: @escaping () -> Void) {
+    private func presentPostRemovedNotice(for post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)?) {
         guard visibleConfirmation else {
             return
         }
