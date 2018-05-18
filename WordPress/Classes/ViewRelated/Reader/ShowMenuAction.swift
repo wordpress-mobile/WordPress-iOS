@@ -51,7 +51,7 @@ final class ShowMenuAction {
         alertController.addActionWithTitle(ReaderPostMenuButtonTitles.share,
                                            style: .default,
                                            handler: { (action: UIAlertAction) in
-                                            ShareAction().execute(with: post, context: context, anchor: anchor, vc: vc)
+                                            ReaderShareAction().execute(with: post, context: context, anchor: anchor, vc: vc)
         })
 
         if WPDeviceIdentification.isiPad() {

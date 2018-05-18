@@ -1,5 +1,5 @@
 /// Encapsulates a command to visit a site
-final class VisitSiteAction {
+final class ReaderVisitSiteAction {
     func execute(with post: ReaderPost, context: NSManagedObjectContext, origin: UIViewController) {
         guard
             let permalink = post.permaLink,
