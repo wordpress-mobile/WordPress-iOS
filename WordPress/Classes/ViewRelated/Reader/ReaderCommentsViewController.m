@@ -1031,7 +1031,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     UIViewController *controller = nil;
     BOOL isSupportedNatively = [WPImageViewController isUrlSupported:image.linkURL];
 
-    if (isSupportedNatively) {
+    if (image.imageView.animatedGifData != nil) {
+        controller = [[WPImageViewController alloc] initWithGifData:image.imageView.animatedGifData];
+    } else if (isSupportedNatively) {
         controller = [[WPImageViewController alloc] initWithImage:image.imageView.image andURL:image.linkURL];
     } else if (image.linkURL) {
         [self presentWebViewControllerWithURL:image.linkURL];
