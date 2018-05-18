@@ -177,6 +177,9 @@ class NotificationSettingDetailsViewController: UITableViewController {
     }
 
     private func sectionsForUnkownDeviceStream() -> [Section] {
+        defer {
+            WPAnalytics.track(.pushNotificationPrimerSeen, withProperties: [Analytics.locationKey: Analytics.alertKey])
+        }
         let description     = NSLocalizedString("Allow push notifications", comment: "Shown to the user in settings when they haven't yet allowed or denied push notifications")
         let row             = Row(kind: .Text, description: description, key: nil, value: nil)
 
@@ -275,7 +278,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
     private func requestNoficationAuthorization() {
         defer {
-            WPAnalytics.track(.pushNotificationPrimerNoTapped, withProperties: [Analytics.locationKey: Analytics.alertKey])
+            WPAnalytics.track(.pushNotificationPrimerAllowTapped, withProperties: [Analytics.locationKey: Analytics.alertKey])
         }
         InteractiveNotificationsManager.shared.requestAuthorization { [weak self] in
             self?.refreshPushAuthorizationStatus()
