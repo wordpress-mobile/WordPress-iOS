@@ -122,8 +122,8 @@ class NotificationSettingDetailsViewController: UITableViewController {
             sections = sectionsForDisabledDeviceStream()
         } else if isDeviceStreamUnknown() {
             sections = sectionsForUnkownDeviceStream()
-        } else {
-            sections = sectionsForSettings(settings!, stream: stream!)
+        } else if let settings = settings, let stream = stream {
+            sections = sectionsForSettings(settings, stream: stream)
         }
         tableView.reloadData()
     }
