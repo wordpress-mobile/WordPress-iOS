@@ -18,6 +18,6 @@ final class MenuAction {
     }
 
     fileprivate func showMenuForPost(_ post: ReaderPost, context: NSManagedObjectContext, topic: ReaderSiteTopic? = nil, readerTopic: ReaderAbstractTopic?, fromView anchorView: UIView, vc: UIViewController) {
-        ShowMenuAction(loggedIn: isLoggedIn).execute(with: post, context: context, topic: topic, readerTopic: readerTopic, anchor: anchorView, vc: vc)
+        ReaderShowMenuAction(loggedIn: isLoggedIn).execute(with: post, context: context, topic: topic, readerTopic: readerTopic, anchor: anchorView, vc: vc)
     }
 }
