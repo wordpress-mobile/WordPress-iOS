@@ -399,7 +399,7 @@ import WordPressFlux
 
 
     @objc func displayLoadingViewIfNeeded() {
-        let count = content.contentCount()
+        let count = content.contentCount
         if count > 0 {
             return
         }
@@ -545,7 +545,7 @@ import WordPressFlux
 
         bumpStats()
 
-        let count = content.contentCount()
+        let count = content.contentCount
 
         // Make sure we're showing the no results view if appropriate
         if !syncHelper.isSyncing && count == 0 {
@@ -820,7 +820,7 @@ import WordPressFlux
     }
 
     @objc func canLoadMore() -> Bool {
-        if content.contentCount() == 0 {
+        if content.contentCount == 0 {
             return false
         }
         return canSync()
@@ -870,10 +870,10 @@ import WordPressFlux
     /// Not intended for use as part of a user interaction. See syncIfAppropriate instead.
     ///
     @objc func backgroundFetch(_ completionHandler: @escaping ((UIBackgroundFetchResult) -> Void)) {
-        let lastSeenPostID = (content.content()?.first as? ReaderPost)?.postID ?? -1
+        let lastSeenPostID = (content.content?.first as? ReaderPost)?.postID ?? -1
 
         syncHelper?.backgroundSync(success: { [weak self, weak lastSeenPostID] in
-            let newestFetchedPostID = (self?.content.content()?.first as? ReaderPost)?.postID ?? -1
+            let newestFetchedPostID = (self?.content.content?.first as? ReaderPost)?.postID ?? -1
             if lastSeenPostID == newestFetchedPostID {
                 completionHandler(.noData)
             } else {
@@ -1034,7 +1034,7 @@ import WordPressFlux
             return
         }
 
-        guard let post = content.content()?.last as? ReaderPost else {
+        guard let post = content.content?.last as? ReaderPost else {
             DDLogError("Error: Unable to retrieve an existing reader gap marker.")
             return
         }
@@ -1044,7 +1044,7 @@ import WordPressFlux
         let earlierThan = post.sortDate
         let syncContext = ContextManager.sharedInstance().newDerivedContext()
         let service =  ReaderPostService(managedObjectContext: syncContext)
-        let offset = content.contentCount()
+        let offset = content.contentCount
         syncContext.perform {
             guard let topicInContext = (try? syncContext.existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
                 DDLogError("Error: Could not retrieve an existing topic via its objectID")
@@ -1248,7 +1248,7 @@ extension ReaderStreamViewController: WPContentSyncHelperDelegate {
 
 
     func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
-        if content.isScrolling() {
+        if content.isScrolling {
             cleanupAndRefreshAfterScrolling = true
             return
         }
@@ -1307,7 +1307,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
 
     public func tableViewDidChangeContent(_ tableView: UITableView) {
-        if content.contentCount() == 0 {
+        if content.contentCount == 0 {
             displayNoResultsView()
         }
     }
@@ -1358,7 +1358,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let posts = content.content() as? [ReaderPost] else {
+        guard let posts = content.content as? [ReaderPost] else {
             return UITableViewCell()
         }
 
@@ -1411,7 +1411,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return
         }
 
-        guard let posts = content.content() as? [ReaderPost] else {
+        guard let posts = content.content as? [ReaderPost] else {
             return
         }
         // Bump the render tracker if necessary.
@@ -1424,7 +1424,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let posts = content.content() as? [ReaderPost] else {
+        guard let posts = content.content as? [ReaderPost] else {
             DDLogError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
             return
         }
@@ -1517,7 +1517,7 @@ extension ReaderStreamViewController: WPNoResultsViewDelegate {
 
 extension ReaderStreamViewController: NetworkAwareUI {
     func contentIsEmpty() -> Bool {
-        return content.contentCount() == 0
+        return content.contentCount == 0
     }
 }
 
