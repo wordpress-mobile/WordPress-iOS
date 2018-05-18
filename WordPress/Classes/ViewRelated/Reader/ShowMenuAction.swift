@@ -30,7 +30,7 @@ final class ShowMenuAction {
                                                style: .default,
                                                handler: { (action: UIAlertAction) in
                                                 if let topic: ReaderSiteTopic = ReaderActionHelpers.existingObject(for: topic.objectID, in: context) {
-                                                    SubscribingNotificationAction().execute(for: topic.siteID, context: context, value: !topic.isSubscribedForPostNotifications)
+                                                    ReaderSubscribingNotificationAction().execute(for: topic.siteID, context: context, value: !topic.isSubscribedForPostNotifications)
                                                 }
             })
         }
