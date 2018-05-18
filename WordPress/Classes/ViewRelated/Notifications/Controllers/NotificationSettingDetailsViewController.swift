@@ -121,7 +121,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
         if isDeviceStreamDisabled() {
             sections = sectionsForDisabledDeviceStream()
         } else if isDeviceStreamUnknown() {
-            sections = sectionsForUnkownDeviceStream()
+            sections = sectionsForUnknownDeviceStream()
         } else if let settings = settings, let stream = stream {
             sections = sectionsForSettings(settings, stream: stream)
         }
@@ -176,7 +176,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
         return [section]
     }
 
-    private func sectionsForUnkownDeviceStream() -> [Section] {
+    private func sectionsForUnknownDeviceStream() -> [Section] {
         defer {
             WPAnalytics.track(.pushNotificationPrimerSeen, withProperties: [Analytics.locationKey: Analytics.alertKey])
         }
@@ -240,7 +240,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
         if isDeviceStreamDisabled() {
             openApplicationSettings()
         } else if isDeviceStreamUnknown() {
-            requestNoficationAuthorization()
+            requestNotificationAuthorization()
         }
     }
 
@@ -276,7 +276,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
         UIApplication.shared.open(targetURL!)
     }
 
-    private func requestNoficationAuthorization() {
+    private func requestNotificationAuthorization() {
         defer {
             WPAnalytics.track(.pushNotificationPrimerAllowTapped, withProperties: [Analytics.locationKey: Analytics.alertKey])
         }
