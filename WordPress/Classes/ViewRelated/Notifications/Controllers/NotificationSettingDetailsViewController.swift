@@ -237,7 +237,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
         if isDeviceStreamDisabled() {
             openApplicationSettings()
         } else if isDeviceStreamUnknown() {
-            // TODO: show notification request
+            requestNoficationAuthorization()
         }
     }
 
@@ -271,6 +271,15 @@ class NotificationSettingDetailsViewController: UITableViewController {
     private func openApplicationSettings() {
         let targetURL = URL(string: UIApplicationOpenSettingsURLString)
         UIApplication.shared.open(targetURL!)
+    }
+
+    private func requestNoficationAuthorization() {
+        defer {
+            WPAnalytics.track(.pushNotificationPrimerNoTapped, withProperties: [Analytics.locationKey: Analytics.alertKey])
+        }
+        InteractiveNotificationsManager.shared.requestAuthorization { [weak self] in
+            self?.refreshPushAuthorizationStatus()
+        }
     }
 
     @objc func refreshPushAuthorizationStatus() {
@@ -348,5 +357,10 @@ class NotificationSettingDetailsViewController: UITableViewController {
             case Setting        = "SwitchCell"
             case Text           = "TextCell"
         }
+    }
+
+    private struct Analytics {
+        static let locationKey = "location"
+        static let alertKey = "settings"
     }
 }
