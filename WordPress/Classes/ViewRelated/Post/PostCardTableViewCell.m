@@ -167,7 +167,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 - (ImageLoader *)imageLoader
 {
     if (!_imageLoader && self.postCardImageView) {
-        _imageLoader = [[ImageLoader alloc] initWithImageView:self.postCardImageView gifStrategy:GIFStrategyMediumGIFs loaderStyle:LoaderStyleWhite];
+        _imageLoader = [[ImageLoader alloc] initWithImageView:self.postCardImageView gifStrategy:GIFStrategyMediumGIFs];
     }
 
     return _imageLoader;
