@@ -8,6 +8,7 @@ import WordPressShared
 class MediaCellProgressView: UIView {
     let progressIndicator: ProgressIndicatorView
 
+    private var errorView: UIView?
     private let retryContainer = UIStackView()
 
     @objc enum LoaderStyle: Int {
@@ -36,6 +37,18 @@ class MediaCellProgressView: UIView {
                 return .black
             }
         }
+
+        var retryTintColor: UIColor {
+            switch self {
+            case .white:
+                return .black
+            case .gray:
+                return .white
+            case .black:
+                return .white
+            }
+        }
+
     }
 
     enum State: Equatable {
@@ -43,6 +56,7 @@ class MediaCellProgressView: UIView {
         case retry
         case indeterminate
         case progress(Double)
+        case error
 
         static func ==(lhs: State, rhs: State) -> Bool {
             switch (lhs, rhs) {
@@ -50,6 +64,7 @@ class MediaCellProgressView: UIView {
             case (.retry, .retry): return true
             case (.indeterminate, .indeterminate): return true
             case let (.progress(l), .progress(r)): return l == r
+            case (.error, .error): return true
             default: return false
             }
         }
@@ -61,29 +76,25 @@ class MediaCellProgressView: UIView {
             case .stopped:
                 progressIndicator.state = .stopped
                 retryContainer.isHidden = true
+                errorView?.isHidden = true
             case .retry:
                 progressIndicator.state = .stopped
                 retryContainer.isHidden = false
+                errorView?.isHidden = true
             case .indeterminate:
                 progressIndicator.state = .indeterminate
                 retryContainer.isHidden = true
+                errorView?.isHidden = true
             case .progress:
                 progressIndicator.state = state
                 retryContainer.isHidden = true
+                errorView?.isHidden = true
+            case .error:
+                progressIndicator.state = .stopped
+                retryContainer.isHidden = true
+                errorView?.isHidden = false
             }
         }
-    }
-
-    var whiteStyle: ProgressIndicatorView.Appearance {
-        return ProgressIndicatorView.Appearance(lineColor: WPStyleGuide.mediumBlue())
-    }
-
-    var grayStyle: ProgressIndicatorView.Appearance {
-        return ProgressIndicatorView.Appearance(lineColor: .white)
-    }
-
-    var blackStyle: ProgressIndicatorView.Appearance {
-        return ProgressIndicatorView.Appearance(lineColor: .white)
     }
 
     @objc init(style: LoaderStyle = .white, animationSpeed: Float = 1) {
@@ -93,6 +104,7 @@ class MediaCellProgressView: UIView {
     }
 
     override init(frame: CGRect) {
+        // Default style for cell overlay (Media Library)
         let style = LoaderStyle.gray
         progressIndicator = ProgressIndicatorView(appearance: style.appearance)
         super.init(frame: frame)
@@ -103,9 +115,19 @@ class MediaCellProgressView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func addErrorView(_ view: UIView) {
+        errorView?.removeFromSuperview()
+        errorView = view
+        addSubview(view)
+        NSLayoutConstraint.activate([
+            view.centerXAnchor.constraint(equalTo: centerXAnchor),
+            view.centerYAnchor.constraint(equalTo: centerYAnchor)
+            ])
+    }
+
     fileprivate func setup(_ style: LoaderStyle) {
         addProgressIndicator()
-        addRetryViews()
+        addRetryViews(with: style)
 
         backgroundColor = style.backgroundColor
     }
@@ -139,19 +161,19 @@ class MediaCellProgressView: UIView {
             ])
     }
 
-    private func addRetryViews() {
+    private func addRetryViews(with style: LoaderStyle) {
         retryContainer.axis = .vertical
         retryContainer.alignment = .center
         retryContainer.spacing = RetryContainerAppearance.verticalSpacing
         retryContainer.distribution = .fillProportionally
 
         let retryIconView = UIImageView(image: Gridicon.iconOfType(.refresh))
-        retryIconView.tintColor = .white
+        retryIconView.tintColor = style.retryTintColor
         retryContainer.addArrangedSubview(retryIconView)
 
         let retryLabel = UILabel()
         retryLabel.font = UIFont.systemFont(ofSize: RetryContainerAppearance.fontSize)
-        retryLabel.textColor = .white
+        retryLabel.textColor = style.retryTintColor
         retryLabel.textAlignment = .center
         retryLabel.text = NSLocalizedString("Retry", comment: "Retry. Verb – retry a failed media upload.")
         retryLabel.numberOfLines = 2

@@ -42,7 +42,7 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
         return Gifu.Animator(withDelegate: self)
     }()
 
-    public var disableLoadingIndicator: Bool = false
+    @objc public var disableLoadingIndicator: Bool = false
 
     // MARK: Private fields
 
