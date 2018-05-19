@@ -8,7 +8,7 @@ extension NotificationsViewController {
 
     var shouldShowPrimeForPush: Bool {
         get {
-            return Feature.enabled(.primeForPush) && !UserDefaults.standard.notificationPrimerInlineWasAcknowledged
+            return !UserDefaults.standard.notificationPrimerInlineWasAcknowledged
         }
     }
 
