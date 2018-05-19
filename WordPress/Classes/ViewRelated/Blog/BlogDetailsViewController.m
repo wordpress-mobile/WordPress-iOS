@@ -295,9 +295,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewDidAppear:animated];
     [self createUserActivity];
-    if ([Feature enabled:FeatureFlagPrimeForPush]) {
-        [self showNotificationPrimerAlert];
-    }
+    [self showNotificationPrimerAlert];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
