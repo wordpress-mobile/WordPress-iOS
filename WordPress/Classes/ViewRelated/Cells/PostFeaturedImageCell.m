@@ -25,7 +25,7 @@ CGFloat const PostFeaturedImageCellMargin = 15.0f;
 - (void)setup
 {
     [self layoutImageView];
-    _imageLoader = [[ImageLoader alloc] initWithImageView:self.featuredImageView gifStrategy:GIFStrategyLargeGIFs loaderStyle:LoaderStyleWhite];
+    _imageLoader = [[ImageLoader alloc] initWithImageView:self.featuredImageView gifStrategy:GIFStrategyLargeGIFs];
 }
 
 - (void)setImageWithURL:(NSURL *)url inPost:(id<ImageSourceInformation>)postInformation withSize:(CGSize)size
