@@ -42,6 +42,8 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
         return Gifu.Animator(withDelegate: self)
     }()
 
+    public var disableLoadingIndicator: Bool = false
+
     // MARK: Private fields
 
     private var gifPlaybackStrategy: GIFPlaybackStrategy = MediumGIFPlaybackStrategy()
@@ -109,6 +111,9 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
     }
 
     public func startLoadingAnimation() {
+        guard disableLoadingIndicator == false else {
+            return
+        }
         DispatchQueue.main.async() {
             self.loadingIndicator.startAnimating()
         }
