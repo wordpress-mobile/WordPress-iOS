@@ -120,7 +120,7 @@ static CGFloat const MinimumZoomScale = 0.1;
     self.flingableViewHandler = [[FlingableViewHandler alloc] initWithTargetView:self.scrollView];
     self.flingableViewHandler.delegate = self;
 
-    self.activityIndicatorView = [[MediaCellProgressView alloc] initWithStyle:LoaderStyleBlack animationSpeed:0.7];
+    self.activityIndicatorView = [[MediaCellProgressView alloc] initWithStyle:LoaderStyleWhite animationSpeed:0.7];
     self.activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
 
     [self.view addSubview:self.activityIndicatorView];
