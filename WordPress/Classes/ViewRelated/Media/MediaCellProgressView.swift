@@ -12,43 +12,42 @@ class MediaCellProgressView: UIView {
     private let retryContainer = UIStackView()
 
     @objc enum LoaderStyle: Int {
-        case white
+        case `default`
         case gray
-        case black
+        case white
 
         var appearance: ProgressIndicatorView.Appearance {
             switch self {
-            case .white:
+            case .default:
                 return ProgressIndicatorView.Appearance(lineColor: WPStyleGuide.mediumBlue())
             case .gray:
                 return ProgressIndicatorView.Appearance(lineColor: .white)
-            case .black:
+            case .white:
                 return ProgressIndicatorView.Appearance(lineColor: .white)
             }
         }
 
         var backgroundColor: UIColor {
             switch self {
-            case .white:
+            case .default:
                 return .clear
             case .gray:
                 return WPStyleGuide.darkGrey()
-            case .black:
-                return .black
+            case .white:
+                return .clear
             }
         }
 
         var retryTintColor: UIColor {
             switch self {
-            case .white:
+            case .default:
                 return .black
             case .gray:
                 return .white
-            case .black:
+            case .white:
                 return .white
             }
         }
-
     }
 
     enum State: Equatable {

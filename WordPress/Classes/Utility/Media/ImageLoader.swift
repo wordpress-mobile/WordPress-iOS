@@ -31,14 +31,14 @@
         self.init(imageView: imageView, gifStrategy: gifStrategy)
     }
 
-    @objc init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs, loaderStyle: MediaCellProgressView.LoaderStyle = .white) {
+    @objc init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs, loaderStyle: MediaCellProgressView.LoaderStyle = .default) {
         self.imageView = imageView
         imageView.gifStrategy = gifStrategy
         loadingIndicator = MediaCellProgressView(style: loaderStyle, animationSpeed: 0.7)
 
-        let errorView = UILabel(frame: .zero)
+        let errorView = UIImageView(image: #imageLiteral(resourceName: "hud_error").withRenderingMode(.alwaysTemplate))
+        errorView.tintColor = WPStyleGuide.errorRed()
         errorView.translatesAutoresizingMaskIntoConstraints = false
-        errorView.text = "Error"
         loadingIndicator.addErrorView(errorView)
 
         super.init()
@@ -188,7 +188,9 @@
             return
         }
         DispatchQueue.main.async {
-            self.loadingIndicator.state = .error
+            if self.imageView.disableLoadingIndicator == false {
+                self.loadingIndicator.state = .error
+            }
             self.errorHandler?(error)
         }
     }
