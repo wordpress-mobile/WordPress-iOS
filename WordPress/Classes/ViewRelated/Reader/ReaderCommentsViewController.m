@@ -1031,21 +1031,22 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     UIViewController *controller = nil;
     BOOL isSupportedNatively = [WPImageViewController isUrlSupported:image.linkURL];
 
-    if (image.imageView.animatedGifData != nil) {
+    if (image.imageView.animatedGifData) {
         controller = [[WPImageViewController alloc] initWithGifData:image.imageView.animatedGifData];
     } else if (isSupportedNatively) {
         controller = [[WPImageViewController alloc] initWithImage:image.imageView.image andURL:image.linkURL];
     } else if (image.linkURL) {
         [self presentWebViewControllerWithURL:image.linkURL];
         return;
-    } else {
+    } else if (image.imageView.image) {
         controller = [[WPImageViewController alloc] initWithImage:image.imageView.image];
     }
 
-    controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    controller.modalPresentationStyle = UIModalPresentationFullScreen;
-
-    [self presentViewController:controller animated:YES completion:nil];
+    if (controller) {
+        controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        controller.modalPresentationStyle = UIModalPresentationFullScreen;
+        [self presentViewController:controller animated:YES completion:nil];
+    }
 }
 
 - (BOOL)richContentViewShouldUpdateLayoutForAttachments:(WPRichContentView *)richContentView

@@ -1157,14 +1157,19 @@ extension ReaderDetailViewController: WPRichContentViewDelegate {
 
 
     func richContentView(_ richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage) {
+        // If we have gif data availible, present that
         if let animatedGifData = image.imageView.animatedGifData {
             presentFullScreenGif(with: animatedGifData)
-        } else if let linkURL = image.linkURL, WPImageViewController.isUrlSupported(linkURL) {
+            return
+        }
+
+        // Otherwise try to present the static image/URL
+        if let linkURL = image.linkURL, WPImageViewController.isUrlSupported(linkURL) {
             presentFullScreenImage(with: image.imageView.image, linkURL: linkURL)
         } else if let linkURL = image.linkURL {
             presentWebViewControllerWithURL(linkURL as URL)
-        } else {
-            presentFullScreenImage(with: image.imageView.image)
+        } else if let staticImage = image.imageView.image {
+            presentFullScreenImage(with: staticImage)
         }
     }
 }
