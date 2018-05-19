@@ -5,10 +5,11 @@ final class StockPhotosMediaTests: XCTestCase {
     private var subject: StockPhotosMedia?
 
     private struct MockValues {
-        static let id = "PEXELS-946630"
-        static let url = URL(string: "https://images.pexels.com/photos/946630/pexels-photo-946630.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")!
-        static let title = "pexels-photo-946630.jpeg"
-        static let name = "pexels-photo-946630.jpeg"
+        static let id = "PEXELS-924676"
+        static let url = URL(string: "https://images.pexels.com/photos/924676/pexels-photo-924676.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")!
+        static let title = "shallow focus photography of magnifying glass with black frame"
+        static let name = "pexels-photo-924676.jpeg"
+        static let caption = "Photo by Shane Aldendorff on <a href=\"https://www.pexels.com/\" rel=\"nofollow\">Pexels.com</a>"
         static let size = CGSize.zero
     }
 
@@ -41,6 +42,10 @@ final class StockPhotosMediaTests: XCTestCase {
 
     func testStockPhotosNameMatchesMock() {
         XCTAssertEqual(subject?.name, MockValues.name)
+    }
+
+    func testStockPhotosCaptionMatchesMock() {
+        XCTAssertEqual(subject?.caption, MockValues.caption)
     }
 
     func testStockPhotosSizeMatchesMock() {
