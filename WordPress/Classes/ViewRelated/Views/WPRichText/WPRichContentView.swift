@@ -14,12 +14,6 @@ import WordPressShared
 /// in tags like img, iframe, and video, are loaded manually and presented as subviews.
 ///
 class WPRichContentView: UITextView {
-    struct Constants {
-        static let photonQuality = 65
-        static let textContainerInset = UIEdgeInsetsMake(0.0, 0.0, 16.0, 0.0)
-        static let defaultAttachmentHeight = CGFloat(50.0)
-    }
-
     /// Used to keep references to image attachments.
     ///
     var mediaArray = [RichMedia]()
@@ -200,7 +194,6 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     func attachmentManager(_ attachmentManager: WPTextAttachmentManager, viewForAttachment attachment: WPTextAttachment) -> UIView? {
         if attachment.tagName == "img" {
             return imageForAttachment(attachment)
-
         } else {
             return embedForAttachment(attachment)
         }
@@ -251,12 +244,12 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
             return WPRichTextImage(frame: CGRect.zero)
         }
 
-        // Until we have a loaded image use a 1/1 height.  We want a nonzero value
-        // to avoid an edge case issue where 0 frames are not correctly updated
-        // during rotation.
-        attachment.maxSize = CGSize(width: 1, height: 1)
+        let width: CGFloat = attachment.width > 0 ? attachment.width : textContainer.size.width
+        let height: CGFloat = attachment.height > 0 ? attachment.height : Constants.defaultAttachmentHeight
+        let img = WPRichTextImage(frame: CGRect(x: 0.0, y: 0.0, width: width, height: height))
 
-        let img = WPRichTextImage(frame: CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0))
+        attachment.maxSize = CGSize(width: width, height: height)
+
         img.addTarget(self, action: #selector(type(of: self).handleImageTapped(_:)), for: .touchUpInside)
         img.contentURL = url
         img.linkURL = linkURLForImageAttachment(attachment)
@@ -264,7 +257,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
         let contentInformation = ContentInformation(isPrivateOnWPCom: isPrivate, isSelfHostedWithCredentials: false)
         let index = mediaArray.count
         let indexPath = IndexPath(row: index, section: 1)
-        DDLogDebug("🐶 Started loading reader detail image at url: \(url) and indexPath: \(indexPath)")
+        DDLogDebug("🐶 Started loading reader detail image at url: \(url)")
         img.loadImage(from: contentInformation, preferedSize: maxDisplaySize, indexPath: indexPath, onSuccess: { [weak self] indexPath in
             guard let richMedia = self?.mediaArray[indexPath.row] else {
                 return
@@ -272,9 +265,9 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
 
             richMedia.attachment.maxSize = img.contentSize()
             self?.layoutAttachmentViews()
-            DDLogDebug("🖼 Finished loading reader detail image at url: \(url) and indexPath: \(indexPath)")
+            DDLogDebug("🖼 Finished loading reader detail image at url: \(url)")
         }, onError: { (indexPath, error) in
-            DDLogDebug("⚠️ Error loading reader detail image at url: \(url) and indexPath: \(indexPath)")
+            DDLogDebug("⚠️ Error loading reader detail image at url: \(url)")
             DDLogError("\(String(describing: error))")
         })
 
@@ -366,6 +359,16 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     }
 }
 
+// MARK: - Constants
+
+private extension WPRichContentView {
+    struct Constants {
+        static let textContainerInset = UIEdgeInsetsMake(0.0, 0.0, 16.0, 0.0)
+        static let defaultAttachmentHeight = CGFloat(50.0)
+    }
+}
+
+// MARK: - Rich Media Struct
 
 /// A simple struct used to keep references to a rich text image and its associated attachment.
 ///
@@ -373,6 +376,8 @@ struct RichMedia {
     let image: WPRichTextImage
     let attachment: WPTextAttachment
 }
+
+// MARK: - ContentInformation (ImageSourceInformation)
 
 class ContentInformation: ImageSourceInformation {
     var isPrivateOnWPCom: Bool
