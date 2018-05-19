@@ -20,13 +20,16 @@ class MediaExport {
     let height: CGFloat?
     /// The duration of a media file, this is only available if the asset is a video.
     let duration: TimeInterval?
+    /// A caption to be added to the media item.
+    let caption: String?
 
-    init(url: URL, fileSize: Int64?, width: CGFloat?, height: CGFloat?, duration: TimeInterval?) {
+    init(url: URL, fileSize: Int64?, width: CGFloat?, height: CGFloat?, duration: TimeInterval?, caption: String? = nil) {
         self.url = url
         self.fileSize = fileSize
         self.height = height
         self.width = width
         self.duration = duration
+        self.caption = caption
     }
 }
 
