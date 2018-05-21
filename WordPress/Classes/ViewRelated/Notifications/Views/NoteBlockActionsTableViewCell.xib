@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -21,38 +22,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="389" height="72"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="V3D-QS-G4g">
-                                <rect key="frame" x="15" y="11" width="359" height="50.5"/>
+                                <rect key="frame" x="20" y="11" width="349" height="50.5"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DXE-y2-DWd" userLabel="Reply" customClass="VerticallyStackedButton">
-                                        <rect key="frame" x="0.0" y="9" width="60" height="33"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                        <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
-                                        <state key="normal" title="Reply" image="notifications-reply">
-                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <state key="selected" image="notifications-reply"/>
-                                        <state key="highlighted" image="notifications-reply"/>
-                                        <connections>
-                                            <action selector="replyWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="llo-Tq-bVM"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e8r-Uo-uFk" userLabel="Like" customClass="VerticallyStackedButton">
-                                        <rect key="frame" x="60" y="9" width="59.5" height="33"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                        <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
-                                        <state key="normal" title="Like" image="notifications-like">
-                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <state key="selected" image="notifications-liked"/>
-                                        <state key="highlighted" image="notifications-liked"/>
-                                        <connections>
-                                            <action selector="likeWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="Gij-LE-gQ5"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Agc-K2-0vs" userLabel="Approve" customClass="VerticallyStackedButton">
-                                        <rect key="frame" x="119.5" y="9" width="60" height="33"/>
+                                        <rect key="frame" x="0.0" y="9" width="58" height="33"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
                                         <state key="normal" title="Approve" image="notifications-approve">
@@ -65,20 +38,8 @@
                                             <action selector="approveWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="SJC-Dn-jzf"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TYK-fl-vc7" userLabel="Trash" customClass="VerticallyStackedButton">
-                                        <rect key="frame" x="179.5" y="9" width="60" height="33"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                        <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
-                                        <state key="normal" title="Trash" image="notifications-trash">
-                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="trashWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="ayd-CK-vjN"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hU3-yd-ZtO" userLabel="Spam" customClass="VerticallyStackedButton">
-                                        <rect key="frame" x="239.5" y="9" width="59.5" height="33"/>
+                                        <rect key="frame" x="58" y="9" width="58.5" height="33"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
                                         <state key="normal" title="Spam" image="notifications-spam">
@@ -89,8 +50,34 @@
                                             <action selector="spamWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="pG5-AN-pz0"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TYK-fl-vc7" userLabel="Trash" customClass="VerticallyStackedButton">
+                                        <rect key="frame" x="116.5" y="9" width="58" height="33"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
+                                        <state key="normal" title="Trash" image="notifications-trash">
+                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="trashWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="ayd-CK-vjN"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e8r-Uo-uFk" userLabel="Like" customClass="VerticallyStackedButton">
+                                        <rect key="frame" x="174.5" y="9" width="58" height="33"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
+                                        <state key="normal" title="Like" image="notifications-like">
+                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <state key="selected" image="notifications-liked"/>
+                                        <state key="highlighted" image="notifications-liked"/>
+                                        <connections>
+                                            <action selector="likeWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="Gij-LE-gQ5"/>
+                                        </connections>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LLz-LW-VxX" userLabel="Edit" customClass="VerticallyStackedButton">
-                                        <rect key="frame" x="299" y="9.5" width="60" height="32"/>
+                                        <rect key="frame" x="232.5" y="9.5" width="58.5" height="32"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                         <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
                                         <state key="normal" title="Edit" image="icon-pencil">
@@ -101,6 +88,20 @@
                                         <state key="highlighted" image="icon-pencil"/>
                                         <connections>
                                             <action selector="editWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="7Vz-WB-sXZ"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DXE-y2-DWd" userLabel="Reply" customClass="VerticallyStackedButton">
+                                        <rect key="frame" x="291" y="9" width="58" height="33"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="6" maxX="0.0" maxY="6"/>
+                                        <state key="normal" title="Reply" image="notifications-reply">
+                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <state key="selected" image="notifications-reply"/>
+                                        <state key="highlighted" image="notifications-reply"/>
+                                        <connections>
+                                            <action selector="replyWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="llo-Tq-bVM"/>
                                         </connections>
                                     </button>
                                 </subviews>
