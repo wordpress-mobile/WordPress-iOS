@@ -117,6 +117,26 @@
         loadImage(with: url, from: post, preferedSize: size)
     }
 
+    @objc(loadStaticImageWithURL:fromPost:preferedSize:placeholder:success:error:)
+    /// Always load a static image from a specific post, using the given URL. This function will not animate GIFs.
+    ///
+    /// - Parameters:
+    ///   - url: The URL to load the image from.
+    ///   - post: The post where the image is loaded from.
+    ///   - size: The prefered size of the image to load.
+    ///   - placeholder: A placeholder to show while the image is loading.
+    ///   - success: A closure to be called if the image was loaded successfully.
+    ///   - error: A closure to be called if there was an error loading the image.
+    func loadStaticImage(with url: URL, from post: ImageSourceInformation, preferedSize size: CGSize = .zero, placeholder: UIImage?, success: (() -> Void)?, error: ((Error?) -> Void)?) {
+
+        self.placeholder = placeholder
+        successHandler = success
+        errorHandler = error
+
+        imageView.clean()
+        loadStaticImage(with: url, from: post, preferedSize: size)
+    }
+
     // MARK: - Private helpers
 
     /// Load an animated image from the given URL.
