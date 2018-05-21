@@ -80,10 +80,19 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
             return
         }
 
-        imageLoader.loadImage(with: contentURL, from: contentInformation, preferedSize: size, placeholder: nil, success: {
+        let successHandler: (() -> Void)? = {
             onSuccess?(indexPath)
-        }) { error in
+        }
+
+        let errorHandler: ((Error?) -> Void)? = { error in
             onError?(indexPath, error)
+        }
+
+        if FeatureFlag.gifSupportInReaderDetail.enabled {
+            imageLoader.loadImage(with: contentURL, from: contentInformation, preferedSize: size, placeholder: nil, success: successHandler, error: errorHandler)
+        } else {
+            // NOTE: Once the gifSupportInReaderDetail feature flag is removed, we can also remove this 👇 loadStaticImage() func on ImageLoader
+            imageLoader.loadStaticImage(with: contentURL, from: contentInformation, preferedSize: size, placeholder: nil, success: successHandler, error: errorHandler)
         }
     }
 
