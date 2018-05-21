@@ -43,6 +43,12 @@ final class ReaderSavedPostsViewController: UITableViewController {
         centerResultsStatusViewIfNeeded()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        refreshNoResultsView()
+    }
+
     func centerResultsStatusViewIfNeeded() {
         if noResultsView.isDescendant(of: tableView) {
             noResultsView.centerInSuperview()
