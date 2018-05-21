@@ -29,17 +29,14 @@ PODS:
     - CocoaLumberjack/Default
   - Crashlytics (3.10.1):
     - Fabric (~> 1.7.5)
-  - Expecta (1.0.6)
   - Fabric (1.7.6)
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
   - Gifu (3.0.0)
-  - GoogleSignIn (4.1.2):
+  - GoogleSignInRepacked (4.1.2):
     - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
     - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
-    - GTMOAuth2 (~> 1.0)
-    - GTMSessionFetcher/Core (~> 1.1)
   - GoogleToolboxForMac/DebugUtils (2.1.4):
     - GoogleToolboxForMac/Defines (= 2.1.4)
   - GoogleToolboxForMac/Defines (2.1.4)
@@ -49,13 +46,6 @@ PODS:
     - "GoogleToolboxForMac/NSString+URLArguments (= 2.1.4)"
   - "GoogleToolboxForMac/NSString+URLArguments (2.1.4)"
   - Gridicons (0.15)
-  - GTMOAuth2 (1.1.6):
-    - GTMSessionFetcher (~> 1.1)
-  - GTMSessionFetcher (1.1.15):
-    - GTMSessionFetcher/Full (= 1.1.15)
-  - GTMSessionFetcher/Core (1.1.15)
-  - GTMSessionFetcher/Full (1.1.15):
-    - GTMSessionFetcher/Core (= 1.1.15)
   - HockeySDK (5.1.2):
     - HockeySDK/DefaultLib (= 5.1.2)
   - HockeySDK/DefaultLib (5.1.2)
@@ -109,13 +99,26 @@ PODS:
   - OHHTTPStubs/Swift (6.1.0):
     - OHHTTPStubs/Default
   - Reachability (3.2)
-  - Specta (1.0.7)
   - Starscream (3.0.4)
   - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-Aztec-iOS (1.0.0-beta.18.1):
     - WordPress-Aztec-iOS/WordPressEditor (= 1.0.0-beta.18.1)
   - WordPress-Aztec-iOS/WordPressEditor (1.0.0-beta.18.1)
+  - WordPressAuthenticator (1.0.0):
+    - 1PasswordExtension (= 1.8.5)
+    - Alamofire (= 4.7.2)
+    - CocoaLumberjack (= 3.4.2)
+    - GoogleSignInRepacked (= 4.1.2)
+    - Gridicons (~> 0.15)
+    - lottie-ios (= 2.5.0)
+    - "NSURL+IDN (= 0.3)"
+    - SVProgressHUD (= 2.2.5)
+    - UIDeviceIdentifier (~> 0.4)
+    - WordPressKit (~> 1.0)
+    - WordPressShared (~> 1.0)
+    - WordPressUI (~> 1.0)
+    - wpxmlrpc (~> 0.8)
   - WordPressKit (1.0.3):
     - AFNetworking (= 3.2.1)
     - Alamofire (= 4.7.2)
@@ -145,10 +148,8 @@ DEPENDENCIES:
   - BuddyBuildSDK (= 1.0.17)
   - CocoaLumberjack (= 3.4.2)
   - Crashlytics (= 3.10.1)
-  - Expecta (= 1.0.6)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - Gifu (= 3.0.0)
-  - GoogleSignIn (= 4.1.2)
   - Gridicons (= 0.15)
   - HockeySDK (= 5.1.2)
   - lottie-ios (= 2.5.0)
@@ -161,12 +162,12 @@ DEPENDENCIES:
   - OHHTTPStubs (= 6.1.0)
   - OHHTTPStubs/Swift (= 6.1.0)
   - Reachability (= 3.2)
-  - Specta (= 1.0.7)
   - Starscream (= 3.0.4)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `2a25da7b9b687b5e05ce128423d99f771673a6c4`)
   - WordPress-Aztec-iOS/WordPressEditor (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `2a25da7b9b687b5e05ce128423d99f771673a6c4`)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `989e97b`)
   - WordPressKit (= 1.0.3)
   - WordPressShared (= 1.0.1)
   - WordPressUI (= 1.0.1)
@@ -182,15 +183,12 @@ SPEC REPOS:
     - BuddyBuildSDK
     - CocoaLumberjack
     - Crashlytics
-    - Expecta
     - Fabric
     - FormatterKit
     - Gifu
-    - GoogleSignIn
+    - GoogleSignInRepacked
     - GoogleToolboxForMac
     - Gridicons
-    - GTMOAuth2
-    - GTMSessionFetcher
     - HockeySDK
     - lottie-ios
     - MGSwipeTableCell
@@ -201,7 +199,6 @@ SPEC REPOS:
     - OCMock
     - OHHTTPStubs
     - Reachability
-    - Specta
     - Starscream
     - SVProgressHUD
     - UIDeviceIdentifier
@@ -219,6 +216,9 @@ EXTERNAL SOURCES:
   WordPress-Aztec-iOS:
     :commit: 2a25da7b9b687b5e05ce128423d99f771673a6c4
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WordPressAuthenticator:
+    :commit: 989e97b
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -227,6 +227,9 @@ CHECKOUT OPTIONS:
   WordPress-Aztec-iOS:
     :commit: 2a25da7b9b687b5e05ce128423d99f771673a6c4
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WordPressAuthenticator:
+    :commit: 989e97b
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -236,15 +239,12 @@ SPEC CHECKSUMS:
   BuddyBuildSDK: 8ae12ee721098b356a961ea7dce70ae55f93a7d2
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
   Crashlytics: aee1a064cbbf99b32efa3f056a5f458d846bc8ff
-  Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Fabric: f8d42c893bb187326a7968b62abe55c36a987a46
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   Gifu: 6543ca2056a3d697097c09fe543ef49348ccc892
-  GoogleSignIn: d9ef55b10f0aa401a5de2747f59b725e4b9732ac
+  GoogleSignInRepacked: d62d96582bd9a5f3ca7488fad91134d9cc5a1d6b
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
   Gridicons: 0e5e76ad9fc6f7cbc3da137a9751ef516c5aef73
-  GTMOAuth2: c77fe325e4acd453837e72d91e3b5f13116857b2
-  GTMSessionFetcher: 5fa5b80fd20e439ef5f545fb2cb3ca6c6714caa2
   HockeySDK: 38b7e2726af1ea86ae97ce4b5de33ab0817e3500
   lottie-ios: d699fdee68d7b63e721d949388b015fef1aaa4ac
   MGSwipeTableCell: fb20e983988bde2b8d0df29c2d9e1d8ffd10b74a
@@ -255,11 +255,11 @@ SPEC CHECKSUMS:
   OCMock: 2cd0716969bab32a2283ff3a46fd26a8c8b4c5e3
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 448c4ba1c7d748e9ed881f328963ccdc8977e0d8
+  WordPressAuthenticator: 7ffbe63269cf32be7bb4863d7d75b8018aa6ae9d
   WordPressKit: 58a8663d557c4c8def59b6492f9ef7736a69b60d
   WordPressShared: 13a743d923796382419e03521e47491e9322087e
   WordPressUI: 9f90f8e1e629af13e1021c6281660623d62ff953
@@ -267,6 +267,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: 093103ebe66b3749e8a7325380ca79e77c98d283
+PODFILE CHECKSUM: 9cd15a5eda3def1379e58e766fac7674ed6bb18b
 
 COCOAPODS: 1.5.2
