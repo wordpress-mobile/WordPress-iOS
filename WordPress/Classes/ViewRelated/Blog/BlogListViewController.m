@@ -578,6 +578,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)wordPressComAccountChanged:(NSNotification *)notification
 {
+    [self.tableView reloadData];
     [self setEditing:NO];
     [self updateSearchVisibility];
 }
