@@ -128,8 +128,12 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
 
     public func tableViewDidChangeContent(_ tableView: UITableView) {
         if content.isEmpty {
-            // TODO: Implement no results view
-            //            displayNoResultsView()
+            noResultsView.titleText = "Nope"
+            noResultsView.messageText = "You know what to do"
+            noResultsView.accessoryView = nil
+
+            noResultsView.buttonTitle = NSLocalizedString("Save Posts for Later", comment: "Button title. Tapping lets the user manage the sites they follow.")
+            noResultsView.delegate = self
         }
     }
 
@@ -277,5 +281,11 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
 
     public func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
         // Do nothing
+    }
+}
+
+extension ReaderSavedPostsViewController: WPNoResultsViewDelegate {
+    public func didTap(_ noResultsView: WPNoResultsView!) {
+        //
     }
 }
