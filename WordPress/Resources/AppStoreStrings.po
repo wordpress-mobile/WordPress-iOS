@@ -38,7 +38,7 @@ msgctxt "app_store_keywords"
 msgid "social networking, blogging, blogs, photos, writing, geotagging, media, blog, wordpress\n"
 msgstr ""
 
-msgctxt "v10.0-whats-new"
+msgctxt "v10.1-whats-new"
 msgid ""
 "When importing files into a post in the editor you can now select many different types of file, including PDFs to Word documents.\n"
 msgstr ""
