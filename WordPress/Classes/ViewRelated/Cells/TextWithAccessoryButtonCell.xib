@@ -29,7 +29,7 @@
                         </label>
                     </subviews>
                 </stackView>
-                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YSR-GY-91s" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
+                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YSR-GY-91s" customClass="NUXButton" customModule="WordPressAuthenticator">
                     <rect key="frame" x="523" y="12" width="41" height="36"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="36" id="244-ge-uM1"/>

@@ -152,6 +152,13 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             reloadTableViewPreservingSelection()
         }
 
+        if !AccountHelper.isDotcomAvailable() {
+            promptForJetpackCredentials()
+        } else {
+            jetpackLoginViewController?.view.removeFromSuperview()
+            jetpackLoginViewController?.removeFromParentViewController()
+        }
+
         showNoResultsViewIfNeeded()
     }
 
@@ -160,10 +167,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         showRatingViewIfApplicable()
         syncNewNotifications()
         markSelectedNotificationAsRead()
-
-        if !AccountHelper.isDotcomAvailable() {
-            promptForJetpackCredentials()
-        }
 
         registerUserActivity()
     }
@@ -1401,15 +1404,26 @@ extension NotificationsViewController: AppFeedbackPromptViewDelegate {
         WPAnalytics.track(.appReviewsOpenedFeedbackScreen)
         AppRatingUtility.shared.gaveFeedbackForCurrentVersion()
         hideRatingViewWithDelay(0.0)
-        if HelpshiftUtils.isHelpshiftEnabled() {
-            let presenter = HelpshiftPresenter.init()
-            presenter.sourceTag = SupportSourceTag.inAppFeedback
-            presenter.presentHelpshiftConversationWindowFromViewController(self,
-                                                                           refreshUserDetails: true,
-                                                                           completion: nil)
+
+        if FeatureFlag.zendeskMobile.enabled {
+            if ZendeskUtils.zendeskEnabled {
+                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self)
+            } else {
+                if let contact = URL(string: NotificationsViewController.contactURL) {
+                    UIApplication.shared.open(contact)
+                }
+            }
         } else {
-            if let contact = URL(string: NotificationsViewController.contactURL) {
-                UIApplication.shared.open(contact)
+            if HelpshiftUtils.isHelpshiftEnabled() {
+                let presenter = HelpshiftPresenter.init()
+                presenter.sourceTag = SupportSourceTag.inAppFeedback
+                presenter.presentHelpshiftConversationWindowFromViewController(self,
+                                                                               refreshUserDetails: true,
+                                                                               completion: nil)
+            } else {
+                if let contact = URL(string: NotificationsViewController.contactURL) {
+                    UIApplication.shared.open(contact)
+                }
             }
         }
     }

@@ -6,7 +6,6 @@
 #import <WordPressUI/WordPressUI.h>
 #import "WPStyleGuide+Posts.h"
 #import "WordPress-Swift.h"
-#import "FLAnimatedImage.h"
 
 @import Gridicons;
 
@@ -31,8 +30,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, strong) IBOutlet UILabel *authorBlogLabel;
 @property (nonatomic, strong) IBOutlet UILabel *authorNameLabel;
-@property (nonatomic, strong) IBOutlet UIImageView *postCardImageView;
-@property (nonatomic, strong) IBOutlet CachedAnimatedImageView *postCardAnimatedImageView;
+@property (nonatomic, strong) IBOutlet CachedAnimatedImageView *postCardImageView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *snippetLabel;
 @property (nonatomic, strong) IBOutlet UIView *dateView;
@@ -61,6 +59,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, weak) id<InteractivePostViewDelegate> delegate;
 @property (nonatomic, strong) Post *post;
 @property (nonatomic, strong) PostCardStatusViewModel *viewModel;
+@property (nonatomic, strong) ImageLoader *imageLoader;
 @property (nonatomic) CGFloat headerViewHeight;
 @property (nonatomic) CGFloat headerViewLowerMargin;
 @property (nonatomic) CGFloat titleViewLowerMargin;
@@ -165,6 +164,23 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
                      } completion:nil];
 }
 
+- (ImageLoader *)imageLoader
+{
+    if (!_imageLoader && self.postCardImageView) {
+        _imageLoader = [[ImageLoader alloc] initWithImageView:self.postCardImageView];
+    }
+
+    return _imageLoader;
+}
+
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    if (self.imageLoader) {
+        [self.imageLoader prepareForReuse];
+    }
+    [self setNeedsDisplay];
+}
 
 #pragma mark - Configuration
 
@@ -259,55 +275,22 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureCardImage
 {
-    if (!self.postCardImageView) {
+    if (!self.imageLoader) {
         return;
     }
 
     AbstractPost *post = [self.post latest];
-    // Clear the image so we know its not stale.
-    self.postCardImageView.image = nil;
-    self.postCardAnimatedImageView.image = nil;
-    self.postCardAnimatedImageView.animatedImage = nil;
     NSURL *url = [post featuredImageURLForDisplay];
     if (url == nil) {
         // no feature image available.
         return;
     }
 
-    BOOL isAnimatedGIF = [[url pathExtension] isEqual:@"gif"];
-    self.postCardAnimatedImageView.hidden = !isAnimatedGIF;
-    self.postCardImageView.hidden = isAnimatedGIF;
-
-    if (isAnimatedGIF) {
-        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
-        if ([post isPrivate] && [post.blog isHostedAtWPcom]) {
-            request = [PrivateSiteURLProtocol requestForPrivateSiteFromURL:url];
-        }
-        [self.postCardAnimatedImageView setAnimatedImage:request
-                                        placeholderImage:nil
-                                                 success:nil
-                                                 failure:nil];
-        return;
-    }
-    
     CGFloat desiredWidth = [UIApplication  sharedApplication].keyWindow.frame.size.width;
     CGFloat desiredHeight = self.postCardImageViewHeightConstraint.constant;
     CGSize imageSize = CGSizeMake(desiredWidth, desiredHeight);
-    if ([url isFileURL]) {
-        [self.postCardImageView setImageWithURL:url placeholderImage:nil];
-    } else if ([post isPrivate] && [post.blog isHostedAtWPcom]) {
-        CGFloat scale = [[UIScreen mainScreen] scale];
-        CGSize scaledSize = CGSizeMake(desiredWidth * scale, desiredHeight * scale);
-        url = [WPImageURLHelper imageURLWithSize:scaledSize forImageURL:url];
-        NSURLRequest *request = [PrivateSiteURLProtocol requestForPrivateSiteFromURL:url];
-        [self.postCardImageView setImageWithURLRequest:request placeholderImage:nil success:nil failure:nil];
-    } else if (!post.blog.isHostedAtWPcom && post.blog.isBasicAuthCredentialStored) {
-        [self.postCardImageView setImageWithURL:url placeholderImage:nil];
-    } else {
-        // if not private create photon url
-        url = [PhotonImageURLHelper photonURLWithSize:imageSize forImageURL:url];
-        [self.postCardImageView setImageWithURL:url placeholderImage:nil];
-    }
+
+    [self.imageLoader loadImageWithURL:url fromPost:post andPreferedSize:imageSize];
 }
 
 - (void)configureTitle

@@ -1,4 +1,1 @@
-Ora sono disponibili delle foto stock nell'app!
-Spotlight adesso indicizza le sezioni chiave dell'app!
-L'impostazione di Jetpack nell'app ora permette di creare contemporaneamente un nuovo account WP.com.
-Nel selezionatore di documenti si possono effettuare scelte multiple.
+Quando importi file in un articolo nell'editor, ora puoi selezionare molti tipi diversi di file, compresi PDF e documenti Word.

@@ -20,6 +20,9 @@ open class MediaImportService: LocalCoreDataService {
     ///
     @objc static let preferredImageCompressionQuality = 0.9
 
+    /// Allows the caller to designate supported import file types
+    @objc var allowableFileExtensions = [String]()
+
     /// Completion handler for a created Media object.
     ///
     public typealias MediaCompletion = (Media) -> Void
@@ -78,6 +81,7 @@ open class MediaImportService: LocalCoreDataService {
             let exporter = MediaURLExporter(url: url)
             exporter.imageOptions = self.exporterImageOptions
             exporter.videoOptions = self.exporterVideoOptions
+            exporter.urlOptions = self.exporterURLOptions
             return exporter
         case let stockPhotosMedia as StockPhotosMedia:
             let exporter = MediaExternalExporter(externalAsset: stockPhotosMedia)
@@ -136,6 +140,13 @@ open class MediaImportService: LocalCoreDataService {
         var options = MediaVideoExporter.Options()
         options.stripsGeoLocationIfNeeded = MediaSettings().removeLocationSetting
         options.exportPreset = MediaSettings().maxVideoSizeSetting.videoPreset
+        return options
+    }
+
+    fileprivate var exporterURLOptions: MediaURLExporter.Options {
+        var options = MediaURLExporter.Options()
+        options.allowableFileExtensions = allowableFileExtensions
+        options.stripsGeoLocationIfNeeded = MediaSettings().removeLocationSetting
         return options
     }
 
