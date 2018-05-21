@@ -295,9 +295,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewDidAppear:animated];
     [self createUserActivity];
-    if ([Feature enabled:FeatureFlagPrimeForPush]) {
-        [self showNotificationPrimerAlert];
-    }
+    [self showNotificationPrimerAlert];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
@@ -1159,6 +1157,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showNotificationPrimerAlert
 {
     if ([[NSUserDefaults standardUserDefaults] notificationPrimerAlertWasDisplayed]) {
+        return;
+    }
+    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:mainContext];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    if (defaultAccount == nil) {
         return;
     }
     [[PushNotificationsManager shared] loadAuthorizationStatusWithCompletion:^(UNAuthorizationStatus enabled) {
