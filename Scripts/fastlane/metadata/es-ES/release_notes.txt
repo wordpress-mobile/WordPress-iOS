@@ -1,4 +1,1 @@
-¡Fotos gratis de stock ahora disponibles en la aplicación!
-¡Spotlight ahora indexa las secciones clave de la aplicación!
-Configurando Jetpack dentro de la aplicación ahora permite crear al mismo tiempo una nueva cuenta de WP.com.
-Activada la selección múltiple en el selector de documentos.
+Al importar archivos en una entrada en el editor ahora puedes elegir muchos tipos de archivo diferentes, incluidos desde PDF hasta documentos de Word.

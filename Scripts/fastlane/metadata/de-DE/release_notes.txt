@@ -1,4 +1,1 @@
-Kostenfreie Stockfotos jetzt in der App verfügbar!
-Spotlight indiziert jetzt wichtige Bereiche der App!
-Das Einrichten von Jetpack in der App ermöglicht es, dass zur selben Zeit ein neues WP.com-Konto eingerichtet werden kann.
-Mehrfachauswahl in der Dokumenten-Auswahl wurde aktiviert.
+Wenn du Dateien in einen Beitrag importierst, kannst du im Editor viele verschiedene Dateitypen auswählen, u. a. auch PDF und Word.
