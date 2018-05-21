@@ -1,5 +1,7 @@
 import UIKit
 import SVProgressHUD
+import WordPressAuthenticator
+
 
 class SiteCreationThemeSelectionViewController: NUXCollectionViewController, UICollectionViewDelegateFlowLayout, WPContentSyncHelperDelegate {
 

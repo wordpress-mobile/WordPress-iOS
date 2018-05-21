@@ -120,6 +120,11 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         noResultsView.removeFromSuperview()
     }
 
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        noResultsView.centerInSuperview()
+    }
+
 }
 
 // MARK: - UITableViewDelegate
@@ -173,8 +178,13 @@ extension ActivityListViewController {
 
 extension ActivityListViewController: WPNoResultsViewDelegate {
     func didTap(_ noResultsView: WPNoResultsView!) {
-        let supportVC = SupportViewController()
-        supportVC.showFromTabBar()
+        if FeatureFlag.zendeskMobile.enabled {
+            let supportVC = SupportTableViewController()
+            supportVC.showFromTabBar()
+        } else {
+            let supportVC = SupportViewController()
+            supportVC.showFromTabBar()
+        }
     }
 }
 
@@ -184,7 +194,7 @@ extension ActivityListViewController: ActivityRewindPresenter {
 
     func presentRewindFor(activity: Activity) {
         guard activity.isRewindable, let rewindID = activity.rewindID else {
-                return
+            return
         }
 
         let title = NSLocalizedString("Rewind Site",

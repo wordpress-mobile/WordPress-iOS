@@ -38,7 +38,7 @@ final class MediaLibraryMediaPickingCoordinator {
         }
 
         if #available(iOS 11.0, *) {
-            menuAlert.addAction(otherAppsAction(origin: origin))
+            menuAlert.addAction(otherAppsAction(origin: origin, blog: blog))
         }
 
         menuAlert.addAction(cancelAction())
@@ -67,9 +67,9 @@ final class MediaLibraryMediaPickingCoordinator {
         })
     }
 
-    private func otherAppsAction(origin: UIViewController & UIDocumentPickerDelegate) -> UIAlertAction {
+    private func otherAppsAction(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) -> UIAlertAction {
         return UIAlertAction(title: .files, style: .default, handler: { [weak self] action in
-            self?.showDocumentPicker(origin: origin)
+            self?.showDocumentPicker(origin: origin, blog: blog)
         })
     }
 
@@ -87,10 +87,13 @@ final class MediaLibraryMediaPickingCoordinator {
         stockPhotos.presentPicker(origin: origin, blog: blog)
     }
 
-    private func showDocumentPicker(origin: UIViewController & UIDocumentPickerDelegate) {
-        let docTypes = [String(kUTTypeImage), String(kUTTypeMovie)]
+    private func showDocumentPicker(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) {
+        let docTypes = blog.allowedTypeIdentifiers
         let docPicker = UIDocumentPickerViewController(documentTypes: docTypes, in: .import)
         docPicker.delegate = origin
+        if #available(iOS 11.0, *) {
+            docPicker.allowsMultipleSelection = true
+        }
         WPStyleGuide.configureDocumentPickerNavBarAppearance()
         origin.present(docPicker, animated: true, completion: nil)
     }
