@@ -57,7 +57,7 @@ target 'WordPress' do
   pod 'MGSwipeTableCell', '1.6.7'
   pod 'lottie-ios', '2.5.0'
   pod 'Starscream', '3.0.4'
-  pod 'GoogleSignIn', '4.1.2'
+  pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => '989e97b'
   pod 'ZendeskSDK', '1.11.2.1'
 
 
@@ -125,41 +125,6 @@ end
 
 
 
-## WordPress Authenticator
-## =======================
-##
-target 'WordPressAuthenticator' do
-  project 'WordPressAuthenticator/WordPressAuthenticator.xcodeproj'
-
-  shared_with_all_pods
-  shared_with_networking_pods
-
-  ## Automattic libraries
-  ## ====================
-  ##
-  pod 'Gridicons', '0.15'
-  pod 'WordPressUI', '1.0.1'
-
-  ## Third party libraries
-  ## =====================
-  ##
-  pod '1PasswordExtension', '1.8.5'
-  pod 'GoogleSignIn', '4.1.2'
-  pod 'lottie-ios', '2.5.0'
-  pod 'NSURL+IDN', '0.3'
-  pod 'SVProgressHUD', '2.2.5'
-
-  target 'WordPressAuthenticatorTests' do
-    inherit! :search_paths
-
-    shared_test_pods
-    pod 'Expecta', '1.0.6'
-    pod 'Specta', '1.0.7'
-  end
-end
-
-
-
 ## WordPress.com Stats
 ## ===================
 ##
@@ -179,17 +144,4 @@ target 'WordPressComStatsiOS' do
 
     shared_test_pods
   end
-end
-
-
-
-## Remove Duplicate GoogleSignIn References. Nuke this whenever WordPressAuthenticator is brought in via Pods.
-## Based On: https://github.com/CocoaPods/CocoaPods/issues/7155
-##
-pre_install do |installer|
-  embedded_target = installer.aggregate_targets.find { |aggregate_target| aggregate_target.name == 'Pods-WordPressAuthenticator' }
-  host_target = installer.aggregate_targets.find { |aggregate_target| aggregate_target.name == 'Pods-WordPress' }
-
-  duplicated_framework = embedded_target.pod_targets.select { |dependency| dependency.name == 'GoogleSignIn' }
-  host_target.pod_targets = host_target.pod_targets - duplicated_framework
 end
