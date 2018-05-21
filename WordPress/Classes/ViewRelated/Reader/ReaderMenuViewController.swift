@@ -103,6 +103,7 @@ import WordPressShared
 
         setupRefreshControl()
         setupAccountChangeNotificationObserver()
+        setupSavedForLaterNavigationObserver()
         setupApplicationWillTerminateNotificationObserver()
     }
 
@@ -170,6 +171,10 @@ import WordPressShared
 
     @objc func setupAccountChangeNotificationObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(type(of: self).handleAccountChanged), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
+    }
+
+    private func setupSavedForLaterNavigationObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(showSavedForLater), name: .showAllSavedForLaterPosts, object: nil)
     }
 
 
@@ -314,17 +319,25 @@ import WordPressShared
 
     /// Presents the reader's search view controller.
     ///
-    @objc func showReaderSearch() {
-        showDetailViewController(viewControllerForSearch(), sender: self)
-    }
-
     fileprivate func viewControllerForSearch() -> ReaderSearchViewController {
         return ReaderSearchViewController.controller()
+    }
+
+    /// Presents the saved for later view controller
+    @objc func showSavedForLater() {
+        guard let indexPath = viewModel.indexPathOfSavedForLater() else {
+            return
+        }
+
+        tableView.flashRowAtIndexPath(indexPath, scrollPosition: .middle, completion: {
+            self.tableView(self.tableView, didSelectRowAt: indexPath)
+        })
     }
 
     fileprivate func viewControllerForSavedPosts() -> ReaderSavedPostsViewController {
         return ReaderSavedPostsViewController()
     }
+
 
     /// Presents a new view controller for subscribing to a new tag.
     ///
