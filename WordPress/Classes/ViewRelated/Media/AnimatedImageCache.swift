@@ -139,9 +139,9 @@ private extension AnimatedImageCache {
 
     static func totalCostLimit() -> Int {
         let physicalMemory = ProcessInfo.processInfo.physicalMemory
-        let ratio = physicalMemory <= (1024 * 1024 * 512 /* 512 Mb */) ? 0.1 : 0.2
-        let limit = physicalMemory / UInt64(1 / ratio)
-        return limit > UInt64(Int.max) ? Int.max : Int(limit)
+        let cacheRatio = physicalMemory <= (Constants.memory512MB) ? Constants.smallCacheRatio : Constants.largeCacheRatio
+        let cacheLimit = physicalMemory / UInt64(1 / cacheRatio)
+        return cacheLimit > UInt64(Int.max) ? Int.max : Int(cacheLimit)
     }
 }
 
@@ -150,5 +150,8 @@ private extension AnimatedImageCache {
 private extension AnimatedImageCache {
     struct Constants {
         static let keyStaticImageSuffix = "_static_image"
+        static let memory512MB: UInt64 = 1024 * 1024 * 512 // 512 Mb
+        static let smallCacheRatio: CGFloat = 0.1
+        static let largeCacheRatio: CGFloat = 0.2
     }
 }
