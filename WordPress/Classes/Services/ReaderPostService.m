@@ -472,7 +472,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
     NSString *likeSiteURL = [NSString stringWithFormat:@"%@*", siteURL];
     NSPredicate *postsMatching = [NSPredicate predicateWithFormat:@"siteID = %@ AND permaLink LIKE %@ AND topic = %@", siteID, likeSiteURL, topic];
-    request.predicate = [self ignoreSavedForLater:postsMatching];
+    request.predicate = [self predicateIgnoringSavedForLaterPosts:postsMatching];
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
     if (error) {
         DDLogError(@"%@, error (un)following posts with siteID %@ and URL @%: %@", NSStringFromSelector(_cmd), siteID, siteURL, error);
@@ -497,7 +497,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSError *error;
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
     NSPredicate *postsMatching = [NSPredicate predicateWithFormat:@"siteID = %@ AND isWPCom = YES", siteID];
-    request.predicate = [self ignoreSavedForLater:postsMatching];
+    request.predicate = [self predicateIgnoringSavedForLaterPosts:postsMatching];
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
     if (error) {
         DDLogError(@"%@, error deleting posts belonging to siteID %@: %@", NSStringFromSelector(_cmd), siteID, error);
@@ -603,12 +603,12 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return post.sortRank;
 }
 
-- (NSPredicate*)ignoreSavedForLater:(NSPredicate*)fromPredicate
+- (NSPredicate *)predicateIgnoringSavedForLaterPosts:(NSPredicate*)fromPredicate
 {
     return [NSCompoundPredicate andPredicateWithSubpredicates:@[fromPredicate, [self notSavedForLaterPredicate]]];
 }
 
-- (NSPredicate*)notSavedForLaterPredicate
+- (NSPredicate *)notSavedForLaterPredicate
 {
     return [NSPredicate predicateWithFormat:@"isSavedForLater == NO"];
 }
