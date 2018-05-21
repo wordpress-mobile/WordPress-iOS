@@ -445,8 +445,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         let account = service.defaultWordPressComAccount()
-        // Again, ! isn't cool, but let's keep it for now until we refactor the VC
-        // initialization parameters.
         return account
     }
 
