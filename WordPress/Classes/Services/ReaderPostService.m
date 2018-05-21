@@ -471,7 +471,8 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSError *error;
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
     NSString *likeSiteURL = [NSString stringWithFormat:@"%@*", siteURL];
-    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@ AND permaLink LIKE %@ AND topic = %@ AND isSavedForLater == NO", siteID, likeSiteURL, topic];
+    NSPredicate *postsMatching = [NSPredicate predicateWithFormat:@"siteID = %@ AND permaLink LIKE %@ AND topic = %@", siteID, likeSiteURL, topic];
+    request.predicate = [self ignoreSavedForLater:postsMatching];
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
     if (error) {
         DDLogError(@"%@, error (un)following posts with siteID %@ and URL @%: %@", NSStringFromSelector(_cmd), siteID, siteURL, error);
@@ -495,7 +496,8 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 {
     NSError *error;
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
-    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@ AND isWPCom = YES AND isSavedForLater == NO", siteID];
+    NSPredicate *postsMatching = [NSPredicate predicateWithFormat:@"siteID = %@ AND isWPCom = YES", siteID];
+    request.predicate = [self ignoreSavedForLater:postsMatching];
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
     if (error) {
         DDLogError(@"%@, error deleting posts belonging to siteID %@: %@", NSStringFromSelector(_cmd), siteID, error);
@@ -599,6 +601,16 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 
     return post.sortRank;
+}
+
+- (NSPredicate*)ignoreSavedForLater:(NSPredicate*)fromPredicate
+{
+    return [NSCompoundPredicate andPredicateWithSubpredicates:@[fromPredicate, [self notSavedForLaterPredicate]]];
+}
+
+- (NSPredicate*)notSavedForLaterPredicate
+{
+    return [NSPredicate predicateWithFormat:@"isSavedForLater == NO"];
 }
 
 
