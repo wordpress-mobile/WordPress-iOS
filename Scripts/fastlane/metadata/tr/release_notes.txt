@@ -1,4 +1,1 @@
-Artık uygulama içinde ücretsiz stok fotoğraflar mevcut.
-Spotlight artık uygulamanın anahtar kısımlarını indeksliyor.
-Uygulama içinden Jetpack'i ayarlamak artık aynı zamanda WP.com hesabının oluşturulmasını da sağlıyor.
-Belge seçicide çoklu seçim etkinleştirildi.
+Düzenleyici içinden yazıya dosya ekleme sırasında artık bir çok dosya tipi seçebiliyorsunuz, PDF ve Word belgeleri dahil.
