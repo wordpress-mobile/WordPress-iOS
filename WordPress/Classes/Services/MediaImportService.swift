@@ -185,6 +185,10 @@ open class MediaImportService: LocalCoreDataService {
         if let duration = export.duration {
             media.length = duration as NSNumber
         }
+
+        if let caption = export.caption {
+            media.caption = caption
+        }
     }
 
 }
