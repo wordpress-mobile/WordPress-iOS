@@ -95,7 +95,8 @@ final class ReaderSavedPostsViewController: UITableViewController {
             return
         }
 
-        // TODO: Allow logged in features
+        let isLoggedIn = AccountHelper.isDotcomAvailable()
+
         if postCellActions == nil {
             postCellActions = ReaderPostCellActions(context: managedObjectContext(), origin: self, topic: topic, visibleConfirmation: false)
         }
@@ -103,7 +104,7 @@ final class ReaderSavedPostsViewController: UITableViewController {
                                                 withPost: post,
                                                 topic: topic,
                                                 delegate: postCellActions,
-                                                loggedIn: false)
+                                                loggedIn: isLoggedIn)
     }
 }
 
