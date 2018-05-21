@@ -98,6 +98,7 @@ final class ReaderSavedPostsViewController: UITableViewController {
         if postCellActions == nil {
             postCellActions = ReaderPostCellActions(context: managedObjectContext(), origin: self, topic: topic, visibleConfirmation: false)
         }
+
         cellConfiguration.configurePostCardCell(cell,
                                                 withPost: post,
                                                 topic: topic,

@@ -350,18 +350,24 @@ static NSInteger HideSearchMinSites = 3;
 
     __weak __typeof(self) weakSelf = self;
     [context performBlock:^{
+        void (^completionBlock)(void) = ^() {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.tableView.refreshControl endRefreshing];
+            });
+        };
+
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
         if (defaultAccount) {
             [blogService syncBlogsForAccount:defaultAccount success:^{
-                [weakSelf.tableView.refreshControl endRefreshing];
+                completionBlock();
             } failure:^(NSError * _Nonnull error) {
-                [weakSelf.tableView.refreshControl endRefreshing];
+                completionBlock();
             }];
         } else {
-            [weakSelf.tableView.refreshControl endRefreshing];
+            completionBlock();
         }
     }];
 }
