@@ -40,7 +40,9 @@ msgstr ""
 
 msgctxt "v10.1-whats-new"
 msgid ""
-"When importing files into a post in the editor you can now select many different types of file, including PDFs to Word documents.\n"
+"Notification settings management has been improved.\n"
+"A default caption with credits is now generated when uploading stock photos.\n"
+"Support for dysplaying GIF images has been improved.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
