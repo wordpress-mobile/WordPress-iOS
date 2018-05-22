@@ -26,7 +26,7 @@ class MediaCellProgressView: UIView {
         }
     }
 
-    //MARK: - public fields
+    // MARK: - public fields
 
     let retryView = RetryView()
     var errorTintColor = UIColor.white
@@ -56,12 +56,12 @@ class MediaCellProgressView: UIView {
         }
     }
 
-    //MARK: - private fields
+    // MARK: - private fields
 
     private var progressIndicator = ProgressIndicatorView()
     private var errorView: UIView?
 
-    //MARK: - inits
+    // MARK: - inits
 
     @objc convenience init() {
         self.init(frame: .zero)
@@ -76,7 +76,7 @@ class MediaCellProgressView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    //MARK: - UIView overrides
+    // MARK: - UIView overrides
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
@@ -93,7 +93,7 @@ class MediaCellProgressView: UIView {
         setRetryContainerDimmed(false)
     }
 
-    //MARK: - public methods
+    // MARK: - public methods
 
     func addErrorView(_ view: UIView) {
         errorView?.removeFromSuperview()
@@ -110,7 +110,7 @@ class MediaCellProgressView: UIView {
         state = .error
     }
 
-    //MARK: - private methods
+    // MARK: - private methods
 
     private func refreshState() {
         switch state {

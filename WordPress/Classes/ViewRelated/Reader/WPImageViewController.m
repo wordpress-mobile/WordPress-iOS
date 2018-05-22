@@ -132,7 +132,6 @@ static CGFloat const MinimumZoomScale = 0.1;
 
     [NSLayoutConstraint activateConstraints:constraints];
 
-
     [self loadImage];
 }
 
