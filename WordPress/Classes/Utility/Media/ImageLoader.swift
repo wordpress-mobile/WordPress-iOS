@@ -25,24 +25,15 @@
     private var errorHandler: ((Error?) -> Void)?
     private var placeholder: UIImage?
 
-    @objc(initWithImageView:gifStrategy:)
-    /// Convenienve init for objective-c
-    convenience init(objc_imageView imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs) {
-        self.init(imageView: imageView, gifStrategy: gifStrategy)
-    }
-
-    @objc init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs, loaderStyle: MediaCellProgressView.LoaderStyle = .default) {
+    @objc init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs) {
         self.imageView = imageView
         imageView.gifStrategy = gifStrategy
-        loadingIndicator = MediaCellProgressView(style: loaderStyle, animationSpeed: 0.7)
-
-        let errorView = UIImageView(image: #imageLiteral(resourceName: "hud_error").withRenderingMode(.alwaysTemplate))
-        errorView.tintColor = WPStyleGuide.errorRed()
-        errorView.translatesAutoresizingMaskIntoConstraints = false
-        loadingIndicator.addErrorView(errorView)
+        loadingIndicator = MediaCellProgressView()
 
         super.init()
 
+        WPStyleGuide.styleProgressViewWhite(loadingIndicator)
+        WPStyleGuide.addErrorView(to: loadingIndicator)
         imageView.addLoadingIndicator(loadingIndicator, style: .fullView)
     }
 

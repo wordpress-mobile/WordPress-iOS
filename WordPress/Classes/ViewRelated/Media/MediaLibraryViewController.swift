@@ -476,6 +476,7 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
             let media = asset as? Media else {
             return
         }
+        WPStyleGuide.styleProgressViewForMediaCell(overlayView)
         switch media.remoteStatus {
         case .processing:
             if let progress = MediaCoordinator.shared.progress(for: media) {
