@@ -50,15 +50,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         let textView = Aztec.TextView(defaultFont: Fonts.regular, defaultParagraphStyle: paragraphStyle, defaultMissingImage: Assets.defaultMissingImage)
 
-        textView.inputProcessor = PipelineProcessor([CaptionShortcodePreProcessor(),
-                                                     VideoShortcodeProcessor.videoPressPreProcessor,
-                                                     VideoShortcodeProcessor.wordPressVideoPreProcessor,
-                                                     CalypsoProcessorIn()])
-
-        textView.outputProcessor = PipelineProcessor([CaptionShortcodePostProcessor(),
-                                                      VideoShortcodeProcessor.videoPressPostProcessor,
-                                                      VideoShortcodeProcessor.wordPressVideoPostProcessor,
-                                                      CalypsoProcessorOut()])
+        textView.load(WordPressPlugin())
 
         let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
