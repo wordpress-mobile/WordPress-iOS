@@ -1,4 +1,1 @@
-Nu finns ett fritt bildarkiv tillgängligt inuti appen!
-Nu indexerar Spotlight viktiga delar av appen!
-När man konfigurerar Jetpack inuti appen går det nu att samtidigt skapa ett nytt användarkonto på WP.com.
-I dokumentväljaren går det nu att välja flera objekt på samma gång.
+Vid import i redigeraren av filer till ett inlägg kan du nu välja många olika filtyper, inklusive pdf-filer och Word-document.
