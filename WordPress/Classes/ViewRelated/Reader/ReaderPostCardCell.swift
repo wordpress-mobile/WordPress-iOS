@@ -814,10 +814,6 @@ extension ReaderPostCardCell {
         return headerBlogButton
     }
 
-    func getShareButtonForTesting() -> UIButton {
-        return saveForLaterButton
-    }
-
     func getCommentsButtonForTesting() -> UIButton {
         return commentActionButton
     }
