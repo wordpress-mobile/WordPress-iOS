@@ -120,15 +120,14 @@ static CGFloat const MinimumZoomScale = 0.1;
     self.flingableViewHandler = [[FlingableViewHandler alloc] initWithTargetView:self.scrollView];
     self.flingableViewHandler.delegate = self;
 
-    self.activityIndicatorView = [[MediaCellProgressView alloc] initWithStyle:LoaderStyleWhite animationSpeed:0.7];
+    self.activityIndicatorView = [[MediaCellProgressView alloc] init];
+    [WPStyleGuide addErrorViewToProgressView:self.activityIndicatorView];
+    
     self.activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
-
     [self.view addSubview:self.activityIndicatorView];
     NSArray *constraints = @[
-                             [self.activityIndicatorView.topAnchor constraintEqualToAnchor:self.view.topAnchor],
-                             [self.activityIndicatorView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor],
-                             [self.activityIndicatorView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor],
-                             [self.activityIndicatorView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor]
+                             [self.activityIndicatorView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+                             [self.activityIndicatorView.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]
                              ];
 
     [NSLayoutConstraint activateConstraints:constraints];
@@ -175,7 +174,7 @@ static CGFloat const MinimumZoomScale = 0.1;
                                    weakSelf.isLoadingImage = NO;
                                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                                    DDLogError(@"Error loading image: %@", error);
-                                   weakSelf.isLoadingImage = NO;
+                                   [weakSelf.activityIndicatorView showError];
                                }];
 }
 
@@ -189,7 +188,7 @@ static CGFloat const MinimumZoomScale = 0.1;
         weakSelf.image = weakSelf.imageView.image;
         [weakSelf updateImageView];
     } error:^(NSError * _Nullable error) {
-        weakSelf.isLoadingImage = NO;
+        [weakSelf.activityIndicatorView showError];
         DDLogError(@"Error loading image: %@", error);
     }];
 }
