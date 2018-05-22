@@ -146,6 +146,7 @@ final class ReaderPostCardCellTests: XCTestCase {
 
     private struct TestConstants {
         static let headerLabel = "Post by An author, from A blog name, "
+        static let saveLabel = "Save for Later"
         static let moreLabel = "More"
         static let commentLabel = "2 comments"
         static let visitLabel = "Visit"
@@ -167,6 +168,10 @@ final class ReaderPostCardCellTests: XCTestCase {
     func testHeaderLabelMatchesExpectation() {
         let expectedHeaderLabel = TestConstants.headerLabel + mock!.dateForDisplay().mediumString()
         XCTAssertEqual(cell?.getHeaderButtonForTesting().accessibilityLabel, expectedHeaderLabel, "Incorrect accessibility label: Header Button ")
+    }
+
+    func testSaveForLaterButtonLabelMatchesExpectation() {
+        XCTAssertEqual(cell?.getSaveForLaterButtonForTesting().accessibilityLabel, TestConstants.saveLabel, "Incorrect accessibility label: Save for Later button")
     }
 
     func testCommentsButtonLabelMatchesExpectation() {
