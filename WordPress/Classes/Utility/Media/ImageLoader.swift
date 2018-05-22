@@ -187,7 +187,7 @@
     }
 }
 
-//MARK: - Loading Media object
+// MARK: - Loading Media object
 
 extension ImageLoader {
 
