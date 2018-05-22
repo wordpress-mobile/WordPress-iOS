@@ -57,7 +57,6 @@ target 'WordPress' do
   pod 'MGSwipeTableCell', '1.6.7'
   pod 'lottie-ios', '2.5.0'
   pod 'Starscream', '3.0.4'
-  pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => '1d108cf'
   pod 'ZendeskSDK', '1.11.2.1'
 
 
@@ -68,6 +67,7 @@ target 'WordPress' do
   pod 'Gridicons', '0.15'
   pod 'NSURL+IDN', '0.3'
   pod 'WPMediaPicker', '1.0'
+  pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => '599083a'
   pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'2a25da7b9b687b5e05ce128423d99f771673a6c4'
   pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '2a25da7b9b687b5e05ce128423d99f771673a6c4'
   pod 'WordPressUI', '1.0.1'
