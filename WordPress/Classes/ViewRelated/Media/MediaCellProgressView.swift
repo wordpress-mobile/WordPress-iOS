@@ -6,49 +6,6 @@ import WordPressShared
 /// asset is currently being processed, uploaded, or has failed to upload.
 ///
 class MediaCellProgressView: UIView {
-    let progressIndicator: ProgressIndicatorView
-
-    private var errorView: UIView?
-    private let retryContainer = UIStackView()
-
-    @objc enum LoaderStyle: Int {
-        case `default`
-        case gray
-        case white
-
-        var appearance: ProgressIndicatorView.Appearance {
-            switch self {
-            case .default:
-                return ProgressIndicatorView.Appearance(lineColor: WPStyleGuide.mediumBlue())
-            case .gray:
-                return ProgressIndicatorView.Appearance(lineColor: .white)
-            case .white:
-                return ProgressIndicatorView.Appearance(lineColor: .white)
-            }
-        }
-
-        var backgroundColor: UIColor {
-            switch self {
-            case .default:
-                return .clear
-            case .gray:
-                return WPStyleGuide.darkGrey()
-            case .white:
-                return .clear
-            }
-        }
-
-        var retryTintColor: UIColor {
-            switch self {
-            case .default:
-                return .black
-            case .gray:
-                return .white
-            case .white:
-                return .white
-            }
-        }
-    }
 
     enum State: Equatable {
         case stopped
@@ -69,67 +26,57 @@ class MediaCellProgressView: UIView {
         }
     }
 
+    //MARK: - public fields
+
+    let retryView = RetryView()
+    var errorTintColor = UIColor.white
+
     var state: State = .stopped {
         didSet {
-            switch state {
-            case .stopped:
-                progressIndicator.state = .stopped
-                retryContainer.isHidden = true
-                errorView?.isHidden = true
-            case .retry:
-                progressIndicator.state = .stopped
-                retryContainer.isHidden = false
-                errorView?.isHidden = true
-            case .indeterminate:
-                progressIndicator.state = .indeterminate
-                retryContainer.isHidden = true
-                errorView?.isHidden = true
-            case .progress:
-                progressIndicator.state = state
-                retryContainer.isHidden = true
-                errorView?.isHidden = true
-            case .error:
-                progressIndicator.state = .stopped
-                retryContainer.isHidden = true
-                errorView?.isHidden = false
-            }
+            refreshState()
         }
     }
 
-    @objc init(style: LoaderStyle = .white, animationSpeed: Float = 1) {
-        progressIndicator = ProgressIndicatorView(appearance: style.appearance, animationSpeed: animationSpeed)
-        super.init(frame: .zero)
-        setup(style)
+    var loaderAppearance: ProgressIndicatorView.Appearance {
+        get {
+            return progressIndicator.appearance
+        }
+        set {
+            progressIndicator.removeFromSuperview()
+            progressIndicator = ProgressIndicatorView(appearance: newValue)
+            progressIndicator.animationSpeed = animationSpeed
+            addProgressIndicator()
+            refreshState()
+        }
+    }
+
+    var animationSpeed: Float = 1.0 {
+        didSet {
+            progressIndicator.animationSpeed = animationSpeed
+        }
+    }
+
+    //MARK: - private fields
+
+    private var progressIndicator = ProgressIndicatorView()
+    private var errorView: UIView?
+
+    //MARK: - inits
+
+    @objc convenience init() {
+        self.init(frame: .zero)
     }
 
     override init(frame: CGRect) {
-        // Default style for cell overlay (Media Library)
-        let style = LoaderStyle.gray
-        progressIndicator = ProgressIndicatorView(appearance: style.appearance)
         super.init(frame: frame)
-        setup(style)
+        setup()
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func addErrorView(_ view: UIView) {
-        errorView?.removeFromSuperview()
-        errorView = view
-        addSubview(view)
-        NSLayoutConstraint.activate([
-            view.centerXAnchor.constraint(equalTo: centerXAnchor),
-            view.centerYAnchor.constraint(equalTo: centerYAnchor)
-            ])
-    }
-
-    fileprivate func setup(_ style: LoaderStyle) {
-        addProgressIndicator()
-        addRetryViews(with: style)
-
-        backgroundColor = style.backgroundColor
-    }
+    //MARK: - UIView overrides
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
@@ -146,8 +93,58 @@ class MediaCellProgressView: UIView {
         setRetryContainerDimmed(false)
     }
 
+    //MARK: - public methods
+
+    func addErrorView(_ view: UIView) {
+        errorView?.removeFromSuperview()
+        errorView = view
+        addSubview(view)
+        NSLayoutConstraint.activate([
+            view.centerXAnchor.constraint(equalTo: centerXAnchor),
+            view.centerYAnchor.constraint(equalTo: centerYAnchor)
+            ])
+        view.isHidden = true
+    }
+
+    @objc func showError() {
+        state = .error
+    }
+
+    //MARK: - private methods
+
+    private func refreshState() {
+        switch state {
+        case .stopped:
+            progressIndicator.state = .stopped
+            retryView.isHidden = true
+            errorView?.isHidden = true
+        case .retry:
+            progressIndicator.state = .stopped
+            retryView.isHidden = false
+            errorView?.isHidden = true
+        case .indeterminate:
+            progressIndicator.state = .indeterminate
+            retryView.isHidden = true
+            errorView?.isHidden = true
+        case .progress:
+            progressIndicator.state = state
+            retryView.isHidden = true
+            errorView?.isHidden = true
+        case .error:
+            progressIndicator.state = .stopped
+            retryView.isHidden = true
+            errorView?.isHidden = false
+        }
+    }
+
+    fileprivate func setup() {
+        addProgressIndicator()
+        addRetryViews()
+        backgroundColor = .clear
+    }
+
     fileprivate func setRetryContainerDimmed(_ dimmed: Bool) {
-        retryContainer.alpha = (dimmed) ? 0.5 : 1.0
+        retryView.alpha = (dimmed) ? 0.5 : 1.0
     }
 
     private func addProgressIndicator() {
@@ -160,39 +157,83 @@ class MediaCellProgressView: UIView {
             ])
     }
 
-    private func addRetryViews(with style: LoaderStyle) {
-        retryContainer.axis = .vertical
-        retryContainer.alignment = .center
-        retryContainer.spacing = RetryContainerAppearance.verticalSpacing
-        retryContainer.distribution = .fillProportionally
-
-        let retryIconView = UIImageView(image: Gridicon.iconOfType(.refresh))
-        retryIconView.tintColor = style.retryTintColor
-        retryContainer.addArrangedSubview(retryIconView)
-
-        let retryLabel = UILabel()
-        retryLabel.font = UIFont.systemFont(ofSize: RetryContainerAppearance.fontSize)
-        retryLabel.textColor = style.retryTintColor
-        retryLabel.textAlignment = .center
-        retryLabel.text = NSLocalizedString("Retry", comment: "Retry. Verb – retry a failed media upload.")
-        retryLabel.numberOfLines = 2
-        retryContainer.addArrangedSubview(retryLabel)
-
-        addSubview(retryContainer)
-        retryContainer.translatesAutoresizingMaskIntoConstraints = false
+    private func addRetryViews() {
+        addSubview(retryView)
         NSLayoutConstraint.activate([
-            retryContainer.centerYAnchor.constraint(equalTo: centerYAnchor),
-            retryContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: RetryContainerAppearance.horizontalPadding),
-            retryContainer.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -RetryContainerAppearance.horizontalPadding)
+            retryView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            retryView.centerXAnchor.constraint(equalTo: centerXAnchor),
             ])
 
-        retryContainer.isHidden = true
+        retryView.isHidden = true
     }
+}
 
-    enum RetryContainerAppearance {
+/// View used to show in the `retry` progress state
+///
+final class RetryView: UIView {
+
+    enum Appearance {
         static let horizontalPadding: CGFloat = 4.0
         static let verticalSpacing: CGFloat = 3.0
         static let fontSize: CGFloat = 14.0
+    }
+
+    override var tintColor: UIColor! {
+        didSet {
+            label.textColor = tintColor
+            imageView.tintColor = tintColor
+        }
+    }
+
+    let imageView = UIImageView(image: Gridicon.iconOfType(.refresh))
+
+    let label: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: Appearance.fontSize)
+        label.textAlignment = .center
+        label.text = NSLocalizedString("Retry", comment: "Retry. Verb – retry a failed media upload.")
+        label.numberOfLines = 2
+        return label
+    }()
+
+
+    private let container: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.spacing = Appearance.verticalSpacing
+        stackView.distribution = .fillProportionally
+
+        return stackView
+    }()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        layout()
+    }
+
+    init() {
+        super.init(frame: .zero)
+        translatesAutoresizingMaskIntoConstraints = false
+        layout()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        layout()
+    }
+
+    private func layout() {
+        container.addArrangedSubview(imageView)
+        container.addArrangedSubview(label)
+        addSubview(container)
+        NSLayoutConstraint.activate([
+            container.topAnchor.constraint(equalTo: topAnchor),
+            container.bottomAnchor.constraint(equalTo: bottomAnchor),
+            container.leadingAnchor.constraint(equalTo: leadingAnchor, constant: RetryView.Appearance.horizontalPadding),
+            container.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -RetryView.Appearance.horizontalPadding)
+            ])
     }
 }
 
@@ -212,8 +253,8 @@ class ProgressIndicatorView: UIView {
 
         init(size: CGFloat = 25.0,
              lineWidth: CGFloat = 3.0,
-             lineColor: UIColor = WPStyleGuide.mediumBlue(),
-             trackColor: UIColor = WPStyleGuide.grey()) {
+             lineColor: UIColor = .white,
+             trackColor: UIColor = .gray) {
 
             defaultSize = size
             self.lineWidth = lineWidth
@@ -241,14 +282,23 @@ class ProgressIndicatorView: UIView {
         }
     }
 
-    private let appearance: Appearance
-    private var animations: Animations
+    private var animations = Animations(speed: 1)
+
+    let appearance: Appearance
+
+    var animationSpeed: Float {
+        get {
+            return animations.speed
+        }
+        set {
+            animations = Animations(speed: newValue)
+        }
+    }
 
     private var isAnimating = false
 
-    init(appearance: Appearance = Appearance(), animationSpeed: Float = 1) {
+    init(appearance: Appearance = Appearance()) {
         self.appearance = appearance
-        self.animations = Animations(speed: animationSpeed)
         super.init(frame: CGRect(x: 0, y: 0, width: appearance.defaultSize, height: appearance.defaultSize))
         setup()
     }
