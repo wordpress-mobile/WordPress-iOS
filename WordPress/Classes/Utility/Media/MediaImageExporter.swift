@@ -59,24 +59,26 @@ class MediaImageExporter: MediaExporter {
     private let data: Data?
     private let url: URL?
     private let filename: String?
+    private let caption: String?
 
-    private init(image: UIImage?, filename: String?, data: Data?, url: URL?) {
+    private init(image: UIImage?, filename: String?, data: Data?, url: URL?, caption: String?) {
         self.image = image
         self.filename = filename
         self.data = data
         self.url = url
+        self.caption = caption
     }
 
-    convenience init(image: UIImage, filename: String?) {
-        self.init(image: image, filename: filename, data: nil, url: nil)
+    convenience init(image: UIImage, filename: String?, caption: String? = nil) {
+        self.init(image: image, filename: filename, data: nil, url: nil, caption: caption)
     }
 
     convenience init(url: URL) {
-        self.init(image: nil, filename: nil, data: nil, url: url)
+        self.init(image: nil, filename: nil, data: nil, url: url, caption: nil)
     }
 
     convenience init(data: Data, filename: String?) {
-        self.init(image: nil, filename: filename, data: data, url: nil)
+        self.init(image: nil, filename: filename, data: data, url: nil, caption: nil)
     }
 
     @discardableResult public func export(onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) -> Progress {
@@ -219,7 +221,8 @@ class MediaImageExporter: MediaExporter {
                                           fileSize: url.fileSize,
                                           width: result.width,
                                           height: result.height,
-                                          duration: nil))
+                                          duration: nil,
+                                          caption: caption))
         } catch {
             onError(exporterErrorWith(error: error))
         }

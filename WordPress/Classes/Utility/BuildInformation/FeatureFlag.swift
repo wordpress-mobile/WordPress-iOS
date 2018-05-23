@@ -8,7 +8,6 @@ enum FeatureFlag: Int {
     case usernameChanging
     case zendeskMobile
     case saveForLater
-    case primeForPush
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -22,11 +21,9 @@ enum FeatureFlag: Int {
         case .usernameChanging:
             return BuildConfiguration.current == .localDeveloper
         case .zendeskMobile:
-            return BuildConfiguration.current == .localDeveloper
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .saveForLater:
             return false
-        case .primeForPush:
-            return BuildConfiguration.current == .localDeveloper
         }
     }
 }

@@ -1,4 +1,1 @@
-Foto Stok Gratis sekarang tersedia dalam Aplikasi!
-Spotlight sekarang mengindeks bagian kunci dari Aplikasi!
-Menyiapkan Jetpack dalam aplikasi sekarang memungkinkan akun WP.com baru dibuat secara bersamaan.
-Mengaktifkan pilihan ganda dalam pemilih dokumen.
+Saat mengimpor file ke dalam pos di penyunting, Anda dapat memilih banyak tipe file, termasuk dokumen PDF sampai Word.
