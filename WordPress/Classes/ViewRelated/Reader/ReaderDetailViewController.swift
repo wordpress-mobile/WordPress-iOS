@@ -410,6 +410,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         WPStyleGuide.applyReaderCardTagButtonStyle(tagButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(commentButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(likeButton)
+        WPStyleGuide.applyReaderCardActionButtonStyle(saveForLaterButton)
     }
 
 
@@ -802,13 +803,33 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         let size = Gridicon.defaultSize
         let icon = Gridicon.iconOfType(.bookmarkOutline, withSize: size)
-        let highlightedIcon = Gridicon.iconOfType(.bookmark, withSize: size)
+        let selectedIcon = Gridicon.iconOfType(.bookmark, withSize: size)
 
-        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
-        let tintedHighlightedIcon = highlightedIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
+        let normalColor = WPStyleGuide.greyLighten10()
+        let selectedColor = WPStyleGuide.mediumBlue()
+        let highlightedColor = WPStyleGuide.lightBlue()
+
+        let tintedIcon = icon.imageWithTintColor(normalColor)
+        let tintedSelectedIcon = selectedIcon.imageWithTintColor(selectedColor)
+        let tintedHighlightedIcon = icon.imageWithTintColor(highlightedColor)
+        let tintedSelectedHighlightedIcon = selectedIcon.imageWithTintColor(highlightedColor)
 
         saveForLaterButton.setImage(tintedIcon, for: .normal)
-        saveForLaterButton.setImage(tintedHighlightedIcon, for: .selected)
+        saveForLaterButton.setImage(tintedSelectedIcon, for: .selected)
+        saveForLaterButton.setImage(tintedHighlightedIcon, for: .highlighted)
+        saveForLaterButton.setImage(tintedSelectedHighlightedIcon, for: [.highlighted, .selected])
+
+        let saveTitle = NSLocalizedString("Save", comment: "Title of action button to save a Reader post to read later.")
+        let savedTitle = NSLocalizedString("Saved", comment: "Title of action button for a Reader post that has been saved to read later.")
+
+        saveForLaterButton.setTitle(saveTitle, for: .normal)
+        saveForLaterButton.setTitle(savedTitle, for: .selected)
+        saveForLaterButton.setTitle(savedTitle, for: [.highlighted, .selected])
+
+        saveForLaterButton.setTitleColor(normalColor, for: .normal)
+        saveForLaterButton.setTitleColor(selectedColor, for: .selected)
+        saveForLaterButton.setTitleColor(highlightedColor, for: .highlighted)
+        saveForLaterButton.setTitleColor(highlightedColor, for: [.highlighted, .selected])
 
         saveForLaterButton.isHidden = false
         saveForLaterButton.isSelected = post?.isSavedForLater ?? false
