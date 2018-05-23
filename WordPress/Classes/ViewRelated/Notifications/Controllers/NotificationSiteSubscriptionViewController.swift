@@ -36,7 +36,7 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
 
 
         init(kind: Kind = .setting, title: String, frequency: ReaderServiceDeliveryFrequency? = nil) {
-            self.title = NSLocalizedString(title, comment: "The title will be displayed by the row cell")
+            self.title = title
             self.kind = kind
             self.frequency = frequency
         }
@@ -111,14 +111,19 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
         let daily = ReaderServiceDeliveryFrequency.daily
         let weekly = ReaderServiceDeliveryFrequency.weekly
 
+        let newPostsString = NSLocalizedString("New posts", comment: "Noun. The title of an item in a list.")
+        let emailPostsString = NSLocalizedString("Email me new posts", comment: "The title of an item in a list.")
+        let emailCommentsString = NSLocalizedString("Email me new comments", comment: "Noun. The title of an item in a list.")
+        let footerString = NSLocalizedString("Receive notifications for new posts from this site", comment:"Descriptive text below a list of options.")
+
         let post = Section(type: .posts,
-                           rows: [Row(title: "New posts")],
-                           footerText: "Receive notifications for new posts from this site")
-        let email = Section(type: .emails, rows: [Row(title: "Email me new posts"),
+                           rows: [Row(title: newPostsString)],
+                           footerText: footerString)
+        let email = Section(type: .emails, rows: [Row(title: emailPostsString),
                                                   Row(kind: .checkmark, title: instantly.rawValue.capitalized, frequency: instantly),
                                                   Row(kind: .checkmark, title: daily.rawValue.capitalized, frequency: daily),
                                                   Row(kind: .checkmark, title: weekly.rawValue.capitalized, frequency: weekly)])
-        let comments = Section(type: .comments, rows: [Row(title: "Email me new comments")])
+        let comments = Section(type: .comments, rows: [Row(title: emailCommentsString)])
 
         sections = [post, email, comments]
     }
