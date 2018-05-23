@@ -68,8 +68,8 @@ target 'WordPress' do
   pod 'Gridicons', '0.15'
   pod 'NSURL+IDN', '0.3'
   pod 'WPMediaPicker', '1.0'
-  pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'5b67d20c00f0a126bc164a3497bacd34aaa1eb3a'
-  pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '5b67d20c00f0a126bc164a3497bacd34aaa1eb3a'
+  pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag =>'1.0.0-beta.19'
+  pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag =>'1.0.0-beta.19'
   pod 'WordPressUI', '1.0.1'
 
   target 'WordPressTest' do
@@ -89,8 +89,8 @@ target 'WordPress' do
     shared_with_all_pods
     shared_with_networking_pods
 
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'5b67d20c00f0a126bc164a3497bacd34aaa1eb3a'
-    pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '5b67d20c00f0a126bc164a3497bacd34aaa1eb3a'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag =>'1.0.0-beta.19'
+    pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag =>'1.0.0-beta.19'
     pod 'WordPressUI', '1.0.1'
     pod 'Gridicons', '0.15'
   end
@@ -105,8 +105,8 @@ target 'WordPress' do
     shared_with_all_pods
     shared_with_networking_pods
 
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'5b67d20c00f0a126bc164a3497bacd34aaa1eb3a'
-    pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '5b67d20c00f0a126bc164a3497bacd34aaa1eb3a'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag =>'1.0.0-beta.19'
+    pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag =>'1.0.0-beta.19'
     pod 'WordPressUI', '1.0.1'
     pod 'Gridicons', '0.15'
   end
