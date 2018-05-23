@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 import WordPressShared
 import WordPressUI
 
@@ -163,8 +164,22 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
             tableView.pinSubviewAtCenter(noResultsView)
         }
 
-        noResultsView.titleText = NSLocalizedString("No posts saved for later yet", comment: "A message title")
-        noResultsView.messageText = NSLocalizedString("Posts you save for later will appear here.", comment: "A message explaining Save for later in the reader")
+        noResultsView.titleText = NSLocalizedString("No posts saved yet", comment: "Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts.")
+
+        var messageText = NSMutableAttributedString(string: NSLocalizedString("Tap the [gridicons-bookmark-outline] icon on a post to save it.", comment: "A hint displayed in the Saved Posts section of the Reader. The '[gridicons-bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact."))
+
+        // We're setting this once here so that the attributed text
+        // gets the correct font attributes added to it. The font
+        // is used by the attributed string `replace(_:with:)` method
+        // below to correctly position the icon.
+        noResultsView.attributedMessageText = messageText
+        messageText = NSMutableAttributedString(attributedString: noResultsView.attributedMessageText)
+
+        let icon = Gridicon.iconOfType(.bookmarkOutline)
+        messageText.replace("[gridicons-bookmark-outline]", with: icon)
+        noResultsView.attributedMessageText = messageText
+
+        noResultsView.isUserInteractionEnabled = false
         noResultsView.accessoryView = nil
     }
 
