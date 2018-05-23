@@ -114,7 +114,7 @@ class NotificationSiteSubscriptionViewController: UITableViewController {
         let newPostsString = NSLocalizedString("New posts", comment: "Noun. The title of an item in a list.")
         let emailPostsString = NSLocalizedString("Email me new posts", comment: "The title of an item in a list.")
         let emailCommentsString = NSLocalizedString("Email me new comments", comment: "Noun. The title of an item in a list.")
-        let footerString = NSLocalizedString("Receive notifications for new posts from this site", comment:"Descriptive text below a list of options.")
+        let footerString = NSLocalizedString("Receive notifications for new posts from this site", comment: "Descriptive text below a list of options.")
 
         let post = Section(type: .posts,
                            rows: [Row(title: newPostsString)],
