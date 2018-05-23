@@ -22,4 +22,28 @@ extension NSMutableAttributedString {
             }
         } catch { }
     }
+
+    /// Replaces the first occurrence of placeholder text with a particular icon.
+    ///
+    /// - Parameters:
+    ///     - placeholder: Text to find and replace
+    ///     - icon: Image to replace placeholder text with, as a text attachment
+    ///
+    public func replace(_ placeholder: String, with icon: UIImage) {
+        let nsstring = string as NSString
+        let range = nsstring.range(of: placeholder)
+        guard range.location != NSNotFound else {
+            return
+        }
+
+        let font = attribute(NSAttributedStringKey.font, at: range.location, effectiveRange: nil) as? UIFont
+        let capHeight = font?.capHeight ?? 0
+
+        let attachment = NSTextAttachment()
+        attachment.image = icon
+        attachment.bounds = CGRect(x: 0.0, y: (capHeight - icon.size.height).rounded() / 2, width: icon.size.width, height: icon.size.height)
+
+        let iconString = NSAttributedString(attachment: attachment)
+        replaceCharacters(in: range, with: iconString)
+    }
 }
