@@ -174,7 +174,7 @@ begin
       milestone_description = release_data[:milestone_title]
       milestone_description = milestone_description + " (frozen)" unless !release_data[:is_frozen]
       puts "Release #{milestone_description} has"
-      puts " - #{release_data[:open_issues]} open issues" 
+      puts " - #{release_data[:open_issues] - release_data[:open_prs].length} open issues" 
       puts " - #{release_data[:open_prs].length} open PRs" 
       puts "   link: #{release_data[:open_prs_link]}" unless release_data[:open_prs].length == 0
     end
