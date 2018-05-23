@@ -103,7 +103,7 @@ final class ReaderSavedPostsViewController: UITableViewController {
                                                 withPost: post,
                                                 topic: topic,
                                                 delegate: postCellActions,
-                                                loggedIn: .hidden)
+                                                loggedInActionVisibility: .hidden)
     }
 }
 
