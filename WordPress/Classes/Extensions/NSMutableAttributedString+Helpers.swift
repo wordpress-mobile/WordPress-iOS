@@ -41,7 +41,8 @@ extension NSMutableAttributedString {
 
         let attachment = NSTextAttachment()
         attachment.image = icon
-        attachment.bounds = CGRect(x: 0.0, y: (capHeight - icon.size.height).rounded() / 2, width: icon.size.width, height: icon.size.height)
+        let yOrigin = ((capHeight - icon.size.height) / 2.0).rounded()
+        attachment.bounds = CGRect(x: 0.0, y: yOrigin, width: icon.size.width, height: icon.size.height)
 
         let iconString = NSAttributedString(attachment: attachment)
         replaceCharacters(in: range, with: iconString)

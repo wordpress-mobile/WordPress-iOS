@@ -164,9 +164,16 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
             tableView.pinSubviewAtCenter(noResultsView)
         }
 
-        noResultsView.titleText = NSLocalizedString("No posts saved yet", comment: "Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts.")
+        configureNoResultsText()
 
-        var messageText = NSMutableAttributedString(string: NSLocalizedString("Tap the [gridicons-bookmark-outline] icon on a post to save it.", comment: "A hint displayed in the Saved Posts section of the Reader. The '[gridicons-bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact."))
+        noResultsView.isUserInteractionEnabled = false
+        noResultsView.accessoryView = nil
+    }
+
+    private func configureNoResultsText() {
+        noResultsView.titleText = NSLocalizedString("No posts saved – yet!", comment: "Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts.")
+
+        var messageText = NSMutableAttributedString(string: NSLocalizedString("Tap [bookmark-outline] to save a post to your list.", comment: "A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact."))
 
         // We're setting this once here so that the attributed text
         // gets the correct font attributes added to it. The font
@@ -175,12 +182,9 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
         noResultsView.attributedMessageText = messageText
         messageText = NSMutableAttributedString(attributedString: noResultsView.attributedMessageText)
 
-        let icon = Gridicon.iconOfType(.bookmarkOutline)
-        messageText.replace("[gridicons-bookmark-outline]", with: icon)
+        let icon = Gridicon.iconOfType(.bookmarkOutline, withSize: CGSize(width: 18, height: 18))
+        messageText.replace("[bookmark-outline]", with: icon)
         noResultsView.attributedMessageText = messageText
-
-        noResultsView.isUserInteractionEnabled = false
-        noResultsView.accessoryView = nil
     }
 
     @objc func hideNoResultsView() {
