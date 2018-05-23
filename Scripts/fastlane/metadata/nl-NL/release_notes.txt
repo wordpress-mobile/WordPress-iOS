@@ -1,4 +1,1 @@
-Gratis stockfoto's zijn nu beschikbaar in de app!
-Spotlight indexeert nu de voornaamste secties van de app!
-Jetpack instellen vanuit de app staat je toe een nieuw WP.com account direct aan te maken.
-Meervoudige selectie in de document picker ingeschakeld.
+Bij het importeren van bestanden in een bericht in de Editor, kun je nu veel verschillende bestandstypen kiezen, waaronder pdf's en Word-documenten.
