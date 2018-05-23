@@ -135,7 +135,7 @@ end
 # Local helpers
 def show_usage
   puts "Usage:"
-  puts " github-helper <command> <branch name> [optionals]"
+  puts " github-helper <command> <milestone> [optionals]"
   puts ""
   puts " Available commands:"
   puts " - list_open: lists the open issue and PRs set for the given milestone"
