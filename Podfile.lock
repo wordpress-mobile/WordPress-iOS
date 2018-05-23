@@ -1,31 +1,31 @@
 PODS:
   - 1PasswordExtension (1.8.5)
-  - AFNetworking (3.1.0):
-    - AFNetworking/NSURLSession (= 3.1.0)
-    - AFNetworking/Reachability (= 3.1.0)
-    - AFNetworking/Security (= 3.1.0)
-    - AFNetworking/Serialization (= 3.1.0)
-    - AFNetworking/UIKit (= 3.1.0)
-  - AFNetworking/NSURLSession (3.1.0):
+  - AFNetworking (3.2.1):
+    - AFNetworking/NSURLSession (= 3.2.1)
+    - AFNetworking/Reachability (= 3.2.1)
+    - AFNetworking/Security (= 3.2.1)
+    - AFNetworking/Serialization (= 3.2.1)
+    - AFNetworking/UIKit (= 3.2.1)
+  - AFNetworking/NSURLSession (3.2.1):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (3.1.0)
-  - AFNetworking/Security (3.1.0)
-  - AFNetworking/Serialization (3.1.0)
-  - AFNetworking/UIKit (3.1.0):
+  - AFNetworking/Reachability (3.2.1)
+  - AFNetworking/Security (3.2.1)
+  - AFNetworking/Serialization (3.2.1)
+  - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
-  - Alamofire (4.7.0)
+  - Alamofire (4.7.2)
   - Automattic-Tracks-iOS (0.2.3):
     - CocoaLumberjack (~> 3.4.1)
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 0.4)
   - BuddyBuildSDK (1.0.17)
-  - CocoaLumberjack (3.4.1):
-    - CocoaLumberjack/Default (= 3.4.1)
-    - CocoaLumberjack/Extensions (= 3.4.1)
-  - CocoaLumberjack/Default (3.4.1)
-  - CocoaLumberjack/Extensions (3.4.1):
+  - CocoaLumberjack (3.4.2):
+    - CocoaLumberjack/Default (= 3.4.2)
+    - CocoaLumberjack/Extensions (= 3.4.2)
+  - CocoaLumberjack/Default (3.4.2)
+  - CocoaLumberjack/Extensions (3.4.2):
     - CocoaLumberjack/Default
   - Crashlytics (3.10.1):
     - Fabric (~> 1.7.5)
@@ -36,18 +36,18 @@ PODS:
     - FormatterKit/Resources
   - Gifu (3.0.0)
   - GoogleSignIn (4.1.2):
-    - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
-    - GoogleToolboxForMac/NSString+URLArguments (~> 2.1)
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
+    - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
     - GTMOAuth2 (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
   - GoogleToolboxForMac/DebugUtils (2.1.4):
     - GoogleToolboxForMac/Defines (= 2.1.4)
   - GoogleToolboxForMac/Defines (2.1.4)
-  - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.4):
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.1.4)":
     - GoogleToolboxForMac/DebugUtils (= 2.1.4)
     - GoogleToolboxForMac/Defines (= 2.1.4)
-    - GoogleToolboxForMac/NSString+URLArguments (= 2.1.4)
-  - GoogleToolboxForMac/NSString+URLArguments (2.1.4)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.1.4)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.1.4)"
   - Gridicons (0.15)
   - GTMOAuth2 (1.1.6):
     - GTMSessionFetcher (~> 1.1)
@@ -59,8 +59,8 @@ PODS:
   - HockeySDK (5.1.2):
     - HockeySDK/DefaultLib (= 5.1.2)
   - HockeySDK/DefaultLib (5.1.2)
-  - lottie-ios (1.5.1)
-  - MGSwipeTableCell (1.6.6)
+  - lottie-ios (2.5.0)
+  - MGSwipeTableCell (1.6.7)
   - MRProgress (0.8.3):
     - MRProgress/ActivityIndicator (= 0.8.3)
     - MRProgress/Blur (= 0.8.3)
@@ -89,9 +89,9 @@ PODS:
   - MRProgress/ProgressBaseClass (0.8.3)
   - MRProgress/Stopable (0.8.3):
     - MRProgress/Helper
-  - Nimble (7.0.3)
+  - Nimble (7.1.1)
   - NSObject-SafeExpectations (0.0.2)
-  - NSURL+IDN (0.3)
+  - "NSURL+IDN (0.3)"
   - OCMock (3.4.1)
   - OHHTTPStubs (6.1.0):
     - OHHTTPStubs/Default (= 6.1.0)
@@ -113,11 +113,21 @@ PODS:
   - Starscream (3.0.4)
   - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (0.5.0)
-  - WordPress-Aztec-iOS (1.0.0-beta.18.1)
-  - WordPressShared (1.0.0):
+  - WordPress-Aztec-iOS (1.0.0-beta.19):
+    - WordPress-Aztec-iOS/WordPressEditor (= 1.0.0-beta.19)
+  - WordPress-Aztec-iOS/WordPressEditor (1.0.0-beta.19)
+  - WordPressKit (1.0.3):
+    - AFNetworking (= 3.2.1)
+    - Alamofire (= 4.7.2)
+    - CocoaLumberjack (= 3.4.2)
+    - UIDeviceIdentifier (~> 0.4)
+    - WordPressShared (= 1.0.1)
+    - wpxmlrpc (= 0.8.3)
+  - WordPressShared (1.0.1):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
     - NSObject-SafeExpectations (= 0.0.2)
+  - WordPressUI (1.0.1)
   - WPMediaPicker (1.0)
   - wpxmlrpc (0.8.3)
   - ZendeskSDK (1.11.2.1):
@@ -129,11 +139,11 @@ PODS:
 
 DEPENDENCIES:
   - 1PasswordExtension (= 1.8.5)
-  - AFNetworking (= 3.1.0)
-  - Alamofire (= 4.7.0)
+  - AFNetworking (= 3.2.1)
+  - Alamofire (= 4.7.2)
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.2.3`)
   - BuddyBuildSDK (= 1.0.17)
-  - CocoaLumberjack (= 3.4.1)
+  - CocoaLumberjack (= 3.4.2)
   - Crashlytics (= 3.10.1)
   - Expecta (= 1.0.6)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
@@ -141,12 +151,12 @@ DEPENDENCIES:
   - GoogleSignIn (= 4.1.2)
   - Gridicons (= 0.15)
   - HockeySDK (= 5.1.2)
-  - lottie-ios (= 1.5.1)
-  - MGSwipeTableCell (= 1.6.6)
+  - lottie-ios (= 2.5.0)
+  - MGSwipeTableCell (= 1.6.7)
   - MRProgress (= 0.8.3)
-  - Nimble (~> 7.0.3)
+  - Nimble (~> 7.1.1)
   - NSObject-SafeExpectations (= 0.0.2)
-  - NSURL+IDN (= 0.3)
+  - "NSURL+IDN (= 0.3)"
   - OCMock (~> 3.4)
   - OHHTTPStubs (= 6.1.0)
   - OHHTTPStubs/Swift (= 6.1.0)
@@ -155,41 +165,76 @@ DEPENDENCIES:
   - Starscream (= 3.0.4)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `f8021013ee7df63e1c469ad550944c213888faaf`)
-  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `eb742da`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, tag `1.0.0-beta.19`)
+  - WordPress-Aztec-iOS/WordPressEditor (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, tag `1.0.0-beta.19`)
+  - WordPressKit (= 1.0.3)
+  - WordPressShared (= 1.0.1)
+  - WordPressUI (= 1.0.1)
   - WPMediaPicker (= 1.0)
   - wpxmlrpc (= 0.8.3)
   - ZendeskSDK (= 1.11.2.1)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - 1PasswordExtension
+    - AFNetworking
+    - Alamofire
+    - BuddyBuildSDK
+    - CocoaLumberjack
+    - Crashlytics
+    - Expecta
+    - Fabric
+    - FormatterKit
+    - Gifu
+    - GoogleSignIn
+    - GoogleToolboxForMac
+    - Gridicons
+    - GTMOAuth2
+    - GTMSessionFetcher
+    - HockeySDK
+    - lottie-ios
+    - MGSwipeTableCell
+    - MRProgress
+    - Nimble
+    - NSObject-SafeExpectations
+    - "NSURL+IDN"
+    - OCMock
+    - OHHTTPStubs
+    - Reachability
+    - Specta
+    - Starscream
+    - SVProgressHUD
+    - UIDeviceIdentifier
+    - WordPressKit
+    - WordPressShared
+    - WordPressUI
+    - WPMediaPicker
+    - wpxmlrpc
+    - ZendeskSDK
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   WordPress-Aztec-iOS:
-    :commit: f8021013ee7df63e1c469ad550944c213888faaf
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
-  WordPressShared:
-    :commit: eb742da
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
+    :tag: 1.0.0-beta.19
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   WordPress-Aztec-iOS:
-    :commit: f8021013ee7df63e1c469ad550944c213888faaf
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
-  WordPressShared:
-    :commit: eb742da
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
+    :tag: 1.0.0-beta.19
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
-  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  Alamofire: 907e0a98eb68cdb7f9d1f541a563d6ac5dc77b25
+  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
   Automattic-Tracks-iOS: d8c6c6c1351b1905a73e45f431b15598d71963b5
   BuddyBuildSDK: 8ae12ee721098b356a961ea7dce70ae55f93a7d2
-  CocoaLumberjack: 2e258a064cacc8eb9a2aca318e24d02a0a7fd56d
+  CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
   Crashlytics: aee1a064cbbf99b32efa3f056a5f458d846bc8ff
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   Fabric: f8d42c893bb187326a7968b62abe55c36a987a46
@@ -201,12 +246,12 @@ SPEC CHECKSUMS:
   GTMOAuth2: c77fe325e4acd453837e72d91e3b5f13116857b2
   GTMSessionFetcher: 5fa5b80fd20e439ef5f545fb2cb3ca6c6714caa2
   HockeySDK: 38b7e2726af1ea86ae97ce4b5de33ab0817e3500
-  lottie-ios: f680a7c4cb7a567ecf258fde0f967913aff111b8
-  MGSwipeTableCell: c3bc6e261e7bc06c112909fe3fb8205de286082c
+  lottie-ios: d699fdee68d7b63e721d949388b015fef1aaa4ac
+  MGSwipeTableCell: fb20e983988bde2b8d0df29c2d9e1d8ffd10b74a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
-  Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
+  Nimble: 391f07782af4b37914f9bd7b2ffbb952731b8202
   NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
-  NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
+  "NSURL+IDN": 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: 2cd0716969bab32a2283ff3a46fd26a8c8b4c5e3
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
@@ -214,12 +259,14 @@ SPEC CHECKSUMS:
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: 2d8c58f68f422ce521db689fb582122220e77f8d
-  WordPressShared: b1bed3aa4db4438fd9fe78ccd0be58c8fee19c17
+  WordPress-Aztec-iOS: 743dbe41492eae1d9daf3f5ba5435ab295ee668f
+  WordPressKit: 58a8663d557c4c8def59b6492f9ef7736a69b60d
+  WordPressShared: 13a743d923796382419e03521e47491e9322087e
+  WordPressUI: 9f90f8e1e629af13e1021c6281660623d62ff953
   WPMediaPicker: ceb613e43eae03268e73835d48d67f92f595aca6
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: ce4f4d0f73eb78e3b24c2ef49fe1bc8343eb15d9
+PODFILE CHECKSUM: 5b25d733014591f7fc8a4c23617b1cc0612c13c7
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.2

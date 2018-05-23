@@ -1,10 +1,9 @@
 import Foundation
 import CoreData
-import StoreKit
 import CocoaLumberjack
 import MGSwipeTableCell
 import WordPressShared
-
+import WordPressAuthenticator
 
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
@@ -28,13 +27,13 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     ///
     @IBOutlet var filtersSegmentedControl: UISegmentedControl!
 
-    /// Ratings View
+    /// Inline Prompt Header View
     ///
-    @IBOutlet var ratingsView: AppFeedbackPromptView!
+    @IBOutlet var inlinePromptView: AppFeedbackPromptView!
 
-    /// Defines the Height of the Ratings View
+    /// Ensures the segmented control is below the feedback prompt
     ///
-    @IBOutlet var ratingsHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var inlinePromptSpaceConstraint: NSLayoutConstraint!
 
     /// TableView Handler: Our commander in chief!
     ///
@@ -108,12 +107,12 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         super.viewDidLoad()
 
         setupNavigationBar()
-        setupConstraints()
         setupTableView()
+        setupInlinePrompt()
         setupTableHeaderView()
         setupTableFooterView()
+        setupConstraints()
         setupTableHandler()
-        setupRatingsView()
         setupRefreshControl()
         setupNoResultsView()
         setupFiltersSegmentedControl()
@@ -164,7 +163,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        showRatingViewIfApplicable()
         syncNewNotifications()
         markSelectedNotificationAsRead()
 
@@ -181,6 +179,12 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+
+        // table header views are a special kind of broken. This dispatch forces the table header to get a new layout
+        // on the next redraw tick, which seems to be required.
+        DispatchQueue.main.async {
+            self.setupTableHeaderView()
+        }
 
         if splitViewControllerIsHorizontallyCompact {
             tableView.deselectSelectedRowWithAnimation(true)
@@ -342,10 +346,15 @@ private extension NotificationsViewController {
     }
 
     func setupConstraints() {
-        precondition(ratingsHeightConstraint != nil)
+        precondition(inlinePromptSpaceConstraint != nil)
 
-        // Ratings is initially hidden!
-        ratingsHeightConstraint.constant = 0
+        // Inline prompt is initially hidden!
+        tableHeaderView.translatesAutoresizingMaskIntoConstraints = false
+        inlinePromptView.translatesAutoresizingMaskIntoConstraints = false
+
+        tableHeaderView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
+        tableHeaderView.topAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
+        tableHeaderView.widthAnchor.constraint(equalTo: tableView.widthAnchor).isActive = true
     }
 
     func setupTableView() {
@@ -365,14 +374,14 @@ private extension NotificationsViewController {
         precondition(tableHeaderView != nil)
 
         // Fix: Update the Frame manually: Autolayout doesn't really help us, when it comes to Table Headers
-        let requiredSize        = tableHeaderView.systemLayoutSizeFitting(view.bounds.size)
-        var headerFrame         = tableHeaderView.frame
+        let requiredSize = tableHeaderView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        var headerFrame = tableHeaderView.frame
         headerFrame.size.height = requiredSize.height
+        tableHeaderView.frame = headerFrame
 
-        tableHeaderView.frame  = headerFrame
         tableHeaderView.layoutIfNeeded()
 
-        // Due to iOS awesomeness, unless we re-assign the tableHeaderView, iOS might never refresh the UI
+        // We reassign the tableHeaderView to force the UI to refresh. Yes, really.
         tableView.tableHeaderView = tableHeaderView
         tableView.setNeedsLayout()
     }
@@ -389,11 +398,25 @@ private extension NotificationsViewController {
         tableViewHandler = handler
     }
 
-    func setupRatingsView() {
-        precondition(ratingsView != nil)
+    func setupInlinePrompt() {
+        precondition(inlinePromptView != nil)
 
-        ratingsView.delegate = self
-        ratingsView.alpha = WPAlphaZero
+        inlinePromptView.alpha = WPAlphaZero
+
+        // this allows the selector to move to the top
+        inlinePromptSpaceConstraint.isActive = false
+
+        if shouldShowPrimeForPush {
+            PushNotificationsManager.shared.loadAuthorizationStatus { [weak self] (status) in
+                if status == .notDetermined {
+                    self?.setupPrimeForPush()
+                    self?.showInlinePrompt()
+                }
+            }
+        } else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
+            setupAppRatings()
+            showInlinePrompt()
+        }
     }
 
     func setupRefreshControl() {
@@ -1189,37 +1212,30 @@ extension NotificationsViewController: WPNoResultsViewDelegate {
 }
 
 
-// MARK: - RatingsView Helpers
+// MARK: - Inline Prompt Helpers
 //
-private extension NotificationsViewController {
-    func showRatingViewIfApplicable() {
-        guard AppRatingUtility.shared.shouldPromptForAppReview(section: Ratings.section) else {
+internal extension NotificationsViewController {
+    func showInlinePrompt() {
+        guard inlinePromptView.alpha != WPAlphaFull else {
             return
         }
 
-        guard ratingsHeightConstraint.constant != Ratings.heightFull && ratingsView.alpha != WPAlphaFull else {
-            return
-        }
-
-        ratingsView.alpha = WPAlphaZero
-
-        UIView.animate(withDuration: WPAnimationDurationDefault, delay: Ratings.animationDelay, options: .curveEaseIn, animations: {
-            self.ratingsView.alpha = WPAlphaFull
-            self.ratingsHeightConstraint.constant = Ratings.heightFull
-
+        // allows the inline prompt to push the selector down
+        self.inlinePromptSpaceConstraint.isActive = true
+        UIView.animate(withDuration: WPAnimationDurationDefault, delay: InlinePrompt.animationDelay, options: .curveEaseIn, animations: {
+            self.inlinePromptView.alpha = WPAlphaFull
             self.setupTableHeaderView()
         }, completion: nil)
 
         WPAnalytics.track(.appReviewsSawPrompt)
     }
 
-    func hideRatingViewWithDelay(_ delay: TimeInterval) {
+    func hideInlinePrompt(delay: TimeInterval) {
+        self.inlinePromptSpaceConstraint.isActive = false
         UIView.animate(withDuration: WPAnimationDurationDefault,
                        delay: delay,
                        animations: {
-            self.ratingsView.alpha = WPAlphaZero
-            self.ratingsHeightConstraint.constant = Ratings.heightZero
-
+            self.inlinePromptView.alpha = WPAlphaZero
             self.setupTableHeaderView()
         })
     }
@@ -1332,7 +1348,9 @@ private extension NotificationsViewController {
     }
 
     func resetApplicationBadge() {
-        UIApplication.shared.applicationIconBadgeNumber = 0
+        // These notifications are cleared, so we just need to take Zendesk unread notifications
+        // into account when setting the app icon count.
+        UIApplication.shared.applicationIconBadgeNumber = ZendeskUtils.unreadNotificationsCount
     }
 }
 
@@ -1374,67 +1392,6 @@ extension NotificationsViewController: WPSplitViewControllerDetailProvider {
     }
 }
 
-// MARK: - AppFeedbackPromptViewDelegate Methods
-//
-extension NotificationsViewController: AppFeedbackPromptViewDelegate {
-    @objc func likedApp() {
-        WPAnalytics.track(.appReviewsLikedApp)
-        AppRatingUtility.shared.likedCurrentVersion()
-        hideRatingViewWithDelay(3.0)
-        // Optimistically assuming our prompting succeeds since we try to stay
-        // in line and not prompt more than three times a year
-        AppRatingUtility.shared.ratedCurrentVersion()
-        AppRatingUtility.shared.userWasPromptedToReview()
-        DispatchQueue.main.async {
-            if #available(iOS 10.3, *) {
-                SKStoreReviewController.requestReview()
-            } else {
-                UIApplication.shared.open(AppRatingUtility.shared.appReviewUrl)
-            }
-        }
-
-    }
-
-    @objc func dislikedApp() {
-        WPAnalytics.track(.appReviewsDidntLikeApp)
-        AppRatingUtility.shared.dislikedCurrentVersion()
-    }
-
-    @objc func gatherFeedback() {
-        WPAnalytics.track(.appReviewsOpenedFeedbackScreen)
-        AppRatingUtility.shared.gaveFeedbackForCurrentVersion()
-        hideRatingViewWithDelay(0.0)
-
-        if FeatureFlag.zendeskMobile.enabled {
-            if ZendeskUtils.zendeskEnabled {
-                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self)
-            } else {
-                if let contact = URL(string: NotificationsViewController.contactURL) {
-                    UIApplication.shared.open(contact)
-                }
-            }
-        } else {
-            if HelpshiftUtils.isHelpshiftEnabled() {
-                let presenter = HelpshiftPresenter.init()
-                presenter.sourceTag = SupportSourceTag.inAppFeedback
-                presenter.presentHelpshiftConversationWindowFromViewController(self,
-                                                                               refreshUserDetails: true,
-                                                                               completion: nil)
-            } else {
-                if let contact = URL(string: NotificationsViewController.contactURL) {
-                    UIApplication.shared.open(contact)
-                }
-            }
-        }
-    }
-
-    @objc func dismissPrompt() {
-        WPAnalytics.track(.appReviewsDeclinedToRateApp)
-        AppRatingUtility.shared.declinedToRateCurrentVersion()
-        hideRatingViewWithDelay(0.0)
-    }
-}
-
 // MARK: - Details Navigation Datasource
 //
 extension NotificationsViewController: NotificationsNavigationDataSource {
@@ -1471,7 +1428,6 @@ extension NotificationsViewController: SearchableActivityConvertable {
         return Set(keywordArray)
     }
 }
-
 
 // MARK: - Private Properties
 //
@@ -1510,8 +1466,6 @@ private extension NotificationsViewController {
             reloadResultsController()
         }
     }
-
-    static let contactURL = "https://support.wordpress.com/contact/"
 
     enum Filter: Int {
         case none = 0
@@ -1610,10 +1564,8 @@ private extension NotificationsViewController {
         static let undoTimeout = TimeInterval(4)
     }
 
-    enum Ratings {
+    enum InlinePrompt {
         static let section = "notifications"
-        static let heightFull = CGFloat(100)
-        static let heightZero = CGFloat(0)
         static let animationDelay = TimeInterval(0.5)
     }
 }

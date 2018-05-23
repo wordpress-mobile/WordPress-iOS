@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import PDFKit
 import Aztec
 import CocoaLumberjack
 import Gridicons
@@ -1201,6 +1202,7 @@ extension AztecPostViewController {
                 }
             }
 
+
             if let analyticsStat = analyticsStat {
                 self.trackPostSave(stat: analyticsStat)
             }
@@ -1225,7 +1227,7 @@ extension AztecPostViewController {
             if !UserDefaults.standard.asyncPromoWasDisplayed {
                 promoBlock()
             } else {
-                displayPublishConfirmationAlert(onPublish: publishBlock)
+                displayPublishConfirmationAlert(for: action, onPublish: publishBlock)
             }
         } else {
             publishBlock()
@@ -1325,6 +1327,81 @@ private extension AztecPostViewController {
         present(navigationController, animated: true, completion: nil)
     }
 
+    /// Presents an alert controller, allowing the user to insert a link to either:
+    ///
+    /// - Insert a link to the document
+    /// - Insert the content of the text document into the post
+    ///
+    /// - Parameter documentURL: the document URL to act upon
+    func displayInsertionOpensAlertIfNeeded(for documentURL: URL) {
+        let documentType = documentURL.pathExtension
+        guard
+            let uti = String.typeIdentifier(for: documentType),
+            uti == String(kUTTypePDF) || uti == String(kUTTypePlainText)
+        else {
+            insertExternalMediaWithURL(documentURL)
+            return
+        }
+
+        let title = NSLocalizedString("What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?", comment: "Title displayed via UIAlertController when a user inserts a document into a post.")
+
+        let style: UIAlertControllerStyle = UIDevice.isPad() ? .alert : .actionSheet
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
+
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancels an alert.")
+        alertController.addCancelActionWithTitle(cancelTitle)
+
+        let attachAsLinkTitle = NSLocalizedString("Attach File as Link", comment: "Alert option to embed a doc link into a blog post.")
+        alertController.addDefaultActionWithTitle(attachAsLinkTitle) { [weak self] _ in
+            guard let strongSelf = self else { return }
+            strongSelf.insertExternalMediaWithURL(documentURL)
+        }
+
+        let addContentsToPostTitle = NSLocalizedString("Add Contents to Post", comment: "Alert option to add document contents into a blog post.")
+
+        let addContentsActionHandler: (() -> Void)
+        if #available(iOS 11.0, *), uti == String(kUTTypePDF) {
+            addContentsActionHandler = { [weak self] in
+                guard let strongSelf = self else {
+                    return
+                }
+
+                var text = ""
+                if let document = PDFDocument(url: documentURL) {
+                    text = document.string ?? ""
+                }
+                strongSelf.appendText(text: text)
+            }
+        } else {
+            addContentsActionHandler = { [weak self] in
+                guard let strongSelf = self else { return }
+
+                let text: String
+                do {
+                    text = try String(contentsOf: documentURL)
+                }
+                catch {
+                    text = ""
+                }
+                strongSelf.appendText(text: text)
+            }
+        }
+        alertController.addDefaultActionWithTitle(addContentsToPostTitle) { _ in
+            addContentsActionHandler()
+        }
+
+        present(alertController, animated: true)
+    }
+
+    func appendText(text: String) {
+        switch mode {
+        case .html:
+            htmlTextView.insertText(text)
+        case .richText:
+            richTextView.insertText(text)
+        }
+    }
+
     func displayMoreSheet() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
@@ -1413,17 +1490,16 @@ private extension AztecPostViewController {
         return
     }
 
-    /// Displays a publish confirmation alert with two options: "Keep Editing" and "Publish".
+    /// Displays a publish confirmation alert with two options: "Keep Editing" and String for Action.
     ///
     /// - Parameters:
+    ///     - action: Publishing action being performed
     ///     - dismissWhenDone: if `true`, the VC will be dismissed if the user picks "Publish".
     ///
-    func displayPublishConfirmationAlert(onPublish publishAction: @escaping () -> ()) {
-        let title = NSLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing.")
-
+    func displayPublishConfirmationAlert(for action: PostEditorAction, onPublish publishAction: @escaping () -> ()) {
+        let title = action.publishingActionQuestionLabel
         let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
-        let publishTitle = NSLocalizedString("Publish", comment: "Button shown when the author is asked for publishing confirmation.")
-
+        let publishTitle = action.publishActionLabel
         let style: UIAlertControllerStyle = UIDevice.isPad() ? .alert : .actionSheet
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
 
@@ -1431,7 +1507,6 @@ private extension AztecPostViewController {
         alertController.addDefaultActionWithTitle(publishTitle) { _ in
             publishAction()
         }
-
         present(alertController, animated: true, completion: nil)
     }
 }
@@ -2880,7 +2955,7 @@ extension AztecPostViewController {
     }
 
 
-    /// Returns an `ImageAttachent` for use as a placeholder until the related document has been
+    /// Returns an `ImageAttachment` for use as a placeholder until the related document has been
     /// uploaded.
     ///
     /// NB: Use of an `ImageAttachment` here was influenced by visibility of some functions in
@@ -2893,7 +2968,7 @@ extension AztecPostViewController {
         return attachment
     }
 
-    /// Replaces the document link placeholder with the link to the actual uploaded document.
+    /// Replaces the `ImageAttachment` placeholder with the link to the actual uploaded document.
     ///
     /// - Parameters:
     ///   - attachment: the attachment to replact
@@ -2906,13 +2981,16 @@ extension AztecPostViewController {
             let textViewStorage = richTextView.textStorage as? TextStorage,
             let placeholderRange = textViewStorage.rangeFor(attachmentID: attachmentID),
             let documentURL = URL(string: urlString)
-            else { return }
+        else {
+            return
+        }
 
         richTextView.remove(attachmentID: attachmentID)
 
         let linkTitle = documentURL.lastPathComponent
         let linkRange = NSMakeRange(placeholderRange.location, 0)
         richTextView.setLink(documentURL, title: linkTitle, inRange: linkRange)
+        richTextView.insertText(String(Character(.carriageReturn)))
     }
 
     private func insertVideoAttachmentWithPlaceholder() -> VideoAttachment {
@@ -3713,8 +3791,16 @@ extension AztecPostViewController: UIDocumentPickerDelegate {
 
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         mediaSelectionMethod = .documentPicker
-        for documentURL in urls {
-            insertExternalMediaWithURL(documentURL)
+
+        guard urls.count == 1 else {
+            for documentURL in urls {
+                insertExternalMediaWithURL(documentURL)
+            }
+            return
+        }
+
+        if let documentURL = urls.first {
+            displayInsertionOpensAlertIfNeeded(for: documentURL)
         }
     }
 }

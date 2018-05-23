@@ -347,13 +347,27 @@ static NSInteger HideSearchMinSites = 3;
 - (void)syncBlogs
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+
+    __weak __typeof(self) weakSelf = self;
     [context performBlock:^{
+        void (^completionBlock)(void) = ^() {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.tableView.refreshControl endRefreshing];
+            });
+        };
+
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
         if (defaultAccount) {
-            [blogService syncBlogsForAccount:defaultAccount success:nil failure:nil];
+            [blogService syncBlogsForAccount:defaultAccount success:^{
+                completionBlock();
+            } failure:^(NSError * _Nonnull error) {
+                completionBlock();
+            }];
+        } else {
+            completionBlock();
         }
     }];
 }
@@ -474,6 +488,10 @@ static NSInteger HideSearchMinSites = 3;
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.accessibilityIdentifier = NSLocalizedString(@"Blogs", @"");
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(syncBlogs) forControlEvents:UIControlEventValueChanged];
+    self.tableView.refreshControl = refreshControl;
 
     self.tableView.tableFooterView = [UIView new];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];

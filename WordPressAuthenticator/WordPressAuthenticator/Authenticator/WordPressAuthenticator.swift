@@ -41,6 +41,10 @@ public protocol WordPressAuthenticatorDelegate: class {
     ///
     var supportActionEnabled: Bool { get }
 
+    /// Indicates if the Support notification indicator should be displayed.
+    ///
+    var showSupportNotificationIndicator: Bool { get }
+    
     /// Indicates if Support is available or not.
     ///
     var supportEnabled: Bool { get }
@@ -143,6 +147,10 @@ public struct WordPressAuthenticatorConfiguration {
     ///
     let userAgent: String
 
+    /// Used to determine which view to use for new Support notifications.
+    ///
+    let supportNotificationIndicatorFeatureFlag: Bool
+    
     /// Designated Initializer
     ///
     public init (wpcomClientId: String,
@@ -151,7 +159,8 @@ public struct WordPressAuthenticatorConfiguration {
                  wpcomTermsOfServiceURL: String,
                  googleLoginClientId: String,
                  googleLoginServerClientId: String,
-                 userAgent: String) {
+                 userAgent: String,
+                 supportNotificationIndicatorFeatureFlag: Bool) {
         self.wpcomClientId = wpcomClientId
         self.wpcomSecret = wpcomSecret
         self.wpcomScheme = wpcomScheme
@@ -159,6 +168,7 @@ public struct WordPressAuthenticatorConfiguration {
         self.googleLoginClientId =  googleLoginClientId
         self.googleLoginServerClientId = googleLoginServerClientId
         self.userAgent = userAgent
+        self.supportNotificationIndicatorFeatureFlag = supportNotificationIndicatorFeatureFlag
     }
 }
 
@@ -226,7 +236,15 @@ public struct WordPressAuthenticatorConfiguration {
     public func supportBadgeCountWasUpdated() {
         NotificationCenter.default.post(name: .wordpressSupportBadgeUpdated, object: nil)
     }
+    
+    public func supportPushNotificationReceived() {
+        NotificationCenter.default.post(name: .wordpressSupportNotificationReceived, object: nil)
+    }
 
+    public func supportPushNotificationCleared() {
+        NotificationCenter.default.post(name: .wordpressSupportNotificationCleared, object: nil)
+    }
+    
     /// Indicates if the specified ViewController belongs to the Authentication Flow, or not.
     ///
     public class func isAuthenticationViewController(_ viewController: UIViewController) ->  Bool {

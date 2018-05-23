@@ -1,8 +1,0 @@
-{
-    "errors":[
-        {
-            "message": "No media provided in input.",
-            "error": "upload_error"
-        }
-    ]
-}

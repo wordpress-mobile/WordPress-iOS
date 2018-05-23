@@ -46,6 +46,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic isSharingEnabled;
 @dynamic isSiteBlocked;
 @dynamic sourceAttribution;
+@dynamic isSavedForLater;
 
 @dynamic primaryTag;
 @dynamic primaryTagSlug;
@@ -135,6 +136,12 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     NSString *featuredImage = [featuredImageURL absoluteString];
     if (!featuredImage) {
         return NO;
+    }
+
+    // Remove any query string params if needed (e.g. resize values)
+    NSUInteger questionMarkLocation = [featuredImage rangeOfString:@"?" options:NSBackwardsSearch].location;
+    if (questionMarkLocation != NSNotFound) {
+        featuredImage = [featuredImage substringToIndex:questionMarkLocation];
     }
 
     // One URL might be http and the other https, so don't include the protocol in the check.
@@ -303,6 +310,5 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     }
     return nil;
 }
-
 
 @end
