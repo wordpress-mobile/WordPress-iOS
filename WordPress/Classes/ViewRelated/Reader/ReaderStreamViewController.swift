@@ -1147,7 +1147,7 @@ import WordPressFlux
                                                 withPost: post,
                                                 topic: topic,
                                                 delegate: postCellActions,
-                                                loggedIn: true)
+                                                loggedInActionVisibility: .visible(enabled: isLoggedIn))
     }
 
     @objc func handleContextDidSaveNotification(_ notification: Foundation.Notification) {

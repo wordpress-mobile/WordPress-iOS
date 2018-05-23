@@ -75,7 +75,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
     // MARK: - Accessors
     @objc open var hidesFollowButton = false
-    @objc open var enableLoggedInFeatures = true
+    var loggedInActionVisibility: ReaderActionsVisibility = .visible(enabled: true)
 
 
     open override func setSelected(_ selected: Bool, animated: Bool) {
@@ -409,34 +409,64 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
     fileprivate func configureLikeActionButton() {
         // Show likes if logged in, or if likes exist, but not if external
-        guard (enableLoggedInFeatures || contentProvider!.likeCount().intValue > 0) && !contentProvider!.isExternal() else {
+        guard shouldShowLikeActionButton else {
             resetActionButton(likeActionButton)
             return
         }
 
         likeActionButton.tag = CardAction.like.rawValue
-        likeActionButton.isEnabled = enableLoggedInFeatures
+        likeActionButton.isEnabled = loggedInActionVisibility.isEnabled
         likeActionButton.isSelected = contentProvider!.isLiked()
         likeActionButton.isHidden = false
     }
 
+    fileprivate var shouldShowLikeActionButton: Bool {
+        guard loggedInActionVisibility != .hidden else {
+            return false
+        }
+
+        guard let contentProvider = contentProvider else {
+            return false
+        }
+
+        let hasLikes = contentProvider.likeCount().intValue > 0
+
+        guard loggedInActionVisibility.isEnabled || hasLikes else {
+            return false
+        }
+
+        return !contentProvider.isExternal()
+    }
+
     fileprivate func configureCommentActionButton() {
+        guard shouldShowCommentActionButton else {
+            resetActionButton(commentActionButton)
+            return
+        }
+
+        commentActionButton.tag = CardAction.comment.rawValue
+        commentActionButton.isHidden = false
+    }
+
+    fileprivate var shouldShowCommentActionButton: Bool {
+        guard loggedInActionVisibility != .hidden else {
+            return false
+        }
+
+        guard let contentProvider = contentProvider else {
+            return false
+        }
 
         // Show comments if logged in and comments are enabled, or if comments exist.
         // But only if it is from wpcom or jetpack (external is not yet supported).
-        // Nesting this conditional cos it seems clearer that way
-        if contentProvider!.isWPCom() || contentProvider!.isJetpack() {
-            let commentCount = contentProvider!.commentCount()?.intValue ?? 0
-            if (enableLoggedInFeatures && contentProvider!.commentsOpen()) || commentCount > 0 {
+        let usesWPComAPI = contentProvider.isWPCom() || contentProvider.isJetpack()
 
-                commentActionButton.tag = CardAction.comment.rawValue
-                commentActionButton.isHidden = false
+        let commentCount = contentProvider.commentCount()?.intValue ?? 0
+        let hasComments = commentCount > 0
 
-                return
-            }
-        }
-        resetActionButton(commentActionButton)
+        return usesWPComAPI && (contentProvider.commentsOpen() || hasComments)
     }
+
 
     fileprivate func configureSaveForLaterButton() {
         let postIsSavedForLater = contentProvider?.isSavedForLater() ?? false
