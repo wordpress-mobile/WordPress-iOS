@@ -126,3 +126,28 @@ final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         ReaderShareAction().execute(with: post, context: context, anchor: anchorView, vc: origin)
     }
 }
+
+enum ReaderActionsVisibility: Equatable {
+    case hidden
+    case visible(enabled: Bool)
+
+    static func == (lhs: ReaderActionsVisibility, rhs: ReaderActionsVisibility) -> Bool {
+        switch (lhs, rhs) {
+        case (.hidden, .hidden):
+            return true
+        case (.visible(let lenabled), .visible(let renabled)):
+            return lenabled == renabled
+        default:
+            return false
+        }
+    }
+
+    var isEnabled: Bool {
+        switch self {
+        case .hidden:
+            return false
+        case .visible(let enabled):
+            return enabled
+        }
+    }
+}

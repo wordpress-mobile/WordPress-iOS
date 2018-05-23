@@ -165,8 +165,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.4)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `2a25da7b9b687b5e05ce128423d99f771673a6c4`)
-  - WordPress-Aztec-iOS/WordPressEditor (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `2a25da7b9b687b5e05ce128423d99f771673a6c4`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `d5d9fbcf21cbd16bca9876b37f1f44c8ff8bc3ae`)
+  - WordPress-Aztec-iOS/WordPressEditor (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `d5d9fbcf21cbd16bca9876b37f1f44c8ff8bc3ae`)
   - WordPressKit (= 1.0.3)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `no-results-view-clipping`)
   - WordPressUI (= 1.0.1)
@@ -216,7 +216,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   WordPress-Aztec-iOS:
-    :commit: 2a25da7b9b687b5e05ce128423d99f771673a6c4
+    :commit: d5d9fbcf21cbd16bca9876b37f1f44c8ff8bc3ae
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressShared:
     :branch: no-results-view-clipping
@@ -227,7 +227,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   WordPress-Aztec-iOS:
-    :commit: 2a25da7b9b687b5e05ce128423d99f771673a6c4
+    :commit: d5d9fbcf21cbd16bca9876b37f1f44c8ff8bc3ae
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressShared:
     :commit: c043e63da0cc0a1a3e9af79d72eb7d537c41287b
