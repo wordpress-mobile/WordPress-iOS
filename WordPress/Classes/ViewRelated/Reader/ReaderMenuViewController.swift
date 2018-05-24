@@ -329,9 +329,8 @@ import WordPressShared
             return
         }
 
-        tableView.flashRowAtIndexPath(indexPath, scrollPosition: .middle, completion: {
-            self.tableView(self.tableView, didSelectRowAt: indexPath)
-        })
+        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .middle)
+        self.tableView(self.tableView, didSelectRowAt: indexPath)
     }
 
     fileprivate func viewControllerForSavedPosts() -> ReaderSavedPostsViewController {
