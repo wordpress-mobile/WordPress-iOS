@@ -179,8 +179,15 @@ function doBranching() {
     if [ $? -eq 0 ]; then
         showMessage "Branch $releaseBranch already exists. Skipping creation."
         git checkout $releaseBranch >> $logFile 2>&1 || stopOnError
+        git pull origin $releaseBranch >> $logFile 2>&1 
     else
         git checkout -b $releaseBranch >> $logFile 2>&1 || stopOnError
+
+        # Push to origin
+        git push -u origin $releaseBranch >> $logFile 2>&1 || stopOnError
+
+        # Set branch protection
+        ./github-helper.rb set_prot $newMainVer
     fi 
 }
 

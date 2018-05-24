@@ -90,6 +90,6 @@ final class ReaderSaveForLaterAction {
     }
 
     private func showAll() {
-        //TODO. Navigate to all saved for later
+        NotificationCenter.default.post(name: .showAllSavedForLaterPosts, object: self, userInfo: nil)
     }
 }
