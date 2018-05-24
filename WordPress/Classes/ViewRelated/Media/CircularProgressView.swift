@@ -296,10 +296,10 @@ final class ProgressIndicatorView: UIView {
 
     private enum Animations {
         static let rotationAmount = Float.pi * 2.0
-        static let rotationDuration: TimeInterval = 0.84
-        static let strokeDuration: TimeInterval = 0.56
+        static let rotationDuration: TimeInterval = 1.71
+        static let strokeDuration: TimeInterval = 1.14
         static let strokeSlowdownPoint: Float = 0.8
-        static let strokeBeginTime: TimeInterval = 0.35
+        static let strokeBeginTime: TimeInterval = 0.71
     }
 
     var state: CircularProgressView.State = .stopped {
