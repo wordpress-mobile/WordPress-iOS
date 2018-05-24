@@ -24,6 +24,19 @@ class WPRichContentView: UITextView {
         return WPTextAttachmentManager(textView: self, delegate: self)
     }()
 
+    /// Used to load images for attachments.
+    ///
+    @objc lazy var imageSource: WPTableImageSource = {
+        if FeatureFlag.gifSupportInReaderDetail.enabled {
+            DDLogDebug("Please remove this property when this feature flag is removed")
+        }
+        let source = WPTableImageSource(maxSize: self.maxDisplaySize)
+        source?.delegate = self
+        source?.forceLargerSizeWhenFetching = false
+        source?.photonQuality = Constants.photonQuality
+        return source!
+    }()
+
     /// The maximum size for images.
     ///
     @objc lazy var maxDisplaySize: CGSize = {
@@ -232,6 +245,48 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     }
 
 
+    /// Find the most appropriate size for a gif image to be loaded efficiently without loosing much quality.
+    /// With height: 0, the image will resize proportionally, and won't grow bigger than its original size.
+    ///
+    /// - url: The URL for the image.
+    /// - Parameter size: The proposed size for the gif image.
+    /// - Returns: The most efficient size with good quality.
+    fileprivate func efficientImageSize(with url: URL, proposedSize size: CGSize) -> CGSize {
+        guard url.isGif else {
+            return size
+        }
+
+        // Dont load bigger images in landscape mode.
+        let maximumImageWidth = min(maxDisplaySize.height, maxDisplaySize.width)
+
+        // Don't resize small images. Resizing bigger images will also affect quality, saving extra memory.
+        if size.width < maximumImageWidth && size.height < maximumImageWidth {
+            return CGSize(width: maximumImageWidth, height: 0)
+        } else {
+            return CGSize(width: maximumImageWidth/2, height: 0)
+        }
+    }
+
+
+    /// Creates and return a `WPRichTextImage` with the given parameters.
+    ///
+    fileprivate func ritchTextImage(with size: CGSize, _ url: URL, _ attachment: WPTextAttachment) -> WPRichTextImage {
+        let image = WPRichTextImage(frame: CGRect(x: 0.0, y: 0.0, width: size.width, height: size.height))
+        image.addTarget(self, action: #selector(type(of: self).handleImageTapped(_:)), for: .touchUpInside)
+        image.contentURL = url
+        image.linkURL = linkURLForImageAttachment(attachment)
+        return image
+    }
+
+
+    /// Returns the CGSize instance for the given `WPTextAttachment`
+    ///
+    fileprivate func sizeForAttachment(_ attachment: WPTextAttachment) -> CGSize {
+        let width: CGFloat = attachment.width > 0 ? attachment.width : textContainer.size.width
+        let height: CGFloat = attachment.height > 0 ? attachment.height : Constants.defaultAttachmentHeight
+        return CGSize(width: width, height: height)
+    }
+
     /// Returns the view to use for an image attachment.
     ///
     /// - Parameters:
@@ -240,42 +295,76 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     /// - Returns: A WPRichTextImage instance configured for the attachment.
     ///
     @objc func imageForAttachment(_ attachment: WPTextAttachment) -> WPRichTextImage {
+
+        guard FeatureFlag.gifSupportInReaderDetail.enabled else {
+            return old_imageForAttachment(attachment)
+        }
+
         guard let url = URL(string: attachment.src) else {
             return WPRichTextImage(frame: CGRect.zero)
         }
 
-        let width: CGFloat = attachment.width > 0 ? attachment.width : textContainer.size.width
-        let height: CGFloat = attachment.height > 0 ? attachment.height : Constants.defaultAttachmentHeight
-        let img = WPRichTextImage(frame: CGRect(x: 0.0, y: 0.0, width: width, height: height))
+        let proposedSize = sizeForAttachment(attachment)
+        let finalSize = efficientImageSize(with: url, proposedSize: proposedSize)
+        let image = ritchTextImage(with: finalSize, url, attachment)
 
-        attachment.maxSize = CGSize(width: width, height: height)
-
-        img.addTarget(self, action: #selector(type(of: self).handleImageTapped(_:)), for: .touchUpInside)
-        img.contentURL = url
-        img.linkURL = linkURLForImageAttachment(attachment)
+        // show that something is loading.
+        attachment.maxSize = CGSize(width: finalSize.width, height: finalSize.width / 2.0)
 
         let contentInformation = ContentInformation(isPrivateOnWPCom: isPrivate, isSelfHostedWithCredentials: false)
         let index = mediaArray.count
         let indexPath = IndexPath(row: index, section: 1)
-        DDLogDebug("🐶 Started loading reader detail image at url: \(url)")
-        img.loadImage(from: contentInformation, preferedSize: maxDisplaySize, indexPath: indexPath, onSuccess: { [weak self] indexPath in
+
+        image.loadImage(from: contentInformation, preferedSize: finalSize, indexPath: indexPath, onSuccess: { [weak self] indexPath in
             guard let richMedia = self?.mediaArray[indexPath.row] else {
                 return
             }
 
-            richMedia.attachment.maxSize = img.contentSize()
+            richMedia.attachment.maxSize = image.contentSize()
             self?.layoutAttachmentViews()
-            DDLogDebug("🖼 Finished loading reader detail image at url: \(url)")
         }, onError: { (indexPath, error) in
-            DDLogDebug("⚠️ Error loading reader detail image at url: \(url)")
             DDLogError("\(String(describing: error))")
         })
+
+        let media = RichMedia(image: image, attachment: attachment)
+        mediaArray.append(media)
+
+        return image
+    }
+
+    /// Old function to use when the gifSupportInReaderDetail feature flag is disabled.
+    /// Remove this when the feature flag is removed
+    ///
+    private func old_imageForAttachment(_ attachment: WPTextAttachment) -> WPRichTextImage {
+        guard let url = URL(string: attachment.src) else {
+            return WPRichTextImage(frame: CGRect.zero)
+        }
+
+        // Until we have a loaded image use a 1/1 height.  We want a nonzero value
+        // to avoid an edge case issue where 0 frames are not correctly updated
+        // during rotation.
+        attachment.maxSize = CGSize(width: 1, height: 1)
+
+        let img = WPRichTextImage(frame: CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0))
+        img.addTarget(self, action: #selector(type(of: self).handleImageTapped(_:)), for: .touchUpInside)
+        img.contentURL = url
+        img.linkURL = linkURLForImageAttachment(attachment)
+
+        if let cachedImage = imageSource.image(for: url, with: maxDisplaySize) {
+            img.imageView.image = cachedImage
+            attachment.maxSize = cachedImage.size
+        } else {
+            let index = mediaArray.count
+            let indexPath = IndexPath(row: index, section: 1)
+            imageSource.fetchImage(for: url, with: maxDisplaySize, indexPath: indexPath, isPrivate: isPrivate)
+        }
 
         let media = RichMedia(image: img, attachment: attachment)
         mediaArray.append(media)
 
         return img
     }
+
 
 
     /// Retrieves the URL for a link wrapping a text attachment, if one exists.
@@ -365,6 +454,32 @@ private extension WPRichContentView {
     struct Constants {
         static let textContainerInset = UIEdgeInsetsMake(0.0, 0.0, 16.0, 0.0)
         static let defaultAttachmentHeight = CGFloat(50.0)
+        static let photonQuality = 65
+    }
+}
+
+extension WPRichContentView: WPTableImageSourceDelegate {
+
+    /// Reminder to delete this delegate when the feature flag is deleted.
+    private func removeDelegate() {
+        if FeatureFlag.gifSupportInReaderDetail.enabled {
+            DDLogDebug("Please remove this `WPTableImageSourceDelegate` when this feature flag is removed")
+        }
+    }
+
+    func tableImageSource(_ tableImageSource: WPTableImageSource!, imageReady image: UIImage!, for indexPath: IndexPath!) {
+        let richMedia = mediaArray[indexPath.row]
+
+        richMedia.image.imageView.image = image
+        richMedia.attachment.maxSize = image.size
+
+        layoutAttachmentViews()
+    }
+
+    func tableImageSource(_ tableImageSource: WPTableImageSource!, imageFailedforIndexPath indexPath: IndexPath!, error: Error!) {
+        let richMedia = mediaArray[indexPath.row]
+        DDLogError("Error loading image: \(richMedia.attachment.src)")
+        DDLogError("\(error)")
     }
 }
 
