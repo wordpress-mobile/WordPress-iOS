@@ -558,7 +558,7 @@ private extension ZendeskUtils {
             return Constants.noValue
         }
 
-        return (allBlogs.map { $0.logDescription() }).joined(separator: Constants.blogSeperator)
+        return (allBlogs.map { $0.supportDescription() }).joined(separator: Constants.blogSeperator)
     }
 
     static func getTags() -> [String] {
