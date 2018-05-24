@@ -95,15 +95,15 @@ final class ReaderSavedPostsViewController: UITableViewController {
             return
         }
 
-        // TODO: Allow logged in features
         if postCellActions == nil {
             postCellActions = ReaderPostCellActions(context: managedObjectContext(), origin: self, topic: topic, visibleConfirmation: false)
         }
+
         cellConfiguration.configurePostCardCell(cell,
                                                 withPost: post,
                                                 topic: topic,
                                                 delegate: postCellActions,
-                                                loggedIn: false)
+                                                loggedInActionVisibility: .hidden)
     }
 }
 
