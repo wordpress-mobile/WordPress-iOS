@@ -3,7 +3,6 @@ import UIKit
 
 extension WPStyleGuide {
     static func styleProgressViewWhite(_ progressView: CircularProgressView) {
-        progressView.animationSpeed = 0.7
         progressView.loaderAppearance = ProgressIndicatorView.Appearance(lineColor: WPStyleGuide.lightBlue())
         progressView.backgroundColor = .clear
     }
