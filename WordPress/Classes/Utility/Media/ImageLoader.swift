@@ -19,7 +19,7 @@
 @objc class ImageLoader: NSObject {
 
     private unowned let imageView: CachedAnimatedImageView
-    private let loadingIndicator: MediaCellProgressView
+    private let loadingIndicator: CircularProgressView
 
     private var successHandler: (() -> Void)?
     private var errorHandler: ((Error?) -> Void)?
@@ -28,7 +28,7 @@
     @objc init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs) {
         self.imageView = imageView
         imageView.gifStrategy = gifStrategy
-        loadingIndicator = MediaCellProgressView()
+        loadingIndicator = CircularProgressView()
 
         super.init()
 

@@ -19,7 +19,7 @@ static CGFloat const MinimumZoomScale = 0.1;
 @property (nonatomic, strong) CachedAnimatedImageView *imageView;
 @property (nonatomic, strong) ImageLoader *imageLoader;
 @property (nonatomic, assign) BOOL shouldHideStatusBar;
-@property (nonatomic, strong) MediaCellProgressView *activityIndicatorView;
+@property (nonatomic, strong) CircularProgressView *activityIndicatorView;
 
 @property (nonatomic) FlingableViewHandler *flingableViewHandler;
 
@@ -120,7 +120,7 @@ static CGFloat const MinimumZoomScale = 0.1;
     self.flingableViewHandler = [[FlingableViewHandler alloc] initWithTargetView:self.scrollView];
     self.flingableViewHandler.delegate = self;
 
-    self.activityIndicatorView = [[MediaCellProgressView alloc] init];
+    self.activityIndicatorView = [[CircularProgressView alloc] init];
     [WPStyleGuide addErrorViewToProgressView:self.activityIndicatorView];
     
     self.activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
