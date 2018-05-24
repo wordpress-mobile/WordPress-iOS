@@ -26,7 +26,7 @@ final class ReaderSaveForLaterAction {
         let readerPostService = ReaderPostService(managedObjectContext: context)
 
         readerPostService.toggleSavedForLater(for: post, success: {
-            self.presentSuccessNotice(for: post, context: context, completion: completion)
+            self.presentSuccessNotice(for: post, context: context, origin: origin, completion: completion)
             completion?()
             }, failure: { error in
                 self.presentErrorNotice(error, activating: !post.isSavedForLater)
@@ -40,7 +40,7 @@ final class ReaderSaveForLaterAction {
         }
 
         if post.isSavedForLater {
-            presentPostSavedNotice()
+            presentPostSavedNotice(origin: origin)
         } else {
             presentPostRemovedNotice(for: post,
                                      context: context,
@@ -49,11 +49,12 @@ final class ReaderSaveForLaterAction {
         }
     }
 
-    private func presentPostSavedNotice() {
+    private func presentPostSavedNotice(origin: ReaderSaveForLaterOrigin) {
         let notice = Notice(title: Strings.postSaved,
                             feedbackType: .success,
                             actionTitle: Strings.viewAll,
                             actionHandler: {
+                                self.trackViewAllSavedPostsAction(origin: origin)
                                 self.showAll()
         })
 
