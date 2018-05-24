@@ -997,6 +997,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatReaderListNotificationEnabled:
             eventName = @"followed_blog_notifications_reader_enabled";
             break;
+        case WPAnalyticsStatReaderPostSaved:
+            eventName = @"reader_post_saved";
+            break;
+        case WPAnalyticsStatReaderPostUnsaved:
+            eventName = @"reader_post_unsaved";
+            break;
+        case WPAnalyticsStatReaderSavedPostOpened:
+            eventName = @"reader_saved_post_opened";
+            break;
+        case WPAnalyticsStatReaderSavedListViewed:
+            eventName = @"reader_saved_list_viewed";
+            break;
         case WPAnalyticsStatReaderSearchLoaded:
             eventName = @"reader_search_loaded";
             break;
