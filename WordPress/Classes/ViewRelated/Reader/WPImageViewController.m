@@ -121,7 +121,6 @@ static CGFloat const MinimumZoomScale = 0.1;
     self.flingableViewHandler.delegate = self;
 
     self.activityIndicatorView = [[CircularProgressView alloc] initWithStyle:CircularProgressViewStyleWhite];
-    [WPStyleGuide addErrorViewToProgressView:self.activityIndicatorView];
     
     self.activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.activityIndicatorView];
