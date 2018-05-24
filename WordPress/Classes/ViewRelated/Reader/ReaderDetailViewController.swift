@@ -501,7 +501,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
 
         let postInfo = ReaderCardContent(provider: post)
-        featuredImageLoader.loadImage(with: featuredImageURL, from: postInfo, placeholder: nil, success: { [weak self] in
+        let maxImageWidth = min(view.frame.width, view.frame.height)
+        let imageWidthSize = CGSize(width: maxImageWidth, height: 0) // height 0: preserves aspect ratio.
+        featuredImageLoader.loadImage(with: featuredImageURL, from: postInfo, preferedSize: imageWidthSize, placeholder: nil, success: { [weak self] in
             guard let strongSelf = self, let size = strongSelf.featuredImageView.image?.size else {
                 return
             }
