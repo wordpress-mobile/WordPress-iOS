@@ -33,7 +33,6 @@
         super.init()
 
         WPStyleGuide.styleProgressViewWhite(loadingIndicator)
-        WPStyleGuide.addErrorView(to: loadingIndicator)
         imageView.addLoadingIndicator(loadingIndicator, style: .fullView)
     }
 
