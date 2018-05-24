@@ -32,7 +32,7 @@ class AnimatedImageCache {
         bcf.allowedUnits = [.useMB]
         bcf.countStyle = .file
         let cacheSizeinMB = bcf.string(fromByteCount: Int64(totalCostLimit()))
-        DDLogDebug("🗄 AnimatedImageCache initialized with total cost limit of \(cacheSizeinMB)")
+
         return cache
     }()
 
