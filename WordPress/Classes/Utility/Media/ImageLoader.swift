@@ -179,7 +179,7 @@
             return
         }
         DispatchQueue.main.async {
-            if self.imageView.disableLoadingIndicator == false {
+            if self.imageView.shouldShowLoadingIndicator {
                 self.loadingIndicator.state = .error
             }
             self.errorHandler?(error)
