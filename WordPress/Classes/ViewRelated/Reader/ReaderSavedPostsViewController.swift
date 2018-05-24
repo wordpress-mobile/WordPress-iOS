@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 import WordPressShared
 import WordPressUI
 
@@ -35,6 +36,24 @@ final class ReaderSavedPostsViewController: UITableViewController {
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
         updateAndPerformFetchRequest()
+    }
+
+    open override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        centerResultsStatusViewIfNeeded()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        refreshNoResultsView()
+    }
+
+    func centerResultsStatusViewIfNeeded() {
+        if noResultsView.isDescendant(of: tableView) {
+            noResultsView.centerInSuperview()
+        }
     }
 
     // MARK: - Setup
@@ -127,10 +146,49 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
 
 
     public func tableViewDidChangeContent(_ tableView: UITableView) {
+        refreshNoResultsView()
+    }
+
+    private func refreshNoResultsView() {
         if content.isEmpty {
-            // TODO: Implement no results view
-            //            displayNoResultsView()
+            displayNoResultsView()
+        } else {
+            hideNoResultsView()
         }
+    }
+
+    private func displayNoResultsView() {
+        if !noResultsView.isDescendant(of: tableView) {
+            tableView.addSubview(withFadeAnimation: noResultsView)
+            noResultsView.translatesAutoresizingMaskIntoConstraints = false
+            tableView.pinSubviewAtCenter(noResultsView)
+        }
+
+        configureNoResultsText()
+
+        noResultsView.isUserInteractionEnabled = false
+        noResultsView.accessoryView = nil
+    }
+
+    private func configureNoResultsText() {
+        noResultsView.titleText = NSLocalizedString("No posts saved – yet!", comment: "Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts.")
+
+        var messageText = NSMutableAttributedString(string: NSLocalizedString("Tap [bookmark-outline] to save a post to your list.", comment: "A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact."))
+
+        // We're setting this once here so that the attributed text
+        // gets the correct font attributes added to it. The font
+        // is used by the attributed string `replace(_:with:)` method
+        // below to correctly position the icon.
+        noResultsView.attributedMessageText = messageText
+        messageText = NSMutableAttributedString(attributedString: noResultsView.attributedMessageText)
+
+        let icon = Gridicon.iconOfType(.bookmarkOutline, withSize: CGSize(width: 18, height: 18))
+        messageText.replace("[bookmark-outline]", with: icon)
+        noResultsView.attributedMessageText = messageText
+    }
+
+    @objc func hideNoResultsView() {
+        noResultsView.removeFromSuperview()
     }
 
     // MARK: - TableView Related
