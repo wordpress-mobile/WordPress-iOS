@@ -28,7 +28,7 @@
     @objc init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs) {
         self.imageView = imageView
         imageView.gifStrategy = gifStrategy
-        loadingIndicator = CircularProgressView()
+        loadingIndicator = CircularProgressView(style: .wordPressBlue)
 
         super.init()
 

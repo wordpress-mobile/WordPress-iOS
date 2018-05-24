@@ -26,6 +26,43 @@ class CircularProgressView: UIView {
         }
     }
 
+    @objc(CircularProgressViewStyle)
+    enum Style: Int {
+        case wordPressBlue
+        case white
+        case mediaCell
+
+        fileprivate var appearance: Appearance {
+            switch self {
+            case .wordPressBlue:
+                return Appearance(
+                    progressIndicatorAppearance: ProgressIndicatorView.Appearance(lineColor: WPStyleGuide.mediumBlue()),
+                    backgroundColor: .clear,
+                    accessoryViewTintColor: WPStyleGuide.darkGrey(),
+                    accessoryViewBackgroundColor: WPStyleGuide.lightGrey())
+            case .mediaCell:
+                return Appearance(
+                    progressIndicatorAppearance: ProgressIndicatorView.Appearance(lineColor: .white),
+                    backgroundColor: WPStyleGuide.darkGrey(),
+                    accessoryViewTintColor: .white,
+                    accessoryViewBackgroundColor: .clear)
+            case .white:
+                return Appearance(
+                    progressIndicatorAppearance: ProgressIndicatorView.Appearance(lineColor: .white),
+                    backgroundColor: .clear,
+                    accessoryViewTintColor: .white,
+                    accessoryViewBackgroundColor: WPStyleGuide.lightGrey())
+            }
+        }
+    }
+
+    fileprivate struct Appearance {
+        let progressIndicatorAppearance: ProgressIndicatorView.Appearance
+        let backgroundColor: UIColor
+        let accessoryViewTintColor: UIColor
+        let accessoryViewBackgroundColor: UIColor
+    }
+
     // MARK: - public fields
 
     let retryView = RetryView()
@@ -37,30 +74,24 @@ class CircularProgressView: UIView {
         }
     }
 
-    var loaderAppearance: ProgressIndicatorView.Appearance {
-        get {
-            return progressIndicator.appearance
-        }
-        set {
-            progressIndicator.removeFromSuperview()
-            progressIndicator = ProgressIndicatorView(appearance: newValue)
-            addProgressIndicator()
-            refreshState()
-        }
-    }
-
     // MARK: - private fields
 
-    private var progressIndicator = ProgressIndicatorView()
+    private let progressIndicator: ProgressIndicatorView
     private var errorView: UIView?
+    private var style: Style
 
     // MARK: - inits
 
-    @objc convenience init() {
-        self.init(frame: .zero)
+    @objc init(style: Style) {
+        self.style = style
+        progressIndicator = ProgressIndicatorView(appearance: style.appearance.progressIndicatorAppearance)
+        super.init(frame: .zero)
+        setup()
     }
 
     override init(frame: CGRect) {
+        self.style = Style.mediaCell
+        progressIndicator = ProgressIndicatorView(appearance: style.appearance.progressIndicatorAppearance)
         super.init(frame: frame)
         setup()
     }
@@ -133,7 +164,7 @@ class CircularProgressView: UIView {
     fileprivate func setup() {
         addProgressIndicator()
         addRetryViews()
-        backgroundColor = .clear
+        backgroundColor = style.appearance.backgroundColor
     }
 
     fileprivate func setRetryContainerDimmed(_ dimmed: Bool) {
