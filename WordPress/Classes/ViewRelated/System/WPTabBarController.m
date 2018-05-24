@@ -146,6 +146,11 @@ static CGFloat const WPTabBarIconSize = 32.0f;
                                                      name:WordPressAuthenticator.WPSigninDidFinishNotification
                                                    object:nil];
 
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(switchReaderTabToSavedPosts)
+                                                     name:NSNotification.ShowAllSavedForLaterPostsNotification
+                                                   object:nil];
+
         // Watch for application badge number changes
         [[UIApplication sharedApplication] addObserver:self
                                             forKeyPath:WPApplicationIconBadgeNumberKeyPath
@@ -674,6 +679,21 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     // settings VC isn't correct when pushed...
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.meViewController navigateToHelpAndSupport];
+    });
+}
+
+- (void)switchReaderTabToSavedPosts
+{
+    [self showReaderTab];
+
+    // Unfortunately animations aren't disabled properly for this
+    // transition unless we dispatch_async.
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.readerNavigationController popToRootViewControllerAnimated:NO];
+
+        [UIView performWithoutAnimation:^{
+            [self.readerMenuViewController showSavedForLater];
+        }];
     });
 }
 
