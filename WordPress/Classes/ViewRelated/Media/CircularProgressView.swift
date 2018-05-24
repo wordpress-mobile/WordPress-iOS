@@ -65,8 +65,13 @@ class CircularProgressView: UIView {
 
     // MARK: - public fields
 
-    private let retryView = AccessoryView()
-    private let errorView = AccessoryView()
+    let retryView = AccessoryView()
+    var errorView: UIView = UIView() {
+        didSet {
+            oldValue.removeFromSuperview()
+            configureErrorView()
+        }
+    }
 
     var errorTintColor = UIColor.white
 
@@ -137,8 +142,8 @@ class CircularProgressView: UIView {
             errorView.isHidden = true
         case .retry:
             progressIndicator.state = .stopped
-            retryView.isHidden = false
             errorView.isHidden = true
+            animateAccessoryView(retryView)
         case .indeterminate:
             progressIndicator.state = .indeterminate
             retryView.isHidden = true
@@ -150,7 +155,7 @@ class CircularProgressView: UIView {
         case .error:
             progressIndicator.state = .stopped
             retryView.isHidden = true
-            errorView.isHidden = false
+            animateAccessoryView(errorView)
         }
     }
 
@@ -176,9 +181,8 @@ class CircularProgressView: UIView {
     }
 
     private func configureErrorView() {
+        errorView.translatesAutoresizingMaskIntoConstraints = false
         configureAccessoryView(errorView)
-        errorView.label.text = NSLocalizedString("Unable to load", comment: "Error. Verb – error loading a media file.")
-        errorView.imageView.image = #imageLiteral(resourceName: "hud_error").withRenderingMode(.alwaysTemplate)
     }
 
     private func configureRetryViews() {
@@ -187,7 +191,7 @@ class CircularProgressView: UIView {
         retryView.imageView.image = Gridicon.iconOfType(.refresh)
     }
 
-    private func configureAccessoryView(_ view: AccessoryView) {
+    private func configureAccessoryView(_ view: UIView) {
         view.tintColor = style.appearance.accessoryViewTintColor
         view.backgroundColor = style.appearance.accessoryViewBackgroundColor
 
@@ -200,6 +204,14 @@ class CircularProgressView: UIView {
             ])
 
         view.isHidden = true
+    }
+
+    private func animateAccessoryView(_ view: UIView) {
+        view.isHidden = false
+        view.alpha = 0.0
+        UIView.animate(withDuration: 0.2) {
+            view.alpha = 1.0
+        }
     }
 }
 
@@ -309,7 +321,6 @@ final class ProgressIndicatorView: UIView {
     }
 
     private let appearance: Appearance
-
     private var isAnimating = false
 
     fileprivate init(appearance: Appearance = Appearance()) {
