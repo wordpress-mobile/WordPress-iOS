@@ -13,21 +13,29 @@ extension NSNotification.Name {
     public static let ZendeskPushNotificationClearedNotification = NSNotification.Name.ZendeskPushNotificationClearedNotification
 }
 
+/// This class provides the functionality to communicate with Zendesk for Help Center and support ticket interaction,
+/// as well as displaying views for the Help Center, new tickets, and ticket list.
+///
 @objc class ZendeskUtils: NSObject {
 
-    // MARK: - Properties
+    // MARK: - Public Properties
 
     static var sharedInstance: ZendeskUtils = ZendeskUtils()
-    private override init() {}
-
     static var zendeskEnabled = false
+    @objc static var unreadNotificationsCount = 0
 
     @objc static var showSupportNotificationIndicator: Bool {
         return unreadNotificationsCount > 0
     }
 
-    @objc static var unreadNotificationsCount = 0
+    struct PushNotificationIdentifiers {
+        static let key = "type"
+        static let type = "zendesk"
+    }
 
+    // MARK: - Private Properties
+
+    private override init() {}
     private var sourceTag: WordPressSupportSourceTag?
 
     // Specifically for WPError, which has the sourceTag as a String.
@@ -36,21 +44,15 @@ extension NSNotification.Name {
     private var userName: String?
     private var userEmail: String?
     private var deviceID: String?
+    private var usingAnonymousIDForHelpCenter = false
 
     private static var zdAppID: String?
     private static var zdUrl: String?
     private static var zdClientId: String?
-
     private static var presentInController: UIViewController?
-    private var usingAnonymousIDForHelpCenter = false
 
     private static var appVersion: String {
         return Bundle.main.shortVersionString() ?? Constants.unknownValue
-    }
-
-    struct PushNotificationIdentifiers {
-        static let key = "type"
-        static let type = "zendesk"
     }
 
     // MARK: - Public Methods
@@ -64,11 +66,11 @@ extension NSNotification.Name {
                                         zendeskUrl: zdUrl,
                                         clientId: zdClientId)
 
-        ZendeskUtils.toggleZendesk(enabled: true)
+        toggleZendesk(enabled: true)
 
         // User has accessed a single ticket view, typically via the Zendesk Push Notification alert.
         // In this case, we'll clear the Push Notification indicators.
-        NotificationCenter.default.addObserver(self, selector: #selector(ZendeskUtils.ticketViewed(_:)), name: NSNotification.Name(rawValue: ZDKAPI_CommentListStarting), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ticketViewed(_:)), name: NSNotification.Name(rawValue: ZDKAPI_CommentListStarting), object: nil)
 
         // Get unread notification count from User Defaults.
         unreadNotificationsCount = UserDefaults.standard.integer(forKey: Constants.userDefaultsZendeskUnreadNotifications)
@@ -81,6 +83,8 @@ extension NSNotification.Name {
 
     // MARK: - Show Zendesk Views
 
+    /// Displays the Zendesk Help Center from the given controller, filtered by the mobile category and articles labelled as iOS.
+    ///
     func showHelpCenterIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
 
         ZendeskUtils.configureViewController(controller)
@@ -90,9 +94,9 @@ extension NSNotification.Name {
         if ZDKConfig.instance().userIdentity == nil {
             let zendeskIdentity = ZDKAnonymousIdentity()
             ZDKConfig.instance().userIdentity = zendeskIdentity
-            ZendeskUtils.sharedInstance.usingAnonymousIDForHelpCenter = true
+            usingAnonymousIDForHelpCenter = true
         } else {
-            ZendeskUtils.sharedInstance.usingAnonymousIDForHelpCenter = false
+            usingAnonymousIDForHelpCenter = false
         }
 
         self.sourceTag = sourceTag
@@ -107,19 +111,20 @@ extension NSNotification.Name {
         helpCenterContentModel.labels = [Constants.articleLabel]
 
         // Set the ability to 'Contact Us' from the Help Center according to usingAnonymousIDForHelpCenter.
-        ZDKHelpCenter.setUIDelegate(ZendeskUtils.sharedInstance)
-        _ = ZendeskUtils.sharedInstance.active()
+        ZDKHelpCenter.setUIDelegate(self)
+        _ = active()
 
         ZDKHelpCenter.presentOverview(ZendeskUtils.presentInController, with: helpCenterContentModel)
     }
 
+    /// Displays the Zendesk New Request view from the given controller, for users to submit new tickets.
+    ///
     func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
 
         ZendeskUtils.configureViewController(controller)
 
         ZendeskUtils.createIdentity { success in
             guard success else {
-                // TODO: show error
                 return
             }
 
@@ -130,13 +135,14 @@ extension NSNotification.Name {
         }
     }
 
+    /// Displays the Zendesk Request List view from the given controller, allowing user to access their tickets.
+    ///
     func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
 
         ZendeskUtils.configureViewController(controller)
 
         ZendeskUtils.createIdentity { success in
             guard success else {
-                // TODO: show error
                 return
             }
 
@@ -148,10 +154,15 @@ extension NSNotification.Name {
 
     // MARK: - Device Registration
 
+    /// Sets the device ID to be registered with Zendesk for push notifications.
+    /// Actual registration is done when a user selects one of the Zendesk views.
+    ///
     static func setNeedToRegisterDevice(_ identifier: String) {
         ZendeskUtils.sharedInstance.deviceID = identifier
     }
 
+    /// Unregisters the device ID from Zendesk for push notifications.
+    ///
     static func unregisterDevice(_ identifier: String) {
         ZDKConfig.instance().disablePush(identifier) { status, error in
             if let error = error {
@@ -164,6 +175,10 @@ extension NSNotification.Name {
 
     // MARK: - Push Notifications
 
+    /// This handles in-app Zendesk push notifications.
+    /// If a Zendesk view is being displayed, an alert will appear allowing
+    /// the user to view the updated ticket.
+    ///
     static func handlePushNotification(_ userInfo: NSDictionary) {
 
         guard zendeskEnabled == true,
@@ -181,12 +196,21 @@ extension NSNotification.Name {
                                clientId: zdClientId)
     }
 
+    /// This handles all Zendesk push notifications. (The in-app flow goes through here as well.)
+    /// When a notification is received, an NSNotification is posted to allow
+    /// the various indicators to be displayed.
+    ///
     static func pushNotificationReceived() {
         unreadNotificationsCount += 1
         saveUnreadCountToUD()
         postNotificationReceived()
     }
 
+    /// When a user views the Ticket List, this is called to:
+    /// - clear the notification count
+    /// - update the application badge count
+    /// - post an NSNotification so the various indicators can be cleared.
+    ///
     static func pushNotificationRead() {
         UIApplication.shared.applicationIconBadgeNumber -= unreadNotificationsCount
         unreadNotificationsCount = 0
@@ -196,7 +220,8 @@ extension NSNotification.Name {
 
     // MARK: - Helpers
 
-    // Specifically for WPError, which is ObjC & has the sourceTag as a String.
+    /// Specifically for WPError, which is ObjC & has the sourceTag as a String.
+    ///
     static func updateSourceTag(with description: String) {
         ZendeskUtils.sharedInstance.sourceTagDescription = description
     }
@@ -215,7 +240,7 @@ private extension ZendeskUtils {
             url.count > 0,
             clientId.count > 0 else {
                 DDLogInfo("Unable to get Zendesk credentials.")
-                ZendeskUtils.toggleZendesk(enabled: false)
+                toggleZendesk(enabled: false)
                 return false
         }
 
@@ -226,7 +251,7 @@ private extension ZendeskUtils {
     }
 
     static func toggleZendesk(enabled: Bool) {
-        ZendeskUtils.zendeskEnabled = enabled
+        zendeskEnabled = enabled
         DDLogInfo("Zendesk Enabled: \(enabled)")
     }
 
@@ -249,8 +274,8 @@ private extension ZendeskUtils {
         let accountService = AccountService(managedObjectContext: context)
         if let defaultAccount = accountService.defaultWordPressComAccount() {
             DDLogDebug("Using defaultAccount for Zendesk identity.")
-            ZendeskUtils.getUserInformationFrom(wpAccount: defaultAccount)
-            ZendeskUtils.createZendeskIdentity()
+            getUserInformationFrom(wpAccount: defaultAccount)
+            createZendeskIdentity()
             completion(true)
             return
         }
@@ -258,8 +283,8 @@ private extension ZendeskUtils {
         // 2. Check User Defaults
         if let savedProfile = UserDefaults.standard.dictionary(forKey: Constants.zendeskProfileUDKey) {
             DDLogDebug("Using User Defaults for Zendesk identity.")
-            ZendeskUtils.getUserInformationFrom(savedProfile: savedProfile)
-            ZendeskUtils.createZendeskIdentity()
+            getUserInformationFrom(savedProfile: savedProfile)
+            createZendeskIdentity()
             completion(true)
             return
         }
@@ -272,14 +297,14 @@ private extension ZendeskUtils {
             // The user is not logged in. Check User Defaults for manually entered information.
             if let savedProfile = UserDefaults.standard.dictionary(forKey: Constants.zendeskNoAccountProfileUDKey) {
                 DDLogDebug("Using manually entered information from User Defaults for Zendesk identity.")
-                ZendeskUtils.getUserInformationFrom(savedProfile: savedProfile)
-                ZendeskUtils.createZendeskIdentity()
+                getUserInformationFrom(savedProfile: savedProfile)
+                createZendeskIdentity()
                 completion(true)
                 return
             }
 
             // We have no user information. Prompt user for it.
-            ZendeskUtils.promptUserForInformation { success in
+            promptUserForInformation { success in
                 guard success else {
                     DDLogInfo("No user information to create Zendesk identity with.")
                     completion(false)
@@ -287,8 +312,8 @@ private extension ZendeskUtils {
                 }
 
                 DDLogDebug("Using manually entered information for Zendesk identity.")
-                ZendeskUtils.saveNoAccountProfileToUD()
-                ZendeskUtils.createZendeskIdentity()
+                saveNoAccountProfileToUD()
+                createZendeskIdentity()
                 completion(true)
                 return
             }
@@ -298,9 +323,9 @@ private extension ZendeskUtils {
         // 3a. Jetpack site
         if let jetpackState = blog.jetpack, jetpackState.isConnected {
             DDLogDebug("Using Jetpack site for Zendesk identity.")
-            ZendeskUtils.getUserInformationFrom(jetpackState: jetpackState)
-            ZendeskUtils.createZendeskIdentity()
-            ZendeskUtils.saveAccountProfileToUD()
+            getUserInformationFrom(jetpackState: jetpackState)
+            createZendeskIdentity()
+            saveAccountProfileToUD()
             completion(true)
             return
 
@@ -309,8 +334,8 @@ private extension ZendeskUtils {
         // 3b. self-hosted site
         ZendeskUtils.getUserInformationFrom(blog: blog) {
             DDLogDebug("Using self-hosted for Zendesk identity.")
-            ZendeskUtils.createZendeskIdentity()
-            ZendeskUtils.saveAccountProfileToUD()
+            createZendeskIdentity()
+            saveAccountProfileToUD()
             completion(true)
             return
         }
@@ -329,13 +354,13 @@ private extension ZendeskUtils {
         zendeskIdentity.name = ZendeskUtils.sharedInstance.userName
         ZDKConfig.instance().userIdentity = zendeskIdentity
         DDLogDebug("Zendesk identity created with email '\(zendeskIdentity.email)' and name '\(zendeskIdentity.name)'.")
-        ZendeskUtils.registerDeviceIfNeeded()
+        registerDeviceIfNeeded()
     }
 
     static func registerDeviceIfNeeded() {
 
         guard let deviceID = ZendeskUtils.sharedInstance.deviceID else {
-                return
+            return
         }
 
         ZDKConfig.instance().enablePush(withDeviceID: deviceID) { pushResponse, error in
@@ -384,7 +409,7 @@ private extension ZendeskUtils {
             controller.modalPresentationStyle = .formSheet
             controller.modalTransitionStyle = .crossDissolve
         }
-        ZendeskUtils.presentInController = controller
+        presentInController = controller
     }
 
     // MARK: - Get User Information
@@ -455,6 +480,7 @@ private extension ZendeskUtils {
 
         // Since we have account information, remove no account information.
         UserDefaults.standard.removeObject(forKey: Constants.zendeskNoAccountProfileUDKey)
+        UserDefaults.standard.synchronize()
     }
 
     static func saveNoAccountProfileToUD() {
@@ -573,7 +599,7 @@ private extension ZendeskUtils {
         return networkInformation.joined(separator: "\n")
     }
 
-    // MARK: - NSNotification Helpers
+    // MARK: - Push Notification Helpers
 
     static func postNotificationReceived() {
         // Updating unread indicators should trigger UI updates, so send notification in main thread.
@@ -633,7 +659,7 @@ private extension ZendeskUtils {
             textField.clearButtonMode = .always
             textField.placeholder = LocalizedText.emailPlaceholder
 
-            textField.addTarget(ZendeskUtils.self,
+            textField.addTarget(self,
                                 action: #selector(emailTextFieldDidChange),
                                 for: UIControlEvents.editingChanged)
         })
@@ -743,7 +769,7 @@ extension ZendeskUtils: ZDKHelpCenterConversationsUIDelegate {
 
     func active() -> ZDKContactUsVisibility {
         // If the user is not logged in, disable 'Contact Us' via the Help Center and Article view.
-        if ZendeskUtils.sharedInstance.usingAnonymousIDForHelpCenter {
+        if usingAnonymousIDForHelpCenter {
             return .off
         }
 
