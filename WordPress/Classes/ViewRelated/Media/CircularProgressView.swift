@@ -44,15 +44,8 @@ class CircularProgressView: UIView {
         set {
             progressIndicator.removeFromSuperview()
             progressIndicator = ProgressIndicatorView(appearance: newValue)
-            progressIndicator.animationSpeed = animationSpeed
             addProgressIndicator()
             refreshState()
-        }
-    }
-
-    var animationSpeed: Float = 1.0 {
-        didSet {
-            progressIndicator.animationSpeed = animationSpeed
         }
     }
 
@@ -263,17 +256,12 @@ class ProgressIndicatorView: UIView {
         }
     }
 
-    private struct Animations {
-        let speed: Float
-        let rotationAmount = Float.pi * 2.0
-        lazy var rotationDuration: TimeInterval = 1.2 / TimeInterval(speed)
-        lazy var strokeDuration: TimeInterval = 0.8 / TimeInterval(speed)
-        let strokeSlowdownPoint: Float = 0.8
-        lazy var strokeBeginTime: TimeInterval = 0.5 / TimeInterval(speed)
-
-        init(speed: Float) {
-            self.speed = speed
-        }
+    private enum Animations {
+        static let rotationAmount = Float.pi * 2.0
+        static let rotationDuration: TimeInterval = 0.84
+        static let strokeDuration: TimeInterval = 0.56
+        static let strokeSlowdownPoint: Float = 0.8
+        static let strokeBeginTime: TimeInterval = 0.35
     }
 
     var state: CircularProgressView.State = .stopped {
@@ -282,18 +270,7 @@ class ProgressIndicatorView: UIView {
         }
     }
 
-    private var animations = Animations(speed: 1)
-
     let appearance: Appearance
-
-    var animationSpeed: Float {
-        get {
-            return animations.speed
-        }
-        set {
-            animations = Animations(speed: newValue)
-        }
-    }
 
     private var isAnimating = false
 
@@ -376,23 +353,23 @@ class ProgressIndicatorView: UIView {
         indeterminateLayer.isHidden = false
 
         let strokeEnd = CAKeyframeAnimation(keyPath: "strokeEnd")
-        strokeEnd.duration = animations.strokeDuration
+        strokeEnd.duration = Animations.strokeDuration
         strokeEnd.values = [0.0, 1.0]
 
         let strokeStart = CAKeyframeAnimation(keyPath: "strokeStart")
-        strokeStart.duration = animations.strokeDuration
-        strokeStart.values = [0.0, animations.strokeSlowdownPoint, 1.0]
-        strokeStart.beginTime = animations.strokeBeginTime
+        strokeStart.duration = Animations.strokeDuration
+        strokeStart.values = [0.0, Animations.strokeSlowdownPoint, 1.0]
+        strokeStart.beginTime = Animations.strokeBeginTime
 
         let group = CAAnimationGroup()
         group.animations = [strokeEnd, strokeStart]
-        group.duration = animations.strokeDuration + strokeStart.beginTime
+        group.duration = Animations.strokeDuration + strokeStart.beginTime
         group.repeatCount = Float.infinity
 
         let animation = CABasicAnimation(keyPath: "transform.rotation.z")
         animation.fromValue = 0
-        animation.toValue = animations.rotationAmount
-        animation.duration = animations.rotationDuration
+        animation.toValue = Animations.rotationAmount
+        animation.duration = Animations.rotationDuration
         animation.repeatCount = Float.infinity
 
         indeterminateLayer.add(animation, forKey: "rotation")
