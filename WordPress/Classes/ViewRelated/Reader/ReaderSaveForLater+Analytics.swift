@@ -18,6 +18,19 @@ enum ReaderSaveForLaterOrigin {
             return ""
         }
     }
+
+    fileprivate var viewAllPostsValue: String {
+        switch self {
+        case .savedStream:
+            return "post_list_saved_post_notice"
+        case .otherStream:
+            return "post_list_saved_post_notice"
+        case .postDetail:
+            return "post_details_saved_post_notice"
+        case .readerMenu:
+            return "reader_filter"
+        }
+    }
 }
 
 
@@ -34,5 +47,17 @@ extension ReaderSaveForLaterAction {
         } else {
             WPAppAnalytics.track(.readerPostUnsaved, withProperties: properties)
         }
+    }
+
+    func trackViewAllSavedPostsAction(origin: ReaderSaveForLaterOrigin) {
+        let properties = [ readerSaveForLaterSourceKey: origin.viewAllPostsValue ]
+
+        WPAppAnalytics.track(.readerSavedListViewed, withProperties: properties)
+    }
+}
+
+extension ReaderMenuViewController {
+    func trackSavedPostsNavigation() {
+        WPAppAnalytics.track(.readerSavedListViewed, withProperties: [ readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.readerMenu.viewAllPostsValue ])
     }
 }
