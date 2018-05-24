@@ -1298,6 +1298,51 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatSupportUserRepliedToHelpshift:
             eventName = @"support_user_replied_to_helpshift";
             break;
+        case WPAnalyticsStatSupportHelpCenterUserSearched:
+            eventName = @"support_help_center_user_searched";
+            break;
+        case WPAnalyticsStatSupportHelpCenterViewed:
+            eventName = @"support_help_center_viewed";
+            break;
+        case WPAnalyticsStatSupportNewRequestViewed:
+            eventName = @"support_new_request_viewed";
+            break;
+        case WPAnalyticsStatSupportTicketListViewed:
+            eventName = @"support_ticket_list_viewed";
+            break;
+        case WPAnalyticsStatSupportNewRequestCreated:
+            eventName = @"support_new_request_created";
+            break;
+        case WPAnalyticsStatSupportNewRequestFailed:
+            eventName = @"support_new_request_failed";
+            break;
+        case WPAnalyticsStatSupportNewRequestFileAttached:
+            eventName = @"support_new_request_file_attached";
+            break;
+        case WPAnalyticsStatSupportNewRequestFileAttachmentFailed:
+            eventName = @"support_new_request_file_attachment_failed";
+            break;
+        case WPAnalyticsStatSupportTicketAttachmentUserDeleted:
+            eventName = @"support_ticket_attachment_user_deleted";
+            break;
+        case WPAnalyticsStatSupportTicketAttachmentUserDeleteFailed:
+            eventName = @"support_ticket_attachment_user_delete_failed";
+            break;
+        case WPAnalyticsStatSupportTicketUserReplied:
+            eventName = @"support_ticket_user_replied";
+            break;
+        case WPAnalyticsStatSupportTicketUserReplyFailed:
+            eventName = @"support_ticket_user_reply_failed";
+            break;
+        case WPAnalyticsStatSupportTicketListViewFailed:
+            eventName = @"support_ticket_list_view_failed";
+            break;
+        case WPAnalyticsStatSupportTicketUserViewed:
+            eventName = @"support_ticket_user_viewed";
+            break;
+        case WPAnalyticsStatSupportTicketViewFailed:
+            eventName = @"support_ticket_view_failed";
+            break;
         case WPAnalyticsStatThemesAccessedThemeBrowser:
             eventName = @"themes_theme_browser_accessed";
             break;
