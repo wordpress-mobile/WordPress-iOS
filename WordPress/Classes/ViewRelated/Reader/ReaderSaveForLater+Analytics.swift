@@ -19,6 +19,19 @@ enum ReaderSaveForLaterOrigin {
         }
     }
 
+    fileprivate var openPostValue: String {
+        switch self {
+        case .savedStream:
+            return "saved_post_list"
+        case .otherStream:
+            return "other_post_list"
+        case .postDetail:
+            return ""
+        case .readerMenu:
+            return ""
+        }
+    }
+
     fileprivate var viewAllPostsValue: String {
         switch self {
         case .savedStream:
@@ -59,5 +72,17 @@ extension ReaderSaveForLaterAction {
 extension ReaderMenuViewController {
     func trackSavedPostsNavigation() {
         WPAppAnalytics.track(.readerSavedListViewed, withProperties: [ readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.readerMenu.viewAllPostsValue ])
+    }
+}
+
+extension ReaderSavedPostsViewController {
+    func trackSavedPostNavigation() {
+        WPAppAnalytics.track(.readerSavedPostOpened, withProperties: [ readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.savedStream.openPostValue ])
+    }
+}
+
+extension ReaderStreamViewController {
+    func trackSavedPostNavigation() {
+        WPAppAnalytics.track(.readerSavedPostOpened, withProperties: [ readerSaveForLaterSourceKey: ReaderSaveForLaterOrigin.otherStream.openPostValue ])
     }
 }
