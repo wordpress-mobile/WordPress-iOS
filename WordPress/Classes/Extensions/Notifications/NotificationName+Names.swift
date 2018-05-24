@@ -12,6 +12,10 @@ extension Foundation.Notification.Name {
     }
 }
 
+@objc extension NSNotification {
+    public static let ShowAllSavedForLaterPostsNotification = Foundation.Notification.Name.showAllSavedForLaterPosts
+}
+
 /// Keys for Notification's userInfo dictionary
 extension Foundation.Notification {
     static var reachabilityKey: String {
