@@ -51,7 +51,7 @@ class CircularProgressView: UIView {
                     progressIndicatorAppearance: ProgressIndicatorView.Appearance(lineColor: .white),
                     backgroundColor: .clear,
                     accessoryViewTintColor: .white,
-                    accessoryViewBackgroundColor: WPStyleGuide.lightGrey())
+                    accessoryViewBackgroundColor: .clear)
             }
         }
     }
@@ -65,7 +65,9 @@ class CircularProgressView: UIView {
 
     // MARK: - public fields
 
-    let retryView = RetryView()
+    private let retryView = AccessoryView()
+    private let errorView = AccessoryView()
+
     var errorTintColor = UIColor.white
 
     var state: State = .stopped {
@@ -77,7 +79,6 @@ class CircularProgressView: UIView {
     // MARK: - private fields
 
     private let progressIndicator: ProgressIndicatorView
-    private var errorView: UIView?
     private var style: Style
 
     // MARK: - inits
@@ -119,17 +120,9 @@ class CircularProgressView: UIView {
 
     // MARK: - public methods
 
-    func addErrorView(_ view: UIView) {
-        errorView?.removeFromSuperview()
-        errorView = view
-        addSubview(view)
-        NSLayoutConstraint.activate([
-            view.centerXAnchor.constraint(equalTo: centerXAnchor),
-            view.centerYAnchor.constraint(equalTo: centerYAnchor)
-            ])
-        view.isHidden = true
-    }
 
+    /// Shows the error state. (Obj-C helper)
+    ///
     @objc func showError() {
         state = .error
     }
@@ -141,29 +134,30 @@ class CircularProgressView: UIView {
         case .stopped:
             progressIndicator.state = .stopped
             retryView.isHidden = true
-            errorView?.isHidden = true
+            errorView.isHidden = true
         case .retry:
             progressIndicator.state = .stopped
             retryView.isHidden = false
-            errorView?.isHidden = true
+            errorView.isHidden = true
         case .indeterminate:
             progressIndicator.state = .indeterminate
             retryView.isHidden = true
-            errorView?.isHidden = true
+            errorView.isHidden = true
         case .progress:
             progressIndicator.state = state
             retryView.isHidden = true
-            errorView?.isHidden = true
+            errorView.isHidden = true
         case .error:
             progressIndicator.state = .stopped
             retryView.isHidden = true
-            errorView?.isHidden = false
+            errorView.isHidden = false
         }
     }
 
     fileprivate func setup() {
         addProgressIndicator()
-        addRetryViews()
+        configureRetryViews()
+        configureErrorView()
         backgroundColor = style.appearance.backgroundColor
     }
 
@@ -181,20 +175,37 @@ class CircularProgressView: UIView {
             ])
     }
 
-    private func addRetryViews() {
-        addSubview(retryView)
+    private func configureErrorView() {
+        configureAccessoryView(errorView)
+        errorView.label.text = NSLocalizedString("Unable to load", comment: "Error. Verb – error loading a media file.")
+        errorView.imageView.image = #imageLiteral(resourceName: "hud_error").withRenderingMode(.alwaysTemplate)
+    }
+
+    private func configureRetryViews() {
+        configureAccessoryView(retryView)
+        retryView.label.text = NSLocalizedString("Retry", comment: "Retry. Verb – retry a failed media upload.")
+        retryView.imageView.image = Gridicon.iconOfType(.refresh)
+    }
+
+    private func configureAccessoryView(_ view: AccessoryView) {
+        view.tintColor = style.appearance.accessoryViewTintColor
+        view.backgroundColor = style.appearance.accessoryViewBackgroundColor
+
+        addSubview(view)
         NSLayoutConstraint.activate([
-            retryView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            retryView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            view.topAnchor.constraint(equalTo: topAnchor),
+            view.bottomAnchor.constraint(equalTo: bottomAnchor),
+            view.leadingAnchor.constraint(equalTo: leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: trailingAnchor)
             ])
 
-        retryView.isHidden = true
+        view.isHidden = true
     }
 }
 
-/// View used to show in the `retry` progress state
+/// View with an image over a label. Used to show the `retry` and `error` progress state
 ///
-final class RetryView: UIView {
+final class AccessoryView: UIView {
 
     enum Appearance {
         static let horizontalPadding: CGFloat = 4.0
@@ -209,17 +220,15 @@ final class RetryView: UIView {
         }
     }
 
-    let imageView = UIImageView(image: Gridicon.iconOfType(.refresh))
+    let imageView = UIImageView()
 
     let label: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: Appearance.fontSize)
         label.textAlignment = .center
-        label.text = NSLocalizedString("Retry", comment: "Retry. Verb – retry a failed media upload.")
         label.numberOfLines = 2
         return label
     }()
-
 
     private let container: UIStackView = {
         let stackView = UIStackView()
@@ -253,10 +262,8 @@ final class RetryView: UIView {
         container.addArrangedSubview(label)
         addSubview(container)
         NSLayoutConstraint.activate([
-            container.topAnchor.constraint(equalTo: topAnchor),
-            container.bottomAnchor.constraint(equalTo: bottomAnchor),
-            container.leadingAnchor.constraint(equalTo: leadingAnchor, constant: RetryView.Appearance.horizontalPadding),
-            container.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -RetryView.Appearance.horizontalPadding)
+            container.centerXAnchor.constraint(equalTo: centerXAnchor),
+            container.centerYAnchor.constraint(equalTo: centerYAnchor)
             ])
     }
 }
@@ -264,12 +271,12 @@ final class RetryView: UIView {
 /// Small circular progress indicator view, currently just used in media cells
 /// during the processing / upload flow.
 ///
-class ProgressIndicatorView: UIView {
+final class ProgressIndicatorView: UIView {
     private let indeterminateLayer = CAShapeLayer()
     private let progressTrackLayer = CAShapeLayer()
     private let progressLayer = CAShapeLayer()
 
-    struct Appearance {
+    fileprivate struct Appearance {
         let defaultSize: CGFloat
         let lineWidth: CGFloat
         let lineColor: UIColor
@@ -301,11 +308,11 @@ class ProgressIndicatorView: UIView {
         }
     }
 
-    let appearance: Appearance
+    private let appearance: Appearance
 
     private var isAnimating = false
 
-    init(appearance: Appearance = Appearance()) {
+    fileprivate init(appearance: Appearance = Appearance()) {
         self.appearance = appearance
         super.init(frame: CGRect(x: 0, y: 0, width: appearance.defaultSize, height: appearance.defaultSize))
         setup()
