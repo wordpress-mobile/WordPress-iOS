@@ -623,7 +623,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 {
     // Gather information
     
-    NSString *blogType = [NSString stringWithFormat:@"Type: (%@)", [self blogStateDescription]];
+    NSString *blogType = [NSString stringWithFormat:@"Type: (%@)", [self stateDescription]];
     NSString *urlType = [self wordPressComRestApi] ? @"REST" : @"Self-hosted";
     NSString *url = [NSString stringWithFormat:@"URL: %@", self.url];
 
@@ -660,7 +660,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     return [NSString stringWithFormat:@"<%@>", [blogInformation componentsJoinedByString:@" "]];
 }
 
-- (NSString *)blogStateDescription
+- (NSString *)stateDescription
 {
     if (self.account) {
         return @"wpcom";
