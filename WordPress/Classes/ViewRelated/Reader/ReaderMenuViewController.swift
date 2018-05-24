@@ -103,7 +103,6 @@ import WordPressShared
 
         setupRefreshControl()
         setupAccountChangeNotificationObserver()
-        setupSavedForLaterNavigationObserver()
         setupApplicationWillTerminateNotificationObserver()
     }
 
@@ -171,10 +170,6 @@ import WordPressShared
 
     @objc func setupAccountChangeNotificationObserver() {
         NotificationCenter.default.addObserver(self, selector: #selector(type(of: self).handleAccountChanged), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
-    }
-
-    private func setupSavedForLaterNavigationObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(showSavedForLater), name: .showAllSavedForLaterPosts, object: nil)
     }
 
 
