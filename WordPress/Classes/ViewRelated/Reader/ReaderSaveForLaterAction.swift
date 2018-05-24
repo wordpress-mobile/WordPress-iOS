@@ -17,11 +17,12 @@ final class ReaderSaveForLaterAction {
         self.visibleConfirmation = visibleConfirmation
     }
 
-    func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)? = nil) {
-        toggleSavedForLater(post, context: context, completion: completion)
+    func execute(with post: ReaderPost, context: NSManagedObjectContext, origin: ReaderSaveForLaterOrigin, completion: (() -> Void)? = nil) {
+        trackSaveAction(for: post, origin: origin)
+        toggleSavedForLater(post, context: context, origin: origin, completion: completion)
     }
 
-    private func toggleSavedForLater(_ post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)?) {
+    private func toggleSavedForLater(_ post: ReaderPost, context: NSManagedObjectContext, origin: ReaderSaveForLaterOrigin, completion: (() -> Void)?) {
         let readerPostService = ReaderPostService(managedObjectContext: context)
 
         readerPostService.toggleSavedForLater(for: post, success: {
@@ -33,7 +34,7 @@ final class ReaderSaveForLaterAction {
         })
     }
 
-    private func presentSuccessNotice(for post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)?) {
+    private func presentSuccessNotice(for post: ReaderPost, context: NSManagedObjectContext, origin: ReaderSaveForLaterOrigin, completion: (() -> Void)?) {
         guard visibleConfirmation else {
             return
         }
@@ -43,6 +44,7 @@ final class ReaderSaveForLaterAction {
         } else {
             presentPostRemovedNotice(for: post,
                                      context: context,
+                                     origin: origin,
                                      completion: completion)
         }
     }
@@ -58,7 +60,7 @@ final class ReaderSaveForLaterAction {
         present(notice)
     }
 
-    private func presentPostRemovedNotice(for post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)?) {
+    private func presentPostRemovedNotice(for post: ReaderPost, context: NSManagedObjectContext, origin: ReaderSaveForLaterOrigin, completion: (() -> Void)?) {
         guard visibleConfirmation else {
             return
         }
@@ -67,7 +69,7 @@ final class ReaderSaveForLaterAction {
                             feedbackType: .success,
                             actionTitle: Strings.undo,
                             actionHandler: {
-                                self.toggleSavedForLater(post, context: context, completion: completion)
+                                self.toggleSavedForLater(post, context: context, origin: origin, completion: completion)
         })
 
         present(notice)
