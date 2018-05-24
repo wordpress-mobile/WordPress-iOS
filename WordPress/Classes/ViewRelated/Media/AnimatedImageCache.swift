@@ -104,13 +104,11 @@ class AnimatedImageCache {
             if let key = urlRequest.url {
                 let dataByteCost = AnimatedImageCache.byteCost(for: data)
                 AnimatedImageCache.cache.setObject(data as NSData, forKey: key as NSURL, cost: dataByteCost)
-                DDLogDebug("🗄 Cached gif data for \(key) with byteCost of \(dataByteCost). Cache total cost limit is: \(AnimatedImageCache.cache.totalCostLimit) bytes.")
 
                 // Creating a static image from GIF data is an expensive op, so let's try to do it once...
                 let imageByteCost = AnimatedImageCache.byteCost(for: staticImage)
                 let imageKey = key.absoluteString + Constants.keyStaticImageSuffix
                 AnimatedImageCache.cache.setObject(staticImage as AnyObject, forKey: imageKey as AnyObject, cost: imageByteCost)
-                DDLogDebug("🗄 Cached static image for \(key) with byteCost of \(imageByteCost). Cache total cost limit is: \(AnimatedImageCache.cache.totalCostLimit) bytes.")
             }
             success?(data, staticImage)
         })
