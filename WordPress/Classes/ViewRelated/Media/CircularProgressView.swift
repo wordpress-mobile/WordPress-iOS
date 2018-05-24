@@ -5,7 +5,7 @@ import WordPressShared
 /// Progress view displayed in cells in the media library to indicate that an
 /// asset is currently being processed, uploaded, or has failed to upload.
 ///
-class MediaCellProgressView: UIView {
+class CircularProgressView: UIView {
 
     enum State: Equatable {
         case stopped
@@ -276,7 +276,7 @@ class ProgressIndicatorView: UIView {
         }
     }
 
-    var state: MediaCellProgressView.State = .stopped {
+    var state: CircularProgressView.State = .stopped {
         didSet {
             stateDidChange()
         }
