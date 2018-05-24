@@ -102,7 +102,7 @@ static CGFloat const MinimumZoomScale = 0.1;
 
     self.imageView = [[CachedAnimatedImageView alloc] initWithFrame:frame];
     self.imageView.gifStrategy = GIFStrategyLargeGIFs;
-    self.imageView.disableLoadingIndicator = YES;
+    self.imageView.shouldShowLoadingIndicator = NO;
     self.imageView.userInteractionEnabled = YES;
     [self.scrollView addSubview:self.imageView];
 
