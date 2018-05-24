@@ -70,6 +70,7 @@ final class ReaderSaveForLaterAction {
                             feedbackType: .success,
                             actionTitle: Strings.undo,
                             actionHandler: {
+                                self.trackSaveAction(for: post, origin: origin)
                                 self.toggleSavedForLater(post, context: context, origin: origin, completion: completion)
         })
 
