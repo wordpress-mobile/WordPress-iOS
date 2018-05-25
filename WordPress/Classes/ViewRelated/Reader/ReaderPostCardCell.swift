@@ -469,6 +469,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 
     fileprivate func configureSaveForLaterButton() {
+        saveForLaterButton.isHidden = false
         let postIsSavedForLater = contentProvider?.isSavedForLater() ?? false
         saveForLaterButton.isSelected = postIsSavedForLater
     }
