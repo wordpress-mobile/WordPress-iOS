@@ -5,5 +5,4 @@ import Foundation
     var linkURL: URL? {get set}
     var frame: CGRect {get set}
     func contentSize() -> CGSize
-    func contentRatio() -> CGFloat
 }
