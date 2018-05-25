@@ -18,10 +18,24 @@
 ///
 @objc class ImageLoader: NSObject {
 
+    // MARK: Public Fields
+
+    public var photonQuality: UInt {
+        get {
+            return selectedPhotonQuality
+        }
+        set(newPhotonQuality) {
+            selectedPhotonQuality = min(max(newPhotonQuality, Constants.minPhotonQuality), Constants.maxPhotonQuality)
+        }
+    }
+
+    // MARK: Private Fields
+
     private unowned let imageView: CachedAnimatedImageView
     private var successHandler: (() -> Void)?
     private var errorHandler: ((Error?) -> Void)?
     private var placeholder: UIImage?
+    private var selectedPhotonQuality: UInt = Constants.defaultPhotonQuality
 
     @objc init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs) {
         self.imageView = imageView
@@ -60,7 +74,7 @@
         }
 
         if url.isGif {
-            loadGif(with: url, from: media.blog)
+            loadGif(with: url, from: media.blog, preferedSize: size)
         } else if imageView.image == nil {
             imageView.clean()
             loadImage(from: media, preferredSize: size)
@@ -77,7 +91,7 @@
     ///
     func loadImage(with url: URL, from post: ImageSourceInformation, preferedSize size: CGSize = .zero) {
         if url.isGif {
-            loadGif(with: url, from: post)
+            loadGif(with: url, from: post, preferedSize: size)
         } else {
             imageView.clean()
             loadStaticImage(with: url, from: post, preferedSize: size)
@@ -90,7 +104,7 @@
     /// - Parameters:
     ///   - url: The URL to load the image from.
     ///   - post: The post where the image is loaded from.
-    ///   - size: The prefered size of the image to load.
+    ///   - size: The prefered size of the image to load. You can pass height 0 to set width and preserve aspect ratio.
     ///   - placeholder: A placeholder to show while the image is loading.
     ///   - success: A closure to be called if the image was loaded successfully.
     ///   - error: A closure to be called if there was an error loading the image.
@@ -107,12 +121,20 @@
 
     /// Load an animated image from the given URL.
     ///
-    private func loadGif(with url: URL, from post: ImageSourceInformation) {
+    private func loadGif(with url: URL, from post: ImageSourceInformation, preferedSize size: CGSize) {
         let request: URLRequest
         if post.isPrivateOnWPCom {
             request = PrivateSiteURLProtocol.requestForPrivateSite(from: url)
         } else {
-            request = URLRequest(url: url)
+            // Photon helper set the size to load the retina version. We don't want that for gifs
+            let scale = UIScreen.main.scale
+            let nonRetinaSize = CGSize(width: size.width / scale, height: size.height / scale)
+            if let photonUrl = getPhotonUrl(for: url, size: nonRetinaSize) {
+                request = URLRequest(url: photonUrl)
+            } else {
+                request = URLRequest(url: url)
+            }
+
         }
         downloadGif(from: request)
     }
@@ -127,7 +149,7 @@
         } else if post.isSelfHostedWithCredentials {
             downloadImage(from: url)
         } else {
-            loadProtonUrl(with: url, preferedSize: size)
+            loadPhotonUrl(with: url, preferedSize: size)
         }
     }
 
@@ -142,14 +164,15 @@
         downloadImage(from: request)
     }
 
-    /// Loads the image from the Proton API with the given size.
+    /// Loads the image from the Photon API with the given size.
     ///
-    private func loadProtonUrl(with url: URL, preferedSize size: CGSize) {
-        guard let protonURL = PhotonImageURLHelper.photonURL(with: size, forImageURL: url) else {
+    private func loadPhotonUrl(with url: URL, preferedSize size: CGSize) {
+        guard let photonURL = getPhotonUrl(for: url, size: size) else {
             downloadImage(from: url)
             return
         }
-        downloadImage(from: protonURL)
+
+        downloadImage(from: photonURL)
     }
 
     private func loadImage(from media: Media, preferredSize size: CGSize) {
@@ -230,5 +253,22 @@
             return remoteUrl
         }
         return nil
+    }
+
+    private func getPhotonUrl(for url: URL, size: CGSize) -> URL? {
+        return PhotonImageURLHelper.photonURL(with: size,
+                                              forImageURL: url,
+                                              forceResize: true,
+                                              imageQuality: selectedPhotonQuality)
+    }
+}
+
+// MARK: - Constants
+
+private extension ImageLoader {
+    enum Constants {
+        static let minPhotonQuality: UInt = 1
+        static let maxPhotonQuality: UInt = 100
+        static let defaultPhotonQuality: UInt = 80
     }
 }
