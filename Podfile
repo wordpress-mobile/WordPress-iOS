@@ -70,7 +70,7 @@ target 'WordPress' do
   pod 'WPMediaPicker', '1.0'
   pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag =>'1.0.0-beta.19'
   pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag =>'1.0.0-beta.19'
-  pod 'WordPressUI', '1.0.1'
+  pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :branch => 'fix/fancy-alert-constraint'
 
   target 'WordPressTest' do
     inherit! :search_paths
@@ -91,7 +91,7 @@ target 'WordPress' do
 
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag =>'1.0.0-beta.19'
     pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag =>'1.0.0-beta.19'
-    pod 'WordPressUI', '1.0.1'
+    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :branch => 'fix/fancy-alert-constraint'
     pod 'Gridicons', '0.15'
   end
 
@@ -107,7 +107,7 @@ target 'WordPress' do
 
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag =>'1.0.0-beta.19'
     pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :tag =>'1.0.0-beta.19'
-    pod 'WordPressUI', '1.0.1'
+    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :branch => 'fix/fancy-alert-constraint'
     pod 'Gridicons', '0.15'
   end
 
@@ -138,7 +138,7 @@ target 'WordPressAuthenticator' do
   ## ====================
   ##
   pod 'Gridicons', '0.15'
-  pod 'WordPressUI', '1.0.1'
+  pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :branch => 'fix/fancy-alert-constraint'
 
   ## Third party libraries
   ## =====================
@@ -172,7 +172,7 @@ target 'WordPressComStatsiOS' do
   ## Automattic libraries
   ## ====================
   ##
-  pod 'WordPressUI', '1.0.1'
+  pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :branch => 'fix/fancy-alert-constraint'
 
   target 'WordPressComStatsiOSTests' do
     inherit! :search_paths
