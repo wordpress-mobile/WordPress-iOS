@@ -17,7 +17,7 @@ open class FancyAlertView: UIView {
     /// Title
     ///
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var titleAccessoryButtonTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet var titleAccessoryButtonTrailingConstraint: NSLayoutConstraint!
 
     /// Body
     ///
