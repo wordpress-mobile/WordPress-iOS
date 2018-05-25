@@ -297,11 +297,6 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
             return
         }
 
-        //        if recentlyBlockedSitePostObjectIDs.contains(apost.objectID) {
-        //            unblockSiteForPost(apost)
-        //            return
-        //        }
-
         if let topic = post.topic, ReaderHelpers.isTopicSearchTopic(topic) {
             WPAppAnalytics.track(.readerSearchResultTapped)
 
@@ -326,6 +321,8 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
             controller = ReaderDetailViewController.controllerWithPost(post)
 
         }
+
+        trackSavedPostNavigation()
 
         navigationController?.pushFullscreenViewController(controller, animated: true)
 
