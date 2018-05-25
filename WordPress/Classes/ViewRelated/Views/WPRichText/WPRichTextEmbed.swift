@@ -96,22 +96,6 @@ class WPRichTextEmbed: UIView, UIWebViewDelegate, WPRichTextMediaAttachment {
         return documentSize
     }
 
-    func contentRatio() -> CGFloat {
-        if fixedHeight > 0 {
-            return 0.0
-        }
-
-        if !attachmentSize.equalTo(CGSize.zero) {
-            return attachmentSize.width / attachmentSize.height
-        }
-
-        if !documentSize.equalTo(CGSize.zero) {
-            return documentSize.width / documentSize.height
-        }
-
-        return 0.0
-    }
-
     @objc func loadContentURL(_ url: URL) {
         var url = url
         if var components = URLComponents(string: url.absoluteString) {
