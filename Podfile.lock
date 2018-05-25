@@ -90,7 +90,7 @@ PODS:
   - MRProgress/Stopable (0.8.3):
     - MRProgress/Helper
   - Nimble (7.1.1)
-  - NSObject-SafeExpectations (0.0.2)
+  - NSObject-SafeExpectations (0.0.3)
   - "NSURL+IDN (0.3)"
   - OCMock (3.4.1)
   - OHHTTPStubs (6.1.0):
@@ -116,17 +116,17 @@ PODS:
   - WordPress-Aztec-iOS (1.0.0-beta.19):
     - WordPress-Aztec-iOS/WordPressEditor (= 1.0.0-beta.19)
   - WordPress-Aztec-iOS/WordPressEditor (1.0.0-beta.19)
-  - WordPressKit (1.0.4):
+  - WordPressKit (1.0.5):
     - AFNetworking (= 3.2.1)
     - Alamofire (= 4.7.2)
     - CocoaLumberjack (= 3.4.2)
+    - NSObject-SafeExpectations (= 0.0.3)
     - UIDeviceIdentifier (~> 0.4)
-    - WordPressShared (~> 1.0.1)
+    - WordPressShared (= 1.0.3)
     - wpxmlrpc (= 0.8.3)
-  - WordPressShared (1.0.2):
+  - WordPressShared (1.0.3):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
-    - NSObject-SafeExpectations (= 0.0.2)
   - WordPressUI (1.0.1)
   - WPMediaPicker (1.0)
   - wpxmlrpc (0.8.3)
@@ -155,7 +155,7 @@ DEPENDENCIES:
   - MGSwipeTableCell (= 1.6.7)
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.1.1)
-  - NSObject-SafeExpectations (= 0.0.2)
+  - NSObject-SafeExpectations (= 0.0.3)
   - "NSURL+IDN (= 0.3)"
   - OCMock (~> 3.4)
   - OHHTTPStubs (= 6.1.0)
@@ -167,7 +167,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `e98d89780ddd12e79144b3c66f74dae183a8c4c9`)
   - WordPress-Aztec-iOS/WordPressEditor (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `e98d89780ddd12e79144b3c66f74dae183a8c4c9`)
-  - WordPressKit (= 1.0.4)
+  - WordPressKit (= 1.0.5)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, branch `add/reader-save-for-later-analytics`)
   - WordPressUI (= 1.0.1)
   - WPMediaPicker (= 1.0)
@@ -230,7 +230,7 @@ CHECKOUT OPTIONS:
     :commit: e98d89780ddd12e79144b3c66f74dae183a8c4c9
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressShared:
-    :commit: 89f05883295000fb9b0a5a3ad02f16c328354e52
+    :commit: 82e9b2414c355d75e25baf359e73f05cef2e5f6d
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
@@ -255,7 +255,7 @@ SPEC CHECKSUMS:
   MGSwipeTableCell: fb20e983988bde2b8d0df29c2d9e1d8ffd10b74a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   Nimble: 391f07782af4b37914f9bd7b2ffbb952731b8202
-  NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
+  NSObject-SafeExpectations: b989b68a8a9b7b9f2b264a8b52ba9d7aab8f3129
   "NSURL+IDN": 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: 2cd0716969bab32a2283ff3a46fd26a8c8b4c5e3
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
@@ -265,13 +265,13 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 743dbe41492eae1d9daf3f5ba5435ab295ee668f
-  WordPressKit: 4444d268171d0e1fd34f513513c16c1289a2bafa
-  WordPressShared: 378a62d09417209278bf68b57720579dbcd76e0c
+  WordPressKit: afe6d2c23db6d4f110638c25e86b029e899ffc34
+  WordPressShared: b8e910d8133a54e9452ab7bd9d8e27e78dc2f5ba
   WordPressUI: 9f90f8e1e629af13e1021c6281660623d62ff953
   WPMediaPicker: ceb613e43eae03268e73835d48d67f92f595aca6
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: b37f7aa0ddb0b46549635a7f6e8869ecf0d4425a
+PODFILE CHECKSUM: 56c674389728295079c6e288e61b445e646b1085
 
 COCOAPODS: 1.5.2
