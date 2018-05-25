@@ -144,6 +144,7 @@
 		1759F1701FE017BF0003EC81 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759F16F1FE017BF0003EC81 /* Queue.swift */; };
 		1759F1721FE017F20003EC81 /* QueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759F1711FE017F20003EC81 /* QueueTests.swift */; };
 		1759F1801FE1460C0003EC81 /* NoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1759F17F1FE1460C0003EC81 /* NoticeView.swift */; };
+		175A650C20B6F7280023E71B /* ReaderSaveForLater+Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175A650B20B6F7280023E71B /* ReaderSaveForLater+Analytics.swift */; };
 		176579F71C63A40F0000978E /* PurchaseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176579F61C63A40F0000978E /* PurchaseButton.swift */; };
 		1767494E1D3633A000B8D1D1 /* ThemeBrowserSearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1767494D1D3633A000B8D1D1 /* ThemeBrowserSearchHeaderView.swift */; };
 		176DEEE91D4615FE00331F30 /* WPSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176DEEE81D4615FE00331F30 /* WPSplitViewController.swift */; };
@@ -1467,6 +1468,7 @@
 		1759F16F1FE017BF0003EC81 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		1759F1711FE017F20003EC81 /* QueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueTests.swift; sourceTree = "<group>"; };
 		1759F17F1FE1460C0003EC81 /* NoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeView.swift; sourceTree = "<group>"; };
+		175A650B20B6F7280023E71B /* ReaderSaveForLater+Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderSaveForLater+Analytics.swift"; sourceTree = "<group>"; };
 		176579F61C63A40F0000978E /* PurchaseButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseButton.swift; sourceTree = "<group>"; };
 		1767494D1D3633A000B8D1D1 /* ThemeBrowserSearchHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserSearchHeaderView.swift; sourceTree = "<group>"; };
 		176DEEE81D4615FE00331F30 /* WPSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPSplitViewController.swift; sourceTree = "<group>"; };
@@ -5555,6 +5557,7 @@
 				D8212CC420AA83F9008E8AE8 /* ReaderCommentAction.swift */,
 				D8212CC620AA85C1008E8AE8 /* ReaderHeaderAction.swift */,
 				D8212CC820AA87E5008E8AE8 /* ReaderMenuAction.swift */,
+				175A650B20B6F7280023E71B /* ReaderSaveForLater+Analytics.swift */,
 			);
 			name = ReaderPostActions;
 			sourceTree = "<group>";
@@ -7039,6 +7042,7 @@
 				B5ECA6CA1DBAA0020062D7E0 /* CoreDataHelper.swift in Sources */,
 				FFC6ADDA1B56F366002F3C84 /* LocalCoreDataService.m in Sources */,
 				B587798619B799EB00E57C5A /* Notification+Interface.swift in Sources */,
+				175A650C20B6F7280023E71B /* ReaderSaveForLater+Analytics.swift in Sources */,
 				984B4EF320742FCC00F87888 /* ZendeskUtils.swift in Sources */,
 				0828D7FA1E6E09AE00C7C7D4 /* WPAppAnalytics+Media.swift in Sources */,
 				7ED3695520A9F091007B0D56 /* Blog+ImageSourceInformation.swift in Sources */,
