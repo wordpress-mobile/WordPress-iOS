@@ -407,12 +407,7 @@ private extension NotificationsViewController {
         inlinePromptSpaceConstraint.isActive = false
 
         if shouldShowPrimeForPush {
-            PushNotificationsManager.shared.loadAuthorizationStatus { [weak self] (status) in
-                if status == .notDetermined {
-                    self?.setupPrimeForPush()
-                    self?.showInlinePrompt()
-                }
-            }
+           setupNotificationPrompt()
         } else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
             setupAppRatings()
             showInlinePrompt()
