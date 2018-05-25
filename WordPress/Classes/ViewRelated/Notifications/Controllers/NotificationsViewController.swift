@@ -118,8 +118,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         setupFiltersSegmentedControl()
 
         reloadTableViewPreservingSelection()
-
-        observeNetworkStatus()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -816,10 +814,10 @@ extension NotificationsViewController {
             DispatchQueue.main.asyncAfter(deadline: delay) {
                 self?.refreshControl?.endRefreshing()
                 self?.clearUnreadNotifications()
-            }
 
-            if let _ = error {
-                self?.handleConnectionError()
+                if let _ = error {
+                    self?.handleConnectionError()
+                }
             }
         }
     }
@@ -1247,7 +1245,6 @@ internal extension NotificationsViewController {
 private extension NotificationsViewController {
     func syncNewNotifications() {
         guard connectionAvailable() else {
-            handleConnectionError()
             return
         }
 
