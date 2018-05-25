@@ -97,7 +97,14 @@ final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     }
 
     fileprivate func toggleSavedForLater(for post: ReaderPost) {
-        ReaderSaveForLaterAction(visibleConfirmation: visibleConfirmation).execute(with: post, context: context)
+        let actionOrigin: ReaderSaveForLaterOrigin
+        if origin is ReaderSavedPostsViewController {
+            actionOrigin = .savedStream
+        } else {
+            actionOrigin = .otherStream
+        }
+
+        ReaderSaveForLaterAction(visibleConfirmation: visibleConfirmation).execute(with: post, context: context, origin: actionOrigin)
     }
 
     fileprivate func visitSiteForPost(_ post: ReaderPost) {

@@ -1469,6 +1469,10 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
         }
 
+        if post.isSavedForLater {
+            trackSavedPostNavigation()
+        }
+
         navigationController?.pushFullscreenViewController(controller, animated: true)
 
         tableView.deselectRow(at: indexPath, animated: false)
