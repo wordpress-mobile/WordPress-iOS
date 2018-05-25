@@ -567,7 +567,8 @@ extension LoginEmailViewController: LoginSocialErrorViewControllerDelegate {
     func retryAsSignup() {
         cleanupAfterSocialErrors()
 
-        let storyboard = UIStoryboard(name: "Signup", bundle: nil)
+
+        let storyboard = UIStoryboard(name: "Signup", bundle: Bundle(for: LoginEmailViewController.self))
         if let controller = storyboard.instantiateViewController(withIdentifier: "emailEntry") as? SignupEmailViewController {
             controller.loginFields = loginFields
             navigationController?.pushViewController(controller, animated: true)
