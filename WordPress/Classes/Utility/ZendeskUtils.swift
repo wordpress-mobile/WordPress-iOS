@@ -67,6 +67,7 @@ extension NSNotification.Name {
                                         clientId: zdClientId)
 
         toggleZendesk(enabled: true)
+        setAppearance()
 
         // User has accessed a single ticket view, typically via the Zendesk Push Notification alert.
         // In this case, we'll clear the Push Notification indicators.
@@ -402,6 +403,8 @@ private extension ZendeskUtils {
         }
     }
 
+    // MARK: - View
+
     static func configureViewController(_ controller: UIViewController) {
         // If the controller is a UIViewController, set the modal display for iPad.
         // If the controller is a UINavigationController, do nothing as the ZD views will inherit from that.
@@ -410,6 +413,26 @@ private extension ZendeskUtils {
             controller.modalTransitionStyle = .crossDissolve
         }
         presentInController = controller
+    }
+
+    static func setAppearance() {
+
+        // Create a ZDKTheme object
+        let theme = ZDKTheme.base()
+
+        // Set color properties
+        theme.primaryTextColor = WPStyleGuide.darkGrey()
+        theme.secondaryTextColor = WPStyleGuide.darkGrey()
+        theme.primaryBackgroundColor = UIColor.white
+        theme.secondaryBackgroundColor = WPStyleGuide.lightGrey()
+        theme.emptyBackgroundColor = WPStyleGuide.greyLighten30()
+        theme.metaTextColor = WPStyleGuide.greyDarken10()
+        theme.separatorColor = WPStyleGuide.greyLighten20()
+        theme.inputFieldTextColor = WPStyleGuide.darkGrey()
+        theme.inputFieldBackgroundColor = WPStyleGuide.lightGrey()
+
+        // Apply the Theme
+        theme.apply()
     }
 
     // MARK: - Get User Information

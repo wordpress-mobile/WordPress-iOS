@@ -77,7 +77,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        [self configureInstance];
+        [self commonInitWithPlaceholder:nil hint:nil];
     }
 
     return self;
