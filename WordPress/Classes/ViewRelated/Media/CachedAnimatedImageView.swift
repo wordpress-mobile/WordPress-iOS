@@ -42,6 +42,8 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
         return Gifu.Animator(withDelegate: self)
     }()
 
+    public var disableLoadingIndicator: Bool = false
+
     // MARK: Private fields
 
     private var gifPlaybackStrategy: GIFPlaybackStrategy = MediumGIFPlaybackStrategy()
@@ -61,6 +63,36 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
             return defaultLoadingIndicator
         }
         return custom
+    }
+
+    // MARK: Initializers
+
+    public override init(image: UIImage?, highlightedImage: UIImage?) {
+        super.init(image: image, highlightedImage: highlightedImage)
+        commonInit()
+    }
+
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        commonInit()
+    }
+
+    public override init(image: UIImage?) {
+        super.init(image: image)
+        commonInit()
+    }
+
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        commonInit()
+    }
+
+    private func commonInit() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleLowMemoryWarningNotification(_:)), name: .UIApplicationDidReceiveMemoryWarning, object: nil)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - Public methods
@@ -109,6 +141,9 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
     }
 
     public func startLoadingAnimation() {
+        guard disableLoadingIndicator == false else {
+            return
+        }
         DispatchQueue.main.async() {
             self.loadingIndicator.startAnimating()
         }
@@ -121,7 +156,6 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
     }
 
     public func addLoadingIndicator(_ loadingIndicator: ActivityIndicatorType, style: LoadingIndicatorStyle) {
-
         guard let loadingView = loadingIndicator as? UIView else {
             assertionFailure("Loading indicator must be a UIView subclass")
             return
@@ -133,6 +167,10 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
     }
 
     // MARK: - Private methods
+
+    @objc private func handleLowMemoryWarningNotification(_ notification: NSNotification) {
+        stopAnimatingGIF()
+    }
 
     private func validateAndSetGifData(_ animatedImageData: Data, alternateStaticImage: UIImage? = nil, success: (() -> Void)? = nil) {
         let didVerifyDataSize = gifPlaybackStrategy.verifyDataSize(animatedImageData)
