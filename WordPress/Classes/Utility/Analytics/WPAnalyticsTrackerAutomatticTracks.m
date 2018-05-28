@@ -1408,6 +1408,22 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
         case WPAnalyticsStatMaxValue:
+        case WPAnalyticsStatPushNotificationWinbackShown:
+        case WPAnalyticsStatPushNotificationWinbackNoTapped:
+        case WPAnalyticsStatPushNotificationWinbackSettingsTapped:
+        case WPAnalyticsStatSupportHelpCenterUserSearched:
+        case WPAnalyticsStatSupportHelpCenterViewed:
+        case WPAnalyticsStatSupportNewRequestViewed:
+        case WPAnalyticsStatSupportTicketListViewed:
+        case WPAnalyticsStatSupportNewRequestFileAttached:
+        case WPAnalyticsStatSupportNewRequestFileAttachmentFailed:
+        case WPAnalyticsStatSupportTicketUserReplied:
+        case WPAnalyticsStatSupportTicketUserReplyFailed:
+        case WPAnalyticsStatSupportTicketListViewFailed:
+        case WPAnalyticsStatSupportTicketUserViewed:
+        case WPAnalyticsStatSupportTicketViewFailed:
+        case WPAnalyticsStatSupportTicketAttachmentUserDeleted:
+        case WPAnalyticsStatSupportTicketAttachmentUserDeleteFailed:
             return nil;
     }
 
