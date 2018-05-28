@@ -30,7 +30,7 @@ PODS:
   - Crashlytics (3.10.1):
     - Fabric (~> 1.7.5)
   - Expecta (1.0.6)
-  - Fabric (1.7.6)
+  - Fabric (1.7.7)
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
@@ -242,7 +242,7 @@ SPEC CHECKSUMS:
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
   Crashlytics: aee1a064cbbf99b32efa3f056a5f458d846bc8ff
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  Fabric: f8d42c893bb187326a7968b62abe55c36a987a46
+  Fabric: bda89e242bce1b7b8ab264248cf3407774ce0095
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   Gifu: 6543ca2056a3d697097c09fe543ef49348ccc892
   GoogleSignIn: d9ef55b10f0aa401a5de2747f59b725e4b9732ac
@@ -272,6 +272,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: 7c8e0e6a5a68aea5917da92788a5b9197b4dd40a
+PODFILE CHECKSUM: b2896aed21b068e1b335ca737ac07c75fb0c40ce
 
 COCOAPODS: 1.5.2
