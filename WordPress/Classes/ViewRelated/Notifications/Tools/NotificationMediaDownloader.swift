@@ -134,7 +134,10 @@ class NotificationMediaDownloader: NSObject {
         request.httpShouldHandleCookies = false
         request.addValue("image/*", forHTTPHeaderField: "Accept")
 
-        let dataTask = downloadSession.dataTask(with: request as URLRequest, completionHandler: { (response, responseObject, error) in
+        let dataTask = downloadSession.dataTask(with: request as URLRequest,
+                                                uploadProgress: nil,
+                                                downloadProgress: nil,
+                                                completionHandler: { (response, responseObject, error) in
             if let error = error {
                 // If possible, retry
                 if retryCount < self.maximumRetryCount {

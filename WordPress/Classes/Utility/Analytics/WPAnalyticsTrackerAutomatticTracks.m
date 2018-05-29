@@ -997,6 +997,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatReaderListNotificationEnabled:
             eventName = @"followed_blog_notifications_reader_enabled";
             break;
+        case WPAnalyticsStatReaderPostSaved:
+            eventName = @"reader_post_saved";
+            break;
+        case WPAnalyticsStatReaderPostUnsaved:
+            eventName = @"reader_post_unsaved";
+            break;
+        case WPAnalyticsStatReaderSavedPostOpened:
+            eventName = @"reader_saved_post_opened";
+            break;
+        case WPAnalyticsStatReaderSavedListViewed:
+            eventName = @"reader_saved_list_viewed";
+            break;
         case WPAnalyticsStatReaderSearchLoaded:
             eventName = @"reader_search_loaded";
             break;
@@ -1396,6 +1408,22 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
         case WPAnalyticsStatMaxValue:
+        case WPAnalyticsStatPushNotificationWinbackShown:
+        case WPAnalyticsStatPushNotificationWinbackNoTapped:
+        case WPAnalyticsStatPushNotificationWinbackSettingsTapped:
+        case WPAnalyticsStatSupportHelpCenterUserSearched:
+        case WPAnalyticsStatSupportHelpCenterViewed:
+        case WPAnalyticsStatSupportNewRequestViewed:
+        case WPAnalyticsStatSupportTicketListViewed:
+        case WPAnalyticsStatSupportNewRequestFileAttached:
+        case WPAnalyticsStatSupportNewRequestFileAttachmentFailed:
+        case WPAnalyticsStatSupportTicketUserReplied:
+        case WPAnalyticsStatSupportTicketUserReplyFailed:
+        case WPAnalyticsStatSupportTicketListViewFailed:
+        case WPAnalyticsStatSupportTicketUserViewed:
+        case WPAnalyticsStatSupportTicketViewFailed:
+        case WPAnalyticsStatSupportTicketAttachmentUserDeleted:
+        case WPAnalyticsStatSupportTicketAttachmentUserDeleteFailed:
             return nil;
     }
 
