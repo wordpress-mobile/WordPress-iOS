@@ -775,6 +775,8 @@ private extension ZendeskUtils {
         static let userDefaultsZendeskUnreadNotifications = "wp_zendesk_unread_notifications"
     }
 
+    // Zendesk expects these as NSNumber. However, they are defined as UInt64 to satisfy 32-bit devices (ex: iPhone 5).
+    // Which means they then have to be converted to NSNumber when sending to Zendesk.
     struct TicketFieldIDs {
         static let form: UInt64 = 360000010286
         static let appVersion: UInt64 = 360000086866
