@@ -57,47 +57,47 @@
         imageView.prepForReuse()
     }
 
-    @objc(loadImageWithURL:fromPost:andPreferedSize:)
+    @objc(loadImageWithURL:fromPost:andPreferredSize:)
     /// Load an image from a specific post, using the given URL. Supports animated images (gifs) as well.
     ///
     /// - Parameters:
     ///   - url: The URL to load the image from.
     ///   - post: The post where the image is loaded from.
-    ///   - size: The prefered size of the image to load.
+    ///   - size: The preferred size of the image to load.
     ///
-    func loadImage(with url: URL, from source: ImageSourceInformation, preferedSize size: CGSize = .zero) {
+    func loadImage(with url: URL, from source: ImageSourceInformation, preferredSize size: CGSize = .zero) {
         if url.isGif {
-            loadGif(with: url, from: source, preferedSize: size)
+            loadGif(with: url, from: source, preferredSize: size)
         } else {
             imageView.clean()
-            loadStaticImage(with: url, from: source, preferedSize: size)
+            loadStaticImage(with: url, from: source, preferredSize: size)
         }
     }
 
-    @objc(loadImageWithURL:fromPost:preferedSize:placeholder:success:error:)
+    @objc(loadImageWithURL:fromPost:preferredSize:placeholder:success:error:)
     /// Load an image from a specific post, using the given URL. Supports animated images (gifs) as well.
     ///
     /// - Parameters:
     ///   - url: The URL to load the image from.
     ///   - post: The post where the image is loaded from.
-    ///   - size: The prefered size of the image to load. You can pass height 0 to set width and preserve aspect ratio.
+    ///   - size: The preferred size of the image to load. You can pass height 0 to set width and preserve aspect ratio.
     ///   - placeholder: A placeholder to show while the image is loading.
     ///   - success: A closure to be called if the image was loaded successfully.
     ///   - error: A closure to be called if there was an error loading the image.
-    func loadImage(with url: URL, from source: ImageSourceInformation, preferedSize size: CGSize = .zero, placeholder: UIImage?, success: (() -> Void)?, error: ((Error?) -> Void)?) {
+    func loadImage(with url: URL, from source: ImageSourceInformation, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: (() -> Void)?, error: ((Error?) -> Void)?) {
 
         self.placeholder = placeholder
         successHandler = success
         errorHandler = error
 
-        loadImage(with: url, from: source, preferedSize: size)
+        loadImage(with: url, from: source, preferredSize: size)
     }
 
     // MARK: - Private helpers
 
     /// Load an animated image from the given URL.
     ///
-    private func loadGif(with url: URL, from source: ImageSourceInformation, preferedSize size: CGSize) {
+    private func loadGif(with url: URL, from source: ImageSourceInformation, preferredSize size: CGSize) {
         let request: URLRequest
         if source.isPrivateOnWPCom {
             request = PrivateSiteURLProtocol.requestForPrivateSite(from: url)
@@ -116,21 +116,21 @@
 
     /// Load a static image from the given URL.
     ///
-    private func loadStaticImage(with url: URL, from source: ImageSourceInformation, preferedSize size: CGSize) {
+    private func loadStaticImage(with url: URL, from source: ImageSourceInformation, preferredSize size: CGSize) {
         if url.isFileURL {
             downloadImage(from: url)
         } else if source.isPrivateOnWPCom {
-            loadPrivateImage(with: url, from: source, preferedSize: size)
+            loadPrivateImage(with: url, from: source, preferredSize: size)
         } else if source.isSelfHostedWithCredentials {
             downloadImage(from: url)
         } else {
-            loadPhotonUrl(with: url, preferedSize: size)
+            loadPhotonUrl(with: url, preferredSize: size)
         }
     }
 
     /// Loads the image from a private post hosted in WPCom.
     ///
-    private func loadPrivateImage(with url: URL, from source: ImageSourceInformation, preferedSize size: CGSize) {
+    private func loadPrivateImage(with url: URL, from source: ImageSourceInformation, preferredSize size: CGSize) {
         let scale = UIScreen.main.scale
         let scaledSize = CGSize(width: size.width * scale, height: size.height * scale)
         let scaledURL = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: url)
@@ -141,7 +141,7 @@
 
     /// Loads the image from the Photon API with the given size.
     ///
-    private func loadPhotonUrl(with url: URL, preferedSize size: CGSize) {
+    private func loadPhotonUrl(with url: URL, preferredSize size: CGSize) {
         guard let photonURL = getPhotonUrl(for: url, size: size) else {
             downloadImage(from: url)
             return
@@ -219,7 +219,7 @@ extension ImageLoader {
     /// - Parameters:
     ///   - media: The media object
     ///   - placeholder: A placeholder to show while the image is loading.
-    ///   - size: The prefered size of the image to load.
+    ///   - size: The preferred size of the image to load.
     ///   - success: A closure to be called if the image was loaded successfully.
     ///   - error: A closure to be called if there was an error loading the image.
     ///
@@ -236,7 +236,7 @@ extension ImageLoader {
         }
 
         if url.isGif {
-            loadGif(with: url, from: media.blog, preferedSize: size)
+            loadGif(with: url, from: media.blog, preferredSize: size)
         } else if imageView.image == nil {
             imageView.clean()
             loadImage(from: media, preferredSize: size)
