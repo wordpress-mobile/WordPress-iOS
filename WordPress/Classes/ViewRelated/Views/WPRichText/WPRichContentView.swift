@@ -14,12 +14,6 @@ import WordPressShared
 /// in tags like img, iframe, and video, are loaded manually and presented as subviews.
 ///
 class WPRichContentView: UITextView {
-    struct Constants {
-        static let photonQuality = 65
-        static let textContainerInset = UIEdgeInsetsMake(0.0, 0.0, 16.0, 0.0)
-        static let defaultAttachmentHeight = CGFloat(50.0)
-    }
-
     /// Used to keep references to image attachments.
     ///
     var mediaArray = [RichMedia]()
@@ -33,6 +27,9 @@ class WPRichContentView: UITextView {
     /// Used to load images for attachments.
     ///
     @objc lazy var imageSource: WPTableImageSource = {
+        if FeatureFlag.gifSupportInReaderDetail.enabled {
+            DDLogDebug("Please remove this property when this feature flag is removed")
+        }
         let source = WPTableImageSource(maxSize: self.maxDisplaySize)
         source?.delegate = self
         source?.forceLargerSizeWhenFetching = false
@@ -169,6 +166,9 @@ class WPRichContentView: UITextView {
         setupView()
     }
 
+    deinit {
+        mediaArray.forEach { $0.image.clean() }
+    }
 
     /// A convenience method for one-time, common setup that should be done in init.
     ///
@@ -207,7 +207,6 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     func attachmentManager(_ attachmentManager: WPTextAttachmentManager, viewForAttachment attachment: WPTextAttachment) -> UIView? {
         if attachment.tagName == "img" {
             return imageForAttachment(attachment)
-
         } else {
             return embedForAttachment(attachment)
         }
@@ -246,6 +245,48 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     }
 
 
+    /// Find the most appropriate size for a gif image to be loaded efficiently without loosing much quality.
+    /// With height: 0, the image will resize proportionally, and won't grow bigger than its original size.
+    ///
+    /// - url: The URL for the image.
+    /// - Parameter size: The proposed size for the gif image.
+    /// - Returns: The most efficient size with good quality.
+    fileprivate func efficientImageSize(with url: URL, proposedSize size: CGSize) -> CGSize {
+        guard url.isGif else {
+            return size
+        }
+
+        // Dont load bigger images in landscape mode.
+        let maximumImageWidth = min(maxDisplaySize.height, maxDisplaySize.width)
+
+        // Don't resize small images. Resizing bigger images will also affect quality, saving extra memory.
+        if size.width < maximumImageWidth && size.height < maximumImageWidth {
+            return CGSize(width: maximumImageWidth, height: 0)
+        } else {
+            return CGSize(width: maximumImageWidth/2, height: 0)
+        }
+    }
+
+
+    /// Creates and return a `WPRichTextImage` with the given parameters.
+    ///
+    fileprivate func ritchTextImage(with size: CGSize, _ url: URL, _ attachment: WPTextAttachment) -> WPRichTextImage {
+        let image = WPRichTextImage(frame: CGRect(x: 0.0, y: 0.0, width: size.width, height: size.height))
+        image.addTarget(self, action: #selector(type(of: self).handleImageTapped(_:)), for: .touchUpInside)
+        image.contentURL = url
+        image.linkURL = linkURLForImageAttachment(attachment)
+        return image
+    }
+
+
+    /// Returns the CGSize instance for the given `WPTextAttachment`
+    ///
+    fileprivate func sizeForAttachment(_ attachment: WPTextAttachment) -> CGSize {
+        let width: CGFloat = attachment.width > 0 ? attachment.width : textContainer.size.width
+        let height: CGFloat = attachment.height > 0 ? attachment.height : Constants.defaultAttachmentHeight
+        return CGSize(width: width, height: height)
+    }
+
     /// Returns the view to use for an image attachment.
     ///
     /// - Parameters:
@@ -254,6 +295,47 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     /// - Returns: A WPRichTextImage instance configured for the attachment.
     ///
     @objc func imageForAttachment(_ attachment: WPTextAttachment) -> WPRichTextImage {
+
+        guard FeatureFlag.gifSupportInReaderDetail.enabled else {
+            return old_imageForAttachment(attachment)
+        }
+
+        guard let url = URL(string: attachment.src) else {
+            return WPRichTextImage(frame: CGRect.zero)
+        }
+
+        let proposedSize = sizeForAttachment(attachment)
+        let finalSize = efficientImageSize(with: url, proposedSize: proposedSize)
+        let image = ritchTextImage(with: finalSize, url, attachment)
+
+        // show that something is loading.
+        attachment.maxSize = CGSize(width: finalSize.width, height: finalSize.width / 2.0)
+
+        let contentInformation = ContentInformation(isPrivateOnWPCom: isPrivate, isSelfHostedWithCredentials: false)
+        let index = mediaArray.count
+        let indexPath = IndexPath(row: index, section: 1)
+
+        image.loadImage(from: contentInformation, preferedSize: finalSize, indexPath: indexPath, onSuccess: { [weak self] indexPath in
+            guard let richMedia = self?.mediaArray[indexPath.row] else {
+                return
+            }
+
+            richMedia.attachment.maxSize = image.contentSize()
+            self?.layoutAttachmentViews()
+        }, onError: { (indexPath, error) in
+            DDLogError("\(String(describing: error))")
+        })
+
+        let media = RichMedia(image: image, attachment: attachment)
+        mediaArray.append(media)
+
+        return image
+    }
+
+    /// Old function to use when the gifSupportInReaderDetail feature flag is disabled.
+    /// Remove this when the feature flag is removed
+    ///
+    private func old_imageForAttachment(_ attachment: WPTextAttachment) -> WPRichTextImage {
         guard let url = URL(string: attachment.src) else {
             return WPRichTextImage(frame: CGRect.zero)
         }
@@ -282,6 +364,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
 
         return img
     }
+
 
 
     /// Retrieves the URL for a link wrapping a text attachment, if one exists.
@@ -351,7 +434,6 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
         guard let delegate = delegate else {
             return
         }
-
         if let url = sender.linkURL,
             let range = attachmentRangeForRichTextImage(sender) {
 
@@ -366,8 +448,24 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     }
 }
 
+// MARK: - Constants
+
+private extension WPRichContentView {
+    struct Constants {
+        static let textContainerInset = UIEdgeInsetsMake(0.0, 0.0, 16.0, 0.0)
+        static let defaultAttachmentHeight = CGFloat(50.0)
+        static let photonQuality = 65
+    }
+}
 
 extension WPRichContentView: WPTableImageSourceDelegate {
+
+    /// Reminder to delete this delegate when the feature flag is deleted.
+    private func removeDelegate() {
+        if FeatureFlag.gifSupportInReaderDetail.enabled {
+            DDLogDebug("Please remove this `WPTableImageSourceDelegate` when this feature flag is removed")
+        }
+    }
 
     func tableImageSource(_ tableImageSource: WPTableImageSource!, imageReady image: UIImage!, for indexPath: IndexPath!) {
         let richMedia = mediaArray[indexPath.row]
@@ -385,10 +483,23 @@ extension WPRichContentView: WPTableImageSourceDelegate {
     }
 }
 
+// MARK: - Rich Media Struct
 
 /// A simple struct used to keep references to a rich text image and its associated attachment.
 ///
 struct RichMedia {
     let image: WPRichTextImage
     let attachment: WPTextAttachment
+}
+
+// MARK: - ContentInformation (ImageSourceInformation)
+
+class ContentInformation: ImageSourceInformation {
+    var isPrivateOnWPCom: Bool
+    var isSelfHostedWithCredentials: Bool
+
+    init(isPrivateOnWPCom: Bool, isSelfHostedWithCredentials: Bool) {
+        self.isPrivateOnWPCom = isPrivateOnWPCom
+        self.isSelfHostedWithCredentials = isSelfHostedWithCredentials
+    }
 }
