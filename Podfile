@@ -80,7 +80,6 @@ target 'WordPress' do
     end
 
 
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'e98d89780ddd12e79144b3c66f74dae183a8c4c9'
     ## Share Extension
     ## ===============
     ##
