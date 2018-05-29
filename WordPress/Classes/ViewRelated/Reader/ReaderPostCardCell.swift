@@ -352,7 +352,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         featuredImageDesiredWidth = featuredImageView.frame.width
         let size = CGSize(width: featuredImageDesiredWidth, height: featuredMediaHeightConstraintConstant)
         let postInfo = ReaderCardContent(provider: content)
-        imageLoader.loadImage(with: featuredImageURL, from: postInfo, preferedSize: size)
+        imageLoader.loadImage(with: featuredImageURL, from: postInfo, preferredSize: size)
     }
 
     fileprivate func configureTitle() {
