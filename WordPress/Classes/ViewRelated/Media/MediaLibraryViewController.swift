@@ -45,7 +45,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
         super.init(options: MediaLibraryViewController.pickerOptions())
 
-        registerClass(forReusableCellOverlayViews: MediaCellProgressView.self)
+        registerClass(forReusableCellOverlayViews: CircularProgressView.self)
 
         super.restorationIdentifier = MediaLibraryViewController.restorationIdentifier
         restorationClass = MediaLibraryViewController.self
@@ -190,7 +190,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     private func updateCellProgress(_ progress: Double, for media: Media) {
         visibleCells(for: media).forEach { cell in
-            if let overlayView = cell.overlayView as? MediaCellProgressView {
+            if let overlayView = cell.overlayView as? CircularProgressView {
                 if progress < MediaLibraryViewController.uploadCompleteProgress {
                     overlayView.state = .progress(progress)
                 } else {
@@ -202,7 +202,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         }
     }
 
-    private func configureAppearance(for overlayView: MediaCellProgressView, with media: Media) {
+    private func configureAppearance(for overlayView: CircularProgressView, with media: Media) {
         if media.localThumbnailURL != nil {
             overlayView.backgroundColor = overlayView.backgroundColor?.withAlphaComponent(0.5)
         } else {
@@ -212,7 +212,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     private func showUploadingStateForCell(for media: Media) {
         visibleCells(for: media).forEach { cell in
-            if let overlayView = cell.overlayView as? MediaCellProgressView {
+            if let overlayView = cell.overlayView as? CircularProgressView {
                 overlayView.state = .indeterminate
             }
         }
@@ -220,7 +220,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     private func showFailedStateForCell(for media: Media) {
         visibleCells(for: media).forEach { cell in
-            if let overlayView = cell.overlayView as? MediaCellProgressView {
+            if let overlayView = cell.overlayView as? CircularProgressView {
                 overlayView.state = .retry
                 configureAppearance(for: overlayView, with: media)
             }
@@ -472,10 +472,11 @@ extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, willShowOverlayView overlayView: UIView, forCellFor asset: WPMediaAsset) {
-        guard let overlayView = overlayView as? MediaCellProgressView,
+        guard let overlayView = overlayView as? CircularProgressView,
             let media = asset as? Media else {
             return
         }
+        WPStyleGuide.styleProgressViewForMediaCell(overlayView)
         switch media.remoteStatus {
         case .processing:
             if let progress = MediaCoordinator.shared.progress(for: media) {

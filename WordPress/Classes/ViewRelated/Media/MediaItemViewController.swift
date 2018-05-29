@@ -80,7 +80,9 @@ class MediaItemViewController: UITableViewController {
 
                 switch media.mediaType {
                 case .image:
-                    self?.presentImageViewControllerForMedia()
+                    if self?.isMediaLoaded() == true {
+                        self?.presentImageViewControllerForMedia()
+                    }
                 case .video:
                     self?.presentVideoViewControllerForMedia()
                 default: break
@@ -168,6 +170,20 @@ class MediaItemViewController: UITableViewController {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelTapped))
             navigationItem.rightBarButtonItems = [ UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTapped)) ]
         }
+    }
+
+    private func isMediaLoaded() -> Bool {
+        let headerIndexPath = IndexPath(row: 0, section: 0)
+        // Check in case of future changes.
+        assert(viewModel.sections[headerIndexPath.section].rows[headerIndexPath.row].cellClass == headerRow.cellClass, "Wrong index path for headerRow")
+
+        guard
+            let cell = tableView.cellForRow(at: headerIndexPath) as? MediaItemImageTableViewCell,
+            cell.customImageView.image != nil else {
+
+            return false
+        }
+        return true
     }
 
     private func presentImageViewControllerForMedia() {
