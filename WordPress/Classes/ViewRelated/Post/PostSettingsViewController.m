@@ -51,7 +51,7 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
 };
 
 static CGFloat CellHeight = 44.0f;
-static CGFloat LoadingIndicatorHeight = 20.0f;
+static CGFloat LoadingIndicatorHeight = 28.0f;
 
 static NSInteger RowIndexForDatePicker = 0;
 static NSInteger RowIndexForPassword = 3;
