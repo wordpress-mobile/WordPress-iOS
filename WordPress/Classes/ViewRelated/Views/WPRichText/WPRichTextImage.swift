@@ -88,7 +88,7 @@ open class WPRichTextImage: UIControl, WPRichTextMediaAttachment {
             onError?(indexPath, error)
         }
 
-        imageLoader.loadImage(with: contentURL, from: contentInformation, preferedSize: size, placeholder: nil, success: successHandler, error: errorHandler)
+        imageLoader.loadImage(with: contentURL, from: contentInformation, preferredSize: size, placeholder: nil, success: successHandler, error: errorHandler)
     }
 
     func contentSize() -> CGSize {
