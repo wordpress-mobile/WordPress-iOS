@@ -1417,9 +1417,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
         case WPAnalyticsStatMaxValue:
-        case WPAnalyticsStatPushNotificationWinbackShown:
-        case WPAnalyticsStatPushNotificationWinbackNoTapped:
-        case WPAnalyticsStatPushNotificationWinbackSettingsTapped:
         case WPAnalyticsStatSupportHelpCenterUserSearched:
         case WPAnalyticsStatSupportHelpCenterViewed:
         case WPAnalyticsStatSupportNewRequestViewed:
