@@ -24,8 +24,8 @@
 
 - (void)doneSettingProperties
 {
-    self.leftLabel.text = self.leftText;
-    self.rightLabel.text = self.rightText;
+    self.leftLabel.text = [self.leftText stringByDecodingXMLCharacters];
+    self.rightLabel.text = [self.rightText stringByDecodingXMLCharacters];
     self.leftHandGlyph.hidden = !self.expandable && self.selectType == StatsTwoColumnTableViewCellSelectTypeDetail;
 
     if (self.selectable) {
