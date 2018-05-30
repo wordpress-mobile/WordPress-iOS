@@ -43,6 +43,11 @@ class SupportTableViewController: UITableViewController {
         setupTable()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        reloadViewModel()
+    }
+
     @objc func showFromTabBar() {
         let navigationController = UINavigationController.init(rootViewController: self)
 
@@ -207,7 +212,12 @@ private extension SupportTableViewController {
                 return
             }
 
-            ZendeskUtils.sharedInstance.showSupportEmailPrompt(from: controllerToShowFrom)
+            ZendeskUtils.sharedInstance.showSupportEmailPrompt(from: controllerToShowFrom) { success in
+                guard success else {
+                    return
+                }
+                self.reloadViewModel()
+            }
         }
     }
 
