@@ -3716,6 +3716,26 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         updateFormatBarInsertAssetCount()
     }
 
+    func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor assets: [WPMediaAsset], selectedIndex selected: Int) -> UIViewController? {
+        guard assets.count > 0, selected < assets.endIndex else {
+            return nil
+        }
+
+        let asset = assets[selected]
+        guard let ext = asset.fileExtension?(), ext == "gif" else {
+            return nil // Not a GIF, use the default
+        }
+
+        if let mediaAsset = asset as? Media {
+            return WPImageViewController(media: mediaAsset)
+        } else if let phasset = asset as? PHAsset {
+            // FIXME: Handle PHAsset appropriately
+            return nil
+        } else {
+            return nil // use the default
+        }
+    }
+
     private func updateFormatBarInsertAssetCount() {
         guard let assetCount = mediaPickerInputViewController?.mediaPicker.selectedAssets.count else {
             return
