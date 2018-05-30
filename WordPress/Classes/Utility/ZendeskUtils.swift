@@ -156,6 +156,17 @@ extension NSNotification.Name {
         }
     }
 
+    /// Displays an alert allowing the user to change their Support email address.
+    ///
+    func showSupportEmailPrompt(from controller: UIViewController) {
+        ZendeskUtils.configureViewController(controller)
+        ZendeskUtils.promptUserForInformation(withName: false) { success in
+            guard success else {
+                return
+            }
+        }
+    }
+
     // MARK: - Device Registration
 
     /// Sets the device ID to be registered with Zendesk for push notifications.
@@ -230,6 +241,13 @@ extension NSNotification.Name {
         ZendeskUtils.sharedInstance.sourceTagDescription = description
     }
 
+    /// Returns the user's Support email address.
+    ///
+    static func userSupportEmail() -> String? {
+        let _ = getSupportInformationFromUD()
+        return ZendeskUtils.sharedInstance.userEmail
+    }
+
 }
 
 // MARK: - Private Extension
@@ -290,7 +308,7 @@ private extension ZendeskUtils {
         }
 
         ZendeskUtils.getUserInformationIfAvailable {
-            ZendeskUtils.promptUserForInformation { success in
+            ZendeskUtils.promptUserForInformation(withName: true) { success in
                 guard success else {
                     DDLogInfo("No user information to create Zendesk identity with.")
                     completion(false)
@@ -661,13 +679,14 @@ private extension ZendeskUtils {
 
     // MARK: - User Information Prompt
 
-    static func promptUserForInformation(completion: @escaping (Bool) -> Void) {
+    static func promptUserForInformation(withName: Bool, completion: @escaping (Bool) -> Void) {
 
         let alertController = UIAlertController(title: nil,
                                                 message: nil,
                                                 preferredStyle: .alert)
 
-        alertController.setValue(NSAttributedString(string: LocalizedText.alertMessage, attributes: [.font: WPStyleGuide.subtitleFont()]),
+        let alertMessage = withName ? LocalizedText.alertMessageWithName : LocalizedText.alertMessage
+        alertController.setValue(NSAttributedString(string: alertMessage, attributes: [.font: WPStyleGuide.subtitleFont()]),
                                  forKey: "attributedMessage")
 
         // Cancel Action
@@ -684,7 +703,9 @@ private extension ZendeskUtils {
             }
 
             ZendeskUtils.sharedInstance.userEmail = email
-            ZendeskUtils.sharedInstance.userName = alertController?.textFields?.last?.text
+            if withName {
+                ZendeskUtils.sharedInstance.userName = alertController?.textFields?.last?.text
+            }
             saveSupportInformationToUD()
             completion(true)
             return
@@ -709,10 +730,12 @@ private extension ZendeskUtils {
         })
 
         // Name Text Field
-        alertController.addTextField { textField in
-            textField.clearButtonMode = .always
-            textField.placeholder = LocalizedText.namePlaceholder
-            textField.text = ZendeskUtils.sharedInstance.userName
+        if withName {
+            alertController.addTextField { textField in
+                textField.clearButtonMode = .always
+                textField.placeholder = LocalizedText.namePlaceholder
+                textField.text = ZendeskUtils.sharedInstance.userName
+            }
         }
 
         // Show alert
@@ -862,7 +885,8 @@ private extension ZendeskUtils {
     }
 
     struct LocalizedText {
-        static let alertMessage = NSLocalizedString("To continue please enter your email address and name.", comment: "Instructions for alert asking for email and name.")
+        static let alertMessageWithName = NSLocalizedString("To continue please enter your email address and name.", comment: "Instructions for alert asking for email and name.")
+        static let alertMessage = NSLocalizedString("To continue please enter your email address.", comment: "Instructions for alert asking for email.")
         static let alertSubmit = NSLocalizedString("OK", comment: "Submit button on prompt for user information.")
         static let alertCancel = NSLocalizedString("Cancel", comment: "Cancel prompt for user information.")
         static let emailPlaceholder = NSLocalizedString("Email", comment: "Email address text field placeholder")
