@@ -765,10 +765,6 @@ private extension ZendeskUtils {
                                                name: NSNotification.Name(rawValue: ZDKAPI_UploadAttachmentSuccess), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(ZendeskUtils.zendeskNotification(_:)),
                                                name: NSNotification.Name(rawValue: ZDKAPI_UploadAttachmentError), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ZendeskUtils.zendeskNotification(_:)),
-                                               name: NSNotification.Name(rawValue: ZDKAPI_DeleteUploadSuccess), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ZendeskUtils.zendeskNotification(_:)),
-                                               name: NSNotification.Name(rawValue: ZDKAPI_DeleteUploadError), object: nil)
 
         // New Ticket Creation
         NotificationCenter.default.addObserver(self, selector: #selector(ZendeskUtils.zendeskNotification(_:)),
@@ -807,10 +803,6 @@ private extension ZendeskUtils {
             WPAnalytics.track(.supportNewRequestFileAttached)
         case ZDKAPI_UploadAttachmentError:
             WPAnalytics.track(.supportNewRequestFileAttachmentFailed)
-        case ZDKAPI_DeleteUploadSuccess:
-            WPAnalytics.track(.supportTicketAttachmentUserDeleted)
-        case ZDKAPI_DeleteUploadError:
-            WPAnalytics.track(.supportTicketAttachmentUserDeleteFailed)
         case ZDKAPI_CommentSubmissionSuccess:
             WPAnalytics.track(.supportTicketUserReplied)
         case ZDKAPI_CommentSubmissionError:
