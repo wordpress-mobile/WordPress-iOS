@@ -158,12 +158,14 @@ extension NSNotification.Name {
 
     /// Displays an alert allowing the user to change their Support email address.
     ///
-    func showSupportEmailPrompt(from controller: UIViewController) {
+    func showSupportEmailPrompt(from controller: UIViewController, completion: @escaping (Bool) -> Void) {
         ZendeskUtils.configureViewController(controller)
         ZendeskUtils.promptUserForInformation(withName: false) { success in
             guard success else {
+                completion(false)
                 return
             }
+            completion(true)
         }
     }
 
