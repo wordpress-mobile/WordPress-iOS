@@ -160,12 +160,9 @@ extension NSNotification.Name {
     ///
     func showSupportEmailPrompt(from controller: UIViewController, completion: @escaping (Bool) -> Void) {
         ZendeskUtils.configureViewController(controller)
-        ZendeskUtils.promptUserForInformation(withName: false) { success in
-            guard success else {
-                completion(false)
-                return
-            }
-            completion(true)
+
+        ZendeskUtils.getUserInformationAndShowPrompt(withName: false) { success in
+            completion(success)
         }
     }
 
@@ -309,8 +306,15 @@ private extension ZendeskUtils {
             }
         }
 
+        ZendeskUtils.getUserInformationAndShowPrompt(withName: true) { success in
+            completion(success)
+        }
+
+    }
+
+    static func getUserInformationAndShowPrompt(withName: Bool, completion: @escaping (Bool) -> Void) {
         ZendeskUtils.getUserInformationIfAvailable {
-            ZendeskUtils.promptUserForInformation(withName: true) { success in
+            ZendeskUtils.promptUserForInformation(withName: withName) { success in
                 guard success else {
                     DDLogInfo("No user information to create Zendesk identity with.")
                     completion(false)
