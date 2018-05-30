@@ -398,6 +398,8 @@ private extension ZendeskUtils {
             ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.deviceFreeSpace as NSNumber, andValue: ZendeskUtils.getDeviceFreeSpace()))
             ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.networkInformation as NSNumber, andValue: ZendeskUtils.getNetworkInformation()))
             ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.logs as NSNumber, andValue: ZendeskUtils.getLogFile()))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.currentSite as NSNumber, andValue: ZendeskUtils.getCurrentSiteDescription()))
+
             ZDKConfig.instance().customTicketFields = ticketFields
 
             // Set tags
@@ -555,6 +557,17 @@ private extension ZendeskUtils {
         return logText
     }
 
+    static func getCurrentSiteDescription() -> String {
+        let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+
+        guard let blog = blogService.lastUsedBlog() else {
+            return Constants.noValue
+        }
+
+        let url = blog.url ?? Constants.unknownValue
+        return "\(url) (\(blog.stateDescription()))"
+    }
+
     static func getBlogInformation() -> String {
 
         let blogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
@@ -563,7 +576,7 @@ private extension ZendeskUtils {
             return Constants.noValue
         }
 
-        return (allBlogs.map { $0.logDescription() }).joined(separator: Constants.blogSeperator)
+        return (allBlogs.map { $0.supportDescription() }).joined(separator: Constants.blogSeperator)
     }
 
     static func getTags() -> [String] {
@@ -838,6 +851,8 @@ private extension ZendeskUtils {
         static let userDefaultsZendeskUnreadNotifications = "wp_zendesk_unread_notifications"
     }
 
+    // Zendesk expects these as NSNumber. However, they are defined as UInt64 to satisfy 32-bit devices (ex: iPhone 5).
+    // Which means they then have to be converted to NSNumber when sending to Zendesk.
     struct TicketFieldIDs {
         static let form: UInt64 = 360000010286
         static let appVersion: UInt64 = 360000086866
@@ -845,6 +860,7 @@ private extension ZendeskUtils {
         static let deviceFreeSpace: UInt64 = 360000089123
         static let networkInformation: UInt64 = 360000086966
         static let logs: UInt64 = 22871957
+        static let currentSite: UInt64 = 360000103103
     }
 
     struct LocalizedText {

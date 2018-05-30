@@ -290,7 +290,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     CGFloat desiredHeight = self.postCardImageViewHeightConstraint.constant;
     CGSize imageSize = CGSizeMake(desiredWidth, desiredHeight);
 
-    [self.imageLoader loadImageWithURL:url fromPost:post andPreferedSize:imageSize];
+    [self.imageLoader loadImageWithURL:url fromPost:post andPreferredSize:imageSize];
 }
 
 - (void)configureTitle

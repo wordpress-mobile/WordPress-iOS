@@ -185,6 +185,8 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
         let icon = Gridicon.iconOfType(.bookmarkOutline, withSize: CGSize(width: 18, height: 18))
         messageText.replace("[bookmark-outline]", with: icon)
         noResultsView.attributedMessageText = messageText
+
+        noResultsView.accessibilityLabel = NSLocalizedString("No posts saved – yet! Tap the Save Post button to save a post to your list.", comment: "Alternative accessibility text displayed to Voiceover users on the Reader Saved Posts screen.")
     }
 
     @objc func hideNoResultsView() {
@@ -297,11 +299,6 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
             return
         }
 
-        //        if recentlyBlockedSitePostObjectIDs.contains(apost.objectID) {
-        //            unblockSiteForPost(apost)
-        //            return
-        //        }
-
         if let topic = post.topic, ReaderHelpers.isTopicSearchTopic(topic) {
             WPAppAnalytics.track(.readerSearchResultTapped)
 
@@ -326,6 +323,8 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
             controller = ReaderDetailViewController.controllerWithPost(post)
 
         }
+
+        trackSavedPostNavigation()
 
         navigationController?.pushFullscreenViewController(controller, animated: true)
 
