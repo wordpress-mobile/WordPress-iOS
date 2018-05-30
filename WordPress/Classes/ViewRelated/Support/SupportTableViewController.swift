@@ -38,7 +38,7 @@ class SupportTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        WPAnalytics.track(.openedSupport)
         setupNavBar()
         setupTable()
     }
