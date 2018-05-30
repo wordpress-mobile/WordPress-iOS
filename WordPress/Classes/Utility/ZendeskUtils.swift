@@ -80,6 +80,8 @@ extension NSNotification.Name {
         if unreadNotificationsCount > 0 {
             postNotificationReceived()
         }
+
+        observeZendeskNotifications()
     }
 
     // MARK: - Show Zendesk Views
@@ -110,6 +112,7 @@ extension NSNotification.Name {
         helpCenterContentModel.groupType = .category
         helpCenterContentModel.groupIds = [Constants.mobileCategoryID]
         helpCenterContentModel.labels = [Constants.articleLabel]
+        WPAnalytics.track(.supportHelpCenterViewed)
 
         // Set the ability to 'Contact Us' from the Help Center according to usingAnonymousIDForHelpCenter.
         ZDKHelpCenter.setUIDelegate(self)
@@ -132,6 +135,7 @@ extension NSNotification.Name {
             self.sourceTag = sourceTag
 
             ZDKRequests.presentRequestCreation(with: ZendeskUtils.presentInController)
+            WPAnalytics.track(.supportNewRequestViewed)
             self.createRequest()
         }
     }
@@ -150,6 +154,7 @@ extension NSNotification.Name {
             self.sourceTag = sourceTag
 
             ZDKRequests.presentRequestList(with: ZendeskUtils.presentInController)
+            WPAnalytics.track(.supportTicketListViewed)
         }
     }
 
@@ -181,7 +186,7 @@ extension NSNotification.Name {
     /// the user to view the updated ticket.
     ///
     static func handlePushNotification(_ userInfo: NSDictionary) {
-
+        WPAnalytics.track(.supportReceivedResponseFromSupport)
         guard zendeskEnabled == true,
             let payload = userInfo as? [AnyHashable: Any] else {
                 DDLogInfo("Zendesk push notification payload invalid.")
@@ -750,6 +755,69 @@ private extension ZendeskUtils {
         let autoDisplayName = nameLowercased.capitalized
 
         return autoDisplayName
+    }
+
+    // MARK: - Zendesk Notifications
+
+    static func observeZendeskNotifications() {
+        // Ticket Attachments
+        NotificationCenter.default.addObserver(self, selector: #selector(ZendeskUtils.zendeskNotification(_:)),
+                                               name: NSNotification.Name(rawValue: ZDKAPI_UploadAttachmentSuccess), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ZendeskUtils.zendeskNotification(_:)),
+                                               name: NSNotification.Name(rawValue: ZDKAPI_UploadAttachmentError), object: nil)
+
+        // New Ticket Creation
+        NotificationCenter.default.addObserver(self, selector: #selector(ZendeskUtils.zendeskNotification(_:)),
+                                               name: NSNotification.Name(rawValue: ZDKAPI_RequestSubmissionSuccess), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ZendeskUtils.zendeskNotification(_:)),
+                                               name: NSNotification.Name(rawValue: ZDKAPI_RequestSubmissionError), object: nil)
+
+        // Ticket Reply
+        NotificationCenter.default.addObserver(self, selector: #selector(ZendeskUtils.zendeskNotification(_:)),
+                                               name: NSNotification.Name(rawValue: ZDKAPI_CommentSubmissionSuccess), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ZendeskUtils.zendeskNotification(_:)),
+                                               name: NSNotification.Name(rawValue: ZDKAPI_CommentSubmissionError), object: nil)
+
+        // View Ticket List
+        NotificationCenter.default.addObserver(self, selector: #selector(ZendeskUtils.zendeskNotification(_:)),
+                                               name: NSNotification.Name(rawValue: ZDKAPI_RequestsError), object: nil)
+
+        // View Individual Ticket
+        NotificationCenter.default.addObserver(self, selector: #selector(ZendeskUtils.zendeskNotification(_:)),
+                                               name: NSNotification.Name(rawValue: ZDKAPI_CommentListSuccess), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ZendeskUtils.zendeskNotification(_:)),
+                                               name: NSNotification.Name(rawValue: ZDKAPI_CommentListError), object: nil)
+
+        // Help Center
+        NotificationCenter.default.addObserver(self, selector: #selector(ZendeskUtils.zendeskNotification(_:)),
+                                               name: NSNotification.Name(rawValue: ZD_HC_SearchSuccess), object: nil)
+    }
+
+    @objc static func zendeskNotification(_ notification: Foundation.Notification) {
+        switch notification.name.rawValue {
+        case ZDKAPI_RequestSubmissionSuccess:
+            WPAnalytics.track(.supportNewRequestCreated)
+        case ZDKAPI_RequestSubmissionError:
+            WPAnalytics.track(.supportNewRequestFailed)
+        case ZDKAPI_UploadAttachmentSuccess:
+            WPAnalytics.track(.supportNewRequestFileAttached)
+        case ZDKAPI_UploadAttachmentError:
+            WPAnalytics.track(.supportNewRequestFileAttachmentFailed)
+        case ZDKAPI_CommentSubmissionSuccess:
+            WPAnalytics.track(.supportTicketUserReplied)
+        case ZDKAPI_CommentSubmissionError:
+            WPAnalytics.track(.supportTicketUserReplyFailed)
+        case ZDKAPI_RequestsError:
+            WPAnalytics.track(.supportTicketListViewFailed)
+        case ZDKAPI_CommentListSuccess:
+            WPAnalytics.track(.supportTicketUserViewed)
+        case ZDKAPI_CommentListError:
+            WPAnalytics.track(.supportTicketViewFailed)
+        case ZD_HC_SearchSuccess:
+            WPAnalytics.track(.supportHelpCenterUserSearched)
+        default:
+            break
+        }
     }
 
     // MARK: - Constants
