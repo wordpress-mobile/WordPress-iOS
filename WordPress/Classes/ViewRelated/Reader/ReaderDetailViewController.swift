@@ -502,7 +502,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
 
         let postInfo = ReaderCardContent(provider: post)
-        featuredImageLoader.loadImage(with: featuredImageURL, from: postInfo, placeholder: nil, success: { [weak self] in
+        let maxImageWidth = min(view.frame.width, view.frame.height)
+        let imageWidthSize = CGSize(width: maxImageWidth, height: 0) // height 0: preserves aspect ratio.
+        featuredImageLoader.loadImage(with: featuredImageURL, from: postInfo, preferredSize: imageWidthSize, placeholder: nil, success: { [weak self] in
             guard let strongSelf = self, let size = strongSelf.featuredImageView.image?.size else {
                 return
             }
@@ -872,6 +874,29 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         present(navController, animated: true, completion: nil)
     }
 
+    @objc func presentFullScreenGif(with animatedGifData: Data?) {
+        guard let animatedGifData = animatedGifData,
+            let controller = WPImageViewController(gifData: animatedGifData) else {
+                return
+        }
+
+        controller.modalTransitionStyle = .crossDissolve
+        controller.modalPresentationStyle = .fullScreen
+        present(controller, animated: true, completion: nil)
+    }
+
+    @objc func presentFullScreenImage(with image: UIImage?, linkURL: URL? = nil) {
+        var controller: WPImageViewController
+
+        if let linkURL = linkURL {
+            controller = WPImageViewController(image: image, andURL: linkURL)
+        } else {
+            controller = WPImageViewController(image: image)
+        }
+        controller.modalTransitionStyle = .crossDissolve
+        controller.modalPresentationStyle = .fullScreen
+        present(controller, animated: true, completion: nil)
+    }
 
     @objc func previewSite() {
         let controller = ReaderStreamViewController.controllerWithSiteID(post!.siteID, isFeed: post!.isExternal)
@@ -984,8 +1009,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             return
         }
 
-        ReaderSaveForLaterAction().execute(with: readerPost, context: context) { [weak self] in
+        ReaderSaveForLaterAction().execute(with: readerPost, context: context, origin: .postDetail) { [weak self] in
             self?.saveForLaterButton.isSelected = readerPost.isSavedForLater
+            self?.prepareActionButtonsForVoiceOver()
         }
     }
 
@@ -1155,23 +1181,20 @@ extension ReaderDetailViewController: WPRichContentViewDelegate {
 
 
     func richContentView(_ richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage) {
-        var controller: WPImageViewController
-
-        if let linkURL = image.linkURL, WPImageViewController.isUrlSupported(linkURL) {
-            controller = WPImageViewController(image: image.imageView.image, andURL: linkURL)
-
-        } else if let linkURL = image.linkURL {
-            presentWebViewControllerWithURL(linkURL as URL)
+        // If we have gif data availible, present that
+        if let animatedGifData = image.imageView.animatedGifData {
+            presentFullScreenGif(with: animatedGifData)
             return
-
-        } else {
-            controller = WPImageViewController(image: image.imageView.image)
         }
 
-        controller.modalTransitionStyle = .crossDissolve
-        controller.modalPresentationStyle = .fullScreen
-
-        present(controller, animated: true, completion: nil)
+        // Otherwise try to present the static image/URL
+        if let linkURL = image.linkURL, WPImageViewController.isUrlSupported(linkURL) {
+            presentFullScreenImage(with: image.imageView.image, linkURL: linkURL)
+        } else if let linkURL = image.linkURL {
+            presentWebViewControllerWithURL(linkURL as URL)
+        } else if let staticImage = image.imageView.image {
+            presentFullScreenImage(with: staticImage)
+        }
     }
 }
 
@@ -1232,6 +1255,7 @@ extension ReaderDetailViewController: Accessible {
         prepareMenuForVoiceOver()
         prepareHeaderForVoiceOver()
         prepareContentForVoiceOver()
+        prepareActionButtonsForVoiceOver()
     }
 
     private func prepareMenuForVoiceOver() {
@@ -1283,5 +1307,11 @@ extension ReaderDetailViewController: Accessible {
 
         titleLabel.accessibilityLabel = title
         titleLabel.accessibilityTraits = UIAccessibilityTraitStaticText
+    }
+
+    private func prepareActionButtonsForVoiceOver() {
+        let isSavedForLater = post?.isSavedForLater ?? false
+        saveForLaterButton.accessibilityLabel = isSavedForLater ? NSLocalizedString("Saved Post", comment: "Accessibility label for the 'Save Post' button when a post has been saved.") : NSLocalizedString("Save post", comment: "Accessibility label for the 'Save Post' button.")
+        saveForLaterButton.accessibilityHint = isSavedForLater ? NSLocalizedString("Remove this post from my saved posts.", comment: "Accessibility hint for the 'Save Post' button when a post is already saved.") : NSLocalizedString("Saves this post for later.", comment: "Accessibility hint for the 'Save Post' button.")
     }
 }

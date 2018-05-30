@@ -619,6 +619,65 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     return [NSString stringWithFormat:@"<Blog Name: %@ URL: %@ XML-RPC: %@%@>", self.settings.name, self.url, self.xmlrpc, extra];
 }
 
+- (NSString *)supportDescription
+{
+    // Gather information
+    
+    NSString *blogType = [NSString stringWithFormat:@"Type: (%@)", [self stateDescription]];
+    NSString *urlType = [self wordPressComRestApi] ? @"REST" : @"Self-hosted";
+    NSString *url = [NSString stringWithFormat:@"URL: %@", self.url];
+
+    NSString *username;
+    NSString *planDescription;
+    if (self.account) {
+        planDescription = [NSString stringWithFormat:@"Plan: %@ (%@)", self.planTitle, self.planID];
+    } else {
+        username = [self.jetpack connectedUsername];
+    }
+    
+    NSString *jetpackVersion;
+    if ([self.jetpack isInstalled]) {
+        jetpackVersion = [NSString stringWithFormat:@"Jetpack-version: %@", [self.jetpack version]];
+    }
+    
+    // Add information to array in the order we want to display it.
+    
+    NSMutableArray *blogInformation = [[NSMutableArray alloc] init];
+    [blogInformation addObject:blogType];
+    if (username) {
+        [blogInformation addObject:username];
+    }
+    [blogInformation addObject:urlType];
+    [blogInformation addObject:url];
+    if (planDescription) {
+        [blogInformation addObject:planDescription];
+    }
+    if (jetpackVersion) {
+        [blogInformation addObject:jetpackVersion];
+    }
+    
+    // Combine and return.
+    return [NSString stringWithFormat:@"<%@>", [blogInformation componentsJoinedByString:@" "]];
+}
+
+- (NSString *)stateDescription
+{
+    if (self.account) {
+        return @"wpcom";
+    }
+    
+    if ([self.jetpack isConnected]) {
+        NSString *apiType = [self wordPressComRestApi] ? @"REST" : @"XML-RPC";
+        return [NSString stringWithFormat:@"jetpack_connected - %@", apiType];
+    }
+    
+    if ([self.jetpack isInstalled]) {
+        return @"self-hosted - jetpack_installed";
+    }
+    
+    return @"self_hosted";
+}
+
 #pragma mark - api accessor
 
 - (WordPressOrgXMLRPCApi *)xmlrpcApi

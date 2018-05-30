@@ -53,8 +53,8 @@ extension GIFPlaybackStrategy {
 }
 
 class SmallGIFPlaybackStrategy: GIFPlaybackStrategy {
-    var maxSize = 10_000_000  // in MB
-    var frameBufferCount = 50
+    var maxSize = 8_000_000  // in MB
+    var frameBufferCount = 25
     var gifStrategy: GIFStrategy = .smallGIFs
 }
 

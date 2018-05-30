@@ -320,18 +320,21 @@ import WordPressShared
 
     /// Presents the saved for later view controller
     @objc func showSavedForLater() {
-        guard let indexPath = viewModel.indexPathOfSavedForLater() else {
-            return
+        guard let indexPath = viewModel.indexPathOfSavedForLater(),
+            let menuItem = viewModel.menuItemAtIndexPath(indexPath),
+            let viewController = viewControllerForMenuItem(menuItem) else {
+                return
         }
 
         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .middle)
-        self.tableView(self.tableView, didSelectRowAt: indexPath)
+        restorableSelectedIndexPath = indexPath
+
+        showDetailViewController(viewController, sender: self)
     }
 
     fileprivate func viewControllerForSavedPosts() -> ReaderSavedPostsViewController {
         return ReaderSavedPostsViewController()
     }
-
 
     /// Presents a new view controller for subscribing to a new tag.
     ///
@@ -503,6 +506,10 @@ import WordPressShared
             tableView.deselectSelectedRowWithAnimation(true)
             showAddTag()
             return
+        }
+
+        if menuItem.type == .savedPosts {
+            trackSavedPostsNavigation()
         }
 
         restorableSelectedIndexPath = indexPath

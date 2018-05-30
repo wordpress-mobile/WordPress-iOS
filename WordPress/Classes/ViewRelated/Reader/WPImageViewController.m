@@ -19,7 +19,7 @@ static CGFloat const MinimumZoomScale = 0.1;
 @property (nonatomic, strong) CachedAnimatedImageView *imageView;
 @property (nonatomic, strong) ImageLoader *imageLoader;
 @property (nonatomic, assign) BOOL shouldHideStatusBar;
-@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
+@property (nonatomic, strong) CircularProgressView *activityIndicatorView;
 
 @property (nonatomic) FlingableViewHandler *flingableViewHandler;
 
@@ -102,6 +102,7 @@ static CGFloat const MinimumZoomScale = 0.1;
 
     self.imageView = [[CachedAnimatedImageView alloc] initWithFrame:frame];
     self.imageView.gifStrategy = GIFStrategyLargeGIFs;
+    self.imageView.shouldShowLoadingIndicator = NO;
     self.imageView.userInteractionEnabled = YES;
     [self.scrollView addSubview:self.imageView];
 
@@ -119,12 +120,16 @@ static CGFloat const MinimumZoomScale = 0.1;
     self.flingableViewHandler = [[FlingableViewHandler alloc] initWithTargetView:self.scrollView];
     self.flingableViewHandler.delegate = self;
 
-    self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    self.activityIndicatorView.color = [WPStyleGuide greyDarken30];
-    self.activityIndicatorView.hidesWhenStopped = YES;
-    self.activityIndicatorView.center = self.view.center;
-    self.activityIndicatorView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin;
+    self.activityIndicatorView = [[CircularProgressView alloc] initWithStyle:CircularProgressViewStyleWhite];
+    
+    self.activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.activityIndicatorView];
+    NSArray *constraints = @[
+                             [self.activityIndicatorView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+                             [self.activityIndicatorView.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor]
+                             ];
+
+    [NSLayoutConstraint activateConstraints:constraints];
 
     [self loadImage];
 }
@@ -167,7 +172,7 @@ static CGFloat const MinimumZoomScale = 0.1;
                                    weakSelf.isLoadingImage = NO;
                                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                                    DDLogError(@"Error loading image: %@", error);
-                                   weakSelf.isLoadingImage = NO;
+                                   [weakSelf.activityIndicatorView showError];
                                }];
 }
 
@@ -181,7 +186,7 @@ static CGFloat const MinimumZoomScale = 0.1;
         weakSelf.image = weakSelf.imageView.image;
         [weakSelf updateImageView];
     } error:^(NSError * _Nullable error) {
-        weakSelf.isLoadingImage = NO;
+        [weakSelf.activityIndicatorView showError];
         DDLogError(@"Error loading image: %@", error);
     }];
 }
