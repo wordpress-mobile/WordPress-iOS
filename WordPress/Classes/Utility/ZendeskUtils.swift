@@ -309,7 +309,6 @@ private extension ZendeskUtils {
         ZendeskUtils.getUserInformationAndShowPrompt(withName: true) { success in
             completion(success)
         }
-
     }
 
     static func getUserInformationAndShowPrompt(withName: Bool, completion: @escaping (Bool) -> Void) {
