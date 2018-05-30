@@ -93,7 +93,8 @@ private extension SupportTableViewController {
         ImmuTable.registerRows([SwitchRow.self,
                                 NavigationItemRow.self,
                                 TextRow.self,
-                                HelpRow.self],
+                                HelpRow.self,
+                                SupportEmailRow.self],
                                tableView: tableView)
         tableHandler = ImmuTableViewHandler(takeOver: self)
         reloadViewModel()
@@ -107,12 +108,15 @@ private extension SupportTableViewController {
     func tableViewModel() -> ImmuTable {
 
         // Help Section
-        var helpSectionRows = [HelpRow]()
+        var helpSectionRows = [ImmuTableRow]()
         helpSectionRows.append(HelpRow(title: LocalizedText.wpHelpCenter, action: helpCenterSelected()))
 
         if ZendeskUtils.zendeskEnabled {
             helpSectionRows.append(HelpRow(title: LocalizedText.contactUs, action: contactUsSelected()))
             helpSectionRows.append(HelpRow(title: LocalizedText.myTickets, action: myTicketsSelected(), showIndicator: ZendeskUtils.showSupportNotificationIndicator))
+            helpSectionRows.append(SupportEmailRow(title: LocalizedText.contactEmail,
+                                                   value: ZendeskUtils.userSupportEmail() ?? LocalizedText.emailNotSet,
+                                                   action: supportEmailSelected()))
         } else {
             helpSectionRows.append(HelpRow(title: LocalizedText.wpForums, action: contactUsSelected()))
         }
@@ -194,6 +198,19 @@ private extension SupportTableViewController {
         }
     }
 
+    func supportEmailSelected() -> ImmuTableAction {
+        return { [unowned self] row in
+
+            self.tableView.deselectSelectedRowWithAnimation(true)
+
+            guard let controllerToShowFrom = self.controllerToShowFrom() else {
+                return
+            }
+
+            ZendeskUtils.sharedInstance.showSupportEmailPrompt(from: controllerToShowFrom)
+        }
+    }
+
     func extraDebugToggled() -> (_ newValue: Bool) -> Void {
         return { [unowned self] newValue in
             self.userDefaults.set(newValue, forKey: UserDefaultsKeys.extraDebug)
@@ -233,6 +250,21 @@ private extension SupportTableViewController {
         }
     }
 
+    struct SupportEmailRow: ImmuTableRow {
+        static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
+
+        let title: String
+        let value: String
+        let action: ImmuTableAction?
+
+        func configureCell(_ cell: UITableViewCell) {
+            cell.textLabel?.text = title
+            cell.detailTextLabel?.text = value
+            WPStyleGuide.configureTableViewCell(cell)
+            cell.textLabel?.textColor = WPStyleGuide.wordPressBlue()
+        }
+    }
+
     // MARK: - Helpers
 
     func controllerToShowFrom() -> UIViewController? {
@@ -253,6 +285,8 @@ private extension SupportTableViewController {
         static let extraDebug = NSLocalizedString("Extra Debug", comment: "Option in Support view to enable/disable adding extra information to support ticket.")
         static let activityLogs = NSLocalizedString("Activity Logs", comment: "Option in Support view to see activity logs.")
         static let informationFooter = NSLocalizedString("The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app.", comment: "Support screen footer text explaining the Extra Debug feature.")
+        static let contactEmail = NSLocalizedString("Contact Email", comment: "Support email label.")
+        static let emailNotSet = NSLocalizedString("not set", comment: "Display value for Support email field if there is no user email address.")
     }
 
     // MARK: - User Defaults Keys
