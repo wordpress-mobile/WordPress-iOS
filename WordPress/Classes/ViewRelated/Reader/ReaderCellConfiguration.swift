@@ -29,7 +29,7 @@ final class ReaderCellConfiguration {
         cell.setSiteName(post.blogName)
     }
 
-    func configurePostCardCell(_ cell: UITableViewCell, withPost post: ReaderPost, topic: ReaderAbstractTopic, delegate: ReaderPostCellDelegate?, loggedInActionVisibility: ReaderActionsVisibility) {
+    func configurePostCardCell(_ cell: UITableViewCell, withPost post: ReaderPost, topic: ReaderAbstractTopic? = nil, delegate: ReaderPostCellDelegate?, loggedInActionVisibility: ReaderActionsVisibility) {
         // To help avoid potential crash: https://github.com/wordpress-mobile/WordPress-iOS/issues/6757
         guard !post.isDeleted else {
             return
@@ -38,9 +38,16 @@ final class ReaderCellConfiguration {
         let postCell = cell as! ReaderPostCardCell
 
         postCell.delegate = delegate
-        postCell.hidesFollowButton = ReaderHelpers.topicIsFollowing(topic)
+
+        if let topic = topic {
+            postCell.hidesFollowButton = ReaderHelpers.topicIsFollowing(topic)
+            postCell.headerBlogButtonIsEnabled = !ReaderHelpers.isTopicSite(topic)
+        } else {
+            postCell.hidesFollowButton = true
+            postCell.headerBlogButtonIsEnabled = true
+        }
+
         postCell.loggedInActionVisibility = loggedInActionVisibility
-        postCell.headerBlogButtonIsEnabled = !ReaderHelpers.isTopicSite(topic)
         postCell.configureCell(post)
     }
 
