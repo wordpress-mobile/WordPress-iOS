@@ -66,7 +66,7 @@ extension NSNotification.Name {
                                         zendeskUrl: zdUrl,
                                         clientId: zdClientId)
 
-        ZendeskUtils.sharedInstance.haveUserIdentity = getSupportInformationFromUD()
+        ZendeskUtils.sharedInstance.haveUserIdentity = getUserProfile()
         toggleZendesk(enabled: true)
         setAppearance()
 
@@ -206,7 +206,7 @@ extension NSNotification.Name {
     ///
     static func pushNotificationReceived() {
         unreadNotificationsCount += 1
-        saveUnreadCountToUD()
+        saveUnreadCount()
         postNotificationReceived()
     }
 
@@ -218,7 +218,7 @@ extension NSNotification.Name {
     static func pushNotificationRead() {
         UIApplication.shared.applicationIconBadgeNumber -= unreadNotificationsCount
         unreadNotificationsCount = 0
-        saveUnreadCountToUD()
+        saveUnreadCount()
         postNotificationRead()
     }
 
@@ -275,7 +275,7 @@ private extension ZendeskUtils {
          4. Create Zendesk identity with user information.
          */
 
-        if getSupportInformationFromUD() {
+        if getUserProfile() {
             ZendeskUtils.createZendeskIdentity { success in
                 guard success else {
                     DDLogInfo("Creating Zendesk identity failed.")
@@ -506,26 +506,26 @@ private extension ZendeskUtils {
 
     // MARK: - User Defaults
 
-    static func saveSupportInformationToUD() {
+    static func saveUserProfile() {
         var userProfile = [String: String]()
         userProfile[Constants.profileEmailKey] = ZendeskUtils.sharedInstance.userEmail
         userProfile[Constants.profileNameKey] = ZendeskUtils.sharedInstance.userName
-        DDLogDebug("Zendesk - saving profile to UD: \(userProfile)")
+        DDLogDebug("Zendesk - saving profile to User Defaults: \(userProfile)")
         UserDefaults.standard.set(userProfile, forKey: Constants.zendeskProfileUDKey)
         UserDefaults.standard.synchronize()
     }
 
-    static func getSupportInformationFromUD() -> Bool {
+    static func getUserProfile() -> Bool {
         guard let userProfile = UserDefaults.standard.dictionary(forKey: Constants.zendeskProfileUDKey) else {
             return false
         }
-        DDLogDebug("Zendesk - read profile from UD: \(userProfile)")
+        DDLogDebug("Zendesk - read profile from User Defaults: \(userProfile)")
         ZendeskUtils.sharedInstance.userEmail = userProfile.valueAsString(forKey: Constants.profileEmailKey)
         ZendeskUtils.sharedInstance.userName = userProfile.valueAsString(forKey: Constants.profileNameKey)
         return true
     }
 
-    static func saveUnreadCountToUD() {
+    static func saveUnreadCount() {
         UserDefaults.standard.set(unreadNotificationsCount, forKey: Constants.userDefaultsZendeskUnreadNotifications)
         UserDefaults.standard.synchronize()
     }
@@ -685,7 +685,7 @@ private extension ZendeskUtils {
 
             ZendeskUtils.sharedInstance.userEmail = email
             ZendeskUtils.sharedInstance.userName = alertController?.textFields?.last?.text
-            saveSupportInformationToUD()
+            saveUserProfile()
             completion(true)
             return
         }
