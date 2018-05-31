@@ -44,7 +44,7 @@ extension NSNotification.Name {
     private var userName: String?
     private var userEmail: String?
     private var deviceID: String?
-    private var usingAnonymousIDForHelpCenter = false
+    private var haveUserIdentity = false
 
     private static var zdAppID: String?
     private static var zdUrl: String?
@@ -66,6 +66,7 @@ extension NSNotification.Name {
                                         zendeskUrl: zdUrl,
                                         clientId: zdClientId)
 
+        ZendeskUtils.sharedInstance.haveUserIdentity = getUserProfile()
         toggleZendesk(enabled: true)
         setAppearance()
 
@@ -94,12 +95,9 @@ extension NSNotification.Name {
 
         // Since user information is not needed to display the Help Center,
         // if a user identity has not been created, create an empty identity.
-        if ZDKConfig.instance().userIdentity == nil {
+        if !ZendeskUtils.sharedInstance.haveUserIdentity {
             let zendeskIdentity = ZDKAnonymousIdentity()
             ZDKConfig.instance().userIdentity = zendeskIdentity
-            usingAnonymousIDForHelpCenter = true
-        } else {
-            usingAnonymousIDForHelpCenter = false
         }
 
         self.sourceTag = sourceTag
@@ -208,7 +206,7 @@ extension NSNotification.Name {
     ///
     static func pushNotificationReceived() {
         unreadNotificationsCount += 1
-        saveUnreadCountToUD()
+        saveUnreadCount()
         postNotificationReceived()
     }
 
@@ -220,7 +218,7 @@ extension NSNotification.Name {
     static func pushNotificationRead() {
         UIApplication.shared.applicationIconBadgeNumber -= unreadNotificationsCount
         unreadNotificationsCount = 0
-        saveUnreadCountToUD()
+        saveUnreadCount()
         postNotificationRead()
     }
 
@@ -263,95 +261,108 @@ private extension ZendeskUtils {
 
     static func createIdentity(completion: @escaping (Bool) -> Void) {
 
+        // If we already have an identity, do nothing.
+        guard ZendeskUtils.sharedInstance.haveUserIdentity == false else {
+            DDLogDebug("Using existing Zendesk identity: \(ZendeskUtils.sharedInstance.userEmail ?? ""), \(ZendeskUtils.sharedInstance.userName ?? "")")
+            completion(true)
+            return
+        }
+
         /*
-         Steps to selecting which account to use:
-         1. If there is a WordPress.com account, use that.
-         2. If not, check if we’ve saved user information in User Defaults. If so, use that.
-         3. If not, get user information from the selected site, save it to User Defaults, and use it.
-         
-         If the user is not logged in:
-         1. Check if we’ve saved user information in User Defaults. If so, use that.
-         2. If not, we don't have any user information. Prompt the user for it.
+         1. Attempt to get user information from User Defaults.
+         2. If we don't have the user's information yet, attempt to get it from the account/site.
+         3. Prompt the user for email & name, pre-populating with user information obtained in step 1.
+         4. Create Zendesk identity with user information.
          */
 
-        let context = ContextManager.sharedInstance().mainContext
-
-        // 1. Check for WP account
-        let accountService = AccountService(managedObjectContext: context)
-        if let defaultAccount = accountService.defaultWordPressComAccount() {
-            DDLogDebug("Using defaultAccount for Zendesk identity.")
-            getUserInformationFrom(wpAccount: defaultAccount)
-            createZendeskIdentity()
-            completion(true)
-            return
-        }
-
-        // 2. Check User Defaults
-        if let savedProfile = UserDefaults.standard.dictionary(forKey: Constants.zendeskProfileUDKey) {
-            DDLogDebug("Using User Defaults for Zendesk identity.")
-            getUserInformationFrom(savedProfile: savedProfile)
-            createZendeskIdentity()
-            completion(true)
-            return
-        }
-
-        // 3. Use information from selected site.
-        let blogService = BlogService(managedObjectContext: context)
-
-        guard let blog = blogService.lastUsedBlog() else {
-
-            // The user is not logged in. Check User Defaults for manually entered information.
-            if let savedProfile = UserDefaults.standard.dictionary(forKey: Constants.zendeskNoAccountProfileUDKey) {
-                DDLogDebug("Using manually entered information from User Defaults for Zendesk identity.")
-                getUserInformationFrom(savedProfile: savedProfile)
-                createZendeskIdentity()
+        if getUserProfile() {
+            ZendeskUtils.createZendeskIdentity { success in
+                guard success else {
+                    DDLogInfo("Creating Zendesk identity failed.")
+                    completion(false)
+                    return
+                }
+                DDLogDebug("Using User Defaults for Zendesk identity.")
+                ZendeskUtils.sharedInstance.haveUserIdentity = true
                 completion(true)
                 return
             }
+        }
 
-            // We have no user information. Prompt user for it.
-            promptUserForInformation { success in
+        ZendeskUtils.getUserInformationIfAvailable {
+            ZendeskUtils.promptUserForInformation { success in
                 guard success else {
                     DDLogInfo("No user information to create Zendesk identity with.")
                     completion(false)
                     return
                 }
 
-                DDLogDebug("Using manually entered information for Zendesk identity.")
-                saveNoAccountProfileToUD()
-                createZendeskIdentity()
-                completion(true)
-                return
+                ZendeskUtils.createZendeskIdentity { success in
+                    guard success else {
+                        DDLogInfo("Creating Zendesk identity failed.")
+                        completion(false)
+                        return
+                    }
+                    DDLogDebug("Using information from prompt for Zendesk identity.")
+                    ZendeskUtils.sharedInstance.haveUserIdentity = true
+                    completion(true)
+                    return
+                }
             }
+        }
+    }
+
+    static func getUserInformationIfAvailable(completion: @escaping () -> ()) {
+
+        /*
+         Steps to selecting which account to use:
+         1. If there is a WordPress.com account, use that.
+         2. If not, use selected site.
+        */
+
+        let context = ContextManager.sharedInstance().mainContext
+
+        // 1. Check for WP account
+        let accountService = AccountService(managedObjectContext: context)
+        if let defaultAccount = accountService.defaultWordPressComAccount() {
+            DDLogDebug("Zendesk - Using defaultAccount for suggested identity.")
+            getUserInformationFrom(wpAccount: defaultAccount)
+            completion()
             return
         }
 
-        // 3a. Jetpack site
+        // 2. Use information from selected site.
+        let blogService = BlogService(managedObjectContext: context)
+
+        guard let blog = blogService.lastUsedBlog() else {
+            // We have no user information.
+            completion()
+            return
+        }
+
+        // 2a. Jetpack site
         if let jetpackState = blog.jetpack, jetpackState.isConnected {
-            DDLogDebug("Using Jetpack site for Zendesk identity.")
+            DDLogDebug("Zendesk - Using Jetpack site for suggested identity.")
             getUserInformationFrom(jetpackState: jetpackState)
-            createZendeskIdentity()
-            saveAccountProfileToUD()
-            completion(true)
+            completion()
             return
 
         }
 
-        // 3b. self-hosted site
+        // 2b. self-hosted site
         ZendeskUtils.getUserInformationFrom(blog: blog) {
-            DDLogDebug("Using self-hosted for Zendesk identity.")
-            createZendeskIdentity()
-            saveAccountProfileToUD()
-            completion(true)
+            DDLogDebug("Zendesk - Using self-hosted for suggested identity.")
+            completion()
             return
         }
     }
 
-    static func createZendeskIdentity() {
+    static func createZendeskIdentity(completion: @escaping (Bool) -> Void) {
 
         guard let userEmail = ZendeskUtils.sharedInstance.userEmail else {
             DDLogInfo("No user email to create Zendesk identity with.")
             ZDKConfig.instance().userIdentity = nil
+            completion(false)
             return
         }
 
@@ -359,8 +370,9 @@ private extension ZendeskUtils {
         zendeskIdentity.email = userEmail
         zendeskIdentity.name = ZendeskUtils.sharedInstance.userName
         ZDKConfig.instance().userIdentity = zendeskIdentity
-        DDLogDebug("Zendesk identity created with email '\(zendeskIdentity.email)' and name '\(zendeskIdentity.name)'.")
+        DDLogDebug("Zendesk identity created with email '\(zendeskIdentity.email ?? "")' and name '\(zendeskIdentity.name ?? "")'.")
         registerDeviceIfNeeded()
+        completion(true)
     }
 
     static func registerDeviceIfNeeded() {
@@ -492,41 +504,28 @@ private extension ZendeskUtils {
         }
     }
 
-    static func getUserInformationFrom(savedProfile: [String: Any]) {
+    // MARK: - User Defaults
 
-        if let savedEmail = savedProfile[Constants.profileEmailKey] as? String {
-            ZendeskUtils.sharedInstance.userEmail = savedEmail
-        }
-
-        if let savedName = savedProfile[Constants.profileNameKey] as? String {
-            ZendeskUtils.sharedInstance.userName = savedName
-        }
-    }
-
-    // MARK: - Save to User Defaults
-
-    static func saveAccountProfileToUD() {
-        saveProfileToUDFor(key: Constants.zendeskProfileUDKey)
-
-        // Since we have account information, remove no account information.
-        UserDefaults.standard.removeObject(forKey: Constants.zendeskNoAccountProfileUDKey)
-        UserDefaults.standard.synchronize()
-    }
-
-    static func saveNoAccountProfileToUD() {
-        saveProfileToUDFor(key: Constants.zendeskNoAccountProfileUDKey)
-    }
-
-    static func saveProfileToUDFor(key: String) {
+    static func saveUserProfile() {
         var userProfile = [String: String]()
         userProfile[Constants.profileEmailKey] = ZendeskUtils.sharedInstance.userEmail
         userProfile[Constants.profileNameKey] = ZendeskUtils.sharedInstance.userName
-
-        UserDefaults.standard.set(userProfile, forKey: key)
+        DDLogDebug("Zendesk - saving profile to User Defaults: \(userProfile)")
+        UserDefaults.standard.set(userProfile, forKey: Constants.zendeskProfileUDKey)
         UserDefaults.standard.synchronize()
     }
 
-    static func saveUnreadCountToUD() {
+    static func getUserProfile() -> Bool {
+        guard let userProfile = UserDefaults.standard.dictionary(forKey: Constants.zendeskProfileUDKey) else {
+            return false
+        }
+        DDLogDebug("Zendesk - read profile from User Defaults: \(userProfile)")
+        ZendeskUtils.sharedInstance.userEmail = userProfile.valueAsString(forKey: Constants.profileEmailKey)
+        ZendeskUtils.sharedInstance.userName = userProfile.valueAsString(forKey: Constants.profileNameKey)
+        return true
+    }
+
+    static func saveUnreadCount() {
         UserDefaults.standard.set(unreadNotificationsCount, forKey: Constants.userDefaultsZendeskUnreadNotifications)
         UserDefaults.standard.synchronize()
     }
@@ -685,13 +684,16 @@ private extension ZendeskUtils {
             }
 
             ZendeskUtils.sharedInstance.userEmail = email
-            ZendeskUtils.sharedInstance.userName = alertController?.textFields?.last?.text ?? generateDisplayName(from: email)
+            ZendeskUtils.sharedInstance.userName = alertController?.textFields?.last?.text
+            saveUserProfile()
             completion(true)
             return
         }
 
-        // Disable Submit until a valid Email is entered.
-        submitAction.isEnabled = false
+        // Enable Submit based on email validity.
+        let email = ZendeskUtils.sharedInstance.userEmail ?? ""
+        submitAction.isEnabled = EmailFormatValidator.validate(string: email)
+
         // Make Submit button bold.
         alertController.preferredAction = submitAction
 
@@ -699,6 +701,7 @@ private extension ZendeskUtils {
         alertController.addTextField(configurationHandler: { textField in
             textField.clearButtonMode = .always
             textField.placeholder = LocalizedText.emailPlaceholder
+            textField.text = ZendeskUtils.sharedInstance.userEmail
 
             textField.addTarget(self,
                                 action: #selector(emailTextFieldDidChange),
@@ -709,6 +712,7 @@ private extension ZendeskUtils {
         alertController.addTextField { textField in
             textField.clearButtonMode = .always
             textField.placeholder = LocalizedText.namePlaceholder
+            textField.text = ZendeskUtils.sharedInstance.userName
         }
 
         // Show alert
@@ -736,7 +740,10 @@ private extension ZendeskUtils {
             return
         }
 
-        nameField.text = generateDisplayName(from: email)
+        // If we don't already have the user's name, generate it from the email.
+        if ZendeskUtils.sharedInstance.userName == nil {
+            nameField.text = generateDisplayName(from: email)
+        }
     }
 
     static func generateDisplayName(from rawEmail: String) -> String {
@@ -837,7 +844,6 @@ private extension ZendeskUtils {
         static let networkCarrierLabel = "Carrier:"
         static let networkCountryCodeLabel = "Country Code:"
         static let zendeskProfileUDKey = "wp_zendesk_profile"
-        static let zendeskNoAccountProfileUDKey = "wp_zendesk_profile_no_account"
         static let profileEmailKey = "email"
         static let profileNameKey = "name"
         static let userDefaultsZendeskUnreadNotifications = "wp_zendesk_unread_notifications"
@@ -875,8 +881,8 @@ extension ZendeskUtils: ZDKHelpCenterConversationsUIDelegate {
     }
 
     func active() -> ZDKContactUsVisibility {
-        // If the user is not logged in, disable 'Contact Us' via the Help Center and Article view.
-        if usingAnonymousIDForHelpCenter {
+        // If we don't have the user's information, disable 'Contact Us' via the Help Center and Article view.
+        if !ZendeskUtils.sharedInstance.haveUserIdentity {
             return .off
         }
 
