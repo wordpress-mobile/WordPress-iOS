@@ -3729,10 +3729,9 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         if let mediaAsset = asset as? Media {
             return WPImageViewController(media: mediaAsset)
         } else if let phasset = asset as? PHAsset {
-            // FIXME: Handle PHAsset appropriately
-            return nil
+            return WPImageViewController(asset: phasset)
         } else {
-            return nil // use the default
+            return nil // use the default preview
         }
     }
 
