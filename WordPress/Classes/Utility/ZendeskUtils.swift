@@ -370,7 +370,7 @@ private extension ZendeskUtils {
         zendeskIdentity.email = userEmail
         zendeskIdentity.name = ZendeskUtils.sharedInstance.userName
         ZDKConfig.instance().userIdentity = zendeskIdentity
-        DDLogDebug("Zendesk identity created with email '\(zendeskIdentity.email)' and name '\(zendeskIdentity.name)'.")
+        DDLogDebug("Zendesk identity created with email '\(zendeskIdentity.email ?? "")' and name '\(zendeskIdentity.name ?? "")'.")
         registerDeviceIfNeeded()
         completion(true)
     }
