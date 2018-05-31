@@ -1,3 +1,4 @@
+import MobileCoreServices
 
 /// Protocol used to abstract the information needed to load post related images.
 ///
@@ -38,6 +39,14 @@
     private var errorHandler: ((Error?) -> Void)?
     private var placeholder: UIImage?
     private var selectedPhotonQuality: UInt = Constants.defaultPhotonQuality
+
+    private lazy var assetRequestOptions: PHImageRequestOptions = {
+        let requestOptions = PHImageRequestOptions()
+        requestOptions.resizeMode = .fast
+        requestOptions.deliveryMode = .fastFormat
+        requestOptions.isNetworkAccessAllowed = true
+        return requestOptions
+    }()
 
     @objc init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs) {
         self.imageView = imageView
@@ -248,99 +257,6 @@ extension ImageLoader {
         }
     }
 
-    @objc(loadImageFromPHAsset:preferredSize:placeholder:success:error:)
-    /// Load an image from the given PHAsset object. If it's a gif, it will animate it.
-    /// For any other type of media, this will load the corresponding static image.
-    ///
-    /// - Parameters:
-    ///   - asset: The PHAsset object
-    ///   - placeholder: A placeholder to show while the image is loading.
-    ///   - size: The preferred size of the image to load.
-    ///   - success: A closure to be called if the image was loaded successfully.
-    ///   - error: A closure to be called if there was an error loading the image.
-    ///
-    func loadImage(asset: PHAsset, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: (() -> Void)?, error: ((Error?) -> Void)?) {
-
-// FIXME: Crude implmentation - clean this method up!!!
-
-        self.placeholder = placeholder
-        successHandler = success
-        errorHandler = error
-
-        // FIXME: If we have a video...we need to let the media picker's default preview handle this
-        guard asset.assetType() == .image else {
-            let error = self.createError(description: ErrorDescriptions.phassetIsNotImage)
-            callErrorHandler(with: error)
-            return
-        }
-
-        imageView.image = placeholder
-        imageView.startLoadingAnimation()
-
-        let manager = PHImageManager.default()
-        let requestOptions = PHImageRequestOptions()
-        requestOptions.resizeMode = .fast
-        requestOptions.deliveryMode = .fastFormat
-        requestOptions.isNetworkAccessAllowed = true
-
-        var optimizedSize: CGSize = size
-        if optimizedSize == .zero {
-            // When using a zero size, default to the maximum screen dimension.
-            let screenSize = UIScreen.main.bounds
-            let screenSizeMax = max(screenSize.width, screenSize.height)
-            optimizedSize = CGSize(width: screenSizeMax, height: screenSizeMax)
-        }
-
-        if asset.fileExtension()?.lowercased() == "gif" {
-            manager.requestImageData(for: asset, options: requestOptions, resultHandler: { [weak self] (data, str, orientation, info) -> Void in
-                guard info?[PHImageErrorKey] == nil else {
-                    var error: NSError?
-                    if let phImageError = info?[PHImageErrorKey] as? NSError {
-                        let userInfo = [NSUnderlyingErrorKey: phImageError]
-                        error = NSError(domain: ImageLoader.classNameWithoutNamespaces(), code: 0, userInfo: userInfo)
-                    } else {
-                        error = self?.createError(description: ErrorDescriptions.phassetGenericError)
-                    }
-                    self?.callErrorHandler(with: error)
-                    return
-                }
-
-                guard let data = data else {
-                    let error = self?.createError(description: ErrorDescriptions.phassetReturnedDataIsEmpty)
-                    self?.callErrorHandler(with: error)
-                    return
-                }
-
-                self?.imageView.setAnimatedImage(data, success: {
-                    self?.callSuccessHandler()
-                })
-            })
-        } else {
-            manager.requestImage(for: asset, targetSize: optimizedSize, contentMode: .aspectFill, options: requestOptions) { [weak self] (image, info) in
-                guard info?[PHImageErrorKey] == nil else {
-                    var error: NSError?
-                    if let phImageError = info?[PHImageErrorKey] as? NSError {
-                        let userInfo = [NSUnderlyingErrorKey: phImageError]
-                        error = NSError(domain: ImageLoader.classNameWithoutNamespaces(), code: 0, userInfo: userInfo)
-                    } else {
-                        error = self?.createError(description: ErrorDescriptions.phassetGenericError)
-                    }
-                    self?.callErrorHandler(with: error)
-                    return
-                }
-
-                guard let image = image else {
-                    let error = self?.createError(description: ErrorDescriptions.phassetReturnedDataIsEmpty)
-                    self?.callErrorHandler(with: error)
-                    return
-                }
-
-                self?.imageView.image = image
-                self?.callSuccessHandler()
-            }
-        }
-    }
-
     private func loadImage(from media: Media, preferredSize size: CGSize) {
         imageView.image = placeholder
         imageView.startLoadingAnimation()
@@ -368,6 +284,109 @@ extension ImageLoader {
                                               forImageURL: url,
                                               forceResize: true,
                                               imageQuality: selectedPhotonQuality)
+    }
+}
+
+// MARK: - Loading PHAsset object
+
+extension ImageLoader {
+
+    @objc(loadImageFromPHAsset:preferredSize:placeholder:success:error:)
+    /// Load an image from the given PHAsset object. If it's a gif, it will animate it.
+    /// For any other type of media, this will load the corresponding static image.
+    ///
+    /// - Parameters:
+    ///   - asset: The PHAsset object
+    ///   - placeholder: A placeholder to show while the image is loading.
+    ///   - size: The preferred size of the image to load.
+    ///   - success: A closure to be called if the image was loaded successfully.
+    ///   - error: A closure to be called if there was an error loading the image.
+    ///
+    func loadImage(asset: PHAsset, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: (() -> Void)?, error: ((Error?) -> Void)?) {
+        self.placeholder = placeholder
+        successHandler = success
+        errorHandler = error
+
+        guard asset.assetType() == .image else {
+            let error = self.createError(description: ErrorDescriptions.phassetIsNotImage)
+            callErrorHandler(with: error)
+            return
+        }
+
+        if let typeIdentifier = asset.utTypeIdentifier(), UTTypeEqual(typeIdentifier as CFString, kUTTypeGIF) {
+            loadGif(from: asset)
+        } else {
+            loadImage(from: asset, preferredSize: size)
+        }
+    }
+
+    private func loadGif(from asset: PHAsset) {
+        imageView.image = placeholder
+        imageView.startLoadingAnimation()
+
+        PHImageManager.default().requestImageData(for: asset,
+                                                  options: assetRequestOptions,
+                                                  resultHandler: { [weak self] (data, str, orientation, info) -> Void in
+            guard info?[PHImageErrorKey] == nil else {
+                var error: NSError?
+                if let phImageError = info?[PHImageErrorKey] as? NSError {
+                    let userInfo = [NSUnderlyingErrorKey: phImageError]
+                    error = NSError(domain: ImageLoader.classNameWithoutNamespaces(), code: 0, userInfo: userInfo)
+                } else {
+                    error = self?.createError(description: ErrorDescriptions.phassetGenericError)
+                }
+                self?.callErrorHandler(with: error)
+                return
+            }
+
+            guard let data = data else {
+                let error = self?.createError(description: ErrorDescriptions.phassetReturnedDataIsEmpty)
+                self?.callErrorHandler(with: error)
+                return
+            }
+
+            self?.imageView.setAnimatedImage(data, success: {
+                self?.callSuccessHandler()
+            })
+        })
+    }
+
+    private func loadImage(from asset: PHAsset, preferredSize size: CGSize) {
+        imageView.image = placeholder
+        imageView.startLoadingAnimation()
+
+        var optimizedSize: CGSize = size
+        if optimizedSize == .zero {
+            // When using a zero size, default to the maximum screen dimension.
+            let screenSize = UIScreen.main.bounds
+            let screenSizeMax = max(screenSize.width, screenSize.height)
+            optimizedSize = CGSize(width: screenSizeMax, height: screenSizeMax)
+        }
+
+        PHImageManager.default().requestImage(for: asset,
+                                              targetSize: optimizedSize,
+                                              contentMode: .aspectFill,
+                                              options: assetRequestOptions) { [weak self] (image, info) in
+            guard info?[PHImageErrorKey] == nil else {
+                var error: NSError?
+                if let phImageError = info?[PHImageErrorKey] as? NSError {
+                    let userInfo = [NSUnderlyingErrorKey: phImageError]
+                    error = NSError(domain: ImageLoader.classNameWithoutNamespaces(), code: 0, userInfo: userInfo)
+                } else {
+                    error = self?.createError(description: ErrorDescriptions.phassetGenericError)
+                }
+                self?.callErrorHandler(with: error)
+                return
+            }
+            guard let image = image else {
+                let error = self?.createError(description: ErrorDescriptions.phassetReturnedDataIsEmpty)
+                self?.callErrorHandler(with: error)
+                return
+            }
+
+            self?.imageView.image = image
+            self?.callSuccessHandler()
+        }
     }
 }
 
