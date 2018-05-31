@@ -2114,7 +2114,8 @@ extension AztecPostViewController {
         options.filter = [.all]
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
-
+        options.badgedUTTypes = [String(kUTTypeGIF)]
+        
         let picker = WPNavigationMediaPickerViewController()
 
         switch dataSourceType {
@@ -2156,6 +2157,7 @@ extension AztecPostViewController {
         options.allowMultipleSelection = true
         options.allowCaptureOfMedia = false
         options.scrollVertically = true
+        options.badgedUTTypes = [String(kUTTypeGIF)]
 
         let picker = WPInputMediaPickerViewController(options: options)
         mediaPickerInputViewController = picker
