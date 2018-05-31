@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+@import Photos;
 
 @class Media;
 
@@ -7,6 +8,7 @@
 - (instancetype)initWithImage:(UIImage *)image;
 - (instancetype)initWithURL:(NSURL *)url;
 - (instancetype)initWithMedia:(Media *)media;
+- (instancetype)initWithAsset:(PHAsset *)asset;
 - (instancetype)initWithGifData:(NSData *)data;
 
 - (instancetype)initWithImage:(UIImage *)image andURL:(NSURL *)url;
