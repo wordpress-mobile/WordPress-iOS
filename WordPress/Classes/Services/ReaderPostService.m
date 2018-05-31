@@ -1067,7 +1067,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     ReaderPost *post;
     NSString *globalID = remotePost.globalID;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"globalID = %@ AND topic = %@", globalID, topic];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"globalID = %@ AND (topic = %@ OR topic = NULL)", globalID, topic];
     NSArray *arr = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 
     BOOL existing = false;
