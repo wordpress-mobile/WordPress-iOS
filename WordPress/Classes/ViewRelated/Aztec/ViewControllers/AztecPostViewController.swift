@@ -9,6 +9,7 @@ import AFNetworking
 import WPMediaPicker
 import SVProgressHUD
 import AVKit
+import MobileCoreServices
 
 
 // MARK: - Aztec's Native Editor!
@@ -3722,7 +3723,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         }
 
         let asset = assets[selected]
-        guard let ext = asset.fileExtension?(), ext == "gif" else {
+        guard let typeIdentifier = asset.utTypeIdentifier?(), UTTypeEqual(typeIdentifier as CFString, kUTTypeGIF) else {
             return nil // Not a GIF, use the default
         }
 
