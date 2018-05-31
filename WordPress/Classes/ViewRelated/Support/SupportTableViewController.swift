@@ -296,7 +296,7 @@ private extension SupportTableViewController {
         static let activityLogs = NSLocalizedString("Activity Logs", comment: "Option in Support view to see activity logs.")
         static let informationFooter = NSLocalizedString("The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app.", comment: "Support screen footer text explaining the Extra Debug feature.")
         static let contactEmail = NSLocalizedString("Contact Email", comment: "Support email label.")
-        static let emailNotSet = NSLocalizedString("not set", comment: "Display value for Support email field if there is no user email address.")
+        static let emailNotSet = NSLocalizedString("Not Set", comment: "Display value for Support email field if there is no user email address.")
     }
 
     // MARK: - User Defaults Keys
