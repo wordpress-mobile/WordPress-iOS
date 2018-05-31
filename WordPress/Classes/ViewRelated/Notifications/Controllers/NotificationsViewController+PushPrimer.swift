@@ -12,10 +12,24 @@ extension NotificationsViewController {
         }
     }
 
-    func setupPrimeForPush() {
+    func setupNotificationPrompt() {
+        PushNotificationsManager.shared.loadAuthorizationStatus { [weak self] (status) in
+            switch status {
+            case .notDetermined:
+                self?.setupPrimeForPush()
+            case .denied:
+                self?.setupWinback()
+            case .authorized:
+                break
+            }
+        }
+    }
+
+    private func setupPrimeForPush() {
         defer {
             WPAnalytics.track(.pushNotificationPrimerSeen, withProperties: [Analytics.locationKey: Analytics.inlineKey])
         }
+        showInlinePrompt()
 
         inlinePromptView.setupHeading(NSLocalizedString("We'll notify you when you get followers, comments, and likes.",
                                                         comment: "This is the string we display when asking the user to approve push notifications"))
@@ -39,6 +53,46 @@ extension NotificationsViewController {
         inlinePromptView.setupNoButton(title: noTitle) { [weak self] button in
             defer {
                 WPAnalytics.track(.pushNotificationPrimerNoTapped, withProperties: [Analytics.locationKey: Analytics.inlineKey])
+            }
+            self?.hideInlinePrompt(delay: 0.0)
+            UserDefaults.standard.notificationPrimerInlineWasAcknowledged = true
+        }
+    }
+
+    private func setupWinback() {
+        // only show the winback for folks that denied without seeing the post-login primer: aka users of a previous version
+        guard !UserDefaults.standard.notificationPrimerAlertWasDisplayed else {
+            // they saw the primer, and denied us. they aren't coming back, we aren't bothering them anymore.
+            UserDefaults.standard.notificationPrimerInlineWasAcknowledged = true
+            return
+        }
+
+        defer {
+            WPAnalytics.track(.pushNotificationWinbackShown, withProperties: [Analytics.locationKey: Analytics.inlineKey])
+        }
+
+        showInlinePrompt()
+
+        inlinePromptView.setupHeading(NSLocalizedString("Push notifications have been turned off in iOS settings. Toggle “Allow Notifications” to turn them back on.",
+                                                        comment: "This is the string we display when asking the user to approve push notifications in the settings app after previously having denied them."))
+        let yesTitle = NSLocalizedString("Go to iOS Settings",
+                                         comment: "Button label for going to settings to approve push notifications")
+        let noTitle = NSLocalizedString("No thanks",
+                                        comment: "Button label for denying our request to re-allow push notifications")
+
+        inlinePromptView.setupYesButton(title: yesTitle) { [weak self] button in
+            defer {
+                WPAnalytics.track(.pushNotificationWinbackSettingsTapped, withProperties: [Analytics.locationKey: Analytics.inlineKey])
+            }
+            self?.hideInlinePrompt(delay: 0.0)
+            let targetURL = URL(string: UIApplicationOpenSettingsURLString)
+            UIApplication.shared.open(targetURL!)
+            UserDefaults.standard.notificationPrimerInlineWasAcknowledged = true
+        }
+
+        inlinePromptView.setupNoButton(title: noTitle) { [weak self] button in
+            defer {
+                WPAnalytics.track(.pushNotificationWinbackNoTapped, withProperties: [Analytics.locationKey: Analytics.inlineKey])
             }
             self?.hideInlinePrompt(delay: 0.0)
             UserDefaults.standard.notificationPrimerInlineWasAcknowledged = true
