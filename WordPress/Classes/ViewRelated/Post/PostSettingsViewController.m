@@ -1259,6 +1259,7 @@ FeaturedImageViewControllerDelegate>
     options.allowMultipleSelection = NO;
     options.filter = WPMediaTypeImage;
     options.showSearchBar = YES;
+    options.badgedUTTypes = [NSSet setWithObject: (__bridge NSString *)kUTTypeGIF];
     WPNavigationMediaPickerViewController *picker = [[WPNavigationMediaPickerViewController alloc] initWithOptions:options];
     self.mediaDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.apost
                                                              initialDataSourceType:MediaPickerDataSourceTypeMediaLibrary];
