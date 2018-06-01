@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import Gridicons
 
 protocol ReaderPostUndoCellDelegate: NSObjectProtocol {
     func readerCellWillUndo(_ cell: ReaderSavedPostUndoCell)
@@ -40,6 +41,11 @@ final class ReaderSavedPostUndoCell: UITableViewCell {
 
     private func setupUndoButton() {
         undoButton.setTitle(Strings.undo, for: .normal)
+        let size = CGSize(width: 20, height: 20)
+        let icon = Gridicon.iconOfType(.undo, withSize: size)
+        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
+
+        undoButton.setImage(tintedIcon, for: .normal)
     }
 
     private func applyStyles() {
