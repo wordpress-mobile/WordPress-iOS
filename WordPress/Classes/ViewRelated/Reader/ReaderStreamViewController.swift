@@ -1147,7 +1147,7 @@ import WordPressFlux
                                                 withPost: post,
                                                 topic: topic,
                                                 delegate: postCellActions,
-                                                loggedIn: true)
+                                                loggedInActionVisibility: .visible(enabled: isLoggedIn))
     }
 
     @objc func handleContextDidSaveNotification(_ notification: Foundation.Notification) {
@@ -1467,6 +1467,10 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         } else {
             controller = ReaderDetailViewController.controllerWithPost(post)
 
+        }
+
+        if post.isSavedForLater {
+            trackSavedPostNavigation()
         }
 
         navigationController?.pushFullscreenViewController(controller, animated: true)
