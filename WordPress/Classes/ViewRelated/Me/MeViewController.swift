@@ -322,7 +322,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                 let controller = SupportTableViewController()
 
                 // If iPad, show Support from Me view controller instead of navigation controller.
-                if WPDeviceIdentification.isiPad() {
+                if !self.splitViewControllerIsHorizontallyCompact {
                     controller.showHelpFromViewController = self
                 }
 
