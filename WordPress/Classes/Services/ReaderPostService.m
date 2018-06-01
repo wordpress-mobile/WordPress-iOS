@@ -426,6 +426,24 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
+- (void)clearSavedPostFlags
+{
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+    request.predicate = [NSPredicate predicateWithFormat:@"isSavedForLater = true"];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@, unsaving saved posts: %@", NSStringFromSelector(_cmd), error);
+        return;
+    }
+
+    for (ReaderPost *post in results) {
+        post.isSavedForLater = NO;
+    }
+
+    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
+}
+
 - (void)clearInUseFlags
 {
     NSError *error;
