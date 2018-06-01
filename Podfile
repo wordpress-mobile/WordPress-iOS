@@ -68,8 +68,8 @@ target 'WordPress' do
     pod 'Gridicons', '0.15'
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'b5ae03494596e3da7a8f814f9cab8e96ca345bc8'
-    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'45a818a5426e5b74ca5fd14c376d4837201c7126'
-    pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '45a818a5426e5b74ca5fd14c376d4837201c7126'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'c38d29b09cc9710ef307891f76a02c80a7002a59'
+    pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'c38d29b09cc9710ef307891f76a02c80a7002a59'
     pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit =>'e72725ee5aed1a2c4dffa755a78c36e3ecf6e2b0'
 
     target 'WordPressTest' do
@@ -89,8 +89,8 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
 
-        pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'45a818a5426e5b74ca5fd14c376d4837201c7126'
-        pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '45a818a5426e5b74ca5fd14c376d4837201c7126'
+        pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'c38d29b09cc9710ef307891f76a02c80a7002a59'
+        pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'c38d29b09cc9710ef307891f76a02c80a7002a59'
         pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit =>'e72725ee5aed1a2c4dffa755a78c36e3ecf6e2b0'
         pod 'Gridicons', '0.15'
     end
@@ -105,8 +105,8 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
 
-        pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'45a818a5426e5b74ca5fd14c376d4837201c7126'
-        pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '45a818a5426e5b74ca5fd14c376d4837201c7126'
+        pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'c38d29b09cc9710ef307891f76a02c80a7002a59'
+        pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => 'c38d29b09cc9710ef307891f76a02c80a7002a59'
         pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit =>'e72725ee5aed1a2c4dffa755a78c36e3ecf6e2b0'
         pod 'Gridicons', '0.15'
     end
