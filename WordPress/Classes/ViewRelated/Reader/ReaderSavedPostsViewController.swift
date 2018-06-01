@@ -11,6 +11,7 @@ final class ReaderSavedPostsViewController: UITableViewController {
     private enum UndoCell {
         static let nibName = "ReaderSavedPostUndoCell"
         static let reuseIdentifier = "ReaderUndoCellReuseIdentifier"
+        static let height: CGFloat = 44
     }
 
     fileprivate var noResultsView: WPNoResultsView!
