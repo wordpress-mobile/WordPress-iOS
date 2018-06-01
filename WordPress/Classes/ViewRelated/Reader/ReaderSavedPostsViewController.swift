@@ -258,19 +258,16 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
         }
         let post = posts[indexPath.row]
 
-        //        if recentlyBlockedSitePostObjectIDs.contains(post.objectID) {
-        //            let cell = tableView.dequeueReusableCell(withIdentifier: readerBlockedCellReuseIdentifier) as! ReaderBlockedSiteCell
-//        cellConfiguration.configureBlockedCell(cell,
-//                                               withContent: content,
-//                                               atIndexPath: indexPath)
-        //            return cell
-        //        }
-
         if post.isCross() {
             let cell = tableConfiguration.crossPostCell(tableView)
             cellConfiguration.configureCrossPostCell(cell,
                                                      withContent: content,
                                                      atIndexPath: indexPath)
+            return cell
+        }
+
+        if removedPosts?.contains(post) == true {
+            let cell = undoCell(tableView)
             return cell
         }
 
