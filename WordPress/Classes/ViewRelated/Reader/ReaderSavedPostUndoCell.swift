@@ -13,8 +13,15 @@ final class ReaderSavedPostUndoCell: UITableViewCell {
 
     weak var delegate: ReaderPostUndoCellDelegate?
 
+    private enum Strings {
+        static let removed = NSLocalizedString("Removed", comment: "Label indicating a post has been removed from Saved For Later")
+        static let undo = NSLocalizedString("Undo", comment: "Undo action")
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
+        setupRemovedLabel()
+        setupUndoButton()
         applyStyles()
     }
 
@@ -25,6 +32,14 @@ final class ReaderSavedPostUndoCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         setHighlighted(selected, animated: animated)
+    }
+
+    private func setupRemovedLabel() {
+        removed.text = Strings.removed
+    }
+
+    private func setupUndoButton() {
+        undoButton.setTitle(Strings.undo, for: .normal)
     }
 
     private func applyStyles() {
