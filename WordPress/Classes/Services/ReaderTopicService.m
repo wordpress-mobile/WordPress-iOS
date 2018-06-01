@@ -165,6 +165,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
     for (ReaderAbstractTopic *topic in results) {
         DDLogInfo(@"Deleting topic: %@", topic.title);
+        [self preserveSavedPostsFromTopic:topic];
         [self.managedObjectContext deleteObject:topic];
     }
     [self.managedObjectContext performBlockAndWait:^{
@@ -190,6 +191,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
             continue;
         }
         DDLogInfo(@"Deleting topic: %@", topic.title);
+        [self preserveSavedPostsFromTopic:topic];
         [self.managedObjectContext deleteObject:topic];
     }
     [self.managedObjectContext performBlockAndWait:^{
@@ -221,6 +223,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     NSArray *currentTopics = [self allTopics];
     for (ReaderAbstractTopic *topic in currentTopics) {
         DDLogInfo(@"Deleting topic: %@", topic.title);
+        [self preserveSavedPostsFromTopic:topic];
         [self.managedObjectContext deleteObject:topic];
     }
     [self.managedObjectContext performBlockAndWait:^{
@@ -233,9 +236,20 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     if (!topic) {
         return;
     }
+    [self preserveSavedPostsFromTopic:topic];
     [self.managedObjectContext deleteObject:topic];
     [self.managedObjectContext performBlockAndWait:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+}
+
+- (void)preserveSavedPostsFromTopic:(ReaderAbstractTopic *)topic
+{
+    [topic.posts enumerateObjectsUsingBlock:^(ReaderPost * _Nonnull post, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (post.isSavedForLater) {
+            DDLogInfo(@"Preserving saved post: %@", post.titleForDisplay);
+            post.topic = nil;
+        }
     }];
 }
 
@@ -941,6 +955,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
                         topic.following = NO;
                     } else {
                         DDLogInfo(@"Deleting topic: %@", topic.title);
+                        [self preserveSavedPostsFromTopic:topic];
                         [self.managedObjectContext deleteObject:topic];
                     }
                 }
