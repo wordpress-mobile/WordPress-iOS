@@ -27,6 +27,8 @@ final class ReaderSavedPostsViewController: UITableViewController {
     private let cellConfiguration = ReaderCellConfiguration()
     /// Actions
     private var postCellActions: ReaderPostCellActions?
+    /// Posts that have been removed but not yet discarded
+    private var removedPosts: ReaderSaveForLaterRemovedPosts?
 
     fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
 
@@ -55,6 +57,12 @@ final class ReaderSavedPostsViewController: UITableViewController {
         super.viewDidAppear(animated)
 
         refreshNoResultsView()
+        setupRemovedPosts()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        clearRemovedPosts()
     }
 
     func centerResultsStatusViewIfNeeded() {
@@ -67,10 +75,10 @@ final class ReaderSavedPostsViewController: UITableViewController {
 
     fileprivate func setupTableView() {
         tableConfiguration.setup(tableView)
-        setUpUndoCell(tableView)
+        setupUndoCell(tableView)
     }
 
-    private func setUpUndoCell(_ tableView: UITableView) {
+    private func setupUndoCell(_ tableView: UITableView) {
         let nib = UINib(nibName: UndoCell.nibName, bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: UndoCell.reuseIdentifier)
     }
@@ -81,6 +89,14 @@ final class ReaderSavedPostsViewController: UITableViewController {
 
     fileprivate func setupContentHandler() {
         content.initializeContent(tableView: tableView, delegate: self)
+    }
+
+    private func setupRemovedPosts() {
+        removedPosts = ReaderSaveForLaterRemovedPosts()
+    }
+
+    private func clearRemovedPosts() {
+        removedPosts = nil
     }
 
     /// The fetch request can need a different predicate depending on how the content
