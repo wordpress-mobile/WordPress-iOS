@@ -8,13 +8,15 @@ protocol ReaderPostUndoCellDelegate: NSObjectProtocol {
 final class ReaderSavedPostUndoCell: UITableViewCell {
     @IBOutlet weak var removed: UILabel!
     @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var borderedView: UIView!
+    @IBOutlet weak var undoButton: UIButton!
 
     weak var delegate: ReaderPostUndoCellDelegate?
     weak var contentProvider: ReaderPostContentProvider?
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        applyStyles()
     }
 
     @IBAction func undo(_ sender: Any) {
@@ -27,5 +29,16 @@ final class ReaderSavedPostUndoCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         setHighlighted(selected, animated: animated)
+    }
+
+    private func applyStyles() {
+        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
+        borderedView.layer.borderWidth = 1.0
+//        backgroundColor = WPStyleGuide.greyLighten30()
+//        contentView.backgroundColor = WPStyleGuide.greyLighten30()
+//        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
+//        borderedView.layer.borderWidth = 1.0
+
+        WPStyleGuide.applyReaderCardTitleLabelStyle(title)
     }
 }
