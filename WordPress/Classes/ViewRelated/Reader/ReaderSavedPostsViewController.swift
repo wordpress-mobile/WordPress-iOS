@@ -110,17 +110,13 @@ final class ReaderSavedPostsViewController: UITableViewController {
 
 
     @objc open func configurePostCardCell(_ cell: UITableViewCell, post: ReaderPost) {
-        guard let topic = post.topic else {
-            return
-        }
-
         if postCellActions == nil {
-            postCellActions = ReaderPostCellActions(context: managedObjectContext(), origin: self, topic: topic, visibleConfirmation: false)
+            postCellActions = ReaderPostCellActions(context: managedObjectContext(), origin: self, topic: post.topic, visibleConfirmation: false)
         }
 
         cellConfiguration.configurePostCardCell(cell,
                                                 withPost: post,
-                                                topic: topic,
+                                                topic: post.topic,
                                                 delegate: postCellActions,
                                                 loggedInActionVisibility: .hidden)
     }
