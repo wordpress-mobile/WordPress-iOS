@@ -7,6 +7,12 @@ final class ReaderSavedPostsViewController: UITableViewController {
     private enum Strings {
         static let title = NSLocalizedString("Saved Posts", comment: "Title for list of posts saved for later")
     }
+
+    private enum UndoCell {
+        static let nibName = "ReaderSavedPostUndoCell"
+        static let reuseIdentifier = "ReaderUndoCellReuseIdentifier"
+    }
+
     fileprivate var noResultsView: WPNoResultsView!
     fileprivate var footerView: PostListFooterView!
     fileprivate let heightForFooterView = CGFloat(34.0)
@@ -60,6 +66,13 @@ final class ReaderSavedPostsViewController: UITableViewController {
 
     fileprivate func setupTableView() {
         tableConfiguration.setup(tableView)
+
+        setUpUndoCell(tableView)
+    }
+
+    private func setUpUndoCell(_ tableView: UITableView) {
+        let nib = UINib(nibName: UndoCell.nibName, bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: UndoCell.reuseIdentifier)
     }
 
 
