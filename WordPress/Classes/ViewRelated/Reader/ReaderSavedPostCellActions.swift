@@ -2,6 +2,8 @@ protocol ReaderSavedPostCellActionsDelegate: class {
     func willRemove(_ cell: ReaderPostCardCell)
 }
 
+
+/// Specialises ReaderPostCellActions to provide specific overrides for the ReaderSavedPostsViewController
 final class ReaderSavedPostCellActions: ReaderPostCellActions {
     /// Posts that have been removed but not yet discarded
     private var removedPosts = ReaderSaveForLaterRemovedPosts()
@@ -13,7 +15,6 @@ final class ReaderSavedPostCellActions: ReaderPostCellActions {
             removedPosts.add(post)
         }
         delegate?.willRemove(cell)
-        //super.readerCell(cell, saveActionForProvider: provider)
     }
 
     func contains(_ post: ReaderPost) -> Bool {
