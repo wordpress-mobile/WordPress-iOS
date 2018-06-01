@@ -1,4 +1,5 @@
 import WPMediaPicker
+import MobileCoreServices
 
 /// Encapsulates launching and customization of a media picker to import media from the Photos Library
 final class MediaLibraryPicker: NSObject {
@@ -13,7 +14,7 @@ final class MediaLibraryPicker: NSObject {
         options.showMostRecentFirst = true
         options.filter = [.all]
         options.allowCaptureOfMedia = false
-
+        options.badgedUTTypes = [String(kUTTypeGIF)]
 
         let picker = WPNavigationMediaPickerViewController(options: options)
         picker.dataSource = dataSource
