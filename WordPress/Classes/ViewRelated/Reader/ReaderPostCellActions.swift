@@ -96,7 +96,7 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         }
     }
 
-    fileprivate func toggleSavedForLater(for post: ReaderPost) {
+    func toggleSavedForLater(for post: ReaderPost) {
         let actionOrigin: ReaderSaveForLaterOrigin
         if origin is ReaderSavedPostsViewController {
             actionOrigin = .savedStream
