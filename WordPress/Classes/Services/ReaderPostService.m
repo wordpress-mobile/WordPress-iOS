@@ -409,6 +409,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = NULL AND inUse = false"];
+    pred = [self predicateIgnoringSavedForLaterPosts:pred];
     [fetchRequest setPredicate:pred];
 
     NSArray *arr = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -872,7 +873,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = %@ AND sortRank < %@", topic, rank];
-
     [fetchRequest setPredicate:pred];
 
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortRank" ascending:NO];
@@ -885,8 +885,13 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 
     for (ReaderPost *post in currentPosts) {
-        DDLogInfo(@"Deleting ReaderPost: %@", post);
-        [self.managedObjectContext deleteObject:post];
+        if (post.isSavedForLater) {
+            // If the missing post is currently being used or has been saved, just remove its topic.
+            post.topic = nil;
+        } else {
+            DDLogInfo(@"Deleting ReaderPost: %@", post);
+            [self.managedObjectContext deleteObject:post];
+        }
     }
 }
 
@@ -930,8 +935,8 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
             continue;
         }
         // The post was missing from the batch and needs to be cleaned up.
-        if (post.inUse) {
-            // If the missing post is currenty being used just remove its topic.
+        if (post.inUse || post.isSavedForLater) {
+            // If the missing post is currently being used or has been saved, just remove its topic.
             post.topic = nil;
         } else {
             DDLogInfo(@"Deleting ReaderPost: %@", post);
@@ -977,7 +982,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSRange range = NSMakeRange(maxPosts, [posts count] - maxPosts);
     NSArray *postsToDelete = [posts subarrayWithRange:range];
     for (ReaderPost *post in postsToDelete) {
-        if (post.inUse) {
+        if (post.inUse || post.isSavedForLater) {
             post.topic = nil;
         } else {
             DDLogInfo(@"Deleting ReaderPost: %@", post.postTitle);
@@ -1014,7 +1019,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 
     for (ReaderPost *post in results) {
-        if (post.inUse) {
+        if (post.inUse || post.isSavedForLater) {
             // If the missing post is currenty being used just remove its topic.
             post.topic = nil;
         } else {
@@ -1062,7 +1067,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     ReaderPost *post;
     NSString *globalID = remotePost.globalID;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"globalID = %@ AND topic = %@", globalID, topic];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"globalID = %@ AND (topic = %@ OR topic = NULL)", globalID, topic];
     NSArray *arr = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 
     BOOL existing = false;
