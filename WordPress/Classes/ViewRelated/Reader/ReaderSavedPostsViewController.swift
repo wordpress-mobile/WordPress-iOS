@@ -365,15 +365,10 @@ extension ReaderSavedPostsViewController: ReaderSavedPostCellActionsDelegate {
 
 extension ReaderSavedPostsViewController: ReaderPostUndoCellDelegate {
     func readerCell(_ cell: ReaderSavedPostUndoCell, undoActionForProvider provider: ReaderPostContentProvider) {
-        if let cellIndex = tableView.indexPath(for: cell) {
-            guard let posts = content.content as? [ReaderPost] else {
-                DDLogError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
-                return
-            }
-
-            let post = posts[cellIndex.row]
-            postCellActions?.remove(post)
-            tableView.reloadRows(at: [cellIndex], with: .fade)
+        if let cellIndex = tableView.indexPath(for: cell),
+            let post: ReaderPost = content.object(at: cellIndex) {
+                postCellActions?.remove(post)
+                tableView.reloadRows(at: [cellIndex], with: .fade)
         }
     }
 }
