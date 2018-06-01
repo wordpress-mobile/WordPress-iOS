@@ -20,4 +20,8 @@ final class ReaderSaveForLaterRemovedPosts {
     func contains(_ post: ReaderPost) -> Bool {
         return removedPosts.contains(post)
     }
+
+    func all() -> [ReaderPost] {
+        return removedPosts
+    }
 }
