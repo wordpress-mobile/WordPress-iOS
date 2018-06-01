@@ -67,7 +67,6 @@ final class ReaderSavedPostsViewController: UITableViewController {
 
     fileprivate func setupTableView() {
         tableConfiguration.setup(tableView)
-
         setUpUndoCell(tableView)
     }
 
@@ -76,6 +75,9 @@ final class ReaderSavedPostsViewController: UITableViewController {
         tableView.register(nib, forCellReuseIdentifier: UndoCell.reuseIdentifier)
     }
 
+    func undoCell(_ tableView: UITableView) -> ReaderSavedPostUndoCell {
+        return tableView.dequeueReusableCell(withIdentifier: UndoCell.reuseIdentifier) as! ReaderSavedPostUndoCell
+    }
 
     fileprivate func setupContentHandler() {
         content.initializeContent(tableView: tableView, delegate: self)
