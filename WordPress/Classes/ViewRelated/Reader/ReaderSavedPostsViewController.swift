@@ -265,7 +265,6 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
 
     private func configureUndoCell(_ cell: ReaderSavedPostUndoCell, with post: ReaderPost) {
         cell.title.text = post.titleForDisplay()
-        cell.contentProvider = post
         cell.delegate = self
     }
 
@@ -364,7 +363,7 @@ extension ReaderSavedPostsViewController: ReaderSavedPostCellActionsDelegate {
 }
 
 extension ReaderSavedPostsViewController: ReaderPostUndoCellDelegate {
-    func readerCell(_ cell: ReaderSavedPostUndoCell, undoActionForProvider provider: ReaderPostContentProvider) {
+    func readerCellWillUndo(_ cell: ReaderSavedPostUndoCell) {
         if let cellIndex = tableView.indexPath(for: cell),
             let post: ReaderPost = content.object(at: cellIndex) {
                 postCellActions?.remove(post)

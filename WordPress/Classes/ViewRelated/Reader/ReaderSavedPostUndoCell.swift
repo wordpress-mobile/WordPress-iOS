@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 protocol ReaderPostUndoCellDelegate: NSObjectProtocol {
-    func readerCell(_ cell: ReaderSavedPostUndoCell, undoActionForProvider provider: ReaderPostContentProvider)
+    func readerCellWillUndo(_ cell: ReaderSavedPostUndoCell)
 }
 
 final class ReaderSavedPostUndoCell: UITableViewCell {
@@ -12,7 +12,6 @@ final class ReaderSavedPostUndoCell: UITableViewCell {
     @IBOutlet weak var undoButton: UIButton!
 
     weak var delegate: ReaderPostUndoCellDelegate?
-    weak var contentProvider: ReaderPostContentProvider?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -20,10 +19,7 @@ final class ReaderSavedPostUndoCell: UITableViewCell {
     }
 
     @IBAction func undo(_ sender: Any) {
-        guard let provider = contentProvider else {
-            return
-        }
-        delegate?.readerCell(self, undoActionForProvider: provider)
+        delegate?.readerCellWillUndo(self)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
