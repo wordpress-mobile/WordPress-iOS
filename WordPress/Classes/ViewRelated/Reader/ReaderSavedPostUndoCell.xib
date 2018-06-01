@@ -24,10 +24,10 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0qS-wL-AiS">
-                        <rect key="frame" x="16" y="6" width="304" height="30"/>
+                        <rect key="frame" x="16" y="6" width="288" height="30"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="edF-mf-PsH">
-                                <rect key="frame" x="0.0" y="0.0" width="258" height="30"/>
+                                <rect key="frame" x="0.0" y="0.0" width="242" height="30"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Removed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qPM-It-aeV">
                                         <rect key="frame" x="0.0" y="0.0" width="71.5" height="30"/>
@@ -36,7 +36,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lnR-4i-vdi">
-                                        <rect key="frame" x="71.5" y="0.0" width="186.5" height="30"/>
+                                        <rect key="frame" x="71.5" y="0.0" width="170.5" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -44,7 +44,7 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jmj-W8-Yz3">
-                                <rect key="frame" x="258" y="0.0" width="46" height="30"/>
+                                <rect key="frame" x="242" y="0.0" width="46" height="30"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
                                     <action selector="undo:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ZyQ-ga-eiX"/>
@@ -57,7 +57,7 @@
                     <constraint firstItem="0qS-wL-AiS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="FCo-M3-vdJ"/>
                     <constraint firstAttribute="trailing" secondItem="TBy-h6-gyK" secondAttribute="trailing" id="HV5-h3-5B3"/>
                     <constraint firstAttribute="bottom" secondItem="TBy-h6-gyK" secondAttribute="bottom" constant="-0.5" id="UDU-ic-hD6"/>
-                    <constraint firstAttribute="trailing" secondItem="0qS-wL-AiS" secondAttribute="trailing" id="dU4-cX-eF9"/>
+                    <constraint firstAttribute="trailing" secondItem="0qS-wL-AiS" secondAttribute="trailing" constant="16" id="dU4-cX-eF9"/>
                     <constraint firstItem="TBy-h6-gyK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="eGO-Jj-XbX"/>
                     <constraint firstItem="TBy-h6-gyK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="pGx-RV-Mba"/>
                     <constraint firstItem="0qS-wL-AiS" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="rhX-kB-f68"/>
