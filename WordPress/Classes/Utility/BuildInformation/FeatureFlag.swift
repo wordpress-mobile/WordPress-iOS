@@ -5,7 +5,6 @@ enum FeatureFlag: Int {
     case exampleFeature
     case jetpackDisconnect
     case activity
-    case usernameChanging
     case zendeskMobile
     case saveForLater
     case gifSupportInReaderDetail
@@ -19,8 +18,6 @@ enum FeatureFlag: Int {
             return BuildConfiguration.current == .localDeveloper
         case .activity:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
-        case .usernameChanging:
-            return BuildConfiguration.current == .localDeveloper
         case .zendeskMobile:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .saveForLater:
