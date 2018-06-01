@@ -128,6 +128,7 @@ final class ReaderSavedPostsViewController: UITableViewController {
     @objc open func configurePostCardCell(_ cell: UITableViewCell, post: ReaderPost) {
         if postCellActions == nil {
             postCellActions = ReaderSavedPostCellActions(context: managedObjectContext(), origin: self, topic: post.topic, visibleConfirmation: false)
+            postCellActions?.delegate = self
         }
 
         cellConfiguration.configurePostCardCell(cell,
@@ -250,6 +251,7 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
+
         if postCellActions?.contains(post) == true {
             let cell = undoCell(tableView)
             return cell
@@ -344,4 +346,14 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
     public func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
         // Do nothing
     }
+}
+
+extension ReaderSavedPostsViewController: ReaderSavedPostCellActionsDelegate {
+    func willRemove(_ cell: ReaderPostCardCell) {
+        if let cellIndex = tableView.indexPath(for: cell) {
+            tableView.reloadRows(at: [cellIndex], with: .fade)
+        }
+    }
+
+
 }
