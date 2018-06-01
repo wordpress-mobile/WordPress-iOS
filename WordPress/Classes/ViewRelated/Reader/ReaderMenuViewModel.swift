@@ -717,6 +717,18 @@ enum ReaderDefaultMenuItemOrder: Int {
         }
         return nil
     }
+
+    func indexPathOfSavedForLater() -> IndexPath? {
+        if let sectionIndex = indexOfSectionWithType(.defaults) {
+            for (index, item) in defaultSectionItems.enumerated() {
+                if item.type == .savedPosts {
+                    return IndexPath(row: index, section: sectionIndex)
+                }
+            }
+        }
+
+        return nil
+    }
 }
 
 

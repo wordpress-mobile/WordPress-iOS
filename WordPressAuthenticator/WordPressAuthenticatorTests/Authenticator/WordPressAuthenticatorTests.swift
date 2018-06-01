@@ -34,9 +34,9 @@ class WordPressAuthenticatorTests: XCTestCase {
         baseURL = "http://例.例"
         let punycode = "http://xn--fsq.xn--fsq"
         url = WordPressAuthenticator.baseSiteURL(string: baseURL)
-        XCTAssert(url == baseURL)
+        XCTAssert(url == punycode)
         url = WordPressAuthenticator.baseSiteURL(string: punycode)
-        XCTAssert(url == baseURL)
+        XCTAssert(url == punycode)
     }
 
     func testEmailAddressTokenHandling() {
