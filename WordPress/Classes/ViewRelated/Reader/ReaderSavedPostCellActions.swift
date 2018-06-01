@@ -1,13 +1,19 @@
+protocol ReaderSavedPostCellActionsDelegate: class {
+    func willRemove(_ cell: ReaderPostCardCell)
+}
+
 final class ReaderSavedPostCellActions: ReaderPostCellActions {
     /// Posts that have been removed but not yet discarded
     private var removedPosts = ReaderSaveForLaterRemovedPosts()
+
+    weak var delegate: ReaderSavedPostCellActionsDelegate?
 
     override func readerCell(_ cell: ReaderPostCardCell, saveActionForProvider provider: ReaderPostContentProvider) {
         if let post = provider as? ReaderPost {
             removedPosts.add(post)
         }
-
-        super.readerCell(cell, saveActionForProvider: provider)
+        delegate?.willRemove(cell)
+        //super.readerCell(cell, saveActionForProvider: provider)
     }
 
     func contains(_ post: ReaderPost) -> Bool {
