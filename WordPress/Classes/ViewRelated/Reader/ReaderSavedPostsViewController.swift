@@ -26,9 +26,7 @@ final class ReaderSavedPostsViewController: UITableViewController {
     /// Configuration of cells
     private let cellConfiguration = ReaderCellConfiguration()
     /// Actions
-    private var postCellActions: ReaderPostCellActions?
-    /// Posts that have been removed but not yet discarded
-    private var removedPosts: ReaderSaveForLaterRemovedPosts?
+    private var postCellActions: ReaderSavedPostCellActions?
 
     fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
 
@@ -57,12 +55,6 @@ final class ReaderSavedPostsViewController: UITableViewController {
         super.viewDidAppear(animated)
 
         refreshNoResultsView()
-        setupRemovedPosts()
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        clearRemovedPosts()
     }
 
     func centerResultsStatusViewIfNeeded() {
@@ -89,14 +81,6 @@ final class ReaderSavedPostsViewController: UITableViewController {
 
     fileprivate func setupContentHandler() {
         content.initializeContent(tableView: tableView, delegate: self)
-    }
-
-    private func setupRemovedPosts() {
-        removedPosts = ReaderSaveForLaterRemovedPosts()
-    }
-
-    private func clearRemovedPosts() {
-        removedPosts = nil
     }
 
     /// The fetch request can need a different predicate depending on how the content
@@ -143,7 +127,7 @@ final class ReaderSavedPostsViewController: UITableViewController {
 
     @objc open func configurePostCardCell(_ cell: UITableViewCell, post: ReaderPost) {
         if postCellActions == nil {
-            postCellActions = ReaderPostCellActions(context: managedObjectContext(), origin: self, topic: post.topic, visibleConfirmation: false)
+            postCellActions = ReaderSavedPostCellActions(context: managedObjectContext(), origin: self, topic: post.topic, visibleConfirmation: false)
         }
 
         cellConfiguration.configurePostCardCell(cell,
@@ -266,7 +250,7 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
-        if removedPosts?.contains(post) == true {
+        if postCellActions?.contains(post) == true {
             let cell = undoCell(tableView)
             return cell
         }
