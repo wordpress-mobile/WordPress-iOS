@@ -254,12 +254,17 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
 
         if postCellActions?.contains(post) == true {
             let cell = undoCell(tableView)
+            configureUndoCell(cell, with: post)
             return cell
         }
 
         let cell = tableConfiguration.postCardCell(tableView)
         configurePostCardCell(cell, post: post)
         return cell
+    }
+
+    private func configureUndoCell(_ cell: ReaderSavedPostUndoCell, with post: ReaderPost) {
+        cell.title.text = post.titleForDisplay()
     }
 
     override public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
