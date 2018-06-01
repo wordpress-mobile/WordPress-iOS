@@ -17,15 +17,16 @@ final class ReaderSaveForLaterAction {
         self.visibleConfirmation = visibleConfirmation
     }
 
-    func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)? = nil) {
-        toggleSavedForLater(post, context: context, completion: completion)
+    func execute(with post: ReaderPost, context: NSManagedObjectContext, origin: ReaderSaveForLaterOrigin, completion: (() -> Void)? = nil) {
+        trackSaveAction(for: post, origin: origin)
+        toggleSavedForLater(post, context: context, origin: origin, completion: completion)
     }
 
-    private func toggleSavedForLater(_ post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)?) {
+    private func toggleSavedForLater(_ post: ReaderPost, context: NSManagedObjectContext, origin: ReaderSaveForLaterOrigin, completion: (() -> Void)?) {
         let readerPostService = ReaderPostService(managedObjectContext: context)
 
         readerPostService.toggleSavedForLater(for: post, success: {
-            self.presentSuccessNotice(for: post, context: context, completion: completion)
+            self.presentSuccessNotice(for: post, context: context, origin: origin, completion: completion)
             completion?()
             }, failure: { error in
                 self.presentErrorNotice(error, activating: !post.isSavedForLater)
@@ -33,32 +34,34 @@ final class ReaderSaveForLaterAction {
         })
     }
 
-    private func presentSuccessNotice(for post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)?) {
+    private func presentSuccessNotice(for post: ReaderPost, context: NSManagedObjectContext, origin: ReaderSaveForLaterOrigin, completion: (() -> Void)?) {
         guard visibleConfirmation else {
             return
         }
 
         if post.isSavedForLater {
-            presentPostSavedNotice()
+            presentPostSavedNotice(origin: origin)
         } else {
             presentPostRemovedNotice(for: post,
                                      context: context,
+                                     origin: origin,
                                      completion: completion)
         }
     }
 
-    private func presentPostSavedNotice() {
+    private func presentPostSavedNotice(origin: ReaderSaveForLaterOrigin) {
         let notice = Notice(title: Strings.postSaved,
                             feedbackType: .success,
                             actionTitle: Strings.viewAll,
                             actionHandler: {
+                                self.trackViewAllSavedPostsAction(origin: origin)
                                 self.showAll()
         })
 
         present(notice)
     }
 
-    private func presentPostRemovedNotice(for post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)?) {
+    private func presentPostRemovedNotice(for post: ReaderPost, context: NSManagedObjectContext, origin: ReaderSaveForLaterOrigin, completion: (() -> Void)?) {
         guard visibleConfirmation else {
             return
         }
@@ -67,7 +70,8 @@ final class ReaderSaveForLaterAction {
                             feedbackType: .success,
                             actionTitle: Strings.undo,
                             actionHandler: {
-                                self.toggleSavedForLater(post, context: context, completion: completion)
+                                self.trackSaveAction(for: post, origin: origin)
+                                self.toggleSavedForLater(post, context: context, origin: origin, completion: completion)
         })
 
         present(notice)
@@ -90,6 +94,6 @@ final class ReaderSaveForLaterAction {
     }
 
     private func showAll() {
-        //TODO. Navigate to all saved for later
+        NotificationCenter.default.post(name: .showAllSavedForLaterPosts, object: self, userInfo: nil)
     }
 }
