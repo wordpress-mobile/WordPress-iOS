@@ -26,17 +26,17 @@
                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="0qS-wL-AiS">
                         <rect key="frame" x="16" y="6" width="304" height="30"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="edF-mf-PsH">
-                                <rect key="frame" x="0.0" y="0.0" width="230" height="30"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="edF-mf-PsH">
+                                <rect key="frame" x="0.0" y="0.0" width="216.5" height="30"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Removed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qPM-It-aeV">
-                                        <rect key="frame" x="0.0" y="0.0" width="115" height="30"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Removed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qPM-It-aeV">
+                                        <rect key="frame" x="0.0" y="0.0" width="136.5" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lnR-4i-vdi">
-                                        <rect key="frame" x="115" y="0.0" width="115" height="30"/>
+                                        <rect key="frame" x="136.5" y="0.0" width="80" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -44,7 +44,7 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jmj-W8-Yz3">
-                                <rect key="frame" x="230" y="0.0" width="74" height="30"/>
+                                <rect key="frame" x="216.5" y="0.0" width="87.5" height="30"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
                                     <action selector="undo:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ZyQ-ga-eiX"/>
