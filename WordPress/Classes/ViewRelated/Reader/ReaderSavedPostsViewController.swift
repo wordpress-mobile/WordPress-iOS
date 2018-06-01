@@ -265,6 +265,8 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
 
     private func configureUndoCell(_ cell: ReaderSavedPostUndoCell, with post: ReaderPost) {
         cell.title.text = post.titleForDisplay()
+        cell.contentProvider = post
+        cell.delegate = self
     }
 
     override public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -359,6 +361,19 @@ extension ReaderSavedPostsViewController: ReaderSavedPostCellActionsDelegate {
             tableView.reloadRows(at: [cellIndex], with: .fade)
         }
     }
+}
 
+extension ReaderSavedPostsViewController: ReaderPostUndoCellDelegate {
+    func readerCell(_ cell: ReaderSavedPostUndoCell, undoActionForProvider provider: ReaderPostContentProvider) {
+        if let cellIndex = tableView.indexPath(for: cell) {
+            guard let posts = content.content as? [ReaderPost] else {
+                DDLogError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
+                return
+            }
 
+            let post = posts[cellIndex.row]
+            postCellActions?.remove(post)
+            tableView.reloadRows(at: [cellIndex], with: .fade)
+        }
+    }
 }
