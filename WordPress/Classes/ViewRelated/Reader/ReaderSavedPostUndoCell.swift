@@ -34,11 +34,8 @@ final class ReaderSavedPostUndoCell: UITableViewCell {
     private func applyStyles() {
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = 1.0
-//        backgroundColor = WPStyleGuide.greyLighten30()
-//        contentView.backgroundColor = WPStyleGuide.greyLighten30()
-//        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
-//        borderedView.layer.borderWidth = 1.0
 
-        WPStyleGuide.applyReaderCardTitleLabelStyle(title)
+        WPStyleGuide.applyRestorePostLabelStyle(removed)
+        WPStyleGuide.applyRestorePostLabelStyle(title)
     }
 }
