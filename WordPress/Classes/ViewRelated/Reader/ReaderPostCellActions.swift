@@ -1,5 +1,5 @@
 /// Action commands in Reader cells
-final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
+class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     private let context: NSManagedObjectContext
     private weak var origin: UIViewController?
     private let topic: ReaderAbstractTopic?
