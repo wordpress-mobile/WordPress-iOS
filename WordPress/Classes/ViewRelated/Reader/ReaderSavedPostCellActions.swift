@@ -23,4 +23,12 @@ final class ReaderSavedPostCellActions: ReaderPostCellActions {
     func remove(_ post: ReaderPost) {
         removedPosts.remove(post)
     }
+
+    func clear() {
+        let allRemovedPosts = removedPosts.all()
+        for post in allRemovedPosts {
+            toggleSavedForLater(for: post)
+        }
+        removedPosts = ReaderSaveForLaterRemovedPosts()
+    }
 }
