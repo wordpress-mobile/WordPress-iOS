@@ -320,7 +320,12 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         return { [unowned self] row in
             if FeatureFlag.zendeskMobile.enabled {
                 let controller = SupportTableViewController()
-                controller.showHelpFromViewController = self
+
+                // If iPad, show Support from Me view controller instead of navigation controller.
+                if !self.splitViewControllerIsHorizontallyCompact {
+                    controller.showHelpFromViewController = self
+                }
+
                 self.showDetailViewController(controller, sender: self)
             } else {
                 let controller = SupportViewController()
