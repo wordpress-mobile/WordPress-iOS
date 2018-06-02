@@ -7,6 +7,13 @@ final class ReaderSavedPostsViewController: UITableViewController {
     private enum Strings {
         static let title = NSLocalizedString("Saved Posts", comment: "Title for list of posts saved for later")
     }
+
+    private enum UndoCell {
+        static let nibName = "ReaderSavedPostUndoCell"
+        static let reuseIdentifier = "ReaderUndoCellReuseIdentifier"
+        static let height: CGFloat = 44
+    }
+
     fileprivate var noResultsView: WPNoResultsView!
     fileprivate var footerView: PostListFooterView!
     fileprivate let heightForFooterView = CGFloat(34.0)
@@ -19,7 +26,7 @@ final class ReaderSavedPostsViewController: UITableViewController {
     /// Configuration of cells
     private let cellConfiguration = ReaderCellConfiguration()
     /// Actions
-    private var postCellActions: ReaderPostCellActions?
+    private var postCellActions: ReaderSavedPostCellActions?
 
     fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
 
@@ -50,6 +57,10 @@ final class ReaderSavedPostsViewController: UITableViewController {
         refreshNoResultsView()
     }
 
+    deinit {
+        postCellActions?.clearRemovedPosts()
+    }
+
     func centerResultsStatusViewIfNeeded() {
         if noResultsView.isDescendant(of: tableView) {
             noResultsView.centerInSuperview()
@@ -60,8 +71,17 @@ final class ReaderSavedPostsViewController: UITableViewController {
 
     fileprivate func setupTableView() {
         tableConfiguration.setup(tableView)
+        setupUndoCell(tableView)
     }
 
+    private func setupUndoCell(_ tableView: UITableView) {
+        let nib = UINib(nibName: UndoCell.nibName, bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: UndoCell.reuseIdentifier)
+    }
+
+    func undoCell(_ tableView: UITableView) -> ReaderSavedPostUndoCell {
+        return tableView.dequeueReusableCell(withIdentifier: UndoCell.reuseIdentifier) as! ReaderSavedPostUndoCell
+    }
 
     fileprivate func setupContentHandler() {
         content.initializeContent(tableView: tableView, delegate: self)
@@ -111,7 +131,8 @@ final class ReaderSavedPostsViewController: UITableViewController {
 
     @objc open func configurePostCardCell(_ cell: UITableViewCell, post: ReaderPost) {
         if postCellActions == nil {
-            postCellActions = ReaderPostCellActions(context: managedObjectContext(), origin: self, topic: post.topic, visibleConfirmation: false)
+            postCellActions = ReaderSavedPostCellActions(context: managedObjectContext(), origin: self, topic: post.topic, visibleConfirmation: false)
+            postCellActions?.delegate = self
         }
 
         cellConfiguration.configurePostCardCell(cell,
@@ -226,14 +247,6 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
         }
         let post = posts[indexPath.row]
 
-        //        if recentlyBlockedSitePostObjectIDs.contains(post.objectID) {
-        //            let cell = tableView.dequeueReusableCell(withIdentifier: readerBlockedCellReuseIdentifier) as! ReaderBlockedSiteCell
-//        cellConfiguration.configureBlockedCell(cell,
-//                                               withContent: content,
-//                                               atIndexPath: indexPath)
-        //            return cell
-        //        }
-
         if post.isCross() {
             let cell = tableConfiguration.crossPostCell(tableView)
             cellConfiguration.configureCrossPostCell(cell,
@@ -242,9 +255,21 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
+
+        if postCellActions?.postIsRemoved(post) == true {
+            let cell = undoCell(tableView)
+            configureUndoCell(cell, with: post)
+            return cell
+        }
+
         let cell = tableConfiguration.postCardCell(tableView)
         configurePostCardCell(cell, post: post)
         return cell
+    }
+
+    private func configureUndoCell(_ cell: ReaderSavedPostUndoCell, with post: ReaderPost) {
+        cell.title.text = post.titleForDisplay()
+        cell.delegate = self
     }
 
     override public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -330,5 +355,23 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
 
     public func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
         // Do nothing
+    }
+}
+
+extension ReaderSavedPostsViewController: ReaderSavedPostCellActionsDelegate {
+    func willRemove(_ cell: ReaderPostCardCell) {
+        if let cellIndex = tableView.indexPath(for: cell) {
+            tableView.reloadRows(at: [cellIndex], with: .fade)
+        }
+    }
+}
+
+extension ReaderSavedPostsViewController: ReaderPostUndoCellDelegate {
+    func readerCellWillUndo(_ cell: ReaderSavedPostUndoCell) {
+        if let cellIndex = tableView.indexPath(for: cell),
+            let post: ReaderPost = content.object(at: cellIndex) {
+                postCellActions?.restoreUnsavedPost(post)
+                tableView.reloadRows(at: [cellIndex], with: .fade)
+        }
     }
 }
