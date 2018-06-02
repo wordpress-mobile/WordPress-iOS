@@ -1,5 +1,5 @@
 /// Action commands in Reader cells
-final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
+class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     private let context: NSManagedObjectContext
     private weak var origin: UIViewController?
     private let topic: ReaderAbstractTopic?
@@ -96,7 +96,7 @@ final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         }
     }
 
-    fileprivate func toggleSavedForLater(for post: ReaderPost) {
+    func toggleSavedForLater(for post: ReaderPost) {
         let actionOrigin: ReaderSaveForLaterOrigin
         if origin is ReaderSavedPostsViewController {
             actionOrigin = .savedStream
