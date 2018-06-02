@@ -58,7 +58,6 @@ final class ReaderSavedPostsViewController: UITableViewController {
     }
 
     deinit {
-        print("===== deinit =====")
         postCellActions?.clearRemovedPosts()
     }
 
