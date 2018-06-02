@@ -256,7 +256,7 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
         }
 
 
-        if postCellActions?.contains(post) == true {
+        if postCellActions?.postIsRemoved(post) == true {
             let cell = undoCell(tableView)
             configureUndoCell(cell, with: post)
             return cell
