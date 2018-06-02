@@ -57,8 +57,8 @@ final class ReaderSavedPostsViewController: UITableViewController {
         refreshNoResultsView()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    deinit {
+        print("===== deinit =====")
         postCellActions?.clearRemovedPosts()
     }
 
