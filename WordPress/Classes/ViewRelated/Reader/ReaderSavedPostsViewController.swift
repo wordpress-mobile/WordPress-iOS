@@ -370,7 +370,7 @@ extension ReaderSavedPostsViewController: ReaderPostUndoCellDelegate {
     func readerCellWillUndo(_ cell: ReaderSavedPostUndoCell) {
         if let cellIndex = tableView.indexPath(for: cell),
             let post: ReaderPost = content.object(at: cellIndex) {
-                postCellActions?.remove(post)
+                postCellActions?.restoreUnsavedPost(post)
                 tableView.reloadRows(at: [cellIndex], with: .fade)
         }
     }
