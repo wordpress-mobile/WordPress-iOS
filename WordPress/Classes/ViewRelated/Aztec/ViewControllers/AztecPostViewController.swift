@@ -3724,18 +3724,15 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
             return nil
         }
 
-        let asset = assets[selected]
-        guard let typeIdentifier = asset.utTypeIdentifier?(), UTTypeEqual(typeIdentifier as CFString, kUTTypeGIF) else {
-            return nil // Not a GIF, use the default
+        if assets.count > 1 {
+            let carouselViewController = WPCarouselAssetsViewController(assets: assets)
+            carouselViewController.setPreviewingAssetAt(selected, animated: false)
+            carouselViewController.carouselDelegate = self
+            return carouselViewController
         }
 
-        if let mediaAsset = asset as? Media {
-            return WPImageViewController(media: mediaAsset)
-        } else if let phasset = asset as? PHAsset {
-            return WPImageViewController(asset: phasset)
-        } else {
-            return nil // use the default preview
-        }
+        let asset = assets[selected]
+        return self.viewController(for: asset)
     }
 
     private func updateFormatBarInsertAssetCount() {
@@ -3752,6 +3749,38 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
                 formatBar.trailingItem = insertToolbarItem
             }
         }
+    }
+}
+
+extension AztecPostViewController: WPCarouselAssetsViewControllerDelegate {
+
+    func asset(for viewController: UIViewController) -> WPMediaAsset {
+        guard
+            let imageViewController = viewController as? WPImageViewController,
+            let asset = imageViewController.mediaAsset else {
+            fatalError()
+        }
+        return asset
+
+    }
+
+    func viewController(for asset: WPMediaAsset) -> UIViewController? {
+
+        guard asset.assetType() == .image else {
+            return nil
+        }
+
+        if let mediaAsset = asset as? Media {
+            let imageController = WPImageViewController(media: mediaAsset)
+            imageController?.shouldDismissWithGestures = false
+            return imageController
+        } else if let phasset = asset as? PHAsset {
+            let imageController =  WPImageViewController(asset: phasset)
+            imageController?.shouldDismissWithGestures = false
+            return imageController
+        }
+
+        return nil // use the default preview
     }
 }
 

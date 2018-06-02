@@ -1,9 +1,14 @@
 #import <UIKit/UIKit.h>
+
 @import Photos;
+@import WPMediaPicker;
 
 @class Media;
 
 @interface WPImageViewController : UIViewController
+
+@property (nonatomic, readonly) id<WPMediaAsset> mediaAsset;
+@property (nonatomic, assign) BOOL shouldDismissWithGestures;
 
 - (instancetype)initWithImage:(UIImage *)image;
 - (instancetype)initWithURL:(NSURL *)url;

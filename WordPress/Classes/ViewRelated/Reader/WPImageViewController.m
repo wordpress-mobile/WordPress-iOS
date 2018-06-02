@@ -50,6 +50,7 @@ static CGFloat const MinimumZoomScale = 0.1;
     self = [super init];
     if (self) {
         _asset = asset;
+        [self commonInit];
     }
     return self;
 }
@@ -59,6 +60,7 @@ static CGFloat const MinimumZoomScale = 0.1;
     self = [super init];
     if (self) {
         _data = data;
+        [self commonInit];
     }
     return self;
 }
@@ -69,6 +71,7 @@ static CGFloat const MinimumZoomScale = 0.1;
     if (self) {
         _image = [image copy];
         _url = url;
+        [self commonInit];
     }
     return self;
 }
@@ -79,8 +82,14 @@ static CGFloat const MinimumZoomScale = 0.1;
     if (self) {
         _image = [image copy];
         _media = media;
+        [self commonInit];
     }
     return self;
+}
+
+- (void)commonInit
+{
+    _shouldDismissWithGestures = YES;
 }
 
 - (void)setIsLoadingImage:(BOOL)isLoadingImage
@@ -129,6 +138,7 @@ static CGFloat const MinimumZoomScale = 0.1;
 
     self.flingableViewHandler = [[FlingableViewHandler alloc] initWithTargetView:self.scrollView];
     self.flingableViewHandler.delegate = self;
+    self.flingableViewHandler.isActive = self.shouldDismissWithGestures;
 
     self.activityIndicatorView = [[CircularProgressView alloc] initWithStyle:CircularProgressViewStyleWhite];
     
@@ -261,6 +271,23 @@ static CGFloat const MinimumZoomScale = 0.1;
 
 #pragma mark - Instance Methods
 
+- (id<WPMediaAsset>)mediaAsset
+{
+    if (self.asset) {
+        return self.asset;
+    }
+    if (self.media) {
+        return self.media;
+    }
+    return nil;
+}
+
+- (void)setShouldDismissWithGestures:(BOOL)shouldDismissWithGestures
+{
+    _shouldDismissWithGestures = shouldDismissWithGestures;
+    self.flingableViewHandler.isActive = shouldDismissWithGestures;
+}
+
 - (void)hideBars:(BOOL)hide animated:(BOOL)animated
 {
     self.shouldHideStatusBar = hide;
@@ -297,7 +324,9 @@ static CGFloat const MinimumZoomScale = 0.1;
 
 - (void)handleImageTapped:(UITapGestureRecognizer *)tgr
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (self.shouldDismissWithGestures) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)handleImageDoubleTapped:(UITapGestureRecognizer *)tgr
@@ -350,6 +379,9 @@ static CGFloat const MinimumZoomScale = 0.1;
 
 - (void)updateFlingableViewHandlerActiveState
 {
+    if (!self.shouldDismissWithGestures) {
+        return;
+    }
     BOOL isScrollViewZoomedOut = (self.scrollView.zoomScale == self.scrollView.minimumZoomScale);
 
     self.flingableViewHandler.isActive = isScrollViewZoomedOut;
