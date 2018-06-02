@@ -6,16 +6,17 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="ReaderSavedPostUndoCell" customModule="WordPress" customModuleProvider="target">
+        <tableViewCell contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="ReaderSavedPostUndoCell" customModule="WordPress" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" layoutMarginsFollowReadableWidth="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
@@ -23,27 +24,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
-                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0qS-wL-AiS">
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="0qS-wL-AiS">
                         <rect key="frame" x="16" y="6" width="288" height="30"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="edF-mf-PsH">
-                                <rect key="frame" x="0.0" y="0.0" width="242" height="30"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="edF-mf-PsH">
+                                <rect key="frame" x="0.0" y="0.0" width="226" height="30"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" text="Removed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qPM-It-aeV">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Removed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qPM-It-aeV">
                                         <rect key="frame" x="0.0" y="0.0" width="71.5" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lnR-4i-vdi">
-                                        <rect key="frame" x="79.5" y="0.0" width="162.5" height="30"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lnR-4i-vdi">
+                                        <rect key="frame" x="77.5" y="0.0" width="148.5" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jmj-W8-Yz3">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jmj-W8-Yz3">
                                 <rect key="frame" x="242" y="0.0" width="46" height="30"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
@@ -54,10 +55,10 @@
                     </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="0qS-wL-AiS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="FCo-M3-vdJ"/>
+                    <constraint firstItem="0qS-wL-AiS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="FCo-M3-vdJ"/>
                     <constraint firstAttribute="trailing" secondItem="TBy-h6-gyK" secondAttribute="trailing" id="HV5-h3-5B3"/>
                     <constraint firstAttribute="bottom" secondItem="TBy-h6-gyK" secondAttribute="bottom" constant="-0.5" id="UDU-ic-hD6"/>
-                    <constraint firstAttribute="trailing" secondItem="0qS-wL-AiS" secondAttribute="trailing" constant="16" id="dU4-cX-eF9"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="0qS-wL-AiS" secondAttribute="trailing" id="dU4-cX-eF9"/>
                     <constraint firstItem="TBy-h6-gyK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="eGO-Jj-XbX"/>
                     <constraint firstItem="TBy-h6-gyK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="pGx-RV-Mba"/>
                     <constraint firstItem="0qS-wL-AiS" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="rhX-kB-f68"/>
