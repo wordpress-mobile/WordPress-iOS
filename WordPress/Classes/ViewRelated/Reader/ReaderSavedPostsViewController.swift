@@ -59,7 +59,7 @@ final class ReaderSavedPostsViewController: UITableViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        postCellActions?.clear()
+        postCellActions?.clearRemovedPosts()
     }
 
     func centerResultsStatusViewIfNeeded() {

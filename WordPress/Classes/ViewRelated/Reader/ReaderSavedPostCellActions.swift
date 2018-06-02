@@ -25,7 +25,7 @@ final class ReaderSavedPostCellActions: ReaderPostCellActions {
         removedPosts.remove(post)
     }
 
-    func clear() {
+    func clearRemovedPosts() {
         let allRemovedPosts = removedPosts.all()
         for post in allRemovedPosts {
             toggleSavedForLater(for: post)
