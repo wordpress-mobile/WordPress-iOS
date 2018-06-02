@@ -21,7 +21,7 @@ enum FeatureFlag: Int {
         case .zendeskMobile:
             return true
         case .saveForLater:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .gifSupportInReaderDetail:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         }
