@@ -953,7 +953,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
             continue;
         }
         // The post was missing from the batch and needs to be cleaned up.
-        if (post.inUse || post.isSavedForLater) {
+        if ([self topicShouldBeClearedFor:post]) {
             // If the missing post is currently being used or has been saved, just remove its topic.
             post.topic = nil;
         } else {
@@ -1000,7 +1000,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     NSRange range = NSMakeRange(maxPosts, [posts count] - maxPosts);
     NSArray *postsToDelete = [posts subarrayWithRange:range];
     for (ReaderPost *post in postsToDelete) {
-        if (post.inUse || post.isSavedForLater) {
+        if ([self topicShouldBeClearedFor:post]) {
             post.topic = nil;
         } else {
             DDLogInfo(@"Deleting ReaderPost: %@", post.postTitle);
@@ -1037,7 +1037,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 
     for (ReaderPost *post in results) {
-        if (post.inUse || post.isSavedForLater) {
+        if ([self topicShouldBeClearedFor:post]) {
             // If the missing post is currenty being used just remove its topic.
             post.topic = nil;
         } else {
@@ -1045,6 +1045,11 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
             [self.managedObjectContext deleteObject:post];
         }
     }
+}
+
+- (BOOL)topicShouldBeClearedFor:(ReaderPost *)post
+{
+    return (post.inUse || post.isSavedForLater);
 }
 
 
