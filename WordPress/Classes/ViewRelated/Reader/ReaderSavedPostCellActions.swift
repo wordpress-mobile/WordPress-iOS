@@ -21,7 +21,7 @@ final class ReaderSavedPostCellActions: ReaderPostCellActions {
         return removedPosts.contains(post)
     }
 
-    func remove(_ post: ReaderPost) {
+    func restoreUnsavedPost(_ post: ReaderPost) {
         removedPosts.remove(post)
     }
 
