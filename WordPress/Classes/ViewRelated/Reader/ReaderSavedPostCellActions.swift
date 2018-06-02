@@ -17,7 +17,7 @@ final class ReaderSavedPostCellActions: ReaderPostCellActions {
         delegate?.willRemove(cell)
     }
 
-    func contains(_ post: ReaderPost) -> Bool {
+    func postIsRemoved(_ post: ReaderPost) -> Bool {
         return removedPosts.contains(post)
     }
 
