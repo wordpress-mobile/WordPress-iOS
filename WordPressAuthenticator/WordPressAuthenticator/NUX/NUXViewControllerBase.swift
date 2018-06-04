@@ -102,7 +102,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
     func refreshSupportBadge() {
         let count = WordPressAuthenticator.shared.delegate?.supportBadgeCount ?? 0
         helpBadge.text = "\(count)"
-        helpBadge.isHidden = (count == 0)
+        helpBadge.isHidden = false //(count == 0)
     }
 
     func refreshSupportNotificationIndicator() {
@@ -181,9 +181,11 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
 
             notificationView = helpIndicator
             helpNotificationSize = CGSize(width: 10, height: 10)
-            let notificationCenterOffset = CGPoint(x: 5, y: 8)
+            let notificationCenterOffset = CGPoint(x: 5, y: 12)
+
             notificationViewCenterXConstraint = notificationView.centerXAnchor.constraint(equalTo: helpButton.trailingAnchor,
                                                                                           constant: helpButton.contentEdgeInsets.top + notificationCenterOffset.x)
+
             notificationViewCenterYConstraint = notificationView.centerYAnchor.constraint(equalTo: helpButton.topAnchor,
                                                                                           constant: helpButton.contentEdgeInsets.top + notificationCenterOffset.y)
         } else {
@@ -203,7 +205,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         customView.heightAnchor.constraint(equalToConstant: 44.0).isActive = true
         customView.widthAnchor.constraint(greaterThanOrEqualToConstant: 44.0).isActive = true
 
-        helpButton.setTitle(NSLocalizedString("Ayuda", comment: "Help button"), for: .normal)
+        helpButton.setTitle(NSLocalizedString("Help", comment: "Help button"), for: .normal)
         helpButton.setTitleColor(UIColor(white: 1.0, alpha: 0.4), for: .highlighted)
         helpButton.on(.touchUpInside) { [weak self] control in
             guard let strongSelf = self else {
@@ -214,8 +216,8 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
 
         customView.addSubview(helpButton)
         helpButton.translatesAutoresizingMaskIntoConstraints = false
-        helpButton.leadingAnchor.constraint(equalTo: customView.leadingAnchor).isActive = true
-        helpButton.trailingAnchor.constraint(equalTo: customView.trailingAnchor).isActive = true
+        helpButton.leadingAnchor.constraint(equalTo: customView.leadingAnchor, constant: 5.0).isActive = true
+        helpButton.trailingAnchor.constraint(equalTo: customView.trailingAnchor, constant: -5.0).isActive = true
         helpButton.topAnchor.constraint(equalTo: customView.topAnchor).isActive = true
         helpButton.bottomAnchor.constraint(equalTo: customView.bottomAnchor).isActive = true
 
