@@ -1,5 +1,5 @@
 import Foundation
-import AFNetworking
+
 
 /// The purpose of this class is to provide a simple API to download assets from the web.
 /// Assets are downloaded, and resized to fit a maximumWidth, specified in the initial download call.
@@ -8,10 +8,36 @@ import AFNetworking
 /// which will take care of resizing the original image, to fit the new orientation.
 ///
 class NotificationMediaDownloader: NSObject {
-    // MARK: - Public Methods
 
+    /// Downloader Private URLSession
+    ///
+    private lazy var downloadSession = URLSession(configuration: .default)
+
+    /// Resize OP's will never hit the main thread
+    ///
+    private let resizeQueue = DispatchQueue(label: "notifications.media.resize", attributes: .concurrent)
+
+    /// Original Images Cache
+    ///
+    private var originalImagesMap = [URL: UIImage]()
+
+    /// Resized Images Cache
+    ///
+    private var resizedImagesMap = [URL: UIImage]()
+
+    /// Collection of the URL(S) with active downloads
+    ///
+    private var urlsBeingDownloaded = Set<URL>()
+
+    /// Failed downloads collection
+    ///
+    private var urlsFailed = Set<URL>()
+
+
+    /// Deinit!
+    ///
     deinit {
-        downloadSession.invalidateSessionCancelingTasks(true)
+        downloadSession.invalidateAndCancel()
     }
 
     /// Downloads a set of assets, resizes them (if needed), and hits a completion block.
@@ -22,7 +48,7 @@ class NotificationMediaDownloader: NSObject {
     ///     - maximumWidth: Represents the maximum width that a returned image should have.
     ///     - completion: Is a closure that will get executed once all of the assets are ready
     ///
-    @objc func downloadMedia(urls: Set<URL>, maximumWidth: CGFloat, completion: @escaping SuccessBlock) {
+    func downloadMedia(urls: Set<URL>, maximumWidth: CGFloat, completion: @escaping () -> Void) {
         let missingUrls         = urls.filter { self.shouldDownloadImage(url: $0) }
         let group               = DispatchGroup()
         let shouldHitCompletion = !missingUrls.isEmpty
@@ -52,7 +78,7 @@ class NotificationMediaDownloader: NSObject {
             return
         }
 
-        group.notify(queue: DispatchQueue.main) {
+        group.notify(queue: .main) {
             completion()
         }
     }
@@ -68,7 +94,7 @@ class NotificationMediaDownloader: NSObject {
     ///     - maximumWidth: Represents the maximum width that a returned image should have
     ///     - completion: Is a closure that will get executed just one time, after all of the assets get resized
     ///
-    @objc func resizeMediaWithIncorrectSize(_ maximumWidth: CGFloat, completion: @escaping SuccessBlock) {
+    func resizeMediaWithIncorrectSize(_ maximumWidth: CGFloat, completion: @escaping () -> Void) {
         let group               = DispatchGroup()
         var shouldHitCompletion = false
 
@@ -89,7 +115,7 @@ class NotificationMediaDownloader: NSObject {
             }
         }
 
-        group.notify(queue: DispatchQueue.main) {
+        group.notify(queue: .main) {
             if shouldHitCompletion {
                 completion()
             }
@@ -104,13 +130,11 @@ class NotificationMediaDownloader: NSObject {
     ///
     /// - Returns: A dictionary with URL as Key, and Image as Value.
     ///
-    @objc func imagesForUrls(_ urls: [URL]) -> [URL: UIImage] {
+    func imagesForUrls(_ urls: [URL]) -> [URL: UIImage] {
         var filtered = [URL: UIImage]()
 
-        for (url, image) in resizedImagesMap {
-            if urls.contains(url) {
-                filtered[url] = image
-            }
+        for (url, image) in resizedImagesMap where urls.contains(url) {
+            filtered[url] = image
         }
 
         return filtered
@@ -129,38 +153,28 @@ class NotificationMediaDownloader: NSObject {
     ///     - retryCount: Number of times the download has been attempted
     ///     - success: A closure to be executed, on success.
     ///
-    fileprivate func downloadImage(_ url: URL, retryCount: Int = 0, completion: @escaping ((NSError?, UIImage?) -> ())) {
-        let request = NSMutableURLRequest(url: url)
+    private func downloadImage(_ url: URL, retryCount: Int = 0, completion: @escaping (Error?, UIImage?) -> Void) {
+        guard retryCount < Constants.maximumRetryCount else {
+            completion(NotificationMediaError.retryCountExceeded, nil)
+            urlsBeingDownloaded.remove(url)
+            urlsFailed.insert(url)
+            return
+        }
+
+        var request = URLRequest(url: url)
         request.httpShouldHandleCookies = false
         request.addValue("image/*", forHTTPHeaderField: "Accept")
 
-        let dataTask = downloadSession.dataTask(with: request as URLRequest,
-                                                uploadProgress: nil,
-                                                downloadProgress: nil,
-                                                completionHandler: { (response, responseObject, error) in
-            if let error = error {
-                // If possible, retry
-                if retryCount < self.maximumRetryCount {
-                    self.downloadImage(url, retryCount: retryCount + 1, completion: completion)
-
-                // Otherwise, we just failed!
-                } else {
-                    completion(error as NSError?, nil)
-                    self.urlsBeingDownloaded.remove(url)
-                    self.urlsFailed.insert(url)
-                }
+        let dataTask = downloadSession.dataTask(with: request) { (data, _, error) in
+            guard let data = data, let image = UIImage(data: data) else {
+                self.downloadImage(url, retryCount: retryCount + 1, completion: completion)
                 return
             }
 
-            if let unwrappedImage = responseObject as? UIImage {
-                completion(nil, unwrappedImage)
-            } else {
-                let error = NSError(domain: self.downloaderDomain, code: self.emptyMediaErrorCode, userInfo: nil)
-                completion(error, nil)
-            }
-
+            completion(nil, image)
             self.urlsBeingDownloaded.remove(url)
-        })
+        }
+
         dataTask.resume()
         urlsBeingDownloaded.insert(url)
     }
@@ -175,7 +189,7 @@ class NotificationMediaDownloader: NSObject {
     ///
     /// - Returns: A dictionary with URL as Key, and Image as Value.
     ///
-    fileprivate func shouldDownloadImage(url: URL) -> Bool {
+    private func shouldDownloadImage(url: URL) -> Bool {
         return originalImagesMap[url] == nil && !urlsBeingDownloaded.contains(url) && !urlsFailed.contains(url)
     }
 
@@ -186,7 +200,7 @@ class NotificationMediaDownloader: NSObject {
     ///     - maximumWidth: The maximum width in which the image should fit
     ///     - callback: A closure to be called, on the main thread, on completion
     ///
-    fileprivate func resizeImageIfNeeded(_ image: UIImage, maximumWidth: CGFloat, callback: @escaping ((UIImage) -> ())) {
+    private func resizeImageIfNeeded(_ image: UIImage, maximumWidth: CGFloat, callback: @escaping (UIImage) -> Void) {
         let targetSize = cappedImageSize(image.size, maximumWidth: maximumWidth)
         if image.size == targetSize {
             callback(image)
@@ -209,7 +223,7 @@ class NotificationMediaDownloader: NSObject {
     ///
     /// - Returns: The size, scaled down proportionally (if needed) to fit a maximum width
     ///
-    fileprivate func cappedImageSize(_ originalSize: CGSize, maximumWidth: CGFloat) -> CGSize {
+    private func cappedImageSize(_ originalSize: CGSize, maximumWidth: CGFloat) -> CGSize {
         var targetSize = originalSize
 
         if targetSize.width > maximumWidth {
@@ -219,26 +233,21 @@ class NotificationMediaDownloader: NSObject {
 
         return targetSize
     }
+}
 
 
-    // MARK: - Public Aliases
-    typealias SuccessBlock          = (() -> Void)
+// MARK: - Settings
+//
+private extension NotificationMediaDownloader {
 
-    // MARK: - Private Constants
-    fileprivate let maximumRetryCount   = 3
-    fileprivate let emptyMediaErrorCode = -1
-    fileprivate let downloaderDomain    = "notifications.media.downloader"
+    struct Constants {
+        static let maximumRetryCount   = 3
+    }
+}
 
-    // MARK: - Private Properties
-    fileprivate let responseSerializer  = AFImageResponseSerializer()
-    fileprivate lazy var downloadSession: AFURLSessionManager = {
-        let sessionManager = AFURLSessionManager()
-        sessionManager.responseSerializer = self.responseSerializer
-        return sessionManager
-    }()
-    fileprivate let resizeQueue         = DispatchQueue(label: "notifications.media.resize", attributes: DispatchQueue.Attributes.concurrent)
-    fileprivate var originalImagesMap   = [URL: UIImage]()
-    fileprivate var resizedImagesMap    = [URL: UIImage]()
-    fileprivate var urlsBeingDownloaded = Set<URL>()
-    fileprivate var urlsFailed          = Set<URL>()
+
+// MARK: - Errors
+//
+enum NotificationMediaError: Error {
+    case retryCountExceeded
 }
