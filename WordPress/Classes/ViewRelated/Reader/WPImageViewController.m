@@ -12,10 +12,12 @@ static CGFloat const MinimumZoomScale = 0.1;
 @property (nonatomic, strong) NSURL *url;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) Media *media;
+@property (nonatomic, strong) NSData *data;
 
 @property (nonatomic, assign) BOOL isLoadingImage;
 @property (nonatomic, strong) UIScrollView *scrollView;
-@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) CachedAnimatedImageView *imageView;
+@property (nonatomic, strong) ImageLoader *imageLoader;
 @property (nonatomic, assign) BOOL shouldHideStatusBar;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 
@@ -40,6 +42,15 @@ static CGFloat const MinimumZoomScale = 0.1;
 - (instancetype)initWithMedia:(Media *)media
 {
     return [self initWithImage:nil andMedia:media];
+}
+
+- (instancetype)initWithGifData:(NSData *)data
+{
+    self = [super init];
+    if (self) {
+        _data = data;
+    }
+    return self;
 }
 
 - (instancetype)initWithImage:(UIImage *)image andURL:(NSURL *)url
@@ -89,9 +100,12 @@ static CGFloat const MinimumZoomScale = 0.1;
     self.scrollView.delegate = self;
     [self.view addSubview:self.scrollView];
 
-    self.imageView = [[UIImageView alloc] initWithFrame:frame];
+    self.imageView = [[CachedAnimatedImageView alloc] initWithFrame:frame];
+    self.imageView.gifStrategy = GIFStrategyLargeGIFs;
     self.imageView.userInteractionEnabled = YES;
     [self.scrollView addSubview:self.imageView];
+
+    self.imageLoader = [[ImageLoader alloc] initWithImageView:self.imageView gifStrategy:GIFStrategyLargeGIFs];
 
     UITapGestureRecognizer *tgr2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageDoubleTapped:)];
     [tgr2 setNumberOfTapsRequired:2];
@@ -127,6 +141,8 @@ static CGFloat const MinimumZoomScale = 0.1;
         [self loadImageFromURL];
     } else if (self.media) {
         [self loadImageFromMedia];
+    } else if (self.data) {
+        [self loadImageFromGifData];
     }
 }
 
@@ -157,20 +173,31 @@ static CGFloat const MinimumZoomScale = 0.1;
 
 - (void)loadImageFromMedia
 {
+    self.imageView.image = self.image;
+    self.isLoadingImage = YES;
+    __weak __typeof__(self) weakSelf = self;
+    [self.imageLoader loadImageFromMedia:self.media preferredSize:CGSizeZero placeholder:self.image success:^{
+        weakSelf.isLoadingImage = NO;
+        weakSelf.image = weakSelf.imageView.image;
+        [weakSelf updateImageView];
+    } error:^(NSError * _Nullable error) {
+        weakSelf.isLoadingImage = NO;
+        DDLogError(@"Error loading image: %@", error);
+    }];
+}
+
+- (void)loadImageFromGifData
+{
     self.isLoadingImage = YES;
 
     __weak __typeof__(self) weakSelf = self;
-    self.imageView.image = self.image;
-    [self.media imageWithSize:CGSizeZero completionHandler:^(UIImage *result, NSError *error) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.image = [[UIImage alloc] initWithData: self.data];
+        [weakSelf updateImageView];
+    });
+    [self.imageView setAnimatedImage:self.data success:^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (error) {
-                DDLogError(@"Error loading image: %@", error);
-                weakSelf.isLoadingImage = NO;
-            } else {
-                weakSelf.image = result;
-                [weakSelf updateImageView];
-                weakSelf.isLoadingImage = NO;
-            }
+            weakSelf.isLoadingImage = NO;
         });
     }];
 }

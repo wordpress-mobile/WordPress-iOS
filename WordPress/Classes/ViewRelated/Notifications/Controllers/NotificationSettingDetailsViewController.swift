@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import UserNotifications
 
 
 /// The purpose of this class is to render a collection of NotificationSettings for a given Stream,
@@ -30,7 +31,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
     /// Indicates whether push notifications have been disabled, in the device, or not.
     ///
-    private var pushNotificationsAuthorized = true {
+    private var pushNotificationsAuthorized: UNAuthorizationStatus = .notDetermined {
         didSet {
             reloadTable()
         }
@@ -117,7 +118,13 @@ class NotificationSettingDetailsViewController: UITableViewController {
     }
 
     @IBAction func reloadTable() {
-        sections = isDeviceStreamDisabled() ? sectionsForDisabledDeviceStream() : sectionsForSettings(settings!, stream: stream!)
+        if isDeviceStreamDisabled() {
+            sections = sectionsForDisabledDeviceStream()
+        } else if isDeviceStreamUnknown() {
+            sections = sectionsForUnknownDeviceStream()
+        } else if let settings = settings, let stream = stream {
+            sections = sectionsForSettings(settings, stream: stream)
+        }
         tableView.reloadData()
     }
 
@@ -164,6 +171,20 @@ class NotificationSettingDetailsViewController: UITableViewController {
         let footerText      = NSLocalizedString("Push Notifications have been turned off in iOS Settings App. " +
                                                 "Toggle \"Allow Notifications\" to turn them back on.",
                                                 comment: "Suggests to enable Push Notification Settings in Settings.app")
+        let section         = Section(rows: [row], footerText: footerText)
+
+        return [section]
+    }
+
+    private func sectionsForUnknownDeviceStream() -> [Section] {
+        defer {
+            WPAnalytics.track(.pushNotificationPrimerSeen, withProperties: [Analytics.locationKey: Analytics.alertKey])
+        }
+        let description     = NSLocalizedString("Allow push notifications", comment: "Shown to the user in settings when they haven't yet allowed or denied push notifications")
+        let row             = Row(kind: .Text, description: description, key: nil, value: nil)
+
+        let footerText      = NSLocalizedString("Allow WordPress to send you push notifications",
+                                                comment: "Suggests the user allow push notifications. Appears within app settings.")
         let section         = Section(rows: [row], footerText: footerText)
 
         return [section]
@@ -218,6 +239,8 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
         if isDeviceStreamDisabled() {
             openApplicationSettings()
+        } else if isDeviceStreamUnknown() {
+            requestNotificationAuthorization()
         }
     }
 
@@ -241,7 +264,11 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
     // MARK: - Disabled Push Notifications Handling
     private func isDeviceStreamDisabled() -> Bool {
-        return stream?.kind == .Device && pushNotificationsAuthorized == false
+        return stream?.kind == .Device && pushNotificationsAuthorized == .denied
+    }
+
+    private func isDeviceStreamUnknown() -> Bool {
+        return stream?.kind == .Device && pushNotificationsAuthorized == .notDetermined
     }
 
     private func openApplicationSettings() {
@@ -249,9 +276,18 @@ class NotificationSettingDetailsViewController: UITableViewController {
         UIApplication.shared.open(targetURL!)
     }
 
+    private func requestNotificationAuthorization() {
+        defer {
+            WPAnalytics.track(.pushNotificationPrimerAllowTapped, withProperties: [Analytics.locationKey: Analytics.alertKey])
+        }
+        InteractiveNotificationsManager.shared.requestAuthorization { [weak self] in
+            self?.refreshPushAuthorizationStatus()
+        }
+    }
+
     @objc func refreshPushAuthorizationStatus() {
         PushNotificationsManager.shared.loadAuthorizationStatus { status in
-            self.pushNotificationsAuthorized = status == .authorized
+            self.pushNotificationsAuthorized = status
         }
     }
 
@@ -324,5 +360,10 @@ class NotificationSettingDetailsViewController: UITableViewController {
             case Setting        = "SwitchCell"
             case Text           = "TextCell"
         }
+    }
+
+    private struct Analytics {
+        static let locationKey = "location"
+        static let alertKey = "settings"
     }
 }

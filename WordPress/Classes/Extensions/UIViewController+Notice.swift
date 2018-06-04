@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import WordPressShared
 
 
 extension UIViewController {
@@ -25,7 +26,9 @@ extension UIViewController {
                             actionTitle: buttonTitle) {
                                 let context = ContextManager.sharedInstance().mainContext
                                 let service = ReaderTopicService(managedObjectContext: context)
-                                service.toggleSubscribingNotifications(for: siteID, subscribe: true)
+                                service.toggleSubscribingNotifications(for: siteID.intValue, subscribe: true, {
+                                    WPAnalytics.track(.readerListNotificationEnabled)
+                                })
         }
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }

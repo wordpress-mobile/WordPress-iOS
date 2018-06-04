@@ -35,6 +35,7 @@ final class MockStockPhotosService: StockPhotosService {
             URL: url,
             title: "pexels-photo-710916.jpeg",
             name: "pexels-photo-710916.jpeg",
+            caption: "From Pexels",
             size:
             CGSize(width: 1880, height: 1253),
             thumbnails: thumbs

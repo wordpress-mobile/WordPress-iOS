@@ -1,1 +1,3 @@
-Saat mengimpor file ke dalam pos di penyunting, Anda dapat memilih banyak tipe file, termasuk dokumen PDF sampai Word.
+Manajemen pengaturan pemberitahuan telah ditingkatkan.
+Keterangan asal dengan kredit sekarang telah dibuat saat mengunggah foto stok.
+Dukungan untuk menampilkan gambar GIF telah ditingkatkan.

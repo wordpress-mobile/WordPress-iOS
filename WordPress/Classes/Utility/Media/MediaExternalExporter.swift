@@ -8,6 +8,8 @@ protocol MediaExternalAsset {
     var URL: URL { get }
     /// Asset name
     var name: String { get }
+    // Caption
+    var caption: String { get }
 }
 
 enum MediaExternalExporterError: MediaExportError {
@@ -74,8 +76,9 @@ class MediaExternalExporter: MediaExporter {
     }
 
     private func exportImage(_ image: UIImage, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) {
-        let exporter = MediaImageExporter(image: image, filename: asset.name)
+        let exporter = MediaImageExporter(image: image, filename: asset.name, caption: asset.caption)
         exporter.mediaDirectoryType = mediaDirectoryType
+
         exporter.export(onCompletion: onCompletion, onError: onError)
     }
 }
