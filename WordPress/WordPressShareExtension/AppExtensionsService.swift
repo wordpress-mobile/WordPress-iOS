@@ -91,9 +91,24 @@ extension AppExtensionsService {
                 onFailure()
                 return
             }
-            let primaryBlogID = ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteID ?? 0
-            let filteredBlogs = blogs.filter({ ($0.blogID.intValue == primaryBlogID || $0.visible == true) })
-            onSuccess(filteredBlogs)
+            // Find the primary site (even if it's not visible)
+            let primarySiteID = ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteID ?? 0
+            let primarySites = blogs.filter({ $0.blogID.intValue == primarySiteID })
+            let visibleSitesSansPrimary = blogs.filter({ $0.blogID.intValue != primarySiteID }).filter({ $0.visible })
+
+            // Recently-used AND visible sites (excluding the primary site)
+            let recentSiteURLs  = ShareExtensionService.retrieveShareExtensionRecentSites() ?? [String()]
+            let recentSites = recentSiteURLs.compactMap({ url in
+                return visibleSitesSansPrimary.first(where: { $0.url == url })
+            })
+
+            // Everything else
+            let remainingSites = visibleSitesSansPrimary.filter({ site in
+                !recentSites.contains(site)
+            })
+
+            let combinedSiteList = primarySites + recentSites + remainingSites
+            onSuccess(combinedSiteList)
         }, failure: { error in
             DDLogError("Error retrieving sites: \(String(describing: error))")
             onFailure()
