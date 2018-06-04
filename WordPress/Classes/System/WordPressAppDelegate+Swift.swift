@@ -299,6 +299,11 @@ extension WordPressAppDelegate {
                        selector: #selector(handleUIContentSizeCategoryDidChangeNotification(_:)),
                        name: NSNotification.Name.UIContentSizeCategoryDidChange,
                        object: nil)
+
+        nc.addObserver(self,
+                       selector: #selector(saveRecentSitesForExtensions),
+                       name: .WPRecentSitesChanged,
+                       object: nil)
     }
 
     @objc fileprivate func handleDefaultAccountChangedNotification(_ notification: NSNotification) {
@@ -338,8 +343,7 @@ extension WordPressAppDelegate {
         let maxImagesize = MediaSettings().maxImageSizeSetting
         ShareExtensionService.configureShareExtensionMaximumMediaDimension(maxImagesize)
 
-        let recentSites = RecentSitesService().recentSites
-        ShareExtensionService.configureShareExtensionRecentSites(recentSites)
+        saveRecentSitesForExtensions()
     }
 
     // MARK: - Today Extension
@@ -362,5 +366,10 @@ extension WordPressAppDelegate {
 
     @objc func removeShareExtensionConfiguration() {
         ShareExtensionService.removeShareExtensionConfiguration()
+    }
+
+    @objc func saveRecentSitesForExtensions() {
+        let recentSites = RecentSitesService().recentSites
+        ShareExtensionService.configureShareExtensionRecentSites(recentSites)
     }
 }
