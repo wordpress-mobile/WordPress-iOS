@@ -1,1 +1,3 @@
-Quando importi file in un articolo nell'editor, ora puoi selezionare molti tipi diversi di file, compresi PDF e documenti Word.
+La gestione delle impostazioni di notifica è stata migliorata.
+Quando vengono caricate le foto stock, ora viene generata una didascalia predefinita con dei crediti.
+Il supporto per la visualizzazione delle immagini GIF è stato migliorato.
