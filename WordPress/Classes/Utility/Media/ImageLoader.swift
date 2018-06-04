@@ -43,7 +43,7 @@ import MobileCoreServices
     private lazy var assetRequestOptions: PHImageRequestOptions = {
         let requestOptions = PHImageRequestOptions()
         requestOptions.resizeMode = .fast
-        requestOptions.deliveryMode = .fastFormat
+        requestOptions.deliveryMode = .opportunistic
         requestOptions.isNetworkAccessAllowed = true
         return requestOptions
     }()

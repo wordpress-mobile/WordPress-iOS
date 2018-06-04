@@ -450,9 +450,15 @@ class AztecPostViewController: UIViewController, PostEditor {
 
 
     /// Presents whatever happens when FormatBar's more button is selected
+    ///
     fileprivate lazy var moreCoordinator: AztecMediaPickingCoordinator = {
         return AztecMediaPickingCoordinator(delegate: self)
     }()
+
+
+    /// Helps choosing the correct view controller for previewing a media asset
+    ///
+    private let mediaPreviewHelper = MediaPreviewHelper()
 
 
     // MARK: - Initializers
@@ -3720,19 +3726,7 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor assets: [WPMediaAsset], selectedIndex selected: Int) -> UIViewController? {
-        guard assets.count > 0, selected < assets.endIndex else {
-            return nil
-        }
-
-        if assets.count > 1 {
-            let carouselViewController = WPCarouselAssetsViewController(assets: assets)
-            carouselViewController.setPreviewingAssetAt(selected, animated: false)
-            carouselViewController.carouselDelegate = self
-            return carouselViewController
-        }
-
-        let asset = assets[selected]
-        return self.viewController(for: asset)
+        return mediaPreviewHelper.previewViewController(for: assets, selectedIndex: selected)
     }
 
     private func updateFormatBarInsertAssetCount() {
@@ -3749,38 +3743,6 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
                 formatBar.trailingItem = insertToolbarItem
             }
         }
-    }
-}
-
-extension AztecPostViewController: WPCarouselAssetsViewControllerDelegate {
-
-    func asset(for viewController: UIViewController) -> WPMediaAsset {
-        guard
-            let imageViewController = viewController as? WPImageViewController,
-            let asset = imageViewController.mediaAsset else {
-            fatalError()
-        }
-        return asset
-
-    }
-
-    func viewController(for asset: WPMediaAsset) -> UIViewController? {
-
-        guard asset.assetType() == .image else {
-            return nil
-        }
-
-        if let mediaAsset = asset as? Media {
-            let imageController = WPImageViewController(media: mediaAsset)
-            imageController?.shouldDismissWithGestures = false
-            return imageController
-        } else if let phasset = asset as? PHAsset {
-            let imageController =  WPImageViewController(asset: phasset)
-            imageController?.shouldDismissWithGestures = false
-            return imageController
-        }
-
-        return nil // use the default preview
     }
 }
 
