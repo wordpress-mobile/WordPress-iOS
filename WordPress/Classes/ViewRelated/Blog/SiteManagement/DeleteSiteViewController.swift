@@ -200,7 +200,7 @@ open class DeleteSiteViewController: UITableViewController {
         let styledMessage: NSMutableAttributedString = NSMutableAttributedString(string: message)
         styledMessage.append(styledUrl)
 
-        // Create alert        
+        // Create alert
         let confirmTitle = NSLocalizedString("Confirm Delete Site", comment: "Title of Delete Site confirmation alert")
         let alertController = UIAlertController(title: confirmTitle, message: nil, preferredStyle: .alert)
         alertController.setValue(styledMessage, forKey: "attributedMessage")
@@ -208,7 +208,7 @@ open class DeleteSiteViewController: UITableViewController {
         let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
         alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
 
-        let deleteTitle = NSLocalizedString("Delete this site", comment: "Delete Site confirmation action title")
+        let deleteTitle = NSLocalizedString("Permanently Delete Site", comment: "Delete Site confirmation action title")
         let deleteAction = UIAlertAction(title: deleteTitle, style: .destructive, handler: { action in
             self.deleteSiteConfirmed()
         })
