@@ -144,7 +144,13 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         applyOpaqueBackgroundColors()
         setupFeaturedImageView()
         setupVisitButton()
-        setupSaveForLaterButton()
+
+        if FeatureFlag.saveForLater.enabled {
+            setupSaveForLaterButton()
+        } else {
+            setupShareButton()
+        }
+
         setupMenuButton()
         setupSummaryLabel()
         setupAttributionView()
@@ -209,9 +215,13 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     fileprivate func setupSaveForLaterButton() {
-        let size = FeatureFlag.saveForLater.enabled ? Gridicon.defaultSize : CGSize(width: 20, height: 20)
-        let icon = FeatureFlag.saveForLater.enabled ? Gridicon.iconOfType(.bookmarkOutline, withSize: size) : Gridicon.iconOfType(.share, withSize: size)
-        let highlightedIcon = FeatureFlag.saveForLater.enabled ? Gridicon.iconOfType(.bookmark, withSize: size) : icon
+        WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
+    }
+
+    fileprivate func setupShareButton() {
+        let size = CGSize(width: 20, height: 20)
+        let icon = Gridicon.iconOfType(.share, withSize: size)
+        let highlightedIcon = icon
 
         let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
         let tintedHighlightedIcon = highlightedIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
@@ -495,21 +505,25 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
             insetFollowButtonIcon(false)
         } else {
-            // show title text
-
             let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
             let commentTitle = WPStyleGuide.commentCountForDisplay(commentCount)
-            let saveForLaterTitle = FeatureFlag.saveForLater.enabled ? NSLocalizedString("Save", comment: "Verb. Button title.  Tap to save a post for later.") : NSLocalizedString("Share", comment: "Verb. Button title.  Tap to share a post.")
             let followTitle = WPStyleGuide.followStringForDisplay(false)
             let followingTitle = WPStyleGuide.followStringForDisplay(true)
 
             likeActionButton.setTitle(likeTitle, for: .normal)
             commentActionButton.setTitle(commentTitle, for: .normal)
-            saveForLaterButton.setTitle(saveForLaterTitle, for: .normal)
+
 
             followButton.setTitle(followTitle, for: .normal)
             followButton.setTitle(followingTitle, for: .selected)
             followButton.setTitle(followingTitle, for: .highlighted)
+
+            if FeatureFlag.saveForLater.enabled {
+                WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
+            } else {
+                let shareTitle = NSLocalizedString("Share", comment: "Verb. Button title.  Tap to share a post.")
+                saveForLaterButton.setTitle(shareTitle, for: .normal)
+            }
 
             insetFollowButtonIcon(true)
         }
@@ -853,6 +867,10 @@ extension ReaderPostCardCell {
 
     func getHeaderButtonForTesting() -> UIButton {
         return headerBlogButton
+    }
+
+    func getSaveForLaterButtonForTesting() -> UIButton {
+        return saveForLaterButton
     }
 
     func getCommentsButtonForTesting() -> UIButton {

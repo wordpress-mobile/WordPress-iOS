@@ -209,6 +209,12 @@ import WordPressShared
         }
     }
 
+    /// Clears all saved posts, so they can be deleted by cleanup methods.
+    ///
+    func clearSavedPosts() {
+        let context = ContextManager.sharedInstance().mainContext
+        ReaderPostService(managedObjectContext: context).clearSavedPostFlags()
+    }
 
     // MARK: - Instance Methods
 
@@ -231,6 +237,7 @@ import WordPressShared
 
         // Clean up obsolete content.
         unflagInUseContent()
+        clearSavedPosts()
         cleanupStaleContent(removeAllTopics: true)
 
         // Clean up stale search history

@@ -870,6 +870,10 @@
 		D83CA3AB20842E5F0060E310 /* StockPhotosResultsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3AA20842E5F0060E310 /* StockPhotosResultsPage.swift */; };
 		D83CA3B02084CAAF0060E310 /* StockPhotosDataLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3AF2084CAAF0060E310 /* StockPhotosDataLoader.swift */; };
 		D87A329620ABD60700F4726F /* ReaderTableContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87A329520ABD60700F4726F /* ReaderTableContent.swift */; };
+		D88106F720C0C9A8001D2F00 /* ReaderSavedPostUndoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88106F520C0C9A8001D2F00 /* ReaderSavedPostUndoCell.swift */; };
+		D88106F820C0C9A8001D2F00 /* ReaderSavedPostUndoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D88106F620C0C9A8001D2F00 /* ReaderSavedPostUndoCell.xib */; };
+		D88106FA20C0CFEE001D2F00 /* ReaderSaveForLaterRemovedPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88106F920C0CFEE001D2F00 /* ReaderSaveForLaterRemovedPosts.swift */; };
+		D88106FC20C0D4A4001D2F00 /* ReaderSavedPostCellActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88106FB20C0D4A4001D2F00 /* ReaderSavedPostCellActions.swift */; };
 		D88A6492208D7A0A008AE9BC /* MockStockPhotosService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88A6491208D7A0A008AE9BC /* MockStockPhotosService.swift */; };
 		D88A6494208D7AD0008AE9BC /* DefaultStockPhotosService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88A6493208D7AD0008AE9BC /* DefaultStockPhotosService.swift */; };
 		D88A6496208D7B0B008AE9BC /* NullStockPhotosService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88A6495208D7B0B008AE9BC /* NullStockPhotosService.swift */; };
@@ -2407,6 +2411,10 @@
 		D83CA3AA20842E5F0060E310 /* StockPhotosResultsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosResultsPage.swift; sourceTree = "<group>"; };
 		D83CA3AF2084CAAF0060E310 /* StockPhotosDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosDataLoader.swift; sourceTree = "<group>"; };
 		D87A329520ABD60700F4726F /* ReaderTableContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTableContent.swift; sourceTree = "<group>"; };
+		D88106F520C0C9A8001D2F00 /* ReaderSavedPostUndoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSavedPostUndoCell.swift; sourceTree = "<group>"; };
+		D88106F620C0C9A8001D2F00 /* ReaderSavedPostUndoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderSavedPostUndoCell.xib; sourceTree = "<group>"; };
+		D88106F920C0CFEE001D2F00 /* ReaderSaveForLaterRemovedPosts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSaveForLaterRemovedPosts.swift; sourceTree = "<group>"; };
+		D88106FB20C0D4A4001D2F00 /* ReaderSavedPostCellActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSavedPostCellActions.swift; sourceTree = "<group>"; };
 		D88A6491208D7A0A008AE9BC /* MockStockPhotosService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockStockPhotosService.swift; sourceTree = "<group>"; };
 		D88A6493208D7AD0008AE9BC /* DefaultStockPhotosService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultStockPhotosService.swift; sourceTree = "<group>"; };
 		D88A6495208D7B0B008AE9BC /* NullStockPhotosService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullStockPhotosService.swift; sourceTree = "<group>"; };
@@ -3668,6 +3676,8 @@
 				D87A329520ABD60700F4726F /* ReaderTableContent.swift */,
 				D817798F20ABF26800330998 /* ReaderCellConfiguration.swift */,
 				D817799320ABFDB300330998 /* ReaderPostCellActions.swift */,
+				D88106F920C0CFEE001D2F00 /* ReaderSaveForLaterRemovedPosts.swift */,
+				D88106FB20C0D4A4001D2F00 /* ReaderSavedPostCellActions.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -3731,6 +3741,8 @@
 				E6A3384D1BB0A50900371587 /* ReaderGapMarkerCell.xib */,
 				E6D3E8481BEBD871002692E8 /* ReaderCrossPostCell.swift */,
 				E6D3E84A1BEBD888002692E8 /* ReaderCrossPostCell.xib */,
+				D88106F520C0C9A8001D2F00 /* ReaderSavedPostUndoCell.swift */,
+				D88106F620C0C9A8001D2F00 /* ReaderSavedPostUndoCell.xib */,
 			);
 			name = Cards;
 			sourceTree = "<group>";
@@ -6526,6 +6538,7 @@
 				40640046200ED30300106789 /* TextWithAccessoryButtonCell.xib in Resources */,
 				FF00889D204DFF77007CCE66 /* MediaQuotaCell.xib in Resources */,
 				931DF4D618D09A2F00540BDD /* InfoPlist.strings in Resources */,
+				D88106F820C0C9A8001D2F00 /* ReaderSavedPostUndoCell.xib in Resources */,
 				5D5A6E941B613CA400DAF819 /* ReaderPostCardCell.xib in Resources */,
 				1731BCD11DD9EFF1009FE3AE /* HelpshiftCustomConfig.plist in Resources */,
 				4019B27120885AB900A0C7EB /* Activity.storyboard in Resources */,
@@ -7193,6 +7206,7 @@
 				433432541E9EE0B100915988 /* EpilogueSegue.swift in Sources */,
 				D800D86E2099857000E7C7E5 /* SearchMenuItemCreator.swift in Sources */,
 				9827B3B1201FF30700530AF5 /* SiteCreationFields.swift in Sources */,
+				D88106FA20C0CFEE001D2F00 /* ReaderSaveForLaterRemovedPosts.swift in Sources */,
 				1751E5931CE23801000CA08D /* NSAttributedString+StyledHTML.swift in Sources */,
 				D8071631203DA23700B32FD9 /* Accessible.swift in Sources */,
 				98077B5A2075561800109F95 /* SupportTableViewController.swift in Sources */,
@@ -7537,6 +7551,7 @@
 				7E729C28209A087300F76599 /* ImageLoader.swift in Sources */,
 				5D146EBB189857ED0068FDC6 /* FeaturedImageViewController.m in Sources */,
 				D817799020ABF26800330998 /* ReaderCellConfiguration.swift in Sources */,
+				D88106FC20C0D4A4001D2F00 /* ReaderSavedPostCellActions.swift in Sources */,
 				31EC15081A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m in Sources */,
 				9F74696B209EFD0C0074D52B /* CheckmarkTableViewCell.swift in Sources */,
 				FF5371631FDFF64F00619A3F /* MediaService.swift in Sources */,
@@ -7613,6 +7628,7 @@
 				5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */,
 				D80BC79C207464D200614A59 /* MediaLibraryMediaPickingCoordinator.swift in Sources */,
 				982A4C3520227D6700B5518E /* NoResultsViewController.swift in Sources */,
+				D88106F720C0C9A8001D2F00 /* ReaderSavedPostUndoCell.swift in Sources */,
 				74EA3B88202A0462004F802D /* ShareNoticeConstants.swift in Sources */,
 				FF1933FF1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.m in Sources */,
 				B54075D41D3D7D5B0095C318 /* IntrinsicTableView.swift in Sources */,
