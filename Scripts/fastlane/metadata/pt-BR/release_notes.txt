@@ -1,1 +1,0 @@
-Ao importar arquivos para um post no editor, agora é possível selecionar vários tipos de arquivo, incluindo PDFs e documentos do Word.

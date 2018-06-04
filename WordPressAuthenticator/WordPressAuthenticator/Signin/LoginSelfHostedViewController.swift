@@ -171,7 +171,7 @@ class LoginSelfHostedViewController: LoginViewController, NUXKeyboardResponder {
     func configureBlogDetailHeaderView(siteInfo: WordPressComSiteInfo) {
         let siteAddress = sanitizedSiteAddress(siteAddress: siteInfo.url)
         siteHeaderView.title = siteInfo.name
-        siteHeaderView.subtitle = siteAddress
+        siteHeaderView.subtitle = NSURL.idnDecodedURL(siteAddress)
         siteHeaderView.subtitleIsHidden = false
 
         siteHeaderView.blavatarBorderIsHidden = false

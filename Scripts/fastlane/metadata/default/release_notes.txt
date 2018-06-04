@@ -1,1 +1,3 @@
-When importing files into a post in the editor you can now select many different types of file, including PDFs to Word documents.
+Notification settings management has been improved.
+A default caption with credits is now generated when uploading stock photos.
+Support for displaying GIF images has been improved.

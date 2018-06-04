@@ -1,1 +1,3 @@
-Al importar archivos en una entrada en el editor ahora puedes elegir muchos tipos de archivo diferentes, incluidos desde PDF hasta documentos de Word.
+Se ha mejorado la gestión de ajustes de notificaciones.
+Ahora se genera una leyenda por defecto con agradecimientos al subir fotos de stock.
+Se ha mejorado la compatibilidad para mostrar imagénes en formato GIF.

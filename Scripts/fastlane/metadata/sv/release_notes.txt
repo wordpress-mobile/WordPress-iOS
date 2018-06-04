@@ -1,1 +1,3 @@
-Vid import i redigeraren av filer till ett inlägg kan du nu välja många olika filtyper, inklusive pdf-filer och Word-document.
+Hanteringen av inställningar för notiser har förbättrats.
+Nu skapas en standardbeskrivning med källa vid uppladdning av foton från bildbanker.
+Stödet för visning av GIF-bilder har förbättrats.
