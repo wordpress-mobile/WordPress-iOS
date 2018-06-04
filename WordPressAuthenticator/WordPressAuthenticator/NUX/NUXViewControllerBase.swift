@@ -163,7 +163,6 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
     ///
     public func addHelpButtonToNavController() {
         let helpButtonMarginSpacerWidth = CGFloat(-8)
-        let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
         
         var helpNotificationSize: CGSize
         var notificationView: UIView
@@ -199,9 +198,12 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
             notificationViewCenterYConstraint = notificationView.centerYAnchor.constraint(equalTo: helpButton.topAnchor)
         }
 
-        let customView = UIView(frame: helpButtonContainerFrame)
+        let customView = UIView(frame: .zero)
+        customView.translatesAutoresizingMaskIntoConstraints = false
+        customView.heightAnchor.constraint(equalToConstant: 44.0).isActive = true
+        customView.widthAnchor.constraint(greaterThanOrEqualToConstant: 44.0).isActive = true
 
-        helpButton.setTitle(NSLocalizedString("Help", comment: "Help button"), for: .normal)
+        helpButton.setTitle(NSLocalizedString("Ayuda", comment: "Help button"), for: .normal)
         helpButton.setTitleColor(UIColor(white: 1.0, alpha: 0.4), for: .highlighted)
         helpButton.on(.touchUpInside) { [weak self] control in
             guard let strongSelf = self else {
@@ -224,6 +226,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         notificationViewCenterYConstraint.isActive = true
         notificationView.widthAnchor.constraint(equalToConstant: helpNotificationSize.width).isActive = true
         notificationView.heightAnchor.constraint(equalToConstant: helpNotificationSize.height).isActive = true
+
 
         let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         spacer.width = helpButtonMarginSpacerWidth
