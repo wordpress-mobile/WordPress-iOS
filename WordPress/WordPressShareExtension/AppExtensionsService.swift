@@ -200,7 +200,8 @@ extension AppExtensionsService {
             if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
                 ExtensionNotificationManager.scheduleSuccessNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
                                                                          postID: String(uploadPostOp.remotePostID),
-                                                                         blogID: String(uploadPostOp.siteID))
+                                                                         blogID: String(uploadPostOp.siteID),
+                                                                         postStatus: remotePost.status)
             }
             onComplete?()
         }, onFailure: {
@@ -208,7 +209,8 @@ extension AppExtensionsService {
             if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
                 ExtensionNotificationManager.scheduleFailureNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
                                                                          postID: String(uploadPostOp.remotePostID),
-                                                                         blogID: String(uploadPostOp.siteID))
+                                                                         blogID: String(uploadPostOp.siteID),
+                                                                         postStatus: remotePost.status)
             }
 
             // Error is already logged in coredata so no need to do it here.
@@ -269,7 +271,7 @@ extension AppExtensionsService {
                                       sharedContainerIdentifier: WPAppGroupName)
 
         // NOTE: The success and error closures **may** get called here - it’s non-deterministic as to whether WPiOS
-        // or the extension gets the "did complete" callback. So unfortunatly, we need to have the logic to complete
+        // or the extension gets the "did complete" callback. So unfortunately, we need to have the logic to complete
         // post share here as well as WPiOS.
         let remote = MediaServiceRemoteREST(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
         remote.uploadMedia(allRemoteMedia, requestEnqueued: { taskID in
@@ -314,7 +316,7 @@ extension AppExtensionsService {
             self.coreDataStack.saveContext()
 
             // Now upload the post
-            self.combinePostWithMediaAndUpload(forPostUploadOpWithObjectID: uploadPostOpID)
+            self.combinePostWithMediaAndUpload(forPostUploadOpWithObjectID: uploadPostOpID, postStatus: remotePost.status)
         }) { error in
             guard let error = error as NSError? else {
                 return
@@ -358,7 +360,7 @@ fileprivate extension AppExtensionsService {
     ///
     /// - Parameter uploadPostOpID: Managed object ID for the post
     ///
-    func combinePostWithMediaAndUpload(forPostUploadOpWithObjectID uploadPostOpID: NSManagedObjectID) {
+    func combinePostWithMediaAndUpload(forPostUploadOpWithObjectID uploadPostOpID: NSManagedObjectID, postStatus: String) {
         guard let postUploadOp = coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID),
             let groupID = postUploadOp.groupID,
             let mediaUploadOps = coreDataStack.fetchMediaUploadOps(for: groupID) else {
@@ -385,7 +387,8 @@ fileprivate extension AppExtensionsService {
                 ExtensionNotificationManager.scheduleSuccessNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
                                                                          postID: String(uploadPostOp.remotePostID),
                                                                          blogID: String(uploadPostOp.siteID),
-                                                                         mediaItemCount: mediaUploadOps.count)
+                                                                         mediaItemCount: mediaUploadOps.count,
+                                                                         postStatus: postStatus)
             }
         }, onFailure: {
             // Schedule a local failure notification
@@ -393,7 +396,8 @@ fileprivate extension AppExtensionsService {
                 ExtensionNotificationManager.scheduleFailureNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
                                                                          postID: String(uploadPostOp.remotePostID),
                                                                          blogID: String(uploadPostOp.siteID),
-                                                                         mediaItemCount: mediaUploadOps.count)
+                                                                         mediaItemCount: mediaUploadOps.count,
+                                                                         postStatus: postStatus)
             }
         })
     }
