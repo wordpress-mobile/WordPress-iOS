@@ -295,9 +295,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewDidAppear:animated];
     [self createUserActivity];
-    if ([Feature enabled:FeatureFlagPrimeForPush]) {
-        [self showNotificationPrimerAlert];
-    }
+    [self showNotificationPrimerAlert];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
@@ -680,6 +678,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         // blogs that do not have capabilities since those will not support the REST API icon update
         return;
     }
+    [WPAnalytics track:WPAnalyticsStatSiteSettingsSiteIconTapped];
     [self showUpdateSiteIconAlert];
 }
 
@@ -806,6 +805,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     self.headerView.updatingIcon = YES;
     self.blog.settings.iconMediaID = @0;
     [self updateBlogSettingsAndRefreshIcon];
+    [WPAnalytics track:WPAnalyticsStatSiteSettingsSiteIconRemoved];
 }
 
 - (void)updateBlogIconWithMedia:(Media *)media
@@ -1157,6 +1157,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showNotificationPrimerAlert
 {
     if ([[NSUserDefaults standardUserDefaults] notificationPrimerAlertWasDisplayed]) {
+        return;
+    }
+    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:mainContext];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    if (defaultAccount == nil) {
         return;
     }
     [[PushNotificationsManager shared] loadAuthorizationStatusWithCompletion:^(UNAuthorizationStatus enabled) {

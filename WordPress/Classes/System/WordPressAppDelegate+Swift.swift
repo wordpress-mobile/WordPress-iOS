@@ -74,11 +74,27 @@ extension WordPressAppDelegate {
         connectionAvailable = internetReachability.isReachable()
     }
 
+    @objc func configureSelfHostedChallengeHandler() {
+        /// Note:
+        /// WordPressKit, now imported via CocoaPods, has the `AppExtension Safe API Only` flag set to *true*. Meaning that
+        /// the host app is, effectively as of now, responsible for presenting any alert onscreen (whenever a HTTP Challenge is
+        /// received). Capicci?
+        ///
+        WordPressOrgXMLRPCApi.onChallenge = { (challenge, completionHandler) in
+            guard let alertController = HTTPAuthenticationAlertController.controller(for: challenge, handler: completionHandler) else {
+                completionHandler(.performDefaultHandling, nil)
+                return
+            }
+
+            alertController.presentFromRootViewController()
+        }
+    }
+
     @objc func configureWordPressAuthenticator() {
         authManager = WordPressAuthenticationManager()
 
         authManager.initializeWordPressAuthenticator()
-        authManager.startRelayingHelpshiftNotifications()
+        authManager.startRelayingSupportNotifications()
 
         WordPressAuthenticator.shared.delegate = authManager
     }

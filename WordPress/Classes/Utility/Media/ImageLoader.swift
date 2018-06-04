@@ -1,7 +1,7 @@
 
 /// Protocol used to abstract the information needed to load post related images.
 ///
-@objc protocol PostInformation {
+@objc protocol ImageSourceInformation {
 
     /// The post is private and hosted on WPcom.
     /// Redundant name due to naming conflict.
@@ -10,7 +10,7 @@
 
     /// The blog is self-hosted and there is already a basic auth credential stored.
     ///
-    var isBlogSelfHostedWithCredentials: Bool { get }
+    var isSelfHostedWithCredentials: Bool { get }
 }
 
 /// Class used together with `CachedAnimatedImageView` to facilitate the loading of both
@@ -23,16 +23,48 @@
     private var errorHandler: ((Error?) -> Void)?
     private var placeholder: UIImage?
 
-    @objc init(imageView: CachedAnimatedImageView) {
+    @objc init(imageView: CachedAnimatedImageView, gifStrategy: GIFStrategy = .mediumGIFs) {
         self.imageView = imageView
+        imageView.gifStrategy = gifStrategy
         super.init()
     }
 
+    /// Removes the gif animation and prevents it from animate again.
     /// Call this in a table/collection cell's `prepareForReuse()`.
     ///
     @objc func prepareForReuse() {
-        imageView.image = nil
         imageView.prepForReuse()
+    }
+
+    @objc(loadImageFromMedia:preferredSize:placeholder:success:error:)
+    /// Load an image from the given Media object. If it's a gif, it will animate it.
+    /// For any other type of media, this will load the corresponding static image.
+    ///
+    /// - Parameters:
+    ///   - media: The media object
+    ///   - placeholder: A placeholder to show while the image is loading.
+    ///   - size: The prefered size of the image to load.
+    ///   - success: A closure to be called if the image was loaded successfully.
+    ///   - error: A closure to be called if there was an error loading the image.
+    ///
+    func loadImage(media: Media, preferredSize size: CGSize = .zero, placeholder: UIImage?, success: (() -> Void)?, error: ((Error?) -> Void)?) {
+
+        self.placeholder = placeholder
+        successHandler = success
+        errorHandler = error
+
+        guard let url = url(from: media) else {
+            let error = NSError(domain: NSURLErrorDomain, code: NSURLErrorBadURL, userInfo: nil)
+            callErrorHandler(with: error)
+            return
+        }
+
+        if url.isGif {
+            loadGif(with: url, from: media.blog)
+        } else if imageView.image == nil {
+            imageView.clean()
+            loadImage(from: media, preferredSize: size)
+        }
     }
 
     @objc(loadImageWithURL:fromPost:andPreferedSize:)
@@ -43,11 +75,12 @@
     ///   - post: The post where the image is loaded from.
     ///   - size: The prefered size of the image to load.
     ///
-    func loadImage(with url: URL, from post: PostInformation, preferedSize size: CGSize = .zero) {
+    func loadImage(with url: URL, from post: ImageSourceInformation, preferedSize size: CGSize = .zero) {
         if url.isGif {
             loadGif(with: url, from: post)
         } else {
-            loadStillImage(with: url, from: post, preferedSize: size)
+            imageView.clean()
+            loadStaticImage(with: url, from: post, preferedSize: size)
         }
     }
 
@@ -61,7 +94,8 @@
     ///   - placeholder: A placeholder to show while the image is loading.
     ///   - success: A closure to be called if the image was loaded successfully.
     ///   - error: A closure to be called if there was an error loading the image.
-    func loadImage(with url: URL, from post: PostInformation, preferedSize size: CGSize = .zero, placeholder: UIImage?, success: (() -> Void)?, error: ((Error?) -> Void)?) {
+    func loadImage(with url: URL, from post: ImageSourceInformation, preferedSize size: CGSize = .zero, placeholder: UIImage?, success: (() -> Void)?, error: ((Error?) -> Void)?) {
+
         self.placeholder = placeholder
         successHandler = success
         errorHandler = error
@@ -73,7 +107,7 @@
 
     /// Load an animated image from the given URL.
     ///
-    private func loadGif(with url: URL, from post: PostInformation) {
+    private func loadGif(with url: URL, from post: ImageSourceInformation) {
         let request: URLRequest
         if post.isPrivateOnWPCom {
             request = PrivateSiteURLProtocol.requestForPrivateSite(from: url)
@@ -85,12 +119,12 @@
 
     /// Load a static image from the given URL.
     ///
-    private func loadStillImage(with url: URL, from post: PostInformation, preferedSize size: CGSize) {
+    private func loadStaticImage(with url: URL, from post: ImageSourceInformation, preferedSize size: CGSize) {
         if url.isFileURL {
             downloadImage(from: url)
         } else if post.isPrivateOnWPCom {
             loadPrivateImage(with: url, from: post, preferedSize: size)
-        } else if post.isBlogSelfHostedWithCredentials {
+        } else if post.isSelfHostedWithCredentials {
             downloadImage(from: url)
         } else {
             loadProtonUrl(with: url, preferedSize: size)
@@ -99,7 +133,7 @@
 
     /// Loads the image from a private post hosted in WPCom.
     ///
-    private func loadPrivateImage(with url: URL, from post: PostInformation, preferedSize size: CGSize) {
+    private func loadPrivateImage(with url: URL, from post: ImageSourceInformation, preferedSize size: CGSize) {
         let scale = UIScreen.main.scale
         let scaledSize = CGSize(width: size.width * scale, height: size.height * scale)
         let scaledURL = WPImageURLHelper.imageURLWithSize(scaledSize, forImageURL: url)
@@ -118,9 +152,23 @@
         downloadImage(from: protonURL)
     }
 
+    private func loadImage(from media: Media, preferredSize size: CGSize) {
+        imageView.image = placeholder
+        imageView.startLoadingAnimation()
+        media.image(with: size) {  [weak self] (image, error) in
+            if let image = image {
+                self?.imageView.image = image
+                self?.callSuccessHandler()
+            } else {
+                self?.callErrorHandler(with: error)
+            }
+        }
+    }
+
     /// Download the animated image from the given URL Request.
     ///
     private func downloadGif(from request: URLRequest) {
+        imageView.startLoadingAnimation()
         imageView.setAnimatedImage(request, placeholderImage: placeholder, success: { [weak self] in
             self?.callSuccessHandler()
         }) { [weak self] (error) in
@@ -131,18 +179,20 @@
     /// Downloads the image from the given URL Request.
     ///
     private func downloadImage(from request: URLRequest) {
+        imageView.startLoadingAnimation()
         imageView.setImageWith(request, placeholderImage: placeholder, success: { [weak self] (_, _, image) in
             // Since a success block is specified, we need to set the image manually.
             self?.imageView.image = image
-            self?.successHandler?()
+            self?.callSuccessHandler()
         }) { [weak self] (_, _, error) in
-            self?.errorHandler?(error)
+            self?.callErrorHandler(with: error)
         }
     }
 
     /// Downloads the image from the given URL.
     ///
     private func downloadImage(from url: URL) {
+        imageView.startLoadingAnimation()
         imageView.downloadImage(from: url, placeholderImage: placeholder, success: { [weak self] (_) in
             self?.callSuccessHandler()
         }) { [weak self] (error) in
@@ -151,6 +201,7 @@
     }
 
     private func callSuccessHandler() {
+        imageView.stopLoadingAnimation()
         guard successHandler != nil else {
             return
         }
@@ -160,11 +211,24 @@
     }
 
     private func callErrorHandler(with error: Error?) {
+        guard let error = error, (error as NSError).code != NSURLErrorCancelled else {
+            return
+        }
+        imageView.stopLoadingAnimation()
         guard errorHandler != nil else {
             return
         }
         DispatchQueue.main.async {
             self.errorHandler?(error)
         }
+    }
+
+    private func url(from media: Media) -> URL? {
+        if let localUrl = media.absoluteLocalURL {
+            return localUrl
+        } else if let urlString = media.remoteURL, let remoteUrl = URL(string: urlString) {
+            return remoteUrl
+        }
+        return nil
     }
 }

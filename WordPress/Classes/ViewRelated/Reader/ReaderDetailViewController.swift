@@ -1,7 +1,9 @@
 import Foundation
 import CocoaLumberjack
 import WordPressShared
+import WordPressUI
 import QuartzCore
+import Gridicons
 
 open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration {
     @objc static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"
@@ -31,7 +33,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     @IBOutlet fileprivate weak var commentButton: UIButton!
     @IBOutlet fileprivate weak var likeButton: UIButton!
     @IBOutlet fileprivate weak var footerViewHeightConstraint: NSLayoutConstraint!
-
+    @IBOutlet fileprivate weak var saveForLaterButton: UIButton!
     // Wrapper views
     @IBOutlet fileprivate weak var textHeaderStackView: UIStackView!
     @IBOutlet fileprivate weak var textFooterStackView: UIStackView!
@@ -45,9 +47,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     @IBOutlet fileprivate weak var menuButton: UIButton!
 
     // Content views
-    @IBOutlet fileprivate weak var featuredImageView: UIImageView!
+    @IBOutlet fileprivate weak var featuredImageView: CachedAnimatedImageView!
     @IBOutlet fileprivate weak var titleLabel: UILabel!
     @IBOutlet fileprivate weak var bylineView: UIView!
+    @IBOutlet fileprivate weak var bylineScrollView: UIScrollView!
+    @IBOutlet fileprivate var bylineGradientViews: [GradientView]!
     @IBOutlet fileprivate weak var avatarImageView: CircularImageView!
     @IBOutlet fileprivate weak var bylineLabel: UILabel!
     @IBOutlet fileprivate weak var textView: WPRichContentView!
@@ -91,11 +95,20 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
     }
 
-
     fileprivate var isLoaded: Bool {
         return post != nil
     }
 
+    fileprivate lazy var featuredImageLoader: ImageLoader = {
+        // Allow for large GIFs to animate on the detail page
+        return ImageLoader(imageView: featuredImageView, gifStrategy: .largeGIFs)
+    }()
+
+    /// The user interface direction for the view's semantic content attribute.
+    ///
+    private var layoutDirection: UIUserInterfaceLayoutDirection {
+        return UIView.userInterfaceLayoutDirection(for: self.view.semanticContentAttribute)
+    }
 
     // MARK: - Convenience Factories
 
@@ -223,6 +236,14 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
+    open override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+
+        updateContentInsets()
+        updateTextViewMargins()
+    }
+
+
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
@@ -230,6 +251,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         // split screen multitasking on the iPad.
         view.layoutIfNeeded()
     }
+
 
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
@@ -472,74 +494,48 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 
     fileprivate func configureFeaturedImage() {
-        var url = post!.featuredImageURLForDisplay()
-
-        guard url != nil else {
-            return
+        guard let post = post,
+            !post.contentIncludesFeaturedImage(),
+            let featuredImageURL = post.featuredImageURLForDisplay() else {
+                return
         }
 
-        // Do not display the featured image if it exists in the content.
-        if post!.contentIncludesFeaturedImage() {
-            return
-        }
-
-        var request: URLRequest
-
-        if !(post!.isPrivate()) {
-            let size = CGSize(width: featuredImageView.frame.width, height: 0)
-            url = PhotonImageURLHelper.photonURL(with: size, forImageURL: url)
-            request = URLRequest(url: url!)
-
-        } else if (url?.host != nil) && (url?.host!.hasSuffix("wordpress.com"))! {
-            // private wpcom image needs special handling.
-            request = requestForURL(url!)
-
-        } else {
-            // private but not a wpcom hosted image
-            request = URLRequest(url: url!)
-        }
-
-        // Define a success block to make the image visible and update its aspect ratio constraint
-        let successBlock: ((URLRequest, HTTPURLResponse?, UIImage) -> Void) = { [weak self] (request: URLRequest, response: HTTPURLResponse?, image: UIImage) in
-            guard self != nil else {
+        let postInfo = ReaderCardContent(provider: post)
+        featuredImageLoader.loadImage(with: featuredImageURL, from: postInfo, placeholder: nil, success: { [weak self] in
+            guard let strongSelf = self, let size = strongSelf.featuredImageView.image?.size else {
                 return
             }
-
-            self!.configureFeaturedImageWithImage(image)
+            DispatchQueue.main.async {
+                strongSelf.configureFeaturedImageConstraints(with: size)
+                strongSelf.configureFeaturedImageGestures()
+            }
+        }) { error in
+            DDLogError("Error loading featured image in reader detail: \(String(describing: error))")
         }
-
-        featuredImageView.setImageWith(request, placeholderImage: nil, success: successBlock, failure: nil)
     }
 
-
-    open override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-
-        updateContentInsets()
-        updateTextViewMargins()
-    }
-
-
-    fileprivate func configureFeaturedImageWithImage(_ image: UIImage) {
+    fileprivate func configureFeaturedImageConstraints(with size: CGSize) {
         // Unhide the views
         featuredImageView.isHidden = false
         featuredImageBottomPaddingView.isHidden = false
 
         // Now that we have the image, create an aspect ratio constraint for
         // the featuredImageView
-        let ratio = image.size.height / image.size.width
+        let ratio = size.height / size.width
         let constraint = NSLayoutConstraint(item: featuredImageView,
-            attribute: .height,
-            relatedBy: .equal,
-            toItem: featuredImageView,
-            attribute: .width,
-            multiplier: ratio,
-            constant: 0)
+                                            attribute: .height,
+                                            relatedBy: .equal,
+                                            toItem: featuredImageView,
+                                            attribute: .width,
+                                            multiplier: ratio,
+                                            constant: 0)
         constraint.priority = .defaultHigh
         featuredImageView.addConstraint(constraint)
         featuredImageView.setNeedsUpdateConstraints()
-        featuredImageView.image = image
+    }
 
+
+    fileprivate func configureFeaturedImageGestures() {
         // Listen for taps so we can display the image detail
         let tgr = UITapGestureRecognizer(target: self, action: #selector(ReaderDetailViewController.didTapFeaturedImage(_:)))
         featuredImageView.addGestureRecognizer(tgr)
@@ -604,6 +600,23 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
 
         bylineLabel.text = byline
+
+        flipBylineViewIfNeeded()
+    }
+
+    private func flipBylineViewIfNeeded() {
+        if layoutDirection == .rightToLeft {
+            bylineScrollView.transform = CGAffineTransform(scaleX: -1, y: 1)
+            bylineScrollView.subviews.first?.transform = CGAffineTransform(scaleX: -1, y: 1)
+
+            for gradientView in bylineGradientViews {
+                let start = gradientView.startPoint
+                let end = gradientView.endPoint
+
+                gradientView.startPoint = end
+                gradientView.endPoint = start
+            }
+        }
     }
 
 
@@ -644,6 +657,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     fileprivate func configureActionButtons() {
         resetActionButton(likeButton)
         resetActionButton(commentButton)
+        resetActionButton(saveForLaterButton)
 
         guard let post = post else {
             assertionFailure()
@@ -664,6 +678,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                 configureCommentActionButton()
             }
         }
+
+        configureSaveForLaterButton()
     }
 
 
@@ -776,6 +792,26 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         let image = UIImage(named: "icon-reader-comment")
         let highlightImage = UIImage(named: "icon-reader-comment-highlight")
         configureActionButton(commentButton, title: title, image: image, highlightedImage: highlightImage, selected: false)
+    }
+
+    fileprivate func configureSaveForLaterButton() {
+        guard FeatureFlag.saveForLater.enabled else {
+            saveForLaterButton.isHidden = true
+            return
+        }
+
+        let size = Gridicon.defaultSize
+        let icon = Gridicon.iconOfType(.bookmarkOutline, withSize: size)
+        let highlightedIcon = Gridicon.iconOfType(.bookmark, withSize: size)
+
+        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
+        let tintedHighlightedIcon = highlightedIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
+
+        saveForLaterButton.setImage(tintedIcon, for: .normal)
+        saveForLaterButton.setImage(tintedHighlightedIcon, for: .selected)
+
+        saveForLaterButton.isHidden = false
+        saveForLaterButton.isSelected = post?.isSavedForLater ?? false
     }
 
 
@@ -922,6 +958,16 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     // MARK: - Actions
 
+    @IBAction func didTapSaveForLaterButton(_ sender: UIButton) {
+        guard let readerPost = post, let context = readerPost.managedObjectContext else {
+            return
+        }
+
+        ReaderSaveForLaterAction().execute(with: readerPost, context: context) { [weak self] in
+            self?.saveForLaterButton.isSelected = readerPost.isSavedForLater
+        }
+    }
+
     @IBAction func didTapTagButton(_ sender: UIButton) {
         if !isLoaded {
             return
@@ -1000,14 +1046,19 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 
     @objc func didTapFeaturedImage(_ gesture: UITapGestureRecognizer) {
-        if gesture.state != .ended {
+        guard gesture.state == .ended, let post = post else {
             return
         }
 
-        let controller = WPImageViewController(image: featuredImageView.image)
-        controller?.modalTransitionStyle = .crossDissolve
-        controller?.modalPresentationStyle = .fullScreen
-        present(controller!, animated: true, completion: nil)
+        var controller: WPImageViewController
+        if post.featuredImageURL.isGif && featuredImageView.animatedGifData != nil {
+            controller = WPImageViewController(gifData: featuredImageView.animatedGifData)
+        } else {
+            controller = WPImageViewController(image: featuredImageView.image)
+        }
+        controller.modalTransitionStyle = .crossDissolve
+        controller.modalPresentationStyle = .fullScreen
+        present(controller, animated: true, completion: nil)
     }
 
 

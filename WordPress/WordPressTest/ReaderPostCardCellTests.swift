@@ -133,6 +133,10 @@ class MockContentProvider: NSObject, ReaderPostContentProvider {
     func isCommentCrossPost() -> Bool {
         return false
     }
+
+    func isSavedForLater() -> Bool {
+        return false
+    }
 }
 
 final class ReaderPostCardCellTests: XCTestCase {
