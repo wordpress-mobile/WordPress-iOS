@@ -77,7 +77,7 @@ class AppExtensionsService {
 // MARK: - Sites
 
 extension AppExtensionsService {
-    /// Fetches the primary blog + visible blogs for the current account.
+    /// Fetches the primary blog + recent sites + remaining visible blogs for the current account.
     ///
     /// - Parameters:
     ///   - onSuccess: Completion handler executed after a successful fetch.
