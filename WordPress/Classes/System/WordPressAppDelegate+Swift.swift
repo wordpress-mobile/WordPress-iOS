@@ -337,6 +337,9 @@ extension WordPressAppDelegate {
 
         let maxImagesize = MediaSettings().maxImageSizeSetting
         ShareExtensionService.configureShareExtensionMaximumMediaDimension(maxImagesize)
+
+        let recentSites = RecentSitesService().recentSites
+        ShareExtensionService.configureShareExtensionRecentSites(recentSites)
     }
 
     // MARK: - Today Extension
