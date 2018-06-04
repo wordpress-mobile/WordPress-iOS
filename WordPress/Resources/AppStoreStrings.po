@@ -38,7 +38,7 @@ msgctxt "app_store_keywords"
 msgid "social networking, blogging, blogs, photos, writing, geotagging, media, blog, wordpress\n"
 msgstr ""
 
-msgctxt "v10.1-whats-new"
+msgctxt "v10.2-whats-new"
 msgid ""
 "Notification settings management has been improved.\n"
 "A default caption with credits is now generated when uploading stock photos.\n"
