@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ck1-vY-O11">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ck1-vY-O11">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -21,7 +21,7 @@
         <!--Login Prologue Page View Controller-->
         <scene sceneID="Jbm-5H-sqY">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="TP5-re-Ncg" customClass="LoginProloguePageViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="TP5-re-Ncg" customClass="LoginProloguePageViewController" customModule="WordPressAuthenticator" customModuleProvider="target" sceneMemberID="viewController">
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="350"/>
                 </pageViewController>
@@ -32,7 +32,7 @@
         <!--Login Prologue Signup Method View Controller-->
         <scene sceneID="8K7-Gj-yNn">
             <objects>
-                <viewController id="IwV-3R-6dB" customClass="LoginPrologueSignupMethodViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="IwV-3R-6dB" customClass="LoginPrologueSignupMethodViewController" customModule="WordPressAuthenticator" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LS5-8f-iNn"/>
                         <viewControllerLayoutGuide type="bottom" id="NZ0-gC-OHl"/>
@@ -79,7 +79,7 @@
         <!--Login Prologue View Controller-->
         <scene sceneID="nGd-KO-sMQ">
             <objects>
-                <viewController id="xro-OF-z8b" customClass="LoginPrologueViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="xro-OF-z8b" customClass="LoginPrologueViewController" customModule="WordPressAuthenticator" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bfJ-T5-JnD"/>
                         <viewControllerLayoutGuide type="bottom" id="dPr-Tg-feW"/>
@@ -133,7 +133,7 @@
         <!--Login Navigation Controller-->
         <scene sceneID="1BJ-CW-C88">
             <objects>
-                <navigationController id="Ck1-vY-O11" customClass="LoginNavigationController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController id="Ck1-vY-O11" customClass="LoginNavigationController" customModule="WordPressAuthenticator" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="mKb-UO-KoA">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -165,13 +165,13 @@
         <!--Login Email View Controller-->
         <scene sceneID="w6Y-pB-a3f">
             <objects>
-                <viewController storyboardIdentifier="emailEntry" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fwZ-QE-5et" customClass="LoginEmailViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="emailEntry" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fwZ-QE-5et" customClass="LoginEmailViewController" customModule="WordPressAuthenticator" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bn3-aC-RIM"/>
                         <viewControllerLayoutGuide type="bottom" id="tip-gy-Hwr"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="e5n-Bf-JaL">
-                        <rect key="frame" x="0.0" y="0.0" width="383" height="676"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ozJ-hT-OEw">
@@ -196,7 +196,7 @@
                                                             <constraint firstAttribute="height" constant="20" id="nUZ-Ew-0l4"/>
                                                         </constraints>
                                                     </view>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email address" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XXO-aV-keK" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email address" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XXO-aV-keK" customClass="LoginTextField" customModule="WordPressAuthenticator" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="58" width="383" height="44"/>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="usernameField"/>
@@ -281,7 +281,7 @@
                                             <constraint firstItem="JdU-yW-tzf" firstAttribute="leading" secondItem="KAn-ug-oE6" secondAttribute="leading" id="yAg-ul-Rff"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OZC-xf-OAn" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OZC-xf-OAn" customClass="NUXButton" customModule="WordPressAuthenticator" customModuleProvider="target">
                                         <rect key="frame" x="327" y="592" width="36" height="44"/>
                                         <accessibility key="accessibilityConfiguration" identifier="nextButton"/>
                                         <constraints>
@@ -371,7 +371,7 @@
         <!--Login Self Hosted View Controller-->
         <scene sceneID="b2O-iW-wfB">
             <objects>
-                <viewController storyboardIdentifier="selfHosted" useStoryboardIdentifierAsRestorationIdentifier="YES" id="SZS-o3-1P7" customClass="LoginSelfHostedViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="selfHosted" useStoryboardIdentifierAsRestorationIdentifier="YES" id="SZS-o3-1P7" customClass="LoginSelfHostedViewController" customModule="WordPressAuthenticator" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Yjk-Cc-Bxb"/>
                         <viewControllerLayoutGuide type="bottom" id="Ktl-It-Kmo"/>
@@ -386,7 +386,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y8j-4r-VXw">
                                         <rect key="frame" x="0.0" y="0.0" width="383" height="583"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wnq-Hk-jIw" userLabel="Header" customClass="SiteInfoHeaderView" customModule="WordPress" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wnq-Hk-jIw" userLabel="Header" customClass="SiteInfoHeaderView" customModule="WordPressAuthenticator" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="213.5" width="343" height="36"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="rFl-BX-tKE" userLabel="Header Stack View">
@@ -435,7 +435,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="tW0-In-DwC">
                                                 <rect key="frame" x="0.0" y="269.5" width="383" height="88"/>
                                                 <subviews>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username / Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ESh-DI-dtB" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username / Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ESh-DI-dtB" customClass="LoginTextField" customModule="WordPressAuthenticator" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="383" height="44"/>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="usernameField"/>
@@ -451,7 +451,7 @@
                                                             <outlet property="delegate" destination="SZS-o3-1P7" id="NfG-gH-Yct"/>
                                                         </connections>
                                                     </textField>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oi5-Kd-TEW" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oi5-Kd-TEW" customClass="LoginTextField" customModule="WordPressAuthenticator" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="44" width="383" height="44"/>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="passwordField"/>
@@ -495,7 +495,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zbk-h0-lpE">
                                         <rect key="frame" x="20" y="583" width="343" height="44"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gzk-TE-YfP" customClass="SubheadlineButton" customModule="WordPress" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gzk-TE-YfP" customClass="SubheadlineButton" customModule="WordPressAuthenticator" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="7" width="141" height="30"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <state key="normal" title="Lost your password?">
@@ -505,7 +505,7 @@
                                                     <action selector="handleForgotPasswordButtonTapped:" destination="SZS-o3-1P7" eventType="touchUpInside" id="YFl-yy-9UR"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SBB-7Z-qWs" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SBB-7Z-qWs" customClass="NUXButton" customModule="WordPressAuthenticator" customModuleProvider="target">
                                                 <rect key="frame" x="311" y="0.0" width="32" height="44"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="submitButton"/>
                                                 <constraints>
@@ -580,7 +580,7 @@
         <!--LoginWP Com View Controller-->
         <scene sceneID="brQ-1M-iPT">
             <objects>
-                <viewController storyboardIdentifier="LoginWPcomPassword" useStoryboardIdentifierAsRestorationIdentifier="YES" id="lmD-c6-SLs" customClass="LoginWPComViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginWPcomPassword" useStoryboardIdentifierAsRestorationIdentifier="YES" id="lmD-c6-SLs" customClass="LoginWPComViewController" customModule="WordPressAuthenticator" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="dAs-4b-ACP"/>
                         <viewControllerLayoutGuide type="bottom" id="kOH-fr-1L0"/>
@@ -618,7 +618,7 @@
                                                             </label>
                                                         </subviews>
                                                     </stackView>
-                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BtS-3D-CIU" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BtS-3D-CIU" customClass="LoginTextField" customModule="WordPressAuthenticator" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="28.5" width="383" height="44"/>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="passwordField"/>
@@ -668,7 +668,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ilv-iW-HgP">
                                         <rect key="frame" x="20" y="583" width="343" height="44"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0P1-6g-BI3" customClass="SubheadlineButton" customModule="WordPress" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0P1-6g-BI3" customClass="SubheadlineButton" customModule="WordPressAuthenticator" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="7" width="141" height="30"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <state key="normal" title="Lost your password?">
@@ -678,7 +678,7 @@
                                                     <action selector="handleForgotPasswordButtonTapped:" destination="lmD-c6-SLs" eventType="touchUpInside" id="q8s-z9-VIK"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E3x-LN-sUk" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E3x-LN-sUk" customClass="NUXButton" customModule="WordPressAuthenticator" customModuleProvider="target">
                                                 <rect key="frame" x="292" y="0.0" width="51" height="44"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="submitButton"/>
                                                 <constraints>
@@ -755,7 +755,7 @@
         <!--Login2FA View Controller-->
         <scene sceneID="cQl-0b-Utj">
             <objects>
-                <viewController storyboardIdentifier="Login2FAViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="bAd-Df-IzS" customClass="Login2FAViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Login2FAViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="bAd-Df-IzS" customClass="Login2FAViewController" customModule="WordPressAuthenticator" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="959-UQ-1Jm"/>
                         <viewControllerLayoutGuide type="bottom" id="fG1-qw-2YS"/>
@@ -776,7 +776,7 @@
                                                 <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Verification Code" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="A2K-lq-6XM" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Verification Code" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="A2K-lq-6XM" customClass="LoginTextField" customModule="WordPressAuthenticator" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="265.5" width="383" height="44"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="Verification Code"/>
@@ -829,7 +829,7 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="x1G-Lf-mra">
                                         <rect key="frame" x="20" y="575" width="343" height="44"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="309-z3-fPx" customClass="SubheadlineButton" customModule="WordPress" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="309-z3-fPx" customClass="SubheadlineButton" customModule="WordPressAuthenticator" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="131" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="fzI-rH-0f8"/>
@@ -843,7 +843,7 @@
                                                     <action selector="handleSendVerificationButtonTapped:" destination="bAd-Df-IzS" eventType="touchUpInside" id="rvK-YF-gYu"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6eO-V2-a64" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6eO-V2-a64" customClass="NUXButton" customModule="WordPressAuthenticator" customModuleProvider="target">
                                                 <rect key="frame" x="296" y="0.0" width="47" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="eoc-KU-71N"/>
@@ -916,7 +916,7 @@
         <!--Login Link Request View Controller-->
         <scene sceneID="lHx-fY-p45">
             <objects>
-                <viewController storyboardIdentifier="LoginLinkRequestViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Kvo-Y2-yhG" customClass="LoginLinkRequestViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginLinkRequestViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Kvo-Y2-yhG" customClass="LoginLinkRequestViewController" customModule="WordPressAuthenticator" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="q8R-wf-TMO"/>
                         <viewControllerLayoutGuide type="bottom" id="h4a-j8-84P"/>
@@ -928,7 +928,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="Mq6-n0-6iO">
                                 <rect key="frame" x="36" y="184.5" width="303" height="258.5"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ukv-qo-ql4" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ukv-qo-ql4" customClass="CircularImageView" customModule="WordPressAuthenticator" customModuleProvider="target">
                                         <rect key="frame" x="101.5" y="0.0" width="100" height="100"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="100" id="3wv-b7-gzu"/>
@@ -941,7 +941,7 @@
                                         <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iIy-Sm-1r0" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iIy-Sm-1r0" customClass="NUXButton" customModule="WordPressAuthenticator" customModuleProvider="target">
                                         <rect key="frame" x="115.5" y="224.5" width="72" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="GRI-y6-q3i"/>
@@ -973,7 +973,7 @@
                                     </mask>
                                 </variation>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B6x-b7-hU9" customClass="SubheadlineButton" customModule="WordPress" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B6x-b7-hU9" customClass="SubheadlineButton" customModule="WordPressAuthenticator" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="617" width="375" height="30"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <state key="normal" title="Enter your password instead">
@@ -1017,13 +1017,13 @@
         <!--Login Site Address View Controller-->
         <scene sceneID="idG-jg-gxH">
             <objects>
-                <viewController storyboardIdentifier="siteAddress" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="anK-hg-K4j" customClass="LoginSiteAddressViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="siteAddress" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="anK-hg-K4j" customClass="LoginSiteAddressViewController" customModule="WordPressAuthenticator" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pmp-Uj-4NW"/>
                         <viewControllerLayoutGuide type="bottom" id="rYV-q2-blN"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="CvY-vN-fn9">
-                        <rect key="frame" x="0.0" y="0.0" width="383" height="676"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a59-c7-WBk">
@@ -1038,7 +1038,7 @@
                                                 <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="example.wordpress.com" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZrT-CY-qD7" customClass="LoginTextField" customModule="WordPress" customModuleProvider="target">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="example.wordpress.com" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZrT-CY-qD7" customClass="LoginTextField" customModule="WordPressAuthenticator" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="268" width="391" height="44"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="usernameField"/>
@@ -1081,7 +1081,7 @@
                                     <stackView contentMode="scaleToFill" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" distribution="equalSpacing" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="mlx-XY-MGX">
                                         <rect key="frame" x="20" y="580" width="351" height="44"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="roL-ID-k8n" customClass="SubheadlineButton" customModule="WordPress" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="roL-ID-k8n" customClass="SubheadlineButton" customModule="WordPressAuthenticator" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="7" width="250" height="30"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="addSelfHostedButton"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
@@ -1092,7 +1092,7 @@
                                                     <action selector="handleSiteAddressHelpButtonTapped:" destination="anK-hg-K4j" eventType="touchUpInside" id="PXe-Yc-xaK"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ltO-hW-mbe" customClass="NUXButton" customModule="WordPress" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ltO-hW-mbe" customClass="NUXButton" customModule="WordPressAuthenticator" customModuleProvider="target">
                                                 <rect key="frame" x="315" y="0.0" width="36" height="44"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="nextButton"/>
                                                 <constraints>
