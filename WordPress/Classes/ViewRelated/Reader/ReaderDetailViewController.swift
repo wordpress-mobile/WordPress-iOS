@@ -875,10 +875,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
     @objc func presentFullScreenGif(with animatedGifData: Data?) {
-        guard let animatedGifData = animatedGifData,
-            let controller = WPImageViewController(gifData: animatedGifData) else {
+        guard let animatedGifData = animatedGifData else {
                 return
         }
+        let controller = WPImageViewController(gifData: animatedGifData)
 
         controller.modalTransitionStyle = .crossDissolve
         controller.modalPresentationStyle = .fullScreen
@@ -890,9 +890,12 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         if let linkURL = linkURL {
             controller = WPImageViewController(image: image, andURL: linkURL)
-        } else {
+        } else if let image = image {
             controller = WPImageViewController(image: image)
+        } else {
+            return
         }
+        
         controller.modalTransitionStyle = .crossDissolve
         controller.modalPresentationStyle = .fullScreen
         present(controller, animated: true, completion: nil)
@@ -1098,10 +1101,12 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
 
         var controller: WPImageViewController
-        if post.featuredImageURL.isGif && featuredImageView.animatedGifData != nil {
-            controller = WPImageViewController(gifData: featuredImageView.animatedGifData)
+        if post.featuredImageURL.isGif, let data = featuredImageView.animatedGifData {
+            controller = WPImageViewController(gifData: data)
+        } else if let featuredImage = featuredImageView.image {
+            controller = WPImageViewController(image: featuredImage)
         } else {
-            controller = WPImageViewController(image: featuredImageView.image)
+            return
         }
         controller.modalTransitionStyle = .crossDissolve
         controller.modalPresentationStyle = .fullScreen
