@@ -1,1 +1,3 @@
-Lors de l’import d’un fichier dans un article à partir de l’éditeur, vous pouvez à présent choisir plusieurs types de fichiers comme les PDF et les documents Word.
+La gestion des notifications a été améliorée.
+Une légende par défaut avec crédits est générée lors du téléversement des photos « stock ».
+Le support pour l'affichage des images GIF a été amélioré.

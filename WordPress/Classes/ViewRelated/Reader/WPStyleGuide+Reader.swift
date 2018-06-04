@@ -260,6 +260,40 @@ extension WPStyleGuide {
         button.setTitle(followingStr, for: .highlighted)
     }
 
+    @objc public class func applyReaderSaveForLaterButtonStyle(_ button: UIButton) {
+        let size = Gridicon.defaultSize
+        let icon = Gridicon.iconOfType(.bookmarkOutline, withSize: size)
+        let selectedIcon = Gridicon.iconOfType(.bookmark, withSize: size)
+
+        let normalColor = WPStyleGuide.greyLighten10()
+        let selectedColor = WPStyleGuide.mediumBlue()
+        let highlightedColor = WPStyleGuide.lightBlue()
+
+        let tintedIcon = icon.imageWithTintColor(normalColor)
+        let tintedSelectedIcon = selectedIcon.imageWithTintColor(selectedColor)
+        let tintedHighlightedIcon = icon.imageWithTintColor(highlightedColor)
+        let tintedSelectedHighlightedIcon = selectedIcon.imageWithTintColor(highlightedColor)
+
+        button.setImage(tintedIcon, for: .normal)
+        button.setImage(tintedSelectedIcon, for: .selected)
+        button.setImage(tintedHighlightedIcon, for: .highlighted)
+        button.setImage(tintedSelectedHighlightedIcon, for: [.highlighted, .selected])
+
+        button.setTitleColor(normalColor, for: .normal)
+        button.setTitleColor(selectedColor, for: .selected)
+        button.setTitleColor(highlightedColor, for: .highlighted)
+        button.setTitleColor(highlightedColor, for: [.highlighted, .selected])
+    }
+
+    @objc public class func applyReaderSaveForLaterButtonTitles(_ button: UIButton) {
+        let saveTitle = WPStyleGuide.savePostStringForDisplay(false)
+        let savedTitle = WPStyleGuide.savePostStringForDisplay(true)
+
+        button.setTitle(saveTitle, for: .normal)
+        button.setTitle(savedTitle, for: .selected)
+        button.setTitle(savedTitle, for: [.highlighted, .selected])
+    }
+
     @objc public class func likeCountForDisplay(_ count: Int) -> String {
         let likeStr = NSLocalizedString("Like", comment: "Text for the 'like' button. Tapping marks a post in the reader as 'liked'.")
         let likesStr = NSLocalizedString("Likes", comment: "Text for the 'like' button. Tapping removes the 'liked' status from a post.")
@@ -294,6 +328,13 @@ extension WPStyleGuide {
         }
     }
 
+    @objc public class func savePostStringForDisplay(_ isSaved: Bool) -> String {
+        if isSaved {
+            return NSLocalizedString("Saved", comment: "Title of action button for a Reader post that has been saved to read later.")
+        } else {
+            return NSLocalizedString("Save", comment: "Title of action button to save a Reader post to read later.")
+        }
+    }
 
     // MARK: - Gap Marker Styles
 
