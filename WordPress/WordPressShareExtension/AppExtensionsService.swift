@@ -261,17 +261,10 @@ extension AppExtensionsService {
         let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .pending)
         let (uploadMediaOpIDs, allRemoteMedia) = createAndSaveRemoteMediaWithLocalURLs(localMediaFileURLs, siteID: NSNumber(value: siteID))
 
-        // Setup an API that uses background uploads with the shared container
-        let api = WordPressComRestApi(oAuthToken: oauth2Token,
-                                      userAgent: nil,
-                                      backgroundUploads: true,
-                                      backgroundSessionIdentifier: backgroundSessionIdentifier,
-                                      sharedContainerIdentifier: WPAppGroupName)
-
         // NOTE: The success and error closures **may** get called here - it’s non-deterministic as to whether WPiOS
         // or the extension gets the "did complete" callback. So unfortunatly, we need to have the logic to complete
         // post share here as well as WPiOS.
-        let remote = MediaServiceRemoteREST(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
+        let remote = MediaServiceRemoteREST(wordPressComRestApi: api(), siteID: NSNumber(value: siteID))
         remote.uploadMedia(allRemoteMedia, requestEnqueued: { taskID in
             uploadMediaOpIDs.forEach({ uploadMediaOpID in
                 self.coreDataStack.updateStatus(.inProgress, forUploadOpWithObjectID: uploadMediaOpID)
@@ -314,7 +307,7 @@ extension AppExtensionsService {
             self.coreDataStack.saveContext()
 
             // Now upload the post
-            self.combinePostWithMediaAndUpload(forPostUploadOpWithObjectID: uploadPostOpID)
+            self.combinePostWithMediaAndUpload(forPostUploadOpWithObjectID: uploadPostOpID, media: allRemoteMedia)
         }) { error in
             guard let error = error as NSError? else {
                 return
@@ -358,7 +351,7 @@ fileprivate extension AppExtensionsService {
     ///
     /// - Parameter uploadPostOpID: Managed object ID for the post
     ///
-    func combinePostWithMediaAndUpload(forPostUploadOpWithObjectID uploadPostOpID: NSManagedObjectID) {
+    func combinePostWithMediaAndUpload(forPostUploadOpWithObjectID uploadPostOpID: NSManagedObjectID, media: [RemoteMedia]) {
         guard let postUploadOp = coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID),
             let groupID = postUploadOp.groupID,
             let mediaUploadOps = coreDataStack.fetchMediaUploadOps(for: groupID) else {
@@ -436,6 +429,15 @@ fileprivate extension AppExtensionsService {
             self.coreDataStack.updateStatus(.error, forUploadOpWithObjectID: uploadOpObjectID)
             onFailure?()
         })
+    }
+
+    // Setup an API that uses background uploads with the shared container
+    fileprivate func api() -> WordPressComRestApi {
+        return WordPressComRestApi(oAuthToken: oauth2Token,
+                                   userAgent: nil,
+                                   backgroundUploads: true,
+                                   backgroundSessionIdentifier: backgroundSessionIdentifier,
+                                   sharedContainerIdentifier: WPAppGroupName)
     }
 }
 
