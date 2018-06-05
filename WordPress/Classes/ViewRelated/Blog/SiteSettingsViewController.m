@@ -71,7 +71,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionAdvanced,
 };
 
-static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/empty-site/";
+static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/empty-site";
 
 @interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, JetpackConnectionDelegate, PostCategoriesViewControllerDelegate>
 
@@ -1045,7 +1045,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         StartOverViewController *viewController = [[StartOverViewController alloc] initWithBlog:blog];
         [self.navigationController pushViewController:viewController animated:YES];
     } else {
-        NSURL *targetURL = [NSURL URLWithString:EmptySiteSupportURL];
+        NSURL *targetURL = [[NSURL URLWithString:EmptySiteSupportURL] appendHideMasterbarParameters];
         UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL];
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
         [self presentViewController:navController animated:YES completion:nil];
