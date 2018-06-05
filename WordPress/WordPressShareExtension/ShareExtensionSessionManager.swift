@@ -155,8 +155,8 @@ import WordPressFlux
     /// - Returns: The updated post PostUploadOperation or nil
     ///
     fileprivate func combinePostAndMediaContent(for groupID: String) -> PostUploadOperation? {
-        guard let postUploadOp = coreDataStack.fetchPostUploadOp(for: groupID),
-            let mediaUploadOps = coreDataStack.fetchMediaUploadOps(for: groupID) else {
+        guard let postUploadOp = postUploadOperation(for: groupID),
+            let mediaUploadOps = mediaUploadOperations(for: groupID) else {
                 return nil
         }
 
@@ -165,6 +165,7 @@ import WordPressFlux
                 let remoteURL = mediaUploadOp.remoteURL else {
                     return
             }
+
 
             let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: fileName,
                                                             remoteURLString: remoteURL,
@@ -207,8 +208,9 @@ import WordPressFlux
                 postUploadOp.remotePostID = postID.int64Value
             }
             postUploadOp.currentStatus = .complete
-            self.coreDataStack.saveContext()
 
+            self.updateMedia(postID: post.postID.int64Value, siteID: postUploadOp.siteID)
+            self.coreDataStack.saveContext()
             ShareExtensionSessionManager.fireUserNotificationIfNeeded(postUploadOpID.uriRepresentation().absoluteString)
             self.cleanupSessionAndTerminate()
         }, failure: { error in
@@ -232,6 +234,58 @@ import WordPressFlux
 
     private func token() -> String? {
         return ShareExtensionService.retrieveShareExtensionToken()
+    }
+
+    private func updateMedia(postID: Int64?, siteID: Int64) {
+        guard let siteIdentifier = Int(exactly: siteID) else {
+            return
+        }
+
+        guard let postID = postID else {
+            return
+        }
+
+        guard let service = mediaService(siteID: siteIdentifier) else {
+            return
+        }
+
+        guard let groupID = coreDataStack.fetchGroupID(for: backgroundSessionIdentifier), !groupID.isEmpty else {
+            DDLogError("Unable to find the Group ID for session with ID \(backgroundSessionIdentifier).")
+            return
+        }
+
+        let media = mediaUploadOperations(for: groupID)?.compactMap({return $0.remoteMedia})
+
+        media?.forEach { mediaItem in
+            mediaItem.postID = NSNumber(value: postID)
+            service.update(mediaItem, success: { updatedRemoteMedia in
+                //
+                self.coreDataStack.saveContext()
+                print("===== updated remote media item ====", updatedRemoteMedia?.mediaID)
+                print("===== updated remote media item postID ====", updatedRemoteMedia?.postID)
+            }, failure: { error in
+                var errorString = "Error creating post in share extension"
+                if let error = error as NSError? {
+                    errorString += ": \(error.localizedDescription)"
+                }
+                DDLogError(errorString)
+            })
+        }
+    }
+
+    fileprivate func mediaService(siteID: Int) -> MediaServiceRemoteREST? {
+        guard let oauth2Token = token() else {
+            return nil
+        }
+        return MediaServiceRemoteREST(wordPressComRestApi: api(token: oauth2Token), siteID: NSNumber(value: siteID))
+    }
+
+    private func mediaUploadOperations(for groupID: String) -> [MediaUploadOperation]? {
+        return coreDataStack.fetchMediaUploadOps(for: groupID)
+    }
+
+    private func postUploadOperation(for groupID: String) -> PostUploadOperation? {
+        return coreDataStack.fetchPostUploadOp(for: groupID)
     }
 }
 
