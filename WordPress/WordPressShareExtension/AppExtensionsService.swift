@@ -443,11 +443,8 @@ fileprivate extension AppExtensionsService {
         media.forEach { mediaItem in
             mediaItem.postID = NSNumber(value: postID)
             service.update(mediaItem, success: { updatedRemoteMedia in
-                //
-                print("===== updated remote media item ====", updatedRemoteMedia?.mediaID)
-                print("===== updated remote media item postID ====", updatedRemoteMedia?.postID)
             }, failure: { error in
-                var errorString = "Error creating post in share extension"
+                var errorString = "Error assigning media items to post in share extension"
                 if let error = error as NSError? {
                     errorString += ": \(error.localizedDescription)"
                 }
