@@ -77,7 +77,7 @@ class AppExtensionsService {
 // MARK: - Sites
 
 extension AppExtensionsService {
-    /// Fetches the primary blog + visible blogs for the current account.
+    /// Fetches the primary blog + recent sites + remaining visible blogs for the current account.
     ///
     /// - Parameters:
     ///   - onSuccess: Completion handler executed after a successful fetch.
@@ -91,12 +91,48 @@ extension AppExtensionsService {
                 onFailure()
                 return
             }
-            let primaryBlogID = ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteID ?? 0
-            let filteredBlogs = blogs.filter({ ($0.blogID.intValue == primaryBlogID || $0.visible == true) })
-            onSuccess(filteredBlogs)
+
+            let primary = self.primarySites(with: blogs)
+            let recents = self.recentSites(with: blogs, ignoring: primary)
+            let combinedSiteList = primary + recents + self.remainingSites(with: blogs, ignoring: (primary + recents))
+            onSuccess(combinedSiteList)
         }, failure: { error in
             DDLogError("Error retrieving sites: \(String(describing: error))")
             onFailure()
+        })
+    }
+
+    private func primarySites(with blogs: [RemoteBlog]) -> [RemoteBlog] {
+        // Find the primary site (even if it's not visible)
+        let primarySiteID = ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteID ?? 0
+        return blogs.filter({ $0.blogID.intValue == primarySiteID })
+    }
+
+    private func recentSites(with sites: [RemoteBlog], ignoring excludedSites: [RemoteBlog]? = nil) -> [RemoteBlog] {
+        let visibleSites = sites.filter({ $0.visible })
+        var filteredVisibleSites: [RemoteBlog]
+        if let excludedSites = excludedSites {
+            filteredVisibleSites = visibleSites.filter({ site in
+                !excludedSites.contains(site)
+            })
+        } else {
+            filteredVisibleSites = visibleSites
+        }
+        let recentSiteURLs  = ShareExtensionService.retrieveShareExtensionRecentSites() ?? [String()]
+
+        return recentSiteURLs.compactMap({ url in
+            return filteredVisibleSites.first(where: { $0.url == url })
+        })
+    }
+
+    private func remainingSites(with sites: [RemoteBlog], ignoring excludedSites: [RemoteBlog]? = nil) -> [RemoteBlog] {
+        let visibleSites = sites.filter({ $0.visible })
+        guard let excludedSites = excludedSites else {
+            return visibleSites
+        }
+
+        return visibleSites.filter({ site in
+            !excludedSites.contains(site)
         })
     }
 }
@@ -200,7 +236,8 @@ extension AppExtensionsService {
             if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
                 ExtensionNotificationManager.scheduleSuccessNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
                                                                          postID: String(uploadPostOp.remotePostID),
-                                                                         blogID: String(uploadPostOp.siteID))
+                                                                         blogID: String(uploadPostOp.siteID),
+                                                                         postStatus: remotePost.status)
             }
             onComplete?()
         }, onFailure: {
@@ -208,7 +245,8 @@ extension AppExtensionsService {
             if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
                 ExtensionNotificationManager.scheduleFailureNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
                                                                          postID: String(uploadPostOp.remotePostID),
-                                                                         blogID: String(uploadPostOp.siteID))
+                                                                         blogID: String(uploadPostOp.siteID),
+                                                                         postStatus: remotePost.status)
             }
 
             // Error is already logged in coredata so no need to do it here.
@@ -262,7 +300,7 @@ extension AppExtensionsService {
         let (uploadMediaOpIDs, allRemoteMedia) = createAndSaveRemoteMediaWithLocalURLs(localMediaFileURLs, siteID: NSNumber(value: siteID))
 
         // NOTE: The success and error closures **may** get called here - it’s non-deterministic as to whether WPiOS
-        // or the extension gets the "did complete" callback. So unfortunatly, we need to have the logic to complete
+        // or the extension gets the "did complete" callback. So unfortunately, we need to have the logic to complete
         // post share here as well as WPiOS.
         let remote = mediaService(siteID: siteID)
         remote.uploadMedia(allRemoteMedia, requestEnqueued: { taskID in
@@ -307,7 +345,7 @@ extension AppExtensionsService {
             self.coreDataStack.saveContext()
 
             // Now upload the post
-            self.combinePostWithMediaAndUpload(forPostUploadOpWithObjectID: uploadPostOpID, media: allRemoteMedia)
+            self.combinePostWithMediaAndUpload(forPostUploadOpWithObjectID: uploadPostOpID, postStatus: remotePost.status, media: allRemoteMedia)
         }) { error in
             guard let error = error as NSError? else {
                 return
@@ -351,7 +389,7 @@ fileprivate extension AppExtensionsService {
     ///
     /// - Parameter uploadPostOpID: Managed object ID for the post
     ///
-    func combinePostWithMediaAndUpload(forPostUploadOpWithObjectID uploadPostOpID: NSManagedObjectID, media: [RemoteMedia]) {
+    func combinePostWithMediaAndUpload(forPostUploadOpWithObjectID uploadPostOpID: NSManagedObjectID, postStatus: String, media: [RemoteMedia]) {
         guard let postUploadOp = coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID),
             let groupID = postUploadOp.groupID,
             let mediaUploadOps = coreDataStack.fetchMediaUploadOps(for: groupID) else {
@@ -378,10 +416,10 @@ fileprivate extension AppExtensionsService {
                 let siteID = uploadPostOp.siteID
                 let postID = uploadPostOp.remotePostID
                 ExtensionNotificationManager.scheduleSuccessNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
-                                                                         postID: String(postID),
-                                                                         blogID: String(siteID),
-                                                                         mediaItemCount: mediaUploadOps.count)
-
+                                                                         postID: String(uploadPostOp.remotePostID),
+                                                                         blogID: String(uploadPostOp.siteID),
+                                                                         mediaItemCount: mediaUploadOps.count,
+                                                                         postStatus: postStatus)
                 self?.updateMedia(media, postID: postID, siteID: siteID)
             }
         }, onFailure: {
@@ -390,7 +428,8 @@ fileprivate extension AppExtensionsService {
                 ExtensionNotificationManager.scheduleFailureNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
                                                                          postID: String(uploadPostOp.remotePostID),
                                                                          blogID: String(uploadPostOp.siteID),
-                                                                         mediaItemCount: mediaUploadOps.count)
+                                                                         mediaItemCount: mediaUploadOps.count,
+                                                                         postStatus: postStatus)
             }
         })
     }
