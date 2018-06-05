@@ -77,7 +77,7 @@ class AppExtensionsService {
 // MARK: - Sites
 
 extension AppExtensionsService {
-    /// Fetches the primary blog + visible blogs for the current account.
+    /// Fetches the primary blog + recent sites + remaining visible blogs for the current account.
     ///
     /// - Parameters:
     ///   - onSuccess: Completion handler executed after a successful fetch.
@@ -91,12 +91,48 @@ extension AppExtensionsService {
                 onFailure()
                 return
             }
-            let primaryBlogID = ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteID ?? 0
-            let filteredBlogs = blogs.filter({ ($0.blogID.intValue == primaryBlogID || $0.visible == true) })
-            onSuccess(filteredBlogs)
+
+            let primary = self.primarySites(with: blogs)
+            let recents = self.recentSites(with: blogs, ignoring: primary)
+            let combinedSiteList = primary + recents + self.remainingSites(with: blogs, ignoring: (primary + recents))
+            onSuccess(combinedSiteList)
         }, failure: { error in
             DDLogError("Error retrieving sites: \(String(describing: error))")
             onFailure()
+        })
+    }
+
+    private func primarySites(with blogs: [RemoteBlog]) -> [RemoteBlog] {
+        // Find the primary site (even if it's not visible)
+        let primarySiteID = ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteID ?? 0
+        return blogs.filter({ $0.blogID.intValue == primarySiteID })
+    }
+
+    private func recentSites(with sites: [RemoteBlog], ignoring excludedSites: [RemoteBlog]? = nil) -> [RemoteBlog] {
+        let visibleSites = sites.filter({ $0.visible })
+        var filteredVisibleSites: [RemoteBlog]
+        if let excludedSites = excludedSites {
+            filteredVisibleSites = visibleSites.filter({ site in
+                !excludedSites.contains(site)
+            })
+        } else {
+            filteredVisibleSites = visibleSites
+        }
+        let recentSiteURLs  = ShareExtensionService.retrieveShareExtensionRecentSites() ?? [String()]
+
+        return recentSiteURLs.compactMap({ url in
+            return filteredVisibleSites.first(where: { $0.url == url })
+        })
+    }
+
+    private func remainingSites(with sites: [RemoteBlog], ignoring excludedSites: [RemoteBlog]? = nil) -> [RemoteBlog] {
+        let visibleSites = sites.filter({ $0.visible })
+        guard let excludedSites = excludedSites else {
+            return visibleSites
+        }
+
+        return visibleSites.filter({ site in
+            !excludedSites.contains(site)
         })
     }
 }

@@ -50,6 +50,7 @@ NSString *const WPShareExtensionUserDefaultsPrimarySiteID           = @"WPShareU
 NSString *const WPShareExtensionUserDefaultsLastUsedSiteName        = @"WPShareUserDefaultsLastUsedSiteName";
 NSString *const WPShareExtensionUserDefaultsLastUsedSiteID          = @"WPShareUserDefaultsLastUsedSiteID";
 NSString *const WPShareExtensionMaximumMediaDimensionKey            = @"WPShareExtensionMaximumMediaDimensionKey";
+NSString *const WPShareExtensionRecentSitesKey                      = @"WPShareExtensionRecentSitesKey";
 
 /// Today Widget Constants
 ///
