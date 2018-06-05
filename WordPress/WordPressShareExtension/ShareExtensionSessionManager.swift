@@ -184,7 +184,7 @@ import WordPressFlux
     ///
     fileprivate func uploadPost(with postUploadOp: PostUploadOperation) {
         let postUploadOpID = postUploadOp.objectID
-        guard let oauth2Token = ShareExtensionService.retrieveShareExtensionToken() else {
+        guard let oauth2Token = token() else {
             logError("Error creating post: OAuth token is not defined.", uploadOpObjectIDs: postUploadOpID)
             return
         }
@@ -193,12 +193,7 @@ import WordPressFlux
             return
         }
 
-        let api = WordPressComRestApi(oAuthToken: oauth2Token,
-                                      userAgent: nil,
-                                      backgroundUploads: false,
-                                      backgroundSessionIdentifier: backgroundSessionIdentifier,
-                                      sharedContainerIdentifier: WPAppGroupName)
-        let remote = PostServiceRemoteREST(wordPressComRestApi: api, siteID: NSNumber(value: postUploadOp.siteID))
+        let remote = PostServiceRemoteREST(wordPressComRestApi: api(token: oauth2Token), siteID: NSNumber(value: postUploadOp.siteID))
         postUploadOp.currentStatus = .inProgress
         coreDataStack.saveContext()
 
@@ -225,6 +220,18 @@ import WordPressFlux
             ShareExtensionSessionManager.fireUserNotificationIfNeeded(postUploadOpID.uriRepresentation().absoluteString)
             self.cleanupSessionAndTerminate()
         })
+    }
+
+    private func api(token: String) -> WordPressComRestApi {
+        return WordPressComRestApi(oAuthToken: token,
+                                   userAgent: nil,
+                                   backgroundUploads: false,
+                                   backgroundSessionIdentifier: backgroundSessionIdentifier,
+                                   sharedContainerIdentifier: WPAppGroupName)
+    }
+
+    private func token() -> String? {
+        return ShareExtensionService.retrieveShareExtensionToken()
     }
 }
 
