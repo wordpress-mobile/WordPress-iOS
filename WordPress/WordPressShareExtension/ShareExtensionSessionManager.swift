@@ -254,8 +254,8 @@ import WordPressFlux
 
         media?.forEach { mediaItem in
             mediaItem.postID = NSNumber(value: postID)
-            service.update(mediaItem, success: { updatedRemoteMedia in
-                self.coreDataStack.saveContext()
+            service.update(mediaItem, success: { [weak self] updatedRemoteMedia in
+                self?.coreDataStack.saveContext()
             }, failure: { error in
                 var errorString = "Error creating post in share extension"
                 if let error = error as NSError? {
