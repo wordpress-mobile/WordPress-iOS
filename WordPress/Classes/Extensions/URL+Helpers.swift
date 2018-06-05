@@ -128,4 +128,15 @@ extension NSURL {
         }
         return NSNumber(value: fileSize)
     }
+
+    @objc func appendHideMasterbarParameters() -> NSURL? {
+
+        let url = self
+
+        guard let originalPath = url.absoluteString else {
+            return nil
+        }
+
+        return NSURL(string: originalPath + "/?preview=true&iframe=true")
+    }
 }
