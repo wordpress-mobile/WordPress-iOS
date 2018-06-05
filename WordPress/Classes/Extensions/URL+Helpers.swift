@@ -115,6 +115,10 @@ extension URL {
             return pathExtension.lowercased() == "gif"
         }
     }
+
+    func appendHideMasterbarParameters() -> URL? {
+        return URL(string: self.absoluteString + "/?preview=true&iframe=true")
+    }
 }
 
 extension NSURL {
