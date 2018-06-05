@@ -777,6 +777,7 @@
 		B5E23BDF19AD0D00000D6879 /* NoteTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5E23BDE19AD0D00000D6879 /* NoteTableViewCell.xib */; };
 		B5E51B7B203477DF00151ECD /* WordPressAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E51B7A203477DF00151ECD /* WordPressAuthenticationManager.swift */; };
 		B5E94D151FE04815000E7C20 /* UIImageView+SiteIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E94D141FE04815000E7C20 /* UIImageView+SiteIcon.swift */; };
+		B5EB19EC20C6DACC008372B9 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EB19EB20C6DACC008372B9 /* ImageDownloader.swift */; };
 		B5ECA6CA1DBAA0020062D7E0 /* CoreDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ECA6C91DBAA0020062D7E0 /* CoreDataHelper.swift */; };
 		B5ECA6CD1DBAAD510062D7E0 /* CoreDataHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ECA6CC1DBAAD510062D7E0 /* CoreDataHelperTests.swift */; };
 		B5ED790F207E97D100A8FD8C /* WordPressAuthenticator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ED790E207E97D100A8FD8C /* WordPressAuthenticator.framework */; };
@@ -2298,6 +2299,7 @@
 		B5E23BDE19AD0D00000D6879 /* NoteTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteTableViewCell.xib; sourceTree = "<group>"; };
 		B5E51B7A203477DF00151ECD /* WordPressAuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressAuthenticationManager.swift; sourceTree = "<group>"; };
 		B5E94D141FE04815000E7C20 /* UIImageView+SiteIcon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+SiteIcon.swift"; sourceTree = "<group>"; };
+		B5EB19EB20C6DACC008372B9 /* ImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
 		B5ECA6C91DBAA0020062D7E0 /* CoreDataHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataHelper.swift; sourceTree = "<group>"; };
 		B5ECA6CC1DBAAD510062D7E0 /* CoreDataHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataHelperTests.swift; sourceTree = "<group>"; };
 		B5ED790E207E97D100A8FD8C /* WordPressAuthenticator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WordPressAuthenticator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3252,6 +3254,7 @@
 				7EAD7CCF206D761200BEDCFD /* MediaExternalExporter.swift */,
 				7E729C27209A087200F76599 /* ImageLoader.swift */,
 				742B7F39209CB2B6002E3CC9 /* GIFPlaybackStrategy.swift */,
+				B5EB19EB20C6DACC008372B9 /* ImageDownloader.swift */,
 			);
 			path = Media;
 			sourceTree = "<group>";
@@ -7476,6 +7479,7 @@
 				595CB3761D2317D50082C7E9 /* PostListFilter.swift in Sources */,
 				17876B1D1F9A131200F774C7 /* MediaCoordinator.swift in Sources */,
 				08E77F451EE87FCF006F9515 /* MediaThumbnailExporter.swift in Sources */,
+				B5EB19EC20C6DACC008372B9 /* ImageDownloader.swift in Sources */,
 				E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */,
 				17BEE0041FC867C20074C124 /* WordPressAppDelegate+Swift.swift in Sources */,
 				08472A201C727E020040769D /* PostServiceOptions.m in Sources */,
