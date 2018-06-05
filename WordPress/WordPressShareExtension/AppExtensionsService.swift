@@ -264,7 +264,7 @@ extension AppExtensionsService {
         // NOTE: The success and error closures **may** get called here - it’s non-deterministic as to whether WPiOS
         // or the extension gets the "did complete" callback. So unfortunatly, we need to have the logic to complete
         // post share here as well as WPiOS.
-        let remote = MediaServiceRemoteREST(wordPressComRestApi: api(), siteID: NSNumber(value: siteID))
+        let remote = mediaService(siteID: siteID)
         remote.uploadMedia(allRemoteMedia, requestEnqueued: { taskID in
             uploadMediaOpIDs.forEach({ uploadMediaOpID in
                 self.coreDataStack.updateStatus(.inProgress, forUploadOpWithObjectID: uploadMediaOpID)
@@ -375,10 +375,14 @@ fileprivate extension AppExtensionsService {
         uploadPost(forUploadOpWithObjectID: uploadPostOpID, onComplete: {
             // Schedule a local success notification
             if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
+                let siteID = uploadPostOp.siteID
+                let postID = uploadPostOp.remotePostID
                 ExtensionNotificationManager.scheduleSuccessNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
-                                                                         postID: String(uploadPostOp.remotePostID),
-                                                                         blogID: String(uploadPostOp.siteID),
+                                                                         postID: String(postID),
+                                                                         blogID: String(siteID),
                                                                          mediaItemCount: mediaUploadOps.count)
+
+                self.updateMedia(media, postID: postID, siteID: siteID )
             }
         }, onFailure: {
             // Schedule a local failure notification
@@ -429,6 +433,31 @@ fileprivate extension AppExtensionsService {
             self.coreDataStack.updateStatus(.error, forUploadOpWithObjectID: uploadOpObjectID)
             onFailure?()
         })
+    }
+
+    private func updateMedia(_ media: [RemoteMedia], postID: Int64, siteID: Int64) {
+        guard let siteIdentifier = Int(exactly: siteID) else {
+            return
+        }
+        let service = mediaService(siteID: siteIdentifier)
+        media.forEach { mediaItem in
+            mediaItem.postID = NSNumber(value: postID)
+            service.update(mediaItem, success: { updatedRemoteMedia in
+                //
+                print("===== updated remote media item ====", updatedRemoteMedia?.mediaID)
+                print("===== updated remote media item postID ====", updatedRemoteMedia?.postID)
+            }, failure: { error in
+                var errorString = "Error creating post in share extension"
+                if let error = error as NSError? {
+                    errorString += ": \(error.localizedDescription)"
+                }
+                DDLogError(errorString)
+            })
+        }
+    }
+
+    fileprivate func mediaService(siteID: Int) -> MediaServiceRemoteREST {
+        return MediaServiceRemoteREST(wordPressComRestApi: api(), siteID: NSNumber(value: siteID))
     }
 
     // Setup an API that uses background uploads with the shared container
