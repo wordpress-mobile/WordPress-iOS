@@ -372,9 +372,9 @@ fileprivate extension AppExtensionsService {
             postUploadOp.postContent = imgPostUploadProcessor.process(content)
         }
         coreDataStack.saveContext()
-        uploadPost(forUploadOpWithObjectID: uploadPostOpID, onComplete: {
+        uploadPost(forUploadOpWithObjectID: uploadPostOpID, onComplete: { [weak self] in
             // Schedule a local success notification
-            if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
+            if let uploadPostOp = self?.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
                 let siteID = uploadPostOp.siteID
                 let postID = uploadPostOp.remotePostID
                 ExtensionNotificationManager.scheduleSuccessNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
@@ -382,7 +382,7 @@ fileprivate extension AppExtensionsService {
                                                                          blogID: String(siteID),
                                                                          mediaItemCount: mediaUploadOps.count)
 
-                self.updateMedia(media, postID: postID, siteID: siteID )
+                self?.updateMedia(media, postID: postID, siteID: siteID)
             }
         }, onFailure: {
             // Schedule a local failure notification
