@@ -41,7 +41,7 @@ class ImageDownloader {
 }
 
 
-// MARK: -
+// MARK: - Error Types
 //
 enum ImageDownloaderError: Error {
     case failed
