@@ -195,7 +195,7 @@ open class DeleteSiteViewController: UITableViewController {
         urlParagraphStyle.lineBreakMode = .byCharWrapping
         styledUrl.addAttribute(.paragraphStyle, value: urlParagraphStyle, range: NSMakeRange(0, styledUrl.string.count - 1))
 
-        let message = NSLocalizedString("\nPlease type your site address to confirm deletion. Your site will then be permanently deleted.\n\n",
+        let message = NSLocalizedString("\nTo confirm, please re-enter your site's address before deleting.\n\n",
                                              comment: "Message of Delete Site confirmation alert; substitution is site's host.")
         let styledMessage: NSMutableAttributedString = NSMutableAttributedString(string: message)
         styledMessage.append(styledUrl)
