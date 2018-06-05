@@ -8,16 +8,21 @@ private enum Constants {
     static let helpButtonItemMarginSpace = CGFloat(-8)
     static let helpButtonItemMinimumSize = CGSize(width: 44.0, height: 44.0)
 
-    static let zendeskBadgeSize = CGSize(width: 10, height: 10)
-    static let zendeskBadgeCenterOffset = CGPoint(x: 5, y: 12)
-    static let helpshiftBadgeSize = CGSize(width: 12, height: 12)
+    static let notificationIndicatorCenterOffset = CGPoint(x: 5, y: 12)
+    static var notificationIndicatorSize: CGSize {
+        if WordPressAuthenticator.shared.configuration.supportNotificationIndicatorFeatureFlag == true {
+            return CGSize(width: 10, height: 10)
+        } else {
+            return CGSize(width: 12, height: 12)
+        }
+    }
 }
 
 /// base protocol for NUX view controllers
 public protocol NUXViewControllerBase {
     var sourceTag: WordPressSupportSourceTag { get }
     var helpBadge: NUXHelpBadgeLabel { get }
-    var helpIndicator: WPHelpIndicatorView { get }
+    var helpNotificationIndicator: WPHelpIndicatorView { get }
     var helpButton: UIButton { get }
     var loginFields: LoginFields { get }
     var dismissBlock: ((_ cancelled: Bool) -> Void)? { get }
@@ -118,7 +123,7 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
 
     func refreshSupportNotificationIndicator() {
         let showIndicator = WordPressAuthenticator.shared.delegate?.showSupportNotificationIndicator ?? false
-        helpIndicator.isHidden = !showIndicator
+        helpNotificationIndicator.isHidden = !showIndicator
     }
 
     // MARK: - Actions
@@ -175,13 +180,13 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
     public func addHelpButtonToNavController() {
         let barButtonView = createBarButtonView()
         addHelpButton(to: barButtonView)
-        addBadgeView(to: barButtonView)
-        addLeftBarButtonItem(with: barButtonView)
+        addNotificationIndicatorView(to: barButtonView)
+        addRightBarButtonItem(with: barButtonView)
     }
 
     // MARK: - helpers
 
-    private func addLeftBarButtonItem(with customView: UIView) {
+    private func addRightBarButtonItem(with customView: UIView) {
         let spacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
         spacer.width = Constants.helpButtonItemMarginSpace
 
@@ -198,43 +203,43 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         return customView
     }
 
-    private func addHelpButton(to wrapperView: UIView) {
+    private func addHelpButton(to superView: UIView) {
         helpButton.setTitle(NSLocalizedString("Help", comment: "Help button"), for: .normal)
         helpButton.setTitleColor(Constants.helpButtonTitleColor, for: .highlighted)
         helpButton.on(.touchUpInside) { [weak self] control in
             self?.handleHelpButtonTapped(control)
         }
 
-        wrapperView.addSubview(helpButton)
+        superView.addSubview(helpButton)
         helpButton.translatesAutoresizingMaskIntoConstraints = false
 
-        helpButton.leadingAnchor.constraint(equalTo: wrapperView.leadingAnchor, constant: Constants.helpButtonInsets.left).isActive = true
-        helpButton.trailingAnchor.constraint(equalTo: wrapperView.trailingAnchor, constant: -Constants.helpButtonInsets.right).isActive = true
-        helpButton.topAnchor.constraint(equalTo: wrapperView.topAnchor).isActive = true
-        helpButton.bottomAnchor.constraint(equalTo: wrapperView.bottomAnchor).isActive = true
+        helpButton.leadingAnchor.constraint(equalTo: superView.leadingAnchor, constant: Constants.helpButtonInsets.left).isActive = true
+        helpButton.trailingAnchor.constraint(equalTo: superView.trailingAnchor, constant: -Constants.helpButtonInsets.right).isActive = true
+        helpButton.topAnchor.constraint(equalTo: superView.topAnchor).isActive = true
+        helpButton.bottomAnchor.constraint(equalTo: superView.bottomAnchor).isActive = true
     }
 
     // MARK: Badge settings
 
-    private func addBadgeView(to superView: UIView) {
+    private func addNotificationIndicatorView(to superView: UIView) {
         if WordPressAuthenticator.shared.configuration.supportNotificationIndicatorFeatureFlag == true {
-            setupZendeskBadge()
-            layoutBadgeView(helpIndicator, to: superView, size: Constants.zendeskBadgeSize)
+            setupNotificationsIndicator()
+            layoutNotificationIndicatorView(helpNotificationIndicator, to: superView)
         } else {
-            setupHelpshiftBadge()
-            layoutBadgeView(helpBadge, to: superView, size: Constants.helpshiftBadgeSize)
+            setupBadge()
+            layoutNotificationIndicatorView(helpBadge, to: superView)
         }
     }
 
-    private func setupHelpshiftBadge() {
+    private func setupBadge() {
         helpBadge.isHidden = true
         NotificationCenter.default.addObserver(forName: .wordpressSupportBadgeUpdated, object: nil, queue: nil) { [weak self] _ in
             self?.refreshSupportBadge()
         }
     }
 
-    private func setupZendeskBadge() {
-        helpIndicator.isHidden = true
+    private func setupNotificationsIndicator() {
+        helpNotificationIndicator.isHidden = true
 
         NotificationCenter.default.addObserver(forName: .wordpressSupportNotificationReceived, object: nil, queue: nil) { [weak self] _ in
             self?.refreshSupportNotificationIndicator()
@@ -244,19 +249,19 @@ extension NUXViewControllerBase where Self: UIViewController, Self: UIViewContro
         }
     }
 
-    private func layoutBadgeView(_ view: UIView, to superView: UIView, size: CGSize) {
+    private func layoutNotificationIndicatorView(_ view: UIView, to superView: UIView) {
         superView.addSubview(view)
-
         view.translatesAutoresizingMaskIntoConstraints = false
 
-        let xConstant = helpButton.contentEdgeInsets.top + Constants.zendeskBadgeCenterOffset.x
-        let yConstant = helpButton.contentEdgeInsets.top + Constants.zendeskBadgeCenterOffset.y
+        let centerOffset = Constants.notificationIndicatorCenterOffset
+        let xConstant = helpButton.contentEdgeInsets.top + centerOffset.x
+        let yConstant = helpButton.contentEdgeInsets.top + centerOffset.y
 
         NSLayoutConstraint.activate([
             view.centerXAnchor.constraint(equalTo: helpButton.trailingAnchor, constant: xConstant),
             view.centerYAnchor.constraint(equalTo: helpButton.topAnchor, constant: yConstant),
-            view.widthAnchor.constraint(equalToConstant: size.width),
-            view.heightAnchor.constraint(equalToConstant: size.height)
+            view.widthAnchor.constraint(equalToConstant: Constants.notificationIndicatorSize.width),
+            view.heightAnchor.constraint(equalToConstant: Constants.notificationIndicatorSize.height)
             ])
     }
 
