@@ -237,15 +237,11 @@ import WordPressFlux
     }
 
     private func updateMedia(postID: Int64?, siteID: Int64) {
-        guard let siteIdentifier = Int(exactly: siteID) else {
-            return
-        }
-
         guard let postID = postID else {
             return
         }
 
-        guard let service = mediaService(siteID: siteIdentifier) else {
+        guard let service = mediaService(siteID: siteID) else {
             return
         }
 
@@ -270,7 +266,7 @@ import WordPressFlux
         }
     }
 
-    fileprivate func mediaService(siteID: Int) -> MediaServiceRemoteREST? {
+    fileprivate func mediaService(siteID: Int64) -> MediaServiceRemoteREST? {
         guard let oauth2Token = token() else {
             return nil
         }
