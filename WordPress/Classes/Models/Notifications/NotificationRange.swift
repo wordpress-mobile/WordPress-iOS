@@ -84,6 +84,21 @@ class NotificationRange {
     }
 
 
+    /// Forgive Me:
+    /// AVOID USING This Initializer at all costs. Consider getting the backend patched before creating these entities, locally.
+    ///
+    init(kind: Kind, range: NSRange, url: URL? = nil, commentID: NSNumber? = nil, postID: NSNumber? = nil, siteID: NSNumber? = nil, userID: NSNumber? = nil, value: String? = nil) {
+        self.kind = kind
+        self.range = range
+        self.url = url
+        self.commentID = commentID
+        self.postID = postID
+        self.siteID = siteID
+        self.userID = userID
+        self.value = value
+    }
+
+
     /// Returns the NotificationRange Kind, for a given raw Notification Range.
     ///
     /// - Details:
