@@ -180,7 +180,7 @@ import Gridicons
     }
 
     @objc func configureLabel() {
-        let text = NSLocalizedString("What would you like to find?", comment: "A short message that is a call to action for the Reader's Search feature.")
+        let text = NSLocalizedString("Search WordPress for a site or post.", comment: "A short message that is a call to action for the Reader's Search feature.")
         let rawAttributes = WPNUXUtility.titleAttributes(with: WPStyleGuide.greyDarken20()) as! [String: Any]
         let swiftedAttributes = NSAttributedStringKey.convertFromRaw(attributes: rawAttributes)
         label.attributedText = NSAttributedString(string: text, attributes: swiftedAttributes)
