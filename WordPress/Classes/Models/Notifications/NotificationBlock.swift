@@ -68,6 +68,18 @@ class NotificationBlock: Equatable {
         type    = dictionary[BlockKeys.RawType] as? String
         text    = dictionary[BlockKeys.Text] as? String
     }
+
+    /// Forgive Me:
+    /// AVOID USING This Initializer at all costs. Consider getting the backend patched before creating these entities, locally.
+    ///
+    init(text: String?, ranges: [NotificationRange] = [], media: [NotificationMedia] = []) {
+        self.text = text
+        self.ranges = ranges
+        self.media =  media
+        self.actions = nil
+        self.meta = nil
+        self.type = nil
+    }
 }
 
 
