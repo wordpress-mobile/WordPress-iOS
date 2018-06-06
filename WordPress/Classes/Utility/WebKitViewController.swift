@@ -124,7 +124,9 @@ class WebKitViewController: UIViewController {
         if addsWPComReferrer {
             request.setValue("https://wordpress.com", forHTTPHeaderField: "Referer")
         }
-        webView.load(request)
+        DispatchQueue.main.async { [weak self] in
+            self?.webView.load(request)
+        }
     }
 
     // MARK: Navigation bar setup
