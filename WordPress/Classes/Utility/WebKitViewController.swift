@@ -175,36 +175,37 @@ class WebKitViewController: UIViewController {
     }
 
     private func styleNavBar() {
-        let navigationBar = navigationController?.navigationBar
-        navigationBar?.barStyle = .default
-        navigationBar?.titleTextAttributes = [.foregroundColor: WPStyleGuide.darkGrey()]
-        navigationBar?.shadowImage = UIImage(color: WPStyleGuide.webViewModalNavigationBarShadow())
-        navigationBar?.setBackgroundImage(UIImage(color: WPStyleGuide.webViewModalNavigationBarBackground()), for: .default)
-
-        fixNavBarButtonsColorForBoldText()
-    }
-
-    private func fixNavBarButtonsColorForBoldText() {
-        if UIAccessibilityIsBoldTextEnabled() {
-            navigationController?.navigationBar.tintColor = WPStyleGuide.greyLighten10()
+        guard let navigationBar = navigationController?.navigationBar else {
+            return
         }
+        navigationBar.barStyle = .default
+        navigationBar.titleTextAttributes = [.foregroundColor: WPStyleGuide.darkGrey()]
+        navigationBar.shadowImage = UIImage(color: WPStyleGuide.webViewModalNavigationBarShadow())
+        navigationBar.setBackgroundImage(UIImage(color: WPStyleGuide.webViewModalNavigationBarBackground()), for: .default)
+
+        fixBarButtonsColorForBoldText(on: navigationBar)
     }
 
     private func styleNavBarButtons() {
-        navigationItem.leftBarButtonItems?.forEach(styleNavBarButton)
-        navigationItem.rightBarButtonItems?.forEach(styleNavBarButton)
-    }
-
-    private func styleNavBarButton(_ button: UIBarButtonItem) {
-        button.tintColor = WPStyleGuide.greyLighten10()
+        navigationItem.leftBarButtonItems?.forEach(styleBarButton)
+        navigationItem.rightBarButtonItems?.forEach(styleBarButton)
     }
 
     // MARK: ToolBar setup
 
     @objc func configureToolbar() {
         navigationController?.isToolbarHidden = secureInteraction
-        navigationController?.toolbar.barTintColor = UIColor.white
 
+        guard !secureInteraction else {
+            return
+        }
+
+        styleToolBar()
+        configureToolbarButtons()
+        styleToolBarButtons()
+    }
+
+    private func configureToolbarButtons() {
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
         let items = [
@@ -216,9 +217,31 @@ class WebKitViewController: UIViewController {
             space,
             safariButton
         ]
-
-        items.forEach(styleNavBarButton)
         setToolbarItems(items, animated: false)
+    }
+
+    private func styleToolBar() {
+        guard let toolBar = navigationController?.toolbar else {
+            return
+        }
+        toolBar.barTintColor = UIColor.white
+        fixBarButtonsColorForBoldText(on: toolBar)
+    }
+
+    private func styleToolBarButtons() {
+        navigationController?.toolbar.items?.forEach(styleBarButton)
+    }
+
+    // MARK: Helpers
+
+    private func fixBarButtonsColorForBoldText(on bar: UIView) {
+        if UIAccessibilityIsBoldTextEnabled() {
+            bar.tintColor = WPStyleGuide.greyLighten10()
+        }
+    }
+
+    private func styleBarButton(_ button: UIBarButtonItem) {
+        button.tintColor = WPStyleGuide.greyLighten10()
     }
 
     // MARK: User Actions
