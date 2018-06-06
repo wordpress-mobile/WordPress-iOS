@@ -24,7 +24,7 @@ open class ActivityTableViewCell: WPTableViewCell {
 
         iconBackgroundImageView.backgroundColor = Style.getColorByActivityStatus(activity)
         if let iconImage = Style.getIconForActivity(activity) {
-            iconImageView.image = iconImage
+            iconImageView.image = iconImage.imageFlippedForRightToLeftLayoutDirection()
             iconImageView.isHidden = false
         } else {
             iconImageView.isHidden = true
