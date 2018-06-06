@@ -30,6 +30,7 @@ import Gridicons
 
     fileprivate var backgroundTapRecognizer: UITapGestureRecognizer!
     fileprivate var streamController: ReaderStreamViewController?
+    fileprivate var siteSearchController = ReaderSiteSearchViewController()
     fileprivate let searchBarSearchIconSize = CGFloat(13.0)
     fileprivate var suggestionsController: ReaderSearchSuggestionsViewController?
     fileprivate var restoredSearchTopic: ReaderSearchTopic?
@@ -110,6 +111,7 @@ import Gridicons
         configureLabel()
         configureBackgroundTapRecognizer()
         configureForRestoredTopic()
+        configureSiteSearchViewController()
     }
 
 
@@ -205,6 +207,23 @@ import Gridicons
         streamController?.readerTopic = topic
     }
 
+    private func configureSiteSearchViewController() {
+        siteSearchController.view.translatesAutoresizingMaskIntoConstraints = false
+
+        addChildViewController(siteSearchController)
+
+        view.addSubview(siteSearchController.view)
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: siteSearchController.view.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: siteSearchController.view.trailingAnchor),
+            filterBar.bottomAnchor.constraint(equalTo: siteSearchController.view.topAnchor),
+            view.bottomAnchor.constraint(equalTo: siteSearchController.view.bottomAnchor),
+            ])
+
+        siteSearchController.didMove(toParentViewController: self)
+
+        siteSearchController.view.isHidden = true
+    }
 
     // MARK: - Actions
 
@@ -223,6 +242,7 @@ import Gridicons
         }
 
         performPostsSearch(for: phrase)
+        performSitesSearch(for: phrase)
     }
 
     private func performPostsSearch(for phrase: String) {
@@ -248,12 +268,26 @@ import Gridicons
         }
     }
 
+    private func performSitesSearch(for phrase: String) {
+        siteSearchController.searchTerm = phrase
+    }
+
 
     @objc func handleBackgroundTap(_ gesture: UITapGestureRecognizer) {
         endSearch()
     }
 
     @objc private func selectedFilterDidChange(_ filterBar: FilterTabBar) {
+        let section = sections[filterBar.selectedIndex]
+
+        switch section {
+        case .posts:
+            streamController?.view.isHidden = false
+            siteSearchController.view.isHidden = true
+        case .sites:
+            streamController?.view.isHidden = true
+            siteSearchController.view.isHidden = false
+        }
     }
 
     // MARK: - Autocomplete
