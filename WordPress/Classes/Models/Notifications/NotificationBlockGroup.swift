@@ -169,7 +169,7 @@ private extension NotificationBlockGroup {
         ]
 
         let block = NotificationBlock(text: text, ranges: ranges)
-        return NotificationBlockGroup(blocks: [block], kind: .text)
+        return NotificationBlockGroup(blocks: [block], kind: .footer)
     }
 }
 
