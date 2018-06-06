@@ -7,6 +7,8 @@ import WordPressFlux
 ///
 @objc class ShareExtensionSessionManager: NSObject {
 
+    typealias CompletionBlock = () -> Void
+
     // MARK: - Public Properties
 
     typealias ShareExtensionBackgroundCompletionBlock = () -> Void
@@ -209,10 +211,11 @@ import WordPressFlux
             }
             postUploadOp.currentStatus = .complete
 
-            self.updateMedia(postID: post.postID.int64Value, siteID: postUploadOp.siteID)
-            self.coreDataStack.saveContext()
+            self.updateMedia(postID: post.postID.int64Value, siteID: postUploadOp.siteID, onComplete: { [weak self] in
+                self?.coreDataStack.saveContext()
             ShareExtensionSessionManager.fireUserNotificationIfNeeded(postUploadOpID.uriRepresentation().absoluteString)
-            self.cleanupSessionAndTerminate()
+                self?.cleanupSessionAndTerminate()
+            })
         }, failure: { error in
             var errorString = "Error creating post"
             if let error = error as NSError? {
@@ -236,7 +239,7 @@ import WordPressFlux
         return ShareExtensionService.retrieveShareExtensionToken()
     }
 
-    private func updateMedia(postID: Int64?, siteID: Int64) {
+    private func updateMedia(postID: Int64?, siteID: Int64, onComplete: CompletionBlock?) {
         guard let postID = postID else {
             return
         }
@@ -251,18 +254,23 @@ import WordPressFlux
         }
 
         let media = mediaUploadOperations(for: groupID)?.compactMap({return $0.remoteMedia})
-
+        let syncGroup = DispatchGroup()
         media?.forEach { mediaItem in
             mediaItem.postID = NSNumber(value: postID)
             service.update(mediaItem, success: { [weak self] updatedRemoteMedia in
-                self?.coreDataStack.saveContext()
+                syncGroup.leave()
             }, failure: { error in
                 var errorString = "Error creating post in share extension"
                 if let error = error as NSError? {
                     errorString += ": \(error.localizedDescription)"
                 }
                 DDLogError(errorString)
+                syncGroup.leave()
             })
+        }
+
+        syncGroup.notify(queue: .main) {
+            onComplete?()
         }
     }
 
