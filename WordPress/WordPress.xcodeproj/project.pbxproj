@@ -454,8 +454,6 @@
 		74EA3B89202A0462004F802D /* ShareNoticeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */; };
 		74EFB5C8208674250070BD4E /* BlogListViewController+Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EFB5C7208674250070BD4E /* BlogListViewController+Activity.swift */; };
 		74EFB5CA20869DD30070BD4E /* SupportViewController+Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74EFB5C920869DD30070BD4E /* SupportViewController+Activity.swift */; };
-		74F24F671EE8729700E8BFE8 /* xmlrpc-bad-username-password-error.xml in Resources */ = {isa = PBXBuildFile; fileRef = 74F24F621EE8729700E8BFE8 /* xmlrpc-bad-username-password-error.xml */; };
-		74F24F681EE8729700E8BFE8 /* xmlrpc-malformed-request-xml-error.xml in Resources */ = {isa = PBXBuildFile; fileRef = 74F24F631EE8729700E8BFE8 /* xmlrpc-malformed-request-xml-error.xml */; };
 		74F5CD381FE0646F00764E7C /* ShareExtension.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */; };
 		74F5CD3A1FE0653500764E7C /* ShareExtensionEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F5CD391FE0653500764E7C /* ShareExtensionEditorViewController.swift */; };
 		74F89407202A1965008610FA /* ExtensionNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F89406202A1965008610FA /* ExtensionNotificationManager.swift */; };
@@ -568,10 +566,6 @@
 		93C882A21EEB18D700227A59 /* html_page_with_link_to_rsd.html in Resources */ = {isa = PBXBuildFile; fileRef = 93C882991EEB18D700227A59 /* html_page_with_link_to_rsd.html */; };
 		93C882A31EEB18D700227A59 /* plugin_redirect.html in Resources */ = {isa = PBXBuildFile; fileRef = 93C8829A1EEB18D700227A59 /* plugin_redirect.html */; };
 		93C882A41EEB18D700227A59 /* rsd.xml in Resources */ = {isa = PBXBuildFile; fileRef = 93C8829B1EEB18D700227A59 /* rsd.xml */; };
-		93C882A51EEB18D700227A59 /* xmlrpc-response-fault.xml in Resources */ = {isa = PBXBuildFile; fileRef = 93C8829C1EEB18D700227A59 /* xmlrpc-response-fault.xml */; };
-		93C882A71EEB18D700227A59 /* xmlrpc-response-newpost.xml in Resources */ = {isa = PBXBuildFile; fileRef = 93C8829E1EEB18D700227A59 /* xmlrpc-response-newpost.xml */; };
-		93C882A81EEB18D700227A59 /* xmlrpc-response-redirect.html in Resources */ = {isa = PBXBuildFile; fileRef = 93C8829F1EEB18D700227A59 /* xmlrpc-response-redirect.html */; };
-		93C882A91EEB18D700227A59 /* xmlrpc-response-system-listmethods.xml in Resources */ = {isa = PBXBuildFile; fileRef = 93C882A01EEB18D700227A59 /* xmlrpc-response-system-listmethods.xml */; };
 		93CD939319099BE70049096E /* authtoken.json in Resources */ = {isa = PBXBuildFile; fileRef = 93CD939219099BE70049096E /* authtoken.json */; };
 		93D86B981C691E71003D8E3E /* LocalCoreDataServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A9AB391B4C3ECD00A433DC /* LocalCoreDataServiceTests.m */; };
 		93DEB88219E5BF7100F9546D /* TodayExtensionService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93DEB88119E5BF7100F9546D /* TodayExtensionService.m */; };
@@ -1865,8 +1859,6 @@
 		74EA3B87202A0462004F802D /* ShareNoticeConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareNoticeConstants.swift; sourceTree = "<group>"; };
 		74EFB5C7208674250070BD4E /* BlogListViewController+Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BlogListViewController+Activity.swift"; sourceTree = "<group>"; };
 		74EFB5C920869DD30070BD4E /* SupportViewController+Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SupportViewController+Activity.swift"; sourceTree = "<group>"; };
-		74F24F621EE8729700E8BFE8 /* xmlrpc-bad-username-password-error.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-bad-username-password-error.xml"; sourceTree = "<group>"; };
-		74F24F631EE8729700E8BFE8 /* xmlrpc-malformed-request-xml-error.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-malformed-request-xml-error.xml"; sourceTree = "<group>"; };
 		74F5CD371FE0646F00764E7C /* ShareExtension.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ShareExtension.storyboard; sourceTree = "<group>"; };
 		74F5CD391FE0653500764E7C /* ShareExtensionEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionEditorViewController.swift; sourceTree = "<group>"; };
 		74F89406202A1965008610FA /* ExtensionNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionNotificationManager.swift; sourceTree = "<group>"; };
@@ -2042,10 +2034,6 @@
 		93C882991EEB18D700227A59 /* html_page_with_link_to_rsd.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = html_page_with_link_to_rsd.html; sourceTree = "<group>"; };
 		93C8829A1EEB18D700227A59 /* plugin_redirect.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = plugin_redirect.html; sourceTree = "<group>"; };
 		93C8829B1EEB18D700227A59 /* rsd.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = rsd.xml; sourceTree = "<group>"; };
-		93C8829C1EEB18D700227A59 /* xmlrpc-response-fault.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-fault.xml"; sourceTree = "<group>"; };
-		93C8829E1EEB18D700227A59 /* xmlrpc-response-newpost.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-newpost.xml"; sourceTree = "<group>"; };
-		93C8829F1EEB18D700227A59 /* xmlrpc-response-redirect.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "xmlrpc-response-redirect.html"; sourceTree = "<group>"; };
-		93C882A01EEB18D700227A59 /* xmlrpc-response-system-listmethods.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "xmlrpc-response-system-listmethods.xml"; sourceTree = "<group>"; };
 		93CD939219099BE70049096E /* authtoken.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = authtoken.json; sourceTree = "<group>"; };
 		93D86B931C63EC31003D8E3E /* en-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-CA"; path = "en-CA.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		93D86B941C63EC31003D8E3E /* en-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-CA"; path = "en-CA.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -5843,12 +5831,6 @@
 				E1E4CE0517739FAB00430844 /* test-image.jpg */,
 				084D94AE1EDF842600C385A6 /* test-video-device-gps.m4v */,
 				E1A0BBB11CC9267500FE7256 /* TestPlans.swift */,
-				74F24F621EE8729700E8BFE8 /* xmlrpc-bad-username-password-error.xml */,
-				74F24F631EE8729700E8BFE8 /* xmlrpc-malformed-request-xml-error.xml */,
-				93C8829C1EEB18D700227A59 /* xmlrpc-response-fault.xml */,
-				93C8829E1EEB18D700227A59 /* xmlrpc-response-newpost.xml */,
-				93C8829F1EEB18D700227A59 /* xmlrpc-response-redirect.html */,
-				93C882A01EEB18D700227A59 /* xmlrpc-response-system-listmethods.xml */,
 				D88A64A3208D8FB6008AE9BC /* stock-photos-search-response.json */,
 				D88A64A5208D92B1008AE9BC /* stock-photos-media.json */,
 				D88A64A9208D974D008AE9BC /* thumbnail-collection.json */,
@@ -6651,16 +6633,13 @@
 				E15027631E03E51500B847E3 /* notes-action-unsupported.json in Resources */,
 				93C882A21EEB18D700227A59 /* html_page_with_link_to_rsd.html in Resources */,
 				E12BE5EE1C5235DB000FD5CA /* get-me-settings-v1.1.json in Resources */,
-				93C882A51EEB18D700227A59 /* xmlrpc-response-fault.xml in Resources */,
 				933D1F6C1EA7A3AB009FB462 /* TestingMode.storyboard in Resources */,
 				08F8CD371EBD2AA80049D0C0 /* test-image-device-photo-gps.jpg in Resources */,
 				D88A64A6208D92B1008AE9BC /* stock-photos-media.json in Resources */,
 				E15027621E03E51500B847E3 /* notes-action-push.json in Resources */,
 				748BD8851F19234300813F9A /* notifications-mark-as-read.json in Resources */,
-				74F24F681EE8729700E8BFE8 /* xmlrpc-malformed-request-xml-error.xml in Resources */,
 				93594BD5191D2F5A0079E6B2 /* stats-batch.json in Resources */,
 				74585B9C1F0D591D00E7E667 /* domain-service-valid-domains.json in Resources */,
-				93C882A81EEB18D700227A59 /* xmlrpc-response-redirect.html in Resources */,
 				93CD939319099BE70049096E /* authtoken.json in Resources */,
 				E1E4CE0F1774563F00430844 /* misteryman.jpg in Resources */,
 				855408881A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json in Resources */,
@@ -6676,7 +6655,6 @@
 				E1E4CE0617739FAB00430844 /* test-image.jpg in Resources */,
 				748437F01F1D4E9E00E8DDAF /* notifications-load-all.json in Resources */,
 				E11330511A13BAA300D36D84 /* me-sites-with-jetpack.json in Resources */,
-				93C882A71EEB18D700227A59 /* xmlrpc-response-newpost.xml in Resources */,
 				855408861A6F105700DDBD79 /* app-review-prompt-all-enabled.json in Resources */,
 				748437F11F1D4ECC00E8DDAF /* notifications-last-seen.json in Resources */,
 				74585B9D1F0D591D00E7E667 /* domain-service-all-domain-types.json in Resources */,
@@ -6691,11 +6669,9 @@
 				B5AEEC7D1ACACFDA008BF2A4 /* notifications-replied-comment.json in Resources */,
 				E131CB5816CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json in Resources */,
 				08DF9C441E8475530058678C /* test-image-portrait.jpg in Resources */,
-				74F24F671EE8729700E8BFE8 /* xmlrpc-bad-username-password-error.xml in Resources */,
 				B5AEEC7C1ACACFDA008BF2A4 /* notifications-new-follower.json in Resources */,
 				B5AEEC791ACACFDA008BF2A4 /* notifications-badge.json in Resources */,
 				93C882A41EEB18D700227A59 /* rsd.xml in Resources */,
-				93C882A91EEB18D700227A59 /* xmlrpc-response-system-listmethods.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
