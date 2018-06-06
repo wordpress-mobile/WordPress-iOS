@@ -164,6 +164,7 @@
 		17BB26AE1E6D8321008CD031 /* MediaLibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BB26AD1E6D8321008CD031 /* MediaLibraryViewController.swift */; };
 		17BEE0041FC867C20074C124 /* WordPressAppDelegate+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEE0031FC867C20074C124 /* WordPressAppDelegate+Swift.swift */; };
 		17CE77ED20C6C2F3001DEA5A /* ReaderSiteSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE77EC20C6C2F3001DEA5A /* ReaderSiteSearchService.swift */; };
+		17CE77EF20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17CE77EE20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift */; };
 		17D2FDC21C6A468A00944265 /* PlanComparisonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D2FDC11C6A468A00944265 /* PlanComparisonViewController.swift */; };
 		17D5C3F71FFCF2D800EB70FF /* MediaProgressCoordinatorNoticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D5C3F61FFCF2D800EB70FF /* MediaProgressCoordinatorNoticeViewModel.swift */; };
 		17D975AF1EF7F6F100303D63 /* WPStyleGuide+Aztec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D975AE1EF7F6F100303D63 /* WPStyleGuide+Aztec.swift */; };
@@ -1495,6 +1496,7 @@
 		17BB26AD1E6D8321008CD031 /* MediaLibraryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaLibraryViewController.swift; sourceTree = "<group>"; };
 		17BEE0031FC867C20074C124 /* WordPressAppDelegate+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WordPressAppDelegate+Swift.swift"; sourceTree = "<group>"; };
 		17CE77EC20C6C2F3001DEA5A /* ReaderSiteSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSiteSearchService.swift; sourceTree = "<group>"; };
+		17CE77EE20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSiteSearchViewController.swift; sourceTree = "<group>"; };
 		17D2FDC11C6A468A00944265 /* PlanComparisonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanComparisonViewController.swift; sourceTree = "<group>"; };
 		17D5C3F61FFCF2D800EB70FF /* MediaProgressCoordinatorNoticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaProgressCoordinatorNoticeViewModel.swift; sourceTree = "<group>"; };
 		17D975AE1EF7F6F100303D63 /* WPStyleGuide+Aztec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Aztec.swift"; sourceTree = "<group>"; };
@@ -3662,6 +3664,7 @@
 				5D1D04741B7A50B100CDE646 /* ReaderStreamViewController.swift */,
 				1705E54F20A5DA5700EF1C9D /* ReaderSavedPostsViewController.swift */,
 				E69551F51B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift */,
+				17CE77EE20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift */,
 				E69EF9D21BFA539F00ED0554 /* ReaderDetailViewController.swift */,
 				E64ECA4C1CE62041000188A0 /* ReaderSearchViewController.swift */,
 				E6DAABDC1CF632EC0069D933 /* ReaderSearchSuggestionsViewController.swift */,
@@ -7623,6 +7626,7 @@
 				D80BC7A4207487F200614A59 /* MediaLibraryPicker.swift in Sources */,
 				E663D1901C65383E0017F109 /* SharingAccountViewController.swift in Sources */,
 				93DEB88219E5BF7100F9546D /* TodayExtensionService.m in Sources */,
+				17CE77EF20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift in Sources */,
 				98D60B9E1FFEE3D800145190 /* SiteCreationThemeSelectionCell.swift in Sources */,
 				5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */,
 				D80BC79C207464D200614A59 /* MediaLibraryMediaPickingCoordinator.swift in Sources */,
