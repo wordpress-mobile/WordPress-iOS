@@ -159,7 +159,7 @@ private extension NotificationBlockGroup {
     /// Returns a BlockGroup containing a single Text Block, which links to the specified URL.
     ///
     class func pingbackReadMoreGroup(for url: URL) -> NotificationBlockGroup {
-        let text = NSLocalizedString("Read the source post", comment: "")
+        let text = NSLocalizedString("Read the source post", comment: "Displayed at the footer of a Pingback Notification.")
         let textRange = NSRange(location: 0, length: text.count)
         let zeroRange = NSRange(location: 0, length: 0)
 
