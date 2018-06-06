@@ -427,6 +427,8 @@ fileprivate extension AppExtensionsService {
             let siteID = uploadPostOp.siteID
             let postID = uploadPostOp.remotePostID
 
+            self?.coreDataStack.saveContext()
+
             // Associate the remote media with the newly-uploaded post
             let updatedMedia = mediaUploadOps.compactMap({return $0.remoteMedia})
             self?.updateMedia(updatedMedia, postID: postID, siteID: siteID, onComplete: {

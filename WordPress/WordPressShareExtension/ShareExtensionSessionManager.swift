@@ -211,10 +211,11 @@ import WordPressFlux
             }
             postUploadOp.currentStatus = .complete
 
-            self.updateMedia(postID: post.postID.int64Value, siteID: postUploadOp.siteID, onComplete: { [weak self] in
-                self?.coreDataStack.saveContext()
-            ShareExtensionSessionManager.fireUserNotificationIfNeeded(postUploadOpID.uriRepresentation().absoluteString)
-                self?.cleanupSessionAndTerminate()
+            self.coreDataStack.saveContext()
+
+            self.updateMedia(postID: post.postID.int64Value, siteID: postUploadOp.siteID, onComplete: {
+                ShareExtensionSessionManager.fireUserNotificationIfNeeded(postUploadOpID.uriRepresentation().absoluteString)
+                self.cleanupSessionAndTerminate()
             })
         }, failure: { error in
             var errorString = "Error creating post"
@@ -247,6 +248,8 @@ import WordPressFlux
         guard let service = mediaService(siteID: siteID) else {
             return
         }
+
+        coreDataStack.saveContext()
 
         guard let groupID = coreDataStack.fetchGroupID(for: backgroundSessionIdentifier), !groupID.isEmpty else {
             DDLogError("Unable to find the Group ID for session with ID \(backgroundSessionIdentifier).")
