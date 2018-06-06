@@ -164,7 +164,7 @@ private extension NotificationBlockGroup {
         let zeroRange = NSRange(location: 0, length: 0)
 
         let ranges = [
-            NotificationRange(kind: .Noticon, range: zeroRange, value: "\u{f107}"),
+            NotificationRange(kind: .Noticon, range: zeroRange, value: "\u{f442}"),
             NotificationRange(kind: .Link, range: textRange, url: url)
         ]
 
