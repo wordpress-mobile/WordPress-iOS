@@ -10,10 +10,22 @@ import Gridicons
     @objc static let restorationClassIdentifier = "ReaderSearchViewControllerRestorationIdentifier"
     @objc static let restorableSearchTopicPathKey: String = "RestorableSearchTopicPathKey"
 
+    fileprivate enum Section: Int {
+        case posts
+        case sites
+
+        var title: String {
+            switch self {
+            case .posts: return "Posts"
+            case .sites: return "Sites"
+            }
+        }
+    }
 
     // MARK: - Properties
 
     @IBOutlet fileprivate weak var searchBar: UISearchBar!
+    @IBOutlet fileprivate weak var filterBar: FilterTabBar!
     @IBOutlet fileprivate weak var label: UILabel!
 
     fileprivate var backgroundTapRecognizer: UITapGestureRecognizer!
@@ -23,6 +35,8 @@ import Gridicons
     fileprivate var restoredSearchTopic: ReaderSearchTopic?
     fileprivate var didBumpStats = false
 
+
+    fileprivate let sections: [Section] = [ .posts, .sites ]
 
     /// A convenience method for instantiating the controller from the storyboard.
     ///
@@ -92,6 +106,7 @@ import Gridicons
 
         WPStyleGuide.configureColors(for: view, andTableView: nil)
         setupSearchBar()
+        configureFilterBar()
         configureLabel()
         configureBackgroundTapRecognizer()
         configureForRestoredTopic()
@@ -155,6 +170,14 @@ import Gridicons
         WPStyleGuide.configureSearchBar(searchBar)
     }
 
+    func configureFilterBar() {
+        filterBar.tintColor = WPStyleGuide.wordPressBlue()
+        filterBar.deselectedTabColor = WPStyleGuide.greyDarken10()
+        filterBar.dividerColor = WPStyleGuide.greyLighten20()
+        filterBar.items = sections.map({ $0.title })
+
+        filterBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
+    }
 
     @objc func configureLabel() {
         let text = NSLocalizedString("What would you like to find?", comment: "A short message that is a call to action for the Reader's Search feature.")
@@ -195,11 +218,15 @@ import Gridicons
     /// embedded stream to the topic.
     ///
     @objc func performSearch() {
-        guard let streamController = streamController else {
+        guard let phrase = searchBar.text?.trim(), !phrase.isEmpty else {
             return
         }
 
-        guard let phrase = searchBar.text?.trim(), !phrase.isEmpty else {
+        performPostsSearch(for: phrase)
+    }
+
+    private func performPostsSearch(for phrase: String) {
+        guard let streamController = streamController else {
             return
         }
 
@@ -226,6 +253,8 @@ import Gridicons
         endSearch()
     }
 
+    @objc private func selectedFilterDidChange(_ filterBar: FilterTabBar) {
+    }
 
     // MARK: - Autocomplete
 
