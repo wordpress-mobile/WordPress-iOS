@@ -118,7 +118,7 @@ PODS:
   - WordPress-Aztec-iOS/WordPressEditor (1.0.0-beta.19)
   - WordPressKit (1.0.6):
     - AFNetworking (= 3.2.1)
-    - Alamofire (= 4.7.2)
+    - Alamofire (~> 4.7)
     - CocoaLumberjack (= 3.4.2)
     - NSObject-SafeExpectations (= 0.0.3)
     - UIDeviceIdentifier (~> 0.4)
@@ -167,7 +167,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `c38d29b09cc9710ef307891f76a02c80a7002a59`)
   - WordPress-Aztec-iOS/WordPressEditor (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `c38d29b09cc9710ef307891f76a02c80a7002a59`)
-  - WordPressKit (~> 1.0.6)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `0ba02badb90ed41beae0ca9dbf9126402f963a49`)
   - WordPressShared (~> 1.0.5)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, commit `e72725ee5aed1a2c4dffa755a78c36e3ecf6e2b0`)
   - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, commit `b5ae03494596e3da7a8f814f9cab8e96ca345bc8`)
@@ -205,7 +205,6 @@ SPEC REPOS:
     - Starscream
     - SVProgressHUD
     - UIDeviceIdentifier
-    - WordPressKit
     - WordPressShared
     - wpxmlrpc
     - ZendeskSDK
@@ -217,6 +216,9 @@ EXTERNAL SOURCES:
   WordPress-Aztec-iOS:
     :commit: c38d29b09cc9710ef307891f76a02c80a7002a59
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WordPressKit:
+    :commit: 0ba02badb90ed41beae0ca9dbf9126402f963a49
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressUI:
     :commit: e72725ee5aed1a2c4dffa755a78c36e3ecf6e2b0
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
@@ -231,6 +233,9 @@ CHECKOUT OPTIONS:
   WordPress-Aztec-iOS:
     :commit: c38d29b09cc9710ef307891f76a02c80a7002a59
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
+  WordPressKit:
+    :commit: 0ba02badb90ed41beae0ca9dbf9126402f963a49
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressUI:
     :commit: e72725ee5aed1a2c4dffa755a78c36e3ecf6e2b0
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
@@ -270,13 +275,13 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 743dbe41492eae1d9daf3f5ba5435ab295ee668f
-  WordPressKit: f62f8e68ce2300d9a8b4c2b7c743c911bbdbd343
+  WordPressKit: 4084217be7262951d157fff3df6581aa1e685b31
   WordPressShared: d7fdb0ca9302cf4bc7f3ec0fbe98d0d8eb721438
   WordPressUI: ebf73505c8957df23a1c9fe565fba553be296dc5
   WPMediaPicker: ceb613e43eae03268e73835d48d67f92f595aca6
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: fac21ae825299bf6e1eb821d27c150fae75e1193
+PODFILE CHECKSUM: aab4804b108514f5ea0d715b33e12a5a1bbf76e2
 
 COCOAPODS: 1.5.2
