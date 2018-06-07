@@ -87,6 +87,7 @@
 {
     [super viewWillDisappear:animated];
     [self stopLoading];
+    [self stopWaitingForConnectionRestored];
 }
 
 #pragma mark -
@@ -120,6 +121,22 @@
 {
     [SVProgressHUD dismiss];
     [self.webView stopLoading];
+}
+
+- (void)reloadWhenConnectionRestored
+{
+    __weak __typeof(self) weakSelf = self;
+    self.reachabilityObserver = [ReachabilityUtils observeOnceInternetAvailableWithAction:^{
+        [weakSelf refreshWebView];
+    }];
+}
+
+- (void)stopWaitingForConnectionRestored
+{
+    if (self.reachabilityObserver != nil) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self.reachabilityObserver];
+        self.reachabilityObserver = nil;
+    }
 }
 
 #pragma mark -
@@ -212,20 +229,13 @@
 
 - (void)previewFailed:(PostPreviewGenerator *)generator message:(NSString *)message {
     [self showNoResultsWithTite:message];
-
-    __weak __typeof(self) weakSelf = self;
-    self.reachabilityObserver = [ReachabilityUtils observeOnceInternetAvailableWithAction:^{
-        [weakSelf refreshWebView];
-    }];
+    [self reloadWhenConnectionRestored];
 }
 
 #pragma mark - No Results
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView {
-    if (self.reachabilityObserver != nil) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self.reachabilityObserver];
-        self.reachabilityObserver = nil;
-    }
+    [self stopWaitingForConnectionRestored];
     [self hideNoResults];
     [self refreshWebView];
 }
