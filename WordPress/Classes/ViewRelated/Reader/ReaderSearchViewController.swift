@@ -176,6 +176,7 @@ import Gridicons
         filterBar.tintColor = WPStyleGuide.wordPressBlue()
         filterBar.deselectedTabColor = WPStyleGuide.greyDarken10()
         filterBar.dividerColor = WPStyleGuide.greyLighten20()
+        filterBar.tabSizingStyle = .equalWidths
         filterBar.items = sections.map({ $0.title })
 
         filterBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
