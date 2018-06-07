@@ -17,6 +17,7 @@ class FilterTabBar: UIControl {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
         stackView.spacing = 0
         return stackView
     }()
@@ -87,6 +88,29 @@ class FilterTabBar: UIControl {
         }
     }
 
+    // MARK: - Tab Sizing
+
+    private var stackViewEdgeConstraints: [NSLayoutConstraint]!
+    private var stackViewWidthConstraint: NSLayoutConstraint!
+
+    enum TabSizingStyle {
+        /// The tabs will fill the space available to the filter bar,
+        /// with all tabs having equal widths. Tabs will not scroll.
+        case equalWidths
+        /// The tabs will have differing widths which fit their content size.
+        /// If the tabs are too large to fit in the area available, the
+        /// filter bar will scroll.
+        case fitting
+    }
+
+    /// Defines how the tabs should be sized within the tab view.
+    ///
+    var tabSizingStyle: TabSizingStyle = .fitting {
+        didSet {
+            updateTabSizingConstraints()
+        }
+    }
+
     // MARK: - Initialization
 
     init(items: [String]) {
@@ -115,9 +139,16 @@ class FilterTabBar: UIControl {
             ])
 
         scrollView.addSubview(stackView)
-        NSLayoutConstraint.activate([
+
+        stackViewEdgeConstraints = [
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: AppearanceMetrics.horizontalPadding),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -AppearanceMetrics.horizontalPadding),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -AppearanceMetrics.horizontalPadding)
+        ]
+        stackViewWidthConstraint = stackView.widthAnchor.constraint(equalTo: widthAnchor)
+
+        updateTabSizingConstraints()
+
+        NSLayoutConstraint.activate([
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -AppearanceMetrics.bottomDividerHeight),
@@ -148,6 +179,7 @@ class FilterTabBar: UIControl {
         tabs.forEach({ $0.removeFromSuperview() })
         tabs = items.map(makeTab(_:))
         tabs.forEach(stackView.addArrangedSubview(_:))
+
         layoutIfNeeded()
 
         setSelectedIndex(selectedIndex, animated: false)
@@ -166,6 +198,17 @@ class FilterTabBar: UIControl {
         tab.addTarget(self, action: #selector(tabTapped(_:)), for: .touchUpInside)
 
         return tab
+    }
+
+    private func updateTabSizingConstraints() {
+        switch tabSizingStyle {
+        case .equalWidths:
+            NSLayoutConstraint.deactivate(stackViewEdgeConstraints)
+            NSLayoutConstraint.activate([stackViewWidthConstraint])
+        case .fitting:
+            NSLayoutConstraint.deactivate([stackViewWidthConstraint])
+            NSLayoutConstraint.activate(stackViewEdgeConstraints)
+        }
     }
 
     // MARK: - Tab Selection
