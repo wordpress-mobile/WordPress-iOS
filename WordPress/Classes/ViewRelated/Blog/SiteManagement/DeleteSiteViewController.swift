@@ -188,15 +188,27 @@ open class DeleteSiteViewController: UITableViewController {
     /// - Returns: UIAlertController
     ///
     fileprivate func confirmDeleteController() -> UIAlertController {
+
+        // Create atributed strings for URL and message body so we can wrap the URL byCharWrapping.
+        let styledUrl: NSMutableAttributedString = NSMutableAttributedString(string: blog.displayURL! as String)
+        let urlParagraphStyle = NSMutableParagraphStyle()
+        urlParagraphStyle.lineBreakMode = .byCharWrapping
+        styledUrl.addAttribute(.paragraphStyle, value: urlParagraphStyle, range: NSMakeRange(0, styledUrl.string.count - 1))
+
+        let message = NSLocalizedString("\nTo confirm, please re-enter your site's address before deleting.\n\n",
+                                             comment: "Message of Delete Site confirmation alert; substitution is site's host.")
+        let styledMessage: NSMutableAttributedString = NSMutableAttributedString(string: message)
+        styledMessage.append(styledUrl)
+
+        // Create alert
         let confirmTitle = NSLocalizedString("Confirm Delete Site", comment: "Title of Delete Site confirmation alert")
-        let messageFormat = NSLocalizedString("Please type in \n\n%@\n\n in the field below to confirm. Your site will then be gone forever.", comment: "Message of Delete Site confirmation alert; substitution is site's host")
-        let message = String(format: messageFormat, blog.displayURL!)
-        let alertController = UIAlertController(title: confirmTitle, message: message, preferredStyle: .alert)
+        let alertController = UIAlertController(title: confirmTitle, message: nil, preferredStyle: .alert)
+        alertController.setValue(styledMessage, forKey: "attributedMessage")
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
         alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
 
-        let deleteTitle = NSLocalizedString("Delete this site", comment: "Delete Site confirmation action title")
+        let deleteTitle = NSLocalizedString("Permanently Delete Site", comment: "Delete Site confirmation action title")
         let deleteAction = UIAlertAction(title: deleteTitle, style: .destructive, handler: { action in
             self.deleteSiteConfirmed()
         })
