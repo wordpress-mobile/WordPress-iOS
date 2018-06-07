@@ -19,6 +19,7 @@ class WebKitViewController: UIViewController {
     @objc let navigationDelegate: WebNavigationDelegate?
     @objc var secureInteraction = false
     @objc var addsWPComReferrer = false
+    @objc var addsHideDotComMasterbarParameters = true
     @objc var customTitle: String?
 
     @objc init(configuration: WebViewControllerConfiguration) {
@@ -27,6 +28,7 @@ class WebKitViewController: UIViewController {
         customOptionsButton = configuration.optionsButton
         secureInteraction = configuration.secureInteraction
         addsWPComReferrer = configuration.addsWPComReferrer
+        addsHideDotComMasterbarParameters = configuration.addsHideDotComMasterbarParameters
         customTitle = configuration.customTitle
         authenticator = configuration.authenticator
         navigationDelegate = configuration.navigationDelegate
@@ -41,6 +43,7 @@ class WebKitViewController: UIViewController {
         customOptionsButton = parent.customOptionsButton
         secureInteraction = parent.secureInteraction
         addsWPComReferrer = parent.addsWPComReferrer
+        addsHideDotComMasterbarParameters = parent.addsHideDotComMasterbarParameters
         customTitle = parent.customTitle
         authenticator = parent.authenticator
         navigationDelegate = parent.navigationDelegate
@@ -104,6 +107,13 @@ class WebKitViewController: UIViewController {
         if addsWPComReferrer {
             request.setValue("https://wordpress.com", forHTTPHeaderField: "Referer")
         }
+
+        if addsHideDotComMasterbarParameters,
+            let host = request.url?.host,
+            host.contains("wordpress.com") {
+            request.url = request.url?.appendHideDotComMasterbarParameters()
+        }
+
         webView.load(request)
     }
 

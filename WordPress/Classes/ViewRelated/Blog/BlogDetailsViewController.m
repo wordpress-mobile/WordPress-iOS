@@ -1129,7 +1129,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showViewSite
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedViewSite withBlog:self.blog];
-    NSURL *targetURL = [[NSURL URLWithString:self.blog.homeURL] appendHideMasterbarParameters];
+    NSURL *targetURL = [NSURL URLWithString:self.blog.homeURL];
     UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL blog:self.blog];
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];

@@ -116,7 +116,7 @@ extension URL {
         }
     }
 
-    func appendHideMasterbarParameters() -> URL? {
+    func appendHideDotComMasterbarParameters() -> URL? {
         guard var components = URLComponents(url: self, resolvingAgainstBaseURL: false) else {
             return nil
         }
@@ -140,8 +140,8 @@ extension NSURL {
         return NSNumber(value: fileSize)
     }
 
-    @objc func appendHideMasterbarParameters() -> NSURL? {
+    @objc func appendHideDotComMasterbarParameters() -> NSURL? {
         let url = self as URL
-        return url.appendHideMasterbarParameters() as NSURL?
+        return url.appendHideDotComMasterbarParameters() as NSURL?
     }
 }

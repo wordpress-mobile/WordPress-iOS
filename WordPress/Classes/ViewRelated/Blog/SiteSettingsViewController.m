@@ -1045,7 +1045,7 @@ static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/
         StartOverViewController *viewController = [[StartOverViewController alloc] initWithBlog:blog];
         [self.navigationController pushViewController:viewController animated:YES];
     } else {
-        NSURL *targetURL = [[NSURL URLWithString:EmptySiteSupportURL] appendHideMasterbarParameters];
+        NSURL *targetURL = [NSURL URLWithString:EmptySiteSupportURL];
         UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL];
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
         [self presentViewController:navController animated:YES completion:nil];
