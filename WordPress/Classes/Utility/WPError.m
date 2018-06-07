@@ -7,8 +7,6 @@
 #import <wpxmlrpc/WPXMLRPC.h>
 #import "WordPress-Swift.h"
 
-
-
 NSInteger const SupportButtonIndex = 0;
 NSString * const WordPressAppErrorDomain = @"org.wordpress.iphone";
 NSString * const WPErrorSupportSourceKey = @"helpshift-support-source";
@@ -170,7 +168,9 @@ NSString * const WPErrorSupportSourceKey = @"helpshift-support-source";
                                                              [WPError internalInstance].alertShowing = NO;
                                                          }];
         [alertController addAction:action];
-        if (showSupport) {
+        
+        // Add the 'Need help' button only if internet is accessible (i.e. if the user can actually get help).
+        if (showSupport && ReachabilityUtils.isInternetReachable) {
             NSString *supportText = NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.");
             UIAlertAction *action = [UIAlertAction actionWithTitle:supportText
                                                              style:UIAlertActionStyleCancel
