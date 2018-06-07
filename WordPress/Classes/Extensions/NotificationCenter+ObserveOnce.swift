@@ -27,7 +27,6 @@ extension NotificationCenter {
     @discardableResult
     @objc
     func observeOnce(forName name: NSNotification.Name?, object: Any?, queue: OperationQueue?, using block: @escaping (Foundation.Notification) -> Swift.Void, filter: ((Foundation.Notification) -> Bool)? = nil) -> NSObjectProtocol {
-
         let oneTimeObserver = OneTimeObserver(action: block)
 
         let observer = NotificationCenter.default.addObserver(
