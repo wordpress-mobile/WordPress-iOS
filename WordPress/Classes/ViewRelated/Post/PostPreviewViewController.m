@@ -67,7 +67,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self refreshWebView];
     NSMutableArray *rightButtons = [NSMutableArray new];
     if (self.isModal) {
         [rightButtons addObject:[self doneBarButtonItem]];
@@ -76,6 +75,12 @@
         [rightButtons addObject:[self shareBarButtonItem]];
     }
     [self.navigationItem setRightBarButtonItems:rightButtons animated:YES];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self refreshWebView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -101,10 +106,7 @@
     self.noResultsView = [WPNoResultsView new];
     self.noResultsView.buttonTitle = NSLocalizedString(@"Retry", @"Button to retry a preview that failed to load");
     self.noResultsView.delegate = self;
-    self.noResultsView.hidden = YES;
     self.noResultsView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.noResultsView];
-    [self.view pinSubviewToAllEdges:self.noResultsView];
 }
 
 #pragma mark - Loading
@@ -199,18 +201,18 @@
 
 - (void)preview:(PostPreviewGenerator *)generator loadHTML:(NSString *)html {
     [self.webView loadHTMLString:html baseURL:nil];
-    self.noResultsView.hidden = YES;
+    [self hideNoResults];
 }
 
 - (void)preview:(PostPreviewGenerator *)generator attemptRequest:(NSURLRequest *)request {
     [self startLoading];
     [self.webView loadRequest:request];
-    self.noResultsView.hidden = YES;
+    [self hideNoResults];
 }
 
 - (void)previewFailed:(PostPreviewGenerator *)generator message:(NSString *)message {
-    self.noResultsView.titleText = message;
-    self.noResultsView.hidden = NO;
+    [self showNoResultsWithTite:message];
+
     __weak __typeof(self) weakSelf = self;
     self.reachabilityObserver = [ReachabilityUtils observeOnceInternetAvailableWithAction:^{
         [weakSelf refreshWebView];
@@ -224,7 +226,20 @@
         [[NSNotificationCenter defaultCenter] removeObserver:self.reachabilityObserver];
         self.reachabilityObserver = nil;
     }
+    [self hideNoResults];
     [self refreshWebView];
+}
+
+- (void)showNoResultsWithTite:(NSString *)title {
+    self.noResultsView.titleText = title;
+    [self.view addSubview:self.noResultsView];
+    [self.view pinSubviewAtCenter:self.noResultsView];
+    [self.noResultsView layoutIfNeeded];
+}
+
+- (void)hideNoResults {
+    [self.noResultsView removeFromSuperview];
+    self.noResultsView.titleText = nil;
 }
 
 #pragma mark - Custom UI elements
