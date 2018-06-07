@@ -795,12 +795,6 @@ fileprivate extension ShareModularViewController {
             return
         }
 
-        guard let siteList = sites else {
-            let error = createErrorWithDescription("Could not save post to remote site: remote sites list missing.")
-            self.tracks.trackExtensionError(error)
-            return
-        }
-
         isPublishingPost = true
         sitesTableView.refreshControl = nil
         clearSiteDataAndRefreshSitesTable()
@@ -814,33 +808,8 @@ fileprivate extension ShareModularViewController {
 
         // Then proceed uploading the actual post
         let networkService = AppExtensionsService()
-        let isAuthorizedToUploadFiles = networkService.isAuthorizedToUploadMedia(in: siteList, for: siteID)
         let localImageURLs = [URL](shareData.sharedImageDict.keys)
-
-        if localImageURLs.isEmpty {
-            // No media. just a simple post
-            networkService.saveAndUploadPost(title: shareData.title,
-                                             body: shareData.contentBody,
-                                             tags: shareData.tags,
-                                             categories: shareData.selectedCategoriesIDString,
-                                             status: shareData.postStatus.rawValue,
-                                             siteID: siteID,
-                                             onComplete: {
-                                                self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
-                                                self.dismiss()
-            }, onFailure: {
-                let error = self.createErrorWithDescription("Failed to save and upload post with no media.")
-                self.tracks.trackExtensionError(error)
-                self.showAlert()
-            })
-        } else if isAuthorizedToUploadFiles == false {
-            // Error: this role is unable to upload media.
-            let error = self.createErrorWithDescription("This role is unable to upload media.")
-            self.tracks.trackExtensionError(error)
-            let title = NSLocalizedString("Sharing Error", comment: "Share extension error dialog title.")
-            let message = NSLocalizedString("This role is unable to upload media. Please contact your Site Administrator.", comment: "Share extension error dialog text.")
-            self.showAlert(title: title, message: message, retry: false)
-        } else {
+        if !localImageURLs.isEmpty {
             // We have media, so let's upload it with the post
             networkService.uploadPostWithMedia(title: shareData.title,
                                                body: shareData.contentBody,
@@ -854,6 +823,22 @@ fileprivate extension ShareModularViewController {
                                                 self.dismiss()
             }, onFailure: {
                 let error = self.createErrorWithDescription("Failed to save and upload post with media.")
+                self.tracks.trackExtensionError(error)
+                self.showAlert()
+            })
+        } else {
+            // No media. just a simple post
+            networkService.saveAndUploadPost(title: shareData.title,
+                                             body: shareData.contentBody,
+                                             tags: shareData.tags,
+                                             categories: shareData.selectedCategoriesIDString,
+                                             status: shareData.postStatus.rawValue,
+                                             siteID: siteID,
+                                             onComplete: {
+                                                self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
+                                                self.dismiss()
+            }, onFailure: {
+                let error = self.createErrorWithDescription("Failed to save and upload post with no media.")
                 self.tracks.trackExtensionError(error)
                 self.showAlert()
             })
