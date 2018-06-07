@@ -93,12 +93,23 @@ class ReaderSiteSearchViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let feed = feeds[indexPath.row]
-        guard let feedID = Int(feed.feedID) else {
+
+        guard let streamViewController = readerStreamViewController(for: feed) else {
             return
         }
 
-        let streamViewController = ReaderStreamViewController.controllerWithSiteID(feedID as NSNumber,
-                                                                                   isFeed: true)
-        showDetailViewController(streamViewController, sender: self)
+        navigationController?.pushViewController(streamViewController, animated: true)
+    }
+
+    private func readerStreamViewController(for feed: ReaderFeed) -> ReaderStreamViewController? {
+        if let feedID = feed.feedID, let feedIDValue = Int(feedID) {
+            return ReaderStreamViewController.controllerWithSiteID(feedIDValue as NSNumber,
+                                                                   isFeed: true)
+        } else if let blogID = feed.blogID, let blogIDValue = Int(blogID) {
+            return ReaderStreamViewController.controllerWithSiteID(blogIDValue as NSNumber,
+                                                                   isFeed: false)
+        }
+
+        return nil
     }
 }
