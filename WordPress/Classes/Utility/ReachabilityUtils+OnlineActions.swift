@@ -17,6 +17,13 @@ extension ReachabilityUtils {
         action()
     }
 
+    /// Performs the action once when internet becomes reachable.
+    ///
+    /// This returns an opaque value similar to what
+    /// NotificationCenter.addObserver(forName:object:queue:using:) returns.
+    /// You can keep a reference to this if you want to cancel the observer by
+    /// calling NotificationCenter.removeObserver(_:)
+    ///
     @discardableResult
     @objc class func observeOnceInternetAvailable(action: @escaping () -> Void) -> NSObjectProtocol {
         return NotificationCenter.default.observeOnce(

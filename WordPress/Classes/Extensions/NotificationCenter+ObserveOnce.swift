@@ -17,6 +17,13 @@ private class OneTimeObserver {
 }
 
 extension NotificationCenter {
+    /// Adds a notification observer that ensures the callback block will be
+    /// called only once.
+    ///
+    /// If you specify a filter, this will only dispatch the first notification
+    /// that matches the filter.
+    /// For other parameters, see addObserver(forName:object:queue:using:)
+    ///
     @discardableResult
     @objc
     func observeOnce(forName name: NSNotification.Name?, object: Any?, queue: OperationQueue?, using block: @escaping (Foundation.Notification) -> Swift.Void, filter: ((Foundation.Notification) -> Bool)? = nil) -> NSObjectProtocol {
