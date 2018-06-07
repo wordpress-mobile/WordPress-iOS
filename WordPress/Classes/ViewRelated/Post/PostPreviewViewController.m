@@ -81,7 +81,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [self.webView stopLoading];
+    [self stopLoading];
 }
 
 #pragma mark -
@@ -117,6 +117,7 @@
 - (void)stopLoading
 {
     [SVProgressHUD dismiss];
+    [self.webView stopLoading];
 }
 
 #pragma mark -
