@@ -13,7 +13,7 @@
 
 
 
-@interface PostPreviewViewController () <PostPreviewGeneratorDelegate>
+@interface PostPreviewViewController () <PostPreviewGeneratorDelegate, WPNoResultsViewDelegate>
 
 @property (nonatomic, strong) UIWebView *webView;
 @property (nonatomic, strong) NSMutableData *receivedData;
@@ -21,6 +21,7 @@
 @property (nonatomic, strong) UIBarButtonItem *shareBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *doneBarButtonItem;
 @property (nonatomic, strong) PostPreviewGenerator *generator;
+@property (nonatomic, strong) WPNoResultsView *noResultsView;
 
 @end
 
@@ -59,6 +60,7 @@
     
     [super viewDidLoad];
     [self setupWebView];
+    [self setupNoResultsView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -92,6 +94,16 @@
         self.webView.delegate = self;
     }
     [self.view addSubview:self.webView];
+}
+
+- (void)setupNoResultsView {
+    self.noResultsView = [WPNoResultsView new];
+    self.noResultsView.buttonTitle = NSLocalizedString(@"Retry", @"Button to retry a preview that failed to load");
+    self.noResultsView.delegate = self;
+    self.noResultsView.hidden = YES;
+    self.noResultsView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.noResultsView];
+    [self.view pinSubviewAtCenter:self.noResultsView];
 }
 
 #pragma mark - Loading
@@ -185,11 +197,24 @@
 
 - (void)preview:(PostPreviewGenerator *)generator loadHTML:(NSString *)html {
     [self.webView loadHTMLString:html baseURL:nil];
+    self.noResultsView.hidden = YES;
 }
 
 - (void)preview:(PostPreviewGenerator *)generator attemptRequest:(NSURLRequest *)request {
     [self startLoading];
     [self.webView loadRequest:request];
+    self.noResultsView.hidden = YES;
+}
+
+- (void)previewFailed:(PostPreviewGenerator *)generator message:(NSString *)message {
+    self.noResultsView.titleText = message;
+    self.noResultsView.hidden = NO;
+}
+
+#pragma mark - No Results delegate
+
+- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView {
+    [self refreshWebView];
 }
 
 #pragma mark - Custom UI elements
