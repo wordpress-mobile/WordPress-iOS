@@ -112,17 +112,6 @@ extension AppExtensionsService {
         })
     }
 
-    func isAuthorizedToUploadMedia(in sites: [RemoteBlog], for selectedSiteID: Int) -> Bool {
-        let siteID = NSNumber(value: selectedSiteID)
-        var isAuthorizedToUploadFiles = false
-        for site in sites {
-            if site.blogID == siteID {
-                isAuthorizedToUploadFiles = site.isUserCapableOf(.uploadFiles)
-            }
-        }
-        return isAuthorizedToUploadFiles
-    }
-
     private func primarySites(with blogs: [RemoteBlog]) -> [RemoteBlog] {
         // Find the primary site (even if it's not visible)
         let primarySiteID = ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteID ?? 0
