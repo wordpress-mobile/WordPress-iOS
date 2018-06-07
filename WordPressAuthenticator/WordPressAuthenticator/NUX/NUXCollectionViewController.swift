@@ -4,7 +4,7 @@
 open class NUXCollectionViewController: UICollectionViewController, NUXViewControllerBase, UIViewControllerTransitioningDelegate {
     // MARK: NUXViewControllerBase properties
     /// these properties comply with NUXViewControllerBase and are duplicated with NUXTableViewController
-    public var helpIndicator: WPHelpIndicatorView = WPHelpIndicatorView()
+    public var helpNotificationIndicator: WPHelpIndicatorView = WPHelpIndicatorView()
     public var helpBadge: NUXHelpBadgeLabel = NUXHelpBadgeLabel()
     public var helpButton: UIButton = UIButton(type: .custom)
     public var dismissBlock: ((_ cancelled: Bool) -> Void)?
