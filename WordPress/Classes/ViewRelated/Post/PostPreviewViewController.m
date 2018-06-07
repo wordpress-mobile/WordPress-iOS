@@ -22,6 +22,7 @@
 @property (nonatomic, strong) UIBarButtonItem *doneBarButtonItem;
 @property (nonatomic, strong) PostPreviewGenerator *generator;
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
+@property (nonatomic, strong) id reachabilityObserver;
 
 @end
 
@@ -103,7 +104,7 @@
     self.noResultsView.hidden = YES;
     self.noResultsView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.noResultsView];
-    [self.view pinSubviewAtCenter:self.noResultsView];
+    [self.view pinSubviewToAllEdges:self.noResultsView];
 }
 
 #pragma mark - Loading
@@ -209,11 +210,19 @@
 - (void)previewFailed:(PostPreviewGenerator *)generator message:(NSString *)message {
     self.noResultsView.titleText = message;
     self.noResultsView.hidden = NO;
+    __weak __typeof(self) weakSelf = self;
+    self.reachabilityObserver = [ReachabilityUtils observeOnceInternetAvailableWithAction:^{
+        [weakSelf refreshWebView];
+    }];
 }
 
-#pragma mark - No Results delegate
+#pragma mark - No Results
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView {
+    if (self.reachabilityObserver != nil) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self.reachabilityObserver];
+        self.reachabilityObserver = nil;
+    }
     [self refreshWebView];
 }
 
