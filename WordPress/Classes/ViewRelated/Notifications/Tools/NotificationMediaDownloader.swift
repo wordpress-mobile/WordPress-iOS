@@ -9,9 +9,9 @@ import Foundation
 ///
 class NotificationMediaDownloader: NSObject {
 
-    /// Downloader Private URLSession
+    /// Active Download Tasks
     ///
-    private lazy var downloadSession = URLSession(configuration: .default)
+    private let imageDownloader = ImageDownloader()
 
     /// Resize OP's will never hit the main thread
     ///
@@ -34,11 +34,6 @@ class NotificationMediaDownloader: NSObject {
     private var urlsFailed = Set<URL>()
 
 
-    /// Deinit!
-    ///
-    deinit {
-        downloadSession.invalidateAndCancel()
-    }
 
     /// Downloads a set of assets, resizes them (if needed), and hits a completion block.
     /// The completion block will get called just once all of the assets are downloaded, and properly sized.
@@ -161,12 +156,8 @@ class NotificationMediaDownloader: NSObject {
             return
         }
 
-        var request = URLRequest(url: url)
-        request.httpShouldHandleCookies = false
-        request.addValue("image/*", forHTTPHeaderField: "Accept")
-
-        let dataTask = downloadSession.dataTask(with: request) { (data, _, error) in
-            guard let data = data, let image = UIImage(data: data) else {
+        imageDownloader.downloadImage(at: url) { (image, error) in
+            guard let image = image else {
                 self.downloadImage(url, retryCount: retryCount + 1, completion: completion)
                 return
             }
@@ -175,7 +166,6 @@ class NotificationMediaDownloader: NSObject {
             self.urlsBeingDownloaded.remove(url)
         }
 
-        dataTask.resume()
         urlsBeingDownloaded.insert(url)
     }
 
