@@ -954,6 +954,7 @@
 		E14B40FF1C58B93F005046F6 /* SettingsCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14B40FE1C58B93F005046F6 /* SettingsCommon.swift */; };
 		E14B74111C7B16FD00C26E21 /* WPNoResultsView+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14B74101C7B16FD00C26E21 /* WPNoResultsView+Model.swift */; };
 		E14BCABB1E0BC817002E0603 /* Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14BCABA1E0BC817002E0603 /* Delay.swift */; };
+		E14DF70620C922F200959BA9 /* NotificationCenter+ObserveOnce.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14DF70520C922F200959BA9 /* NotificationCenter+ObserveOnce.swift */; };
 		E14DFAFB1E07E7C400494688 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = E14DFAFA1E07E7C400494688 /* Data.swift */; };
 		E15027611E03E51500B847E3 /* notes-action-delete.json in Resources */ = {isa = PBXBuildFile; fileRef = E150275E1E03E51500B847E3 /* notes-action-delete.json */; };
 		E15027621E03E51500B847E3 /* notes-action-push.json in Resources */ = {isa = PBXBuildFile; fileRef = E150275F1E03E51500B847E3 /* notes-action-push.json */; };
@@ -2542,6 +2543,7 @@
 		E14B74101C7B16FD00C26E21 /* WPNoResultsView+Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPNoResultsView+Model.swift"; sourceTree = "<group>"; };
 		E14BCABA1E0BC817002E0603 /* Delay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delay.swift; sourceTree = "<group>"; };
 		E14D65C717E09663007E3EA4 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		E14DF70520C922F200959BA9 /* NotificationCenter+ObserveOnce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+ObserveOnce.swift"; sourceTree = "<group>"; };
 		E14DFAFA1E07E7C400494688 /* Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		E150275E1E03E51500B847E3 /* notes-action-delete.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notes-action-delete.json"; sourceTree = "<group>"; };
 		E150275F1E03E51500B847E3 /* notes-action-push.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notes-action-push.json"; sourceTree = "<group>"; };
@@ -5007,6 +5009,7 @@
 				7ED3695420A9F091007B0D56 /* Blog+ImageSourceInformation.swift */,
 				9F3EFCA2208E308900268758 /* UIViewController+Notice.swift */,
 				B5969E2120A49E86005E9DF1 /* UIAlertController+Helpers.swift */,
+				E14DF70520C922F200959BA9 /* NotificationCenter+ObserveOnce.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -7675,6 +7678,7 @@
 				B5EEDB971C91F10400676B2B /* Blog+Interface.swift in Sources */,
 				5D839AA8187F0D6B00811F4A /* PostFeaturedImageCell.m in Sources */,
 				171909E4206CFFCD0054DF0B /* FancyAlertViewController+Async.swift in Sources */,
+				E14DF70620C922F200959BA9 /* NotificationCenter+ObserveOnce.swift in Sources */,
 				E125F1E41E8E595E00320B67 /* SharePost.swift in Sources */,
 				B56FEB791CD8E13C00E621F9 /* RoleViewController.swift in Sources */,
 				B5B56D3319AFB68800B4E29B /* WPStyleGuide+Notifications.swift in Sources */,
