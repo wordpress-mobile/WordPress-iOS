@@ -283,7 +283,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     ///
     fileprivate func sizeForAttachment(_ attachment: WPTextAttachment) -> CGSize {
         let width: CGFloat = attachment.width > 0 ? attachment.width : textContainer.size.width
-        let height: CGFloat = attachment.height > 0 ? attachment.height : textContainer.size.height
+        let height: CGFloat = attachment.height > 0 ? attachment.height : maxDisplaySize.height
         return CGSize(width: width, height: height)
     }
 
