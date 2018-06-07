@@ -16,4 +16,16 @@ extension ReachabilityUtils {
         }
         action()
     }
+
+    @discardableResult
+    @objc class func observeOnceInternetAvailable(action: @escaping () -> Void) -> NSObjectProtocol {
+        return NotificationCenter.default.observeOnce(
+            forName: .reachabilityChanged,
+            object: nil,
+            queue: .main,
+            using: { _ in action() },
+            filter: { (notification) in
+                return notification.userInfo?[Foundation.Notification.reachabilityKey] as? Bool == true
+        })
+    }
 }
