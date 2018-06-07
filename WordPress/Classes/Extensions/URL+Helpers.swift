@@ -117,7 +117,14 @@ extension URL {
     }
 
     func appendHideMasterbarParameters() -> URL? {
-        return URL(string: self.absoluteString + "/?preview=true&iframe=true")
+        guard var components = URLComponents(url: self, resolvingAgainstBaseURL: false) else {
+            return nil
+        }
+        var queryItems = components.queryItems ?? []
+        queryItems.append(URLQueryItem(name: "preview", value: "true"))
+        queryItems.append(URLQueryItem(name: "iframe", value: "true"))
+        components.queryItems = queryItems
+        return components.url
     }
 }
 
@@ -134,13 +141,7 @@ extension NSURL {
     }
 
     @objc func appendHideMasterbarParameters() -> NSURL? {
-
-        let url = self
-
-        guard let originalPath = url.absoluteString else {
-            return nil
-        }
-
-        return NSURL(string: originalPath + "/?preview=true&iframe=true")
+        let url = self as URL
+        return url.appendHideMasterbarParameters() as NSURL?
     }
 }
