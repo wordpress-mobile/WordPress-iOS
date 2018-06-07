@@ -64,7 +64,7 @@ class SiteCreationSitePreviewViewController: UIViewController {
     private func loadSite() {
         if let webView = webView,
             let siteUrl = siteUrl,
-            let url = URL(string: siteUrl)?.appendHideMasterbarParameters() {
+            let url = URL(string: siteUrl)?.appendHideDotComMasterbarParameters() {
                 webView.load(URLRequest(url: url))
         }
     }
