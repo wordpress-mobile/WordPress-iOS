@@ -115,7 +115,9 @@ class WebKitViewController: UIViewController {
             return
         }
         authenticator.request(url: url, cookieJar: webView.configuration.websiteDataStore.httpCookieStore) { [weak self] (request) in
-            self?.load(request: request)
+            DispatchQueue.main.async {
+                self?.load(request: request)
+            }
         }
     }
 
@@ -124,9 +126,7 @@ class WebKitViewController: UIViewController {
         if addsWPComReferrer {
             request.setValue("https://wordpress.com", forHTTPHeaderField: "Referer")
         }
-        DispatchQueue.main.async { [weak self] in
-            self?.webView.load(request)
-        }
+        webView.load(request)
     }
 
     // MARK: Navigation bar setup
