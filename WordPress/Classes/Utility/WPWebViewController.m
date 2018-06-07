@@ -222,7 +222,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     }
     
     if (self.addsHideDotComMasterbarParameters && [mutableRequest.URL.host containsString:@"wordpress.com"]) {
-        mutableRequest.URL = [mutableRequest.URL appendHideDotComMasterbarParameters];
+        mutableRequest.URL = [mutableRequest.URL appendHideMasterbarParameters];
     }
 
     [mutableRequest setValue:[WPUserAgent wordPressUserAgent] forHTTPHeaderField:@"User-Agent"];

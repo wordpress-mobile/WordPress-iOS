@@ -111,7 +111,7 @@ class WebKitViewController: UIViewController {
         if addsHideDotComMasterbarParameters,
             let host = request.url?.host,
             host.contains("wordpress.com") {
-            request.url = request.url?.appendHideDotComMasterbarParameters()
+            request.url = request.url?.appendHideMasterbarParameters()
         }
 
         webView.load(request)
