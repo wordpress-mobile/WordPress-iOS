@@ -132,6 +132,10 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     // Fire away!
     [self applyModalStyleIfNeeded];
     [self loadWebViewRequest];
+
+    if (UIAccessibilityIsBoldTextEnabled()) {
+        self.navigationController.navigationBar.tintColor = [WPStyleGuide greyLighten10];
+    }
 }
 
 - (void)applyModalStyleIfNeeded
