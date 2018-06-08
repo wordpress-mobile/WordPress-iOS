@@ -318,8 +318,11 @@ class FilterTabBar: UIControl {
         selectionIndicatorLeadingConstraint?.isActive = false
         selectionIndicatorTrailingConstraint?.isActive = false
 
-        selectionIndicatorLeadingConstraint = selectionIndicator.leadingAnchor.constraint(equalTo: tab.leadingAnchor, constant: tab.contentEdgeInsets.left)
-        selectionIndicatorTrailingConstraint = selectionIndicator.trailingAnchor.constraint(equalTo: tab.trailingAnchor, constant: -tab.contentEdgeInsets.right)
+        let leadingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : tab.contentEdgeInsets.left
+        let trailingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : -tab.contentEdgeInsets.right
+
+        selectionIndicatorLeadingConstraint = selectionIndicator.leadingAnchor.constraint(equalTo: tab.leadingAnchor, constant: leadingConstant)
+        selectionIndicatorTrailingConstraint = selectionIndicator.trailingAnchor.constraint(equalTo: tab.trailingAnchor, constant: trailingConstant)
 
         selectionIndicatorLeadingConstraint?.isActive = true
         selectionIndicatorTrailingConstraint?.isActive = true
