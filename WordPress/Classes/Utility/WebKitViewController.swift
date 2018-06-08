@@ -105,12 +105,12 @@ class WebKitViewController: UIViewController {
     @objc func load(request: URLRequest) {
         var request = request
         if addsWPComReferrer {
-            request.setValue("https://wordpress.com", forHTTPHeaderField: "Referer")
+            request.setValue(URLConstants.WPComReferrerURL, forHTTPHeaderField: "Referer")
         }
 
         if addsHideDotComMasterbarParameters,
             let host = request.url?.host,
-            host.contains("wordpress.com") {
+            (host.contains(URLConstants.WPComDomain) || host.contains(URLConstants.AutomatticDomain)) {
             request.url = request.url?.appendHideMasterbarParameters()
         }
 
@@ -263,6 +263,15 @@ class WebKitViewController: UIViewController {
             assertionFailure("Observed change to web view that we are not handling")
         }
     }
+
+    // MARK: - URL Constants
+
+    private struct URLConstants {
+        static let AutomatticDomain = "automattic.com"
+        static let WPComDomain = "wordpress.com"
+        static let WPComReferrerURL = "https://wordpress.com"
+    }
+
 }
 
 extension WebKitViewController: WKNavigationDelegate {
