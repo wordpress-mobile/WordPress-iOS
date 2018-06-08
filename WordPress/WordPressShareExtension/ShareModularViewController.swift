@@ -795,17 +795,11 @@ fileprivate extension ShareModularViewController {
             return
         }
 
-        guard let siteList = sites else {
+        guard let _ = sites else {
             let error = createErrorWithDescription("Could not save post to remote site: remote sites list missing.")
             self.tracks.trackExtensionError(error)
             return
         }
-
-        isPublishingPost = true
-        sitesTableView.refreshControl = nil
-        clearSiteDataAndRefreshSitesTable()
-        showPublishingView()
-        ShareExtensionAbstractViewController.clearCache()
 
         // Next, save the selected site for later use
         if let selectedSiteName = shareData.selectedSiteName {
@@ -813,25 +807,28 @@ fileprivate extension ShareModularViewController {
         }
 
         // Then proceed uploading the actual post
-        let networkService = AppExtensionsService()
-        let isAuthorizedToUploadFiles = networkService.isAuthorizedToUploadMedia(in: siteList, for: siteID)
         let localImageURLs = [URL](shareData.sharedImageDict.keys)
-
         if localImageURLs.isEmpty {
             // No media. just a simple post
-            saveAndUploadSimplePost(service: networkService, siteID: siteID)
+            saveAndUploadSimplePost(siteID: siteID)
+        } else {
+            // We have media, so let's upload it with the post
+            uploadPostAndMedia(siteID: siteID, localImageURLs: localImageURLs)
         }
-
-        guard isAuthorizedToUploadFiles else {
-            // Error: this role is unable to upload media.
-            showUnauthorizedAlert()
-            return
-        }
-        // We have media, so let's upload it with the post
-        uploadPostAndMedia(service: networkService, siteID: siteID, localImageURLs: localImageURLs)
     }
 
-    func saveAndUploadSimplePost(service: AppExtensionsService, siteID: Int) {
+    fileprivate func prepareForPublishing() {
+        isPublishingPost = true
+        sitesTableView.refreshControl = nil
+        clearSiteDataAndRefreshSitesTable()
+        showPublishingView()
+        ShareExtensionAbstractViewController.clearCache()
+    }
+
+    func saveAndUploadSimplePost(siteID: Int) {
+        let service = AppExtensionsService()
+
+        prepareForPublishing()
         service.saveAndUploadPost(title: shareData.title,
                                          body: shareData.contentBody,
                                          tags: shareData.tags,
@@ -848,13 +845,22 @@ fileprivate extension ShareModularViewController {
         })
     }
 
-    func showUnauthorizedAlert() {
-        let error = self.createErrorWithDescription("This role is unable to upload media.")
-        self.tracks.trackExtensionError(error)
-        self.showPermissionsAlert()
-    }
+    func uploadPostAndMedia(siteID: Int, localImageURLs: [URL]) {
+        guard let siteList = sites else {
+            return
+        }
 
-    func uploadPostAndMedia(service: AppExtensionsService, siteID: Int, localImageURLs: [URL]) {
+        let service = AppExtensionsService()
+        let isAuthorizedToUploadFiles = service.isAuthorizedToUploadMedia(in: siteList, for: siteID)
+        guard isAuthorizedToUploadFiles else {
+            // Error: this role is unable to upload media.
+            let error = self.createErrorWithDescription("This role is unable to upload media.")
+            self.tracks.trackExtensionError(error)
+            showPermissionsAlert()
+            return
+        }
+
+        prepareForPublishing()
         service.uploadPostWithMedia(title: shareData.title,
                                     body: shareData.contentBody,
                                     tags: shareData.tags,
