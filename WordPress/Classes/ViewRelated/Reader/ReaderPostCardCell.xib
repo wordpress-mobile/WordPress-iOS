@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -84,8 +85,8 @@
                                     <constraint firstAttribute="height" priority="999" constant="100" id="6Qh-iW-StJ"/>
                                 </constraints>
                             </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0hd-Lx-knp">
-                                <rect key="frame" x="16" y="187" width="288" height="113.5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="0hd-Lx-knp">
+                                <rect key="frame" x="16" y="187" width="288" height="129.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gTo-Tc-GMR">
                                         <rect key="frame" x="0.0" y="0.0" width="288" height="49"/>
@@ -107,7 +108,7 @@
                                         </subviews>
                                     </stackView>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nU7-76-6MV" customClass="ReaderCardDiscoverAttributionView" customModule="WordPress">
-                                        <rect key="frame" x="0.0" y="59" width="288" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="57" width="288" height="20.5"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tUL-YG-fIa" customClass="CircularImageView" customModule="WordPress">
                                                 <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -140,10 +141,10 @@
                                         </connections>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Wzi-SV-nkT">
-                                        <rect key="frame" x="0.0" y="89.5" width="288" height="24"/>
+                                        <rect key="frame" x="0.0" y="85.5" width="288" height="44"/>
                                         <subviews>
                                             <button contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AX6-q0-ijx" customClass="PostMetaButton">
-                                                <rect key="frame" x="0.0" y="0.0" width="23" height="24"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="23" height="44"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <inset key="contentEdgeInsets" minX="-2" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                 <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -155,11 +156,11 @@
                                                 </connections>
                                             </button>
                                             <view alpha="0.0" contentMode="scaleToFill" horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="200" verticalCompressionResistancePriority="200" translatesAutoresizingMaskIntoConstraints="NO" id="RFs-ae-iqC" userLabel="View (Spacer)">
-                                                <rect key="frame" x="33" y="0.0" width="66" height="24"/>
+                                                <rect key="frame" x="33" y="0.0" width="56" height="44"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YRe-Q4-Aq4" customClass="PostMetaButton">
-                                                <rect key="frame" x="109" y="0.0" width="34" height="24"/>
+                                                <rect key="frame" x="99" y="0.0" width="34" height="44"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <inset key="contentEdgeInsets" minX="3" minY="0.0" maxX="3" maxY="0.0"/>
                                                 <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -172,7 +173,7 @@
                                                 </connections>
                                             </button>
                                             <button contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3W2-KV-isX" customClass="PostMetaButton">
-                                                <rect key="frame" x="153" y="0.0" width="38" height="24"/>
+                                                <rect key="frame" x="143" y="0.0" width="38" height="44"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <inset key="contentEdgeInsets" minX="3" minY="0.0" maxX="3" maxY="0.0"/>
                                                 <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -185,7 +186,7 @@
                                                 </connections>
                                             </button>
                                             <button contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z4x-8W-5Dc" customClass="PostMetaButton">
-                                                <rect key="frame" x="201" y="0.0" width="53" height="24"/>
+                                                <rect key="frame" x="191" y="0.0" width="53" height="44"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <inset key="contentEdgeInsets" minX="3" minY="0.0" maxX="3" maxY="0.0"/>
                                                 <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -198,9 +199,9 @@
                                                 </connections>
                                             </button>
                                             <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6l-P3-Z3i">
-                                                <rect key="frame" x="264" y="0.0" width="24" height="24"/>
+                                                <rect key="frame" x="254" y="0.0" width="34" height="44"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="24" id="zjD-kx-Uwk"/>
+                                                    <constraint firstAttribute="width" constant="34" id="zjD-kx-Uwk"/>
                                                 </constraints>
                                                 <state key="normal" image="icon-menu-ellipsis">
                                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -211,17 +212,17 @@
                                             </button>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="24" id="RDJ-jr-Y8h"/>
+                                            <constraint firstAttribute="height" constant="44" id="RDJ-jr-Y8h"/>
                                         </constraints>
                                     </stackView>
                                 </subviews>
                             </stackView>
                             <view contentMode="scaleToFill" verticalHuggingPriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="Aav-jm-io6" userLabel="View (Spacer)">
-                                <rect key="frame" x="16" y="316.5" width="288" height="134.5"/>
+                                <rect key="frame" x="16" y="332.5" width="288" height="128.5"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </subviews>
-                        <edgeInsets key="layoutMargins" top="16" left="16" bottom="16" right="16"/>
+                        <edgeInsets key="layoutMargins" top="16" left="16" bottom="6" right="16"/>
                     </stackView>
                     <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l5X-fR-34a">
                         <rect key="frame" x="16" y="31" width="236" height="32"/>
