@@ -166,7 +166,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `c38d29b09cc9710ef307891f76a02c80a7002a59`)
   - WordPress-Aztec-iOS/WordPressEditor (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `c38d29b09cc9710ef307891f76a02c80a7002a59`)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `6ec846ba030f06d8c5e287ccba8766574feb792e`)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `d2b615bce0818e0af2baf9d5b3f73b8e4b1b92ca`)
   - WordPressShared (~> 1.0.5)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, commit `e72725ee5aed1a2c4dffa755a78c36e3ecf6e2b0`)
   - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, commit `b5ae03494596e3da7a8f814f9cab8e96ca345bc8`)
@@ -216,7 +216,7 @@ EXTERNAL SOURCES:
     :commit: c38d29b09cc9710ef307891f76a02c80a7002a59
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressKit:
-    :commit: 6ec846ba030f06d8c5e287ccba8766574feb792e
+    :commit: d2b615bce0818e0af2baf9d5b3f73b8e4b1b92ca
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressUI:
     :commit: e72725ee5aed1a2c4dffa755a78c36e3ecf6e2b0
@@ -233,7 +233,7 @@ CHECKOUT OPTIONS:
     :commit: c38d29b09cc9710ef307891f76a02c80a7002a59
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressKit:
-    :commit: 6ec846ba030f06d8c5e287ccba8766574feb792e
+    :commit: d2b615bce0818e0af2baf9d5b3f73b8e4b1b92ca
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressUI:
     :commit: e72725ee5aed1a2c4dffa755a78c36e3ecf6e2b0
@@ -281,6 +281,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: 8994eb225f1ac8bac7178ced97bd782dcc955469
+PODFILE CHECKSUM: 467e592cf85dcc6d7429c03e757d24f7e3589dc8
 
 COCOAPODS: 1.5.2
