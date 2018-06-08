@@ -5,7 +5,7 @@ class WebViewControllerConfiguration: NSObject {
     @objc var optionsButton: UIBarButtonItem?
     @objc var secureInteraction = false
     @objc var addsWPComReferrer = false
-    @objc var addsHideDotComMasterbarParameters = true
+    @objc var addsHideMasterbarParameters = true
     @objc var customTitle: String?
     @objc var authenticator: WebViewAuthenticator?
     @objc weak var navigationDelegate: WebNavigationDelegate?

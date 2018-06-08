@@ -72,7 +72,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         _optionsButton = configuration.optionsButton;
         _secureInteraction = configuration.secureInteraction;
         _addsWPComReferrer = configuration.addsWPComReferrer;
-        _addsHideDotComMasterbarParameters = configuration.addsHideDotComMasterbarParameters;
+        _addsHideMasterbarParameters = configuration.addsHideMasterbarParameters;
         _customTitle = configuration.customTitle;
         _authenticator = configuration.authenticator;
     }
@@ -223,7 +223,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         [mutableRequest setValue:WPComReferrerURL forHTTPHeaderField:@"Referer"];
     }
     
-    if (self.addsHideDotComMasterbarParameters &&
+    if (self.addsHideMasterbarParameters &&
         ([mutableRequest.URL.host containsString:WPComDomain] || [mutableRequest.URL.host containsString:AutomatticDomain])) {
         mutableRequest.URL = [mutableRequest.URL appendingHideMasterbarParameters];
     }
