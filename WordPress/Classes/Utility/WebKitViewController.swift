@@ -111,7 +111,7 @@ class WebKitViewController: UIViewController {
         if addsHideDotComMasterbarParameters,
             let host = request.url?.host,
             (host.contains(URLConstants.WPComDomain) || host.contains(URLConstants.AutomatticDomain)) {
-            request.url = request.url?.appendHideMasterbarParameters()
+            request.url = request.url?.appendingHideMasterbarParameters()
         }
 
         webView.load(request)
