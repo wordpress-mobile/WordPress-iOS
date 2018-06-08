@@ -741,7 +741,7 @@ FeaturedImageViewControllerDelegate>
     } else {
         NSURL *featuredURL = [self urlForFeaturedImage];
         if (!featuredURL) {
-            return [self cellForFeaturedImageError];
+            return [self cellForSetFeaturedImage];
         }
 
         return [self cellForFeaturedImageWithURL:featuredURL atIndexPath:indexPath];
@@ -1241,6 +1241,9 @@ FeaturedImageViewControllerDelegate>
 
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:featuredImageVC];
             [self presentViewController:navigationController animated:YES completion:nil];
+        } else if ([self urlForFeaturedImage] == nil) {
+            //If we don't have a featured image url, the image won't be loaded.
+            [self showMediaPicker];
         }
     } else {
         if (!self.isUploadingMedia) {
