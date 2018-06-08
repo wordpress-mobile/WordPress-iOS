@@ -17,6 +17,7 @@
                                                            delegate:self];
     [[BITHockeyManager sharedHockeyManager].authenticator setIdentificationType:BITAuthenticatorIdentificationTypeDevice];
     [[BITHockeyManager sharedHockeyManager] setDisableCrashManager: YES]; //disable crash reporting
+    [[BITHockeyManager sharedHockeyManager].updateManager setUpdateSetting: BITUpdateCheckDaily]; // Sets up daily notifications on notmandatory updates
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
 }
