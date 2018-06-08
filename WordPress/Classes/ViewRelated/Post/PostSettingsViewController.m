@@ -724,47 +724,73 @@ FeaturedImageViewControllerDelegate>
 
 - (UITableViewCell *)configureFeaturedImageCellForIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell;
-
     if (!self.apost.featuredImage && !self.isUploadingMedia) {
-        WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
-        activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
-        activityCell.tag = PostSettingsRowFeaturedImageAdd;
-
-        cell = activityCell;
+        return [self cellForSetFeaturedImage];
 
     } else if (self.isUploadingMedia || self.apost.featuredImage.remoteStatus == MediaRemoteStatusPushing) {
         if (!self.isUploadingMedia) {
             self.isUploadingMedia = YES;
-            [self setupObservingOfMedia: self.apost.featuredImage];
+            [self setupObservingOfMedia:self.apost.featuredImage];
         }
         self.featuredImage = nil;
-        self.progressCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewProgressCellIdentifier forIndexPath:indexPath];
-        [WPStyleGuide configureTableViewCell:self.progressCell];        
-        [self.progressCell setProgress:self.featuredImageProgress];
-        self.progressCell.tag = PostSettingsRowFeaturedLoading;
-        cell = self.progressCell;
+        return [self cellForFeaturedImageUploadProgressAtIndexPath:indexPath];
+
     } else if (self.apost.featuredImage && self.apost.featuredImage.remoteStatus == MediaRemoteStatusFailed) {
-        WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
-        activityCell.textLabel.text = NSLocalizedString(@"Upload failed. Tap for options.", @"Description to show on post setting for a featured image that failed to upload.");
-        activityCell.tag = PostSettingsRowFeaturedImageRemove;
-        cell = activityCell;
+        return [self cellForFeaturedImageError];
+
     } else {
-        PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewFeaturedImageCellIdentifier forIndexPath:indexPath];
-        featuredImageCell.delegate = self;
-        [WPStyleGuide configureTableViewCell:featuredImageCell];
-
-        NSURL *featuredURL = [NSURL URLWithString:self.apost.featuredImage.remoteURL];
+        NSURL *featuredURL = [self urlForFeaturedImage];
         if (!featuredURL) {
-            featuredURL = self.apost.featuredImageURLForDisplay;
+            return [self cellForSetFeaturedImage];
         }
-        [featuredImageCell setImageWithURL:featuredURL inPost:self.apost withSize:self.featuredImageSize];
 
-        cell = featuredImageCell;
-        cell.tag = PostSettingsRowFeaturedImage;
+        return [self cellForFeaturedImageWithURL:featuredURL atIndexPath:indexPath];
     }
+}
 
-    return cell;
+- (UITableViewCell *)cellForSetFeaturedImage
+{
+    WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
+    activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
+    activityCell.tag = PostSettingsRowFeaturedImageAdd;
+
+    return activityCell;
+}
+
+- (UITableViewCell *)cellForFeaturedImageError
+{
+    WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
+    activityCell.textLabel.text = NSLocalizedString(@"Upload failed. Tap for options.", @"Description to show on post setting for a featured image that failed to upload.");
+    activityCell.tag = PostSettingsRowFeaturedImageRemove;
+    return activityCell;
+}
+
+- (UITableViewCell *)cellForFeaturedImageUploadProgressAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.progressCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewProgressCellIdentifier forIndexPath:indexPath];
+    [WPStyleGuide configureTableViewCell:self.progressCell];
+    [self.progressCell setProgress:self.featuredImageProgress];
+    self.progressCell.tag = PostSettingsRowFeaturedLoading;
+    return self.progressCell;
+}
+
+- (UITableViewCell *)cellForFeaturedImageWithURL:(nonnull NSURL *)featuredURL atIndexPath:(NSIndexPath *)indexPath
+{
+    PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewFeaturedImageCellIdentifier forIndexPath:indexPath];
+    featuredImageCell.delegate = self;
+    [WPStyleGuide configureTableViewCell:featuredImageCell];
+
+    [featuredImageCell setImageWithURL:featuredURL inPost:self.apost withSize:self.featuredImageSize];
+    featuredImageCell.tag = PostSettingsRowFeaturedImage;
+    return featuredImageCell;
+}
+
+- (nullable NSURL *)urlForFeaturedImage {
+    NSURL *featuredURL = [NSURL URLWithString:self.apost.featuredImage.remoteURL];
+    if (!featuredURL) {
+        featuredURL = self.apost.featuredImageURLForDisplay;
+    }
+    return featuredURL;
 }
 
 - (UITableViewCell *)configureShareCellForIndexPath:(NSIndexPath *)indexPath
@@ -1215,6 +1241,9 @@ FeaturedImageViewControllerDelegate>
 
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:featuredImageVC];
             [self presentViewController:navigationController animated:YES completion:nil];
+        } else if ([self urlForFeaturedImage] == nil) {
+            //If we don't have a featured image url, the image won't be loaded.
+            [self showMediaPicker];
         }
     } else {
         if (!self.isUploadingMedia) {
