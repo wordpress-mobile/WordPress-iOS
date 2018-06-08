@@ -157,6 +157,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         setupCommentActionButton()
         setupLikeActionButton()
         adjustInsetsForTextDirection()
+        insetFollowButtonIcon()
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -515,17 +516,16 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
                 saveForLaterButton.setTitle(shareTitle, for: .normal)
             }
         }
-
-        insetFollowButtonIcon(true)
     }
 
     /// Adds some space between the button and title.
     /// Setting the titleEdgeInset.left seems to be ignored in IB for whatever reason,
     /// so we'll add/remove it from the image as needed.
-    fileprivate func insetFollowButtonIcon(_ bool: Bool) {
+    fileprivate func insetFollowButtonIcon() {
         var insets = followButton.imageEdgeInsets
-        insets.right = bool ? 2.0 : 0.0
+        insets.right = 2.0
         followButton.imageEdgeInsets = insets
+        followButton.flipInsetsForRightToLeftLayoutDirection()
     }
 
     fileprivate func applyHighlightedEffect(_ highlighted: Bool, animated: Bool) {
