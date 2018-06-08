@@ -115,9 +115,7 @@ class WebKitViewController: UIViewController {
             return
         }
         authenticator.request(url: url, cookieJar: webView.configuration.websiteDataStore.httpCookieStore) { [weak self] (request) in
-            DispatchQueue.main.async {
-                self?.load(request: request)
-            }
+            self?.load(request: request)
         }
     }
 
