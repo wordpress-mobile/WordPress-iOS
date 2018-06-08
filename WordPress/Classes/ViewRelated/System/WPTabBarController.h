@@ -53,6 +53,8 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 - (void)switchMeTabToNotificationSettings;
 - (void)switchMeTabToSupport;
 
+- (void)switchReaderTabToSavedPosts;
+
 - (void)showNotificationsTabForNoteWithID:(NSString *)notificationID;
 - (void)updateNotificationBadgeVisibility;
 

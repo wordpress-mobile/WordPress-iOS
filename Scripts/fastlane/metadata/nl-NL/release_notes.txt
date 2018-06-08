@@ -1,1 +1,3 @@
-Bij het importeren van bestanden in een bericht in de Editor, kun je nu veel verschillende bestandstypen kiezen, waaronder pdf's en Word-documenten.
+Beheer van meldingsinstellingen is verbeterd.
+Een standaardtitel met credits wordt nu gegenereerd wanneer stockfoto's worden geüpload.
+Ondersteuning voor het weergeven van GIF-afbeeldingen is verbeterd.
