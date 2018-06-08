@@ -844,17 +844,14 @@ fileprivate extension ShareModularViewController {
         }, onFailure: {
             let error = self.createErrorWithDescription("Failed to save and upload post with no media.")
             self.tracks.trackExtensionError(error)
-            self.showAlert()
+            self.showRetryAlert()
         })
     }
 
     func showUnauthorizedAlert() {
         let error = self.createErrorWithDescription("This role is unable to upload media.")
         self.tracks.trackExtensionError(error)
-        let title = NSLocalizedString("Sharing Error", comment: "Share extension error dialog title.")
-        let message = NSLocalizedString("Your account does not have permission to upload media to this site. The Site Administrator can change these permissions.", comment: "Share extension error dialog text.")
-        let dismiss = NSLocalizedString("Return to post", comment: "Share extension error dialog cancel button text")
-        self.showAlert(title: title, message: message, dismiss: dismiss, retry: false)
+        self.showPermissionsAlert()
     }
 
     func uploadPostAndMedia(service: AppExtensionsService, siteID: Int, localImageURLs: [URL]) {
@@ -871,29 +868,42 @@ fileprivate extension ShareModularViewController {
         }, onFailure: {
             let error = self.createErrorWithDescription("Failed to save and upload post with media.")
             self.tracks.trackExtensionError(error)
-            self.showAlert()
+            self.showRetryAlert()
         })
     }
 
-    func showAlert(title: String = NSLocalizedString("Sharing Error", comment: "Share extension error dialog title."),
-                   message: String = NSLocalizedString("Whoops, something went wrong while sharing. You can try again, maybe it was a glitch.", comment: "Share extension error dialog text."),
-                   dismiss: String = NSLocalizedString("Dismiss", comment: "Share extension error dialog cancel button label."),
-                   retry: Bool = true) {
+    func showRetryAlert() {
+        let title: String = NSLocalizedString("Sharing Error", comment: "Share extension error dialog title.")
+        let message: String = NSLocalizedString("Whoops, something went wrong while sharing. You can try again, maybe it was a glitch.", comment: "Share extension error dialog text.")
+        let dismiss: String = NSLocalizedString("Dismiss", comment: "Share extension error dialog cancel button label.")
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        if retry {
-            let acceptButtonText = NSLocalizedString("Try again", comment: "Share extension error dialog retry button label.")
-            let acceptAction = UIAlertAction(title: acceptButtonText, style: .default) { (action) in
-                self.savePostToRemoteSite()
-            }
-            alertController.addAction(acceptAction)
+        let acceptButtonText = NSLocalizedString("Try again", comment: "Share extension error dialog retry button label.")
+        let acceptAction = UIAlertAction(title: acceptButtonText, style: .default) { (action) in
+            self.savePostToRemoteSite()
         }
+        alertController.addAction(acceptAction)
 
         let dismissButtonText = dismiss
         let dismissAction = UIAlertAction(title: dismissButtonText, style: .cancel) { (action) in
             self.showCancellingView()
             self.cleanUpSharedContainerAndCache()
             self.dismiss()
+        }
+        alertController.addAction(dismissAction)
+
+        present(alertController, animated: true, completion: nil)
+    }
+
+    func showPermissionsAlert() {
+        let title = NSLocalizedString("Sharing Error", comment: "Share extension error dialog title.")
+        let message = NSLocalizedString("Your account does not have permission to upload media to this site. The Site Administrator can change these permissions.", comment: "Share extension error dialog text.")
+        let dismiss = NSLocalizedString("Return to post", comment: "Share extension error dialog cancel button text")
+
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+
+        let dismissAction = UIAlertAction(title: dismiss, style: .cancel) { [weak self] (action) in
+            self?.clearAllNoResultsViews()
         }
         alertController.addAction(dismissAction)
 
