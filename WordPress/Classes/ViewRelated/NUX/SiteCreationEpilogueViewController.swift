@@ -66,7 +66,7 @@ extension SiteCreationEpilogueViewController: NUXButtonViewControllerDelegate {
 }
 
 
-private extension SiteCreationEpilogueViewController  {
+private extension SiteCreationEpilogueViewController {
     enum ButtonTitles {
         static let primary = NSLocalizedString("Write first post", comment: "On the final site creation page, button to allow the user to write a post for the newly created site.")
         static let secondary = NSLocalizedString("Configure", comment: "Button to allow the user to dismiss the final site creation page.")

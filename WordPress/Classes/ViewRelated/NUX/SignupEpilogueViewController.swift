@@ -261,7 +261,7 @@ extension SignupEpilogueViewController: SignupUsernameViewControllerDelegate {
 }
 
 
-private extension SignupEpilogueViewController  {
+private extension SignupEpilogueViewController {
     enum ButtonTitles {
         static let primary = NSLocalizedString("Continue", comment: "Button text on site creation epilogue page to proceed to My Sites.")
     }
