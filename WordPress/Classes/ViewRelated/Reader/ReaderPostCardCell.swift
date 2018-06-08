@@ -499,24 +499,14 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             likeActionButton.setTitle(likeTitle, for: .normal)
             commentActionButton.setTitle(commentTitle, for: .normal)
             saveForLaterButton.setTitle("", for: .normal)
-            followButton.setTitle("", for: .normal)
-            followButton.setTitle("", for: .selected)
-            followButton.setTitle("", for: .highlighted)
 
-            insetFollowButtonIcon(false)
         } else {
             let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
             let commentTitle = WPStyleGuide.commentCountForDisplay(commentCount)
-            let followTitle = WPStyleGuide.followStringForDisplay(false)
-            let followingTitle = WPStyleGuide.followStringForDisplay(true)
+
 
             likeActionButton.setTitle(likeTitle, for: .normal)
             commentActionButton.setTitle(commentTitle, for: .normal)
-
-
-            followButton.setTitle(followTitle, for: .normal)
-            followButton.setTitle(followingTitle, for: .selected)
-            followButton.setTitle(followingTitle, for: .highlighted)
 
             if FeatureFlag.saveForLater.enabled {
                 WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
@@ -524,9 +514,9 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
                 let shareTitle = NSLocalizedString("Share", comment: "Verb. Button title.  Tap to share a post.")
                 saveForLaterButton.setTitle(shareTitle, for: .normal)
             }
-
-            insetFollowButtonIcon(true)
         }
+
+        insetFollowButtonIcon(true)
     }
 
     /// Adds some space between the button and title.
