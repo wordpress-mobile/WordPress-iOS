@@ -19,7 +19,7 @@ class WebKitViewController: UIViewController {
     @objc let navigationDelegate: WebNavigationDelegate?
     @objc var secureInteraction = false
     @objc var addsWPComReferrer = false
-    @objc var addsHideDotComMasterbarParameters = true
+    @objc var addsHideMasterbarParameters = true
     @objc var customTitle: String?
 
     @objc init(configuration: WebViewControllerConfiguration) {
@@ -28,7 +28,7 @@ class WebKitViewController: UIViewController {
         customOptionsButton = configuration.optionsButton
         secureInteraction = configuration.secureInteraction
         addsWPComReferrer = configuration.addsWPComReferrer
-        addsHideDotComMasterbarParameters = configuration.addsHideDotComMasterbarParameters
+        addsHideMasterbarParameters = configuration.addsHideMasterbarParameters
         customTitle = configuration.customTitle
         authenticator = configuration.authenticator
         navigationDelegate = configuration.navigationDelegate
@@ -43,7 +43,7 @@ class WebKitViewController: UIViewController {
         customOptionsButton = parent.customOptionsButton
         secureInteraction = parent.secureInteraction
         addsWPComReferrer = parent.addsWPComReferrer
-        addsHideDotComMasterbarParameters = parent.addsHideDotComMasterbarParameters
+        addsHideMasterbarParameters = parent.addsHideMasterbarParameters
         customTitle = parent.customTitle
         authenticator = parent.authenticator
         navigationDelegate = parent.navigationDelegate
@@ -108,7 +108,7 @@ class WebKitViewController: UIViewController {
             request.setValue(URLConstants.WPComReferrerURL, forHTTPHeaderField: "Referer")
         }
 
-        if addsHideDotComMasterbarParameters,
+        if addsHideMasterbarParameters,
             let host = request.url?.host,
             (host.contains(URLConstants.WPComDomain) || host.contains(URLConstants.AutomatticDomain)) {
             request.url = request.url?.appendingHideMasterbarParameters()
