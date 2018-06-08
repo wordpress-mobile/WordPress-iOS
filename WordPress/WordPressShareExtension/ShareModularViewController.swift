@@ -819,49 +819,65 @@ fileprivate extension ShareModularViewController {
 
         if localImageURLs.isEmpty {
             // No media. just a simple post
-            networkService.saveAndUploadPost(title: shareData.title,
-                                             body: shareData.contentBody,
-                                             tags: shareData.tags,
-                                             categories: shareData.selectedCategoriesIDString,
-                                             status: shareData.postStatus.rawValue,
-                                             siteID: siteID,
-                                             onComplete: {
-                                                self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
-                                                self.dismiss()
-            }, onFailure: {
-                let error = self.createErrorWithDescription("Failed to save and upload post with no media.")
-                self.tracks.trackExtensionError(error)
-                self.showAlert()
-            })
-        } else if isAuthorizedToUploadFiles == false {
-            // Error: this role is unable to upload media.
-            let error = self.createErrorWithDescription("This role is unable to upload media.")
-            self.tracks.trackExtensionError(error)
-            let title = NSLocalizedString("Sharing Error", comment: "Share extension error dialog title.")
-            let message = NSLocalizedString("This role is unable to upload media. Please contact your Site Administrator.", comment: "Share extension error dialog text.")
-            self.showAlert(title: title, message: message, retry: false)
-        } else {
-            // We have media, so let's upload it with the post
-            networkService.uploadPostWithMedia(title: shareData.title,
-                                               body: shareData.contentBody,
-                                               tags: shareData.tags,
-                                               categories: shareData.selectedCategoriesIDString,
-                                               status: shareData.postStatus.rawValue,
-                                               siteID: siteID,
-                                               localMediaFileURLs: localImageURLs,
-                                               requestEnqueued: {
-                                                self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
-                                                self.dismiss()
-            }, onFailure: {
-                let error = self.createErrorWithDescription("Failed to save and upload post with media.")
-                self.tracks.trackExtensionError(error)
-                self.showAlert()
-            })
+            saveAndUploadSimplePost(service: networkService, siteID: siteID)
         }
+
+        guard isAuthorizedToUploadFiles else {
+            // Error: this role is unable to upload media.
+            showUnauthorizedAlert()
+            return
+        }
+        // We have media, so let's upload it with the post
+        uploadPostAndMedia(service: networkService, siteID: siteID, localImageURLs: localImageURLs)
+    }
+
+    func saveAndUploadSimplePost(service: AppExtensionsService, siteID: Int) {
+        service.saveAndUploadPost(title: shareData.title,
+                                         body: shareData.contentBody,
+                                         tags: shareData.tags,
+                                         categories: shareData.selectedCategoriesIDString,
+                                         status: shareData.postStatus.rawValue,
+                                         siteID: siteID,
+                                         onComplete: {
+                                            self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
+                                            self.dismiss()
+        }, onFailure: {
+            let error = self.createErrorWithDescription("Failed to save and upload post with no media.")
+            self.tracks.trackExtensionError(error)
+            self.showAlert()
+        })
+    }
+
+    func showUnauthorizedAlert() {
+        let error = self.createErrorWithDescription("This role is unable to upload media.")
+        self.tracks.trackExtensionError(error)
+        let title = NSLocalizedString("Sharing Error", comment: "Share extension error dialog title.")
+        let message = NSLocalizedString("Your account does not have permission to upload media to this site. The Site Administrator can change these permissions.", comment: "Share extension error dialog text.")
+        let dismiss = NSLocalizedString("Return to post", comment: "Share extension error dialog cancel button text")
+        self.showAlert(title: title, message: message, dismiss: dismiss, retry: false)
+    }
+
+    func uploadPostAndMedia(service: AppExtensionsService, siteID: Int, localImageURLs: [URL]) {
+        service.uploadPostWithMedia(title: shareData.title,
+                                    body: shareData.contentBody,
+                                    tags: shareData.tags,
+                                    categories: shareData.selectedCategoriesIDString,
+                                    status: shareData.postStatus.rawValue,
+                                    siteID: siteID,
+                                    localMediaFileURLs: localImageURLs,
+                                    requestEnqueued: {
+                                        self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
+                                        self.dismiss()
+        }, onFailure: {
+            let error = self.createErrorWithDescription("Failed to save and upload post with media.")
+            self.tracks.trackExtensionError(error)
+            self.showAlert()
+        })
     }
 
     func showAlert(title: String = NSLocalizedString("Sharing Error", comment: "Share extension error dialog title."),
                    message: String = NSLocalizedString("Whoops, something went wrong while sharing. You can try again, maybe it was a glitch.", comment: "Share extension error dialog text."),
+                   dismiss: String = NSLocalizedString("Dismiss", comment: "Share extension error dialog cancel button label."),
                    retry: Bool = true) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
@@ -873,7 +889,7 @@ fileprivate extension ShareModularViewController {
             alertController.addAction(acceptAction)
         }
 
-        let dismissButtonText = NSLocalizedString("Nevermind", comment: "Share extension error dialog cancel button label.")
+        let dismissButtonText = dismiss
         let dismissAction = UIAlertAction(title: dismissButtonText, style: .cancel) { (action) in
             self.showCancellingView()
             self.cleanUpSharedContainerAndCache()
