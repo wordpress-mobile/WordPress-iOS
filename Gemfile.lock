@@ -114,10 +114,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  cocoapods (~> 1.5.2)
-  danger
-  rake
-  xcpretty-travis-formatter
+  cocoapods (~> 1.5.2)!
+  danger!
+  rake!
+  xcpretty-travis-formatter!
 
 BUNDLED WITH
    1.16.1
