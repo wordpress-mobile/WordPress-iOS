@@ -1132,7 +1132,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSURL *targetURL = [NSURL URLWithString:self.blog.homeURL];
 
     if (self.blog.jetpack) {
-        targetURL = [targetURL appendHideMasterbarParameters];
+        targetURL = [targetURL appendingHideMasterbarParameters];
     }
     
     UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL blog:self.blog];

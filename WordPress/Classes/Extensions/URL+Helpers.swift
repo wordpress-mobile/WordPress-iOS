@@ -140,7 +140,7 @@ extension NSURL {
         return NSNumber(value: fileSize)
     }
 
-    @objc func appendHideMasterbarParameters() -> NSURL? {
+    @objc func appendingHideMasterbarParameters() -> NSURL? {
         let url = self as URL
         return url.appendingHideMasterbarParameters() as NSURL?
     }
