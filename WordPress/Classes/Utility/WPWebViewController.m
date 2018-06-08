@@ -23,6 +23,8 @@ static CGFloat const WPWebViewToolbarHiddenConstant         = -44.0;
 static CGFloat const WPWebViewAnimationShortDuration        = 0.1;
 
 static NSString *const WPComReferrerURL = @"https://wordpress.com";
+static NSString *const AutomatticDomain = @"automattic.com";
+static NSString *const WPComDomain = @"wordpress.com";
 
 static NSString *const WPWebViewWebKitErrorDomain = @"WebKitErrorDomain";
 static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
@@ -221,7 +223,8 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         [mutableRequest setValue:WPComReferrerURL forHTTPHeaderField:@"Referer"];
     }
     
-    if (self.addsHideDotComMasterbarParameters && [mutableRequest.URL.host containsString:@"wordpress.com"]) {
+    if (self.addsHideDotComMasterbarParameters &&
+        ([mutableRequest.URL.host containsString:WPComDomain] || [mutableRequest.URL.host containsString:AutomatticDomain])) {
         mutableRequest.URL = [mutableRequest.URL appendHideMasterbarParameters];
     }
 
