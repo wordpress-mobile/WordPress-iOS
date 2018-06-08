@@ -127,7 +127,7 @@ private extension NotificationBlockGroup {
             groups.append(NotificationBlockGroup(blocks: [block], kind: kind))
         }
 
-        // Hoping the reviewer can forgive me. Pingback Notifications require a locally generated block.
+        // Whenever Possible *REMOVE* this workaround. Pingback Notifications require a locally generated block.
         //
         if parent.isPingback, let homeURL = user.metaLinksHome {
             let blockGroup = pingbackReadMoreGroup(for: homeURL)
