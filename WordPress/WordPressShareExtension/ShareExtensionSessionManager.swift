@@ -249,8 +249,6 @@ import WordPressFlux
             return
         }
 
-        coreDataStack.saveContext()
-
         guard let groupID = coreDataStack.fetchGroupID(for: backgroundSessionIdentifier), !groupID.isEmpty else {
             DDLogError("Unable to find the Group ID for session with ID \(backgroundSessionIdentifier).")
             return
