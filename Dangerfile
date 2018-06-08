@@ -11,8 +11,6 @@ warn("PR is not assigned to a milestone.", sticky: false) unless has_milestone
 ### Core Data Model Safety Checks
 
 target_release_branch = github.branch_for_base.start_with? "release"
-has_modified_model = git.modified_files.include? "WordPress/Classes/WordPress.xcdatamodeld/"
-has_added_model = git.added_files.include? "WordPress/Classes/WordPress.xcdatamodeld/"
+has_modified_model = git.modified_files.include? "WordPress/Classes/WordPress.xcdatamodeld/*/contents"
 
-warn("Do not edit an existing model in a release branch; create a new version and merge back to develop soon.") if has_modified_model
-warn("Tentacles.") if has_added_model
+warn("Core Data: Do not edit an existing model in a release branch unless it hasn't been released to testers yet. Instead create a new model version and merge back to develop soon.") if has_modified_model
