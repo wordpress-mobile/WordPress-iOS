@@ -159,7 +159,6 @@ class Notification: NSManagedObject {
 extension Notification {
 
     /// Verifies if the current notification is a Pingback.
-    /// Same as below: SORRY about the Duck Typing Snippet.
     ///
     var isPingback: Bool {
         guard let subjectRanges = subjectBlock?.ranges, subjectRanges.count == 2 else {
