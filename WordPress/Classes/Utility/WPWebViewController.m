@@ -225,7 +225,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     
     if (self.addsHideDotComMasterbarParameters &&
         ([mutableRequest.URL.host containsString:WPComDomain] || [mutableRequest.URL.host containsString:AutomatticDomain])) {
-        mutableRequest.URL = [mutableRequest.URL appendHideMasterbarParameters];
+        mutableRequest.URL = [mutableRequest.URL appendingHideMasterbarParameters];
     }
 
     [mutableRequest setValue:[WPUserAgent wordPressUserAgent] forHTTPHeaderField:@"User-Agent"];

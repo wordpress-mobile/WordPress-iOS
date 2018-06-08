@@ -423,7 +423,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 - (void)openWebViewWithURL:(NSURL *)url
 {
     if (self.comment.blog.jetpack) {
-        url = [url appendHideMasterbarParameters];
+        url = [url appendingHideMasterbarParameters];
     }
     
     UIViewController *webViewController = [WebViewControllerFactory controllerAuthenticatedWithDefaultAccountWithUrl:url];
