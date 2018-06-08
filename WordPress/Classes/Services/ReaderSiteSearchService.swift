@@ -8,6 +8,9 @@ typealias ReaderSiteSearchFailureBlock = (_ error: Error?) -> Void
 ///
 @objc class ReaderSiteSearchService: LocalCoreDataService {
 
+    // The size of a single page of results when performing a search.
+    static let pageSize = 20
+
     private func apiRequest() -> WordPressComRestApi {
         let accountService = AccountService(managedObjectContext: managedObjectContext)
         let defaultAccount = accountService.defaultWordPressComAccount()
@@ -46,6 +49,6 @@ typealias ReaderSiteSearchFailureBlock = (_ error: Error?) -> Void
     }
 
     private enum Constants {
-        static let pageSize = 10
+        static let pageSize = 20
     }
 }
