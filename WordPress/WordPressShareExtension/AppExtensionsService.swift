@@ -102,14 +102,18 @@ extension AppExtensionsService {
         })
     }
 
+    /// Filters the list of sites and returns if a user is allowed to upload media for the selected site
+    ///
+    /// - Parameters:
+    /// - sites: the list of sites to filter.
+    /// - selectedSiteID: the current site the user wants to upload media to.
+    ///
     func isAuthorizedToUploadMedia(in sites: [RemoteBlog], for selectedSiteID: Int) -> Bool {
         let siteID = NSNumber(value: selectedSiteID)
-        var isAuthorizedToUploadFiles = false
-        for site in sites {
-            if site.blogID == siteID {
-                isAuthorizedToUploadFiles = site.isUserCapableOf(.uploadFiles)
-            }
+        guard let isAuthorizedToUploadFiles = sites.filter({$0.blogID == siteID}).first?.isUploadingFilesAllowed() else {
+            return false
         }
+
         return isAuthorizedToUploadFiles
     }
 
