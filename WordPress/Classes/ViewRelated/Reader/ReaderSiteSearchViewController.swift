@@ -5,31 +5,47 @@ import UIKit
 class ReaderSiteSearchViewController: UITableViewController {
 
     // MARK: - Properties
+    // MARK: Table / Sync Handlers
 
-    lazy var tableHandler: WPTableViewHandler = {
+    fileprivate lazy var tableHandler: WPTableViewHandler = {
         let tableHandler = WPTableViewHandler(tableView: self.tableView)
         return tableHandler
     }()
 
-    var feeds: [ReaderFeed] = [] {
+    fileprivate lazy var syncHelper: WPContentSyncHelper = {
+        let syncHelper = WPContentSyncHelper()
+        syncHelper.delegate = self
+        return syncHelper
+    }()
+
+    // MARK: Data
+
+    fileprivate var feeds: [ReaderFeed] = [] {
         didSet {
             reloadData()
         }
     }
+    fileprivate var totalFeedCount: Int = 0
 
     var searchTerm: String? = nil {
         didSet {
             feeds = []
+            totalFeedCount = 0
 
-            performSearch(for: searchTerm)
+            syncHelper.syncContentWithUserInteraction(false)
         }
     }
 
-    let statusView: WPNoResultsView = {
+    // MARK: Views
+
+    fileprivate let statusView: WPNoResultsView = {
         let view = WPNoResultsView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+
+    fileprivate let headerView = ReaderSiteSearchHeaderView()
+    fileprivate let footerView = ReaderSiteSearchFooterView()
 
     // MARK: - View lifecycle
 
@@ -47,41 +63,82 @@ class ReaderSiteSearchViewController: UITableViewController {
         WPStyleGuide.configureColors(for: self.view, andTableView: tableView)
 
         tableView.register(WPBlogTableViewCell.self, forCellReuseIdentifier: WPBlogTableViewCell.reuseIdentifier())
-        tableView.tableFooterView = UIView()
+
+        configureTableHeaderView()
+        configureTableFooterView()
 
         view.backgroundColor = .clear
     }
 
+    private func configureTableHeaderView() {
+        tableView.tableHeaderView = headerView
+        headerView.isHidden = true
+    }
+
+    private func configureTableFooterView() {
+        footerView.showSpinner(false)
+        footerView.delegate = self
+
+        tableView.tableFooterView = footerView
+        footerView.isHidden = true
+    }
+
     // MARK: - Actions
 
-    private func performSearch(for term: String?) {
+    private func performSearch(for term: String?,
+                               page: Int,
+                               success: ((_ hasMore: Bool) -> Void)?,
+                               failure: ((_ error: NSError) -> Void)?) {
         guard let term = term,
             !term.isEmpty else {
                 return
         }
 
-        showLoadingView()
+        if page == 0 {
+            showLoadingView()
+        }
 
         let context = ContextManager.sharedInstance().mainContext
         let service = ReaderSiteSearchService(managedObjectContext: context)
         service.performSearch(withQuery: term,
-                              page: 0,
-                              success: { [weak self] (feeds, _, _) in
-            self?.feeds = feeds
-            self?.reloadData()
-            }, failure: { [weak self] _ in
-                self?.showLoadingFailedView()
+                              page: page,
+                              success: { [weak self] (feeds, hasMore, totalFeeds) in
+                                self?.feeds.append(contentsOf: feeds)
+                                self?.totalFeedCount = totalFeeds
+                                self?.reloadData(hasMore)
+                                success?(hasMore)
+            }, failure: { [weak self] error in
+                self?.handleFailedSearch()
+
+                if let error = error as NSError? {
+                    failure?(error)
+                }
         })
     }
 
-    private func reloadData() {
+    private func reloadData(_ hasMore: Bool = false) {
         tableView.reloadData()
 
-        if feeds.count == 0 {
+        let noFeeds = feeds.count == 0
+
+        footerView.isHidden = noFeeds
+        headerView.isHidden = noFeeds
+
+        if noFeeds {
             showNoResultsView()
         } else {
             hideStatusView()
+            footerView.showSpinner(hasMore)
         }
+    }
+
+    private func handleFailedSearch() {
+        if feeds.count == 0 {
+            showLoadingFailedView()
+        }
+
+        syncHelper.hasMoreContent = false
+        footerView.showSpinner(false)
     }
 
     // MARK: - Status View
@@ -161,6 +218,16 @@ class ReaderSiteSearchViewController: UITableViewController {
         }
     }
 
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let isLastSection = indexPath.section == tableView.numberOfSections - 1
+        let isLastRow = indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
+        if isLastSection && isLastRow {
+            if syncHelper.hasMoreContent {
+                syncHelper.syncMoreContent()
+            }
+        }
+    }
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let feed = feeds[indexPath.row]
 
@@ -184,7 +251,38 @@ class ReaderSiteSearchViewController: UITableViewController {
     }
 }
 
+// MARK: - WPContentSyncHelperDelegate
+
+extension ReaderSiteSearchViewController: WPContentSyncHelperDelegate {
+    func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
+        let nextPage = Int(round(Float(feeds.count)/Float(ReaderSiteSearchService.pageSize)))
+
+        performSearch(for: searchTerm,
+                      page: nextPage,
+                      success: success,
+                      failure: failure)
+    }
+
+    func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
+        performSearch(for: searchTerm,
+                      page: 0,
+                      success: success,
+                      failure: failure)
+    }
+}
+
+// MARK: - ReaderSiteSearchFooterViewDelegate
+
+extension ReaderSiteSearchViewController: ReaderSiteSearchFooterViewDelegate {
+    func readerSiteSearchFooterViewDidChangeFrame(_ footerView: ReaderSiteSearchFooterView) {
+        // Refresh the footer view's frame
+        tableView.tableFooterView = footerView
+    }
+}
+
 extension ReaderFeed {
+    /// Strips the protocol and query from the URL.
+    ///
     var urlForDisplay: String {
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
             let host = components.host else {
@@ -196,6 +294,93 @@ extension ReaderFeed {
             return host + path
         } else {
             return host
+        }
+    }
+}
+
+// MARK: - Header / Footer views
+
+private let collapsedHeaderFooterHeight: CGFloat = 9.0
+private let headerFooterDividerHeight: CGFloat = 1.0
+
+class ReaderSiteSearchHeaderView: UIView {
+    private let divider = UIView()
+
+    init() {
+        super.init(frame: .zero)
+
+        backgroundColor = .clear
+        frame.size.height = collapsedHeaderFooterHeight
+
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        divider.backgroundColor = WPStyleGuide.postCardBorderColor()
+        addSubview(divider)
+
+        NSLayoutConstraint.activate([
+            divider.bottomAnchor.constraint(equalTo: bottomAnchor),
+            divider.heightAnchor.constraint(equalToConstant: headerFooterDividerHeight),
+            divider.leadingAnchor.constraint(equalTo: leadingAnchor),
+            divider.trailingAnchor.constraint(equalTo: trailingAnchor)
+            ])
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+/// Simple protocol that reports when the footer view has changed its frame.
+/// The delegate can then use this to re-set and resize the associated
+/// tableview's footer view property.
+///
+protocol ReaderSiteSearchFooterViewDelegate: class {
+    func readerSiteSearchFooterViewDidChangeFrame(_ footerView: ReaderSiteSearchFooterView)
+}
+
+class ReaderSiteSearchFooterView: UIView {
+    private let divider = UIView()
+    private let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    weak var delegate: ReaderSiteSearchFooterViewDelegate? = nil
+
+    private static let expandedHeight: CGFloat = 44.0
+
+    init() {
+        super.init(frame: .zero)
+
+        backgroundColor = .clear
+        frame.size.height = ReaderSiteSearchFooterView.expandedHeight
+
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        divider.backgroundColor = WPStyleGuide.postCardBorderColor()
+        addSubview(divider)
+
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.hidesWhenStopped = true
+        addSubview(activityIndicator)
+
+        NSLayoutConstraint.activate([
+            divider.topAnchor.constraint(equalTo: topAnchor),
+            divider.heightAnchor.constraint(equalToConstant: headerFooterDividerHeight),
+            divider.leadingAnchor.constraint(equalTo: leadingAnchor),
+            divider.trailingAnchor.constraint(equalTo: trailingAnchor),
+            activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor)
+            ])
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func showSpinner(_ show: Bool) {
+        if show {
+            activityIndicator.startAnimating()
+            frame.size.height = ReaderSiteSearchFooterView.expandedHeight
+            delegate?.readerSiteSearchFooterViewDidChangeFrame(self)
+        } else {
+            activityIndicator.stopAnimating()
+            frame.size.height = collapsedHeaderFooterHeight
+            delegate?.readerSiteSearchFooterViewDidChangeFrame(self)
         }
     }
 }
