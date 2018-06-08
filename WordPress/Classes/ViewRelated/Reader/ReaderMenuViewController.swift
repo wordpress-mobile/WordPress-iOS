@@ -328,7 +328,7 @@ import WordPressShared
     /// Present the Discover stream as a Site stream.
     ///
     private func viewControllerForDiscover() -> ReaderStreamViewController {
-        return ReaderStreamViewController.controllerWithSiteID(ReaderHelpers.discoverSiteID, isFeed: true)
+        return ReaderStreamViewController.controllerWithSiteID(ReaderHelpers.discoverSiteID, isFeed: false)
     }
 
     /// Presents the saved for later view controller
