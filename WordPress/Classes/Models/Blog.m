@@ -128,21 +128,22 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 // Used as a key to store passwords, if you change the algorithm, logins will break
 - (NSString *)displayURL
 {
-    NSString *url = [NSURL IDNDecodedHostname:self.url];
-    NSAssert(url != nil, @"Decoded url shouldn't be nil");
-    if (url == nil) {
-        DDLogInfo(@"displayURL: decoded url is nil: %@", self.url);
-        return self.url;
-    }
     NSError *error = nil;
     NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"http(s?)://" options:NSRegularExpressionCaseInsensitive error:&error];
-    NSString *result = [NSString stringWithFormat:@"%@", [protocol stringByReplacingMatchesInString:url options:0 range:NSMakeRange(0, [url length]) withTemplate:@""]];
+    NSString *result = [NSString stringWithFormat:@"%@", [protocol stringByReplacingMatchesInString:self.url options:0 range:NSMakeRange(0, [self.url length]) withTemplate:@""]];
 
     if ([result hasSuffix:@"/"]) {
         result = [result substringToIndex:[result length] - 1];
     }
 
-    return result;
+    NSString *decodedResult = [NSURL IDNDecodedHostname:result];
+    NSAssert(decodedResult != nil, @"Decoded url shouldn't be nil");
+    if (decodedResult == nil) {
+        DDLogInfo(@"displayURL: decoded url is nil: %@", self.url);
+        return result;
+    }
+
+    return decodedResult;
 }
 
 - (NSString *)hostURL
@@ -617,6 +618,65 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         extra = [NSString stringWithFormat:@" jetpack: %@", [self.jetpack description]];
     }
     return [NSString stringWithFormat:@"<Blog Name: %@ URL: %@ XML-RPC: %@%@>", self.settings.name, self.url, self.xmlrpc, extra];
+}
+
+- (NSString *)supportDescription
+{
+    // Gather information
+    
+    NSString *blogType = [NSString stringWithFormat:@"Type: (%@)", [self stateDescription]];
+    NSString *urlType = [self wordPressComRestApi] ? @"REST" : @"Self-hosted";
+    NSString *url = [NSString stringWithFormat:@"URL: %@", self.url];
+
+    NSString *username;
+    NSString *planDescription;
+    if (self.account) {
+        planDescription = [NSString stringWithFormat:@"Plan: %@ (%@)", self.planTitle, self.planID];
+    } else {
+        username = [self.jetpack connectedUsername];
+    }
+    
+    NSString *jetpackVersion;
+    if ([self.jetpack isInstalled]) {
+        jetpackVersion = [NSString stringWithFormat:@"Jetpack-version: %@", [self.jetpack version]];
+    }
+    
+    // Add information to array in the order we want to display it.
+    
+    NSMutableArray *blogInformation = [[NSMutableArray alloc] init];
+    [blogInformation addObject:blogType];
+    if (username) {
+        [blogInformation addObject:username];
+    }
+    [blogInformation addObject:urlType];
+    [blogInformation addObject:url];
+    if (planDescription) {
+        [blogInformation addObject:planDescription];
+    }
+    if (jetpackVersion) {
+        [blogInformation addObject:jetpackVersion];
+    }
+    
+    // Combine and return.
+    return [NSString stringWithFormat:@"<%@>", [blogInformation componentsJoinedByString:@" "]];
+}
+
+- (NSString *)stateDescription
+{
+    if (self.account) {
+        return @"wpcom";
+    }
+    
+    if ([self.jetpack isConnected]) {
+        NSString *apiType = [self wordPressComRestApi] ? @"REST" : @"XML-RPC";
+        return [NSString stringWithFormat:@"jetpack_connected - %@", apiType];
+    }
+    
+    if ([self.jetpack isInstalled]) {
+        return @"self-hosted - jetpack_installed";
+    }
+    
+    return @"self_hosted";
 }
 
 #pragma mark - api accessor

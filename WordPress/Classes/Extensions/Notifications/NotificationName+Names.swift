@@ -6,6 +6,14 @@ extension Foundation.Notification.Name {
     static var reachabilityChanged: Foundation.NSNotification.Name {
         return Foundation.Notification.Name("org.wordpress.reachability.changed")
     }
+
+    static var showAllSavedForLaterPosts: Foundation.NSNotification.Name {
+        return Foundation.Notification.Name("org.wordpress.reader.savedforlaterposts.showall")
+    }
+}
+
+@objc extension NSNotification {
+    public static let ShowAllSavedForLaterPostsNotification = Foundation.Notification.Name.showAllSavedForLaterPosts
 }
 
 /// Keys for Notification's userInfo dictionary

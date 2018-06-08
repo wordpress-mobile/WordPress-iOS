@@ -118,8 +118,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         setupFiltersSegmentedControl()
 
         reloadTableViewPreservingSelection()
-
-        observeNetworkStatus()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -407,12 +405,7 @@ private extension NotificationsViewController {
         inlinePromptSpaceConstraint.isActive = false
 
         if shouldShowPrimeForPush {
-            PushNotificationsManager.shared.loadAuthorizationStatus { [weak self] (status) in
-                if status == .notDetermined {
-                    self?.setupPrimeForPush()
-                    self?.showInlinePrompt()
-                }
-            }
+           setupNotificationPrompt()
         } else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
             setupAppRatings()
             showInlinePrompt()
@@ -816,10 +809,10 @@ extension NotificationsViewController {
             DispatchQueue.main.asyncAfter(deadline: delay) {
                 self?.refreshControl?.endRefreshing()
                 self?.clearUnreadNotifications()
-            }
 
-            if let _ = error {
-                self?.handleConnectionError()
+                if let _ = error {
+                    self?.handleConnectionError()
+                }
             }
         }
     }
@@ -1247,7 +1240,6 @@ internal extension NotificationsViewController {
 private extension NotificationsViewController {
     func syncNewNotifications() {
         guard connectionAvailable() else {
-            handleConnectionError()
             return
         }
 

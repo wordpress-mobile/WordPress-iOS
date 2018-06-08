@@ -76,17 +76,10 @@ private class AccountSettingsController: SettingsController {
     func mapViewModel(_ settings: AccountSettings?, service: AccountSettingsService, presenter: ImmuTablePresenter) -> ImmuTable {
         let primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) }
 
-        let username: ImmuTableRow
-        if Feature.enabled(.usernameChanging) {
-            username = EditableTextRow(
-                title: NSLocalizedString("Username", comment: "Account Settings Username label"),
-                value: settings?.username ?? "",
-                action: presenter.push(editUsername(settings)))
-        } else {
-            username = TextRow(
+        let username = TextRow(
             title: NSLocalizedString("Username", comment: "Account Settings Username label"),
-            value: settings?.username ?? "")
-        }
+            value: settings?.username ?? ""
+        )
 
         let email = EditableTextRow(
             title: NSLocalizedString("Email", comment: "Account Settings Email label"),
@@ -119,17 +112,6 @@ private class AccountSettingsController: SettingsController {
 
 
     // MARK: - Actions
-
-    func editUsername(_ settings: AccountSettings?) -> ((ImmuTableRow) -> SignupUsernameViewController) {
-        return { row in
-            let storyboard = UIStoryboard(name: "Signup", bundle: Bundle.main)
-            let controller = storyboard.instantiateViewController(withIdentifier: "usernames") as! SignupUsernameViewController
-            controller.currentUsername = settings?.username ?? "error-no-username"
-            controller.displayName = settings?.displayName ?? "error-no-display-name"
-            return controller
-        }
-    }
-
     func editEmailAddress(_ settings: AccountSettings?, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController {
         return { row in
             let editableRow = row as! EditableTextRow

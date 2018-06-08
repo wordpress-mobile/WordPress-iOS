@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 import WordPressShared
 import WordPressUI
 
@@ -6,6 +7,13 @@ final class ReaderSavedPostsViewController: UITableViewController {
     private enum Strings {
         static let title = NSLocalizedString("Saved Posts", comment: "Title for list of posts saved for later")
     }
+
+    private enum UndoCell {
+        static let nibName = "ReaderSavedPostUndoCell"
+        static let reuseIdentifier = "ReaderUndoCellReuseIdentifier"
+        static let height: CGFloat = 44
+    }
+
     fileprivate var noResultsView: WPNoResultsView!
     fileprivate var footerView: PostListFooterView!
     fileprivate let heightForFooterView = CGFloat(34.0)
@@ -18,7 +26,7 @@ final class ReaderSavedPostsViewController: UITableViewController {
     /// Configuration of cells
     private let cellConfiguration = ReaderCellConfiguration()
     /// Actions
-    private var postCellActions: ReaderPostCellActions?
+    private var postCellActions: ReaderSavedPostCellActions?
 
     fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
 
@@ -37,12 +45,43 @@ final class ReaderSavedPostsViewController: UITableViewController {
         updateAndPerformFetchRequest()
     }
 
+    open override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        centerResultsStatusViewIfNeeded()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        refreshNoResultsView()
+    }
+
+    deinit {
+        postCellActions?.clearRemovedPosts()
+    }
+
+    func centerResultsStatusViewIfNeeded() {
+        if noResultsView.isDescendant(of: tableView) {
+            noResultsView.centerInSuperview()
+        }
+    }
+
     // MARK: - Setup
 
     fileprivate func setupTableView() {
         tableConfiguration.setup(tableView)
+        setupUndoCell(tableView)
     }
 
+    private func setupUndoCell(_ tableView: UITableView) {
+        let nib = UINib(nibName: UndoCell.nibName, bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: UndoCell.reuseIdentifier)
+    }
+
+    func undoCell(_ tableView: UITableView) -> ReaderSavedPostUndoCell {
+        return tableView.dequeueReusableCell(withIdentifier: UndoCell.reuseIdentifier) as! ReaderSavedPostUndoCell
+    }
 
     fileprivate func setupContentHandler() {
         content.initializeContent(tableView: tableView, delegate: self)
@@ -91,20 +130,16 @@ final class ReaderSavedPostsViewController: UITableViewController {
 
 
     @objc open func configurePostCardCell(_ cell: UITableViewCell, post: ReaderPost) {
-        guard let topic = post.topic else {
-            return
-        }
-
-        let isLoggedIn = AccountHelper.isDotcomAvailable()
-
         if postCellActions == nil {
-            postCellActions = ReaderPostCellActions(context: managedObjectContext(), origin: self, topic: topic, visibleConfirmation: false)
+            postCellActions = ReaderSavedPostCellActions(context: managedObjectContext(), origin: self, topic: post.topic, visibleConfirmation: false)
+            postCellActions?.delegate = self
         }
+
         cellConfiguration.configurePostCardCell(cell,
                                                 withPost: post,
-                                                topic: topic,
+                                                topic: post.topic,
                                                 delegate: postCellActions,
-                                                loggedIn: isLoggedIn)
+                                                loggedInActionVisibility: .hidden)
     }
 }
 
@@ -128,10 +163,51 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
 
 
     public func tableViewDidChangeContent(_ tableView: UITableView) {
+        refreshNoResultsView()
+    }
+
+    private func refreshNoResultsView() {
         if content.isEmpty {
-            // TODO: Implement no results view
-            //            displayNoResultsView()
+            displayNoResultsView()
+        } else {
+            hideNoResultsView()
         }
+    }
+
+    private func displayNoResultsView() {
+        if !noResultsView.isDescendant(of: tableView) {
+            tableView.addSubview(withFadeAnimation: noResultsView)
+            noResultsView.translatesAutoresizingMaskIntoConstraints = false
+            tableView.pinSubviewAtCenter(noResultsView)
+        }
+
+        configureNoResultsText()
+
+        noResultsView.isUserInteractionEnabled = false
+        noResultsView.accessoryView = nil
+    }
+
+    private func configureNoResultsText() {
+        noResultsView.titleText = NSLocalizedString("No posts saved – yet!", comment: "Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts.")
+
+        var messageText = NSMutableAttributedString(string: NSLocalizedString("Tap [bookmark-outline] to save a post to your list.", comment: "A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact."))
+
+        // We're setting this once here so that the attributed text
+        // gets the correct font attributes added to it. The font
+        // is used by the attributed string `replace(_:with:)` method
+        // below to correctly position the icon.
+        noResultsView.attributedMessageText = messageText
+        messageText = NSMutableAttributedString(attributedString: noResultsView.attributedMessageText)
+
+        let icon = Gridicon.iconOfType(.bookmarkOutline, withSize: CGSize(width: 18, height: 18))
+        messageText.replace("[bookmark-outline]", with: icon)
+        noResultsView.attributedMessageText = messageText
+
+        noResultsView.accessibilityLabel = NSLocalizedString("No posts saved – yet! Tap the Save Post button to save a post to your list.", comment: "Alternative accessibility text displayed to Voiceover users on the Reader Saved Posts screen.")
+    }
+
+    @objc func hideNoResultsView() {
+        noResultsView.removeFromSuperview()
     }
 
     // MARK: - TableView Related
@@ -171,14 +247,6 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
         }
         let post = posts[indexPath.row]
 
-        //        if recentlyBlockedSitePostObjectIDs.contains(post.objectID) {
-        //            let cell = tableView.dequeueReusableCell(withIdentifier: readerBlockedCellReuseIdentifier) as! ReaderBlockedSiteCell
-//        cellConfiguration.configureBlockedCell(cell,
-//                                               withContent: content,
-//                                               atIndexPath: indexPath)
-        //            return cell
-        //        }
-
         if post.isCross() {
             let cell = tableConfiguration.crossPostCell(tableView)
             cellConfiguration.configureCrossPostCell(cell,
@@ -187,9 +255,21 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
             return cell
         }
 
+
+        if postCellActions?.postIsRemoved(post) == true {
+            let cell = undoCell(tableView)
+            configureUndoCell(cell, with: post)
+            return cell
+        }
+
         let cell = tableConfiguration.postCardCell(tableView)
         configurePostCardCell(cell, post: post)
         return cell
+    }
+
+    private func configureUndoCell(_ cell: ReaderSavedPostUndoCell, with post: ReaderPost) {
+        cell.title.text = post.titleForDisplay()
+        cell.delegate = self
     }
 
     override public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -240,11 +320,6 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
             return
         }
 
-        //        if recentlyBlockedSitePostObjectIDs.contains(apost.objectID) {
-        //            unblockSiteForPost(apost)
-        //            return
-        //        }
-
         if let topic = post.topic, ReaderHelpers.isTopicSearchTopic(topic) {
             WPAppAnalytics.track(.readerSearchResultTapped)
 
@@ -270,6 +345,8 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
 
         }
 
+        trackSavedPostNavigation()
+
         navigationController?.pushFullscreenViewController(controller, animated: true)
 
         tableView.deselectRow(at: indexPath, animated: false)
@@ -278,5 +355,23 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
 
     public func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
         // Do nothing
+    }
+}
+
+extension ReaderSavedPostsViewController: ReaderSavedPostCellActionsDelegate {
+    func willRemove(_ cell: ReaderPostCardCell) {
+        if let cellIndex = tableView.indexPath(for: cell) {
+            tableView.reloadRows(at: [cellIndex], with: .fade)
+        }
+    }
+}
+
+extension ReaderSavedPostsViewController: ReaderPostUndoCellDelegate {
+    func readerCellWillUndo(_ cell: ReaderSavedPostUndoCell) {
+        if let cellIndex = tableView.indexPath(for: cell),
+            let post: ReaderPost = content.object(at: cellIndex) {
+                postCellActions?.restoreUnsavedPost(post)
+                tableView.reloadRows(at: [cellIndex], with: .fade)
+        }
     }
 }
