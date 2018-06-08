@@ -5,7 +5,7 @@ import Aztec
 import CocoaLumberjack
 import Gridicons
 import WordPressShared
-import AFNetworking
+import MobileCoreServices
 import WPMediaPicker
 import SVProgressHUD
 import AVKit
@@ -353,7 +353,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Active Downloads
     ///
-    fileprivate var activeMediaRequests = [AFImageDownloadReceipt]()
+    fileprivate var activeMediaRequests = [ImageDownloader.Task]()
 
 
     /// Boolean indicating whether the post should be removed whenever the changes are discarded, or not.
@@ -2114,6 +2114,7 @@ extension AztecPostViewController {
         options.filter = [.all]
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
+        options.badgedUTTypes = [String(kUTTypeGIF)]
 
         let picker = WPNavigationMediaPickerViewController()
 
@@ -2156,6 +2157,7 @@ extension AztecPostViewController {
         options.allowMultipleSelection = true
         options.allowCaptureOfMedia = false
         options.scrollVertically = true
+        options.badgedUTTypes = [String(kUTTypeGIF)]
 
         let picker = WPInputMediaPickerViewController(options: options)
         mediaPickerInputViewController = picker
@@ -3589,26 +3591,22 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
             request = URLRequest(url: requestURL)
         }
 
-        let imageDownloader = AFImageDownloader.defaultInstance()
-        let receipt = imageDownloader.downloadImage(for: request, success: { [weak self](request, response, image) in
-            guard self != nil else {
+        let receipt = ImageDownloader.shared.downloadImage(for: request) { [weak self] (image, error) in
+            guard let _ = self else {
                 return
             }
-            DispatchQueue.main.async(execute: {
+
+            DispatchQueue.main.async {
+                guard let image = image else {
+                    failure()
+                    return
+                }
+
                 success(image)
-            })
-        }) { [weak self](request, response, error) in
-            guard self != nil else {
-                return
             }
-            DispatchQueue.main.async(execute: {
-                failure()
-            })
         }
 
-        if let receipt = receipt {
-            activeMediaRequests.append(receipt)
-        }
+        activeMediaRequests.append(receipt)
     }
 
     func textView(_ textView: TextView, urlFor imageAttachment: ImageAttachment) -> URL? {
@@ -3617,9 +3615,8 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     }
 
     func cancelAllPendingMediaRequests() {
-        let imageDownloader = AFImageDownloader.defaultInstance()
         for receipt in activeMediaRequests {
-            imageDownloader.cancelTask(for: receipt)
+            receipt.cancel()
         }
         activeMediaRequests.removeAll()
     }

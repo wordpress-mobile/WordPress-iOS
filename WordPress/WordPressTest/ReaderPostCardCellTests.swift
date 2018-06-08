@@ -146,6 +146,7 @@ final class ReaderPostCardCellTests: XCTestCase {
 
     private struct TestConstants {
         static let headerLabel = "Post by An author, from A blog name, "
+        static let saveLabel = "Save post"
         static let shareLabel = "Share"
         static let moreLabel = "More"
         static let commentLabel = "2 comments"
@@ -170,8 +171,9 @@ final class ReaderPostCardCellTests: XCTestCase {
         XCTAssertEqual(cell?.getHeaderButtonForTesting().accessibilityLabel, expectedHeaderLabel, "Incorrect accessibility label: Header Button ")
     }
 
-    func testShareButtonLabelMatchesExpectation() {
-        XCTAssertEqual(cell?.getShareButtonForTesting().accessibilityLabel, TestConstants.shareLabel, "Incorrect accessibility label: Share button")
+    func testSaveForLaterButtonLabelMatchesExpectation() {
+        let validLabelText = FeatureFlag.saveForLater.enabled ? TestConstants.saveLabel : TestConstants.shareLabel
+        XCTAssertEqual(cell?.getSaveForLaterButtonForTesting().accessibilityLabel, validLabelText, "Incorrect accessibility label: Save for Later button")
     }
 
     func testCommentsButtonLabelMatchesExpectation() {

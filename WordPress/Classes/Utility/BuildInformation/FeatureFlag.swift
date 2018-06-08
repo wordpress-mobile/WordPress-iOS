@@ -5,9 +5,9 @@ enum FeatureFlag: Int {
     case exampleFeature
     case jetpackDisconnect
     case activity
-    case usernameChanging
     case zendeskMobile
     case saveForLater
+    case gifSupportInReaderDetail
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -18,12 +18,12 @@ enum FeatureFlag: Int {
             return BuildConfiguration.current == .localDeveloper
         case .activity:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
-        case .usernameChanging:
-            return BuildConfiguration.current == .localDeveloper
         case .zendeskMobile:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
+            return true
         case .saveForLater:
-            return false
+            return true
+        case .gifSupportInReaderDetail:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         }
     }
 }

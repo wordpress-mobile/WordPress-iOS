@@ -1,1 +1,3 @@
-Düzenleyici içinden yazıya dosya ekleme sırasında artık bir çok dosya tipi seçebiliyorsunuz, PDF ve Word belgeleri dahil.
+Bildirim ayarları yönetimi iyileştirildi.
+Stok fotoğraflar yüklenirken artık tanıtım içeren varsayılan bir açıklama oluşturuluyor.
+GIF resimleri görüntüleme için destek iyileştirildi.

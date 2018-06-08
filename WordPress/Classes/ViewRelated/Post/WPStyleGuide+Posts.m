@@ -215,11 +215,39 @@
 
 + (void)applyRestorePageLabelStyle:(UILabel *)label
 {
-    [self configureLabelForRegularFontStyle:label];
+    label.font = [WPStyleGuide regularFont];
     label.textColor = [self grey];
 }
 
 + (void)applyRestorePageButtonStyle:(UIButton *)button
+{
+    [WPStyleGuide configureLabel:button.titleLabel
+                       textStyle:UIFontTextStyleCallout
+                      fontWeight:UIFontWeightSemibold];
+    [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
+    [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
+}
+
++ (void)applyRestoreSavedPostLabelStyle:(UILabel *)label
+{
+    [WPStyleGuide configureLabel:label textStyle:UIFontTextStyleCallout];
+    label.textColor = [self greyDarken10];
+}
+
++ (void)applyRestoreSavedPostTitleLabelStyle:(UILabel *)label
+{
+    [WPStyleGuide configureLabel:label
+                       textStyle:UIFontTextStyleCallout
+                      fontWeight:UIFontWeightSemibold];
+
+    UIFontDescriptor *descriptor = [label.font fontDescriptor];
+    UIFontDescriptorSymbolicTraits traits = [descriptor symbolicTraits];
+    descriptor = [descriptor fontDescriptorWithSymbolicTraits:traits | UIFontDescriptorTraitItalic];
+    label.font = [UIFont fontWithDescriptor:descriptor size:label.font.pointSize];
+    label.textColor = [self greyDarken10];
+}
+
++ (void)applyRestoreSavedPostButtonStyle:(UIButton *)button
 {
     [WPStyleGuide configureLabel:button.titleLabel
                        textStyle:UIFontTextStyleCallout
