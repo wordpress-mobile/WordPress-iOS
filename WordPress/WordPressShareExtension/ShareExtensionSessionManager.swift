@@ -258,6 +258,8 @@ import WordPressFlux
         let syncGroup = DispatchGroup()
         media?.forEach { mediaItem in
             mediaItem.postID = NSNumber(value: postID)
+
+            syncGroup.enter()
             service.update(mediaItem, success: { updatedRemoteMedia in
                 syncGroup.leave()
             }, failure: { error in
