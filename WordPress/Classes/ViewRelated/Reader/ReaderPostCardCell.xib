@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -85,8 +84,8 @@
                                     <constraint firstAttribute="height" priority="999" constant="100" id="6Qh-iW-StJ"/>
                                 </constraints>
                             </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="0hd-Lx-knp">
-                                <rect key="frame" x="16" y="187" width="288" height="129.5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="0hd-Lx-knp">
+                                <rect key="frame" x="16" y="187" width="288" height="123.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gTo-Tc-GMR">
                                         <rect key="frame" x="0.0" y="0.0" width="288" height="49"/>
@@ -108,17 +107,17 @@
                                         </subviews>
                                     </stackView>
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nU7-76-6MV" customClass="ReaderCardDiscoverAttributionView" customModule="WordPress">
-                                        <rect key="frame" x="0.0" y="57" width="288" height="20.5"/>
+                                        <rect key="frame" x="0.0" y="49" width="288" height="30.5"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tUL-YG-fIa" customClass="CircularImageView" customModule="WordPress">
-                                                <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                <rect key="frame" x="0.0" y="10" width="20" height="20"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" priority="999" constant="20" id="gyO-ef-jnx"/>
                                                     <constraint firstAttribute="width" constant="20" id="rXo-se-pG1"/>
                                                 </constraints>
                                             </imageView>
                                             <label userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="1000" text="Attribution" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="maZ-qu-bdT">
-                                                <rect key="frame" x="28" y="0.0" width="260" height="20.5"/>
+                                                <rect key="frame" x="28" y="10" width="260" height="20.5"/>
                                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -128,12 +127,12 @@
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="bottom" secondItem="maZ-qu-bdT" secondAttribute="bottom" id="3US-dt-xFb"/>
-                                            <constraint firstItem="tUL-YG-fIa" firstAttribute="top" secondItem="nU7-76-6MV" secondAttribute="top" id="GDM-yu-uAL"/>
+                                            <constraint firstItem="tUL-YG-fIa" firstAttribute="top" secondItem="nU7-76-6MV" secondAttribute="top" constant="10" id="GDM-yu-uAL"/>
                                             <constraint firstAttribute="trailing" secondItem="maZ-qu-bdT" secondAttribute="trailing" id="Kjm-K9-pd1"/>
                                             <constraint firstItem="tUL-YG-fIa" firstAttribute="leading" secondItem="nU7-76-6MV" secondAttribute="leading" id="RGi-Ae-OxH"/>
                                             <constraint firstItem="maZ-qu-bdT" firstAttribute="height" relation="greaterThanOrEqual" secondItem="tUL-YG-fIa" secondAttribute="height" id="f5c-rQ-0t9"/>
                                             <constraint firstItem="maZ-qu-bdT" firstAttribute="leading" secondItem="tUL-YG-fIa" secondAttribute="trailing" constant="8" id="nVB-6A-H4M"/>
-                                            <constraint firstItem="maZ-qu-bdT" firstAttribute="top" secondItem="nU7-76-6MV" secondAttribute="top" id="sq0-mM-VGr"/>
+                                            <constraint firstItem="maZ-qu-bdT" firstAttribute="top" secondItem="nU7-76-6MV" secondAttribute="top" constant="10" id="sq0-mM-VGr"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="imageView" destination="tUL-YG-fIa" id="ajx-dy-VhM"/>
@@ -141,7 +140,7 @@
                                         </connections>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Wzi-SV-nkT">
-                                        <rect key="frame" x="0.0" y="85.5" width="288" height="44"/>
+                                        <rect key="frame" x="0.0" y="79.5" width="288" height="44"/>
                                         <subviews>
                                             <button contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AX6-q0-ijx" customClass="PostMetaButton">
                                                 <rect key="frame" x="0.0" y="0.0" width="23" height="44"/>
@@ -218,7 +217,7 @@
                                 </subviews>
                             </stackView>
                             <view contentMode="scaleToFill" verticalHuggingPriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="Aav-jm-io6" userLabel="View (Spacer)">
-                                <rect key="frame" x="16" y="332.5" width="288" height="128.5"/>
+                                <rect key="frame" x="16" y="326.5" width="288" height="134.5"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </subviews>
