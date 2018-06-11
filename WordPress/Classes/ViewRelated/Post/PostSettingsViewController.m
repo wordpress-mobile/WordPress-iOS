@@ -725,14 +725,14 @@ FeaturedImageViewControllerDelegate>
 {
     UITableViewCell *cell;
 
-    if (!self.apost.featuredImage && !self.isUploadingMedia) {
+    if (!self.apost.featuredImage) {
         WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
         activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
         activityCell.tag = PostSettingsRowFeaturedImageAdd;
 
         cell = activityCell;
-
     } else if (self.isUploadingMedia || self.apost.featuredImage.remoteStatus == MediaRemoteStatusPushing) {
+        // Is featured Image set on the post and it's being pushed to the server?
         if (!self.isUploadingMedia) {
             self.isUploadingMedia = YES;
             [self setupObservingOfMedia: self.apost.featuredImage];
@@ -744,23 +744,37 @@ FeaturedImageViewControllerDelegate>
         self.progressCell.tag = PostSettingsRowFeaturedLoading;
         cell = self.progressCell;
     } else if (self.apost.featuredImage && self.apost.featuredImage.remoteStatus == MediaRemoteStatusFailed) {
+        // Do we have an feature image set and for some reason the upload failed?
         WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
         activityCell.textLabel.text = NSLocalizedString(@"Upload failed. Tap for options.", @"Description to show on post setting for a featured image that failed to upload.");
         activityCell.tag = PostSettingsRowFeaturedImageRemove;
         cell = activityCell;
     } else {
-        PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewFeaturedImageCellIdentifier forIndexPath:indexPath];
-        featuredImageCell.delegate = self;
-        [WPStyleGuide configureTableViewCell:featuredImageCell];
-
         NSURL *featuredURL = [NSURL URLWithString:self.apost.featuredImage.remoteURL];
+        // If there is a local copy of the featured image let's use it
         if (!featuredURL) {
-            featuredURL = self.apost.featuredImageURLForDisplay;
+            featuredURL = self.apost.featuredImage.absoluteLocalURL;
         }
-        [featuredImageCell setImageWithURL:featuredURL inPost:self.apost withSize:self.featuredImageSize];
+        if (!featuredURL) {
+            featuredURL = self.apost.featuredImageURLForDisplay;            
+        }
 
-        cell = featuredImageCell;
-        cell.tag = PostSettingsRowFeaturedImage;
+        if (featuredURL) {
+            PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewFeaturedImageCellIdentifier forIndexPath:indexPath];
+            featuredImageCell.delegate = self;
+            [WPStyleGuide configureTableViewCell:featuredImageCell];
+            [featuredImageCell setImageWithURL:featuredURL inPost:self.apost withSize:self.featuredImageSize];
+            cell = featuredImageCell;
+            cell.tag = PostSettingsRowFeaturedImage;
+        }
+    }
+    // If for some reason the cell was not set let's default to the Set Featured image option
+    if (!cell) {
+        WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
+        activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
+        activityCell.tag = PostSettingsRowFeaturedImageAdd;
+
+        cell = activityCell;
     }
 
     return cell;
