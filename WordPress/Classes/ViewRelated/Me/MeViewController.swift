@@ -53,8 +53,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         ImmuTable.registerRows([
             NavigationItemRow.self,
-            BadgeNavigationItemRow.self, // Helpshift
-            IndicatorNavigationItemRow.self, // Zendesk
+            IndicatorNavigationItemRow.self,
             ButtonRow.self,
             DestructiveButtonRow.self
             ], tableView: self.tableView)
@@ -171,30 +170,12 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             accessoryType: accessoryType,
             action: pushNotificationSettings())
 
-        // Helpshift
-        let helpshiftBadgeCount = HelpshiftUtils.isHelpshiftEnabled() ? HelpshiftUtils.unreadNotificationCount() : 0
-        let helpAndSupportBadge = BadgeNavigationItemRow(
-            title: RowTitles.support,
-            icon: Gridicon.iconOfType(.help),
-            badgeCount: helpshiftBadgeCount,
-            accessoryType: accessoryType,
-            action: pushHelp())
-
-        // Zendesk
         let helpAndSupportIndicator = IndicatorNavigationItemRow(
             title: RowTitles.support,
             icon: Gridicon.iconOfType(.help),
             showIndicator: ZendeskUtils.showSupportNotificationIndicator,
             accessoryType: accessoryType,
             action: pushHelp())
-
-        let helpAndSupportSection: ImmuTableSection = {
-            if FeatureFlag.zendeskMobile.enabled {
-                return ImmuTableSection(rows: [helpAndSupportIndicator])
-            } else {
-                return ImmuTableSection(rows: [helpAndSupportBadge])
-            }
-        }()
 
         let logIn = ButtonRow(
             title: RowTitles.logIn,
@@ -216,7 +197,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                         appSettingsRow,
                         notificationSettings
                         ]),
-                    helpAndSupportSection,
+                    ImmuTableSection(rows: [helpAndSupportIndicator]),
                     ImmuTableSection(
                         headerText: wordPressComAccount,
                         rows: [
@@ -229,7 +210,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                     ImmuTableSection(rows: [
                         appSettingsRow,
                         ]),
-                    helpAndSupportSection,
+                    ImmuTableSection(rows: [helpAndSupportIndicator]),
                     ImmuTableSection(
                         headerText: wordPressComAccount,
                         rows: [
@@ -400,10 +381,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         let matchRow: ((ImmuTableRow) -> Bool) = { row in
             if let row = row as? NavigationItemRow {
                 return row.title == rowTitle
-            // Helpshift
-            } else if let row = row as? BadgeNavigationItemRow {
-                return row.title == rowTitle
-            // Zendesk
             } else if let row = row as? IndicatorNavigationItemRow {
                 return row.title == rowTitle
             }
