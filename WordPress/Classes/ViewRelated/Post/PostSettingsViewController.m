@@ -723,61 +723,74 @@ FeaturedImageViewControllerDelegate>
 
 - (UITableViewCell *)configureFeaturedImageCellForIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell;
+    if (!self.apost.featuredImage && !self.isUploadingMedia) {
+        return [self cellForSetFeaturedImage];
 
-    if (!self.apost.featuredImage) {
-        WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
-        activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
-        activityCell.tag = PostSettingsRowFeaturedImageAdd;
-
-        cell = activityCell;
     } else if (self.isUploadingMedia || self.apost.featuredImage.remoteStatus == MediaRemoteStatusPushing) {
         // Is featured Image set on the post and it's being pushed to the server?
         if (!self.isUploadingMedia) {
             self.isUploadingMedia = YES;
-            [self setupObservingOfMedia: self.apost.featuredImage];
+            [self setupObservingOfMedia:self.apost.featuredImage];
         }
         self.featuredImage = nil;
-        self.progressCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewProgressCellIdentifier forIndexPath:indexPath];
-        [WPStyleGuide configureTableViewCell:self.progressCell];        
-        [self.progressCell setProgress:self.featuredImageProgress];
-        self.progressCell.tag = PostSettingsRowFeaturedLoading;
-        cell = self.progressCell;
+        return [self cellForFeaturedImageUploadProgressAtIndexPath:indexPath];
+
     } else if (self.apost.featuredImage && self.apost.featuredImage.remoteStatus == MediaRemoteStatusFailed) {
         // Do we have an feature image set and for some reason the upload failed?
-        WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
-        activityCell.textLabel.text = NSLocalizedString(@"Upload failed. Tap for options.", @"Description to show on post setting for a featured image that failed to upload.");
-        activityCell.tag = PostSettingsRowFeaturedImageRemove;
-        cell = activityCell;
+        return [self cellForFeaturedImageError];
     } else {
-        NSURL *featuredURL = [NSURL URLWithString:self.apost.featuredImage.remoteURL];
-        // If there is a local copy of the featured image let's use it
+        NSURL *featuredURL = [self urlForFeaturedImage];
         if (!featuredURL) {
-            featuredURL = self.apost.featuredImage.absoluteLocalURL;
-        }
-        if (!featuredURL) {
-            featuredURL = self.apost.featuredImageURLForDisplay;            
+            return [self cellForSetFeaturedImage];
         }
 
-        if (featuredURL) {
-            PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewFeaturedImageCellIdentifier forIndexPath:indexPath];
-            featuredImageCell.delegate = self;
-            [WPStyleGuide configureTableViewCell:featuredImageCell];
-            [featuredImageCell setImageWithURL:featuredURL inPost:self.apost withSize:self.featuredImageSize];
-            cell = featuredImageCell;
-            cell.tag = PostSettingsRowFeaturedImage;
-        }
+        return [self cellForFeaturedImageWithURL:featuredURL atIndexPath:indexPath];
     }
-    // If for some reason the cell was not set let's default to the Set Featured image option
-    if (!cell) {
-        WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
-        activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
-        activityCell.tag = PostSettingsRowFeaturedImageAdd;
+}
 
-        cell = activityCell;
+- (UITableViewCell *)cellForSetFeaturedImage
+{
+    WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
+    activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
+    activityCell.tag = PostSettingsRowFeaturedImageAdd;
+
+    return activityCell;
+}
+
+- (UITableViewCell *)cellForFeaturedImageError
+{
+    WPTableViewActivityCell *activityCell = [self getWPTableViewActivityCell];
+    activityCell.textLabel.text = NSLocalizedString(@"Upload failed. Tap for options.", @"Description to show on post setting for a featured image that failed to upload.");
+    activityCell.tag = PostSettingsRowFeaturedImageRemove;
+    return activityCell;
+}
+
+- (UITableViewCell *)cellForFeaturedImageUploadProgressAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.progressCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewProgressCellIdentifier forIndexPath:indexPath];
+    [WPStyleGuide configureTableViewCell:self.progressCell];
+    [self.progressCell setProgress:self.featuredImageProgress];
+    self.progressCell.tag = PostSettingsRowFeaturedLoading;
+    return self.progressCell;
+}
+
+- (UITableViewCell *)cellForFeaturedImageWithURL:(nonnull NSURL *)featuredURL atIndexPath:(NSIndexPath *)indexPath
+{
+    PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewFeaturedImageCellIdentifier forIndexPath:indexPath];
+    featuredImageCell.delegate = self;
+    [WPStyleGuide configureTableViewCell:featuredImageCell];
+
+    [featuredImageCell setImageWithURL:featuredURL inPost:self.apost withSize:self.featuredImageSize];
+    featuredImageCell.tag = PostSettingsRowFeaturedImage;
+    return featuredImageCell;
+}
+
+- (nullable NSURL *)urlForFeaturedImage {
+    NSURL *featuredURL = [NSURL URLWithString:self.apost.featuredImage.remoteURL];
+    if (!featuredURL) {
+        featuredURL = self.apost.featuredImageURLForDisplay;
     }
-
-    return cell;
+    return featuredURL;
 }
 
 - (UITableViewCell *)configureShareCellForIndexPath:(NSIndexPath *)indexPath
@@ -1228,6 +1241,9 @@ FeaturedImageViewControllerDelegate>
 
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:featuredImageVC];
             [self presentViewController:navigationController animated:YES completion:nil];
+        } else if ([self urlForFeaturedImage] == nil) {
+            //If we don't have a featured image url, the image won't be loaded.
+            [self showMediaPicker];
         }
     } else {
         if (!self.isUploadingMedia) {

@@ -13,9 +13,9 @@
 
 extern CGFloat const PostFeaturedImageCellMargin;
 
-@property (weak, nonatomic) id<PostFeaturedImageCellDelegate> delegate;
-@property (strong, nonatomic, readonly) UIImage *image;
+@property (weak, nonatomic, nullable) id<PostFeaturedImageCellDelegate> delegate;
+@property (strong, nonatomic, readonly, nullable) UIImage *image;
 
-- (void)setImageWithURL:(NSURL *)url inPost:(id<ImageSourceInformation>)postInformation withSize:(CGSize)size;
+- (void)setImageWithURL:(nonnull NSURL *)url inPost:(nonnull id<ImageSourceInformation>)postInformation withSize:(CGSize)size;
 
 @end
