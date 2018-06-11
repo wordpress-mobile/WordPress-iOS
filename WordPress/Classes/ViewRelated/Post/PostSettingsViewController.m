@@ -61,6 +61,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCellIdentifier";
 static NSString *const TableViewFeaturedImageCellIdentifier = @"TableViewFeaturedImageCellIdentifier";
 
+static void *PostGeoLocationObserverContext = &PostGeoLocationObserverContext;
+
 @interface PostSettingsViewController () <UITextFieldDelegate, WPPickerViewDelegate,
 UIImagePickerControllerDelegate, UINavigationControllerDelegate,
 UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate,
@@ -292,19 +294,13 @@ FeaturedImageViewControllerDelegate>
 - (void)addPostPropertiesObserver
 {
     [self.post addObserver:self
-             forKeyPath:NSStringFromSelector(@selector(featuredImage))
-                options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-                context:nil];
-
-    [self.post addObserver:self
              forKeyPath:NSStringFromSelector(@selector(geolocation))
                 options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-                context:nil];
+                context:PostGeoLocationObserverContext];
 }
 
 - (void)removePostPropertiesObserver
 {
-    [self.post removeObserver:self forKeyPath:NSStringFromSelector(@selector(featuredImage))];
     [self.post removeObserver:self forKeyPath:NSStringFromSelector(@selector(geolocation))];
 }
 
@@ -313,10 +309,13 @@ FeaturedImageViewControllerDelegate>
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    if ([NSStringFromSelector(@selector(featuredImage)) isEqualToString:keyPath]) {
-        self.featuredImage = nil;
-    }
-    [self.tableView reloadData];
+    if (context == PostGeoLocationObserverContext && object == self.post) {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [self.tableView reloadData];
+        }];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }    
 }
 
 #pragma mark - Instance Methods
