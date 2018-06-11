@@ -105,7 +105,7 @@ class ReaderSiteSearchViewController: UITableViewController {
                               success: { [weak self] (feeds, hasMore, totalFeeds) in
                                 self?.feeds.append(contentsOf: feeds)
                                 self?.totalFeedCount = totalFeeds
-                                self?.reloadData(hasMore)
+                                self?.reloadData(hasMoreResults: hasMore)
                                 success?(hasMore)
             }, failure: { [weak self] error in
                 self?.handleFailedSearch()
@@ -116,7 +116,7 @@ class ReaderSiteSearchViewController: UITableViewController {
         })
     }
 
-    private func reloadData(_ hasMore: Bool = false) {
+    private func reloadData(hasMoreResults: Bool = false) {
         tableView.reloadData()
 
         let noFeeds = feeds.count == 0
@@ -128,7 +128,7 @@ class ReaderSiteSearchViewController: UITableViewController {
             showNoResultsView()
         } else {
             hideStatusView()
-            footerView.showSpinner(hasMore)
+            footerView.showSpinner(hasMoreResults)
         }
     }
 
