@@ -568,7 +568,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     NSManagedObjectID *blogObjectID = [blog objectID];
     [self.managedObjectContext performBlock:^{
         Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogObjectID];
-        NSSet *originalLocalMedia = blog.media;
+        NSSet *originalLocalMedia = blogInContext.media;
         [remote getMediaLibraryWithSuccess:^(NSArray *media) {
                                    [self.managedObjectContext performBlock:^{
                                        [self mergeMedia:media forBlog:blogInContext baseMedia:originalLocalMedia completionHandler:success];
