@@ -783,12 +783,6 @@ static NSString *HelpshiftSupportSingleFAQFlow = @"singleFaqFlow";
  */
 - (void) didCheckIfConversationActive:(BOOL)isActive;
 
-/** Optional delegate method that is called when user reply on current open conversation via any Helpshift API Ex:- showFaq:, showConversation:, etc
- * @param newMessage Return reply message on open conversation.
- * Available in SDK version 5.0.0 or later
- */
-- (void) userRepliedToConversationWithMessage:(NSString *)newMessage;
-
 /**Optional delegate method that is called when user complete customer satisfaction survey after issue getting resolved.
  * @param rating Return the rating of customer satisfaction survey.
  * @param feedback Return text which user added in customer satisfaction survey.

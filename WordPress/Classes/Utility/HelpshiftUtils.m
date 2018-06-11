@@ -188,19 +188,4 @@ CGFloat const HelpshiftFlagCheckDelay = 2.0;
     });
 }
 
-- (void)userRepliedToConversationWithMessage:(NSString *)newMessage
-{
-    if ([newMessage isEqualToString:HelpshiftSupportUserAcceptedTheSolution]) {
-        [WPAnalytics track:WPAnalyticsStatSupportUserAcceptedTheSolution];
-    } else if ([newMessage isEqualToString:HelpshiftSupportUserRejectedTheSolution]) {
-        [WPAnalytics track:WPAnalyticsStatSupportUserRejectedTheSolution];
-    } else if ([newMessage isEqualToString:HelpshiftSupportUserSentScreenShot]) {
-        [WPAnalytics track:WPAnalyticsStatSupportUserSentScreenshot];
-    } else if ([newMessage isEqualToString:HelpshiftSupportUserReviewedTheApp]) {
-        [WPAnalytics track:WPAnalyticsStatSupportUserReviewedTheApp];
-    } else {
-        [WPAnalytics track:WPAnalyticsStatSupportUserRepliedToHelpshift];
-    }
-}
-
 @end
