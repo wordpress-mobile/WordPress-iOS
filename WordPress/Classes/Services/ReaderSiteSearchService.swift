@@ -32,7 +32,7 @@ typealias ReaderSiteSearchFailureBlock = (_ error: Error?) -> Void
     ///                more feeds to fetch), and a total feed count.
     ///     - failure: Failure block called on a failed search.
     ///
-    func performSearch(withQuery query: String,
+    func performSearch(with query: String,
                        page: Int,
                        success: @escaping ReaderSiteSearchSuccessBlock,
                        failure: @escaping ReaderSiteSearchFailureBlock) {

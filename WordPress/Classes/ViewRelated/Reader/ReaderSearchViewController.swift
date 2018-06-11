@@ -270,8 +270,8 @@ import Gridicons
         }
     }
 
-    private func performSitesSearch(for phrase: String) {
-        siteSearchController.searchTerm = phrase
+    private func performSitesSearch(for query: String) {
+        siteSearchController.searchQuery = query
     }
 
 
