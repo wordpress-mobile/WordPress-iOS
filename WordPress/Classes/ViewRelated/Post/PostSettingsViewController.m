@@ -786,7 +786,12 @@ FeaturedImageViewControllerDelegate>
 }
 
 - (nullable NSURL *)urlForFeaturedImage {
-    NSURL *featuredURL = [NSURL URLWithString:self.apost.featuredImage.remoteURL];
+    NSURL *featuredURL = self.apost.featuredImage.absoluteLocalURL;
+
+    if (!featuredURL || ![featuredURL checkResourceIsReachableAndReturnError:nil]) {
+        featuredURL = [NSURL URLWithString:self.apost.featuredImage.remoteURL];
+    }
+
     if (!featuredURL) {
         featuredURL = self.apost.featuredImageURLForDisplay;
     }
