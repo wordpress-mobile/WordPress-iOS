@@ -39,6 +39,7 @@ class WebKitViewController: UIViewController {
     @objc let navigationDelegate: WebNavigationDelegate?
     @objc var secureInteraction = false
     @objc var addsWPComReferrer = false
+    @objc var addsHideMasterbarParameters = true
     @objc var customTitle: String?
 
     @objc init(configuration: WebViewControllerConfiguration) {
@@ -47,6 +48,7 @@ class WebKitViewController: UIViewController {
         customOptionsButton = configuration.optionsButton
         secureInteraction = configuration.secureInteraction
         addsWPComReferrer = configuration.addsWPComReferrer
+        addsHideMasterbarParameters = configuration.addsHideMasterbarParameters
         customTitle = configuration.customTitle
         authenticator = configuration.authenticator
         navigationDelegate = configuration.navigationDelegate
@@ -61,6 +63,7 @@ class WebKitViewController: UIViewController {
         customOptionsButton = parent.customOptionsButton
         secureInteraction = parent.secureInteraction
         addsWPComReferrer = parent.addsWPComReferrer
+        addsHideMasterbarParameters = parent.addsHideMasterbarParameters
         customTitle = parent.customTitle
         authenticator = parent.authenticator
         navigationDelegate = parent.navigationDelegate
@@ -122,8 +125,15 @@ class WebKitViewController: UIViewController {
     @objc func load(request: URLRequest) {
         var request = request
         if addsWPComReferrer {
-            request.setValue("https://wordpress.com", forHTTPHeaderField: "Referer")
+            request.setValue(WPComReferrerURL, forHTTPHeaderField: "Referer")
         }
+
+        if addsHideMasterbarParameters,
+            let host = request.url?.host,
+            (host.contains(WPComDomain) || host.contains(AutomatticDomain)) {
+            request.url = request.url?.appendingHideMasterbarParameters()
+        }
+
         webView.load(request)
     }
 
@@ -307,6 +317,7 @@ class WebKitViewController: UIViewController {
             assertionFailure("Observed change to web view that we are not handling")
         }
     }
+
 }
 
 extension WebKitViewController: WKNavigationDelegate {
