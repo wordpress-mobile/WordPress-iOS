@@ -27,7 +27,7 @@ class ReaderSiteSearchViewController: UITableViewController {
     }
     fileprivate var totalFeedCount: Int = 0
 
-    var searchTerm: String? = nil {
+    var searchQuery: String? = nil {
         didSet {
             feeds = []
             totalFeedCount = 0
@@ -85,12 +85,12 @@ class ReaderSiteSearchViewController: UITableViewController {
 
     // MARK: - Actions
 
-    private func performSearch(for term: String?,
+    private func performSearch(with query: String?,
                                page: Int,
                                success: ((_ hasMore: Bool) -> Void)?,
                                failure: ((_ error: NSError) -> Void)?) {
-        guard let term = term,
-            !term.isEmpty else {
+        guard let query = query,
+            !query.isEmpty else {
                 return
         }
 
@@ -100,7 +100,7 @@ class ReaderSiteSearchViewController: UITableViewController {
 
         let context = ContextManager.sharedInstance().mainContext
         let service = ReaderSiteSearchService(managedObjectContext: context)
-        service.performSearch(withQuery: term,
+        service.performSearch(with: query,
                               page: page,
                               success: { [weak self] (feeds, hasMore, totalFeeds) in
                                 self?.feeds.append(contentsOf: feeds)
@@ -147,7 +147,7 @@ class ReaderSiteSearchViewController: UITableViewController {
         statusView.titleText = NSLocalizedString("No sites found", comment: "A message title")
 
         let localizedMessageText = NSLocalizedString("No sites found matching %@ in your language.", comment: "Message shown when the reader finds no sites for the specified search phrase. The %@ is a placeholder for the search phrase.")
-        statusView.messageText = NSString(format: localizedMessageText as NSString, searchTerm ?? "") as String
+        statusView.messageText = NSString(format: localizedMessageText as NSString, searchQuery ?? "") as String
 
         statusView.accessoryView = nil
         statusView.buttonTitle = nil
@@ -257,14 +257,14 @@ extension ReaderSiteSearchViewController: WPContentSyncHelperDelegate {
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
         let nextPage = Int(round(Float(feeds.count)/Float(ReaderSiteSearchService.pageSize)))
 
-        performSearch(for: searchTerm,
+        performSearch(with: searchQuery,
                       page: nextPage,
                       success: success,
                       failure: failure)
     }
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
-        performSearch(for: searchTerm,
+        performSearch(with: searchQuery,
                       page: 0,
                       success: success,
                       failure: failure)
