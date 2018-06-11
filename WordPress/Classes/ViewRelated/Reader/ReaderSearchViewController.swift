@@ -224,6 +224,10 @@ import Gridicons
 
         siteSearchController.didMove(toParentViewController: self)
 
+        if let topic = restoredSearchTopic {
+            siteSearchController.searchQuery = topic.title
+        }
+
         siteSearchController.view.isHidden = true
     }
 

@@ -2,7 +2,7 @@ import UIKit
 
 /// Displays search results from a reader site search.
 ///
-class ReaderSiteSearchViewController: UITableViewController {
+class ReaderSiteSearchViewController: UITableViewController, UIViewControllerRestoration {
 
     // MARK: - Properties
     // MARK: Table / Sync Handlers
@@ -47,10 +47,21 @@ class ReaderSiteSearchViewController: UITableViewController {
     fileprivate let headerView = ReaderSiteSearchHeaderView()
     fileprivate let footerView = ReaderSiteSearchFooterView()
 
+    // MARK: - State restoration
+
+    private static let restorationClassIdentifier = "ReaderSiteSearchRestorationIdentifier"
+
+    static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+        return ReaderSiteSearchViewController()
+    }
+
     // MARK: - View lifecycle
 
     init() {
         super.init(style: .plain)
+
+        restorationIdentifier = ReaderSiteSearchViewController.restorationClassIdentifier
+        restorationClass = ReaderSiteSearchViewController.self
     }
 
     required init?(coder aDecoder: NSCoder) {
