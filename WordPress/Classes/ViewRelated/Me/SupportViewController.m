@@ -350,7 +350,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
             }
         } else if (indexPath.row == SettingsSectionFAQForumsRowContact) {
             if ([HelpshiftUtils isHelpshiftEnabled]) {
-                [WPAnalytics track:WPAnalyticsStatSupportOpenedHelpshiftScreen];
                 [self prepareAndDisplayHelpshiftWindowOfType:kHelpshiftWindowTypeConversation];
             } else {
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://ios.forums.wordpress.org"] options:nil completionHandler:nil];
