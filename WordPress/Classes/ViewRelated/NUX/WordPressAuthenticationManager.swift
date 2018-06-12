@@ -156,7 +156,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             sourceViewController.present(navController, animated: true, completion: nil)
         } else {
             let supportViewController = SupportViewController()
-            supportViewController.sourceTag = sourceTag.toSupportSourceTag()
             supportViewController.helpshiftOptions = options
 
             let navController = UINavigationController(rootViewController: supportViewController)
@@ -176,7 +175,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: sourceViewController, with: sourceTag)
         } else {
             let presenter = HelpshiftPresenter()
-            presenter.sourceTag = sourceTag.toSupportSourceTag()
             presenter.optionsDictionary = options
             presenter.presentHelpshiftConversationWindowFromViewController(sourceViewController,
                                                                            refreshUserDetails: true,
