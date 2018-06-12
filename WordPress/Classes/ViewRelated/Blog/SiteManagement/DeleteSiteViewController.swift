@@ -169,11 +169,9 @@ open class DeleteSiteViewController: UITableViewController {
         tableView.deselectSelectedRowWithAnimation(true)
 
         WPAppAnalytics.track(.siteSettingsStartOverContactSupportClicked, with: blog)
-        if HelpshiftUtils.isHelpshiftEnabled() {
-            setupHelpshift(blog.account!)
 
-            let metadata = helpshiftMetadata(blog)
-            HelpshiftSupport.showConversation(self, with: metadata)
+        if ZendeskUtils.zendeskEnabled {
+            ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self, with: .deleteSite)
         } else {
             if let contact = URL(string: "https://support.wordpress.com/contact/") {
                 UIApplication.shared.open(contact)
@@ -298,29 +296,4 @@ open class DeleteSiteViewController: UITableViewController {
         }
     }
 
-    // MARK: - Contact Support Helpers
-
-    fileprivate func setupHelpshift(_ account: WPAccount) {
-        let user = account.userID.stringValue
-        HelpshiftSupport.setUserIdentifier(user)
-
-        let name = account.username
-        let email = account.email
-        HelpshiftCore.setName(name, andEmail: email)
-    }
-
-    fileprivate func helpshiftMetadata(_ blog: Blog) -> HelpshiftAPIConfig {
-        let tags = blog.account.map({ HelpshiftUtils.planTags(for: $0) }) ?? []
-
-        let config: [AnyHashable: Any] = [
-            HelpshiftSupportCustomMetadataKey: [
-                "Source": "Delete Site",
-                "Blog": blog.logDescription(),
-                HelpshiftSupportTagsKey: tags as Any?]
-        ]
-        let builder = HelpshiftAPIConfigBuilder()
-        builder.extraConfig = config
-
-        return builder.build()
-    }
 }
