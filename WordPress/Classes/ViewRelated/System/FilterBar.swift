@@ -17,7 +17,6 @@ class FilterTabBar: UIControl {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
         stackView.spacing = 0
         return stackView
     }()
@@ -90,8 +89,21 @@ class FilterTabBar: UIControl {
 
     // MARK: - Tab Sizing
 
-    private var stackViewEdgeConstraints: [NSLayoutConstraint]!
-    private var stackViewWidthConstraint: NSLayoutConstraint!
+    private var stackViewEdgeConstraints: [NSLayoutConstraint]! {
+        didSet {
+            if let oldValue = oldValue {
+                NSLayoutConstraint.deactivate(oldValue)
+            }
+        }
+    }
+
+    private var stackViewWidthConstraint: NSLayoutConstraint! {
+        didSet {
+            if let oldValue = oldValue {
+                NSLayoutConstraint.deactivate([oldValue])
+            }
+        }
+    }
 
     enum TabSizingStyle {
         /// The tabs will fill the space available to the filter bar,
@@ -108,6 +120,7 @@ class FilterTabBar: UIControl {
     var tabSizingStyle: TabSizingStyle = .fitting {
         didSet {
             updateTabSizingConstraints()
+            activateTabSizingConstraints()
         }
     }
 
@@ -140,13 +153,10 @@ class FilterTabBar: UIControl {
 
         scrollView.addSubview(stackView)
 
-        stackViewEdgeConstraints = [
-            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: AppearanceMetrics.horizontalPadding),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -AppearanceMetrics.horizontalPadding)
-        ]
         stackViewWidthConstraint = stackView.widthAnchor.constraint(equalTo: widthAnchor)
 
         updateTabSizingConstraints()
+        activateTabSizingConstraints()
 
         NSLayoutConstraint.activate([
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
@@ -201,13 +211,24 @@ class FilterTabBar: UIControl {
     }
 
     private func updateTabSizingConstraints() {
+        let padding = (tabSizingStyle == .equalWidths) ? 0 : AppearanceMetrics.horizontalPadding
+
+        stackViewEdgeConstraints = [
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding)
+        ]
+    }
+
+    private func activateTabSizingConstraints() {
+        NSLayoutConstraint.activate(stackViewEdgeConstraints)
+
         switch tabSizingStyle {
         case .equalWidths:
-            NSLayoutConstraint.deactivate(stackViewEdgeConstraints)
+            stackView.distribution = .fillEqually
             NSLayoutConstraint.activate([stackViewWidthConstraint])
         case .fitting:
+            stackView.distribution = .fill
             NSLayoutConstraint.deactivate([stackViewWidthConstraint])
-            NSLayoutConstraint.activate(stackViewEdgeConstraints)
         }
     }
 
