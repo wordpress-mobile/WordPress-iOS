@@ -1,6 +1,6 @@
 import Foundation
 
-extension SupportViewController: SearchableActivityConvertable {
+extension SupportTableViewController: SearchableActivityConvertable {
     var activityType: String {
         return WPActivityType.support.rawValue
     }
@@ -21,7 +21,7 @@ extension SupportViewController: SearchableActivityConvertable {
         return Set(keywordArray)
     }
 
-    @objc func createUserActivity() {
+    func createUserActivity() {
         registerUserActivity()
     }
 }

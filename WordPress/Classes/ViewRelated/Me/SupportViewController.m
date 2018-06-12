@@ -137,7 +137,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self createUserActivity];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
