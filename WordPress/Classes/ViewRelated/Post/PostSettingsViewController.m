@@ -61,6 +61,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCellIdentifier";
 static NSString *const TableViewFeaturedImageCellIdentifier = @"TableViewFeaturedImageCellIdentifier";
 
+static void *PostGeoLocationObserverContext = &PostGeoLocationObserverContext;
+
 @interface PostSettingsViewController () <UITextFieldDelegate, WPPickerViewDelegate,
 UIImagePickerControllerDelegate, UINavigationControllerDelegate,
 UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate,
@@ -292,19 +294,13 @@ FeaturedImageViewControllerDelegate>
 - (void)addPostPropertiesObserver
 {
     [self.post addObserver:self
-             forKeyPath:NSStringFromSelector(@selector(featuredImage))
-                options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-                context:nil];
-
-    [self.post addObserver:self
              forKeyPath:NSStringFromSelector(@selector(geolocation))
                 options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-                context:nil];
+                context:PostGeoLocationObserverContext];
 }
 
 - (void)removePostPropertiesObserver
 {
-    [self.post removeObserver:self forKeyPath:NSStringFromSelector(@selector(featuredImage))];
     [self.post removeObserver:self forKeyPath:NSStringFromSelector(@selector(geolocation))];
 }
 
@@ -313,10 +309,13 @@ FeaturedImageViewControllerDelegate>
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    if ([NSStringFromSelector(@selector(featuredImage)) isEqualToString:keyPath]) {
-        self.featuredImage = nil;
-    }
-    [self.tableView reloadData];
+    if (context == PostGeoLocationObserverContext && object == self.post) {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [self.tableView reloadData];
+        }];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }    
 }
 
 #pragma mark - Instance Methods
@@ -728,6 +727,7 @@ FeaturedImageViewControllerDelegate>
         return [self cellForSetFeaturedImage];
 
     } else if (self.isUploadingMedia || self.apost.featuredImage.remoteStatus == MediaRemoteStatusPushing) {
+        // Is featured Image set on the post and it's being pushed to the server?
         if (!self.isUploadingMedia) {
             self.isUploadingMedia = YES;
             [self setupObservingOfMedia:self.apost.featuredImage];
@@ -736,8 +736,8 @@ FeaturedImageViewControllerDelegate>
         return [self cellForFeaturedImageUploadProgressAtIndexPath:indexPath];
 
     } else if (self.apost.featuredImage && self.apost.featuredImage.remoteStatus == MediaRemoteStatusFailed) {
+        // Do we have an feature image set and for some reason the upload failed?
         return [self cellForFeaturedImageError];
-
     } else {
         NSURL *featuredURL = [self urlForFeaturedImage];
         if (!featuredURL) {
@@ -786,7 +786,12 @@ FeaturedImageViewControllerDelegate>
 }
 
 - (nullable NSURL *)urlForFeaturedImage {
-    NSURL *featuredURL = [NSURL URLWithString:self.apost.featuredImage.remoteURL];
+    NSURL *featuredURL = self.apost.featuredImage.absoluteLocalURL;
+
+    if (!featuredURL || ![featuredURL checkResourceIsReachableAndReturnError:nil]) {
+        featuredURL = [NSURL URLWithString:self.apost.featuredImage.remoteURL];
+    }
+
     if (!featuredURL) {
         featuredURL = self.apost.featuredImageURLForDisplay;
     }
