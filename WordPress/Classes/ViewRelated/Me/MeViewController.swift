@@ -299,19 +299,14 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     func pushHelp() -> ImmuTableAction {
         return { [unowned self] row in
-            if FeatureFlag.zendeskMobile.enabled {
-                let controller = SupportTableViewController()
+            let controller = SupportTableViewController()
 
-                // If iPad, show Support from Me view controller instead of navigation controller.
-                if !self.splitViewControllerIsHorizontallyCompact {
-                    controller.showHelpFromViewController = self
-                }
-
-                self.showDetailViewController(controller, sender: self)
-            } else {
-                let controller = SupportViewController()
-                self.showDetailViewController(controller, sender: self)
+            // If iPad, show Support from Me view controller instead of navigation controller.
+            if !self.splitViewControllerIsHorizontallyCompact {
+                controller.showHelpFromViewController = self
             }
+
+            self.showDetailViewController(controller, sender: self)
         }
     }
 
