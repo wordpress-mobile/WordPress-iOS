@@ -91,9 +91,7 @@ final public class PushNotificationsManager: NSObject {
         let newToken = tokenData.hexString
 
         // Register device with Zendesk
-        if FeatureFlag.zendeskMobile.enabled {
-            ZendeskUtils.setNeedToRegisterDevice(newToken)
-        }
+        ZendeskUtils.setNeedToRegisterDevice(newToken)
 
         if deviceToken != newToken {
             DDLogInfo("Device Token has changed! OLD Value: \(String(describing: deviceToken)), NEW value: \(newToken)")
@@ -133,8 +131,7 @@ final public class PushNotificationsManager: NSObject {
         }
 
         // Unregister device with Zendesk
-        if FeatureFlag.zendeskMobile.enabled,
-            let deviceToken = deviceToken {
+        if let deviceToken = deviceToken {
             ZendeskUtils.unregisterDevice(deviceToken)
         }
 
