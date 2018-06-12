@@ -706,7 +706,6 @@
 		B56994451B7A7EF200FF26FA /* WPStyleGuide+Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56994441B7A7EF200FF26FA /* WPStyleGuide+Comments.swift */; };
 		B56A70181B5040B9001D5815 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56A70171B5040B9001D5815 /* SwitchTableViewCell.swift */; };
 		B56F25881FBDE502005C33E4 /* NSAttributedStringKey+Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56F25871FBDE502005C33E4 /* NSAttributedStringKey+Conversion.swift */; };
-		B56F5CF7207F8C5500260E0E /* WordPressAuthenticator.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B5ED790E207E97D100A8FD8C /* WordPressAuthenticator.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B56FEB791CD8E13C00E621F9 /* RoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56FEB781CD8E13C00E621F9 /* RoleViewController.swift */; };
 		B5722E421D51A28100F40C5E /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5722E401D51A28100F40C5E /* Notification.swift */; };
 		B57273601B66CCEF000D1C4F /* AlertInternalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B572735D1B66CCEF000D1C4F /* AlertInternalView.swift */; };
@@ -774,7 +773,6 @@
 		B5EB19EC20C6DACC008372B9 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EB19EB20C6DACC008372B9 /* ImageDownloader.swift */; };
 		B5ECA6CA1DBAA0020062D7E0 /* CoreDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ECA6C91DBAA0020062D7E0 /* CoreDataHelper.swift */; };
 		B5ECA6CD1DBAAD510062D7E0 /* CoreDataHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ECA6CC1DBAAD510062D7E0 /* CoreDataHelperTests.swift */; };
-		B5ED790F207E97D100A8FD8C /* WordPressAuthenticator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5ED790E207E97D100A8FD8C /* WordPressAuthenticator.framework */; };
 		B5EEB19F1CA96D19004B6540 /* ImageCropViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5EEB19E1CA96D19004B6540 /* ImageCropViewController.xib */; };
 		B5EEDB971C91F10400676B2B /* Blog+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EEDB961C91F10400676B2B /* Blog+Interface.swift */; };
 		B5EFB1C21B31B98E007608A3 /* NotificationSettingsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EFB1C11B31B98E007608A3 /* NotificationSettingsService.swift */; };
@@ -1300,7 +1298,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B56F5CF7207F8C5500260E0E /* WordPressAuthenticator.framework in CopyFiles */,
 				FF854B8D1FD16DA20043BB2B /* WordPressFlux.framework in CopyFiles */,
 				9356471D1EBE18C100604C6C /* WordPressComStatsiOS.framework in CopyFiles */,
 			);
@@ -2976,7 +2973,6 @@
 				B5AA54D51A8E7510003BDD12 /* WebKit.framework in Frameworks */,
 				E19FED0A1FBD85F300D77FAB /* WordPressFlux.framework in Frameworks */,
 				9356471C1EBE18C100604C6C /* WordPressComStatsiOS.framework in Frameworks */,
-				B5ED790F207E97D100A8FD8C /* WordPressAuthenticator.framework in Frameworks */,
 				722F5726ACB4A276B0CF3C83 /* Pods_WordPress.framework in Frameworks */,
 				93F2E53D1E9E596A0050D489 /* libHelpshift.a in Frameworks */,
 				93F2E5401E9E5A180050D489 /* libsqlite3.tbd in Frameworks */,
@@ -6708,9 +6704,8 @@
 				"${BUILT_PRODUCTS_DIR}/Automattic-Tracks-iOS/AutomatticTracks.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
 				"${BUILT_PRODUCTS_DIR}/FormatterKit/FormatterKit.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
-				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/Gifu/Gifu.framework",
+				"${PODS_ROOT}/GoogleSignInRepacked/Frameworks/GoogleSignIn.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Gridicons/Gridicons.framework",
 				"${BUILT_PRODUCTS_DIR}/MGSwipeTableCell/MGSwipeTableCell.framework",
@@ -6723,6 +6718,7 @@
 				"${BUILT_PRODUCTS_DIR}/UIDeviceIdentifier/UIDeviceIdentifier.framework",
 				"${BUILT_PRODUCTS_DIR}/WPMediaPicker/WPMediaPicker.framework",
 				"${BUILT_PRODUCTS_DIR}/WordPress-Aztec-iOS/Aztec.framework",
+				"${BUILT_PRODUCTS_DIR}/WordPressAuthenticator/WordPressAuthenticator.framework",
 				"${BUILT_PRODUCTS_DIR}/WordPressKit/WordPressKit.framework",
 				"${BUILT_PRODUCTS_DIR}/WordPressShared/WordPressShared.framework",
 				"${BUILT_PRODUCTS_DIR}/WordPressUI/WordPressUI.framework",
@@ -6737,9 +6733,8 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AutomatticTracks.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FormatterKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gifu.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleSignIn.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gridicons.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MGSwipeTableCell.framework",
@@ -6752,6 +6747,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIDeviceIdentifier.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WPMediaPicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Aztec.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WordPressAuthenticator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WordPressKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WordPressShared.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WordPressUI.framework",
@@ -6838,12 +6834,14 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/../Pods/Target Support Files/Pods-WordPress/Pods-WordPress-resources.sh",
+				"${PODS_ROOT}/GoogleSignInRepacked/Resources/GoogleSignIn.bundle",
 				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK.bundle",
 				"${PODS_ROOT}/ZendeskSDK/ZendeskSDKStrings.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/HockeySDK/HockeySDKResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZendeskSDK.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ZendeskSDKStrings.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/HockeySDKResources.bundle",
@@ -8297,7 +8295,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEFINES_MODULE = YES;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes\"",
@@ -8439,6 +8437,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
+				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -8492,6 +8491,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = PZYM8XX95Q;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -8541,6 +8541,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 99KV9Z6BKV;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -8591,6 +8592,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 99KV9Z6BKV;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -8980,6 +8982,7 @@
 				CODE_SIGN_ENTITLEMENTS = "WordPressTodayWidget/WordPressTodayWidget-Alpha.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -9044,6 +9047,7 @@
 				CODE_SIGN_ENTITLEMENTS = WordPressShareExtension/WordPressShare.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -9109,6 +9113,7 @@
 				CODE_SIGN_ENTITLEMENTS = WordPressShareExtension/WordPressShare.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc. (PZYM8XX95Q)";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -9171,6 +9176,7 @@
 				CODE_SIGN_ENTITLEMENTS = "WordPressShareExtension/WordPressShare-Internal.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -9234,6 +9240,7 @@
 				CODE_SIGN_ENTITLEMENTS = "WordPressShareExtension/WordPressShare-Alpha.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -9449,6 +9456,7 @@
 				CODE_SIGN_ENTITLEMENTS = WordPressTodayWidget/WordPressTodayWidget.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -9505,6 +9513,7 @@
 				CODE_SIGN_ENTITLEMENTS = WordPressTodayWidget/WordPressTodayWidget.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc. (PZYM8XX95Q)";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -9558,6 +9567,7 @@
 				CODE_SIGN_ENTITLEMENTS = "WordPressTodayWidget/WordPressTodayWidget-Internal.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";

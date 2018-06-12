@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="e6u-CC-aMV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="e6u-CC-aMV">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -79,9 +79,6 @@
                                     <constraint firstAttribute="height" constant="84" placeholder="YES" id="4ne-6n-cLh"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="84" id="dqd-0X-vaL"/>
                                 </constraints>
-                                <connections>
-                                    <segue destination="Ssr-Ju-yvl" kind="embed" identifier="showSignupEpilogueButtonView" id="GUR-1d-sGu"/>
-                                </connections>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" red="0.91372549020000005" green="0.93725490199999995" blue="0.95294117649999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -97,6 +94,7 @@
                         <viewLayoutGuide key="safeArea" id="Zhy-FD-gA0"/>
                     </view>
                     <connections>
+                        <outlet property="buttonViewContainer" destination="240-cE-xSD" id="JhA-hU-tpt"/>
                         <segue destination="CFB-8a-SBe" kind="show" identifier="showUsernames" id="39l-r4-qyx"/>
                     </connections>
                 </viewController>
@@ -122,14 +120,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tiD-YJ-s0w" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1009" y="351"/>
-        </scene>
-        <!--ButtonView-->
-        <scene sceneID="Lwz-51-8gb">
-            <objects>
-                <viewControllerPlaceholder storyboardName="NUXButtonView" bundleIdentifier="com.automattic.WordPressAuthenticator" referencedIdentifier="ButtonView" id="Ssr-Ju-yvl" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="SWf-JM-jZ7" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="128" y="830"/>
         </scene>
     </scenes>
 </document>
