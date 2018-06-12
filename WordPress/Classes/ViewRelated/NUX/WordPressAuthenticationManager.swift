@@ -16,12 +16,8 @@ class WordPressAuthenticationManager: NSObject {
     /// We'll setup a mechanism to relay the Support event back to the Authenticator.
     ///
     func startRelayingSupportNotifications() {
-        if FeatureFlag.zendeskMobile.enabled {
-            NotificationCenter.default.addObserver(self, selector: #selector(supportPushNotificationReceived), name: .ZendeskPushNotificationReceivedNotification, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(supportPushNotificationCleared), name: .ZendeskPushNotificationClearedNotification, object: nil)
-        } else {
-            NotificationCenter.default.addObserver(self, selector: #selector(helpshiftUnreadCountWasUpdated), name: .HelpshiftUnreadCountUpdated, object: nil)
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(supportPushNotificationReceived), name: .ZendeskPushNotificationReceivedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(supportPushNotificationCleared), name: .ZendeskPushNotificationClearedNotification, object: nil)
     }
 
     /// Initializes WordPressAuthenticator with all of the paramteres that will be needed during the login flow.
@@ -78,11 +74,6 @@ extension WordPressAuthenticationManager {
 // MARK: - Notification Handlers
 //
 extension WordPressAuthenticationManager {
-
-    @objc
-    func helpshiftUnreadCountWasUpdated(_ notification: Foundation.Notification) {
-        WordPressAuthenticator.shared.supportBadgeCountWasUpdated()
-    }
 
     @objc func supportPushNotificationReceived(_ notification: Foundation.Notification) {
         WordPressAuthenticator.shared.supportPushNotificationReceived()
