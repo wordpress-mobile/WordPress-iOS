@@ -108,28 +108,13 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Indicates if Support is Enabled.
     ///
     var supportEnabled: Bool {
-        if FeatureFlag.zendeskMobile.enabled {
-            return ZendeskUtils.zendeskEnabled
-        }
-        return HelpshiftUtils.isHelpshiftEnabled()
+        return ZendeskUtils.zendeskEnabled
     }
 
     /// Indicates if the Support notification indicator should be displayed.
     ///
     var showSupportNotificationIndicator: Bool {
         return ZendeskUtils.showSupportNotificationIndicator
-    }
-
-    /// Returns Helpshift's Unread Messages Count.
-    ///
-    var supportBadgeCount: Int {
-        return HelpshiftUtils.unreadNotificationCount()
-    }
-
-    /// Refreshes Helpshift's Unread Count.
-    ///
-    func refreshSupportBadgeCount() {
-        HelpshiftUtils.refreshUnreadNotificationCount()
     }
 
     /// Returns an instance of a SupportView, configured to be displayed from a specified Support Source.
