@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2dM-ub-12g">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2dM-ub-12g">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -33,7 +33,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="siteCategory" id="mo3-wG-DI8" customClass="SiteCreationCategoryTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="9aF-3U-2i9">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -42,7 +42,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WqP-gn-21O" id="s7l-PK-2RA">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -68,7 +68,7 @@
             <objects>
                 <collectionViewController id="Po4-wx-4jS" customClass="SiteCreationThemeSelectionViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="LQZ-91-7uu">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="0.0" id="a4a-wm-pWI">
@@ -79,7 +79,7 @@
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="themeSelectionCell" id="lbK-qh-Hdp" customClass="SiteCreationThemeSelectionCell" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="7" y="120" width="250" height="250"/>
+                                <rect key="frame" x="62.5" y="120" width="250" height="250"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                     <rect key="frame" x="0.0" y="0.0" width="250" height="250"/>
@@ -137,20 +137,20 @@
                             </collectionViewCell>
                         </cells>
                         <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="themeSelectionHeader" id="iCa-cP-ztv" customClass="SiteCreationThemeSelectionHeaderView" customModule="WordPress" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="110"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="110"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="4Pj-tx-IJ1">
-                                    <rect key="frame" x="20" y="20" width="560" height="90"/>
+                                    <rect key="frame" x="20" y="20" width="335" height="90"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="STEP 2 OF 4" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5eK-Jm-wvx">
-                                            <rect key="frame" x="0.0" y="0.0" width="560" height="24.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="335" height="18"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                             <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get started fast with one of our popular themes. Once your site is created, you can browse and choose from hundreds more." lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lFZ-UF-Tdj">
-                                            <rect key="frame" x="0.0" y="29.5" width="560" height="60.5"/>
+                                            <rect key="frame" x="0.0" y="23" width="335" height="67"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                             <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -189,39 +189,39 @@
             <objects>
                 <viewController id="aP4-2B-Ezc" customClass="SiteCreationSiteDetailsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="b0M-dQ-sgg">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zB1-MJ-ir0">
-                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="STEP 3 OF 4" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tc3-Bo-Atj">
-                                        <rect key="frame" x="20" y="20" width="560" height="16"/>
+                                        <rect key="frame" x="20" y="20" width="335" height="16"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                         <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tell us more about the site you're creating." lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pKm-Si-GCs">
-                                        <rect key="frame" x="20" y="41" width="560" height="18"/>
+                                        <rect key="frame" x="20" y="41" width="335" height="18"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What's the title and tagline?" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zht-l9-NH1">
-                                        <rect key="frame" x="20" y="64" width="560" height="18"/>
+                                        <rect key="frame" x="20" y="64" width="335" height="18"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                         <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jk0-Rv-hIx" userLabel="Separator Line">
-                                        <rect key="frame" x="0.0" y="101.5" width="600" height="0.5"/>
+                                        <rect key="frame" x="0.0" y="101.5" width="375" height="0.5"/>
                                         <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="CFC-sP-cfB"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dzj-vV-csj" userLabel="Title View">
-                                        <rect key="frame" x="0.0" y="102" width="600" height="21.5"/>
+                                        <rect key="frame" x="0.0" y="102" width="375" height="21.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Site Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fd2-JQ-uX5">
                                                 <rect key="frame" x="20" y="0.0" width="67" height="22"/>
@@ -231,7 +231,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add title" textAlignment="right" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8CU-ee-CNI" customClass="LoginTextField" customModule="WordPressAuthenticator">
-                                                <rect key="frame" x="87" y="0.0" width="513" height="21"/>
+                                                <rect key="frame" x="87" y="0.0" width="288" height="21"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="nuxEmailField"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -257,14 +257,14 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IaW-BS-zlj" userLabel="Separator Line">
-                                        <rect key="frame" x="0.0" y="123.5" width="600" height="0.5"/>
+                                        <rect key="frame" x="0.0" y="123.5" width="375" height="0.5"/>
                                         <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="Jwd-7O-xxH"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qh3-nA-H9v" userLabel="Tagline View">
-                                        <rect key="frame" x="0.0" y="124" width="600" height="21"/>
+                                        <rect key="frame" x="0.0" y="124" width="375" height="21"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Site Tagline" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iol-Va-cKN">
                                                 <rect key="frame" x="20" y="0.0" width="88" height="21"/>
@@ -274,7 +274,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Optional tagline" textAlignment="right" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MyF-yC-tG6" customClass="LoginTextField" customModule="WordPressAuthenticator">
-                                                <rect key="frame" x="108" y="0.0" width="492" height="21"/>
+                                                <rect key="frame" x="108" y="0.0" width="267" height="21"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="nuxEmailField"/>
                                                 <nil key="textColor"/>
@@ -301,20 +301,20 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uLJ-4I-TFT" userLabel="Separator Line">
-                                        <rect key="frame" x="0.0" y="145" width="600" height="0.5"/>
+                                        <rect key="frame" x="0.0" y="145" width="375" height="0.5"/>
                                         <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="1yt-CV-1KF"/>
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The tagline is a short line of text shown right below the title in most themes, and acts as site metadata on search engines." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cGJ-Lt-fd3">
-                                        <rect key="frame" x="20" y="155" width="560" height="13.5"/>
+                                        <rect key="frame" x="20" y="155" width="335" height="26.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                         <color key="textColor" red="0.30980392156862746" green="0.45490196078431372" blue="0.55686274509803924" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yYd-Ij-EZ1" customClass="NUXButton" customModule="WordPressAuthenticator">
-                                        <rect key="frame" x="544" y="472" width="36" height="44"/>
+                                        <rect key="frame" x="319" y="539" width="36" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="RGs-QP-jLB"/>
                                         </constraints>
@@ -396,24 +396,21 @@
             <objects>
                 <viewController id="KXX-3w-0CE" customClass="SiteCreationDomainsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="EAZ-3B-IhF">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LRh-0q-RfH" userLabel="Table Container View">
-                                <rect key="frame" x="0.0" y="64" width="600" height="452"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="519"/>
                                 <connections>
                                     <segue destination="uS3-8E-y1q" kind="embed" identifier="showDomainsTable" id="ZGn-j6-2VP"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5gU-1Z-Avk" userLabel="Button Container View">
-                                <rect key="frame" x="0.0" y="516" width="600" height="84"/>
+                                <rect key="frame" x="0.0" y="583" width="375" height="84"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="84" placeholder="YES" id="HXL-Fa-S1S"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="84" id="MGV-TN-X2V"/>
                                 </constraints>
-                                <connections>
-                                    <segue destination="GNW-13-5sy" kind="embed" identifier="showCreateSiteButtonView" id="cA4-aZ-gWw"/>
-                                </connections>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -431,6 +428,7 @@
                     <connections>
                         <outlet property="buttonContainerHeightConstraint" destination="MGV-TN-X2V" id="TJG-Pq-vrh"/>
                         <outlet property="buttonContainerViewBottomConstraint" destination="YCL-CF-uZh" id="aSd-Ko-q7X"/>
+                        <outlet property="buttonViewContainer" destination="5gU-1Z-Avk" id="wPP-Sy-jfW"/>
                         <segue destination="fWU-YH-Qbk" kind="show" identifier="showCreateSite" id="vZo-bh-JWz"/>
                     </connections>
                 </viewController>
@@ -462,7 +460,7 @@
             <objects>
                 <viewController id="fWU-YH-Qbk" customClass="SiteCreationCreateSiteViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="rxp-rD-9hS">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mysites-nosites" translatesAutoresizingMaskIntoConstraints="NO" id="Erg-tS-MMs" userLabel=" Image">
@@ -542,37 +540,26 @@
             </objects>
             <point key="canvasLocation" x="4091" y="540"/>
         </scene>
-        <!--ButtonView-->
-        <scene sceneID="a3K-Nm-WAp">
-            <objects>
-                <viewControllerPlaceholder storyboardName="NUXButtonView" bundleIdentifier="com.automattic.WordPressAuthenticator" referencedIdentifier="ButtonView" id="GNW-13-5sy" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="As8-Bq-6ml" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2590" y="507"/>
-        </scene>
         <!--Site Creation Epilogue View Controller-->
         <scene sceneID="tjq-Mf-ysq">
             <objects>
                 <viewController storyboardIdentifier="SiteCreationEpilogue" id="SYa-VS-bwM" customClass="SiteCreationEpilogueViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="2Jh-zO-DOs">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9mk-X6-iC4" userLabel="Site Preview Container View">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="452"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="519"/>
                                 <connections>
                                     <segue destination="KTF-Bg-ViW" kind="embed" identifier="showSitePreview" id="Xwu-IV-Jab"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="glq-sP-l5l" userLabel="Button Container View">
-                                <rect key="frame" x="0.0" y="452" width="600" height="148"/>
+                                <rect key="frame" x="0.0" y="519" width="375" height="148"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="148" id="Ym4-Vm-NdQ"/>
                                     <constraint firstAttribute="height" constant="148" placeholder="YES" id="veG-Nv-EOP"/>
                                 </constraints>
-                                <connections>
-                                    <segue destination="YT6-IM-P0f" kind="embed" identifier="showEpilogeButtonView" id="Meo-mq-XUq"/>
-                                </connections>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -587,18 +574,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="s9d-Q2-1mR"/>
                     </view>
+                    <connections>
+                        <outlet property="buttonViewContainer" destination="glq-sP-l5l" id="NBX-zX-BFh"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fmd-xx-51m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4854" y="108"/>
-        </scene>
-        <!--ButtonView-->
-        <scene sceneID="hTX-Fl-UMq">
-            <objects>
-                <viewControllerPlaceholder storyboardName="NUXButtonView" bundleIdentifier="com.automattic.WordPressAuthenticator" referencedIdentifier="ButtonView" id="YT6-IM-P0f" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jKJ-UF-RQF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4851" y="540"/>
         </scene>
         <!--Site Creation Site Preview View Controller-->
         <scene sceneID="jwY-ut-ZEb">

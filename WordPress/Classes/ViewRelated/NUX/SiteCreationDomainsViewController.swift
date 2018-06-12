@@ -17,13 +17,33 @@ class SiteCreationDomainsViewController: NUXViewController {
     }
 
     private var domainsTableViewController: SiteCreationDomainsTableViewController?
-    private var buttonViewController: NUXButtonViewController?
+
+    // MARK: - ButtonViewController
+
+    @IBOutlet private var buttonViewContainer: UIView! {
+        didSet {
+            buttonViewController.move(to: self, into: buttonViewContainer)
+        }
+    }
+
+    private lazy var buttonViewController: NUXButtonViewController = {
+        let buttonViewController = NUXButtonViewController.instance()
+        buttonViewController.delegate = self
+        buttonViewController.setButtonTitles(primary: ButtonTitles.primary)
+        return buttonViewController
+    }()
+
 
     // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        showButtonView(show: false, withAnimation: false)
     }
 
     private func configureView() {
@@ -62,13 +82,6 @@ class SiteCreationDomainsViewController: NUXViewController {
             domainsTableViewController?.delegate = self
             domainsTableViewController?.siteName = SiteCreationFields.sharedInstance.title
         }
-
-        if let vc = segue.destination as? NUXButtonViewController {
-            buttonViewController = vc
-            buttonViewController?.delegate = self
-            buttonViewController?.setButtonTitles(primary: NSLocalizedString("Create site", comment: "Button text for creating a new site in the Site Creation process."))
-            showButtonView(show: false, withAnimation: false)
-        }
     }
 }
 
@@ -97,6 +110,10 @@ extension SiteCreationDomainsViewController: NUXButtonViewControllerDelegate {
 // MARK: - Constants
 
 private extension SiteCreationDomainsViewController {
+
+    enum ButtonTitles {
+        static let primary = NSLocalizedString("Create site", comment: "Button text for creating a new site in the Site Creation process.")
+    }
 
     enum Constants {
         static let createSiteSegueIdentifier = "showCreateSite"
