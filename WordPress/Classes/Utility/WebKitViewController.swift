@@ -8,10 +8,30 @@ class WebKitViewController: UIViewController {
     @objc let progressView = WebProgressView()
     @objc let titleView = NavigationTitleView()
 
-    @objc var backButton: UIBarButtonItem?
-    @objc var forwardButton: UIBarButtonItem?
-    @objc var shareButton: UIBarButtonItem?
-    @objc var safariButton: UIBarButtonItem?
+    @objc lazy var backButton: UIBarButtonItem = {
+        return UIBarButtonItem(image: Gridicon.iconOfType(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(),
+                               style: .plain,
+                               target: self,
+                               action: #selector(goBack))
+    }()
+    @objc lazy var forwardButton: UIBarButtonItem = {
+        return UIBarButtonItem(image: Gridicon.iconOfType(.chevronRight).imageFlippedForRightToLeftLayoutDirection(),
+                               style: .plain,
+                               target: self,
+                               action: #selector(goForward))
+    }()
+    @objc lazy var shareButton: UIBarButtonItem = {
+        return UIBarButtonItem(image: Gridicon.iconOfType(.shareIOS),
+                               style: .plain,
+                               target: self,
+                               action: #selector(share))
+    }()
+    @objc lazy var safariButton: UIBarButtonItem = {
+        return UIBarButtonItem(image: Gridicon.iconOfType(.globe),
+                               style: .plain,
+                               target: self,
+                               action: #selector(openInSafari))
+    }()
     @objc var customOptionsButton: UIBarButtonItem?
 
     @objc let url: URL
@@ -19,6 +39,7 @@ class WebKitViewController: UIViewController {
     @objc let navigationDelegate: WebNavigationDelegate?
     @objc var secureInteraction = false
     @objc var addsWPComReferrer = false
+    @objc var addsHideMasterbarParameters = true
     @objc var customTitle: String?
 
     @objc init(configuration: WebViewControllerConfiguration) {
@@ -27,6 +48,7 @@ class WebKitViewController: UIViewController {
         customOptionsButton = configuration.optionsButton
         secureInteraction = configuration.secureInteraction
         addsWPComReferrer = configuration.addsWPComReferrer
+        addsHideMasterbarParameters = configuration.addsHideMasterbarParameters
         customTitle = configuration.customTitle
         authenticator = configuration.authenticator
         navigationDelegate = configuration.navigationDelegate
@@ -41,6 +63,7 @@ class WebKitViewController: UIViewController {
         customOptionsButton = parent.customOptionsButton
         secureInteraction = parent.secureInteraction
         addsWPComReferrer = parent.addsWPComReferrer
+        addsHideMasterbarParameters = parent.addsHideMasterbarParameters
         customTitle = parent.customTitle
         authenticator = parent.authenticator
         navigationDelegate = parent.navigationDelegate
@@ -102,28 +125,23 @@ class WebKitViewController: UIViewController {
     @objc func load(request: URLRequest) {
         var request = request
         if addsWPComReferrer {
-            request.setValue("https://wordpress.com", forHTTPHeaderField: "Referer")
+            request.setValue(WPComReferrerURL, forHTTPHeaderField: "Referer")
         }
+
+        if addsHideMasterbarParameters,
+            let host = request.url?.host,
+            (host.contains(WPComDomain) || host.contains(AutomatticDomain)) {
+            request.url = request.url?.appendingHideMasterbarParameters()
+        }
+
         webView.load(request)
     }
 
+    // MARK: Navigation bar setup
+
     @objc func configureNavigation() {
-        let closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(WebKitViewController.close))
-        closeButton.accessibilityLabel = NSLocalizedString("Dismiss", comment: "Dismiss a view. Verb")
-
-        titleView.titleLabel.text = NSLocalizedString("Loading...", comment: "Loading. Verb")
-        if let title = customTitle {
-            self.title = title
-        } else {
-            navigationItem.titleView = titleView
-        }
-
-        let refreshButton = UIBarButtonItem(image: Gridicon.iconOfType(.refresh), style: .plain, target: self, action: #selector(WebKitViewController.refresh))
-        if let customOptionsButton = customOptionsButton {
-            navigationItem.rightBarButtonItems = [refreshButton, customOptionsButton]
-        } else if !secureInteraction {
-            navigationItem.rightBarButtonItem = refreshButton
-        }
+        setupNavBarTitleView()
+        setupRefreshButton()
 
         // Modal styling
         // Proceed only if this Modal, and it's the only view in the stack.
@@ -132,63 +150,109 @@ class WebKitViewController: UIViewController {
             return
         }
 
+        setupCloseButton()
+        styleNavBar()
+        styleNavBarButtons()
+    }
+
+    private func setupRefreshButton() {
+        let refreshButton = UIBarButtonItem(image: Gridicon.iconOfType(.refresh), style: .plain, target: self, action: #selector(WebKitViewController.refresh))
+        if let customOptionsButton = customOptionsButton {
+            navigationItem.rightBarButtonItems = [refreshButton, customOptionsButton]
+        } else if !secureInteraction {
+            navigationItem.rightBarButtonItem = refreshButton
+        }
+    }
+
+    private func setupCloseButton() {
+        let closeButton = UIBarButtonItem(image: Gridicon.iconOfType(.cross), style: .plain, target: self, action: #selector(WebKitViewController.close))
+        closeButton.accessibilityLabel = NSLocalizedString("Dismiss", comment: "Dismiss a view. Verb")
         navigationItem.leftBarButtonItem = closeButton
+    }
 
-        let navigationBar = navigationController?.navigationBar
-        navigationBar?.shadowImage = UIImage(color: WPStyleGuide.webViewModalNavigationBarShadow())
-        navigationBar?.barStyle = .default
-        navigationBar?.setBackgroundImage(UIImage(color: WPStyleGuide.webViewModalNavigationBarBackground()), for: .default)
-        navigationBar?.titleTextAttributes = [.foregroundColor: WPStyleGuide.darkGrey()]
-
+    private func setupNavBarTitleView() {
+        titleView.titleLabel.text = NSLocalizedString("Loading...", comment: "Loading. Verb")
         titleView.titleLabel.textColor = WPStyleGuide.darkGrey()
         titleView.subtitleLabel.textColor = WPStyleGuide.grey()
-        closeButton.tintColor = WPStyleGuide.greyLighten10()
-        refreshButton.tintColor = WPStyleGuide.greyLighten10()
-        customOptionsButton?.tintColor = WPStyleGuide.greyLighten10()
+
+        if let title = customTitle {
+            self.title = title
+        } else {
+            navigationItem.titleView = titleView
+        }
     }
+
+    private func styleNavBar() {
+        guard let navigationBar = navigationController?.navigationBar else {
+            return
+        }
+        navigationBar.barStyle = .default
+        navigationBar.titleTextAttributes = [.foregroundColor: WPStyleGuide.darkGrey()]
+        navigationBar.shadowImage = UIImage(color: WPStyleGuide.webViewModalNavigationBarShadow())
+        navigationBar.setBackgroundImage(UIImage(color: WPStyleGuide.webViewModalNavigationBarBackground()), for: .default)
+
+        fixBarButtonsColorForBoldText(on: navigationBar)
+    }
+
+    private func styleNavBarButtons() {
+        navigationItem.leftBarButtonItems?.forEach(styleBarButton)
+        navigationItem.rightBarButtonItems?.forEach(styleBarButton)
+    }
+
+    // MARK: ToolBar setup
 
     @objc func configureToolbar() {
         navigationController?.isToolbarHidden = secureInteraction
-        navigationController?.toolbar.barTintColor = UIColor.white
 
-        backButton = UIBarButtonItem(image: Gridicon.iconOfType(.chevronLeft).imageFlippedForRightToLeftLayoutDirection(),
-                                     style: .plain,
-                                     target: self,
-                                     action: #selector(WebKitViewController.goBack))
+        guard !secureInteraction else {
+            return
+        }
 
-        forwardButton = UIBarButtonItem(image: Gridicon.iconOfType(.chevronRight).imageFlippedForRightToLeftLayoutDirection(),
-                                        style: .plain,
-                                        target: self,
-                                        action: #selector(WebKitViewController.goForward))
+        styleToolBar()
+        configureToolbarButtons()
+        styleToolBarButtons()
+    }
 
-        shareButton = UIBarButtonItem(image: Gridicon.iconOfType(.shareIOS),
-                                      style: .plain,
-                                      target: self,
-                                      action: #selector(WebKitViewController.share))
-
-        safariButton = UIBarButtonItem(image: Gridicon.iconOfType(.globe),
-                                       style: .plain,
-                                       target: self,
-                                       action: #selector(WebKitViewController.openInSafari))
-
+    private func configureToolbarButtons() {
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
 
         let items = [
-            backButton!,
+            backButton,
             space,
-            forwardButton!,
+            forwardButton,
             space,
-            shareButton!,
+            shareButton,
             space,
-            safariButton!
+            safariButton
         ]
-
-        items.forEach({ (button) in
-            button.tintColor = WPStyleGuide.greyLighten10()
-        })
-
         setToolbarItems(items, animated: false)
     }
+
+    private func styleToolBar() {
+        guard let toolBar = navigationController?.toolbar else {
+            return
+        }
+        toolBar.barTintColor = UIColor.white
+        fixBarButtonsColorForBoldText(on: toolBar)
+    }
+
+    private func styleToolBarButtons() {
+        navigationController?.toolbar.items?.forEach(styleBarButton)
+    }
+
+    // MARK: Helpers
+
+    private func fixBarButtonsColorForBoldText(on bar: UIView) {
+        if UIAccessibilityIsBoldTextEnabled() {
+            bar.tintColor = WPStyleGuide.greyLighten10()
+        }
+    }
+
+    private func styleBarButton(_ button: UIBarButtonItem) {
+        button.tintColor = WPStyleGuide.greyLighten10()
+    }
+
+    // MARK: User Actions
 
     @objc func close() {
         dismiss(animated: true, completion: nil)
@@ -247,12 +311,13 @@ class WebKitViewController: UIViewController {
             progressView.progress = Float(webView.estimatedProgress)
             progressView.isHidden = webView.estimatedProgress == 1
         case #keyPath(WKWebView.isLoading):
-            backButton?.isEnabled = webView.canGoBack
-            forwardButton?.isEnabled = webView.canGoForward
+            backButton.isEnabled = webView.canGoBack
+            forwardButton.isEnabled = webView.canGoForward
         default:
             assertionFailure("Observed change to web view that we are not handling")
         }
     }
+
 }
 
 extension WebKitViewController: WKNavigationDelegate {
