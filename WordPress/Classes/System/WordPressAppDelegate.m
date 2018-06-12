@@ -42,7 +42,6 @@
 
 // View controllers
 #import "StatsViewController.h"
-#import "SupportViewController.h"
 #import "WPTabBarController.h"
 #import <WPMediaPicker/WPMediaPicker.h>
 
@@ -254,21 +253,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
                         [[Crashlytics sharedInstance] crash];
                     }
                 }
-            }
-        } else if ([[url host] isEqualToString:@"faq"]) {
-            if ([HelpshiftUtils isHelpshiftEnabled]) {
-                NSString *faqID = [url lastPathComponent];
-
-                UIViewController *viewController = self.window.topmostPresentedViewController;
-
-                if (viewController) {
-                    HelpshiftPresenter *presenter = [HelpshiftPresenter new];
-                    [presenter presentHelpshiftWindowForFAQ:faqID
-                                         fromViewController:viewController
-                                                 completion:nil];
-                }
-
-                return YES;
             }
         }
     }
