@@ -7,3 +7,10 @@ warn("PR has more than 500 lines of code changing. Consider splitting into small
 # PRs should have a milestone attached
 has_milestone = github.pr_json["milestone"] != nil
 warn("PR is not assigned to a milestone.", sticky: false) unless has_milestone
+
+### Core Data Model Safety Checks
+
+target_release_branch = github.branch_for_base.start_with? "release"
+has_modified_model = git.modified_files.include? "WordPress/Classes/WordPress.xcdatamodeld/*/contents"
+
+warn("Core Data: Do not edit an existing model in a release branch unless it hasn't been released to testers yet. Instead create a new model version and merge back to develop soon.") if has_modified_model
