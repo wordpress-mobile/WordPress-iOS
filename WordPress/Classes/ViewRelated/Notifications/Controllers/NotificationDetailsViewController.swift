@@ -660,7 +660,7 @@ private extension NotificationDetailsViewController {
         cell.isApproved             = commentBlock.isCommentApproved
 
         // Setup: Callbacks
-        cell.onDetailsClick = { [weak self] sender in
+        cell.onUserClick = { [weak self] in
             guard let homeURL = userBlock.metaLinksHome else {
                 return
             }
