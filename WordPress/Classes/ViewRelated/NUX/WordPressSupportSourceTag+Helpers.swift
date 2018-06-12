@@ -1,19 +1,6 @@
 import Foundation
 import WordPressAuthenticator
 
-
-// MARK: - WordPressSupportSourceTag ClientApp Helper Methods
-//
-extension WordPressSupportSourceTag {
-
-    /// Returns the matching SupportSourceTag enum case, matching for the current WordPressSupportSourceTag (Auth Framework) enum case.
-    ///
-    func toSupportSourceTag() -> SupportSourceTag {
-        return SupportSourceTag(rawValue: name)
-    }
-}
-
-
 /// WordPress-Specific SupportSourceTag(s). (Extensible Enum Technique!)
 ///
 extension WordPressSupportSourceTag {
