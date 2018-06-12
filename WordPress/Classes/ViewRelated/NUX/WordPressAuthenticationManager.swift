@@ -148,15 +148,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Additional metadata is supplied, such as the sourceTag and Login details.
     ///
     func presentSupportRequest(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag) {
-
-        if FeatureFlag.zendeskMobile.enabled {
-            ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: sourceViewController, with: sourceTag)
-        } else {
-            let presenter = HelpshiftPresenter()
-            presenter.presentHelpshiftConversationWindowFromViewController(sourceViewController,
-                                                                           refreshUserDetails: true,
-                                                                           completion: nil)
-        }
+        ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: sourceViewController, with: sourceTag)
     }
 
     /// Presents the Login Epilogue, in the specified NavigationController.
