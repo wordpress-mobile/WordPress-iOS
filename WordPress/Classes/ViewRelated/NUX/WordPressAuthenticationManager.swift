@@ -29,8 +29,7 @@ class WordPressAuthenticationManager: NSObject {
                                                                 wpcomTermsOfServiceURL: WPAutomatticTermsOfServiceURL,
                                                                 googleLoginClientId: ApiCredentials.googleLoginClientId(),
                                                                 googleLoginServerClientId: ApiCredentials.googleLoginServerClientId(),
-                                                                userAgent: WPUserAgent.wordPress(),
-                                                                supportNotificationIndicatorFeatureFlag: FeatureFlag.zendeskMobile.enabled)
+                                                                userAgent: WPUserAgent.wordPress())
 
         WordPressAuthenticator.initialize(configuration: configuration)
     }
