@@ -115,6 +115,17 @@ extension URL {
             return pathExtension.lowercased() == "gif"
         }
     }
+
+    func appendingHideMasterbarParameters() -> URL? {
+        guard var components = URLComponents(url: self, resolvingAgainstBaseURL: false) else {
+            return nil
+        }
+        var queryItems = components.queryItems ?? []
+        queryItems.append(URLQueryItem(name: "preview", value: "true"))
+        queryItems.append(URLQueryItem(name: "iframe", value: "true"))
+        components.queryItems = queryItems
+        return components.url
+    }
 }
 
 extension NSURL {
@@ -127,5 +138,10 @@ extension NSURL {
             return nil
         }
         return NSNumber(value: fileSize)
+    }
+
+    @objc func appendingHideMasterbarParameters() -> NSURL? {
+        let url = self as URL
+        return url.appendingHideMasterbarParameters() as NSURL?
     }
 }

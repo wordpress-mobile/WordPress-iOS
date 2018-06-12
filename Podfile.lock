@@ -79,7 +79,7 @@ PODS:
   - MRProgress/ProgressBaseClass (0.8.3)
   - MRProgress/Stopable (0.8.3):
     - MRProgress/Helper
-  - Nimble (7.1.1)
+  - Nimble (7.1.2)
   - NSObject-SafeExpectations (0.0.3)
   - "NSURL+IDN (0.3)"
   - OCMock (3.4.1)
@@ -119,9 +119,8 @@ PODS:
     - WordPressShared (~> 1.0)
     - WordPressUI (~> 1.0)
     - wpxmlrpc (~> 0.8)
-  - WordPressKit (1.0.6):
-    - AFNetworking (= 3.2.1)
-    - Alamofire (= 4.7.2)
+  - WordPressKit (1.1):
+    - Alamofire (~> 4.7)
     - CocoaLumberjack (= 3.4.2)
     - NSObject-SafeExpectations (= 0.0.3)
     - UIDeviceIdentifier (~> 0.4)
@@ -168,7 +167,7 @@ DEPENDENCIES:
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `c38d29b09cc9710ef307891f76a02c80a7002a59`)
   - WordPress-Aztec-iOS/WordPressEditor (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `c38d29b09cc9710ef307891f76a02c80a7002a59`)
   - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `cc8a5e0`)
-  - WordPressKit (~> 1.0.6)
+  - WordPressKit (= 1.1)
   - WordPressShared (~> 1.0.5)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, commit `e72725ee5aed1a2c4dffa755a78c36e3ecf6e2b0`)
   - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`, commit `b5ae03494596e3da7a8f814f9cab8e96ca345bc8`)
@@ -259,7 +258,7 @@ SPEC CHECKSUMS:
   lottie-ios: d699fdee68d7b63e721d949388b015fef1aaa4ac
   MGSwipeTableCell: fb20e983988bde2b8d0df29c2d9e1d8ffd10b74a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
-  Nimble: 391f07782af4b37914f9bd7b2ffbb952731b8202
+  Nimble: 3835ba9f459daa6b347f8a8e110aaae8ca1920a8
   NSObject-SafeExpectations: b989b68a8a9b7b9f2b264a8b52ba9d7aab8f3129
   "NSURL+IDN": 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: 2cd0716969bab32a2283ff3a46fd26a8c8b4c5e3
@@ -270,13 +269,13 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 743dbe41492eae1d9daf3f5ba5435ab295ee668f
   WordPressAuthenticator: 4c802aa18781858253daf984f873e3efe0dac7ef
-  WordPressKit: f62f8e68ce2300d9a8b4c2b7c743c911bbdbd343
+  WordPressKit: a24baaa783c3a221f2d9a51c19318cbb27333373
   WordPressShared: d7fdb0ca9302cf4bc7f3ec0fbe98d0d8eb721438
   WordPressUI: ebf73505c8957df23a1c9fe565fba553be296dc5
   WPMediaPicker: ceb613e43eae03268e73835d48d67f92f595aca6
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: 4b312eb414f3f08be2b17b5de4fcf5d878c08f21
+PODFILE CHECKSUM: 21d52e1d0f83aba8bb8bfe6f813559cb2ed159b1
 
 COCOAPODS: 1.5.2

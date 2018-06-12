@@ -258,7 +258,9 @@ import WordPressFlux
         let syncGroup = DispatchGroup()
         media?.forEach { mediaItem in
             mediaItem.postID = NSNumber(value: postID)
-            service.update(mediaItem, success: { [weak self] updatedRemoteMedia in
+
+            syncGroup.enter()
+            service.update(mediaItem, success: { updatedRemoteMedia in
                 syncGroup.leave()
             }, failure: { error in
                 var errorString = "Error creating post in share extension"
