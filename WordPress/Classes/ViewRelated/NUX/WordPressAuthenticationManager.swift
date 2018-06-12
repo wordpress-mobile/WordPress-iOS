@@ -135,7 +135,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
     /// Returns an instance of a SupportView, configured to be displayed from a specified Support Source.
     ///
-    func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any] = [:]) {
+    func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag) {
 
         if FeatureFlag.zendeskMobile.enabled {
             let controller = SupportTableViewController()
@@ -147,7 +147,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             sourceViewController.present(navController, animated: true, completion: nil)
         } else {
             let supportViewController = SupportViewController()
-            supportViewController.helpshiftOptions = options
 
             let navController = UINavigationController(rootViewController: supportViewController)
             navController.navigationBar.isTranslucent = false
@@ -160,13 +159,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Presents Support new request, with the specified ViewController as a source.
     /// Additional metadata is supplied, such as the sourceTag and Login details.
     ///
-    func presentSupportRequest(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any]) {
+    func presentSupportRequest(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag) {
 
         if FeatureFlag.zendeskMobile.enabled {
             ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: sourceViewController, with: sourceTag)
         } else {
             let presenter = HelpshiftPresenter()
-            presenter.optionsDictionary = options
             presenter.presentHelpshiftConversationWindowFromViewController(sourceViewController,
                                                                            refreshUserDetails: true,
                                                                            completion: nil)
