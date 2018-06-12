@@ -82,12 +82,6 @@ final public class PushNotificationsManager: NSObject {
     ///
     @objc func registerDeviceToken(_ tokenData: Data) {
 
-        // We want to register with Support regardless so that way if a user isn't logged in
-        // they can still get push notifications that we replied to their support ticket.
-        if !FeatureFlag.zendeskMobile.enabled && HelpshiftUtils.isHelpshiftEnabled() {
-            HelpshiftCore.registerDeviceToken(tokenData)
-        }
-
         // Don't bother registering for WordPress anything if the user isn't logged in
         guard AccountHelper.isDotcomAvailable() else {
             return
