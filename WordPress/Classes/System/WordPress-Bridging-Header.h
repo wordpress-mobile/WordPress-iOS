@@ -1,6 +1,3 @@
-#import "HelpshiftCore.h"
-#import "HelpshiftSupport.h"
-
 #import "SFHFKeychainUtils.h"
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <NSObject_SafeExpectations/NSDictionary+SafeExpectations.h>
