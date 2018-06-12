@@ -3,8 +3,9 @@ import UIKit
 class WebViewControllerConfiguration: NSObject {
     @objc var url: URL
     @objc var optionsButton: UIBarButtonItem?
-    @objc var secureInteraction: Bool = false
-    @objc var addsWPComReferrer: Bool = false
+    @objc var secureInteraction = false
+    @objc var addsWPComReferrer = false
+    @objc var addsHideMasterbarParameters = true
     @objc var customTitle: String?
     @objc var authenticator: WebViewAuthenticator?
     @objc weak var navigationDelegate: WebNavigationDelegate?
