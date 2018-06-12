@@ -207,24 +207,13 @@ extension PushNotificationsManager {
     /// - Returns: True when handled. False otherwise
     ///
     @objc func handleSupportNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
-        if FeatureFlag.zendeskMobile.enabled {
-            guard let type = userInfo.string(forKey: ZendeskUtils.PushNotificationIdentifiers.key),
-                type == ZendeskUtils.PushNotificationIdentifiers.type else {
-                    return false
-            }
-            DispatchQueue.main.async {
-                ZendeskUtils.pushNotificationReceived()
-            }
-        } else {
-            guard let origin = userInfo.string(forKey: Notification.originKey), origin == Helpshift.originValue else {
-                return false
-            }
 
-            let rootViewController = sharedApplication.keyWindow?.rootViewController
-            let payload = userInfo as! [AnyHashable: Any]
-            DispatchQueue.main.async {
-                HelpshiftCore.handleRemoteNotification(payload, with: rootViewController)
-            }
+        guard let type = userInfo.string(forKey: ZendeskUtils.PushNotificationIdentifiers.key),
+            type == ZendeskUtils.PushNotificationIdentifiers.type else {
+                return false
+        }
+        DispatchQueue.main.async {
+            ZendeskUtils.pushNotificationReceived()
         }
 
         WPAnalytics.track(.supportReceivedResponseFromSupport)
@@ -373,10 +362,6 @@ private extension PushNotificationsManager {
     enum Device {
         static let tokenKey = "apnsDeviceToken"
         static let idKey = "notification_device_id"
-    }
-
-    enum Helpshift {
-        static let originValue = "helpshift"
     }
 
     enum Notification {
