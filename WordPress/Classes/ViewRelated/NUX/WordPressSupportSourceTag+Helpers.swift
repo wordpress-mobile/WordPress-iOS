@@ -25,4 +25,7 @@ extension WordPressSupportSourceTag {
     public static var inAppFeedback: WordPressSupportSourceTag {
         return WordPressSupportSourceTag(name: "inAppFeedback", origin: "origin:in-app-feedback")
     }
+    public static var deleteSite: WordPressSupportSourceTag {
+        return WordPressSupportSourceTag(name: "deleteSite", origin: "origin:delete-site")
+    }
 }
