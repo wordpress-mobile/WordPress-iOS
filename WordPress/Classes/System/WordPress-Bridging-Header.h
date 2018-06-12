@@ -32,7 +32,6 @@
 
 #import "EditCommentViewController.h"
 
-#import "HelpshiftUtils.h"
 #import "HockeyManager.h"
 
 #import "InteractivePostView.h"
