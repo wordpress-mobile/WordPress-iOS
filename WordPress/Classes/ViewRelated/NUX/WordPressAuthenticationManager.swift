@@ -16,12 +16,8 @@ class WordPressAuthenticationManager: NSObject {
     /// We'll setup a mechanism to relay the Support event back to the Authenticator.
     ///
     func startRelayingSupportNotifications() {
-        if FeatureFlag.zendeskMobile.enabled {
-            NotificationCenter.default.addObserver(self, selector: #selector(supportPushNotificationReceived), name: .ZendeskPushNotificationReceivedNotification, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(supportPushNotificationCleared), name: .ZendeskPushNotificationClearedNotification, object: nil)
-        } else {
-            NotificationCenter.default.addObserver(self, selector: #selector(helpshiftUnreadCountWasUpdated), name: .HelpshiftUnreadCountUpdated, object: nil)
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(supportPushNotificationReceived), name: .ZendeskPushNotificationReceivedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(supportPushNotificationCleared), name: .ZendeskPushNotificationClearedNotification, object: nil)
     }
 
     /// Initializes WordPressAuthenticator with all of the paramteres that will be needed during the login flow.
@@ -33,8 +29,7 @@ class WordPressAuthenticationManager: NSObject {
                                                                 wpcomTermsOfServiceURL: WPAutomatticTermsOfServiceURL,
                                                                 googleLoginClientId: ApiCredentials.googleLoginClientId(),
                                                                 googleLoginServerClientId: ApiCredentials.googleLoginServerClientId(),
-                                                                userAgent: WPUserAgent.wordPress(),
-                                                                supportNotificationIndicatorFeatureFlag: FeatureFlag.zendeskMobile.enabled)
+                                                                userAgent: WPUserAgent.wordPress())
 
         WordPressAuthenticator.initialize(configuration: configuration)
     }
@@ -78,11 +73,6 @@ extension WordPressAuthenticationManager {
 // MARK: - Notification Handlers
 //
 extension WordPressAuthenticationManager {
-
-    @objc
-    func helpshiftUnreadCountWasUpdated(_ notification: Foundation.Notification) {
-        WordPressAuthenticator.shared.supportBadgeCountWasUpdated()
-    }
 
     @objc func supportPushNotificationReceived(_ notification: Foundation.Notification) {
         WordPressAuthenticator.shared.supportPushNotificationReceived()
@@ -144,7 +134,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
     /// Returns an instance of a SupportView, configured to be displayed from a specified Support Source.
     ///
-    func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any] = [:]) {
+    func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag) {
 
         if FeatureFlag.zendeskMobile.enabled {
             let controller = SupportTableViewController()
@@ -156,7 +146,6 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
             sourceViewController.present(navController, animated: true, completion: nil)
         } else {
             let supportViewController = SupportViewController()
-            supportViewController.helpshiftOptions = options
 
             let navController = UINavigationController(rootViewController: supportViewController)
             navController.navigationBar.isTranslucent = false
@@ -169,13 +158,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Presents Support new request, with the specified ViewController as a source.
     /// Additional metadata is supplied, such as the sourceTag and Login details.
     ///
-    func presentSupportRequest(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag, options: [String: Any]) {
+    func presentSupportRequest(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag) {
 
         if FeatureFlag.zendeskMobile.enabled {
             ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: sourceViewController, with: sourceTag)
         } else {
             let presenter = HelpshiftPresenter()
-            presenter.optionsDictionary = options
             presenter.presentHelpshiftConversationWindowFromViewController(sourceViewController,
                                                                            refreshUserDetails: true,
                                                                            completion: nil)
