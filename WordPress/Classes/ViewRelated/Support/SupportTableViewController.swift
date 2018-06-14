@@ -48,6 +48,11 @@ class SupportTableViewController: UITableViewController {
         reloadViewModel()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        createUserActivity()
+    }
+
     @objc func showFromTabBar() {
         let navigationController = UINavigationController.init(rootViewController: self)
 
