@@ -416,11 +416,9 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
     }
 
     private func handleZendeskNotification(userInfo: NSDictionary) {
-        if FeatureFlag.zendeskMobile.enabled {
-            if let type = userInfo.string(forKey: ZendeskUtils.PushNotificationIdentifiers.key),
-                type == ZendeskUtils.PushNotificationIdentifiers.type {
-                ZendeskUtils.handlePushNotification(userInfo)
-            }
+        if let type = userInfo.string(forKey: ZendeskUtils.PushNotificationIdentifiers.key),
+            type == ZendeskUtils.PushNotificationIdentifiers.type {
+            ZendeskUtils.handlePushNotification(userInfo)
         }
     }
 
