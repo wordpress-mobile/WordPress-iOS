@@ -138,13 +138,8 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
 
 extension PlanListViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
-        if FeatureFlag.zendeskMobile.enabled {
-            let supportVC = SupportTableViewController()
-            supportVC.showFromTabBar()
-        } else {
-            let supportVC = SupportViewController()
-            supportVC.showFromTabBar()
-        }
+        let supportVC = SupportTableViewController()
+        supportVC.showFromTabBar()
     }
 }
 

@@ -28,13 +28,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     required convenience init() {
         self.init(style: .grouped)
         let notificationCenter = NotificationCenter.default
-
-        if FeatureFlag.zendeskMobile.enabled {
-            notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .ZendeskPushNotificationReceivedNotification, object: nil)
-            notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .ZendeskPushNotificationClearedNotification, object: nil)
-        } else {
-            notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .HelpshiftUnreadCountUpdated, object: nil)
-        }
+        notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .ZendeskPushNotificationReceivedNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .ZendeskPushNotificationClearedNotification, object: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -70,10 +65,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         super.viewWillAppear(animated)
 
         refreshAccountDetails()
-
-        if !FeatureFlag.zendeskMobile.enabled {
-            HelpshiftUtils.refreshUnreadNotificationCount()
-        }
 
         if splitViewControllerIsHorizontallyCompact {
             animateDeselectionInteractively()
@@ -299,19 +290,14 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     func pushHelp() -> ImmuTableAction {
         return { [unowned self] row in
-            if FeatureFlag.zendeskMobile.enabled {
-                let controller = SupportTableViewController()
+            let controller = SupportTableViewController()
 
-                // If iPad, show Support from Me view controller instead of navigation controller.
-                if !self.splitViewControllerIsHorizontallyCompact {
-                    controller.showHelpFromViewController = self
-                }
-
-                self.showDetailViewController(controller, sender: self)
-            } else {
-                let controller = SupportViewController()
-                self.showDetailViewController(controller, sender: self)
+            // If iPad, show Support from Me view controller instead of navigation controller.
+            if !self.splitViewControllerIsHorizontallyCompact {
+                controller.showHelpFromViewController = self
             }
+
+            self.showDetailViewController(controller, sender: self)
         }
     }
 
