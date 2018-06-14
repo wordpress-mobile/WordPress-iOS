@@ -1,7 +1,6 @@
 #import "WPError.h"
 #import "WordPressAppDelegate.h"
 #import "WPAccount.h"
-#import "SupportViewController.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import <WordPressUI/WordPressUI.h>
 #import <wpxmlrpc/WPXMLRPC.h>
@@ -175,18 +174,9 @@ NSString * const WPErrorSupportSourceKey = @"helpshift-support-source";
             UIAlertAction *action = [UIAlertAction actionWithTitle:supportText
                                                              style:UIAlertActionStyleCancel
                                                            handler:^(UIAlertAction * _Nonnull action) {
-                                                               
-                                                               if ([Feature enabled:FeatureFlagZendeskMobile]) {
-                                                                   SupportTableViewController *supportVC = [SupportTableViewController new];
-                                                                   [supportVC updateSourceTagWith:sourceTag];
-                                                                   [supportVC showFromTabBar];
-                                                               }
-                                                               else {
-                                                                   SupportViewController *supportVC = [SupportViewController new];
-                                                                   supportVC.sourceTag = sourceTag;
-                                                                   [supportVC showFromTabBar];
-                                                               }
-                                                               
+                                                               SupportTableViewController *supportVC = [SupportTableViewController new];
+                                                               [supportVC updateSourceTagWith:sourceTag];
+                                                               [supportVC showFromTabBar];
                                                                [WPError internalInstance].alertShowing = NO;
                                                            }];
             [alertController addAction:action];
