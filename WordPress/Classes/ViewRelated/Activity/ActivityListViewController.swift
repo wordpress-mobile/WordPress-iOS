@@ -329,7 +329,6 @@ private extension ActivityListViewController {
 
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         addChildViewController(noResultsViewController)
-        //        noResultsViewController.view.frame = tableView.bounds - needed?
         noResultsViewController.didMove(toParentViewController: self)
 
     }
