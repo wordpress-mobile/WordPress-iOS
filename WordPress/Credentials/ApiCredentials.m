@@ -37,18 +37,6 @@
     return @"";
 }
 
-+ (NSString *)helpshiftAPIKey {
-    return  @"";
-}
-
-+ (NSString *)helpshiftDomainName {
-    return @"";
-}
-
-+ (NSString *)helpshiftAppId {
-    return @"";
-}
-
 + (NSString *)debuggingKey {
     return @"";
 }
