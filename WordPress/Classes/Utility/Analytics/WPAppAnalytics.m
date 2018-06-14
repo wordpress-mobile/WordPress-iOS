@@ -20,6 +20,7 @@ NSString * const WPAppAnalyticsKeyFeedItemID = @"feed_item_id";
 NSString * const WPAppAnalyticsKeyIsJetpack = @"is_jetpack";
 NSString * const WPAppAnalyticsKeySessionCount = @"session_count";
 NSString * const WPAppAnalyticsKeyEditorSource = @"editor_source";
+NSString * const WPAppAnalyticsKeyHasGutenbergBlocks = @"has_gutenberg_blocks";
 static NSString * const WPAppAnalyticsKeyLastVisibleScreen = @"last_visible_screen";
 static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 
@@ -264,6 +265,7 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
     if (postOrPage.postID.integerValue > 0) {
         mutableProperties[WPAppAnalyticsKeyPostID] = postOrPage.postID;
     }
+    mutableProperties[WPAppAnalyticsKeyHasGutenbergBlocks] = @([postOrPage containsGutenbergBlocks]);
 
     [WPAppAnalytics track:stat withProperties:mutableProperties withBlog:postOrPage.blog];
 }
