@@ -108,10 +108,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Indicates if Support is Enabled.
     ///
     var supportEnabled: Bool {
-        if FeatureFlag.zendeskMobile.enabled {
-            return ZendeskUtils.zendeskEnabled
-        }
-        return HelpshiftUtils.isHelpshiftEnabled()
+        return ZendeskUtils.zendeskEnabled
     }
 
     /// Indicates if the Support notification indicator should be displayed.
@@ -120,54 +117,23 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         return ZendeskUtils.showSupportNotificationIndicator
     }
 
-    /// Returns Helpshift's Unread Messages Count.
-    ///
-    var supportBadgeCount: Int {
-        return HelpshiftUtils.unreadNotificationCount()
-    }
-
-    /// Refreshes Helpshift's Unread Count.
-    ///
-    func refreshSupportBadgeCount() {
-        HelpshiftUtils.refreshUnreadNotificationCount()
-    }
-
     /// Returns an instance of a SupportView, configured to be displayed from a specified Support Source.
     ///
     func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag) {
+        let controller = SupportTableViewController()
+        controller.sourceTag = sourceTag
 
-        if FeatureFlag.zendeskMobile.enabled {
-            let controller = SupportTableViewController()
-            controller.sourceTag = sourceTag
+        let navController = UINavigationController(rootViewController: controller)
+        navController.modalPresentationStyle = .formSheet
 
-            let navController = UINavigationController(rootViewController: controller)
-            navController.modalPresentationStyle = .formSheet
-
-            sourceViewController.present(navController, animated: true, completion: nil)
-        } else {
-            let supportViewController = SupportViewController()
-
-            let navController = UINavigationController(rootViewController: supportViewController)
-            navController.navigationBar.isTranslucent = false
-            navController.modalPresentationStyle = .formSheet
-
-            sourceViewController.present(navController, animated: true, completion: nil)
-        }
+        sourceViewController.present(navController, animated: true, completion: nil)
     }
 
     /// Presents Support new request, with the specified ViewController as a source.
     /// Additional metadata is supplied, such as the sourceTag and Login details.
     ///
     func presentSupportRequest(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag) {
-
-        if FeatureFlag.zendeskMobile.enabled {
-            ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: sourceViewController, with: sourceTag)
-        } else {
-            let presenter = HelpshiftPresenter()
-            presenter.presentHelpshiftConversationWindowFromViewController(sourceViewController,
-                                                                           refreshUserDetails: true,
-                                                                           completion: nil)
-        }
+        ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: sourceViewController, with: sourceTag)
     }
 
     /// Presents the Login Epilogue, in the specified NavigationController.
