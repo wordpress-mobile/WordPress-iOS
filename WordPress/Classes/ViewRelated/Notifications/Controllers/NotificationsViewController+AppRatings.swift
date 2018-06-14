@@ -76,25 +76,11 @@ extension NotificationsViewController {
         AppRatingUtility.shared.gaveFeedbackForCurrentVersion()
         hideInlinePrompt(delay: 0.0)
 
-        if FeatureFlag.zendeskMobile.enabled {
-            if ZendeskUtils.zendeskEnabled {
-                ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self, with: .inAppFeedback)
-            } else {
-                if let contact = URL(string: NotificationsViewController.contactURL) {
-                    UIApplication.shared.open(contact)
-                }
-            }
+        if ZendeskUtils.zendeskEnabled {
+            ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self, with: .inAppFeedback)
         } else {
-            if HelpshiftUtils.isHelpshiftEnabled() {
-                let presenter = HelpshiftPresenter.init()
-                presenter.sourceTag = SupportSourceTag.inAppFeedback
-                presenter.presentHelpshiftConversationWindowFromViewController(self,
-                                                                               refreshUserDetails: true,
-                                                                               completion: nil)
-            } else {
-                if let contact = URL(string: NotificationsViewController.contactURL) {
-                    UIApplication.shared.open(contact)
-                }
+            if let contact = URL(string: NotificationsViewController.contactURL) {
+                UIApplication.shared.open(contact)
             }
         }
     }
