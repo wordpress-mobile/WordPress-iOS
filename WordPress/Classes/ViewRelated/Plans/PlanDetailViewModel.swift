@@ -50,11 +50,19 @@ struct PlanDetailViewModel {
         case .ready:
             return nil
         case .error:
-            return WPNoResultsView.Model(
-                title: NSLocalizedString("Oops", comment: ""),
-                message: NSLocalizedString("There was an error loading the plan", comment: ""),
-                buttonTitle: NSLocalizedString("Contact support", comment: "")
-            )
+            let appDelegate = WordPressAppDelegate.sharedInstance()
+            if (appDelegate?.connectionAvailable)! {
+                return WPNoResultsView.Model(
+                    title: NSLocalizedString("Oops", comment: ""),
+                    message: NSLocalizedString("There was an error loading the plan", comment: ""),
+                    buttonTitle: NSLocalizedString("Contact support", comment: "")
+                )
+            } else {
+                return WPNoResultsView.Model(
+                    title: NSLocalizedString("No connection", comment: ""),
+                    message: NSLocalizedString("An active internet connection is required to view activities", comment: "")
+                )
+            }
         }
     }
 
