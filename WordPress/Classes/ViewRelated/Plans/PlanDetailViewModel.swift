@@ -56,7 +56,6 @@ struct PlanDetailViewModel {
             } else {
                 return NoResultsViewController.Model(title: NSLocalizedString("No connection", comment: ""),
                                                      subtitle: NSLocalizedString("An active internet connection is required to view activities", comment: ""))
-
             }
         }
     }
