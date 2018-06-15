@@ -1,5 +1,3 @@
-extern NSString * const WPErrorSupportSourceKey;
-
 @interface WPError : NSObject
 
 
