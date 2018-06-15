@@ -8,28 +8,22 @@ enum PlanListViewModel {
     case ready(SitePricedPlans)
     case error(String)
 
-    var noResultsViewModel: WPNoResultsView.Model? {
+    var noResultsViewModel: NoResultsViewController.Model? {
         switch self {
         case .loading:
-            return WPNoResultsView.Model(
-                title: NSLocalizedString("Loading Plans...", comment: "Text displayed while loading plans details"),
-                accessoryView: PlansLoadingIndicatorView()
-        )
+            return NoResultsViewController.Model(title: NSLocalizedString("Loading Plans...", comment: "Text displayed while loading plans details"),
+                                                 accessoryView: PlansLoadingIndicatorView())
         case .ready:
             return nil
         case .error:
             let appDelegate = WordPressAppDelegate.sharedInstance()
             if (appDelegate?.connectionAvailable)! {
-                return WPNoResultsView.Model(
-                    title: NSLocalizedString("Oops", comment: ""),
-                    message: NSLocalizedString("There was an error loading plans", comment: ""),
-                    buttonTitle: NSLocalizedString("Contact support", comment: "")
-                )
+                return NoResultsViewController.Model(title: NSLocalizedString("Oops", comment: ""),
+                                                     subtitle: NSLocalizedString("There was an error loading plans", comment: ""),
+                                                     buttonText: NSLocalizedString("Contact support", comment: ""))
             } else {
-                return WPNoResultsView.Model(
-                    title: NSLocalizedString("No connection", comment: ""),
-                  message: NSLocalizedString("An active internet connection is required to view plans", comment: "")
-                )
+                return NoResultsViewController.Model(title: NSLocalizedString("No connection", comment: ""),
+                                                     subtitle: NSLocalizedString("An active internet connection is required to view plans", comment: ""))
             }
         }
     }
