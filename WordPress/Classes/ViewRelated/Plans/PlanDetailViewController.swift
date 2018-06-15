@@ -258,6 +258,9 @@ class PlanDetailViewController: UIViewController {
 
         noResultsViewController.bindViewModel(viewModel)
 
+        noResultsViewController.view.frame = noResultsViewFrame()
+        noResultsViewController.view.backgroundColor = UIColor.white
+
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         addChildViewController(noResultsViewController)
 
@@ -272,6 +275,14 @@ class PlanDetailViewController: UIViewController {
 
         noResultsViewController.view.removeFromSuperview()
         noResultsViewController.removeFromParentViewController()
+    }
+
+    private func noResultsViewFrame() -> CGRect {
+        layoutHeaderIfNeeded()
+        var noResultsViewBounds = tableView.bounds
+        noResultsViewBounds.origin.y = headerView.frame.height
+        noResultsViewBounds.size.height = tableView.bounds.height - headerView.frame.height
+        return noResultsViewBounds
     }
 
 }
