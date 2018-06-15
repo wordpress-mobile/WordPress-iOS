@@ -7,7 +7,6 @@
 #import "WordPress-Swift.h"
 
 NSInteger const SupportButtonIndex = 0;
-NSString * const WordPressAppErrorDomain = @"org.wordpress.iphone";
 NSString * const WPErrorSupportSourceKey = @"helpshift-support-source";
 
 @interface WPError ()
