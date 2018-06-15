@@ -25,28 +25,7 @@ class PlanDetailViewController: UIViewController {
         }
     }
 
-    fileprivate let noResultsView = WPNoResultsView()
-
-    @objc func updateNoResults() {
-        if let noResultsViewModel = viewModel.noResultsViewModel {
-            showNoResults(noResultsViewModel)
-        } else {
-            hideNoResults()
-        }
-    }
-    func showNoResults(_ viewModel: WPNoResultsView.Model) {
-        noResultsView.bindViewModel(viewModel)
-        if noResultsView.isDescendant(of: tableView) {
-            noResultsView.centerInSuperview()
-        } else {
-            noResultsView.delegate = self
-            tableView.addSubview(withFadeAnimation: noResultsView)
-        }
-    }
-
-    @objc func hideNoResults() {
-        noResultsView.removeFromSuperview()
-    }
+    fileprivate var noResultsViewController: NoResultsViewController?
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var planImageView: UIImageView!
@@ -247,6 +226,54 @@ class PlanDetailViewController: UIViewController {
             alert.presentFromRootViewController()
         }
     }
+
+    // MARK: - NoResults Handling
+
+    private func setupNoResultsViewController() {
+        let noResultsStoryboard = UIStoryboard(name: "NoResults", bundle: nil)
+        guard let noResultsViewController = noResultsStoryboard.instantiateViewController(withIdentifier: "NoResults") as? NoResultsViewController else {
+            return
+        }
+
+        noResultsViewController.delegate = self
+        self.noResultsViewController = noResultsViewController
+    }
+
+    private func updateNoResults() {
+        hideNoResults()
+        if let noResultsViewModel = viewModel.noResultsViewModel {
+            showNoResults(noResultsViewModel)
+        }
+    }
+
+    private func showNoResults(_ viewModel: NoResultsViewController.Model) {
+
+        if noResultsViewController == nil {
+            setupNoResultsViewController()
+        }
+
+        guard let noResultsViewController = noResultsViewController else {
+            return
+        }
+
+        noResultsViewController.bindViewModel(viewModel)
+
+        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        addChildViewController(noResultsViewController)
+
+        noResultsViewController.didMove(toParentViewController: self)
+    }
+
+    private func hideNoResults() {
+
+        guard let noResultsViewController = noResultsViewController else {
+            return
+        }
+
+        noResultsViewController.view.removeFromSuperview()
+        noResultsViewController.removeFromParentViewController()
+    }
+
 }
 
 // MARK: Table View Data Source / Delegate
@@ -297,8 +324,10 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-extension PlanDetailViewController: WPNoResultsViewDelegate {
-    func didTap(_ noResultsView: WPNoResultsView!) {
+// MARK: - NoResultsViewControllerDelegate
+
+extension PlanDetailViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
         let supportVC = SupportTableViewController()
         supportVC.showFromTabBar()
     }
