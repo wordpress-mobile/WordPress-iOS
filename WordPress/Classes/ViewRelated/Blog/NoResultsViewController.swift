@@ -75,13 +75,20 @@ import WordPressAuthenticator
         }
 
         titleLabel.text = titleText
-        subtitleLabel.text = subtitleText
+
+        if let subtitleText = subtitleText {
+            subtitleLabel.text = subtitleText
+            subtitleLabel.isHidden = false
+        } else {
+            subtitleLabel.isHidden = true
+        }
 
         if let buttonText = buttonText {
             actionButton?.setTitle(buttonText, for: UIControlState())
             actionButton?.setTitle(buttonText, for: .highlighted)
             actionButton?.titleLabel?.adjustsFontForContentSizeCategory = true
             actionButton?.accessibilityIdentifier = accessibilityIdentifier(for: buttonText)
+            actionButton.isHidden = false
         } else {
             actionButton.isHidden = true
         }
@@ -90,7 +97,6 @@ import WordPressAuthenticator
             imageView.image = UIImage(named: imageName)
         }
 
-        view.layoutIfNeeded()
     }
 
     // MARK: - Helpers
