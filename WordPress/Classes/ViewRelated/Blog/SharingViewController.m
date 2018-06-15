@@ -4,7 +4,6 @@
 #import "SharingConnectionsViewController.h"
 #import "SVProgressHUD+Dismiss.h"
 #import "WordPress-Swift.h"
-#import <AFNetworking/UIImageView+AFNetworking.h>
 #import <WordPressUI/UIImage+Util.h>
 #import <WordPressShared/WPTableViewCell.h>
 
