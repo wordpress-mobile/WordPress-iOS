@@ -243,7 +243,8 @@
     [self.noResultsViewController configureWithTitle:title
                                          buttonTitle:NSLocalizedString(@"Retry", @"Button to retry a preview that failed to load")
                                             subtitle:nil
-                                               image:nil];
+                                               image:nil
+                                       accessoryView:nil];
     [self.view layoutIfNeeded];
     [self addChildViewController:self.noResultsViewController];
 
