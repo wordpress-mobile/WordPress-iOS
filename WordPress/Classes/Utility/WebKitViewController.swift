@@ -123,6 +123,12 @@ class WebKitViewController: UIViewController {
     }
 
     @objc func load(request: URLRequest) {
+
+        guard ReachabilityUtils.isInternetReachable() else {
+            ReachabilityUtils.showAlertNoInternetConnection()
+            return
+        }
+
         var request = request
         if addsWPComReferrer {
             request.setValue(WPComReferrerURL, forHTTPHeaderField: "Referer")
