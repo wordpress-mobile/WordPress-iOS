@@ -1,3 +1,2 @@
-Bildirim ayarları yönetimi iyileştirildi.
-Stok fotoğraflar yüklenirken artık tanıtım içeren varsayılan bir açıklama oluşturuluyor.
-GIF resimleri görüntüleme için destek iyileştirildi.
+Artık Gönderileri Okuyucu'ya kaydedebilirsiniz: bir gönderinin yer tutucu simgesine dokunarak bunu daha sonra Kaydedilen Gönderiler listesinde bulabilirsiniz. Kaydedilen gönderilerinizin metinlerini çevrimdışı olduğunuzda bile okuyabilirsiniz.
+Lütfen bu ilk sürümde resimlerin çevrimdışı olunduğunda kullanılabileceğinin garanti edilmediğini ve Kaydedilen Gönderiler özelliğinin şu anda cihaza özel bir özellik olduğunu unutmayın. Bu, kaydedilen gönderilerin cihazlar ile web arasında eşitlenmediği ve oturumu kapatmanız ya da uygulamayı kaldırmanız durumunda kaybedileceği anlamına gelir.

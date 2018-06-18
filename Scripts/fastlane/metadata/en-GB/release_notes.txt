@@ -1,3 +1,2 @@
-Notification settings management has been improved.
-A default caption with credits is now generated when uploading stock photos.
-Support for displaying GIF images has been improved.
+You can now save posts in the Reader: just tap the bookmark icon on a post, and you’ll be able to find it later in your Saved Posts list. You can even read the text of your saved posts if you’re offline!
+Please note that images aren’t guaranteed to be available offline in this initial release and that Saved Posts is currently a device-specific feature, which means that saved posts aren’t synced between devices or the web, and will be lost if you log out or uninstall the app.
