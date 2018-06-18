@@ -42,9 +42,10 @@ msgstr ""
 
 msgctxt "v10.3-whats-new"
 msgid ""
-"You can now save posts in the Reader:just tap the bookmark icon on a post, and you’ll be able to find it later in your Saved Posts list."
-"You can even read the text of your saved posts if you’re offline!\n"
-"Please note that images aren’t guaranteed to be available offline in this initial release and that Saved Posts is currently a device-specific feature, which means that saved posts aren’t synced between devices or the web, and will be lost if you log out or uninstall the app.\n"
+"Reader: Search function is now improved to allow searching of sites as well as posts.\n"
+"Editor: Better handling of Gutenberg posts.\n"
+"Reader: An alert with usage information is now displayed the first time the Save Posts for Later feature is used.\n"
+"A lot of small UI tweaks and improvements\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
