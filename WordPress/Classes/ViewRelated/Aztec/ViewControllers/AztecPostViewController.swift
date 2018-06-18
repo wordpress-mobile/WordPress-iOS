@@ -1425,20 +1425,11 @@ private extension AztecPostViewController {
             self.displayPostSettings()
         }
 
-        alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle) { [weak self] _ in
-            // Preventing `UIViewControllerHierarchyInconsistency`
-            // Ref.: https://github.com/wordpress-mobile/WordPress-iOS/issues/8995
-            //
-            self?.restoreFirstResponder()
-        }
+        alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
 
         alert.popoverPresentationController?.barButtonItem = moreBarButtonItem
 
-        // Preventing `UIViewControllerHierarchyInconsistency`
-        // Ref.: https://github.com/wordpress-mobile/WordPress-iOS/issues/8995
-        //
-        rememberFirstResponder()
-        present(alert, animated: true, completion: nil)
+        present(alert, animated: true)
     }
 
     func displaySwitchSiteAlert() {
