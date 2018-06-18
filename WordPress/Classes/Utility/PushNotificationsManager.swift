@@ -82,12 +82,6 @@ final public class PushNotificationsManager: NSObject {
     ///
     @objc func registerDeviceToken(_ tokenData: Data) {
 
-        // We want to register with Support regardless so that way if a user isn't logged in
-        // they can still get push notifications that we replied to their support ticket.
-        if !FeatureFlag.zendeskMobile.enabled && HelpshiftUtils.isHelpshiftEnabled() {
-            HelpshiftCore.registerDeviceToken(tokenData)
-        }
-
         // Don't bother registering for WordPress anything if the user isn't logged in
         guard AccountHelper.isDotcomAvailable() else {
             return
@@ -97,9 +91,7 @@ final public class PushNotificationsManager: NSObject {
         let newToken = tokenData.hexString
 
         // Register device with Zendesk
-        if FeatureFlag.zendeskMobile.enabled {
-            ZendeskUtils.setNeedToRegisterDevice(newToken)
-        }
+        ZendeskUtils.setNeedToRegisterDevice(newToken)
 
         if deviceToken != newToken {
             DDLogInfo("Device Token has changed! OLD Value: \(String(describing: deviceToken)), NEW value: \(newToken)")
@@ -139,8 +131,7 @@ final public class PushNotificationsManager: NSObject {
         }
 
         // Unregister device with Zendesk
-        if FeatureFlag.zendeskMobile.enabled,
-            let deviceToken = deviceToken {
+        if let deviceToken = deviceToken {
             ZendeskUtils.unregisterDevice(deviceToken)
         }
 
@@ -213,24 +204,13 @@ extension PushNotificationsManager {
     /// - Returns: True when handled. False otherwise
     ///
     @objc func handleSupportNotification(_ userInfo: NSDictionary, completionHandler: ((UIBackgroundFetchResult) -> Void)?) -> Bool {
-        if FeatureFlag.zendeskMobile.enabled {
-            guard let type = userInfo.string(forKey: ZendeskUtils.PushNotificationIdentifiers.key),
-                type == ZendeskUtils.PushNotificationIdentifiers.type else {
-                    return false
-            }
-            DispatchQueue.main.async {
-                ZendeskUtils.pushNotificationReceived()
-            }
-        } else {
-            guard let origin = userInfo.string(forKey: Notification.originKey), origin == Helpshift.originValue else {
-                return false
-            }
 
-            let rootViewController = sharedApplication.keyWindow?.rootViewController
-            let payload = userInfo as! [AnyHashable: Any]
-            DispatchQueue.main.async {
-                HelpshiftCore.handleRemoteNotification(payload, with: rootViewController)
-            }
+        guard let type = userInfo.string(forKey: ZendeskUtils.PushNotificationIdentifiers.key),
+            type == ZendeskUtils.PushNotificationIdentifiers.type else {
+                return false
+        }
+        DispatchQueue.main.async {
+            ZendeskUtils.pushNotificationReceived()
         }
 
         WPAnalytics.track(.supportReceivedResponseFromSupport)
@@ -379,10 +359,6 @@ private extension PushNotificationsManager {
     enum Device {
         static let tokenKey = "apnsDeviceToken"
         static let idKey = "notification_device_id"
-    }
-
-    enum Helpshift {
-        static let originValue = "helpshift"
     }
 
     enum Notification {

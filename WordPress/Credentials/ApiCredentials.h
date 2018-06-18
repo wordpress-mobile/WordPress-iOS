@@ -9,9 +9,6 @@
 + (NSString *)googlePlusClientId;
 + (NSString *)googleLoginClientId;
 + (NSString *)googleLoginServerClientId;
-+ (NSString *)helpshiftAPIKey;
-+ (NSString *)helpshiftDomainName;
-+ (NSString *)helpshiftAppId;
 + (NSString *)debuggingKey;
 + (NSString *)zendeskAppId;
 + (NSString *)zendeskUrl;

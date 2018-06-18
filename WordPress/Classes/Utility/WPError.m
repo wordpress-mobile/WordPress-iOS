@@ -1,13 +1,10 @@
 #import "WPError.h"
 #import "WordPressAppDelegate.h"
 #import "WPAccount.h"
-#import "SupportViewController.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import <WordPressUI/WordPressUI.h>
 #import <wpxmlrpc/WPXMLRPC.h>
 #import "WordPress-Swift.h"
-
-
 
 NSInteger const SupportButtonIndex = 0;
 NSString * const WordPressAppErrorDomain = @"org.wordpress.iphone";
@@ -170,23 +167,16 @@ NSString * const WPErrorSupportSourceKey = @"helpshift-support-source";
                                                              [WPError internalInstance].alertShowing = NO;
                                                          }];
         [alertController addAction:action];
-        if (showSupport) {
+        
+        // Add the 'Need help' button only if internet is accessible (i.e. if the user can actually get help).
+        if (showSupport && ReachabilityUtils.isInternetReachable) {
             NSString *supportText = NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.");
             UIAlertAction *action = [UIAlertAction actionWithTitle:supportText
                                                              style:UIAlertActionStyleCancel
                                                            handler:^(UIAlertAction * _Nonnull action) {
-                                                               
-                                                               if ([Feature enabled:FeatureFlagZendeskMobile]) {
-                                                                   SupportTableViewController *supportVC = [SupportTableViewController new];
-                                                                   [supportVC updateSourceTagWith:sourceTag];
-                                                                   [supportVC showFromTabBar];
-                                                               }
-                                                               else {
-                                                                   SupportViewController *supportVC = [SupportViewController new];
-                                                                   supportVC.sourceTag = sourceTag;
-                                                                   [supportVC showFromTabBar];
-                                                               }
-                                                               
+                                                               SupportTableViewController *supportVC = [SupportTableViewController new];
+                                                               [supportVC updateSourceTagWith:sourceTag];
+                                                               [supportVC showFromTabBar];
                                                                [WPError internalInstance].alertShowing = NO;
                                                            }];
             [alertController addAction:action];
