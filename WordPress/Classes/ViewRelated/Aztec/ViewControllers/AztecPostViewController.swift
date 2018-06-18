@@ -1417,18 +1417,27 @@ private extension AztecPostViewController {
             self.toggleEditingMode()
         }
 
-        alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { [unowned self]  _ in
+        alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { [unowned self] _ in
             self.displayPreview()
         }
 
-        alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [unowned self]  _ in
+        alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [unowned self] _ in
             self.displayPostSettings()
         }
 
-        alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle)
+        alert.addCancelActionWithTitle(MoreSheetAlert.keepEditingTitle) { [weak self] _ in
+            // Preventing `UIViewControllerHierarchyInconsistency`
+            // Ref.: https://github.com/wordpress-mobile/WordPress-iOS/issues/8995
+            //
+            self?.restoreFirstResponder()
+        }
 
         alert.popoverPresentationController?.barButtonItem = moreBarButtonItem
 
+        // Preventing `UIViewControllerHierarchyInconsistency`
+        // Ref.: https://github.com/wordpress-mobile/WordPress-iOS/issues/8995
+        //
+        rememberFirstResponder()
         present(alert, animated: true, completion: nil)
     }
 
