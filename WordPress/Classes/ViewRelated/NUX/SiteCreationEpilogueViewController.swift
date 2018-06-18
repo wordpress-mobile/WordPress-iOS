@@ -8,11 +8,25 @@ class SiteCreationEpilogueViewController: NUXViewController {
 
     var siteToShow: Blog?
 
-    private var buttonViewController: NUXButtonViewController?
-
     override var prefersStatusBarHidden: Bool {
         return true
     }
+
+    // MARK: - ButtonViewController
+
+    @IBOutlet private var buttonViewContainer: UIView! {
+        didSet {
+            buttonViewController.move(to: self, into: buttonViewContainer)
+        }
+    }
+
+    private lazy var buttonViewController: NUXButtonViewController = {
+        let buttonViewController = NUXButtonViewController.instance()
+        buttonViewController.delegate = self
+        buttonViewController.setButtonTitles(primary: ButtonTitles.primary, secondary: ButtonTitles.secondary)
+        return buttonViewController
+    }()
+
 
     // MARK: - View
 
@@ -29,22 +43,7 @@ class SiteCreationEpilogueViewController: NUXViewController {
         if let vc = segue.destination as? SiteCreationSitePreviewViewController {
             vc.siteUrl = siteToShow?.url
         }
-
-        if let vc = segue.destination as? NUXButtonViewController {
-            vc.delegate = self
-            buttonViewController = vc
-            setButtonTitles()
-        }
     }
-
-    // MARK: - Button View Button Titles
-
-    private func setButtonTitles() {
-        let primaryTitle = NSLocalizedString("Write first post", comment: "On the final site creation page, button to allow the user to write a post for the newly created site.")
-        let secondaryTitle = NSLocalizedString("Configure", comment: "Button to allow the user to dismiss the final site creation page.")
-        buttonViewController?.setButtonTitles(primary: primaryTitle, secondary: secondaryTitle)
-    }
-
 }
 
 // MARK: - NUXButtonViewControllerDelegate
@@ -63,5 +62,13 @@ extension SiteCreationEpilogueViewController: NUXButtonViewControllerDelegate {
             WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: siteToShow)
         }
         navigationController?.dismiss(animated: true, completion: nil)
+    }
+}
+
+
+private extension SiteCreationEpilogueViewController {
+    enum ButtonTitles {
+        static let primary = NSLocalizedString("Write first post", comment: "On the final site creation page, button to allow the user to write a post for the newly created site.")
+        static let secondary = NSLocalizedString("Configure", comment: "Button to allow the user to dismiss the final site creation page.")
     }
 }

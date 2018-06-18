@@ -1,3 +1,2 @@
-La gestione delle impostazioni di notifica è stata migliorata.
-Quando vengono caricate le foto stock, ora viene generata una didascalia predefinita con dei crediti.
-Il supporto per la visualizzazione delle immagini GIF è stato migliorato.
+Ora puoi salvare gli articoli nel Reader: basta toccare l'icona del segnalibro su un articolo e sarai in grado di ritrovarlo in seguito nell'elenco degli Articoli salvati. Puoi persino leggere il testo dei tuoi articoli salvati se sei offline.
+Tieni presente che in questo rilascio iniziale non si garantisce la disponibilità delle immagini in modalità offline e che Articoli salvati è attualmente una funzionalità specifica del dispositivo, il che significa che gli articoli salvati non vengono sincronizzati tra dispositivi o il web e che andranno persi in caso di disconnessione dall'account o di disinstallazione dell'app.
