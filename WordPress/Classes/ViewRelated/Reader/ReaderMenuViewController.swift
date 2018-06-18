@@ -209,6 +209,12 @@ import WordPressShared
         }
     }
 
+    /// Clears all saved posts, so they can be deleted by cleanup methods.
+    ///
+    func clearSavedPosts() {
+        let context = ContextManager.sharedInstance().mainContext
+        ReaderPostService(managedObjectContext: context).clearSavedPostFlags()
+    }
 
     // MARK: - Instance Methods
 
@@ -231,6 +237,7 @@ import WordPressShared
 
         // Clean up obsolete content.
         unflagInUseContent()
+        clearSavedPosts()
         cleanupStaleContent(removeAllTopics: true)
 
         // Clean up stale search history
@@ -314,12 +321,22 @@ import WordPressShared
 
     /// Presents the reader's search view controller.
     ///
-    @objc func showReaderSearch() {
-        showDetailViewController(viewControllerForSearch(), sender: self)
-    }
-
     fileprivate func viewControllerForSearch() -> ReaderSearchViewController {
         return ReaderSearchViewController.controller()
+    }
+
+    /// Presents the saved for later view controller
+    @objc func showSavedForLater() {
+        guard let indexPath = viewModel.indexPathOfSavedForLater(),
+            let menuItem = viewModel.menuItemAtIndexPath(indexPath),
+            let viewController = viewControllerForMenuItem(menuItem) else {
+                return
+        }
+
+        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .middle)
+        restorableSelectedIndexPath = indexPath
+
+        showDetailViewController(viewController, sender: self)
     }
 
     fileprivate func viewControllerForSavedPosts() -> ReaderSavedPostsViewController {
@@ -496,6 +513,10 @@ import WordPressShared
             tableView.deselectSelectedRowWithAnimation(true)
             showAddTag()
             return
+        }
+
+        if menuItem.type == .savedPosts {
+            trackSavedPostsNavigation()
         }
 
         restorableSelectedIndexPath = indexPath

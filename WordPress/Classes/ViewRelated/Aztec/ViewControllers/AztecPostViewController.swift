@@ -50,15 +50,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         let textView = Aztec.TextView(defaultFont: Fonts.regular, defaultParagraphStyle: paragraphStyle, defaultMissingImage: Assets.defaultMissingImage)
 
-        textView.inputProcessor = PipelineProcessor([CaptionShortcodePreProcessor(),
-                                                     VideoShortcodeProcessor.videoPressPreProcessor,
-                                                     VideoShortcodeProcessor.wordPressVideoPreProcessor,
-                                                     CalypsoProcessorIn()])
-
-        textView.outputProcessor = PipelineProcessor([CaptionShortcodePostProcessor(),
-                                                      VideoShortcodeProcessor.videoPressPostProcessor,
-                                                      VideoShortcodeProcessor.wordPressVideoPostProcessor,
-                                                      CalypsoProcessorOut()])
+        textView.load(WordPressPlugin())
 
         let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
@@ -2122,6 +2114,7 @@ extension AztecPostViewController {
         options.filter = [.all]
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
+        options.badgedUTTypes = [String(kUTTypeGIF)]
 
         let picker = WPNavigationMediaPickerViewController()
 
@@ -2164,6 +2157,7 @@ extension AztecPostViewController {
         options.allowMultipleSelection = true
         options.allowCaptureOfMedia = false
         options.scrollVertically = true
+        options.badgedUTTypes = [String(kUTTypeGIF)]
 
         let picker = WPInputMediaPickerViewController(options: options)
         mediaPickerInputViewController = picker
