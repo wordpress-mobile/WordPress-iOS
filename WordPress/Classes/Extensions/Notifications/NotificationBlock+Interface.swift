@@ -175,7 +175,8 @@ extension NotificationBlock {
             return NSAttributedString()
         }
 
-        let theString = NSMutableAttributedString(string: text, attributes: attributes)
+        let tightenedText = replaceCommonWhitespaceIssues(in: text)
+        let theString = NSMutableAttributedString(string: tightenedText, attributes: attributes)
 
         if let quoteStyles = quoteStyles {
             theString.applyAttributes(toQuotes: quoteStyles)
@@ -206,6 +207,30 @@ extension NotificationBlock {
         }
 
         return theString
+    }
+
+    /// Replaces some common extra whitespace with hairline spaces so that comments display better
+    ///
+    /// - Parameter baseString: string of the comment body before attributes are added
+    /// - Returns: string of same length
+    /// - Note: the length must be maintained or the formatting will break
+    private func replaceCommonWhitespaceIssues(in baseString: String) -> String {
+        var newString: String
+        // \u{200A} = hairline space (very skinny space).
+        // we use these so that the ranges are still in the right position, but the extra space basically disappears
+        newString = baseString.replacingOccurrences(of: "\t ", with: "\u{200A}\u{200A}") // tabs before a space
+        newString = newString.replacingOccurrences(of: " \t", with: " \u{200A}") // tabs after a space
+        newString = newString.replacingOccurrences(of: "\t@", with: "\u{200A}@") // tabs before @mentions
+        newString = newString.replacingOccurrences(of: "\t.", with: "\u{200A}.") // tabs before a space
+        newString = newString.replacingOccurrences(of: "\t,", with: "\u{200A},") // tabs cefore a comman
+        newString = newString.replacingOccurrences(of: "\n\t\n\t", with: "\u{200A}\u{200A}\n\t") // extra newline-with-tab before a newline-with-tab
+
+        // if the length of the string changes the range-based formatting will break
+        guard newString.count == baseString.count else {
+            return baseString
+        }
+
+        return newString
     }
 
 

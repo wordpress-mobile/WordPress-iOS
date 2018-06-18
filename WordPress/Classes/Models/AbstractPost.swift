@@ -28,4 +28,8 @@ extension AbstractPost {
             }
         }
     }
+
+    @objc func containsGutenbergBlocks() -> Bool {
+        return content?.contains("<!-- wp:") ?? false
+    }
 }

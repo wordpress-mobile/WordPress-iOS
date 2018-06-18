@@ -325,6 +325,12 @@ import WordPressShared
         return ReaderSearchViewController.controller()
     }
 
+    /// Present the Discover stream as a Site stream.
+    ///
+    private func viewControllerForDiscover() -> ReaderStreamViewController {
+        return ReaderStreamViewController.controllerWithSiteID(ReaderHelpers.discoverSiteID, isFeed: false)
+    }
+
     /// Presents the saved for later view controller
     @objc func showSavedForLater() {
         guard let indexPath = viewModel.indexPathOfSavedForLater(),
@@ -527,6 +533,11 @@ import WordPressShared
     }
 
     fileprivate func viewControllerForMenuItem(_ menuItem: ReaderMenuItem) -> UIViewController? {
+
+        if let topic = menuItem.topic, ReaderHelpers.topicIsDiscover(topic) {
+            return viewControllerForDiscover()
+        }
+
         if let topic = menuItem.topic {
             currentReaderStream = viewControllerForTopic(topic)
             return currentReaderStream
