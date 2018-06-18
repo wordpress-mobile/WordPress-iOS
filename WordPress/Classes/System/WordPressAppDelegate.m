@@ -4,7 +4,6 @@
 #import "Constants.h"
 
 // Pods
-#import <AFNetworking/UIKit+AFNetworking.h>
 #import <Crashlytics/Crashlytics.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <WordPressUI/WordPressUI.h>
@@ -28,7 +27,6 @@
 
 // Misc managers, helpers, utilities
 #import "ContextManager.h"
-#import "HelpshiftUtils.h"
 #import "TodayExtensionService.h"
 #import "WPAuthTokenIssueSolver.h"
 #import <ZendeskSDK/ZendeskSDK.h>
@@ -42,7 +40,6 @@
 
 // View controllers
 #import "StatsViewController.h"
-#import "SupportViewController.h"
 #import "WPTabBarController.h"
 #import <WPMediaPicker/WPMediaPicker.h>
 
@@ -255,21 +252,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
                     }
                 }
             }
-        } else if ([[url host] isEqualToString:@"faq"]) {
-            if ([HelpshiftUtils isHelpshiftEnabled]) {
-                NSString *faqID = [url lastPathComponent];
-
-                UIViewController *viewController = self.window.topmostPresentedViewController;
-
-                if (viewController) {
-                    HelpshiftPresenter *presenter = [HelpshiftPresenter new];
-                    [presenter presentHelpshiftWindowForFAQ:faqID
-                                         fromViewController:viewController
-                                                 completion:nil];
-                }
-
-                return YES;
-            }
         }
     }
 
@@ -392,11 +374,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [ZDKLogger enable:YES];
 #endif
 
-    [HelpshiftUtils setup];
-    
-    if ([Feature enabled:FeatureFlagZendeskMobile]) {
-        [ZendeskUtils setup];
-    }
+    [ZendeskUtils setup];
 
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];

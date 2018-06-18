@@ -18,6 +18,9 @@ NSString *const WPAutomatticAppsBlogURL                             = @"https://
 NSString *const WPGithubMainURL                                     = @"https://github.com/wordpress-mobile/WordPress-iOS/";
 NSString *const WPTwitterWordPressHandle                            = @"@WordPressiOS";
 NSString *const WPTwitterWordPressMobileURL                         = @"https://twitter.com/WordPressiOS";
+NSString *const WPComReferrerURL                                    = @"https://wordpress.com";
+NSString *const AutomatticDomain                                    = @"automattic.com";
+NSString *const WPComDomain                                         = @"wordpress.com";
 
 /// Notifications Constants
 ///
