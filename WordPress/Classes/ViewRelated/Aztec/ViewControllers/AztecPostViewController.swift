@@ -2286,8 +2286,6 @@ extension AztecPostViewController {
     }
 
     private func showMore(from: FormatBarItem) {
-        rememberFirstResponder()
-
         let moreCoordinatorContext = MediaPickingContext(origin: self, view: view, blog: post.blog)
         moreCoordinator.present(context: moreCoordinatorContext)
     }
