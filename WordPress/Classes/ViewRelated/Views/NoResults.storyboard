@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -20,10 +20,18 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Ae-eX-ae9" userLabel="No Results View">
-                                <rect key="frame" x="20" y="216" width="375" height="256"/>
+                                <rect key="frame" x="20" y="216" width="335" height="256"/>
                                 <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="czl-5D-gem" userLabel="Accessory View">
+                                        <rect key="frame" x="117.5" y="0.0" width="100" height="100"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="100" id="AYV-Gw-aKL"/>
+                                            <constraint firstAttribute="width" secondItem="czl-5D-gem" secondAttribute="height" multiplier="1:1" id="OOu-9J-9cx"/>
+                                        </constraints>
+                                    </view>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mysites-nosites" translatesAutoresizingMaskIntoConstraints="NO" id="Fwm-rl-dKS" userLabel="Image View">
-                                        <rect key="frame" x="167.5" y="-55" width="350" height="218.5"/>
+                                        <rect key="frame" x="-7.5" y="-55" width="350" height="218.5"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="Fwm-rl-dKS" secondAttribute="height" multiplier="8:5" id="AAo-23-ODz"/>
                                             <constraint firstAttribute="width" constant="350" id="wER-bJ-ebd">
@@ -32,16 +40,16 @@
                                         </constraints>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="v7c-T9-kZq" userLabel="Label Stack View">
-                                        <rect key="frame" x="0.0" y="133.5" width="375" height="48.5"/>
+                                        <rect key="frame" x="0.0" y="133.5" width="335" height="48.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is the title text." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8BN-gx-7TL">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="335" height="20.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                 <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is the subtitle text." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdl-jh-nme">
-                                                <rect key="frame" x="0.0" y="30.5" width="375" height="18"/>
+                                                <rect key="frame" x="0.0" y="30.5" width="335" height="18"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -70,6 +78,7 @@
                                 <constraints>
                                     <constraint firstItem="Fwm-rl-dKS" firstAttribute="top" secondItem="0Ae-eX-ae9" secondAttribute="top" constant="-55" id="Q94-Bc-Rfs"/>
                                     <constraint firstItem="v7c-T9-kZq" firstAttribute="leading" secondItem="0Ae-eX-ae9" secondAttribute="leading" id="Qtt-u7-Dee"/>
+                                    <constraint firstItem="czl-5D-gem" firstAttribute="centerX" secondItem="0Ae-eX-ae9" secondAttribute="centerX" id="V5P-Iz-hPa"/>
                                     <constraint firstAttribute="trailing" secondItem="v7c-T9-kZq" secondAttribute="trailing" id="WVb-Ww-qsF"/>
                                     <constraint firstAttribute="bottom" secondItem="CPl-cH-d7b" secondAttribute="bottom" id="YIc-mc-NXm"/>
                                     <constraint firstItem="CPl-cH-d7b" firstAttribute="top" secondItem="v7c-T9-kZq" secondAttribute="bottom" constant="30" id="gWQ-2j-TIB">
@@ -80,6 +89,7 @@
                                     <constraint firstItem="v7c-T9-kZq" firstAttribute="top" secondItem="Fwm-rl-dKS" secondAttribute="bottom" constant="-30" id="rWL-v8-w8t">
                                         <variation key="heightClass=compact" constant="-40"/>
                                     </constraint>
+                                    <constraint firstItem="czl-5D-gem" firstAttribute="top" secondItem="0Ae-eX-ae9" secondAttribute="top" id="zNe-un-uU0"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -94,6 +104,7 @@
                     </view>
                     <size key="freeformSize" width="375" height="667"/>
                     <connections>
+                        <outlet property="accessoryView" destination="czl-5D-gem" id="VNX-la-T42"/>
                         <outlet property="actionButton" destination="CPl-cH-d7b" id="aGa-gx-Vlh"/>
                         <outlet property="imageView" destination="Fwm-rl-dKS" id="dxy-k9-CRH"/>
                         <outlet property="subtitleLabel" destination="sdl-jh-nme" id="egs-7j-xNg"/>
