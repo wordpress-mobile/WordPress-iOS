@@ -1,6 +1,3 @@
-#import "HelpshiftCore.h"
-#import "HelpshiftSupport.h"
-
 #import "SFHFKeychainUtils.h"
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <NSObject_SafeExpectations/NSDictionary+SafeExpectations.h>
@@ -32,7 +29,6 @@
 
 #import "EditCommentViewController.h"
 
-#import "HelpshiftUtils.h"
 #import "HockeyManager.h"
 
 #import "InteractivePostView.h"
@@ -85,7 +81,6 @@
 #import "StatsViewController.h"
 #import "SuggestionService.h"
 #import "SuggestionsTableView.h"
-#import "SupportViewController.h"
 #import "SVProgressHUD+Dismiss.h"
 
 #import "Theme.h"

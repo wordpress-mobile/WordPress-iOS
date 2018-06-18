@@ -1,3 +1,2 @@
-Beheer van meldingsinstellingen is verbeterd.
-Een standaardtitel met credits wordt nu gegenereerd wanneer stockfoto's worden geüpload.
-Ondersteuning voor het weergeven van GIF-afbeeldingen is verbeterd.
+Je kunt nu berichten opslaan in de Reader: tik op het bladwijzerpictogram bij een bericht en je kunt het bericht later terugvinden in je lijst met opgeslagen berichten. Je kunt de tekst van je opgeslagen berichten zelfs offline bekijken!
+Denk eraan dat afbeeldingen niet altijd offline weergegeven kunnen worden in deze eerste release en dat Opgeslagen berichten momenteel een device-specifieke functie is. Dat wil zeggen dat opgeslagen berichten niet worden gesynchroniseerd tussen devices of online en dat je deze kunt kwijtraken wanneer je uitlogt of de app verwijdert.

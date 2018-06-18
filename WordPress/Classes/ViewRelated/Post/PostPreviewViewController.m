@@ -13,7 +13,7 @@
 
 
 
-@interface PostPreviewViewController () <PostPreviewGeneratorDelegate>
+@interface PostPreviewViewController () <PostPreviewGeneratorDelegate, NoResultsViewControllerDelegate>
 
 @property (nonatomic, strong) UIWebView *webView;
 @property (nonatomic, strong) NSMutableData *receivedData;
@@ -21,6 +21,8 @@
 @property (nonatomic, strong) UIBarButtonItem *shareBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *doneBarButtonItem;
 @property (nonatomic, strong) PostPreviewGenerator *generator;
+@property (nonatomic, strong) NoResultsViewController *noResultsViewController;
+@property (nonatomic, strong) id reachabilityObserver;
 
 @end
 
@@ -59,12 +61,12 @@
     
     [super viewDidLoad];
     [self setupWebView];
+    [self setupNoResultsViewController];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self refreshWebView];
     NSMutableArray *rightButtons = [NSMutableArray new];
     if (self.isModal) {
         [rightButtons addObject:[self doneBarButtonItem]];
@@ -75,10 +77,17 @@
     [self.navigationItem setRightBarButtonItems:rightButtons animated:YES];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self refreshWebView];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [self.webView stopLoading];
+    [self stopLoading];
+    [self stopWaitingForConnectionRestored];
 }
 
 #pragma mark -
@@ -94,6 +103,12 @@
     [self.view addSubview:self.webView];
 }
 
+- (void)setupNoResultsViewController {
+    UIStoryboard *noResultsSB = [UIStoryboard storyboardWithName:@"NoResults" bundle:nil];
+    self.noResultsViewController = [noResultsSB instantiateViewControllerWithIdentifier:@"NoResults"];
+    self.noResultsViewController.delegate = self;
+}
+
 #pragma mark - Loading
 
 - (void)startLoading
@@ -104,6 +119,23 @@
 - (void)stopLoading
 {
     [SVProgressHUD dismiss];
+    [self.webView stopLoading];
+}
+
+- (void)reloadWhenConnectionRestored
+{
+    __weak __typeof(self) weakSelf = self;
+    self.reachabilityObserver = [ReachabilityUtils observeOnceInternetAvailableWithAction:^{
+        [weakSelf refreshWebView];
+    }];
+}
+
+- (void)stopWaitingForConnectionRestored
+{
+    if (self.reachabilityObserver != nil) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self.reachabilityObserver];
+        self.reachabilityObserver = nil;
+    }
 }
 
 #pragma mark -
@@ -185,11 +217,45 @@
 
 - (void)preview:(PostPreviewGenerator *)generator loadHTML:(NSString *)html {
     [self.webView loadHTMLString:html baseURL:nil];
+    [self hideNoResults];
 }
 
 - (void)preview:(PostPreviewGenerator *)generator attemptRequest:(NSURLRequest *)request {
     [self startLoading];
     [self.webView loadRequest:request];
+    [self hideNoResults];
+}
+
+- (void)previewFailed:(PostPreviewGenerator *)generator message:(NSString *)message {
+    [self showNoResultsWithTite:message];
+    [self reloadWhenConnectionRestored];
+}
+
+#pragma mark - No Results
+
+- (void)actionButtonPressed {
+    [self stopWaitingForConnectionRestored];
+    [self hideNoResults];
+    [self refreshWebView];
+}
+
+- (void)showNoResultsWithTite:(NSString *)title {
+    [self.noResultsViewController configureWithTitle:title
+                                         buttonTitle:NSLocalizedString(@"Retry", @"Button to retry a preview that failed to load")
+                                            subtitle:nil
+                                               image:nil
+                                       accessoryView:nil];
+    [self.view layoutIfNeeded];
+    [self addChildViewController:self.noResultsViewController];
+
+    [self.view addSubview:self.noResultsViewController.view];
+    self.noResultsViewController.view.frame = self.view.bounds;
+    [self.noResultsViewController didMoveToParentViewController:self];
+}
+
+- (void)hideNoResults {
+    [self.noResultsViewController.view removeFromSuperview];
+    [self.noResultsViewController removeFromParentViewController];
 }
 
 #pragma mark - Custom UI elements
