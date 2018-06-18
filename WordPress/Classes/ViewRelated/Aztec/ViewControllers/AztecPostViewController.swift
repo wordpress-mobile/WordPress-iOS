@@ -3818,12 +3818,6 @@ extension AztecPostViewController: UIDocumentPickerDelegate {
     }
 }
 
-extension AztecPostViewController: MediaPickingOptionsDelegate {
-    func didCancel() {
-        restoreFirstResponder()
-    }
-}
-
 extension AztecPostViewController: StockPhotosPickerDelegate {
     func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
         assets.forEach {
