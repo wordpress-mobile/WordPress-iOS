@@ -148,4 +148,13 @@
     return [[self.objectID URIRepresentation] absoluteString];
 }
 
+- (NSString *)UTTypeIdentifier
+{
+    NSString *extension = [self fileExtension];
+    if (!extension.length) {
+        return nil;
+    }
+    return (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)extension, NULL);
+}
+
 @end

@@ -124,7 +124,12 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
 - (void)deletePostsWithNoTopic;
 
 /**
- Globally sets the `inUse` flag to fall for all posts.
+ Sets the `isSavedForLater` flag to false for all posts.
+ */
+- (void)clearSavedPostFlags;
+
+/**
+ Globally sets the `inUse` flag to false for all posts.
  */
 - (void)clearInUseFlags;
 

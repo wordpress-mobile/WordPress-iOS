@@ -43,9 +43,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
 
         let textView = Aztec.TextView(defaultFont: ShareFonts.regular, defaultParagraphStyle: paragraphStyle, defaultMissingImage: Assets.defaultMissingImage)
 
-        textView.inputProcessor = PipelineProcessor([CalypsoProcessorIn()])
-
-        textView.outputProcessor = PipelineProcessor([CalypsoProcessorOut()])
+        textView.load(WordPressPlugin())
 
         let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)

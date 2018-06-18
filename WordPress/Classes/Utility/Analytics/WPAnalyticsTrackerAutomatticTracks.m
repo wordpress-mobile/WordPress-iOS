@@ -949,6 +949,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatPushNotificationPrimerNoTapped:
             eventName = @"notifications_primer_no_tapped";
             break;
+        case WPAnalyticsStatPushNotificationWinbackShown:
+            eventName = @"notifications_winback_shown";
+            break;
+        case WPAnalyticsStatPushNotificationWinbackNoTapped:
+            eventName = @"notifications_winback_no_tapped";
+            break;
+        case WPAnalyticsStatPushNotificationWinbackSettingsTapped:
+            eventName = @"notifications_winback_settings_tapped";
+            break;
         case WPAnalyticsStatReaderAccessed:
             eventName = @"reader_accessed";
             break;
@@ -996,6 +1005,18 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatReaderListNotificationEnabled:
             eventName = @"followed_blog_notifications_reader_enabled";
+            break;
+        case WPAnalyticsStatReaderPostSaved:
+            eventName = @"reader_post_saved";
+            break;
+        case WPAnalyticsStatReaderPostUnsaved:
+            eventName = @"reader_post_unsaved";
+            break;
+        case WPAnalyticsStatReaderSavedPostOpened:
+            eventName = @"reader_saved_post_opened";
+            break;
+        case WPAnalyticsStatReaderSavedListViewed:
+            eventName = @"reader_saved_list_viewed";
             break;
         case WPAnalyticsStatReaderSearchLoaded:
             eventName = @"reader_search_loaded";
@@ -1298,6 +1319,51 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatSupportUserRepliedToHelpshift:
             eventName = @"support_user_replied_to_helpshift";
             break;
+        case WPAnalyticsStatSupportHelpCenterUserSearched:
+            eventName = @"support_help_center_user_searched";
+            break;
+        case WPAnalyticsStatSupportHelpCenterViewed:
+            eventName = @"support_help_center_viewed";
+            break;
+        case WPAnalyticsStatSupportNewRequestViewed:
+            eventName = @"support_new_request_viewed";
+            break;
+        case WPAnalyticsStatSupportTicketListViewed:
+            eventName = @"support_ticket_list_viewed";
+            break;
+        case WPAnalyticsStatSupportNewRequestCreated:
+            eventName = @"support_new_request_created";
+            break;
+        case WPAnalyticsStatSupportNewRequestFailed:
+            eventName = @"support_new_request_failed";
+            break;
+        case WPAnalyticsStatSupportNewRequestFileAttached:
+            eventName = @"support_new_request_file_attached";
+            break;
+        case WPAnalyticsStatSupportNewRequestFileAttachmentFailed:
+            eventName = @"support_new_request_file_attachment_failed";
+            break;
+        case WPAnalyticsStatSupportTicketAttachmentUserDeleted:
+            eventName = @"support_ticket_attachment_user_deleted";
+            break;
+        case WPAnalyticsStatSupportTicketAttachmentUserDeleteFailed:
+            eventName = @"support_ticket_attachment_user_delete_failed";
+            break;
+        case WPAnalyticsStatSupportTicketUserReplied:
+            eventName = @"support_ticket_user_replied";
+            break;
+        case WPAnalyticsStatSupportTicketUserReplyFailed:
+            eventName = @"support_ticket_user_reply_failed";
+            break;
+        case WPAnalyticsStatSupportTicketListViewFailed:
+            eventName = @"support_ticket_list_view_failed";
+            break;
+        case WPAnalyticsStatSupportTicketUserViewed:
+            eventName = @"support_ticket_user_viewed";
+            break;
+        case WPAnalyticsStatSupportTicketViewFailed:
+            eventName = @"support_ticket_view_failed";
+            break;
         case WPAnalyticsStatThemesAccessedThemeBrowser:
             eventName = @"themes_theme_browser_accessed";
             break;
@@ -1389,7 +1455,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"searchads_attribution_detail_received";
             break;
 
-            // to be implemented
+        // to be implemented
         case WPAnalyticsStatMediaLibraryAddedPhoto:
         case WPAnalyticsStatMediaLibraryAddedVideo:
         case WPAnalyticsStatDefaultAccountChanged:

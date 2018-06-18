@@ -1,5 +1,5 @@
 /// Action commands in Reader cells
-final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
+class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
     private let context: NSManagedObjectContext
     private weak var origin: UIViewController?
     private let topic: ReaderAbstractTopic?
@@ -96,8 +96,15 @@ final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
         }
     }
 
-    fileprivate func toggleSavedForLater(for post: ReaderPost) {
-        ReaderSaveForLaterAction(visibleConfirmation: visibleConfirmation).execute(with: post, context: context)
+    func toggleSavedForLater(for post: ReaderPost) {
+        let actionOrigin: ReaderSaveForLaterOrigin
+        if origin is ReaderSavedPostsViewController {
+            actionOrigin = .savedStream
+        } else {
+            actionOrigin = .otherStream
+        }
+
+        ReaderSaveForLaterAction(visibleConfirmation: visibleConfirmation).execute(with: post, context: context, origin: actionOrigin)
     }
 
     fileprivate func visitSiteForPost(_ post: ReaderPost) {
@@ -124,5 +131,30 @@ final class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
             return
         }
         ReaderShareAction().execute(with: post, context: context, anchor: anchorView, vc: origin)
+    }
+}
+
+enum ReaderActionsVisibility: Equatable {
+    case hidden
+    case visible(enabled: Bool)
+
+    static func == (lhs: ReaderActionsVisibility, rhs: ReaderActionsVisibility) -> Bool {
+        switch (lhs, rhs) {
+        case (.hidden, .hidden):
+            return true
+        case (.visible(let lenabled), .visible(let renabled)):
+            return lenabled == renabled
+        default:
+            return false
+        }
+    }
+
+    var isEnabled: Bool {
+        switch self {
+        case .hidden:
+            return false
+        case .visible(let enabled):
+            return enabled
+        }
     }
 }

@@ -75,7 +75,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
     // MARK: - Accessors
     @objc open var hidesFollowButton = false
-    @objc open var enableLoggedInFeatures = true
+    var loggedInActionVisibility: ReaderActionsVisibility = .visible(enabled: true)
 
 
     open override func setSelected(_ selected: Bool, animated: Bool) {
@@ -144,7 +144,13 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         applyOpaqueBackgroundColors()
         setupFeaturedImageView()
         setupVisitButton()
-        setupSaveForLaterButton()
+
+        if FeatureFlag.saveForLater.enabled {
+            setupSaveForLaterButton()
+        } else {
+            setupShareButton()
+        }
+
         setupMenuButton()
         setupSummaryLabel()
         setupAttributionView()
@@ -209,9 +215,13 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     fileprivate func setupSaveForLaterButton() {
-        let size = FeatureFlag.saveForLater.enabled ? Gridicon.defaultSize : CGSize(width: 20, height: 20)
-        let icon = FeatureFlag.saveForLater.enabled ? Gridicon.iconOfType(.bookmarkOutline, withSize: size) : Gridicon.iconOfType(.share, withSize: size)
-        let highlightedIcon = FeatureFlag.saveForLater.enabled ? Gridicon.iconOfType(.bookmark, withSize: size) : icon
+        WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
+    }
+
+    fileprivate func setupShareButton() {
+        let size = CGSize(width: 20, height: 20)
+        let icon = Gridicon.iconOfType(.share, withSize: size)
+        let highlightedIcon = icon
 
         let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
         let tintedHighlightedIcon = highlightedIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
@@ -352,7 +362,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         featuredImageDesiredWidth = featuredImageView.frame.width
         let size = CGSize(width: featuredImageDesiredWidth, height: featuredMediaHeightConstraintConstant)
         let postInfo = ReaderCardContent(provider: content)
-        imageLoader.loadImage(with: featuredImageURL, from: postInfo, preferedSize: size)
+        imageLoader.loadImage(with: featuredImageURL, from: postInfo, preferredSize: size)
     }
 
     fileprivate func configureTitle() {
@@ -409,36 +419,67 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
     fileprivate func configureLikeActionButton() {
         // Show likes if logged in, or if likes exist, but not if external
-        guard (enableLoggedInFeatures || contentProvider!.likeCount().intValue > 0) && !contentProvider!.isExternal() else {
+        guard shouldShowLikeActionButton else {
             resetActionButton(likeActionButton)
             return
         }
 
         likeActionButton.tag = CardAction.like.rawValue
-        likeActionButton.isEnabled = enableLoggedInFeatures
+        likeActionButton.isEnabled = loggedInActionVisibility.isEnabled
         likeActionButton.isSelected = contentProvider!.isLiked()
         likeActionButton.isHidden = false
     }
 
+    fileprivate var shouldShowLikeActionButton: Bool {
+        guard loggedInActionVisibility != .hidden else {
+            return false
+        }
+
+        guard let contentProvider = contentProvider else {
+            return false
+        }
+
+        let hasLikes = contentProvider.likeCount().intValue > 0
+
+        guard loggedInActionVisibility.isEnabled || hasLikes else {
+            return false
+        }
+
+        return !contentProvider.isExternal()
+    }
+
     fileprivate func configureCommentActionButton() {
+        guard shouldShowCommentActionButton else {
+            resetActionButton(commentActionButton)
+            return
+        }
+
+        commentActionButton.tag = CardAction.comment.rawValue
+        commentActionButton.isHidden = false
+    }
+
+    fileprivate var shouldShowCommentActionButton: Bool {
+        guard loggedInActionVisibility != .hidden else {
+            return false
+        }
+
+        guard let contentProvider = contentProvider else {
+            return false
+        }
 
         // Show comments if logged in and comments are enabled, or if comments exist.
         // But only if it is from wpcom or jetpack (external is not yet supported).
-        // Nesting this conditional cos it seems clearer that way
-        if contentProvider!.isWPCom() || contentProvider!.isJetpack() {
-            let commentCount = contentProvider!.commentCount()?.intValue ?? 0
-            if (enableLoggedInFeatures && contentProvider!.commentsOpen()) || commentCount > 0 {
+        let usesWPComAPI = contentProvider.isWPCom() || contentProvider.isJetpack()
 
-                commentActionButton.tag = CardAction.comment.rawValue
-                commentActionButton.isHidden = false
+        let commentCount = contentProvider.commentCount()?.intValue ?? 0
+        let hasComments = commentCount > 0
 
-                return
-            }
-        }
-        resetActionButton(commentActionButton)
+        return usesWPComAPI && (contentProvider.commentsOpen() || hasComments)
     }
 
+
     fileprivate func configureSaveForLaterButton() {
+        saveForLaterButton.isHidden = false
         let postIsSavedForLater = contentProvider?.isSavedForLater() ?? false
         saveForLaterButton.isSelected = postIsSavedForLater
     }
@@ -464,21 +505,25 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
             insetFollowButtonIcon(false)
         } else {
-            // show title text
-
             let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
             let commentTitle = WPStyleGuide.commentCountForDisplay(commentCount)
-            let saveForLaterTitle = FeatureFlag.saveForLater.enabled ? NSLocalizedString("Save for Later", comment: "Verb. Button title.  Tap to save a post for later.") : NSLocalizedString("Share", comment: "Verb. Button title.  Tap to share a post.")
             let followTitle = WPStyleGuide.followStringForDisplay(false)
             let followingTitle = WPStyleGuide.followStringForDisplay(true)
 
             likeActionButton.setTitle(likeTitle, for: .normal)
             commentActionButton.setTitle(commentTitle, for: .normal)
-            saveForLaterButton.setTitle(saveForLaterTitle, for: .normal)
+
 
             followButton.setTitle(followTitle, for: .normal)
             followButton.setTitle(followingTitle, for: .selected)
             followButton.setTitle(followingTitle, for: .highlighted)
+
+            if FeatureFlag.saveForLater.enabled {
+                WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
+            } else {
+                let shareTitle = NSLocalizedString("Share", comment: "Verb. Button title.  Tap to share a post.")
+                saveForLaterButton.setTitle(shareTitle, for: .normal)
+            }
 
             insetFollowButtonIcon(true)
         }
@@ -598,7 +643,11 @@ extension ReaderPostCardCell: Accessible {
     func prepareForVoiceOver() {
         prepareCardForVoiceOver()
         prepareHeaderButtonForVoiceOver()
-        prepareShareForVoiceOver()
+        if FeatureFlag.saveForLater.enabled {
+            prepareSaveForLaterForVoiceOver()
+        } else {
+            prepareShareForVoiceOver()
+        }
         prepareCommentsForVoiceOver()
         prepareLikeForVoiceOver()
         prepareMenuForVoiceOver()
@@ -655,10 +704,16 @@ extension ReaderPostCardCell: Accessible {
         return String(format: format, title)
     }
 
+    private func prepareSaveForLaterForVoiceOver() {
+        let isSavedForLater = contentProvider?.isSavedForLater() ?? false
+        saveForLaterButton.accessibilityLabel = isSavedForLater ? NSLocalizedString("Saved Post", comment: "Accessibility label for the 'Save Post' button when a post has been saved.") : NSLocalizedString("Save post", comment: "Accessibility label for the 'Save Post' button.")
+        saveForLaterButton.accessibilityHint = isSavedForLater ? NSLocalizedString("Remove this post from my saved posts.", comment: "Accessibility hint for the 'Save Post' button when a post is already saved.") : NSLocalizedString("Saves this post for later.", comment: "Accessibility hint for the 'Save Post' button.")
+        saveForLaterButton.accessibilityTraits = UIAccessibilityTraitButton
+    }
+
     private func prepareShareForVoiceOver() {
-        let saveForLaterFlag = FeatureFlag.saveForLater.enabled
-        saveForLaterButton.accessibilityLabel = saveForLaterFlag ? NSLocalizedString("Save for Later", comment: "Spoken accessibility label") :  NSLocalizedString("Share", comment: "Spoken accessibility label")
-        saveForLaterButton.accessibilityHint = saveForLaterFlag ? NSLocalizedString("Saves this post for later", comment: "Spoken accessibility save for later buttons") : NSLocalizedString("Shares this post", comment: "Spoken accessibility hint for Share buttons")
+        saveForLaterButton.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
+        saveForLaterButton.accessibilityHint = NSLocalizedString("Shares this post", comment: "Spoken accessibility hint for Share buttons")
         saveForLaterButton.accessibilityTraits = UIAccessibilityTraitButton
     }
 
@@ -814,7 +869,7 @@ extension ReaderPostCardCell {
         return headerBlogButton
     }
 
-    func getShareButtonForTesting() -> UIButton {
+    func getSaveForLaterButtonForTesting() -> UIButton {
         return saveForLaterButton
     }
 

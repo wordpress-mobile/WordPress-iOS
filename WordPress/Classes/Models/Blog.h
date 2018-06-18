@@ -213,6 +213,16 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 - (NSString *)logDescription;
 
 /**
+ Returns formatted Blog information to send to Support when user creates a new ticket.
+ */
+- (NSString *)supportDescription;
+
+/**
+ Returns formatted Blog State information to send to Support when user creates a new ticket.
+ */
+- (NSString *)stateDescription;
+
+/**
  Returns a REST API client if available
 
  If the blog is a WordPress.com one or it has Jetpack it will return a REST API

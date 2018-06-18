@@ -203,6 +203,12 @@ extension LoginViewController {
                 return
             }
 
+            if self.isSignUp {
+                // Bump stat now that the account info has been synced.
+                // Note that social signups bump this stat elsewhere.
+                WordPressAuthenticator.track(.createdAccount, properties: ["source": "email"])
+            }
+
             if self.mustShowSignupEpilogue() {
                 self.showSignupEpilogue(for: credentials)
             } else if self.mustShowLoginEpilogue() {
@@ -247,6 +253,7 @@ extension LoginViewController {
             ]
         }
 
+        WPAnalytics.refreshMetadata()
         WordPressAuthenticator.track(.signedIn, properties: properties)
     }
 
