@@ -91,7 +91,7 @@ class AppSettingsViewController: UITableViewController {
                                     value: mediaCacheRowDescription)
 
         let mediaClearCacheRow = DestructiveButtonRow(
-            title: NSLocalizedString("Clear Media Cache", comment: "Label for button that clears all media cache."),
+            title: NSLocalizedString("Clear Device Media Cache", comment: "Label for button that clears all media cache."),
             action: { [weak self] row in
                 self?.clearMediaCache()
             },
@@ -144,7 +144,8 @@ class AppSettingsViewController: UITableViewController {
                     mediaCacheRow,
                     mediaClearCacheRow
                 ],
-                footerText: nil),
+                footerText: NSLocalizedString("Free up storage space on this device by clearing your temporary media files. This will not affect media on your site.", comment: "Explanatory text for clearing device media cache.")
+            ),
             ImmuTableSection(
                 headerText: privacyHeader,
                 rows: [
