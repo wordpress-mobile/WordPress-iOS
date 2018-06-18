@@ -420,6 +420,9 @@ class ListTagProcessor: HtmlTagProcessor {
 /// The HTML for the attachment is extracted and replaced with a string marker.
 ///
 class AttachmentTagProcessor: HtmlTagProcessor {
+
+    private typealias Attributes = [String: String]
+
     let textAttachmentIdentifier = "WPTEXTATTACHMENTIDENTIFIER"
     static let attributeRegex = try! NSRegularExpression(pattern: "([a-z-]+)=(?:\"|')([^\"']+)(?:\"|')", options: .caseInsensitive)
 
@@ -449,26 +452,70 @@ class AttachmentTagProcessor: HtmlTagProcessor {
 
         let attrs = attributesFromTag(html)
 
-        var src = attrs["src"] ?? ""
-        src = src.stringByDecodingXMLCharacters()
-        let textAttachment = WPTextAttachment(tagName: tagName, identifier: identifier, src: src)
+        let source = getSource(from: attrs)
+        let textAttachment = WPTextAttachment(tagName: tagName, identifier: identifier, src: source)
         textAttachment.attributes = attrs
         textAttachment.html = html
 
-        if let widthStr = attrs["width"] {
-            if widthStr.contains("%") {
-                textAttachment.width = CGFloat.greatestFiniteMagnitude
-            } else if let width = Float(widthStr) {
-                textAttachment.width = CGFloat(width)
-            }
-        }
+        let size = getSize(from: attrs)
+        textAttachment.height = size.height
+        textAttachment.width = size.width
 
-        if let heightStr = attrs["height"],
-            let height = Float(heightStr) {
-            textAttachment.height = CGFloat(height)
+        let sizeNotFound = textAttachment.height == 0 && textAttachment.width == 0
+        if sizeNotFound {
+            let originalSize = getOriginalSize(from: attrs)
+            textAttachment.height = originalSize.height
+            textAttachment.width = originalSize.width
         }
 
         return textAttachment
+    }
+
+    private func getSource(from attributes: Attributes) -> String {
+        let source = attributes["src"] ?? ""
+        return source.stringByDecodingXMLCharacters()
+    }
+
+    private func getSize(from attributes: Attributes) -> CGSize {
+
+        func width(from attributes: Attributes) -> CGFloat {
+            if let widthStr = attributes["width"] {
+                if widthStr.contains("%") {
+                    return CGFloat.greatestFiniteMagnitude
+                } else if let widthFloat = Float(widthStr) {
+                    return CGFloat(widthFloat)
+                }
+            }
+            return 0
+        }
+
+        func height(from attributes: Attributes) -> CGFloat {
+            if let heightStr = attributes["height"],
+                let heightFloat = Float(heightStr) {
+                return CGFloat(heightFloat)
+            }
+            return 0
+        }
+
+        return CGSize(width: width(from: attributes), height: height(from: attributes))
+    }
+
+    private func getOriginalSize(from attributes: Attributes) -> CGSize {
+        // Original size comes in the form of:
+        // data-orig-size="w,h"
+        guard let originalSize = attributes["data-orig-size"] else {
+            return .zero
+        }
+        let sizeComponents = originalSize.components(separatedBy: ",")
+        guard
+            let widthString = sizeComponents.first,
+            let heightString = sizeComponents.last,
+            let width = Float(widthString),
+            let height = Float(heightString) else {
+
+            return .zero
+        }
+        return CGSize(width: CGFloat(width), height: CGFloat(height))
     }
 
 

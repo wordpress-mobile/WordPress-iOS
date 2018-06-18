@@ -31,7 +31,7 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
     // MARK: - GUI
 
-    fileprivate let noResultsView = WPNoResultsView()
+    fileprivate var noResultsViewController: NoResultsViewController?
 
     // MARK: - Constructors
 
@@ -40,7 +40,6 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         self.service = service
         super.init(style: .plain)
         title = NSLocalizedString("Activity", comment: "Title for the activity list")
-        noResultsView.delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -99,32 +98,6 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         updateNoResults()
     }
 
-    func updateNoResults() {
-        if let noResultsViewModel = viewModel.noResultsViewModel {
-            showNoResults(noResultsViewModel)
-        } else {
-            hideNoResults()
-        }
-    }
-
-    func showNoResults(_ viewModel: WPNoResultsView.Model) {
-        noResultsView.bindViewModel(viewModel)
-        if noResultsView.isDescendant(of: tableView) {
-            noResultsView.centerInSuperview()
-        } else {
-            tableView.addSubview(withFadeAnimation: noResultsView)
-        }
-    }
-
-    func hideNoResults() {
-        noResultsView.removeFromSuperview()
-    }
-
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        noResultsView.centerInSuperview()
-    }
-
 }
 
 // MARK: - UITableViewDelegate
@@ -174,17 +147,12 @@ extension ActivityListViewController {
 
 }
 
-// MARK: - WPNoResultsViewDelegate
+// MARK: - NoResultsViewControllerDelegate
 
-extension ActivityListViewController: WPNoResultsViewDelegate {
-    func didTap(_ noResultsView: WPNoResultsView!) {
-        if FeatureFlag.zendeskMobile.enabled {
-            let supportVC = SupportTableViewController()
-            supportVC.showFromTabBar()
-        } else {
-            let supportVC = SupportViewController()
-            supportVC.showFromTabBar()
-        }
+extension ActivityListViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        let supportVC = SupportTableViewController()
+        supportVC.showFromTabBar()
     }
 }
 
@@ -319,4 +287,55 @@ extension ActivityListViewController {
         tableView.isUserInteractionEnabled = true
         showErrorFetchingRestoreStatus()
     }
+}
+
+// MARK: - NoResults Handling
+
+private extension ActivityListViewController {
+
+    func setupNoResultsViewController() {
+        let noResultsStoryboard = UIStoryboard(name: "NoResults", bundle: nil)
+        guard let noResultsViewController = noResultsStoryboard.instantiateViewController(withIdentifier: "NoResults") as? NoResultsViewController else {
+            return
+        }
+
+        noResultsViewController.delegate = self
+        self.noResultsViewController = noResultsViewController
+    }
+
+    func updateNoResults() {
+        hideNoResults()
+        if let noResultsViewModel = viewModel.noResultsViewModel {
+            showNoResults(noResultsViewModel)
+        }
+    }
+
+    func showNoResults(_ viewModel: NoResultsViewController.Model) {
+
+        if noResultsViewController == nil {
+            setupNoResultsViewController()
+        }
+
+        guard let noResultsViewController = noResultsViewController else {
+            return
+        }
+
+        noResultsViewController.bindViewModel(viewModel)
+
+        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        addChildViewController(noResultsViewController)
+        noResultsViewController.didMove(toParentViewController: self)
+
+    }
+
+    func hideNoResults() {
+
+        guard let noResultsViewController = noResultsViewController else {
+            return
+        }
+
+        noResultsViewController.view.removeFromSuperview()
+        noResultsViewController.removeFromParentViewController()
+    }
+
 }
