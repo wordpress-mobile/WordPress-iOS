@@ -1,3 +1,2 @@
-Hanteringen av inställningar för notiser har förbättrats.
-Nu skapas en standardbeskrivning med källa vid uppladdning av foton från bildbanker.
-Stödet för visning av GIF-bilder har förbättrats.
+Nu kan du spara inlägg i läsaren: Du behöver bara knacka på bokmärkesikonen för ett inlägg, så hittar du det sedan i din lista över sparade inlägg. Du kan t.o.m. läsa dina sparade inläggs text när du inte är online!
+Observera att du i denna första version inte kan vara säker på att eventuella bilder finns sparade och att Sparade inlägg för närvarande är en funktion som är knuten till en viss enhet, vilket innebär att sparade inlägg inte synkroniseras mellan olika enheter eller till webben och att de förloras om du loggar ut eller avinstallerar appen.

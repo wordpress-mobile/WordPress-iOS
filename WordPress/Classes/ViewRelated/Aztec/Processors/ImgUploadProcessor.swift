@@ -15,28 +15,26 @@ class ImgUploadProcessor: Processor {
         self.height = height
     }
 
-    lazy var imgPostMediaUploadProcessor = HTMLProcessor(tag: "img", replacer: { (img) in
-        guard let imgUploadID = img.attributes.named[MediaAttachment.uploadKey], self.mediaUploadID == imgUploadID else {
+    lazy var imgPostMediaUploadProcessor = HTMLProcessor(for: "img", replacer: { (img) in
+        guard let imgUploadValue = img.attributes[MediaAttachment.uploadKey]?.value,
+            case let .string(imgUploadID) = imgUploadValue,
+            self.mediaUploadID == imgUploadID else {
             return nil
         }
-        var updatedAttributes = img.attributes.named
-        updatedAttributes["src"] = self.remoteURLString
+        var attributes = img.attributes
+        attributes.set(.string(self.remoteURLString), forKey: "src")
         if let width = self.width {
-            updatedAttributes["width"] = "\(width)"
+            attributes.set(.string("\(width)"), forKey: "width")
         }
         if let height = self.height {
-            updatedAttributes["height"] = "\(height)"
+            attributes.set(.string("\(height)"), forKey: "height")
         }
         //remove the uploadKey
-        updatedAttributes[MediaAttachment.uploadKey] = nil
-        var html = "<img "
-        for (name, value) in updatedAttributes {
-            html += "\(name)=\"\(value)\" "
-        }
-        for value in img.attributes.unamed {
-            html += "\(value) "
-        }
+        attributes.remove(key: MediaAttachment.uploadKey)
 
+        var html = "<img "
+        let attributeSerializer = ShortcodeAttributeSerializer()
+        html += attributeSerializer.serialize(attributes)
         html += ">"
         return html
     })
