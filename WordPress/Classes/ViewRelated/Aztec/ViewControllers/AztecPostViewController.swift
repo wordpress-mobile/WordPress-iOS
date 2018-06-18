@@ -1071,7 +1071,7 @@ extension AztecPostViewController {
 }
 
 
-// MARK: -  AztecNavigationControllerDelegate Conformance
+// MARK: - AztecNavigationControllerDelegate Conformance
 
 extension AztecPostViewController: AztecNavigationControllerDelegate {
 
