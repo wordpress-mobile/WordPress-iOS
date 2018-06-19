@@ -7,8 +7,6 @@
 #import "WordPress-Swift.h"
 
 NSInteger const SupportButtonIndex = 0;
-NSString * const WordPressAppErrorDomain = @"org.wordpress.iphone";
-NSString * const WPErrorSupportSourceKey = @"helpshift-support-source";
 
 @interface WPError ()
 
@@ -104,10 +102,8 @@ NSString * const WPErrorSupportSourceKey = @"helpshift-support-source";
             title = customTitle;
         }
     }
-    
-    NSString *sourceTag = [error.userInfo stringForKey:WPErrorSupportSourceKey];
 
-    [self showAlertWithTitle:title message:message withSupportButton:YES fromSource:sourceTag okPressedBlock:nil];
+    [self showAlertWithTitle:title message:message withSupportButton:YES okPressedBlock:nil];
 }
 
 + (void)showXMLRPCErrorAlert:(NSError *)error
@@ -143,11 +139,6 @@ NSString * const WPErrorSupportSourceKey = @"helpshift-support-source";
 
 + (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport okPressedBlock:(void (^)(UIAlertController *))okBlock
 {
-    [self showAlertWithTitle:title message:message withSupportButton:showSupport fromSource:nil okPressedBlock:okBlock];
-}
-
-+ (void)showAlertWithTitle:(NSString *)title message:(NSString *)message withSupportButton:(BOOL)showSupport fromSource:(NSString *)sourceTag okPressedBlock:(void (^)(UIAlertController *))okBlock
-{
     dispatch_async(dispatch_get_main_queue(), ^{
         if ([WPError internalInstance].alertShowing) {
             return;
@@ -175,7 +166,6 @@ NSString * const WPErrorSupportSourceKey = @"helpshift-support-source";
                                                              style:UIAlertActionStyleCancel
                                                            handler:^(UIAlertAction * _Nonnull action) {
                                                                SupportTableViewController *supportVC = [SupportTableViewController new];
-                                                               [supportVC updateSourceTagWith:sourceTag];
                                                                [supportVC showFromTabBar];
                                                                [WPError internalInstance].alertShowing = NO;
                                                            }];
