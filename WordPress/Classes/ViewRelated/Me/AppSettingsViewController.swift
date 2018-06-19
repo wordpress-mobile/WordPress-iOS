@@ -76,26 +76,6 @@ class AppSettingsViewController: UITableViewController {
     }
 
     func tableViewModel() -> ImmuTable {
-        let mediaHeader = NSLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
-        let imageSizingRow = ImageSizingRow(
-            title: NSLocalizedString("Max Image Upload Size", comment: "Title for the image size settings option."),
-            value: Int(MediaSettings().maxImageSizeSetting),
-            onChange: imageSizeChanged())
-
-        let videoSizingRow = NavigationItemRow(
-            title: NSLocalizedString("Max Video Upload Size", comment: "Title for the video size settings option."),
-            detail: MediaSettings().maxVideoSizeSetting.description,
-            action: pushVideoResolutionSettings())
-
-        let mediaCacheRow = TextRow(title: NSLocalizedString("Media Cache Size", comment: "Label for size of media cache in the app."),
-                                    value: mediaCacheRowDescription)
-
-        let mediaClearCacheRow = DestructiveButtonRow(
-            title: NSLocalizedString("Clear Device Media Cache", comment: "Label for button that clears all media cache."),
-            action: { [weak self] row in
-                self?.clearMediaCache()
-            },
-            accessibilityIdentifier: "mediaClearCacheButton")
 
         let editorSettings = EditorSettings()
         let _ = NSLocalizedString("Editor", comment: "Title label for the editor settings section in the app settings")
@@ -108,59 +88,10 @@ class AppSettingsViewController: UITableViewController {
         )
         editorRows.append(nativeEditor)
 
-        let privacyHeader = NSLocalizedString("Privacy", comment: "Privacy settings section header")
-        let mediaRemoveLocation = SwitchRow(
-            title: NSLocalizedString("Remove Location From Media", comment: "Option to enable the removal of location information/gps from photos and videos"),
-            value: Bool(MediaSettings().removeLocationSetting),
-            onChange: mediaRemoveLocationChanged()
-        )
-        let privacySettings = NavigationItemRow(
-            title: NSLocalizedString("Privacy Settings", comment: "Link to privacy settings page"),
-            action: openPrivacySettings()
-        )
-
-        let otherHeader = NSLocalizedString("Other", comment: "Link to About section (contains info about the app)")
-        let spotlightClearCacheRow = DestructiveButtonRow(
-            title: NSLocalizedString("Clear Spotlight Index", comment: "Label for button that clears the spotlight index on device."),
-            action: clearSpotlightCache(),
-            accessibilityIdentifier: "spotlightClearCacheButton")
-
-        let settingsRow = NavigationItemRow(
-            title: NSLocalizedString("Open Device Settings", comment: "Opens iOS's Device Settings for WordPress App"),
-            action: openApplicationSettings()
-        )
-
-        let aboutRow = NavigationItemRow(
-            title: NSLocalizedString("About WordPress for iOS", comment: "Link to About screen for WordPress for iOS"),
-            action: pushAbout()
-        )
-
         return ImmuTable(sections: [
-            ImmuTableSection(
-                headerText: mediaHeader,
-                rows: [
-                    imageSizingRow,
-                    videoSizingRow,
-                    mediaCacheRow,
-                    mediaClearCacheRow
-                ],
-                footerText: NSLocalizedString("Free up storage space on this device by clearing your temporary media files. This will not affect media on your site.", comment: "Explanatory text for clearing device media cache.")
-            ),
-            ImmuTableSection(
-                headerText: privacyHeader,
-                rows: [
-                    mediaRemoveLocation,
-                    privacySettings
-                ]
-            ),
-            ImmuTableSection(
-                headerText: otherHeader,
-                rows: [
-                    spotlightClearCacheRow,
-                    settingsRow,
-                    aboutRow
-                ],
-                footerText: nil)
+            mediaTableSection(),
+            privacyTableSection(),
+            otherTableSection()
             ])
     }
 
@@ -371,5 +302,96 @@ fileprivate struct ImageSizingRow: ImmuTableRow {
         cell.selectionStyle = .none
 
         (cell.minValue, cell.maxValue) = MediaSettings().allowedImageSizeRange
+    }
+}
+
+// MARK: - Table Sections Private Extension
+
+private extension AppSettingsViewController {
+    func mediaTableSection() -> ImmuTableSection {
+        let mediaHeader = NSLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
+
+        let imageSizingRow = ImageSizingRow(
+            title: NSLocalizedString("Max Image Upload Size", comment: "Title for the image size settings option."),
+            value: Int(MediaSettings().maxImageSizeSetting),
+            onChange: imageSizeChanged())
+
+        let videoSizingRow = NavigationItemRow(
+            title: NSLocalizedString("Max Video Upload Size", comment: "Title for the video size settings option."),
+            detail: MediaSettings().maxVideoSizeSetting.description,
+            action: pushVideoResolutionSettings())
+
+        let mediaCacheRow = TextRow(title: NSLocalizedString("Media Cache Size", comment: "Label for size of media cache in the app."),
+                                    value: mediaCacheRowDescription)
+
+        let mediaClearCacheRow = DestructiveButtonRow(
+            title: NSLocalizedString("Clear Device Media Cache", comment: "Label for button that clears all media cache."),
+            action: { [weak self] row in
+                self?.clearMediaCache()
+            },
+            accessibilityIdentifier: "mediaClearCacheButton")
+
+        return ImmuTableSection(
+            headerText: mediaHeader,
+            rows: [
+                imageSizingRow,
+                videoSizingRow,
+                mediaCacheRow,
+                mediaClearCacheRow
+            ],
+            footerText: NSLocalizedString("Free up storage space on this device by clearing your temporary media files. This will not affect media on your site.",
+                                          comment: "Explanatory text for clearing device media cache.")
+        )
+    }
+
+    func privacyTableSection() -> ImmuTableSection {
+        let privacyHeader = NSLocalizedString("Privacy", comment: "Privacy settings section header")
+
+        let mediaRemoveLocation = SwitchRow(
+            title: NSLocalizedString("Remove Location From Media", comment: "Option to enable the removal of location information/gps from photos and videos"),
+            value: Bool(MediaSettings().removeLocationSetting),
+            onChange: mediaRemoveLocationChanged()
+        )
+
+        let privacySettings = NavigationItemRow(
+            title: NSLocalizedString("Privacy Settings", comment: "Link to privacy settings page"),
+            action: openPrivacySettings()
+        )
+
+        return ImmuTableSection(
+            headerText: privacyHeader,
+            rows: [
+                mediaRemoveLocation,
+                privacySettings
+            ]
+        )
+    }
+
+    func otherTableSection() -> ImmuTableSection {
+        let otherHeader = NSLocalizedString("Other", comment: "Link to About section (contains info about the app)")
+
+        let spotlightClearCacheRow = DestructiveButtonRow(
+            title: NSLocalizedString("Clear Spotlight Index", comment: "Label for button that clears the spotlight index on device."),
+            action: clearSpotlightCache(),
+            accessibilityIdentifier: "spotlightClearCacheButton")
+
+        let settingsRow = NavigationItemRow(
+            title: NSLocalizedString("Open Device Settings", comment: "Opens iOS's Device Settings for WordPress App"),
+            action: openApplicationSettings()
+        )
+
+        let aboutRow = NavigationItemRow(
+            title: NSLocalizedString("About WordPress for iOS", comment: "Link to About screen for WordPress for iOS"),
+            action: pushAbout()
+        )
+
+        return ImmuTableSection(
+            headerText: otherHeader,
+            rows: [
+                spotlightClearCacheRow,
+                settingsRow,
+                aboutRow
+            ],
+            footerText: nil)
     }
 }
