@@ -4,7 +4,6 @@
 #import "BlogService.h"
 #import "SharingDetailViewController.h"
 #import "SharingAuthorizationHelper.h"
-#import "UIImageView+AFNetworkingExtra.h"
 #import <WordPressShared/WPTableViewCell.h>
 #import <WordPressUI/WordPressUI.h>
 #import "WordPress-Swift.h"

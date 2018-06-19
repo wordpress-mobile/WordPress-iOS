@@ -1,3 +1,2 @@
-Se ha mejorado la gestión de ajustes de notificaciones.
-Ahora se genera una leyenda por defecto con agradecimientos al subir fotos de stock.
-Se ha mejorado la compatibilidad para mostrar imagénes en formato GIF.
+Ahora puedes guardar entradas en el lector: simplemente toca en el icono del marcador en una entrada y podrás encontrarlo después en tu lista de entradas guardadas. ¡Puedes leer el texto de tus entradas guardadas incluso sin conexión!
+Ten en cuenta que en esta primera versión no podemos garantizar que las imágenes estén disponibles sin conexión y que las publicaciones guardadas dependen del dispositivo, lo que quiere decir que no se sincronizan entre dispositivos y que se pierden si cierras sesión o desinstalas la aplicación.

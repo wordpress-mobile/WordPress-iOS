@@ -97,30 +97,6 @@ print <<-EOF
 EOF
 end
 
-def print_helpshift_api_key(helpshift_api_key)
-print <<-EOF
-+ (NSString *)helpshiftAPIKey {
-    return @"#{helpshift_api_key}";
-}
-EOF
-end
-
-def print_helpshift_domain_name(helpshift_domain_name)
-print <<-EOF
-+ (NSString *)helpshiftDomainName {
-    return @"#{helpshift_domain_name}";
-}
-EOF
-end
-
-def print_helpshift_app_id(helpshift_app_id)
-print <<-EOF
-+ (NSString *)helpshiftAppId {
-    return @"#{helpshift_app_id}";
-}
-EOF
-end
-
 def print_debugging_key(debugging_key)
 print <<-EOF
 + (NSString *)debuggingKey {
@@ -153,7 +129,7 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_login_server, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
+def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
   print <<-EOF
 #import "ApiCredentials.h"
 @implementation ApiCredentials
@@ -166,9 +142,6 @@ EOF
   print_googleplus(googleplus)
   print_google_login(google_id)
   print_google_login_server(google_login_server)
-  print_helpshift_api_key(helpshift_api_key)
-  print_helpshift_domain_name(helpshift_domain_name)
-  print_helpshift_app_id(helpshift_app_id)
   print_debugging_key(debugging_key)
   print_zendesk_app_id(zendesk_app_id)
   print_zendesk_url(zendesk_url)
@@ -196,9 +169,6 @@ hockeyapp = nil
 googleplus = nil
 google_id = nil
 google_login_server = nil
-helpshift_api_key = nil
-helpshift_domain_name = nil
-helpshift_app_id = nil
 debugging_key = nil
 zendesk_app_id = nil
 zendesk_url = nil
@@ -224,12 +194,6 @@ File.open(path) do |f|
       google_id = value
     elsif k == "GOOGLE_LOGIN_SERVER_ID"
       google_login_server = value
-    elsif k == "HELPSHIFT_API_KEY"
-      helpshift_api_key = value
-    elsif k == "HELPSHIFT_DOMAIN_NAME"
-      helpshift_domain_name = value
-    elsif k == "HELPSHIFT_APP_ID"
-      helpshift_app_id = value
     elsif k == "DEBUGGING_KEY"
       debugging_key = value
     elsif k == "ZENDESK_APP_ID"
@@ -271,10 +235,6 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
     $stderr.puts "warning: Google Login Client ID not found"
   end
 
-  if helpshift_api_key.nil? || helpshift_domain_name.nil? || helpshift_app_id.nil?
-    $stderr.puts "warning: Helpshift keys not found"
-  end
-
   if configuration == "Release-Internal"
     if hockeyapp.nil?
       $stderr.puts "warning: HockeyApp App Id not found"
@@ -286,4 +246,4 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   end
 end
 
-print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_login_server, helpshift_api_key, helpshift_domain_name, helpshift_app_id, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
+print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)

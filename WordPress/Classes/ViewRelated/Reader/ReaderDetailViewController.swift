@@ -4,6 +4,7 @@ import WordPressShared
 import WordPressUI
 import QuartzCore
 import Gridicons
+import AFNetworking
 
 open class ReaderDetailViewController: UIViewController, UIViewControllerRestoration {
     @objc static let restorablePostObjectURLhKey: String = "RestorablePostObjectURLKey"
@@ -476,6 +477,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         blogNameButton.setTitle(blogName, for: .highlighted)
         blogNameButton.setTitle(blogName, for: .disabled)
         blogNameButton.isAccessibilityElement = false
+        blogNameButton.naturalContentHorizontalAlignment = .leading
 
         // Enable button only if not previewing a site.
         if let topic = post!.topic {
@@ -792,8 +794,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     fileprivate func configureCommentActionButton() {
         let title = post!.commentCount.stringValue
-        let image = UIImage(named: "icon-reader-comment")
-        let highlightImage = UIImage(named: "icon-reader-comment-highlight")
+        let image = UIImage(named: "icon-reader-comment")?.imageFlippedForRightToLeftLayoutDirection()
+        let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
         configureActionButton(commentButton, title: title, image: image, highlightedImage: highlightImage, selected: false)
     }
 
@@ -822,7 +824,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     fileprivate func adjustInsetsForTextDirection() {
         let buttonsToAdjust: [UIButton] = [
             likeButton,
-            commentButton]
+            commentButton,
+            saveForLaterButton]
         for button in buttonsToAdjust {
             button.flipInsetsForRightToLeftLayoutDirection()
         }
@@ -983,6 +986,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     @IBAction func didTapSaveForLaterButton(_ sender: UIButton) {
         guard let readerPost = post, let context = readerPost.managedObjectContext else {
             return
+        }
+
+        if !readerPost.isSavedForLater {
+            FancyAlertViewController.presentReaderSavedPostsAlertControllerIfNecessary(from: self)
         }
 
         ReaderSaveForLaterAction().execute(with: readerPost, context: context, origin: .postDetail) { [weak self] in
@@ -1291,5 +1298,18 @@ extension ReaderDetailViewController: Accessible {
         let isSavedForLater = post?.isSavedForLater ?? false
         saveForLaterButton.accessibilityLabel = isSavedForLater ? NSLocalizedString("Saved Post", comment: "Accessibility label for the 'Save Post' button when a post has been saved.") : NSLocalizedString("Save post", comment: "Accessibility label for the 'Save Post' button.")
         saveForLaterButton.accessibilityHint = isSavedForLater ? NSLocalizedString("Remove this post from my saved posts.", comment: "Accessibility hint for the 'Save Post' button when a post is already saved.") : NSLocalizedString("Saves this post for later.", comment: "Accessibility hint for the 'Save Post' button.")
+    }
+}
+
+
+//// MARK: - UIViewControllerTransitioningDelegate
+////
+extension ReaderDetailViewController: UIViewControllerTransitioningDelegate {
+    public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        guard presented is FancyAlertViewController else {
+            return nil
+        }
+
+        return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
     }
 }
