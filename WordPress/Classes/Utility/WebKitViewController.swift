@@ -123,12 +123,6 @@ class WebKitViewController: UIViewController {
     }
 
     @objc func load(request: URLRequest) {
-
-        guard ReachabilityUtils.isInternetReachable() else {
-            ReachabilityUtils.showAlertNoInternetConnection()
-            return
-        }
-
         var request = request
         if addsWPComReferrer {
             request.setValue(WPComReferrerURL, forHTTPHeaderField: "Referer")
@@ -359,5 +353,15 @@ extension WebKitViewController: WKUIDelegate {
 
     func webViewDidClose(_ webView: WKWebView) {
         dismiss(animated: true, completion: nil)
+    }
+
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        DDLogInfo("\(NSStringFromClass(type(of: self))) Error Loading [\(error)]")
+
+        if !ReachabilityUtils.isInternetReachable() {
+            ReachabilityUtils.showAlertNoInternetConnection()
+        } else {
+            WPError.showAlert(withTitle: NSLocalizedString("Error", comment: "Generic error alert title"), message: error.localizedDescription)
+        }
     }
 }

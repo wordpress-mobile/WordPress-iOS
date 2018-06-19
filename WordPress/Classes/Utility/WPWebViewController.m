@@ -218,12 +218,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 - (void)loadRequest:(NSURLRequest *)request
 {
-
-    if (![ReachabilityUtils isInternetReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnection];
-        return;
-    }
-
     NSMutableURLRequest *mutableRequest = [request isKindOfClass:[NSMutableURLRequest class]] ? (NSMutableURLRequest *)request : [request mutableCopy];
     if (self.addsWPComReferrer) {
         [mutableRequest setValue:WPComReferrerURL forHTTPHeaderField:@"Referer"];
@@ -421,7 +415,11 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 - (void)displayLoadError:(NSError *)error
 {
-    [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:error.localizedDescription];
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];
+    } else {
+        [WPError showAlertWithTitle: NSLocalizedString(@"Error", @"Generic error alert title") message: error.localizedDescription];
+    }
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView
