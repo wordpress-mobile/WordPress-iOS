@@ -3,12 +3,9 @@ import WPMediaPicker
 
 /// Prepares the alert controller that will be presented when tapping the "more" button in Aztec's Format Bar
 final class AztecMediaPickingCoordinator {
-    private weak var delegate: MediaPickingOptionsDelegate?
-
     private let stockPhotos = StockPhotosPicker()
 
-    init(delegate: MediaPickingOptionsDelegate & StockPhotosPickerDelegate) {
-        self.delegate = delegate
+    init(delegate: StockPhotosPickerDelegate) {
         stockPhotos.delegate = delegate
     }
 
@@ -45,9 +42,7 @@ final class AztecMediaPickingCoordinator {
     }
 
     private func cancelAction() -> UIAlertAction {
-        return UIAlertAction(title: .cancelMoreOptions, style: .cancel, handler: { [weak self] action in
-            self?.delegate?.didCancel()
-        })
+        return UIAlertAction(title: .cancelMoreOptions, style: .cancel, handler: nil)
     }
 
     private func showStockPhotos(origin: UIViewController, blog: Blog) {

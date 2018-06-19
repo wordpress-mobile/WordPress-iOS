@@ -3,7 +3,6 @@
 #import "BlogService.h"
 #import "SVProgressHUD+Dismiss.h"
 #import "SharingAuthorizationHelper.h"
-#import "UIImageView+AFNetworkingExtra.h"
 #import <WordPressShared/WPTableViewCell.h>
 #import <WordPressUI/WordPressUI.h>
 

@@ -42,6 +42,16 @@ class AppExtensionsService {
                             sharedContainerIdentifier: WPAppGroupName)
     }()
 
+    /// Backgrounding Rest API
+    ///
+    fileprivate lazy var backgroundRestAPI: WordPressComRestApi = {
+        return WordPressComRestApi(oAuthToken: oauth2Token,
+                                   userAgent: nil,
+                                   backgroundUploads: true,
+                                   backgroundSessionIdentifier: backgroundSessionIdentifier,
+                                   sharedContainerIdentifier: WPAppGroupName)
+    }()
+
     /// Tracks Instance
     ///
     fileprivate lazy var tracks: Tracks = {
@@ -77,7 +87,7 @@ class AppExtensionsService {
 // MARK: - Sites
 
 extension AppExtensionsService {
-    /// Fetches the primary blog + visible blogs for the current account.
+    /// Fetches the primary blog + recent sites + remaining visible blogs for the current account.
     ///
     /// - Parameters:
     ///   - onSuccess: Completion handler executed after a successful fetch.
@@ -91,12 +101,63 @@ extension AppExtensionsService {
                 onFailure()
                 return
             }
-            let primaryBlogID = ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteID ?? 0
-            let filteredBlogs = blogs.filter({ ($0.blogID.intValue == primaryBlogID || $0.visible == true) })
-            onSuccess(filteredBlogs)
+
+            let primary = self.primarySites(with: blogs)
+            let recents = self.recentSites(with: blogs, ignoring: primary)
+            let combinedSiteList = primary + recents + self.remainingSites(with: blogs, ignoring: (primary + recents))
+            onSuccess(combinedSiteList)
         }, failure: { error in
             DDLogError("Error retrieving sites: \(String(describing: error))")
             onFailure()
+        })
+    }
+
+    /// Filters the list of sites and returns if a user is allowed to upload media for the selected site
+    ///
+    /// - Parameters:
+    /// - sites: the list of sites to filter.
+    /// - selectedSiteID: the current site the user wants to upload media to.
+    ///
+    func isAuthorizedToUploadMedia(in sites: [RemoteBlog], for selectedSiteID: Int) -> Bool {
+        let siteID = NSNumber(value: selectedSiteID)
+        guard let isAuthorizedToUploadFiles = sites.filter({$0.blogID == siteID}).first?.isUploadingFilesAllowed() else {
+            return false
+        }
+
+        return isAuthorizedToUploadFiles
+    }
+
+    private func primarySites(with blogs: [RemoteBlog]) -> [RemoteBlog] {
+        // Find the primary site (even if it's not visible)
+        let primarySiteID = ShareExtensionService.retrieveShareExtensionPrimarySite()?.siteID ?? 0
+        return blogs.filter({ $0.blogID.intValue == primarySiteID })
+    }
+
+    private func recentSites(with sites: [RemoteBlog], ignoring excludedSites: [RemoteBlog]? = nil) -> [RemoteBlog] {
+        let visibleSites = sites.filter({ $0.visible })
+        var filteredVisibleSites: [RemoteBlog]
+        if let excludedSites = excludedSites {
+            filteredVisibleSites = visibleSites.filter({ site in
+                !excludedSites.contains(site)
+            })
+        } else {
+            filteredVisibleSites = visibleSites
+        }
+        let recentSiteURLs  = ShareExtensionService.retrieveShareExtensionRecentSites() ?? [String()]
+
+        return recentSiteURLs.compactMap({ url in
+            return filteredVisibleSites.first(where: { $0.url == url })
+        })
+    }
+
+    private func remainingSites(with sites: [RemoteBlog], ignoring excludedSites: [RemoteBlog]? = nil) -> [RemoteBlog] {
+        let visibleSites = sites.filter({ $0.visible })
+        guard let excludedSites = excludedSites else {
+            return visibleSites
+        }
+
+        return visibleSites.filter({ site in
+            !excludedSites.contains(site)
         })
     }
 }
@@ -200,7 +261,8 @@ extension AppExtensionsService {
             if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
                 ExtensionNotificationManager.scheduleSuccessNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
                                                                          postID: String(uploadPostOp.remotePostID),
-                                                                         blogID: String(uploadPostOp.siteID))
+                                                                         blogID: String(uploadPostOp.siteID),
+                                                                         postStatus: remotePost.status)
             }
             onComplete?()
         }, onFailure: {
@@ -208,7 +270,8 @@ extension AppExtensionsService {
             if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
                 ExtensionNotificationManager.scheduleFailureNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
                                                                          postID: String(uploadPostOp.remotePostID),
-                                                                         blogID: String(uploadPostOp.siteID))
+                                                                         blogID: String(uploadPostOp.siteID),
+                                                                         postStatus: remotePost.status)
             }
 
             // Error is already logged in coredata so no need to do it here.
@@ -261,17 +324,10 @@ extension AppExtensionsService {
         let uploadPostOpID = coreDataStack.savePostOperation(remotePost, groupIdentifier: groupIdentifier, with: .pending)
         let (uploadMediaOpIDs, allRemoteMedia) = createAndSaveRemoteMediaWithLocalURLs(localMediaFileURLs, siteID: NSNumber(value: siteID))
 
-        // Setup an API that uses background uploads with the shared container
-        let api = WordPressComRestApi(oAuthToken: oauth2Token,
-                                      userAgent: nil,
-                                      backgroundUploads: true,
-                                      backgroundSessionIdentifier: backgroundSessionIdentifier,
-                                      sharedContainerIdentifier: WPAppGroupName)
-
         // NOTE: The success and error closures **may** get called here - it’s non-deterministic as to whether WPiOS
-        // or the extension gets the "did complete" callback. So unfortunatly, we need to have the logic to complete
+        // or the extension gets the "did complete" callback. So unfortunately, we need to have the logic to complete
         // post share here as well as WPiOS.
-        let remote = MediaServiceRemoteREST(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
+        let remote = mediaService(siteID: siteID, api: backgroundRestAPI)
         remote.uploadMedia(allRemoteMedia, requestEnqueued: { taskID in
             uploadMediaOpIDs.forEach({ uploadMediaOpID in
                 self.coreDataStack.updateStatus(.inProgress, forUploadOpWithObjectID: uploadMediaOpID)
@@ -314,7 +370,7 @@ extension AppExtensionsService {
             self.coreDataStack.saveContext()
 
             // Now upload the post
-            self.combinePostWithMediaAndUpload(forPostUploadOpWithObjectID: uploadPostOpID)
+            self.combinePostWithMediaAndUpload(forPostUploadOpWithObjectID: uploadPostOpID, postStatus: remotePost.status, media: allRemoteMedia)
         }) { error in
             guard let error = error as NSError? else {
                 return
@@ -358,7 +414,7 @@ fileprivate extension AppExtensionsService {
     ///
     /// - Parameter uploadPostOpID: Managed object ID for the post
     ///
-    func combinePostWithMediaAndUpload(forPostUploadOpWithObjectID uploadPostOpID: NSManagedObjectID) {
+    func combinePostWithMediaAndUpload(forPostUploadOpWithObjectID uploadPostOpID: NSManagedObjectID, postStatus: String, media: [RemoteMedia]) {
         guard let postUploadOp = coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID),
             let groupID = postUploadOp.groupID,
             let mediaUploadOps = coreDataStack.fetchMediaUploadOps(for: groupID) else {
@@ -379,21 +435,33 @@ fileprivate extension AppExtensionsService {
             postUploadOp.postContent = imgPostUploadProcessor.process(content)
         }
         coreDataStack.saveContext()
-        uploadPost(forUploadOpWithObjectID: uploadPostOpID, onComplete: {
-            // Schedule a local success notification
-            if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
+        uploadPost(forUploadOpWithObjectID: uploadPostOpID, onComplete: { [weak self] in
+            guard let uploadPostOp = self?.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) else {
+                return
+            }
+            let siteID = uploadPostOp.siteID
+            let postID = uploadPostOp.remotePostID
+
+            self?.coreDataStack.saveContext()
+
+            // Associate the remote media with the newly-uploaded post
+            let updatedMedia = mediaUploadOps.compactMap({return $0.remoteMedia})
+            self?.updateMedia(updatedMedia, postID: postID, siteID: siteID, onComplete: {
+                // Schedule a local success notification
                 ExtensionNotificationManager.scheduleSuccessNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
                                                                          postID: String(uploadPostOp.remotePostID),
                                                                          blogID: String(uploadPostOp.siteID),
-                                                                         mediaItemCount: mediaUploadOps.count)
-            }
+                                                                         mediaItemCount: mediaUploadOps.count,
+                                                                         postStatus: postStatus)
+            })
         }, onFailure: {
             // Schedule a local failure notification
             if let uploadPostOp = self.coreDataStack.fetchPostUploadOp(withObjectID: uploadPostOpID) {
                 ExtensionNotificationManager.scheduleFailureNotification(postUploadOpID: uploadPostOp.objectID.uriRepresentation().absoluteString,
                                                                          postID: String(uploadPostOp.remotePostID),
                                                                          blogID: String(uploadPostOp.siteID),
-                                                                         mediaItemCount: mediaUploadOps.count)
+                                                                         mediaItemCount: mediaUploadOps.count,
+                                                                         postStatus: postStatus)
             }
         })
     }
@@ -436,6 +504,37 @@ fileprivate extension AppExtensionsService {
             self.coreDataStack.updateStatus(.error, forUploadOpWithObjectID: uploadOpObjectID)
             onFailure?()
         })
+    }
+
+    private func updateMedia(_ media: [RemoteMedia], postID: Int64, siteID: Int64, onComplete: CompletionBlock?) {
+        guard let siteIdentifier = Int(exactly: siteID) else {
+            return
+        }
+
+        let syncGroup = DispatchGroup()
+        let service = mediaService(siteID: siteIdentifier, api: simpleRestAPI)
+        media.forEach { mediaItem in
+            syncGroup.enter()
+            mediaItem.postID = NSNumber(value: postID)
+            service.update(mediaItem, success: { updatedRemoteMedia in
+                syncGroup.leave()
+            }, failure: { error in
+                var errorString = "Error assigning media items to post in share extension"
+                if let error = error as NSError? {
+                    errorString += ": \(error.localizedDescription)"
+                }
+                DDLogError(errorString)
+                syncGroup.leave()
+            })
+        }
+
+        syncGroup.notify(queue: .main) {
+             onComplete?()
+        }
+    }
+
+    fileprivate func mediaService(siteID: Int, api: WordPressComRestApi) -> MediaServiceRemoteREST {
+        return MediaServiceRemoteREST(wordPressComRestApi: api, siteID: NSNumber(value: siteID))
     }
 }
 

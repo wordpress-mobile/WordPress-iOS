@@ -5,7 +5,7 @@ import Aztec
 import CocoaLumberjack
 import Gridicons
 import WordPressShared
-import AFNetworking
+import MobileCoreServices
 import WPMediaPicker
 import SVProgressHUD
 import AVKit
@@ -354,7 +354,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Active Downloads
     ///
-    fileprivate var activeMediaRequests = [AFImageDownloadReceipt]()
+    fileprivate var activeMediaRequests = [ImageDownloader.Task]()
 
 
     /// Boolean indicating whether the post should be removed whenever the changes are discarded, or not.
@@ -578,6 +578,9 @@ class AztecPostViewController: UIViewController, PostEditor {
             return
         }
 
+        /// Wire AztecNavigationControllerDelegate
+        ///
+        navigationController.delegate = self
         configureMediaProgressView(in: navigationController.navigationBar)
     }
 
@@ -997,6 +1000,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 }
 
+
 // MARK: - Format Bar Updating
 
 extension AztecPostViewController {
@@ -1054,6 +1058,15 @@ extension AztecPostViewController {
     /// an ActionSheet onscreen.
     ///
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        // Preventing `UIViewControllerHierarchyInconsistency`
+        // Ref.: https://github.com/wordpress-mobile/WordPress-iOS/issues/8995
+        //
+        if viewControllerToPresent is UIAlertController {
+            rememberFirstResponder()
+        }
+
+        /// Ref.: https://github.com/wordpress-mobile/WordPress-iOS/pull/6666
+        ///
         super.present(viewControllerToPresent, animated: flag) {
             if let alert = viewControllerToPresent as? UIAlertController, alert.preferredStyle == .actionSheet {
                 alert.popoverPresentationController?.passthroughViews = nil
@@ -1061,6 +1074,19 @@ extension AztecPostViewController {
 
             completion?()
         }
+    }
+}
+
+
+// MARK: - AztecNavigationControllerDelegate Conformance
+
+extension AztecPostViewController: AztecNavigationControllerDelegate {
+
+    func navigationController(_ navigationController: UINavigationController, didDismiss alertController: UIAlertController) {
+        // Preventing `UIViewControllerHierarchyInconsistency`
+        // Ref.: https://github.com/wordpress-mobile/WordPress-iOS/issues/8995
+        //
+        restoreFirstResponder()
     }
 }
 
@@ -1424,11 +1450,11 @@ private extension AztecPostViewController {
             self.toggleEditingMode()
         }
 
-        alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { [unowned self]  _ in
+        alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { [unowned self] _ in
             self.displayPreview()
         }
 
-        alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [unowned self]  _ in
+        alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [unowned self] _ in
             self.displayPostSettings()
         }
 
@@ -1436,7 +1462,7 @@ private extension AztecPostViewController {
 
         alert.popoverPresentationController?.barButtonItem = moreBarButtonItem
 
-        present(alert, animated: true, completion: nil)
+        present(alert, animated: true)
     }
 
     func displaySwitchSiteAlert() {
@@ -2267,8 +2293,6 @@ extension AztecPostViewController {
     }
 
     private func showMore(from: FormatBarItem) {
-        rememberFirstResponder()
-
         let moreCoordinatorContext = MediaPickingContext(origin: self, view: view, blog: post.blog)
         moreCoordinator.present(context: moreCoordinatorContext)
     }
@@ -3598,26 +3622,22 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
             request = URLRequest(url: requestURL)
         }
 
-        let imageDownloader = AFImageDownloader.defaultInstance()
-        let receipt = imageDownloader.downloadImage(for: request, success: { [weak self](request, response, image) in
-            guard self != nil else {
+        let receipt = ImageDownloader.shared.downloadImage(for: request) { [weak self] (image, error) in
+            guard let _ = self else {
                 return
             }
-            DispatchQueue.main.async(execute: {
+
+            DispatchQueue.main.async {
+                guard let image = image else {
+                    failure()
+                    return
+                }
+
                 success(image)
-            })
-        }) { [weak self](request, response, error) in
-            guard self != nil else {
-                return
             }
-            DispatchQueue.main.async(execute: {
-                failure()
-            })
         }
 
-        if let receipt = receipt {
-            activeMediaRequests.append(receipt)
-        }
+        activeMediaRequests.append(receipt)
     }
 
     func textView(_ textView: TextView, urlFor imageAttachment: ImageAttachment) -> URL? {
@@ -3626,9 +3646,8 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
     }
 
     func cancelAllPendingMediaRequests() {
-        let imageDownloader = AFImageDownloader.defaultInstance()
         for receipt in activeMediaRequests {
-            imageDownloader.cancelTask(for: receipt)
+            receipt.cancel()
         }
         activeMediaRequests.removeAll()
     }
@@ -3807,12 +3826,6 @@ extension AztecPostViewController: UIDocumentPickerDelegate {
         if let documentURL = urls.first {
             displayInsertionOpensAlertIfNeeded(for: documentURL)
         }
-    }
-}
-
-extension AztecPostViewController: MediaPickingOptionsDelegate {
-    func didCancel() {
-        restoreFirstResponder()
     }
 }
 

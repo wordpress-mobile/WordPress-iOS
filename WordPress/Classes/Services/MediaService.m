@@ -566,19 +566,22 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
     NSManagedObjectID *blogObjectID = [blog objectID];
-    [remote getMediaLibraryWithSuccess:^(NSArray *media) {
-                               [self.managedObjectContext performBlock:^{
-                                   Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogObjectID];
-                                   [self mergeMedia:media forBlog:blogInContext completionHandler:success];
-                               }];
-                           }
-                           failure:^(NSError *error) {
-                               if (failure) {
+    [self.managedObjectContext performBlock:^{
+        Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogObjectID];
+        NSSet *originalLocalMedia = blogInContext.media;
+        [remote getMediaLibraryWithSuccess:^(NSArray *media) {
                                    [self.managedObjectContext performBlock:^{
-                                       failure(error);
+                                       [self mergeMedia:media forBlog:blogInContext baseMedia:originalLocalMedia completionHandler:success];
                                    }];
                                }
-                           }];
+                               failure:^(NSError *error) {
+                                   if (failure) {
+                                       [self.managedObjectContext performBlock:^{
+                                           failure(error);
+                                       }];
+                                   }
+                               }];
+    }];
 }
 
 - (NSInteger)getMediaLibraryCountForBlog:(Blog *)blog
@@ -736,6 +739,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 
 - (void)mergeMedia:(NSArray *)media
            forBlog:(Blog *)blog
+         baseMedia:(NSSet *)originalBlogMedia
  completionHandler:(void (^)(void))completion
 {
     NSParameterAssert(blog);
@@ -751,7 +755,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
             [mediaToKeep addObject:local];
         }
     }
-    NSMutableSet *mediaToDelete = [NSMutableSet setWithSet:blog.media];
+    NSMutableSet *mediaToDelete = [NSMutableSet setWithSet:originalBlogMedia];
     [mediaToDelete minusSet:mediaToKeep];
     for (Media *deleteMedia in mediaToDelete) {
         // only delete media that is server based
