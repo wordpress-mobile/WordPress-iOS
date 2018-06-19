@@ -12,7 +12,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def shared_with_all_pods
-    pod 'WordPressShared', '1.0.6'
+    pod 'WordPressShared', '1.0.7'
     pod 'CocoaLumberjack', '3.4.2'
     pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
     pod 'NSObject-SafeExpectations', '0.0.3'
@@ -64,7 +64,7 @@ target 'WordPress' do
     ## ====================
     ##
     pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.3'
-    pod 'Gridicons', '0.15'
+    pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :commit => '20e95239625168db0560b938691c3aee0e6568b1'
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => 'b5ae03494596e3da7a8f814f9cab8e96ca345bc8'
     pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => 'd0b3c02'
@@ -92,7 +92,7 @@ target 'WordPress' do
         pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'c04b12273f5aec2cc3300fd212836781efc8b356'
         pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'c04b12273f5aec2cc3300fd212836781efc8b356'
         pod 'WordPressUI', '1.0.4'
-        pod 'Gridicons', '0.15'
+        pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :commit => '20e95239625168db0560b938691c3aee0e6568b1'
     end
 
 
@@ -108,7 +108,7 @@ target 'WordPress' do
         pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'c04b12273f5aec2cc3300fd212836781efc8b356'
         pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'c04b12273f5aec2cc3300fd212836781efc8b356'
         pod 'WordPressUI', '1.0.4'
-        pod 'Gridicons', '0.15'
+        pod 'Gridicons', :git => 'https://github.com/Automattic/Gridicons-iOS.git', :commit => '20e95239625168db0560b938691c3aee0e6568b1'
     end
 
 
