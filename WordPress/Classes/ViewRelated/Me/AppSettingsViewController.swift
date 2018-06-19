@@ -77,17 +77,6 @@ class AppSettingsViewController: UITableViewController {
 
     func tableViewModel() -> ImmuTable {
 
-        let editorSettings = EditorSettings()
-        let _ = NSLocalizedString("Editor", comment: "Title label for the editor settings section in the app settings")
-        var editorRows = [ImmuTableRow]()
-
-        let nativeEditor = CheckmarkRow(
-            title: NSLocalizedString("Visual", comment: "Option to enable the Aztec editor."),
-            checked: editorSettings.isEnabled(.aztec),
-            action: enableEditor(.aztec)
-        )
-        editorRows.append(nativeEditor)
-
         return ImmuTable(sections: [
             mediaTableSection(),
             privacyTableSection(),
@@ -308,6 +297,7 @@ fileprivate struct ImageSizingRow: ImmuTableRow {
 // MARK: - Table Sections Private Extension
 
 private extension AppSettingsViewController {
+
     func mediaTableSection() -> ImmuTableSection {
         let mediaHeader = NSLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
 
@@ -394,4 +384,5 @@ private extension AppSettingsViewController {
             ],
             footerText: nil)
     }
+
 }
