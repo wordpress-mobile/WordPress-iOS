@@ -28,13 +28,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     required convenience init() {
         self.init(style: .grouped)
         let notificationCenter = NotificationCenter.default
-
-        if FeatureFlag.zendeskMobile.enabled {
-            notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .ZendeskPushNotificationReceivedNotification, object: nil)
-            notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .ZendeskPushNotificationClearedNotification, object: nil)
-        } else {
-            notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .HelpshiftUnreadCountUpdated, object: nil)
-        }
+        notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .ZendeskPushNotificationReceivedNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(refreshModelWithNotification(_:)), name: .ZendeskPushNotificationClearedNotification, object: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -53,8 +48,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         ImmuTable.registerRows([
             NavigationItemRow.self,
-            BadgeNavigationItemRow.self, // Helpshift
-            IndicatorNavigationItemRow.self, // Zendesk
+            IndicatorNavigationItemRow.self,
             ButtonRow.self,
             DestructiveButtonRow.self
             ], tableView: self.tableView)
@@ -71,10 +65,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         super.viewWillAppear(animated)
 
         refreshAccountDetails()
-
-        if !FeatureFlag.zendeskMobile.enabled {
-            HelpshiftUtils.refreshUnreadNotificationCount()
-        }
 
         if splitViewControllerIsHorizontallyCompact {
             animateDeselectionInteractively()
@@ -171,30 +161,12 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             accessoryType: accessoryType,
             action: pushNotificationSettings())
 
-        // Helpshift
-        let helpshiftBadgeCount = HelpshiftUtils.isHelpshiftEnabled() ? HelpshiftUtils.unreadNotificationCount() : 0
-        let helpAndSupportBadge = BadgeNavigationItemRow(
-            title: RowTitles.support,
-            icon: Gridicon.iconOfType(.help),
-            badgeCount: helpshiftBadgeCount,
-            accessoryType: accessoryType,
-            action: pushHelp())
-
-        // Zendesk
         let helpAndSupportIndicator = IndicatorNavigationItemRow(
             title: RowTitles.support,
             icon: Gridicon.iconOfType(.help),
             showIndicator: ZendeskUtils.showSupportNotificationIndicator,
             accessoryType: accessoryType,
             action: pushHelp())
-
-        let helpAndSupportSection: ImmuTableSection = {
-            if FeatureFlag.zendeskMobile.enabled {
-                return ImmuTableSection(rows: [helpAndSupportIndicator])
-            } else {
-                return ImmuTableSection(rows: [helpAndSupportBadge])
-            }
-        }()
 
         let logIn = ButtonRow(
             title: RowTitles.logIn,
@@ -216,7 +188,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                         appSettingsRow,
                         notificationSettings
                         ]),
-                    helpAndSupportSection,
+                    ImmuTableSection(rows: [helpAndSupportIndicator]),
                     ImmuTableSection(
                         headerText: wordPressComAccount,
                         rows: [
@@ -229,7 +201,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                     ImmuTableSection(rows: [
                         appSettingsRow,
                         ]),
-                    helpAndSupportSection,
+                    ImmuTableSection(rows: [helpAndSupportIndicator]),
                     ImmuTableSection(
                         headerText: wordPressComAccount,
                         rows: [
@@ -318,19 +290,14 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     func pushHelp() -> ImmuTableAction {
         return { [unowned self] row in
-            if FeatureFlag.zendeskMobile.enabled {
-                let controller = SupportTableViewController()
+            let controller = SupportTableViewController()
 
-                // If iPad, show Support from Me view controller instead of navigation controller.
-                if !self.splitViewControllerIsHorizontallyCompact {
-                    controller.showHelpFromViewController = self
-                }
-
-                self.showDetailViewController(controller, sender: self)
-            } else {
-                let controller = SupportViewController()
-                self.showDetailViewController(controller, sender: self)
+            // If iPad, show Support from Me view controller instead of navigation controller.
+            if !self.splitViewControllerIsHorizontallyCompact {
+                controller.showHelpFromViewController = self
             }
+
+            self.showDetailViewController(controller, sender: self)
         }
     }
 
@@ -400,10 +367,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         let matchRow: ((ImmuTableRow) -> Bool) = { row in
             if let row = row as? NavigationItemRow {
                 return row.title == rowTitle
-            // Helpshift
-            } else if let row = row as? BadgeNavigationItemRow {
-                return row.title == rowTitle
-            // Zendesk
             } else if let row = row as? IndicatorNavigationItemRow {
                 return row.title == rowTitle
             }

@@ -5,7 +5,7 @@
 {
     PostCardActionBarItem *item = [PostCardActionBarItem new];
     item.title = title;
-    item.image = image;
+    item.image = [image imageFlippedForRightToLeftLayoutDirection];
     item.imageInsets = UIEdgeInsetsZero;
     item.highlightedImage = highlightedImage;
     return item;
