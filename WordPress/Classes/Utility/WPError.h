@@ -1,6 +1,3 @@
-extern NSString *const WordPressAppErrorDomain;
-extern NSString * const WPErrorSupportSourceKey;
-
 @interface WPError : NSObject
 
 
