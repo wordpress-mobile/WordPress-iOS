@@ -75,13 +75,6 @@ class SupportTableViewController: UITableViewController {
         dismiss(animated: true, completion: nil)
     }
 
-    // MARK: - Helpers
-
-    // Specifically for WPError, which is ObjC & has the sourceTag as a String.
-    @objc func updateSourceTag(with description: String) {
-        ZendeskUtils.updateSourceTag(with: description)
-    }
-
 }
 
 // MARK: - Private Extension

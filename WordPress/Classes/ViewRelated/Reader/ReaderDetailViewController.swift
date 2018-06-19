@@ -477,6 +477,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         blogNameButton.setTitle(blogName, for: .highlighted)
         blogNameButton.setTitle(blogName, for: .disabled)
         blogNameButton.isAccessibilityElement = false
+        blogNameButton.naturalContentHorizontalAlignment = .leading
 
         // Enable button only if not previewing a site.
         if let topic = post!.topic {
@@ -793,8 +794,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     fileprivate func configureCommentActionButton() {
         let title = post!.commentCount.stringValue
-        let image = UIImage(named: "icon-reader-comment")
-        let highlightImage = UIImage(named: "icon-reader-comment-highlight")
+        let image = UIImage(named: "icon-reader-comment")?.imageFlippedForRightToLeftLayoutDirection()
+        let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
         configureActionButton(commentButton, title: title, image: image, highlightedImage: highlightImage, selected: false)
     }
 
@@ -823,7 +824,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     fileprivate func adjustInsetsForTextDirection() {
         let buttonsToAdjust: [UIButton] = [
             likeButton,
-            commentButton]
+            commentButton,
+            saveForLaterButton]
         for button in buttonsToAdjust {
             button.flipInsetsForRightToLeftLayoutDirection()
         }

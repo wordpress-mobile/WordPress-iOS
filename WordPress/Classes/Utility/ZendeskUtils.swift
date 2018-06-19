@@ -38,9 +38,6 @@ extension NSNotification.Name {
     private override init() {}
     private var sourceTag: WordPressSupportSourceTag?
 
-    // Specifically for WPError, which has the sourceTag as a String.
-    private var sourceTagDescription: String?
-
     private var userName: String?
     private var userEmail: String?
     private var deviceID: String?
@@ -233,12 +230,6 @@ extension NSNotification.Name {
     }
 
     // MARK: - Helpers
-
-    /// Specifically for WPError, which is ObjC & has the sourceTag as a String.
-    ///
-    static func updateSourceTag(with description: String) {
-        ZendeskUtils.sharedInstance.sourceTagDescription = description
-    }
 
     /// Returns the user's Support email address.
     ///
@@ -627,7 +618,7 @@ private extension ZendeskUtils {
         }
 
         // Add sourceTag
-        if let sourceTagOrigin = ZendeskUtils.sharedInstance.sourceTag?.origin ?? ZendeskUtils.sharedInstance.sourceTagDescription {
+        if let sourceTagOrigin = ZendeskUtils.sharedInstance.sourceTag?.origin {
             tags.append(sourceTagOrigin)
         }
 
