@@ -188,8 +188,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     fileprivate func setupCommentActionButton() {
-        let image = UIImage(named: "icon-reader-comment")
-        let highlightImage = UIImage(named: "icon-reader-comment-highlight")
+        let image = UIImage(named: "icon-reader-comment")?.imageFlippedForRightToLeftLayoutDirection()
+        let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
         commentActionButton.setImage(image, for: UIControlState())
         commentActionButton.setImage(highlightImage, for: .highlighted)
     }
@@ -207,8 +207,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         let size = CGSize(width: 20, height: 20)
         let title = NSLocalizedString("Visit", comment: "Verb. Button title.  Tap to visit a website.")
         let icon = Gridicon.iconOfType(.external, withSize: size)
-        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
-        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
+        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())?.imageFlippedForRightToLeftLayoutDirection()
+        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())?.imageFlippedForRightToLeftLayoutDirection()
 
         visitButton.setTitle(title, for: UIControlState())
         visitButton.setImage(tintedIcon, for: .normal)
