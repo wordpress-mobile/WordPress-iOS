@@ -329,7 +329,7 @@ private extension AppSettingsViewController {
                 mediaCacheRow,
                 mediaClearCacheRow
             ],
-            footerText: NSLocalizedString("Free up storage space on this device by clearing your temporary media files. This will not affect media on your site.",
+            footerText: NSLocalizedString("Free up storage space on this device by deleting temporary media files. This will not affect the media on your site.",
                                           comment: "Explanatory text for clearing device media cache.")
         )
     }
