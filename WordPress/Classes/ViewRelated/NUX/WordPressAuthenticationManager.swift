@@ -136,6 +136,15 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: sourceViewController, with: sourceTag)
     }
 
+    @objc func testSignupEpilogue(from sourceVC: UIViewController) {
+        let navController = UINavigationController()
+        sourceVC.present(navController, animated: true) {}
+
+        let creds = WordPressCredentials.wpcom(username: "nate@heagy.com", authToken: "gibberish", isJetpackLogin: false, multifactor: false)
+
+        presentLoginEpilogue(in: navController, for: creds) {}
+    }
+
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
     func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: WordPressCredentials, onDismiss: @escaping () -> Void) {
