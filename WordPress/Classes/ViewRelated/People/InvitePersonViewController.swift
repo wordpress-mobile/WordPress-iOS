@@ -343,10 +343,10 @@ private extension InvitePersonViewController {
 
         let message = messageMap[error] ?? messageMap[.unknownError]!
         let title = NSLocalizedString("Sorry!", comment: "Invite Validation Alert")
-        let accept = NSLocalizedString("Accept", comment: "Invite Accept Button")
+        let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        alert.addDefaultActionWithTitle(accept)
+        alert.addDefaultActionWithTitle(okTitle)
         present(alert, animated: true, completion: nil)
     }
 
