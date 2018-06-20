@@ -61,8 +61,12 @@
                     <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="xGK-LG-0cx">
                         <rect key="frame" x="181" y="101" width="20" height="20"/>
                     </activityIndicatorView>
-                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="2Ri-os-5ZW">
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="2Ri-os-5ZW">
                         <rect key="frame" x="173" y="32" width="37" height="37"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="37" id="9OE-Qz-4LV"/>
+                            <constraint firstAttribute="height" constant="37" id="h6l-wf-0gr"/>
+                        </constraints>
                     </activityIndicatorView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="11G-E4-8Jh">
                         <rect key="frame" x="161.5" y="20.5" width="60" height="60"/>
