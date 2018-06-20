@@ -257,9 +257,8 @@ import WordPressFlux
         let media = mediaUploadOperations(for: groupID)?.compactMap({return $0.remoteMedia})
         let syncGroup = DispatchGroup()
         media?.forEach { mediaItem in
-            mediaItem.postID = NSNumber(value: postID)
-
             syncGroup.enter()
+            mediaItem.postID = NSNumber(value: postID)
             service.update(mediaItem, success: { updatedRemoteMedia in
                 syncGroup.leave()
             }, failure: { error in
