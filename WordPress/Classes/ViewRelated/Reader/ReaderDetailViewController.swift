@@ -871,7 +871,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         } else {
             return
         }
-        
+
         controller.modalTransitionStyle = .crossDissolve
         controller.modalPresentationStyle = .fullScreen
         present(controller, animated: true, completion: nil)
