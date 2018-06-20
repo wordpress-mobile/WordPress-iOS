@@ -54,6 +54,8 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     _webView.delegate = nil;
     if (_webView.isLoading) {
         [_webView stopLoading];
@@ -86,6 +88,11 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     NSAssert(_backButton,              @"Missing Outlet!");
     NSAssert(_forwardButton,           @"Missing Outlet!");
     NSAssert(_toolbarBottomConstraint, @"Missing Outlet!");
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleReachabilityChangedNotification:)
+                                                 name:NSNotification.ReachabilityChangedNotification
+                                               object:nil];
     
     // TitleView
     self.titleView                          = [NavigationTitleView new];
@@ -234,16 +241,16 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 - (void)refreshInterface
 {
-    self.backButton.enabled             = self.webView.canGoBack;
-    self.forwardButton.enabled          = self.webView.canGoForward;
-    self.optionsButton.enabled          = !self.loading;
+    self.backButton.enabled = self.webView.canGoBack;
+    self.forwardButton.enabled = self.webView.canGoForward;
+    self.titleView.titleLabel.text = self.loading ? nil : [self documentTitle];
+    self.titleView.subtitleLabel.text = self.webView.request.URL.host;
     
-    if (self.loading) {
-        return;
+    if ([self.webView.request.URL.absoluteString isEqualToString:@""]) {
+        self.optionsButton.enabled = FALSE;
+    } else {
+        self.optionsButton.enabled = !self.loading;
     }
-    
-    self.titleView.titleLabel.text      = [self documentTitle];
-    self.titleView.subtitleLabel.text   = self.webView.request.URL.host;
 }
 
 - (void)showBottomToolbarIfNeeded
@@ -266,6 +273,10 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     }];
 }
 
+- (void)handleReachabilityChangedNotification:(NSNotification *)notification
+{
+    [self loadWebViewRequest];
+}
 
 #pragma mark - Properties
 

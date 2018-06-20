@@ -111,14 +111,27 @@ class WebKitViewController: UIViewController {
         loadWebViewRequest()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(loadWebViewRequest), name: .reachabilityChanged, object: nil)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
+    }
+
     @objc func loadWebViewRequest() {
         guard let authenticator = authenticator,
             #available(iOS 11, *) else {
-            load(request: URLRequest(url: url))
-            return
+                load(request: URLRequest(url: url))
+                return
         }
-        authenticator.request(url: url, cookieJar: webView.configuration.websiteDataStore.httpCookieStore) { [weak self] (request) in
-            self?.load(request: request)
+
+        DispatchQueue.main.async { [weak self] in
+            authenticator.request(url: (self?.url)!, cookieJar: (self?.webView.configuration.websiteDataStore.httpCookieStore)!) { [weak self] (request) in
+                self?.load(request: request)
+            }
         }
     }
 
@@ -306,7 +319,15 @@ class WebKitViewController: UIViewController {
         case #keyPath(WKWebView.title):
             titleView.titleLabel.text = webView.title
         case #keyPath(WKWebView.url):
+            // If the site has no title, use the url.
+            if webView.title?.nonEmptyString() == nil {
+                    titleView.titleLabel.text = webView.url?.host
+            }
             titleView.subtitleLabel.text = webView.url?.host
+            let haveUrl = webView.url != nil
+            shareButton.isEnabled = haveUrl
+            safariButton.isEnabled = haveUrl
+            navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = haveUrl }
         case #keyPath(WKWebView.estimatedProgress):
             progressView.progress = Float(webView.estimatedProgress)
             progressView.isHidden = webView.estimatedProgress == 1
