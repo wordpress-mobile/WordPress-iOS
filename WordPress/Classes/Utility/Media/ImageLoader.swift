@@ -108,13 +108,12 @@ import MobileCoreServices
     ///
     private func loadGif(with url: URL, from source: ImageSourceInformation, preferredSize size: CGSize) {
         let request: URLRequest
-        if source.isPrivateOnWPCom {
+        if url.isFileURL {
+            request = URLRequest(url: url)
+        } else if source.isPrivateOnWPCom {
             request = PrivateSiteURLProtocol.requestForPrivateSite(from: url)
         } else {
-            // Photon helper set the size to load the retina version. We don't want that for gifs
-            let scale = UIScreen.main.scale
-            let nonRetinaSize = CGSize(width: size.width / scale, height: size.height / scale)
-            if let photonUrl = getPhotonUrl(for: url, size: nonRetinaSize) {
+            if let photonUrl = getPhotonUrl(for: url, size: size) {
                 request = URLRequest(url: photonUrl)
             } else {
                 request = URLRequest(url: url)
@@ -280,7 +279,13 @@ extension ImageLoader {
     }
 
     private func getPhotonUrl(for url: URL, size: CGSize) -> URL? {
-        return PhotonImageURLHelper.photonURL(with: size,
+        var finalSize = size
+        if url.isGif {
+            // Photon helper sets the size to load the retina version. We don't want that for gifs
+            let scale = UIScreen.main.scale
+            finalSize = CGSize(width: size.width / scale, height: size.height / scale)
+        }
+        return PhotonImageURLHelper.photonURL(with: finalSize,
                                               forImageURL: url,
                                               forceResize: true,
                                               imageQuality: selectedPhotonQuality)
