@@ -47,6 +47,10 @@ class PostPreviewGenerator: NSObject {
 
 private extension PostPreviewGenerator {
     func attemptPreview(url: URL) {
+
+        // Attempt to append params. If that fails, fall back to the original url.
+        let url = url.appendingHideMasterbarParameters() ?? url
+
         switch authenticationRequired {
         case .nonce:
             attemptNonceAuthenticatedRequest(url: url)
