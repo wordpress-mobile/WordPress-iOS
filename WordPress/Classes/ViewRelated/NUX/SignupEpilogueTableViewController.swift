@@ -123,6 +123,7 @@ class SignupEpilogueTableViewController: NUXTableViewController {
             if let epilogueUserInfo = epilogueUserInfo {
                 cell.configure(userInfo: epilogueUserInfo, showEmail: true)
             }
+            cell.viewControllerProvider = self
             userInfoCell = cell
             return cell
         }
@@ -278,4 +279,15 @@ extension SignupEpilogueTableViewController: SignupEpilogueCellDelegate {
         delegate?.usernameTapped(userInfo: epilogueUserInfo)
     }
 
+}
+
+// MARK: - EpilogueUserInfoCellViewControllerProvider
+
+extension SignupEpilogueTableViewController: EpilogueUserInfoCellViewControllerProvider {
+    func viewControllerForEpilogueUserInfoCell() -> UIViewController {
+        guard let navController = navigationController else {
+            return self
+        }
+        return navController
+    }
 }
