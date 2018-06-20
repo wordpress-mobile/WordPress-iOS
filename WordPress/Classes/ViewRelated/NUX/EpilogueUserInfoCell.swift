@@ -1,5 +1,9 @@
 import UIKit
 
+protocol EpilogueUserInfoCellViewControllerProvider {
+    func viewControllerForEpilogueUserInfoCell() -> UIViewController
+}
+
 // MARK: - EpilogueUserInfoCell
 //
 class EpilogueUserInfoCell: UITableViewCell {
@@ -9,6 +13,8 @@ class EpilogueUserInfoCell: UITableViewCell {
     @IBOutlet var gravatarActivityIndicator: UIActivityIndicatorView!
     @IBOutlet var fullNameLabel: UILabel!
     @IBOutlet var usernameLabel: UILabel!
+    open var viewControllerProvider: EpilogueUserInfoCellViewControllerProvider?
+    private var gravatarStatus: GravatarUploaderStatus = .idle
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,10 +30,17 @@ class EpilogueUserInfoCell: UITableViewCell {
         usernameLabel.text = showEmail ? userInfo.email : "@\(userInfo.username)"
         usernameLabel.fadeInAnimation()
 
-        if let gravatarUrl = userInfo.gravatarUrl, let url = URL(string: gravatarUrl) {
-            gravatarView.downloadImage(from: url)
-        } else {
-            gravatarView.downloadGravatarWithEmail(userInfo.email, rating: .x)
+        switch gravatarStatus {
+        case .uploading(image: _):
+            gravatarActivityIndicator.startAnimating()
+        case .idle:
+            if let gravatarUrl = userInfo.gravatarUrl, let url = URL(string: gravatarUrl) {
+                gravatarView.downloadImage(from: url)
+            } else {
+                gravatarView.downloadGravatarWithEmail(userInfo.email, rating: .x)
+            }
+        case .finished:
+            gravatarActivityIndicator.stopAnimating()
         }
     }
 
@@ -46,25 +59,20 @@ class EpilogueUserInfoCell: UITableViewCell {
         usernameLabel.isHidden = false
         activityIndicator.stopAnimating()
     }
-
-    var parentViewController: UIViewController? {
-        var parentResponder: UIResponder? = self
-        while parentResponder != nil {
-            parentResponder = parentResponder!.next
-            if let viewController = parentResponder as? UIViewController {
-                return viewController
-            }
-        }
-        return nil
-    }
-
-    @IBAction func gravatarTapped() {
-        presentGravatarPicker(from: parentViewController!)
-    }
 }
 
 extension EpilogueUserInfoCell: GravatarUploader {
+    @IBAction func gravatarTapped() {
+        guard let vcProvider = viewControllerProvider else {
+            return
+        }
+        let viewController = vcProvider.viewControllerForEpilogueUserInfoCell()
+        presentGravatarPicker(from: viewController)
+    }
+
+    /// Update the UI based on the status of the gravatar upload
     func updateGravatarStatus(_ status: GravatarUploaderStatus) {
+        gravatarStatus = status
         switch status {
         case .uploading(image: let newImage):
             gravatarView.image = newImage
