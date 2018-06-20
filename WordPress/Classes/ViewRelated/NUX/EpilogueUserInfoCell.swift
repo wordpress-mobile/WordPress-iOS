@@ -6,6 +6,7 @@ class EpilogueUserInfoCell: UITableViewCell {
 
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     @IBOutlet var gravatarView: UIImageView!
+    @IBOutlet var gravatarActivityIndicator: UIActivityIndicatorView!
     @IBOutlet var fullNameLabel: UILabel!
     @IBOutlet var usernameLabel: UILabel!
 
@@ -44,5 +45,32 @@ class EpilogueUserInfoCell: UITableViewCell {
         fullNameLabel.isHidden = false
         usernameLabel.isHidden = false
         activityIndicator.stopAnimating()
+    }
+
+    var parentViewController: UIViewController? {
+        var parentResponder: UIResponder? = self
+        while parentResponder != nil {
+            parentResponder = parentResponder!.next
+            if let viewController = parentResponder as? UIViewController {
+                return viewController
+            }
+        }
+        return nil
+    }
+
+    @IBAction func gravatarTapped() {
+        presentGravatarPicker(from: parentViewController!)
+    }
+}
+
+extension EpilogueUserInfoCell: GravatarUploader {
+    func updateGravatarStatus(_ status: GravatarUploaderStatus) {
+        switch status {
+        case .uploading(image: let newImage):
+            gravatarView.image = newImage
+            gravatarActivityIndicator.startAnimating()
+        case .idle, .finished:
+            gravatarActivityIndicator.stopAnimating()
+        }
     }
 }
