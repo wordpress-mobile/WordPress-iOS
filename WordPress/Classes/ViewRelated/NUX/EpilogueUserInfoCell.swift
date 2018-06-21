@@ -4,6 +4,15 @@ protocol EpilogueUserInfoCellViewControllerProvider {
     func viewControllerForEpilogueUserInfoCell() -> UIViewController
 }
 
+extension EpilogueUserInfoCellViewControllerProvider where Self: UIViewController {
+    func viewControllerForEpilogueUserInfoCell() -> UIViewController {
+        guard let navController = navigationController else {
+            return self
+        }
+        return navController
+    }
+}
+
 // MARK: - EpilogueUserInfoCell
 //
 class EpilogueUserInfoCell: UITableViewCell {
