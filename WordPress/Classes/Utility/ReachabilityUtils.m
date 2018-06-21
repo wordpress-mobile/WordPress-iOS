@@ -84,4 +84,8 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
     return NSLocalizedString(@"The Internet connection appears to be offline.", @"");
 }
 
++ (BOOL)alertIsShowing
+{
+    return __currentReachabilityAlert != nil;
+}
 @end
