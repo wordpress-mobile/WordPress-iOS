@@ -74,6 +74,8 @@ class EpilogueUserInfoCell: UITableViewCell {
     }
 }
 
+// MARK: - Gravatar uploading
+//
 extension EpilogueUserInfoCell: GravatarUploader {
     @IBAction func gravatarTapped() {
         guard let vcProvider = viewControllerProvider else {
