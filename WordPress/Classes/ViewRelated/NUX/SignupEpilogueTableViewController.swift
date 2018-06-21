@@ -121,7 +121,7 @@ class SignupEpilogueTableViewController: NUXTableViewController {
             }
 
             if let epilogueUserInfo = epilogueUserInfo {
-                cell.configure(userInfo: epilogueUserInfo, showEmail: true)
+                cell.configure(userInfo: epilogueUserInfo, showEmail: true, allowGravatarUploads: true)
             }
             cell.viewControllerProvider = self
             userInfoCell = cell

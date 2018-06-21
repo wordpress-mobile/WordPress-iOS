@@ -10,6 +10,7 @@ class EpilogueUserInfoCell: UITableViewCell {
 
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
     @IBOutlet var gravatarView: UIImageView!
+    @IBOutlet var gravatarAddIcon: UIImageView!
     @IBOutlet var gravatarActivityIndicator: UIActivityIndicatorView!
     @IBOutlet var fullNameLabel: UILabel!
     @IBOutlet var usernameLabel: UILabel!
@@ -23,24 +24,27 @@ class EpilogueUserInfoCell: UITableViewCell {
 
     /// Configures the cell so that the LoginEpilogueUserInfo's payload is displayed
     ///
-    func configure(userInfo: LoginEpilogueUserInfo, showEmail: Bool = false) {
+    func configure(userInfo: LoginEpilogueUserInfo, showEmail: Bool = false, allowGravatarUploads: Bool = false) {
         fullNameLabel.text = userInfo.fullName
         fullNameLabel.fadeInAnimation()
 
         usernameLabel.text = showEmail ? userInfo.email : "@\(userInfo.username)"
         usernameLabel.fadeInAnimation()
 
+        gravatarAddIcon.isHidden = !allowGravatarUploads
+
         switch gravatarStatus {
         case .uploading(image: _):
             gravatarActivityIndicator.startAnimating()
+        case .finished:
+            gravatarActivityIndicator.stopAnimating()
         case .idle:
+            let placeholder: UIImage = allowGravatarUploads ? .gravatarUploadablePlaceholderImage : .gravatarPlaceholderImage
             if let gravatarUrl = userInfo.gravatarUrl, let url = URL(string: gravatarUrl) {
                 gravatarView.downloadImage(from: url)
             } else {
-                gravatarView.downloadGravatarWithEmail(userInfo.email, rating: .x)
+                gravatarView.downloadGravatarWithEmail(userInfo.email, rating: .x, placeholderImage: placeholder)
             }
-        case .finished:
-            gravatarActivityIndicator.stopAnimating()
         }
     }
 
@@ -80,5 +84,13 @@ extension EpilogueUserInfoCell: GravatarUploader {
         case .idle, .finished:
             gravatarActivityIndicator.stopAnimating()
         }
+    }
+}
+
+extension UIImage {
+    /// Returns a Gravatar Placeholder Image when uploading is allowed
+    ///
+    fileprivate static var gravatarUploadablePlaceholderImage: UIImage {
+        return UIImage(named: "gravatar-hollow", in: nil, compatibleWith: nil)!
     }
 }
