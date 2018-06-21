@@ -42,6 +42,8 @@ class WebKitViewController: UIViewController {
     @objc var addsHideMasterbarParameters = true
     @objc var customTitle: String?
 
+    var reachabilityObserver: Any?
+
     @objc init(configuration: WebViewControllerConfiguration) {
         webView = WKWebView()
         url = configuration.url
@@ -111,17 +113,16 @@ class WebKitViewController: UIViewController {
         loadWebViewRequest()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(loadWebViewRequest), name: .reachabilityChanged, object: nil)
-    }
-
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self)
+        stopWaitingForConnectionRestored()
     }
 
     @objc func loadWebViewRequest() {
+        if ReachabilityUtils.alertIsShowing() {
+            self.dismiss(animated: false, completion: nil)
+        }
+
         guard let authenticator = authenticator,
             #available(iOS 11, *) else {
                 load(request: URLRequest(url: url))
@@ -265,6 +266,23 @@ class WebKitViewController: UIViewController {
         button.tintColor = WPStyleGuide.greyLighten10()
     }
 
+    // MARK: Reachability Helpers
+
+    private func reloadWhenConnectionRestored() {
+        reachabilityObserver = ReachabilityUtils.observeOnceInternetAvailable {
+            self.loadWebViewRequest()
+        }
+    }
+
+    private func stopWaitingForConnectionRestored() {
+        guard let reachabilityObserver = reachabilityObserver else {
+            return
+        }
+
+        NotificationCenter.default.removeObserver(reachabilityObserver)
+        self.reachabilityObserver = nil
+    }
+
     // MARK: User Actions
 
     @objc func close() {
@@ -381,6 +399,7 @@ extension WebKitViewController: WKUIDelegate {
 
         if !ReachabilityUtils.isInternetReachable() {
             ReachabilityUtils.showAlertNoInternetConnection()
+            reloadWhenConnectionRestored()
         } else {
             WPError.showAlert(withTitle: NSLocalizedString("Error", comment: "Generic error alert title"), message: error.localizedDescription)
         }
