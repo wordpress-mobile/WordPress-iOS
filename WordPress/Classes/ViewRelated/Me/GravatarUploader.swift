@@ -24,7 +24,7 @@ extension GravatarUploader {
         sourceVC.present(pickerViewController, animated: true, completion: nil)
     }
 
-    fileprivate func uploadGravatarImage(_ newGravatar: UIImage) {
+    func uploadGravatarImage(_ newGravatar: UIImage) {
 
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
