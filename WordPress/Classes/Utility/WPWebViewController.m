@@ -42,6 +42,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 @property (nonatomic, copy)   NSString                          *customTitle;
 @property (nonatomic, assign) BOOL                              loading;
 @property (nonatomic, assign) BOOL                              needsLogin;
+@property (nonatomic, strong) id                                reachabilityObserver;
 
 @property (nonatomic, weak) id<WebNavigationDelegate> navigationDelegate;
 
@@ -54,7 +55,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self stopWaitingForConnectionRestored];
     
     _webView.delegate = nil;
     if (_webView.isLoading) {
@@ -88,11 +89,6 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     NSAssert(_backButton,              @"Missing Outlet!");
     NSAssert(_forwardButton,           @"Missing Outlet!");
     NSAssert(_toolbarBottomConstraint, @"Missing Outlet!");
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(handleReachabilityChangedNotification:)
-                                                 name:NSNotification.ReachabilityChangedNotification
-                                               object:nil];
     
     // TitleView
     self.titleView                          = [NavigationTitleView new];
@@ -210,6 +206,10 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 - (void)loadWebViewRequest
 {
+    if ([ReachabilityUtils alertIsShowing]) {
+        [self dismissViewControllerAnimated:false completion:nil];
+    }
+    
     if (self.authenticator == nil) {
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.url];
         [self loadRequest:request];
@@ -273,9 +273,22 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     }];
 }
 
-- (void)handleReachabilityChangedNotification:(NSNotification *)notification
+#pragma mark - Reachability Helpers
+
+- (void)reloadWhenConnectionRestored
 {
-    [self loadWebViewRequest];
+    __weak __typeof(self) weakSelf = self;
+    self.reachabilityObserver = [ReachabilityUtils observeOnceInternetAvailableWithAction:^{
+        [weakSelf loadWebViewRequest];
+    }];
+}
+
+- (void)stopWaitingForConnectionRestored
+{
+    if (self.reachabilityObserver != nil) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self.reachabilityObserver];
+        self.reachabilityObserver = nil;
+    }
 }
 
 #pragma mark - Properties
@@ -428,6 +441,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 {
     if (![ReachabilityUtils isInternetReachable]) {
         [ReachabilityUtils showAlertNoInternetConnection];
+        [self reloadWhenConnectionRestored];
     } else {
         [WPError showAlertWithTitle: NSLocalizedString(@"Error", @"Generic error alert title") message: error.localizedDescription];
     }
