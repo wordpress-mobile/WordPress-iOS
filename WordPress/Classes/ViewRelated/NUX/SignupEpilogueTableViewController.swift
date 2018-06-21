@@ -17,7 +17,7 @@ protocol SignupEpilogueTableViewControllerDataSource {
     var username: String? { get }
 }
 
-class SignupEpilogueTableViewController: NUXTableViewController {
+class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInfoCellViewControllerProvider {
 
     // MARK: - Properties
 
@@ -279,15 +279,4 @@ extension SignupEpilogueTableViewController: SignupEpilogueCellDelegate {
         delegate?.usernameTapped(userInfo: epilogueUserInfo)
     }
 
-}
-
-// MARK: - EpilogueUserInfoCellViewControllerProvider
-
-extension SignupEpilogueTableViewController: EpilogueUserInfoCellViewControllerProvider {
-    func viewControllerForEpilogueUserInfoCell() -> UIViewController {
-        guard let navController = navigationController else {
-            return self
-        }
-        return navController
-    }
 }
