@@ -16,13 +16,13 @@ class AztecAttachmentViewController: UITableViewController {
         }
     }
 
-    var alignment = ImageAttachment.Alignment.none
+    var alignment: ImageAttachment.Alignment? = nil
     var linkURL: URL?
     var size = ImageAttachment.Size.none
     @objc var alt: String?
     var caption: NSAttributedString?
 
-    var onUpdate: ((_ alignment: ImageAttachment.Alignment, _ size: ImageAttachment.Size, _ linkURL: URL?, _ altText: String?, _ caption: NSAttributedString?) -> Void)?
+    var onUpdate: ((_ alignment: ImageAttachment.Alignment?, _ size: ImageAttachment.Size, _ linkURL: URL?, _ altText: String?, _ caption: NSAttributedString?) -> Void)?
     @objc var onCancel: (() -> Void)?
 
     fileprivate var handler: ImmuTableViewHandler!
@@ -74,7 +74,7 @@ class AztecAttachmentViewController: UITableViewController {
 
         let alignmentRow = EditableTextRow(
             title: NSLocalizedString("Alignment", comment: "Image alignment option title."),
-            value: alignment.localizedString,
+            value: alignment?.localizedString ?? ImageAttachment.Alignment.none.localizedString,
             action: displayAlignmentSelector)
 
         let linkToRow = EditableTextRow(
@@ -167,11 +167,11 @@ class AztecAttachmentViewController: UITableViewController {
         let currentValue = alignment
 
         let dict: [String: Any] = [
-            SettingsSelectionDefaultValueKey: alignment,
+            SettingsSelectionDefaultValueKey: alignment ?? ImageAttachment.Alignment.none,
             SettingsSelectionTitleKey: NSLocalizedString("Alignment", comment: "Title of the screen for choosing an image's alignment."),
             SettingsSelectionTitlesKey: titles,
             SettingsSelectionValuesKey: values,
-            SettingsSelectionCurrentValueKey: currentValue
+            SettingsSelectionCurrentValueKey: currentValue ?? ImageAttachment.Alignment.none
         ]
 
         guard let vc = SettingsSelectionViewController(dictionary: dict) else {
