@@ -66,7 +66,7 @@ class CircularProgressView: UIView {
     // MARK: - public fields
 
     let retryView = AccessoryView()
-    var errorView: UIView = UIView() {
+    @objc var errorView: UIView = UIView() {
         didSet {
             oldValue.removeFromSuperview()
             configureErrorView()
@@ -232,9 +232,9 @@ final class AccessoryView: UIView {
         }
     }
 
-    let imageView = UIImageView()
+    @objc let imageView = UIImageView()
 
-    let label: UILabel = {
+    @objc let label: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: Appearance.fontSize)
         label.textAlignment = .center
