@@ -427,7 +427,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             return LogoutAlert.defaultTitle
         }
 
-        return String(format: LogoutAlert.unsavedTitle, count)
+        let format = count > 1 ? LogoutAlert.unsavedTitlePlural : LogoutAlert.unsavedTitleSingular
+        return String(format: format, count)
     }
 
     fileprivate func logOut() {
@@ -540,8 +541,10 @@ private extension MeViewController {
 
     enum LogoutAlert {
         static let defaultTitle =  NSLocalizedString("Log out of WordPress?", comment: "LogOut confirmation text, whenever there are no local changes")
-        static let unsavedTitle = NSLocalizedString("You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?",
-                                                    comment: "Warning displayed before logging out. The %d placeholder will contain the number of local posts")
+        static let unsavedTitleSingular = NSLocalizedString("You have changes that haven't been uploaded to your site. Logging out now will delete those changes. Log out anyway?",
+                                                            comment: "Warning displayed before logging out. The %d placeholder will contain the number of local posts")
+        static let unsavedTitlePlural = NSLocalizedString("You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?",
+                                                          comment: "Warning displayed before logging out. The %d placeholder will contain the number of local posts (PLURAL!)")
         static let cancelAction = NSLocalizedString("Cancel", comment: "")
         static let logoutAction = NSLocalizedString("Log Out", comment: "Button for confirming logging out from WordPress.com account")
     }
