@@ -541,8 +541,8 @@ private extension MeViewController {
 
     enum LogoutAlert {
         static let defaultTitle =  NSLocalizedString("Log out of WordPress?", comment: "LogOut confirmation text, whenever there are no local changes")
-        static let unsavedTitleSingular = NSLocalizedString("You have changes that haven't been uploaded to your site. Logging out now will delete those changes. Log out anyway?",
-                                                            comment: "Warning displayed before logging out. The %d placeholder will contain the number of local posts")
+        static let unsavedTitleSingular = NSLocalizedString("You have changes to %d post that hasn't been uploaded to your site. Logging out now will delete those changes. Log out anyway?",
+                                                            comment: "Warning displayed before logging out. The %d placeholder will contain the number of local posts (SINGULAR!)")
         static let unsavedTitlePlural = NSLocalizedString("You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?",
                                                           comment: "Warning displayed before logging out. The %d placeholder will contain the number of local posts (PLURAL!)")
         static let cancelAction = NSLocalizedString("Cancel", comment: "")
