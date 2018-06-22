@@ -9,6 +9,7 @@ import MobileCoreServices
 import WPMediaPicker
 import SVProgressHUD
 import AVKit
+import MobileCoreServices
 
 
 // MARK: - Aztec's Native Editor!
@@ -449,9 +450,15 @@ class AztecPostViewController: UIViewController, PostEditor {
 
 
     /// Presents whatever happens when FormatBar's more button is selected
+    ///
     fileprivate lazy var moreCoordinator: AztecMediaPickingCoordinator = {
         return AztecMediaPickingCoordinator(delegate: self)
     }()
+
+
+    /// Helps choosing the correct view controller for previewing a media asset
+    ///
+    private let mediaPreviewHelper = MediaPreviewHelper()
 
 
     // MARK: - Initializers
@@ -3735,6 +3742,10 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didDeselect asset: WPMediaAsset) {
         updateFormatBarInsertAssetCount()
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor assets: [WPMediaAsset], selectedIndex selected: Int) -> UIViewController? {
+        return mediaPreviewHelper.previewViewController(for: assets, selectedIndex: selected)
     }
 
     private func updateFormatBarInsertAssetCount() {
