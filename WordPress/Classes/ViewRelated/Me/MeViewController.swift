@@ -225,21 +225,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     // MARK: - Actions
 
-    fileprivate func presentGravatarPicker() {
-        WPAppAnalytics.track(.gravatarTapped)
-
-        let pickerViewController = GravatarPickerViewController()
-        pickerViewController.onCompletion = { [weak self] image in
-            if let updatedGravatarImage = image {
-                self?.uploadGravatarImage(updatedGravatarImage)
-            }
-
-            self?.dismiss(animated: true, completion: nil)
-        }
-        pickerViewController.modalPresentationStyle = .formSheet
-        present(pickerViewController, animated: true, completion: nil)
-    }
-
     fileprivate var myProfileViewController: UIViewController? {
         guard let account = self.defaultAccount() else {
             let error = "Tried to push My Profile without a default account. This shouldn't happen"
@@ -384,27 +369,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
-    // MARK: - Gravatar Helpers
-
-    fileprivate func uploadGravatarImage(_ newGravatar: UIImage) {
-        guard let account = defaultAccount() else {
-            return
-        }
-
-        WPAppAnalytics.track(.gravatarUploaded)
-
-        gravatarUploadInProgress = true
-        headerView.overrideGravatarImage(newGravatar)
-
-        let service = GravatarService()
-        service.uploadImage(newGravatar, forAccount: account) { [weak self] error in
-            DispatchQueue.main.async(execute: {
-                self?.gravatarUploadInProgress = false
-                self?.reloadViewModel()
-            })
-        }
-    }
-
     // MARK: - Helpers
 
     // FIXME: (@koke 2015-12-17) Not cool. Let's stop passing managed objects
@@ -434,17 +398,13 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     // MARK: - Private Properties
 
-    fileprivate var gravatarUploadInProgress = false {
-        didSet {
-            headerView.showsActivityIndicator = gravatarUploadInProgress
-            headerView.isUserInteractionEnabled = !gravatarUploadInProgress
-        }
-    }
-
     fileprivate lazy var headerView: MeHeaderView = {
         let headerView = MeHeaderView()
         headerView.onGravatarPress = { [weak self] in
-            self?.presentGravatarPicker()
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf.presentGravatarPicker(from: strongSelf)
         }
         headerView.onDroppedImage = { [weak self] image in
             let imageCropViewController = ImageCropViewController(image: image)
@@ -453,7 +413,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
             imageCropViewController.onCancel = { [weak self] in
                 self?.dismiss(animated: true, completion: nil)
-                self?.gravatarUploadInProgress = false
+                self?.updateGravatarStatus(.idle)
             }
             imageCropViewController.onCompletion = { [weak self] image, _ in
                 self?.dismiss(animated: true, completion: nil)
@@ -510,6 +470,26 @@ extension MeViewController: SearchableActivityConvertable {
         }
 
         return Set(keywordArray)
+    }
+}
+
+// MARK: - Gravatar uploading
+//
+extension MeViewController: GravatarUploader {
+    /// Update the UI based on the status of the gravatar upload
+    func updateGravatarStatus(_ status: GravatarUploaderStatus) {
+        switch status {
+        case .uploading(image: let newGravatarImage):
+            headerView.showsActivityIndicator = true
+            headerView.isUserInteractionEnabled = false
+            headerView.overrideGravatarImage(newGravatarImage)
+        case .finished:
+            reloadViewModel()
+            fallthrough
+        default:
+            headerView.showsActivityIndicator = false
+            headerView.isUserInteractionEnabled = true
+        }
     }
 }
 
