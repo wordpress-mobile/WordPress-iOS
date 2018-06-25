@@ -20,7 +20,7 @@ enum FeatureFlag: Int {
         case .saveForLater:
             return true
         case .gifSupportInReaderDetail:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
+            return true
         }
     }
 }
