@@ -46,19 +46,18 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
                                                                              message:message
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     
-    [alertController addCancelActionWithTitle:NSLocalizedString(@"OK", @"") handler:^(UIAlertAction *action) {
+    [alertController addDefaultActionWithTitle:NSLocalizedString(@"OK", @"") handler:^(UIAlertAction *action) {
         __currentReachabilityAlert = nil;
     }];
     
-    
     if (self.retryBlock) {
-        [alertController addDefaultActionWithTitle:NSLocalizedString(@"Retry?", @"") handler:^(UIAlertAction *action) {
+        [alertController addCancelActionWithTitle:NSLocalizedString(@"Retry?", @"") handler:^(UIAlertAction *action) {
             self.retryBlock();
         }];
     } else if (ReachabilityUtils.isInternetReachable) {
         // Add the 'Need help' button only if internet is accessible (i.e. if the user can actually get help).
         NSString *supportText = NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.");
-        [alertController addDefaultActionWithTitle:supportText handler:^(UIAlertAction *action) {
+        [alertController addCancelActionWithTitle:supportText handler:^(UIAlertAction *action) {
             SupportTableViewController *supportVC = [SupportTableViewController new];
             [supportVC showFromTabBar];
             __currentReachabilityAlert = nil;
