@@ -1,4 +1,4 @@
-final class ReplyToComment: NotificationAction {
+final class ReplyToComment: DefaultNotificationAction {
     func execute() {
 
     }

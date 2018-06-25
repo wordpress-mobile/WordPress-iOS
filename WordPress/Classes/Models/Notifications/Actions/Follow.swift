@@ -1,4 +1,4 @@
-final class Follow: NotificationAction {
+final class Follow: DefaultNotificationAction {
     func execute() {
 
     }

@@ -1,4 +1,4 @@
-final class ApproveComment: NotificationAction {
+final class ApproveComment: DefaultNotificationAction {
     func execute() {
 
     }
