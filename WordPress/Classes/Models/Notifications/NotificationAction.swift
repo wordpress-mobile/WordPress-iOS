@@ -1,0 +1,3 @@
+protocol NotificationAction {
+    func execute()
+}
