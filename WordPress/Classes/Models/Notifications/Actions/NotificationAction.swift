@@ -1,3 +1,5 @@
+import MGSwipeTableCell
+
 protocol NotificationAction {
     func identifier() -> Identifier
     func execute()
@@ -5,6 +7,8 @@ protocol NotificationAction {
     func disable()
     func setOn()
     func setOff()
+
+    var icon: UIButton? { get }
 }
 
 extension NotificationAction {
@@ -21,6 +25,10 @@ class DefaultNotificationAction: NotificationAction {
     private(set) lazy var actionsService: NotificationActionsService? = {
         return NotificationActionsService(managedObjectContext: mainContext!)
     }()
+
+    var icon: UIButton? {
+        return nil
+    }
 
     func identifier() -> Identifier {
         let typeAsString = String(describing: type(of: self))
