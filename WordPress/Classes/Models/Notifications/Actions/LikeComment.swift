@@ -1,4 +1,4 @@
-final class LikeComment: NotificationAction {
+final class LikeComment: DefaultNotificationAction {
     func execute() {
 
     }

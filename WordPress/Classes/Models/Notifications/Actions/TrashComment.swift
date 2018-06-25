@@ -1,4 +1,4 @@
-final class TrashComment: NotificationAction {
+final class TrashComment: DefaultNotificationAction {
     func execute() {
 
     }
