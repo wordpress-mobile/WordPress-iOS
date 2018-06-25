@@ -1,4 +1,4 @@
-final class MarkAsSpam: NotificationAction {
+final class MarkAsSpam: DefaultNotificationAction {
     func execute() {
 
     }
