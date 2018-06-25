@@ -1,4 +1,5 @@
 protocol NotificationAction {
+    func identifier() -> Identifier
     func execute()
     func enable()
     func disable()
@@ -7,6 +8,11 @@ protocol NotificationAction {
 }
 
 extension NotificationAction {
+    func identifier() -> Identifier {
+        let typeAsString = String(describing: type(of: self))
+        return Identifier(value: typeAsString)
+    }
+
     func enable() {
 
     }
