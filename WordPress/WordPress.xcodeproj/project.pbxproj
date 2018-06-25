@@ -4828,13 +4828,13 @@
 		B545186718E9E08000AC3A54 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				D816C1EA20E0884100C4D82F /* Actions */,
 				B5722E401D51A28100F40C5E /* Notification.swift */,
 				B539714F1D537763006135EC /* NotificationBlockGroup.swift */,
 				B53971511D537B22006135EC /* NotificationBlock.swift */,
 				B500A4821D5B8D5E00FC8A96 /* NotificationMedia.swift */,
 				B500A4831D5B8D5E00FC8A96 /* NotificationRange.swift */,
 				B5899AE31B422D990075A3D6 /* NotificationSettings.swift */,
-				D816C1E820E0880400C4D82F /* NotificationAction.swift */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -5529,6 +5529,14 @@
 				175A650B20B6F7280023E71B /* ReaderSaveForLater+Analytics.swift */,
 			);
 			name = ReaderPostActions;
+			sourceTree = "<group>";
+		};
+		D816C1EA20E0884100C4D82F /* Actions */ = {
+			isa = PBXGroup;
+			children = (
+				D816C1E820E0880400C4D82F /* NotificationAction.swift */,
+			);
+			path = Actions;
 			sourceTree = "<group>";
 		};
 		D88A6490208D79F1008AE9BC /* Stock Photos */ = {
