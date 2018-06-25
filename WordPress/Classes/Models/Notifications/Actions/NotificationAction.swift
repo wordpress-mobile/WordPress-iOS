@@ -2,6 +2,8 @@ protocol NotificationAction {
     func execute()
     func enable()
     func disable()
+    func setOn()
+    func setOff()
 }
 
 extension NotificationAction {
@@ -10,6 +12,14 @@ extension NotificationAction {
     }
 
     func disable() {
+
+    }
+
+    func setOn() {
+
+    }
+
+    func setOff() {
 
     }
 }
