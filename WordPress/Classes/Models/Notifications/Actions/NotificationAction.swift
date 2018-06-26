@@ -7,6 +7,7 @@ protocol NotificationAction: CustomStringConvertible {
     func setOff()
 
     var enabled: Bool { get }
+    var on: Bool { get }
     var icon: UIButton? { get }
 }
 
@@ -29,7 +30,9 @@ extension NotificationAction {
 }
 
 class DefaultNotificationAction: NotificationAction {
-    let enabled: Bool
+    var enabled: Bool
+
+    let on: Bool
 
     private(set) lazy var mainContext: NSManagedObjectContext? = {
         return ContextManager.sharedInstance().mainContext
@@ -43,8 +46,9 @@ class DefaultNotificationAction: NotificationAction {
         return nil
     }
 
-    init(enabled: Bool) {
-        self.enabled = enabled
+    init(on: Bool) {
+        self.on = on
+        self.enabled = true
     }
 
     func identifier() -> Identifier {

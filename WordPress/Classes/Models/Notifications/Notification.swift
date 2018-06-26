@@ -195,7 +195,9 @@ extension Notification {
             return false
         }
 
-        return block.isActionEnabled(.Approve) && !block.isActionOn(.Approve)
+        //return block.isActionEnabled(.Approve) && !block.isActionOn(.Approve)
+        let commandId = ApproveComment.actionIdentifier()
+        return block.isCommandEnabled(id: commandId) && !block.isCommandOn(id: commandId)
     }
 
     /// Parses the Notification.type field into a Swift Native enum. Returns .Unknown on failure.
