@@ -57,12 +57,12 @@ class NotificationBlock: Equatable {
 
     /// Designated Initializer.
     ///
-    init(dictionary: [String: AnyObject], commands: [NotificationAction], parent note: Notification) {
+    init(dictionary: [String: AnyObject], commands commandActions: [NotificationAction], parent note: Notification) {
         let rawMedia    = dictionary[BlockKeys.Media] as? [[String: AnyObject]]
         let rawRanges   = dictionary[BlockKeys.Ranges] as? [[String: AnyObject]]
 
         actions = dictionary[BlockKeys.Actions] as? [String: AnyObject]
-        self.commands = commands
+        commands = commandActions
         media   = NotificationMedia.mediaFromArray(rawMedia)
         meta    = dictionary[BlockKeys.Meta] as? [String: AnyObject]
         ranges  = NotificationRange.rangesFromArray(rawRanges)
