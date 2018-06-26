@@ -20,7 +20,7 @@ open class ActivityTableViewCell: WPTableViewCell {
     open func configureCell(_ activity: Activity) {
         self.activity = activity
         summaryLabel.text = activity.summary
-        contentLabel.text = activity.text
+        contentLabel.attributedText = activity.formattedContent
 
         iconBackgroundImageView.backgroundColor = Style.getColorByActivityStatus(activity)
         if let iconImage = Style.getIconForActivity(activity) {
