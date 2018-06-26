@@ -5,6 +5,33 @@ import MGSwipeTableCell
 import WordPressShared
 import WordPressAuthenticator
 
+class FormattableSubjectStyles: FormattableContentStyles {
+    var attributes: [NSAttributedStringKey : Any] {
+        return WPStyleGuide.Notifications.subjectRegularStyle
+    }
+
+    var quoteStyles: [NSAttributedStringKey : Any]? {
+        return WPStyleGuide.Notifications.subjectItalicsStyle
+    }
+
+    var rangeStylesMap: [FormattableContentRange.Kind : [NSAttributedStringKey : Any]]? {
+        return [
+            .User: WPStyleGuide.Notifications.subjectBoldStyle,
+            .Post: WPStyleGuide.Notifications.subjectItalicsStyle,
+            .Comment: WPStyleGuide.Notifications.subjectItalicsStyle,
+            .Blockquote: WPStyleGuide.Notifications.subjectQuotedStyle,
+            .Noticon: WPStyleGuide.Notifications.subjectNoticonStyle
+        ]
+    }
+
+    var linksColor: UIColor? {
+        return nil
+    }
+
+    var key: String {
+        return "FormattableSubjectStyles"
+    }
+}
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account.
@@ -18,6 +45,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     @objc static let selectedSegmentIndexRestorationIdentifier   = "NotificationsSelectedSegmentIndexKey"
 
     // MARK: - Properties
+
+    let subjectFormatter = FormattableContentFormatter(styles: FormattableSubjectStyles())
 
     /// TableHeader
     ///
@@ -922,6 +951,9 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         let deletionRequest         = deletionRequestForNoteWithID(note.objectID)
         let isLastRow               = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
 
+        if let subjectBlock = note.subjectContentGroup?.blocks.first {
+            cell.attributedSubject = subjectFormatter.render(content: subjectBlock)
+        }
         cell.attributedSubject      = note.subjectBlock?.attributedSubjectText
         cell.attributedSnippet      = note.snippetBlock?.attributedSnippetText
         cell.read                   = note.read
