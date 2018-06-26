@@ -17,6 +17,12 @@ extension NotificationAction {
 }
 
 extension NotificationAction {
+    static func actionIdentifier() -> Identifier {
+        return Identifier(value: String(describing: self))
+    }
+}
+
+extension NotificationAction {
     var description: String {
         return identifier().description + " enabled \(enabled)"
     }
@@ -42,8 +48,7 @@ class DefaultNotificationAction: NotificationAction {
     }
 
     func identifier() -> Identifier {
-        let typeAsString = String(describing: type(of: self))
-        return Identifier(value: typeAsString)
+        return type(of: self).actionIdentifier()
     }
 
     func enable() {
