@@ -28,6 +28,7 @@ class NotificationBlock: Equatable {
     /// Available Actions collection.
     ///
     fileprivate let actions: [String: AnyObject]?
+    fileprivate let commands: [NotificationAction]?
 
     /// Action Override Values
     ///
@@ -61,6 +62,7 @@ class NotificationBlock: Equatable {
         let rawRanges   = dictionary[BlockKeys.Ranges] as? [[String: AnyObject]]
 
         actions = dictionary[BlockKeys.Actions] as? [String: AnyObject]
+        self.commands = commands
         media   = NotificationMedia.mediaFromArray(rawMedia)
         meta    = dictionary[BlockKeys.Meta] as? [String: AnyObject]
         ranges  = NotificationRange.rangesFromArray(rawRanges)
@@ -84,6 +86,7 @@ class NotificationBlock: Equatable {
         self.ranges = ranges
         self.media =  media
         self.actions = nil
+        self.commands = nil
         self.meta = nil
         self.type = nil
     }
