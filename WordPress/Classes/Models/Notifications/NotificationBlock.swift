@@ -275,9 +275,12 @@ extension NotificationBlock {
     ///
     class func blocksFromArray(_ blocks: [[String: AnyObject]], parent: Notification) -> [NotificationBlock] {
         return blocks.compactMap {
+            let actions = actionParser.parse($0[BlockKeys.Actions] as? [String: AnyObject])
             return NotificationBlock(dictionary: $0, parent: parent)
         }
     }
+
+    private static let actionParser = NotificationActionParser()
 }
 
 
