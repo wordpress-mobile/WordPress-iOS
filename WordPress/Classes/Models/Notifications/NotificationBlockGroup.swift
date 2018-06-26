@@ -87,7 +87,9 @@ private extension NotificationBlockGroup {
     ///
     class func groupsForNonCommentBodyBlocks(_ blocks: [NotificationBlock], parent: Notification) -> [NotificationBlockGroup] {
         let parentKindsWithFooters: [Notification.Kind] = [.Follow, .Like, .CommentLike]
-        let parentMayContainFooter = parentKindsWithFooters.contains(parent.kind)
+        
+        let kind = Notification.Kind(rawValue: parent.kind.rawValue)!
+        let parentMayContainFooter = parentKindsWithFooters.contains(kind)
 
         return blocks.map { block in
             let isFooter = parentMayContainFooter && block.kind == .text && blocks.last == block

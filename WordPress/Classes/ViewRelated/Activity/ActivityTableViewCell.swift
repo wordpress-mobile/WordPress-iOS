@@ -4,6 +4,8 @@ import WordPressShared.WPTableViewCell
 
 open class ActivityTableViewCell: WPTableViewCell {
 
+    let formatter = FormattableContentFormatter(styles: FormattableSubjectStyles())
+
     // MARK: - Overwritten Methods
 
     open override func awakeFromNib() {
@@ -20,7 +22,7 @@ open class ActivityTableViewCell: WPTableViewCell {
     open func configureCell(_ activity: Activity) {
         self.activity = activity
         summaryLabel.text = activity.summary
-        contentLabel.attributedText = activity.formattedContent
+        contentLabel.attributedText = activity.formattedContent(ofKind: .text, using: formatter)
 
         iconBackgroundImageView.backgroundColor = Style.getColorByActivityStatus(activity)
         if let iconImage = Style.getIconForActivity(activity) {

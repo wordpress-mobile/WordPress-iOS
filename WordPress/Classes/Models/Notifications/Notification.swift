@@ -3,6 +3,19 @@ import CoreData
 import CocoaLumberjack
 import WordPressKit
 
+extension Notification: FormattableContentParent {
+    var uniqueID: String? {
+        return self.notificationId
+    }
+
+    func isEqual(to other: FormattableContentParent) -> Bool {
+        guard let otherNotification = other as? Notification else {
+            return false
+        }
+        return self == otherNotification
+    }
+}
+
 // MARK: - Notification Entity
 //
 @objc(Notification)
@@ -63,6 +76,7 @@ class Notification: NSManagedObject {
     ///
     fileprivate var cachedTimestampAsDate: Date?
 
+    fileprivate var cachedSubjectContentGroup: FormattableContentGroup?
     /// Subject Blocks Transient Storage.
     ///
     fileprivate var cachedSubjectBlockGroup: NotificationBlockGroup?
@@ -152,7 +166,12 @@ class Notification: NSManagedObject {
     }
 }
 
-
+class SubjectGroup: FormattableContentGroup {
+    class func createGroup(from subject: [[String: AnyObject]], parent: FormattableContentParent) -> FormattableContentGroup {
+        let blocks = FormattableContent.blocksFromArray(subject, parent: parent)
+        return FormattableContentGroup(blocks: blocks, kind: .subject)
+    }
+}
 
 // MARK: - Notification Computed Properties
 //
@@ -200,8 +219,8 @@ extension Notification {
 
     /// Parses the Notification.type field into a Swift Native enum. Returns .Unknown on failure.
     ///
-    var kind: Kind {
-        guard let type = type, let kind = Kind(rawValue: type) else {
+    var kind: ParentKind {
+        guard let type = type, let kind = ParentKind(rawValue: type) else {
             return .Unknown
         }
         return kind
@@ -273,6 +292,19 @@ extension Notification {
 
         cachedTimestampAsDate = timestampAsDate
         return timestampAsDate
+    }
+
+    var subjectContentGroup: FormattableContentGroup? {
+        if let group = cachedSubjectContentGroup {
+            return group
+        }
+
+        guard let subject = subject as? [[String: AnyObject]], subject.isEmpty == false else {
+            return nil
+        }
+
+        cachedSubjectContentGroup = SubjectGroup.createGroup(from: subject, parent: self)
+        return cachedSubjectContentGroup
     }
 
     /// Returns the Subject Block Group, if any.
