@@ -1,6 +1,6 @@
 import MGSwipeTableCell
 
-protocol NotificationAction: Hashable {
+protocol NotificationAction {
     func identifier() -> Identifier
     func execute()
     func enable()
@@ -12,22 +12,12 @@ protocol NotificationAction: Hashable {
 }
 
 extension NotificationAction {
-    var hashValue: Int {
-        return identifier().hashValue
-    }
-}
-
-extension NotificationAction {
     func execute() {
 
     }
 }
 
 class DefaultNotificationAction: NotificationAction {
-    static func == (lhs: DefaultNotificationAction, rhs: DefaultNotificationAction) -> Bool {
-        return lhs.identifier() == rhs.identifier()
-    }
-
     private(set) lazy var mainContext: NSManagedObjectContext? = {
         return ContextManager.sharedInstance().mainContext
     }()
