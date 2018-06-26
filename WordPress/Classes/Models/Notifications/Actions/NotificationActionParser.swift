@@ -21,67 +21,67 @@ struct NotificationActionParser {
         }
 
         return allKeys.compactMap({
-            return action(key: $0)
+            return action(key: $0, enabled: dictionary?[$0] as? Bool ?? false)
         })
     }
 
-    private func action(key: String) -> NotificationAction {
+    private func action(key: String, enabled: Bool) -> NotificationAction {
         switch Action.matching(value: key) {
         case .approve:
-            return approveAction()
+            return approveAction(enabled: enabled)
         case .follow:
-            return followAction()
+            return followAction(enabled: enabled)
         case .likeComment:
-            return likeCommentAction()
+            return likeCommentAction(enabled: enabled)
         case .likePost:
-            return likePostAction()
+            return likePostAction(enabled: enabled)
         case .reply:
-            return replyAction()
+            return replyAction(enabled: enabled)
         case .spam:
-            return spamAction()
+            return spamAction(enabled: enabled)
         case .editComment:
-            return editCommentAction()
+            return editCommentAction(enabled: enabled)
         case .trash:
-            return trashAction()
+            return trashAction(enabled: enabled)
         case .none:
-            return notFoundAction()
+            return notFoundAction(enabled: enabled)
         }
     }
 
-    private func approveAction() -> NotificationAction {
-        return ApproveComment()
+    private func approveAction(enabled: Bool) -> NotificationAction {
+        return ApproveComment(enabled: enabled)
     }
 
-    private func followAction() -> NotificationAction {
-        return Follow()
+    private func followAction(enabled: Bool) -> NotificationAction {
+        return Follow(enabled: enabled)
     }
 
-    private func likeCommentAction() -> NotificationAction {
-        return LikeComment()
+    private func likeCommentAction(enabled: Bool) -> NotificationAction {
+        return LikeComment(enabled: enabled)
     }
 
-    private func likePostAction() -> NotificationAction {
-        return LikePost()
+    private func likePostAction(enabled: Bool) -> NotificationAction {
+        return LikePost(enabled: enabled)
     }
 
-    private func replyAction() -> NotificationAction {
-        return ReplyToComment()
+    private func replyAction(enabled: Bool) -> NotificationAction {
+        return ReplyToComment(enabled: enabled)
     }
 
-    private func spamAction() -> NotificationAction {
-        return MarkAsSpam()
+    private func spamAction(enabled: Bool) -> NotificationAction {
+        return MarkAsSpam(enabled: enabled)
     }
 
-    private func editCommentAction() -> NotificationAction {
-        return EditComment()
+    private func editCommentAction(enabled: Bool) -> NotificationAction {
+        return EditComment(enabled: enabled)
     }
 
-    private func trashAction() -> NotificationAction {
-        return TrashComment()
+    private func trashAction(enabled: Bool) -> NotificationAction {
+        return TrashComment(enabled: enabled)
     }
 
-    private func notFoundAction() -> NotificationAction {
+    private func notFoundAction(enabled: Bool) -> NotificationAction {
         print("======= printing not found action ")
-        return DefaultNotificationAction()
+        return DefaultNotificationAction(enabled: enabled)
     }
 }
