@@ -16,6 +16,7 @@ open class NotificationActionsService: LocalCoreDataService {
             return
         }
 
+        //TODO. CESAR. REFACTOR. Encapsulate this in the command
         siteService.followSite(withID: siteID, success: {
             DDLogInfo("Successfully followed site \(siteID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
@@ -23,11 +24,11 @@ open class NotificationActionsService: LocalCoreDataService {
 
         }, failure: { error in
             DDLogError("Error while trying to follow site: \(String(describing: error))")
-            block.removeOverrideValueForAction(.Follow)
+            //block.removeOverrideValueForAction(.Follow)
             completion?(false)
         })
 
-        block.setOverrideValue(true, forAction: .Follow)
+        //block.setOverrideValue(true, forAction: .Follow)
     }
 
 
@@ -42,6 +43,7 @@ open class NotificationActionsService: LocalCoreDataService {
             return
         }
 
+        // TODO. CESAR
         siteService.unfollowSite(withID: siteID, success: {
             DDLogInfo("Successfully unfollowed site \(siteID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
@@ -49,11 +51,11 @@ open class NotificationActionsService: LocalCoreDataService {
 
         }, failure: { error in
             DDLogError("Error while trying to unfollow site: \(String(describing: error))")
-            block.removeOverrideValueForAction(.Follow)
+            //block.removeOverrideValueForAction(.Follow)
             completion?(false)
         })
 
-        block.setOverrideValue(false, forAction: .Follow)
+        //block.setOverrideValue(false, forAction: .Follow)
     }
 
 
@@ -125,6 +127,7 @@ open class NotificationActionsService: LocalCoreDataService {
             approveCommentWithBlock(block)
         }
 
+        // TODO. Cesar
         // Proceed toggling the Like field
         commentService.likeComment(withID: commentID, siteID: siteID, success: {
             DDLogInfo("Successfully liked comment \(siteID).\(commentID)")
@@ -133,11 +136,11 @@ open class NotificationActionsService: LocalCoreDataService {
 
         }, failure: { error in
             DDLogError("Error while trying to like comment: \(String(describing: error))")
-            block.removeOverrideValueForAction(.Like)
+            //block.removeOverrideValueForAction(.Like)
             completion?(false)
         })
 
-        block.setOverrideValue(true, forAction: .Like)
+        //block.setOverrideValue(true, forAction: .Like)
     }
 
 
@@ -152,6 +155,7 @@ open class NotificationActionsService: LocalCoreDataService {
             return
         }
 
+        // TODO. Cesar
         commentService.unlikeComment(withID: commentID, siteID: siteID, success: {
             DDLogInfo("Successfully unliked comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
@@ -159,11 +163,11 @@ open class NotificationActionsService: LocalCoreDataService {
 
         }, failure: { error in
             DDLogError("Error while trying to unlike comment: \(String(describing: error))")
-            block.removeOverrideValueForAction(.Like)
+            //block.removeOverrideValueForAction(.Like)
             completion?(false)
         })
 
-        block.setOverrideValue(false, forAction: .Like)
+        //block.setOverrideValue(false, forAction: .Like)
     }
 
 
@@ -178,6 +182,7 @@ open class NotificationActionsService: LocalCoreDataService {
             return
         }
 
+        // TODO. Cesar
         commentService.approveComment(withID: commentID, siteID: siteID, success: {
             DDLogInfo("Successfully approved comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
@@ -185,11 +190,11 @@ open class NotificationActionsService: LocalCoreDataService {
 
         }, failure: { error in
             DDLogError("Error while trying to moderate comment: \(String(describing: error))")
-            block.removeOverrideValueForAction(.Approve)
+            //block.removeOverrideValueForAction(.Approve)
             completion?(false)
         })
 
-        block.setOverrideValue(true, forAction: .Approve)
+        //block.setOverrideValue(true, forAction: .Approve)
     }
 
 
@@ -204,6 +209,7 @@ open class NotificationActionsService: LocalCoreDataService {
             return
         }
 
+        // TODO. Cesar
         commentService.unapproveComment(withID: commentID, siteID: siteID, success: {
             DDLogInfo("Successfully unapproved comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
@@ -211,11 +217,11 @@ open class NotificationActionsService: LocalCoreDataService {
 
         }, failure: { error in
             DDLogError("Error while trying to moderate comment: \(String(describing: error))")
-            block.removeOverrideValueForAction(.Approve)
+            //block.removeOverrideValueForAction(.Approve)
             completion?(false)
         })
 
-        block.setOverrideValue(false, forAction: .Approve)
+        //block.setOverrideValue(false, forAction: .Approve)
     }
 
 

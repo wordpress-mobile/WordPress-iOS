@@ -27,16 +27,16 @@ class NotificationBlock: Equatable {
 
     /// Available Actions collection.
     ///
-    fileprivate let actions: [String: AnyObject]?
+    //fileprivate let actions: [String: AnyObject]?
     let commands: [NotificationAction]?
 
     /// Action Override Values
     ///
-    fileprivate var actionsOverride = [Action: Bool]() {
-        didSet {
-            parent?.didChangeOverrides()
-        }
-    }
+//    fileprivate var actionsOverride = [Action: Bool]() {
+//        didSet {
+//            parent?.didChangeOverrides()
+//        }
+//    }
 
     /// Helper used by the +Interface Extension.
     ///
@@ -61,7 +61,7 @@ class NotificationBlock: Equatable {
         let rawMedia    = dictionary[BlockKeys.Media] as? [[String: AnyObject]]
         let rawRanges   = dictionary[BlockKeys.Ranges] as? [[String: AnyObject]]
 
-        actions = dictionary[BlockKeys.Actions] as? [String: AnyObject]
+        //actions = dictionary[BlockKeys.Actions] as? [String: AnyObject]
         commands = commandActions
         media   = NotificationMedia.mediaFromArray(rawMedia)
         meta    = dictionary[BlockKeys.Meta] as? [String: AnyObject]
@@ -85,7 +85,7 @@ class NotificationBlock: Equatable {
         self.text = text
         self.ranges = ranges
         self.media =  media
-        self.actions = nil
+        //self.actions = nil
         self.commands = nil
         self.meta = nil
         self.type = nil
@@ -130,7 +130,9 @@ extension NotificationBlock {
     /// Returns YES if the associated comment (if any) is approved. NO otherwise.
     ///
     var isCommentApproved: Bool {
-        return isActionOn(.Approve) || !isActionEnabled(.Approve)
+        //return isActionOn(.Approve) || !isActionEnabled(.Approve)
+        let identifier = ApproveComment.actionIdentifier()
+        return isCommandOn(id: identifier) || !isCommandEnabled(id: identifier)
     }
 
     /// Comment ID, if any.
@@ -194,37 +196,51 @@ extension NotificationBlock {
     /// Allows us to set a local override for a remote value. This is used to fake the UI, while
     /// there's a BG call going on.
     ///
-    func setOverrideValue(_ value: Bool, forAction action: Action) {
-        actionsOverride[action] = value
+//    func setOverrideValue(_ value: Bool, forAction action: Action) {
+//        actionsOverride[action] = value
+//    }
+//
+//    /// Removes any local (temporary) value that might have been set by means of *setActionOverrideValue*.
+//    ///
+//    func removeOverrideValueForAction(_ action: Action) {
+//        actionsOverride.removeValue(forKey: action)
+//    }
+//
+//    /// Returns the Notification Block status for a given action. Will return any *Override* that might be set, if any.
+//    ///
+//    fileprivate func valueForAction(_ action: Action) -> Bool? {
+//        if let overrideValue = actionsOverride[action] {
+//            return overrideValue
+//        }
+//
+//        let value = actions?[action.rawValue] as? NSNumber
+//        return value?.boolValue
+//    }
+//
+//    /// Returns *true* if a given action is available.
+//    ///
+//    func isActionEnabled(_ action: Action) -> Bool {
+//        return valueForAction(action) != nil
+//    }
+//
+//    /// Returns *true* if a given action is toggled on. (I.e.: Approval = On >> the comment is currently approved).
+//    ///
+//    func isActionOn(_ action: Action) -> Bool {
+//        return valueForAction(action) ?? false
+//    }
+
+    func command(id: Identifier) -> NotificationAction? {
+        return commands?.filter {
+            $0.identifier() == id
+        }.first
     }
 
-    /// Removes any local (temporary) value that might have been set by means of *setActionOverrideValue*.
-    ///
-    func removeOverrideValueForAction(_ action: Action) {
-        actionsOverride.removeValue(forKey: action)
+    func isCommandOn(id: Identifier) -> Bool {
+        return command(id: id)?.on ?? false
     }
 
-    /// Returns the Notification Block status for a given action. Will return any *Override* that might be set, if any.
-    ///
-    fileprivate func valueForAction(_ action: Action) -> Bool? {
-        if let overrideValue = actionsOverride[action] {
-            return overrideValue
-        }
-
-        let value = actions?[action.rawValue] as? NSNumber
-        return value?.boolValue
-    }
-
-    /// Returns *true* if a given action is available.
-    ///
-    func isActionEnabled(_ action: Action) -> Bool {
-        return valueForAction(action) != nil
-    }
-
-    /// Returns *true* if a given action is toggled on. (I.e.: Approval = On >> the comment is currently approved).
-    ///
-    func isActionOn(_ action: Action) -> Bool {
-        return valueForAction(action) ?? false
+    func isCommandEnabled(id: Identifier) -> Bool {
+        return command(id: id)?.enabled ?? false
     }
 
     // Dynamic Attribute Cache: Used internally by the Interface Extension, as an optimization.
