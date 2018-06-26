@@ -1,4 +1,4 @@
-struct Identifier: Equatable {
+struct Identifier: Equatable, Hashable {
     private let rawValue: String
 
     init(value: String) {
