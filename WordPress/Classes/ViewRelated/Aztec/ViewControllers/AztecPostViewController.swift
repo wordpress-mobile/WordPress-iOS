@@ -3093,7 +3093,7 @@ extension AztecPostViewController {
                     replacePlaceholder(attachment: imageAttachment, with: documentURLString)
                 }
             } else if let videoAttachment = attachment as? VideoAttachment, let videoURLString = media.remoteURL {
-                videoAttachment.srcURL = URL(string: videoURLString)
+                videoAttachment.updateURL(URL(string: videoURLString))
                 var posterChange = false
                 if let videoPosterURLString = media.remoteThumbnailURL {
                     videoAttachment.posterURL = URL(string: videoPosterURLString)
@@ -3236,13 +3236,13 @@ extension AztecPostViewController {
             videoAttachment.image = Gridicon.iconOfType(.video, withSize: Constants.mediaPlaceholderImageSize)
             self.richTextView.refresh(videoAttachment)
         }
-        if let videoSrcURL = videoAttachment.srcURL,
+        if let videoSrcURL = videoAttachment.url,
            videoSrcURL.scheme == VideoShortcodeProcessor.videoPressScheme,
            let videoPressID = videoSrcURL.host {
             // It's videoPress video so let's fetch the information for the video
             let mediaService = MediaService(managedObjectContext: ContextManager.sharedInstance().mainContext)
             mediaService.getMediaURL(fromVideoPressID: videoPressID, in: self.post.blog, success: { (videoURLString, posterURLString) in
-                videoAttachment.srcURL = URL(string: videoURLString)
+                videoAttachment.updateURL(URL(string: videoURLString))
                 if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
                     videoAttachment.posterURL = posterURL
                 }
@@ -3250,7 +3250,7 @@ extension AztecPostViewController {
             }, failure: { (error) in
                 DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(error.localizedDescription)")
             })
-        } else if let videoSrcURL = videoAttachment.srcURL, videoSrcURL != Constants.placeholderMediaLink, videoAttachment.posterURL == nil {
+        } else if let videoSrcURL = videoAttachment.url, videoSrcURL != Constants.placeholderMediaLink, videoAttachment.posterURL == nil {
             let thumbnailGenerator = MediaVideoExporter(url: videoSrcURL)
             thumbnailGenerator.exportPreviewImageForVideo(atURL: videoSrcURL, imageOptions: nil, onCompletion: { (exportResult) in
                 DispatchQueue.main.async {
@@ -3410,7 +3410,7 @@ extension AztecPostViewController {
     }
 
     func displayPlayerFor(videoAttachment: VideoAttachment, atPosition position: CGPoint) {
-        guard let videoURL = videoAttachment.srcURL else {
+        guard let videoURL = videoAttachment.url else {
             return
         }
         guard let videoPressID = videoAttachment.videoPressID else {
@@ -3427,7 +3427,7 @@ extension AztecPostViewController {
                 self.displayUnableToPlayVideoAlert()
                 return
             }
-            videoAttachment.srcURL = videoURL
+            videoAttachment.updateURL(videoURL)
             if let validPosterURLString = posterURLString, let posterURL = URL(string: validPosterURLString) {
                 videoAttachment.posterURL = posterURL
             }
