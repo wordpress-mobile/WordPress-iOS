@@ -454,7 +454,8 @@ extension NotificationDetailsViewController {
             return false
         }
 
-        return block.isActionOn(.Reply)
+        //return block.isActionOn(.Reply)
+        return block.command(id: ReplyToComment.actionIdentifier())?.on ?? false
     }
 
     func storeNotificationReplyIfNeeded() {
@@ -612,8 +613,10 @@ private extension NotificationDetailsViewController {
         cell.accessoryType = hasHomeURL ? .disclosureIndicator : .none
         cell.name = userBlock.text
         cell.blogTitle = hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome?.host
-        cell.isFollowEnabled = userBlock.isActionEnabled(.Follow)
-        cell.isFollowOn = userBlock.isActionOn(.Follow)
+        //cell.isFollowEnabled = userBlock.isActionEnabled(.Follow)
+        cell.isFollowEnabled = userBlock.isCommandEnabled(id: Follow.actionIdentifier())
+        //cell.isFollowOn = userBlock.isActionOn(.Follow)
+        cell.isFollowOn = userBlock.isCommandOn(id: Follow.actionIdentifier())
 
         cell.onFollowClick = { [weak self] in
             self?.followSiteWithBlock(userBlock)
@@ -694,14 +697,23 @@ private extension NotificationDetailsViewController {
         // Setup: Properties
         // Note: Approve Action is actually a synonym for 'Edit' (Based on Calypso's basecode)
         //
-        cell.isReplyEnabled     = UIDevice.isPad() && commentBlock.isActionOn(.Reply)
-        cell.isLikeEnabled      = commentBlock.isActionEnabled(.Like)
-        cell.isApproveEnabled   = commentBlock.isActionEnabled(.Approve)
-        cell.isTrashEnabled     = commentBlock.isActionEnabled(.Trash)
-        cell.isSpamEnabled      = commentBlock.isActionEnabled(.Spam)
-        cell.isEditEnabled      = commentBlock.isActionOn(.Approve)
-        cell.isLikeOn           = commentBlock.isActionOn(.Like)
-        cell.isApproveOn        = commentBlock.isActionOn(.Approve)
+        cell.isReplyEnabled     = UIDevice.isPad() && commentBlock.isCommandOn(id: ReplyToComment.actionIdentifier())
+        cell.isLikeEnabled      = commentBlock.isCommandEnabled(id: LikeComment.actionIdentifier())
+        cell.isApproveEnabled   = commentBlock.isCommandEnabled(id: ApproveComment.actionIdentifier())
+        cell.isTrashEnabled     = commentBlock.isCommandEnabled(id: TrashComment.actionIdentifier())
+        cell.isSpamEnabled      = commentBlock.isCommandEnabled(id: MarkAsSpam.actionIdentifier())
+        cell.isEditEnabled      = commentBlock.isCommandOn(id: ApproveComment.actionIdentifier())
+        cell.isLikeOn           = commentBlock.isCommandOn(id: LikeComment.actionIdentifier())
+        cell.isApproveOn        = commentBlock.isCommandOn(id: ApproveComment.actionIdentifier())
+
+//        cell.isReplyEnabled     = UIDevice.isPad() && commentBlock.isActionOn(.Reply)
+//        cell.isLikeEnabled      = commentBlock.isActionEnabled(.Like)
+//        cell.isApproveEnabled   = commentBlock.isActionEnabled(.Approve)
+//        cell.isTrashEnabled     = commentBlock.isActionEnabled(.Trash)
+//        cell.isSpamEnabled      = commentBlock.isActionEnabled(.Spam)
+//        cell.isEditEnabled      = commentBlock.isActionOn(.Approve)
+//        cell.isLikeOn           = commentBlock.isActionOn(.Like)
+//        cell.isApproveOn        = commentBlock.isActionOn(.Approve)
 
         // Setup: Callbacks
         cell.onReplyClick = { [weak self] _ in
