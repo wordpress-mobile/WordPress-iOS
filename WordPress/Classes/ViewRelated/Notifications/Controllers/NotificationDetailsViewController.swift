@@ -706,15 +706,6 @@ private extension NotificationDetailsViewController {
         cell.isLikeOn           = commentBlock.isCommandOn(id: LikeComment.actionIdentifier())
         cell.isApproveOn        = commentBlock.isCommandOn(id: ApproveComment.actionIdentifier())
 
-//        cell.isReplyEnabled     = UIDevice.isPad() && commentBlock.isActionOn(.Reply)
-//        cell.isLikeEnabled      = commentBlock.isActionEnabled(.Like)
-//        cell.isApproveEnabled   = commentBlock.isActionEnabled(.Approve)
-//        cell.isTrashEnabled     = commentBlock.isActionEnabled(.Trash)
-//        cell.isSpamEnabled      = commentBlock.isActionEnabled(.Spam)
-//        cell.isEditEnabled      = commentBlock.isActionOn(.Approve)
-//        cell.isLikeOn           = commentBlock.isActionOn(.Like)
-//        cell.isApproveOn        = commentBlock.isActionOn(.Approve)
-
         // Setup: Callbacks
         cell.onReplyClick = { [weak self] _ in
             self?.focusOnReplyTextViewWithBlock(commentBlock)
