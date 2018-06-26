@@ -12,7 +12,9 @@ class CustomLogFormatter: NSObject, DDLogFormatter {
     }()
 
     func format(message logMessage: DDLogMessage) -> String? {
-        return ("\(logTimeStampFormatter.string(from: logMessage.timestamp)) \(logMessage.message)")
+        let timestamp = logTimeStampFormatter.string(from: logMessage.timestamp)
+        let message = logMessage.message
+        return ("\(timestamp) \(message)")
     }
 
 }
