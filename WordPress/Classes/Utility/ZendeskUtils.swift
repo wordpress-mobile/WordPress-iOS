@@ -549,12 +549,25 @@ private extension ZendeskUtils {
     static func getDeviceFreeSpace() -> String {
 
         guard let resourceValues = try? URL(fileURLWithPath: "/").resourceValues(forKeys: [.volumeAvailableCapacityKey]),
-            let capacity = resourceValues.volumeAvailableCapacity else {
+            let capacityBytes = resourceValues.volumeAvailableCapacity else {
                 return Constants.unknownValue
         }
 
         // format string using human readable units. ex: 1.5 GB
-        return ByteCountFormatter.string(fromByteCount: Int64(capacity), countStyle: .binary)
+        // Since ByteCountFormatter.string translates the string and has no locale setting,
+        // do the byte conversion manually so the Free Space is in English.
+        let sizeAbbreviations = ["bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
+        var sizeAbbreviationsIndex = 0
+        var capacity = Double(capacityBytes)
+
+        while capacity > 1024 {
+            capacity /= 1024
+            sizeAbbreviationsIndex += 1
+        }
+
+        let formattedCapacity = String(format: "%4.2f", capacity)
+        let sizeAbbreviation = sizeAbbreviations[sizeAbbreviationsIndex]
+        return "\(formattedCapacity) \(sizeAbbreviation)"
     }
 
     static func getLogFile() -> String {
