@@ -28,7 +28,7 @@ class NotificationBlock: Equatable {
     /// Available Actions collection.
     ///
     fileprivate let actions: [String: AnyObject]?
-    fileprivate let commands: [NotificationAction]?
+    let commands: [NotificationAction]?
 
     /// Action Override Values
     ///
