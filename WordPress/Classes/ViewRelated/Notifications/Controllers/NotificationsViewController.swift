@@ -1051,10 +1051,11 @@ private extension NotificationsViewController {
 
         let approveCommand = block.command(id: ApproveComment.actionIdentifier())
         let button = approveCommand?.icon as? MGSwipeButton
+        let title: String
         if approveCommand?.enabled == true {
-            let title = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
+            title = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
         } else {
-            let title = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
+            title = NSLocalizedString("Approve", comment: "Approves a Comment")
         }
 
         button?.setTitle(title, for: .normal)
