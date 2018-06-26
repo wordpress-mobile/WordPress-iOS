@@ -56,7 +56,7 @@ class NotificationBlock: Equatable {
 
     /// Designated Initializer.
     ///
-    init(dictionary: [String: AnyObject], parent note: Notification) {
+    init(dictionary: [String: AnyObject], commands: [NotificationAction], parent note: Notification) {
         let rawMedia    = dictionary[BlockKeys.Media] as? [[String: AnyObject]]
         let rawRanges   = dictionary[BlockKeys.Ranges] as? [[String: AnyObject]]
 
@@ -276,7 +276,7 @@ extension NotificationBlock {
     class func blocksFromArray(_ blocks: [[String: AnyObject]], parent: Notification) -> [NotificationBlock] {
         return blocks.compactMap {
             let actions = actionParser.parse($0[BlockKeys.Actions] as? [String: AnyObject])
-            return NotificationBlock(dictionary: $0, parent: parent)
+            return NotificationBlock(dictionary: $0, commands: actions, parent: parent)
         }
     }
 
