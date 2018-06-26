@@ -3569,6 +3569,9 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
 
     func textView(_ textView: TextView, attachment: NSTextAttachment, imageAt url: URL, onSuccess success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
         var requestURL = url
+        if let videoAttachment = attachment as? VideoAttachment, let posterURL = videoAttachment.posterURL {
+            requestURL = posterURL
+        }
         let imageMaxDimension = max(UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
         //use height zero to maintain the aspect ratio when fetching
         var size = CGSize(width: imageMaxDimension, height: 0)
