@@ -7,6 +7,7 @@ enum FeatureFlag: Int {
     case activity
     case saveForLater
     case gifSupportInReaderDetail
+    case extractNotifications
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -21,6 +22,8 @@ enum FeatureFlag: Int {
             return true
         case .gifSupportInReaderDetail:
             return true
+        case .extractNotifications:
+            return BuildConfiguration.current == .localDeveloper
         }
     }
 }
