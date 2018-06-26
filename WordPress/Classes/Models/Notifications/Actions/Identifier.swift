@@ -5,3 +5,9 @@ struct Identifier: Equatable, Hashable {
         rawValue = value
     }
 }
+
+extension Identifier: CustomStringConvertible {
+    var description: String {
+        return rawValue
+    }
+}
