@@ -766,7 +766,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         let providers: [TextViewAttachmentImageProvider] = [
             SpecialTagAttachmentRenderer(),
             CommentAttachmentRenderer(font: Fonts.regular),
-            HTMLAttachmentRenderer(font: Fonts.regular)
+            HTMLAttachmentRenderer(font: Fonts.regular),
+            GutenpackAttachmentRenderer()
         ]
 
         for provider in providers {
