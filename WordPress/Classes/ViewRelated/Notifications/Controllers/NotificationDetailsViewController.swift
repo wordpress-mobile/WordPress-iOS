@@ -5,107 +5,6 @@ import SVProgressHUD
 import WordPressShared
 import WordPressComStatsiOS
 
-class HeaderContentStyles: FormattableContentStyles {
-    var attributes: [NSAttributedStringKey : Any] {
-        return WPStyleGuide.Notifications.headerTitleRegularStyle
-    }
-
-    var quoteStyles: [NSAttributedStringKey : Any]? = nil
-
-    var rangeStylesMap: [FormattableContentRange.Kind : [NSAttributedStringKey : Any]]? {
-        return [
-            .User: WPStyleGuide.Notifications.headerTitleBoldStyle,
-            .Post: WPStyleGuide.Notifications.headerTitleContextStyle,
-            .Comment: WPStyleGuide.Notifications.headerTitleContextStyle
-        ]
-    }
-
-    var linksColor: UIColor? = nil
-
-    var key: String = "HeaderContentStyles"
-}
-
-class FooterContentStyles: FormattableContentStyles {
-    var attributes: [NSAttributedStringKey : Any] {
-        return WPStyleGuide.Notifications.footerRegularStyle
-    }
-
-    var quoteStyles: [NSAttributedStringKey : Any]? = nil
-
-    var rangeStylesMap: [FormattableContentRange.Kind : [NSAttributedStringKey : Any]]? {
-        return [
-            .Noticon: WPStyleGuide.Notifications.blockNoticonStyle
-        ]
-    }
-
-    var linksColor: UIColor? = nil
-
-    var key: String = "FooterContentStyles"
-}
-
-class RichTextStyles: FormattableContentStyles {
-
-    let key: String
-
-    init(key: String) {
-        self.key = key
-    }
-
-    init() {
-        self.key = "RichTextStyles"
-    }
-
-    var attributes: [NSAttributedStringKey : Any] {
-        return WPStyleGuide.Notifications.contentBlockRegularStyle
-    }
-
-    var quoteStyles: [NSAttributedStringKey : Any]? {
-        return WPStyleGuide.Notifications.contentBlockBoldStyle
-    }
-
-    var rangeStylesMap: [FormattableContentRange.Kind : [NSAttributedStringKey : Any]]? {
-        return [
-            .Blockquote: WPStyleGuide.Notifications.contentBlockQuotedStyle,
-            .Noticon: WPStyleGuide.Notifications.blockNoticonStyle,
-            .Match: WPStyleGuide.Notifications.contentBlockMatchStyle
-        ]
-    }
-
-    var linksColor: UIColor? {
-        return WPStyleGuide.Notifications.blockLinkColor
-    }
-}
-
-class BadgeContentStyles: FormattableContentStyles {
-
-    let key: String
-
-    init(cachingKey: String) {
-        key = cachingKey
-    }
-
-    var attributes: [NSAttributedStringKey : Any] {
-        return WPStyleGuide.Notifications.badgeRegularStyle
-    }
-
-    var quoteStyles: [NSAttributedStringKey : Any]? {
-        return WPStyleGuide.Notifications.badgeBoldStyle
-    }
-
-    var rangeStylesMap: [FormattableContentRange.Kind : [NSAttributedStringKey : Any]]? {
-        return [
-            .User: WPStyleGuide.Notifications.badgeBoldStyle,
-            .Post: WPStyleGuide.Notifications.badgeItalicsStyle,
-            .Comment: WPStyleGuide.Notifications.badgeItalicsStyle,
-            .Blockquote: WPStyleGuide.Notifications.badgeQuotedStyle
-        ]
-    }
-
-    var linksColor: UIColor? {
-        return WPStyleGuide.Notifications.badgeLinkColor
-    }
-}
-
 
 ///
 ///
@@ -904,7 +803,7 @@ private extension NotificationDetailsViewController {
         switch cell {
         case let cell as NoteBlockHeaderTableViewCell:
             setupHeaderCell(cell, blockGroup: blockGroup)
-        case let cell as NoteBlockTextTableViewCell where blockGroup is FormattableFooterGroup:
+        case let cell as NoteBlockTextTableViewCell where blockGroup is FooterContentGroup:
             setupFooterCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockUserTableViewCell:
             setupUserCell(cell, blockGroup: blockGroup)
@@ -1003,7 +902,7 @@ private extension NotificationDetailsViewController {
         let mediaMap = mediaDownloader.imagesForUrls(commentBlock.imageUrls)
         let mediaRanges = commentBlock.buildRangesToImagesMap(mediaMap)
 
-        let styles = RichTextStyles(key: "RichText-\(indexPath)")
+        let styles = RichTextContentStyles(key: "RichText-\(indexPath)")
         let text = formatter.render(content: commentBlock, with: styles).stringByEmbeddingImageAttachments(mediaRanges)
 
         // Setup: Properties
@@ -1114,7 +1013,7 @@ private extension NotificationDetailsViewController {
         // Load the attributedText
         let text = note.isBadge ?
             formatter.render(content: textBlock, with: BadgeContentStyles(cachingKey: "Badge-\(indexPath)")) :
-            formatter.render(content: textBlock, with: RichTextStyles(key: "Rich-Text-\(indexPath)"))
+            formatter.render(content: textBlock, with: RichTextContentStyles(key: "Rich-Text-\(indexPath)"))
 
         // Setup: Properties
         cell.attributedText = text.stringByEmbeddingImageAttachments(mediaRanges)
