@@ -10,7 +10,7 @@ final class LikeComment: DefaultNotificationAction {
         return likeIcon
     }
 
-    func execute() {
-
+    func execute(block: NotificationBlock, onCompletion: ((NotificationDeletionRequest) -> Void)?) {
+        actionsService?.likeCommentWithBlock(block)
     }
 }
