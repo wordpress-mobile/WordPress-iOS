@@ -1085,8 +1085,11 @@ private extension NotificationDetailsViewController {
             return
         }
 
-        let actionContext = ActionContext(block: block, completion: { [weak self] request in
+        let actionContext = ActionContext(block: block, completion: { [weak self] (request, success) in
             WPAppAnalytics.track(.notificationsCommentFlaggedAsSpam, withBlogID: block.metaSiteID)
+            guard let request = request else {
+                return
+            }
             self?.onDeletionRequestCallback?(request)
         })
 
@@ -1103,8 +1106,11 @@ private extension NotificationDetailsViewController {
             return
         }
 
-        let actionContext = ActionContext(block: block, completion: { [weak self] request in
+        let actionContext = ActionContext(block: block, completion: { [weak self] (request, success) in
             WPAppAnalytics.track(.notificationsCommentTrashed, withBlogID: block.metaSiteID)
+            guard let request = request else {
+                return
+            }
             self?.onDeletionRequestCallback?(request)
         })
 
@@ -1115,36 +1121,25 @@ private extension NotificationDetailsViewController {
     }
 
     func replyCommentWithBlock(_ block: NotificationBlock, content: String) {
-//        let generator = UINotificationFeedbackGenerator()
-//        generator.prepare()
-//        generator.notificationOccurred(.success)
-
         guard let replyAction = block.action(id: ReplyToComment.actionIdentifier()) else {
             return
         }
 
-        let actionContext = ActionContext(block: block, content: content) { _ in
-            let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
-            SVProgressHUD.showDismissibleSuccess(withStatus: message)
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+        generator.notificationOccurred(.success)
+
+        let actionContext = ActionContext(block: block, content: content) { [weak self] (request, success) in
+            if success {
+                let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
+                SVProgressHUD.showDismissibleSuccess(withStatus: message)
+            } else {
+                generator.notificationOccurred(.error)
+                self?.displayReplyErrorWithBlock(block, content: content)
+            }
         }
 
         replyAction.execute(context: actionContext)
-
-//        replyAction.execute(block: <#T##NotificationBlock#>) { request in
-//            let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
-//            SVProgressHUD.showDismissibleSuccess(withStatus: message)
-//        }
-
-//        actionsService.replyCommentWithBlock(block, content: content, completion: { success in
-//            guard success else {
-//                generator.notificationOccurred(.error)
-//                self.displayReplyErrorWithBlock(block, content: content)
-//                return
-//            }
-//
-//            let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
-//            SVProgressHUD.showDismissibleSuccess(withStatus: message)
-//        })
     }
 
     func updateCommentWithBlock(_ block: NotificationBlock, content: String) {

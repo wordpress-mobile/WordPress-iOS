@@ -11,30 +11,16 @@ final class ReplyToComment: DefaultNotificationAction {
     }
 
     func execute(context: ActionContext) {
-        let generator = UINotificationFeedbackGenerator()
-        generator.prepare()
-        generator.notificationOccurred(.success)
 
         let block = context.block
         let content = context.content
         actionsService?.replyCommentWithBlock(block, content: content, completion: { success in
             guard success else {
-                generator.notificationOccurred(.error)
-                //self.displayReplyErrorWithBlock(block, content: content)
+                context.completion?(nil, false)
                 return
             }
 
-            context.completion?()
+            context.completion?(nil, true)
         })
-
-//        ReachabilityUtils.onAvailableInternetConnectionDo {
-//            let request = NotificationDeletionRequest(kind: .deletion, action: { [weak self] requestCompletion in
-//                self?.actionsService?.replyCommentWithBlock(block, completion: { success in
-//                    requestCompletion(success)
-//                })
-//            })
-//
-//            onCompletion?(request)
-//        }
     }
 }
