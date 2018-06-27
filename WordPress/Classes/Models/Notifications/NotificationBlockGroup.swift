@@ -1,6 +1,8 @@
 import Foundation
 
+class FormattableFooterGroup: FormattableContentGroup {
 
+}
 
 // MARK: - NotificationBlockGroup: Adapter to match 1 View <> 1 BlockGroup
 //
@@ -92,8 +94,10 @@ class BodyContentGroup: FormattableContentGroup {
 
         return blocks.map { block in
             let isFooter = parentMayContainFooter && block.kind == .text && blocks.last == block
-            let kind = isFooter ? .footer : Kind.fromBlockKind(block.kind)
-            return FormattableContentGroup(blocks: [block], kind: kind)
+            if isFooter {
+                return FormattableFooterGroup(blocks: [block])
+            }
+            return FormattableContentGroup(blocks: [block])
         }
     }
 
@@ -109,7 +113,7 @@ class BodyContentGroup: FormattableContentGroup {
         let actionGroupBlocks   = [comment]
 
         // Comment Group: Comment + User Blocks
-        groups.append(FormattableContentGroup(blocks: commentGroupBlocks, kind: .comment))
+        groups.append(FormattableContentGroup(blocks: commentGroupBlocks))
 
         // Middle Group(s): Anything
         for block in middleGroupBlocks {
@@ -117,12 +121,11 @@ class BodyContentGroup: FormattableContentGroup {
             // If the block contains a range that matches with the metaReplyID field, we'll need to render this
             // with a custom style. Translates into the `You replied to this comment` footer.
             //
-            var kind = Kind.fromBlockKind(block.kind)
             if let parentReplyID = parent.metaReplyID, block.formattableContentRangeWithCommentId(parentReplyID) != nil {
-                kind = .footer
+                groups.append(FormattableFooterGroup(blocks: [block]))
+            } else {
+                groups.append(FormattableContentGroup(blocks: [block]))
             }
-
-            groups.append(FormattableContentGroup(blocks: [block], kind: kind))
         }
 
         // Whenever Possible *REMOVE* this workaround. Pingback Notifications require a locally generated block.
@@ -133,7 +136,7 @@ class BodyContentGroup: FormattableContentGroup {
         }
 
         // Actions Group: A copy of the Comment Block (Actions)
-        groups.append(FormattableContentGroup(blocks: actionGroupBlocks, kind: .actions))
+        groups.append(FormattableContentGroup(blocks: actionGroupBlocks))
 
         return groups
     }
@@ -149,7 +152,7 @@ class BodyContentGroup: FormattableContentGroup {
         ]
 
         let block = FormattableContent(text: text, ranges: ranges)
-        return FormattableContentGroup(blocks: [block], kind: .footer)
+        return FormattableFooterGroup(blocks: [block])
     }
 }
 

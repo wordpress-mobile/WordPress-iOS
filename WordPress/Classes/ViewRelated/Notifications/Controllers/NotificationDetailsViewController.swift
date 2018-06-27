@@ -904,7 +904,7 @@ private extension NotificationDetailsViewController {
         switch cell {
         case let cell as NoteBlockHeaderTableViewCell:
             setupHeaderCell(cell, blockGroup: blockGroup)
-        case let cell as NoteBlockTextTableViewCell where blockGroup.kind == .footer:
+        case let cell as NoteBlockTextTableViewCell where blockGroup is FormattableFooterGroup:
             setupFooterCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockUserTableViewCell:
             setupUserCell(cell, blockGroup: blockGroup)
