@@ -29,4 +29,11 @@ class Page: AbstractPost {
             preconditionFailure("Invalid key path for a section identifier")
         }
     }
+
+    override func featuredImageURLForDisplay() -> URL? {
+        guard let path = pathForDisplayImage else {
+            return nil
+        }
+        return URL(string: path)
+    }
 }
