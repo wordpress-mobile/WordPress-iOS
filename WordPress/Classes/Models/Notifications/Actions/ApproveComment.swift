@@ -6,6 +6,13 @@ final class ApproveComment: DefaultNotificationAction {
         static let unapprove = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
     }
 
+    override var enabled: Bool {
+        willSet {
+            let newTitle = newValue ? TitleStrings.approve : TitleStrings.unapprove
+            setIconTitle(newTitle)
+        }
+    }
+
     let approveIcon: UIButton = {
         let title = NSLocalizedString("Approve", comment: "Approves a Comment")
         return MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
