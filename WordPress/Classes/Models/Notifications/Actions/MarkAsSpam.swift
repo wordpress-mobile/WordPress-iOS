@@ -16,6 +16,6 @@ final class MarkAsSpam: DefaultNotificationAction {
                 requestCompletion(success)
             }
         })
-        context.completion?(request)
+        context.completion?(request, true)
     }
 }

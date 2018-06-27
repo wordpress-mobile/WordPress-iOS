@@ -18,7 +18,7 @@ final class TrashComment: DefaultNotificationAction {
                 })
             })
 
-            context.completion?(request)
+            context.completion?(request, true)
         }
     }
 }

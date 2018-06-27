@@ -1,6 +1,6 @@
 import MGSwipeTableCell
 
-typealias ActionContextRequest = (NotificationDeletionRequest) -> Void
+typealias ActionContextRequest = (NotificationDeletionRequest?, Bool) -> Void
 struct ActionContext {
     let block: NotificationBlock
     let content: String
