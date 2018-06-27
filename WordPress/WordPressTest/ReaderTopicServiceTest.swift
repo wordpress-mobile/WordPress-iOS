@@ -12,12 +12,12 @@ class ReaderTopicSwiftTest: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        testContextManager = TestContextManager()
+        testContextManager = TestContextManager.sharedInstance()
     }
 
     override func tearDown() {
         super.tearDown()
-        ContextManager.overrideSharedInstance(nil)
+        TestContextManager.overrideSharedInstance(nil)
         testContextManager = nil
     }
 
@@ -135,8 +135,8 @@ class ReaderTopicSwiftTest: XCTestCase {
 
         // Setup
         var expect = expectation(description: "topics saved expectation")
-        let context = ContextManager.sharedInstance().mainContext
-        let service = ReaderTopicService(managedObjectContext: context)
+        let context = testContextManager?.mainContext
+        let service = ReaderTopicService(managedObjectContext: context!)
         service.mergeMenuTopics(remoteTopics, withSuccess: { () -> Void in
             expect.fulfill()
         })
@@ -144,7 +144,7 @@ class ReaderTopicSwiftTest: XCTestCase {
 
         // Topics exist in the context
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderTagTopic.classNameWithoutNamespaces())
-        var count = try! context.count(for: request)
+        var count = try! context?.count(for: request)
         XCTAssertEqual(count, remoteTopics.count, "Number of topics in context did not match expectations")
 
         // Merge new set of topics
@@ -156,11 +156,11 @@ class ReaderTopicSwiftTest: XCTestCase {
         waitForExpectations(timeout: expectationTimeout, handler: nil)
 
         // Make sure the missing topics were removed when merged
-        count = try! context.count(for: request)
+        count = try! context?.count(for: request)
         XCTAssertEqual(count, 1, "Number of topics in context did not match expectations")
         do {
-            let results = try context.fetch(request)
-            let topic = results.first as! ReaderTagTopic
+            let results = try context?.fetch(request)
+            let topic = results?.first as! ReaderTagTopic
             XCTAssertEqual(topic.tagID, foo?.topicID, "The topic returned was not the one expected.")
         } catch let error as NSError {
             XCTAssertNil(error, "Error executing fetch request.")
@@ -179,8 +179,8 @@ class ReaderTopicSwiftTest: XCTestCase {
 
         // Setup
         var expect = expectation(description: "topics saved expectation")
-        let context = ContextManager.sharedInstance().mainContext
-        let service = ReaderTopicService(managedObjectContext: context)
+        let context = testContextManager?.mainContext
+        let service = ReaderTopicService(managedObjectContext: context!)
         service.mergeMenuTopics(startingTopics, withSuccess: { () -> Void in
             expect.fulfill()
         })
@@ -190,7 +190,7 @@ class ReaderTopicSwiftTest: XCTestCase {
         let sortDescriptor = NSSortDescriptor(key: "tagID", ascending: true)
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderTagTopic.classNameWithoutNamespaces())
         request.sortDescriptors = [sortDescriptor]
-        var count = try! context.count(for: request)
+        var count = try! context?.count(for: request)
         XCTAssertEqual(count, startingTopics.count, "Number of topics in context did not match expectations")
 
         // Merge new set of topics
@@ -201,12 +201,12 @@ class ReaderTopicSwiftTest: XCTestCase {
         waitForExpectations(timeout: expectationTimeout, handler: nil)
 
         // make sure the missing topics were added
-        count = try! context.count(for: request)
+        count = try! context?.count(for: request)
         XCTAssertEqual(count, remoteTopics.count, "Number of topics in context did not match expectations")
 
         do {
-            let results = try context.fetch(request)
-            let topic = results.first as! ReaderTagTopic
+            let results = try context?.fetch(request)
+            let topic = results?.first as! ReaderTagTopic
             XCTAssertEqual(topic.tagID, foo!.topicID, "The topic returned was not the one expected.")
         } catch let error as NSError {
             XCTAssertNil(error, "Error executing fetch request.")
@@ -221,8 +221,8 @@ class ReaderTopicSwiftTest: XCTestCase {
 
         // Setup
         let expect = expectation(description: "topics saved expectation")
-        let context = ContextManager.sharedInstance().mainContext
-        let service = ReaderTopicService(managedObjectContext: context)
+        let context = testContextManager?.mainContext
+        let service = ReaderTopicService(managedObjectContext: context!)
         service.currentTopic = nil
 
         // Current topic is not nil after a sync
@@ -237,12 +237,12 @@ class ReaderTopicSwiftTest: XCTestCase {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderAbstractTopic.classNameWithoutNamespaces())
         request.sortDescriptors = [sortDescriptor]
 
-        let results = try! context.fetch(request)
+        let results = try! context?.fetch(request)
 
-        var topic = results.last as! ReaderAbstractTopic
+        var topic = results?.last as! ReaderAbstractTopic
         XCTAssertEqual(service.currentTopic.type, ReaderDefaultTopic.TopicType, "The curent topic should have been a default topic")
 
-        topic = results.first as! ReaderAbstractTopic
+        topic = results?.first as! ReaderAbstractTopic
         service.currentTopic = topic
 
         XCTAssertEqual(service.currentTopic.path, topic.path, "The current topic did not match the topic we assiged to it")
@@ -254,8 +254,8 @@ class ReaderTopicSwiftTest: XCTestCase {
     func testDeleteAllTopics() {
         seedTopics()
         XCTAssertFalse(countTopics() == 0, "The number of seeded topics should not be zero")
-        let context = ContextManager.sharedInstance().mainContext
-        let service = ReaderTopicService(managedObjectContext: context)
+        let context = testContextManager?.mainContext
+        let service = ReaderTopicService(managedObjectContext: context!)
         service.deleteAllTopics()
         XCTAssertTrue(countTopics() == 0, "The number of seeded topics should be zero")
     }
@@ -265,8 +265,8 @@ class ReaderTopicSwiftTest: XCTestCase {
     */
     func testPostsDeletedWhenTopicDeleted() {
         // setup
-        let context = ContextManager.sharedInstance().mainContext
-        let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderListTopic.classNameWithoutNamespaces(), into: context) as! ReaderListTopic
+        let context = testContextManager?.mainContext
+        let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderListTopic.classNameWithoutNamespaces(), into: context!) as! ReaderListTopic
         topic.path = "/list/topic"
         topic.title = "topic"
         topic.type = ReaderListTopic.TopicType
@@ -276,32 +276,32 @@ class ReaderTopicSwiftTest: XCTestCase {
 
         // Save the new topic + posts in the contet
         var expect = expectation(description: "topics saved expectation")
-        ContextManager.sharedInstance().save(context, withCompletionBlock: { () -> Void in
+        ContextManager.sharedInstance().save(context!, withCompletionBlock: { () -> Void in
             expect.fulfill()
         })
         waitForExpectations(timeout: expectationTimeout, handler: nil)
 
         // Delete the topic and posts from the context
-        context.delete(topic)
+        context?.delete(topic)
 
         expect = expectation(description: "topics saved expectation")
-        ContextManager.sharedInstance().save(context, withCompletionBlock: { () -> Void in
+        ContextManager.sharedInstance().save(context!, withCompletionBlock: { () -> Void in
             expect.fulfill()
         })
         waitForExpectations(timeout: expectationTimeout, handler: nil)
 
         var request = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderAbstractTopic.classNameWithoutNamespaces())
-        var count = try! context.count(for: request)
+        var count = try! context?.count(for: request)
         XCTAssertTrue(count == 0, "Topic was not deleted successfully")
 
         request = NSFetchRequest(entityName: ReaderPost.classNameWithoutNamespaces())
-        count = try! context.count(for: request)
+        count = try! context?.count(for: request)
         XCTAssertTrue(count == 0, "Topic posts were not deleted successfully")
     }
 
     func testTopicTitleFormatting() {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = ReaderTopicService(managedObjectContext: context)
+        let context = testContextManager?.mainContext
+        let service = ReaderTopicService(managedObjectContext: context!)
 
         var unformatted = "WordPress"
         var formatted = service.formatTitle(unformatted)
@@ -328,8 +328,8 @@ class ReaderTopicSwiftTest: XCTestCase {
     }
 
     func testReaderSearchTopicCreated() {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = ReaderTopicService(managedObjectContext: context)
+        let context = testContextManager?.mainContext
+        let service = ReaderTopicService(managedObjectContext: context!)
 
         let phrase = "coffee talk"
         let topic = service.searchTopic(forSearchPhrase: phrase)
