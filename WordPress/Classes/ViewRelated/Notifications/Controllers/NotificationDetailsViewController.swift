@@ -5,6 +5,92 @@ import SVProgressHUD
 import WordPressShared
 import WordPressComStatsiOS
 
+class HeaderContentStyles: FormattableContentStyles {
+    var attributes: [NSAttributedStringKey : Any] {
+        return WPStyleGuide.Notifications.headerTitleRegularStyle
+    }
+
+    var quoteStyles: [NSAttributedStringKey : Any]? = nil
+
+    var rangeStylesMap: [FormattableContentRange.Kind : [NSAttributedStringKey : Any]]? {
+        return [
+            .User: WPStyleGuide.Notifications.headerTitleBoldStyle,
+            .Post: WPStyleGuide.Notifications.headerTitleContextStyle,
+            .Comment: WPStyleGuide.Notifications.headerTitleContextStyle
+        ]
+    }
+
+    var linksColor: UIColor? = nil
+
+    var key: String = "HeaderContentStyles"
+}
+
+class FooterContentStyles: FormattableContentStyles {
+    var attributes: [NSAttributedStringKey : Any] {
+        return WPStyleGuide.Notifications.footerRegularStyle
+    }
+
+    var quoteStyles: [NSAttributedStringKey : Any]? = nil
+
+    var rangeStylesMap: [FormattableContentRange.Kind : [NSAttributedStringKey : Any]]? {
+        return [
+            .Noticon: WPStyleGuide.Notifications.blockNoticonStyle
+        ]
+    }
+
+    var linksColor: UIColor? = nil
+
+    var key: String = "FooterContentStyles"
+}
+
+class RichTextStyles: FormattableContentStyles {
+    var attributes: [NSAttributedStringKey : Any] {
+        return WPStyleGuide.Notifications.contentBlockRegularStyle
+    }
+
+    var quoteStyles: [NSAttributedStringKey : Any]? {
+        return WPStyleGuide.Notifications.contentBlockBoldStyle
+    }
+
+    var rangeStylesMap: [FormattableContentRange.Kind : [NSAttributedStringKey : Any]]? {
+        return [
+            .Blockquote: WPStyleGuide.Notifications.contentBlockQuotedStyle,
+            .Noticon: WPStyleGuide.Notifications.blockNoticonStyle,
+            .Match: WPStyleGuide.Notifications.contentBlockMatchStyle
+        ]
+    }
+
+    var linksColor: UIColor? {
+        return WPStyleGuide.Notifications.blockLinkColor
+    }
+
+    var key: String = "RichTextStyles"
+}
+
+class AttributedBadgeStyles: FormattableContentStyles {
+    var attributes: [NSAttributedStringKey : Any] {
+        return WPStyleGuide.Notifications.badgeRegularStyle
+    }
+
+    var quoteStyles: [NSAttributedStringKey : Any]? {
+        return WPStyleGuide.Notifications.badgeBoldStyle
+    }
+
+    var rangeStylesMap: [FormattableContentRange.Kind : [NSAttributedStringKey : Any]]? {
+        return [
+            .User: WPStyleGuide.Notifications.badgeBoldStyle,
+            .Post: WPStyleGuide.Notifications.badgeItalicsStyle,
+            .Comment: WPStyleGuide.Notifications.badgeItalicsStyle,
+            .Blockquote: WPStyleGuide.Notifications.badgeQuotedStyle
+        ]
+    }
+
+    var linksColor: UIColor? {
+        return WPStyleGuide.Notifications.badgeLinkColor
+    }
+
+    var key: String = "RichTextStyles"
+}
 
 
 ///
@@ -19,6 +105,12 @@ protocol NotificationsNavigationDataSource: class {
 //
 class NotificationDetailsViewController: UIViewController {
     // MARK: - Properties
+
+    let headerFormatter    = FormattableContentFormatter(styles: HeaderContentStyles())
+    let bodyFormatter      = FormattableContentFormatter(styles: FormattableSnipetsStyles())
+    let footerFormatter    = FormattableContentFormatter(styles: FooterContentStyles())
+    let richTextFormatter  = FormattableContentFormatter(styles: RichTextStyles())
+    let badgeTextFormatter = FormattableContentFormatter(styles: AttributedBadgeStyles())
 
     /// StackView: Top-Level Entity
     ///
@@ -281,10 +373,26 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
         }
 
         setupSeparators(cell, indexPath: indexPath)
-        setupCell(cell, blockGroup: blockGroup)
-        downloadAndResizeMedia(indexPath, blockGroup: blockGroup)
+
+        if FeatureFlag.extractNotifications.enabled {
+            setup(cell, withContentGroupAt: indexPath)
+        } else {
+            setup(cell, withBlockGroupAt: indexPath)
+        }
 
         return cell
+    }
+
+    func setup(_ cell: NoteBlockTableViewCell, withContentGroupAt indexPath: IndexPath) {
+        let group = contentGroup(for: indexPath)
+        setup(cell, with: group)
+        downloadAndResizeMedia(at: indexPath, from: group)
+    }
+
+    func setup(_ cell: NoteBlockTableViewCell, withBlockGroupAt indexPath: IndexPath) {
+        let blockGroup = blockGroupForIndexPath(indexPath)
+        setupCell(cell, blockGroup: blockGroup)
+        downloadAndResizeMedia(indexPath, blockGroup: blockGroup)
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -779,6 +887,235 @@ private extension NotificationDetailsViewController {
     }
 }
 
+// MARK: - UITableViewCell Subclass Setup
+//
+private extension NotificationDetailsViewController {
+    func setup(_ cell: NoteBlockTableViewCell, with blockGroup: FormattableContentGroup) {
+        switch cell {
+        case let cell as NoteBlockHeaderTableViewCell:
+            setupHeaderCell(cell, blockGroup: blockGroup)
+        case let cell as NoteBlockTextTableViewCell where blockGroup.kind == .footer:
+            setupFooterCell(cell, blockGroup: blockGroup)
+        case let cell as NoteBlockUserTableViewCell:
+            setupUserCell(cell, blockGroup: blockGroup)
+        case let cell as NoteBlockCommentTableViewCell:
+            setupCommentCell(cell, blockGroup: blockGroup)
+        case let cell as NoteBlockActionsTableViewCell:
+            setupActionsCell(cell, blockGroup: blockGroup)
+        case let cell as NoteBlockImageTableViewCell:
+            setupImageCell(cell, blockGroup: blockGroup)
+        case let cell as NoteBlockTextTableViewCell:
+            setupTextCell(cell, blockGroup: blockGroup)
+        default:
+            assertionFailure("NotificationDetails: Please, add support for \(cell)")
+        }
+    }
+
+    func setupHeaderCell(_ cell: NoteBlockHeaderTableViewCell, blockGroup: FormattableContentGroup) {
+        // Note:
+        // We're using a UITableViewCell as a Header, instead of UITableViewHeaderFooterView, because:
+        // -   UITableViewCell automatically handles highlight / unhighlight for us
+        // -   UITableViewCell's taps don't require a Gestures Recognizer. No big deal, but less code!
+        //
+
+        let snippetBlock = blockGroup.blockOfKind(.text)
+        cell.headerDetails = snippetBlock?.text
+        cell.attributedHeaderTitle = nil
+
+        guard let gravatarBlock = blockGroup.blockOfKind(.image) else {
+            return
+        }
+
+        cell.attributedHeaderTitle = headerFormatter.render(content: gravatarBlock)
+        // Download the Gravatar
+        let mediaURL = gravatarBlock.media.first?.mediaURL
+        cell.downloadAuthorAvatar(with: mediaURL)
+    }
+
+    func setupFooterCell(_ cell: NoteBlockTextTableViewCell, blockGroup: FormattableContentGroup) {
+        guard let textBlock = blockGroup.blocks.first else {
+            assertionFailure("Missing Text Block for Notification [\(note.notificationId)")
+            return
+        }
+
+        cell.attributedText = footerFormatter.render(content: textBlock)
+        cell.isTextViewSelectable = false
+        cell.isTextViewClickable = false
+    }
+
+    func setupUserCell(_ cell: NoteBlockUserTableViewCell, blockGroup: FormattableContentGroup) {
+        guard let userBlock = blockGroup.blocks.first else {
+            assertionFailure("Missing User Block for Notification [\(note.notificationId)]")
+            return
+        }
+
+        let hasHomeURL = userBlock.metaLinksHome != nil
+        let hasHomeTitle = userBlock.metaTitlesHome?.isEmpty == false
+
+        cell.accessoryType = hasHomeURL ? .disclosureIndicator : .none
+        cell.name = userBlock.text
+        cell.blogTitle = hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome?.host
+        cell.isFollowEnabled = userBlock.isActionEnabled(.Follow)
+        cell.isFollowOn = userBlock.isActionOn(.Follow)
+
+        cell.onFollowClick = { [weak self] in
+//            self?.followSiteWithBlock(userBlock)
+        }
+
+        cell.onUnfollowClick = { [weak self] in
+//            self?.unfollowSiteWithBlock(userBlock)
+        }
+
+        // Download the Gravatar
+        let mediaURL = userBlock.media.first?.mediaURL
+        cell.downloadGravatarWithURL(mediaURL)
+    }
+
+    func setupCommentCell(_ cell: NoteBlockCommentTableViewCell, blockGroup: FormattableContentGroup) {
+        // Note:
+        // The main reason why it's a very good idea *not* to reuse NoteBlockHeaderTableViewCell, just to display the
+        // gravatar, is because we're implementing a custom behavior whenever the user approves/ unapproves the comment.
+        //
+        //  -   Font colors are updated.
+        //  -   A left separator is displayed.
+        //
+        guard let commentBlock = blockGroup.blockOfKind(.comment) else {
+            assertionFailure("Missing Comment Block for Notification [\(note.notificationId)]")
+            return
+        }
+
+        guard let userBlock = blockGroup.blockOfKind(.user) else {
+            assertionFailure("Missing User Block for Notification [\(note.notificationId)]")
+            return
+        }
+
+        // Merge the Attachments with their ranges: [NSRange: UIImage]
+        let mediaMap = mediaDownloader.imagesForUrls(commentBlock.imageUrls)
+        let mediaRanges = commentBlock.buildRangesToImagesMap(mediaMap)
+
+        let text = richTextFormatter.render(content: commentBlock).stringByEmbeddingImageAttachments(mediaRanges)
+
+        // Setup: Properties
+        cell.name                   = userBlock.text
+        cell.timestamp              = (note.timestampAsDate as NSDate).mediumString()
+        cell.site                   = userBlock.metaTitlesHome ?? userBlock.metaLinksHome?.host
+        cell.attributedCommentText  = text.trimNewlines()
+        cell.isApproved             = commentBlock.isCommentApproved
+
+        // Setup: Callbacks
+        cell.onUserClick = { [weak self] in
+            guard let homeURL = userBlock.metaLinksHome else {
+                return
+            }
+
+            self?.displayURL(homeURL)
+        }
+
+        cell.onUrlClick = { [weak self] url in
+            self?.displayURL(url as URL)
+        }
+
+        cell.onAttachmentClick = { [weak self] attachment in
+            guard let image = attachment.image else {
+                return
+            }
+
+            self?.displayFullscreenImage(image)
+        }
+
+        // Download the Gravatar
+        let mediaURL = userBlock.media.first?.mediaURL
+        cell.downloadGravatarWithURL(mediaURL)
+    }
+
+    func setupActionsCell(_ cell: NoteBlockActionsTableViewCell, blockGroup: FormattableContentGroup) {
+        guard let commentBlock = blockGroup.blockOfKind(.comment) else {
+            assertionFailure("Missing Comment Block for Notification \(note.notificationId)")
+            return
+        }
+
+        // Setup: Properties
+        // Note: Approve Action is actually a synonym for 'Edit' (Based on Calypso's basecode)
+        //
+        cell.isReplyEnabled     = UIDevice.isPad() && commentBlock.isActionOn(.Reply)
+        cell.isLikeEnabled      = commentBlock.isActionEnabled(.Like)
+        cell.isApproveEnabled   = commentBlock.isActionEnabled(.Approve)
+        cell.isTrashEnabled     = commentBlock.isActionEnabled(.Trash)
+        cell.isSpamEnabled      = commentBlock.isActionEnabled(.Spam)
+        cell.isEditEnabled      = commentBlock.isActionOn(.Approve)
+        cell.isLikeOn           = commentBlock.isActionOn(.Like)
+        cell.isApproveOn        = commentBlock.isActionOn(.Approve)
+
+        // Setup: Callbacks
+        cell.onReplyClick = { [weak self] _ in
+//            self?.focusOnReplyTextViewWithBlock(commentBlock)
+        }
+
+        cell.onLikeClick = { [weak self] _ in
+//            self?.likeCommentWithBlock(commentBlock)
+        }
+
+        cell.onUnlikeClick = { [weak self] _ in
+//            self?.unlikeCommentWithBlock(commentBlock)
+        }
+
+        cell.onApproveClick = { [weak self] _ in
+//            self?.approveCommentWithBlock(commentBlock)
+        }
+
+        cell.onUnapproveClick = { [weak self] _ in
+//            self?.unapproveCommentWithBlock(commentBlock)
+        }
+
+        cell.onTrashClick = { [weak self] _ in
+//            self?.trashCommentWithBlock(commentBlock)
+        }
+
+        cell.onSpamClick = { [weak self] _ in
+//            self?.spamCommentWithBlock(commentBlock)
+        }
+
+        cell.onEditClick = { [weak self] _ in
+//            self?.displayCommentEditorWithBlock(commentBlock)
+        }
+    }
+
+    func setupImageCell(_ cell: NoteBlockImageTableViewCell, blockGroup: FormattableContentGroup) {
+        guard let imageBlock = blockGroup.blocks.first else {
+            assertionFailure("Missing Image Block for Notification [\(note.notificationId)")
+            return
+        }
+
+        let mediaURL = imageBlock.media.first?.mediaURL
+        cell.downloadImage(mediaURL)
+    }
+
+    func setupTextCell(_ cell: NoteBlockTextTableViewCell, blockGroup: FormattableContentGroup) {
+        guard let textBlock = blockGroup.blocks.first else {
+            assertionFailure("Missing Text Block for Notification \(note.notificationId)")
+            return
+        }
+
+        // Merge the Attachments with their ranges: [NSRange: UIImage]
+        let mediaMap = mediaDownloader.imagesForUrls(textBlock.imageUrls)
+        let mediaRanges = textBlock.buildRangesToImagesMap(mediaMap)
+
+        // Load the attributedText
+        let text = note.isBadge ? badgeTextFormatter.render(content: textBlock) : richTextFormatter.render(content: textBlock)
+
+        // Setup: Properties
+        cell.attributedText = text.stringByEmbeddingImageAttachments(mediaRanges)
+
+        // Setup: Callbacks
+        cell.onUrlClick = { [weak self] url in
+//            guard let `self` = self, self.isViewOnScreen() else {
+//                return
+//            }
+//
+//            self.displayURL(url)
+        }
+    }
+}
 
 
 // MARK: - Notification Helpers
@@ -961,6 +1298,11 @@ private extension NotificationDetailsViewController {
 // MARK: - Helpers
 //
 private extension NotificationDetailsViewController {
+
+    func contentGroup(for indexPath: IndexPath) -> FormattableContentGroup {
+        return note.headerAndBodyContentGroups[indexPath.row]
+    }
+
     func blockGroupForIndexPath(_ indexPath: IndexPath) -> NotificationBlockGroup {
         return note.headerAndBodyBlockGroups[indexPath.row]
     }
@@ -1012,6 +1354,27 @@ private extension NotificationDetailsViewController {
             UIView.animate(withDuration: Media.duration, delay: Media.delay, options: Media.options, animations: { [weak self] in
                 self?.tableView.reloadRows(at: [indexPath], with: .fade)
             }, completion: nil)
+        }
+
+        mediaDownloader.downloadMedia(urls: imageUrls, maximumWidth: maxMediaEmbedWidth, completion: completion)
+        mediaDownloader.resizeMediaWithIncorrectSize(maxMediaEmbedWidth, completion: completion)
+    }
+
+    func downloadAndResizeMedia(at indexPath: IndexPath, from contentGroup: FormattableContentGroup) {
+        //  Notes:
+        //  -   We'll *only* download Media for Text and Comment Blocks
+        //  -   Plus, we'll also resize the downloaded media cache *if needed*. This is meant to adjust images to
+        //      better fit onscreen, whenever the device orientation changes (and in turn, the maxMediaEmbedWidth changes too).
+        //
+        let imageUrls = contentGroup.imageUrlsFromBlocksInKindSet(ContentMedia.richBlockTypes)
+
+        let completion = {
+            // Workaround: Performing the reload call, multiple times, without the .BeginFromCurrentState might
+            // lead to a state in which the cell remains not visible.
+            //
+            UIView.animate(withDuration: Media.duration, delay: Media.delay, options: Media.options, animations: { [weak self] in
+                self?.tableView.reloadRows(at: [indexPath], with: .fade)
+                }, completion: nil)
         }
 
         mediaDownloader.downloadMedia(urls: imageUrls, maximumWidth: maxMediaEmbedWidth, completion: completion)
@@ -1297,6 +1660,13 @@ private extension NotificationDetailsViewController {
 
     enum Media {
         static let richBlockTypes           = Set(arrayLiteral: NotificationBlock.Kind.text, NotificationBlock.Kind.comment)
+        static let duration                 = TimeInterval(0.25)
+        static let delay                    = TimeInterval(0)
+        static let options: UIViewAnimationOptions = [.overrideInheritedDuration, .beginFromCurrentState]
+    }
+
+    enum ContentMedia {
+        static let richBlockTypes           = Set(arrayLiteral: FormattableContent.Kind.text, FormattableContent.Kind.comment)
         static let duration                 = TimeInterval(0.25)
         static let delay                    = TimeInterval(0)
         static let options: UIViewAnimationOptions = [.overrideInheritedDuration, .beginFromCurrentState]
