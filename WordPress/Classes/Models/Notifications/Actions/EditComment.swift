@@ -10,7 +10,7 @@ final class EditComment: DefaultNotificationAction {
         return editIcon
     }
 
-    func execute() {
+    func execute(context: ActionContext) {
 
     }
 }
