@@ -44,6 +44,17 @@ class FooterContentStyles: FormattableContentStyles {
 }
 
 class RichTextStyles: FormattableContentStyles {
+
+    let key: String
+
+    init(key: String) {
+        self.key = key
+    }
+
+    init() {
+        self.key = "RichTextStyles"
+    }
+
     var attributes: [NSAttributedStringKey : Any] {
         return WPStyleGuide.Notifications.contentBlockRegularStyle
     }
@@ -63,11 +74,16 @@ class RichTextStyles: FormattableContentStyles {
     var linksColor: UIColor? {
         return WPStyleGuide.Notifications.blockLinkColor
     }
-
-    var key: String = "RichTextStyles"
 }
 
-class AttributedBadgeStyles: FormattableContentStyles {
+class BadgeContentStyles: FormattableContentStyles {
+
+    let key: String
+
+    init(cachingKey: String) {
+        key = cachingKey
+    }
+
     var attributes: [NSAttributedStringKey : Any] {
         return WPStyleGuide.Notifications.badgeRegularStyle
     }
@@ -88,8 +104,6 @@ class AttributedBadgeStyles: FormattableContentStyles {
     var linksColor: UIColor? {
         return WPStyleGuide.Notifications.badgeLinkColor
     }
-
-    var key: String = "RichTextStyles"
 }
 
 
@@ -106,11 +120,7 @@ protocol NotificationsNavigationDataSource: class {
 class NotificationDetailsViewController: UIViewController {
     // MARK: - Properties
 
-    let headerFormatter    = FormattableContentFormatter(styles: HeaderContentStyles())
-    let bodyFormatter      = FormattableContentFormatter(styles: FormattableSnipetsStyles())
-    let footerFormatter    = FormattableContentFormatter(styles: FooterContentStyles())
-    let richTextFormatter  = FormattableContentFormatter(styles: RichTextStyles())
-    let badgeTextFormatter = FormattableContentFormatter(styles: AttributedBadgeStyles())
+    let formatter = FormattableContentFormatter()
 
     /// StackView: Top-Level Entity
     ///
@@ -385,7 +395,7 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
 
     func setup(_ cell: NoteBlockTableViewCell, withContentGroupAt indexPath: IndexPath) {
         let group = contentGroup(for: indexPath)
-        setup(cell, with: group)
+        setup(cell, with: group, at: indexPath)
         downloadAndResizeMedia(at: indexPath, from: group)
     }
 
@@ -890,7 +900,7 @@ private extension NotificationDetailsViewController {
 // MARK: - UITableViewCell Subclass Setup
 //
 private extension NotificationDetailsViewController {
-    func setup(_ cell: NoteBlockTableViewCell, with blockGroup: FormattableContentGroup) {
+    func setup(_ cell: NoteBlockTableViewCell, with blockGroup: FormattableContentGroup, at indexPath: IndexPath) {
         switch cell {
         case let cell as NoteBlockHeaderTableViewCell:
             setupHeaderCell(cell, blockGroup: blockGroup)
@@ -899,13 +909,13 @@ private extension NotificationDetailsViewController {
         case let cell as NoteBlockUserTableViewCell:
             setupUserCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockCommentTableViewCell:
-            setupCommentCell(cell, blockGroup: blockGroup)
+            setupCommentCell(cell, blockGroup: blockGroup, at: indexPath)
         case let cell as NoteBlockActionsTableViewCell:
             setupActionsCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockImageTableViewCell:
             setupImageCell(cell, blockGroup: blockGroup)
         case let cell as NoteBlockTextTableViewCell:
-            setupTextCell(cell, blockGroup: blockGroup)
+            setupTextCell(cell, blockGroup: blockGroup, at: indexPath)
         default:
             assertionFailure("NotificationDetails: Please, add support for \(cell)")
         }
@@ -926,7 +936,7 @@ private extension NotificationDetailsViewController {
             return
         }
 
-        cell.attributedHeaderTitle = headerFormatter.render(content: gravatarBlock)
+        cell.attributedHeaderTitle = formatter.render(content: gravatarBlock, with: HeaderContentStyles())
         // Download the Gravatar
         let mediaURL = gravatarBlock.media.first?.mediaURL
         cell.downloadAuthorAvatar(with: mediaURL)
@@ -938,7 +948,7 @@ private extension NotificationDetailsViewController {
             return
         }
 
-        cell.attributedText = footerFormatter.render(content: textBlock)
+        cell.attributedText = formatter.render(content: textBlock, with: FooterContentStyles())
         cell.isTextViewSelectable = false
         cell.isTextViewClickable = false
     }
@@ -971,7 +981,7 @@ private extension NotificationDetailsViewController {
         cell.downloadGravatarWithURL(mediaURL)
     }
 
-    func setupCommentCell(_ cell: NoteBlockCommentTableViewCell, blockGroup: FormattableContentGroup) {
+    func setupCommentCell(_ cell: NoteBlockCommentTableViewCell, blockGroup: FormattableContentGroup, at indexPath: IndexPath) {
         // Note:
         // The main reason why it's a very good idea *not* to reuse NoteBlockHeaderTableViewCell, just to display the
         // gravatar, is because we're implementing a custom behavior whenever the user approves/ unapproves the comment.
@@ -993,7 +1003,8 @@ private extension NotificationDetailsViewController {
         let mediaMap = mediaDownloader.imagesForUrls(commentBlock.imageUrls)
         let mediaRanges = commentBlock.buildRangesToImagesMap(mediaMap)
 
-        let text = richTextFormatter.render(content: commentBlock).stringByEmbeddingImageAttachments(mediaRanges)
+        let styles = RichTextStyles(key: "RichText-\(indexPath)")
+        let text = formatter.render(content: commentBlock, with: styles).stringByEmbeddingImageAttachments(mediaRanges)
 
         // Setup: Properties
         cell.name                   = userBlock.text
@@ -1090,7 +1101,7 @@ private extension NotificationDetailsViewController {
         cell.downloadImage(mediaURL)
     }
 
-    func setupTextCell(_ cell: NoteBlockTextTableViewCell, blockGroup: FormattableContentGroup) {
+    func setupTextCell(_ cell: NoteBlockTextTableViewCell, blockGroup: FormattableContentGroup, at indexPath: IndexPath) {
         guard let textBlock = blockGroup.blocks.first else {
             assertionFailure("Missing Text Block for Notification \(note.notificationId)")
             return
@@ -1101,7 +1112,9 @@ private extension NotificationDetailsViewController {
         let mediaRanges = textBlock.buildRangesToImagesMap(mediaMap)
 
         // Load the attributedText
-        let text = note.isBadge ? badgeTextFormatter.render(content: textBlock) : richTextFormatter.render(content: textBlock)
+        let text = note.isBadge ?
+            formatter.render(content: textBlock, with: BadgeContentStyles(cachingKey: "Badge-\(indexPath)")) :
+            formatter.render(content: textBlock, with: RichTextStyles(key: "Rich-Text-\(indexPath)"))
 
         // Setup: Properties
         cell.attributedText = text.stringByEmbeddingImageAttachments(mediaRanges)
