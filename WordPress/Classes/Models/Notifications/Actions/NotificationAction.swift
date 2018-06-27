@@ -1,12 +1,12 @@
 import MGSwipeTableCell
 
 protocol NotificationAction: CustomStringConvertible {
-    func identifier() -> Identifier
-    func execute(block: NotificationBlock, onCompletion: ((NotificationDeletionRequest) -> Void)?)
-
+    var identifier: Identifier { get }
     var enabled: Bool { get }
     var on: Bool { get }
     var icon: UIButton? { get }
+
+    func execute(block: NotificationBlock, onCompletion: ((NotificationDeletionRequest) -> Void)?)
 }
 
 extension NotificationAction {
@@ -23,7 +23,7 @@ extension NotificationAction {
 
 extension NotificationAction {
     var description: String {
-        return identifier().description + " enabled \(enabled)"
+        return identifier.description + " enabled \(enabled)"
     }
 }
 
@@ -31,6 +31,10 @@ class DefaultNotificationAction: NotificationAction {
     var enabled: Bool
 
     let on: Bool
+
+    var identifier: Identifier {
+        return type(of: self).actionIdentifier()
+    }
 
     private(set) lazy var mainContext: NSManagedObjectContext? = {
         return ContextManager.sharedInstance().mainContext
@@ -47,9 +51,5 @@ class DefaultNotificationAction: NotificationAction {
     init(on: Bool) {
         self.on = on
         self.enabled = true
-    }
-
-    func identifier() -> Identifier {
-        return type(of: self).actionIdentifier()
     }
 }
