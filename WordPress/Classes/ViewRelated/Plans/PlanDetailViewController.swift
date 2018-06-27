@@ -8,6 +8,9 @@ class PlanDetailViewController: UIViewController {
     fileprivate let tableViewHorizontalMargin: CGFloat = 24.0
     fileprivate let planImageDropshadowRadius: CGFloat = 3.0
 
+    private var noResultsViewController: NoResultsViewController?
+    private var noResultsViewModel: NoResultsViewController.Model?
+
     fileprivate var tableViewModel = ImmuTable.Empty {
         didSet {
             tableView?.reloadData()
@@ -24,8 +27,6 @@ class PlanDetailViewController: UIViewController {
             }
         }
     }
-
-    fileprivate var noResultsViewController: NoResultsViewController?
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var planImageView: UIImageView!
@@ -227,81 +228,41 @@ class PlanDetailViewController: UIViewController {
         }
     }
 
-    // MARK: - NoResults Handling
-
-    private func setupNoResultsViewController() {
-        let noResultsStoryboard = UIStoryboard(name: "NoResults", bundle: nil)
-        guard let noResultsViewController = noResultsStoryboard.instantiateViewController(withIdentifier: "NoResults") as? NoResultsViewController else {
-            return
-        }
-
-        noResultsViewController.delegate = self
-        self.noResultsViewController = noResultsViewController
-    }
-
-    private func updateNoResults() {
-        hideNoResults()
-        if let noResultsViewModel = viewModel.noResultsViewModel {
-            showNoResults(noResultsViewModel)
-        }
-    }
-
-    private func showNoResults(_ viewModel: NoResultsViewController.Model) {
-
-        if noResultsViewController == nil {
-            setupNoResultsViewController()
-        }
-
-        guard let noResultsViewController = noResultsViewController else {
-            return
-        }
-
-        noResultsViewController.bindViewModel(viewModel)
-
-        noResultsViewController.view.frame = noResultsViewFrame()
-        noResultsViewController.view.backgroundColor = UIColor.white
-
-        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
-        addChildViewController(noResultsViewController)
-
-        noResultsViewController.didMove(toParentViewController: self)
-    }
-
-    private func hideNoResults() {
-
-        guard let noResultsViewController = noResultsViewController else {
-            return
-        }
-
-        noResultsViewController.view.removeFromSuperview()
-        noResultsViewController.removeFromParentViewController()
-    }
-
-    private func noResultsViewFrame() -> CGRect {
-        layoutHeaderIfNeeded()
-        var noResultsViewBounds = tableView.bounds
-        noResultsViewBounds.origin.y = headerView.frame.height
-        noResultsViewBounds.size.height = tableView.bounds.height - headerView.frame.height
-        return noResultsViewBounds
-    }
-
 }
 
 // MARK: Table View Data Source / Delegate
 extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return tableViewModel.sections.count
+        return noResultsViewModel != nil ? 1 : tableViewModel.sections.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableViewModel.sections[section].rows.count
+        return noResultsViewModel != nil ? 1 : tableViewModel.sections[section].rows.count
+    }
+
+     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if noResultsViewModel != nil {
+            // Calculate the height of the no results cell from the bottom of the header to the table bottom.
+            var noResultsViewBounds = tableView.bounds
+            noResultsViewBounds.origin.y = headerView.frame.height
+            noResultsViewBounds.size.height = tableView.bounds.height - headerView.frame.height
+            return noResultsViewBounds.size.height
+        }
+
+        return tableView.estimatedRowHeight
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let row = tableViewModel.rowAtIndexPath(indexPath)
-        let cell = tableView.dequeueReusableCell(withIdentifier: row.reusableIdentifier, for: indexPath)
 
-        row.configureCell(cell)
+        let cell: UITableViewCell
+
+        if noResultsViewModel != nil {
+            cell = noResultsCell()
+        } else {
+            let row = tableViewModel.rowAtIndexPath(indexPath)
+            cell = tableView.dequeueReusableCell(withIdentifier: row.reusableIdentifier, for: indexPath)
+            row.configureCell(cell)
+        }
 
         return cell
     }
@@ -327,12 +288,64 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return tableViewModel.sections[section].headerText
+        return noResultsViewModel != nil ? nil : tableViewModel.sections[section].headerText
     }
 
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionHeader(view)
     }
+}
+
+// MARK: - No Results Handling Private Extension
+
+private extension PlanDetailViewController {
+
+    func updateNoResults() {
+        removeNoResultsFromView()
+        if let noResultsViewModel = viewModel.noResultsViewModel {
+            self.noResultsViewModel = noResultsViewModel
+        } else {
+            self.noResultsViewModel = nil
+        }
+    }
+
+    func removeNoResultsFromView() {
+        noResultsViewController?.view.removeFromSuperview()
+        noResultsViewController?.removeFromParentViewController()
+    }
+
+    func noResultsCell() -> UITableViewCell {
+        let cell = UITableViewCell()
+        addNoResultsTo(cell: cell)
+        return cell
+    }
+
+    func addNoResultsTo(cell: UITableViewCell) {
+        removeNoResultsFromView()
+
+        if noResultsViewController == nil {
+            instantiateNoResultsViewController()
+        }
+
+        guard let noResultsViewController = noResultsViewController,
+            let noResultsViewModel = noResultsViewModel else {
+                return
+        }
+
+        noResultsViewController.bindViewModel(noResultsViewModel)
+        noResultsViewController.view.backgroundColor =  .white
+        noResultsViewController.view.frame = cell.frame
+        cell.contentView.addSubview(noResultsViewController.view)
+        addChildViewController(noResultsViewController)
+        noResultsViewController.didMove(toParentViewController: self)
+    }
+
+    func instantiateNoResultsViewController() {
+        let noResultsSB = UIStoryboard(name: "NoResults", bundle: nil)
+        noResultsViewController = noResultsSB.instantiateViewController(withIdentifier: "NoResults") as? NoResultsViewController
+        noResultsViewController?.delegate = self
+    }
+
 }
 
 // MARK: - NoResultsViewControllerDelegate
