@@ -11,6 +11,15 @@ final class EditComment: DefaultNotificationAction {
     }
 
     func execute(context: ActionContext) {
+        let block = context.block
+        let content = context.content
+        actionsService?.updateCommentWithBlock(block, content: content, completion: { success in
+            guard success else {
+                context.completion?(nil, false)
+                return
+            }
 
+            context.completion?(nil, true)
+        })
     }
 }
