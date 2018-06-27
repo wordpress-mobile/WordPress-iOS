@@ -16,6 +16,20 @@ extension Notification: FormattableContentParent {
     }
 }
 
+class SubjectGroup: FormattableContentGroup {
+    class func createGroup(from subject: [[String: AnyObject]], parent: FormattableContentParent) -> FormattableContentGroup {
+        let blocks = FormattableContent.blocksFromArray(subject, parent: parent)
+        return FormattableContentGroup(blocks: blocks, kind: .subject)
+    }
+}
+
+class HeaderContentGroup: FormattableContentGroup {
+    class func createGroup(from header: [[String: AnyObject]], parent: FormattableContentParent) -> FormattableContentGroup {
+        let blocks = FormattableContent.blocksFromArray(header, parent: parent)
+        return FormattableContentGroup(blocks: blocks, kind: .header)
+    }
+}
+
 // MARK: - Notification Entity
 //
 @objc(Notification)
@@ -79,22 +93,25 @@ class Notification: NSManagedObject {
     let subjectFormatter = FormattableContentFormatter(styles: FormattableSubjectStyles())
     let snippetFormatter = FormattableContentFormatter(styles: FormattableSnipetsStyles())
 
-    fileprivate var cachedSubjectContentGroup: FormattableContentGroup?
     /// Subject Blocks Transient Storage.
     ///
     fileprivate var cachedSubjectBlockGroup: NotificationBlockGroup?
+    fileprivate var cachedSubjectContentGroup: FormattableContentGroup?
 
     /// Header Blocks Transient Storage.
     ///
     fileprivate var cachedHeaderBlockGroup: NotificationBlockGroup?
+    fileprivate var cachedHeaderContentGroup: FormattableContentGroup?
 
     /// Body Blocks Transient Storage.
     ///
     fileprivate var cachedBodyBlockGroups: [NotificationBlockGroup]?
+    fileprivate var cachedBodyContentGroup: [FormattableContentGroup]?
 
     /// Header + Body Blocks Transient Storage.
     ///
     fileprivate var cachedHeaderAndBodyBlockGroups: [NotificationBlockGroup]?
+    fileprivate var cachedHeaderAndBodyContentGroup: [FormattableContentGroup]?
 
     /// Array that contains the Cached Property Names
     ///
@@ -181,13 +198,6 @@ class Notification: NSManagedObject {
     }
 }
 
-class SubjectGroup: FormattableContentGroup {
-    class func createGroup(from subject: [[String: AnyObject]], parent: FormattableContentParent) -> FormattableContentGroup {
-        let blocks = FormattableContent.blocksFromArray(subject, parent: parent)
-        return FormattableContentGroup(blocks: blocks, kind: .subject)
-    }
-}
-
 // MARK: - Notification Computed Properties
 //
 extension Notification {
@@ -232,10 +242,17 @@ extension Notification {
         return block.isActionEnabled(.Approve) && !block.isActionOn(.Approve)
     }
 
-    /// Parses the Notification.type field into a Swift Native enum. Returns .Unknown on failure.
-    ///
     var kind: ParentKind {
         guard let type = type, let kind = ParentKind(rawValue: type) else {
+            return .Unknown
+        }
+        return kind
+    }
+
+    /// Parses the Notification.type field into a Swift Native enum. Returns .Unknown on failure.
+    ///
+    var notificationKind: Kind {
+        guard let type = type, let kind = Kind(rawValue: type) else {
             return .Unknown
         }
         return kind
@@ -337,6 +354,18 @@ extension Notification {
         return cachedSubjectBlockGroup
     }
 
+    var headerContentGroup: FormattableContentGroup? {
+        if let group = cachedHeaderContentGroup {
+            return group
+        }
+
+        guard let header = header as? [[String: AnyObject]], header.isEmpty == false else {
+            return nil
+        }
+
+        cachedHeaderContentGroup = HeaderContentGroup.createGroup(from: header, parent: self)
+        return cachedHeaderContentGroup
+    }
     /// Returns the Header Block Group, if any.
     ///
     var headerBlockGroup: NotificationBlockGroup? {
@@ -352,6 +381,18 @@ extension Notification {
         return cachedHeaderBlockGroup
     }
 
+    var bodyContentGroups: [FormattableContentGroup] {
+        if let group = cachedBodyContentGroup {
+            return group
+        }
+
+        guard let body = body as? [[String: AnyObject]], body.isEmpty == false else {
+            return []
+        }
+
+        cachedBodyContentGroup = BodyContentGroup.create(from: body, parent: self)
+        return cachedBodyContentGroup ?? []
+    }
     /// Returns the Body Block Groups, if any.
     ///
     var bodyBlockGroups: [NotificationBlockGroup] {
@@ -367,6 +408,22 @@ extension Notification {
         return cachedBodyBlockGroups ?? []
     }
 
+
+    var headerAndBodyContentGroups: [FormattableContentGroup] {
+        if let groups = cachedHeaderAndBodyContentGroup {
+            return groups
+        }
+
+        var mergedGroups = [FormattableContentGroup]()
+        if let header = headerContentGroup {
+            mergedGroups.append(header)
+        }
+
+        mergedGroups.append(contentsOf: bodyContentGroups)
+        cachedHeaderAndBodyContentGroup = mergedGroups
+
+        return mergedGroups
+    }
     /// Returns the Header + Body Block Groups, if any. This is done for convenience.
     ///
     var headerAndBodyBlockGroups: [NotificationBlockGroup] {
