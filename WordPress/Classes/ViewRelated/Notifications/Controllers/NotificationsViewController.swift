@@ -1021,6 +1021,12 @@ private extension NotificationsViewController {
 
         // Comments: Trash
         if let trashCommand = block.command(id: TrashComment.actionIdentifier()), let button = trashCommand.icon as? MGSwipeButton {
+            button.callback = { [weak self] _ in
+                trashCommand.execute(block: block, onCompletion: { request in
+                    self?.showUndeleteForNoteWithID(note.objectID, request: request)
+                })
+                return true
+            }
             rightButtons.append(button)
         }
 //        if block.isActionEnabled(.Trash) {

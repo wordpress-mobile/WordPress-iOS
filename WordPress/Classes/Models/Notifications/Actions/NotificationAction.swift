@@ -2,7 +2,7 @@ import MGSwipeTableCell
 
 protocol NotificationAction: CustomStringConvertible {
     func identifier() -> Identifier
-    func execute()
+    func execute(block: NotificationBlock, onCompletion: ((NotificationDeletionRequest) -> Void)?)
     func setOn()
     func setOff()
 
@@ -12,7 +12,7 @@ protocol NotificationAction: CustomStringConvertible {
 }
 
 extension NotificationAction {
-    func execute() {
+    func execute(block: NotificationBlock, onCompletion: ((NotificationDeletionRequest) -> Void)? = nil) {
 
     }
 }
