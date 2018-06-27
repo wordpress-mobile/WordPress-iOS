@@ -16,68 +16,67 @@ class ReaderTopicSwiftTest: XCTestCase {
     }
 
     override func tearDown() {
-        super.tearDown()
         TestContextManager.overrideSharedInstance(nil)
         testContextManager = nil
+        super.tearDown()
     }
-
 
     // MARK: - Config / Helpers
 
     func seedTopics() {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = testContextManager?.mainContext
 
-        let topic1 = NSEntityDescription.insertNewObject(forEntityName: ReaderListTopic.classNameWithoutNamespaces(), into: context) as! ReaderListTopic
+        let topic1 = NSEntityDescription.insertNewObject(forEntityName: ReaderListTopic.classNameWithoutNamespaces(), into: context!) as! ReaderListTopic
         topic1.path = "/list/topic1"
         topic1.title = "topic1"
         topic1.type = ReaderListTopic.TopicType
 
-        let topic2 = NSEntityDescription.insertNewObject(forEntityName: ReaderTagTopic.classNameWithoutNamespaces(), into: context) as! ReaderTagTopic
+        let topic2 = NSEntityDescription.insertNewObject(forEntityName: ReaderTagTopic.classNameWithoutNamespaces(), into: context!) as! ReaderTagTopic
         topic2.path = "/tags/topic2"
         topic2.title = "topic2"
         topic2.type = ReaderTagTopic.TopicType
 
-        let topic3 = NSEntityDescription.insertNewObject(forEntityName: ReaderTagTopic.classNameWithoutNamespaces(), into: context) as! ReaderTagTopic
+        let topic3 = NSEntityDescription.insertNewObject(forEntityName: ReaderTagTopic.classNameWithoutNamespaces(), into: context!) as! ReaderTagTopic
         topic3.path = "/list/topic3"
         topic3.title = "topic3"
         topic3.type = ReaderTagTopic.TopicType
 
         do {
-            try context.save()
+            try context?.save()
         } catch let error as NSError {
             XCTAssertNil(error, "Error seeding topics")
         }
     }
 
     func countTopics() -> Int {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = testContextManager?.mainContext
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderAbstractTopic.classNameWithoutNamespaces())
-        return try! context.count(for: request)
+        return try! context!.count(for: request)
     }
 
     func seedPostsForTopic(_ topic: ReaderAbstractTopic) {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = testContextManager?.mainContext
 
-        let post1 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(), into: context) as! ReaderPost
+        let post1 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(), into: context!) as! ReaderPost
         post1.postID = NSNumber(value: 1)
         post1.postTitle = "post1"
         post1.content = "post1"
         post1.topic = topic
 
-        let post2 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(), into: context) as! ReaderPost
+        let post2 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(), into: context!) as! ReaderPost
         post2.postID = NSNumber(value: 2)
         post2.postTitle = "post2"
         post2.content = "post2"
         post2.topic = topic
 
-        let post3 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(), into: context) as! ReaderPost
+        let post3 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(), into: context!) as! ReaderPost
         post3.postID = NSNumber(value: 3)
         post3.postTitle = "post3"
         post3.content = "post3"
         post3.topic = topic
 
         do {
-            try context.save()
+            try context?.save()
         } catch let error as NSError {
             XCTAssertNil(error, "Error seeding posts")
         }
@@ -276,7 +275,7 @@ class ReaderTopicSwiftTest: XCTestCase {
 
         // Save the new topic + posts in the contet
         var expect = expectation(description: "topics saved expectation")
-        ContextManager.sharedInstance().save(context!, withCompletionBlock: { () -> Void in
+        testContextManager?.save(context!, withCompletionBlock: { () -> Void in
             expect.fulfill()
         })
         waitForExpectations(timeout: expectationTimeout, handler: nil)
@@ -285,17 +284,17 @@ class ReaderTopicSwiftTest: XCTestCase {
         context?.delete(topic)
 
         expect = expectation(description: "topics saved expectation")
-        ContextManager.sharedInstance().save(context!, withCompletionBlock: { () -> Void in
+        testContextManager?.save(context!, withCompletionBlock: { () -> Void in
             expect.fulfill()
         })
         waitForExpectations(timeout: expectationTimeout, handler: nil)
 
-        var request = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderAbstractTopic.classNameWithoutNamespaces())
-        var count = try! context?.count(for: request)
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderListTopic.classNameWithoutNamespaces())
+        let count = try! context?.count(for: request)
         XCTAssertTrue(count == 0, "Topic was not deleted successfully")
 
-        request = NSFetchRequest(entityName: ReaderPost.classNameWithoutNamespaces())
-        count = try! context?.count(for: request)
+        let postRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderPost.classNameWithoutNamespaces())
+        let postRequestCount = try! context?.count(for: postRequest)
         XCTAssertTrue(count == 0, "Topic posts were not deleted successfully")
     }
 
