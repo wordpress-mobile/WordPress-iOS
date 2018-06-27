@@ -1143,18 +1143,24 @@ private extension NotificationDetailsViewController {
     }
 
     func updateCommentWithBlock(_ block: NotificationBlock, content: String) {
+        guard let editCommentAction = block.action(id: EditComment.actionIdentifier()) else {
+            return
+        }
+
         let generator = UINotificationFeedbackGenerator()
         generator.prepare()
         generator.notificationOccurred(.success)
 
-        actionsService.updateCommentWithBlock(block, content: content, completion: { success in
+        let actionContext = ActionContext(block: block, content: content) { [weak self] (request, success) in
             guard success == false else {
                 return
             }
 
             generator.notificationOccurred(.error)
-            self.displayCommentUpdateErrorWithBlock(block, content: content)
-        })
+            self?.displayCommentUpdateErrorWithBlock(block, content: content)
+        }
+
+        editCommentAction.execute(context: actionContext)
     }
 }
 

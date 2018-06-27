@@ -11,7 +11,6 @@ final class ReplyToComment: DefaultNotificationAction {
     }
 
     func execute(context: ActionContext) {
-
         let block = context.block
         let content = context.content
         actionsService?.replyCommentWithBlock(block, content: content, completion: { success in
