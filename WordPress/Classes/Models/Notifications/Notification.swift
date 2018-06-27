@@ -19,14 +19,14 @@ extension Notification: FormattableContentParent {
 class SubjectGroup: FormattableContentGroup {
     class func createGroup(from subject: [[String: AnyObject]], parent: FormattableContentParent) -> FormattableContentGroup {
         let blocks = FormattableContent.blocksFromArray(subject, parent: parent)
-        return FormattableContentGroup(blocks: blocks, kind: .subject)
+        return FormattableContentGroup(blocks: blocks)
     }
 }
 
 class HeaderContentGroup: FormattableContentGroup {
     class func createGroup(from header: [[String: AnyObject]], parent: FormattableContentParent) -> FormattableContentGroup {
         let blocks = FormattableContent.blocksFromArray(header, parent: parent)
-        return FormattableContentGroup(blocks: blocks, kind: .header)
+        return FormattableContentGroup(blocks: blocks)
     }
 }
 
