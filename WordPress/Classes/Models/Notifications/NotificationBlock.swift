@@ -231,7 +231,7 @@ extension NotificationBlock {
 
     func command(id: Identifier) -> NotificationAction? {
         return commands?.filter {
-            $0.identifier() == id
+            $0.identifier == id
         }.first
     }
 
