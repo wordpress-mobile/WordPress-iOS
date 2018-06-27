@@ -76,6 +76,9 @@ class Notification: NSManagedObject {
     ///
     fileprivate var cachedTimestampAsDate: Date?
 
+    let subjectFormatter = FormattableContentFormatter(styles: FormattableSubjectStyles())
+    let snippetFormatter = FormattableContentFormatter(styles: FormattableSnipetsStyles())
+
     fileprivate var cachedSubjectContentGroup: FormattableContentGroup?
     /// Subject Blocks Transient Storage.
     ///
@@ -97,7 +100,19 @@ class Notification: NSManagedObject {
     ///
     fileprivate static let cachedAttributes = Set(arrayLiteral: "body", "header", "subject", "timestamp")
 
+    func renderSubject() -> NSAttributedString? {
+        guard let subjectContent = subjectContentGroup?.blocks.first else {
+            return nil
+        }
+        return subjectFormatter.render(content: subjectContent)
+    }
 
+    func renderSnippet() -> NSAttributedString? {
+        guard let snippetContent = snippetContent else {
+            return nil
+        }
+        return snippetFormatter.render(content: snippetContent)
+    }
 
     /// When needed, nukes cached attributes
     ///
@@ -374,6 +389,13 @@ extension Notification {
     ///
     var subjectBlock: NotificationBlock? {
         return subjectBlockGroup?.blocks.first
+    }
+
+    var snippetContent: FormattableContent? {
+        guard let content = subjectContentGroup?.blocks, content.count > 1 else {
+            return nil
+        }
+        return content.last
     }
 
     /// Returns the Snippet Block, if any.
