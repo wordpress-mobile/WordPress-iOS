@@ -20,7 +20,11 @@ open class ActivityTableViewCell: WPTableViewCell {
     open func configureCell(_ activity: Activity) {
         self.activity = activity
         summaryLabel.text = activity.summary
-        contentLabel.attributedText = activity.formattedContent(ofKind: .text, using: RichTextStyles())
+        if FeatureFlag.extractNotifications.enabled {
+            contentLabel.attributedText = activity.formattedContent(ofKind: .text, using: RichTextStyles())
+        } else {
+            contentLabel.text = activity.text
+        }
 
         iconBackgroundImageView.backgroundColor = Style.getColorByActivityStatus(activity)
         if let iconImage = Style.getIconForActivity(activity) {
