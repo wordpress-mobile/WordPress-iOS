@@ -1352,6 +1352,15 @@ private extension NotificationDetailsViewController {
 // MARK: - Media Download Helpers
 //
 private extension NotificationDetailsViewController {
+
+    /// Extracts all of the imageUrl's for the blocks of the specified kinds
+    ///
+    func imageUrls(from content: [FormattableContent], inKindSet kindSet: Set<FormattableContent.Kind>) -> Set<URL> {
+        let filtered = content.filter { kindSet.contains($0.kind) }
+        let imageUrls = filtered.flatMap { $0.imageUrls }
+        return Set(imageUrls) as Set<URL>
+    }
+
     func downloadAndResizeMedia(_ indexPath: IndexPath, blockGroup: NotificationBlockGroup) {
         //  Notes:
         //  -   We'll *only* download Media for Text and Comment Blocks
@@ -1379,7 +1388,7 @@ private extension NotificationDetailsViewController {
         //  -   Plus, we'll also resize the downloaded media cache *if needed*. This is meant to adjust images to
         //      better fit onscreen, whenever the device orientation changes (and in turn, the maxMediaEmbedWidth changes too).
         //
-        let imageUrls = contentGroup.imageUrlsFromBlocksInKindSet(ContentMedia.richBlockTypes)
+        let urls = imageUrls(from: contentGroup.blocks, inKindSet: ContentMedia.richBlockTypes)
 
         let completion = {
             // Workaround: Performing the reload call, multiple times, without the .BeginFromCurrentState might
@@ -1390,7 +1399,7 @@ private extension NotificationDetailsViewController {
                 }, completion: nil)
         }
 
-        mediaDownloader.downloadMedia(urls: imageUrls, maximumWidth: maxMediaEmbedWidth, completion: completion)
+        mediaDownloader.downloadMedia(urls: urls, maximumWidth: maxMediaEmbedWidth, completion: completion)
         mediaDownloader.resizeMediaWithIncorrectSize(maxMediaEmbedWidth, completion: completion)
     }
 
