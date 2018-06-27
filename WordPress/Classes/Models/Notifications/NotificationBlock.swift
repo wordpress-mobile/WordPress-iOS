@@ -28,7 +28,7 @@ class NotificationBlock: Equatable {
     /// Available Actions collection.
     ///
     //fileprivate let actions: [String: AnyObject]?
-    let commands: [NotificationAction]?
+    let actions: [NotificationAction]?
 
     /// Action Override Values
     ///
@@ -57,12 +57,11 @@ class NotificationBlock: Equatable {
 
     /// Designated Initializer.
     ///
-    init(dictionary: [String: AnyObject], commands commandActions: [NotificationAction], parent note: Notification) {
+    init(dictionary: [String: AnyObject], actions commandActions: [NotificationAction], parent note: Notification) {
         let rawMedia    = dictionary[BlockKeys.Media] as? [[String: AnyObject]]
         let rawRanges   = dictionary[BlockKeys.Ranges] as? [[String: AnyObject]]
 
-        //actions = dictionary[BlockKeys.Actions] as? [String: AnyObject]
-        commands = commandActions
+        actions = commandActions
         media   = NotificationMedia.mediaFromArray(rawMedia)
         meta    = dictionary[BlockKeys.Meta] as? [String: AnyObject]
         ranges  = NotificationRange.rangesFromArray(rawRanges)
@@ -85,8 +84,7 @@ class NotificationBlock: Equatable {
         self.text = text
         self.ranges = ranges
         self.media =  media
-        //self.actions = nil
-        self.commands = nil
+        self.actions = nil
         self.meta = nil
         self.type = nil
     }
@@ -132,7 +130,7 @@ extension NotificationBlock {
     var isCommentApproved: Bool {
         //return isActionOn(.Approve) || !isActionEnabled(.Approve)
         let identifier = ApproveComment.actionIdentifier()
-        return isCommandOn(id: identifier) || !isCommandEnabled(id: identifier)
+        return isActionOn(id: identifier) || !isActionEnabled(id: identifier)
     }
 
     /// Comment ID, if any.
@@ -193,26 +191,24 @@ extension NotificationBlock {
 // MARK: - NotificationBlock Methods
 //
 extension NotificationBlock {
-
     /// Gets a command by identifier
     ///
-    func command(id: Identifier) -> NotificationAction? {
-        return commands?.filter {
+    func action(id: Identifier) -> NotificationAction? {
+        return actions?.filter {
             $0.identifier == id
         }.first
     }
 
-
     /// Indicated if a command is active
     ///
-    func isCommandOn(id: Identifier) -> Bool {
-        return command(id: id)?.on ?? false
+    func isActionOn(id: Identifier) -> Bool {
+        return action(id: id)?.on ?? false
     }
 
     /// Indicates if a command is enabled
     ///
-    func isCommandEnabled(id: Identifier) -> Bool {
-        return command(id: id)?.enabled ?? false
+    func isActionEnabled(id: Identifier) -> Bool {
+        return action(id: id)?.enabled ?? false
     }
 
     // Dynamic Attribute Cache: Used internally by the Interface Extension, as an optimization.
@@ -267,7 +263,7 @@ extension NotificationBlock {
     class func blocksFromArray(_ blocks: [[String: AnyObject]], parent: Notification) -> [NotificationBlock] {
         return blocks.compactMap {
             let actions = actionParser.parse($0[BlockKeys.Actions] as? [String: AnyObject])
-            return NotificationBlock(dictionary: $0, commands: actions, parent: parent)
+            return NotificationBlock(dictionary: $0, actions: actions, parent: parent)
         }
     }
 
