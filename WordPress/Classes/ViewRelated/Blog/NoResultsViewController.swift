@@ -39,8 +39,8 @@ import WordPressAuthenticator
         WPStyleGuide.configureColors(for: view, andTableView: nil)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func didMove(toParentViewController parent: UIViewController?) {
+        super.didMove(toParentViewController: parent)
         configureView()
     }
 
