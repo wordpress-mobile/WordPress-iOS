@@ -1022,9 +1022,10 @@ private extension NotificationsViewController {
         // Comments: Trash
         if let trashCommand = block.action(id: TrashComment.actionIdentifier()), let button = trashCommand.icon as? MGSwipeButton {
             button.callback = { [weak self] _ in
-                trashCommand.execute(block: block, onCompletion: { request in
+                let actionContext = ActionContext(block: block, completion: { [weak self] request in
                     self?.showUndeleteForNoteWithID(note.objectID, request: request)
                 })
+                trashCommand.execute(context: actionContext)
                 return true
             }
             rightButtons.append(button)
@@ -1037,7 +1038,8 @@ private extension NotificationsViewController {
         let approveCommand = block.action(id: ApproveComment.actionIdentifier())
         let button = approveCommand?.icon as? MGSwipeButton
         button?.callback = { _ in
-            approveCommand?.execute(block: block)
+            let actionContext = ActionContext(block: block)
+            approveCommand?.execute(context: actionContext)
             return true
         }
 

@@ -10,12 +10,12 @@ final class MarkAsSpam: DefaultNotificationAction {
         return spamIcon
     }
 
-    func execute(block: NotificationBlock, onCompletion: ((NotificationDeletionRequest) -> Void)? = nil) {
+    func execute(context: ActionContext) {
         let request = NotificationDeletionRequest(kind: .spamming, action: { [weak self] requestCompletion in
-            self?.actionsService?.spamCommentWithBlock(block) { (success) in
+            self?.actionsService?.spamCommentWithBlock(context.block) { (success) in
                 requestCompletion(success)
             }
         })
-        onCompletion?(request)
+        context.completion?(request)
     }
 }

@@ -1048,8 +1048,8 @@ private extension NotificationDetailsViewController {
         guard let likeAction = block.action(id: LikeComment.actionIdentifier()) else {
             return
         }
-
-        likeAction.execute(block: block)
+        let actionContext = ActionContext(block: block)
+        likeAction.execute(context: actionContext)
         WPAppAnalytics.track(.notificationsCommentLiked, withBlogID: block.metaSiteID)
     }
 
@@ -1063,7 +1063,8 @@ private extension NotificationDetailsViewController {
             return
         }
 
-        approveAction.execute(block: block)
+        let actionContext = ActionContext(block: block)
+        approveAction.execute(context: actionContext)
         WPAppAnalytics.track(.notificationsCommentApproved, withBlogID: block.metaSiteID)
     }
 
@@ -1072,7 +1073,8 @@ private extension NotificationDetailsViewController {
             return
         }
 
-        approveAction.execute(block: block)
+        let actionContext = ActionContext(block: block)
+        approveAction.execute(context: actionContext)
         WPAppAnalytics.track(.notificationsCommentUnapproved, withBlogID: block.metaSiteID)
     }
 
@@ -1083,10 +1085,12 @@ private extension NotificationDetailsViewController {
             return
         }
 
-        spamAction.execute(block: block) { [weak self] request in
+        let actionContext = ActionContext(block: block, completion: { [weak self] request in
             WPAppAnalytics.track(.notificationsCommentFlaggedAsSpam, withBlogID: block.metaSiteID)
             self?.onDeletionRequestCallback?(request)
-        }
+        })
+
+        spamAction.execute(context: actionContext)
 
         // We're thru
         _ = navigationController?.popToRootViewController(animated: true)
@@ -1099,30 +1103,48 @@ private extension NotificationDetailsViewController {
             return
         }
 
-        trashAction.execute(block: block) { [weak self] request in
+        let actionContext = ActionContext(block: block, completion: { [weak self] request in
             WPAppAnalytics.track(.notificationsCommentTrashed, withBlogID: block.metaSiteID)
             self?.onDeletionRequestCallback?(request)
-        }
+        })
+
+        trashAction.execute(context: actionContext)
 
         // We're thru
         _ = navigationController?.popToRootViewController(animated: true)
     }
 
     func replyCommentWithBlock(_ block: NotificationBlock, content: String) {
-        let generator = UINotificationFeedbackGenerator()
-        generator.prepare()
-        generator.notificationOccurred(.success)
+//        let generator = UINotificationFeedbackGenerator()
+//        generator.prepare()
+//        generator.notificationOccurred(.success)
 
-        actionsService.replyCommentWithBlock(block, content: content, completion: { success in
-            guard success else {
-                generator.notificationOccurred(.error)
-                self.displayReplyErrorWithBlock(block, content: content)
-                return
-            }
+        guard let replyAction = block.action(id: ReplyToComment.actionIdentifier()) else {
+            return
+        }
 
+        let actionContext = ActionContext(block: block, content: content) { _ in
             let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
             SVProgressHUD.showDismissibleSuccess(withStatus: message)
-        })
+        }
+
+        replyAction.execute(context: actionContext)
+
+//        replyAction.execute(block: <#T##NotificationBlock#>) { request in
+//            let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
+//            SVProgressHUD.showDismissibleSuccess(withStatus: message)
+//        }
+
+//        actionsService.replyCommentWithBlock(block, content: content, completion: { success in
+//            guard success else {
+//                generator.notificationOccurred(.error)
+//                self.displayReplyErrorWithBlock(block, content: content)
+//                return
+//            }
+//
+//            let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
+//            SVProgressHUD.showDismissibleSuccess(withStatus: message)
+//        })
     }
 
     func updateCommentWithBlock(_ block: NotificationBlock, content: String) {
