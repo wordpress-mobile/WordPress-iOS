@@ -90,8 +90,7 @@ class Notification: NSManagedObject {
     ///
     fileprivate var cachedTimestampAsDate: Date?
 
-    let subjectFormatter = FormattableContentFormatter(styles: FormattableSubjectStyles())
-    let snippetFormatter = FormattableContentFormatter(styles: FormattableSnipetsStyles())
+    let formatter = FormattableContentFormatter()
 
     /// Subject Blocks Transient Storage.
     ///
@@ -121,14 +120,14 @@ class Notification: NSManagedObject {
         guard let subjectContent = subjectContentGroup?.blocks.first else {
             return nil
         }
-        return subjectFormatter.render(content: subjectContent)
+        return formatter.render(content: subjectContent, with: FormattableSubjectStyles())
     }
 
     func renderSnippet() -> NSAttributedString? {
         guard let snippetContent = snippetContent else {
             return nil
         }
-        return snippetFormatter.render(content: snippetContent)
+        return formatter.render(content: snippetContent, with: FormattableSnipetsStyles())
     }
 
     /// When needed, nukes cached attributes

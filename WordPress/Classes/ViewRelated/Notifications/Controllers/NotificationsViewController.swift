@@ -55,8 +55,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     // MARK: - Properties
 
-    let subjectFormatter = FormattableContentFormatter(styles: FormattableSubjectStyles())
-    let snippetFormatter = FormattableContentFormatter(styles: FormattableSnipetsStyles())
+    let formatter = FormattableContentFormatter()
 
     /// TableHeader
     ///
