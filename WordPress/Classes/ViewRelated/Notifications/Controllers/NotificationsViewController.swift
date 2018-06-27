@@ -1020,7 +1020,7 @@ private extension NotificationsViewController {
         }
 
         // Comments: Trash
-        if let trashCommand = block.command(id: TrashComment.actionIdentifier()), let button = trashCommand.icon as? MGSwipeButton {
+        if let trashCommand = block.action(id: TrashComment.actionIdentifier()), let button = trashCommand.icon as? MGSwipeButton {
             button.callback = { [weak self] _ in
                 trashCommand.execute(block: block, onCompletion: { request in
                     self?.showUndeleteForNoteWithID(note.objectID, request: request)
@@ -1030,11 +1030,11 @@ private extension NotificationsViewController {
             rightButtons.append(button)
         }
 
-        guard let approveEnabled = block.command(id: ApproveComment.actionIdentifier())?.enabled, approveEnabled == true else {
+        guard let approveEnabled = block.action(id: ApproveComment.actionIdentifier())?.enabled, approveEnabled == true else {
             return rightButtons
         }
 
-        let approveCommand = block.command(id: ApproveComment.actionIdentifier())
+        let approveCommand = block.action(id: ApproveComment.actionIdentifier())
         let button = approveCommand?.icon as? MGSwipeButton
         button?.callback = { _ in
             approveCommand?.execute(block: block)
