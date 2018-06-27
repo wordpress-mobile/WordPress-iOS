@@ -22,7 +22,8 @@ final class ApproveComment: DefaultNotificationAction {
         return approveIcon
     }
 
-    func execute(block: NotificationBlock, onCompletion: ((NotificationDeletionRequest) -> Void)? = nil) {
+    func execute(context: ActionContext) {
+        let block = context.block
         if enabled {
             unApprove(block: block)
         } else {

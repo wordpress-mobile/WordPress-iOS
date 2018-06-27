@@ -10,15 +10,15 @@ final class TrashComment: DefaultNotificationAction {
         return trashIcon
     }
 
-    func execute(block: NotificationBlock, onCompletion: ((NotificationDeletionRequest) -> Void)?) {
+    func execute(context: ActionContext) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
             let request = NotificationDeletionRequest(kind: .deletion, action: { [weak self] requestCompletion in
-                self?.actionsService?.deleteCommentWithBlock(block, completion: { success in
+                self?.actionsService?.deleteCommentWithBlock(context.block, completion: { success in
                     requestCompletion(success)
                 })
             })
 
-            onCompletion?(request)
+            context.completion?(request)
         }
     }
 }
