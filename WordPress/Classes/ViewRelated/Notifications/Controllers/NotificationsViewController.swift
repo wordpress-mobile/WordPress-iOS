@@ -24,13 +24,22 @@ class FormattableSubjectStyles: FormattableContentStyles {
         ]
     }
 
-    var linksColor: UIColor? {
-        return nil
+    var linksColor: UIColor? = nil
+    var key: String = "FormattableSubjectStyles"
+}
+
+class FormattableSnipetsStyles: FormattableContentStyles {
+    var attributes: [NSAttributedStringKey : Any] {
+        return WPStyleGuide.Notifications.snippetRegularStyle
     }
 
-    var key: String {
-        return "FormattableSubjectStyles"
-    }
+    var quoteStyles: [NSAttributedStringKey : Any]? = nil
+
+    var rangeStylesMap: [FormattableContentRange.Kind : [NSAttributedStringKey : Any]]? = nil
+
+    var linksColor: UIColor? = nil
+
+    var key: String = "FormattableSnipetsStyles"
 }
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
@@ -47,6 +56,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     // MARK: - Properties
 
     let subjectFormatter = FormattableContentFormatter(styles: FormattableSubjectStyles())
+    let snippetFormatter = FormattableContentFormatter(styles: FormattableSnipetsStyles())
 
     /// TableHeader
     ///
@@ -951,11 +961,12 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         let deletionRequest         = deletionRequestForNoteWithID(note.objectID)
         let isLastRow               = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
 
-        if let subjectBlock = note.subjectContentGroup?.blocks.first {
-            cell.attributedSubject = subjectFormatter.render(content: subjectBlock)
-        }
-        cell.attributedSubject      = note.subjectBlock?.attributedSubjectText
-        cell.attributedSnippet      = note.snippetBlock?.attributedSnippetText
+
+        cell.attributedSubject = note.renderSubject()
+        cell.attributedSnippet = note.renderSnippet()
+        
+//        cell.attributedSubject      = note.subjectBlock?.attributedSubjectText
+//        cell.attributedSnippet      = note.snippetBlock?.attributedSnippetText
         cell.read                   = note.read
         cell.noticon                = note.noticon
         cell.unapproved             = note.isUnapprovedComment
