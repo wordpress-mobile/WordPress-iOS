@@ -1095,18 +1095,14 @@ private extension NotificationDetailsViewController {
     func trashCommentWithBlock(_ block: NotificationBlock) {
         precondition(onDeletionRequestCallback != nil)
 
-        // Hit the DeletionRequest Callback
-        let request = NotificationDeletionRequest(kind: .deletion, action: { onCompletion in
-            let mainContext = ContextManager.sharedInstance().mainContext
-            let service = NotificationActionsService(managedObjectContext: mainContext)
-            service.deleteCommentWithBlock(block) { (success) in
-                onCompletion(success)
-            }
+        guard let trashAction = block.action(id: TrashComment.actionIdentifier()) else {
+            return
+        }
 
+        trashAction.execute(block: block) { [weak self] request in
             WPAppAnalytics.track(.notificationsCommentTrashed, withBlogID: block.metaSiteID)
-        })
-
-        onDeletionRequestCallback?(request)
+            self?.onDeletionRequestCallback?(request)
+        }
 
         // We're thru
         _ = navigationController?.popToRootViewController(animated: true)
