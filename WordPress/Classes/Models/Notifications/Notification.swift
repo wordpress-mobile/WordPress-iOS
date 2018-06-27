@@ -3,33 +3,6 @@ import CoreData
 import CocoaLumberjack
 import WordPressKit
 
-extension Notification: FormattableContentParent {
-    var uniqueID: String? {
-        return self.notificationId
-    }
-
-    func isEqual(to other: FormattableContentParent) -> Bool {
-        guard let otherNotification = other as? Notification else {
-            return false
-        }
-        return self == otherNotification
-    }
-}
-
-class SubjectGroup: FormattableContentGroup {
-    class func createGroup(from subject: [[String: AnyObject]], parent: FormattableContentParent) -> FormattableContentGroup {
-        let blocks = FormattableContent.blocksFromArray(subject, parent: parent)
-        return FormattableContentGroup(blocks: blocks)
-    }
-}
-
-class HeaderContentGroup: FormattableContentGroup {
-    class func createGroup(from header: [[String: AnyObject]], parent: FormattableContentParent) -> FormattableContentGroup {
-        let blocks = FormattableContent.blocksFromArray(header, parent: parent)
-        return FormattableContentGroup(blocks: blocks)
-    }
-}
-
 // MARK: - Notification Entity
 //
 @objc(Notification)
@@ -120,14 +93,14 @@ class Notification: NSManagedObject {
         guard let subjectContent = subjectContentGroup?.blocks.first else {
             return nil
         }
-        return formatter.render(content: subjectContent, with: FormattableSubjectStyles())
+        return formatter.render(content: subjectContent, with: SubjectContentStyles())
     }
 
     func renderSnippet() -> NSAttributedString? {
         guard let snippetContent = snippetContent else {
             return nil
         }
-        return formatter.render(content: snippetContent, with: FormattableSnipetsStyles())
+        return formatter.render(content: snippetContent, with: SnipetsContentStyles())
     }
 
     /// When needed, nukes cached attributes
@@ -334,7 +307,7 @@ extension Notification {
             return nil
         }
 
-        cachedSubjectContentGroup = SubjectGroup.createGroup(from: subject, parent: self)
+        cachedSubjectContentGroup = SubjectContentGroup.createGroup(from: subject, parent: self)
         return cachedSubjectContentGroup
     }
 

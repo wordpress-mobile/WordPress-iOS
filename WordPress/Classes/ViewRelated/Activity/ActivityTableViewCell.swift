@@ -21,7 +21,7 @@ open class ActivityTableViewCell: WPTableViewCell {
         self.activity = activity
         summaryLabel.text = activity.summary
         if FeatureFlag.extractNotifications.enabled {
-            contentLabel.attributedText = activity.formattedContent(ofKind: .text, using: RichTextStyles())
+            contentLabel.attributedText = activity.formattedContent(ofKind: .text, using: RichTextContentStyles())
         } else {
             contentLabel.text = activity.text
         }

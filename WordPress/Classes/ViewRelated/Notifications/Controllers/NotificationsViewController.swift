@@ -5,43 +5,6 @@ import MGSwipeTableCell
 import WordPressShared
 import WordPressAuthenticator
 
-class FormattableSubjectStyles: FormattableContentStyles {
-    var attributes: [NSAttributedStringKey : Any] {
-        return WPStyleGuide.Notifications.subjectRegularStyle
-    }
-
-    var quoteStyles: [NSAttributedStringKey : Any]? {
-        return WPStyleGuide.Notifications.subjectItalicsStyle
-    }
-
-    var rangeStylesMap: [FormattableContentRange.Kind : [NSAttributedStringKey : Any]]? {
-        return [
-            .User: WPStyleGuide.Notifications.subjectBoldStyle,
-            .Post: WPStyleGuide.Notifications.subjectItalicsStyle,
-            .Comment: WPStyleGuide.Notifications.subjectItalicsStyle,
-            .Blockquote: WPStyleGuide.Notifications.subjectQuotedStyle,
-            .Noticon: WPStyleGuide.Notifications.subjectNoticonStyle
-        ]
-    }
-
-    var linksColor: UIColor? = nil
-    var key: String = "FormattableSubjectStyles"
-}
-
-class FormattableSnipetsStyles: FormattableContentStyles {
-    var attributes: [NSAttributedStringKey : Any] {
-        return WPStyleGuide.Notifications.snippetRegularStyle
-    }
-
-    var quoteStyles: [NSAttributedStringKey : Any]? = nil
-
-    var rangeStylesMap: [FormattableContentRange.Kind : [NSAttributedStringKey : Any]]? = nil
-
-    var linksColor: UIColor? = nil
-
-    var key: String = "FormattableSnipetsStyles"
-}
-
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account.
 ///
@@ -960,12 +923,13 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         let deletionRequest         = deletionRequestForNoteWithID(note.objectID)
         let isLastRow               = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
 
-
-        cell.attributedSubject = note.renderSubject()
-        cell.attributedSnippet = note.renderSnippet()
-        
-//        cell.attributedSubject      = note.subjectBlock?.attributedSubjectText
-//        cell.attributedSnippet      = note.snippetBlock?.attributedSnippetText
+        if FeatureFlag.extractNotifications.enabled {
+            cell.attributedSubject = note.renderSubject()
+            cell.attributedSnippet = note.renderSnippet()
+        } else {
+            cell.attributedSubject      = note.subjectBlock?.attributedSubjectText
+            cell.attributedSnippet      = note.snippetBlock?.attributedSnippetText
+        }
         cell.read                   = note.read
         cell.noticon                = note.noticon
         cell.unapproved             = note.isUnapprovedComment
