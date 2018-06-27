@@ -1,11 +1,12 @@
 import Foundation
 
 /// An enum for returning validation errors.
-enum SiteCreationFieldsError {
+enum SiteCreationFieldsValidation {
     case missingTitle
     case missingDomain
     case domainContainsWordPressDotCom
     case missingTheme
+    case noError
 }
 
 /// Singleton class to contain options selected by the user
@@ -28,25 +29,25 @@ class SiteCreationFields {
         sharedInstance = SiteCreationFields()
     }
 
-    static func validateFields() -> SiteCreationFieldsError? {
+    static func validateFields() -> SiteCreationFieldsValidation {
 
         if SiteCreationFields.sharedInstance.title.isEmpty {
-            return SiteCreationFieldsError.missingTitle
+            return .missingTitle
         }
 
         if SiteCreationFields.sharedInstance.domain.isEmpty {
-            return SiteCreationFieldsError.missingDomain
+            return .missingDomain
         }
 
         if SiteCreationFields.sharedInstance.domain.contains(".wordpress.com") {
-            return SiteCreationFieldsError.domainContainsWordPressDotCom
+            return .domainContainsWordPressDotCom
         }
 
         if SiteCreationFields.sharedInstance.theme == nil {
-            return SiteCreationFieldsError.missingTheme
+            return .missingTheme
         }
 
-        return nil
+        return .noError
     }
 
 }
