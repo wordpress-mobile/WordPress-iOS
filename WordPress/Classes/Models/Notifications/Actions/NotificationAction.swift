@@ -3,8 +3,6 @@ import MGSwipeTableCell
 protocol NotificationAction: CustomStringConvertible {
     func identifier() -> Identifier
     func execute(block: NotificationBlock, onCompletion: ((NotificationDeletionRequest) -> Void)?)
-    func setOn()
-    func setOff()
 
     var enabled: Bool { get }
     var on: Bool { get }
@@ -53,21 +51,5 @@ class DefaultNotificationAction: NotificationAction {
 
     func identifier() -> Identifier {
         return type(of: self).actionIdentifier()
-    }
-
-    func enable() {
-
-    }
-
-    func disable() {
-
-    }
-
-    func setOn() {
-
-    }
-
-    func setOff() {
-
     }
 }
