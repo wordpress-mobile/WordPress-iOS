@@ -193,52 +193,24 @@ extension NotificationBlock {
 // MARK: - NotificationBlock Methods
 //
 extension NotificationBlock {
-    /// Allows us to set a local override for a remote value. This is used to fake the UI, while
-    /// there's a BG call going on.
-    ///
-//    func setOverrideValue(_ value: Bool, forAction action: Action) {
-//        actionsOverride[action] = value
-//    }
-//
-//    /// Removes any local (temporary) value that might have been set by means of *setActionOverrideValue*.
-//    ///
-//    func removeOverrideValueForAction(_ action: Action) {
-//        actionsOverride.removeValue(forKey: action)
-//    }
-//
-//    /// Returns the Notification Block status for a given action. Will return any *Override* that might be set, if any.
-//    ///
-//    fileprivate func valueForAction(_ action: Action) -> Bool? {
-//        if let overrideValue = actionsOverride[action] {
-//            return overrideValue
-//        }
-//
-//        let value = actions?[action.rawValue] as? NSNumber
-//        return value?.boolValue
-//    }
-//
-//    /// Returns *true* if a given action is available.
-//    ///
-//    func isActionEnabled(_ action: Action) -> Bool {
-//        return valueForAction(action) != nil
-//    }
-//
-//    /// Returns *true* if a given action is toggled on. (I.e.: Approval = On >> the comment is currently approved).
-//    ///
-//    func isActionOn(_ action: Action) -> Bool {
-//        return valueForAction(action) ?? false
-//    }
 
+    /// Gets a command by identifier
+    ///
     func command(id: Identifier) -> NotificationAction? {
         return commands?.filter {
             $0.identifier == id
         }.first
     }
 
+
+    /// Indicated if a command is active
+    ///
     func isCommandOn(id: Identifier) -> Bool {
         return command(id: id)?.on ?? false
     }
 
+    /// Indicates if a command is enabled
+    ///
     func isCommandEnabled(id: Identifier) -> Bool {
         return command(id: id)?.enabled ?? false
     }
