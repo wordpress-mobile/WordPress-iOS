@@ -1045,7 +1045,11 @@ private extension NotificationDetailsViewController {
     }
 
     func likeCommentWithBlock(_ block: NotificationBlock) {
-        actionsService.likeCommentWithBlock(block)
+        guard let likeAction = block.action(id: LikeComment.actionIdentifier()) else {
+            return
+        }
+
+        likeAction.execute(block: block)
         WPAppAnalytics.track(.notificationsCommentLiked, withBlogID: block.metaSiteID)
     }
 
@@ -1055,29 +1059,34 @@ private extension NotificationDetailsViewController {
     }
 
     func approveCommentWithBlock(_ block: NotificationBlock) {
-        actionsService.approveCommentWithBlock(block)
+        guard let approveAction = block.action(id: ApproveComment.actionIdentifier()) else {
+            return
+        }
+
+        approveAction.execute(block: block)
         WPAppAnalytics.track(.notificationsCommentApproved, withBlogID: block.metaSiteID)
     }
 
     func unapproveCommentWithBlock(_ block: NotificationBlock) {
-        actionsService.unapproveCommentWithBlock(block)
+        guard let approveAction = block.action(id: ApproveComment.actionIdentifier()) else {
+            return
+        }
+
+        approveAction.execute(block: block)
         WPAppAnalytics.track(.notificationsCommentUnapproved, withBlogID: block.metaSiteID)
     }
 
     func spamCommentWithBlock(_ block: NotificationBlock) {
         precondition(onDeletionRequestCallback != nil)
 
-        let request = NotificationDeletionRequest(kind: .spamming, action: { onCompletion in
-            let mainContext = ContextManager.sharedInstance().mainContext
-            let service = NotificationActionsService(managedObjectContext: mainContext)
-            service.spamCommentWithBlock(block) { (success) in
-                onCompletion(success)
-            }
+        guard let spamAction = block.action(id: MarkAsSpam.actionIdentifier()) else {
+            return
+        }
 
+        spamAction.execute(block: block) { [weak self] request in
             WPAppAnalytics.track(.notificationsCommentFlaggedAsSpam, withBlogID: block.metaSiteID)
-        })
-
-        onDeletionRequestCallback?(request)
+            self?.onDeletionRequestCallback?(request)
+        }
 
         // We're thru
         _ = navigationController?.popToRootViewController(animated: true)
