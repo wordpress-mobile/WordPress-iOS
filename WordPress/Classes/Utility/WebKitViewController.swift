@@ -343,7 +343,7 @@ class WebKitViewController: UIViewController {
         case #keyPath(WKWebView.url):
             // If the site has no title, use the url.
             if webView.title?.nonEmptyString() == nil {
-                    titleView.titleLabel.text = webView.url?.host
+                titleView.titleLabel.text = webView.url?.host
             }
             titleView.subtitleLabel.text = webView.url?.host
             let haveUrl = webView.url != nil
