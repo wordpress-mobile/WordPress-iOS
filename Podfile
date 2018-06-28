@@ -67,7 +67,7 @@ target 'WordPress' do
     pod 'Gridicons', '0.16'
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '1.1'
-    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => 'd0b3c02'
+    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => 'b039eb868f0b3df8bf8c52eeab3b53a438227a6f'
     pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'e8c86c1c1006335a987332e7327af1a3fec3dbcd'
     pod 'WordPress-Aztec-iOS/WordPressEditor', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit =>'e8c86c1c1006335a987332e7327af1a3fec3dbcd'
     pod 'WordPressUI', '1.0.4'
