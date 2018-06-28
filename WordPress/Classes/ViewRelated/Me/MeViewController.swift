@@ -174,7 +174,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
         let logOut = DestructiveButtonRow(
             title: RowTitles.logOut,
-            action: confirmLogout(),
+            action: logoutRowWasPressed(),
             accessibilityIdentifier: "logOutFromWPcomButton")
 
         let wordPressComAccount = HeaderTitles.wpAccount
@@ -293,28 +293,10 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
-    fileprivate func confirmLogout() -> ImmuTableAction {
+    fileprivate func logoutRowWasPressed() -> ImmuTableAction {
         return { [unowned self] row in
-            let format = NSLocalizedString("Logging out will remove all of @%@’s WordPress.com data from this device.", comment: "Label for logging out from WordPress.com account. The %@ is a placeholder for the user's screen name.")
-            let title = String(format: format, self.defaultAccount()!.username)
-            let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-
-            let cancel = UIAlertAction(
-                title: NSLocalizedString("Cancel", comment: ""),
-                style: .cancel,
-                handler: nil)
-            let logOut = UIAlertAction(
-                title: NSLocalizedString("Log Out", comment: "Button for confirming logging out from WordPress.com account"),
-                style: .destructive,
-                handler: { [unowned self] _ in
-                self.logOut()
-            })
-
-            alert.addAction(cancel)
-            alert.addAction(logOut)
-
-            self.present(alert, animated: true, completion: nil)
             self.tableView.deselectSelectedRowWithAnimation(true)
+            self.displayLogOutAlert()
         }
     }
 
@@ -387,6 +369,32 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         service.updateUserDetails(for: account, success: { () in }, failure: { _ in })
     }
 
+
+    // MARK: - LogOut
+
+    private func displayLogOutAlert() {
+        let alert  = UIAlertController(title: logOutAlertTitle, message: nil, preferredStyle: .alert)
+        alert.addActionWithTitle(LogoutAlert.cancelAction, style: .cancel)
+        alert.addActionWithTitle(LogoutAlert.logoutAction, style: .destructive) { _ in
+            self.logOut()
+        }
+
+        present(alert, animated: true, completion: nil)
+    }
+
+    private var logOutAlertTitle: String {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = PostService(managedObjectContext: context)
+        let count = service.countPostsWithoutRemote()
+
+        guard count > 0 else {
+            return LogoutAlert.defaultTitle
+        }
+
+        let format = count > 1 ? LogoutAlert.unsavedTitlePlural : LogoutAlert.unsavedTitleSingular
+        return String(format: format, count)
+    }
+
     fileprivate func logOut() {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
@@ -395,6 +403,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         // Also clear the spotlight index
         SearchManager.shared.deleteAllSearchableItems()
     }
+
 
     // MARK: - Private Properties
 
@@ -495,8 +504,8 @@ extension MeViewController: GravatarUploader {
 
 // MARK: - Constants
 
-extension MeViewController {
-    struct RowTitles {
+private extension MeViewController {
+    enum RowTitles {
         static let appSettings = NSLocalizedString("App Settings", comment: "Link to App Settings section")
         static let myProfile = NSLocalizedString("My Profile", comment: "Link to My Profile section")
         static let accountSettings = NSLocalizedString("Account Settings", comment: "Link to Account Settings section")
@@ -506,8 +515,18 @@ extension MeViewController {
         static let logOut = NSLocalizedString("Log Out", comment: "Label for logging out from WordPress.com account")
     }
 
-    struct HeaderTitles {
+    enum HeaderTitles {
         static let wpAccount = NSLocalizedString("WordPress.com Account", comment: "WordPress.com sign-in/sign-out section header title")
+    }
+
+    enum LogoutAlert {
+        static let defaultTitle =  NSLocalizedString("Log out of WordPress?", comment: "LogOut confirmation text, whenever there are no local changes")
+        static let unsavedTitleSingular = NSLocalizedString("You have changes to %d post that hasn't been uploaded to your site. Logging out now will delete those changes. Log out anyway?",
+                                                            comment: "Warning displayed before logging out. The %d placeholder will contain the number of local posts (SINGULAR!)")
+        static let unsavedTitlePlural = NSLocalizedString("You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?",
+                                                          comment: "Warning displayed before logging out. The %d placeholder will contain the number of local posts (PLURAL!)")
+        static let cancelAction = NSLocalizedString("Cancel", comment: "")
+        static let logoutAction = NSLocalizedString("Log Out", comment: "Button for confirming logging out from WordPress.com account")
     }
 }
 

@@ -45,7 +45,7 @@ PODS:
     - GoogleToolboxForMac/Defines (= 2.1.4)
     - "GoogleToolboxForMac/NSString+URLArguments (= 2.1.4)"
   - "GoogleToolboxForMac/NSString+URLArguments (2.1.4)"
-  - Gridicons (0.15)
+  - Gridicons (0.16)
   - HockeySDK (5.1.2):
     - HockeySDK/DefaultLib (= 5.1.2)
   - HockeySDK/DefaultLib (5.1.2)
@@ -149,7 +149,7 @@ DEPENDENCIES:
   - Crashlytics (= 3.10.1)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - Gifu (= 3.1.0)
-  - Gridicons (from `https://github.com/Automattic/Gridicons-iOS.git`, commit `20e95239625168db0560b938691c3aee0e6568b1`)
+  - Gridicons (= 0.16)
   - HockeySDK (= 5.1.2)
   - lottie-ios (= 2.5.0)
   - MGSwipeTableCell (= 1.6.7)
@@ -164,8 +164,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.4)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `b989822e4fcb68f007bd661089c008333b40b8c5`)
-  - WordPress-Aztec-iOS/WordPressEditor (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `b989822e4fcb68f007bd661089c008333b40b8c5`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `e8c86c1c1006335a987332e7327af1a3fec3dbcd`)
+  - WordPress-Aztec-iOS/WordPressEditor (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `e8c86c1c1006335a987332e7327af1a3fec3dbcd`)
   - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `d0b3c02`)
   - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `690bc3babc0285ae182f73297c8424d77d9847e0`)
   - WordPressShared (= 1.0.7)
@@ -187,6 +187,7 @@ SPEC REPOS:
     - Gifu
     - GoogleSignInRepacked
     - GoogleToolboxForMac
+    - Gridicons
     - HockeySDK
     - lottie-ios
     - MGSwipeTableCell
@@ -210,11 +211,8 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
-  Gridicons:
-    :commit: 20e95239625168db0560b938691c3aee0e6568b1
-    :git: https://github.com/Automattic/Gridicons-iOS.git
   WordPress-Aztec-iOS:
-    :commit: b989822e4fcb68f007bd661089c008333b40b8c5
+    :commit: e8c86c1c1006335a987332e7327af1a3fec3dbcd
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressAuthenticator:
     :commit: d0b3c02
@@ -227,11 +225,8 @@ CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
-  Gridicons:
-    :commit: 20e95239625168db0560b938691c3aee0e6568b1
-    :git: https://github.com/Automattic/Gridicons-iOS.git
   WordPress-Aztec-iOS:
-    :commit: b989822e4fcb68f007bd661089c008333b40b8c5
+    :commit: e8c86c1c1006335a987332e7327af1a3fec3dbcd
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressAuthenticator:
     :commit: d0b3c02
@@ -253,7 +248,7 @@ SPEC CHECKSUMS:
   Gifu: fd1e9e3a15ac5d90bae0a510e4ed9f94b485ab03
   GoogleSignInRepacked: d357702618c555f38923576924661325eb1ef22b
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
-  Gridicons: 0e5e76ad9fc6f7cbc3da137a9751ef516c5aef73
+  Gridicons: 8cc5cb666d5ad8b8f1771d3c7a93d27ae25b7c2e
   HockeySDK: 38b7e2726af1ea86ae97ce4b5de33ab0817e3500
   lottie-ios: d699fdee68d7b63e721d949388b015fef1aaa4ac
   MGSwipeTableCell: fb20e983988bde2b8d0df29c2d9e1d8ffd10b74a
@@ -276,6 +271,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: 14b73c70aaab4a8c16ce2ce54baa72a1acfaa9c1
+PODFILE CHECKSUM: 5190960fe59702ad6ab7520a8c263aad95ab3f46
 
 COCOAPODS: 1.5.3
