@@ -127,10 +127,19 @@ class Notification: NSManagedObject {
     ///
     func resetCachedAttributes() {
         cachedTimestampAsDate = nil
-        cachedSubjectBlockGroup = nil
-        cachedHeaderBlockGroup = nil
-        cachedBodyBlockGroups = nil
-        cachedHeaderAndBodyBlockGroups = nil
+
+        if FeatureFlag.extractNotifications.enabled {
+            formatter.resetCache()
+            cachedBodyContentGroup = nil
+            cachedHeaderContentGroup = nil
+            cachedSubjectContentGroup = nil
+            cachedHeaderAndBodyContentGroup = nil
+        } else {
+            cachedSubjectBlockGroup = nil
+            cachedHeaderBlockGroup = nil
+            cachedBodyBlockGroups = nil
+            cachedHeaderAndBodyBlockGroups = nil
+        }
     }
 
     // This is a NO-OP that will force NSFetchedResultsController to reload the row for this object.
