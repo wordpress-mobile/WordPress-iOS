@@ -130,7 +130,11 @@ class WebKitViewController: UIViewController {
         }
 
         DispatchQueue.main.async { [weak self] in
-            authenticator.request(url: (self?.url)!, cookieJar: (self?.webView.configuration.websiteDataStore.httpCookieStore)!) { [weak self] (request) in
+            guard let strongSelf = self else {
+                return
+            }
+
+            authenticator.request(url: strongSelf.url, cookieJar: strongSelf.webView.configuration.websiteDataStore.httpCookieStore) { [weak self] (request) in
                 self?.load(request: request)
             }
         }
