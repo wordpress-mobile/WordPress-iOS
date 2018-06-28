@@ -25,7 +25,7 @@ final class LikeComment: DefaultNotificationAction {
     override func execute(context: ActionContext) {
         let block = context.block
         if on {
-            unlike(block: block)
+            removelike(block: block)
         } else {
             like(block: block)
         }
@@ -37,5 +37,9 @@ final class LikeComment: DefaultNotificationAction {
 
     private func removeLike(block: NotificationBlock) {
         actionsService?.unlikeCommentWithBlock(block)
+    }
+
+    private func setIconTitle(_ title: String) {
+        icon?.setTitle(title, for: .normal)
     }
 }
