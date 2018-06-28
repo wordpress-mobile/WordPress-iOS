@@ -10,7 +10,7 @@ final class TrashComment: DefaultNotificationAction {
         return trashIcon
     }
 
-    func execute(context: ActionContext) {
+    override func execute(context: ActionContext) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
             let request = NotificationDeletionRequest(kind: .deletion, action: { [weak self] requestCompletion in
                 self?.actionsService?.deleteCommentWithBlock(context.block, completion: { success in

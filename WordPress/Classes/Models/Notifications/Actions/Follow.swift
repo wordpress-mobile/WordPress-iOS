@@ -10,7 +10,7 @@ final class Follow: DefaultNotificationAction {
         return followIcon
     }
 
-    func execute(context: ActionContext) {
+    override func execute(context: ActionContext) {
 
     }
 }

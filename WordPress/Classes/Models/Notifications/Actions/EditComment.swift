@@ -10,7 +10,7 @@ final class EditComment: DefaultNotificationAction {
         return editIcon
     }
 
-    func execute(context: ActionContext) {
+    override func execute(context: ActionContext) {
         let block = context.block
         let content = context.content
         actionsService?.updateCommentWithBlock(block, content: content, completion: { success in

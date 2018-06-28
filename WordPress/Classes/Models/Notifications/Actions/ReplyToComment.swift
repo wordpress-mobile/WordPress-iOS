@@ -10,7 +10,7 @@ final class ReplyToComment: DefaultNotificationAction {
         return replyIcon
     }
 
-    func execute(context: ActionContext) {
+    override func execute(context: ActionContext) {
         let block = context.block
         let content = context.content
         actionsService?.replyCommentWithBlock(block, content: content, completion: { success in
