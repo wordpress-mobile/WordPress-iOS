@@ -23,7 +23,6 @@ final class ApproveComment: DefaultNotificationAction {
     }
 
     override func execute(context: ActionContext) {
-        print("====== approve comment execute ")
         let block = context.block
         if on {
             unApprove(block: block)
