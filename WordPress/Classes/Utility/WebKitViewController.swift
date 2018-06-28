@@ -42,7 +42,7 @@ class WebKitViewController: UIViewController {
     @objc var addsHideMasterbarParameters = true
     @objc var customTitle: String?
 
-    var reachabilityObserver: Any?
+    private var reachabilityObserver: Any?
 
     @objc init(configuration: WebViewControllerConfiguration) {
         webView = WKWebView()
