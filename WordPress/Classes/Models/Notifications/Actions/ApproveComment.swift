@@ -6,7 +6,7 @@ final class ApproveComment: DefaultNotificationAction {
         static let unapprove = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
     }
 
-    override var enabled: Bool {
+    override var on: Bool {
         willSet {
             let newTitle = newValue ? TitleStrings.approve : TitleStrings.unapprove
             setIconTitle(newTitle)
@@ -22,9 +22,10 @@ final class ApproveComment: DefaultNotificationAction {
         return approveIcon
     }
 
-    func execute(context: ActionContext) {
+    override func execute(context: ActionContext) {
+        print("====== approve comment execute ")
         let block = context.block
-        if enabled {
+        if on {
             unApprove(block: block)
         } else {
             approve(block: block)
