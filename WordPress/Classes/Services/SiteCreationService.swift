@@ -21,11 +21,9 @@ struct SiteCreationParams {
     var siteUrl: String
     var siteTitle: String
     var siteTagline: String?
-    // NOTE: Once the .siteCreation feature flag is removed, Theme should be required.
-    // It's optional now to support the existing Signup flow with automatic site creation.
-    var siteTheme: Theme?
+    var siteTheme: Theme
 
-    init(siteUrl: String, siteTitle: String, siteTagline: String? = nil, siteTheme: Theme? = nil) {
+    init(siteUrl: String, siteTitle: String, siteTagline: String? = nil, siteTheme: Theme) {
         self.siteUrl = siteUrl
         self.siteTitle = siteTitle
         self.siteTagline = siteTagline
@@ -63,7 +61,7 @@ open class SiteCreationService: LocalCoreDataService {
     func createSite(siteURL url: String,
                     siteTitle: String,
                     siteTagline: String?,
-                    siteTheme: Theme?,
+                    siteTheme: Theme,
                     status: @escaping SiteCreationStatusBlock,
                     success: @escaping SiteCreationRequestSuccessBlock,
                     failure: @escaping SiteCreationFailureBlock) {
@@ -120,11 +118,10 @@ open class SiteCreationService: LocalCoreDataService {
             }
 
             let setTaglineBlock = {
-                let successBlock = (siteTheme != nil) ? setThemeBlock : updateAndSyncBlock
                 self.setWPComBlogTagline(blog: blog,
                                          params: params,
                                          status: status,
-                                         success: successBlock,
+                                         success: setThemeBlock,
                                          failure: setTaglineFailureBlock)
             }
 
@@ -141,10 +138,8 @@ open class SiteCreationService: LocalCoreDataService {
             if let siteTagline = siteTagline,
                 !siteTagline.isEmpty {
                 setTaglineBlock()
-            } else if siteTheme != nil {
-                setThemeBlock()
             } else {
-                updateAndSyncBlock()
+                setThemeBlock()
             }
         }
 
@@ -348,20 +343,13 @@ open class SiteCreationService: LocalCoreDataService {
 
         status(.settingTheme)
 
-        guard let siteTheme = params.siteTheme else {
-            let error = SiteCreationError.missingTheme
-            DDLogError("Error while creating site: Missing Theme.")
-            failure(error)
-            return
-        }
-
         let themeService = ThemeService(managedObjectContext: managedObjectContext)
 
         let themeServiceSuccessBlock = { (theme: Theme?) in
             success()
         }
 
-        _ = themeService.activate(siteTheme, for: blog, success: themeServiceSuccessBlock, failure: failure)
+        _ = themeService.activate(params.siteTheme, for: blog, success: themeServiceSuccessBlock, failure: failure)
     }
 
     /// Create a new blog entity from the supplied blog options. Calls the supplied
