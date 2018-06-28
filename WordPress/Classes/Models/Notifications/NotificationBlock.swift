@@ -283,17 +283,6 @@ extension NotificationBlock {
         case comment
     }
 
-    /// Known kinds of Actions
-    ///
-    enum Action: String {
-        case Approve            = "approve-comment"
-        case Follow             = "follow"
-        case Like               = "like-comment"
-        case Reply              = "replyto-comment"
-        case Spam               = "spam-comment"
-        case Trash              = "trash-comment"
-    }
-
     /// Parsing Keys
     ///
     fileprivate enum BlockKeys {
