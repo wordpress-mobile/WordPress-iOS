@@ -10,7 +10,7 @@ final class LikePost: DefaultNotificationAction {
         return likeIcon
     }
 
-    func execute(context: ActionContext) {
+    override func execute(context: ActionContext) {
 
     }
 }

@@ -23,12 +23,6 @@ protocol NotificationAction: CustomStringConvertible {
 }
 
 extension NotificationAction {
-    func execute(context: ActionContext) {
-
-    }
-}
-
-extension NotificationAction {
     static func actionIdentifier() -> Identifier {
         return Identifier(value: String(describing: self))
     }
@@ -43,7 +37,7 @@ extension NotificationAction {
 class DefaultNotificationAction: NotificationAction {
     var enabled: Bool
 
-    let on: Bool
+    var on: Bool
 
     var identifier: Identifier {
         return type(of: self).actionIdentifier()
@@ -65,4 +59,6 @@ class DefaultNotificationAction: NotificationAction {
         self.on = on
         self.enabled = true
     }
+
+    func execute(context: ActionContext) { }
 }
