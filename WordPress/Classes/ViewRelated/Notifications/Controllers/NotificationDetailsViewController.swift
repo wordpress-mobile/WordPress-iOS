@@ -1054,7 +1054,11 @@ private extension NotificationDetailsViewController {
     }
 
     func unlikeCommentWithBlock(_ block: NotificationBlock) {
-        actionsService.unlikeCommentWithBlock(block)
+        guard let likeAction = block.action(id: LikeComment.actionIdentifier()) else {
+            return
+        }
+        let actionContext = ActionContext(block: block)
+        likeAction.execute(context: actionContext)
         WPAppAnalytics.track(.notificationsCommentUnliked, withBlogID: block.metaSiteID)
     }
 
