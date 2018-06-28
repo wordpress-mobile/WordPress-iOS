@@ -25,7 +25,7 @@ final class LikeComment: DefaultNotificationAction {
     override func execute(context: ActionContext) {
         let block = context.block
         if on {
-            removelike(block: block)
+            removeLike(block: block)
         } else {
             like(block: block)
         }
