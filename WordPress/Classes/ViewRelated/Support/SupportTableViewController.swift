@@ -210,10 +210,12 @@ private extension SupportTableViewController {
                 return
             }
 
+            WPAnalytics.track(.supportIdentityFormViewed)
             ZendeskUtils.sharedInstance.showSupportEmailPrompt(from: controllerToShowFrom) { success in
                 guard success else {
                     return
                 }
+                WPAnalytics.track(.supportIdentitySet)
                 self.reloadViewModel()
             }
         }

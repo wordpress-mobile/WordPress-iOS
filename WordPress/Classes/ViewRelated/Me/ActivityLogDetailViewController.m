@@ -1,4 +1,5 @@
 #import "ActivityLogDetailViewController.h"
+#import "WordPress-Swift.h"
 
 @interface ActivityLogDetailViewController ()
 
@@ -49,6 +50,7 @@
                                                                 target:self
                                                                 action:@selector(showShareOptions:)];
     self.navigationItem.rightBarButtonItem = shareButton;
+    [WPAnalytics track:WPAnalyticsStatActivityLogDetailViewed];
 }
 
 - (void)viewWillAppear:(BOOL)animated
