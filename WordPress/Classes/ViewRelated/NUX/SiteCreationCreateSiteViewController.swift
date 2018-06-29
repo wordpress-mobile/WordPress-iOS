@@ -137,9 +137,17 @@ private extension SiteCreationCreateSiteViewController {
     func createSite() {
 
         // Make sure we have all required info before proceeding.
-        if let validationError = SiteCreationFields.validateFields() {
+        let validationError = SiteCreationFields.validateFields()
+        guard validationError == .noError else {
             setErrorMessage(for: validationError)
             DDLogError("Error while creating site: \(String(describing: errorMessage))")
+            performSegue(withIdentifier: Constants.errorSegueIdentifier, sender: self)
+            return
+        }
+        let siteCreationFields = SiteCreationFields.sharedInstance
+        guard let theme = siteCreationFields.theme else {
+            setErrorMessage(for: .missingTheme)
+            DDLogError("Error while creating site, after successful validation: \(String(describing: errorMessage))")
             performSegue(withIdentifier: Constants.errorSegueIdentifier, sender: self)
             return
         }
@@ -170,12 +178,11 @@ private extension SiteCreationCreateSiteViewController {
         }
 
         // Start the site creation process
-        let siteCreationFields = SiteCreationFields.sharedInstance
         let service = SiteCreationService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.createSite(siteURL: siteCreationFields.domain,
                            siteTitle: siteCreationFields.title,
                            siteTagline: siteCreationFields.tagline,
-                           siteTheme: siteCreationFields.theme,
+                           siteTheme: theme,
                            status: statusBlock,
                            success: successBlock,
                            failure: failureBlock)
@@ -221,7 +228,7 @@ private extension SiteCreationCreateSiteViewController {
     ///
     /// - Parameter validationError: validation error type returned by SiteCreationFields.validation
     ///
-    func setErrorMessage(for validationError: SiteCreationFieldsError) {
+    func setErrorMessage(for validationError: SiteCreationFieldsValidation) {
         switch validationError {
         case .missingTitle:
             setReturnViewController(for: .details)
@@ -235,6 +242,8 @@ private extension SiteCreationCreateSiteViewController {
         case .missingTheme:
             setReturnViewController(for: .themeSelection)
             errorMessage = NSLocalizedString("The site theme is missing.", comment: "Error shown during site creation process when the site theme is missing.")
+        case .noError:
+            errorMessage = ""
         }
     }
 
