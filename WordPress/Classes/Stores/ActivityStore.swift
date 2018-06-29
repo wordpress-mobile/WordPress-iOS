@@ -73,6 +73,10 @@ private enum Constants {
     static let maxRetries = 12
 }
 
+private enum ActivityStoreError: Error {
+    case rewindAlreadyRunning
+}
+
 class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
 
     fileprivate let refreshInterval: TimeInterval = 60 // seconds
@@ -230,6 +234,12 @@ private extension ActivityStore {
     }
 
     func rewind(site: JetpackSiteRef, rewindID: String) {
+        let currentStatus = getRewindStatus(site: site)
+        guard currentStatus == nil || (currentStatus?.restore?.status != .running && currentStatus?.restore?.status != .queued) else {
+            actionDispatcher.dispatch(ActivityAction.rewindRequestFailed(site: site, error: ActivityStoreError.rewindAlreadyRunning))
+            return
+        }
+
         remote(site: site)?.restoreSite(
             site.siteID,
             rewindID: rewindID,
@@ -283,8 +293,15 @@ private extension ActivityStore {
     }
 
     func rewindFailed(site: JetpackSiteRef, error: Error) {
-        let message = NSLocalizedString("Unable to restore your site, please try again later or contact support.",
+        let message: String
+        switch error {
+        case ActivityStoreError.rewindAlreadyRunning:
+            message = NSLocalizedString("There's a restore currently in progress, please wait before starting next one",
+                                        comment: "Text displayed when user tries to start a restore when there is already one running")
+        default:
+            message = NSLocalizedString("Unable to restore your site, please try again later or contact support.",
                                         comment: "Text displayed when a site restore fails.")
+        }
 
         let noticeAction = NoticeAction.post(Notice(title: message))
 
