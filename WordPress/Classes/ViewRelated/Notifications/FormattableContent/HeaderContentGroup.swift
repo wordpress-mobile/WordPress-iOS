@@ -1,9 +1,7 @@
 
 class HeaderContentGroup: FormattableContentGroup {
     class func createGroup(from header: [[String: AnyObject]], parent: FormattableContentParent) -> FormattableContentGroup {
-//        let parser = NotificationActionParser()
-//        let actions = parser.parse(header)
-        let blocks = FormattableContent.blocksFromArray(header, actions: [], parent: parent)
+        let blocks = FormattableContent.blocksFromArray(header, actionsParser: NotificationActionParser(), parent: parent)
         return FormattableContentGroup(blocks: blocks)
     }
 }

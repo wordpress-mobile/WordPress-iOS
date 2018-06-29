@@ -1,4 +1,4 @@
-struct NotificationActionParser {
+struct NotificationActionParser: FormattableContentActionParser {
     private enum Action: String {
         case approve = "approve-comment"
         case follow = "follow"
