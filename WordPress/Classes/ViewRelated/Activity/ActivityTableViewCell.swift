@@ -56,8 +56,8 @@ open class RewindStatusTableViewCell: ActivityTableViewCell {
 
     @IBOutlet private var progressView: UIProgressView!
 
-    private(set) var title: String = ""
-    private(set) var summary: String = ""
+    private(set) var title = ""
+    private(set) var summary = ""
     private(set) var progress: Float = 0.0
 
     open func configureCell(title: String,

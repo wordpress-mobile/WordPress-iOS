@@ -112,8 +112,7 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
         activeQueries.filter {
             if case .restoreStatus = $0 {
                 return true
-            }
-            else {
+            } else {
                 return false
             }
         }
@@ -130,8 +129,7 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
             .filter {
                 if case .activities = $0 {
                     return true
-                }
-                else {
+                } else {
                     return false
                 }
             }
