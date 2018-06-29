@@ -1,7 +1,7 @@
 
 class BodyContentGroup: FormattableContentGroup {
     class func create(from body: [[String: AnyObject]], parent: FormattableContentParent) -> [FormattableContentGroup] {
-        let blocks = FormattableContent.blocksFromArray(body, actions: [], parent: parent)
+        let blocks = FormattableContent.blocksFromArray(body, actionsParser: NotificationActionParser(), parent: parent)
 
         switch parent.kind {
         case .Comment:
