@@ -1,11 +1,9 @@
-Beheer of creeër je WordPress blog of website direct van jouw iOS device: bekijk statistieken, modereer reacties, maak en bewerk berichten en pagina's, en upload media.
+Beheer of maak je WordPress-blog of -website direct vanaf je iOS-device: maak en bewerk berichten en pagina's, upload je favoriete foto's en video's, bekijk statistieken en plaats reacties op opmerkingen.
 
-Met WordPress voor iOS heb je publicatiemogelijkheden in de palm van je hand. Schrijf een spontane haiku vanuit je luie stoel. Maak tijdens een ommetje een foto voor de wekelijkse fotowedstrijd van de krant. Reageer op de laatste reacties of houd je statistieken in de gaten om te zien waar de lezers van vandaag vandaan komen.
+Met WordPress voor iOS heb je publicatiemogelijkheden in de palm van je hand. Schrijf een spontane haiku vanaf je bank. Maak een foto tijdens je lunchpauze en upload deze. Reageer op de laatste opmerkingen of houd je statistieken in de gaten om te zien uit welke landen de bezoekers van vandaag komen.
 
-Vergeet je berichten die vanaf de app zijn gepubliceerd niet te taggen met #wponthego, zodat de community je artistieke creaties onderweg kan vinden.
+WordPress voor iOS is een opensourceproject; dat betekent dat ook jij kunt helpen bij de ontwikkeling ervan. Ga naar https://apps.wordpress.com/contribute/ voor meer informatie.
 
-WordPress voor iOS is een Open Source-project; dat betekent dat ook jij kunt helpen bij de ontwikkeling ervan. Ga naar https://apps.wordpress.com/contribute/ voor meer informatie.
+WordPress voor iOS ondersteunt WordPress.com en zelf-gehoste WordPress.org-sites die op WordPress 4.0 of hoger worden uitgevoerd.
 
-WordPress voor iOS ondersteunt WordPress.com en self-hosted WordPress.org sites draaiend op WordPress 4.0 of nieuwer.
-
-Hulp nodig bij de app? Bezoek de forums op https://ios.forums.wordpress.org of stuur ons een tweet op @WordPressiOS.
+Hulp nodig bij de app? Bezoek de forums op https://ios.forums.wordpress.org/ of tweet ons @WordPressiOS.

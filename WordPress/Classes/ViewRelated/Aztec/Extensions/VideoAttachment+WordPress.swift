@@ -1,5 +1,6 @@
 import Foundation
 import Aztec
+import WordPressEditor
 
 
 // MARK: - VideoAttachment
