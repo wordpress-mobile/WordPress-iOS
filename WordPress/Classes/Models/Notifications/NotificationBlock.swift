@@ -28,7 +28,7 @@ class NotificationBlock: Equatable {
     /// Available Actions collection.
     ///
     //fileprivate let actions: [String: AnyObject]?
-    let actions: [NotificationAction]?
+    let actions: [FormattableContentAction]?
 
     /// Action Override Values
     ///
@@ -57,7 +57,7 @@ class NotificationBlock: Equatable {
 
     /// Designated Initializer.
     ///
-    init(dictionary: [String: AnyObject], actions commandActions: [NotificationAction], parent note: Notification) {
+    init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], parent note: Notification) {
         let rawMedia    = dictionary[BlockKeys.Media] as? [[String: AnyObject]]
         let rawRanges   = dictionary[BlockKeys.Ranges] as? [[String: AnyObject]]
 
@@ -193,7 +193,7 @@ extension NotificationBlock {
 extension NotificationBlock {
     /// Gets a command by identifier
     ///
-    func action(id: Identifier) -> NotificationAction? {
+    func action(id: Identifier) -> FormattableContentAction? {
         return actions?.filter {
             $0.identifier == id
         }.first

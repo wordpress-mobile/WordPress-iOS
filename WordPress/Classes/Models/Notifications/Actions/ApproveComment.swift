@@ -31,7 +31,7 @@ final class ApproveComment: DefaultNotificationAction {
         }
     }
 
-    private func unApprove(block: NotificationBlock) {
+    private func unApprove(block: ActionableObject) {
         setIconTitle(TitleStrings.unapprove)
 
         ReachabilityUtils.onAvailableInternetConnectionDo {
@@ -39,7 +39,7 @@ final class ApproveComment: DefaultNotificationAction {
         }
     }
 
-    private func approve(block: NotificationBlock) {
+    private func approve(block: ActionableObject) {
         setIconTitle(TitleStrings.approve)
 
         ReachabilityUtils.onAvailableInternetConnectionDo {

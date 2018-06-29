@@ -31,11 +31,11 @@ final class LikeComment: DefaultNotificationAction {
         }
     }
 
-    private func like(block: NotificationBlock) {
+    private func like(block: ActionableObject) {
         actionsService?.likeCommentWithBlock(block)
     }
 
-    private func removeLike(block: NotificationBlock) {
+    private func removeLike(block: ActionableObject) {
         actionsService?.unlikeCommentWithBlock(block)
     }
 

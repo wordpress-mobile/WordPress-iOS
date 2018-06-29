@@ -867,15 +867,15 @@ private extension NotificationDetailsViewController {
         cell.accessoryType = hasHomeURL ? .disclosureIndicator : .none
         cell.name = userBlock.text
         cell.blogTitle = hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome?.host
-        cell.isFollowEnabled = userBlock.isActionEnabled(.Follow)
-        cell.isFollowOn = userBlock.isActionOn(.Follow)
+        cell.isFollowEnabled = userBlock.isActionEnabled(id: Follow.actionIdentifier())
+        cell.isFollowOn = userBlock.isActionOn(id: Follow.actionIdentifier())
 
-        cell.onFollowClick = { [weak self] in
-//            self?.followSiteWithBlock(userBlock)
+         cell.onFollowClick = { [weak self] in
+            self?.followSiteWithBlock(userBlock)
         }
 
         cell.onUnfollowClick = { [weak self] in
-//            self?.unfollowSiteWithBlock(userBlock)
+            self?.unfollowSiteWithBlock(userBlock)
         }
 
         // Download the Gravatar
@@ -950,14 +950,14 @@ private extension NotificationDetailsViewController {
         // Setup: Properties
         // Note: Approve Action is actually a synonym for 'Edit' (Based on Calypso's basecode)
         //
-        cell.isReplyEnabled     = UIDevice.isPad() && commentBlock.isActionOn(.Reply)
-        cell.isLikeEnabled      = commentBlock.isActionEnabled(.Like)
-        cell.isApproveEnabled   = commentBlock.isActionEnabled(.Approve)
-        cell.isTrashEnabled     = commentBlock.isActionEnabled(.Trash)
-        cell.isSpamEnabled      = commentBlock.isActionEnabled(.Spam)
-        cell.isEditEnabled      = commentBlock.isActionOn(.Approve)
-        cell.isLikeOn           = commentBlock.isActionOn(.Like)
-        cell.isApproveOn        = commentBlock.isActionOn(.Approve)
+        cell.isReplyEnabled     = UIDevice.isPad() && commentBlock.isActionOn(id: ReplyToComment.actionIdentifier())
+        cell.isLikeEnabled      = commentBlock.isActionEnabled(id: LikeComment.actionIdentifier())
+        cell.isApproveEnabled   = commentBlock.isActionEnabled(id: ApproveComment.actionIdentifier())
+        cell.isTrashEnabled     = commentBlock.isActionEnabled(id: TrashComment.actionIdentifier())
+        cell.isSpamEnabled      = commentBlock.isActionEnabled(id: MarkAsSpam.actionIdentifier())
+        cell.isEditEnabled      = commentBlock.isActionOn(id: ApproveComment.actionIdentifier())
+        cell.isLikeOn           = commentBlock.isActionOn(id: LikeComment.actionIdentifier())
+        cell.isApproveOn        = commentBlock.isActionOn(id: ApproveComment.actionIdentifier())
 
         // Setup: Callbacks
         cell.onReplyClick = { [weak self] _ in
@@ -1316,19 +1316,19 @@ private extension NotificationDetailsViewController {
 // MARK: - Action Handlers
 //
 private extension NotificationDetailsViewController {
-    func followSiteWithBlock(_ block: NotificationBlock) {
+    func followSiteWithBlock(_ block: ActionableObject) {
         UINotificationFeedbackGenerator().notificationOccurred(.success)
 
         actionsService.followSiteWithBlock(block)
         WPAppAnalytics.track(.notificationsSiteFollowAction, withBlogID: block.metaSiteID)
     }
 
-    func unfollowSiteWithBlock(_ block: NotificationBlock) {
+    func unfollowSiteWithBlock(_ block: ActionableObject) {
         actionsService.unfollowSiteWithBlock(block)
         WPAppAnalytics.track(.notificationsSiteUnfollowAction, withBlogID: block.metaSiteID)
     }
 
-    func likeCommentWithBlock(_ block: NotificationBlock) {
+    func likeCommentWithBlock(_ block: ActionableObject) {
         guard let likeAction = block.action(id: LikeComment.actionIdentifier()) else {
             return
         }
@@ -1337,7 +1337,7 @@ private extension NotificationDetailsViewController {
         WPAppAnalytics.track(.notificationsCommentLiked, withBlogID: block.metaSiteID)
     }
 
-    func unlikeCommentWithBlock(_ block: NotificationBlock) {
+    func unlikeCommentWithBlock(_ block: ActionableObject) {
         guard let likeAction = block.action(id: LikeComment.actionIdentifier()) else {
             return
         }
@@ -1346,7 +1346,7 @@ private extension NotificationDetailsViewController {
         WPAppAnalytics.track(.notificationsCommentUnliked, withBlogID: block.metaSiteID)
     }
 
-    func approveCommentWithBlock(_ block: NotificationBlock) {
+    func approveCommentWithBlock(_ block: ActionableObject) {
         guard let approveAction = block.action(id: ApproveComment.actionIdentifier()) else {
             return
         }
@@ -1356,7 +1356,7 @@ private extension NotificationDetailsViewController {
         WPAppAnalytics.track(.notificationsCommentApproved, withBlogID: block.metaSiteID)
     }
 
-    func unapproveCommentWithBlock(_ block: NotificationBlock) {
+    func unapproveCommentWithBlock(_ block: ActionableObject) {
         guard let approveAction = block.action(id: ApproveComment.actionIdentifier()) else {
             return
         }
@@ -1366,7 +1366,7 @@ private extension NotificationDetailsViewController {
         WPAppAnalytics.track(.notificationsCommentUnapproved, withBlogID: block.metaSiteID)
     }
 
-    func spamCommentWithBlock(_ block: NotificationBlock) {
+    func spamCommentWithBlock(_ block: ActionableObject) {
         precondition(onDeletionRequestCallback != nil)
 
         guard let spamAction = block.action(id: MarkAsSpam.actionIdentifier()) else {
@@ -1387,7 +1387,7 @@ private extension NotificationDetailsViewController {
         _ = navigationController?.popToRootViewController(animated: true)
     }
 
-    func trashCommentWithBlock(_ block: NotificationBlock) {
+    func trashCommentWithBlock(_ block: ActionableObject) {
         precondition(onDeletionRequestCallback != nil)
 
         guard let trashAction = block.action(id: TrashComment.actionIdentifier()) else {
@@ -1408,7 +1408,7 @@ private extension NotificationDetailsViewController {
         _ = navigationController?.popToRootViewController(animated: true)
     }
 
-    func replyCommentWithBlock(_ block: NotificationBlock, content: String) {
+    func replyCommentWithBlock(_ block: ActionableObject, content: String) {
         guard let replyAction = block.action(id: ReplyToComment.actionIdentifier()) else {
             return
         }
@@ -1430,7 +1430,7 @@ private extension NotificationDetailsViewController {
         replyAction.execute(context: actionContext)
     }
 
-    func updateCommentWithBlock(_ block: NotificationBlock, content: String) {
+    func updateCommentWithBlock(_ block: ActionableObject, content: String) {
         guard let editCommentAction = block.action(id: EditComment.actionIdentifier()) else {
             return
         }
@@ -1453,7 +1453,6 @@ private extension NotificationDetailsViewController {
 }
 
 
-
 // MARK: - Replying Comments
 //
 private extension NotificationDetailsViewController {
@@ -1461,7 +1460,7 @@ private extension NotificationDetailsViewController {
         let _ = replyTextView.becomeFirstResponder()
     }
 
-    func displayReplyErrorWithBlock(_ block: NotificationBlock, content: String) {
+    func displayReplyErrorWithBlock(_ block: ActionableObject, content: String) {
         let message     = NSLocalizedString("There has been an unexpected error while sending your reply",
                                             comment: "Reply Failure Message")
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancels an Action")
@@ -1504,7 +1503,7 @@ private extension NotificationDetailsViewController {
         present(navController, animated: true, completion: nil)
     }
 
-    func displayCommentUpdateErrorWithBlock(_ block: NotificationBlock, content: String) {
+    func displayCommentUpdateErrorWithBlock(_ block: ActionableObject, content: String) {
         let message     = NSLocalizedString("There has been an unexpected error while updating your comment",
                                             comment: "Displayed whenever a Comment Update Fails")
         let cancelTitle = NSLocalizedString("Give Up", comment: "Cancel")
