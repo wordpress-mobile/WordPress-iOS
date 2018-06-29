@@ -1,1 +1,2 @@
-redes sociales, bloguear, blogs, fotos, escribir, geolocalización, medios, blog, wordpress
+red,social,notas,jetpack,fotos,escribir,geotagging,media,blog,wordpress,web,blogging,diseño
+

@@ -1,1 +1,1 @@
-социальные сети, блогинг, блоги, фото, написание, геопривязка, медиа, блог, wordpress
+social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design

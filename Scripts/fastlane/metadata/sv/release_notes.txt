@@ -1,2 +1,4 @@
-Nu kan du spara inlägg i läsaren: Du behöver bara knacka på bokmärkesikonen för ett inlägg, så hittar du det sedan i din lista över sparade inlägg. Du kan t.o.m. läsa dina sparade inläggs text när du inte är online!
-Observera att du i denna första version inte kan vara säker på att eventuella bilder finns sparade och att Sparade inlägg för närvarande är en funktion som är knuten till en viss enhet, vilket innebär att sparade inlägg inte synkroniseras mellan olika enheter eller till webben och att de förloras om du loggar ut eller avinstallerar appen.
+Läsare: Sökfunktionen har förbättrats så att man nu kan söka efter både webbplatser och inlägg.
+Redigerare: Hanterar Gutenberg-inlägg bättre.
+Läsare: Ett meddelande med information om användningen visas när man första gången använder funktionen för att spara inlägg till senare.
+En rad mindre ändringar och förbättringar av användargränssnittet
