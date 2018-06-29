@@ -231,6 +231,7 @@ class PlanDetailViewController: UIViewController {
 }
 
 // MARK: Table View Data Source / Delegate
+
 extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return noResultsViewModel != nil ? 1 : tableViewModel.sections.count
@@ -240,16 +241,14 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
         return noResultsViewModel != nil ? 1 : tableViewModel.sections[section].rows.count
     }
 
-     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if noResultsViewModel != nil {
-            // Calculate the height of the no results cell from the bottom of the header to the table bottom.
-            var noResultsViewBounds = tableView.bounds
-            noResultsViewBounds.origin.y = headerView.frame.height
-            noResultsViewBounds.size.height = tableView.bounds.height - headerView.frame.height
-            return noResultsViewBounds.size.height
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+
+        guard noResultsViewModel != nil,
+            let noResultsViewController = noResultsViewController else {
+                return tableView.estimatedRowHeight
         }
 
-        return tableView.estimatedRowHeight
+        return noResultsViewController.heightForTableCell()
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
