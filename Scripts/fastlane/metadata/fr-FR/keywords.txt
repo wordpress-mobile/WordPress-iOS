@@ -1,1 +1,1 @@
-réseau social, blogging, blogs, photos, écriture, géolocalisation, média, blog, wordpress
+social,réseau,notes,jetpack,photos,écriture,geotagging,média,blog,wordpress,website,blogging,design
