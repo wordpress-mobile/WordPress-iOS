@@ -1,2 +1,4 @@
-Ahora puedes guardar entradas en el lector: simplemente toca en el icono del marcador en una entrada y podrás encontrarlo después en tu lista de entradas guardadas. ¡Puedes leer el texto de tus entradas guardadas incluso sin conexión!
-Ten en cuenta que en esta primera versión no podemos garantizar que las imágenes estén disponibles sin conexión y que las publicaciones guardadas dependen del dispositivo, lo que quiere decir que no se sincronizan entre dispositivos y que se pierden si cierras sesión o desinstalas la aplicación.
+Lector: Se ha mejorado la función de búsqueda para permitir también buscar sitios además de entradas
+Editor: Mejor gestión de las entradas Gutenberg.
+Lector: Ahora se muestra una alerta con la información de uso la primera vez que se utiliza la característica Guardar entradas para más tarde.
+Un montón de pequeñas mejoras y arreglos en la interfaz de usuario.

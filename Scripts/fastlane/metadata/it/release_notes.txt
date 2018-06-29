@@ -1,2 +1,4 @@
-Ora puoi salvare gli articoli nel Reader: basta toccare l'icona del segnalibro su un articolo e sarai in grado di ritrovarlo in seguito nell'elenco degli Articoli salvati. Puoi persino leggere il testo dei tuoi articoli salvati se sei offline.
-Tieni presente che in questo rilascio iniziale non si garantisce la disponibilità delle immagini in modalità offline e che Articoli salvati è attualmente una funzionalità specifica del dispositivo, il che significa che gli articoli salvati non vengono sincronizzati tra dispositivi o il web e che andranno persi in caso di disconnessione dall'account o di disinstallazione dell'app.
+Lettore: La funzione di ricerca è stata migliorata per consentire la ricerca dei siti e di articoli.
+Editor: Gestione migliore degli articoli Gutenberg.
+Lettore: Ora viene visualizzato un avviso con le informazioni di utilizzo al primo utilizzo della funzione Salva articoli per dopo.
+Molti piccoli aggiustamenti e miglioramenti UI
