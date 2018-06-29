@@ -21,7 +21,6 @@ class PluginDirectoryViewModel: Observable {
     private let popularReceipt: Receipt
     private let newReceipt: Receipt
 
-    private var storeReceipt: Receipt?
     private var actionReceipt: Receipt?
 
     private let throttle = Scheduler(seconds: 1)
