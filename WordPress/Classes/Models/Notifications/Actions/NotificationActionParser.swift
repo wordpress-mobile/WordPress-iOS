@@ -15,7 +15,7 @@ struct NotificationActionParser {
         }
     }
 
-    func parse(_ dictionary: [String: AnyObject]?) -> [NotificationAction] {
+    func parse(_ dictionary: [String: AnyObject]?) -> [FormattableContentAction] {
         guard let allKeys = dictionary?.keys else {
             return []
         }
@@ -25,7 +25,7 @@ struct NotificationActionParser {
         })
     }
 
-    private func action(key: String, on: Bool) -> NotificationAction {
+    private func action(key: String, on: Bool) -> FormattableContentAction {
         switch Action.matching(value: key) {
         case .approve:
             return approveAction(on: on)
@@ -48,39 +48,39 @@ struct NotificationActionParser {
         }
     }
 
-    private func approveAction(on: Bool) -> NotificationAction {
+    private func approveAction(on: Bool) -> FormattableContentAction {
         return ApproveComment(on: on)
     }
 
-    private func followAction(on: Bool) -> NotificationAction {
+    private func followAction(on: Bool) -> FormattableContentAction {
         return Follow(on: on)
     }
 
-    private func likeCommentAction(on: Bool) -> NotificationAction {
+    private func likeCommentAction(on: Bool) -> FormattableContentAction {
         return LikeComment(on: on)
     }
 
-    private func likePostAction(on: Bool) -> NotificationAction {
+    private func likePostAction(on: Bool) -> FormattableContentAction {
         return LikePost(on: on)
     }
 
-    private func replyAction(on: Bool) -> NotificationAction {
+    private func replyAction(on: Bool) -> FormattableContentAction {
         return ReplyToComment(on: on)
     }
 
-    private func spamAction(on: Bool) -> NotificationAction {
+    private func spamAction(on: Bool) -> FormattableContentAction {
         return MarkAsSpam(on: on)
     }
 
-    private func editCommentAction(on: Bool) -> NotificationAction {
+    private func editCommentAction(on: Bool) -> FormattableContentAction {
         return EditComment(on: on)
     }
 
-    private func trashAction(on: Bool) -> NotificationAction {
+    private func trashAction(on: Bool) -> FormattableContentAction {
         return TrashComment(on: on)
     }
 
-    private func notFoundAction(on: Bool) -> NotificationAction {
+    private func notFoundAction(on: Bool) -> FormattableContentAction {
         print("======= printing not found action ")
         return DefaultNotificationAction(on: on)
     }
