@@ -9,7 +9,7 @@ enum ActivityAction: Action {
     case receiveActivitiesFailed(site: JetpackSiteRef, error: Error)
 
     case rewind(site: JetpackSiteRef, rewindID: String)
-    case rewindStarted(site: JetpackSiteRef, restoreID: String)
+    case rewindStarted(site: JetpackSiteRef, rewindID: String, restoreID: String)
     case rewindRequestFailed(site: JetpackSiteRef, error: Error)
     case rewindFinished(site: JetpackSiteRef, restoreID: String)
     case rewindFailed(site: JetpackSiteRef, restoreID: String)
@@ -110,8 +110,12 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
 
         // Fetching Status
         activeQueries.filter {
-            if case .restoreStatus = $0 { return true }
-            else { return false }
+            if case .restoreStatus = $0 {
+                return true
+            }
+            else {
+                return false
+            }
         }
         .compactMap { $0.site }
         .filter { state.fetchingRewindStatus[$0] != true }
@@ -124,8 +128,12 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
     private var sitesToFetch: [JetpackSiteRef] {
         return activeQueries
             .filter {
-                if case .activities = $0 { return true }
-                else { return false }
+                if case .activities = $0 {
+                    return true
+                }
+                else {
+                    return false
+                }
             }
             .compactMap { $0.site }
             .unique
@@ -143,10 +151,6 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
         return state.fetchingActivities[site, default: false]
     }
 
-    func isRestoring(site: JetpackSiteRef) -> Bool {
-        return false
-    }
-
     override func onDispatch(_ action: Action) {
         guard let activityAction = action as? ActivityAction else {
             return
@@ -159,21 +163,26 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
             receiveActivitiesFailed(site: site, error: error)
         case .rewind(let site, let rewindID):
             rewind(site: site, rewindID: rewindID)
-        case .rewindStarted(let site, let restoreID):
-            rewindStarted(site: site, restoreID: restoreID)
+        case .rewindStarted(let site, let rewindID, let restoreID):
+            rewindStarted(site: site, rewindID: rewindID, restoreID: restoreID)
         case .rewindRequestFailed(let site, let error):
             rewindFailed(site: site, error: error)
         case .rewindStatusUpdated(let site, let status):
             rewindStatusUpdated(site: site, status: status)
         case .rewindStatusUpdateFailed(let site, _):
             delayedRetryFetchRewindStatus(site: site)
-        case .rewindFinished(let site, _),
-             .rewindFailed(let site, _),
+        case .rewindFinished(let site, let restoreID):
+            rewindFinished(site: site, restoreID: restoreID)
+        case .rewindFailed(let site, _),
              .rewindStatusUpdateTimedOut(let site):
             transaction { state in
                 state.fetchingRewindStatus[site] = false
                 state.rewindStatusRetries[site] = nil
             }
+
+            let notice = Notice(title: NSLocalizedString("Your restore is taking longer than usual, please check again in a few minutes.",
+                                                         comment: "Text displayed when a site restore takes too long."))
+            actionDispatcher.dispatch(NoticeAction.post(notice))
         }
     }
 }
@@ -182,6 +191,11 @@ extension ActivityStore {
     func getActivities(site: JetpackSiteRef) -> [Activity]? {
         return state.activities[site] ?? nil
     }
+
+    func getActivity(site: JetpackSiteRef, rewindID: String) -> Activity? {
+        return getActivities(site: site)?.filter { $0.rewindID == rewindID }.first
+    }
+
     func getRewindStatus(site: JetpackSiteRef) -> RewindStatus? {
         return state.rewindStatus[site] ?? nil
     }
@@ -189,6 +203,8 @@ extension ActivityStore {
 
 private extension ActivityStore {
     func fetchActivities(site: JetpackSiteRef, count: Int = 1000) {
+        state.fetchingActivities[site] = true
+
         remote(site: site)?.getActivityForSite(
             site.siteID,
             count: count,
@@ -220,15 +236,52 @@ private extension ActivityStore {
             site.siteID,
             rewindID: rewindID,
             success: { [actionDispatcher] restoreID in
-                actionDispatcher.dispatch(ActivityAction.rewindStarted(site: site, restoreID: restoreID))
+                actionDispatcher.dispatch(ActivityAction.rewindStarted(site: site, rewindID: rewindID, restoreID: restoreID))
             },
             failure: {  [actionDispatcher] error in
                 actionDispatcher.dispatch(ActivityAction.rewindRequestFailed(site: site, error: error))
         })
     }
 
-    func rewindStarted(site: JetpackSiteRef, restoreID: String) {
+    func rewindStarted(site: JetpackSiteRef, rewindID: String, restoreID: String) {
         fetchRewindStatus(site: site)
+
+        let notice: Notice
+        let title = NSLocalizedString("Your site is being restored",
+                                      comment: "Title of a message displayed when user starts a rewind operation")
+
+        if let activity = getActivity(site: site, rewindID: rewindID) {
+            let formattedString = mediumString(from: activity.published, adjustingTimezoneTo: site)
+
+            let message = String(format: NSLocalizedString("Rewinding to %@", comment: "Notice showing the date the site is being rewinded to"), formattedString)
+            notice = Notice(title: title, message: message)
+        } else {
+            notice = Notice(title: title)
+        }
+
+        actionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    func rewindFinished(site: JetpackSiteRef, restoreID: String) {
+        transaction { state in
+            state.fetchingRewindStatus[site] = false
+            state.rewindStatusRetries[site] = nil
+        }
+
+        let notice: Notice
+        let title = NSLocalizedString("Your site has been succesfully restored",
+                                      comment: "Title of a message displayed when a site has finished rewinding")
+
+        if let activity = getActivity(site: site, rewindID: restoreID) {
+            let formattedString = mediumString(from: activity.published, adjustingTimezoneTo: site)
+
+            let message = String(format: NSLocalizedString("Rewound to %@", comment: "Notice showing the date the site is being rewinded to"), formattedString)
+            notice = Notice(title: title, message: message)
+        } else {
+            notice = Notice(title: title)
+        }
+
+        actionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
     func rewindFailed(site: JetpackSiteRef, error: Error) {
@@ -276,6 +329,16 @@ private extension ActivityStore {
     }
 
     func rewindStatusUpdated(site: JetpackSiteRef, status: RewindStatus) {
+        let shouldPostStateUpdates = getRewindStatus(site: site)?.restore?.status == .running ||
+                                     getRewindStatus(site: site)?.restore?.status == .queued
+        // The way our API works, if there was a restore event "recently" (for some undefined value of "recently",
+        // on the order of magnitude of ~30 minutes or so), it'll be reported back by the API.
+        // But if the restore has finished a good while back (e.g. there's also an event in the AL telling us
+        // about the restore happening) we don't neccesarily want to display that redundant info to the users.
+        // Hence this somewhat dumb hack — if we've gotten updates about a RewindStatus before (which means we have displayed the UI)
+        // we're gonna show users "hey, your rewind finished!". But if the only thing we know the restore is
+        // that it has finished in a recent past, we don't do anything special.
+
         state.rewindStatus[site] = status
 
         guard let restoreStatus = status.restore else {
@@ -286,9 +349,13 @@ private extension ActivityStore {
         case .running, .queued:
             delayedRetryFetchRewindStatus(site: site)
         case .finished:
-            actionDispatcher.dispatch(ActivityAction.rewindFinished(site: site, restoreID: restoreStatus.id))
+            if shouldPostStateUpdates {
+                actionDispatcher.dispatch(ActivityAction.rewindFinished(site: site, restoreID: restoreStatus.id))
+            }
         case .fail:
-            actionDispatcher.dispatch(ActivityAction.rewindFailed(site: site, restoreID: restoreStatus.id))
+            if shouldPostStateUpdates {
+                actionDispatcher.dispatch(ActivityAction.rewindFailed(site: site, restoreID: restoreStatus.id))
+            }
         }
     }
 
@@ -300,5 +367,30 @@ private extension ActivityStore {
         let api = WordPressComRestApi(oAuthToken: token, userAgent: WPUserAgent.wordPress())
 
         return ActivityServiceRemote(wordPressComRestApi: api)
+    }
+
+    private func mediumString(from date: Date, adjustingTimezoneTo site: JetpackSiteRef) -> String {
+        guard let timezone = timeZone(for: site) else {
+            return date.mediumStringWithTime()
+        }
+
+        let formatter = DateFormatter()
+        formatter.doesRelativeDateFormatting = true
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        formatter.timeZone = timezone
+
+        return formatter.string(from: date)
+    }
+
+    private func timeZone(for site: JetpackSiteRef) -> TimeZone? {
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+
+        guard let blog = blogService.blog(byBlogId: site.siteID as NSNumber) else {
+            return TimeZone(secondsFromGMT: 0)
+        }
+
+        return blogService.timeZone(for: blog)
     }
 }
