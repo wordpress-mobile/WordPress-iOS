@@ -1,0 +1,9 @@
+您可以直接在 iOS 设备上管理或创建自己的 WordPress 博客或网站：创建和编辑文章和页面，上传您最喜欢的照片和视频，查看统计数据和回复评论。
+
+借助 iOS 版 WordPress，您可以随时随地发布信息，尽在您的掌握。在沙发上为即兴创作的俳句撰写草稿。在午休时间拍照并发表。回复最新评论，或者查看统计数据，看看今天的访客来自哪些新国家/地区。
+
+iOS 版 WordPress 是开源项目，这意味着您也可以为它的开发贡献一份力量。详细信息请访问 https://apps.wordpress.com/contribute/。
+
+iOS 版 WordPress 支持 WordPress.com 和运行 WordPress 4.0 或更高版本的自托管 WordPress.org 站点。
+
+需要应用方面的帮助？请访问我们的论坛 (https://ios.forums.wordpress.org/)，或在 Twitter 上 @ 我们 (@WordPressiOS)。
