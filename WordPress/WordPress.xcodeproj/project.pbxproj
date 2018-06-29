@@ -205,6 +205,7 @@
 		405B53FB1F83C369002E19BF /* FancyAlerts+VerificationPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 405B53FA1F83C369002E19BF /* FancyAlerts+VerificationPrompt.swift */; };
 		40640046200ED30300106789 /* TextWithAccessoryButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40640045200ED30300106789 /* TextWithAccessoryButtonCell.xib */; };
 		4070D75C20E5F55A007CEBDA /* RewindStatusTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4070D75B20E5F55A007CEBDA /* RewindStatusTableViewCell.xib */; };
+		4070D75E20E6B4E4007CEBDA /* ActivityDateFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4070D75D20E6B4E4007CEBDA /* ActivityDateFormatting.swift */; };
 		40A2777F20191AA500D078D5 /* PluginDirectoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A2777E20191AA500D078D5 /* PluginDirectoryCollectionViewCell.swift */; };
 		40A2778120191B5E00D078D5 /* PluginDirectoryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40A2778020191B5E00D078D5 /* PluginDirectoryCollectionViewCell.xib */; };
 		40ADB15520686870009A9161 /* PluginStore+Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40ADB15420686870009A9161 /* PluginStore+Persistence.swift */; };
@@ -1554,6 +1555,7 @@
 		405B53FA1F83C369002E19BF /* FancyAlerts+VerificationPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FancyAlerts+VerificationPrompt.swift"; sourceTree = "<group>"; };
 		40640045200ED30300106789 /* TextWithAccessoryButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextWithAccessoryButtonCell.xib; sourceTree = "<group>"; };
 		4070D75B20E5F55A007CEBDA /* RewindStatusTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RewindStatusTableViewCell.xib; sourceTree = "<group>"; };
+		4070D75D20E6B4E4007CEBDA /* ActivityDateFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDateFormatting.swift; sourceTree = "<group>"; };
 		40A2777E20191AA500D078D5 /* PluginDirectoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginDirectoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		40A2778020191B5E00D078D5 /* PluginDirectoryCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PluginDirectoryCollectionViewCell.xib; sourceTree = "<group>"; };
 		40ADB15420686870009A9161 /* PluginStore+Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PluginStore+Persistence.swift"; sourceTree = "<group>"; };
@@ -4082,6 +4084,7 @@
 				825327571FBF7CD600B8B7D2 /* ActivityUtils.swift */,
 				82B67B351FC726CD006FB593 /* Memoize.swift */,
 				82FC611F1FA8ADAC00A1757E /* WPStyleGuide+Activity.swift */,
+				4070D75D20E6B4E4007CEBDA /* ActivityDateFormatting.swift */,
 				4019B27020885AB900A0C7EB /* Activity.storyboard */,
 				4070D75B20E5F55A007CEBDA /* RewindStatusTableViewCell.xib */,
 			);
@@ -7039,6 +7042,7 @@
 				E6D170371EF9D8D10046D433 /* SiteInfo.swift in Sources */,
 				822D60B11F4C747E0016C46D /* JetpackSecuritySettingsViewController.swift in Sources */,
 				E16A76F31FC4766900A661E3 /* CredentialsService.swift in Sources */,
+				4070D75E20E6B4E4007CEBDA /* ActivityDateFormatting.swift in Sources */,
 				E2AA87A518523E5300886693 /* UIView+Subviews.m in Sources */,
 				5D51ADAF19A832AF00539C0B /* WordPress-20-21.xcmappingmodel in Sources */,
 				43FB3F471EC10F1E00FC8A62 /* LoginEpilogueTableViewController.swift in Sources */,
