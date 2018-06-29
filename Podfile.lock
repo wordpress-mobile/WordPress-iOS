@@ -167,7 +167,7 @@ DEPENDENCIES:
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `e8c86c1c1006335a987332e7327af1a3fec3dbcd`)
   - WordPress-Aztec-iOS/WordPressEditor (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `e8c86c1c1006335a987332e7327af1a3fec3dbcd`)
   - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `b039eb868f0b3df8bf8c52eeab3b53a438227a6f`)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `415f706a6e59be64630df0943f8b4e454218c180`)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `b8a3541c5cca07b1c16d30008ed3904dad2de3ef`)
   - WordPressShared (= 1.0.7)
   - WordPressUI (= 1.0.4)
   - WPMediaPicker (= 1.1)
@@ -218,7 +218,7 @@ EXTERNAL SOURCES:
     :commit: b039eb868f0b3df8bf8c52eeab3b53a438227a6f
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressKit:
-    :commit: 415f706a6e59be64630df0943f8b4e454218c180
+    :commit: b8a3541c5cca07b1c16d30008ed3904dad2de3ef
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 CHECKOUT OPTIONS:
@@ -232,7 +232,7 @@ CHECKOUT OPTIONS:
     :commit: b039eb868f0b3df8bf8c52eeab3b53a438227a6f
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressKit:
-    :commit: 415f706a6e59be64630df0943f8b4e454218c180
+    :commit: b8a3541c5cca07b1c16d30008ed3904dad2de3ef
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
@@ -271,6 +271,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: 9de359d1a6895544c84e5d31bb56fcc58c137d66
+PODFILE CHECKSUM: cd37d382b2694239cd22880751f32404b73314f6
 
 COCOAPODS: 1.5.3
