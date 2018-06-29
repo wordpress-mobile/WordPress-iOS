@@ -1,9 +1,9 @@
-使用 iOS 裝置管理或建立 WordPress 網誌或網站：建立及編輯文章和網頁、上傳最愛的相片和影片、查看統計資料及回覆留言。
+靈感隨時隨地都可能乍現。使用 iOS 裝置，外出時也可以管理 WordPress 網誌或網站：查看統計資料、審核回應、建立和編輯文章和頁面，以及上傳媒體。你只需要一個 WordPress.com 網誌，或是執行 3.6 版或更高版本的自助託管 WordPress.org 網站。
 
-使用 iOS 版 WordPress，你就能夠在掌上輕鬆發佈文章。窩在沙發上信手創作幾行俳句；趁著午休時間拍照並上傳；回覆最新的回應；或者查看統計資料，並瞭解今天的讀者來自哪些國家。
+使用 iOS 版 WordPress，你就能夠在掌上輕鬆發佈文章。搭火車時信手創作幾行俳句；午後漫步時拍張照，投稿《每日郵報》的每週照片挑戰活動；回覆最新的回應；或者監控統計資料，查看今天的讀者來自哪些地方。
 
-Android 版 WordPress 是開放原始碼專案，這表示你也可以貢獻己力協助開發此程式。深入瞭解：https://apps.wordpress.com/contribute/。
+別忘了為從應用程式發佈的文章加註 #wponthego 標籤，讓社群可以隨時搜尋到你的傑作。
 
-iOS 版 WordPress 支援 WordPress.com 和執行 WordPress 4.0 或以上版本的自助託管 WordPress.org 網站。
+iOS 版 WordPress 是開放原始碼專案，這表示你也可以貢獻己力協助開發此程式。深入瞭解：http://ios.wordpress.org。
 
-需要應用程式的說明嗎？請造訪論壇：https://ios.forums.wordpress.org/ 或使用 Twitter 推文給我們：@WordPressiOS。
+需要應用程式的說明嗎？請造訪論壇：http://ios.forums.wordpress.org 或使用 Twitter 推文給我們：@WordPressiOS
