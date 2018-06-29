@@ -18,4 +18,6 @@ class StoreContainer {
     let plugin = PluginStore()
     let notice = NoticeStore()
     let timezone = TimeZoneStore()
+    let activity = ActivityStore()
+
 }

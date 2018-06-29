@@ -220,7 +220,9 @@ extension Notification {
             return false
         }
 
-        return block.isActionEnabled(.Approve) && !block.isActionOn(.Approve)
+        //return block.isActionEnabled(.Approve) && !block.isActionOn(.Approve)
+        let commandId = ApproveComment.actionIdentifier()
+        return block.isActionEnabled(id: commandId) && !block.isActionOn(id: commandId)
     }
 
     var kind: ParentKind {
