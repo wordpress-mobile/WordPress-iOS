@@ -334,7 +334,7 @@ private extension ActivityStore {
             // let's keep retrying as long as it's registered — we want users to see the updates.
             // The retry logic should only kick-in when the site is off-screen, so we can pop-up a Notice
             // letting users know what's happening with their site.
-            DispatchDelayedAction(delay: .seconds(Constants.delaySequence.last!)) { [weak self] in
+            _ = DispatchDelayedAction(delay: .seconds(Constants.delaySequence.last!)) { [weak self] in
                 self?.fetchRewindStatus(site: site)
             }
             return
