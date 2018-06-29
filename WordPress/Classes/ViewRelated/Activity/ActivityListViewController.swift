@@ -183,6 +183,7 @@ extension ActivityListViewController: ActivityDetailPresenter {
         }
 
         detailVC.activity = activity
+        detailVC.dateFormatter = viewModel.longDateFormatterWithoutTime
         detailVC.rewindPresenter = self
 
         self.navigationController?.pushViewController(detailVC, animated: true)
