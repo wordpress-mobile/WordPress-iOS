@@ -47,6 +47,7 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
     [self loadLogFiles];
 
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:ActivityLogCellIdentifier];
+    [WPAnalytics track:WPAnalyticsStatActivityLogViewed];
 }
 
 - (void)didReceiveMemoryWarning
