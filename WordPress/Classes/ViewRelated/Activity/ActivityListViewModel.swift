@@ -120,32 +120,10 @@ class ActivityListViewModel: Observable {
     // MARK: - Date/Time handling
 
     lazy var longDateFormatterWithoutTime: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        formatter.timeZone = timeZone(for: site)
-
-        return formatter
+        return ActivityDateFormatting.longDateFormatterWithoutTime(for: site)
     }()
 
     lazy var mediumDateFormatterWithTime: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.doesRelativeDateFormatting = true
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        formatter.timeZone = timeZone(for: site)
-
-        return formatter
+        return ActivityDateFormatting.mediumDateFormatterWithTime(for: site)
     }()
-
-    private func timeZone(for site: JetpackSiteRef) -> TimeZone {
-        let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-
-        guard let blog = blogService.blog(byBlogId: site.siteID as NSNumber) else {
-            return TimeZone(secondsFromGMT: 0)!
-        }
-
-        return blogService.timeZone(for: blog)
-    }
 }
