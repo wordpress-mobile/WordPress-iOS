@@ -12,28 +12,13 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
     let activitiesReceipt: Receipt
     let restoreStatusReceipt: Receipt
 
-    var actionsReceipt: Receipt?
     var changeReceipt: Receipt?
-
-    var lastRewindStatus: RewindStatus?
-    // The way our API works, if there was a restore event "recently" (for some undefined value of "recently",
-    // on the order of magnitude of ~30 minutes or so), it'll be reported back by the API.
-    // But if the restore has finished a good while back (e.g. there's also an event in the AL telling us
-    // about the restore happening) we don't neccesarily want to display that redundant info to the users.
-    // Hence this somewhat dumb hack — if we've gotten updates about a RewindStatus before (which means we have displayed a progress bar),
-    // we're gonna show users "hey, your rewind finished!". But if the only thing we know the restore is
-    // that it has finished in a recent past, we don't do anything special.
 
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
     }()
 
-    fileprivate var viewModel: ActivityListViewModel = .loading {
-        didSet {
-            refreshModel()
-        }
-    }
-
+    fileprivate var viewModel: ActivityListViewModel
     private enum Constants {
         static let estimatedRowHeight: CGFloat = 62
     }
@@ -47,39 +32,15 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
     init(site: JetpackSiteRef, store: ActivityStore) {
         self.site = site
         self.store = store
+        self.viewModel = ActivityListViewModel(site: site)
 
         self.activitiesReceipt = store.query(.activities(site: site))
         self.restoreStatusReceipt = store.query(.restoreStatus(site: site))
 
         super.init(style: .plain)
 
-        self.changeReceipt = store.onChange { [weak self] in
-            self?.updateViewModel()
-        }
-
-        self.actionsReceipt = ActionDispatcher.global.subscribe { [weak self] action in
-            switch action {
-            case ActivityAction.rewindStarted(let site, _):
-                guard site == self?.site else { return }
-                self?.showRestoringMessage(0)
-            case ActivityAction.rewindFinished(let site, _):
-                guard site == self?.site else { return }
-                self?.restoreCompleted()
-            case ActivityAction.rewindFailed(let site, _), ActivityAction.rewindRequestFailed(let site, _):
-                guard site == self?.site else { return }
-                self?.restoreFailed()
-            case ActivityAction.rewindStatusUpdateTimedOut(let site):
-                guard site == self?.site else { return }
-                self?.restoreTimedout()
-            case ActivityAction.rewindStatusUpdated(let site, let status):
-                guard site == self?.site, let restore = status.restore, (restore.status == .running || restore.status == .queued) else {
-                    return
-                }
-
-                self?.lastRewindStatus = status
-                self?.showRestoringMessage(Float(restore.progress) / 100.0)
-            default: return
-            }
+        self.changeReceipt = viewModel.onChange { [weak self] in
+            self?.refreshModel()
         }
 
         title = NSLocalizedString("Activity", comment: "Title for the activity list")
@@ -110,7 +71,7 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
         let nib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
         tableView.register(nib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
-        ImmuTable.registerRows([ActivityListRow.self], tableView: tableView)
+        ImmuTable.registerRows([ActivityListRow.self, RewindStatusRow.self], tableView: tableView)
         // Magic to avoid cell separators being displayed while a plain table loads
         tableView.tableFooterView = UIView()
 
@@ -119,15 +80,6 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
     override func viewWillDisappear(_ animated: Bool) {
         SVProgressHUD.dismiss()
-    }
-
-    func updateViewModel() {
-        guard let activities = store.getActivities(site: site) else {
-            self.viewModel = .error
-            return
-        }
-
-        self.viewModel = .ready(activities)
     }
 
     func refreshModel() {
@@ -204,7 +156,7 @@ extension ActivityListViewController: ActivityRewindPresenter {
 
         let title = NSLocalizedString("Rewind Site",
                                       comment: "Title displayed in the Rewind Site alert, should match Calypso")
-        let rewindDate = activity.published.mediumStringWithUTCTime()
+        let rewindDate = viewModel.mediumDateFormatterWithTime.string(from: activity.published)
         let messageFormat = NSLocalizedString("Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then.",
                                               comment: "Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso.")
         let message = String(format: messageFormat, rewindDate)
@@ -246,51 +198,6 @@ extension ActivityListViewController {
         navigationController?.popToViewController(self, animated: true)
         store.actionDispatcher.dispatch(ActivityAction.rewind(site: site, rewindID: rewindID))
     }
-
-    fileprivate func showErrorRestoringMessage() {
-        SVProgressHUD.showDismissibleError(withStatus: NSLocalizedString("Unable to restore your site, please try again later or contact support.",
-                                                                         comment: "Text displayed when a site restore fails."))
-        tableView.isUserInteractionEnabled = true
-    }
-
-    fileprivate func showRestoringMessage(_ progress: Float = 0) {
-        tableView.isUserInteractionEnabled = false
-        SVProgressHUD.showProgress(progress, status: NSLocalizedString("Restoring ...",
-                                                                       comment: "Text displayed in HUD while a site is being restored."))
-    }
-
-    fileprivate func showErrorFetchingRestoreStatus() {
-        SVProgressHUD.showDismissibleError(withStatus: NSLocalizedString("Your restore is taking longer than usual, please check again in a few minutes.",
-                                                                         comment: "Text displayed when a site restore takes too long."))
-        tableView.isUserInteractionEnabled = true
-    }
-
-    fileprivate func restoreCompleted() {
-        guard self.lastRewindStatus != nil else {
-            return
-        }
-
-        SVProgressHUD.showDismissibleSuccess(withStatus: NSLocalizedString("Restore completed",
-                                                                           comment: "Text displayed in HUD when the site restore is completed."))
-        tableView.isUserInteractionEnabled = true
-        refreshModel()
-    }
-
-    fileprivate func restoreFailed() {
-        guard self.lastRewindStatus != nil else {
-            return
-        }
-
-        showErrorRestoringMessage()
-    }
-
-    fileprivate func restoreTimedout() {
-        guard self.lastRewindStatus != nil else {
-            return
-        }
-
-        showErrorFetchingRestoreStatus()
-    }
 }
 
 // MARK: - NoResults Handling
@@ -309,7 +216,7 @@ private extension ActivityListViewController {
 
     func updateNoResults() {
         hideNoResults()
-        if let noResultsViewModel = viewModel.noResultsViewModel {
+        if let noResultsViewModel = viewModel.noResultsViewModel() {
             showNoResults(noResultsViewModel)
         }
     }
