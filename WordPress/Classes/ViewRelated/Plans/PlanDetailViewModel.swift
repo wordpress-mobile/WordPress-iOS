@@ -44,18 +44,18 @@ struct PlanDetailViewModel {
     var noResultsViewModel: NoResultsViewController.Model? {
         switch features {
         case .loading:
-            return NoResultsViewController.Model(title: NSLocalizedString("Loading Plan...", comment: "Text displayed while loading plans details"))
+            return NoResultsViewController.Model(title: LocalizedText.loadingTitle)
         case .ready:
             return nil
         case .error:
-            let appDelegate = WordPressAppDelegate.sharedInstance()
-            if (appDelegate?.connectionAvailable)! {
-                return NoResultsViewController.Model(title: NSLocalizedString("Oops", comment: ""),
-                                                     subtitle: NSLocalizedString("There was an error loading the plan", comment: "Text displayed when there is a failure loading the plan details"),
-                                                     buttonText: NSLocalizedString("Contact support", comment: "Button label for contacting support"))
+            if let appDelegate = WordPressAppDelegate.sharedInstance(),
+                appDelegate.connectionAvailable {
+                return NoResultsViewController.Model(title: LocalizedText.errorTitle,
+                                                     subtitle: LocalizedText.errorSubtitle,
+                                                     buttonText: LocalizedText.errorButtonText)
             } else {
-                return NoResultsViewController.Model(title: NSLocalizedString("No connection", comment: ""),
-                                                     subtitle: NSLocalizedString("An active internet connection is required to view plans", comment: ""))
+                return NoResultsViewController.Model(title: LocalizedText.noConnectionTitle,
+                                                     subtitle: LocalizedText.noConnectionSubtitle)
             }
         }
     }
@@ -68,7 +68,7 @@ struct PlanDetailViewModel {
         if price.isEmpty {
             return nil
         } else {
-            return String(format: NSLocalizedString("%@ per year", comment: "Plan yearly price"), price)
+            return String(format: LocalizedText.price, price)
         }
     }
 
@@ -84,4 +84,15 @@ struct PlanDetailViewModel {
     fileprivate var purchaseAvailability: PurchaseAvailability {
         return StoreKitCoordinator.instance.purchaseAvailability(forPlan: plan, siteID: siteID, activePlan: activePlan)
     }
+
+    private struct LocalizedText {
+        static let loadingTitle = NSLocalizedString("Loading Plan...", comment: "Text displayed while loading plans details")
+        static let errorTitle = NSLocalizedString("Oops", comment: "")
+        static let errorSubtitle = NSLocalizedString("There was an error loading the plan", comment: "Text displayed when there is a failure loading the plan details")
+        static let errorButtonText = NSLocalizedString("Contact support", comment: "Button label for contacting support")
+        static let noConnectionTitle = NSLocalizedString("No connection", comment: "")
+        static let noConnectionSubtitle = NSLocalizedString("An active internet connection is required to view plans", comment: "")
+        static let price = NSLocalizedString("%@ per year", comment: "Plan yearly price")
+    }
+
 }
