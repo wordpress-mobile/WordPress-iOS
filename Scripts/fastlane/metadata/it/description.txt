@@ -1,14 +1,9 @@
-Gestire il tuo sito WordPress da un device Apple è da oggi ancora più semplice grazie a WordPress per iOS. 
-Con WordPress per iOS è possibile moderare commenti, creare o editare articoli e pagine, visualizzare le statistiche del tuo sito, e condividere immagini e video con semplicità. 
+Gestisci o crea il tuo sito web o blog WordPress direttamente dal tuo dispositivo iOS: Crea e modifica articoli e pagine, carica foto e video preferiti, visualizza le statistiche e rispondi ai commenti.
 
-Tutto quello di cui hai bisogno è un blog su WordPress.com, oppure che il tuo sito sia stato creato con WordPress.org 4.0 o superiore. 
+Con WordPress per iOS, hai il potere di pubblicare sul palmo della tua mano. Crea una bozza di un haiku spontaneo dal divano. Scatta e supplica una foto della tua pausa pranzo. Rispondi agli ultimi commenti o controlla le statistiche per scoprire da quale paese provengono i nuovi visitatori di oggi.
 
-Con WordPress per iOS, hai il potere di pubblicare nel palmo della tua mano. Scrivi una poesia mentre sei sul divano. Scatta una foto sulla pausa pranzo per la sfida fotografica della settimana al The Daily Post. Rispondi ai commenti sul tuo sito più recenti o controlla le statistiche per vedere dove vengono i lettori di oggi.
+WordPress per iOS è un progetto Open Source, il che significa che anche tu puoi contribuire al suo sviluppo. Scopri di più all’indirizzo https://apps.wordpress.com/contribute/.
 
-Non dimenticare di inserire nei tuoi articoli il tag #wponthego in modo che la community possa trovare i tuoi capolavori scritti dalla App.
+WordPress per iOS supporta WordPress.com e i siti WordPress.org in self-hosting che eseguono WordPress 4.0 o versione successiva.
 
-
-WordPress per iOS è un progetto Open Source. Se desideri partecipare allo sviluppo di questa applicazione vieni su: 
-https://apps.wordpress.com/contribute/.
-
-Per chiedere aiuto con l’applicazione visita il forum disponibile su https://ios.forums.wordpress.org oppure inviaci un tweet a @WordPressiOS.
+Hai bisogno di aiuto con l’app? Visita i forum all’indirizzo https://ios.forums.wordpress.org/ o mandaci un tweet a @WordPressiOS.
