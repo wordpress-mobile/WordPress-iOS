@@ -216,9 +216,10 @@ private extension ActivityListViewController {
     }
 
     func updateNoResults() {
-        hideNoResults()
         if let noResultsViewModel = viewModel.noResultsViewModel() {
             showNoResults(noResultsViewModel)
+        } else {
+            hideNoResults()
         }
     }
 
@@ -234,7 +235,10 @@ private extension ActivityListViewController {
 
         noResultsViewController.bindViewModel(viewModel)
 
-        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        if noResultsViewController.view.superview != tableView {
+            tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        }
+
         addChildViewController(noResultsViewController)
         noResultsViewController.didMove(toParentViewController: self)
 
