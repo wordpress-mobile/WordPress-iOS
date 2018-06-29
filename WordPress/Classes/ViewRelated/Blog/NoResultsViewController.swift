@@ -19,6 +19,7 @@ import WordPressAuthenticator
     // MARK: - Properties
 
     @objc weak var delegate: NoResultsViewControllerDelegate?
+    @IBOutlet weak var noResultsView: UIView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
@@ -37,6 +38,11 @@ import WordPressAuthenticator
     override func viewDidLoad() {
         super.viewDidLoad()
         WPStyleGuide.configureColors(for: view, andTableView: nil)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureView()
     }
 
     override func didMove(toParentViewController parent: UIViewController?) {
@@ -113,6 +119,8 @@ import WordPressAuthenticator
         // Otherwise, show the imageView.
         accessoryView.isHidden = accessorySubview == nil
         imageView.isHidden = !accessoryView.isHidden
+
+        view.layoutIfNeeded()
     }
 
     // MARK: - Helpers
@@ -120,6 +128,10 @@ import WordPressAuthenticator
     private func accessibilityIdentifier(for string: String) -> String {
         let buttonIdFormat = NSLocalizedString("%@ Button", comment: "Accessibility identifier for buttons.")
         return String(format: buttonIdFormat, string)
+    }
+
+    func heightForTableCell() -> CGFloat {
+        return noResultsView.frame.height
     }
 
     // MARK: - Button Handling
