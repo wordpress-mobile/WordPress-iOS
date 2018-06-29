@@ -44,11 +44,11 @@ class ActivityListViewModel: Observable {
 
         let appDelegate = WordPressAppDelegate.sharedInstance()
         if (appDelegate?.connectionAvailable)! {
-            return NoResultsViewController.Model(title: NSLocalizedString("Oops", comment: ""),
+            return NoResultsViewController.Model(title: NSLocalizedString("Oops", comment: "Title for the view when there's an error loading Activity Log"),
                                                  subtitle: NSLocalizedString("There was an error loading activities", comment: "Text displayed when there is a failure loading the activity feed"),
                                                  buttonText: NSLocalizedString("Contact support", comment: "Button label for contacting support"))
         } else {
-            return NoResultsViewController.Model(title: NSLocalizedString("No connection", comment: ""),
+            return NoResultsViewController.Model(title: NSLocalizedString("No connection", comment: "Title for the error view when there's no connection"),
                                                  subtitle: NSLocalizedString("An active internet connection is required to view activities", comment: ""))
 
         }
@@ -98,7 +98,7 @@ class ActivityListViewModel: Observable {
         if let rewindPoint = store.getActivity(site: site, rewindID: restore.id) {
             let dateString = mediumDateFormatterWithTime.string(from: rewindPoint.published)
             let messageFormat = NSLocalizedString("Rewinding to %@",
-                comment: "Text showing the point in time the site is being currently restored to")
+                comment: "Text showing the point in time the site is being currently restored to. %@' is a placeholder that will expand to a date.")
 
             summary = String(format: messageFormat, dateString)
         } else {
