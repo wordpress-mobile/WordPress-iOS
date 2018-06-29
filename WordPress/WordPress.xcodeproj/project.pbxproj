@@ -861,7 +861,6 @@
 		D816C1F220E0894D00C4D82F /* ReplyToComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816C1F120E0894D00C4D82F /* ReplyToComment.swift */; };
 		D816C1F420E0895E00C4D82F /* MarkAsSpam.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816C1F320E0895E00C4D82F /* MarkAsSpam.swift */; };
 		D816C1F620E0896F00C4D82F /* TrashComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816C1F520E0896F00C4D82F /* TrashComment.swift */; };
-		D816C1F820E08B1900C4D82F /* Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816C1F720E08B1900C4D82F /* Identifier.swift */; };
 		D817799020ABF26800330998 /* ReaderCellConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D817798F20ABF26800330998 /* ReaderCellConfiguration.swift */; };
 		D817799420ABFDB300330998 /* ReaderPostCellActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D817799320ABFDB300330998 /* ReaderPostCellActions.swift */; };
 		D81879D920ABC647000CFA95 /* ReaderTableConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81879D820ABC647000CFA95 /* ReaderTableConfiguration.swift */; };
@@ -2407,7 +2406,6 @@
 		D816C1F120E0894D00C4D82F /* ReplyToComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToComment.swift; sourceTree = "<group>"; };
 		D816C1F320E0895E00C4D82F /* MarkAsSpam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkAsSpam.swift; sourceTree = "<group>"; };
 		D816C1F520E0896F00C4D82F /* TrashComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashComment.swift; sourceTree = "<group>"; };
-		D816C1F720E08B1900C4D82F /* Identifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifier.swift; sourceTree = "<group>"; };
 		D817798F20ABF26800330998 /* ReaderCellConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCellConfiguration.swift; sourceTree = "<group>"; };
 		D817799320ABFDB300330998 /* ReaderPostCellActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderPostCellActions.swift; sourceTree = "<group>"; };
 		D81879D820ABC647000CFA95 /* ReaderTableConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTableConfiguration.swift; sourceTree = "<group>"; };
@@ -5615,7 +5613,6 @@
 				D816C1F120E0894D00C4D82F /* ReplyToComment.swift */,
 				D816C1F320E0895E00C4D82F /* MarkAsSpam.swift */,
 				D816C1F520E0896F00C4D82F /* TrashComment.swift */,
-				D816C1F720E08B1900C4D82F /* Identifier.swift */,
 				D858F2FC20E1F09F007E8A1C /* NotificationActionParser.swift */,
 				D858F30020E20106007E8A1C /* LikePost.swift */,
 				D858F30220E201F4007E8A1C /* EditComment.swift */,
@@ -7644,7 +7641,6 @@
 				E2E7EB46185FB140004F5E72 /* WPBlogSelectorButton.m in Sources */,
 				9808655C203D079B00D58786 /* EpilogueUserInfoCell.swift in Sources */,
 				08216FD41CDBF96000304BA7 /* MenuItemTypeSelectionView.m in Sources */,
-				D816C1F820E08B1900C4D82F /* Identifier.swift in Sources */,
 				176DEEE91D4615FE00331F30 /* WPSplitViewController.swift in Sources */,
 				400F4625201E74EE000CFD9E /* CollectionViewContainerRow.swift in Sources */,
 				FF0AAE0A1A150A560089841D /* WPProgressTableViewCell.m in Sources */,

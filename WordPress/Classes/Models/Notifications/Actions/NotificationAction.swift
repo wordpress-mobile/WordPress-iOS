@@ -1,40 +1,6 @@
 import MGSwipeTableCell
 
-typealias ActionContextRequest = (NotificationDeletionRequest?, Bool) -> Void
-struct ActionContext {
-    let block: NotificationBlock
-    let content: String
-    let completion: ActionContextRequest?
-
-    init(block: NotificationBlock, content: String = "", completion: ActionContextRequest? = nil) {
-        self.block = block
-        self.content = content
-        self.completion = completion
-    }
-}
-
-protocol NotificationAction: CustomStringConvertible {
-    var identifier: Identifier { get }
-    var enabled: Bool { get }
-    var on: Bool { get }
-    var icon: UIButton? { get }
-
-    func execute(context: ActionContext)
-}
-
-extension NotificationAction {
-    static func actionIdentifier() -> Identifier {
-        return Identifier(value: String(describing: self))
-    }
-}
-
-extension NotificationAction {
-    var description: String {
-        return identifier.description + " enabled \(enabled)"
-    }
-}
-
-class DefaultNotificationAction: NotificationAction {
+class DefaultNotificationAction: FormattableContentAction {
     var enabled: Bool
 
     var on: Bool
