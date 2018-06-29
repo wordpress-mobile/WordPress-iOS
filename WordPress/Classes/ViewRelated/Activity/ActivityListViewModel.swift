@@ -9,7 +9,7 @@ protocol ActivityDetailPresenter: class {
 enum ActivityListViewModel {
     case loading
     case ready([Activity])
-    case error(String)
+    case error
 
     var noResultsViewModel: NoResultsViewController.Model? {
         switch self {
@@ -39,8 +39,8 @@ enum ActivityListViewModel {
             let rows = activities.map({ activity in
                 return ActivityListRow(
                     activity: activity,
-                    action: { (row) in
-                        presenter.presentDetailsFor(activity: activity)
+                    action: { [weak presenter] (row) in
+                        presenter?.presentDetailsFor(activity: activity)
                     }
                 )
             })

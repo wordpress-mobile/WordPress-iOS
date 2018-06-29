@@ -1026,52 +1026,33 @@ private extension NotificationsViewController {
         }
 
         // Comments: Trash
-        if block.isActionEnabled(.Trash) {
-            let trashButton = MGSwipeButton(title: NSLocalizedString("Trash", comment: "Trashes a comment"), backgroundColor: WPStyleGuide.errorRed(), callback: { [weak self] _ in
-                ReachabilityUtils.onAvailableInternetConnectionDo {
-                    let request = NotificationDeletionRequest(kind: .deletion, action: { [weak self] onCompletion in
-                        self?.actionsService.deleteCommentWithBlock(block) { success in
-                            onCompletion(success)
-                        }
-                    })
-
+        if let trashCommand = block.action(id: TrashComment.actionIdentifier()), let button = trashCommand.icon as? MGSwipeButton {
+            button.callback = { [weak self] _ in
+                let actionContext = ActionContext(block: block, completion: { [weak self] (request, success) in
+                    guard let request = request else {
+                        return
+                    }
                     self?.showUndeleteForNoteWithID(note.objectID, request: request)
-                }
+                })
+                trashCommand.execute(context: actionContext)
                 return true
-            })
-            rightButtons.append(trashButton)
+            }
+            rightButtons.append(button)
         }
 
-        guard block.isActionEnabled(.Approve) else {
+        guard let approveEnabled = block.action(id: ApproveComment.actionIdentifier())?.enabled, approveEnabled == true else {
             return rightButtons
         }
 
-        // Comments: Unapprove
-        if block.isActionOn(.Approve) {
-            let title = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
-
-            let unapproveButton = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.grey(), callback: { [weak self] _ in
-                ReachabilityUtils.onAvailableInternetConnectionDo {
-                    self?.actionsService.unapproveCommentWithBlock(block)
-                }
-                return true
-            })
-
-            rightButtons.append(unapproveButton)
-
-            // Comments: Approve
-        } else {
-            let title = NSLocalizedString("Approve", comment: "Approves a Comment")
-
-            let approveButton = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue(), callback: { [weak self] _ in
-                ReachabilityUtils.onAvailableInternetConnectionDo {
-                    self?.actionsService.approveCommentWithBlock(block)
-                }
-                return true
-            })
-
-            rightButtons.append(approveButton)
+        let approveCommand = block.action(id: ApproveComment.actionIdentifier())
+        let button = approveCommand?.icon as? MGSwipeButton
+        button?.callback = { _ in
+            let actionContext = ActionContext(block: block)
+            approveCommand?.execute(context: actionContext)
+            return true
         }
+
+        rightButtons.append(button!)
 
         return rightButtons
     }
