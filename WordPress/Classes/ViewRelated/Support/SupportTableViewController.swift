@@ -215,6 +215,8 @@ private extension SupportTableViewController {
                 guard success else {
                     return
                 }
+                // Tracking when the dialog's "OK" button is pressed, not necessarily
+                // if the value changed.
                 WPAnalytics.track(.supportIdentitySet)
                 self.reloadViewModel()
             }
