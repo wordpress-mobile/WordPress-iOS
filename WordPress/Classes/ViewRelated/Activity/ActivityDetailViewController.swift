@@ -5,7 +5,7 @@ import WordPressUI
 class ActivityDetailViewController: UIViewController {
 
     var activity: Activity?
-    var dateFormatter: DateFormatter?
+    var site: JetpackSiteRef?
 
     weak var rewindPresenter: ActivityRewindPresenter?
 
@@ -74,7 +74,7 @@ class ActivityDetailViewController: UIViewController {
     }
 
     private func setupText() {
-        guard let activity = activity else {
+        guard let activity = activity, let site = site else {
             return
         }
 
@@ -82,18 +82,19 @@ class ActivityDetailViewController: UIViewController {
         nameLabel.text = activity.actor?.displayName
         roleLabel.text = activity.actor?.role.localizedCapitalized
 
-        dateLabel.text = dateFormatter?.string(from: activity.published) ?? activity.publishedDateUTCWithoutTime
-
         textLabel.text = activity.text
         summaryLabel.text = activity.summary
 
         rewindButton.setTitle(NSLocalizedString("Rewind", comment: "Title for button allowing user to rewind their Jetpack site"),
                                                 for: .normal)
 
+        let dateFormatter = ActivityDateFormatting.longDateFormatterWithoutTime(for: site)
+        dateLabel.text = dateFormatter.string(from: activity.published)
+
         let timeFormatter = DateFormatter()
         timeFormatter.dateStyle = .none
         timeFormatter.timeStyle = .short
-        timeFormatter.timeZone = dateFormatter?.timeZone ?? TimeZone(secondsFromGMT: 0)
+        timeFormatter.timeZone = dateFormatter.timeZone
 
         timeLabel.text = timeFormatter.string(from: activity.published)
     }

@@ -368,27 +368,7 @@ private extension ActivityStore {
     }
 
     private func mediumString(from date: Date, adjustingTimezoneTo site: JetpackSiteRef) -> String {
-        guard let timezone = timeZone(for: site) else {
-            return date.mediumStringWithTime()
-        }
-
-        let formatter = DateFormatter()
-        formatter.doesRelativeDateFormatting = true
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        formatter.timeZone = timezone
-
+        let formatter = ActivityDateFormatting.mediumDateFormatterWithTime(for: site)
         return formatter.string(from: date)
-    }
-
-    private func timeZone(for site: JetpackSiteRef) -> TimeZone? {
-        let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-
-        guard let blog = blogService.blog(byBlogId: site.siteID as NSNumber) else {
-            return TimeZone(secondsFromGMT: 0)
-        }
-
-        return blogService.timeZone(for: blog)
     }
 }
