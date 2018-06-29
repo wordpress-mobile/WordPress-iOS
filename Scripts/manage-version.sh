@@ -7,6 +7,10 @@ CMD_UPDATE="update-branch"
 CMD_UPDATE_SHORT="update"
 CMD_FORCE="force-branch"
 CMD_FORCE_SHORT="force"
+CMD_BUMP_RELEASE="bump-release"
+CMD_BUMP_HOTFIX="bump-hotfix"
+CMD_BUMP_INTERNAL="bump-internal"
+CMD_GET_VERSION="get-version"
 
 # Regex for "is a number"
 IS_A_NUM_RE="^[0-9]+$"
@@ -29,13 +33,21 @@ function showUsage() {
     echo "Usage: $exeName command new-version [new-internal-version]"
     echo ""
     echo "   Available commands:"
+    echo "      $CMD_GET_VERSION: reads the current version"
+    echo "      $CMD_BUMP_RELEASE: reads the current version, bumps the release digits and creates the new branch (works only on develop branch)"
+    echo "      $CMD_BUMP_HOTFIX: reads the current version,  bumps the hotfix digit and updates the IDs (works only on release branch)"
+    echo "      $CMD_BUMP_INTERNAL: reads the current version, bumps the internal build digit and updates the IDs (works only on release branch)"
     echo "      $CMD_CREATE (or $CMD_CREATE_SHORT): creates the new branch and updates the version IDs"
     echo "      $CMD_UPDATE (or $CMD_UPDATE_SHORT): updates the version IDs"
     echo "      $CMD_FORCE (or $CMD_FORCE_SHORT): force the update to the provided version, skipping the checks."
     echo ""
-    echo "Example: $exeName create 9.3.0"
-    echo "Example: $exeName update 9.3.0.1"
-    echo "Example: $exeName update 9.3.0.1 9.3.0.20180129"
+    echo "Example: $exeName $CMD_GET_VERSION"
+    echo "Example: $exeName $CMD_BUMP_RELEASE"
+    echo "Example: $exeName $CMD_BUMP_HOTFIX"
+    echo "Example: $exeName $CMD_BUMP_INTERNAL"
+    echo "Example: $exeName $CMD_CREATE_SHORT 9.3.0"
+    echo "Example: $exeName $CMD_UPDATE_SHORT 9.3.0.1"
+    echo "Example: $exeName $CMD_UPDATE_SHORT 9.3.0.1 9.3.0.20180129"
     echo ""
     exit 1
 }
@@ -80,6 +92,10 @@ function verifyCommand() {
         return
     fi
 
+    if [ $cmd == $CMD_BUMP_RELEASE ] || [ $cmd == $CMD_BUMP_INTERNAL ] || [ $cmd == $CMD_BUMP_HOTFIX ] || [ $cmd == $CMD_GET_VERSION ]; then
+      return
+    fi
+
     showUsage
 }
 
@@ -121,6 +137,11 @@ function verifyVersion() {
     # Create version numbers
     newVer=${nvp[0]}.${nvp[1]}.${nvp[2]}.${nvp[3]}
     newMainVer=${nvp[0]}.${nvp[1]}
+    if [ ${nvp[2]} == 0 ]; then
+      newShortVer=${newMainVer}
+    else
+      newShortVer=${newMainVer}.${nvp[2]}
+    fi
     releaseBranch="$releaseBranch$newMainVer"
 
     # If internal version exists, check if has the same major, minor, release
@@ -137,6 +158,12 @@ function verifyVersion() {
 # Verifies the command and the version
 function verifyParams() {
     verifyCommand
+
+    # Skip verify for bump commands
+    if [ $cmd == $CMD_BUMP_RELEASE ] || [ $cmd == $CMD_BUMP_INTERNAL ] || [ $cmd == $CMD_BUMP_HOTFIX ] || [ $cmd == $CMD_GET_VERSION ]; then
+      return
+    fi
+
     verifyVersion
 }
 
@@ -146,6 +173,7 @@ function showConfig() {
     showMessage "Current internal version: $currentIntVer"
     showMessage "New build version: $newVer"
     showMessage "New internal version: $newIntVer"
+    showMessage "New short version: $newShortVer"
     showMessage "Release branch: $releaseBranch"
 }
 
@@ -214,7 +242,7 @@ function updateGlotPressKey() {
 function updateFastlaneDeliver() {
     fdFile="./fastlane/Deliverfile"
     if [ -f $fdFile ]; then
-        sed -i '' "s/app_version.*/app_version \"$newMainVer\"/" $fdFile
+        sed -i '' "s/app_version.*/app_version \"$newShortVer\"/" $fdFile
     else
         showErrorMessage "Can't find $fdFile."
         stopOnError
@@ -231,7 +259,7 @@ function updateConfigFiles() {
         cFile="../config/$i"
         if [ -f "$cFile" ]; then
             echo "Updating $cFile to version $2" >> $logFile 2>&1
-            sed -i '' "$(awk '/^VERSION_SHORT/{ print NR; exit }' "$cFile")s/=.*/=$newMainVer/" "$cFile" >> $logFile 2>&1 || stopOnError
+            sed -i '' "$(awk '/^VERSION_SHORT/{ print NR; exit }' "$cFile")s/=.*/=$newShortVer/" "$cFile" >> $logFile 2>&1 || stopOnError
             sed -i '' "$(awk '/^VERSION_LONG/{ print NR; exit }' "$cFile")s/=.*/=$updateVer/" "$cFile" >> $logFile 2>&1 || stopOnError
         else
             stopOnError "$cFile  not found"
@@ -254,6 +282,9 @@ function updateBranch() {
         showConfig
     fi
 
+    showMessage "Updating Fastlane deliver file..."
+    updateFastlaneDeliver
+    showMessage "Done!"
     showMessage "Updating XcConfig..."
     updateXcConfigs
     showMessage "Done!"
@@ -278,9 +309,6 @@ function createBranch() {
     showMessage "Done!"
     showMessage "Updating glotPressKeys..."
     updateGlotPressKey
-    showMessage "Done!"
-    showMessage "Updating Fastlane deliver file..."
-    updateFastlaneDeliver
     showMessage "Done!"
     updateBranch
     showOkMessage "Success!"
@@ -340,11 +368,73 @@ function checkVersions() {
     checkVersion $newIntVer $currentIntVer
 }
 
+# Check that the current branch name contains the provided string
+function checkBranch() {
+    btover=$1
+    branch_name=$(git symbolic-ref -q HEAD)
+    if [[ $branch_name = *"$btover"* ]]; then
+      return
+    fi
+
+    showErrorMessage "This command works only on $1 branch"
+    stopOnError
+}
+
+# Bump current release number (only on develop branch)
+function bumpRelease() {
+    checkBranch "develop"
+
+    # Bump release
+    showMessage "Current version: $currentVer"
+    cvp=( ${currentVer//./ } )
+
+    # Bump minor
+    cvp[1]=$((${cvp[1]}+1))
+    if [ ${cvp[1]} == 10 ]; then
+      cvp[1]=0
+      cvp[0]=$((${cvp[0]}+1))
+    fi
+
+    newVer=${cvp[0]}.${cvp[1]}
+    verifyVersion
+    createBranch
+}
+
+# Bump hotfix digit (only on release branch)
+function bumpHotFix {
+    checkBranch "release"
+
+    # Bump release
+    showMessage "Current version: $currentVer"
+    cvp=( ${currentVer//./ } )
+
+    cvp[2]=$((${cvp[2]}+1))
+    newVer=${cvp[0]}.${cvp[1]}.${cvp[2]}
+    verifyVersion
+    showConfig
+    updateBranch
+}
+
+#Bump internal digit (only on release branch)
+function bumpInternal {
+    checkBranch "release"
+
+    # Bump release
+    showMessage "Current version: $currentVer"
+    cvp=( ${currentVer//./ } )
+
+    cvp[3]=$((${cvp[3]}+1))
+    newVer=${cvp[0]}.${cvp[1]}.${cvp[2]}.${cvp[3]}
+    verifyVersion
+    showConfig
+    updateBranch
+}
+
 ### Script main
 exeName=$(basename "$0" ".sh")
 
 # Params check
-if [ "$#" -lt 2 ] || [ "$#" -gt 3 ] || [ -z $1 ]; then
+if [ "$#" -lt 1 ] || [ "$#" -gt 3 ] || [ -z $1 ]; then
     showUsage
 fi
 
@@ -353,6 +443,7 @@ cmd=$1
 newVer=$2
 newIntVer=$3
 newMainVer=0
+newShortVer=0
 currentVer=0
 currentIntVer=0
 releaseBranch="release/"
@@ -360,10 +451,19 @@ logFile="/tmp/manage-version.log"
 
 verifyParams
 getCurrentVersions
+
 if [ $cmd == $CMD_CREATE ] || [ $cmd == $CMD_FORCE ]; then
     createBranch
 elif [ $cmd == $CMD_UPDATE ]; then
     updateBranch
+elif [ $cmd == $CMD_BUMP_RELEASE ]; then
+    bumpRelease
+elif [ $cmd == $CMD_BUMP_HOTFIX ]; then
+    bumpHotFix 
+elif [ $cmd == $CMD_BUMP_INTERNAL ]; then
+    bumpInternal 
+elif [ $cmd == $CMD_GET_VERSION ]; then
+    echo $currentVer 
 else
     showUsage
 fi
