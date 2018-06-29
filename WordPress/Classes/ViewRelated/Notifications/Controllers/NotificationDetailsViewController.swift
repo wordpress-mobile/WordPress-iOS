@@ -961,35 +961,35 @@ private extension NotificationDetailsViewController {
 
         // Setup: Callbacks
         cell.onReplyClick = { [weak self] _ in
-//            self?.focusOnReplyTextViewWithBlock(commentBlock)
+            self?.focusOnReplyTextViewWithBlock(commentBlock)
         }
 
         cell.onLikeClick = { [weak self] _ in
-//            self?.likeCommentWithBlock(commentBlock)
+            self?.likeCommentWithBlock(commentBlock)
         }
 
         cell.onUnlikeClick = { [weak self] _ in
-//            self?.unlikeCommentWithBlock(commentBlock)
+            self?.unlikeCommentWithBlock(commentBlock)
         }
 
         cell.onApproveClick = { [weak self] _ in
-//            self?.approveCommentWithBlock(commentBlock)
+            self?.approveCommentWithBlock(commentBlock)
         }
 
         cell.onUnapproveClick = { [weak self] _ in
-//            self?.unapproveCommentWithBlock(commentBlock)
+            self?.unapproveCommentWithBlock(commentBlock)
         }
 
         cell.onTrashClick = { [weak self] _ in
-//            self?.trashCommentWithBlock(commentBlock)
+            self?.trashCommentWithBlock(commentBlock)
         }
 
         cell.onSpamClick = { [weak self] _ in
-//            self?.spamCommentWithBlock(commentBlock)
+            self?.spamCommentWithBlock(commentBlock)
         }
 
         cell.onEditClick = { [weak self] _ in
-//            self?.displayCommentEditorWithBlock(commentBlock)
+            self?.displayCommentEditorWithBlock(commentBlock)
         }
     }
 
@@ -1456,7 +1456,7 @@ private extension NotificationDetailsViewController {
 // MARK: - Replying Comments
 //
 private extension NotificationDetailsViewController {
-    func focusOnReplyTextViewWithBlock(_ block: NotificationBlock) {
+    func focusOnReplyTextViewWithBlock(_ block: ActionableObject) {
         let _ = replyTextView.becomeFirstResponder()
     }
 
@@ -1482,7 +1482,7 @@ private extension NotificationDetailsViewController {
 // MARK: - Editing Comments
 //
 private extension NotificationDetailsViewController {
-    func displayCommentEditorWithBlock(_ block: NotificationBlock) {
+    func displayCommentEditorWithBlock(_ block: ActionableObject) {
         let editViewController = EditCommentViewController.newEdit()
         editViewController?.content = block.text
         editViewController?.onCompletion = { (hasNewContent, newContent) in

@@ -285,7 +285,7 @@ extension NotificationBlock {
 
     /// Parsing Keys
     ///
-    fileprivate enum BlockKeys {
+    enum BlockKeys {
         static let Actions      = "actions"
         static let Media        = "media"
         static let Meta         = "meta"
