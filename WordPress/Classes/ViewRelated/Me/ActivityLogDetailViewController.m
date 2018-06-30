@@ -1,5 +1,4 @@
 #import "ActivityLogDetailViewController.h"
-#import "WordPress-Swift.h"
 
 @interface ActivityLogDetailViewController ()
 
