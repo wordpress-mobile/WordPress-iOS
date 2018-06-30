@@ -1,5 +1,0 @@
-Verwalte deinen WordPress-Blog oder deine Website über dein iOS-Gerät von unterwegs: Zeige deine Statistiken an, moderiere Kommentare, erstelle und bearbeite Beiträge und Seiten und lade Medien hoch. Alles, was du dafür benötigst, ist ein Blog bei WordPress.com oder eine selbst gehostete WordPress-Website, die mit Version 4.0 oder höher läuft.
-Mit WordPress für iOS liegt das Veröffentlichen von Inhalten direkt in deiner Hand. Entwirf ein spontanes Haiku auf der Couch. Mache einen Schnappschuss in deiner Mittagspause für den Fotowettbewerb bei The Daily Post. Antworte auf die neuesten Kommentare oder überwache deine Statistiken, um zu sehen, woher die Leser heute kommen.
-Vergiss nicht, die von der App veröffentlichten Beiträge mit #wponthego zu markieren, damit deine unterwegs von dir veröffentlichten Meisterwerke von anderen gefunden werden können.
-WordPress für iOS ist ein Open Source-Projekt. Deshalb kannst auch du dich gerne an der Entwicklung beteiligen. Weitere Informationen erhältst du unter  https://apps.wordpress.com/contribute/.
-Du brauchst Hilfe mit der App? Schau im Forum vorbei unter https://ios.forums.wordpress.org oder tweete an @WordPressiOS.
