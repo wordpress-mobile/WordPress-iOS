@@ -347,7 +347,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     }
 }
 
-- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *))restorationHandler {
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler {
     // Spotlight search
     [SearchManager.shared handleWithActivity: userActivity];
     return YES;
