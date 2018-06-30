@@ -61,7 +61,7 @@
                     <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="xGK-LG-0cx">
                         <rect key="frame" x="181" y="101" width="20" height="20"/>
                     </activityIndicatorView>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="2Ri-os-5ZW">
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="2Ri-os-5ZW">
                         <rect key="frame" x="173" y="32" width="37" height="37"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="37" id="9OE-Qz-4LV"/>
