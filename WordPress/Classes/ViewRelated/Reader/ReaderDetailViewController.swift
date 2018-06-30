@@ -38,7 +38,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     // Wrapper views
     @IBOutlet fileprivate weak var textHeaderStackView: UIStackView!
     @IBOutlet fileprivate weak var textFooterStackView: UIStackView!
-    fileprivate weak var textFooterTopConstraint: NSLayoutConstraint!
+    fileprivate var textFooterTopConstraint: NSLayoutConstraint!
 
     // Header realated Views
     @IBOutlet fileprivate weak var headerView: UIView!
