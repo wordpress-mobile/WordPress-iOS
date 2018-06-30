@@ -33,6 +33,7 @@ class ActivityDetailViewController: UIViewController {
         setupViews()
         setupText()
         setupAccesibility()
+        WPAnalytics.track(.activityLogDetailViewed)
     }
 
     @IBAction func rewindButtonTapped(sender: UIButton) {

@@ -76,6 +76,7 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         tableView.tableFooterView = UIView()
 
         refreshModel()
+        WPAnalytics.track(.activityLogViewed)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
