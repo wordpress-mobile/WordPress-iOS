@@ -273,7 +273,7 @@ private extension ActivityStore {
         } else {
             notice = Notice(title: title)
         }
-
+        WPAnalytics.track(.activityLogRewindStarted)
         actionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
