@@ -45,7 +45,7 @@ final class ReaderSavedPostsViewController: UITableViewController {
         updateAndPerformFetchRequest()
     }
 
-    open override func viewDidLayoutSubviews() {
+    public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
         centerResultsStatusViewIfNeeded()
@@ -129,7 +129,7 @@ final class ReaderSavedPostsViewController: UITableViewController {
     }
 
 
-    @objc open func configurePostCardCell(_ cell: UITableViewCell, post: ReaderPost) {
+    @objc public func configurePostCardCell(_ cell: UITableViewCell, post: ReaderPost) {
         if postCellActions == nil {
             postCellActions = ReaderSavedPostCellActions(context: managedObjectContext(), origin: self, topic: post.topic, visibleConfirmation: false)
             postCellActions?.delegate = self
