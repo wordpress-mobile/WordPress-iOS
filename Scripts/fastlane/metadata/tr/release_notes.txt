@@ -1,2 +1,4 @@
-Artık Gönderileri Okuyucu'ya kaydedebilirsiniz: bir gönderinin yer tutucu simgesine dokunarak bunu daha sonra Kaydedilen Gönderiler listesinde bulabilirsiniz. Kaydedilen gönderilerinizin metinlerini çevrimdışı olduğunuzda bile okuyabilirsiniz.
-Lütfen bu ilk sürümde resimlerin çevrimdışı olunduğunda kullanılabileceğinin garanti edilmediğini ve Kaydedilen Gönderiler özelliğinin şu anda cihaza özel bir özellik olduğunu unutmayın. Bu, kaydedilen gönderilerin cihazlar ile web arasında eşitlenmediği ve oturumu kapatmanız ya da uygulamayı kaldırmanız durumunda kaybedileceği anlamına gelir.
+Okuyucu: Arama işlevi artık yazıların yanı sıra sitelerin aranmasına izin vermek için geliştirildi.
+Editör: Gutenberg yazılarının daha iyi işlenmesi.
+Okuyucu: Kullanım bilgilerini içeren bir uyarı, "Yazıları sonrası için kaydet" özelliği ilk kez kullanıldığında görüntülenir.
+Bir sürü küçük UI düzeltmeleri ve geliştirmeler
