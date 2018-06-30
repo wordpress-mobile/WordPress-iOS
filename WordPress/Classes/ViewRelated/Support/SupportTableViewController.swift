@@ -210,10 +210,14 @@ private extension SupportTableViewController {
                 return
             }
 
+            WPAnalytics.track(.supportIdentityFormViewed)
             ZendeskUtils.sharedInstance.showSupportEmailPrompt(from: controllerToShowFrom) { success in
                 guard success else {
                     return
                 }
+                // Tracking when the dialog's "OK" button is pressed, not necessarily
+                // if the value changed.
+                WPAnalytics.track(.supportIdentitySet)
                 self.reloadViewModel()
             }
         }
