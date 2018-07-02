@@ -1,7 +1,51 @@
 
+private enum Constants {
+    /// Parsing Keys
+    ///
+    fileprivate enum BlockKeys {
+        static let Actions      = "actions"
+        static let Media        = "media"
+        static let Meta         = "meta"
+        static let Ranges       = "ranges"
+        static let RawType      = "type"
+        static let Text         = "text"
+        static let UserType     = "user"
+    }
+
+    /// Meta Parsing Keys
+    ///
+    fileprivate enum MetaKeys {
+        static let Ids          = "ids"
+        static let Links        = "links"
+        static let Titles       = "titles"
+        static let Site         = "site"
+        static let Post         = "post"
+        static let Comment      = "comment"
+        static let Reply        = "reply_comment"
+        static let Home         = "home"
+    }
+}
+
+class NotificationContentFactory: FormattableContentFactory {
+    static func content(from blocks: [[String : AnyObject]], actionsParser parser: FormattableContentActionParser, parent: FormattableContentParent) -> [FormattableContent] {
+        return blocks.compactMap {
+            let actions = parser.parse($0[Constants.BlockKeys.Actions] as? [String: AnyObject])
+            guard let type = $0[Constants.BlockKeys.RawType] as? String else {
+                return DefaultFormattableContent(dictionary: $0, actions: actions, parent: parent)
+            }
+            if type == "comment" {
+                return FormattableCommentContent(dictionary: $0, actions: actions, parent: parent)
+            } else if type == "user" {
+                return FormattableUserContent(dictionary: $0, actions: actions, parent: parent)
+            }
+            return DefaultFormattableContent(dictionary: $0, actions: actions, parent: parent)
+        }
+    }
+}
+
 class BodyContentGroup: FormattableContentGroup {
     class func create(from body: [[String: AnyObject]], parent: FormattableContentParent) -> [FormattableContentGroup] {
-        let blocks = DefaultFormattableContent.blocksFromArray(body, actionsParser: NotificationActionParser(), parent: parent)
+        let blocks = NotificationContentFactory.content(from: body, actionsParser: NotificationActionParser(), parent: parent)
 
         switch parent.kind {
         case .Comment:
@@ -28,13 +72,22 @@ class BodyContentGroup: FormattableContentGroup {
     private class func groupsForCommentBodyBlocks(_ blocks: [FormattableContent], parent: FormattableContentParent) -> [FormattableContentGroup] {
 
 //        guard let comment = blockOfKind(.comment, from: blocks), let user = blockOfKind(.user, from: blocks) else {
-        guard let comment = blockOfType(DefaultFormattableContent.self, from: blocks), let user = blockOfType(DefaultFormattableContent.self, from: blocks) else {
+        guard let comment = blockOfType(FormattableCommentContent.self, from: blocks), let user = blockOfType(FormattableUserContent.self, from: blocks) else {
             return []
         }
 
-        var groups              = [FormattableContentGroup]()
-        let commentGroupBlocks  = [comment, user]
-        let middleGroupBlocks   = blocks.filter { return commentGroupBlocks.contains($0 as! DefaultFormattableContent) == false } as! [DefaultFormattableContent]
+        var groups = [FormattableContentGroup]()
+        let commentGroupBlocks: [FormattableContent] = [comment, user]
+
+        let middleGroupBlocks   = blocks.filter {
+            if let theComment = $0 as? FormattableCommentContent {
+                return theComment != comment
+            } else if let theUser = $0 as? FormattableUserContent {
+                return theUser != user
+            }
+            return false
+        }
+        
         let actionGroupBlocks   = [comment]
 
         // Comment Group: Comment + User Blocks
@@ -46,7 +99,10 @@ class BodyContentGroup: FormattableContentGroup {
             // If the block contains a range that matches with the metaReplyID field, we'll need to render this
             // with a custom style. Translates into the `You replied to this comment` footer.
             //
-            if let parentReplyID = parent.metaReplyID, block.formattableContentRangeWithCommentId(parentReplyID) != nil {
+            if let commentContent = block as? FormattableCommentContent,
+                let parentReplyID = parent.metaReplyID,
+                commentContent.formattableContentRangeWithCommentId(parentReplyID) != nil {
+
                 groups.append(FooterContentGroup(blocks: [block]))
             } else {
                 groups.append(FormattableContentGroup(blocks: [block]))
