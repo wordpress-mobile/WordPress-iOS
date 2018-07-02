@@ -7,15 +7,15 @@ class BadgeContentStyles: FormattableContentStyles {
         key = cachingKey
     }
 
-    var attributes: [NSAttributedStringKey : Any] {
+    var attributes: [NSAttributedStringKey: Any] {
         return WPStyleGuide.Notifications.badgeRegularStyle
     }
 
-    var quoteStyles: [NSAttributedStringKey : Any]? {
+    var quoteStyles: [NSAttributedStringKey: Any]? {
         return WPStyleGuide.Notifications.badgeBoldStyle
     }
 
-    var rangeStylesMap: [FormattableContentRange.Kind : [NSAttributedStringKey : Any]]? {
+    var rangeStylesMap: [FormattableContentRange.Kind: [NSAttributedStringKey: Any]]? {
         return [
             .User: WPStyleGuide.Notifications.badgeBoldStyle,
             .Post: WPStyleGuide.Notifications.badgeItalicsStyle,

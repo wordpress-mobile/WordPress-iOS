@@ -11,15 +11,15 @@ class RichTextContentStyles: FormattableContentStyles {
         self.key = "RichTextContentStyles"
     }
 
-    var attributes: [NSAttributedStringKey : Any] {
+    var attributes: [NSAttributedStringKey: Any] {
         return WPStyleGuide.Notifications.contentBlockRegularStyle
     }
 
-    var quoteStyles: [NSAttributedStringKey : Any]? {
+    var quoteStyles: [NSAttributedStringKey: Any]? {
         return WPStyleGuide.Notifications.contentBlockBoldStyle
     }
 
-    var rangeStylesMap: [FormattableContentRange.Kind : [NSAttributedStringKey : Any]]? {
+    var rangeStylesMap: [FormattableContentRange.Kind: [NSAttributedStringKey: Any]]? {
         return [
             .Blockquote: WPStyleGuide.Notifications.contentBlockQuotedStyle,
             .Noticon: WPStyleGuide.Notifications.blockNoticonStyle,

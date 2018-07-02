@@ -1,14 +1,14 @@
 
 class SubjectContentStyles: FormattableContentStyles {
-    var attributes: [NSAttributedStringKey : Any] {
+    var attributes: [NSAttributedStringKey: Any] {
         return WPStyleGuide.Notifications.subjectRegularStyle
     }
 
-    var quoteStyles: [NSAttributedStringKey : Any]? {
+    var quoteStyles: [NSAttributedStringKey: Any]? {
         return WPStyleGuide.Notifications.subjectItalicsStyle
     }
 
-    var rangeStylesMap: [FormattableContentRange.Kind : [NSAttributedStringKey : Any]]? {
+    var rangeStylesMap: [FormattableContentRange.Kind: [NSAttributedStringKey: Any]]? {
         return [
             .User: WPStyleGuide.Notifications.subjectBoldStyle,
             .Post: WPStyleGuide.Notifications.subjectItalicsStyle,
