@@ -71,7 +71,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionAdvanced,
 };
 
-static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/empty-site/";
+static NSString *const EmptySiteSupportURL = @"https://en.support.wordpress.com/empty-site";
 
 @interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, JetpackConnectionDelegate, PostCategoriesViewControllerDelegate>
 

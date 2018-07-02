@@ -87,6 +87,43 @@ class FilterTabBar: UIControl {
         }
     }
 
+    // MARK: - Tab Sizing
+
+    private var stackViewEdgeConstraints: [NSLayoutConstraint]! {
+        didSet {
+            if let oldValue = oldValue {
+                NSLayoutConstraint.deactivate(oldValue)
+            }
+        }
+    }
+
+    private var stackViewWidthConstraint: NSLayoutConstraint! {
+        didSet {
+            if let oldValue = oldValue {
+                NSLayoutConstraint.deactivate([oldValue])
+            }
+        }
+    }
+
+    enum TabSizingStyle {
+        /// The tabs will fill the space available to the filter bar,
+        /// with all tabs having equal widths. Tabs will not scroll.
+        case equalWidths
+        /// The tabs will have differing widths which fit their content size.
+        /// If the tabs are too large to fit in the area available, the
+        /// filter bar will scroll.
+        case fitting
+    }
+
+    /// Defines how the tabs should be sized within the tab view.
+    ///
+    var tabSizingStyle: TabSizingStyle = .fitting {
+        didSet {
+            updateTabSizingConstraints()
+            activateTabSizingConstraints()
+        }
+    }
+
     // MARK: - Initialization
 
     init(items: [String]) {
@@ -115,9 +152,13 @@ class FilterTabBar: UIControl {
             ])
 
         scrollView.addSubview(stackView)
+
+        stackViewWidthConstraint = stackView.widthAnchor.constraint(equalTo: widthAnchor)
+
+        updateTabSizingConstraints()
+        activateTabSizingConstraints()
+
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: AppearanceMetrics.horizontalPadding),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -AppearanceMetrics.horizontalPadding),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -AppearanceMetrics.bottomDividerHeight),
@@ -148,6 +189,7 @@ class FilterTabBar: UIControl {
         tabs.forEach({ $0.removeFromSuperview() })
         tabs = items.map(makeTab(_:))
         tabs.forEach(stackView.addArrangedSubview(_:))
+
         layoutIfNeeded()
 
         setSelectedIndex(selectedIndex, animated: false)
@@ -166,6 +208,28 @@ class FilterTabBar: UIControl {
         tab.addTarget(self, action: #selector(tabTapped(_:)), for: .touchUpInside)
 
         return tab
+    }
+
+    private func updateTabSizingConstraints() {
+        let padding = (tabSizingStyle == .equalWidths) ? 0 : AppearanceMetrics.horizontalPadding
+
+        stackViewEdgeConstraints = [
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: padding),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -padding)
+        ]
+    }
+
+    private func activateTabSizingConstraints() {
+        NSLayoutConstraint.activate(stackViewEdgeConstraints)
+
+        switch tabSizingStyle {
+        case .equalWidths:
+            stackView.distribution = .fillEqually
+            NSLayoutConstraint.activate([stackViewWidthConstraint])
+        case .fitting:
+            stackView.distribution = .fill
+            NSLayoutConstraint.deactivate([stackViewWidthConstraint])
+        }
     }
 
     // MARK: - Tab Selection
@@ -275,8 +339,11 @@ class FilterTabBar: UIControl {
         selectionIndicatorLeadingConstraint?.isActive = false
         selectionIndicatorTrailingConstraint?.isActive = false
 
-        selectionIndicatorLeadingConstraint = selectionIndicator.leadingAnchor.constraint(equalTo: tab.leadingAnchor, constant: tab.contentEdgeInsets.left)
-        selectionIndicatorTrailingConstraint = selectionIndicator.trailingAnchor.constraint(equalTo: tab.trailingAnchor, constant: -tab.contentEdgeInsets.right)
+        let leadingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : tab.contentEdgeInsets.left
+        let trailingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : -tab.contentEdgeInsets.right
+
+        selectionIndicatorLeadingConstraint = selectionIndicator.leadingAnchor.constraint(equalTo: tab.leadingAnchor, constant: leadingConstant)
+        selectionIndicatorTrailingConstraint = selectionIndicator.trailingAnchor.constraint(equalTo: tab.trailingAnchor, constant: trailingConstant)
 
         selectionIndicatorLeadingConstraint?.isActive = true
         selectionIndicatorTrailingConstraint?.isActive = true

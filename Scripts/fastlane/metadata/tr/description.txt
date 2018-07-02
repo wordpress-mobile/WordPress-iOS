@@ -1,9 +1,9 @@
-WordPress blogunuzu veya web sitenizi iOS cihazınızdan yönetin: İstatistikleri görüntüleyin, yorumları yönetin, sayfalar ile iletileri oluşturup düzenleyin ve karşıya medya yükleyin. İhtiyacınız olan tek şey bir WordPress.com blogu ya da 4.0 veya daha yüksek sürümde çalışan bir kendini barındıran WordPress.org sitesi.
+WordPress blogunuzu veya web sitenizi doğrudan iOS cihazınızdan yönetin veya oluşturun: yazılar ve sayfalar oluşturun ve düzenleyin, beğendiğiniz fotoğraflarınızı ve videolarınızı yükleyin, istatistikleri görüntüleyin ve yorumlara cevap verin.
 
-WordPress for iOS ile yayımcılığın gücünü avucunuzda tutarsınız. Trende giderken hemen o anda bir haiku yazın. The Daily Post'taki haftanın fotoğrafı yarışması için akşamüzeri gezintinizde bir fotoğraf çekin. En son yorumlarınıza cevap verin veya bugünkü okuyucuların nereden geldiklerini görmek için durumunuzu takip edin.
+iOS için WordPress ile yayımcılığın gücünü avucunuzda tutarsınız. Kanepede otururken hemen o anda bir haiku yazın. Öğle tatilinde fotoğraf çekin ve yayımlayın. En son yorumlarınıza yanıt verin veya bugünün okuyucularının hangi yeni ülkelerden geldiğini görmek için istatistiklerinizi kontrol edin.
 
-Topluluğun şaheserlerinizi hareket halindeyken de bulabilmeleri için uygulamadan yayımlanan yazılarınızı #wponthego ile etiketlemeyi unutmayın.
+iOS için WordPress bir açık kaynak projesidir, bu da sizin gelişiminize katkıda bulunabileceğiniz anlamına gelir. https://apps.wordpress.com/contribute/ adresinden daha fazla bilgi edinin.
 
-WordPress for iOS bir Açık Kaynak projesidir; bu, geliştirilmesine sizin de yardımcı olabileceğiniz anlamına gelir. https://apps.wordpress.com/contribute/ adresinde daha fazlasını öğrenin.
+iOS için WordPress, WordPress.com ve kendi kendine barındırılan WordPress 4.0 veya daha yüksek bir sürümünü çalıştıran WordPress.org sitelerini destekler.
 
-Uygulamayla ilgili yardım mı gerekli? https://ios.forums.wordpress.org adresinde forumları ziyaret edin veya @WordPressiOS adresinden bize tweet atın.
+Uygulamayla ilgili yardım mı gerekli? https://ios.forums.wordpress.org/ adresinde forumları ziyaret edin veya @WordPressiOS adresinden bize tweet atın.

@@ -84,6 +84,28 @@ class NotificationRange {
     }
 
 
+    /// AVOID USING This Initializer at all costs.
+    ///
+    /// The Notifications stack was designed to render the Model entities, retrieved via the Backend's API, for several reasons.
+    /// Most important one is: iOS, Android, WordPress.com and the WordPress Desktop App need to look consistent, all over.
+    ///
+    /// If you're tampering with the Backend Response, just to get a new UI component onscreen, means that you'll break consistency.
+    /// Please consider patching the backend first, so that the actual response contains (whatever) you need it to contain!.
+    ///
+    /// Alternatively, depending on what you need to get done, you may also consider modifying the way the current blocks look like.
+    ///
+    init(kind: Kind, range: NSRange, url: URL? = nil, commentID: NSNumber? = nil, postID: NSNumber? = nil, siteID: NSNumber? = nil, userID: NSNumber? = nil, value: String? = nil) {
+        self.kind = kind
+        self.range = range
+        self.url = url
+        self.commentID = commentID
+        self.postID = postID
+        self.siteID = siteID
+        self.userID = userID
+        self.value = value
+    }
+
+
     /// Returns the NotificationRange Kind, for a given raw Notification Range.
     ///
     /// - Details:

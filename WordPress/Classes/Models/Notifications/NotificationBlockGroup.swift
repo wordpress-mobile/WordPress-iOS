@@ -127,6 +127,13 @@ private extension NotificationBlockGroup {
             groups.append(NotificationBlockGroup(blocks: [block], kind: kind))
         }
 
+        // Whenever Possible *REMOVE* this workaround. Pingback Notifications require a locally generated block.
+        //
+        if parent.isPingback, let homeURL = user.metaLinksHome {
+            let blockGroup = pingbackReadMoreGroup(for: homeURL)
+            groups.append(blockGroup)
+        }
+
         // Actions Group: A copy of the Comment Block (Actions)
         groups.append(NotificationBlockGroup(blocks: actionGroupBlocks, kind: .actions))
 
@@ -141,6 +148,28 @@ private extension NotificationBlockGroup {
         }
 
         return nil
+    }
+}
+
+
+// MARK: - Private Parsing Helpers
+//
+private extension NotificationBlockGroup {
+
+    /// Returns a BlockGroup containing a single Text Block, which links to the specified URL.
+    ///
+    class func pingbackReadMoreGroup(for url: URL) -> NotificationBlockGroup {
+        let text = NSLocalizedString("Read the source post", comment: "Displayed at the footer of a Pingback Notification.")
+        let textRange = NSRange(location: 0, length: text.count)
+        let zeroRange = NSRange(location: 0, length: 0)
+
+        let ranges = [
+            NotificationRange(kind: .Noticon, range: zeroRange, value: "\u{f442}"),
+            NotificationRange(kind: .Link, range: textRange, url: url)
+        ]
+
+        let block = NotificationBlock(text: text, ranges: ranges)
+        return NotificationBlockGroup(blocks: [block], kind: .footer)
     }
 }
 

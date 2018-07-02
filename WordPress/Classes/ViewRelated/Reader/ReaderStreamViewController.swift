@@ -1532,3 +1532,15 @@ extension ReaderStreamViewController: NetworkStatusDelegate {
         syncIfAppropriate()
     }
 }
+
+// MARK: - UIViewControllerTransitioningDelegate
+//
+extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
+    public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        guard presented is FancyAlertViewController else {
+            return nil
+        }
+
+        return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}

@@ -157,6 +157,17 @@ class Notification: NSManagedObject {
 // MARK: - Notification Computed Properties
 //
 extension Notification {
+
+    /// Verifies if the current notification is a Pingback.
+    ///
+    var isPingback: Bool {
+        guard let subjectRanges = subjectBlock?.ranges, subjectRanges.count == 2 else {
+            return false
+        }
+
+        return subjectRanges.first?.kind == .Site && subjectRanges.last?.kind == .Post
+    }
+
     /// Verifies if the current notification is actually a Badge one.
     /// Note: Sorry about the following snippet. I'm (and will always be) against Duck Typing.
     ///

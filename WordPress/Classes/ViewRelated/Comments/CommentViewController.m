@@ -353,7 +353,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         [weakSelf openWebViewWithURL:url];
     };
 
-    cell.onDetailsClick = ^(UIButton *sender){
+    cell.onUserClick = ^{
         NSURL *url = [NSURL URLWithString:self.comment.author_url];
         if (url) {
             [weakSelf openWebViewWithURL:url];
@@ -422,6 +422,10 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)openWebViewWithURL:(NSURL *)url
 {
+    if (self.comment.blog.jetpack) {
+        url = [url appendingHideMasterbarParameters];
+    }
+    
     UIViewController *webViewController = [WebViewControllerFactory controllerAuthenticatedWithDefaultAccountWithUrl:url];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];

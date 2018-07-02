@@ -241,23 +241,22 @@ extension WPStyleGuide {
     @objc public class func applyReaderFollowButtonStyle(_ button: UIButton) {
         let side = WPStyleGuide.fontSizeForTextStyle(Cards.buttonTextStyle)
         let size = CGSize(width: side, height: side)
-        let followStr = followStringForDisplay(false)
-        let followingStr = followStringForDisplay(true)
 
         let followIcon = Gridicon.iconOfType(.readerFollow, withSize: size)
         let followingIcon = Gridicon.iconOfType(.readerFollowing, withSize: size)
-        let tintedFollowIcon = followIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
 
+        let tintedFollowIcon = followIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
         let tintedFollowingIcon = followingIcon.imageWithTintColor(WPStyleGuide.validGreen())
+
         let highlightIcon = followingIcon.imageWithTintColor(WPStyleGuide.lightBlue())
 
         button.setImage(tintedFollowIcon, for: .normal)
         button.setImage(tintedFollowingIcon, for: .selected)
         button.setImage(highlightIcon, for: .highlighted)
 
-        button.setTitle(followStr, for: UIControlState())
-        button.setTitle(followingStr, for: .selected)
-        button.setTitle(followingStr, for: .highlighted)
+        button.setTitle(followStringForDisplay, for: UIControlState())
+        button.setTitle(followingStringForDisplay, for: .selected)
+        button.setTitle(followingStringForDisplay, for: .highlighted)
     }
 
     @objc public class func applyReaderSaveForLaterButtonStyle(_ button: UIButton) {
@@ -320,12 +319,12 @@ extension WPStyleGuide {
         }
     }
 
-    @objc public class func followStringForDisplay(_ isFollowing: Bool) -> String {
-        if isFollowing {
-            return NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
-        } else {
-            return NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
-        }
+    @objc public static var followStringForDisplay: String {
+        return NSLocalizedString("Follow", comment: "Verb. Button title. Follow a new blog.")
+    }
+
+    @objc public static var followingStringForDisplay: String {
+        return NSLocalizedString("Following", comment: "Verb. Button title. The user is following a blog.")
     }
 
     @objc public class func savePostStringForDisplay(_ isSaved: Bool) -> String {

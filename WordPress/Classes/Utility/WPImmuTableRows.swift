@@ -60,35 +60,6 @@ struct IndicatorNavigationItemRow: ImmuTableRow {
     }
 }
 
-struct BadgeNavigationItemRow: ImmuTableRow {
-    static let cell = ImmuTableCell.class(WPTableViewCellBadge.self)
-
-    let title: String
-    let icon: UIImage?
-    let action: ImmuTableAction?
-    let badgeCount: Int
-    let accessoryType: UITableViewCellAccessoryType
-
-    init(title: String, icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCellAccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction) {
-        self.title = title
-        self.icon = icon
-        self.badgeCount = badgeCount
-        self.accessoryType = accessoryType
-        self.action = action
-    }
-
-    func configureCell(_ cell: UITableViewCell) {
-        let cell = cell as! WPTableViewCellBadge
-
-        cell.textLabel?.text = title
-        cell.accessoryType = accessoryType
-        cell.imageView?.image = icon
-        cell.badgeCount = badgeCount
-
-        WPStyleGuide.configureTableViewCell(cell)
-    }
-}
-
 struct EditableTextRow: ImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellValue1.self)
 

@@ -795,11 +795,11 @@ fileprivate extension ShareModularViewController {
             return
         }
 
-        isPublishingPost = true
-        sitesTableView.refreshControl = nil
-        clearSiteDataAndRefreshSitesTable()
-        showPublishingView()
-        ShareExtensionAbstractViewController.clearCache()
+        guard let _ = sites else {
+            let error = createErrorWithDescription("Could not save post to remote site: remote sites list missing.")
+            self.tracks.trackExtensionError(error)
+            return
+        }
 
         // Next, save the selected site for later use
         if let selectedSiteName = shareData.selectedSiteName {
@@ -807,47 +807,81 @@ fileprivate extension ShareModularViewController {
         }
 
         // Then proceed uploading the actual post
-        let networkService = AppExtensionsService()
         let localImageURLs = [URL](shareData.sharedImageDict.keys)
-        if !localImageURLs.isEmpty {
-            // We have media, so let's upload it with the post
-            networkService.uploadPostWithMedia(title: shareData.title,
-                                               body: shareData.contentBody,
-                                               tags: shareData.tags,
-                                               categories: shareData.selectedCategoriesIDString,
-                                               status: shareData.postStatus.rawValue,
-                                               siteID: siteID,
-                                               localMediaFileURLs: localImageURLs,
-                                               requestEnqueued: {
-                                                self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
-                                                self.dismiss()
-            }, onFailure: {
-                let error = self.createErrorWithDescription("Failed to save and upload post with media.")
-                self.tracks.trackExtensionError(error)
-                self.showAlert()
-            })
-        } else {
+        if localImageURLs.isEmpty {
             // No media. just a simple post
-            networkService.saveAndUploadPost(title: shareData.title,
-                                             body: shareData.contentBody,
-                                             tags: shareData.tags,
-                                             categories: shareData.selectedCategoriesIDString,
-                                             status: shareData.postStatus.rawValue,
-                                             siteID: siteID,
-                                             onComplete: {
-                                                self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
-                                                self.dismiss()
-            }, onFailure: {
-                let error = self.createErrorWithDescription("Failed to save and upload post with no media.")
-                self.tracks.trackExtensionError(error)
-                self.showAlert()
-            })
+            saveAndUploadSimplePost(siteID: siteID)
+        } else {
+            // We have media, so let's upload it with the post
+            uploadPostAndMedia(siteID: siteID, localImageURLs: localImageURLs)
         }
     }
 
-    func showAlert() {
-        let title = NSLocalizedString("Sharing Error", comment: "Share extension error dialog title.")
-        let message = NSLocalizedString("Whoops, something went wrong while sharing. You can try again, maybe it was a glitch.", comment: "Share extension error dialog text.")
+    fileprivate func prepareForPublishing() {
+        isPublishingPost = true
+        sitesTableView.refreshControl = nil
+        clearSiteDataAndRefreshSitesTable()
+        showPublishingView()
+        ShareExtensionAbstractViewController.clearCache()
+    }
+
+    func saveAndUploadSimplePost(siteID: Int) {
+        let service = AppExtensionsService()
+
+        prepareForPublishing()
+        service.saveAndUploadPost(title: shareData.title,
+                                         body: shareData.contentBody,
+                                         tags: shareData.tags,
+                                         categories: shareData.selectedCategoriesIDString,
+                                         status: shareData.postStatus.rawValue,
+                                         siteID: siteID,
+                                         onComplete: {
+                                            self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
+                                            self.dismiss()
+        }, onFailure: {
+            let error = self.createErrorWithDescription("Failed to save and upload post with no media.")
+            self.tracks.trackExtensionError(error)
+            self.showRetryAlert()
+        })
+    }
+
+    func uploadPostAndMedia(siteID: Int, localImageURLs: [URL]) {
+        guard let siteList = sites else {
+            return
+        }
+
+        let service = AppExtensionsService()
+        let isAuthorizedToUploadFiles = service.isAuthorizedToUploadMedia(in: siteList, for: siteID)
+        guard isAuthorizedToUploadFiles else {
+            // Error: this role is unable to upload media.
+            let error = self.createErrorWithDescription("This role is unable to upload media.")
+            self.tracks.trackExtensionError(error)
+            showPermissionsAlert()
+            return
+        }
+
+        prepareForPublishing()
+        service.uploadPostWithMedia(title: shareData.title,
+                                    body: shareData.contentBody,
+                                    tags: shareData.tags,
+                                    categories: shareData.selectedCategoriesIDString,
+                                    status: shareData.postStatus.rawValue,
+                                    siteID: siteID,
+                                    localMediaFileURLs: localImageURLs,
+                                    requestEnqueued: {
+                                        self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
+                                        self.dismiss()
+        }, onFailure: {
+            let error = self.createErrorWithDescription("Failed to save and upload post with media.")
+            self.tracks.trackExtensionError(error)
+            self.showRetryAlert()
+        })
+    }
+
+    func showRetryAlert() {
+        let title: String = NSLocalizedString("Sharing Error", comment: "Share extension error dialog title.")
+        let message: String = NSLocalizedString("Whoops, something went wrong while sharing. You can try again, maybe it was a glitch.", comment: "Share extension error dialog text.")
+        let dismiss: String = NSLocalizedString("Dismiss", comment: "Share extension error dialog cancel button label.")
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
         let acceptButtonText = NSLocalizedString("Try again", comment: "Share extension error dialog retry button label.")
@@ -856,11 +890,26 @@ fileprivate extension ShareModularViewController {
         }
         alertController.addAction(acceptAction)
 
-        let dismissButtonText = NSLocalizedString("Nevermind", comment: "Share extension error dialog cancel button label.")
+        let dismissButtonText = dismiss
         let dismissAction = UIAlertAction(title: dismissButtonText, style: .cancel) { (action) in
             self.showCancellingView()
             self.cleanUpSharedContainerAndCache()
             self.dismiss()
+        }
+        alertController.addAction(dismissAction)
+
+        present(alertController, animated: true, completion: nil)
+    }
+
+    func showPermissionsAlert() {
+        let title = NSLocalizedString("Sharing Error", comment: "Share extension error dialog title.")
+        let message = NSLocalizedString("Your account does not have permission to upload media to this site. The Site Administrator can change these permissions.", comment: "Share extension error dialog text.")
+        let dismiss = NSLocalizedString("Return to post", comment: "Share extension error dialog cancel button text")
+
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+
+        let dismissAction = UIAlertAction(title: dismiss, style: .cancel) { [weak self] (action) in
+            self?.clearAllNoResultsViews()
         }
         alertController.addAction(dismissAction)
 

@@ -5,9 +5,6 @@
       location = "group:WordPress/WordPress.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:WordPressAuthenticator/WordPressAuthenticator.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:WordPressFlux/WordPressFlux.xcodeproj">
    </FileRef>
    <FileRef

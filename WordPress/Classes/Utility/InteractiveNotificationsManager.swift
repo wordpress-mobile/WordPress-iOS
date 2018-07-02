@@ -48,8 +48,16 @@ final class InteractiveNotificationsManager: NSObject {
     /// Because of this, this should be called only when we know we will need to show notifications (for instance, after login).
     ///
     @objc func requestAuthorization(completion: @escaping () -> ()) {
+        defer {
+            WPAnalytics.track(.pushNotificationOSAlertShown)
+        }
         let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.requestAuthorization(options: [.badge, .sound, .alert]) { (_, _)  in
+        notificationCenter.requestAuthorization(options: [.badge, .sound, .alert]) { (allowed, _)  in
+            if allowed {
+                WPAnalytics.track(.pushNotificationOSAlertAllowed)
+            } else {
+                WPAnalytics.track(.pushNotificationOSAlertDenied)
+            }
             completion()
         }
     }
@@ -416,11 +424,9 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
     }
 
     private func handleZendeskNotification(userInfo: NSDictionary) {
-        if FeatureFlag.zendeskMobile.enabled {
-            if let type = userInfo.string(forKey: ZendeskUtils.PushNotificationIdentifiers.key),
-                type == ZendeskUtils.PushNotificationIdentifiers.type {
-                ZendeskUtils.handlePushNotification(userInfo)
-            }
+        if let type = userInfo.string(forKey: ZendeskUtils.PushNotificationIdentifiers.key),
+            type == ZendeskUtils.PushNotificationIdentifiers.type {
+            ZendeskUtils.handlePushNotification(userInfo)
         }
     }
 

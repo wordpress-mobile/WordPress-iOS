@@ -22,8 +22,6 @@ static CGFloat const WPWebViewToolbarShownConstant          = 0.0;
 static CGFloat const WPWebViewToolbarHiddenConstant         = -44.0;
 static CGFloat const WPWebViewAnimationShortDuration        = 0.1;
 
-static NSString *const WPComReferrerURL = @"https://wordpress.com";
-
 static NSString *const WPWebViewWebKitErrorDomain = @"WebKitErrorDomain";
 static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
@@ -70,6 +68,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         _optionsButton = configuration.optionsButton;
         _secureInteraction = configuration.secureInteraction;
         _addsWPComReferrer = configuration.addsWPComReferrer;
+        _addsHideMasterbarParameters = configuration.addsHideMasterbarParameters;
         _customTitle = configuration.customTitle;
         _authenticator = configuration.authenticator;
     }
@@ -132,6 +131,10 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     // Fire away!
     [self applyModalStyleIfNeeded];
     [self loadWebViewRequest];
+
+    if (UIAccessibilityIsBoldTextEnabled()) {
+        self.navigationController.navigationBar.tintColor = [WPStyleGuide greyLighten10];
+    }
 }
 
 - (void)applyModalStyleIfNeeded
@@ -219,6 +222,12 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     if (self.addsWPComReferrer) {
         [mutableRequest setValue:WPComReferrerURL forHTTPHeaderField:@"Referer"];
     }
+    
+    if (self.addsHideMasterbarParameters &&
+        ([mutableRequest.URL.host containsString:WPComDomain] || [mutableRequest.URL.host containsString:AutomatticDomain])) {
+        mutableRequest.URL = [mutableRequest.URL appendingHideMasterbarParameters];
+    }
+
     [mutableRequest setValue:[WPUserAgent wordPressUserAgent] forHTTPHeaderField:@"User-Agent"];
     [self.webView loadRequest:mutableRequest];
 }

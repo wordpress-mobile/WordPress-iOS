@@ -7,6 +7,8 @@ import WordPressFlux
 ///
 @objc class ShareExtensionSessionManager: NSObject {
 
+    typealias CompletionBlock = () -> Void
+
     // MARK: - Public Properties
 
     typealias ShareExtensionBackgroundCompletionBlock = () -> Void
@@ -155,8 +157,8 @@ import WordPressFlux
     /// - Returns: The updated post PostUploadOperation or nil
     ///
     fileprivate func combinePostAndMediaContent(for groupID: String) -> PostUploadOperation? {
-        guard let postUploadOp = coreDataStack.fetchPostUploadOp(for: groupID),
-            let mediaUploadOps = coreDataStack.fetchMediaUploadOps(for: groupID) else {
+        guard let postUploadOp = postUploadOperation(for: groupID),
+            let mediaUploadOps = mediaUploadOperations(for: groupID) else {
                 return nil
         }
 
@@ -165,6 +167,7 @@ import WordPressFlux
                 let remoteURL = mediaUploadOp.remoteURL else {
                     return
             }
+
 
             let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: fileName,
                                                             remoteURLString: remoteURL,
@@ -184,7 +187,7 @@ import WordPressFlux
     ///
     fileprivate func uploadPost(with postUploadOp: PostUploadOperation) {
         let postUploadOpID = postUploadOp.objectID
-        guard let oauth2Token = ShareExtensionService.retrieveShareExtensionToken() else {
+        guard let oauth2Token = token() else {
             logError("Error creating post: OAuth token is not defined.", uploadOpObjectIDs: postUploadOpID)
             return
         }
@@ -193,12 +196,7 @@ import WordPressFlux
             return
         }
 
-        let api = WordPressComRestApi(oAuthToken: oauth2Token,
-                                      userAgent: nil,
-                                      backgroundUploads: false,
-                                      backgroundSessionIdentifier: backgroundSessionIdentifier,
-                                      sharedContainerIdentifier: WPAppGroupName)
-        let remote = PostServiceRemoteREST(wordPressComRestApi: api, siteID: NSNumber(value: postUploadOp.siteID))
+        let remote = PostServiceRemoteREST(wordPressComRestApi: api(token: oauth2Token), siteID: NSNumber(value: postUploadOp.siteID))
         postUploadOp.currentStatus = .inProgress
         coreDataStack.saveContext()
 
@@ -212,10 +210,13 @@ import WordPressFlux
                 postUploadOp.remotePostID = postID.int64Value
             }
             postUploadOp.currentStatus = .complete
+
             self.coreDataStack.saveContext()
 
-            ShareExtensionSessionManager.fireUserNotificationIfNeeded(postUploadOpID.uriRepresentation().absoluteString)
-            self.cleanupSessionAndTerminate()
+            self.updateMedia(postID: post.postID.int64Value, siteID: postUploadOp.siteID, onComplete: {
+                ShareExtensionSessionManager.fireUserNotificationIfNeeded(postUploadOpID.uriRepresentation().absoluteString)
+                self.cleanupSessionAndTerminate()
+            })
         }, failure: { error in
             var errorString = "Error creating post"
             if let error = error as NSError? {
@@ -225,6 +226,69 @@ import WordPressFlux
             ShareExtensionSessionManager.fireUserNotificationIfNeeded(postUploadOpID.uriRepresentation().absoluteString)
             self.cleanupSessionAndTerminate()
         })
+    }
+
+    private func api(token: String) -> WordPressComRestApi {
+        return WordPressComRestApi(oAuthToken: token,
+                                   userAgent: nil,
+                                   backgroundUploads: false,
+                                   backgroundSessionIdentifier: backgroundSessionIdentifier,
+                                   sharedContainerIdentifier: WPAppGroupName)
+    }
+
+    private func token() -> String? {
+        return ShareExtensionService.retrieveShareExtensionToken()
+    }
+
+    private func updateMedia(postID: Int64?, siteID: Int64, onComplete: CompletionBlock?) {
+        guard let postID = postID else {
+            return
+        }
+
+        guard let service = mediaService(siteID: siteID) else {
+            return
+        }
+
+        guard let groupID = coreDataStack.fetchGroupID(for: backgroundSessionIdentifier), !groupID.isEmpty else {
+            DDLogError("Unable to find the Group ID for session with ID \(backgroundSessionIdentifier).")
+            return
+        }
+
+        let media = mediaUploadOperations(for: groupID)?.compactMap({return $0.remoteMedia})
+        let syncGroup = DispatchGroup()
+        media?.forEach { mediaItem in
+            syncGroup.enter()
+            mediaItem.postID = NSNumber(value: postID)
+            service.update(mediaItem, success: { updatedRemoteMedia in
+                syncGroup.leave()
+            }, failure: { error in
+                var errorString = "Error creating post in share extension"
+                if let error = error as NSError? {
+                    errorString += ": \(error.localizedDescription)"
+                }
+                DDLogError(errorString)
+                syncGroup.leave()
+            })
+        }
+
+        syncGroup.notify(queue: .main) {
+            onComplete?()
+        }
+    }
+
+    fileprivate func mediaService(siteID: Int64) -> MediaServiceRemoteREST? {
+        guard let oauth2Token = token() else {
+            return nil
+        }
+        return MediaServiceRemoteREST(wordPressComRestApi: api(token: oauth2Token), siteID: NSNumber(value: siteID))
+    }
+
+    private func mediaUploadOperations(for groupID: String) -> [MediaUploadOperation]? {
+        return coreDataStack.fetchMediaUploadOps(for: groupID)
+    }
+
+    private func postUploadOperation(for groupID: String) -> PostUploadOperation? {
+        return coreDataStack.fetchPostUploadOp(for: groupID)
     }
 }
 

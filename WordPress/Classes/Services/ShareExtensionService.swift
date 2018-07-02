@@ -67,7 +67,6 @@ open class ShareExtensionService: NSObject {
         userDefaults.synchronize()
     }
 
-
     /// Sets the Maximum Media Size.
     ///
     /// - Parameter maximumMediaSize: The maximum size a media attachment might occupy.
@@ -78,6 +77,20 @@ open class ShareExtensionService: NSObject {
         }
 
         userDefaults.set(maximumMediaDimension, forKey: WPShareExtensionMaximumMediaDimensionKey)
+        userDefaults.synchronize()
+    }
+
+
+    /// Sets the recently used sites.
+    ///
+    /// - Parameter recentSites: An array of URL's representing the recently used sites.
+    ///
+    @objc class func configureShareExtensionRecentSites(_ recentSites: [String]) {
+        guard let userDefaults = UserDefaults(suiteName: WPAppGroupName) else {
+            return
+        }
+
+        userDefaults.set(recentSites, forKey: WPShareExtensionRecentSitesKey)
         userDefaults.synchronize()
     }
 
@@ -106,6 +119,7 @@ open class ShareExtensionService: NSObject {
             userDefaults.removeObject(forKey: WPShareExtensionUserDefaultsLastUsedSiteID)
             userDefaults.removeObject(forKey: WPShareExtensionUserDefaultsLastUsedSiteName)
             userDefaults.removeObject(forKey: WPShareExtensionMaximumMediaDimensionKey)
+            userDefaults.removeObject(forKey: WPShareExtensionRecentSitesKey)
             userDefaults.synchronize()
         }
     }
@@ -176,5 +190,15 @@ open class ShareExtensionService: NSObject {
         }
 
         return userDefaults.object(forKey: WPShareExtensionMaximumMediaDimensionKey) as? Int
+    }
+
+    /// Retrieves the recently used sites, if any.
+    ///
+    class func retrieveShareExtensionRecentSites() -> [String]? {
+        guard let userDefaults = UserDefaults(suiteName: WPAppGroupName) else {
+            return nil
+        }
+
+        return userDefaults.object(forKey: WPShareExtensionRecentSitesKey) as? [String]
     }
 }

@@ -14,7 +14,9 @@ class VideoUploadProcessor: Processor {
     }
 
     lazy var videoPostMediaUploadProcessor = ShortcodeProcessor(tag: "video", replacer: { (shortcode) in
-        guard let uploadID = shortcode.attributes.named[MediaAttachment.uploadKey], self.mediaUploadID == uploadID else {
+        guard let uploadValue = shortcode.attributes[MediaAttachment.uploadKey]?.value,
+            case let .string(uploadID) = uploadValue,
+            self.mediaUploadID == uploadID else {
             return nil
         }
         var html = ""
@@ -24,17 +26,13 @@ class VideoUploadProcessor: Processor {
             html += " ]"
         } else {
             html = "[video "
-            var updatedAttributes = shortcode.attributes.named
-            updatedAttributes["src"] = self.remoteURLString
+            var updatedAttributes = shortcode.attributes
+            updatedAttributes.set(.string(self.remoteURLString), forKey: "src")
             //remove the uploadKey
-            updatedAttributes[MediaAttachment.uploadKey] = nil
+            updatedAttributes.remove(key: MediaAttachment.uploadKey)
 
-            for (name, value) in updatedAttributes {
-                html += "\(name)=\"\(value)\" "
-            }
-            for value in shortcode.attributes.unamed {
-                html += "\(value) "
-            }
+            let attributeSerializer = ShortcodeAttributeSerializer()
+            html += attributeSerializer.serialize(updatedAttributes)
 
             html += "]"
         }

@@ -10,7 +10,6 @@
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPScrollableViewController.h"
-#import "HelpshiftUtils.h"
 #import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
@@ -119,22 +118,15 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
         [self setSelectedViewController:self.blogListSplitViewController];
 
-        if ([Feature enabled:FeatureFlagZendeskMobile]) {
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(updateIconIndicators:)
-                                                         name:NSNotification.ZendeskPushNotificationReceivedNotification
-                                                       object:nil];
-            
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(updateIconIndicators:)
-                                                         name:NSNotification.ZendeskPushNotificationClearedNotification
-                                                       object:nil];
-        } else {
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(helpshiftUnreadCountUpdated:)
-                                                         name:HelpshiftUnreadCountUpdatedNotification
-                                                       object:nil];
-        }
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateIconIndicators:)
+                                                     name:NSNotification.ZendeskPushNotificationReceivedNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateIconIndicators:)
+                                                     name:NSNotification.ZendeskPushNotificationClearedNotification
+                                                   object:nil];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(defaultAccountDidChange:)
@@ -811,20 +803,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     [self updateMeNotificationIcon];
     [self updateNotificationBadgeVisibility];
-}
-
-#pragma mark - Helpshift Notifications
-
-- (void)helpshiftUnreadCountUpdated:(NSNotification *)notification
-{
-    NSInteger unreadCount = [HelpshiftUtils unreadNotificationCount];
-    UITabBarItem *meTabBarItem = self.tabBar.items[WPTabMe];
-    if (unreadCount == 0) {
-        [meTabBarItem setBadgeValue:nil];
-    }
-    else {
-        [meTabBarItem setBadgeValue:[NSString stringWithFormat:@"%ld", unreadCount]];
-    }
 }
 
 #pragma mark - Default Account Notifications

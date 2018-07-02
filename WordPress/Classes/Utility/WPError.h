@@ -40,7 +40,7 @@ extern NSString * const WPErrorSupportSourceKey;
  Show a general alert with a custom title and message.
  
  @discussion The buttons provided are localized: "OK" and "Need help?"
-             "Need help?" opens the SupportViewController
+             "Need help?" opens Support
              "OK" simply dismisses the alert.
  
  @param title for the alert
@@ -52,7 +52,7 @@ extern NSString * const WPErrorSupportSourceKey;
  Show a general alert with a custom title and message.
  
  @discussion The buttons provided are localized: "OK" and optionally "Need help?"
-             "Need help?" opens the SupportViewController
+             "Need help?" opens Support
              "OK" simply dismisses the alert.
  
  @param title for the alert
@@ -66,7 +66,7 @@ extern NSString * const WPErrorSupportSourceKey;
  Supply a block to execute custom logic when the OK button is pressed
  
  @discussion The buttons provided are localized: "OK" and optionally "Need help?"
-             "Need help?" opens the SupportViewController
+             "Need help?" opens Support
              "OK" simply dismisses the alert.
  
  @param title for the alert

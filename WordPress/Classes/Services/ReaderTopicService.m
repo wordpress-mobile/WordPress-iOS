@@ -590,7 +590,14 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
                        success:(void (^)(NSManagedObjectID *objectID, BOOL isFollowing))success
                        failure:(void (^)(NSError *error))failure
 {
-    ReaderSiteTopic *siteTopic = [self findSiteTopicWithSiteID:siteID];
+    ReaderSiteTopic *siteTopic;
+
+    if (isFeed) {
+        siteTopic = [self findSiteTopicWithFeedID:siteID];
+    } else {
+        siteTopic = [self findSiteTopicWithSiteID:siteID];
+    }
+
     if (siteTopic) {
         if (success) {
             success(siteTopic.objectID, siteTopic.following);
@@ -1050,6 +1057,20 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderSiteTopic classNameWithoutNamespaces]];
     request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@", siteID];
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
+        return nil;
+    }
+
+    return (ReaderSiteTopic *)[results firstObject];
+}
+
+- (ReaderSiteTopic *)findSiteTopicWithFeedID:(NSNumber *)feedID
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderSiteTopic classNameWithoutNamespaces]];
+    request.predicate = [NSPredicate predicateWithFormat:@"feedID = %@", feedID];
     NSError *error;
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
     if (error) {

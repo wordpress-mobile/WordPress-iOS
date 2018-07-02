@@ -99,7 +99,9 @@
     ///
     private func loadGif(with url: URL, from source: ImageSourceInformation, preferredSize size: CGSize) {
         let request: URLRequest
-        if source.isPrivateOnWPCom {
+        if url.isFileURL {
+            request = URLRequest(url: url)
+        } else if source.isPrivateOnWPCom {
             request = PrivateSiteURLProtocol.requestForPrivateSite(from: url)
         } else {
             // Photon helper set the size to load the retina version. We don't want that for gifs

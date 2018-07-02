@@ -958,6 +958,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatPushNotificationWinbackSettingsTapped:
             eventName = @"notifications_winback_settings_tapped";
             break;
+        case WPAnalyticsStatPushNotificationOSAlertShown:
+            eventName = @"notifications_os_alert_shown";
+            break;
+        case WPAnalyticsStatPushNotificationOSAlertAllowed:
+            eventName = @"notifications_os_alert_allowed";
+            break;
+        case WPAnalyticsStatPushNotificationOSAlertDenied:
+            eventName = @"notifications_os_alert_denied";
+            break;
         case WPAnalyticsStatReaderAccessed:
             eventName = @"reader_accessed";
             break;
@@ -1298,26 +1307,8 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatStockMediaUploaded:
             eventName = @"stock_media_uploaded";
             break;
-        case WPAnalyticsStatSupportOpenedHelpshiftScreen:
-            eventName = @"support_opened_helpshift_screen";
-            break;
         case WPAnalyticsStatSupportReceivedResponseFromSupport:
             eventName = @"support_received_response_from_support";
-            break;
-        case WPAnalyticsStatSupportUserAcceptedTheSolution:
-            eventName = @"support_user_accepted_the_solution";
-            break;
-        case WPAnalyticsStatSupportUserRejectedTheSolution:
-            eventName = @"support_user_rejected_the_solution";
-            break;
-        case WPAnalyticsStatSupportUserSentScreenshot:
-            eventName = @"support_user_sent_screenshot";
-            break;
-        case WPAnalyticsStatSupportUserReviewedTheApp:
-            eventName = @"support_user_reviewed_the_app";
-            break;
-        case WPAnalyticsStatSupportUserRepliedToHelpshift:
-            eventName = @"support_user_replied_to_helpshift";
             break;
         case WPAnalyticsStatSupportHelpCenterUserSearched:
             eventName = @"support_help_center_user_searched";
@@ -1342,12 +1333,6 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatSupportNewRequestFileAttachmentFailed:
             eventName = @"support_new_request_file_attachment_failed";
-            break;
-        case WPAnalyticsStatSupportTicketAttachmentUserDeleted:
-            eventName = @"support_ticket_attachment_user_deleted";
-            break;
-        case WPAnalyticsStatSupportTicketAttachmentUserDeleteFailed:
-            eventName = @"support_ticket_attachment_user_delete_failed";
             break;
         case WPAnalyticsStatSupportTicketUserReplied:
             eventName = @"support_ticket_user_replied";
