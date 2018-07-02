@@ -12,28 +12,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         }
     }
 
-    fileprivate let noResultsView = WPNoResultsView()
-
-    @objc func updateNoResults() {
-        if let noResultsViewModel = viewModel.noResultsViewModel {
-            showNoResults(noResultsViewModel)
-        } else {
-            hideNoResults()
-        }
-    }
-
-    func showNoResults(_ viewModel: WPNoResultsView.Model) {
-        noResultsView.bindViewModel(viewModel)
-        if noResultsView.isDescendant(of: tableView) {
-            noResultsView.centerInSuperview()
-        } else {
-            tableView.addSubview(withFadeAnimation: noResultsView)
-        }
-    }
-
-    @objc func hideNoResults() {
-        noResultsView.removeFromSuperview()
-    }
+    fileprivate var noResultsViewController: NoResultsViewController?
 
     @objc static let restorationIdentifier = "PlanList"
     /// Reference to the blog object if initialized with a blog. Used for state restoration only.
@@ -62,7 +41,6 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         // https://bugs.swift.org/browse/SR-3465
         super.restorationIdentifier = PlanListViewController.restorationIdentifier
         restorationClass = PlanListViewController.self
-        noResultsView.delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -106,19 +84,62 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
             })
         }
     }
+
+    // MARK: - NoResults Handling
+
+    private func setupNoResultsViewController() {
+        let noResultsStoryboard = UIStoryboard(name: "NoResults", bundle: nil)
+        guard let noResultsViewController = noResultsStoryboard.instantiateViewController(withIdentifier: "NoResults") as? NoResultsViewController else {
+            return
+        }
+
+        noResultsViewController.delegate = self
+        self.noResultsViewController = noResultsViewController
+    }
+
+    private func updateNoResults() {
+        hideNoResults()
+        if let noResultsViewModel = viewModel.noResultsViewModel {
+            showNoResults(noResultsViewModel)
+        }
+    }
+
+    private func showNoResults(_ viewModel: NoResultsViewController.Model) {
+
+        if noResultsViewController == nil {
+            setupNoResultsViewController()
+        }
+
+        guard let noResultsViewController = noResultsViewController else {
+            return
+        }
+
+        noResultsViewController.bindViewModel(viewModel)
+
+        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        addChildViewController(noResultsViewController)
+        noResultsViewController.didMove(toParentViewController: self)
+
+    }
+
+    private func hideNoResults() {
+
+        guard let noResultsViewController = noResultsViewController else {
+            return
+        }
+
+        noResultsViewController.view.removeFromSuperview()
+        noResultsViewController.removeFromParentViewController()
+    }
+
 }
 
-// MARK: - WPNoResultsViewDelegate
+// MARK: - NoResultsViewControllerDelegate
 
-extension PlanListViewController: WPNoResultsViewDelegate {
-    func didTap(_ noResultsView: WPNoResultsView!) {
-        if FeatureFlag.zendeskMobile.enabled {
-            let supportVC = SupportTableViewController()
-            supportVC.showFromTabBar()
-        } else {
-            let supportVC = SupportViewController()
-            supportVC.showFromTabBar()
-        }
+extension PlanListViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        let supportVC = SupportTableViewController()
+        supportVC.showFromTabBar()
     }
 }
 

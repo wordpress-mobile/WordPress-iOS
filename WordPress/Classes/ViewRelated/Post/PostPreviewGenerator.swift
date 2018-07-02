@@ -4,6 +4,7 @@ import Foundation
 protocol PostPreviewGeneratorDelegate {
     func preview(_ generator: PostPreviewGenerator, attemptRequest request: URLRequest)
     func preview(_ generator: PostPreviewGenerator, loadHTML html: String)
+    func previewFailed(_ generator: PostPreviewGenerator, message: String)
 }
 
 class PostPreviewGenerator: NSObject {
@@ -25,11 +26,7 @@ class PostPreviewGenerator: NSObject {
         }
 
         guard WordPressAppDelegate.sharedInstance().connectionAvailable else {
-            showFakePreview(message:
-                NSLocalizedString("The internet connection appears to be offline.", comment: "") +
-                    " " +
-                NSLocalizedString("A simple preview is shown below.", comment: "")
-            )
+            delegate?.previewFailed(self, message: NSLocalizedString("The internet connection appears to be offline.", comment: ""))
             return
         }
 
@@ -37,11 +34,7 @@ class PostPreviewGenerator: NSObject {
     }
 
     @objc func previewRequestFailed(error: NSError) {
-        showFakePreview(message:
-            NSLocalizedString("There has been an error while trying to reach your site.", comment: "") +
-                " " +
-                NSLocalizedString("A simple preview is shown below.", comment: "")
-        )
+        delegate?.previewFailed(self, message: NSLocalizedString("There has been an error while trying to reach your site.", comment: ""))
     }
 
     @objc func interceptRedirect(request: URLRequest) -> URLRequest? {

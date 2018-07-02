@@ -104,6 +104,12 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
             actionOrigin = .otherStream
         }
 
+        if !post.isSavedForLater {
+            if let origin = origin as? UIViewController & UIViewControllerTransitioningDelegate {
+                FancyAlertViewController.presentReaderSavedPostsAlertControllerIfNecessary(from: origin)
+            }
+        }
+
         ReaderSaveForLaterAction(visibleConfirmation: visibleConfirmation).execute(with: post, context: context, origin: actionOrigin)
     }
 

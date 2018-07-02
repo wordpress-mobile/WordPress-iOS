@@ -1,11 +1,9 @@
-Hantera eller skapa din WordPress-blogg eller webbplats direkt från din iOS-enhet: visa statistik, granska kommentarer, skapa och redigera inlägg och sidor och ladda upp media.
+Hantera eller skapa din WordPress-blogg eller -webbplats direkt från din iOS-enhet: skapa och redigera inlägg och sidor, ladda upp dina bästa bilder och videoklipp, kolla statistiken och svara på kommentarer.
 
-Med WordPress för iOS har du kraften att publicera direkt från din hand. Utforma en spontan haiku från soffan. Ta ett foto på din lunchpaus för veckans fotoutmaning på The Daily Post. Svara på dina senaste kommentarer, eller kolla din statistik för att se var dagens läsare kommer från.
+Med WordPress för iOS finns möjligheten att publicera direkt i din handflata. Skriv ett spontant utkast till en haiku när du sitter i soffan. Ta ett foto och publicera det under lunchrasten. Svara på dina senaste kommentarer eller kolla statistiken för att se från vilka nya länder du fått besökare idag.
 
-Glöm inte att ge dina inlägg publicerade med appen etiketten #wponthego så alla andra kan hitta dina mästerverk i farten.
+WordPress för iOS är ett öppen källkodsprojekt, vilket innebär att även du är välkommen att bidra till dess utveckling. Läs mer på https://apps.wordpress.com/contribute/.
 
-WordPress för iOS är ett Open Source-projekt, vilket innebär att du också kan bidra till utvecklingen. Lär dig mer på https://apps.wordpress.com/contribute/.
+WordPress for iOS supports WordPress.com and self-hosted WordPress.org sites running WordPress 4.0 or higher.
 
-WordPress för iOS stöder WordPress.com och drivs med egna servrar för WordPress.org-webbplatser som kör WordPress 4.0 eller högre.
-
-Behöver du hjälp med appen? Besök forumet på https://ios.forums.wordpress.org eller tweeta oss @WordPressiOS.
+Need help with the app? Visit the forums at https://ios.forums.wordpress.org/ or tweet us @WordPressiOS.

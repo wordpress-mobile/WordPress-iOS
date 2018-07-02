@@ -68,6 +68,25 @@ class NotificationBlock: Equatable {
         type    = dictionary[BlockKeys.RawType] as? String
         text    = dictionary[BlockKeys.Text] as? String
     }
+
+    /// AVOID USING This Initializer at all costs.
+    ///
+    /// The Notifications stack was designed to render the Model entities, retrieved via the Backend's API, for several reasons.
+    /// Most important one is: iOS, Android, WordPress.com and the WordPress Desktop App need to look consistent, all over.
+    ///
+    /// If you're tampering with the Backend Response, just to get a new UI component onscreen, means that you'll break consistency.
+    /// Please consider patching the backend first, so that the actual response contains (whatever) you need it to contain!.
+    ///
+    /// Alternatively, depending on what you need to get done, you may also consider modifying the way the current blocks look like.
+    ///
+    init(text: String?, ranges: [NotificationRange] = [], media: [NotificationMedia] = []) {
+        self.text = text
+        self.ranges = ranges
+        self.media =  media
+        self.actions = nil
+        self.meta = nil
+        self.type = nil
+    }
 }
 
 

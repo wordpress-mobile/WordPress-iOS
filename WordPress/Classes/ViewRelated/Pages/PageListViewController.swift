@@ -351,7 +351,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             presentAlertForPageBeingUploaded()
             return
         }
-        WPAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics())
+        WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: apost)
         showEditor(post: apost)
     }
 

@@ -157,6 +157,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         setupCommentActionButton()
         setupLikeActionButton()
         adjustInsetsForTextDirection()
+        insetFollowButtonIcon()
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -499,24 +500,14 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             likeActionButton.setTitle(likeTitle, for: .normal)
             commentActionButton.setTitle(commentTitle, for: .normal)
             saveForLaterButton.setTitle("", for: .normal)
-            followButton.setTitle("", for: .normal)
-            followButton.setTitle("", for: .selected)
-            followButton.setTitle("", for: .highlighted)
 
-            insetFollowButtonIcon(false)
         } else {
             let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
             let commentTitle = WPStyleGuide.commentCountForDisplay(commentCount)
-            let followTitle = WPStyleGuide.followStringForDisplay(false)
-            let followingTitle = WPStyleGuide.followStringForDisplay(true)
+
 
             likeActionButton.setTitle(likeTitle, for: .normal)
             commentActionButton.setTitle(commentTitle, for: .normal)
-
-
-            followButton.setTitle(followTitle, for: .normal)
-            followButton.setTitle(followingTitle, for: .selected)
-            followButton.setTitle(followingTitle, for: .highlighted)
 
             if FeatureFlag.saveForLater.enabled {
                 WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
@@ -524,18 +515,17 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
                 let shareTitle = NSLocalizedString("Share", comment: "Verb. Button title.  Tap to share a post.")
                 saveForLaterButton.setTitle(shareTitle, for: .normal)
             }
-
-            insetFollowButtonIcon(true)
         }
     }
 
     /// Adds some space between the button and title.
     /// Setting the titleEdgeInset.left seems to be ignored in IB for whatever reason,
     /// so we'll add/remove it from the image as needed.
-    fileprivate func insetFollowButtonIcon(_ bool: Bool) {
+    fileprivate func insetFollowButtonIcon() {
         var insets = followButton.imageEdgeInsets
-        insets.right = bool ? 2.0 : 0.0
+        insets.right = 2.0
         followButton.imageEdgeInsets = insets
+        followButton.flipInsetsForRightToLeftLayoutDirection()
     }
 
     fileprivate func applyHighlightedEffect(_ highlighted: Bool, animated: Bool) {

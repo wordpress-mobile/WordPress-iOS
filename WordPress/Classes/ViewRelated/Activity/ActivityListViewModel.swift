@@ -11,30 +11,22 @@ enum ActivityListViewModel {
     case ready([Activity])
     case error(String)
 
-    var noResultsViewModel: WPNoResultsView.Model? {
+    var noResultsViewModel: NoResultsViewController.Model? {
         switch self {
         case .loading:
-            return WPNoResultsView.Model(
-                title: NSLocalizedString("Loading Activities...",
-                                         comment: "Text displayed while loading the activity feed for a site")
-            )
+            return NoResultsViewController.Model(title: NSLocalizedString("Loading Activities...", comment: "Text displayed while loading the activity feed for a site"))
         case .ready:
             return nil
         case .error:
             let appDelegate = WordPressAppDelegate.sharedInstance()
             if (appDelegate?.connectionAvailable)! {
-                return WPNoResultsView.Model(
-                    title: NSLocalizedString("Oops", comment: ""),
-                    message: NSLocalizedString("There was an error loading activities",
-                                               comment: "Text displayed when there is a failure loading the activity feed"),
-                    buttonTitle: NSLocalizedString("Contact support",
-                                                   comment: "Button label for contacting support")
-                )
+                return NoResultsViewController.Model(title: NSLocalizedString("Oops", comment: ""),
+                                                     subtitle: NSLocalizedString("There was an error loading activities", comment: "Text displayed when there is a failure loading the activity feed"),
+                                                     buttonText: NSLocalizedString("Contact support", comment: "Button label for contacting support"))
             } else {
-                return WPNoResultsView.Model(
-                    title: NSLocalizedString("No connection", comment: ""),
-                    message: NSLocalizedString("An active internet connection is required to view activities", comment: "")
-                )
+                return NoResultsViewController.Model(title: NSLocalizedString("No connection", comment: ""),
+                                                     subtitle: NSLocalizedString("An active internet connection is required to view activities", comment: ""))
+
             }
         }
     }

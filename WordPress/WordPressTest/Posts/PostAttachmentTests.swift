@@ -60,7 +60,8 @@ class PostAttachmentTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         let html = richTextView.getHTML()
-        XCTAssert(html == "<p>\(prefixString)<img src=\"\(imageName)\" class=\"alignnone\" alt=\"\(altValue)\"></p>")
+        let expected = "<p>\(prefixString)<img src=\"\(imageName)\" alt=\"\(altValue)\"></p>"
+        XCTAssertEqual(html, expected)
     }
 
     func testIfAltValueWasLeftEmptyForImageAttachment() {
@@ -94,7 +95,8 @@ class PostAttachmentTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         let html = richTextView.getHTML()
-        XCTAssert(html == "<p>\(prefixString)<img src=\"\(imageName)\" class=\"alignnone\"></p>")
+        let expected = "<p>\(prefixString)<img src=\"\(imageName)\"></p>"
+        XCTAssertEqual(html, expected)
     }
 
     func testIfLinkURLValueWasAddedToImageAttachment() {
@@ -126,6 +128,8 @@ class PostAttachmentTests: XCTestCase {
         waitForExpectations(timeout: 1, handler: nil)
 
         let html = richTextView.getHTML()
-        XCTAssertEqual(html, "<p>Image with link: <a href=\"https://wordpress.com/\"><img src=\"\(imageName)\" class=\"alignnone\"></a></p>")
+        let expected = "<p>Image with link: <a href=\"https://wordpress.com/\"><img src=\"\(imageName)\"></a></p>"
+
+        XCTAssertEqual(html, expected)
     }
 }

@@ -11,9 +11,10 @@ class DocumentUploadProcessor: Processor {
     private let remoteURLString: String
     private let title: String
 
-    private lazy var processor = HTMLProcessor(tag: "img", replacer: { [mediaUploadID, remoteURLString, title] img in
+    private lazy var processor = HTMLProcessor(for: "img", replacer: { [mediaUploadID, remoteURLString, title] img in
         guard
-            let imageUploadIdentifier = img.attributes.named[MediaAttachment.uploadKey],
+            let uploadKeyValue = img.attributes[MediaAttachment.uploadKey]?.value,
+            case let .string(imageUploadIdentifier) = uploadKeyValue,
             mediaUploadID == imageUploadIdentifier
         else {
             return nil

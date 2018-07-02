@@ -2,32 +2,67 @@ import Foundation
 import WordPressShared.WPStyleGuide
 
 
+// MARK: - NoteBlockCommentTableViewCell Renders a Comment Block Onscreen
+//
 class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
-    typealias EventHandler = ((_ sender: AnyObject) -> Void)
 
-    // MARK: - Public Properties
-    @objc var onDetailsClick: EventHandler?
+    // MARK: - Private Constants
+    private typealias Style = WPStyleGuide.Notifications
+    private let separatorUnapprovedInsets = UIEdgeInsets.zero
 
+    /// Gravatar ImageView
+    ///
+    @IBOutlet private weak var gravatarImageView: CircularImageView!
+
+    /// Source's Title
+    ///
+    @IBOutlet private weak var titleLabel: UILabel!
+
+    /// Source's Details
+    ///
+    @IBOutlet private weak var detailsLabel: UILabel!
+
+    /// Returns the Placeholder image, tinted for the current approval state
+    ///
+    private var placeholderImage: UIImage {
+        return Style.blockGravatarPlaceholderImage(isApproved: isApproved)
+    }
+
+    /// onUserClick: Executed whenever any of the User's fields gets clicked
+    ///
+    @objc var onUserClick: (() -> Void)?
+
+    /// Comment's AttributedText Payload
+    ///
     @objc var attributedCommentText: NSAttributedString? {
         didSet {
             refreshApprovalColors()
         }
     }
+
+    /// Comments (Plain)  Text Payload
+    ///
     @objc var commentText: String? {
         set {
             let text = newValue ?? String()
-            attributedCommentText = NSMutableAttributedString(string: text, attributes: Style.contentBlockRegularStyle)
+            attributedCommentText = NSAttributedString(string: text, attributes: Style.contentBlockRegularStyle)
         }
         get {
             return attributedCommentText?.string
         }
     }
+
+    /// Indicates if the comment is approved, or not.
+    ///
     @objc var isApproved: Bool = false {
         didSet {
             refreshApprovalColors()
             refreshSeparators()
         }
     }
+
+    /// Commenter's Name
+    ///
     @objc var name: String? {
         set {
             titleLabel.text  = newValue
@@ -36,11 +71,17 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
             return titleLabel.text
         }
     }
+
+    /// Timestamp of the comment
+    ///
     @objc var timestamp: String? {
         didSet {
             refreshDetails()
         }
     }
+
+    /// Originating Site
+    ///
     @objc var site: String? {
         didSet {
             refreshDetails()
@@ -50,6 +91,7 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
 
 
     // MARK: - Public Methods
+
     @objc func downloadGravatarWithURL(_ url: URL?) {
         let gravatar = url.flatMap { Gravatar($0) }
 
@@ -67,21 +109,23 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
 
 
     // MARK: - View Methods
+
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        // Setup Labels
         titleLabel.font = Style.blockBoldFont
-        detailsLabel.font = Style.blockRegularFont
+        titleLabel.isUserInteractionEnabled = true
+        titleLabel.gestureRecognizers = [ UITapGestureRecognizer(target: self, action: #selector(titleWasPressed)) ]
 
-        // Setup Recognizers
-        detailsLabel.gestureRecognizers = [ UITapGestureRecognizer(target: self, action: #selector(NoteBlockCommentTableViewCell.detailsWasPressed(_:))) ]
+        detailsLabel.font = Style.blockRegularFont
         detailsLabel.isUserInteractionEnabled = true
+        detailsLabel.gestureRecognizers = [ UITapGestureRecognizer(target: self, action: #selector(detailsWasPressed)) ]
     }
 
 
 
     // MARK: - Approval Color Helpers
+
     override func refreshSeparators() {
         // Left Separator
         separatorsView.leftVisible = !isApproved
@@ -97,23 +141,23 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
         separatorsView.backgroundColor = Style.blockBackgroundColorForComment(isApproved: isApproved)
     }
 
-    fileprivate func refreshDetails() {
+    private func refreshDetails() {
         var details = timestamp ?? String()
-        if let unwrappedSite = site {
-            details = String(format: "%@ • %@", details, unwrappedSite)
+        if let site = site, !site.isEmpty {
+            details = String(format: "%@ • %@", details, site)
         }
 
         detailsLabel.text = details
     }
 
-    fileprivate func refreshApprovalColors() {
+    private func refreshApprovalColors() {
         titleLabel.textColor = Style.blockTitleColorForComment(isApproved: isApproved)
         detailsLabel.textColor = Style.blockDetailsColorForComment(isApproved: isApproved)
         linkColor = Style.blockLinkColorForComment(isApproved: isApproved)
         attributedText = isApproved ? attributedCommentText : attributedCommentUnapprovedText
     }
 
-    fileprivate var attributedCommentUnapprovedText: NSAttributedString? {
+    private var attributedCommentUnapprovedText: NSAttributedString? {
         guard let commentText = attributedCommentText?.mutableCopy() as? NSMutableAttributedString else {
             return nil
         }
@@ -125,29 +169,11 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
         return commentText
     }
 
-
-
-
-    // MARK: - Event Handlers
-    @IBAction func detailsWasPressed(_ sender: AnyObject) {
-        onDetailsClick?(sender)
+    @IBAction func titleWasPressed() {
+        onUserClick?()
     }
 
-
-    // MARK: - Aliases
-    typealias Style = WPStyleGuide.Notifications
-
-    // MARK: - Private Calculated Properties
-    fileprivate var placeholderImage: UIImage {
-        return Style.blockGravatarPlaceholderImage(isApproved: isApproved)
+    @IBAction func detailsWasPressed() {
+        onUserClick?()
     }
-
-    // MARK: - Private Constants
-    fileprivate let separatorUnapprovedInsets = UIEdgeInsets.zero
-
-    // MARK: - IBOutlets
-    @IBOutlet fileprivate weak var actionsView: UIView!
-    @IBOutlet fileprivate weak var gravatarImageView: CircularImageView!
-    @IBOutlet fileprivate weak var titleLabel: UILabel!
-    @IBOutlet fileprivate weak var detailsLabel: UILabel!
 }

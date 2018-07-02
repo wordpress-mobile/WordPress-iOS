@@ -218,12 +218,7 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
 
 extension TimeZoneSelectorViewController: WPNoResultsViewDelegate {
     func didTap(_ noResultsView: WPNoResultsView!) {
-        if FeatureFlag.zendeskMobile.enabled {
-            let supportVC = SupportTableViewController()
-            supportVC.showFromTabBar()
-        } else {
-            let supportVC = SupportViewController()
-            supportVC.showFromTabBar()
-        }
+        let supportVC = SupportTableViewController()
+        supportVC.showFromTabBar()
     }
 }

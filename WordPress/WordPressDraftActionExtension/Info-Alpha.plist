@@ -31,21 +31,44 @@
 		<key>NSExtensionAttributes</key>
 		<dict>
 			<key>NSExtensionActivationRule</key>
-			<dict>
-				<key>NSExtensionActivationSupportsImageWithMaxCount</key>
-				<integer>2</integer>
-				<key>NSExtensionActivationDictionaryVersion</key>
-				<integer>2</integer>
-				<key>NSExtensionActivationSupportsText</key>
-				<true/>
-				<key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
-				<integer>1</integer>
-				<key>NSExtensionActivationSupportsWebPageWithMaxCount</key>
-				<integer>1</integer>
-			</dict>
-			<key>NSExtensionJavaScriptPreprocessingFile</key>
-			<string>WordPressShare</string>
-		</dict>
+            <string>
+                SUBQUERY(
+                extensionItems,
+                $extensionItem,
+                (SUBQUERY(
+                $extensionItem.attachments,
+                $attachment,
+                ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.image"
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.png"
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.jpeg"
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.jpeg-2000"
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.tiff"
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "com.compuserve.gif"
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "com.microsoft.bmp"
+                ).@count &lt; 3
+                OR
+                SUBQUERY(
+                $extensionItem.attachments,
+                $attachment,
+                ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.plain-text"
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.text"
+                ).@count == 1
+                OR
+                SUBQUERY(
+                $extensionItem.attachments,
+                $attachment,
+                ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.url"
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.file-url"
+                ).@count == 1)
+                AND
+                SUBQUERY(
+                $extensionItem.attachments,
+                $attachment,
+                ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "org.appextension.find-login-action"
+                || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "org.appextension.save-login-action"
+                ).@count == 0
+                ).@count >= 1
+            </string>
 		<key>NSExtensionMainStoryboard</key>
 		<string>MainInterface</string>
 		<key>NSExtensionPointIdentifier</key>

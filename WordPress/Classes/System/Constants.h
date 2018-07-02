@@ -18,6 +18,9 @@ extern NSString *const WPAutomatticAppsBlogURL;
 extern NSString *const WPGithubMainURL;
 extern NSString *const WPTwitterWordPressHandle;
 extern NSString *const WPTwitterWordPressMobileURL;
+extern NSString *const WPComReferrerURL;
+extern NSString *const AutomatticDomain;
+extern NSString *const WPComDomain;
 
 /// Notifications Constants
 ///
@@ -38,6 +41,7 @@ extern NSString *const WPShareExtensionUserDefaultsPrimarySiteID;
 extern NSString *const WPShareExtensionUserDefaultsLastUsedSiteName;
 extern NSString *const WPShareExtensionUserDefaultsLastUsedSiteID;
 extern NSString *const WPShareExtensionMaximumMediaDimensionKey;
+extern NSString *const WPShareExtensionRecentSitesKey;
 
 /// Today Widget Constants
 ///

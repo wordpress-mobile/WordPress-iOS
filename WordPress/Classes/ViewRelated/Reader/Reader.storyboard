@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -19,11 +19,11 @@
                         <viewControllerLayoutGuide type="bottom" id="icf-FG-h6u"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="nFH-eq-cvg">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="483"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="437"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n2H-rP-0mh">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="483"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="437"/>
                                 <connections>
                                     <segue destination="ojY-lw-Nq8" kind="embed" id="HkI-vX-JZt"/>
                                 </connections>
@@ -535,7 +535,7 @@
             <objects>
                 <tableViewController id="ojY-lw-Nq8" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="8GD-qV-397">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="483"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="437"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <connections>
@@ -571,14 +571,21 @@
                                     <outlet property="delegate" destination="sKI-JH-RAG" id="fsR-5r-2Md"/>
                                 </connections>
                             </searchBar>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KJP-Gn-VWy" customClass="FilterTabBar" customModule="WordPress" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="56" width="375" height="46"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="46" id="8Zx-Ii-BAp"/>
+                                </constraints>
+                            </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PuG-YC-OIC">
-                                <rect key="frame" x="0.0" y="56" width="375" height="547"/>
+                                <rect key="frame" x="0.0" y="102" width="375" height="501"/>
                                 <connections>
                                     <segue destination="His-O5-Cy6" kind="embed" id="xfh-l2-pdU"/>
                                 </connections>
                             </containerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What would you like to find?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="afc-5c-5tF">
-                                <rect key="frame" x="16" y="252" width="343" height="27"/>
+                                <rect key="frame" x="16" y="339" width="343" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -587,20 +594,24 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="4Hq-9j-ssQ" firstAttribute="top" secondItem="PuG-YC-OIC" secondAttribute="bottom" id="00R-Fx-nqw"/>
+                            <constraint firstItem="KJP-Gn-VWy" firstAttribute="leading" secondItem="3Jv-hf-pib" secondAttribute="leading" id="3hK-Yk-mzY"/>
                             <constraint firstItem="afc-5c-5tF" firstAttribute="width" secondItem="UQY-Uf-csX" secondAttribute="width" constant="-32" id="7H0-0r-9sW"/>
-                            <constraint firstItem="PuG-YC-OIC" firstAttribute="top" secondItem="UQY-Uf-csX" secondAttribute="bottom" id="9Py-mf-1gR"/>
+                            <constraint firstItem="KJP-Gn-VWy" firstAttribute="top" secondItem="UQY-Uf-csX" secondAttribute="bottom" id="HHm-eE-R1Z"/>
                             <constraint firstItem="UQY-Uf-csX" firstAttribute="leading" secondItem="3Jv-hf-pib" secondAttribute="leading" id="OVh-zU-bdz"/>
+                            <constraint firstItem="PuG-YC-OIC" firstAttribute="top" secondItem="KJP-Gn-VWy" secondAttribute="bottom" id="SLO-Jy-5QA"/>
                             <constraint firstItem="UQY-Uf-csX" firstAttribute="top" secondItem="KDf-ab-yd0" secondAttribute="bottom" id="Vjr-r9-9fI"/>
-                            <constraint firstItem="afc-5c-5tF" firstAttribute="centerY" secondItem="PuG-YC-OIC" secondAttribute="centerY" constant="-64" id="WFt-Iz-74I"/>
+                            <constraint firstItem="afc-5c-5tF" firstAttribute="centerY" secondItem="PuG-YC-OIC" secondAttribute="centerY" id="WFt-Iz-74I"/>
                             <constraint firstAttribute="trailing" secondItem="PuG-YC-OIC" secondAttribute="trailing" id="Xy7-kf-4Zi"/>
                             <constraint firstAttribute="trailing" secondItem="UQY-Uf-csX" secondAttribute="trailing" id="ack-5h-tUx"/>
                             <constraint firstItem="afc-5c-5tF" firstAttribute="centerX" secondItem="PuG-YC-OIC" secondAttribute="centerX" id="e4c-Hf-6s0"/>
+                            <constraint firstAttribute="trailing" secondItem="KJP-Gn-VWy" secondAttribute="trailing" id="oCm-Ws-bQM"/>
                             <constraint firstItem="PuG-YC-OIC" firstAttribute="leading" secondItem="3Jv-hf-pib" secondAttribute="leading" id="u5y-Zc-kp9"/>
                         </constraints>
                         <variation key="widthClass=regular" layoutMarginsFollowReadableWidth="YES"/>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
+                        <outlet property="filterBar" destination="KJP-Gn-VWy" id="P35-se-cGl"/>
                         <outlet property="label" destination="afc-5c-5tF" id="Ytv-PP-Zf4"/>
                         <outlet property="searchBar" destination="UQY-Uf-csX" id="df9-mO-cAe"/>
                     </connections>

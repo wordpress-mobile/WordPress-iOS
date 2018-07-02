@@ -457,7 +457,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         }
         editor.modalPresentationStyle = .fullScreen
         present(editor, animated: false, completion: nil)
-        WPAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics())
+        WPAppAnalytics.track(.postListEditAction, withProperties: propertiesForAnalytics(), with: apost)
     }
 
     func presentAlertForPostBeingUploaded() {

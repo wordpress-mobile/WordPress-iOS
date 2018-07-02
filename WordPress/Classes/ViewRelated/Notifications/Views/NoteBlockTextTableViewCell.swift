@@ -9,9 +9,16 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
     // MARK: - IBOutlets
     @IBOutlet private weak var textView: RichTextView!
 
-    // MARK: - Public Properties
+    /// onUrlClick: Called whenever a URL is pressed within the textView's Area.
+    ///
     @objc var onUrlClick: ((URL) -> Void)?
+
+    /// onAttachmentClick: Called whenever a NSTextAttachment receives a press event
+    ///
     @objc var onAttachmentClick: ((NSTextAttachment) -> Void)?
+
+    /// Attributed Text!
+    ///
     @objc var attributedText: NSAttributedString? {
         set {
             textView.attributedText = newValue
@@ -22,12 +29,16 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
         }
     }
 
+    /// Indicates if this is a Badge Block
+    ///
     override var isBadge: Bool {
         didSet {
             backgroundColor = WPStyleGuide.Notifications.blockBackgroundColorForRichText(isBadge)
         }
     }
 
+    /// TextView's NSLink Color
+    ///
     @objc var linkColor: UIColor? {
         didSet {
             if let unwrappedLinkColor = linkColor {
@@ -36,6 +47,8 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
         }
     }
 
+    /// TextView's Data Detectors
+    ///
     @objc var dataDetectors: UIDataDetectorTypes {
         set {
             textView.dataDetectorTypes = newValue
@@ -45,6 +58,8 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
         }
     }
 
+    /// Wraps Up TextView.selectable Property
+    ///
     @objc var isTextViewSelectable: Bool {
         set {
             textView.selectable = newValue
@@ -54,6 +69,8 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
         }
     }
 
+    /// Wraps Up TextView.isUserInteractionEnabled Property
+    ///
     @objc var isTextViewClickable: Bool {
         set {
             textView.isUserInteractionEnabled = newValue
@@ -63,14 +80,15 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
         }
     }
 
+
     // MARK: - View Methods
+
     override func awakeFromNib() {
         super.awakeFromNib()
 
         backgroundColor = WPStyleGuide.Notifications.blockBackgroundColor
         selectionStyle = .none
 
-        assert(textView != nil)
         textView.contentInset = .zero
         textView.textContainerInset = .zero
         textView.backgroundColor = .clear
@@ -85,6 +103,7 @@ class NoteBlockTextTableViewCell: NoteBlockTableViewCell, RichTextViewDataSource
 
 
     // MARK: - RichTextView Data Source
+
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         onUrlClick?(URL)
         return false

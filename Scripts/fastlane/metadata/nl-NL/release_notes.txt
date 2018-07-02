@@ -1,2 +1,4 @@
-Je kunt nu berichten opslaan in de Reader: tik op het bladwijzerpictogram bij een bericht en je kunt het bericht later terugvinden in je lijst met opgeslagen berichten. Je kunt de tekst van je opgeslagen berichten zelfs offline bekijken!
-Denk eraan dat afbeeldingen niet altijd offline weergegeven kunnen worden in deze eerste release en dat Opgeslagen berichten momenteel een device-specifieke functie is. Dat wil zeggen dat opgeslagen berichten niet worden gesynchroniseerd tussen devices of online en dat je deze kunt kwijtraken wanneer je uitlogt of de app verwijdert.
+Reader: De zoekfunctie is nu verbeterd en maakt het mogelijk om zowel sites als berichten te zoeken.
+Editor: Betere ondersteuning van Gutenberg-berichten.
+Reader: Er wordt nu een waarschuwing met gebruiksinformatie weergegeven wanneer de functie 'Berichten opslaan voor later' voor het eerst wordt gebruikt.
+Een hoop kleine UI-verbeteringen en verfraaiingen

@@ -82,6 +82,22 @@
     OCMVerify(mockManager);
 }
 
+- (void)testZendeskNotificationIsProperlyHandled
+{
+    NSDictionary *userInfo = @{ @"type" : @"zendesk" };
+    PushNotificationsManager *manager = [PushNotificationsManager new];
+    id mockManager = OCMPartialMock(manager);
+    
+    XCTAssertTrue([mockManager handleSupportNotification:userInfo completionHandler:nil], @"Error handling Zendesk");
+    XCTAssertFalse([mockManager handleAuthenticationNotification:userInfo completionHandler:nil], @"Error handling Zendesk");
+    XCTAssertFalse([mockManager handleInactiveNotification:userInfo completionHandler:nil], @"Error handling Zendesk");
+    XCTAssertFalse([mockManager handleBackgroundNotification:userInfo completionHandler:nil], @"Error handling Zendesk");
+    
+    OCMExpect([manager handleSupportNotification:userInfo completionHandler:nil]);
+    [mockManager handleNotification:userInfo completionHandler:nil];
+    OCMVerify(mockManager);
+}
+
 - (void)testAuthenticationNotificationIsProperlyHandled
 {
     NSDictionary *userInfo = @{ @"type" : @"push_auth" };

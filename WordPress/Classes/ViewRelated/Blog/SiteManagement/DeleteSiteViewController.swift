@@ -169,11 +169,9 @@ open class DeleteSiteViewController: UITableViewController {
         tableView.deselectSelectedRowWithAnimation(true)
 
         WPAppAnalytics.track(.siteSettingsStartOverContactSupportClicked, with: blog)
-        if HelpshiftUtils.isHelpshiftEnabled() {
-            setupHelpshift(blog.account!)
 
-            let metadata = helpshiftMetadata(blog)
-            HelpshiftSupport.showConversation(self, with: metadata)
+        if ZendeskUtils.zendeskEnabled {
+            ZendeskUtils.sharedInstance.showNewRequestIfPossible(from: self, with: .deleteSite)
         } else {
             if let contact = URL(string: "https://support.wordpress.com/contact/") {
                 UIApplication.shared.open(contact)
@@ -188,15 +186,27 @@ open class DeleteSiteViewController: UITableViewController {
     /// - Returns: UIAlertController
     ///
     fileprivate func confirmDeleteController() -> UIAlertController {
+
+        // Create atributed strings for URL and message body so we can wrap the URL byCharWrapping.
+        let styledUrl: NSMutableAttributedString = NSMutableAttributedString(string: blog.displayURL! as String)
+        let urlParagraphStyle = NSMutableParagraphStyle()
+        urlParagraphStyle.lineBreakMode = .byCharWrapping
+        styledUrl.addAttribute(.paragraphStyle, value: urlParagraphStyle, range: NSMakeRange(0, styledUrl.string.count - 1))
+
+        let message = NSLocalizedString("\nTo confirm, please re-enter your site's address before deleting.\n\n",
+                                             comment: "Message of Delete Site confirmation alert; substitution is site's host.")
+        let styledMessage: NSMutableAttributedString = NSMutableAttributedString(string: message)
+        styledMessage.append(styledUrl)
+
+        // Create alert
         let confirmTitle = NSLocalizedString("Confirm Delete Site", comment: "Title of Delete Site confirmation alert")
-        let messageFormat = NSLocalizedString("Please type in \n\n%@\n\n in the field below to confirm. Your site will then be gone forever.", comment: "Message of Delete Site confirmation alert; substitution is site's host")
-        let message = String(format: messageFormat, blog.displayURL!)
-        let alertController = UIAlertController(title: confirmTitle, message: message, preferredStyle: .alert)
+        let alertController = UIAlertController(title: confirmTitle, message: nil, preferredStyle: .alert)
+        alertController.setValue(styledMessage, forKey: "attributedMessage")
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
         alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
 
-        let deleteTitle = NSLocalizedString("Delete this site", comment: "Delete Site confirmation action title")
+        let deleteTitle = NSLocalizedString("Permanently Delete Site", comment: "Delete Site confirmation action title")
         let deleteAction = UIAlertAction(title: deleteTitle, style: .destructive, handler: { action in
             self.deleteSiteConfirmed()
         })
@@ -286,29 +296,4 @@ open class DeleteSiteViewController: UITableViewController {
         }
     }
 
-    // MARK: - Contact Support Helpers
-
-    fileprivate func setupHelpshift(_ account: WPAccount) {
-        let user = account.userID.stringValue
-        HelpshiftSupport.setUserIdentifier(user)
-
-        let name = account.username
-        let email = account.email
-        HelpshiftCore.setName(name, andEmail: email)
-    }
-
-    fileprivate func helpshiftMetadata(_ blog: Blog) -> HelpshiftAPIConfig {
-        let tags = blog.account.map({ HelpshiftUtils.planTags(for: $0) }) ?? []
-
-        let config: [AnyHashable: Any] = [
-            HelpshiftSupportCustomMetadataKey: [
-                "Source": "Delete Site",
-                "Blog": blog.logDescription(),
-                HelpshiftSupportTagsKey: tags as Any?]
-        ]
-        let builder = HelpshiftAPIConfigBuilder()
-        builder.extraConfig = config
-
-        return builder.build()
-    }
 }

@@ -12,9 +12,9 @@ class ExtensionNotificationManager {
     ///   - blogID: ID string representing a blog/site
     ///   - mediaItemCount: Number of media items included with the post. Default is 0.
     ///
-    static func scheduleSuccessNotification(postUploadOpID: String, postID: String, blogID: String, mediaItemCount: Int = 0, notificationDate: Date = Date()) {
+    static func scheduleSuccessNotification(postUploadOpID: String, postID: String, blogID: String, mediaItemCount: Int = 0, notificationDate: Date = Date(), postStatus: String) {
         let userInfo = makeUserInfoDict(postUploadOpID: postUploadOpID, postID: postID, blogID: blogID)
-        let title = ShareNoticeText.successTitle(mediaItemCount: mediaItemCount)
+        let title = ShareNoticeText.successTitle(mediaItemCount: mediaItemCount, postStatus: postStatus)
         let body = notificationDate.mediumString()
         scheduleLocalNotification(title: title, body: body, category: ShareNoticeConstants.categorySuccessIdentifier, userInfo: userInfo)
     }
@@ -27,9 +27,9 @@ class ExtensionNotificationManager {
     ///   - blogID: ID string representing a blog/site
     ///   - mediaItemCount: Number of media items included with the post. Default is 0.
     ///
-    static func scheduleFailureNotification(postUploadOpID: String, postID: String, blogID: String, mediaItemCount: Int = 0, notificationDate: Date = Date()) {
+    static func scheduleFailureNotification(postUploadOpID: String, postID: String, blogID: String, mediaItemCount: Int = 0, notificationDate: Date = Date(), postStatus: String) {
         let userInfo = makeUserInfoDict(postUploadOpID: postUploadOpID, postID: postID, blogID: blogID)
-        let title = ShareNoticeText.successTitle(mediaItemCount: mediaItemCount)
+        let title = ShareNoticeText.successTitle(mediaItemCount: mediaItemCount, postStatus: postStatus)
         let body = notificationDate.mediumString()
         scheduleLocalNotification(title: title, body: body, category: ShareNoticeConstants.categoryFailureIdentifier, userInfo: userInfo)
     }

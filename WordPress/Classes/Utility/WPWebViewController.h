@@ -33,6 +33,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, assign) BOOL addsWPComReferrer;
 
+/**
+ *  @brief  When true adds parameters to hide the site's masterbar.
+ */
+@property (nonatomic, assign) BOOL addsHideMasterbarParameters;
+
 @property (nonatomic, strong, nullable) WebViewAuthenticator *authenticator;
 
 /**

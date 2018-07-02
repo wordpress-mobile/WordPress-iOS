@@ -10,19 +10,34 @@ import Gridicons
     @objc static let restorationClassIdentifier = "ReaderSearchViewControllerRestorationIdentifier"
     @objc static let restorableSearchTopicPathKey: String = "RestorableSearchTopicPathKey"
 
+    fileprivate enum Section: Int {
+        case posts
+        case sites
+
+        var title: String {
+            switch self {
+            case .posts: return NSLocalizedString("Posts", comment: "Title of a Reader tab showing Posts matching a user's search query")
+            case .sites: return NSLocalizedString("Sites", comment: "Title of a Reader tab showing Sites matching a user's search query")
+            }
+        }
+    }
 
     // MARK: - Properties
 
     @IBOutlet fileprivate weak var searchBar: UISearchBar!
+    @IBOutlet fileprivate weak var filterBar: FilterTabBar!
     @IBOutlet fileprivate weak var label: UILabel!
 
     fileprivate var backgroundTapRecognizer: UITapGestureRecognizer!
     fileprivate var streamController: ReaderStreamViewController?
+    fileprivate var siteSearchController = ReaderSiteSearchViewController()
     fileprivate let searchBarSearchIconSize = CGFloat(13.0)
     fileprivate var suggestionsController: ReaderSearchSuggestionsViewController?
     fileprivate var restoredSearchTopic: ReaderSearchTopic?
     fileprivate var didBumpStats = false
 
+
+    fileprivate let sections: [Section] = [ .posts, .sites ]
 
     /// A convenience method for instantiating the controller from the storyboard.
     ///
@@ -92,9 +107,11 @@ import Gridicons
 
         WPStyleGuide.configureColors(for: view, andTableView: nil)
         setupSearchBar()
+        configureFilterBar()
         configureLabel()
         configureBackgroundTapRecognizer()
         configureForRestoredTopic()
+        configureSiteSearchViewController()
     }
 
 
@@ -145,7 +162,7 @@ import Gridicons
 
     @objc func setupSearchBar() {
         // Appearance must be set before the search bar is added to the view hierarchy.
-        let placeholderText = NSLocalizedString("Search WordPress.com", comment: "Placeholder text for the Reader search feature.")
+        let placeholderText = NSLocalizedString("Search WordPress", comment: "Placeholder text for the Reader search feature.")
         let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderSearchViewController.self]).attributedPlaceholder = attributedPlaceholder
@@ -155,11 +172,21 @@ import Gridicons
         WPStyleGuide.configureSearchBar(searchBar)
     }
 
+    func configureFilterBar() {
+        filterBar.tintColor = WPStyleGuide.wordPressBlue()
+        filterBar.deselectedTabColor = WPStyleGuide.greyDarken10()
+        filterBar.dividerColor = WPStyleGuide.greyLighten20()
+        filterBar.tabSizingStyle = .equalWidths
+        filterBar.items = sections.map({ $0.title })
+
+        filterBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
+    }
 
     @objc func configureLabel() {
-        let text = NSLocalizedString("What would you like to find?", comment: "A short message that is a call to action for the Reader's Search feature.")
+        let text = NSLocalizedString("Search WordPress\nfor a site or post", comment: "A short message that is a call to action for the Reader's Search feature.")
         let rawAttributes = WPNUXUtility.titleAttributes(with: WPStyleGuide.greyDarken20()) as! [String: Any]
         let swiftedAttributes = NSAttributedStringKey.convertFromRaw(attributes: rawAttributes)
+        label.numberOfLines = 2
         label.attributedText = NSAttributedString(string: text, attributes: swiftedAttributes)
     }
 
@@ -182,6 +209,27 @@ import Gridicons
         streamController?.readerTopic = topic
     }
 
+    private func configureSiteSearchViewController() {
+        siteSearchController.view.translatesAutoresizingMaskIntoConstraints = false
+
+        addChildViewController(siteSearchController)
+
+        view.addSubview(siteSearchController.view)
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: siteSearchController.view.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: siteSearchController.view.trailingAnchor),
+            filterBar.bottomAnchor.constraint(equalTo: siteSearchController.view.topAnchor),
+            view.bottomAnchor.constraint(equalTo: siteSearchController.view.bottomAnchor),
+            ])
+
+        siteSearchController.didMove(toParentViewController: self)
+
+        if let topic = restoredSearchTopic {
+            siteSearchController.searchQuery = topic.title
+        }
+
+        siteSearchController.view.isHidden = true
+    }
 
     // MARK: - Actions
 
@@ -195,11 +243,16 @@ import Gridicons
     /// embedded stream to the topic.
     ///
     @objc func performSearch() {
-        guard let streamController = streamController else {
+        guard let phrase = searchBar.text?.trim(), !phrase.isEmpty else {
             return
         }
 
-        guard let phrase = searchBar.text?.trim(), !phrase.isEmpty else {
+        performPostsSearch(for: phrase)
+        performSitesSearch(for: phrase)
+    }
+
+    private func performPostsSearch(for phrase: String) {
+        guard let streamController = streamController else {
             return
         }
 
@@ -221,11 +274,27 @@ import Gridicons
         }
     }
 
+    private func performSitesSearch(for query: String) {
+        siteSearchController.searchQuery = query
+    }
+
 
     @objc func handleBackgroundTap(_ gesture: UITapGestureRecognizer) {
         endSearch()
     }
 
+    @objc private func selectedFilterDidChange(_ filterBar: FilterTabBar) {
+        let section = sections[filterBar.selectedIndex]
+
+        switch section {
+        case .posts:
+            streamController?.view.isHidden = false
+            siteSearchController.view.isHidden = true
+        case .sites:
+            streamController?.view.isHidden = true
+            siteSearchController.view.isHidden = false
+        }
+    }
 
     // MARK: - Autocomplete
 

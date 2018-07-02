@@ -2,6 +2,7 @@ struct ShareNoticeViewModel {
     private let postInContext: Post?
     private let uploadStatus: UploadOperation.UploadStatus
     private let uploadedMediaCount: Int
+    private let postStatus: Post.Status?
 
     init?(post: Post?, uploadStatus: UploadOperation.UploadStatus, uploadedMediaCount: Int = 0) {
         guard uploadStatus != .pending, uploadStatus != .inProgress else {
@@ -11,6 +12,7 @@ struct ShareNoticeViewModel {
         self.postInContext = post
         self.uploadStatus = uploadStatus
         self.uploadedMediaCount = uploadedMediaCount
+        self.postStatus = post?.status
     }
 
     var notice: Notice? {
@@ -78,11 +80,11 @@ struct ShareNoticeViewModel {
     }
 
     private var successfulTitle: String {
-        if uploadedMediaCount == 0 {
+        if uploadedMediaCount == 0 && postStatus != .draft {
             return ShareNoticeText.successTitleDefault
         }
 
-        return ShareNoticeText.successTitle(mediaItemCount: uploadedMediaCount)
+        return ShareNoticeText.successTitle(mediaItemCount: uploadedMediaCount, postStatus: (postStatus?.rawValue)!)
     }
 
     private var failedTitle: String {

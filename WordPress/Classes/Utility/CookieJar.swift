@@ -72,9 +72,11 @@ extension HTTPCookieStorage: CookieJarSharedImplementation {
 extension WKHTTPCookieStore: CookieJarSharedImplementation {
     func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void) {
         getAllCookies { (cookies) in
-            completion(cookies.filter({ (cookie) in
-                return cookie.matches(url: url)
-            }))
+            DispatchQueue.main.async {
+                completion(cookies.filter({ (cookie) in
+                    return cookie.matches(url: url)
+                }))
+            }
         }
     }
 

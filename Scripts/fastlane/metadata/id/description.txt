@@ -1,0 +1,9 @@
+Kelola atau buat blog atau situs web WordPress Anda dari perangkat iOS: buat dan edit pos serta halaman, unggah foto dan video favorit, lihat statistik, dan balas komentar.
+
+Dengan WordPress untuk iOS, Anda memiliki kekuatan untuk memublikasikan dari telapak tangan Anda. Rangkai haiku secara spontan dari sofa Anda. Bidik dan pos foto saat istirahat makan siang. Tanggapi komentar terbaru, atau periksa statistik untuk melihat dari negara mana saja pengunjung situs Anda hari ini.
+
+WordPress untuk iOS adalah proyek Sumber Terbuka, yang berarti Anda juga bisa memberikan kontribusi dalam pengembangannya. Pelajari selengkapnya di https://apps.wordpress.com/contribute/.
+
+WordPress untuk iOS mendukung WordPress.com dan situs WordPress.org yang dihosting sendiri yang menjalankan WordPress versi 4.0 atau versi lebih tinggi.
+
+Butuh bantuan terkait aplikasi? Kunjungi forum di https://ios.forums.wordpress.org/ atau tweet kami di @WordPressiOS.
