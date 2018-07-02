@@ -468,9 +468,14 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
             return [self supportsPushNotifications];
         case BlogFeatureThemeBrowsing:
             return [self supportsRestApi] && [self isAdmin];
-        case BlogFeatureActivity:
+        case BlogFeatureActivity: {
             // For now Activity is suported for admin users
-            return [self supportsRestApi] && [self isAdmin];
+            BOOL supportsAL = [self supportsRestApi] && [self isAdmin];
+            BOOL isJetpack = ![self isHostedAtWPcom];
+            BOOL isPaidWPCom = [self isHostedAtWPcom] && [self hasPaidPlan];
+
+            return supportsAL && (isJetpack || isPaidWPCom);
+        }
         case BlogFeatureCustomThemes:
             return [self supportsRestApi] && [self isAdmin] && ![self isHostedAtWPcom];
         case BlogFeaturePremiumThemes:

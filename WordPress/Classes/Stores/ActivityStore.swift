@@ -9,7 +9,7 @@ enum ActivityAction: Action {
     case receiveActivitiesFailed(site: JetpackSiteRef, error: Error)
 
     case rewind(site: JetpackSiteRef, rewindID: String)
-    case rewindStarted(site: JetpackSiteRef, restoreID: String)
+    case rewindStarted(site: JetpackSiteRef, rewindID: String, restoreID: String)
     case rewindRequestFailed(site: JetpackSiteRef, error: Error)
     case rewindFinished(site: JetpackSiteRef, restoreID: String)
     case rewindFailed(site: JetpackSiteRef, restoreID: String)
@@ -73,6 +73,10 @@ private enum Constants {
     static let maxRetries = 12
 }
 
+private enum ActivityStoreError: Error {
+    case rewindAlreadyRunning
+}
+
 class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
 
     fileprivate let refreshInterval: TimeInterval = 60 // seconds
@@ -109,27 +113,38 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
 
 
         // Fetching Status
-        activeQueries.filter {
-            if case .restoreStatus = $0 { return true }
-            else { return false }
-        }
-        .compactMap { $0.site }
-        .filter { state.fetchingRewindStatus[$0] != true }
-        .unique
-        .forEach {
-            fetchRewindStatus(site: $0)
+        sitesStatusesToFetch
+            .filter { state.fetchingRewindStatus[$0] != true }
+            .forEach {
+                fetchRewindStatus(site: $0)
         }
 
     }
     private var sitesToFetch: [JetpackSiteRef] {
         return activeQueries
             .filter {
-                if case .activities = $0 { return true }
-                else { return false }
+                if case .activities = $0 {
+                    return true
+                } else {
+                    return false
+                }
             }
             .compactMap { $0.site }
             .unique
             .filter { shouldFetch(site: $0) }
+    }
+
+    private var sitesStatusesToFetch: [JetpackSiteRef] {
+        return activeQueries
+            .filter {
+                if case .restoreStatus = $0 {
+                    return true
+                } else {
+                    return false
+                }
+            }
+            .compactMap { $0.site }
+            .unique
     }
 
     func shouldFetch(site: JetpackSiteRef) -> Bool {
@@ -141,10 +156,6 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
 
     func isFetching(site: JetpackSiteRef) -> Bool {
         return state.fetchingActivities[site, default: false]
-    }
-
-    func isRestoring(site: JetpackSiteRef) -> Bool {
-        return false
     }
 
     override func onDispatch(_ action: Action) {
@@ -159,20 +170,27 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
             receiveActivitiesFailed(site: site, error: error)
         case .rewind(let site, let rewindID):
             rewind(site: site, rewindID: rewindID)
-        case .rewindStarted(let site, let restoreID):
-            rewindStarted(site: site, restoreID: restoreID)
+        case .rewindStarted(let site, let rewindID, let restoreID):
+            rewindStarted(site: site, rewindID: rewindID, restoreID: restoreID)
         case .rewindRequestFailed(let site, let error):
             rewindFailed(site: site, error: error)
         case .rewindStatusUpdated(let site, let status):
             rewindStatusUpdated(site: site, status: status)
         case .rewindStatusUpdateFailed(let site, _):
             delayedRetryFetchRewindStatus(site: site)
-        case .rewindFinished(let site, _),
-             .rewindFailed(let site, _),
+        case .rewindFinished(let site, let restoreID):
+            rewindFinished(site: site, restoreID: restoreID)
+        case .rewindFailed(let site, _),
              .rewindStatusUpdateTimedOut(let site):
             transaction { state in
                 state.fetchingRewindStatus[site] = false
                 state.rewindStatusRetries[site] = nil
+            }
+
+            if shouldPostStateUpdates(for: site) {
+                let notice = Notice(title: NSLocalizedString("Your restore is taking longer than usual, please check again in a few minutes.",
+                                                             comment: "Text displayed when a site restore takes too long."))
+                actionDispatcher.dispatch(NoticeAction.post(notice))
             }
         }
     }
@@ -182,6 +200,11 @@ extension ActivityStore {
     func getActivities(site: JetpackSiteRef) -> [Activity]? {
         return state.activities[site] ?? nil
     }
+
+    func getActivity(site: JetpackSiteRef, rewindID: String) -> Activity? {
+        return getActivities(site: site)?.filter { $0.rewindID == rewindID }.first
+    }
+
     func getRewindStatus(site: JetpackSiteRef) -> RewindStatus? {
         return state.rewindStatus[site] ?? nil
     }
@@ -189,6 +212,8 @@ extension ActivityStore {
 
 private extension ActivityStore {
     func fetchActivities(site: JetpackSiteRef, count: Int = 1000) {
+        state.fetchingActivities[site] = true
+
         remote(site: site)?.getActivityForSite(
             site.siteID,
             count: count,
@@ -216,24 +241,74 @@ private extension ActivityStore {
     }
 
     func rewind(site: JetpackSiteRef, rewindID: String) {
+        let currentStatus = getRewindStatus(site: site)
+        guard currentStatus == nil || (currentStatus?.restore?.status != .running && currentStatus?.restore?.status != .queued) else {
+            actionDispatcher.dispatch(ActivityAction.rewindRequestFailed(site: site, error: ActivityStoreError.rewindAlreadyRunning))
+            return
+        }
+
         remote(site: site)?.restoreSite(
             site.siteID,
             rewindID: rewindID,
             success: { [actionDispatcher] restoreID in
-                actionDispatcher.dispatch(ActivityAction.rewindStarted(site: site, restoreID: restoreID))
+                actionDispatcher.dispatch(ActivityAction.rewindStarted(site: site, rewindID: rewindID, restoreID: restoreID))
             },
             failure: {  [actionDispatcher] error in
                 actionDispatcher.dispatch(ActivityAction.rewindRequestFailed(site: site, error: error))
         })
     }
 
-    func rewindStarted(site: JetpackSiteRef, restoreID: String) {
+    func rewindStarted(site: JetpackSiteRef, rewindID: String, restoreID: String) {
         fetchRewindStatus(site: site)
+
+        let notice: Notice
+        let title = NSLocalizedString("Your site is being restored",
+                                      comment: "Title of a message displayed when user starts a rewind operation")
+
+        if let activity = getActivity(site: site, rewindID: rewindID) {
+            let formattedString = mediumString(from: activity.published, adjustingTimezoneTo: site)
+
+            let message = String(format: NSLocalizedString("Rewinding to %@", comment: "Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date."), formattedString)
+            notice = Notice(title: title, message: message)
+        } else {
+            notice = Notice(title: title)
+        }
+        WPAnalytics.track(.activityLogRewindStarted)
+        actionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    func rewindFinished(site: JetpackSiteRef, restoreID: String) {
+        transaction { state in
+            state.fetchingRewindStatus[site] = false
+            state.rewindStatusRetries[site] = nil
+        }
+
+        let notice: Notice
+        let title = NSLocalizedString("Your site has been succesfully restored",
+                                      comment: "Title of a message displayed when a site has finished rewinding")
+
+        if let activity = getActivity(site: site, rewindID: restoreID) {
+            let formattedString = mediumString(from: activity.published, adjustingTimezoneTo: site)
+
+            let message = String(format: NSLocalizedString("Rewound to %@", comment: "Notice showing the date the site is being rewinded to. '%@' is a placeholder that will expand to a date."), formattedString)
+            notice = Notice(title: title, message: message)
+        } else {
+            notice = Notice(title: title)
+        }
+
+        actionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
     func rewindFailed(site: JetpackSiteRef, error: Error) {
-        let message = NSLocalizedString("Unable to restore your site, please try again later or contact support.",
+        let message: String
+        switch error {
+        case ActivityStoreError.rewindAlreadyRunning:
+            message = NSLocalizedString("There's a restore currently in progress, please wait before starting next one",
+                                        comment: "Text displayed when user tries to start a restore when there is already one running")
+        default:
+            message = NSLocalizedString("Unable to restore your site, please try again later or contact support.",
                                         comment: "Text displayed when a site restore fails.")
+        }
 
         let noticeAction = NoticeAction.post(Notice(title: message))
 
@@ -254,12 +329,24 @@ private extension ActivityStore {
     }
 
     func delayedRetryFetchRewindStatus(site: JetpackSiteRef) {
+        guard sitesStatusesToFetch.contains(site) == false else {
+            // if we still have an active query asking about status of this site (e.g. it's still visible on screen)
+            // let's keep retrying as long as it's registered — we want users to see the updates.
+            // The retry logic should only kick-in when the site is off-screen, so we can pop-up a Notice
+            // letting users know what's happening with their site.
+            _ = DispatchDelayedAction(delay: .seconds(Constants.delaySequence.last!)) { [weak self] in
+                self?.fetchRewindStatus(site: site)
+            }
+            return
+        }
+
         // Note: this might look sorta weird, because it appears we're not at any point actually
         // scheduling the rewind, *but*: initiating/`increment`ing the `DelayStateWrapper` has a side-effect
         // of automagically calling the closure after an appropriate amount of time elapses.
-
         guard var existingWrapper = state.rewindStatusRetries[site] else {
-            let newDelayWrapper = DelayStateWrapper { [weak self] in self?.fetchRewindStatus(site: site) }
+            let newDelayWrapper = DelayStateWrapper { [weak self] in
+                self?.fetchRewindStatus(site: site)
+            }
 
             state.rewindStatusRetries[site] = newDelayWrapper
             return
@@ -286,9 +373,13 @@ private extension ActivityStore {
         case .running, .queued:
             delayedRetryFetchRewindStatus(site: site)
         case .finished:
-            actionDispatcher.dispatch(ActivityAction.rewindFinished(site: site, restoreID: restoreStatus.id))
+            if shouldPostStateUpdates(for: site) {
+                actionDispatcher.dispatch(ActivityAction.rewindFinished(site: site, restoreID: restoreStatus.id))
+            }
         case .fail:
-            actionDispatcher.dispatch(ActivityAction.rewindFailed(site: site, restoreID: restoreStatus.id))
+            if shouldPostStateUpdates(for: site) {
+                actionDispatcher.dispatch(ActivityAction.rewindFailed(site: site, restoreID: restoreStatus.id))
+            }
         }
     }
 
@@ -300,5 +391,23 @@ private extension ActivityStore {
         let api = WordPressComRestApi(oAuthToken: token, userAgent: WPUserAgent.wordPress())
 
         return ActivityServiceRemote(wordPressComRestApi: api)
+    }
+
+    private func mediumString(from date: Date, adjustingTimezoneTo site: JetpackSiteRef) -> String {
+        let formatter = ActivityDateFormatting.mediumDateFormatterWithTime(for: site)
+        return formatter.string(from: date)
+    }
+
+    private func shouldPostStateUpdates(for site: JetpackSiteRef) -> Bool {
+        // The way our API works, if there was a restore event "recently" (for some undefined value of "recently",
+        // on the order of magnitude of ~30 minutes or so), it'll be reported back by the API.
+        // But if the restore has finished a good while back (e.g. there's also an event in the AL telling us
+        // about the restore happening) we don't neccesarily want to display that redundant info to the users.
+        // Hence this somewhat dumb hack — if we've gotten updates about a RewindStatus before (which means we have displayed the UI)
+        // we're gonna show users "hey, your rewind finished!". But if the only thing we know the restore is
+        // that it has finished in a recent past, we don't do anything special.
+
+        return getRewindStatus(site: site)?.restore?.status == .running ||
+               getRewindStatus(site: site)?.restore?.status == .queued
     }
 }
