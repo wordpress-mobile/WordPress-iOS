@@ -211,7 +211,7 @@ class PluginListViewModel: Observable {
                 )
             } else {
                 return WPNoResultsView.Model(
-                    title: NSLocalizedString("No connection", comment: ""),
+                    title: NSLocalizedString("No connection", comment: "Title for the error view when there's no connection"),
                     message: NSLocalizedString("An active internet connection is required to view plugins", comment: "")
                 )
             }
