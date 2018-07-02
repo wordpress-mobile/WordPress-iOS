@@ -4,7 +4,7 @@ import CocoaLumberjack
 extension NotificationBlock: ActionableObject {
 }
 
-extension FormattableContent: ActionableObject {
+extension DefaultFormattableContent: ActionableObject {
     public var isCommentApproved: Bool {
         return true
     }
