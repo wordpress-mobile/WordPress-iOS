@@ -1,7 +1,7 @@
 
 class BodyContentGroup: FormattableContentGroup {
     class func create(from body: [[String: AnyObject]], parent: FormattableContentParent) -> [FormattableContentGroup] {
-        let blocks = FormattableContent.blocksFromArray(body, actionsParser: NotificationActionParser(), parent: parent)
+        let blocks = DefaultFormattableContent.blocksFromArray(body, actionsParser: NotificationActionParser(), parent: parent)
 
         switch parent.kind {
         case .Comment:
@@ -16,7 +16,8 @@ class BodyContentGroup: FormattableContentGroup {
         let parentMayContainFooter = parentKindsWithFooters.contains(parent.kind)
 
         return blocks.map { block in
-            let isFooter = parentMayContainFooter && block.kind == .text && blocks.last == block
+//            let isFooter = parentMayContainFooter && block.kind == .text && blocks.last == block
+            let isFooter = false
             if isFooter {
                 return FooterContentGroup(blocks: [block])
             }
@@ -26,13 +27,14 @@ class BodyContentGroup: FormattableContentGroup {
 
     private class func groupsForCommentBodyBlocks(_ blocks: [FormattableContent], parent: FormattableContentParent) -> [FormattableContentGroup] {
 
-        guard let comment = blockOfKind(.comment, from: blocks), let user = blockOfKind(.user, from: blocks) else {
+//        guard let comment = blockOfKind(.comment, from: blocks), let user = blockOfKind(.user, from: blocks) else {
+        guard let comment = blockOfType(DefaultFormattableContent.self, from: blocks), let user = blockOfType(DefaultFormattableContent.self, from: blocks) else {
             return []
         }
 
         var groups              = [FormattableContentGroup]()
         let commentGroupBlocks  = [comment, user]
-        let middleGroupBlocks   = blocks.filter { return commentGroupBlocks.contains($0) == false }
+        let middleGroupBlocks   = blocks.filter { return commentGroupBlocks.contains($0 as! DefaultFormattableContent) == false } as! [DefaultFormattableContent]
         let actionGroupBlocks   = [comment]
 
         // Comment Group: Comment + User Blocks
@@ -74,7 +76,7 @@ class BodyContentGroup: FormattableContentGroup {
             FormattableContentRange(kind: .Link, range: textRange, url: url)
         ]
 
-        let block = FormattableContent(text: text, ranges: ranges)
+        let block = DefaultFormattableContent(text: text, ranges: ranges)
         return FooterContentGroup(blocks: [block])
     }
 }
