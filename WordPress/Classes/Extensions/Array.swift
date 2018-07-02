@@ -43,11 +43,20 @@ extension Array {
     /// of the original array by Value.
     ///
     public func sortedGroup<Value: Equatable>(keyPath: KeyPath<Element, Value>) -> [(Value, [Element])] {
+        return sortedGroup {
+            element in return element[keyPath: keyPath]
+        }
+    }
+
+    /// Returns an array of [(Value, [Element])] resulting of grouping the sorted elements
+    /// of the original array by the Value returned from the `transforming` closure.
+    ///
+    public func sortedGroup<Value: Equatable>(transforming: ((Element) -> Value)) -> [(Value, [Element])] {
         var currentValue: Value?
         var currentGroup = [Element]()
         var result = [(Value, [Element])]()
         forEach { (element) in
-            let value = element[keyPath: keyPath]
+            let value = transforming(element)
             if currentValue != value {
                 if let currentValue = currentValue {
                     result.append((currentValue, currentGroup))
@@ -62,4 +71,6 @@ extension Array {
         }
         return result
     }
+
+
 }
