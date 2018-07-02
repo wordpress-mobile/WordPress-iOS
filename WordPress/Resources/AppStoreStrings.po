@@ -91,5 +91,5 @@ msgstr ""
 
 #. translators: This is a promo message.
 msgctxt "app_store_screenshot-5"
-msgid "All the stats in your end"
+msgid "All the stats in your hand"
 msgstr ""
