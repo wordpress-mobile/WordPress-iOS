@@ -4105,10 +4105,7 @@
 			isa = PBXGroup;
 			children = (
 				7E3E7A5E20E44E110075D159 /* Styles */,
-				7E3E7A5F20E44E490075D159 /* FooterContentGroup.swift */,
-				7E3E7A6120E44E6A0075D159 /* BodyContentGroup.swift */,
-				7E3E7A6320E44ED60075D159 /* SubjectContentGroup.swift */,
-				7E3E7A6520E44F200075D159 /* HeaderContentGroup.swift */,
+				7EFF207F20EAC59D009C4699 /* Groups */,
 				7E3E7A6720E44F440075D159 /* Notification+FormattableContentParent.swift */,
 			);
 			path = FormattableContent;
@@ -4125,6 +4122,17 @@
 				7E3E7A5C20E44DB00075D159 /* BadgeContentStyles.swift */,
 			);
 			path = Styles;
+			sourceTree = "<group>";
+		};
+		7EFF207F20EAC59D009C4699 /* Groups */ = {
+			isa = PBXGroup;
+			children = (
+				7E3E7A5F20E44E490075D159 /* FooterContentGroup.swift */,
+				7E3E7A6120E44E6A0075D159 /* BodyContentGroup.swift */,
+				7E3E7A6320E44ED60075D159 /* SubjectContentGroup.swift */,
+				7E3E7A6520E44F200075D159 /* HeaderContentGroup.swift */,
+			);
+			path = Groups;
 			sourceTree = "<group>";
 		};
 		8298F38D1EEF2B15008EB7F0 /* Ratings */ = {
