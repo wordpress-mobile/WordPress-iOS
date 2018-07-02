@@ -38,7 +38,7 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v10.3-whats-new"
+msgctxt "v10.4-whats-new"
 msgid ""
 "Reader: Search function is now improved to allow searching of sites as well as posts.\n"
 "Editor: Better handling of Gutenberg posts.\n"
