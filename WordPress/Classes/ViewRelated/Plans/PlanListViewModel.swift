@@ -22,7 +22,7 @@ enum PlanListViewModel {
                                                      subtitle: NSLocalizedString("There was an error loading plans", comment: ""),
                                                      buttonText: NSLocalizedString("Contact support", comment: ""))
             } else {
-                return NoResultsViewController.Model(title: NSLocalizedString("No connection", comment: ""),
+                return NoResultsViewController.Model(title: NSLocalizedString("No connection", comment: "Title for the error view when there's no connection"),
                                                      subtitle: NSLocalizedString("An active internet connection is required to view plans", comment: ""))
             }
         }
