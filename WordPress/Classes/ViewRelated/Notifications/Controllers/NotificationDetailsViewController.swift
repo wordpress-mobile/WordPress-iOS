@@ -858,7 +858,7 @@ private extension NotificationDetailsViewController {
     }
 
     func setupUserCell(_ cell: NoteBlockUserTableViewCell, blockGroup: FormattableContentGroup) {
-        guard let userBlock = blockGroup.blocks.first as? DefaultFormattableContent else {
+        guard let userBlock = blockGroup.blocks.first as? FormattableUserContent else {
             assertionFailure("Missing User Block for Notification [\(note.notificationId)]")
             return
         }
@@ -894,13 +894,13 @@ private extension NotificationDetailsViewController {
         //  -   A left separator is displayed.
         //
 //        guard let commentBlock = blockGroup.blockOfKind(.comment) else {
-        guard let commentBlock = blockGroup.blockOfType(DefaultFormattableContent.self) else {
+        guard let commentBlock = blockGroup.blockOfType(FormattableCommentContent.self) else {
             assertionFailure("Missing Comment Block for Notification [\(note.notificationId)]")
             return
         }
 
 //        guard let userBlock = blockGroup.blockOfKind(.user) else {
-        guard let userBlock = blockGroup.blockOfType(DefaultFormattableContent.self) else {
+        guard let userBlock = blockGroup.blockOfType(FormattableUserContent.self) else {
             assertionFailure("Missing User Block for Notification [\(note.notificationId)]")
             return
         }
@@ -946,8 +946,7 @@ private extension NotificationDetailsViewController {
     }
 
     func setupActionsCell(_ cell: NoteBlockActionsTableViewCell, blockGroup: FormattableContentGroup) {
-//        guard let commentBlock = blockGroup.blockOfKind(.comment) else {
-        guard let commentBlock = blockGroup.blockOfType(DefaultFormattableContent.self) else {
+        guard let commentBlock = blockGroup.blockOfType(FormattableCommentContent.self) else {
             assertionFailure("Missing Comment Block for Notification \(note.notificationId)")
             return
         }
