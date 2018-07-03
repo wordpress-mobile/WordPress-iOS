@@ -831,12 +831,12 @@ private extension NotificationDetailsViewController {
         //
 
 //        let snippetBlock = blockGroup.blockOfKind(.text)
-        let snippetBlock = blockGroup.blockOfType(DefaultFormattableContent.self)
+        let snippetBlock = blockGroup.blockOfType(FormattableTextContent.self)
         cell.headerDetails = snippetBlock?.text
         cell.attributedHeaderTitle = nil
 
 //        guard let gravatarBlock = blockGroup.blockOfKind(.image) else {
-        guard let gravatarBlock = blockGroup.blockOfType(DefaultFormattableContent.self) else {
+        guard let gravatarBlock = blockGroup.blockOfType(NotificationTextContent.self) else {
             return
         }
 
@@ -998,7 +998,7 @@ private extension NotificationDetailsViewController {
     }
 
     func setupImageCell(_ cell: NoteBlockImageTableViewCell, blockGroup: FormattableContentGroup) {
-        guard let imageBlock = blockGroup.blocks.first as? DefaultFormattableContent else {
+        guard let imageBlock = blockGroup.blocks.first as? NotificationTextContent, imageBlock.type == "image" else {
             assertionFailure("Missing Image Block for Notification [\(note.notificationId)")
             return
         }
@@ -1008,7 +1008,7 @@ private extension NotificationDetailsViewController {
     }
 
     func setupTextCell(_ cell: NoteBlockTextTableViewCell, blockGroup: FormattableContentGroup, at indexPath: IndexPath) {
-        guard let textBlock = blockGroup.blocks.first as? DefaultFormattableContent else {
+        guard let textBlock = blockGroup.blocks.first as? NotificationTextContent else {
             assertionFailure("Missing Text Block for Notification \(note.notificationId)")
             return
         }
@@ -1027,11 +1027,11 @@ private extension NotificationDetailsViewController {
 
         // Setup: Callbacks
         cell.onUrlClick = { [weak self] url in
-//            guard let `self` = self, self.isViewOnScreen() else {
-//                return
-//            }
-//
-//            self.displayURL(url)
+            guard let `self` = self, self.isViewOnScreen() else {
+                return
+            }
+
+            self.displayURL(url)
         }
     }
 }
@@ -1626,7 +1626,6 @@ private extension NotificationDetailsViewController {
 
     enum ContentMedia {
 //        static let richBlockTypes           = Set(arrayLiteral: FormattableContent.Kind.text, FormattableContent.Kind.comment)
-//        static let richBlockTypes           = Set(arrayLiteral: DefaultFormattableContent.self)
         static let duration                 = TimeInterval(0.25)
         static let delay                    = TimeInterval(0)
         static let options: UIViewAnimationOptions = [.overrideInheritedDuration, .beginFromCurrentState]

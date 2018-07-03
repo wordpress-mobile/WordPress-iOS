@@ -78,7 +78,7 @@ class Notification: NSManagedObject {
     /// Body Blocks Transient Storage.
     ///
     fileprivate var cachedBodyBlockGroups: [NotificationBlockGroup]?
-    fileprivate var cachedBodyContentGroup: [FormattableContentGroup]?
+    fileprivate var cachedBodyContentGroups: [FormattableContentGroup]?
 
     /// Header + Body Blocks Transient Storage.
     ///
@@ -130,7 +130,7 @@ class Notification: NSManagedObject {
 
         if FeatureFlag.extractNotifications.enabled {
             formatter.resetCache()
-            cachedBodyContentGroup = nil
+            cachedBodyContentGroups = nil
             cachedHeaderContentGroup = nil
             cachedSubjectContentGroup = nil
             cachedHeaderAndBodyContentGroup = nil
@@ -349,6 +349,7 @@ extension Notification {
         cachedHeaderContentGroup = HeaderContentGroup.createGroup(from: header, parent: self)
         return cachedHeaderContentGroup
     }
+    
     /// Returns the Header Block Group, if any.
     ///
     var headerBlockGroup: NotificationBlockGroup? {
@@ -365,7 +366,7 @@ extension Notification {
     }
 
     var bodyContentGroups: [FormattableContentGroup] {
-        if let group = cachedBodyContentGroup {
+        if let group = cachedBodyContentGroups {
             return group
         }
 
@@ -373,8 +374,8 @@ extension Notification {
             return []
         }
 
-        cachedBodyContentGroup = BodyContentGroup.create(from: body, parent: self)
-        return cachedBodyContentGroup ?? []
+        cachedBodyContentGroups = BodyContentGroup.create(from: body, parent: self)
+        return cachedBodyContentGroups ?? []
     }
     /// Returns the Body Block Groups, if any.
     ///

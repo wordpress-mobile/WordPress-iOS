@@ -4,16 +4,6 @@ import CocoaLumberjack
 extension NotificationBlock: ActionableObject {
 }
 
-extension DefaultFormattableContent: ActionableObject {
-    public var isCommentApproved: Bool {
-        return true
-    }
-
-    public var notificationID: String? {
-        return parentID
-    }
-}
-
 /// This service encapsulates all of the Actions that can be performed with a NotificationBlock
 ///
 open class NotificationActionsService: LocalCoreDataService {
