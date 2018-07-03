@@ -8,7 +8,7 @@ import WordPressShared
 
     // MARK: - Topic Helpers
 
-    open static let discoverSiteID = NSNumber(value: 53424024)
+    public static let discoverSiteID = NSNumber(value: 53424024)
 
     /// Check if the specified topic is a default topic
     ///
