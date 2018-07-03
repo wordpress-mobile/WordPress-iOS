@@ -19,7 +19,7 @@ extension NotificationsViewController {
                 self?.setupPrimeForPush()
             case .denied:
                 self?.setupWinback()
-            case .authorized:
+            default:
                 break
             }
         }
