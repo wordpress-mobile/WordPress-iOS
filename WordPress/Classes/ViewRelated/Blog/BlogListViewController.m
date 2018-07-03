@@ -868,11 +868,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)addSite
 {
-    UIAlertController *addSiteAlertController = [self makeAddSiteAlertController];
-    addSiteAlertController.popoverPresentationController.barButtonItem = self.addSiteButton;
-
-    [self presentViewController:addSiteAlertController animated:YES completion:nil];
-    self.addSiteAlertController = addSiteAlertController;
+    [self showAddSiteAlertFromButton:self.noResultsViewController.actionButton];
 }
 
 - (UIAlertController *)makeAddSiteAlertController
@@ -985,7 +981,7 @@ static NSInteger HideSearchMinSites = 3;
 #pragma mark - NoResultsViewControllerDelegate
 
 - (void)actionButtonPressed {
-    [self showAddSiteAlertFromButton:self.noResultsViewController.actionButton];
+    [self addSite];
 }
 
 #pragma mark - View Delegate Helper
