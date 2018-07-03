@@ -1,5 +1,5 @@
 
-class FormattableUserContent: FormattableMediaContent {
+class FormattableUserContent: NotificationTextContent {
     var metaLinksHome: URL? {
         guard let rawLink = metaLinks?[Constants.MetaKeys.Home] as? String else {
             return nil
@@ -10,6 +10,10 @@ class FormattableUserContent: FormattableMediaContent {
 
     public var metaTitlesHome: String? {
         return metaTitles?[Constants.MetaKeys.Home] as? String
+    }
+
+    override var type: String? {
+        return "user"
     }
 
     private var metaLinks: [String: AnyObject]? {

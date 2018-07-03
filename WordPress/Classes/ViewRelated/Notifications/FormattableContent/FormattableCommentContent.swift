@@ -1,5 +1,5 @@
 
-class FormattableCommentContent: FormattableMediaContent {
+class FormattableCommentContent: NotificationTextContent {
 
     var metaCommentID: NSNumber? {
         return metaIds?[Constants.MetaKeys.Comment] as? NSNumber
@@ -8,6 +8,10 @@ class FormattableCommentContent: FormattableMediaContent {
     var isCommentApproved: Bool {
         let identifier = ApproveComment.actionIdentifier()
         return isActionOn(id: identifier) || !isActionEnabled(id: identifier)
+    }
+
+    override var type: String? {
+        return "comment"
     }
 
     private var metaIds: [String: AnyObject]? {
