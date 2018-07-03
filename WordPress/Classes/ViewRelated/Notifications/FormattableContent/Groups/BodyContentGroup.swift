@@ -11,19 +11,6 @@ private enum Constants {
         static let Text         = "text"
         static let UserType     = "user"
     }
-
-    /// Meta Parsing Keys
-    ///
-    fileprivate enum MetaKeys {
-        static let Ids          = "ids"
-        static let Links        = "links"
-        static let Titles       = "titles"
-        static let Site         = "site"
-        static let Post         = "post"
-        static let Comment      = "comment"
-        static let Reply        = "reply_comment"
-        static let Home         = "home"
-    }
 }
 
 class NotificationContentFactory: FormattableContentFactory {
@@ -31,14 +18,14 @@ class NotificationContentFactory: FormattableContentFactory {
         return blocks.compactMap {
             let actions = parser.parse($0[Constants.BlockKeys.Actions] as? [String: AnyObject])
             guard let type = $0[Constants.BlockKeys.RawType] as? String else {
-                return DefaultFormattableContent(dictionary: $0, actions: actions, parent: parent)
+                return NotificationTextContent(dictionary: $0, actions: actions, parent: parent)
             }
             if type == "comment" {
                 return FormattableCommentContent(dictionary: $0, actions: actions, parent: parent)
             } else if type == "user" {
                 return FormattableUserContent(dictionary: $0, actions: actions, parent: parent)
             }
-            return DefaultFormattableContent(dictionary: $0, actions: actions, parent: parent)
+            return NotificationTextContent(dictionary: $0, actions: actions, parent: parent)
         }
     }
 }
@@ -59,9 +46,8 @@ class BodyContentGroup: FormattableContentGroup {
         let parentKindsWithFooters: [ParentKind] = [.Follow, .Like, .CommentLike]
         let parentMayContainFooter = parentKindsWithFooters.contains(parent.kind)
 
-        return blocks.map { block in
-//            let isFooter = parentMayContainFooter && block.kind == .text && blocks.last == block
-            let isFooter = false
+        return blocks.enumerated().map { index, block in
+            let isFooter = parentMayContainFooter && block.type == "text" && index == blocks.count - 1
             if isFooter {
                 return FooterContentGroup(blocks: [block])
             }
@@ -79,14 +65,7 @@ class BodyContentGroup: FormattableContentGroup {
         var groups = [FormattableContentGroup]()
         let commentGroupBlocks: [FormattableContent] = [comment, user]
 
-        let middleGroupBlocks   = blocks.filter {
-            if let theComment = $0 as? FormattableCommentContent {
-                return theComment != comment
-            } else if let theUser = $0 as? FormattableUserContent {
-                return theUser != user
-            }
-            return false
-        }
+        let middleGroupBlocks = contentFrom(blocks, differentThan: comment, and: user)
         
         let actionGroupBlocks   = [comment]
 
@@ -122,6 +101,17 @@ class BodyContentGroup: FormattableContentGroup {
         return groups
     }
 
+    private class func contentFrom(_ content: [FormattableContent], differentThan comment: FormattableCommentContent, and user: FormattableUserContent) -> [FormattableContent] {
+        return content.filter { block in
+            if let theComment = block as? FormattableCommentContent {
+                return theComment != comment
+            } else if let theUser = block as? FormattableUserContent {
+                return theUser != user
+            }
+            return true
+        }
+    }
+
     public class func pingbackReadMoreGroup(for url: URL) -> FormattableContentGroup {
         let text = NSLocalizedString("Read the source post", comment: "Displayed at the footer of a Pingback Notification.")
         let textRange = NSRange(location: 0, length: text.count)
@@ -132,7 +122,7 @@ class BodyContentGroup: FormattableContentGroup {
             FormattableContentRange(kind: .Link, range: textRange, url: url)
         ]
 
-        let block = DefaultFormattableContent(text: text, ranges: ranges)
+        let block = FormattableTextContent(text: text, ranges: ranges)
         return FooterContentGroup(blocks: [block])
     }
 }
