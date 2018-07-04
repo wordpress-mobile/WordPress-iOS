@@ -16,7 +16,7 @@ class BodyContentGroup: FormattableContentGroup {
         let parentMayContainFooter = parentKindsWithFooters.contains(parent.kind)
 
         return blocks.enumerated().map { index, block in
-            let isFooter = parentMayContainFooter && block.type == "text" && index == blocks.count - 1
+            let isFooter = parentMayContainFooter && block.kind == .text && index == blocks.count - 1
             if isFooter {
                 return FooterContentGroup(blocks: [block])
             }
@@ -26,8 +26,7 @@ class BodyContentGroup: FormattableContentGroup {
 
     private class func groupsForCommentBodyBlocks(_ blocks: [FormattableContent], parent: FormattableContentParent) -> [FormattableContentGroup] {
 
-//        guard let comment = blockOfKind(.comment, from: blocks), let user = blockOfKind(.user, from: blocks) else {
-        guard let comment = blockOfType(FormattableCommentContent.self, from: blocks), let user = blockOfType(FormattableUserContent.self, from: blocks) else {
+        guard let comment: FormattableCommentContent = blockOfKind(.comment, from: blocks), let user: FormattableUserContent = blockOfKind(.user, from: blocks) else {
             return []
         }
 

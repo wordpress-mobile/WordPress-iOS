@@ -1,6 +1,12 @@
 
 import Foundation
 
+extension FormattableContentKind {
+    static let image = FormattableContentKind("image")
+    static let comment = FormattableContentKind("comment")
+    static let user = FormattableContentKind("user")
+}
+
 protocol FormattableMediaContent {
     var textOverride: String? { get }
     var media: [FormattableMediaItem] { get }
@@ -45,31 +51,16 @@ extension FormattableMediaContent where Self: FormattableContent {
 class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
     var textOverride: String?
     let media: [FormattableMediaItem]
-    override var type: String? {
+
+    override var text: String? {
+        return textOverride ?? super.text
+    }
+
+    override var kind: FormattableContentKind {
         if let firstMedia = media.first, (firstMedia.kind == .Image || firstMedia.kind == .Badge) {
-            return "image"
+            return .image
         }
-        return "text"
-    }
-    required init(dictionary: [String : AnyObject], actions commandActions: [FormattableContentAction], parent note: FormattableContentParent) {
-        let rawMedia = dictionary[Constants.BlockKeys.Media] as? [[String: AnyObject]]
-        media = FormattableMediaItem.mediaFromArray(rawMedia)
-        super.init(dictionary: dictionary, actions: commandActions, parent: note)
-    }
-}
-
-class NotificationMediaContent: FormattableTextContent {
-
-    let media: [FormattableMediaItem]
-    var textOverride: String?
-    var imageUrls: [URL] {
-        return media.compactMap {
-            guard $0.kind == .Image && $0.mediaURL != nil else {
-                return nil
-            }
-
-            return $0.mediaURL as URL?
-        }
+        return .text
     }
 
     required init(dictionary: [String : AnyObject], actions commandActions: [FormattableContentAction], parent note: FormattableContentParent) {
