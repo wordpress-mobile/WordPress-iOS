@@ -377,6 +377,7 @@ extension Notification {
         cachedBodyContentGroups = BodyContentGroup.create(from: body, parent: self)
         return cachedBodyContentGroups ?? []
     }
+
     /// Returns the Body Block Groups, if any.
     ///
     var bodyBlockGroups: [NotificationBlockGroup] {

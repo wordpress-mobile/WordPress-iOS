@@ -1,35 +1,4 @@
 
-private enum Constants {
-    /// Parsing Keys
-    ///
-    fileprivate enum BlockKeys {
-        static let Actions      = "actions"
-        static let Media        = "media"
-        static let Meta         = "meta"
-        static let Ranges       = "ranges"
-        static let RawType      = "type"
-        static let Text         = "text"
-        static let UserType     = "user"
-    }
-}
-
-class NotificationContentFactory: FormattableContentFactory {
-    static func content(from blocks: [[String : AnyObject]], actionsParser parser: FormattableContentActionParser, parent: FormattableContentParent) -> [FormattableContent] {
-        return blocks.compactMap {
-            let actions = parser.parse($0[Constants.BlockKeys.Actions] as? [String: AnyObject])
-            guard let type = $0[Constants.BlockKeys.RawType] as? String else {
-                return NotificationTextContent(dictionary: $0, actions: actions, parent: parent)
-            }
-            if type == "comment" {
-                return FormattableCommentContent(dictionary: $0, actions: actions, parent: parent)
-            } else if type == "user" {
-                return FormattableUserContent(dictionary: $0, actions: actions, parent: parent)
-            }
-            return NotificationTextContent(dictionary: $0, actions: actions, parent: parent)
-        }
-    }
-}
-
 class BodyContentGroup: FormattableContentGroup {
     class func create(from body: [[String: AnyObject]], parent: FormattableContentParent) -> [FormattableContentGroup] {
         let blocks = NotificationContentFactory.content(from: body, actionsParser: NotificationActionParser(), parent: parent)
@@ -51,7 +20,7 @@ class BodyContentGroup: FormattableContentGroup {
             if isFooter {
                 return FooterContentGroup(blocks: [block])
             }
-            return FormattableContentGroup(blocks: [block])
+            return FormattableContentGroup(blocks: [block], kind: .text)
         }
     }
 
@@ -70,7 +39,7 @@ class BodyContentGroup: FormattableContentGroup {
         let actionGroupBlocks   = [comment]
 
         // Comment Group: Comment + User Blocks
-        groups.append(FormattableContentGroup(blocks: commentGroupBlocks))
+        groups.append(FormattableContentGroup(blocks: commentGroupBlocks, kind: .comment))
 
         // Middle Group(s): Anything
         for block in middleGroupBlocks {
@@ -84,7 +53,7 @@ class BodyContentGroup: FormattableContentGroup {
 
                 groups.append(FooterContentGroup(blocks: [block]))
             } else {
-                groups.append(FormattableContentGroup(blocks: [block]))
+                groups.append(FormattableContentGroup(blocks: [block], kind: .text))
             }
         }
 
@@ -96,7 +65,7 @@ class BodyContentGroup: FormattableContentGroup {
         }
 
         // Actions Group: A copy of the Comment Block (Actions)
-        groups.append(FormattableContentGroup(blocks: actionGroupBlocks))
+        groups.append(FormattableContentGroup(blocks: actionGroupBlocks, kind: .actions))
 
         return groups
     }
