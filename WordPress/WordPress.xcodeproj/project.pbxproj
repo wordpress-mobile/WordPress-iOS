@@ -485,6 +485,7 @@
 		7E729C2A209A241100F76599 /* AbstractPost+PostInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */; };
 		7E7B4CF820459E21001463D6 /* PersonHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7B4CF720459E21001463D6 /* PersonHeaderCell.swift */; };
 		7EAD7CD0206D761200BEDCFD /* MediaExternalExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAD7CCF206D761200BEDCFD /* MediaExternalExporter.swift */; };
+		7EB5824720EC41B200002702 /* NotificationContentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB5824620EC41B200002702 /* NotificationContentFactory.swift */; };
 		7EBB4126206C388100012D98 /* StockPhotosService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBB4125206C388100012D98 /* StockPhotosService.swift */; };
 		7ECD5B8120C4D823001AEBC5 /* MediaPreviewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECD5B8020C4D823001AEBC5 /* MediaPreviewHelper.swift */; };
 		7ED3695520A9F091007B0D56 /* Blog+ImageSourceInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED3695420A9F091007B0D56 /* Blog+ImageSourceInformation.swift */; };
@@ -1911,6 +1912,7 @@
 		7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+PostInformation.swift"; sourceTree = "<group>"; };
 		7E7B4CF720459E21001463D6 /* PersonHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonHeaderCell.swift; sourceTree = "<group>"; };
 		7EAD7CCF206D761200BEDCFD /* MediaExternalExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaExternalExporter.swift; sourceTree = "<group>"; };
+		7EB5824620EC41B200002702 /* NotificationContentFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContentFactory.swift; sourceTree = "<group>"; };
 		7EBB4125206C388100012D98 /* StockPhotosService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosService.swift; sourceTree = "<group>"; };
 		7ECD5B8020C4D823001AEBC5 /* MediaPreviewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPreviewHelper.swift; sourceTree = "<group>"; };
 		7ED3695420A9F091007B0D56 /* Blog+ImageSourceInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+ImageSourceInformation.swift"; sourceTree = "<group>"; };
@@ -4116,6 +4118,7 @@
 				7EFF208520EAD918009C4699 /* FormattableUserContent.swift */,
 				7EFF208920EADCB6009C4699 /* NotificationTextContent.swift */,
 				7EFF208B20EADF68009C4699 /* FormattableCommentContent.swift */,
+				7EB5824620EC41B200002702 /* NotificationContentFactory.swift */,
 			);
 			path = FormattableContent;
 			sourceTree = "<group>";
@@ -7651,6 +7654,7 @@
 				17FCA6811FD84B4600DBA9C8 /* NoticeStore.swift in Sources */,
 				1751E5911CE0E552000CA08D /* KeyValueDatabase.swift in Sources */,
 				937F3E321AD6FDA7006BA498 /* WPAnalyticsTrackerAutomatticTracks.m in Sources */,
+				7EB5824720EC41B200002702 /* NotificationContentFactory.swift in Sources */,
 				B55086211CC15CCB004EADB4 /* PromptViewController.swift in Sources */,
 				82FC612C1FA8B7FC00A1757E /* ActivityListRow.swift in Sources */,
 				FF0A4FEA1F16C9BD00D6CC69 /* ImageAttachment+WordPress.swift in Sources */,
