@@ -1,5 +1,9 @@
 
 class FormattableUserContent: NotificationTextContent {
+    override var kind: FormattableContentKind {
+        return .user
+    }
+
     var metaLinksHome: URL? {
         guard let rawLink = metaLinks?[Constants.MetaKeys.Home] as? String else {
             return nil
@@ -10,10 +14,6 @@ class FormattableUserContent: NotificationTextContent {
 
     public var metaTitlesHome: String? {
         return metaTitles?[Constants.MetaKeys.Home] as? String
-    }
-
-    override var type: String? {
-        return "user"
     }
 
     private var metaLinks: [String: AnyObject]? {
@@ -45,8 +45,6 @@ extension FormattableUserContent: ActionableObject {
     var isCommentApproved: Bool {
         return false
     }
-
-
 }
 
 extension FormattableUserContent: Equatable {
