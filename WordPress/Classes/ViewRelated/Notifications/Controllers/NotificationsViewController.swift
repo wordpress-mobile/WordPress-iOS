@@ -5,7 +5,6 @@ import MGSwipeTableCell
 import WordPressShared
 import WordPressAuthenticator
 
-
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account.
 ///
@@ -18,6 +17,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     @objc static let selectedSegmentIndexRestorationIdentifier   = "NotificationsSelectedSegmentIndexKey"
 
     // MARK: - Properties
+
+    let formatter = FormattableContentFormatter()
 
     /// TableHeader
     ///
@@ -922,8 +923,13 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         let deletionRequest         = deletionRequestForNoteWithID(note.objectID)
         let isLastRow               = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
 
-        cell.attributedSubject      = note.subjectBlock?.attributedSubjectText
-        cell.attributedSnippet      = note.snippetBlock?.attributedSnippetText
+        if FeatureFlag.extractNotifications.enabled {
+            cell.attributedSubject = note.renderSubject()
+            cell.attributedSnippet = note.renderSnippet()
+        } else {
+            cell.attributedSubject      = note.subjectBlock?.attributedSubjectText
+            cell.attributedSnippet      = note.snippetBlock?.attributedSnippetText
+        }
         cell.read                   = note.read
         cell.noticon                = note.noticon
         cell.unapproved             = note.isUnapprovedComment

@@ -1,7 +1,5 @@
 import Foundation
 
-
-
 // MARK: - NotificationBlockGroup: Adapter to match 1 View <> 1 BlockGroup
 //
 class NotificationBlockGroup {
@@ -87,7 +85,7 @@ private extension NotificationBlockGroup {
     ///
     class func groupsForNonCommentBodyBlocks(_ blocks: [NotificationBlock], parent: Notification) -> [NotificationBlockGroup] {
         let parentKindsWithFooters: [Notification.Kind] = [.Follow, .Like, .CommentLike]
-        let parentMayContainFooter = parentKindsWithFooters.contains(parent.kind)
+        let parentMayContainFooter = parentKindsWithFooters.contains(parent.notificationKind)
 
         return blocks.map { block in
             let isFooter = parentMayContainFooter && block.kind == .text && blocks.last == block
