@@ -157,7 +157,7 @@ import WordPressFlux
     // MARK: - State Restoration
 
 
-    open static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+    public static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
         guard let path = coder.decodeObject(forKey: restorableTopicPathKey) as? String else {
             return nil
         }
