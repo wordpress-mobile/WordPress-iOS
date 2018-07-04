@@ -479,7 +479,7 @@ extension WPRichContentView: WPTableImageSourceDelegate {
     func tableImageSource(_ tableImageSource: WPTableImageSource!, imageFailedforIndexPath indexPath: IndexPath!, error: Error!) {
         let richMedia = mediaArray[indexPath.row]
         DDLogError("Error loading image: \(richMedia.attachment.src)")
-        DDLogError("\(error)")
+        DDLogError("\(String(describing: error))")
     }
 }
 
