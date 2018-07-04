@@ -10,8 +10,8 @@ class FormattableCommentContent: NotificationTextContent {
         return isActionOn(id: identifier) || !isActionEnabled(id: identifier)
     }
 
-    override var type: String? {
-        return "comment"
+    override var kind: FormattableContentKind {
+        return .comment
     }
 
     private var metaIds: [String: AnyObject]? {
@@ -57,28 +57,9 @@ extension FormattableCommentContent: ActionableObject {
 }
 
 private enum Constants {
-    /// Parsing Keys
-    ///
-    fileprivate enum BlockKeys {
-        static let Actions      = "actions"
-        static let Media        = "media"
-        static let Meta         = "meta"
-        static let Ranges       = "ranges"
-        static let RawType      = "type"
-        static let Text         = "text"
-        static let UserType     = "user"
-    }
-
-    /// Meta Parsing Keys
-    ///
     fileprivate enum MetaKeys {
         static let Ids          = "ids"
-        static let Links        = "links"
-        static let Titles       = "titles"
         static let Site         = "site"
-        static let Post         = "post"
         static let Comment      = "comment"
-        static let Reply        = "reply_comment"
-        static let Home         = "home"
     }
 }
