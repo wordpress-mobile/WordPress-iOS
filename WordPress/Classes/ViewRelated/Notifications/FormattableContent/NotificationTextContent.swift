@@ -10,7 +10,7 @@ extension FormattableContentKind {
 protocol FormattableMediaContent {
     var textOverride: String? { get }
     var media: [FormattableMediaItem] { get }
-    var imageUrls: [URL]  { get }
+    var imageUrls: [URL] { get }
 
     func buildRangesToImagesMap(_ mediaMap: [URL: UIImage]) -> [NSValue: UIImage]?
 }
@@ -39,8 +39,8 @@ extension FormattableMediaContent where Self: FormattableContent {
             }
 
             if let image = mediaMap[mediaURL as URL] {
-                let rangeValue      = NSValue(range: theMedia.range)
-                ranges[rangeValue]  = image
+                let rangeValue = NSValue(range: theMedia.range)
+                ranges[rangeValue] = image
             }
         }
 
@@ -63,7 +63,7 @@ class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
         return .text
     }
 
-    required init(dictionary: [String : AnyObject], actions commandActions: [FormattableContentAction], parent note: FormattableContentParent) {
+    required init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], parent note: FormattableContentParent) {
         let rawMedia = dictionary[Constants.BlockKeys.Media] as? [[String: AnyObject]]
         media = FormattableMediaItem.mediaFromArray(rawMedia)
         super.init(dictionary: dictionary, actions: commandActions, parent: note)

@@ -349,7 +349,7 @@ extension Notification {
         cachedHeaderContentGroup = HeaderContentGroup.createGroup(from: header, parent: self)
         return cachedHeaderContentGroup
     }
-    
+
     /// Returns the Header Block Group, if any.
     ///
     var headerBlockGroup: NotificationBlockGroup? {
