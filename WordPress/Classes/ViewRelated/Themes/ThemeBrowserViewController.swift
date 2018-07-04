@@ -820,7 +820,7 @@ public protocol ThemePresenter: class {
                 alertController.presentFromRootViewController()
             },
             failure: { (error) in
-                DDLogError("Error activating theme \(theme.themeId): \(String(describing: error?.localizedDescription))")
+                DDLogError("Error activating theme \(String(describing: theme.themeId)): \(String(describing: error?.localizedDescription))")
 
                 let errorTitle = NSLocalizedString("Activation Error", comment: "Title of alert when theme activation fails")
                 let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
