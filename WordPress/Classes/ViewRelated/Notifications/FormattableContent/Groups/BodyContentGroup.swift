@@ -34,7 +34,7 @@ class BodyContentGroup: FormattableContentGroup {
         let commentGroupBlocks: [FormattableContent] = [comment, user]
 
         let middleGroupBlocks = contentFrom(blocks, differentThan: comment, and: user)
-        
+
         let actionGroupBlocks   = [comment]
 
         // Comment Group: Comment + User Blocks
