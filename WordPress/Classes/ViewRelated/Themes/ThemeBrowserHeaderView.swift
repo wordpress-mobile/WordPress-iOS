@@ -4,7 +4,7 @@ import WordPressShared
 open class ThemeBrowserHeaderView: UICollectionReusableView {
     // MARK: - Constants
 
-    @objc open static let reuseIdentifier = "ThemeBrowserHeaderView"
+    @objc public static let reuseIdentifier = "ThemeBrowserHeaderView"
 
     // MARK: - Private Aliases
 
