@@ -831,12 +831,12 @@ private extension NotificationDetailsViewController {
         //
 
 //        let snippetBlock = blockGroup.blockOfKind(.text)
-        let snippetBlock = blockGroup.blockOfType(FormattableTextContent.self)
+        let snippetBlock: NotificationTextContent? = blockGroup.blockOfType("text")
         cell.headerDetails = snippetBlock?.text
         cell.attributedHeaderTitle = nil
 
 //        guard let gravatarBlock = blockGroup.blockOfKind(.image) else {
-        guard let gravatarBlock = blockGroup.blockOfType(NotificationTextContent.self) else {
+        guard let gravatarBlock: NotificationTextContent = blockGroup.blockOfType("image") else {
             return
         }
 
