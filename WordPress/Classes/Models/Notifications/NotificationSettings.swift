@@ -9,15 +9,15 @@ import Foundation
 open class NotificationSettings {
     /// Represents the Channel to which the current settings are associated.
     ///
-    open let channel: Channel
+    public let channel: Channel
 
     /// Contains an array of the available Notification Streams.
     ///
-    open let streams: [Stream]
+    public let streams: [Stream]
 
     /// Maps to the associated blog, if any.
     ///
-    open let blog: Blog?
+    public let blog: Blog?
 
 
 
