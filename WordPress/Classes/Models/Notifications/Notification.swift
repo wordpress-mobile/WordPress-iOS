@@ -63,27 +63,45 @@ class Notification: NSManagedObject {
     ///
     fileprivate var cachedTimestampAsDate: Date?
 
+    let formatter = FormattableContentFormatter()
+
     /// Subject Blocks Transient Storage.
     ///
     fileprivate var cachedSubjectBlockGroup: NotificationBlockGroup?
+    fileprivate var cachedSubjectContentGroup: FormattableContentGroup?
 
     /// Header Blocks Transient Storage.
     ///
     fileprivate var cachedHeaderBlockGroup: NotificationBlockGroup?
+    fileprivate var cachedHeaderContentGroup: FormattableContentGroup?
 
     /// Body Blocks Transient Storage.
     ///
     fileprivate var cachedBodyBlockGroups: [NotificationBlockGroup]?
+    fileprivate var cachedBodyContentGroup: [FormattableContentGroup]?
 
     /// Header + Body Blocks Transient Storage.
     ///
     fileprivate var cachedHeaderAndBodyBlockGroups: [NotificationBlockGroup]?
+    fileprivate var cachedHeaderAndBodyContentGroup: [FormattableContentGroup]?
 
     /// Array that contains the Cached Property Names
     ///
     fileprivate static let cachedAttributes = Set(arrayLiteral: "body", "header", "subject", "timestamp")
 
+    func renderSubject() -> NSAttributedString? {
+        guard let subjectContent = subjectContentGroup?.blocks.first else {
+            return nil
+        }
+        return formatter.render(content: subjectContent, with: SubjectContentStyles())
+    }
 
+    func renderSnippet() -> NSAttributedString? {
+        guard let snippetContent = snippetContent else {
+            return nil
+        }
+        return formatter.render(content: snippetContent, with: SnipetsContentStyles())
+    }
 
     /// When needed, nukes cached attributes
     ///
@@ -109,10 +127,19 @@ class Notification: NSManagedObject {
     ///
     func resetCachedAttributes() {
         cachedTimestampAsDate = nil
-        cachedSubjectBlockGroup = nil
-        cachedHeaderBlockGroup = nil
-        cachedBodyBlockGroups = nil
-        cachedHeaderAndBodyBlockGroups = nil
+
+        if FeatureFlag.extractNotifications.enabled {
+            formatter.resetCache()
+            cachedBodyContentGroup = nil
+            cachedHeaderContentGroup = nil
+            cachedSubjectContentGroup = nil
+            cachedHeaderAndBodyContentGroup = nil
+        } else {
+            cachedSubjectBlockGroup = nil
+            cachedHeaderBlockGroup = nil
+            cachedBodyBlockGroups = nil
+            cachedHeaderAndBodyBlockGroups = nil
+        }
     }
 
     // This is a NO-OP that will force NSFetchedResultsController to reload the row for this object.
@@ -151,8 +178,6 @@ class Notification: NSManagedObject {
         return nil
     }
 }
-
-
 
 // MARK: - Notification Computed Properties
 //
@@ -200,9 +225,16 @@ extension Notification {
         return block.isActionEnabled(id: commandId) && !block.isActionOn(id: commandId)
     }
 
+    var kind: ParentKind {
+        guard let type = type, let kind = ParentKind(rawValue: type) else {
+            return .Unknown
+        }
+        return kind
+    }
+
     /// Parses the Notification.type field into a Swift Native enum. Returns .Unknown on failure.
     ///
-    var kind: Kind {
+    var notificationKind: Kind {
         guard let type = type, let kind = Kind(rawValue: type) else {
             return .Unknown
         }
@@ -277,6 +309,19 @@ extension Notification {
         return timestampAsDate
     }
 
+    var subjectContentGroup: FormattableContentGroup? {
+        if let group = cachedSubjectContentGroup {
+            return group
+        }
+
+        guard let subject = subject as? [[String: AnyObject]], subject.isEmpty == false else {
+            return nil
+        }
+
+        cachedSubjectContentGroup = SubjectContentGroup.createGroup(from: subject, parent: self)
+        return cachedSubjectContentGroup
+    }
+
     /// Returns the Subject Block Group, if any.
     ///
     var subjectBlockGroup: NotificationBlockGroup? {
@@ -292,6 +337,18 @@ extension Notification {
         return cachedSubjectBlockGroup
     }
 
+    var headerContentGroup: FormattableContentGroup? {
+        if let group = cachedHeaderContentGroup {
+            return group
+        }
+
+        guard let header = header as? [[String: AnyObject]], header.isEmpty == false else {
+            return nil
+        }
+
+        cachedHeaderContentGroup = HeaderContentGroup.createGroup(from: header, parent: self)
+        return cachedHeaderContentGroup
+    }
     /// Returns the Header Block Group, if any.
     ///
     var headerBlockGroup: NotificationBlockGroup? {
@@ -307,6 +364,18 @@ extension Notification {
         return cachedHeaderBlockGroup
     }
 
+    var bodyContentGroups: [FormattableContentGroup] {
+        if let group = cachedBodyContentGroup {
+            return group
+        }
+
+        guard let body = body as? [[String: AnyObject]], body.isEmpty == false else {
+            return []
+        }
+
+        cachedBodyContentGroup = BodyContentGroup.create(from: body, parent: self)
+        return cachedBodyContentGroup ?? []
+    }
     /// Returns the Body Block Groups, if any.
     ///
     var bodyBlockGroups: [NotificationBlockGroup] {
@@ -322,6 +391,22 @@ extension Notification {
         return cachedBodyBlockGroups ?? []
     }
 
+
+    var headerAndBodyContentGroups: [FormattableContentGroup] {
+        if let groups = cachedHeaderAndBodyContentGroup {
+            return groups
+        }
+
+        var mergedGroups = [FormattableContentGroup]()
+        if let header = headerContentGroup {
+            mergedGroups.append(header)
+        }
+
+        mergedGroups.append(contentsOf: bodyContentGroups)
+        cachedHeaderAndBodyContentGroup = mergedGroups
+
+        return mergedGroups
+    }
     /// Returns the Header + Body Block Groups, if any. This is done for convenience.
     ///
     var headerAndBodyBlockGroups: [NotificationBlockGroup] {
@@ -344,6 +429,13 @@ extension Notification {
     ///
     var subjectBlock: NotificationBlock? {
         return subjectBlockGroup?.blocks.first
+    }
+
+    var snippetContent: FormattableContent? {
+        guard let content = subjectContentGroup?.blocks, content.count > 1 else {
+            return nil
+        }
+        return content.last
     }
 
     /// Returns the Snippet Block, if any.
