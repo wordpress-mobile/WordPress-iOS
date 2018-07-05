@@ -550,6 +550,12 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 }
 
+
+- (void)popNotificationsTabToRoot
+{
+    [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
+}
+
 - (void)switchTabToPostsListForPost:(AbstractPost *)post
 {
     UIViewController *topVC = [self.blogListSplitViewController topDetailViewController];
