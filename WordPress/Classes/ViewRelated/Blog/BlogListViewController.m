@@ -431,10 +431,10 @@ static NSInteger HideSearchMinSites = 3;
 
 #pragma mark - Public methods
 
-- (void)presentInterfaceForAddingNewSite
+- (void)presentInterfaceForAddingNewSiteFrom:(UIView *)sourceView
 {
     [self.navigationController popToRootViewControllerAnimated:YES];
-    [self addSite];
+    [self showAddSiteAlertFromView:sourceView];
 }
 
 - (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar
@@ -868,11 +868,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)addSite
 {
-    UIAlertController *addSiteAlertController = [self makeAddSiteAlertController];
-    addSiteAlertController.popoverPresentationController.barButtonItem = self.addSiteButton;
-
-    [self presentViewController:addSiteAlertController animated:YES completion:nil];
-    self.addSiteAlertController = addSiteAlertController;
+    [self showAddSiteAlertFromView:self.noResultsViewController.actionButton];
 }
 
 - (UIAlertController *)makeAddSiteAlertController
@@ -880,6 +876,7 @@ static NSInteger HideSearchMinSites = 3;
     UIAlertController *addSiteAlertController = [UIAlertController alertControllerWithTitle:nil
                                                                                     message:nil
                                                                              preferredStyle:UIAlertControllerStyleActionSheet];
+
     if ([self defaultWordPressComAccount]) {
         UIAlertAction *addNewWordPressAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Create WordPress.com site", @"Create WordPress.com site button")
                                                                         style:UIAlertActionStyleDefault
@@ -985,17 +982,17 @@ static NSInteger HideSearchMinSites = 3;
 #pragma mark - NoResultsViewControllerDelegate
 
 - (void)actionButtonPressed {
-    [self showAddSiteAlertFromButton:self.noResultsViewController.actionButton];
+    [self showAddSiteAlertFromView:self.noResultsViewController.actionButton];
 }
 
 #pragma mark - View Delegate Helper
 
-- (void)showAddSiteAlertFromButton:(UIButton *)sourceButton
+- (void)showAddSiteAlertFromView:(UIView *)sourceView
 {
     if (self.dataSource.allBlogsCount == 0) {
         UIAlertController *addSiteAlertController = [self makeAddSiteAlertController];
-        addSiteAlertController.popoverPresentationController.sourceView = sourceButton;
-        addSiteAlertController.popoverPresentationController.sourceRect = sourceButton.bounds;
+        addSiteAlertController.popoverPresentationController.sourceView = sourceView;
+        addSiteAlertController.popoverPresentationController.sourceRect = sourceView.bounds;
         addSiteAlertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
         
         [self presentViewController:addSiteAlertController animated:YES completion:nil];
