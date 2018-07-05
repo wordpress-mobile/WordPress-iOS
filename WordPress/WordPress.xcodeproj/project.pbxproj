@@ -485,10 +485,14 @@
 		7E729C2A209A241100F76599 /* AbstractPost+PostInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */; };
 		7E7B4CF820459E21001463D6 /* PersonHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7B4CF720459E21001463D6 /* PersonHeaderCell.swift */; };
 		7EAD7CD0206D761200BEDCFD /* MediaExternalExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAD7CCF206D761200BEDCFD /* MediaExternalExporter.swift */; };
+		7EB5824720EC41B200002702 /* NotificationContentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB5824620EC41B200002702 /* NotificationContentFactory.swift */; };
 		7EBB4126206C388100012D98 /* StockPhotosService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBB4125206C388100012D98 /* StockPhotosService.swift */; };
 		7ECD5B8120C4D823001AEBC5 /* MediaPreviewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECD5B8020C4D823001AEBC5 /* MediaPreviewHelper.swift */; };
 		7ED3695520A9F091007B0D56 /* Blog+ImageSourceInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED3695420A9F091007B0D56 /* Blog+ImageSourceInformation.swift */; };
 		7EDAB3F420B046FE002D1A76 /* CircularProgressView+ActivityIndicatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDAB3F320B046FE002D1A76 /* CircularProgressView+ActivityIndicatorType.swift */; };
+		7EFF208620EAD918009C4699 /* FormattableUserContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFF208520EAD918009C4699 /* FormattableUserContent.swift */; };
+		7EFF208A20EADCB6009C4699 /* NotificationTextContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFF208920EADCB6009C4699 /* NotificationTextContent.swift */; };
+		7EFF208C20EADF68009C4699 /* FormattableCommentContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFF208B20EADF68009C4699 /* FormattableCommentContent.swift */; };
 		820ADD701F3A1F88002D7F93 /* ThemeBrowserSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 820ADD6F1F3A1F88002D7F93 /* ThemeBrowserSectionHeaderView.xib */; };
 		820ADD721F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 820ADD711F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift */; };
 		821738091FE04A9E00BEC94C /* DateAndTimeFormatSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821738081FE04A9E00BEC94C /* DateAndTimeFormatSettingsViewController.swift */; };
@@ -1908,10 +1912,14 @@
 		7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+PostInformation.swift"; sourceTree = "<group>"; };
 		7E7B4CF720459E21001463D6 /* PersonHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonHeaderCell.swift; sourceTree = "<group>"; };
 		7EAD7CCF206D761200BEDCFD /* MediaExternalExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaExternalExporter.swift; sourceTree = "<group>"; };
+		7EB5824620EC41B200002702 /* NotificationContentFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContentFactory.swift; sourceTree = "<group>"; };
 		7EBB4125206C388100012D98 /* StockPhotosService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosService.swift; sourceTree = "<group>"; };
 		7ECD5B8020C4D823001AEBC5 /* MediaPreviewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPreviewHelper.swift; sourceTree = "<group>"; };
 		7ED3695420A9F091007B0D56 /* Blog+ImageSourceInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+ImageSourceInformation.swift"; sourceTree = "<group>"; };
 		7EDAB3F320B046FE002D1A76 /* CircularProgressView+ActivityIndicatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CircularProgressView+ActivityIndicatorType.swift"; sourceTree = "<group>"; };
+		7EFF208520EAD918009C4699 /* FormattableUserContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattableUserContent.swift; sourceTree = "<group>"; };
+		7EFF208920EADCB6009C4699 /* NotificationTextContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTextContent.swift; sourceTree = "<group>"; };
+		7EFF208B20EADF68009C4699 /* FormattableCommentContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattableCommentContent.swift; sourceTree = "<group>"; };
 		820ADD6C1F3A0DA0002D7F93 /* WordPress 64.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 64.xcdatamodel"; sourceTree = "<group>"; };
 		820ADD6F1F3A1F88002D7F93 /* ThemeBrowserSectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThemeBrowserSectionHeaderView.xib; sourceTree = "<group>"; };
 		820ADD711F3A226E002D7F93 /* ThemeBrowserSectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserSectionHeaderView.swift; sourceTree = "<group>"; };
@@ -4105,11 +4113,12 @@
 			isa = PBXGroup;
 			children = (
 				7E3E7A5E20E44E110075D159 /* Styles */,
-				7E3E7A5F20E44E490075D159 /* FooterContentGroup.swift */,
-				7E3E7A6120E44E6A0075D159 /* BodyContentGroup.swift */,
-				7E3E7A6320E44ED60075D159 /* SubjectContentGroup.swift */,
-				7E3E7A6520E44F200075D159 /* HeaderContentGroup.swift */,
+				7EFF207F20EAC59D009C4699 /* Groups */,
 				7E3E7A6720E44F440075D159 /* Notification+FormattableContentParent.swift */,
+				7EFF208520EAD918009C4699 /* FormattableUserContent.swift */,
+				7EFF208920EADCB6009C4699 /* NotificationTextContent.swift */,
+				7EFF208B20EADF68009C4699 /* FormattableCommentContent.swift */,
+				7EB5824620EC41B200002702 /* NotificationContentFactory.swift */,
 			);
 			path = FormattableContent;
 			sourceTree = "<group>";
@@ -4125,6 +4134,17 @@
 				7E3E7A5C20E44DB00075D159 /* BadgeContentStyles.swift */,
 			);
 			path = Styles;
+			sourceTree = "<group>";
+		};
+		7EFF207F20EAC59D009C4699 /* Groups */ = {
+			isa = PBXGroup;
+			children = (
+				7E3E7A5F20E44E490075D159 /* FooterContentGroup.swift */,
+				7E3E7A6120E44E6A0075D159 /* BodyContentGroup.swift */,
+				7E3E7A6320E44ED60075D159 /* SubjectContentGroup.swift */,
+				7E3E7A6520E44F200075D159 /* HeaderContentGroup.swift */,
+			);
+			path = Groups;
 			sourceTree = "<group>";
 		};
 		8298F38D1EEF2B15008EB7F0 /* Ratings */ = {
@@ -7157,6 +7177,7 @@
 				D8160442209C1B0F00ABAFFA /* ReaderSaveForLaterAction.swift in Sources */,
 				E68580F61E0D91470090EE63 /* WPHorizontalRuleAttachment.swift in Sources */,
 				E12FE0741FA0CEE000F28710 /* ImmuTable+Optional.swift in Sources */,
+				7EFF208C20EADF68009C4699 /* FormattableCommentContent.swift in Sources */,
 				D8212CBF20AA7B7F008E8AE8 /* ReaderShowAttributionAction.swift in Sources */,
 				C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */,
 				E15644F11CE0E56600D96E64 /* FeatureItemCell.swift in Sources */,
@@ -7464,6 +7485,7 @@
 				5926E1E31AC4468300964783 /* WPCrashlytics.m in Sources */,
 				E16273E11B2ACEB600088AF7 /* BlogToBlog32to33.swift in Sources */,
 				E678FC151C76241000F55F55 /* WPStyleGuide+ApplicationStyles.swift in Sources */,
+				7EFF208620EAD918009C4699 /* FormattableUserContent.swift in Sources */,
 				E66EB6F91C1B7A76003DABC5 /* ReaderSpacerView.swift in Sources */,
 				B55853F31962337500FAF6C3 /* NSScanner+Helpers.m in Sources */,
 				B560914C208A671F00399AE4 /* WPStyleGuide+SiteCreation.swift in Sources */,
@@ -7632,6 +7654,7 @@
 				17FCA6811FD84B4600DBA9C8 /* NoticeStore.swift in Sources */,
 				1751E5911CE0E552000CA08D /* KeyValueDatabase.swift in Sources */,
 				937F3E321AD6FDA7006BA498 /* WPAnalyticsTrackerAutomatticTracks.m in Sources */,
+				7EB5824720EC41B200002702 /* NotificationContentFactory.swift in Sources */,
 				B55086211CC15CCB004EADB4 /* PromptViewController.swift in Sources */,
 				82FC612C1FA8B7FC00A1757E /* ActivityListRow.swift in Sources */,
 				FF0A4FEA1F16C9BD00D6CC69 /* ImageAttachment+WordPress.swift in Sources */,
@@ -7680,6 +7703,7 @@
 				E66969DA1B9E55AB00EC9C00 /* ReaderTopicToReaderTagTopic37to38.swift in Sources */,
 				D800D86620997C6E00E7C7E5 /* FollowingMenuItemCreator.swift in Sources */,
 				172797D91CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift in Sources */,
+				7EFF208A20EADCB6009C4699 /* NotificationTextContent.swift in Sources */,
 				B5176CC11CDCE1B90083CF2D /* ManagedPerson.swift in Sources */,
 				B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */,
 				08216FCA1CDBF96000304BA7 /* MenuItemEditingFooterView.m in Sources */,
