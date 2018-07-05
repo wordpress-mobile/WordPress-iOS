@@ -17,7 +17,9 @@ struct UniversalLinkRouter {
     static let shared = UniversalLinkRouter(routes: [
         MeRoute(),
         MeAccountSettingsRoute(),
-        MeNotificationSettingsRoute()
+        MeNotificationSettingsRoute(),
+        NewPostRoute(),
+        NewPostForSiteRoute()
         ])
 
     /// Attempts to find a Route that matches the url's path, and perform its
