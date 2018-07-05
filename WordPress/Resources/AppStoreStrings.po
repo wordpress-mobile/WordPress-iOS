@@ -71,7 +71,7 @@ msgstr ""
 
 #. translators: This is a promo message.
 msgctxt "app_store_screenshot-1"
-msgid "Enjoy your favourite sites"
+msgid "Enjoy your favorite sites"
 msgstr ""
 
 #. translators: This is a promo message.
