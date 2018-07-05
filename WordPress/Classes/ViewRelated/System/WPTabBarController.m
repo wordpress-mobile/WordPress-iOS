@@ -550,6 +550,10 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 }
 
+- (void)popMeTabToRoot
+{
+    [self.meNavigationController popToRootViewControllerAnimated:NO];
+}
 
 - (void)popNotificationsTabToRoot
 {
@@ -709,12 +713,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.meViewController navigateToHelpAndSupport];
     });
-}
-
-- (void)popMeTabToRoot
-{
-    [self showMeTab];
-    [self.meNavigationController popToRootViewControllerAnimated:NO];
 }
 
 - (void)switchReaderTabToSavedPosts
