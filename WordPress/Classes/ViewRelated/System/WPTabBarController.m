@@ -479,6 +479,17 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 }
 
+- (void)showPostTabForBlog:(Blog *)blog
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    if ([blogService blogCountForAllAccounts] == 0) {
+        [self switchMySitesTabToAddNewSite];
+    } else {
+        [self showPostTabAnimated:YES toMedia:NO blog:blog];
+    }
+}
+
 - (void)showMeTab
 {
     [self showTabForIndex:WPTabMe];
@@ -491,15 +502,23 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia
 {
+    [self showPostTabAnimated:animated toMedia:openToMedia blog:nil];
+}
+
+- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog
+{
     if (self.presentedViewController) {
         [self dismissViewControllerAnimated:NO completion:nil];
     }
 
-    Blog *blog = [self currentlyVisibleBlog];
-    if (blog == nil) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        blog = [blogService lastUsedOrFirstBlog];
+    if (!blog) {
+        blog = [self currentlyVisibleBlog];
+
+        if (blog == nil) {
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+            blog = [blogService lastUsedOrFirstBlog];
+        }
     }
 
     EditPostViewController* editor = [[EditPostViewController alloc] initWithBlog:blog];
