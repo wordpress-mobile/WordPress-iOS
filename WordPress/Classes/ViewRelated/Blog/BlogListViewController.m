@@ -993,7 +993,7 @@ static NSInteger HideSearchMinSites = 3;
         UIAlertController *addSiteAlertController = [self makeAddSiteAlertController];
         addSiteAlertController.popoverPresentationController.sourceView = sourceView;
         addSiteAlertController.popoverPresentationController.sourceRect = sourceView.bounds;
-        addSiteAlertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown;
+        addSiteAlertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
         
         [self presentViewController:addSiteAlertController animated:YES completion:nil];
         self.addSiteAlertController = addSiteAlertController;
