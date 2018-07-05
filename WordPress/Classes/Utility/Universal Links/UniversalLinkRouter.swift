@@ -19,7 +19,8 @@ struct UniversalLinkRouter {
         MeAccountSettingsRoute(),
         MeNotificationSettingsRoute(),
         NewPostRoute(),
-        NewPostForSiteRoute()
+        NewPostForSiteRoute(),
+        NotificationsRoute()
         ])
 
     /// Attempts to find a Route that matches the url's path, and perform its

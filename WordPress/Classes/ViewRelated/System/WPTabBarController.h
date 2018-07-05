@@ -54,7 +54,9 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 - (void)switchMeTabToAppSettings;
 - (void)switchMeTabToNotificationSettings;
 - (void)switchMeTabToSupport;
+
 - (void)popMeTabToRoot;
+- (void)popNotificationsTabToRoot;
 
 - (void)switchReaderTabToSavedPosts;
 
