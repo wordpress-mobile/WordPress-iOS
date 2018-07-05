@@ -27,7 +27,7 @@ struct UniversalLinkRouter {
         let matches = matcher.routesMatching(url.path)
 
         for matchedRoute in matches {
-            matchedRoute.action.perform()
+            matchedRoute.action.perform(matchedRoute.values)
         }
     }
 }
