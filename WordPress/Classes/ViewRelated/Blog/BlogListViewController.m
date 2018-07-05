@@ -876,7 +876,7 @@ static NSInteger HideSearchMinSites = 3;
     UIAlertController *addSiteAlertController = [UIAlertController alertControllerWithTitle:nil
                                                                                     message:nil
                                                                              preferredStyle:UIAlertControllerStyleActionSheet];
-//    addSiteAlertController.popoverPresentationController.sourceView = self.noResultsViewController.actionButton;
+
     if ([self defaultWordPressComAccount]) {
         UIAlertAction *addNewWordPressAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Create WordPress.com site", @"Create WordPress.com site button")
                                                                         style:UIAlertActionStyleDefault
