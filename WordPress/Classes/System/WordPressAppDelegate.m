@@ -352,8 +352,13 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 #else
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler {
 #endif
-    // Spotlight search
-    [SearchManager.shared handleWithActivity: userActivity];
+    if ([userActivity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb]) {
+        [self handleWebActivity:userActivity];
+    } else {
+        // Spotlight search
+        [SearchManager.shared handleWithActivity: userActivity];
+    }
+
     return YES;
 }
 
