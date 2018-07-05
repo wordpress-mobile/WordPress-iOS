@@ -171,6 +171,16 @@ private extension NotificationBlockGroup {
     }
 }
 
+extension FormattableContentGroup.Kind {
+    static let text = FormattableContentGroup.Kind("text")
+    static let image = FormattableContentGroup.Kind("image")
+    static let user = FormattableContentGroup.Kind("user")
+    static let comment = FormattableContentGroup.Kind("comment")
+    static let actions = FormattableContentGroup.Kind("actions")
+    static let subject = FormattableContentGroup.Kind("subject")
+    static let header = FormattableContentGroup.Kind("header")
+    static let footer = FormattableContentGroup.Kind("footer")
+}
 
 // MARK: - NotificationBlockGroup Types
 //

@@ -830,11 +830,11 @@ private extension NotificationDetailsViewController {
         // -   UITableViewCell's taps don't require a Gestures Recognizer. No big deal, but less code!
         //
 
-        let snippetBlock = blockGroup.blockOfKind(.text)
+        let snippetBlock: NotificationTextContent? = blockGroup.blockOfKind(.text)
         cell.headerDetails = snippetBlock?.text
         cell.attributedHeaderTitle = nil
 
-        guard let gravatarBlock = blockGroup.blockOfKind(.image) else {
+        guard let gravatarBlock: NotificationTextContent = blockGroup.blockOfKind(.image) else {
             return
         }
 
@@ -856,7 +856,7 @@ private extension NotificationDetailsViewController {
     }
 
     func setupUserCell(_ cell: NoteBlockUserTableViewCell, blockGroup: FormattableContentGroup) {
-        guard let userBlock = blockGroup.blocks.first else {
+        guard let userBlock = blockGroup.blocks.first as? FormattableUserContent else {
             assertionFailure("Missing User Block for Notification [\(note.notificationId)]")
             return
         }
@@ -891,12 +891,12 @@ private extension NotificationDetailsViewController {
         //  -   Font colors are updated.
         //  -   A left separator is displayed.
         //
-        guard let commentBlock = blockGroup.blockOfKind(.comment) else {
+        guard let commentBlock: FormattableCommentContent = blockGroup.blockOfKind(.comment) else {
             assertionFailure("Missing Comment Block for Notification [\(note.notificationId)]")
             return
         }
 
-        guard let userBlock = blockGroup.blockOfKind(.user) else {
+        guard let userBlock: FormattableUserContent = blockGroup.blockOfKind(.user) else {
             assertionFailure("Missing User Block for Notification [\(note.notificationId)]")
             return
         }
@@ -942,7 +942,7 @@ private extension NotificationDetailsViewController {
     }
 
     func setupActionsCell(_ cell: NoteBlockActionsTableViewCell, blockGroup: FormattableContentGroup) {
-        guard let commentBlock = blockGroup.blockOfKind(.comment) else {
+        guard let commentBlock: FormattableCommentContent = blockGroup.blockOfKind(.comment) else {
             assertionFailure("Missing Comment Block for Notification \(note.notificationId)")
             return
         }
@@ -994,7 +994,7 @@ private extension NotificationDetailsViewController {
     }
 
     func setupImageCell(_ cell: NoteBlockImageTableViewCell, blockGroup: FormattableContentGroup) {
-        guard let imageBlock = blockGroup.blocks.first else {
+        guard let imageBlock = blockGroup.blocks.first as? NotificationTextContent else {
             assertionFailure("Missing Image Block for Notification [\(note.notificationId)")
             return
         }
@@ -1004,7 +1004,7 @@ private extension NotificationDetailsViewController {
     }
 
     func setupTextCell(_ cell: NoteBlockTextTableViewCell, blockGroup: FormattableContentGroup, at indexPath: IndexPath) {
-        guard let textBlock = blockGroup.blocks.first else {
+        guard let textBlock = blockGroup.blocks.first as? NotificationTextContent else {
             assertionFailure("Missing Text Block for Notification \(note.notificationId)")
             return
         }
@@ -1023,11 +1023,11 @@ private extension NotificationDetailsViewController {
 
         // Setup: Callbacks
         cell.onUrlClick = { [weak self] url in
-//            guard let `self` = self, self.isViewOnScreen() else {
-//                return
-//            }
-//
-//            self.displayURL(url)
+            guard let `self` = self, self.isViewOnScreen() else {
+                return
+            }
+
+            self.displayURL(url)
         }
     }
 }
@@ -1257,10 +1257,10 @@ private extension NotificationDetailsViewController {
 
     /// Extracts all of the imageUrl's for the blocks of the specified kinds
     ///
-    func imageUrls(from content: [FormattableContent], inKindSet kindSet: Set<FormattableContent.Kind>) -> Set<URL> {
+    func imageUrls(from content: [FormattableContent], inKindSet kindSet: Set<FormattableContentKind>) -> Set<URL> {
         let filtered = content.filter { kindSet.contains($0.kind) }
-        let imageUrls = filtered.flatMap { $0.imageUrls }
-        return Set(imageUrls) as Set<URL>
+        let imageUrls = filtered.compactMap { ($0 as? NotificationTextContent)?.imageUrls }.flatMap { $0 }
+        return Set(imageUrls)
     }
 
     func downloadAndResizeMedia(_ indexPath: IndexPath, blockGroup: NotificationBlockGroup) {
@@ -1621,7 +1621,7 @@ private extension NotificationDetailsViewController {
     }
 
     enum ContentMedia {
-        static let richBlockTypes           = Set(arrayLiteral: FormattableContent.Kind.text, FormattableContent.Kind.comment)
+        static let richBlockTypes           = Set(arrayLiteral: FormattableContentKind.text, FormattableContentKind.comment)
         static let duration                 = TimeInterval(0.25)
         static let delay                    = TimeInterval(0)
         static let options: UIViewAnimationOptions = [.overrideInheritedDuration, .beginFromCurrentState]

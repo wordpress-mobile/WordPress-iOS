@@ -1,7 +1,7 @@
 
 class BodyContentGroup: FormattableContentGroup {
     class func create(from body: [[String: AnyObject]], parent: FormattableContentParent) -> [FormattableContentGroup] {
-        let blocks = FormattableContent.blocksFromArray(body, actionsParser: NotificationActionParser(), parent: parent)
+        let blocks = NotificationContentFactory.content(from: body, actionsParser: NotificationActionParser(), parent: parent)
 
         switch parent.kind {
         case .Comment:
@@ -15,28 +15,30 @@ class BodyContentGroup: FormattableContentGroup {
         let parentKindsWithFooters: [ParentKind] = [.Follow, .Like, .CommentLike]
         let parentMayContainFooter = parentKindsWithFooters.contains(parent.kind)
 
-        return blocks.map { block in
-            let isFooter = parentMayContainFooter && block.kind == .text && blocks.last == block
+        return blocks.enumerated().map { index, block in
+            let isFooter = parentMayContainFooter && block.kind == .text && index == blocks.count - 1
             if isFooter {
                 return FooterContentGroup(blocks: [block])
             }
-            return FormattableContentGroup(blocks: [block])
+            return FormattableContentGroup(blocks: [block], kind: .text)
         }
     }
 
     private class func groupsForCommentBodyBlocks(_ blocks: [FormattableContent], parent: FormattableContentParent) -> [FormattableContentGroup] {
 
-        guard let comment = blockOfKind(.comment, from: blocks), let user = blockOfKind(.user, from: blocks) else {
+        guard let comment: FormattableCommentContent = blockOfKind(.comment, from: blocks), let user: FormattableUserContent = blockOfKind(.user, from: blocks) else {
             return []
         }
 
-        var groups              = [FormattableContentGroup]()
-        let commentGroupBlocks  = [comment, user]
-        let middleGroupBlocks   = blocks.filter { return commentGroupBlocks.contains($0) == false }
+        var groups = [FormattableContentGroup]()
+        let commentGroupBlocks: [FormattableContent] = [comment, user]
+
+        let middleGroupBlocks = contentFrom(blocks, differentThan: comment, and: user)
+
         let actionGroupBlocks   = [comment]
 
         // Comment Group: Comment + User Blocks
-        groups.append(FormattableContentGroup(blocks: commentGroupBlocks))
+        groups.append(FormattableContentGroup(blocks: commentGroupBlocks, kind: .comment))
 
         // Middle Group(s): Anything
         for block in middleGroupBlocks {
@@ -44,10 +46,13 @@ class BodyContentGroup: FormattableContentGroup {
             // If the block contains a range that matches with the metaReplyID field, we'll need to render this
             // with a custom style. Translates into the `You replied to this comment` footer.
             //
-            if let parentReplyID = parent.metaReplyID, block.formattableContentRangeWithCommentId(parentReplyID) != nil {
+            if let commentContent = block as? FormattableCommentContent,
+                let parentReplyID = parent.metaReplyID,
+                commentContent.formattableContentRangeWithCommentId(parentReplyID) != nil {
+
                 groups.append(FooterContentGroup(blocks: [block]))
             } else {
-                groups.append(FormattableContentGroup(blocks: [block]))
+                groups.append(FormattableContentGroup(blocks: [block], kind: .text))
             }
         }
 
@@ -59,9 +64,20 @@ class BodyContentGroup: FormattableContentGroup {
         }
 
         // Actions Group: A copy of the Comment Block (Actions)
-        groups.append(FormattableContentGroup(blocks: actionGroupBlocks))
+        groups.append(FormattableContentGroup(blocks: actionGroupBlocks, kind: .actions))
 
         return groups
+    }
+
+    private class func contentFrom(_ content: [FormattableContent], differentThan comment: FormattableCommentContent, and user: FormattableUserContent) -> [FormattableContent] {
+        return content.filter { block in
+            if let theComment = block as? FormattableCommentContent {
+                return theComment != comment
+            } else if let theUser = block as? FormattableUserContent {
+                return theUser != user
+            }
+            return true
+        }
     }
 
     public class func pingbackReadMoreGroup(for url: URL) -> FormattableContentGroup {
@@ -74,7 +90,7 @@ class BodyContentGroup: FormattableContentGroup {
             FormattableContentRange(kind: .Link, range: textRange, url: url)
         ]
 
-        let block = FormattableContent(text: text, ranges: ranges)
+        let block = FormattableTextContent(text: text, ranges: ranges)
         return FooterContentGroup(blocks: [block])
     }
 }
