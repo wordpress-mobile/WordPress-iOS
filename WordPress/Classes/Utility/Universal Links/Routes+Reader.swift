@@ -58,7 +58,7 @@ extension ReaderRoute: NavigationAction {
         case .search:
             coordinator.showSearch()
         case .a8c:
-            break
+            coordinator.showA8CTeam()
         case .likes:
             break
         case .manageFollowing:

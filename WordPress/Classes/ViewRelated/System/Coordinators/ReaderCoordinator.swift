@@ -29,5 +29,18 @@ class ReaderCoordinator: NSObject {
     func showSearch() {
         WPTabBarController.sharedInstance().showReaderTab()
 
+        readerNavigationController.popToRootViewController(animated: false)
+
+        readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .search,
+                                                               animated: false)
+    }
+
+    func showA8CTeam() {
+        WPTabBarController.sharedInstance().showReaderTab()
+
+        readerNavigationController.popToRootViewController(animated: false)
+
+        readerMenuViewController.showSectionForTeam(withSlug: ReaderTeamTopic.a8cTeamSlug, animated: false)
+    }
     }
 }
