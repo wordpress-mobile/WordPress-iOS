@@ -13,34 +13,41 @@ class ReaderCoordinator: NSObject {
 
         super.init()
     }
+    private func prepareToNavigate() {
+        WPTabBarController.sharedInstance().showReaderTab()
+
+        readerNavigationController.popToRootViewController(animated: false)
+    }
 
     func showReaderTab() {
         WPTabBarController.sharedInstance().showReaderTab()
     }
 
     func showDiscover() {
-        WPTabBarController.sharedInstance().showReaderTab()
+        prepareToNavigate()
 
-        readerNavigationController.popToRootViewController(animated: false)
         readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .discover,
                                                                animated: false)
     }
 
     func showSearch() {
-        WPTabBarController.sharedInstance().showReaderTab()
-
-        readerNavigationController.popToRootViewController(animated: false)
+        prepareToNavigate()
 
         readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .search,
                                                                animated: false)
     }
 
     func showA8CTeam() {
-        WPTabBarController.sharedInstance().showReaderTab()
-
-        readerNavigationController.popToRootViewController(animated: false)
+        prepareToNavigate()
 
         readerMenuViewController.showSectionForTeam(withSlug: ReaderTeamTopic.a8cTeamSlug, animated: false)
+    }
+
+    func showMyLikes() {
+        prepareToNavigate()
+
+        readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .likes,
+                                                               animated: false)
     }
     }
 }

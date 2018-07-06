@@ -60,7 +60,7 @@ extension ReaderRoute: NavigationAction {
         case .a8c:
             coordinator.showA8CTeam()
         case .likes:
-            break
+            coordinator.showMyLikes()
         case .manageFollowing:
             break
         case .list:
