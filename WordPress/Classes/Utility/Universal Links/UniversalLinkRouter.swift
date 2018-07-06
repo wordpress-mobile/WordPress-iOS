@@ -23,7 +23,8 @@ struct UniversalLinkRouter {
         NotificationsRoute(),
         ReaderRoute.root,
         ReaderRoute.discover,
-        ReaderRoute.search
+        ReaderRoute.search,
+        ReaderRoute.a8c
         ])
 
     /// Attempts to find a Route that matches the url's path, and perform its

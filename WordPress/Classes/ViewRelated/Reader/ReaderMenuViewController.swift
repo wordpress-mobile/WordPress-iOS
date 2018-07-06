@@ -357,6 +357,15 @@ import WordPressShared
         return ReaderSavedPostsViewController()
     }
 
+    /// Presents a team view controller
+    func showSectionForTeam(withSlug slug: String, animated: Bool) {
+        guard let indexPath = viewModel.indexPathOfTeam(withSlug: slug) else {
+            return
+        }
+
+        showViewController(for: indexPath, animated: animated)
+    }
+
     private func showViewController(for indexPath: IndexPath,
                                     animated: Bool) {
         guard let menuItem = viewModel.menuItemAtIndexPath(indexPath),
