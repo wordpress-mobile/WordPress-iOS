@@ -54,7 +54,7 @@ extension ReaderRoute: NavigationAction {
         case .root:
             coordinator.showReaderTab()
         case .discover:
-            break
+            coordinator.showDiscover()
         case .search:
             break
         case .a8c:
