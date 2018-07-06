@@ -97,6 +97,14 @@ print <<-EOF
 EOF
 end
 
+def print_google_auth_scheme(google_auth_scheme)
+print <<-EOF
++ (NSSTring *)googleAuthScheme {
+    return @"#{google_auth_scheme}";
+}
+EOF
+end
+
 def print_debugging_key(debugging_key)
 print <<-EOF
 + (NSString *)debuggingKey {
@@ -129,7 +137,7 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
+def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_login_server, google_auth_scheme, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
   print <<-EOF
 #import "ApiCredentials.h"
 @implementation ApiCredentials
@@ -142,6 +150,7 @@ EOF
   print_googleplus(googleplus)
   print_google_login(google_id)
   print_google_login_server(google_login_server)
+  print_google_auth_scheme(google_auth_scheme)
   print_debugging_key(debugging_key)
   print_zendesk_app_id(zendesk_app_id)
   print_zendesk_url(zendesk_url)
@@ -169,6 +178,7 @@ hockeyapp = nil
 googleplus = nil
 google_id = nil
 google_login_server = nil
+google_auth_scheme = nil
 debugging_key = nil
 zendesk_app_id = nil
 zendesk_url = nil
@@ -194,6 +204,8 @@ File.open(path) do |f|
       google_id = value
     elsif k == "GOOGLE_LOGIN_SERVER_ID"
       google_login_server = value
+    elsif k == "GOOGLE_AUTH_SCHEME"
+      google_auth_scheme = value
     elsif k == "DEBUGGING_KEY"
       debugging_key = value
     elsif k == "ZENDESK_APP_ID"
@@ -235,6 +247,10 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
     $stderr.puts "warning: Google Login Client ID not found"
   end
 
+  if google_auth_scheme.nil?
+    $stderr.puts "warning: Google Auth Scheme not found"
+  end
+
   if configuration == "Release-Internal"
     if hockeyapp.nil?
       $stderr.puts "warning: HockeyApp App Id not found"
@@ -246,4 +262,4 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   end
 end
 
-print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
+print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_login_server, google_auth_scheme, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
