@@ -22,7 +22,8 @@ struct UniversalLinkRouter {
         NewPostForSiteRoute(),
         NotificationsRoute(),
         ReaderRoute.root,
-        ReaderRoute.discover
+        ReaderRoute.discover,
+        ReaderRoute.search
         ])
 
     /// Attempts to find a Route that matches the url's path, and perform its
