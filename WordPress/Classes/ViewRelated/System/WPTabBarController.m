@@ -479,6 +479,17 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 }
 
+- (void)showPostTabForBlog:(Blog *)blog
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    if ([blogService blogCountForAllAccounts] == 0) {
+        [self switchMySitesTabToAddNewSite];
+    } else {
+        [self showPostTabAnimated:YES toMedia:NO blog:blog];
+    }
+}
+
 - (void)showMeTab
 {
     [self showTabForIndex:WPTabMe];
@@ -491,15 +502,23 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia
 {
+    [self showPostTabAnimated:animated toMedia:openToMedia blog:nil];
+}
+
+- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog
+{
     if (self.presentedViewController) {
         [self dismissViewControllerAnimated:NO completion:nil];
     }
 
-    Blog *blog = [self currentlyVisibleBlog];
-    if (blog == nil) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        blog = [blogService lastUsedOrFirstBlog];
+    if (!blog) {
+        blog = [self currentlyVisibleBlog];
+
+        if (blog == nil) {
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+            blog = [blogService lastUsedOrFirstBlog];
+        }
     }
 
     EditPostViewController* editor = [[EditPostViewController alloc] initWithBlog:blog];
@@ -529,6 +548,16 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         ReaderDetailViewController *readerPostDetailVC = [ReaderDetailViewController controllerWithPostID:postId siteID:blogId];
         [topDetailVC.navigationController pushFullscreenViewController:readerPostDetailVC animated:YES];
     }
+}
+
+- (void)popMeTabToRoot
+{
+    [self.meNavigationController popToRootViewControllerAnimated:NO];
+}
+
+- (void)popNotificationsTabToRoot
+{
+    [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
 }
 
 - (void)switchTabToPostsListForPost:(AbstractPost *)post
@@ -574,7 +603,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (void)switchMySitesTabToAddNewSite
 {
     [self showTabForIndex:WPTabMySites];
-    [self.blogListViewController presentInterfaceForAddingNewSite];
+    [self.blogListViewController presentInterfaceForAddingNewSiteFrom:self.tabBar];
 }
 
 - (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog
@@ -684,12 +713,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.meViewController navigateToHelpAndSupport];
     });
-}
-
-- (void)popMeTabToRoot
-{
-    [self showMeTab];
-    [self.meNavigationController popToRootViewControllerAnimated:NO];
 }
 
 - (void)switchReaderTabToSavedPosts
