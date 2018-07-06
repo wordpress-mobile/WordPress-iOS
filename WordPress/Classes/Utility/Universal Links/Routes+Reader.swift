@@ -62,7 +62,7 @@ extension ReaderRoute: NavigationAction {
         case .likes:
             coordinator.showMyLikes()
         case .manageFollowing:
-            break
+            coordinator.showManageFollowing()
         case .list:
             break
         case .tag:

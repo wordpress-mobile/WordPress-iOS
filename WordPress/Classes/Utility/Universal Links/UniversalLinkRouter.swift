@@ -25,7 +25,8 @@ struct UniversalLinkRouter {
         ReaderRoute.discover,
         ReaderRoute.search,
         ReaderRoute.a8c,
-        ReaderRoute.likes
+        ReaderRoute.likes,
+        ReaderRoute.manageFollowing
         ])
 
     /// Attempts to find a Route that matches the url's path, and perform its
