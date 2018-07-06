@@ -331,19 +331,12 @@ import WordPressShared
         return ReaderStreamViewController.controllerWithSiteID(ReaderHelpers.discoverSiteID, isFeed: false)
     }
 
-    /// Presents the Discover view controller
-    @objc func showDiscover() {
-        let indexPath = viewModel.indexPathOfDefaultMenuItemWithOrder(order: .discover)
+    /// Presents the view controller for a default menu item
+    func showSectionForDefaultMenuItem(withOrder order: ReaderDefaultMenuItemOrder,
+                                       animated: Bool) {
+        let indexPath = viewModel.indexPathOfDefaultMenuItemWithOrder(order: order)
 
-        guard let menuItem = viewModel.menuItemAtIndexPath(indexPath),
-            let viewController = viewControllerForMenuItem(menuItem) else {
-                return
-        }
-
-        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .middle)
-        restorableSelectedIndexPath = indexPath
-
-        showDetailViewController(viewController, sender: self)
+        showViewController(for: indexPath, animated: animated)
     }
 
     /// Presents the saved for later view controller
@@ -362,6 +355,27 @@ import WordPressShared
 
     fileprivate func viewControllerForSavedPosts() -> ReaderSavedPostsViewController {
         return ReaderSavedPostsViewController()
+    }
+
+    private func showViewController(for indexPath: IndexPath,
+                                    animated: Bool) {
+        guard let menuItem = viewModel.menuItemAtIndexPath(indexPath),
+            let viewController = viewControllerForMenuItem(menuItem) else {
+                return
+        }
+
+        let actions = {
+            self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .middle)
+            self.restorableSelectedIndexPath = indexPath
+
+            self.showDetailViewController(viewController, sender: self)
+        }
+
+        if animated {
+            actions()
+        } else {
+            UIView.performWithoutAnimation(actions)
+        }
     }
 
     /// Presents a new view controller for subscribing to a new tag.

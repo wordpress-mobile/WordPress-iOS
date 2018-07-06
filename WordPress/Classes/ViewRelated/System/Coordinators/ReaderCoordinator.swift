@@ -22,9 +22,12 @@ class ReaderCoordinator: NSObject {
         WPTabBarController.sharedInstance().showReaderTab()
 
         readerNavigationController.popToRootViewController(animated: false)
+        readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .discover,
+                                                               animated: false)
+    }
 
-        UIView.performWithoutAnimation {
-            self.readerMenuViewController.showDiscover()
-        }
+    func showSearch() {
+        WPTabBarController.sharedInstance().showReaderTab()
+
     }
 }
