@@ -99,7 +99,7 @@ end
 
 def print_google_auth_scheme(google_auth_scheme)
 print <<-EOF
-+ (NSSTring *)googleAuthScheme {
++ (NSString *)googleAuthScheme {
     return @"#{google_auth_scheme}";
 }
 EOF
