@@ -37,10 +37,6 @@
     return @"";
 }
 
-+ (NSString *)googleAuthScheme {
-    return @"";
-}
-
 + (NSString *)debuggingKey {
     return @"";
 }

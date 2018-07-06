@@ -9,7 +9,6 @@
 + (NSString *)googlePlusClientId;
 + (NSString *)googleLoginClientId;
 + (NSString *)googleLoginServerClientId;
-+ (NSString *)googleAuthScheme;
 + (NSString *)debuggingKey;
 + (NSString *)zendeskAppId;
 + (NSString *)zendeskUrl;
