@@ -20,6 +20,11 @@ extern NSString *const WPBlogUpdatedNotification;
 - (nullable Blog *)blogByBlogId:(NSNumber *)blogID;
 
 /**
+ Returns the blog that matches with a given hostname
+ */
+- (nullable Blog *)blogByHostname:(NSString *)hostname;
+
+/**
  Returns the blog currently flagged as the one last used, or the primary blog,
  or the first blog in an alphanumerically sorted list, whichever is found first.
  */

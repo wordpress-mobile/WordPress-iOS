@@ -20,9 +20,10 @@ enum MeNavigationAction: NavigationAction {
     case accountSettings
     case notificationSettings
 
-    func perform() {
+    func perform(_ values: [String: String]? = nil) {
         switch self {
         case .root:
+            WPTabBarController.sharedInstance().showMeTab()
             WPTabBarController.sharedInstance().popMeTabToRoot()
         case .accountSettings:
             WPTabBarController.sharedInstance().switchMeTabToAccountSettings()

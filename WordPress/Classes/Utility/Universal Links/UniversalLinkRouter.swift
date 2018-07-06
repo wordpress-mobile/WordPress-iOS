@@ -17,7 +17,10 @@ struct UniversalLinkRouter {
     static let shared = UniversalLinkRouter(routes: [
         MeRoute(),
         MeAccountSettingsRoute(),
-        MeNotificationSettingsRoute()
+        MeNotificationSettingsRoute(),
+        NewPostRoute(),
+        NewPostForSiteRoute(),
+        NotificationsRoute()
         ])
 
     /// Attempts to find a Route that matches the url's path, and perform its
@@ -27,7 +30,7 @@ struct UniversalLinkRouter {
         let matches = matcher.routesMatching(url.path)
 
         for matchedRoute in matches {
-            matchedRoute.action.perform()
+            matchedRoute.action.perform(matchedRoute.values)
         }
     }
 }
