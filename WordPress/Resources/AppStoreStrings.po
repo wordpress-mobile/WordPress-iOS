@@ -69,27 +69,32 @@ msgid ""
 "Small changes add up!"
 msgstr ""
 
-#. translators: This is a promo message.
+#. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one. 
 msgctxt "app_store_screenshot-1"
 msgid "Enjoy your favorite sites"
 msgstr ""
 
-#. translators: This is a promo message.
+#. translators: This is a promo message that will be attached on top of the second screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one. 
 msgctxt "app_store_screenshot-2"
 msgid "Get notified in real-time"
 msgstr ""
 
-#. translators: This is a promo message.
+#. translators: This is a promo message that will be attached on top of the third screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one. 
 msgctxt "app_store_screenshot-3"
 msgid "Manage your site everywhere you go"
 msgstr ""
 
-#. translators: This is a promo message.
+#. translators: This is a promo message that will be attached on top of the fourth screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one. 
 msgctxt "app_store_screenshot-4"
 msgid "Share your ideas with the world"
 msgstr ""
 
-#. translators: This is a promo message.
+#. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one. 
 msgctxt "app_store_screenshot-5"
 msgid "All the stats in your hand"
 msgstr ""
