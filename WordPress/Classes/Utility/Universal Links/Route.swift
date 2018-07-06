@@ -13,7 +13,7 @@ protocol Route {
 }
 
 protocol NavigationAction {
-    func perform()
+    func perform(_ values: [String: String]?)
 }
 
 // MARK: - Route helper methods
