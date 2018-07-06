@@ -223,7 +223,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   WordPressAuthenticator:
-    :commit: 3ed9b8b4baa23ea1a03551a7399cc1cd5fddfc1c
+    :commit: abaffb0775e3d2e8d0c71504ac29cae913134adc
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
