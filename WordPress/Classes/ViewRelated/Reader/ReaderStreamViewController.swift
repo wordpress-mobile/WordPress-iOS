@@ -680,9 +680,9 @@ import WordPressFlux
     }
 
 
-    @objc func showManageSites() {
+    @objc func showManageSites(animated: Bool = true) {
         let controller = ReaderFollowedSitesViewController.controller()
-        navigationController?.pushViewController(controller, animated: true)
+        navigationController?.pushViewController(controller, animated: animated)
     }
 
 

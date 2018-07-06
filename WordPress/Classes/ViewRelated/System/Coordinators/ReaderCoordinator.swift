@@ -49,5 +49,15 @@ class ReaderCoordinator: NSObject {
         readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .likes,
                                                                animated: false)
     }
+
+    func showManageFollowing() {
+        prepareToNavigate()
+
+        readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .followed, animated: false)
+
+        if let followedViewController = readerNavigationController.topViewController as? ReaderStreamViewController {
+            followedViewController.showManageSites(animated: false)
+        }
+    }
     }
 }
