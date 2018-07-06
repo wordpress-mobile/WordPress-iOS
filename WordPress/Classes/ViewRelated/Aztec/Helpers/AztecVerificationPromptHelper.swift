@@ -18,12 +18,12 @@ class AztecVerificationPromptHelper: NSObject {
 
         accountService = AccountService(managedObjectContext: managedObjectContext)
 
-//        guard accountService.isDefaultWordPressComAccount(passedAccount),
-//              passedAccount.needsEmailVerification else {
-//                // if the post the user is trying to compose isn't on a WP.com account,
-//                // or they're already verified, then the verification prompt is irrelevant.
-//                return nil
-//        }
+        guard accountService.isDefaultWordPressComAccount(passedAccount),
+              passedAccount.needsEmailVerification else {
+                // if the post the user is trying to compose isn't on a WP.com account,
+                // or they're already verified, then the verification prompt is irrelevant.
+                return nil
+        }
 
         wpComAccount = passedAccount
 

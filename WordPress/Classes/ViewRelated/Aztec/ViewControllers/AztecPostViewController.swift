@@ -1197,7 +1197,7 @@ extension AztecPostViewController {
         }
 
         // If the user is trying to publish to WP.com and they haven't verified their account, prompt them to do so.
-        if let verificationHelper = verificationPromptHelper, true {
+        if let verificationHelper = verificationPromptHelper, verificationHelper.needsVerification(before: postEditorStateContext.action) {
             verificationHelper.displayVerificationPrompt(from: self) { [unowned self] verifiedInBackground in
                 // User could've been plausibly silently verified in the background.
                 // If so, proceed to publishing the post as normal, otherwise save it as a draft.
