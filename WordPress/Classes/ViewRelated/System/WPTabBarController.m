@@ -450,6 +450,13 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     self.selectedIndex = WPTabMySites;
 }
 
+#pragma mark - Navigation Coordinators
+
+- (ReaderCoordinator *)readerCoordinator
+{
+    return [[ReaderCoordinator alloc] init];
+}
+
 #pragma mark - Navigation Helpers
 
 - (void)showTabForIndex:(NSInteger)tabIndex
