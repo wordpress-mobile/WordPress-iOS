@@ -1251,7 +1251,7 @@ extension AztecPostViewController {
         }
 
         if action.isAsync {
-            if !UserDefaults.standard.asyncPromoWasDisplayed {
+            if true {
                 promoBlock()
             } else {
                 displayPublishConfirmationAlert(for: action, onPublish: publishBlock)
