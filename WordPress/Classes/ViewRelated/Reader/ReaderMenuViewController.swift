@@ -331,6 +331,21 @@ import WordPressShared
         return ReaderStreamViewController.controllerWithSiteID(ReaderHelpers.discoverSiteID, isFeed: false)
     }
 
+    /// Presents the Discover view controller
+    @objc func showDiscover() {
+        let indexPath = viewModel.indexPathOfDefaultMenuItemWithOrder(order: .discover)
+
+        guard let menuItem = viewModel.menuItemAtIndexPath(indexPath),
+            let viewController = viewControllerForMenuItem(menuItem) else {
+                return
+        }
+
+        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .middle)
+        restorableSelectedIndexPath = indexPath
+
+        showDetailViewController(viewController, sender: self)
+    }
+
     /// Presents the saved for later view controller
     @objc func showSavedForLater() {
         guard let indexPath = viewModel.indexPathOfSavedForLater(),
