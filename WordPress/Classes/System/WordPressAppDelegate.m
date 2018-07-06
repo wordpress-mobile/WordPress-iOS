@@ -184,9 +184,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
         returnValue = YES;
     }
 
-    if ([WordPressAuthenticator isGoogleAuthURLWithUrl:url
-                                     sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey]
-                                            annotation:options[UIApplicationOpenURLOptionsAnnotationKey]]) {
+    if ([WordPressAuthenticator.shared handleGoogleAuthUrl:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey] annotation:options[UIApplicationOpenURLOptionsAnnotationKey]]) {
         returnValue = YES;
     }
 
