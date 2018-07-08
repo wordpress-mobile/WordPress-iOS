@@ -15,12 +15,12 @@ class BadgeContentStyles: FormattableContentStyles {
         return WPStyleGuide.Notifications.badgeBoldStyle
     }
 
-    var rangeStylesMap: [FormattableContentRange.Kind: [NSAttributedStringKey: Any]]? {
+    var rangeStylesMap: [NotificationContentRange.Kind: [NSAttributedStringKey: Any]]? {
         return [
-            .User: WPStyleGuide.Notifications.badgeBoldStyle,
-            .Post: WPStyleGuide.Notifications.badgeItalicsStyle,
-            .Comment: WPStyleGuide.Notifications.badgeItalicsStyle,
-            .Blockquote: WPStyleGuide.Notifications.badgeQuotedStyle
+            .user: WPStyleGuide.Notifications.badgeBoldStyle,
+            .post: WPStyleGuide.Notifications.badgeItalicsStyle,
+            .comment: WPStyleGuide.Notifications.badgeItalicsStyle,
+            .blockquote: WPStyleGuide.Notifications.badgeQuotedStyle
         ]
     }
 
