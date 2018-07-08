@@ -6,11 +6,11 @@ class HeaderContentStyles: FormattableContentStyles {
 
     var quoteStyles: [NSAttributedStringKey: Any]? = nil
 
-    var rangeStylesMap: [FormattableContentRange.Kind: [NSAttributedStringKey: Any]]? {
+    var rangeStylesMap: [NotificationContentRange.Kind: [NSAttributedStringKey: Any]]? {
         return [
-            .User: WPStyleGuide.Notifications.headerTitleBoldStyle,
-            .Post: WPStyleGuide.Notifications.headerTitleContextStyle,
-            .Comment: WPStyleGuide.Notifications.headerTitleContextStyle
+            .user: WPStyleGuide.Notifications.headerTitleBoldStyle,
+            .post: WPStyleGuide.Notifications.headerTitleContextStyle,
+            .comment: WPStyleGuide.Notifications.headerTitleContextStyle
         ]
     }
 

@@ -35,7 +35,7 @@ class BodyContentGroup: FormattableContentGroup {
 
         let middleGroupBlocks = contentFrom(blocks, differentThan: comment, and: user)
 
-        let actionGroupBlocks   = [comment]
+        let actionGroupBlocks = [comment]
 
         // Comment Group: Comment + User Blocks
         groups.append(FormattableContentGroup(blocks: commentGroupBlocks, kind: .comment))
@@ -46,7 +46,7 @@ class BodyContentGroup: FormattableContentGroup {
             // If the block contains a range that matches with the metaReplyID field, we'll need to render this
             // with a custom style. Translates into the `You replied to this comment` footer.
             //
-            if let commentContent = block as? FormattableCommentContent,
+            if let commentContent = block as? NotificationTextContent,
                 let parentReplyID = parent.metaReplyID,
                 commentContent.formattableContentRangeWithCommentId(parentReplyID) != nil {
 
@@ -85,9 +85,12 @@ class BodyContentGroup: FormattableContentGroup {
         let textRange = NSRange(location: 0, length: text.count)
         let zeroRange = NSRange(location: 0, length: 0)
 
+        var properties = NotificationContentRange.Properties(range: textRange)
+        properties.url = url
+
         let ranges = [
-            FormattableContentRange(kind: .Noticon, range: zeroRange, value: "\u{f442}"),
-            FormattableContentRange(kind: .Link, range: textRange, url: url)
+            FormattableNoticonRange(value: "\u{f442}", properties: NotificationContentRange.Properties(range: zeroRange)),
+            NotificationContentRange(kind: .link, properties: properties)
         ]
 
         let block = FormattableTextContent(text: text, ranges: ranges)
