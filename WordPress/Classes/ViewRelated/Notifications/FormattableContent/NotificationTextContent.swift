@@ -68,6 +68,16 @@ class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
         media = FormattableMediaItem.mediaFromArray(rawMedia)
         super.init(dictionary: dictionary, actions: commandActions, parent: note)
     }
+
+    func formattableContentRangeWithCommentId(_ commentID: NSNumber) -> NotificationContentRange? {
+        for range in ranges.compactMap({ $0 as? FormattableCommentRange }) {
+            if let commentID = range.commentID, commentID.isEqual(commentID) {
+                return range
+            }
+        }
+
+        return nil
+    }
 }
 
 private enum Constants {
