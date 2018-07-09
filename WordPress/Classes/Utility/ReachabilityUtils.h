@@ -10,8 +10,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)showAlertNoInternetConnectionWithRetryBlock:(void (^)(void))retryBlock;
 
-+ (void)showConnectionErrorAlertWithMessage:(NSString *)message;
-
 + (NSString *)noConnectionMessage;
 
 + (BOOL)alertIsShowing;

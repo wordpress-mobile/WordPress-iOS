@@ -415,7 +415,7 @@ extension WebKitViewController: WKUIDelegate {
             ReachabilityUtils.showAlertNoInternetConnection()
             reloadWhenConnectionRestored()
         } else {
-            ReachabilityUtils.showConnectionErrorAlert(withMessage: error.localizedDescription)
+            WPError.showAlert(withTitle: NSLocalizedString("Error", comment: "Generic error alert title"), message: error.localizedDescription)
         }
     }
 }
