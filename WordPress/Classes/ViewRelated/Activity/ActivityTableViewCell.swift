@@ -51,3 +51,30 @@ open class ActivityTableViewCell: WPTableViewCell {
     @IBOutlet fileprivate var rewindIconContainer: UIView!
     @IBOutlet fileprivate var rewindIcon: UIImageView!
 }
+
+open class RewindStatusTableViewCell: ActivityTableViewCell {
+
+    @IBOutlet private var progressView: UIProgressView!
+
+    private(set) var title = ""
+    private(set) var summary = ""
+    private(set) var progress: Float = 0.0
+
+    open func configureCell(title: String,
+                            summary: String,
+                            progress: Float) {
+        self.title = title
+        self.summary = summary
+        self.progress = progress
+
+        contentLabel.text = title
+        summaryLabel.text = summary
+
+        iconBackgroundImageView.backgroundColor = WPStyleGuide.wordPressBlue()
+        iconImageView.image = Gridicon.iconOfType(.noticeOutline).imageWithTintColor(.white)
+        iconImageView.isHidden = false
+        rewindIconContainer.isHidden = true
+
+        progressView.setProgress(progress, animated: true)
+    }
+}

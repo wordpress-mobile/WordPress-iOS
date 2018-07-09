@@ -228,6 +228,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatAddedSelfHostedSiteButJetpackNotConnectedToWPCom:
             eventName = @"self_hosted_blog_added_jetpack_not_connected";
             break;
+        case WPAnalyticsStatActivityLogViewed:
+            eventName = @"activity_log_list_opened";
+            break;
+        case WPAnalyticsStatActivityLogDetailViewed:
+            eventName = @"activity_log_detail_opened";
+            break;
+        case WPAnalyticsStatActivityLogRewindStarted:
+            eventName = @"activity_log_rewind_started";
+            break;
         case WPAnalyticsStatAppInstalled:
             eventName = @"application_installed";
             break;
@@ -1312,6 +1321,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatSupportHelpCenterUserSearched:
             eventName = @"support_help_center_user_searched";
+            break;
+        case WPAnalyticsStatSupportIdentityFormViewed:
+            eventName = @"support_identity_form_viewed";
+            break;
+        case WPAnalyticsStatSupportIdentitySet:
+            eventName = @"support_identity_set";
             break;
         case WPAnalyticsStatSupportHelpCenterViewed:
             eventName = @"support_help_center_viewed";
