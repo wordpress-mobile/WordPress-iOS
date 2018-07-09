@@ -167,7 +167,7 @@ DEPENDENCIES:
   - WordPress-Aztec-iOS (= 1.0.0-beta.22)
   - WordPress-Editor-iOS (= 1.0.0-beta.22)
   - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `b039eb868f0b3df8bf8c52eeab3b53a438227a6f`)
-  - WordPressKit (= 1.1)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `add/reader-post-service-feed`)
   - WordPressShared (= 1.0.8)
   - WordPressUI (= 1.0.4)
   - WPMediaPicker (= 1.1)
@@ -203,7 +203,6 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressKit
     - WordPressShared
     - WordPressUI
     - WPMediaPicker
@@ -217,6 +216,9 @@ EXTERNAL SOURCES:
   WordPressAuthenticator:
     :commit: b039eb868f0b3df8bf8c52eeab3b53a438227a6f
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
+  WordPressKit:
+    :branch: add/reader-post-service-feed
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -225,6 +227,9 @@ CHECKOUT OPTIONS:
   WordPressAuthenticator:
     :commit: b039eb868f0b3df8bf8c52eeab3b53a438227a6f
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
+  WordPressKit:
+    :commit: da51f0818ef74e3fc52f87507b81e6dff4c119c5
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -263,6 +268,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: f21f259d9e0f9c46661621fa1b638b729a5d780b
+PODFILE CHECKSUM: 83d3d7ed99f5069d867526464aa9fe48ce0251fb
 
 COCOAPODS: 1.5.3
