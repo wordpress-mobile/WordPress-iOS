@@ -129,7 +129,7 @@ extension NotificationBlock {
     ///
     var isCommentApproved: Bool {
         //return isActionOn(.Approve) || !isActionEnabled(.Approve)
-        let identifier = ApproveComment.actionIdentifier()
+        let identifier = ApproveCommentAction.actionIdentifier()
         return isActionOn(id: identifier) || !isActionEnabled(id: identifier)
     }
 
