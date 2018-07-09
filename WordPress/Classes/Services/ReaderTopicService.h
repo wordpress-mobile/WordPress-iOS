@@ -205,13 +205,22 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (NSArray <ReaderSiteTopic *>*)allSiteTopics;
 
 /**
- Find a topic by its path.
+ Find a topic by its exact path.
  
  @param path The path of the topic
  
  @returns A matching abstract topic or nil.
  */
 - (ReaderAbstractTopic *)findWithPath:(NSString *)path;
+
+/**
+ Find a topic where its path contains a specified path.
+
+ @param path The path of the topic
+
+ @returns A matching abstract topic or nil.
+ */
+- (ReaderAbstractTopic *)findContainingPath:(NSString *)path;
 
 /**
  Find a site topic by its site id

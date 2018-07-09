@@ -64,7 +64,10 @@ extension ReaderRoute: NavigationAction {
         case .manageFollowing:
             coordinator.showManageFollowing()
         case .list:
-            break
+            if let username = values?["username"],
+                let listName = values?["list_name"] {
+                coordinator.showList(named: listName, forUser: username)
+            }
         case .tag:
             break
         case .feedsPost:

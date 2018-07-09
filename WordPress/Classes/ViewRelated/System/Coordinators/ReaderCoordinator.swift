@@ -59,5 +59,44 @@ class ReaderCoordinator: NSObject {
             followedViewController.showManageSites(animated: false)
         }
     }
+
+    func showList(named listName: String, forUser user: String) {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = ReaderTopicService(managedObjectContext: context)
+
+        guard let topic = service.topicForList(named: listName, forUser: user) else {
+            return
+        }
+
+        prepareToNavigate()
+
+        let streamViewController = ReaderStreamViewController.controllerWithTopic(topic)
+        readerNavigationController.pushViewController(streamViewController,
+                                                      animated: false)
+    }
+}
+
+private extension ReaderTopicService {
+    /// Returns an existing topic for the specified list, or creates one if one
+    /// doesn't already exist.
+    ///
+    func topicForList(named listName: String, forUser user: String) -> ReaderListTopic? {
+        let sanitizedListName = listName.lowercased().replacingMatches(of: " ", with: "-")
+        let sanitizedUser = user.lowercased()
+
+        let remote = ReaderTopicServiceRemote(wordPressComRestApi: WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress()))
+        let path = remote.path(forEndpoint: "read/list/\(sanitizedUser)/\(sanitizedListName)/posts", withVersion: ._1_2)
+
+        if let existingTopic = findContainingPath(path) as? ReaderListTopic {
+            return existingTopic
+        }
+
+        let topic = ReaderListTopic(context: managedObjectContext)
+        topic.title = listName
+        topic.slug = sanitizedListName
+        topic.owner = user
+        topic.path = path
+
+        return topic
     }
 }
