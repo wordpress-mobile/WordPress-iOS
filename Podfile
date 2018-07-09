@@ -68,8 +68,8 @@ target 'WordPress' do
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '1.1'
     pod 'WordPressAuthenticator', '1.0.0'
-    pod 'WordPress-Aztec-iOS', '1.0.0-beta.22'
-	pod 'WordPress-Editor-iOS', '1.0.0-beta.22'
+    pod 'WordPress-Aztec-iOS', '1.0.0-beta.23'
+	pod 'WordPress-Editor-iOS', '1.0.0-beta.23'
     pod 'WordPressUI', '1.0.4'
 
     target 'WordPressTest' do
@@ -89,8 +89,8 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
 
-        pod 'WordPress-Aztec-iOS', '1.0.0-beta.22'
-        pod 'WordPress-Editor-iOS', '1.0.0-beta.22'
+        pod 'WordPress-Aztec-iOS', '1.0.0-beta.23'
+        pod 'WordPress-Editor-iOS', '1.0.0-beta.23'
         pod 'WordPressUI', '1.0.4'
         pod 'Gridicons', '0.16'
     end
@@ -105,8 +105,8 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
 
-        pod 'WordPress-Aztec-iOS', '1.0.0-beta.22'
-        pod 'WordPress-Editor-iOS', '1.0.0-beta.22'
+        pod 'WordPress-Aztec-iOS', '1.0.0-beta.23'
+        pod 'WordPress-Editor-iOS', '1.0.0-beta.23'
         pod 'WordPressUI', '1.0.4'
         pod 'Gridicons', '0.16'
     end
