@@ -17,16 +17,6 @@ class FormattableCommentContent: NotificationTextContent {
     private var metaIds: [String: AnyObject]? {
         return meta?[Constants.MetaKeys.Ids] as? [String: AnyObject]
     }
-
-    func formattableContentRangeWithCommentId(_ commentID: NSNumber) -> FormattableContentRange? {
-        for range in ranges {
-            if let rangeCommentID = range.commentID, rangeCommentID.isEqual(commentID) {
-                return range
-            }
-        }
-
-        return nil
-    }
 }
 
 extension FormattableCommentContent: Equatable {

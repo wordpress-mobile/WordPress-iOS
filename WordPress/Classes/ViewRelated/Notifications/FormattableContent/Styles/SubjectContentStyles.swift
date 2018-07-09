@@ -8,13 +8,13 @@ class SubjectContentStyles: FormattableContentStyles {
         return WPStyleGuide.Notifications.subjectItalicsStyle
     }
 
-    var rangeStylesMap: [FormattableContentRange.Kind: [NSAttributedStringKey: Any]]? {
+    var rangeStylesMap: [NotificationContentRange.Kind: [NSAttributedStringKey: Any]]? {
         return [
-            .User: WPStyleGuide.Notifications.subjectBoldStyle,
-            .Post: WPStyleGuide.Notifications.subjectItalicsStyle,
-            .Comment: WPStyleGuide.Notifications.subjectItalicsStyle,
-            .Blockquote: WPStyleGuide.Notifications.subjectQuotedStyle,
-            .Noticon: WPStyleGuide.Notifications.subjectNoticonStyle
+            .user: WPStyleGuide.Notifications.subjectBoldStyle,
+            .post: WPStyleGuide.Notifications.subjectItalicsStyle,
+            .comment: WPStyleGuide.Notifications.subjectItalicsStyle,
+            .blockquote: WPStyleGuide.Notifications.subjectQuotedStyle,
+            .noticon: WPStyleGuide.Notifications.subjectNoticonStyle
         ]
     }
 
