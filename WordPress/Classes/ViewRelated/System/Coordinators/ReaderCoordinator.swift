@@ -74,6 +74,16 @@ class ReaderCoordinator: NSObject {
         readerNavigationController.pushViewController(streamViewController,
                                                       animated: false)
     }
+
+    func showTag(named tagName: String) {
+        prepareToNavigate()
+
+        let remote = ReaderTopicServiceRemote(wordPressComRestApi: WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress()))
+        let slug = remote.slug(forTopicName: tagName) ?? tagName.lowercased()
+        let controller = ReaderStreamViewController.controllerWithTagSlug(slug)
+
+        readerNavigationController.pushViewController(controller, animated: true)
+    }
 }
 
 private extension ReaderTopicService {
@@ -81,10 +91,9 @@ private extension ReaderTopicService {
     /// doesn't already exist.
     ///
     func topicForList(named listName: String, forUser user: String) -> ReaderListTopic? {
-        let sanitizedListName = listName.lowercased().replacingMatches(of: " ", with: "-")
-        let sanitizedUser = user.lowercased()
-
         let remote = ReaderTopicServiceRemote(wordPressComRestApi: WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress()))
+        let sanitizedListName = remote.slug(forTopicName: listName) ?? listName.lowercased()
+        let sanitizedUser = user.lowercased()
         let path = remote.path(forEndpoint: "read/list/\(sanitizedUser)/\(sanitizedListName)/posts", withVersion: ._1_2)
 
         if let existingTopic = findContainingPath(path) as? ReaderListTopic {

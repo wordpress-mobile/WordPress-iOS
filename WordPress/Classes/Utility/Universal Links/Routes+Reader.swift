@@ -69,7 +69,9 @@ extension ReaderRoute: NavigationAction {
                 coordinator.showList(named: listName, forUser: username)
             }
         case .tag:
-            break
+            if let tagName = values?["tag_name"] {
+                coordinator.showTag(named: tagName)
+            }
         case .feedsPost:
             break
         case .blogsPost:
