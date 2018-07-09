@@ -1,2 +1,4 @@
-Anda kini dapat menyimpan pos di Pembaca. Cukup ketuk ikon bookmark di pos, dan nanti Anda dapat menemukannya di daftar Pos yang Disimpan. Anda bahkan dapat membaca teks pos yang disimpan meskipun sedang offline!
-Harap diperhatikan bahwa gambar tidak dijamin tersedia saat offline pada rilis awal ini dan Pos yang Disimpan saat ini fitur spesifik per perangkat, yang berarti pos yang disimpan tidak disinkronkan antar perangkat atau web, dan akan hilang jika Anda logout atau menghapus instalan aplikasi.
+Pembaca: Fungsi pencarian sekarang telah ditingkatkan untuk memungkinkan pencarian situs dan pos.
+Penyunting: Menangani pos Gutenberg dengan lebih baik.
+Pembaca: Pemberitahuan dengan informasi penggunaan sekarang menampilkan fitur Simpan Pos untuk Nanti saat pertama kali digunakan.
+Sejumlah perubahan dan perbaikan kecil pada UI

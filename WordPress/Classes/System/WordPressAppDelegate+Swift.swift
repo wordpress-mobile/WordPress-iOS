@@ -98,6 +98,15 @@ extension WordPressAppDelegate {
 
         WordPressAuthenticator.shared.delegate = authManager
     }
+
+    @objc func handleWebActivity(_ activity: NSUserActivity) {
+        guard activity.activityType == NSUserActivityTypeBrowsingWeb,
+            let url = activity.webpageURL else {
+                return
+        }
+
+        UniversalLinkRouter.shared.handle(url: url)
+    }
 }
 
 // MARK: - UIAppearance
