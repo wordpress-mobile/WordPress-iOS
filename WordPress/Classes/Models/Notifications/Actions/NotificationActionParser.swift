@@ -51,35 +51,59 @@ struct NotificationActionParser: FormattableContentActionParser {
     }
 
     private func approveAction(on: Bool) -> FormattableContentAction {
-        return ApproveCommentAction(on: on)
+        let action = ApproveCommentAction(on: on)
+        action.command = ApproveComment(on: on)
+
+        return action
     }
 
     private func followAction(on: Bool) -> FormattableContentAction {
-        return FollowAction(on: on)
+        let action = FollowAction(on: on)
+        action.command = Follow(on: on)
+
+        return action
     }
 
     private func likeCommentAction(on: Bool) -> FormattableContentAction {
-        return LikeCommentAction(on: on)
+        let action = LikeCommentAction(on: on)
+        action.command = LikeComment(on: on)
+
+        return action
     }
 
     private func likePostAction(on: Bool) -> FormattableContentAction {
-        return LikePostAction(on: on)
+        let action = LikePostAction(on: on)
+        action.command = LikePost(on: on)
+
+        return action
     }
 
     private func replyAction(on: Bool) -> FormattableContentAction {
-        return ReplyToCommentAction(on: on)
+        let action = ReplyToCommentAction(on: on)
+        action.command = ReplyToComment(on: on)
+
+        return action
     }
 
     private func spamAction(on: Bool) -> FormattableContentAction {
-        return MarkAsSpamAction(on: on)
+        let action = MarkAsSpamAction(on: on)
+        action.command = MarkAsSpam(on: on)
+
+        return action
     }
 
     private func editCommentAction(on: Bool) -> FormattableContentAction {
-        return EditCommentAction(on: on)
+        let action = EditCommentAction(on: on)
+        action.command = EditComment(on: on)
+
+        return action
     }
 
     private func trashAction(on: Bool) -> FormattableContentAction {
-        return TrashCommentAction(on: on)
+        let action = TrashCommentAction(on: on)
+        action.command = TrashComment(on: on)
+
+        return action
     }
 
     private func notFoundAction(on: Bool) -> FormattableContentAction {
