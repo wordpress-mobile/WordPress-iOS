@@ -44,6 +44,10 @@ class WebKitViewController: UIViewController {
 
     private var reachabilityObserver: Any?
 
+    private struct WebViewErrors {
+        static let frameLoadInterrupted = 102
+    }
+
     @objc init(configuration: WebViewControllerConfiguration) {
         webView = WKWebView()
         url = configuration.url
@@ -400,6 +404,12 @@ extension WebKitViewController: WKUIDelegate {
 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         DDLogInfo("\(NSStringFromClass(type(of: self))) Error Loading [\(error)]")
+
+        // Don't show Frame Load Interrupted errors
+        let code = (error as NSError).code
+        if code == WebViewErrors.frameLoadInterrupted {
+            return
+        }
 
         if !ReachabilityUtils.isInternetReachable() {
             ReachabilityUtils.showAlertNoInternetConnection()

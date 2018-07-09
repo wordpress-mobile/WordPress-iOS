@@ -71,12 +71,25 @@ extension HTTPCookieStorage: CookieJarSharedImplementation {
 @available(iOS 11.0, *)
 extension WKHTTPCookieStore: CookieJarSharedImplementation {
     func getCookies(url: URL, completion: @escaping ([HTTPCookie]) -> Void) {
-        getAllCookies { (cookies) in
-            DispatchQueue.main.async {
-                completion(cookies.filter({ (cookie) in
+
+        var urlCookies: [HTTPCookie] = []
+
+        DispatchQueue.main.async {
+            let group = DispatchGroup()
+            group.enter()
+
+            self.getAllCookies { (cookies) in
+                urlCookies = cookies.filter({ (cookie) in
                     return cookie.matches(url: url)
-                }))
+                })
+                group.leave()
             }
+
+            let result = group.wait(timeout: .now() + .seconds(2))
+            if result == .timedOut {
+                DDLogWarn("Time out waiting for WKHTTPCookieStore to get cookies")
+            }
+            completion(urlCookies)
         }
     }
 
