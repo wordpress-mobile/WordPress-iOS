@@ -214,9 +214,14 @@ public protocol ThemePresenter: class {
     fileprivate var presentingTheme: Theme?
 
     private var noResultsViewController: NoResultsViewController?
+
     private struct NoResultsTitles {
         static let noThemes = NSLocalizedString("No Themes Found", comment: "Text displayed when theme name search has no matches")
         static let fetchingThemes = NSLocalizedString("Fetching Themes...", comment: "Text displayed while fetching themes")
+    }
+
+    private var noResultsShown: Bool {
+        return noResultsViewController?.parent != nil
     }
 
     /**
@@ -887,6 +892,11 @@ private extension ThemeBrowserViewController {
     }
 
     func showNoResults() {
+
+        guard !noResultsShown else {
+            return
+        }
+
         if noResultsViewController == nil {
             setupNoResultsViewController()
         }
@@ -904,12 +914,13 @@ private extension ThemeBrowserViewController {
     }
 
     func hideNoResults() {
-        guard let noResultsViewController = noResultsViewController else {
+
+        guard noResultsShown else {
             return
         }
 
-        noResultsViewController.view.removeFromSuperview()
-        noResultsViewController.removeFromParentViewController()
+        noResultsViewController?.view.removeFromSuperview()
+        noResultsViewController?.removeFromParentViewController()
 
         if searchController.isActive {
             collectionView?.reloadData()
