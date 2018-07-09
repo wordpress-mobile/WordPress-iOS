@@ -51,47 +51,38 @@ struct NotificationActionParser: FormattableContentActionParser {
     }
 
     private func approveAction(on: Bool) -> FormattableContentAction {
-        //return ApproveComment(on: on)
         return ApproveCommentAction(on: on)
     }
 
     private func followAction(on: Bool) -> FormattableContentAction {
         return FollowAction(on: on)
-        //return Follow(on: on)
     }
 
     private func likeCommentAction(on: Bool) -> FormattableContentAction {
         return LikeCommentAction(on: on)
-        //return LikeComment(on: on)
     }
 
     private func likePostAction(on: Bool) -> FormattableContentAction {
         return LikePostAction(on: on)
-        //return LikePost(on: on)
     }
 
     private func replyAction(on: Bool) -> FormattableContentAction {
         return ReplyToCommentAction(on: on)
-        //return ReplyToComment(on: on)
     }
 
     private func spamAction(on: Bool) -> FormattableContentAction {
         return MarkAsSpamAction(on: on)
-        //return MarkAsSpam(on: on)
     }
 
     private func editCommentAction(on: Bool) -> FormattableContentAction {
         return EditCommentAction(on: on)
-        //return EditComment(on: on)
     }
 
     private func trashAction(on: Bool) -> FormattableContentAction {
         return TrashCommentAction(on: on)
-        //return TrashComment(on: on)
     }
 
     private func notFoundAction(on: Bool) -> FormattableContentAction {
-        //return DefaultNotificationAction(on: on)
         return DefaultFormattableContentAction(on: on)
     }
 }
