@@ -472,7 +472,7 @@ extension NotificationDetailsViewController {
         }
 
         //return block.isActionOn(.Reply)
-        return block.action(id: ReplyToComment.actionIdentifier())?.on ?? false
+        return block.action(id: ReplyToCommentAction.actionIdentifier())?.on ?? false
     }
 
     func storeNotificationReplyIfNeeded() {
@@ -630,10 +630,8 @@ private extension NotificationDetailsViewController {
         cell.accessoryType = hasHomeURL ? .disclosureIndicator : .none
         cell.name = userBlock.text
         cell.blogTitle = hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome?.host
-        //cell.isFollowEnabled = userBlock.isActionEnabled(.Follow)
-        cell.isFollowEnabled = userBlock.isActionEnabled(id: Follow.actionIdentifier())
-        //cell.isFollowOn = userBlock.isActionOn(.Follow)
-        cell.isFollowOn = userBlock.isActionOn(id: Follow.actionIdentifier())
+        cell.isFollowEnabled = userBlock.isActionEnabled(id: FollowAction.actionIdentifier())
+        cell.isFollowOn = userBlock.isActionOn(id: FollowAction.actionIdentifier())
 
         cell.onFollowClick = { [weak self] in
             self?.followSiteWithBlock(userBlock)
@@ -714,14 +712,14 @@ private extension NotificationDetailsViewController {
         // Setup: Properties
         // Note: Approve Action is actually a synonym for 'Edit' (Based on Calypso's basecode)
         //
-        cell.isReplyEnabled     = UIDevice.isPad() && commentBlock.isActionOn(id: ReplyToComment.actionIdentifier())
-        cell.isLikeEnabled      = commentBlock.isActionEnabled(id: LikeComment.actionIdentifier())
-        cell.isApproveEnabled   = commentBlock.isActionEnabled(id: ApproveComment.actionIdentifier())
-        cell.isTrashEnabled     = commentBlock.isActionEnabled(id: TrashComment.actionIdentifier())
-        cell.isSpamEnabled      = commentBlock.isActionEnabled(id: MarkAsSpam.actionIdentifier())
-        cell.isEditEnabled      = commentBlock.isActionOn(id: ApproveComment.actionIdentifier())
-        cell.isLikeOn           = commentBlock.isActionOn(id: LikeComment.actionIdentifier())
-        cell.isApproveOn        = commentBlock.isActionOn(id: ApproveComment.actionIdentifier())
+        cell.isReplyEnabled     = UIDevice.isPad() && commentBlock.isActionOn(id: ReplyToCommentAction.actionIdentifier())
+        cell.isLikeEnabled      = commentBlock.isActionEnabled(id: LikeCommentAction.actionIdentifier())
+        cell.isApproveEnabled   = commentBlock.isActionEnabled(id: ApproveCommentAction.actionIdentifier())
+        cell.isTrashEnabled     = commentBlock.isActionEnabled(id: TrashCommentAction.actionIdentifier())
+        cell.isSpamEnabled      = commentBlock.isActionEnabled(id: MarkAsSpamAction.actionIdentifier())
+        cell.isEditEnabled      = commentBlock.isActionOn(id: ApproveCommentAction.actionIdentifier())
+        cell.isLikeOn           = commentBlock.isActionOn(id: LikeCommentAction.actionIdentifier())
+        cell.isApproveOn        = commentBlock.isActionOn(id: ApproveCommentAction.actionIdentifier())
 
         // Setup: Callbacks
         cell.onReplyClick = { [weak self] _ in
@@ -867,8 +865,8 @@ private extension NotificationDetailsViewController {
         cell.accessoryType = hasHomeURL ? .disclosureIndicator : .none
         cell.name = userBlock.text
         cell.blogTitle = hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome?.host
-        cell.isFollowEnabled = userBlock.isActionEnabled(id: Follow.actionIdentifier())
-        cell.isFollowOn = userBlock.isActionOn(id: Follow.actionIdentifier())
+        cell.isFollowEnabled = userBlock.isActionEnabled(id: FollowAction.actionIdentifier())
+        cell.isFollowOn = userBlock.isActionOn(id: FollowAction.actionIdentifier())
 
          cell.onFollowClick = { [weak self] in
             self?.followSiteWithBlock(userBlock)
@@ -950,14 +948,14 @@ private extension NotificationDetailsViewController {
         // Setup: Properties
         // Note: Approve Action is actually a synonym for 'Edit' (Based on Calypso's basecode)
         //
-        cell.isReplyEnabled     = UIDevice.isPad() && commentBlock.isActionOn(id: ReplyToComment.actionIdentifier())
-        cell.isLikeEnabled      = commentBlock.isActionEnabled(id: LikeComment.actionIdentifier())
-        cell.isApproveEnabled   = commentBlock.isActionEnabled(id: ApproveComment.actionIdentifier())
-        cell.isTrashEnabled     = commentBlock.isActionEnabled(id: TrashComment.actionIdentifier())
-        cell.isSpamEnabled      = commentBlock.isActionEnabled(id: MarkAsSpam.actionIdentifier())
-        cell.isEditEnabled      = commentBlock.isActionOn(id: ApproveComment.actionIdentifier())
-        cell.isLikeOn           = commentBlock.isActionOn(id: LikeComment.actionIdentifier())
-        cell.isApproveOn        = commentBlock.isActionOn(id: ApproveComment.actionIdentifier())
+        cell.isReplyEnabled     = UIDevice.isPad() && commentBlock.isActionOn(id: ReplyToCommentAction.actionIdentifier())
+        cell.isLikeEnabled      = commentBlock.isActionEnabled(id: LikeCommentAction.actionIdentifier())
+        cell.isApproveEnabled   = commentBlock.isActionEnabled(id: ApproveCommentAction.actionIdentifier())
+        cell.isTrashEnabled     = commentBlock.isActionEnabled(id: TrashCommentAction.actionIdentifier())
+        cell.isSpamEnabled      = commentBlock.isActionEnabled(id: MarkAsSpamAction.actionIdentifier())
+        cell.isEditEnabled      = commentBlock.isActionOn(id: ApproveCommentAction.actionIdentifier())
+        cell.isLikeOn           = commentBlock.isActionOn(id: LikeCommentAction.actionIdentifier())
+        cell.isApproveOn        = commentBlock.isActionOn(id: ApproveCommentAction.actionIdentifier())
 
         // Setup: Callbacks
         cell.onReplyClick = { [weak self] _ in
@@ -1329,7 +1327,7 @@ private extension NotificationDetailsViewController {
     }
 
     func likeCommentWithBlock(_ block: ActionableObject) {
-        guard let likeAction = block.action(id: LikeComment.actionIdentifier()) else {
+        guard let likeAction = block.action(id: LikeCommentAction.actionIdentifier()) else {
             return
         }
         let actionContext = ActionContext(block: block)
@@ -1338,7 +1336,7 @@ private extension NotificationDetailsViewController {
     }
 
     func unlikeCommentWithBlock(_ block: ActionableObject) {
-        guard let likeAction = block.action(id: LikeComment.actionIdentifier()) else {
+        guard let likeAction = block.action(id: LikeCommentAction.actionIdentifier()) else {
             return
         }
         let actionContext = ActionContext(block: block)
@@ -1347,7 +1345,7 @@ private extension NotificationDetailsViewController {
     }
 
     func approveCommentWithBlock(_ block: ActionableObject) {
-        guard let approveAction = block.action(id: ApproveComment.actionIdentifier()) else {
+        guard let approveAction = block.action(id: ApproveCommentAction.actionIdentifier()) else {
             return
         }
 
@@ -1357,7 +1355,7 @@ private extension NotificationDetailsViewController {
     }
 
     func unapproveCommentWithBlock(_ block: ActionableObject) {
-        guard let approveAction = block.action(id: ApproveComment.actionIdentifier()) else {
+        guard let approveAction = block.action(id: ApproveCommentAction.actionIdentifier()) else {
             return
         }
 
@@ -1369,7 +1367,7 @@ private extension NotificationDetailsViewController {
     func spamCommentWithBlock(_ block: ActionableObject) {
         precondition(onDeletionRequestCallback != nil)
 
-        guard let spamAction = block.action(id: MarkAsSpam.actionIdentifier()) else {
+        guard let spamAction = block.action(id: MarkAsSpamAction.actionIdentifier()) else {
             return
         }
 
@@ -1390,7 +1388,7 @@ private extension NotificationDetailsViewController {
     func trashCommentWithBlock(_ block: ActionableObject) {
         precondition(onDeletionRequestCallback != nil)
 
-        guard let trashAction = block.action(id: TrashComment.actionIdentifier()) else {
+        guard let trashAction = block.action(id: TrashCommentAction.actionIdentifier()) else {
             return
         }
 
@@ -1409,7 +1407,7 @@ private extension NotificationDetailsViewController {
     }
 
     func replyCommentWithBlock(_ block: ActionableObject, content: String) {
-        guard let replyAction = block.action(id: ReplyToComment.actionIdentifier()) else {
+        guard let replyAction = block.action(id: ReplyToCommentAction.actionIdentifier()) else {
             return
         }
 
@@ -1431,7 +1429,7 @@ private extension NotificationDetailsViewController {
     }
 
     func updateCommentWithBlock(_ block: ActionableObject, content: String) {
-        guard let editCommentAction = block.action(id: EditComment.actionIdentifier()) else {
+        guard let editCommentAction = block.action(id: EditCommentAction.actionIdentifier()) else {
             return
         }
 
