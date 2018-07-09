@@ -443,7 +443,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
         [ReachabilityUtils showAlertNoInternetConnection];
         [self reloadWhenConnectionRestored];
     } else {
-        [ReachabilityUtils showConnectionErrorAlertWithMessage:error.localizedDescription];
+        [WPError showAlertWithTitle: NSLocalizedString(@"Error", @"Generic error alert title") message: error.localizedDescription];
     }
 }
 

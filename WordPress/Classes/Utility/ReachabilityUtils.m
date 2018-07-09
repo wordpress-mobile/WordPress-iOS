@@ -28,38 +28,24 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
 
 - (void)show
 {
-    [self showWithTitle:NSLocalizedString(@"No Connection", @"") andMessage:[ReachabilityUtils noConnectionMessage]];
-}
-
-- (void)showWithMessage:(NSString *)message
-{
-    [self showWithTitle:NSLocalizedString(@"Error", @"Generic error alert title") andMessage:message];
-}
-
-- (void)showWithTitle:(NSString *)title andMessage:(NSString *)message
-{
     if (__currentReachabilityAlert) {
         return;
     }
+    
+    NSString *title = NSLocalizedString(@"No Connection", @"");
+    NSString *message = [ReachabilityUtils noConnectionMessage];
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
                                                                              message:message
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     
-    [alertController addDefaultActionWithTitle:NSLocalizedString(@"OK", @"") handler:^(UIAlertAction *action) {
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"OK", @"") handler:^(UIAlertAction *action) {
         __currentReachabilityAlert = nil;
     }];
     
     if (self.retryBlock) {
-        [alertController addCancelActionWithTitle:NSLocalizedString(@"Retry?", @"") handler:^(UIAlertAction *action) {
+        [alertController addDefaultActionWithTitle:NSLocalizedString(@"Retry?", @"") handler:^(UIAlertAction *action) {
             self.retryBlock();
-        }];
-    } else if (ReachabilityUtils.isInternetReachable) {
-        // Add the 'Need help' button only if internet is accessible (i.e. if the user can actually get help).
-        NSString *supportText = NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.");
-        [alertController addCancelActionWithTitle:supportText handler:^(UIAlertAction *action) {
-            SupportTableViewController *supportVC = [SupportTableViewController new];
-            [supportVC showFromTabBar];
             __currentReachabilityAlert = nil;
         }];
     }
@@ -84,12 +70,6 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
 {
     ReachabilityAlert *alert = [[ReachabilityAlert alloc] initWithRetryBlock:nil];
     [alert show];
-}
-
-+ (void)showConnectionErrorAlertWithMessage:(NSString *)message
-{
-    ReachabilityAlert *alert = [[ReachabilityAlert alloc] initWithRetryBlock:nil];
-    [alert showWithMessage:message];
 }
 
 + (void)showAlertNoInternetConnectionWithRetryBlock:(void (^)(void))retryBlock
