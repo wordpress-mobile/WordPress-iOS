@@ -6,7 +6,7 @@ class FormattableCommentContent: NotificationTextContent {
     }
 
     var isCommentApproved: Bool {
-        let identifier = ApproveComment.actionIdentifier()
+        let identifier = ApproveCommentAction.actionIdentifier()
         return isActionOn(id: identifier) || !isActionEnabled(id: identifier)
     }
 

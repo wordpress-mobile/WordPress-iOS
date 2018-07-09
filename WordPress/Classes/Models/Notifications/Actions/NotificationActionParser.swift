@@ -1,3 +1,5 @@
+import WordPressKit
+
 struct NotificationActionParser: FormattableContentActionParser {
     private enum Action: String {
         case approve = "approve-comment"
@@ -49,39 +51,55 @@ struct NotificationActionParser: FormattableContentActionParser {
     }
 
     private func approveAction(on: Bool) -> FormattableContentAction {
-        return ApproveComment(on: on)
+        let command = ApproveComment(on: on)
+
+        return ApproveCommentAction(on: on, command: command)
     }
 
     private func followAction(on: Bool) -> FormattableContentAction {
-        return Follow(on: on)
+        let command = Follow(on: on)
+
+        return FollowAction(on: on, command: command)
     }
 
     private func likeCommentAction(on: Bool) -> FormattableContentAction {
-        return LikeComment(on: on)
+        let command = LikeComment(on: on)
+
+        return LikeCommentAction(on: on, command: command)
     }
 
     private func likePostAction(on: Bool) -> FormattableContentAction {
-        return LikePost(on: on)
+        let command = LikePost(on: on)
+
+        return LikePostAction(on: on, command: command)
     }
 
     private func replyAction(on: Bool) -> FormattableContentAction {
-        return ReplyToComment(on: on)
+        let command = ReplyToComment(on: on)
+
+        return ReplyToCommentAction(on: on, command: command)
     }
 
     private func spamAction(on: Bool) -> FormattableContentAction {
-        return MarkAsSpam(on: on)
+        let command = MarkAsSpam(on: on)
+
+        return MarkAsSpamAction(on: on, command: command)
     }
 
     private func editCommentAction(on: Bool) -> FormattableContentAction {
-        return EditComment(on: on)
+        let command = EditComment(on: on)
+
+        return EditCommentAction(on: on, command: command)
     }
 
     private func trashAction(on: Bool) -> FormattableContentAction {
-        return TrashComment(on: on)
+        let command = TrashComment(on: on)
+
+        return TrashCommentAction(on: on, command: command)
     }
 
     private func notFoundAction(on: Bool) -> FormattableContentAction {
-        print("======= printing not found action ")
-        return DefaultNotificationAction(on: on)
+        let command = DefaultNotificationActionCommand(on: on)
+        return DefaultFormattableContentAction(on: on, command: command)
     }
 }
