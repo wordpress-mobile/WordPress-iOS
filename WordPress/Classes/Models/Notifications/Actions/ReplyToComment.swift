@@ -1,6 +1,6 @@
 import MGSwipeTableCell
 
-final class ReplyToComment: DefaultNotificationAction {
+final class ReplyToComment: DefaultNotificationActionCommand {
     let replyIcon: UIButton = {
         let title = NSLocalizedString("Reply", comment: "Reply to a comment.")
         return MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())

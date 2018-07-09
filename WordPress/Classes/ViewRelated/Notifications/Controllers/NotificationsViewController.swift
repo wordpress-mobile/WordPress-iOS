@@ -1040,11 +1040,11 @@ private extension NotificationsViewController {
             rightButtons.append(button)
         }
 
-        guard let approveEnabled = block.action(id: ApproveComment.actionIdentifier())?.enabled, approveEnabled == true else {
+        guard let approveEnabled = block.action(id: ApproveCommentAction.actionIdentifier())?.enabled, approveEnabled == true else {
             return rightButtons
         }
 
-        let approveCommand = block.action(id: ApproveComment.actionIdentifier())
+        let approveCommand = block.action(id: ApproveCommentAction.actionIdentifier())
         let button = approveCommand?.icon as? MGSwipeButton
         button?.callback = { _ in
             let actionContext = ActionContext(block: block)

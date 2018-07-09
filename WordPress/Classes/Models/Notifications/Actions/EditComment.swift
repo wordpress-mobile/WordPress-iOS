@@ -1,6 +1,6 @@
 import MGSwipeTableCell
 
-final class EditComment: DefaultNotificationAction {
+final class EditComment: DefaultNotificationActionCommand {
     let editIcon: UIButton = {
         let title = NSLocalizedString("Edit", comment: "Edits a Comment")
         return MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())

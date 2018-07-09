@@ -1,6 +1,6 @@
 import MGSwipeTableCell
 
-final class TrashComment: DefaultNotificationAction {
+final class TrashComment: DefaultNotificationActionCommand {
     let trashIcon: UIButton = {
         let title = NSLocalizedString("Trash", comment: "Trashes a comment")
         return MGSwipeButton(title: title, backgroundColor: WPStyleGuide.errorRed())
