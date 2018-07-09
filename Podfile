@@ -23,7 +23,7 @@ def shared_with_networking_pods
     pod 'AFNetworking', '3.2.1'
     pod 'Alamofire', '4.7.2'
     pod 'wpxmlrpc', '0.8.3'
-    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :commit => '2020c151ca572804e43c45baf7c27ef0ec85293a'
+    pod 'WordPressKit', :git => 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', :branch => 'feature/refactor-formattable-content-action-command'
 end
 
 def shared_test_pods
