@@ -51,62 +51,55 @@ struct NotificationActionParser: FormattableContentActionParser {
     }
 
     private func approveAction(on: Bool) -> FormattableContentAction {
-        let action = ApproveCommentAction(on: on)
-        action.command = ApproveComment(on: on)
+        let command = ApproveComment(on: on)
 
-        return action
+        return ApproveCommentAction(on: on, command: command)
     }
 
     private func followAction(on: Bool) -> FormattableContentAction {
-        let action = FollowAction(on: on)
-        action.command = Follow(on: on)
+        let command = Follow(on: on)
 
-        return action
+        return FollowAction(on: on, command: command)
     }
 
     private func likeCommentAction(on: Bool) -> FormattableContentAction {
-        let action = LikeCommentAction(on: on)
-        action.command = LikeComment(on: on)
+        let command = LikeComment(on: on)
 
-        return action
+        return LikeCommentAction(on: on, command: command)
     }
 
     private func likePostAction(on: Bool) -> FormattableContentAction {
-        let action = LikePostAction(on: on)
-        action.command = LikePost(on: on)
+        let command = LikePost(on: on)
 
-        return action
+        return LikePostAction(on: on, command: command)
     }
 
     private func replyAction(on: Bool) -> FormattableContentAction {
-        let action = ReplyToCommentAction(on: on)
-        action.command = ReplyToComment(on: on)
+        let command = ReplyToComment(on: on)
 
-        return action
+        return ReplyToCommentAction(on: on, command: command)
     }
 
     private func spamAction(on: Bool) -> FormattableContentAction {
-        let action = MarkAsSpamAction(on: on)
-        action.command = MarkAsSpam(on: on)
+        let command = MarkAsSpam(on: on)
 
-        return action
+        return MarkAsSpamAction(on: on, command: command)
     }
 
     private func editCommentAction(on: Bool) -> FormattableContentAction {
-        let action = EditCommentAction(on: on)
-        action.command = EditComment(on: on)
+        let command = EditComment(on: on)
 
-        return action
+        return EditCommentAction(on: on, command: command)
     }
 
     private func trashAction(on: Bool) -> FormattableContentAction {
-        let action = TrashCommentAction(on: on)
-        action.command = TrashComment(on: on)
+        let command = TrashComment(on: on)
 
-        return action
+        return TrashCommentAction(on: on, command: command)
     }
 
     private func notFoundAction(on: Bool) -> FormattableContentAction {
-        return DefaultFormattableContentAction(on: on)
+        let command = DefaultNotificationActionCommand(on: on)
+        return DefaultFormattableContentAction(on: on, command: command)
     }
 }
