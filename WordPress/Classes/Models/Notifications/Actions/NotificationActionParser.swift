@@ -1,3 +1,5 @@
+import WordPressKit
+
 struct NotificationActionParser: FormattableContentActionParser {
     private enum Action: String {
         case approve = "approve-comment"
@@ -49,39 +51,47 @@ struct NotificationActionParser: FormattableContentActionParser {
     }
 
     private func approveAction(on: Bool) -> FormattableContentAction {
-        return ApproveComment(on: on)
+        //return ApproveComment(on: on)
+        return ApproveCommentAction(on: on)
     }
 
     private func followAction(on: Bool) -> FormattableContentAction {
-        return Follow(on: on)
+        return FollowAction(on: on)
+        //return Follow(on: on)
     }
 
     private func likeCommentAction(on: Bool) -> FormattableContentAction {
-        return LikeComment(on: on)
+        return LikeCommentAction(on: on)
+        //return LikeComment(on: on)
     }
 
     private func likePostAction(on: Bool) -> FormattableContentAction {
-        return LikePost(on: on)
+        return LikePostAction(on: on)
+        //return LikePost(on: on)
     }
 
     private func replyAction(on: Bool) -> FormattableContentAction {
-        return ReplyToComment(on: on)
+        return ReplyToCommentAction(on: on)
+        //return ReplyToComment(on: on)
     }
 
     private func spamAction(on: Bool) -> FormattableContentAction {
-        return MarkAsSpam(on: on)
+        return MarkAsSpamAction(on: on)
+        //return MarkAsSpam(on: on)
     }
 
     private func editCommentAction(on: Bool) -> FormattableContentAction {
-        return EditComment(on: on)
+        return EditCommentAction(on: on)
+        //return EditComment(on: on)
     }
 
     private func trashAction(on: Bool) -> FormattableContentAction {
-        return TrashComment(on: on)
+        return TrashCommentAction(on: on)
+        //return TrashComment(on: on)
     }
 
     private func notFoundAction(on: Bool) -> FormattableContentAction {
-        print("======= printing not found action ")
-        return DefaultNotificationAction(on: on)
+        //return DefaultNotificationAction(on: on)
+        return DefaultFormattableContentAction(on: on)
     }
 }
