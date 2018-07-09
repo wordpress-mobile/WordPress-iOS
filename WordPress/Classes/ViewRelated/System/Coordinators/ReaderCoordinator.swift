@@ -84,6 +84,14 @@ class ReaderCoordinator: NSObject {
 
         readerNavigationController.pushViewController(controller, animated: true)
     }
+
+    func showPost(with postID: Int, for feedID: Int, isFeed: Bool) {
+        prepareToNavigate()
+
+        let detailViewController = ReaderDetailViewController.controllerWithPostID(postID as NSNumber,
+                                                                                       siteID: feedID as NSNumber)
+        readerNavigationController.pushFullscreenViewController(detailViewController, animated: true)
+    }
 }
 
 private extension ReaderTopicService {

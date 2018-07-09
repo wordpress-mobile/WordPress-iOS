@@ -75,7 +75,21 @@ extension ReaderRoute: NavigationAction {
         case .feedsPost:
             break
         case .blogsPost:
-            break
+            if let (blogID, postID) = blogAndPostID(from: values) {
+                coordinator.showPost(with: postID, for: blogID, isFeed: false)
+            }
         }
+    }
+
+
+    private func blogAndPostID(from values: [String: String]?) -> (Int, Int)? {
+        guard let blogIDValue = values?["blog_id"],
+            let postIDValue = values?["post_id"],
+            let blogID = Int(blogIDValue),
+            let postID = Int(postIDValue) else {
+                return nil
+        }
+
+        return (blogID, postID)
     }
 }
