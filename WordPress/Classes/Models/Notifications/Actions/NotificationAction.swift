@@ -1,4 +1,6 @@
 class DefaultNotificationActionCommand: FormattableContentActionCommand {
+    var on: Bool
+
     var identifier: Identifier {
         return type(of: self).commandIdentifier()
     }
@@ -13,6 +15,10 @@ class DefaultNotificationActionCommand: FormattableContentActionCommand {
 
     var icon: UIButton? {
         return nil
+    }
+
+    public init(on: Bool) {
+        self.on = on
     }
 
     func execute(context: ActionContext) { }
