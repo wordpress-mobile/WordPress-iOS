@@ -89,7 +89,8 @@ class ReaderCoordinator: NSObject {
         prepareToNavigate()
 
         let detailViewController = ReaderDetailViewController.controllerWithPostID(postID as NSNumber,
-                                                                                       siteID: feedID as NSNumber)
+                                                                                       siteID: feedID as NSNumber,
+                                                                                       isFeed: isFeed)
         readerNavigationController.pushFullscreenViewController(detailViewController, animated: true)
     }
 }

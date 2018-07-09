@@ -73,7 +73,9 @@ extension ReaderRoute: NavigationAction {
                 coordinator.showTag(named: tagName)
             }
         case .feedsPost:
-            break
+            if let (feedID, postID) = feedAndPostID(from: values) {
+                coordinator.showPost(with: postID, for: feedID, isFeed: true)
+            }
         case .blogsPost:
             if let (blogID, postID) = blogAndPostID(from: values) {
                 coordinator.showPost(with: postID, for: blogID, isFeed: false)
@@ -81,6 +83,16 @@ extension ReaderRoute: NavigationAction {
         }
     }
 
+    private func feedAndPostID(from values: [String: String]?) -> (Int, Int)? {
+        guard let feedIDValue = values?["feed_id"],
+            let postIDValue = values?["post_id"],
+            let feedID = Int(feedIDValue),
+            let postID = Int(postIDValue) else {
+                return nil
+        }
+
+        return (feedID, postID)
+    }
 
     private func blogAndPostID(from values: [String: String]?) -> (Int, Int)? {
         guard let blogIDValue = values?["blog_id"],

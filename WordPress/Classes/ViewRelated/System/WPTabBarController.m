@@ -553,7 +553,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 
     if (topDetailVC && topDetailVC.navigationController) {
-        ReaderDetailViewController *readerPostDetailVC = [ReaderDetailViewController controllerWithPostID:postId siteID:blogId];
+        ReaderDetailViewController *readerPostDetailVC = [ReaderDetailViewController controllerWithPostID:postId siteID:blogId isFeed:NO];
         [topDetailVC.navigationController pushFullscreenViewController:readerPostDetailVC animated:YES];
     }
 }
