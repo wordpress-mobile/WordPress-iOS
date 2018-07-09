@@ -1258,6 +1258,11 @@ extension ReaderStreamViewController: WPContentSyncHelperDelegate {
 
     func syncContentFailed(_ syncHelper: WPContentSyncHelper) {
         cleanupAfterSync(refresh: false)
+
+        if let count = content.content?.count,
+            count == 0 {
+            displayLoadingStreamFailed()
+        }
     }
 }
 
