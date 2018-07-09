@@ -1,4 +1,4 @@
-class DefaultNotificationAction: FormattableContentActionCommand {
+class DefaultNotificationActionCommand: FormattableContentActionCommand {
     var identifier: Identifier {
         return type(of: self).commandIdentifier()
     }

@@ -1,6 +1,6 @@
 import MGSwipeTableCell
 
-final class ApproveComment: DefaultNotificationAction {
+final class ApproveComment: DefaultNotificationActionCommand {
     private enum TitleStrings {
         static let approve = NSLocalizedString("Approve", comment: "Approves a Comment")
         static let unapprove = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")

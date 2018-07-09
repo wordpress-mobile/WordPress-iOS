@@ -953,7 +953,7 @@ private extension NotificationDetailsViewController {
         cell.isApproveEnabled   = commentBlock.isActionEnabled(id: ApproveCommentAction.actionIdentifier())
         cell.isTrashEnabled     = commentBlock.isActionEnabled(id: TrashCommentAction.actionIdentifier())
         cell.isSpamEnabled      = commentBlock.isActionEnabled(id: MarkAsSpamAction.actionIdentifier())
-        cell.isEditEnabled      = commentBlock.isActionOn(id: ApproveCommentActio0n.actionIdentifier())
+        cell.isEditEnabled      = commentBlock.isActionOn(id: ApproveCommentAction.actionIdentifier())
         cell.isLikeOn           = commentBlock.isActionOn(id: LikeCommentAction.actionIdentifier())
         cell.isApproveOn        = commentBlock.isActionOn(id: ApproveCommentAction.actionIdentifier())
 
