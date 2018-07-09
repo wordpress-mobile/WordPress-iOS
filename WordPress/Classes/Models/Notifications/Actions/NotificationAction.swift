@@ -1,12 +1,6 @@
-import MGSwipeTableCell
-
-class DefaultNotificationAction: FormattableContentAction {
-    var enabled: Bool
-
-    var on: Bool
-
+class DefaultNotificationAction: FormattableContentActionCommand {
     var identifier: Identifier {
-        return type(of: self).actionIdentifier()
+        return type(of: self).commandIdentifier()
     }
 
     private(set) lazy var mainContext: NSManagedObjectContext? = {
@@ -19,11 +13,6 @@ class DefaultNotificationAction: FormattableContentAction {
 
     var icon: UIButton? {
         return nil
-    }
-
-    init(on: Bool) {
-        self.on = on
-        self.enabled = true
     }
 
     func execute(context: ActionContext) { }
