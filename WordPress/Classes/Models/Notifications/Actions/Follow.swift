@@ -1,6 +1,6 @@
 import MGSwipeTableCell
 
-final class Follow: DefaultNotificationAction {
+final class Follow: DefaultNotificationActionCommand {
     let followIcon: UIButton = {
         let title = NSLocalizedString("Follow", comment: "Prompt to follow a blog.")
         return MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())

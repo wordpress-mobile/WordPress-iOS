@@ -1,6 +1,6 @@
 import MGSwipeTableCell
 
-final class LikeComment: DefaultNotificationAction {
+final class LikeComment: DefaultNotificationActionCommand {
     private enum TitleStrings {
         static let like = NSLocalizedString("Like", comment: "Likes a Comment")
         static let unlike = NSLocalizedString("Liked", comment: "A comment is marked as liked")
