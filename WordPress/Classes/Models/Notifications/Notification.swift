@@ -221,7 +221,7 @@ extension Notification {
         }
 
         //return block.isActionEnabled(.Approve) && !block.isActionOn(.Approve)
-        let commandId = ApproveComment.actionIdentifier()
+        let commandId = ApproveCommentAction.actionIdentifier()
         return block.isActionEnabled(id: commandId) && !block.isActionOn(id: commandId)
     }
 
