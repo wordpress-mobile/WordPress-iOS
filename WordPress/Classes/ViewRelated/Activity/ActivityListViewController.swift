@@ -2,31 +2,25 @@ import Foundation
 import CocoaLumberjack
 import SVProgressHUD
 import WordPressShared
+import WordPressFlux
 
 class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
-    let siteID: Int
-    let service: ActivityServiceRemote
+    let site: JetpackSiteRef
 
-    enum Constants {
-        /// Sequence of increasing delays to apply to the fetch restore status mechanism (in seconds)
-        ///
-        static let delaySequence = [1, 5]
-        static let maxRetries = 12
-        static let estimatedRowHeight: CGFloat = 62
-    }
-    fileprivate var delay = IncrementalDelay(Constants.delaySequence)
-    fileprivate var delayedRetry: DispatchDelayedAction?
-    fileprivate var delayedRetryAttempt: Int = 0
+    let store: ActivityStore
+    let activitiesReceipt: Receipt
+    let restoreStatusReceipt: Receipt
+
+    var changeReceipt: Receipt?
 
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
     }()
 
-    fileprivate var viewModel: ActivityListViewModel = .loading {
-        didSet {
-            refreshModel()
-        }
+    fileprivate var viewModel: ActivityListViewModel
+    private enum Constants {
+        static let estimatedRowHeight: CGFloat = 62
     }
 
     // MARK: - GUI
@@ -35,10 +29,20 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
     // MARK: - Constructors
 
-    init(siteID: Int, service: ActivityServiceRemote) {
-        self.siteID = siteID
-        self.service = service
+    init(site: JetpackSiteRef, store: ActivityStore) {
+        self.site = site
+        self.store = store
+        self.viewModel = ActivityListViewModel(site: site)
+
+        self.activitiesReceipt = store.query(.activities(site: site))
+        self.restoreStatusReceipt = store.query(.restoreStatus(site: site))
+
         super.init(style: .plain)
+
+        self.changeReceipt = viewModel.onChange { [weak self] in
+            self?.refreshModel()
+        }
+
         title = NSLocalizedString("Activity", comment: "Title for the activity list")
     }
 
@@ -48,16 +52,12 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
     @objc convenience init?(blog: Blog) {
         precondition(blog.dotComID != nil)
-        guard let api = blog.wordPressComRestApi(), let siteID = blog.dotComID?.intValue else {
+        guard let siteRef = JetpackSiteRef(blog: blog) else {
             return nil
         }
 
-        let service = ActivityServiceRemote(wordPressComRestApi: api)
-        self.init(siteID: siteID, service: service)
-    }
 
-    deinit {
-        delayedRetry?.cancel()
+        self.init(site: siteRef, store: StoreContainer.shared.activity)
     }
 
     // MARK: - View lifecycle
@@ -71,22 +71,12 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
         let nib = UINib(nibName: ActivityListSectionHeaderView.identifier, bundle: nil)
         tableView.register(nib, forHeaderFooterViewReuseIdentifier: ActivityListSectionHeaderView.identifier)
-        ImmuTable.registerRows([ActivityListRow.self], tableView: tableView)
+        ImmuTable.registerRows([ActivityListRow.self, RewindStatusRow.self], tableView: tableView)
         // Magic to avoid cell separators being displayed while a plain table loads
         tableView.tableFooterView = UIView()
 
         refreshModel()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        service.getActivityForSite(siteID, count: 1000, success: { (activities, _) in
-            self.viewModel = .ready(activities)
-        }, failure: { error in
-            DDLogError("Error loading activities: \(error)")
-            self.viewModel = .error(String(describing: error))
-        })
+        WPAnalytics.track(.activityLogViewed)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -167,7 +157,7 @@ extension ActivityListViewController: ActivityRewindPresenter {
 
         let title = NSLocalizedString("Rewind Site",
                                       comment: "Title displayed in the Rewind Site alert, should match Calypso")
-        let rewindDate = activity.published.mediumStringWithUTCTime()
+        let rewindDate = viewModel.mediumDateFormatterWithTime.string(from: activity.published)
         let messageFormat = NSLocalizedString("Are you sure you want to rewind your site back to %@?\nThis will remove all content and options created or changed since then.",
                                               comment: "Message displayed in the Rewind Site alert, the placeholder holds a date, should match Calypso.")
         let message = String(format: messageFormat, rewindDate)
@@ -193,6 +183,7 @@ extension ActivityListViewController: ActivityDetailPresenter {
             return
         }
 
+        detailVC.site = site
         detailVC.activity = activity
         detailVC.rewindPresenter = self
 
@@ -207,85 +198,7 @@ extension ActivityListViewController {
 
     fileprivate func restoreSiteToRewindID(_ rewindID: String) {
         navigationController?.popToViewController(self, animated: true)
-        tableView.isUserInteractionEnabled = false
-        service.restoreSite(siteID, rewindID: rewindID, success: { (restoreID) in
-            self.showRestoringMessage()
-            self.delayedRetryAttempt = 0
-            self.checkStatusDelayedForRestoreID(restoreID)
-        }) { (error) in
-            self.tableView.isUserInteractionEnabled = true
-            self.showErrorRestoringMessage()
-        }
-    }
-
-    fileprivate func checkStatusDelayedForRestoreID(_ restoreID: String) {
-        delayedRetryAttempt = delayedRetryAttempt + 1
-        guard delayedRetryAttempt < Constants.maxRetries else {
-            restoreTimedout()
-            return
-        }
-
-        service.getRewindStatus(siteID, success: { (rewindStatus) in
-            guard let restoreStatus = rewindStatus.restore,
-                restoreStatus.id == restoreID else {
-                self.delayedRetryForRestoreID(restoreID, showingProgress: 0)
-                return
-            }
-
-            switch restoreStatus.status {
-            case .running, .queued:
-                self.delayedRetryForRestoreID(restoreID, showingProgress: restoreStatus.progress)
-            case .finished:
-                self.restoreCompleted()
-            case .fail:
-                self.restoreFailed()
-            }
-        }) { (error) in
-            DDLogError("Error checking restore status \(error)")
-        }
-    }
-
-    fileprivate func delayedRetryForRestoreID(_ restoreID: String, showingProgress progress: Int) {
-        self.showRestoringMessage(Float(progress) / 100.0)
-        self.delayedRetry = DispatchDelayedAction(delay: .seconds(self.delay.current)) { [weak self] in
-            self?.checkStatusDelayedForRestoreID(restoreID)
-        }
-        self.delay.increment()
-    }
-
-    fileprivate func showErrorRestoringMessage() {
-        SVProgressHUD.showDismissibleError(withStatus: NSLocalizedString("Unable to restore your site, please try again later or contact support.",
-                                                                         comment: "Text displayed when a site restore fails."))
-    }
-
-    fileprivate func showRestoringMessage(_ progress: Float = 0) {
-        SVProgressHUD.showProgress(progress, status: NSLocalizedString("Restoring ...",
-                                                                       comment: "Text displayed in HUD while a site is being restored."))
-    }
-
-    fileprivate func showErrorFetchingRestoreStatus() {
-        SVProgressHUD.showDismissibleError(withStatus: NSLocalizedString("Your restore is taking longer than usual, please check again in a few minutes.",
-                                                                         comment: "Text displayed when a site restore takes too long."))
-    }
-
-    fileprivate func restoreCompleted() {
-        delay.reset()
-        tableView.isUserInteractionEnabled = true
-        SVProgressHUD.showDismissibleSuccess(withStatus: NSLocalizedString("Restore completed",
-                                                                           comment: "Text displayed in HUD when the site restore is completed."))
-        refreshModel()
-    }
-
-    fileprivate func restoreFailed() {
-        delay.reset()
-        tableView.isUserInteractionEnabled = true
-        showErrorRestoringMessage()
-    }
-
-    fileprivate func restoreTimedout() {
-        delay.reset()
-        tableView.isUserInteractionEnabled = true
-        showErrorFetchingRestoreStatus()
+        store.actionDispatcher.dispatch(ActivityAction.rewind(site: site, rewindID: rewindID))
     }
 }
 
@@ -304,9 +217,10 @@ private extension ActivityListViewController {
     }
 
     func updateNoResults() {
-        hideNoResults()
-        if let noResultsViewModel = viewModel.noResultsViewModel {
+        if let noResultsViewModel = viewModel.noResultsViewModel() {
             showNoResults(noResultsViewModel)
+        } else {
+            hideNoResults()
         }
     }
 
@@ -322,7 +236,10 @@ private extension ActivityListViewController {
 
         noResultsViewController.bindViewModel(viewModel)
 
-        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        if noResultsViewController.view.superview != tableView {
+            tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        }
+
         addChildViewController(noResultsViewController)
         noResultsViewController.didMove(toParentViewController: self)
 

@@ -347,9 +347,18 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     }
 }
 
-- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray *))restorationHandler {
-    // Spotlight search
-    [SearchManager.shared handleWithActivity: userActivity];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 120000
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id<UIUserActivityRestoring>> * _Nullable))restorationHandler {
+#else
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler {
+#endif
+    if ([userActivity.activityType isEqualToString:NSUserActivityTypeBrowsingWeb]) {
+        [self handleWebActivity:userActivity];
+    } else {
+        // Spotlight search
+        [SearchManager.shared handleWithActivity: userActivity];
+    }
+
     return YES;
 }
 

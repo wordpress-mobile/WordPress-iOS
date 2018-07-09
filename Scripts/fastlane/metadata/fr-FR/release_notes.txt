@@ -1,2 +1,4 @@
-Vous pouvez désormais enregistrer des articles dans le Lecteur : appuyez simplement sur l'icône Favori d'un article pour ajouter les articles à la liste Articles enregistrés et y accéder à nouveau ultérieurement. Vous pouvez même lire le texte de vos articles enregistrés hors ligne !
-Veuillez noter qu'il n'y a aucune garantie que les images soient disponibles hors ligne dans cette version initiale et que la fonctionnalité Articles enregistrés est actuellement propre à l'appareil sur lequel elle est utilisée. Cela signifie que les articles enregistrés ne sont pas synchronisés entre les appareils ou sur le Web et qu'ils seront perdus si vous vous déconnectez ou si vous désinstallez l'application.
+Lecteur : la fonction de recherche a été améliorée pour rechercher aussi bien un site qu'un article.
+Éditeur : meilleur gestion des articles Gutenberg.
+Lecteur : une alerte avec des informations d’utilisation est maintenant affichée la première fois que la fonctionnalité Enregistrer pour plus tard est utilisée.
+Beaucoup d’autres petits ajustements et améliorations de l’interface utilisateur.
