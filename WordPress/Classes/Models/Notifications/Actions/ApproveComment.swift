@@ -1,5 +1,6 @@
 import MGSwipeTableCell
 
+/// Encapsulates logic to approve a cooment
 final class ApproveComment: DefaultNotificationActionCommand {
     private enum TitleStrings {
         static let approve = NSLocalizedString("Approve", comment: "Approves a Comment")

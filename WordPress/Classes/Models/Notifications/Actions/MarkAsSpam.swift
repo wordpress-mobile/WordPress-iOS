@@ -1,5 +1,6 @@
 import MGSwipeTableCell
 
+/// Encapsulates logic to mark a comment as spam
 final class MarkAsSpam: DefaultNotificationActionCommand {
     let spamIcon: UIButton = {
         let title = NSLocalizedString("Spam", comment: "Mark s comment as spam.")
