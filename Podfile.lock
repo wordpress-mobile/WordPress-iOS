@@ -167,7 +167,7 @@ DEPENDENCIES:
   - WordPress-Aztec-iOS (= 1.0.0-beta.23)
   - WordPress-Editor-iOS (= 1.0.0-beta.23)
   - WordPressAuthenticator (= 1.0.1)
-  - WordPressKit (= 1.1)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `c2ae16bbc3fb759e0684fc9e5642d52390d00285`)
   - WordPressShared (= 1.0.8)
   - WordPressUI (= 1.0.6)
   - WPMediaPicker (= 1.1)
@@ -204,7 +204,6 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
-    - WordPressKit
     - WordPressShared
     - WordPressUI
     - WPMediaPicker
@@ -215,11 +214,17 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
+  WordPressKit:
+    :commit: c2ae16bbc3fb759e0684fc9e5642d52390d00285
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
+  WordPressKit:
+    :commit: c2ae16bbc3fb759e0684fc9e5642d52390d00285
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
