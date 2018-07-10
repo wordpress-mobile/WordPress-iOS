@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Ae-eX-ae9" userLabel="No Results View">
-                                <rect key="frame" x="10" y="215.5" width="355" height="256"/>
+                                <rect key="frame" x="10" y="214.5" width="355" height="258.5"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="czl-5D-gem" userLabel="Accessory View">
                                         <rect key="frame" x="127.5" y="0.0" width="100" height="100"/>
@@ -31,16 +31,14 @@
                                         </constraints>
                                     </view>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mysites-nosites" translatesAutoresizingMaskIntoConstraints="NO" id="Fwm-rl-dKS" userLabel="Image View">
-                                        <rect key="frame" x="2.5" y="-55" width="350" height="218.5"/>
+                                        <rect key="frame" x="64.5" y="10" width="226" height="116"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="Fwm-rl-dKS" secondAttribute="height" multiplier="8:5" id="AAo-23-ODz"/>
-                                            <constraint firstAttribute="width" constant="350" id="wER-bJ-ebd">
-                                                <variation key="heightClass=compact" constant="325"/>
-                                            </constraint>
+                                            <constraint firstAttribute="width" secondItem="Fwm-rl-dKS" secondAttribute="height" multiplier="113:58" id="LtV-EW-4bR"/>
+                                            <constraint firstAttribute="width" constant="226" id="zgJ-Vl-MiN"/>
                                         </constraints>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="gjj-bC-32w">
-                                        <rect key="frame" x="0.0" y="133.5" width="355" height="122.5"/>
+                                        <rect key="frame" x="0.0" y="136" width="355" height="122.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="v7c-T9-kZq" userLabel="Label Stack View">
                                                 <rect key="frame" x="98" y="0.0" width="159.5" height="48.5"/>
@@ -82,8 +80,8 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="gjj-bC-32w" secondAttribute="bottom" id="9L8-n3-tw3"/>
-                                    <constraint firstItem="gjj-bC-32w" firstAttribute="top" secondItem="Fwm-rl-dKS" secondAttribute="bottom" constant="-30" id="BdA-bk-oTl"/>
-                                    <constraint firstItem="Fwm-rl-dKS" firstAttribute="top" secondItem="0Ae-eX-ae9" secondAttribute="top" constant="-55" id="Q94-Bc-Rfs"/>
+                                    <constraint firstItem="gjj-bC-32w" firstAttribute="top" secondItem="Fwm-rl-dKS" secondAttribute="bottom" constant="10" id="BdA-bk-oTl"/>
+                                    <constraint firstItem="Fwm-rl-dKS" firstAttribute="top" secondItem="0Ae-eX-ae9" secondAttribute="top" constant="10" id="Q94-Bc-Rfs"/>
                                     <constraint firstItem="gjj-bC-32w" firstAttribute="leading" secondItem="0Ae-eX-ae9" secondAttribute="leading" id="UZP-FI-0Fk"/>
                                     <constraint firstItem="czl-5D-gem" firstAttribute="centerX" secondItem="0Ae-eX-ae9" secondAttribute="centerX" id="V5P-Iz-hPa"/>
                                     <constraint firstItem="Fwm-rl-dKS" firstAttribute="centerX" secondItem="0Ae-eX-ae9" secondAttribute="centerX" id="jdr-4Z-YKV"/>
@@ -117,6 +115,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="mysites-nosites" width="400" height="250"/>
+        <image name="mysites-nosites" width="226" height="116"/>
     </resources>
 </document>
