@@ -4,7 +4,11 @@ import MGSwipeTableCell
 final class ReplyToComment: DefaultNotificationActionCommand {
     let replyIcon: UIButton = {
         let title = NSLocalizedString("Reply", comment: "Reply to a comment.")
-        return MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
+        let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
+        button.accessibilityLabel = title
+        button.accessibilityTraits = UIAccessibilityTraitButton
+        button.accessibilityHint = NSLocalizedString("Replies to a comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to reply to a comment.")
+        return button
     }()
 
     override var icon: UIButton? {
