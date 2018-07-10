@@ -15,11 +15,9 @@ final class ApproveComment: DefaultNotificationActionCommand {
     override var on: Bool {
         willSet {
             let newTitle = newValue ? TitleStrings.approve : TitleStrings.unapprove
-            setIconTitle(newTitle)
-            setAccessibilityLabel(newTitle)
-
             let newHint = newValue ? TitleHints.approve : TitleHints.unapprove
-            setAccessibilityHint(newHint)
+
+            setIconStrings(title: newTitle, label: newTitle, hint: newHint)
         }
     }
 
@@ -46,9 +44,9 @@ final class ApproveComment: DefaultNotificationActionCommand {
     }
 
     private func unApprove(block: ActionableObject) {
-        setIconTitle(TitleStrings.unapprove)
-        setAccessibilityLabel(TitleStrings.unapprove)
-        setAccessibilityHint(TitleHints.unapprove)
+        setIconStrings(title: TitleStrings.unapprove,
+                       label: TitleStrings.unapprove,
+                       hint: TitleHints.unapprove)
 
         ReachabilityUtils.onAvailableInternetConnectionDo {
             actionsService?.unapproveCommentWithBlock(block)
@@ -56,9 +54,9 @@ final class ApproveComment: DefaultNotificationActionCommand {
     }
 
     private func approve(block: ActionableObject) {
-        setIconTitle(TitleStrings.approve)
-        setAccessibilityLabel(TitleStrings.approve)
-        setAccessibilityHint(TitleHints.approve)
+        setIconStrings(title: TitleStrings.approve,
+                       label: TitleStrings.approve,
+                       hint: TitleHints.approve)
 
         ReachabilityUtils.onAvailableInternetConnectionDo {
             actionsService?.approveCommentWithBlock(block)

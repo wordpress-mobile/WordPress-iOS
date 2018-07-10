@@ -14,7 +14,7 @@ final class LikeComment: DefaultNotificationActionCommand {
     override var on: Bool {
         willSet {
             let newTitle = newValue ? TitleStrings.like : TitleStrings.unlike
-            setIconTitle(newTitle)
+            setIconStrings(title: newTitle)
         }
     }
 
