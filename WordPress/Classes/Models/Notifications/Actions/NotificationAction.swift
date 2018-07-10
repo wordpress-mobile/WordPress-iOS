@@ -23,4 +23,17 @@ class DefaultNotificationActionCommand: FormattableContentActionCommand {
     }
 
     func execute(context: ActionContext) { }
+
+    func setIconTitle(_ title: String) {
+        icon?.setTitle(title, for: .normal)
+    }
+
+    func setAccessibilityLabel(_ title: String) {
+        icon?.accessibilityLabel = title
+    }
+
+    func setAccessibilityHint(_ hint: String) {
+        icon?.accessibilityHint = hint
+    }
+
 }
