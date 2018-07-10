@@ -73,6 +73,7 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
  */
 - (void)fetchPost:(NSUInteger)postID
           forSite:(NSUInteger)siteID
+           isFeed:(BOOL)isFeed 
           success:(void (^)(ReaderPost *post))success
           failure:(void (^)(NSError *error))failure;
 
