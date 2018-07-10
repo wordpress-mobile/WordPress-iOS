@@ -7,18 +7,28 @@ final class ApproveComment: DefaultNotificationActionCommand {
         static let unapprove = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
     }
 
+    private enum TitleHints {
+        static let approve = NSLocalizedString("Approves a Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to approve a comment")
+        static let unapprove = NSLocalizedString("Unapproves a Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment")
+    }
+
     override var on: Bool {
         willSet {
             let newTitle = newValue ? TitleStrings.approve : TitleStrings.unapprove
             setIconTitle(newTitle)
+            setAccessibilityLabel(newTitle)
+
+            let newHint = newValue ? TitleHints.approve : TitleHints.unapprove
+            setAccessibilityHint(newHint)
         }
     }
 
     let approveIcon: UIButton = {
-        let title = NSLocalizedString("Approve", comment: "Approves a Comment")
+        let title = TitleStrings.approve
         let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
         button.accessibilityLabel = title
         button.accessibilityTraits = UIAccessibilityTraitButton
+        button.accessibilityHint = TitleHints.approve
         return button
     }()
 
@@ -53,10 +63,13 @@ final class ApproveComment: DefaultNotificationActionCommand {
 
     private func setIconTitle(_ title: String) {
         icon?.setTitle(title, for: .normal)
-        setAccessibilityLabel(title)
     }
 
     private func setAccessibilityLabel(_ title: String) {
         icon?.accessibilityLabel = title
+    }
+
+    private func setAccessibilityHint(_ hint: String) {
+        icon?.accessibilityHint = hint
     }
 }
