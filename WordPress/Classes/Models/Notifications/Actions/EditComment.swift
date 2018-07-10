@@ -1,5 +1,6 @@
 import MGSwipeTableCell
 
+/// Encapsulates logic to Edit a comment
 final class EditComment: DefaultNotificationActionCommand {
     let editIcon: UIButton = {
         let title = NSLocalizedString("Edit", comment: "Edits a Comment")

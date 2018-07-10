@@ -1,5 +1,6 @@
 import MGSwipeTableCell
 
+/// Encapsulates logic to reply to a comment
 final class ReplyToComment: DefaultNotificationActionCommand {
     let replyIcon: UIButton = {
         let title = NSLocalizedString("Reply", comment: "Reply to a comment.")
