@@ -4,7 +4,11 @@ import MGSwipeTableCell
 final class EditComment: DefaultNotificationActionCommand {
     let editIcon: UIButton = {
         let title = NSLocalizedString("Edit", comment: "Edits a Comment")
-        return MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
+        let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
+        button.accessibilityLabel = title
+        button.accessibilityTraits = UIAccessibilityTraitButton
+        button.accessibilityHint = NSLocalizedString("Edits a comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to Edit a Comment.")
+        return button
     }()
 
     override var icon: UIButton? {
