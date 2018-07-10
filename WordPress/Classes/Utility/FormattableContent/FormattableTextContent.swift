@@ -17,11 +17,11 @@ open class FormattableTextContent: FormattableContent {
     public let ranges: [FormattableContentRange]
     public var parent: FormattableContentParent?
     public var actions: [FormattableContentAction]?
-    public var meta: [String : AnyObject]?
+    public var meta: [String: AnyObject]?
 
     private let internalText: String?
 
-    public required init(dictionary: [String : AnyObject], actions commandActions: [FormattableContentAction], parent note: FormattableContentParent) {
+    public required init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], parent note: FormattableContentParent) {
         let rawRanges   = dictionary[Constants.BlockKeys.Ranges] as? [[String: AnyObject]]
 
         actions = commandActions
