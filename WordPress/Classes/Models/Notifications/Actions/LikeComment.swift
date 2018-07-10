@@ -38,8 +38,4 @@ final class LikeComment: DefaultNotificationActionCommand {
     private func removeLike(block: ActionableObject) {
         actionsService?.unlikeCommentWithBlock(block)
     }
-
-    private func setIconTitle(_ title: String) {
-        icon?.setTitle(title, for: .normal)
-    }
 }
