@@ -17,11 +17,15 @@ open class ActivityTableViewCell: WPTableViewCell {
 
     // MARK: - Public Methods
 
-    open func configureCell(_ activity: Activity) {
-        self.activity = activity
+    func configureCell(_ formattableActivity: FormattableActivity) {
+        activity = formattableActivity.activity
+        guard let activity = activity else {
+            return
+        }
+
         summaryLabel.text = activity.summary
         if FeatureFlag.extractNotifications.enabled {
-            contentLabel.attributedText = activity.formattedContent(using: SubjectContentStyles())
+            contentLabel.attributedText = formattableActivity.formattedContent(using: SubjectContentStyles())
         } else {
             contentLabel.text = activity.text
         }
