@@ -1,6 +1,6 @@
 
 class ActivityActionsParser: FormattableContentActionParser {
-    func parse(_ dictionary: [String : AnyObject]?) -> [FormattableContentAction] {
+    func parse(_ dictionary: [String: AnyObject]?) -> [FormattableContentAction] {
         return []
     }
 }

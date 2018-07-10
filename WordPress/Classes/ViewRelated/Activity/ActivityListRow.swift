@@ -11,7 +11,7 @@ struct ActivityListRow: ImmuTableRow {
         return formattableActivity.activity
     }
     let action: ImmuTableAction?
-    
+
     private let formattableActivity: FormattableActivity
 
     init(formattableActivity: FormattableActivity, action: ImmuTableAction?) {

@@ -1,11 +1,11 @@
 
 public protocol FormattableContentFactory {
-    static func content(from blocks: [[String: AnyObject]],  actionsParser parser: FormattableContentActionParser , parent: FormattableContentParent) -> [FormattableContent]
+    static func content(from blocks: [[String: AnyObject]], actionsParser parser: FormattableContentActionParser, parent: FormattableContentParent) -> [FormattableContent]
 }
 
 struct ActivityFormattableContentFactory: FormattableContentFactory {
     public static func content(from blocks: [[String: AnyObject]],
-                               actionsParser parser: FormattableContentActionParser ,
+                               actionsParser parser: FormattableContentActionParser,
                                parent: FormattableContentParent) -> [FormattableContent] {
 
         return blocks.compactMap {

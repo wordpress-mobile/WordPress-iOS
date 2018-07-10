@@ -1,5 +1,5 @@
 public class DefaultFormattableContentAction: FormattableContentAction {
-    public var enabled: Bool 
+    public var enabled: Bool
 
     public var on: Bool {
         didSet {
