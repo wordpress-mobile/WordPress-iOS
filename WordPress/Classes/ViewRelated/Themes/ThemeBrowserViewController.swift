@@ -911,6 +911,11 @@ private extension ThemeBrowserViewController {
         addChildViewController(noResultsViewController)
         collectionView.addSubview(noResultsViewController.view)
         noResultsViewController.view.frame = collectionView.frame
+
+        // There is a gap between the search bar and the collection view - https://github.com/wordpress-mobile/WordPress-iOS/issues/9730
+        // This makes the No Results View look vertically off-center. Until that is resolved, we'll move the NRV up by the search bar height.
+        noResultsViewController.view.frame.origin.y -= searchBarHeight
+
         noResultsViewController.didMove(toParentViewController: self)
     }
 
