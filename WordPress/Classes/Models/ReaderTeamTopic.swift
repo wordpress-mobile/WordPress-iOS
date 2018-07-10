@@ -16,6 +16,8 @@ import Foundation
     }
 
     fileprivate let bundledTeamIcons: [String] = [
-        "a8c"
+        ReaderTeamTopic.a8cTeamSlug
     ]
+
+    static let a8cTeamSlug = "a8c"
 }

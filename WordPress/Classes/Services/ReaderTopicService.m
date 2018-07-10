@@ -1053,6 +1053,12 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     return [results firstObject];
 }
 
+- (ReaderAbstractTopic *)findContainingPath:(NSString *)path
+{
+    NSArray *results = [[self allTopics] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path CONTAINS %@", [path lowercaseString]]];
+    return [results firstObject];
+}
+
 - (ReaderSiteTopic *)findSiteTopicWithSiteID:(NSNumber *)siteID
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderSiteTopic classNameWithoutNamespaces]];
