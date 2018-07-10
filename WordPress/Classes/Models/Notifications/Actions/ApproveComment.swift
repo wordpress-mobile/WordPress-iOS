@@ -16,7 +16,10 @@ final class ApproveComment: DefaultNotificationActionCommand {
 
     let approveIcon: UIButton = {
         let title = NSLocalizedString("Approve", comment: "Approves a Comment")
-        return MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
+        let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
+        button.accessibilityLabel = title
+        button.accessibilityTraits = UIAccessibilityTraitButton
+        return button
     }()
 
     override var icon: UIButton? {
@@ -50,5 +53,10 @@ final class ApproveComment: DefaultNotificationActionCommand {
 
     private func setIconTitle(_ title: String) {
         icon?.setTitle(title, for: .normal)
+        setAccessibilityLabel(title)
+    }
+
+    private func setAccessibilityLabel(_ title: String) {
+        icon?.accessibilityLabel = title
     }
 }
