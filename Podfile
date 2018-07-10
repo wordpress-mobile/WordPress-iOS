@@ -67,12 +67,10 @@ target 'WordPress' do
     pod 'Gridicons', '0.16'
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '1.1'
-    ## pod 'WordPressAuthenticator', '1.0.1' ## 1.0.1 anticipated pod version after WPAuth changes approved
-    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :branch => 'feature/nux-button-appearance'
+    pod 'WordPressAuthenticator', '1.0.1'
     pod 'WordPress-Aztec-iOS', '1.0.0-beta.23'
 	pod 'WordPress-Editor-iOS', '1.0.0-beta.23'
-    ## pod 'WordPressUI', '1.0.6' ## 1.0.6 anticipated pod version after WPUI changes approved
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :branch => 'fix/fancy-button-default-corner-radius'
+    pod 'WordPressUI', '1.0.6'
 
     target 'WordPressTest' do
         inherit! :search_paths
@@ -93,8 +91,7 @@ target 'WordPress' do
 
         pod 'WordPress-Aztec-iOS', '1.0.0-beta.23'
         pod 'WordPress-Editor-iOS', '1.0.0-beta.23'
-        ## pod 'WordPressUI', '~> 1.0'
-        pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :branch => 'fix/fancy-button-default-corner-radius'
+        pod 'WordPressUI', '1.0.6'
         pod 'Gridicons', '0.16'
     end
 
@@ -110,8 +107,7 @@ target 'WordPress' do
 
         pod 'WordPress-Aztec-iOS', '1.0.0-beta.23'
         pod 'WordPress-Editor-iOS', '1.0.0-beta.23'
-        ##pod 'WordPressUI', '~> 1.0'
-        pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :branch => 'fix/fancy-button-default-corner-radius'
+        pod 'WordPressUI', '1.0.6'
         pod 'Gridicons', '0.16'
     end
 
@@ -141,8 +137,7 @@ target 'WordPressComStatsiOS' do
     ## Automattic libraries
     ## ====================
     ##
-    ##pod 'WordPressUI', '~> 1.0'
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :branch => 'fix/fancy-button-default-corner-radius'
+    pod 'WordPressUI', '1.0.6'
 
     target 'WordPressComStatsiOSTests' do
         inherit! :search_paths
