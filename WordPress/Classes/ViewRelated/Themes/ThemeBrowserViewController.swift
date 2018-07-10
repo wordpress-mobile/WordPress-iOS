@@ -909,7 +909,8 @@ private extension ThemeBrowserViewController {
         noResultsViewController.configure(title: title)
 
         addChildViewController(noResultsViewController)
-        view.addSubview(noResultsViewController.view)
+        collectionView.addSubview(noResultsViewController.view)
+        noResultsViewController.view.frame = collectionView.frame
         noResultsViewController.didMove(toParentViewController: self)
     }
 
