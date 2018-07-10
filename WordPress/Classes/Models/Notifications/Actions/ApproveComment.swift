@@ -47,6 +47,8 @@ final class ApproveComment: DefaultNotificationActionCommand {
 
     private func unApprove(block: ActionableObject) {
         setIconTitle(TitleStrings.unapprove)
+        setAccessibilityLabel(TitleStrings.unapprove)
+        setAccessibilityHint(TitleHints.unapprove)
 
         ReachabilityUtils.onAvailableInternetConnectionDo {
             actionsService?.unapproveCommentWithBlock(block)
@@ -55,6 +57,8 @@ final class ApproveComment: DefaultNotificationActionCommand {
 
     private func approve(block: ActionableObject) {
         setIconTitle(TitleStrings.approve)
+        setAccessibilityLabel(TitleStrings.approve)
+        setAccessibilityHint(TitleHints.approve)
 
         ReachabilityUtils.onAvailableInternetConnectionDo {
             actionsService?.approveCommentWithBlock(block)
