@@ -1,7 +1,7 @@
 import MGSwipeTableCell
 
 /// Encapsulates logic to approve a cooment
-final class ApproveComment: DefaultNotificationActionCommand, AccessibleFormattableContentActionCommand {
+class ApproveComment: DefaultNotificationActionCommand, AccessibleFormattableContentActionCommand {
     private enum TitleStrings {
         static let approve = NSLocalizedString("Approve", comment: "Approves a Comment")
         static let unapprove = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
