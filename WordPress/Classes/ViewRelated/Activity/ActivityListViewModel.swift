@@ -58,12 +58,12 @@ class ActivityListViewModel: Observable {
         guard let activities = store.getActivities(site: site) else {
             return .Empty
         }
-
-        let activitiesRows = activities.map({ activity in
+        let formattableActivities = activities.map(FormattableActivity.init)
+        let activitiesRows = formattableActivities.map({ formattableActivity in
             return ActivityListRow(
-                activity: activity,
+                formattableActivity: formattableActivity,
                 action: { [weak presenter] (row) in
-                    presenter?.presentDetailsFor(activity: activity)
+                    presenter?.presentDetailsFor(activity: formattableActivity.activity)
                 }
             )
         })
