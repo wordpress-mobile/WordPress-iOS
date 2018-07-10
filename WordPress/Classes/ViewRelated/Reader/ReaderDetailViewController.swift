@@ -131,10 +131,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
 
-    @objc open class func controllerWithPostID(_ postID: NSNumber, siteID: NSNumber) -> ReaderDetailViewController {
+    @objc open class func controllerWithPostID(_ postID: NSNumber, siteID: NSNumber, isFeed: Bool = false) -> ReaderDetailViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderDetailViewController") as! ReaderDetailViewController
-        controller.setupWithPostID(postID, siteID: siteID)
+        controller.setupWithPostID(postID, siteID: siteID, isFeed: isFeed)
 
         return controller
     }
@@ -303,7 +303,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     // MARK: - Setup
 
-    @objc open func setupWithPostID(_ postID: NSNumber, siteID: NSNumber) {
+    @objc open func setupWithPostID(_ postID: NSNumber, siteID: NSNumber, isFeed: Bool) {
         let title = NSLocalizedString("Loading Post...", comment: "Text displayed while loading a post.")
         WPNoResultsView.displayAnimatedBox(withTitle: title, message: nil, view: view)
         textView.alpha = 0.0
@@ -314,6 +314,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         service.fetchPost(
         postID.uintValue,
         forSite: siteID.uintValue,
+        isFeed: isFeed,
         success: {[weak self] (post: ReaderPost?) in
                 WPNoResultsView.remove(from: self?.view)
                 self?.textView.alpha = 1.0
