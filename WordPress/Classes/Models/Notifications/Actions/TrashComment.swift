@@ -1,5 +1,6 @@
 import MGSwipeTableCell
 
+/// Encapsulates logic to trash a comment
 final class TrashComment: DefaultNotificationActionCommand {
     let trashIcon: UIButton = {
         let title = NSLocalizedString("Trash", comment: "Trashes a comment")

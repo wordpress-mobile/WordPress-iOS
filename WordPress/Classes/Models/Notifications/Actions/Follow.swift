@@ -1,5 +1,6 @@
 import MGSwipeTableCell
 
+/// Encapsulates logic to follow a blog
 final class Follow: DefaultNotificationActionCommand {
     let followIcon: UIButton = {
         let title = NSLocalizedString("Follow", comment: "Prompt to follow a blog.")

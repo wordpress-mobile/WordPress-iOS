@@ -1,5 +1,6 @@
 import MGSwipeTableCell
 
+/// Encapsulates logic to Like a Post
 final class LikePost: DefaultNotificationActionCommand {
     let likeIcon: UIButton = {
         let title = NSLocalizedString("Like", comment: "Like a post.")

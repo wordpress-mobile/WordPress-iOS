@@ -1,4 +1,4 @@
-/// Abstracts contextual actions that can be applied to FormattableContent.
+/// Abstracts the logic behind contextual actions that can be applied to FormattableContent.
 /// i.e. the actions applied to notifications (Approve, Mark a comment as Spam)
 
 protocol FormattableContentActionCommand: CustomStringConvertible {

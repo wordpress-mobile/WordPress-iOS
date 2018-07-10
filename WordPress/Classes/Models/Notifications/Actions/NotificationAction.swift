@@ -1,3 +1,4 @@
+/// Base Notification Action Command
 class DefaultNotificationActionCommand: FormattableContentActionCommand {
     var on: Bool
 
