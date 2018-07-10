@@ -20,3 +20,28 @@ extension FormattableContentActionCommand {
         return identifier.description
     }
 }
+
+protocol AccessibleFormattableContentActionCommand {
+    func setIconStrings(title: String, label: String, hint: String)
+}
+
+extension AccessibleFormattableContentActionCommand where Self: FormattableContentActionCommand {
+    func setIconStrings(title: String, label: String, hint: String) {
+        setIconTitle(title)
+        setAccessibilityLabel(label)
+        setAccessibilityHint(hint)
+    }
+
+    private func setIconTitle(_ title: String) {
+        icon?.setTitle(title, for: .normal)
+    }
+
+    private func setAccessibilityLabel(_ label: String) {
+        icon?.accessibilityLabel = label
+    }
+
+    private func setAccessibilityHint(_ hint: String) {
+        icon?.accessibilityHint = hint
+    }
+
+}

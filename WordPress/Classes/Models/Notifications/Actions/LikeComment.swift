@@ -1,6 +1,6 @@
 import MGSwipeTableCell
 /// Encapsulates logic to Like a comment
-final class LikeComment: DefaultNotificationActionCommand {
+final class LikeComment: DefaultNotificationActionCommand, AccessibleFormattableContentActionCommand {
     private enum TitleStrings {
         static let like = NSLocalizedString("Like", comment: "Likes a Comment")
         static let unlike = NSLocalizedString("Liked", comment: "A comment is marked as liked")
@@ -14,7 +14,7 @@ final class LikeComment: DefaultNotificationActionCommand {
     override var on: Bool {
         willSet {
             let newTitle = newValue ? TitleStrings.like : TitleStrings.unlike
-            setIconStrings(title: newTitle)
+            setIconStrings(title: newTitle, label: newTitle, hint: newTitle)
         }
     }
 
