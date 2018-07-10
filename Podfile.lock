@@ -169,7 +169,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, branch `feature/nux-button-appearance`)
   - WordPressKit (= 1.1)
   - WordPressShared (= 1.0.8)
-  - WordPressUI (~> 1.0)
+  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, branch `fix/fancy-button-default-corner-radius`)
   - WPMediaPicker (= 1.1)
   - wpxmlrpc (= 0.8.3)
   - ZendeskSDK (= 1.11.2.1)
@@ -205,7 +205,6 @@ SPEC REPOS:
     - WordPress-Editor-iOS
     - WordPressKit
     - WordPressShared
-    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskSDK
@@ -217,14 +216,20 @@ EXTERNAL SOURCES:
   WordPressAuthenticator:
     :branch: feature/nux-button-appearance
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
+  WordPressUI:
+    :branch: fix/fancy-button-default-corner-radius
+    :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   WordPressAuthenticator:
-    :commit: abaffb0775e3d2e8d0c71504ac29cae913134adc
+    :commit: 046625d1c3139ce07f053f2bba50a7e2ded37550
     :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
+  WordPressUI:
+    :commit: 7aeeeee1a72247a0c385939f518a1366a0546209
+    :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -263,6 +268,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: f40c28ae7b7f1c1790f783a06db59ed6f98beba5
+PODFILE CHECKSUM: 23f2d133df85338fb95af1cb906e73e1db5b0168
 
 COCOAPODS: 1.5.3
