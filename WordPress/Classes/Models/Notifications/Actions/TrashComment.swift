@@ -4,7 +4,11 @@ import MGSwipeTableCell
 final class TrashComment: DefaultNotificationActionCommand {
     let trashIcon: UIButton = {
         let title = NSLocalizedString("Trash", comment: "Trashes a comment")
-        return MGSwipeButton(title: title, backgroundColor: WPStyleGuide.errorRed())
+        let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.errorRed())
+        button.accessibilityLabel =  title
+        button.accessibilityTraits = UIAccessibilityTraitButton
+        button.accessibilityHint = NSLocalizedString("Trashes a comment", comment: "VoiceOver accessibility hint, informing the user the button can be used to Trashes a comment")
+        return button
     }()
 
     override var icon: UIButton? {
