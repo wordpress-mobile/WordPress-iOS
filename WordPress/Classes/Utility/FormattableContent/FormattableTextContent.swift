@@ -1,27 +1,27 @@
 
 import Foundation
 
-public extension FormattableContentKind {
-    public static let text = FormattableContentKind("text")
+extension FormattableContentKind {
+    static let text = FormattableContentKind("text")
 }
 
-open class FormattableTextContent: FormattableContent {
-    open var kind: FormattableContentKind {
+class FormattableTextContent: FormattableContent {
+    var kind: FormattableContentKind {
         return .text
     }
 
-    open var text: String? {
+    var text: String? {
         return internalText
     }
 
-    public let ranges: [FormattableContentRange]
-    public var parent: FormattableContentParent?
-    public var actions: [FormattableContentAction]?
-    public var meta: [String: AnyObject]?
+    let ranges: [FormattableContentRange]
+    var parent: FormattableContentParent?
+    var actions: [FormattableContentAction]?
+    var meta: [String: AnyObject]?
 
     private let internalText: String?
 
-    public required init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], parent note: FormattableContentParent) {
+    required init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], parent note: FormattableContentParent) {
         let rawRanges   = dictionary[Constants.BlockKeys.Ranges] as? [[String: AnyObject]]
 
         actions = commandActions
@@ -31,7 +31,7 @@ open class FormattableTextContent: FormattableContent {
         meta = dictionary[Constants.BlockKeys.Meta] as? [String: AnyObject]
     }
 
-    public init(text: String, ranges: [NotificationContentRange]) {
+    init(text: String, ranges: [NotificationContentRange]) {
         self.internalText = text
         self.ranges = ranges
     }
@@ -42,7 +42,7 @@ open class FormattableTextContent: FormattableContent {
     }
 }
 
-public extension FormattableMediaItem {
+extension FormattableMediaItem {
     fileprivate enum MediaKeys {
         static let RawType      = "type"
         static let URL          = "url"

@@ -1,6 +1,6 @@
 
 /// Protocol to help transition from NotificationBlock to FormattableObject
-public protocol ActionableObject: AnyObject {
+protocol ActionableObject: AnyObject {
     var notificationID: String? { get }
     var metaSiteID: NSNumber? { get }
     var metaCommentID: NSNumber? { get }
@@ -10,7 +10,7 @@ public protocol ActionableObject: AnyObject {
     func action(id: Identifier) -> FormattableContentAction?
 }
 
-public protocol FormattableContentActionParser {
+protocol FormattableContentActionParser {
     func parse(_ dictionary: [String: AnyObject]?) -> [FormattableContentAction]
 }
 
@@ -54,20 +54,20 @@ extension Identifier: CustomStringConvertible {
 }
 
 
-public typealias ActionContextRequest = (NotificationDeletionRequest?, Bool) -> Void
-public struct ActionContext {
-    public let block: ActionableObject
-    public let content: String
-    public let completion: ActionContextRequest?
+typealias ActionContextRequest = (NotificationDeletionRequest?, Bool) -> Void
+struct ActionContext {
+    let block: ActionableObject
+    let content: String
+    let completion: ActionContextRequest?
 
-    public init(block: ActionableObject, content: String = "", completion: ActionContextRequest? = nil) {
+    init(block: ActionableObject, content: String = "", completion: ActionContextRequest? = nil) {
         self.block = block
         self.content = content
         self.completion = completion
     }
 }
 
-public protocol FormattableContentAction: CustomStringConvertible {
+protocol FormattableContentAction: CustomStringConvertible {
     var identifier: Identifier { get }
     var enabled: Bool { get }
     var on: Bool { get }
