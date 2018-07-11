@@ -168,13 +168,13 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
     /// Returns the accessibility label for the Like Button
     ///
     fileprivate var likeAccesibilityLabel: String {
-        return isLikeOn ? Like.selectedTitle : Like.normalTitle
+        return isLikeOn ? LikeComment.TitleStrings.unlike : LikeComment.TitleStrings.like
     }
 
     /// Returns the accessibility hint for the Like Button
     ///
     fileprivate var likeAccessibilityHint: String {
-        return isLikeOn ? Like.selectedHint : Like.normalHint
+        return isLikeOn ? LikeComment.TitleHints.unlike : LikeComment.TitleHints.like
     }
 
 
@@ -195,9 +195,9 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
         btnReply.accessibilityLabel = ReplyToComment.title
         btnReply.accessibilityHint = ReplyToComment.hint
 
-        btnLike.setTitle(Like.normalTitle, for: UIControlState())
-        btnLike.setTitle(Like.selectedTitle, for: .highlighted)
-        btnLike.setTitle(Like.selectedTitle, for: .selected)
+        btnLike.setTitle(LikeComment.TitleStrings.like, for: UIControlState())
+        btnLike.setTitle(LikeComment.TitleStrings.unlike, for: .highlighted)
+        btnLike.setTitle(LikeComment.TitleStrings.unlike, for: .selected)
         btnLike.setTitleColor(textNormalColor, for: UIControlState())
         btnLike.setTitleColor(textSelectedColor, for: .highlighted)
         btnLike.setTitleColor(textSelectedColor, for: .selected)
@@ -351,13 +351,6 @@ private extension NoteBlockActionsTableViewCell {
     struct Edit {
         static let normalTitle      = NSLocalizedString("Edit", comment: "Verb, edit a comment")
         static let normalHint       = NSLocalizedString("Edits a comment", comment: "Edit Action Spoken hint.")
-    }
-
-    struct Like {
-        static let normalTitle      = NSLocalizedString("Like", comment: "Like a comment")
-        static let selectedTitle    = NSLocalizedString("Liked", comment: "A comment has been liked")
-        static let normalHint       = NSLocalizedString("Likes the comment", comment: "Likes a comment. Spoken Hint.")
-        static let selectedHint     = NSLocalizedString("Unlikes the comment", comment: "Unlikes a comment. Spoken Hint.")
     }
 
     struct Constants {
