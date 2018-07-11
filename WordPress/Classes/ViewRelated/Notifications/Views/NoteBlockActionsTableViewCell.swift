@@ -190,8 +190,10 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
         let textNormalColor = WPStyleGuide.Notifications.blockActionDisabledColor
         let textSelectedColor = WPStyleGuide.Notifications.blockActionEnabledColor
 
-        btnReply.setTitle(Reply.normalTitle, for: UIControlState())
+        btnReply.setTitle(ReplyToComment.title, for: UIControlState())
         btnReply.setTitleColor(textNormalColor, for: UIControlState())
+        btnReply.accessibilityLabel = ReplyToComment.title
+        btnReply.accessibilityHint = ReplyToComment.hint
 
         btnLike.setTitle(Like.normalTitle, for: UIControlState())
         btnLike.setTitle(Like.selectedTitle, for: .highlighted)
@@ -214,6 +216,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
         btnSpam.accessibilityLabel = MarkAsSpam.title
         btnSpam.accessibilityHint = MarkAsSpam.hint
 
+        btnTrash.setTitle(TrashComment.title, for: .normal)
         btnTrash.setTitleColor(textNormalColor, for: UIControlState())
         btnTrash.accessibilityLabel = TrashComment.title
         btnTrash.accessibilityHint = TrashComment.hint
@@ -362,11 +365,6 @@ private extension NoteBlockActionsTableViewCell {
         static let selectedTitle    = NSLocalizedString("Liked", comment: "A comment has been liked")
         static let normalHint       = NSLocalizedString("Likes the comment", comment: "Likes a comment. Spoken Hint.")
         static let selectedHint     = NSLocalizedString("Unlikes the comment", comment: "Unlikes a comment. Spoken Hint.")
-    }
-
-    struct Reply {
-        static let normalTitle      = NSLocalizedString("Reply", comment: "Verb, reply to a comment")
-        static let normalHint       = NSLocalizedString("Replies to a comment", comment: "Reply Action Spoken hint.")
     }
 
     struct Constants {
