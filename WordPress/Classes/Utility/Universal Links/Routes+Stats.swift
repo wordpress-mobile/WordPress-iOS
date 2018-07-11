@@ -9,6 +9,8 @@ enum StatsRoute {
     case monthSite
     case yearSite
     case insights
+    case dayCategory
+    case annualStats
     case activityLog
 }
 
@@ -33,6 +35,10 @@ extension StatsRoute: Route {
             return "/stats/year/:domain"
         case .insights:
             return "/stats/insights/:domain"
+        case .dayCategory:
+            return "/stats/day/:category/:domain"
+        case .annualStats:
+            return "/stats/annualstats/:domain"
         case .activityLog:
             return "/stats/activity/:domain"
         }
@@ -78,6 +84,16 @@ extension StatsRoute: NavigationAction {
             if let blog = blog(from: values) {
                 coordinator.showStats(for: blog,
                                       timePeriod: StatsPeriodType.insights)
+            }
+        case .dayCategory:
+            if let blog = blog(from: values) {
+                coordinator.showStats(for: blog,
+                                      timePeriod: StatsPeriodType.days)
+            }
+        case .annualStats:
+            if let blog = blog(from: values) {
+                coordinator.showStats(for: blog,
+                                      timePeriod: StatsPeriodType.years)
             }
         case .activityLog:
             if let blog = blog(from: values) {
