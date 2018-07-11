@@ -7,7 +7,7 @@ class ActivityContentStyles: FormattableContentStyles {
     var rangeStylesMap: [NotificationContentRange.Kind: [NSAttributedStringKey: Any]]? {
         return [
             .post: WPStyleGuide.ActivityStyleGuide.contentItalicStyle,
-            .comment: WPStyleGuide.ActivityStyleGuide.contentItalicStyle,
+            .comment: WPStyleGuide.ActivityStyleGuide.contentRegularStyle,
             .italic: WPStyleGuide.ActivityStyleGuide.contentItalicStyle
         ]
     }
