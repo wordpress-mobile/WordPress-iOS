@@ -3,6 +3,7 @@ import Foundation
 enum StatsRoute {
     case root
     case site
+    case activityLog
 }
 
 extension StatsRoute: Route {
@@ -16,6 +17,8 @@ extension StatsRoute: Route {
             return "/stats"
         case .site:
             return "/stats/:domain"
+        case .activityLog:
+            return "/stats/activity/:domain"
         }
     }
 }
@@ -35,8 +38,10 @@ extension StatsRoute: NavigationAction {
             if let blog = blog(from: values) {
                 coordinator.showStats(for: blog)
             }
-        default:
-            break
+        case .activityLog:
+            if let blog = blog(from: values) {
+                coordinator.showActivityLog(for: blog)
+            }
         }
     }
 
