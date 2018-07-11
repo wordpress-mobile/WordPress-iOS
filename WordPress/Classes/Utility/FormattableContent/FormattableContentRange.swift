@@ -6,9 +6,23 @@ public protocol FormattableContentRange {
     func apply(_ styles: FormattableContentStyles, to string: NSMutableAttributedString, withShift shift: Int) -> Shift
 }
 
+protocol LinkContentRange {
+    var url: URL? { get }
+    func applyURLStyles(to string: NSMutableAttributedString, shiftedRange: NSRange, applying styles: FormattableContentStyles)
+}
+
+extension LinkContentRange where Self: FormattableContentRange {
+    func applyURLStyles(to string: NSMutableAttributedString, shiftedRange: NSRange, applying styles: FormattableContentStyles) {
+        if let url = url, let linksColor = styles.linksColor {
+            string.addAttribute(.link, value: url, range: shiftedRange)
+            string.addAttribute(.foregroundColor, value: linksColor, range: shiftedRange)
+        }
+    }
+}
+
 // MARK: - DefaultFormattableContentRange Entity
 //
-public class NotificationContentRange: FormattableContentRange {
+public class NotificationContentRange: FormattableContentRange, LinkContentRange {
     public let kind: Kind
     public let range: NSRange
 
@@ -38,13 +52,6 @@ public class NotificationContentRange: FormattableContentRange {
     fileprivate func apply(_ styles: FormattableContentStyles, to string: NSMutableAttributedString, at shiftedRange: NSRange) {
         if let rangeStyle = styles.rangeStylesMap?[kind] {
             string.addAttributes(rangeStyle, range: shiftedRange)
-        }
-    }
-
-    fileprivate func applyURLStyles(to string: NSMutableAttributedString, shiftedRange: NSRange, applying styles: FormattableContentStyles) {
-        if let url = url, let linksColor = styles.linksColor {
-            string.addAttribute(.link, value: url, range: shiftedRange)
-            string.addAttribute(.foregroundColor, value: linksColor, range: shiftedRange)
         }
     }
 
@@ -125,4 +132,5 @@ public extension NotificationContentRange.Kind {
     public static let site       = NotificationContentRange.Kind("site")
     public static let match      = NotificationContentRange.Kind("match")
     public static let link       = NotificationContentRange.Kind("link")
+    public static let italic     = NotificationContentRange.Kind("i")
 }

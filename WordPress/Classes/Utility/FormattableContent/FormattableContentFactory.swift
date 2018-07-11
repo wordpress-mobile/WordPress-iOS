@@ -1,6 +1,8 @@
 
 public protocol FormattableContentFactory {
-    static func content(from blocks: [[String: AnyObject]], actionsParser parser: FormattableContentActionParser, parent: FormattableContentParent) -> [FormattableContent]
+    static func content(from blocks: [[String: AnyObject]],
+                        actionsParser parser: FormattableContentActionParser,
+                        parent: FormattableContentParent) -> [FormattableContent]
 }
 
 struct ActivityFormattableContentFactory: FormattableContentFactory {
