@@ -192,7 +192,6 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
 
         btnReply.setTitle(Reply.normalTitle, for: UIControlState())
         btnReply.setTitleColor(textNormalColor, for: UIControlState())
-        btnReply.accessibilityLabel = Reply.normalHint
 
         btnLike.setTitle(Like.normalTitle, for: UIControlState())
         btnLike.setTitle(Like.selectedTitle, for: .highlighted)
@@ -200,7 +199,6 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
         btnLike.setTitleColor(textNormalColor, for: UIControlState())
         btnLike.setTitleColor(textSelectedColor, for: .highlighted)
         btnLike.setTitleColor(textSelectedColor, for: .selected)
-        btnLike.accessibilityLabel = Like.normalTitle
 
         btnApprove.setTitle(Approve.normalTitle, for: UIControlState())
         btnApprove.setTitle(Approve.selectedTitle, for: .highlighted)
@@ -208,19 +206,15 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
         btnApprove.setTitleColor(textNormalColor, for: UIControlState())
         btnApprove.setTitleColor(textSelectedColor, for: .highlighted)
         btnApprove.setTitleColor(textSelectedColor, for: .selected)
-        btnApprove.accessibilityLabel = Approve.normalTitle
 
-        btnEdit.setTitle(Edit.normalTitle, for: UIControlState())
         btnEdit.setTitleColor(textNormalColor, for: UIControlState())
-        btnEdit.accessibilityLabel = Edit.normalHint
 
-        btnSpam.setTitle(Spam.normalTitle, for: UIControlState())
+        btnSpam.setTitle(MarkAsSpam.title, for: .normal)
         btnSpam.setTitleColor(textNormalColor, for: UIControlState())
-        btnSpam.accessibilityLabel = Spam.normalHint
+        btnSpam.accessibilityLabel = MarkAsSpam.title
+        btnSpam.accessibilityHint = MarkAsSpam.hint
 
-        btnTrash.setTitle(Trash.normalTitle, for: UIControlState())
         btnTrash.setTitleColor(textNormalColor, for: UIControlState())
-        btnTrash.accessibilityLabel = Trash.normalHint
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -371,12 +365,6 @@ private extension NoteBlockActionsTableViewCell {
     struct Reply {
         static let normalTitle      = NSLocalizedString("Reply", comment: "Verb, reply to a comment")
         static let normalHint       = NSLocalizedString("Replies to a comment", comment: "Reply Action Spoken hint.")
-    }
-
-    struct Spam {
-        static let normalTitle      = NSLocalizedString("Spam", comment: "Verb, spam a comment")
-        static let normalHint       = NSLocalizedString("Moves a comment to Spam", comment: "Spam Action Spoken hint.")
-
     }
 
     struct Trash {

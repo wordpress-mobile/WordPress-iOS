@@ -2,12 +2,14 @@ import MGSwipeTableCell
 
 /// Encapsulates logic to mark a comment as spam
 final class MarkAsSpam: DefaultNotificationActionCommand {
+    static let title = NSLocalizedString("Spam", comment: "Marks comment as spam.")
+    static let hint = NSLocalizedString("Mark as spam.", comment: "VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam.")
+
     let spamIcon: UIButton = {
-        let title = NSLocalizedString("Spam", comment: "Marks comment as spam.")
         let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
         button.accessibilityLabel = title
         button.accessibilityTraits = UIAccessibilityTraitButton
-        button.accessibilityHint = NSLocalizedString("Mark as spam.", comment: "VoiceOver accessibility hint, informing the user the button can be used to Mark a comment as spam.")
+        button.accessibilityHint = hint
         return button
     }()
 
