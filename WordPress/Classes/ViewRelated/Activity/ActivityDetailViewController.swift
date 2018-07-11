@@ -4,7 +4,11 @@ import WordPressUI
 
 class ActivityDetailViewController: UIViewController {
 
-    var activity: Activity?
+    var formattableActivity: FormattableActivity? {
+        didSet {
+            activity = formattableActivity?.activity
+        }
+    }
     var site: JetpackSiteRef?
 
     weak var rewindPresenter: ActivityRewindPresenter?
@@ -17,6 +21,7 @@ class ActivityDetailViewController: UIViewController {
     @IBOutlet private var timeLabel: UILabel!
     @IBOutlet private var dateLabel: UILabel!
 
+    @IBOutlet weak var textView: UITextView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var summaryLabel: UILabel!
 
@@ -27,6 +32,8 @@ class ActivityDetailViewController: UIViewController {
     @IBOutlet private var bottomConstaint: NSLayoutConstraint!
 
     @IBOutlet private var rewindButton: UIButton!
+
+    private var activity: Activity?
 
     override func viewDidLoad() {
         setupFonts()
@@ -44,13 +51,24 @@ class ActivityDetailViewController: UIViewController {
         nameLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .footnote).pointSize,
                                            weight: .semibold)
 
-        textLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize,
-                                           weight: .semibold)
+        if FeatureFlag.extractNotifications.enabled == false {
+            textLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize,
+                                               weight: .semibold)
+        }
     }
 
     private func setupViews() {
         guard let activity = activity else {
             return
+        }
+
+        let showFormattedText = FeatureFlag.extractNotifications.enabled
+        textLabel.isHidden = showFormattedText
+        textView.isHidden = !showFormattedText
+
+        if showFormattedText {
+            textView.textContainerInset = .zero
+            textView.textContainer.lineFragmentPadding = 0
         }
 
         if activity.isRewindable {
@@ -83,7 +101,11 @@ class ActivityDetailViewController: UIViewController {
         nameLabel.text = activity.actor?.displayName
         roleLabel.text = activity.actor?.role.localizedCapitalized
 
-        textLabel.text = activity.text
+        if FeatureFlag.extractNotifications.enabled {
+            textView.attributedText = formattableActivity?.formattedContent(using: ActivityContentStyles())
+        } else {
+            textLabel.text = activity.text
+        }
         summaryLabel.text = activity.summary
 
         rewindButton.setTitle(NSLocalizedString("Rewind", comment: "Title for button allowing user to rewind their Jetpack site"),
