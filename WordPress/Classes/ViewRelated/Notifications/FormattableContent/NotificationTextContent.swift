@@ -63,10 +63,11 @@ class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
         return .text
     }
 
-    required init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], parent note: FormattableContentParent) {
+    required init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], ranges: [FormattableContentRange], parent note: FormattableContentParent) {
         let rawMedia = dictionary[Constants.BlockKeys.Media] as? [[String: AnyObject]]
         media = FormattableMediaItem.mediaFromArray(rawMedia)
-        super.init(dictionary: dictionary, actions: commandActions, parent: note)
+
+        super.init(dictionary: dictionary, actions: commandActions, ranges: ranges, parent: note)
     }
 
     func formattableContentRangeWithCommentId(_ commentID: NSNumber) -> NotificationContentRange? {

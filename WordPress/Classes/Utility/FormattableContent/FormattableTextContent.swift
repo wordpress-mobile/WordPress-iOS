@@ -21,11 +21,11 @@ open class FormattableTextContent: FormattableContent {
 
     private let internalText: String?
 
-    public required init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], parent note: FormattableContentParent) {
-        let rawRanges   = dictionary[Constants.BlockKeys.Ranges] as? [[String: AnyObject]]
+    public required init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], ranges: [FormattableContentRange], parent note: FormattableContentParent) {
 
         actions = commandActions
-        ranges = FormattableTextContent.rangesFrom(rawRanges)
+//        ranges = FormattableTextContent.rangesFrom(rawRanges)
+        self.ranges = ranges
         parent = note
         internalText = dictionary[Constants.BlockKeys.Text] as? String
         meta = dictionary[Constants.BlockKeys.Meta] as? [String: AnyObject]
