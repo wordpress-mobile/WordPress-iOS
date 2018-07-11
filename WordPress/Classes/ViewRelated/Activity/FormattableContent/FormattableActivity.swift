@@ -1,6 +1,7 @@
 
 class FormattableActivity {
     let activity: Activity
+    
     private let formatter = FormattableContentFormatter()
     private var cachedContentGroup: FormattableContentGroup? = nil
 

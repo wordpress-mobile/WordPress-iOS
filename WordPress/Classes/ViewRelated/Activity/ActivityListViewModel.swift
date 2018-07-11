@@ -5,7 +5,7 @@ protocol ActivityRewindPresenter: class {
 }
 
 protocol ActivityDetailPresenter: class {
-    func presentDetailsFor(activity: Activity)
+    func presentDetailsFor(activity: FormattableActivity)
 }
 
 class ActivityListViewModel: Observable {
@@ -63,7 +63,7 @@ class ActivityListViewModel: Observable {
             return ActivityListRow(
                 formattableActivity: formattableActivity,
                 action: { [weak presenter] (row) in
-                    presenter?.presentDetailsFor(activity: formattableActivity.activity)
+                    presenter?.presentDetailsFor(activity: formattableActivity)
                 }
             )
         })
