@@ -215,6 +215,8 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
         btnSpam.accessibilityHint = MarkAsSpam.hint
 
         btnTrash.setTitleColor(textNormalColor, for: UIControlState())
+        btnTrash.accessibilityLabel = TrashComment.title
+        btnTrash.accessibilityHint = TrashComment.hint
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -365,11 +367,6 @@ private extension NoteBlockActionsTableViewCell {
     struct Reply {
         static let normalTitle      = NSLocalizedString("Reply", comment: "Verb, reply to a comment")
         static let normalHint       = NSLocalizedString("Replies to a comment", comment: "Reply Action Spoken hint.")
-    }
-
-    struct Trash {
-        static let normalTitle      = NSLocalizedString("Trash", comment: "Move a comment to the trash")
-        static let normalHint       = NSLocalizedString("Moves the comment to Trash", comment: "Trash Action Spoken hint")
     }
 
     struct Constants {
