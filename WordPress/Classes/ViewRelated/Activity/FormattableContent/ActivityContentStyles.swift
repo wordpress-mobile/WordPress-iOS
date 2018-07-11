@@ -4,8 +4,6 @@ class ActivityContentStyles: FormattableContentStyles {
         return WPStyleGuide.ActivityStyleGuide.contentRegularStyle
     }
 
-    var quoteStyles: [NSAttributedStringKey: Any]? = nil
-
     var rangeStylesMap: [NotificationContentRange.Kind: [NSAttributedStringKey: Any]]? {
         return [
             .post: WPStyleGuide.ActivityStyleGuide.contentItalicStyle,
@@ -14,6 +12,7 @@ class ActivityContentStyles: FormattableContentStyles {
         ]
     }
 
-    var linksColor: UIColor? = WPStyleGuide.ActivityStyleGuide.linkColor
-    var key: String = "ActivityContentStyles"
+    let linksColor: UIColor? = WPStyleGuide.ActivityStyleGuide.linkColor
+    let quoteStyles: [NSAttributedStringKey: Any]? = nil
+    let key: String = "ActivityContentStyles"
 }
