@@ -20,7 +20,17 @@ struct UniversalLinkRouter {
         MeNotificationSettingsRoute(),
         NewPostRoute(),
         NewPostForSiteRoute(),
-        NotificationsRoute()
+        NotificationsRoute(),
+        ReaderRoute.root,
+        ReaderRoute.discover,
+        ReaderRoute.search,
+        ReaderRoute.a8c,
+        ReaderRoute.likes,
+        ReaderRoute.manageFollowing,
+        ReaderRoute.list,
+        ReaderRoute.tag,
+        ReaderRoute.feedsPost,
+        ReaderRoute.blogsPost
         ])
 
     /// Attempts to find a Route that matches the url's path, and perform its
