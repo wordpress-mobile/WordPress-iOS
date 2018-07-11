@@ -33,4 +33,12 @@ class MySitesCoordinator: NSObject {
             blogDetailsViewController.showDetailView(for: .stats)
         }
     }
+
+    func showActivityLog(for blog: Blog) {
+        showBlogDetails(for: blog)
+
+        if let blogDetailsViewController = mySitesNavigationController.topViewController as? BlogDetailsViewController {
+            blogDetailsViewController.showDetailView(for: .activity)
+        }
+    }
 }
