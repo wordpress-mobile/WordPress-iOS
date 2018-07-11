@@ -156,13 +156,13 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
     /// Returns the accessibility label for the Approve Button
     ///
     fileprivate var approveAccesibilityLabel: String {
-        return isApproveOn ? Approve.selectedTitle : Approve.normalTitle
+        return isApproveOn ? ApproveComment.TitleStrings.selected : ApproveComment.TitleStrings.approve
     }
 
     /// Returns the accessibility hint for the Approve Button
     ///
     fileprivate var approveAccesibilityHint: String {
-        return isApproveOn ? Approve.selectedHint : Approve.normalHint
+        return isApproveOn ? ApproveComment.TitleHints.selected : ApproveComment.TitleStrings.approve
     }
 
     /// Returns the accessibility label for the Like Button
@@ -202,9 +202,9 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
         btnLike.setTitleColor(textSelectedColor, for: .highlighted)
         btnLike.setTitleColor(textSelectedColor, for: .selected)
 
-        btnApprove.setTitle(Approve.normalTitle, for: UIControlState())
-        btnApprove.setTitle(Approve.selectedTitle, for: .highlighted)
-        btnApprove.setTitle(Approve.selectedTitle, for: .selected)
+        btnApprove.setTitle(ApproveComment.TitleStrings.approve, for: UIControlState())
+        btnApprove.setTitle(ApproveComment.TitleStrings.selected, for: .highlighted)
+        btnApprove.setTitle(ApproveComment.TitleStrings.selected, for: .selected)
         btnApprove.setTitleColor(textNormalColor, for: UIControlState())
         btnApprove.setTitleColor(textSelectedColor, for: .highlighted)
         btnApprove.setTitleColor(textSelectedColor, for: .selected)
@@ -348,13 +348,6 @@ private extension NoteBlockActionsTableViewCell {
 // MARK: - Private Constants
 //
 private extension NoteBlockActionsTableViewCell {
-    struct Approve {
-        static let normalTitle      = NSLocalizedString("Approve", comment: "Approve a comment")
-        static let selectedTitle    = NSLocalizedString("Approved", comment: "Unapprove a comment")
-        static let normalHint       = NSLocalizedString("Approves the comment", comment: "Approves a comment. Spoken Hint.")
-        static let selectedHint     = NSLocalizedString("Unapproves the comment", comment: "Unapproves a comment. Spoken Hint.")
-    }
-
     struct Edit {
         static let normalTitle      = NSLocalizedString("Edit", comment: "Verb, edit a comment")
         static let normalHint       = NSLocalizedString("Edits a comment", comment: "Edit Action Spoken hint.")
