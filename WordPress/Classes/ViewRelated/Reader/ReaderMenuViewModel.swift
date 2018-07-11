@@ -718,6 +718,21 @@ enum ReaderDefaultMenuItemOrder: Int {
         return nil
     }
 
+    func indexPathOfTeam(withSlug slug: String) -> IndexPath? {
+        guard let teams = teamsFetchedResultsController.fetchedObjects as? [ReaderTeamTopic],
+            let section = indexOfSectionWithType(.teams) else {
+            return nil
+        }
+
+        for (index, team) in teams.enumerated() {
+            if team.slug == slug {
+                return IndexPath(row: index, section: section)
+            }
+        }
+
+        return nil
+    }
+
     func indexPathOfSavedForLater() -> IndexPath? {
         if let sectionIndex = indexOfSectionWithType(.defaults) {
             for (index, item) in defaultSectionItems.enumerated() {

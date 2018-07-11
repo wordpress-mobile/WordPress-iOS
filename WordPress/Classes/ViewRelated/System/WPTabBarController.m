@@ -450,6 +450,14 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     self.selectedIndex = WPTabMySites;
 }
 
+#pragma mark - Navigation Coordinators
+
+- (ReaderCoordinator *)readerCoordinator
+{
+    return [[ReaderCoordinator alloc] initWithReaderNavigationController:self.readerNavigationController
+                                                readerMenuViewController:self.readerMenuViewController];
+}
+
 #pragma mark - Navigation Helpers
 
 - (void)showTabForIndex:(NSInteger)tabIndex
@@ -545,7 +553,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 
     if (topDetailVC && topDetailVC.navigationController) {
-        ReaderDetailViewController *readerPostDetailVC = [ReaderDetailViewController controllerWithPostID:postId siteID:blogId];
+        ReaderDetailViewController *readerPostDetailVC = [ReaderDetailViewController controllerWithPostID:postId siteID:blogId isFeed:NO];
         [topDetailVC.navigationController pushFullscreenViewController:readerPostDetailVC animated:YES];
     }
 }
