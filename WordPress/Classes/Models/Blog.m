@@ -18,6 +18,7 @@ static NSInteger const ImageSizeLargeWidth = 640;
 static NSInteger const ImageSizeLargeHeight = 480;
 static NSInteger const JetpackProfessionalYearlyPlanId = 2004;
 static NSInteger const JetpackProfessionalMonthlyPlanId = 2001;
+static NSInteger const BusinessPlanId = 1008;
 
 NSString * const BlogEntityName = @"Blog";
 NSString * const PostFormatStandard = @"standard";
@@ -554,7 +555,14 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 
 - (BOOL)supportsPluginManagement
 {
-    return [self hasRequiredJetpackVersion:@"5.6"];
+    if ([Feature enabled:FeatureFlagAutomatedTransfersCustomDomain]) {
+        return self.isHostedAtWPcom
+        && self.planID.integerValue == BusinessPlanId
+        && !(self.siteVisibility == SiteVisibilityPrivate)
+        && self.isAdmin;
+    } else {
+        return [self hasRequiredJetpackVersion:@"5.6"];
+    }
 }
 
 - (BOOL)accountIsDefaultAccount
