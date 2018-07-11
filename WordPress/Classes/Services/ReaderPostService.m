@@ -142,10 +142,10 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                                   }];
 }
 
-- (void)fetchPost:(NSUInteger)postID forSite:(NSUInteger)siteID success:(void (^)(ReaderPost *post))success failure:(void (^)(NSError *error))failure
+- (void)fetchPost:(NSUInteger)postID forSite:(NSUInteger)siteID isFeed:(BOOL)isFeed success:(void (^)(ReaderPost *post))success failure:(void (^)(NSError *error))failure
 {
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
-    [remoteService fetchPost:postID fromSite:siteID success:^(RemoteReaderPost *remotePost) {
+    [remoteService fetchPost:postID fromSite:siteID isFeed:isFeed success:^(RemoteReaderPost *remotePost) {
         if (!success) {
             return;
         }
