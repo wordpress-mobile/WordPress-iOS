@@ -56,6 +56,8 @@ struct UniversalLinkRouter {
         StatsRoute.monthSite,
         StatsRoute.yearSite,
         StatsRoute.insights,
+        StatsRoute.dayCategory,
+        StatsRoute.annualStats,
         StatsRoute.activityLog
     ]
 
