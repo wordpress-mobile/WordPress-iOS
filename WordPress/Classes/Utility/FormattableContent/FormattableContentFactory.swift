@@ -12,7 +12,7 @@ struct ActivityFormattableContentFactory: FormattableContentFactory {
 
         return blocks.compactMap {
             let actions = parser.parse($0[Constants.ActionsKey] as? [String: AnyObject])
-            return FormattableTextContent(dictionary: $0, actions: actions, parent: parent)
+            return FormattableTextContent(dictionary: $0, actions: actions, ranges: [], parent: parent)
         }
     }
 }

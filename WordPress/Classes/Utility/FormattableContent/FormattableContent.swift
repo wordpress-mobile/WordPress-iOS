@@ -8,7 +8,7 @@ public protocol FormattableContent {
     var meta: [String: AnyObject]? { get }
     var kind: FormattableContentKind { get }
 
-    init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], parent note: FormattableContentParent)
+    init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], ranges: [FormattableContentRange], parent note: FormattableContentParent)
 
     func action(id: Identifier) -> FormattableContentAction?
     func isActionEnabled(id: Identifier) -> Bool
