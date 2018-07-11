@@ -32,7 +32,8 @@ struct UniversalLinkRouter {
         ReaderRoute.feedsPost,
         ReaderRoute.blogsPost,
         StatsRoute.root,
-        StatsRoute.site
+        StatsRoute.site,
+        StatsRoute.activityLog
         ])
 
     /// Attempts to find a Route that matches the url's path, and perform its
