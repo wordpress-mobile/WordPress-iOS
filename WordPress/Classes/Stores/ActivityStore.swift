@@ -5,6 +5,7 @@ import WordPressFlux
 // MARK: - Store helper types
 
 enum ActivityAction: Action {
+    case refreshActivities(site: JetpackSiteRef)
     case receiveActivities(site: JetpackSiteRef, activities: [Activity])
     case receiveActivitiesFailed(site: JetpackSiteRef, error: Error)
 
@@ -168,6 +169,8 @@ class ActivityStore: QueryStore<ActivityStoreState, ActivityQuery> {
             receiveActivities(site: site, activities: activities)
         case .receiveActivitiesFailed(let site, let error):
             receiveActivitiesFailed(site: site, error: error)
+        case .refreshActivities(let site):
+            refreshActivities(site: site)
         case .rewind(let site, let rewindID):
             rewind(site: site, rewindID: rewindID)
         case .rewindStarted(let site, let rewindID, let restoreID):
@@ -238,6 +241,14 @@ private extension ActivityStore {
             state.fetchingActivities[site] = false
             state.lastFetch[site] = Date()
         }
+    }
+
+    func refreshActivities(site: JetpackSiteRef) {
+        guard !isFetching(site: site) else {
+            DDLogInfo("Activity Log refresh triggered while one was in progress")
+            return
+        }
+        fetchActivities(site: site)
     }
 
     func rewind(site: JetpackSiteRef, rewindID: String) {
