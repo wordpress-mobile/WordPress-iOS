@@ -506,6 +506,8 @@
 		7E4123C820F417EF00DF8486 /* FormattableActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123C720F417EF00DF8486 /* FormattableActivity.swift */; };
 		7E4123CA20F4184200DF8486 /* ActivityContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123C920F4184200DF8486 /* ActivityContentGroup.swift */; };
 		7E4123CC20F418A500DF8486 /* ActivityActionsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123CB20F418A500DF8486 /* ActivityActionsParser.swift */; };
+		7E442FC720F677CB00DEACA5 /* ActivityLogRangesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E442FC620F677CB00DEACA5 /* ActivityLogRangesTest.swift */; };
+		7E442FCA20F678D100DEACA5 /* activity-log-post-content.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E442FC920F678D100DEACA5 /* activity-log-post-content.json */; };
 		7E52B7181FC89F2400B55EB8 /* MediaNoResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */; };
 		7E729C28209A087300F76599 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E729C27209A087200F76599 /* ImageLoader.swift */; };
 		7E729C2A209A241100F76599 /* AbstractPost+PostInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */; };
@@ -1959,6 +1961,8 @@
 		7E4123C720F417EF00DF8486 /* FormattableActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattableActivity.swift; sourceTree = "<group>"; };
 		7E4123C920F4184200DF8486 /* ActivityContentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentGroup.swift; sourceTree = "<group>"; };
 		7E4123CB20F418A500DF8486 /* ActivityActionsParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityActionsParser.swift; sourceTree = "<group>"; };
+		7E442FC620F677CB00DEACA5 /* ActivityLogRangesTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogRangesTest.swift; sourceTree = "<group>"; };
+		7E442FC920F678D100DEACA5 /* activity-log-post-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "activity-log-post-content.json"; sourceTree = "<group>"; };
 		7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaNoResultsView.swift; sourceTree = "<group>"; };
 		7E729C27209A087200F76599 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+PostInformation.swift"; sourceTree = "<group>"; };
@@ -4241,6 +4245,22 @@
 			path = FormattableContent;
 			sourceTree = "<group>";
 		};
+		7E442FC520F677A300DEACA5 /* ActivityLog */ = {
+			isa = PBXGroup;
+			children = (
+				7E442FC620F677CB00DEACA5 /* ActivityLogRangesTest.swift */,
+			);
+			name = ActivityLog;
+			sourceTree = "<group>";
+		};
+		7E442FC820F6783600DEACA5 /* ActivityLog */ = {
+			isa = PBXGroup;
+			children = (
+				7E442FC920F678D100DEACA5 /* activity-log-post-content.json */,
+			);
+			name = ActivityLog;
+			sourceTree = "<group>";
+		};
 		7EFF207F20EAC59D009C4699 /* Groups */ = {
 			isa = PBXGroup;
 			children = (
@@ -5796,6 +5816,7 @@
 		E1239B7B176A2E0F00D37220 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				7E442FC520F677A300DEACA5 /* ActivityLog */,
 				D88A6490208D79F1008AE9BC /* Stock Photos */,
 				FF7691661EE06CF500713F4B /* Aztec */,
 				B5AEEC7F1ACAD099008BF2A4 /* Categories */,
@@ -5986,6 +6007,7 @@
 		E16AB94414D9A13A0047A2E5 /* Mock Data */ = {
 			isa = PBXGroup;
 			children = (
+				7E442FC820F6783600DEACA5 /* ActivityLog */,
 				B5DA8A5E20ADAA1C00D5BDE1 /* plugin-directory-jetpack.json */,
 				855408851A6F105700DDBD79 /* app-review-prompt-all-enabled.json */,
 				855408891A6F107D00DDBD79 /* app-review-prompt-global-disable.json */,
@@ -6820,6 +6842,7 @@
 				D88A64A6208D92B1008AE9BC /* stock-photos-media.json in Resources */,
 				E15027621E03E51500B847E3 /* notes-action-push.json in Resources */,
 				748BD8851F19234300813F9A /* notifications-mark-as-read.json in Resources */,
+				7E442FCA20F678D100DEACA5 /* activity-log-post-content.json in Resources */,
 				93594BD5191D2F5A0079E6B2 /* stats-batch.json in Resources */,
 				74585B9C1F0D591D00E7E667 /* domain-service-valid-domains.json in Resources */,
 				93CD939319099BE70049096E /* authtoken.json in Resources */,
@@ -8196,6 +8219,7 @@
 				08AAD6A11CBEA610002B2418 /* MenusServiceTests.m in Sources */,
 				BEA0E4851BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift in Sources */,
 				E1C545801C6C79BB001CEB0E /* MediaSettingsTests.swift in Sources */,
+				7E442FC720F677CB00DEACA5 /* ActivityLogRangesTest.swift in Sources */,
 				D80EE63A203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift in Sources */,
 				08E77F471EE9D72F006F9515 /* MediaThumbnailExporterTests.swift in Sources */,
 				59FBD5621B5684F300734466 /* ThemeServiceTests.m in Sources */,

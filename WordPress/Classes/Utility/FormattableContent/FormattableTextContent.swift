@@ -36,7 +36,7 @@ open class FormattableTextContent: FormattableContent {
         self.ranges = ranges
     }
 
-    private static func rangesFrom(_ rawRanges: [[String: AnyObject]]?) -> [NotificationContentRange] {
+    private static func rangesFrom(_ rawRanges: [[String: AnyObject]]?) -> [FormattableContentRange] {
         let parsed = rawRanges?.compactMap(NotificationContentRangeFactory.contentRange)
         return parsed ?? []
     }

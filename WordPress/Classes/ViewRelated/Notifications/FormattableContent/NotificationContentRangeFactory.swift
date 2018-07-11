@@ -1,6 +1,10 @@
 
-struct NotificationContentRangeFactory {
-    static func contentRange(from dictionary: [String: AnyObject]) -> NotificationContentRange? {
+protocol ContentRangeFactory {
+    static func contentRange(from dictionary: [String: AnyObject]) -> FormattableContentRange?
+}
+
+struct NotificationContentRangeFactory: ContentRangeFactory {
+    static func contentRange(from dictionary: [String: AnyObject]) -> FormattableContentRange? {
         guard let range = rangeFrom(dictionary) else {
             return nil
         }
