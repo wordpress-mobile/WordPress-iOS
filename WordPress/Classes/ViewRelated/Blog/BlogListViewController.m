@@ -516,15 +516,9 @@ static NSInteger HideSearchMinSites = 3;
 - (void)instantiateNoResultsViewControllerIfNeeded
 {
     if (!self.noResultsViewController) {
-        [self instantiateNoResultsViewController];
+        self.noResultsViewController = [NoResultsViewController controller];
+        self.noResultsViewController.delegate = self;
     }
-}
-
-- (void)instantiateNoResultsViewController
-{
-    UIStoryboard *noResultsSB = [UIStoryboard storyboardWithName:@"NoResults" bundle:nil];
-    self.noResultsViewController = [noResultsSB instantiateViewControllerWithIdentifier:@"NoResults"];
-    self.noResultsViewController.delegate = self;
 }
 
 #pragma mark - Notifications
