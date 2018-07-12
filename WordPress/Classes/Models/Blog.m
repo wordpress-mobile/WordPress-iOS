@@ -558,7 +558,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     if ([Feature enabled:FeatureFlagAutomatedTransfersCustomDomain]) {
         return self.isHostedAtWPcom
         && self.planID.integerValue == BusinessPlanId
-        && !(self.siteVisibility == SiteVisibilityPrivate)
+        && self.siteVisibility != SiteVisibilityPrivate
         && self.isAdmin;
     } else {
         return [self hasRequiredJetpackVersion:@"5.6"];
