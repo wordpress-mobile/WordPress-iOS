@@ -507,7 +507,9 @@
 		7E4123CA20F4184200DF8486 /* ActivityContentGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123C920F4184200DF8486 /* ActivityContentGroup.swift */; };
 		7E4123CC20F418A500DF8486 /* ActivityActionsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123CB20F418A500DF8486 /* ActivityActionsParser.swift */; };
 		7E442FC720F677CB00DEACA5 /* ActivityLogRangesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E442FC620F677CB00DEACA5 /* ActivityLogRangesTest.swift */; };
-		7E442FCA20F678D100DEACA5 /* activity-log-post-content.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E442FC920F678D100DEACA5 /* activity-log-post-content.json */; };
+		7E442FCA20F678D100DEACA5 /* activity-log-pingback-content.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E442FC920F678D100DEACA5 /* activity-log-pingback-content.json */; };
+		7E442FCD20F6AB9C00DEACA5 /* ActivityContentRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E442FCB20F6AACB00DEACA5 /* ActivityContentRange.swift */; };
+		7E442FCF20F6C19000DEACA5 /* ActivityLogFormattableContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E442FCE20F6C19000DEACA5 /* ActivityLogFormattableContentTests.swift */; };
 		7E52B7181FC89F2400B55EB8 /* MediaNoResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */; };
 		7E729C28209A087300F76599 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E729C27209A087200F76599 /* ImageLoader.swift */; };
 		7E729C2A209A241100F76599 /* AbstractPost+PostInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */; };
@@ -1962,7 +1964,9 @@
 		7E4123C920F4184200DF8486 /* ActivityContentGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentGroup.swift; sourceTree = "<group>"; };
 		7E4123CB20F418A500DF8486 /* ActivityActionsParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityActionsParser.swift; sourceTree = "<group>"; };
 		7E442FC620F677CB00DEACA5 /* ActivityLogRangesTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogRangesTest.swift; sourceTree = "<group>"; };
-		7E442FC920F678D100DEACA5 /* activity-log-post-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "activity-log-post-content.json"; sourceTree = "<group>"; };
+		7E442FC920F678D100DEACA5 /* activity-log-pingback-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "activity-log-pingback-content.json"; sourceTree = "<group>"; };
+		7E442FCB20F6AACB00DEACA5 /* ActivityContentRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentRange.swift; sourceTree = "<group>"; };
+		7E442FCE20F6C19000DEACA5 /* ActivityLogFormattableContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogFormattableContentTests.swift; sourceTree = "<group>"; };
 		7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaNoResultsView.swift; sourceTree = "<group>"; };
 		7E729C27209A087200F76599 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+PostInformation.swift"; sourceTree = "<group>"; };
@@ -4241,6 +4245,7 @@
 				7E4123C920F4184200DF8486 /* ActivityContentGroup.swift */,
 				7E4123CB20F418A500DF8486 /* ActivityActionsParser.swift */,
 				7E3AB3DA20F52654001F33B6 /* ActivityContentStyles.swift */,
+				7E442FCB20F6AACB00DEACA5 /* ActivityContentRange.swift */,
 			);
 			path = FormattableContent;
 			sourceTree = "<group>";
@@ -4249,6 +4254,7 @@
 			isa = PBXGroup;
 			children = (
 				7E442FC620F677CB00DEACA5 /* ActivityLogRangesTest.swift */,
+				7E442FCE20F6C19000DEACA5 /* ActivityLogFormattableContentTests.swift */,
 			);
 			name = ActivityLog;
 			sourceTree = "<group>";
@@ -4256,7 +4262,7 @@
 		7E442FC820F6783600DEACA5 /* ActivityLog */ = {
 			isa = PBXGroup;
 			children = (
-				7E442FC920F678D100DEACA5 /* activity-log-post-content.json */,
+				7E442FC920F678D100DEACA5 /* activity-log-pingback-content.json */,
 			);
 			name = ActivityLog;
 			sourceTree = "<group>";
@@ -6842,7 +6848,7 @@
 				D88A64A6208D92B1008AE9BC /* stock-photos-media.json in Resources */,
 				E15027621E03E51500B847E3 /* notes-action-push.json in Resources */,
 				748BD8851F19234300813F9A /* notifications-mark-as-read.json in Resources */,
-				7E442FCA20F678D100DEACA5 /* activity-log-post-content.json in Resources */,
+				7E442FCA20F678D100DEACA5 /* activity-log-pingback-content.json in Resources */,
 				93594BD5191D2F5A0079E6B2 /* stats-batch.json in Resources */,
 				74585B9C1F0D591D00E7E667 /* domain-service-valid-domains.json in Resources */,
 				93CD939319099BE70049096E /* authtoken.json in Resources */,
@@ -7711,6 +7717,7 @@
 				E1D0D81616D3B86800E33F4C /* SafariActivity.m in Sources */,
 				E603C7701BC94AED00AD49D7 /* WordPress-37-38.xcmappingmodel in Sources */,
 				741E22461FC0CC55007967AB /* UploadOperation.swift in Sources */,
+				7E442FCD20F6AB9C00DEACA5 /* ActivityContentRange.swift in Sources */,
 				FF0AAE0D1A16550D0089841D /* WPMediaProgressTableViewController.m in Sources */,
 				591232691CCEAA5100B86207 /* AbstractPostListViewController.swift in Sources */,
 				E14200781C117A2E00B3B115 /* ManagedAccountSettings.swift in Sources */,
@@ -8171,6 +8178,7 @@
 				82301B8F1E787420009C9C4E /* AppRatingUtilityTests.swift in Sources */,
 				74B335EC1F06F9520053A184 /* MockWordPressComRestApi.swift in Sources */,
 				FF1FD02620912AA900186384 /* URL+LinkNormalizationTests.swift in Sources */,
+				7E442FCF20F6C19000DEACA5 /* ActivityLogFormattableContentTests.swift in Sources */,
 				E1926C091C779868009F3C2C /* PlanListViewControllerTest.swift in Sources */,
 				D8B6BEB7203E11F2007C8A19 /* Bundle+LoadFromNib.swift in Sources */,
 				E135965D1E7152D1006C6606 /* RecentSitesServiceTests.swift in Sources */,

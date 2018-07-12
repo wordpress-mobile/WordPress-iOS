@@ -6,7 +6,7 @@ class HeaderContentStyles: FormattableContentStyles {
 
     var quoteStyles: [NSAttributedStringKey: Any]? = nil
 
-    var rangeStylesMap: [NotificationContentRange.Kind: [NSAttributedStringKey: Any]]? {
+    var rangeStylesMap: [FormattableRangeKind: [NSAttributedStringKey: Any]]? {
         return [
             .user: WPStyleGuide.Notifications.headerTitleBoldStyle,
             .post: WPStyleGuide.Notifications.headerTitleContextStyle,

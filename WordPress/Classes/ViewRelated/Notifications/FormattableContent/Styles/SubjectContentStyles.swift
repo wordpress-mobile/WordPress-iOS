@@ -8,7 +8,7 @@ class SubjectContentStyles: FormattableContentStyles {
         return WPStyleGuide.Notifications.subjectItalicsStyle
     }
 
-    var rangeStylesMap: [NotificationContentRange.Kind: [NSAttributedStringKey: Any]]? {
+    var rangeStylesMap: [FormattableRangeKind: [NSAttributedStringKey: Any]]? {
         return [
             .user: WPStyleGuide.Notifications.subjectBoldStyle,
             .post: WPStyleGuide.Notifications.subjectItalicsStyle,

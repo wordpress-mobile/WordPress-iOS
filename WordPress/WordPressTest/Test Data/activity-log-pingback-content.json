@@ -1,0 +1,20 @@
+{
+    "text": "Pingback to Camino a Machu Picchu from Tren de Machu Picchu a Cusco – eToledo",
+    "ranges": [{
+               "url": "https://etoledom.wordpress.com/2018/07/06/tren-de-machu-picchu-a-cusco/",
+               "indices": [
+                           39,
+                           77
+                           ]
+               },
+               {
+               "type": "post",
+               "indices": [
+                           12,
+                           33
+                           ],
+               "url": "Array",
+               "site_id": 137726971,
+               "id": 347
+               }]
+}
