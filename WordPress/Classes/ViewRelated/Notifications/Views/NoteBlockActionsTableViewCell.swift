@@ -156,25 +156,25 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
     /// Returns the accessibility label for the Approve Button
     ///
     fileprivate var approveAccesibilityLabel: String {
-        return isApproveOn ? Approve.selectedTitle : Approve.normalTitle
+        return isApproveOn ? ApproveComment.TitleStrings.selected : ApproveComment.TitleStrings.approve
     }
 
     /// Returns the accessibility hint for the Approve Button
     ///
     fileprivate var approveAccesibilityHint: String {
-        return isApproveOn ? Approve.selectedHint : Approve.normalHint
+        return isApproveOn ? ApproveComment.TitleHints.selected : ApproveComment.TitleStrings.approve
     }
 
     /// Returns the accessibility label for the Like Button
     ///
     fileprivate var likeAccesibilityLabel: String {
-        return isLikeOn ? Like.selectedTitle : Like.normalTitle
+        return isLikeOn ? LikeComment.TitleStrings.unlike : LikeComment.TitleStrings.like
     }
 
     /// Returns the accessibility hint for the Like Button
     ///
     fileprivate var likeAccessibilityHint: String {
-        return isLikeOn ? Like.selectedHint : Like.normalHint
+        return isLikeOn ? LikeComment.TitleHints.unlike : LikeComment.TitleHints.like
     }
 
 
@@ -190,37 +190,36 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
         let textNormalColor = WPStyleGuide.Notifications.blockActionDisabledColor
         let textSelectedColor = WPStyleGuide.Notifications.blockActionEnabledColor
 
-        btnReply.setTitle(Reply.normalTitle, for: UIControlState())
+        btnReply.setTitle(ReplyToComment.title, for: UIControlState())
         btnReply.setTitleColor(textNormalColor, for: UIControlState())
-        btnReply.accessibilityLabel = Reply.normalHint
+        btnReply.accessibilityLabel = ReplyToComment.title
+        btnReply.accessibilityHint = ReplyToComment.hint
 
-        btnLike.setTitle(Like.normalTitle, for: UIControlState())
-        btnLike.setTitle(Like.selectedTitle, for: .highlighted)
-        btnLike.setTitle(Like.selectedTitle, for: .selected)
+        btnLike.setTitle(LikeComment.TitleStrings.like, for: UIControlState())
+        btnLike.setTitle(LikeComment.TitleStrings.unlike, for: .highlighted)
+        btnLike.setTitle(LikeComment.TitleStrings.unlike, for: .selected)
         btnLike.setTitleColor(textNormalColor, for: UIControlState())
         btnLike.setTitleColor(textSelectedColor, for: .highlighted)
         btnLike.setTitleColor(textSelectedColor, for: .selected)
-        btnLike.accessibilityLabel = Like.normalTitle
 
-        btnApprove.setTitle(Approve.normalTitle, for: UIControlState())
-        btnApprove.setTitle(Approve.selectedTitle, for: .highlighted)
-        btnApprove.setTitle(Approve.selectedTitle, for: .selected)
+        btnApprove.setTitle(ApproveComment.TitleStrings.approve, for: UIControlState())
+        btnApprove.setTitle(ApproveComment.TitleStrings.selected, for: .highlighted)
+        btnApprove.setTitle(ApproveComment.TitleStrings.selected, for: .selected)
         btnApprove.setTitleColor(textNormalColor, for: UIControlState())
         btnApprove.setTitleColor(textSelectedColor, for: .highlighted)
         btnApprove.setTitleColor(textSelectedColor, for: .selected)
-        btnApprove.accessibilityLabel = Approve.normalTitle
 
-        btnEdit.setTitle(Edit.normalTitle, for: UIControlState())
         btnEdit.setTitleColor(textNormalColor, for: UIControlState())
-        btnEdit.accessibilityLabel = Edit.normalHint
 
-        btnSpam.setTitle(Spam.normalTitle, for: UIControlState())
+        btnSpam.setTitle(MarkAsSpam.title, for: .normal)
         btnSpam.setTitleColor(textNormalColor, for: UIControlState())
-        btnSpam.accessibilityLabel = Spam.normalHint
+        btnSpam.accessibilityLabel = MarkAsSpam.title
+        btnSpam.accessibilityHint = MarkAsSpam.hint
 
-        btnTrash.setTitle(Trash.normalTitle, for: UIControlState())
+        btnTrash.setTitle(TrashComment.title, for: .normal)
         btnTrash.setTitleColor(textNormalColor, for: UIControlState())
-        btnTrash.accessibilityLabel = Trash.normalHint
+        btnTrash.accessibilityLabel = TrashComment.title
+        btnTrash.accessibilityHint = TrashComment.hint
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -349,39 +348,9 @@ private extension NoteBlockActionsTableViewCell {
 // MARK: - Private Constants
 //
 private extension NoteBlockActionsTableViewCell {
-    struct Approve {
-        static let normalTitle      = NSLocalizedString("Approve", comment: "Approve a comment")
-        static let selectedTitle    = NSLocalizedString("Approved", comment: "Unapprove a comment")
-        static let normalHint       = NSLocalizedString("Approves the comment", comment: "Approves a comment. Spoken Hint.")
-        static let selectedHint     = NSLocalizedString("Unapproves the comment", comment: "Unapproves a comment. Spoken Hint.")
-    }
-
     struct Edit {
         static let normalTitle      = NSLocalizedString("Edit", comment: "Verb, edit a comment")
         static let normalHint       = NSLocalizedString("Edits a comment", comment: "Edit Action Spoken hint.")
-    }
-
-    struct Like {
-        static let normalTitle      = NSLocalizedString("Like", comment: "Like a comment")
-        static let selectedTitle    = NSLocalizedString("Liked", comment: "A comment has been liked")
-        static let normalHint       = NSLocalizedString("Likes the comment", comment: "Likes a comment. Spoken Hint.")
-        static let selectedHint     = NSLocalizedString("Unlikes the comment", comment: "Unlikes a comment. Spoken Hint.")
-    }
-
-    struct Reply {
-        static let normalTitle      = NSLocalizedString("Reply", comment: "Verb, reply to a comment")
-        static let normalHint       = NSLocalizedString("Replies to a comment", comment: "Reply Action Spoken hint.")
-    }
-
-    struct Spam {
-        static let normalTitle      = NSLocalizedString("Spam", comment: "Verb, spam a comment")
-        static let normalHint       = NSLocalizedString("Moves a comment to Spam", comment: "Spam Action Spoken hint.")
-
-    }
-
-    struct Trash {
-        static let normalTitle      = NSLocalizedString("Trash", comment: "Move a comment to the trash")
-        static let normalHint       = NSLocalizedString("Moves the comment to Trash", comment: "Trash Action Spoken hint")
     }
 
     struct Constants {
