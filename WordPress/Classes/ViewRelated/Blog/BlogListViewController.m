@@ -431,11 +431,12 @@ static NSInteger HideSearchMinSites = 3;
 
 #pragma mark - Public methods
 
-- (void)presentInterfaceForAddingNewSiteFrom:(UIView *)sourceView
+- (void)presentInterfaceForAddingNewSite
 {
     [self.navigationController popToRootViewControllerAnimated:YES];
-    [self showAddSiteAlertFrom:sourceView];
+    [self actionButtonPressed];
 }
+
 
 - (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar
 {
