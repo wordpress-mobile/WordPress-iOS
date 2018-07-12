@@ -174,6 +174,7 @@ class PluginViewModel: Observable {
                 onButtonTap: { [unowned self] _ in
                     if isHostedAtWPCom {
                         guard let atHelper = AutomatedTransferHelper(site: self.site, plugin: directoryEntry) else {
+                   
                             ActionDispatcher.dispatch(NoticeAction.post(Notice(title: String(format: NSLocalizedString("Error installing %@.", comment: "Notice displayed after attempt to install a plugin fails."), directoryEntry.name))))
                             return
                         }
@@ -222,6 +223,17 @@ class PluginViewModel: Observable {
 
         return versionRow
     }
+
+    private func shouldPopRegisterDomainAlert() -> Bool {
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+        if let blog = blogService.blog(byBlogId: NSNumber(value: self.site.siteID)),
+            blog.isHostedAtWPcom {
+            return true
+        }
+        return false
+    }
+
 
     func noResultsViewModel() -> NoResultsViewController.Model? {
         switch state {
@@ -443,6 +455,20 @@ class PluginViewModel: Observable {
             ])
     }
 
+    private func confirmRegisterDomainAlert() -> UIAlertController {
+        let title = NSLocalizedString("Install Plugin", comment: "Install Plugin dialog title.")
+        let message = NSLocalizedString("To install plugins you need to have a custom domain associated with your site", comment: "Install Plugin dialog text.")
+        let registerDomainActionTitle = NSLocalizedString("Register domain", comment: "Install Plugin dialog register domain button text")
+
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel removing a plugin"))
+        alertController.addDefaultActionWithTitle(registerDomainActionTitle) { [weak self] (action) in
+            self?.routeToRegisterDomain()
+        }
+        return alertController
+    }
+
     private func confirmRemovalAlert(plugin: Plugin) -> UIAlertController {
         let question: String
         if let siteTitle = getSiteTitle() {
@@ -473,6 +499,10 @@ class PluginViewModel: Observable {
             }
         )
         return alert
+    }
+
+    private func routeToRegisterDomain() {
+        //TODO
     }
 
     private func presentBrowser(`for` url: URL) {
