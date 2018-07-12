@@ -42,6 +42,7 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 @property (nonatomic, copy)   NSString                          *customTitle;
 @property (nonatomic, assign) BOOL                              loading;
 @property (nonatomic, assign) BOOL                              needsLogin;
+@property (nonatomic, strong) id                                reachabilityObserver;
 
 @property (nonatomic, weak) id<WebNavigationDelegate> navigationDelegate;
 
@@ -54,6 +55,8 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 - (void)dealloc
 {
+    [self stopWaitingForConnectionRestored];
+    
     _webView.delegate = nil;
     if (_webView.isLoading) {
         [_webView stopLoading];
@@ -203,6 +206,10 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 - (void)loadWebViewRequest
 {
+    if ([ReachabilityUtils alertIsShowing]) {
+        [self dismissViewControllerAnimated:false completion:nil];
+    }
+    
     if (self.authenticator == nil) {
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:self.url];
         [self loadRequest:request];
@@ -234,16 +241,16 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 - (void)refreshInterface
 {
-    self.backButton.enabled             = self.webView.canGoBack;
-    self.forwardButton.enabled          = self.webView.canGoForward;
-    self.optionsButton.enabled          = !self.loading;
+    self.backButton.enabled = self.webView.canGoBack;
+    self.forwardButton.enabled = self.webView.canGoForward;
+    self.titleView.titleLabel.text = self.loading ? nil : [self documentTitle];
+    self.titleView.subtitleLabel.text = self.webView.request.URL.host;
     
-    if (self.loading) {
-        return;
+    if ([self.webView.request.URL.absoluteString isEqualToString:@""]) {
+        self.optionsButton.enabled = FALSE;
+    } else {
+        self.optionsButton.enabled = !self.loading;
     }
-    
-    self.titleView.titleLabel.text      = [self documentTitle];
-    self.titleView.subtitleLabel.text   = self.webView.request.URL.host;
 }
 
 - (void)showBottomToolbarIfNeeded
@@ -266,6 +273,23 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
     }];
 }
 
+#pragma mark - Reachability Helpers
+
+- (void)reloadWhenConnectionRestored
+{
+    __weak __typeof(self) weakSelf = self;
+    self.reachabilityObserver = [ReachabilityUtils observeOnceInternetAvailableWithAction:^{
+        [weakSelf loadWebViewRequest];
+    }];
+}
+
+- (void)stopWaitingForConnectionRestored
+{
+    if (self.reachabilityObserver != nil) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self.reachabilityObserver];
+        self.reachabilityObserver = nil;
+    }
+}
 
 #pragma mark - Properties
 
@@ -415,7 +439,12 @@ static NSInteger const WPWebViewErrorPluginHandledLoad = 204;
 
 - (void)displayLoadError:(NSError *)error
 {
-    [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:error.localizedDescription];
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];
+        [self reloadWhenConnectionRestored];
+    } else {
+        [WPError showAlertWithTitle: NSLocalizedString(@"Error", @"Generic error alert title") message: error.localizedDescription];
+    }
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView

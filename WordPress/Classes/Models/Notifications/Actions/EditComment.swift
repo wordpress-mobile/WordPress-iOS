@@ -1,9 +1,15 @@
 import MGSwipeTableCell
 
+/// Encapsulates logic to Edit a comment
 final class EditComment: DefaultNotificationActionCommand {
+    static let title = NSLocalizedString("Edit", comment: "Edits a Comment")
+    static let hint = NSLocalizedString("Edits the comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment.")
     let editIcon: UIButton = {
-        let title = NSLocalizedString("Edit", comment: "Edits a Comment")
-        return MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
+        let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
+        button.accessibilityLabel = title
+        button.accessibilityTraits = UIAccessibilityTraitButton
+        button.accessibilityHint = hint
+        return button
     }()
 
     override var icon: UIButton? {

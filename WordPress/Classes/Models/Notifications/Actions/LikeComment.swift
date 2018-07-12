@@ -1,20 +1,30 @@
 import MGSwipeTableCell
-
-final class LikeComment: DefaultNotificationActionCommand {
-    private enum TitleStrings {
+/// Encapsulates logic to Like a comment
+final class LikeComment: DefaultNotificationActionCommand, AccessibleFormattableContentActionCommand {
+    enum TitleStrings {
         static let like = NSLocalizedString("Like", comment: "Likes a Comment")
         static let unlike = NSLocalizedString("Liked", comment: "A comment is marked as liked")
     }
 
+    enum TitleHints {
+        static let like = NSLocalizedString("Likes the Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to like a comment")
+        static let unlike = NSLocalizedString("Unlike the Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment")
+    }
+
     let likeIcon: UIButton = {
-        let title = NSLocalizedString("Like", comment: "Like a comment.")
-        return MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
+        let title = TitleStrings.like
+        let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
+        button.accessibilityLabel = title
+        button.accessibilityTraits = UIAccessibilityTraitButton
+        button.accessibilityHint = TitleHints.unlike
+        return button
     }()
 
     override var on: Bool {
         willSet {
             let newTitle = newValue ? TitleStrings.like : TitleStrings.unlike
-            setIconTitle(newTitle)
+            let newHint = newValue ? TitleHints.like : TitleHints.unlike
+            setIconStrings(title: newTitle, label: newTitle, hint: newHint)
         }
     }
 
@@ -33,13 +43,17 @@ final class LikeComment: DefaultNotificationActionCommand {
 
     private func like(block: ActionableObject) {
         actionsService?.likeCommentWithBlock(block)
+
+        setIconStrings(title: TitleStrings.unlike,
+                       label: TitleStrings.unlike,
+                       hint: TitleHints.unlike)
     }
 
     private func removeLike(block: ActionableObject) {
         actionsService?.unlikeCommentWithBlock(block)
-    }
 
-    private func setIconTitle(_ title: String) {
-        icon?.setTitle(title, for: .normal)
+        setIconStrings(title: TitleStrings.like,
+                       label: TitleStrings.like,
+                       hint: TitleHints.like)
     }
 }

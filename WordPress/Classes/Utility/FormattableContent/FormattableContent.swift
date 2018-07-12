@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol FormattableContent {
+protocol FormattableContent {
     var text: String? { get }
     var ranges: [FormattableContentRange] { get }
     var parent: FormattableContentParent? { get }
@@ -15,23 +15,23 @@ public protocol FormattableContent {
     func isActionOn(id: Identifier) -> Bool
 }
 
-public struct FormattableContentKind: Equatable, Hashable {
+struct FormattableContentKind: Equatable, Hashable {
     let rawValue: String
-    public init(_ rawValue: String) {
+    init(_ rawValue: String) {
         self.rawValue = rawValue
     }
 }
 
-public extension FormattableContent {
-    public func isActionEnabled(id: Identifier) -> Bool {
+extension FormattableContent {
+    func isActionEnabled(id: Identifier) -> Bool {
         return action(id: id)?.enabled ?? false
     }
 
-    public func isActionOn(id: Identifier) -> Bool {
+    func isActionOn(id: Identifier) -> Bool {
         return action(id: id)?.on ?? false
     }
 
-    public func action(id: Identifier) -> FormattableContentAction? {
+    func action(id: Identifier) -> FormattableContentAction? {
         return actions?.filter {
             $0.identifier == id
         }.first
