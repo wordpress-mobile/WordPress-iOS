@@ -85,7 +85,7 @@ class PickDomainViewController: UIViewController {
         if let vc = segue.destination as? PickDomainTableViewController {
             domainsTableViewController = vc
             domainsTableViewController?.delegate = self
-            domainsTableViewController?.siteName = ""
+            domainsTableViewController?.siteName = nil
         }
     }
 
