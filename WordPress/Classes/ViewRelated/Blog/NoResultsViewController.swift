@@ -78,7 +78,7 @@ import WordPressAuthenticator
     /// As this only creates the controller, the configure method should be called
     /// to set the view values before presenting the No Results View.
     ///
-    class func controller() -> NoResultsViewController {
+    @objc class func controller() -> NoResultsViewController {
         let storyBoard = UIStoryboard(name: "NoResults", bundle: nil)
         let controller = storyBoard.instantiateViewController(withIdentifier: "NoResults") as! NoResultsViewController
         return controller
