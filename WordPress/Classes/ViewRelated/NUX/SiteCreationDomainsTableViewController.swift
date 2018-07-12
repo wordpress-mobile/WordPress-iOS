@@ -14,7 +14,9 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
 
     open var siteName: String?
     open var delegate: SiteCreationDomainsTableViewControllerDelegate?
-
+    open var suggestOnlyWordPressDotCom: Bool {
+        return true
+    }
     private var noResultsViewController: NoResultsViewController?
     private var service: DomainsService?
     private var siteTitleSuggestions: [String] = []
@@ -93,7 +95,9 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
         let service = DomainsService(managedObjectContext: ContextManager.sharedInstance().mainContext, remote: DomainsServiceRemote(wordPressComRestApi: api))
         SVProgressHUD.show(withStatus: NSLocalizedString("Loading domains", comment: "Shown while the app waits for the domain suggestions web service to return during the site creation process."))
 
-        service.getDomainSuggestions(base: searchTerm, success: { [weak self] (suggestions) in
+        service.getDomainSuggestions(base: searchTerm,
+                                     onlyWordPressDotCom: suggestOnlyWordPressDotCom,
+                                     success: { [weak self] (suggestions) in
             self?.isSearching = false
             self?.noSuggestions = false
             SVProgressHUD.dismiss()
