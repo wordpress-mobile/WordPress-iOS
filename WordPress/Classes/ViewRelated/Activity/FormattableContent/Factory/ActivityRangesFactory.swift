@@ -1,6 +1,6 @@
 
 struct ActivityRangesFactory: ContentRangeFactory {
-    static func contentRange(from dictionary: [String : AnyObject]) -> FormattableContentRange? {
+    static func contentRange(from dictionary: [String: AnyObject]) -> FormattableContentRange? {
         guard let range = rangeFrom(dictionary) else {
             return nil
         }
@@ -42,7 +42,7 @@ struct ActivityRangesFactory: ContentRangeFactory {
         return ActivityPostRange(range: range, siteID: siteId, postID: postID)
     }
 
-    private static func createPluginRange(with dictionary: [String : AnyObject], and range: NSRange) -> ActivityPluginRange? {
+    private static func createPluginRange(with dictionary: [String: AnyObject], and range: NSRange) -> ActivityPluginRange? {
         guard let siteSlug = dictionary[RangeKeys.siteSlug] as? String,
             let pluginSlug = dictionary[RangeKeys.slug] as? String else {
                 return nil
