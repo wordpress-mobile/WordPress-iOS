@@ -12,11 +12,52 @@ struct ActivityFormattableContentFactory: FormattableContentFactory {
 
         return blocks.compactMap {
             let actions = parser.parse($0[Constants.ActionsKey] as? [String: AnyObject])
-            return FormattableTextContent(dictionary: $0, actions: actions, ranges: [], parent: parent)
+            let ranges = rangesFrom(disctionary: $0)
+            return FormattableTextContent(dictionary: $0, actions: actions, ranges: ranges, parent: parent)
         }
+    }
+
+    static func rangesFrom(disctionary: [String: AnyObject]) -> [FormattableContentRange] {
+        let rawRanges   = disctionary[Constants.Ranges] as? [[String: AnyObject]]
+        let parsed = rawRanges?.compactMap(ActivityRangesFactory.contentRange)
+        return parsed ?? []
     }
 }
 
 private enum Constants {
     static let ActionsKey = "actions"
+    static let Ranges       = "ranges"
+}
+
+private enum RangeKeys {
+    static let rawType = "type"
+    static let url = "url"
+    static let indices = "indices"
+    static let id = "id"
+    static let value = "value"
+    static let siteId = "site_id"
+    static let postId = "post_id"
+}
+struct ActivityRangesFactory: ContentRangeFactory {
+    static func contentRange(from dictionary: [String : AnyObject]) -> FormattableContentRange? {
+        guard let range = rangeFrom(dictionary) else {
+            return nil
+        }
+        let urlString = dictionary[RangeKeys.url] as? String
+        let url = URL(string: urlString ?? "")
+
+        guard let kind = kindString(from: dictionary) else {
+            return ActivityRange(range: range, url: url)
+        }
+        let rangeKind = FormattableRangeKind(kind)
+        switch rangeKind {
+        case .post:
+            guard let postID = dictionary[RangeKeys.id] as? Int, let siteId = dictionary[RangeKeys.siteId] as? Int else {
+                fallthrough
+            }
+            return ActivityPostRange(range: range, siteID: siteId, postID: postID)
+        default:
+            return ActivityRange(range: range, url: url)
+        }
+    }
 }

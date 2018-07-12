@@ -24,7 +24,6 @@ open class FormattableTextContent: FormattableContent {
     public required init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], ranges: [FormattableContentRange], parent note: FormattableContentParent) {
 
         actions = commandActions
-//        ranges = FormattableTextContent.rangesFrom(rawRanges)
         self.ranges = ranges
         parent = note
         internalText = dictionary[Constants.BlockKeys.Text] as? String
