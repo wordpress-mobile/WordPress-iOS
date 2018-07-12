@@ -28,26 +28,15 @@ class ActivityRange: FormattableContentRange, LinkContentRange {
     }
 }
 
-class ActivityPostRange: FormattableContentRange, LinkContentRange {
-    let kind = FormattableRangeKind.post
-
-    var range: NSRange
-
-    let siteID: Int
-    let postID: Int
-
-    var url: URL? {
-        return URL(string: urlString)
-    }
-
-    private var urlString: String {
-        return "https://wordpress.com/read/blogs/\(siteID)/posts/\(postID)"
-    }
-
+class ActivityPostRange: ActivityRange {
     init(range: NSRange, siteID: Int, postID: Int) {
-        self.range = range
-        self.siteID = siteID
-        self.postID = postID
+        let url = ActivityPostRange.urlWith(siteID: siteID, postID: postID)
+        super.init(kind: .post, range: range, url: url)
+    }
+
+    private static func urlWith(siteID: Int, postID: Int) -> URL? {
+        let urlString = "https://wordpress.com/read/blogs/\(siteID)/posts/\(postID)"
+        return URL(string: urlString)
     }
 }
 
