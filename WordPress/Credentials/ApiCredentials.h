@@ -8,6 +8,7 @@
 + (NSString *)hockeyappAppId;
 + (NSString *)googlePlusClientId;
 + (NSString *)googleLoginClientId;
++ (NSString *)googleLoginSchemeId;
 + (NSString *)googleLoginServerClientId;
 + (NSString *)debuggingKey;
 + (NSString *)zendeskAppId;

@@ -15,7 +15,7 @@ extension FancyAlertViewController {
             let managedObjectContext = ContextManager.sharedInstance().mainContext
             let accountService = AccountService(managedObjectContext: managedObjectContext)
 
-            let submitButton = button as? NUXSubmitButton
+            let submitButton = button as? NUXButton
 
             submitButton?.showActivityIndicator(true)
 
