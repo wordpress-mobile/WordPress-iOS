@@ -7,7 +7,7 @@ final class Follow: DefaultNotificationActionCommand {
         let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
         button.accessibilityLabel = title
         button.accessibilityTraits = UIAccessibilityTraitButton
-        button.accessibilityHint = NSLocalizedString("Follows a blog.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a blog.")
+        button.accessibilityHint = NSLocalizedString("Follows the blog.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a blog.")
         return button
     }()
 
