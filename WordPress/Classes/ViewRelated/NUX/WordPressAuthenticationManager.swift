@@ -201,7 +201,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
     /// Synchronizes the specified WordPress Account.
     ///
-    func sync(credentials: WordPressCredentials, onCompletion: @escaping (Error?) -> Void) {
+    func sync(credentials: WordPressCredentials, onCompletion: @escaping () -> Void) {
         switch credentials {
         case .wpcom(let username, let authToken, let isJetpackLogin, _):
             syncWPCom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin, onCompletion: onCompletion)
@@ -236,7 +236,7 @@ private extension WordPressAuthenticationManager {
 
     /// Synchronizes a WordPress.com account with the specified credentials.
     ///
-    private func syncWPCom(username: String, authToken: String, isJetpackLogin: Bool, onCompletion: @escaping (Error?) -> ()) {
+    private func syncWPCom(username: String, authToken: String, isJetpackLogin: Bool, onCompletion: @escaping () -> ()) {
         let service = WordPressComSyncService()
 
         service.syncWPCom(username: username, authToken: authToken, isJetpackLogin: isJetpackLogin, onSuccess: { account in
@@ -247,21 +247,21 @@ private extension WordPressAuthenticationManager {
             let notification = isJetpackLogin == true ? .wordpressLoginFinishedJetpackLogin : Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification)
             NotificationCenter.default.post(name: notification, object: account)
 
-            onCompletion(nil)
+            onCompletion()
 
-        }, onFailure: { error in
-            onCompletion(error)
+        }, onFailure: { _ in
+            onCompletion()
         })
     }
 
     /// Synchronizes a WordPress.org account with the specified credentials.
     ///
-    private func syncWPOrg(username: String, password: String, xmlrpc: String, options: [AnyHashable: Any], onCompletion: @escaping (Error?) -> ()) {
+    private func syncWPOrg(username: String, password: String, xmlrpc: String, options: [AnyHashable: Any], onCompletion: @escaping () -> ()) {
         let service = BlogSyncFacade()
 
         service.syncBlog(withUsername: username, password: password, xmlrpc: xmlrpc, options: options) { blog in
             RecentSitesService().touch(blog: blog)
-            onCompletion(nil)
+            onCompletion()
         }
     }
 }
