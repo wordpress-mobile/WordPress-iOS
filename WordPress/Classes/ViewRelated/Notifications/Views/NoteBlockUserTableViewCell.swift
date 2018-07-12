@@ -24,6 +24,7 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
     @objc var isFollowOn: Bool {
         set {
             btnFollow.isSelected = newValue
+            configureAccesibility()
         }
         get {
             return btnFollow.isSelected
@@ -65,8 +66,6 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
 
         WPStyleGuide.Notifications.configureFollowButton(btnFollow)
         btnFollow.titleLabel?.font = WPStyleGuide.Notifications.blockRegularFont
-        btnFollow.accessibilityLabel = Follow.title
-        btnFollow.accessibilityHint = Follow.hint
 
         backgroundColor = WPStyleGuide.Notifications.blockBackgroundColor
 
@@ -76,12 +75,16 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
         blogLabel.font = WPStyleGuide.Notifications.blockRegularFont
         blogLabel.textColor = WPStyleGuide.greyDarken20()
         blogLabel.adjustsFontSizeToFitWidth = false
+
+        configureAccesibility()
     }
 
 
     // MARK: - IBActions
     @IBAction func followWasPressed(_ sender: AnyObject) {
         ReachabilityUtils.onAvailableInternetConnectionDo {
+            configureAccesibility()
+
             if let listener = isFollowOn ? onUnfollowClick : onFollowClick {
                 listener()
             }
@@ -90,6 +93,20 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
     }
 
     // MARK: - Private
+    private func configureAccesibility() {
+        isFollowOn ? configureAsSelected() : configureAsUnSelected()
+    }
+
+    private func configureAsUnSelected() {
+        btnFollow.accessibilityLabel = Follow.title
+        btnFollow.accessibilityHint = Follow.hint
+    }
+
+    private func configureAsSelected() {
+        btnFollow.accessibilityLabel = Follow.selectedTitle
+        btnFollow.accessibilityHint = Follow.selectedHint
+    }
+
     fileprivate var gravatarURL: URL?
 
     // MARK: - IBOutlets
