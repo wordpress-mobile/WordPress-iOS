@@ -510,7 +510,7 @@
 		7E4123CC20F418A500DF8486 /* ActivityActionsParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123CB20F418A500DF8486 /* ActivityActionsParser.swift */; };
 		7E442FC720F677CB00DEACA5 /* ActivityLogRangesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E442FC620F677CB00DEACA5 /* ActivityLogRangesTest.swift */; };
 		7E442FCA20F678D100DEACA5 /* activity-log-pingback-content.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E442FC920F678D100DEACA5 /* activity-log-pingback-content.json */; };
-		7E442FCD20F6AB9C00DEACA5 /* ActivityContentRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E442FCB20F6AACB00DEACA5 /* ActivityContentRange.swift */; };
+		7E442FCD20F6AB9C00DEACA5 /* ActivityRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E442FCB20F6AACB00DEACA5 /* ActivityRange.swift */; };
 		7E442FCF20F6C19000DEACA5 /* ActivityLogFormattableContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E442FCE20F6C19000DEACA5 /* ActivityLogFormattableContentTests.swift */; };
 		7E4A772120F7BBBD001C706D /* activity-log-post-content.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E4A772020F7BBBD001C706D /* activity-log-post-content.json */; };
 		7E4A772320F7BE94001C706D /* activity-log-comment-content.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E4A772220F7BE94001C706D /* activity-log-comment-content.json */; };
@@ -519,6 +519,10 @@
 		7E4A772B20F7E5FD001C706D /* activity-log-site-content.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E4A772A20F7E5FD001C706D /* activity-log-site-content.json */; };
 		7E4A772D20F7E8D8001C706D /* activity-log-plugin-content.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E4A772C20F7E8D8001C706D /* activity-log-plugin-content.json */; };
 		7E4A772F20F7FDF8001C706D /* ActivityLogTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4A772E20F7FDF8001C706D /* ActivityLogTestData.swift */; };
+		7E4A773720F802A8001C706D /* ActivityRangesFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4A773520F80146001C706D /* ActivityRangesFactory.swift */; };
+		7E4A773820F80414001C706D /* ActivityPostRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4A773120F800CB001C706D /* ActivityPostRange.swift */; };
+		7E4A773920F80417001C706D /* ActivityPluginRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4A773320F800ED001C706D /* ActivityPluginRange.swift */; };
+		7E4A773C20F80598001C706D /* ActivityContentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4A773A20F8058F001C706D /* ActivityContentFactory.swift */; };
 		7E52B7181FC89F2400B55EB8 /* MediaNoResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */; };
 		7E729C28209A087300F76599 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E729C27209A087200F76599 /* ImageLoader.swift */; };
 		7E729C2A209A241100F76599 /* AbstractPost+PostInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */; };
@@ -1976,7 +1980,7 @@
 		7E4123CB20F418A500DF8486 /* ActivityActionsParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityActionsParser.swift; sourceTree = "<group>"; };
 		7E442FC620F677CB00DEACA5 /* ActivityLogRangesTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogRangesTest.swift; sourceTree = "<group>"; };
 		7E442FC920F678D100DEACA5 /* activity-log-pingback-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "activity-log-pingback-content.json"; sourceTree = "<group>"; };
-		7E442FCB20F6AACB00DEACA5 /* ActivityContentRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentRange.swift; sourceTree = "<group>"; };
+		7E442FCB20F6AACB00DEACA5 /* ActivityRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRange.swift; sourceTree = "<group>"; };
 		7E442FCE20F6C19000DEACA5 /* ActivityLogFormattableContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogFormattableContentTests.swift; sourceTree = "<group>"; };
 		7E4A772020F7BBBD001C706D /* activity-log-post-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "activity-log-post-content.json"; sourceTree = "<group>"; };
 		7E4A772220F7BE94001C706D /* activity-log-comment-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "activity-log-comment-content.json"; sourceTree = "<group>"; };
@@ -1985,6 +1989,10 @@
 		7E4A772A20F7E5FD001C706D /* activity-log-site-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "activity-log-site-content.json"; sourceTree = "<group>"; };
 		7E4A772C20F7E8D8001C706D /* activity-log-plugin-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "activity-log-plugin-content.json"; sourceTree = "<group>"; };
 		7E4A772E20F7FDF8001C706D /* ActivityLogTestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogTestData.swift; sourceTree = "<group>"; };
+		7E4A773120F800CB001C706D /* ActivityPostRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityPostRange.swift; sourceTree = "<group>"; };
+		7E4A773320F800ED001C706D /* ActivityPluginRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityPluginRange.swift; sourceTree = "<group>"; };
+		7E4A773520F80146001C706D /* ActivityRangesFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRangesFactory.swift; sourceTree = "<group>"; };
+		7E4A773A20F8058F001C706D /* ActivityContentFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentFactory.swift; sourceTree = "<group>"; };
 		7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaNoResultsView.swift; sourceTree = "<group>"; };
 		7E729C27209A087200F76599 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+PostInformation.swift"; sourceTree = "<group>"; };
@@ -4265,7 +4273,8 @@
 				7E4123C920F4184200DF8486 /* ActivityContentGroup.swift */,
 				7E4123CB20F418A500DF8486 /* ActivityActionsParser.swift */,
 				7E3AB3DA20F52654001F33B6 /* ActivityContentStyles.swift */,
-				7E442FCB20F6AACB00DEACA5 /* ActivityContentRange.swift */,
+				7E4A773D20F80625001C706D /* Factory */,
+				7E4A773020F80063001C706D /* Ranges */,
 			);
 			path = FormattableContent;
 			sourceTree = "<group>";
@@ -4292,6 +4301,25 @@
 				7E4A772C20F7E8D8001C706D /* activity-log-plugin-content.json */,
 			);
 			name = ActivityLog;
+			sourceTree = "<group>";
+		};
+		7E4A773020F80063001C706D /* Ranges */ = {
+			isa = PBXGroup;
+			children = (
+				7E442FCB20F6AACB00DEACA5 /* ActivityRange.swift */,
+				7E4A773120F800CB001C706D /* ActivityPostRange.swift */,
+				7E4A773320F800ED001C706D /* ActivityPluginRange.swift */,
+			);
+			path = Ranges;
+			sourceTree = "<group>";
+		};
+		7E4A773D20F80625001C706D /* Factory */ = {
+			isa = PBXGroup;
+			children = (
+				7E4A773A20F8058F001C706D /* ActivityContentFactory.swift */,
+				7E4A773520F80146001C706D /* ActivityRangesFactory.swift */,
+			);
+			path = Factory;
 			sourceTree = "<group>";
 		};
 		7EFF207F20EAC59D009C4699 /* Groups */ = {
@@ -7265,6 +7293,7 @@
 				B53971501D537763006135EC /* NotificationBlockGroup.swift in Sources */,
 				1759F1801FE1460C0003EC81 /* NoticeView.swift in Sources */,
 				B53971521D537B22006135EC /* NotificationBlock.swift in Sources */,
+				7E4A773920F80417001C706D /* ActivityPluginRange.swift in Sources */,
 				7462BFD02028C49800B552D8 /* ShareNoticeViewModel.swift in Sources */,
 				17A4A36920EE51870071C2CA /* Routes+Reader.swift in Sources */,
 				0807CB721CE670A800CDBDAC /* WPContentSearchHelper.swift in Sources */,
@@ -7752,7 +7781,7 @@
 				E1D0D81616D3B86800E33F4C /* SafariActivity.m in Sources */,
 				E603C7701BC94AED00AD49D7 /* WordPress-37-38.xcmappingmodel in Sources */,
 				741E22461FC0CC55007967AB /* UploadOperation.swift in Sources */,
-				7E442FCD20F6AB9C00DEACA5 /* ActivityContentRange.swift in Sources */,
+				7E442FCD20F6AB9C00DEACA5 /* ActivityRange.swift in Sources */,
 				FF0AAE0D1A16550D0089841D /* WPMediaProgressTableViewController.m in Sources */,
 				591232691CCEAA5100B86207 /* AbstractPostListViewController.swift in Sources */,
 				E14200781C117A2E00B3B115 /* ManagedAccountSettings.swift in Sources */,
@@ -7818,6 +7847,7 @@
 				0857C27A1CE5375F0014AE99 /* MenuItemView.m in Sources */,
 				B5E51B7B203477DF00151ECD /* WordPressAuthenticationManager.swift in Sources */,
 				FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */,
+				7E4A773820F80414001C706D /* ActivityPostRange.swift in Sources */,
 				D8212CC120AA7C58008E8AE8 /* ReaderShowMenuAction.swift in Sources */,
 				B5BE31C41CB825A100BDF770 /* NSURLCache+Helpers.swift in Sources */,
 				B5552D831CD1062400B26DF6 /* String+Extensions.swift in Sources */,
@@ -7924,6 +7954,7 @@
 				5D42A405175E76A7005CFF05 /* WPImageViewController.m in Sources */,
 				E61084C01B9B47BA008050C5 /* ReaderListTopic.swift in Sources */,
 				E6374DC11C444D8B00F24720 /* PublicizeService.swift in Sources */,
+				7E4A773C20F80598001C706D /* ActivityContentFactory.swift in Sources */,
 				931D26FE19EDA10D00114F17 /* ALIterativeMigrator.m in Sources */,
 				5DA3EE161925090A00294E0B /* MediaService.m in Sources */,
 				7E4123C520F4097B00DF8486 /* FormattableContentAction.swift in Sources */,
@@ -8041,6 +8072,7 @@
 				0857C2781CE5375F0014AE99 /* MenuItemInsertionView.m in Sources */,
 				B532D4EA199D4357006E4DF6 /* NoteBlockHeaderTableViewCell.swift in Sources */,
 				319D6E8519E44F7F0013871C /* SuggestionsTableViewCell.m in Sources */,
+				7E4A773720F802A8001C706D /* ActivityRangesFactory.swift in Sources */,
 				E1AC282D18282423004D394C /* SFHFKeychainUtils.m in Sources */,
 				7EDAB3F420B046FE002D1A76 /* CircularProgressView+ActivityIndicatorType.swift in Sources */,
 				938CF3DC1EF1BE6800AF838E /* CocoaLumberjack.swift in Sources */,
