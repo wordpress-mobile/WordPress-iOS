@@ -9,7 +9,7 @@ extension WPStyleGuide {
     public struct ActivityStyleGuide {
 
         // MARK: - Public Properties
-        
+
         public static let linkColor = WPStyleGuide.baseLighterBlue()
 
         public static var contentRegularStyle: [NSAttributedStringKey: Any] {

@@ -21,7 +21,6 @@ class ActivityDetailViewController: UIViewController {
     @IBOutlet private var timeLabel: UILabel!
     @IBOutlet private var dateLabel: UILabel!
 
-    
     @IBOutlet weak var textView: UITextView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var summaryLabel: UILabel!

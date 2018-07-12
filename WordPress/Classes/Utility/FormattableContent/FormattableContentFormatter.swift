@@ -1,16 +1,16 @@
 
 import Foundation
 
-public class FormattableContentFormatter {
+class FormattableContentFormatter {
 
     /// Helper used by the +Interface Extension.
     ///
     fileprivate var dynamicAttributesCache = [String: AnyObject]()
 
-    public init() {
+    init() {
     }
 
-    public func render(content: FormattableContent, with styles: FormattableContentStyles) -> NSAttributedString {
+    func render(content: FormattableContent, with styles: FormattableContentStyles) -> NSAttributedString {
         let attributedText = memoize {
             let snippet = self.text(from: content, with: styles)
 
@@ -20,7 +20,7 @@ public class FormattableContentFormatter {
         return attributedText(styles.key)
     }
 
-    public func resetCache() {
+    func resetCache() {
         dynamicAttributesCache.removeAll()
     }
 
