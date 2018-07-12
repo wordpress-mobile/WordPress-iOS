@@ -65,6 +65,8 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
 
         WPStyleGuide.Notifications.configureFollowButton(btnFollow)
         btnFollow.titleLabel?.font = WPStyleGuide.Notifications.blockRegularFont
+        btnFollow.accessibilityLabel = Follow.title
+        btnFollow.accessibilityHint = Follow.hint
 
         backgroundColor = WPStyleGuide.Notifications.blockBackgroundColor
 
