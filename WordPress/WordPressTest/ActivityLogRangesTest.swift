@@ -3,20 +3,7 @@ import XCTest
 
 final class ActivityLogRangesTests: XCTestCase {
 
-    let activityLogJSON = ActivityLogJSON()
-
-    let testPostID = 441
-    let testSiteID = 137726971
-    var testPostUrl: String {
-        return "https://wordpress.com/read/blogs/\(testSiteID)/posts/\(testPostID)"
-    }
-
-    let testPluginSlug = "wp-job-manager"
-    let testSiteSlug = "etoledomatomicsite01.blog"
-
-    var testPluginUrl: String {
-        return "https://wordpress.com/plugins/\(testPluginSlug)/\(testSiteSlug)"
-    }
+    let testData = ActivityLogTestData()
 
     override func setUp() {
         super.setUp()
@@ -28,57 +15,57 @@ final class ActivityLogRangesTests: XCTestCase {
 
     func testPostRangeCreatesURL() {
         let range = NSRange(location: 0, length: 0)
-        let postRange = ActivityPostRange(range: range, siteID: testSiteID, postID: testPostID)
+        let postRange = ActivityPostRange(range: range, siteID: testData.testSiteID, postID: testData.testPostID)
 
-        XCTAssertEqual(testPostUrl, postRange.url?.absoluteString)
+        XCTAssertEqual(testData.testPostUrl, postRange.url?.absoluteString)
     }
 
     func testPluginRangeCreatesURL() {
         let range = NSRange(location: 0, length: 0)
-        let pluginRange = ActivityPluginRange(range: range, pluginSlug: testPluginSlug, siteSlug: testSiteSlug)
+        let pluginRange = ActivityPluginRange(range: range, pluginSlug: testData.testPluginSlug, siteSlug: testData.testSiteSlug)
 
-        XCTAssertEqual(pluginRange.url?.absoluteString, testPluginUrl)
+        XCTAssertEqual(pluginRange.url?.absoluteString, testData.testPluginUrl)
     }
 
     func testDefaultRange() {
         let range = NSRange(location: 0, length: 0)
-        let url = URL(string: testPostUrl)!
+        let url = URL(string: testData.testPostUrl)!
 
         let defaultRange = ActivityRange(range: range, url: url)
 
         XCTAssertEqual(defaultRange.kind, .default)
-        XCTAssertEqual(defaultRange.url, url)
+        XCTAssertEqual(defaultRange.url?.absoluteString, testData.testPostUrl)
         XCTAssertEqual(defaultRange.range, range)
     }
 
     func testRangeFactoryCreatesCommentRange() {
-        let commentRangeRaw = activityLogJSON.getCommentRangeDictionary()
+        let commentRangeRaw = testData.getCommentRangeDictionary()
         let range = ActivityRangesFactory.contentRange(from: commentRangeRaw)
 
         XCTAssertNotNil(range)
-        XCTAssertTrue(range! is ActivityCommentRange)
+        XCTAssertTrue(range is ActivityRange)
 
-        let commentRange = range as! ActivityCommentRange
+        let commentRange = range as? ActivityRange
 
-        XCTAssertEqual(commentRange.kind, .comment)
-        XCTAssertNotNil(commentRange.url)
+        XCTAssertEqual(commentRange?.kind, .comment)
+        XCTAssertNotNil(commentRange?.url)
     }
 
     func testRangeFactoryCreatesThemeRange() {
-        let themeRangeRaw = activityLogJSON.getThemeRangeDictionary()
+        let themeRangeRaw = testData.getThemeRangeDictionary()
         let range = ActivityRangesFactory.contentRange(from: themeRangeRaw)
 
         XCTAssertNotNil(range)
-        XCTAssertTrue(range! is ActivityThemeRange)
+        XCTAssertTrue(range is ActivityRange)
 
-        let themeRange = range as! ActivityThemeRange
+        let themeRange = range as? ActivityRange
 
-        XCTAssertEqual(themeRange.kind, .theme)
-        XCTAssertNotNil(themeRange.url)
+        XCTAssertEqual(themeRange?.kind, .theme)
+        XCTAssertNotNil(themeRange?.url)
     }
 
     func testRangeFactoryCreatesPostRange() {
-        let postRangeRaw = activityLogJSON.getPostRangeDictionary()
+        let postRangeRaw = testData.getPostRangeDictionary()
 
         let range = ActivityRangesFactory.contentRange(from: postRangeRaw)
         XCTAssertNotNil(range)
@@ -87,11 +74,11 @@ final class ActivityLogRangesTests: XCTestCase {
 
         let postRange = range as? ActivityPostRange
 
-        XCTAssertEqual(postRange?.url?.absoluteString, testPostUrl)
+        XCTAssertEqual(postRange?.url?.absoluteString, testData.testPostUrl)
     }
 
     func testRangeFactoryCreatesItalicRange() {
-        let italicRangeRaw = activityLogJSON.getItalicRangeDictionary()
+        let italicRangeRaw = testData.getItalicRangeDictionary()
 
         let range = ActivityRangesFactory.contentRange(from: italicRangeRaw)
         XCTAssertNotNil(range)
@@ -99,7 +86,7 @@ final class ActivityLogRangesTests: XCTestCase {
     }
 
     func testRangeFactoryCreatesSiteRange() {
-        let siteRangeRaw = activityLogJSON.getSiteRangeDictionary()
+        let siteRangeRaw = testData.getSiteRangeDictionary()
         let range = ActivityRangesFactory.contentRange(from: siteRangeRaw)
 
         XCTAssertNotNil(range)
@@ -107,7 +94,7 @@ final class ActivityLogRangesTests: XCTestCase {
     }
 
     func testRangeFactoryCreatesPluginRange() {
-        let pluginRangeRaw = activityLogJSON.getPluginRangeDictionary()
+        let pluginRangeRaw = testData.getPluginRangeDictionary()
         let range = ActivityRangesFactory.contentRange(from: pluginRangeRaw)
 
         XCTAssertNotNil(range)
@@ -116,6 +103,6 @@ final class ActivityLogRangesTests: XCTestCase {
 
         let pluginRange = range as? ActivityPluginRange
 
-        XCTAssertEqual(pluginRange?.url?.absoluteString, testPluginUrl)
+        XCTAssertEqual(pluginRange?.url?.absoluteString, testData.testPluginUrl)
     }
 }

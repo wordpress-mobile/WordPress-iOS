@@ -53,25 +53,44 @@ struct ActivityRangesFactory: ContentRangeFactory {
             return ActivityRange(range: range, url: url)
         }
         let rangeKind = FormattableRangeKind(kind)
-        switch rangeKind {
-        case .post:
-            guard let postID = dictionary[RangeKeys.id] as? Int,
-                let siteId = dictionary[RangeKeys.siteId] as? Int else {
-                    fallthrough
-            }
-            return ActivityPostRange(range: range, siteID: siteId, postID: postID)
+
+        return createRangeOfKind(rangeKind, url: url, range: range, dictionary: dictionary)
+    }
+
+    private static func createRangeOfKind(_ kind: FormattableRangeKind, url: URL?, range: NSRange, dictionary: [String: AnyObject]) -> FormattableContentRange {
+        switch kind {
         case .theme:
             let uri = urlFrom(dictionary, withKey: RangeKeys.uri)
             return ActivityRange(kind: .theme, range: range, url: uri)
-        case .plugin:
-            guard let siteSlug = dictionary[RangeKeys.siteSlug] as? String,
-                let pluginSlug = dictionary[RangeKeys.slug] as? String else {
-                    fallthrough
+        case .post:
+            guard let postRange = createPostRange(with: dictionary, and: range) else {
+                fallthrough
             }
-            return ActivityPluginRange(range: range, pluginSlug: pluginSlug, siteSlug: siteSlug)
+            return postRange
+        case .plugin:
+            guard let pluginRange = createPluginRange(with: dictionary, and: range) else {
+                fallthrough
+            }
+            return pluginRange
         default:
-            return ActivityRange(kind: rangeKind, range: range, url: url)
+            return ActivityRange(kind: kind, range: range, url: url)
         }
+    }
+
+    private static func createPostRange(with dictionary: [String: AnyObject], and range: NSRange) -> ActivityPostRange? {
+        guard let postID = dictionary[RangeKeys.id] as? Int,
+            let siteId = dictionary[RangeKeys.siteId] as? Int else {
+                return nil
+        }
+        return ActivityPostRange(range: range, siteID: siteId, postID: postID)
+    }
+
+    private static func createPluginRange(with dictionary: [String : AnyObject], and range: NSRange) -> ActivityPluginRange? {
+        guard let siteSlug = dictionary[RangeKeys.siteSlug] as? String,
+            let pluginSlug = dictionary[RangeKeys.slug] as? String else {
+                return nil
+        }
+        return ActivityPluginRange(range: range, pluginSlug: pluginSlug, siteSlug: siteSlug)
     }
 
     private static func urlFrom(_ dictionary: [String: AnyObject], withKey key: String) -> URL? {
