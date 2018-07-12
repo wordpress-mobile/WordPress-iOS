@@ -882,15 +882,6 @@ private extension ThemeBrowserViewController {
         }
     }
 
-    func setupNoResultsViewController() {
-        let noResultsStoryboard = UIStoryboard(name: "NoResults", bundle: nil)
-        guard let noResultsViewController = noResultsStoryboard.instantiateViewController(withIdentifier: "NoResults") as? NoResultsViewController else {
-            return
-        }
-
-        self.noResultsViewController = noResultsViewController
-    }
-
     func showNoResults() {
 
         guard !noResultsShown else {
@@ -898,15 +889,13 @@ private extension ThemeBrowserViewController {
         }
 
         if noResultsViewController == nil {
-            setupNoResultsViewController()
+            let title = searchController.isActive ? NoResultsTitles.noThemes : NoResultsTitles.fetchingThemes
+            noResultsViewController = NoResultsViewController.controllerWith(title: title)
         }
 
         guard let noResultsViewController = noResultsViewController else {
             return
         }
-
-        let title = searchController.isActive ? NoResultsTitles.noThemes : NoResultsTitles.fetchingThemes
-        noResultsViewController.configure(title: title)
 
         addChildViewController(noResultsViewController)
         collectionView.addSubview(noResultsViewController.view)
