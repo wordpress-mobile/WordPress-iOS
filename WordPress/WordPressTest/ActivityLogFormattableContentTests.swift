@@ -26,6 +26,7 @@ final class ActivityLogFormattableContentTests: XCTestCase {
     let pingbackText = "Pingback to Camino a Machu Picchu from Tren de Machu Picchu a Cusco – eToledo"
     let postText = "Tren de Machu Picchu a Cusco"
     let commentText = "Comment by levitoledo on Hola Lima! 🇵🇪: Great post! True talent!"
+    let themeText = "Spatial"
 
     let activityLogJSON = ActivityLogJSON()
     let parent = MockActivityParent()
@@ -39,7 +40,7 @@ final class ActivityLogFormattableContentTests: XCTestCase {
         super.tearDown()
     }
 
-    func testPingbackContent() {
+    func testPingbackContentIsParsedCorrectly() {
         let dictionary = activityLogJSON.getPingbackDictionary()
 
         let pingbackContent = ActivityFormattableContentFactory.content(from: [dictionary], actionsParser: actionsParser, parent: parent)
@@ -54,7 +55,7 @@ final class ActivityLogFormattableContentTests: XCTestCase {
         XCTAssertEqual(pingback.ranges.last?.kind, .post)
     }
 
-    func testPostContent() {
+    func testPostContentIsParsedCorrectly() {
         let dictionary = activityLogJSON.getPostContentDictionary()
         let postContent = ActivityFormattableContentFactory.content(from: [dictionary], actionsParser: actionsParser, parent: parent)
 
@@ -67,7 +68,7 @@ final class ActivityLogFormattableContentTests: XCTestCase {
         XCTAssertEqual(post.ranges.first?.kind, .post)
     }
 
-    func testCommentContent() {
+    func testCommentContentIsParsedCorrectly() {
         let dictionary = activityLogJSON.getCommentContentDictionary()
         let commentContent = ActivityFormattableContentFactory.content(from: [dictionary], actionsParser: actionsParser, parent: parent)
 
@@ -79,6 +80,19 @@ final class ActivityLogFormattableContentTests: XCTestCase {
         XCTAssertEqual(comment.ranges.count, 2)
         XCTAssertEqual(comment.ranges.first?.kind, .comment)
         XCTAssertEqual(comment.ranges.last?.kind, .post)
+    }
+
+    func testThemeContentIsParsedCorrectly() {
+        let dictionary = activityLogJSON.getThemeContentDictionary()
+        let themeContent = ActivityFormattableContentFactory.content(from: [dictionary], actionsParser: actionsParser, parent: parent)
+
+        XCTAssertEqual(themeContent.count, 1)
+
+        let theme = themeContent[0]
+
+        XCTAssertEqual(theme.text, themeText)
+        XCTAssertEqual(theme.ranges.count, 1)
+        XCTAssertEqual(theme.ranges.first?.kind, .theme)
     }
 }
 
@@ -102,16 +116,28 @@ class ActivityLogJSON {
         return getDictionaryFromFile(named: "activity-log-comment-content.json")
     }
 
+    func getThemeContentDictionary() -> [String: AnyObject] {
+        return getDictionaryFromFile(named: "activity-log-theme-content.json")
+    }
+
     func getCommentRangeDictionary() -> [String: AnyObject] {
         let dictionary = getCommentContentDictionary()
-        let ranges = getRanges(from: dictionary)
-        return ranges[0]
+        return getRange(at: 0, from: dictionary)
     }
 
     func getPostRangeDictionary() -> [String: AnyObject] {
         let dictionary = getPostContentDictionary()
+        return getRange(at: 0, from: dictionary)
+    }
+
+    func getThemeRangeDictionary() -> [String: AnyObject] {
+        let dictionary = getThemeContentDictionary()
+        return getRange(at: 0, from: dictionary)
+    }
+
+    private func getRange(at index: Int, from dictionary: [String: AnyObject]) -> [String: AnyObject] {
         let ranges = getRanges(from: dictionary)
-        return ranges[0]
+        return ranges[index]
     }
 
     private func getRanges(from dictionary: [String: AnyObject]) -> [[String: AnyObject]] {
