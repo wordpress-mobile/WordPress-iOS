@@ -4,6 +4,7 @@ import Foundation
 extension FormattableRangeKind {
     static let `default` = FormattableRangeKind("default")
     static let theme = FormattableRangeKind("theme")
+    static let plugin = FormattableRangeKind("plugin")
 }
 
 class ActivityRange: FormattableContentRange, LinkContentRange {
@@ -59,5 +60,17 @@ class ActivityCommentRange: ActivityRange {
 class ActivityThemeRange: ActivityRange {
     override var kind: FormattableRangeKind {
         return .theme
+    }
+}
+
+class ActivityPluginRange: ActivityRange {
+    init(range: NSRange, pluginSlug: String, siteSlug: String) {
+        let url = ActivityPluginRange.urlWith(pluginSlug: pluginSlug, siteSlug: siteSlug)
+        super.init(kind: .plugin, range: range, url: url)
+    }
+
+    private static func urlWith(pluginSlug: String, siteSlug: String) -> URL? {
+        let urlString = "https://wordpress.com/plugins/\(pluginSlug)/\(siteSlug)"
+        return URL(string: urlString)
     }
 }
