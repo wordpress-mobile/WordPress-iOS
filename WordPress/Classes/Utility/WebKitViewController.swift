@@ -42,6 +42,12 @@ class WebKitViewController: UIViewController {
     @objc var addsHideMasterbarParameters = true
     @objc var customTitle: String?
 
+    private var reachabilityObserver: Any?
+
+    private struct WebViewErrors {
+        static let frameLoadInterrupted = 102
+    }
+
     @objc init(configuration: WebViewControllerConfiguration) {
         webView = WKWebView()
         url = configuration.url
@@ -111,14 +117,30 @@ class WebKitViewController: UIViewController {
         loadWebViewRequest()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        stopWaitingForConnectionRestored()
+    }
+
     @objc func loadWebViewRequest() {
+        if ReachabilityUtils.alertIsShowing() {
+            self.dismiss(animated: false, completion: nil)
+        }
+
         guard let authenticator = authenticator,
             #available(iOS 11, *) else {
-            load(request: URLRequest(url: url))
-            return
+                load(request: URLRequest(url: url))
+                return
         }
-        authenticator.request(url: url, cookieJar: webView.configuration.websiteDataStore.httpCookieStore) { [weak self] (request) in
-            self?.load(request: request)
+
+        DispatchQueue.main.async { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+
+            authenticator.request(url: strongSelf.url, cookieJar: strongSelf.webView.configuration.websiteDataStore.httpCookieStore) { [weak self] (request) in
+                self?.load(request: request)
+            }
         }
     }
 
@@ -252,6 +274,23 @@ class WebKitViewController: UIViewController {
         button.tintColor = WPStyleGuide.greyLighten10()
     }
 
+    // MARK: Reachability Helpers
+
+    private func reloadWhenConnectionRestored() {
+        reachabilityObserver = ReachabilityUtils.observeOnceInternetAvailable {
+            self.loadWebViewRequest()
+        }
+    }
+
+    private func stopWaitingForConnectionRestored() {
+        guard let reachabilityObserver = reachabilityObserver else {
+            return
+        }
+
+        NotificationCenter.default.removeObserver(reachabilityObserver)
+        self.reachabilityObserver = nil
+    }
+
     // MARK: User Actions
 
     @objc func close() {
@@ -306,7 +345,15 @@ class WebKitViewController: UIViewController {
         case #keyPath(WKWebView.title):
             titleView.titleLabel.text = webView.title
         case #keyPath(WKWebView.url):
+            // If the site has no title, use the url.
+            if webView.title?.nonEmptyString() == nil {
+                titleView.titleLabel.text = webView.url?.host
+            }
             titleView.subtitleLabel.text = webView.url?.host
+            let haveUrl = webView.url != nil
+            shareButton.isEnabled = haveUrl
+            safariButton.isEnabled = haveUrl
+            navigationItem.rightBarButtonItems?.forEach { $0.isEnabled = haveUrl }
         case #keyPath(WKWebView.estimatedProgress):
             progressView.progress = Float(webView.estimatedProgress)
             progressView.isHidden = webView.estimatedProgress == 1
@@ -353,5 +400,22 @@ extension WebKitViewController: WKUIDelegate {
 
     func webViewDidClose(_ webView: WKWebView) {
         dismiss(animated: true, completion: nil)
+    }
+
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        DDLogInfo("\(NSStringFromClass(type(of: self))) Error Loading [\(error)]")
+
+        // Don't show Frame Load Interrupted errors
+        let code = (error as NSError).code
+        if code == WebViewErrors.frameLoadInterrupted {
+            return
+        }
+
+        if !ReachabilityUtils.isInternetReachable() {
+            ReachabilityUtils.showAlertNoInternetConnection()
+            reloadWhenConnectionRestored()
+        } else {
+            WPError.showAlert(withTitle: NSLocalizedString("Error", comment: "Generic error alert title"), message: error.localizedDescription)
+        }
     }
 }
