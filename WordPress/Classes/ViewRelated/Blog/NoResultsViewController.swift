@@ -59,11 +59,11 @@ import WordPressAuthenticator
     ///   - image:          Name of image file to use. Optional.
     ///   - accessoryView:  View to show instead of the image. Optional.
     ///
-    class func controllerWith(title: String,
-                              buttonTitle: String? = nil,
-                              subtitle: String? = nil,
-                              image: String? = nil,
-                              accessoryView: UIView? = nil) -> NoResultsViewController {
+    @objc class func controllerWith(title: String,
+                                    buttonTitle: String? = nil,
+                                    subtitle: String? = nil,
+                                    image: String? = nil,
+                                    accessoryView: UIView? = nil) -> NoResultsViewController {
 
         let controller = NoResultsViewController.controller()
         controller.titleText = title
