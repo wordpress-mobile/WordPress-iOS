@@ -38,6 +38,8 @@ private enum RangeKeys {
     static let value = "value"
     static let siteId = "site_id"
     static let postId = "post_id"
+    static let slug = "slug"
+    static let siteSlug = "site_slug"
 }
 struct ActivityRangesFactory: ContentRangeFactory {
     static func contentRange(from dictionary: [String : AnyObject]) -> FormattableContentRange? {
@@ -52,8 +54,9 @@ struct ActivityRangesFactory: ContentRangeFactory {
         let rangeKind = FormattableRangeKind(kind)
         switch rangeKind {
         case .post:
-            guard let postID = dictionary[RangeKeys.id] as? Int, let siteId = dictionary[RangeKeys.siteId] as? Int else {
-                fallthrough
+            guard let postID = dictionary[RangeKeys.id] as? Int,
+                let siteId = dictionary[RangeKeys.siteId] as? Int else {
+                    fallthrough
             }
             return ActivityPostRange(range: range, siteID: siteId, postID: postID)
         case .comment:
@@ -61,6 +64,12 @@ struct ActivityRangesFactory: ContentRangeFactory {
         case .theme:
             let uri = urlFrom(dictionary, withKey: RangeKeys.uri)
             return ActivityThemeRange(range: range, url: uri)
+        case .plugin:
+            guard let siteSlug = dictionary[RangeKeys.siteSlug] as? String,
+                let pluginSlug = dictionary[RangeKeys.slug] as? String else {
+                    fallthrough
+            }
+            return ActivityPluginRange(range: range, pluginSlug: pluginSlug, siteSlug: siteSlug)
         default:
             return ActivityRange(kind: rangeKind, range: range, url: url)
         }

@@ -29,6 +29,7 @@ final class ActivityLogFormattableContentTests: XCTestCase {
     let themeText = "Spatial"
     let settingsText = "Default post category changed from \"subcategory\" to \"viajes\""
     let siteText = "Atomic"
+    let pluginText = "WP Job Manager 1.31.1"
 
     let activityLogJSON = ActivityLogJSON()
     let parent = MockActivityParent()
@@ -123,6 +124,19 @@ final class ActivityLogFormattableContentTests: XCTestCase {
         XCTAssertEqual(site.ranges.count, 1)
         XCTAssertEqual(site.ranges.first?.kind, .site)
     }
+
+    func testPluginContentIsParsedCorreclty() {
+        let dictionary = activityLogJSON.getPluginContentDictionary()
+        let pluginContent = ActivityFormattableContentFactory.content(from: [dictionary], actionsParser: actionsParser, parent: parent)
+
+        XCTAssertEqual(pluginContent.count, 1)
+
+        let plugin = pluginContent[0]
+
+        XCTAssertEqual(plugin.text, pluginText)
+        XCTAssertEqual(plugin.ranges.count, 1)
+        XCTAssertEqual(plugin.ranges.first?.kind, .plugin)
+    }
 }
 
 class ActivityLogJSON {
@@ -157,6 +171,10 @@ class ActivityLogJSON {
         return getDictionaryFromFile(named: "activity-log-site-content.json")
     }
 
+    func getPluginContentDictionary() -> [String: AnyObject] {
+        return getDictionaryFromFile(named: "activity-log-plugin-content.json")
+    }
+
     func getCommentRangeDictionary() -> [String: AnyObject] {
         let dictionary = getCommentContentDictionary()
         return getRange(at: 0, from: dictionary)
@@ -179,6 +197,11 @@ class ActivityLogJSON {
 
     func getSiteRangeDictionary() -> [String: AnyObject] {
         let dictionary = getSiteContentDictionary()
+        return getRange(at: 0, from: dictionary)
+    }
+
+    func getPluginRangeDictionary() -> [String: AnyObject] {
+        let dictionary = getPluginContentDictionary()
         return getRange(at: 0, from: dictionary)
     }
 
