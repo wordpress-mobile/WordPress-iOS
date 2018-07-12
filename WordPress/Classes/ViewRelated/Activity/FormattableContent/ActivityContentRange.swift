@@ -3,6 +3,7 @@ import Foundation
 
 extension FormattableRangeKind {
     static let `default` = FormattableRangeKind("default")
+    static let theme = FormattableRangeKind("theme")
 }
 
 class ActivityRange: FormattableContentRange, LinkContentRange {
@@ -50,5 +51,11 @@ class ActivityPostRange: FormattableContentRange, LinkContentRange {
 class ActivityCommentRange: ActivityRange {
     override var kind: FormattableRangeKind {
         return .comment
+    }
+}
+
+class ActivityThemeRange: ActivityRange {
+    override var kind: FormattableRangeKind {
+        return .theme
     }
 }
