@@ -210,6 +210,8 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
         btnApprove.setTitleColor(textSelectedColor, for: .selected)
 
         btnEdit.setTitleColor(textNormalColor, for: UIControlState())
+        btnEdit.accessibilityLabel = EditComment.title
+        btnEdit.accessibilityHint = EditComment.hint
 
         btnSpam.setTitle(MarkAsSpam.title, for: .normal)
         btnSpam.setTitleColor(textNormalColor, for: UIControlState())
