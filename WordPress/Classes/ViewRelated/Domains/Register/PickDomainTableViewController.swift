@@ -3,6 +3,10 @@ import WordPressAuthenticator
 
 class PickDomainTableViewController: SiteCreationDomainsTableViewController {
 
+    override open var suggestOnlyWordPressDotCom: Bool {
+        return false
+    }
+
     override func titleAndDescriptionCell() -> UITableViewCell {
         let title = ""
         let description = NSLocalizedString("Pick an available address",
