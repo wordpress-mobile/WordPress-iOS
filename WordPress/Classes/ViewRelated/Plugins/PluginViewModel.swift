@@ -438,7 +438,9 @@ class PluginViewModel: Observable {
     }
 
     private func routeToRegisterDomain() {
-        //TODO
+        let controller = PickDomainViewController.instance()
+        let navigationController = UINavigationController(rootViewController: controller)
+        self.present?(navigationController)
     }
 
     private func presentBrowser(`for` url: URL) {
