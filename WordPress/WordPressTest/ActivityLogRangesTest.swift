@@ -50,6 +50,19 @@ final class ActivityLogRangesTests: XCTestCase {
         XCTAssertNotNil(commentRange.url)
     }
 
+    func testThemeRange() {
+        let themeRangeRaw = activityLogJSON.getThemeRangeDictionary()
+        let range = ActivityRangesFactory.contentRange(from: themeRangeRaw)
+
+        XCTAssertNotNil(range)
+        XCTAssertTrue(range! is ActivityThemeRange)
+
+        let themeRange = range as! ActivityThemeRange
+
+        XCTAssertEqual(themeRange.kind, .theme)
+        XCTAssertNotNil(themeRange.url)
+    }
+
     func testRangeFactoryCreatePostRange() {
         let postRangeRaw = activityLogJSON.getPostRangeDictionary()
 

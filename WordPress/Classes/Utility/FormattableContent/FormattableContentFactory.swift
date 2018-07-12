@@ -32,6 +32,7 @@ private enum Constants {
 private enum RangeKeys {
     static let rawType = "type"
     static let url = "url"
+    static let uri = "uri"
     static let indices = "indices"
     static let id = "id"
     static let value = "value"
@@ -43,8 +44,7 @@ struct ActivityRangesFactory: ContentRangeFactory {
         guard let range = rangeFrom(dictionary) else {
             return nil
         }
-        let urlString = dictionary[RangeKeys.url] as? String
-        let url = URL(string: urlString ?? "")
+        let url = urlFrom(dictionary, withKey: RangeKeys.url)
 
         guard let kind = kindString(from: dictionary) else {
             return ActivityRange(range: range, url: url)
@@ -58,8 +58,16 @@ struct ActivityRangesFactory: ContentRangeFactory {
             return ActivityPostRange(range: range, siteID: siteId, postID: postID)
         case .comment:
             return ActivityCommentRange(range: range, url: url)
+        case .theme:
+            let uri = urlFrom(dictionary, withKey: RangeKeys.uri)
+            return ActivityThemeRange(range: range, url: uri)
         default:
             return ActivityRange(range: range, url: url)
         }
+    }
+
+    private static func urlFrom(_ dictionary: [String: AnyObject], withKey key: String) -> URL? {
+        let urlString = dictionary[key] as? String
+        return URL(string: urlString ?? "")
     }
 }
