@@ -23,8 +23,8 @@ class ActivityLogTestData {
         return "https://wordpress.com/plugins/\(testPluginSlug)/\(testSiteSlug)"
     }
 
-    private func getDictionaryFromFile(named fileName: String) -> [String : AnyObject] {
-        return contextManager.object(withContentOfFile: fileName) as! [String : AnyObject]
+    private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
+        return contextManager.object(withContentOfFile: fileName) as! [String: AnyObject]
     }
 
     func getPingbackDictionary() -> [String: AnyObject] {
