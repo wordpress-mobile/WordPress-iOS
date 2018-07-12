@@ -28,6 +28,7 @@ final class ActivityLogFormattableContentTests: XCTestCase {
     let commentText = "Comment by levitoledo on Hola Lima! 🇵🇪: Great post! True talent!"
     let themeText = "Spatial"
     let settingsText = "Default post category changed from \"subcategory\" to \"viajes\""
+    let siteText = "Atomic"
 
     let activityLogJSON = ActivityLogJSON()
     let parent = MockActivityParent()
@@ -109,6 +110,19 @@ final class ActivityLogFormattableContentTests: XCTestCase {
         XCTAssertEqual(settings.ranges.first?.kind, .italic)
         XCTAssertEqual(settings.ranges.last?.kind, .italic)
     }
+
+    func testSiteContentIsParsedCorreclty() {
+        let dictionary = activityLogJSON.getSiteContentDictionary()
+        let siteContent = ActivityFormattableContentFactory.content(from: [dictionary], actionsParser: actionsParser, parent: parent)
+
+        XCTAssertEqual(siteContent.count, 1)
+
+        let site = siteContent[0]
+
+        XCTAssertEqual(site.text, siteText)
+        XCTAssertEqual(site.ranges.count, 1)
+        XCTAssertEqual(site.ranges.first?.kind, .site)
+    }
 }
 
 class ActivityLogJSON {
@@ -139,6 +153,10 @@ class ActivityLogJSON {
         return getDictionaryFromFile(named: "activity-log-settings-content.json")
     }
 
+    func getSiteContentDictionary() -> [String: AnyObject] {
+        return getDictionaryFromFile(named: "activity-log-site-content.json")
+    }
+
     func getCommentRangeDictionary() -> [String: AnyObject] {
         let dictionary = getCommentContentDictionary()
         return getRange(at: 0, from: dictionary)
@@ -156,6 +174,11 @@ class ActivityLogJSON {
 
     func getItalicRangeDictionary() -> [String: AnyObject] {
         let dictionary = getSettingsContentDictionary()
+        return getRange(at: 0, from: dictionary)
+    }
+
+    func getSiteRangeDictionary() -> [String: AnyObject] {
+        let dictionary = getSiteContentDictionary()
         return getRange(at: 0, from: dictionary)
     }
 
