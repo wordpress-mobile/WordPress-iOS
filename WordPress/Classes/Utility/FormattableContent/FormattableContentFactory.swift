@@ -56,6 +56,8 @@ struct ActivityRangesFactory: ContentRangeFactory {
                 fallthrough
             }
             return ActivityPostRange(range: range, siteID: siteId, postID: postID)
+        case .comment:
+            return ActivityCommentRange(range: range, url: url)
         default:
             return ActivityRange(range: range, url: url)
         }

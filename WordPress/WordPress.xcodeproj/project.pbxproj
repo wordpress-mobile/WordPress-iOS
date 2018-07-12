@@ -510,6 +510,8 @@
 		7E442FCA20F678D100DEACA5 /* activity-log-pingback-content.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E442FC920F678D100DEACA5 /* activity-log-pingback-content.json */; };
 		7E442FCD20F6AB9C00DEACA5 /* ActivityContentRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E442FCB20F6AACB00DEACA5 /* ActivityContentRange.swift */; };
 		7E442FCF20F6C19000DEACA5 /* ActivityLogFormattableContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E442FCE20F6C19000DEACA5 /* ActivityLogFormattableContentTests.swift */; };
+		7E4A772120F7BBBD001C706D /* activity-log-post-content.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E4A772020F7BBBD001C706D /* activity-log-post-content.json */; };
+		7E4A772320F7BE94001C706D /* activity-log-comment-content.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E4A772220F7BE94001C706D /* activity-log-comment-content.json */; };
 		7E52B7181FC89F2400B55EB8 /* MediaNoResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */; };
 		7E729C28209A087300F76599 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E729C27209A087200F76599 /* ImageLoader.swift */; };
 		7E729C2A209A241100F76599 /* AbstractPost+PostInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */; };
@@ -1967,6 +1969,8 @@
 		7E442FC920F678D100DEACA5 /* activity-log-pingback-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "activity-log-pingback-content.json"; sourceTree = "<group>"; };
 		7E442FCB20F6AACB00DEACA5 /* ActivityContentRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentRange.swift; sourceTree = "<group>"; };
 		7E442FCE20F6C19000DEACA5 /* ActivityLogFormattableContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogFormattableContentTests.swift; sourceTree = "<group>"; };
+		7E4A772020F7BBBD001C706D /* activity-log-post-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "activity-log-post-content.json"; sourceTree = "<group>"; };
+		7E4A772220F7BE94001C706D /* activity-log-comment-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "activity-log-comment-content.json"; sourceTree = "<group>"; };
 		7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaNoResultsView.swift; sourceTree = "<group>"; };
 		7E729C27209A087200F76599 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+PostInformation.swift"; sourceTree = "<group>"; };
@@ -4263,6 +4267,8 @@
 			isa = PBXGroup;
 			children = (
 				7E442FC920F678D100DEACA5 /* activity-log-pingback-content.json */,
+				7E4A772020F7BBBD001C706D /* activity-log-post-content.json */,
+				7E4A772220F7BE94001C706D /* activity-log-comment-content.json */,
 			);
 			name = ActivityLog;
 			sourceTree = "<group>";
@@ -6842,6 +6848,7 @@
 				E1EBC3751C118EDE00F638E0 /* ImmuTableTestViewCellWithNib.xib in Resources */,
 				E15027631E03E51500B847E3 /* notes-action-unsupported.json in Resources */,
 				93C882A21EEB18D700227A59 /* html_page_with_link_to_rsd.html in Resources */,
+				7E4A772320F7BE94001C706D /* activity-log-comment-content.json in Resources */,
 				E12BE5EE1C5235DB000FD5CA /* get-me-settings-v1.1.json in Resources */,
 				933D1F6C1EA7A3AB009FB462 /* TestingMode.storyboard in Resources */,
 				08F8CD371EBD2AA80049D0C0 /* test-image-device-photo-gps.jpg in Resources */,
@@ -6864,6 +6871,7 @@
 				08B832421EC130D60079808D /* test-gif.gif in Resources */,
 				748437EB1F1D4A4800E8DDAF /* gallery-reader-post-private.json in Resources */,
 				E1E4CE0617739FAB00430844 /* test-image.jpg in Resources */,
+				7E4A772120F7BBBD001C706D /* activity-log-post-content.json in Resources */,
 				748437F01F1D4E9E00E8DDAF /* notifications-load-all.json in Resources */,
 				E11330511A13BAA300D36D84 /* me-sites-with-jetpack.json in Resources */,
 				855408861A6F105700DDBD79 /* app-review-prompt-all-enabled.json in Resources */,
