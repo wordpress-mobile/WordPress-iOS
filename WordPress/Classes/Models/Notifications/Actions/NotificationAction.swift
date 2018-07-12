@@ -1,3 +1,4 @@
+/// Base Notification Action Command
 class DefaultNotificationActionCommand: FormattableContentActionCommand {
     var on: Bool
 
@@ -17,7 +18,7 @@ class DefaultNotificationActionCommand: FormattableContentActionCommand {
         return nil
     }
 
-    public init(on: Bool) {
+    init(on: Bool) {
         self.on = on
     }
 
