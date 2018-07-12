@@ -3,7 +3,7 @@ import MGSwipeTableCell
 /// Encapsulates logic to trash a comment
 final class TrashComment: DefaultNotificationActionCommand {
     static let title = NSLocalizedString("Trash", comment: "Trashes a comment")
-    static let hint = NSLocalizedString("Trashes a comment", comment: "VoiceOver accessibility hint, informing the user the button can be used to Trashes a comment")
+    static let hint = NSLocalizedString("Moves the comment to the Trash.", comment: "VoiceOver accessibility hint, informing the user the button can be used to Move a comment to the Trash.")
 
     let trashIcon: UIButton = {
         let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.errorRed())
