@@ -1,12 +1,12 @@
 import MGSwipeTableCell
 /// Encapsulates logic to Like a comment
 final class LikeComment: DefaultNotificationActionCommand, AccessibleFormattableContentActionCommand {
-    private enum TitleStrings {
+    enum TitleStrings {
         static let like = NSLocalizedString("Like", comment: "Likes a Comment")
         static let unlike = NSLocalizedString("Liked", comment: "A comment is marked as liked")
     }
 
-    private enum TitleHints {
+    enum TitleHints {
         static let like = NSLocalizedString("Likes a Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to like a comment")
         static let unlike = NSLocalizedString("Unlike a Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment")
     }

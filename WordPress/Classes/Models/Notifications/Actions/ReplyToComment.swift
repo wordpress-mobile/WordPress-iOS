@@ -2,12 +2,14 @@ import MGSwipeTableCell
 
 /// Encapsulates logic to reply to a comment
 final class ReplyToComment: DefaultNotificationActionCommand {
+    static let title = NSLocalizedString("Reply", comment: "Reply to a comment.")
+    static let hint = NSLocalizedString("Replies to a comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to reply to a comment.")
+
     let replyIcon: UIButton = {
-        let title = NSLocalizedString("Reply", comment: "Reply to a comment.")
         let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
         button.accessibilityLabel = title
         button.accessibilityTraits = UIAccessibilityTraitButton
-        button.accessibilityHint = NSLocalizedString("Replies to a comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to reply to a comment.")
+        button.accessibilityHint = hint
         return button
     }()
 
