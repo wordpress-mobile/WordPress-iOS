@@ -24,11 +24,7 @@ open class ActivityTableViewCell: WPTableViewCell {
         }
 
         summaryLabel.text = activity.summary
-        if FeatureFlag.extractNotifications.enabled {
-            contentLabel.attributedText = formattableActivity.formattedContent(using: SubjectContentStyles())
-        } else {
-            contentLabel.text = activity.text
-        }
+        contentLabel.text = activity.text
 
         iconBackgroundImageView.backgroundColor = Style.getColorByActivityStatus(activity)
         if let iconImage = Style.getIconForActivity(activity) {

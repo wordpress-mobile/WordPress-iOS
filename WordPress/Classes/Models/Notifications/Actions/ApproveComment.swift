@@ -2,14 +2,16 @@ import MGSwipeTableCell
 
 /// Encapsulates logic to approve a cooment
 class ApproveComment: DefaultNotificationActionCommand, AccessibleFormattableContentActionCommand {
-    private enum TitleStrings {
+    enum TitleStrings {
         static let approve = NSLocalizedString("Approve", comment: "Approves a Comment")
         static let unapprove = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
+        static let selected = NSLocalizedString("Approved", comment: "Unapprove a comment")
     }
 
-    private enum TitleHints {
-        static let approve = NSLocalizedString("Approves a Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to approve a comment")
-        static let unapprove = NSLocalizedString("Unapproves a Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment")
+    enum TitleHints {
+        static let approve = NSLocalizedString("Approves the Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to approve a comment")
+        static let unapprove = NSLocalizedString("Unapproves the Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to unapprove a comment")
+        static let selected = NSLocalizedString("Unapproves the comment", comment: "Unapproves a comment. Spoken Hint.")
     }
 
     override var on: Bool {

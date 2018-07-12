@@ -331,6 +331,14 @@ import WordPressShared
         return ReaderStreamViewController.controllerWithSiteID(ReaderHelpers.discoverSiteID, isFeed: false)
     }
 
+    /// Presents the view controller for a default menu item
+    func showSectionForDefaultMenuItem(withOrder order: ReaderDefaultMenuItemOrder,
+                                       animated: Bool) {
+        let indexPath = viewModel.indexPathOfDefaultMenuItemWithOrder(order: order)
+
+        showViewController(for: indexPath, animated: animated)
+    }
+
     /// Presents the saved for later view controller
     @objc func showSavedForLater() {
         guard let indexPath = viewModel.indexPathOfSavedForLater(),
@@ -347,6 +355,36 @@ import WordPressShared
 
     fileprivate func viewControllerForSavedPosts() -> ReaderSavedPostsViewController {
         return ReaderSavedPostsViewController()
+    }
+
+    /// Presents a team view controller
+    func showSectionForTeam(withSlug slug: String, animated: Bool) {
+        guard let indexPath = viewModel.indexPathOfTeam(withSlug: slug) else {
+            return
+        }
+
+        showViewController(for: indexPath, animated: animated)
+    }
+
+    private func showViewController(for indexPath: IndexPath,
+                                    animated: Bool) {
+        guard let menuItem = viewModel.menuItemAtIndexPath(indexPath),
+            let viewController = viewControllerForMenuItem(menuItem) else {
+                return
+        }
+
+        let actions = {
+            self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .middle)
+            self.restorableSelectedIndexPath = indexPath
+
+            self.showDetailViewController(viewController, sender: self)
+        }
+
+        if animated {
+            actions()
+        } else {
+            UIView.performWithoutAnimation(actions)
+        }
     }
 
     /// Presents a new view controller for subscribing to a new tag.
