@@ -217,7 +217,7 @@ extension SiteCreationDomainsTableViewController {
 
     // MARK: table view cells
 
-    private func titleAndDescriptionCell() -> UITableViewCell {
+    @objc func titleAndDescriptionCell() -> UITableViewCell {
         let title = NSLocalizedString("Step 4 of 4", comment: "Title for last step in the site creation process.").localizedUppercase
         let description = NSLocalizedString("Pick an available \"yourname.wordpress.com\" address to let people find you on the web.", comment: "Description of how to pick a domain name during the site creation process")
         let cell = LoginSocialErrorCell(title: title, description: description)
