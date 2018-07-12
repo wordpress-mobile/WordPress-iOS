@@ -7,21 +7,23 @@ extension FormattableRangeKind {
 }
 
 class ActivityRange: FormattableContentRange, LinkContentRange {
-    var kind: FormattableRangeKind {
-        return .default
-    }
-
     var range: NSRange
+
+    var kind: FormattableRangeKind {
+        return internalKind ?? .default
+    }
 
     var url: URL? {
         return internalUrl
     }
 
     private var internalUrl: URL?
+    private var internalKind: FormattableRangeKind?
 
-    init(range: NSRange, url: URL?) {
+    init(kind: FormattableRangeKind? = nil, range: NSRange, url: URL?) {
         self.range = range
         self.internalUrl = url
+        self.internalKind = kind
     }
 }
 

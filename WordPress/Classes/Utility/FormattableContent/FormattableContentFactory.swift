@@ -62,7 +62,7 @@ struct ActivityRangesFactory: ContentRangeFactory {
             let uri = urlFrom(dictionary, withKey: RangeKeys.uri)
             return ActivityThemeRange(range: range, url: uri)
         default:
-            return ActivityRange(range: range, url: url)
+            return ActivityRange(kind: rangeKind, range: range, url: url)
         }
     }
 
