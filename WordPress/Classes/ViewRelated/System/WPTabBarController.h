@@ -15,6 +15,7 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 @class Blog;
 @class BlogListViewController;
 @class MeViewController;
+@class MySitesCoordinator;
 @class NotificationsViewController;
 @class ReaderCoordinator;
 @class ReaderMenuViewController;
@@ -28,6 +29,7 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 @property (nonatomic, strong, readonly) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong, readonly) MeViewController *meViewController;
 
+@property (nonatomic, strong, readonly) MySitesCoordinator *mySitesCoordinator;
 @property (nonatomic, strong, readonly) ReaderCoordinator *readerCoordinator;
 
 + (instancetype)sharedInstance;
