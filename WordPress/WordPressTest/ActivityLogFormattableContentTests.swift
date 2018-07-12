@@ -27,6 +27,7 @@ final class ActivityLogFormattableContentTests: XCTestCase {
     let postText = "Tren de Machu Picchu a Cusco"
     let commentText = "Comment by levitoledo on Hola Lima! 🇵🇪: Great post! True talent!"
     let themeText = "Spatial"
+    let settingsText = "Default post category changed from \"subcategory\" to \"viajes\""
 
     let activityLogJSON = ActivityLogJSON()
     let parent = MockActivityParent()
@@ -94,6 +95,20 @@ final class ActivityLogFormattableContentTests: XCTestCase {
         XCTAssertEqual(theme.ranges.count, 1)
         XCTAssertEqual(theme.ranges.first?.kind, .theme)
     }
+
+    func testSettingContentIsParsedCorrectly() {
+        let dictionary = activityLogJSON.getSettingsContentDictionary()
+        let settingsContent = ActivityFormattableContentFactory.content(from: [dictionary], actionsParser: actionsParser, parent: parent)
+
+        XCTAssertEqual(settingsContent.count, 1)
+
+        let settings = settingsContent[0]
+
+        XCTAssertEqual(settings.text, settingsText)
+        XCTAssertEqual(settings.ranges.count, 2)
+        XCTAssertEqual(settings.ranges.first?.kind, .italic)
+        XCTAssertEqual(settings.ranges.last?.kind, .italic)
+    }
 }
 
 class ActivityLogJSON {
@@ -120,6 +135,10 @@ class ActivityLogJSON {
         return getDictionaryFromFile(named: "activity-log-theme-content.json")
     }
 
+    func getSettingsContentDictionary() -> [String: AnyObject] {
+        return getDictionaryFromFile(named: "activity-log-settings-content.json")
+    }
+
     func getCommentRangeDictionary() -> [String: AnyObject] {
         let dictionary = getCommentContentDictionary()
         return getRange(at: 0, from: dictionary)
@@ -132,6 +151,11 @@ class ActivityLogJSON {
 
     func getThemeRangeDictionary() -> [String: AnyObject] {
         let dictionary = getThemeContentDictionary()
+        return getRange(at: 0, from: dictionary)
+    }
+
+    func getItalicRangeDictionary() -> [String: AnyObject] {
+        let dictionary = getSettingsContentDictionary()
         return getRange(at: 0, from: dictionary)
     }
 
