@@ -1,9 +1,20 @@
 import XCTest
 @testable import WordPress
 
+fileprivate class MockNotificationActionsService: NotificationActionsService {
+    //    override func unapproveCommentWithBlock(_ block: ActionableObject, completion: ((Bool) -> Void)?) {
+    //        completion?(true)
+    //    }
+    //
+    //    override func approveCommentWithBlock(_ block: ActionableObject, completion: ((Bool) -> Void)?) {
+    //        completion?(true)
+    //    }
+}
+
+
 final class TestableApproveComment: ApproveComment {
     override var actionsService: NotificationActionsService? {
-        return NotificationActionsService(managedObjectContext: TestContextManager.sharedInstance().mainContext)
+        return MockNotificationActionsService(managedObjectContext: TestContextManager.sharedInstance().mainContext)
     }
 }
 
