@@ -31,7 +31,7 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
     if (__currentReachabilityAlert) {
         return;
     }
-
+    
     NSString *title = NSLocalizedString(@"No Connection", @"");
     NSString *message = [ReachabilityUtils noConnectionMessage];
     
@@ -42,7 +42,6 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
     [alertController addCancelActionWithTitle:NSLocalizedString(@"OK", @"") handler:^(UIAlertAction *action) {
         __currentReachabilityAlert = nil;
     }];
-    
     
     if (self.retryBlock) {
         [alertController addDefaultActionWithTitle:NSLocalizedString(@"Retry?", @"") handler:^(UIAlertAction *action) {
@@ -84,4 +83,8 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
     return NSLocalizedString(@"The Internet connection appears to be offline.", @"");
 }
 
++ (BOOL)alertIsShowing
+{
+    return __currentReachabilityAlert != nil;
+}
 @end
