@@ -162,7 +162,7 @@ class NoteBlockActionsTableViewCell: NoteBlockTableViewCell {
     /// Returns the accessibility hint for the Approve Button
     ///
     fileprivate var approveAccesibilityHint: String {
-        return isApproveOn ? ApproveComment.TitleHints.selected : ApproveComment.TitleStrings.approve
+        return isApproveOn ? ApproveComment.TitleHints.selected : ApproveComment.TitleHints.approve
     }
 
     /// Returns the accessibility label for the Like Button
