@@ -50,6 +50,40 @@ import WordPressAuthenticator
         configureView()
     }
 
+    /// Public method to get controller instance and set view values.
+    ///
+    /// - Parameters:
+    ///   - title:          Main descriptive text. Required.
+    ///   - buttonTitle:    Title of action button. Optional.
+    ///   - subtitle:       Secondary descriptive text. Optional.
+    ///   - image:          Name of image file to use. Optional.
+    ///   - accessoryView:  View to show instead of the image. Optional.
+    ///
+    class func controllerWith(title: String,
+                              buttonTitle: String? = nil,
+                              subtitle: String? = nil,
+                              image: String? = nil,
+                              accessoryView: UIView? = nil) -> NoResultsViewController {
+
+        let controller = NoResultsViewController.controller()
+        controller.titleText = title
+        controller.subtitleText = subtitle
+        controller.buttonText = buttonTitle
+        controller.imageName = image
+        controller.accessorySubview = accessoryView
+        return controller
+    }
+
+    /// Public method to get controller instance.
+    /// As this only creates the controller, the configure method should be called
+    /// to set the view values before presenting the No Results View.
+    ///
+    class func controller() -> NoResultsViewController {
+        let storyBoard = UIStoryboard(name: "NoResults", bundle: nil)
+        let controller = storyBoard.instantiateViewController(withIdentifier: "NoResults") as! NoResultsViewController
+        return controller
+    }
+
     /// Public method to provide values for text elements.
     ///
     /// - Parameters:
