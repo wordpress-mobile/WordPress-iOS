@@ -59,6 +59,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     @objc var refreshControl: UIRefreshControl? {
         get {
+            self.tableViewController.refreshControl?.backgroundColor = .clear
             return self.tableViewController.refreshControl
         }
     }
