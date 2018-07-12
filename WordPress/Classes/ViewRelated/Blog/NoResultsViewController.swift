@@ -114,12 +114,22 @@ import WordPressAuthenticator
         navigationItem.leftBarButtonItem = dismissButton
     }
 
-    /// Use the values provided in the actual elements.
+    /// Public method to get the view height when adding the No Results View to a table cell.
     ///
-    private func configureView() {
+    func heightForTableCell() -> CGFloat {
+        return noResultsView.frame.height
+    }
+
+}
+
+private extension NoResultsViewController {
+
+    // MARK: - View
+
+    func configureView() {
 
         guard let titleText = titleText else {
-                return
+            return
         }
 
         titleLabel.text = titleText
@@ -157,17 +167,6 @@ import WordPressAuthenticator
         view.layoutIfNeeded()
     }
 
-    // MARK: - Helpers
-
-    private func accessibilityIdentifier(for string: String) -> String {
-        let buttonIdFormat = NSLocalizedString("%@ Button", comment: "Accessibility identifier for buttons.")
-        return String(format: buttonIdFormat, string)
-    }
-
-    func heightForTableCell() -> CGFloat {
-        return noResultsView.frame.height
-    }
-
     // MARK: - Button Handling
 
     @IBAction func actionButtonPressed(_ sender: Any) {
@@ -176,6 +175,13 @@ import WordPressAuthenticator
 
     @objc func dismissButtonPressed() {
         delegate?.dismissButtonPressed?()
+    }
+
+    // MARK: - Helpers
+
+    func accessibilityIdentifier(for string: String) -> String {
+        let buttonIdFormat = NSLocalizedString("%@ Button", comment: "Accessibility identifier for buttons.")
+        return String(format: buttonIdFormat, string)
     }
 
 }
