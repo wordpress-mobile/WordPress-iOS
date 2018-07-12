@@ -78,4 +78,12 @@ final class ActivityLogRangesTests: XCTestCase {
         XCTAssertNotNil(range)
         XCTAssertEqual(range?.kind, .italic)
     }
+
+    func testRangeFactoryCreatesSiteRange() {
+        let siteRangeRaw = activityLogJSON.getSiteRangeDictionary()
+        let range = ActivityRangesFactory.contentRange(from: siteRangeRaw)
+
+        XCTAssertNotNil(range)
+        XCTAssertEqual(range?.kind, .site)
+    }
 }
