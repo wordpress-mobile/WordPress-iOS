@@ -34,6 +34,8 @@
 #import "InteractivePostView.h"
 #import "InteractivePostViewDelegate.h"
 
+#import "LocalCoreDataService.h"
+
 #import "Media.h"
 #import "MediaLibraryPickerDataSource.h"
 #import "MediaService.h"
