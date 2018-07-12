@@ -37,7 +37,7 @@ final class ActivityLogRangesTests: XCTestCase {
         XCTAssertEqual(defaultRange.range, range)
     }
 
-    func testCommentRange() {
+    func testRangeFactoryCreatesCommentRange() {
         let commentRangeRaw = activityLogJSON.getCommentRangeDictionary()
         let range = ActivityRangesFactory.contentRange(from: commentRangeRaw)
 
@@ -50,7 +50,7 @@ final class ActivityLogRangesTests: XCTestCase {
         XCTAssertNotNil(commentRange.url)
     }
 
-    func testThemeRange() {
+    func testRangeFactoryCreatesThemeRange() {
         let themeRangeRaw = activityLogJSON.getThemeRangeDictionary()
         let range = ActivityRangesFactory.contentRange(from: themeRangeRaw)
 
@@ -63,11 +63,19 @@ final class ActivityLogRangesTests: XCTestCase {
         XCTAssertNotNil(themeRange.url)
     }
 
-    func testRangeFactoryCreatePostRange() {
+    func testRangeFactoryCreatesPostRange() {
         let postRangeRaw = activityLogJSON.getPostRangeDictionary()
 
-        let factory = ActivityRangesFactory.contentRange(from: postRangeRaw)
-        XCTAssertNotNil(factory)
-        XCTAssertEqual(factory?.kind, .post)
+        let range = ActivityRangesFactory.contentRange(from: postRangeRaw)
+        XCTAssertNotNil(range)
+        XCTAssertEqual(range?.kind, .post)
+    }
+
+    func testRangeFactoryCreatesItalicRange() {
+        let italicRangeRaw = activityLogJSON.getItalicRangeDictionary()
+
+        let range = ActivityRangesFactory.contentRange(from: italicRangeRaw)
+        XCTAssertNotNil(range)
+        XCTAssertEqual(range?.kind, .italic)
     }
 }
