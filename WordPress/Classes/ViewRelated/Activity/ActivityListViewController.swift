@@ -206,16 +206,6 @@ extension ActivityListViewController {
 
 private extension ActivityListViewController {
 
-    func setupNoResultsViewController() {
-        let noResultsStoryboard = UIStoryboard(name: "NoResults", bundle: nil)
-        guard let noResultsViewController = noResultsStoryboard.instantiateViewController(withIdentifier: "NoResults") as? NoResultsViewController else {
-            return
-        }
-
-        noResultsViewController.delegate = self
-        self.noResultsViewController = noResultsViewController
-    }
-
     func updateNoResults() {
         if let noResultsViewModel = viewModel.noResultsViewModel() {
             showNoResults(noResultsViewModel)
@@ -227,7 +217,8 @@ private extension ActivityListViewController {
     func showNoResults(_ viewModel: NoResultsViewController.Model) {
 
         if noResultsViewController == nil {
-            setupNoResultsViewController()
+            noResultsViewController = NoResultsViewController.controller()
+            noResultsViewController?.delegate = self
         }
 
         guard let noResultsViewController = noResultsViewController else {
