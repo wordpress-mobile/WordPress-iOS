@@ -37,6 +37,19 @@ final class ActivityLogRangesTests: XCTestCase {
         XCTAssertEqual(defaultRange.range, range)
     }
 
+    func testCommentRange() {
+        let commentRangeRaw = activityLogJSON.getCommentRangeDictionary()
+        let range = ActivityRangesFactory.contentRange(from: commentRangeRaw)
+
+        XCTAssertNotNil(range)
+        XCTAssertTrue(range! is ActivityCommentRange)
+
+        let commentRange = range as! ActivityCommentRange
+
+        XCTAssertEqual(commentRange.kind, .comment)
+        XCTAssertNotNil(commentRange.url)
+    }
+
     func testRangeFactoryCreatePostRange() {
         let postRangeRaw = activityLogJSON.getPostRangeDictionary()
 

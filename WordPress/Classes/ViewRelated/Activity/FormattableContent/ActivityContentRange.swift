@@ -6,7 +6,9 @@ extension FormattableRangeKind {
 }
 
 class ActivityRange: FormattableContentRange, LinkContentRange {
-    let kind = FormattableRangeKind.default
+    var kind: FormattableRangeKind {
+        return .default
+    }
 
     var range: NSRange
 
@@ -42,5 +44,11 @@ class ActivityPostRange: FormattableContentRange, LinkContentRange {
         self.range = range
         self.siteID = siteID
         self.postID = postID
+    }
+}
+
+class ActivityCommentRange: ActivityRange {
+    override var kind: FormattableRangeKind {
+        return .comment
     }
 }
