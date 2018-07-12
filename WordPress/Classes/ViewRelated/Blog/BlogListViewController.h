@@ -8,7 +8,7 @@
 
 - (void)setSelectedBlog:(Blog *)selectedBlog animated:(BOOL)animated;
 
-- (void)presentInterfaceForAddingNewSiteFrom:(UIView *)sourceView;
+- (void)presentInterfaceForAddingNewSite;
 - (void)bypassBlogListViewController;
 - (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar;
 
