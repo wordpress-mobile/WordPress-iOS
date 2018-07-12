@@ -14,6 +14,7 @@ extension Foundation.Notification.Name {
 
 @objc extension NSNotification {
     public static let ShowAllSavedForLaterPostsNotification = Foundation.Notification.Name.showAllSavedForLaterPosts
+    public static let ReachabilityChangedNotification = Foundation.Notification.Name.reachabilityChanged
 }
 
 /// Keys for Notification's userInfo dictionary
