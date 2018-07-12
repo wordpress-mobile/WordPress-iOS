@@ -7,8 +7,8 @@ final class LikeComment: DefaultNotificationActionCommand, AccessibleFormattable
     }
 
     enum TitleHints {
-        static let like = NSLocalizedString("Likes a Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to like a comment")
-        static let unlike = NSLocalizedString("Unlike a Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment")
+        static let like = NSLocalizedString("Likes the Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to like a comment")
+        static let unlike = NSLocalizedString("Unlike the Comment.", comment: "VoiceOver accessibility hint, informing the user the button can be used to stop liking a comment")
     }
 
     let likeIcon: UIButton = {
