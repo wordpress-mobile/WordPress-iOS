@@ -7,9 +7,6 @@ class FormattableContentFormatter {
     ///
     fileprivate var dynamicAttributesCache = [String: AnyObject]()
 
-    init() {
-    }
-
     func render(content: FormattableContent, with styles: FormattableContentStyles) -> NSAttributedString {
         let attributedText = memoize {
             let snippet = self.text(from: content, with: styles)
@@ -24,7 +21,7 @@ class FormattableContentFormatter {
         dynamicAttributesCache.removeAll()
     }
 
-    /// This method is meant to aid cache-implementation into all of the AttriutedString getters introduced
+    /// This method is meant to aid cache-implementation into all of the AttributedString getters introduced
     /// in this extension.
     ///
     /// - Parameter fn: A Closure that, on execution, returns an attributed string.
