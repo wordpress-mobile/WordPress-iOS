@@ -3882,7 +3882,6 @@
 		5D7A577D1AFBFD7C0097C028 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				D81C2F5320F85DB1002AE1F1 /* ApproveCommentActionTests.swift */,
 				D800D87B20999CA200E7C7E5 /* SearchMenuItemCreatorTests.swift */,
 				D800D87920999C0500E7C7E5 /* OtherMenuItemCreatorTests.swift */,
 				D800D87720999B6D00E7C7E5 /* LikedMenuItemCreatorTests.swift */,
@@ -5018,6 +5017,7 @@
 		B5416CF81C17542900006DD8 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				D81C2F5320F85DB1002AE1F1 /* ApproveCommentActionTests.swift */,
 				B5882C461D5297D1008E0EAA /* NotificationTests.swift */,
 				B5C0CF3E204DB92F00DB0362 /* NotificationReplyStoreTests.swift */,
 				85B125401B028E34008A3D95 /* PushAuthenticationManagerTests.swift */,
