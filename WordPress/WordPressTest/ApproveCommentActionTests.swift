@@ -18,6 +18,34 @@ final class TestableApproveComment: ApproveComment {
     }
 }
 
+final class MockActionableObject: ActionableObject {
+    var textOverride: String?
+
+    var notificationID: String? {
+        return "mockID"
+    }
+
+    var metaSiteID: NSNumber? {
+        return NSNumber(value: 0)
+    }
+
+    var metaCommentID: NSNumber? {
+        return NSNumber(value: 0)
+    }
+
+    var isCommentApproved: Bool {
+        return true
+    }
+
+    var text: String? {
+        return "Hello"
+    }
+
+    func action(id: Identifier) -> FormattableContentAction? {
+        return nil
+    }
+}
+
 final class ApproveCommentActionTests: XCTestCase {
     private var action: ApproveComment?
 
@@ -27,7 +55,7 @@ final class ApproveCommentActionTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        action = ApproveComment(on: Constants.initialStatus)
+        action = TestableApproveComment(on: Constants.initialStatus)
     }
 
     override func tearDown() {
@@ -37,5 +65,55 @@ final class ApproveCommentActionTests: XCTestCase {
 
     func testStatusPassedInInitialiserIsPreserved() {
         XCTAssertEqual(action?.on, Constants.initialStatus)
+    }
+
+    func testSettingActionOnSetsExpectedTitle() {
+        action?.on = true
+        XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.approve)
+    }
+
+    func testSettingActionOnSetsExpectedAccessibilityLabel() {
+        action?.on = true
+        XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.approve)
+    }
+
+    func testSettingActionOnSetsExpectedAccessibilityHint() {
+        action?.on = true
+        XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.approve)
+    }
+
+    func testSettingActionOffSetsExpectedTitle() {
+        action?.on = false
+        XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.unapprove)
+    }
+
+    func testSettingActionOffSetsExpectedAccessibilityLabel() {
+        action?.on = false
+        XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.unapprove)
+    }
+
+    func testSettingActionOffSetsExpectedAccessibilityHint() {
+        action?.on = false
+        XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.unapprove)
+    }
+
+    func testDefaultTitleIsExpected() {
+        XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.approve)
+    }
+
+    func testDefaultAccessibilityLabelIsExpected() {
+        XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.approve)
+    }
+
+    func testDefaultAccessibilityHintIsExpected() {
+        XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.approve)
+    }
+
+    private func mockContext() -> ActionContext {
+        return ActionContext(block: mockActionableObject())
+    }
+
+    private func mockActionableObject() -> ActionableObject {
+        return MockActionableObject()
     }
 }
