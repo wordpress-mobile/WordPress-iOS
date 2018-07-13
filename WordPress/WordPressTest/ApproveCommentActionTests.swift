@@ -129,6 +129,67 @@ final class ApproveCommentActionTests: XCTestCase {
         XCTAssertTrue(mockService.unaproveWasCalled)
     }
 
+    func testExecuteUpdatesIconTitleWhenIconIsOn() {
+        action?.on = true
+
+        action?.execute(context: mockContext())
+
+        XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.unapprove)
+    }
+
+    func testExecuteUpdatesIconAccessibilityLabelWhenIconIsOn() {
+        action?.on = true
+
+        action?.execute(context: mockContext())
+
+        XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.unapprove)
+    }
+
+    func testExecuteUpdatesIconAccessibilityHintWhenIconIsOn() {
+        action?.on = true
+
+        action?.execute(context: mockContext())
+
+        XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.unapprove)
+    }
+
+    func testExecuteCallsApproveWhenIconIsOff() {
+        action?.on = false
+
+        action?.execute(context: mockContext())
+
+        guard let mockService = action?.actionsService as? MockNotificationActionsService else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertTrue(mockService.aproveWasCalled)
+    }
+
+    func testExecuteUpdatesIconTitleWhenIconIsOff() {
+        action?.on = false
+
+        action?.execute(context: mockContext())
+
+        XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.approve)
+    }
+
+    func testExecuteUpdatesIconAccessibilityLabelWhenIconIsOff() {
+        action?.on = false
+
+        action?.execute(context: mockContext())
+
+        XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.approve)
+    }
+
+    func testExecuteUpdatesIconAccessibilityHintWhenIconIsOff() {
+        action?.on = false
+
+        action?.execute(context: mockContext())
+
+        XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.approve)
+    }
+
     private func mockContext() -> ActionContext {
         return ActionContext(block: mockActionableObject())
     }
