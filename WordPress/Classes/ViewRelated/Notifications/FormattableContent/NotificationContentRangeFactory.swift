@@ -1,6 +1,35 @@
 
-struct NotificationContentRangeFactory {
-    static func contentRange(from dictionary: [String: AnyObject]) -> NotificationContentRange? {
+protocol ContentRangeFactory {
+    static func contentRange(from dictionary: [String: AnyObject]) -> FormattableContentRange?
+}
+
+extension ContentRangeFactory {
+    static func rangeFrom(_ dictionary: [String: AnyObject]) -> NSRange? {
+        guard let indices = dictionary[RangeKeys.indices] as? [Int],
+            let start = indices.first,
+            let end = indices.last else {
+                return nil
+        }
+        return NSMakeRange(start, end - start)
+    }
+
+    static func kindString(from dictionary: [String: AnyObject]) -> String? {
+        return dictionary[RangeKeys.rawType] as? String
+    }
+}
+
+private enum RangeKeys {
+    static let rawType = "type"
+    static let url = "url"
+    static let indices = "indices"
+    static let id = "id"
+    static let value = "value"
+    static let siteId = "site_id"
+    static let postId = "post_id"
+}
+
+struct NotificationContentRangeFactory: ContentRangeFactory {
+    static func contentRange(from dictionary: [String: AnyObject]) -> FormattableContentRange? {
         guard let range = rangeFrom(dictionary) else {
             return nil
         }
@@ -11,15 +40,6 @@ struct NotificationContentRangeFactory {
         }
 
         return contentRangeWithoutKindSpecified(with: properties, from: dictionary)
-    }
-
-    private static func rangeFrom(_ dictionary: [String: AnyObject]) -> NSRange? {
-        guard let indices = dictionary[RangeKeys.indices] as? [Int],
-            let start = indices.first,
-            let end = indices.last else {
-                return nil
-        }
-        return NSMakeRange(start, end - start)
     }
 
     private static func propertiesFrom(_ dictionary: [String: AnyObject], with range: NSRange) -> NotificationContentRange.Properties {
@@ -34,13 +54,9 @@ struct NotificationContentRangeFactory {
         return properties
     }
 
-    private static func kindString(from dictionary: [String: AnyObject]) -> String? {
-        return dictionary[RangeKeys.rawType] as? String
-    }
-
     private static func contentRange(ofKind type: String, with properties: NotificationContentRange.Properties, from dictionary: [String: AnyObject]) -> NotificationContentRange? {
         var properties = properties
-        let kind = NotificationContentRange.Kind(type)
+        let kind = FormattableRangeKind(type)
 
         switch kind {
         case .comment:

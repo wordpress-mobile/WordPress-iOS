@@ -6,7 +6,7 @@ class FooterContentStyles: FormattableContentStyles {
 
     var quoteStyles: [NSAttributedStringKey: Any]? = nil
 
-    var rangeStylesMap: [NotificationContentRange.Kind: [NSAttributedStringKey: Any]]? {
+    var rangeStylesMap: [FormattableRangeKind: [NSAttributedStringKey: Any]]? {
         return [
             .noticon: WPStyleGuide.Notifications.blockNoticonStyle
         ]
