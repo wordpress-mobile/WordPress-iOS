@@ -1,7 +1,7 @@
 
 class ActivityContentGroup: FormattableContentGroup {
     class func create(with subject: [[String: AnyObject]], parent: FormattableContentParent) -> FormattableContentGroup {
-        let blocks = ActivityFormattableContentFactory.content(from: subject, actionsParser: ActivityActionsParser(), parent: parent)
+        let blocks = ActivityContentFactory.content(from: subject, actionsParser: ActivityActionsParser(), parent: parent)
         return FormattableContentGroup(blocks: blocks, kind: .activity)
     }
 }
