@@ -278,6 +278,7 @@
 		43B27968216809AC00ECC046 /* QuickStartNavigationWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B27967216809AC00ECC046 /* QuickStartNavigationWatcher.swift */; };
 		43C9908E21067E22009EFFEB /* QuickStartChecklistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C9908D21067E22009EFFEB /* QuickStartChecklistViewController.swift */; };
 		43D54D131DCAA070007F575F /* PostPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D54D121DCAA070007F575F /* PostPostViewController.swift */; };
+		43D74AC820F8D17A004AD934 /* HidableBottomViewOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D74AC720F8D17A004AD934 /* HidableBottomViewOwner.swift */; };
 		43DC0EF12040B23200896C9C /* SignupUsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DC0EF02040B23200896C9C /* SignupUsernameViewController.swift */; };
 		43DDFE8C21715ADD008BE72F /* WPTabBarController+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DDFE8B21715ADD008BE72F /* WPTabBarController+QuickStart.swift */; };
 		43DDFE9021785EAC008BE72F /* QuickStartCongratulationsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43DDFE8F21785EAC008BE72F /* QuickStartCongratulationsCell.xib */; };
@@ -1899,6 +1900,7 @@
 		43C8831B211A47DB003125C7 /* WordPress 78.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 78.xcdatamodel"; sourceTree = "<group>"; };
 		43C9908D21067E22009EFFEB /* QuickStartChecklistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistViewController.swift; sourceTree = "<group>"; };
 		43D54D121DCAA070007F575F /* PostPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPostViewController.swift; sourceTree = "<group>"; };
+		43D74AC720F8D17A004AD934 /* HidableBottomViewOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HidableBottomViewOwner.swift; sourceTree = "<group>"; };
 		43DC0EF02040B23200896C9C /* SignupUsernameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupUsernameViewController.swift; sourceTree = "<group>"; };
 		43DDFE8B21715ADD008BE72F /* WPTabBarController+QuickStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPTabBarController+QuickStart.swift"; sourceTree = "<group>"; };
 		43DDFE8F21785EAC008BE72F /* QuickStartCongratulationsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartCongratulationsCell.xib; sourceTree = "<group>"; };
@@ -7059,6 +7061,7 @@
 				9827B3B0201FF30700530AF5 /* SiteCreationFields.swift */,
 				B5E51B7A203477DF00151ECD /* WordPressAuthenticationManager.swift */,
 				B5326E6E203F554C007392C3 /* WordPressSupportSourceTag+Helpers.swift */,
+				43D74AC720F8D17A004AD934 /* HidableBottomViewOwner.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -8768,6 +8771,7 @@
 				E1E49CE41C4902EE002393A4 /* ImmuTableViewController.swift in Sources */,
 				D88A6496208D7B0B008AE9BC /* NullStockPhotosService.swift in Sources */,
 				E616E4B31C480896002C024E /* SharingService.swift in Sources */,
+				43D74AC820F8D17A004AD934 /* HidableBottomViewOwner.swift in Sources */,
 				E1FD45E01C030B3800750F4C /* AccountSettingsService.swift in Sources */,
 				E149ABF91CA1A42000A2AD2C /* InAppPurchaseStore.swift in Sources */,
 				E1D0D81616D3B86800E33F4C /* SafariActivity.m in Sources */,

@@ -426,8 +426,8 @@
                         <viewLayoutGuide key="safeArea" id="Axj-bl-L3B"/>
                     </view>
                     <connections>
-                        <outlet property="buttonContainerHeightConstraint" destination="MGV-TN-X2V" id="TJG-Pq-vrh"/>
-                        <outlet property="buttonContainerViewBottomConstraint" destination="YCL-CF-uZh" id="aSd-Ko-q7X"/>
+                        <outlet property="bottomViewBottomConstraint" destination="YCL-CF-uZh" id="aSd-Ko-q7X"/>
+                        <outlet property="bottomViewHeightConstraint" destination="MGV-TN-X2V" id="TJG-Pq-vrh"/>
                         <outlet property="buttonViewContainer" destination="5gU-1Z-Avk" id="wPP-Sy-jfW"/>
                         <segue destination="fWU-YH-Qbk" kind="show" identifier="showCreateSite" id="vZo-bh-JWz"/>
                     </connections>

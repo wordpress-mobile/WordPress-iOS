@@ -1,10 +1,10 @@
 import UIKit
 import WordPressAuthenticator
 
-class PickDomainViewController: UIViewController {
+class PickDomainViewController: UIViewController, HidableBottomViewOwner {
 
-    @IBOutlet weak var buttonContainerViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var buttonContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomViewHeightConstraint: NSLayoutConstraint!
 
     private var domainsTableViewController: PickDomainTableViewController?
 
@@ -55,26 +55,6 @@ class PickDomainViewController: UIViewController {
             target: self,
             action: #selector(cancelBarButtonTapped)
         )
-    }
-
-    private func showButtonView(show: Bool, withAnimation: Bool) {
-
-        let duration = withAnimation ? WPAnimationDurationDefault : 0
-
-        UIView.animate(withDuration: duration, animations: {
-            if show {
-                self.buttonContainerViewBottomConstraint.constant = 0
-            }
-            else {
-                // Move the view down double the height to ensure it's off the screen.
-                // i.e. to defy iPhone X bottom gap.
-                self.buttonContainerViewBottomConstraint.constant +=
-                    self.buttonContainerHeightConstraint.constant * 2
-            }
-
-            // Since the Button View uses auto layout, need to call this so the animation works properly.
-            self.view.layoutIfNeeded()
-        }, completion: nil)
     }
 
     // MARK: - Navigation

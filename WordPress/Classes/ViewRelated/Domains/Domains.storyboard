@@ -146,8 +146,8 @@
                         <viewLayoutGuide key="safeArea" id="Q89-Y5-qZD"/>
                     </view>
                     <connections>
-                        <outlet property="buttonContainerHeightConstraint" destination="EQt-ZA-X1Y" id="viv-QP-h51"/>
-                        <outlet property="buttonContainerViewBottomConstraint" destination="9OQ-II-CcJ" id="aae-hF-gpp"/>
+                        <outlet property="bottomViewBottomConstraint" destination="9OQ-II-CcJ" id="aae-hF-gpp"/>
+                        <outlet property="bottomViewHeightConstraint" destination="EQt-ZA-X1Y" id="viv-QP-h51"/>
                         <outlet property="buttonViewContainer" destination="XNb-yy-4rF" id="yXz-71-4Qd"/>
                     </connections>
                 </viewController>
