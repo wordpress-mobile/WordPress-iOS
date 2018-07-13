@@ -186,6 +186,7 @@ class NotificationDetailsViewController: UIViewController {
     }
 
     fileprivate func refreshInterface() {
+        formatter.resetCache()
         tableView.reloadData()
         attachReplyViewIfNeeded()
         attachSuggestionsViewIfNeeded()
