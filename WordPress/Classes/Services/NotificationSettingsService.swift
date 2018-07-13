@@ -69,7 +69,7 @@ open class NotificationSettingsService: LocalCoreDataService {
             stream.preferences?[key] = value
         }
 
-        notificationsServiceRemote?.updateSettings(remote as [String : AnyObject],
+        notificationsServiceRemote?.updateSettings(remote as [String: AnyObject],
             success: {
                 success?()
             },
