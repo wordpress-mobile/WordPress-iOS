@@ -44,7 +44,7 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         }
 
         refreshControl = UIRefreshControl()
-        refreshControl?.addTarget(self, action: #selector(ActivityListViewController.userRefresh), for: .valueChanged)
+        refreshControl?.addTarget(self, action: #selector(userRefresh), for: .valueChanged)
 
         title = NSLocalizedString("Activity", comment: "Title for the activity list")
     }
