@@ -6,7 +6,7 @@ class SnipetsContentStyles: FormattableContentStyles {
 
     var quoteStyles: [NSAttributedStringKey: Any]? = nil
 
-    var rangeStylesMap: [NotificationContentRange.Kind: [NSAttributedStringKey: Any]]? = nil
+    var rangeStylesMap: [FormattableRangeKind: [NSAttributedStringKey: Any]]? = nil
 
     var linksColor: UIColor? = nil
 
