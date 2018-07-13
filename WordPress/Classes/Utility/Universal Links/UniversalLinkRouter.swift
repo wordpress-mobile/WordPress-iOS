@@ -14,11 +14,13 @@ struct UniversalLinkRouter {
     // app delegate, and because it's primarily written in objective-c we can't
     // add a struct property there.
     //
-    static let shared = UniversalLinkRouter(routes: MeRoutes +
+    static let shared = UniversalLinkRouter(routes:
+        MeRoutes +
         NewPostRoutes +
         NotificationsRoutes +
         ReaderRoutes +
-        StatsRoutes)
+        StatsRoutes +
+        AppBannerRoutes)
 
     private static let MeRoutes: [Route] = [
         MeRoute(),
@@ -61,11 +63,15 @@ struct UniversalLinkRouter {
         StatsRoute.activityLog
     ]
 
+    private static let AppBannerRoutes: [Route] = [
+        AppBannerRoute()
+    ]
+
     /// Attempts to find a Route that matches the url's path, and perform its
     /// associated action.
     ///
     func handle(url: URL) {
-        let matches = matcher.routesMatching(url.path)
+        let matches = matcher.routesMatching(url)
 
         for matchedRoute in matches {
             matchedRoute.action.perform(matchedRoute.values)
