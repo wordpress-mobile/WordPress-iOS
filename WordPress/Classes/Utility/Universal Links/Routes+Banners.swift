@@ -3,7 +3,7 @@ import Foundation
 /// Routes to handle WordPress.com app banner "Open in app" links.
 /// Banner routes always begin https://apps.wordpress.com/get and can contain
 /// an optional fragment to route to a specific part of the app. The fragment
-/// will be treated like any other route The fragment
+/// will be treated like any other route. The fragment
 /// can contain additional components to route more specifically:
 ///
 ///   * /get#post
