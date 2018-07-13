@@ -7,7 +7,7 @@ final class LikePost: DefaultNotificationActionCommand {
         let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
         button.accessibilityLabel = title
         button.accessibilityTraits = UIAccessibilityTraitButton
-        button.accessibilityHint = NSLocalizedString("Likes a post.", comment: "VoiceOver accessibility hint, informing the user the button can be used to Like a Post.")
+        button.accessibilityHint = NSLocalizedString("Likes the post.", comment: "VoiceOver accessibility hint, informing the user the button can be used to Like a Post.")
         return button
     }()
 
