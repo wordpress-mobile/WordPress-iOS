@@ -611,8 +611,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (void)switchMySitesTabToAddNewSite
 {
     [self showTabForIndex:WPTabMySites];
-
-    [self.blogListViewController presentInterfaceForAddingNewSite];
+    [self.blogListViewController presentInterfaceForAddingNewSiteFrom:self.tabBar];
 }
 
 - (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog
