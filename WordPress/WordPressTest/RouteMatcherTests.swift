@@ -19,7 +19,7 @@ class RouteMatcherTests: XCTestCase {
         routes = [ TestRoute(path: "/me") ]
         matcher = RouteMatcher(routes: routes)
 
-        let matches = matcher.routesMatching("/hello")
+        let matches = matcher.routesMatching(URL(string: "/hello")!)
         XCTAssert(matches.count == 0)
     }
 
@@ -27,7 +27,7 @@ class RouteMatcherTests: XCTestCase {
         routes = [ TestRoute(path: "/me"), TestRoute(path: "/me/account") ]
         matcher = RouteMatcher(routes: routes)
 
-        let matches = matcher.routesMatching("/me") as [Route]
+        let matches = matcher.routesMatching(URL(string: "/me")!) as [Route]
         XCTAssert(matches.first!.isEqual(to: routes.first!))
         XCTAssert(matches.count == 1)
     }
@@ -36,7 +36,7 @@ class RouteMatcherTests: XCTestCase {
         routes = [ TestRoute(path: "/me"), TestRoute(path: "/me/account") ]
         matcher = RouteMatcher(routes: routes)
 
-        let matches = matcher.routesMatching("/me/account") as [Route]
+        let matches = matcher.routesMatching(URL(string: "/me/account")!) as [Route]
         XCTAssert(matches.first!.isEqual(to: routes.last!))
         XCTAssert(matches.count == 1)
     }
@@ -45,7 +45,7 @@ class RouteMatcherTests: XCTestCase {
         routes = [ TestRoute(path: "/me"), TestRoute(path: "/me") ]
         matcher = RouteMatcher(routes: routes)
 
-        let matches = matcher.routesMatching("/me") as [Route]
+        let matches = matcher.routesMatching(URL(string: "/me")!) as [Route]
         XCTAssert(matches.elementsEqual(routes, by: { $0.isEqual(to: $1) }))
     }
 
@@ -53,7 +53,7 @@ class RouteMatcherTests: XCTestCase {
         routes = [ TestRoute(path: "/me/:placeholder") ]
         matcher = RouteMatcher(routes: routes)
 
-        let matches = matcher.routesMatching("/me/hello") as [Route]
+        let matches = matcher.routesMatching(URL(string: "/me/hello")!) as [Route]
         XCTAssert(matches.first!.isEqual(to: routes.first!))
         XCTAssert(matches.count == 1)
     }
@@ -64,7 +64,7 @@ class RouteMatcherTests: XCTestCase {
         routes = [ TestRoute(path: "/me/:account") ]
         matcher = RouteMatcher(routes: routes)
 
-        let matches = matcher.routesMatching("/me/bobsmith")
+        let matches = matcher.routesMatching(URL(string: "/me/bobsmith")!)
         let values = matches.first!.values
         XCTAssert(values.count == 1)
         XCTAssertEqual(values["account"], "bobsmith")
@@ -74,7 +74,7 @@ class RouteMatcherTests: XCTestCase {
         routes = [ TestRoute(path: "/me") ]
         matcher = RouteMatcher(routes: routes)
 
-        let matches = matcher.routesMatching("/me")
+        let matches = matcher.routesMatching(URL(string: "/me")!)
         XCTAssert(matches.first!.values.count == 0)
     }
 
@@ -82,7 +82,7 @@ class RouteMatcherTests: XCTestCase {
         routes = [ TestRoute(path: "/me/:account/share/:type") ]
         matcher = RouteMatcher(routes: routes)
 
-        let matches = matcher.routesMatching("/me/bobsmith")
+        let matches = matcher.routesMatching(URL(string: "/me/bobsmith")!)
         XCTAssert(matches.count == 0)
     }
 
@@ -90,7 +90,7 @@ class RouteMatcherTests: XCTestCase {
         routes = [ TestRoute(path: "/me/:account/share/:type") ]
         matcher = RouteMatcher(routes: routes)
 
-        let matches = matcher.routesMatching("/me/bobsmith/share/group")
+        let matches = matcher.routesMatching(URL(string: "/me/bobsmith/share/group")!)
         let values = matches.first!.values
         XCTAssert(values.count == 2)
         XCTAssertEqual(values["account"], "bobsmith")
@@ -103,7 +103,7 @@ class RouteMatcherTests: XCTestCase {
                    TestRoute(path: "/me/:account/share/:test") ]
         matcher = RouteMatcher(routes: routes)
 
-        let matches = matcher.routesMatching("/me/bobsmith/share/group")
+        let matches = matcher.routesMatching(URL(string: "/me/bobsmith/share/group")!)
         XCTAssert(matches.count == 2)
 
         let values1 = matches.first!.values
