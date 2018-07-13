@@ -1,7 +1,7 @@
 import Foundation
 
-/// RouterMatcher finds URL routes with paths that match a specified path, and
-/// attempts to extract URL components for any placeholders present in the route.
+/// RouterMatcher finds URL routes with paths that match the path of a specified URL,
+/// and attempts to extract URL components for any placeholders present in the route.
 ///
 class RouteMatcher {
     let routes: [Route]
@@ -11,7 +11,7 @@ class RouteMatcher {
         self.routes = routes
     }
 
-    /// Finds routes that match the specified path. If any of the matching routes
+    /// Finds routes that match the specified URL's path. If any of the matching routes
     /// contain placeholder components, the actual values for those placeholders
     /// will be extracted, and returned in the `values` dictionary of a MatchedRoute.
     ///
@@ -19,16 +19,20 @@ class RouteMatcher {
     ///          path to match of `/me/account/alice`, a matched route will
     ///          be returned with a values dictionary containing ["username": "alice"].
     ///
-    /// - parameter path: A path to match against this matcher's routes collection.
+    /// - parameter url: A URL to match against this matcher's routes collection.
     /// - returns: A collection of MatchedRoutes whose paths match `path`.
     ///
-    func routesMatching(_ path: String) -> [MatchedRoute] {
-        let pathComponents = (path as NSString).pathComponents
+    func routesMatching(_ url: URL) -> [MatchedRoute] {
+        let pathComponents = url.pathComponents
 
         return routes.compactMap({ route in
             // If the paths are the same, we definitely have a match
-            if route.path == path {
-                return route.matched()
+            if route.path == url.path {
+                if let fragment = url.fragment {
+                    return route.matched(with: [MatchedRouteURLComponentKey.fragment.rawValue: fragment])
+                } else {
+                    return route.matched()
+                }
             }
 
             let routeComponents = route.components
@@ -38,9 +42,13 @@ class RouteMatcher {
                 return nil
             }
 
-            guard let values = placeholderDictionary(forKeyComponents: routeComponents,
+            guard var values = placeholderDictionary(forKeyComponents: routeComponents,
                                                      valueComponents: pathComponents) else {
                                                         return nil
+            }
+
+            if let fragment = url.fragment {
+                values[MatchedRouteURLComponentKey.fragment.rawValue] = fragment
             }
 
             return route.matched(with: values)
@@ -92,4 +100,8 @@ extension Route {
     fileprivate func matched(with values: [String: String] = [:]) -> MatchedRoute {
         return MatchedRoute(path: path, action: action, values: values)
     }
+}
+
+enum MatchedRouteURLComponentKey: String {
+    case fragment = "matched-route-fragment"
 }
