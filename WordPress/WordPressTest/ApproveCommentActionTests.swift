@@ -1,34 +1,6 @@
 import XCTest
 @testable import WordPress
 
-final class MockActionableObject: ActionableObject {
-    var textOverride: String?
-
-    var notificationID: String? {
-        return "mockID"
-    }
-
-    var metaSiteID: NSNumber? {
-        return NSNumber(value: 0)
-    }
-
-    var metaCommentID: NSNumber? {
-        return NSNumber(value: 0)
-    }
-
-    var isCommentApproved: Bool {
-        return true
-    }
-
-    var text: String? {
-        return "Hello"
-    }
-
-    func action(id: Identifier) -> FormattableContentAction? {
-        return nil
-    }
-}
-
 final class ApproveCommentActionTests: XCTestCase {
     private class TestableApproveComment: ApproveComment {
         let service = MockNotificationActionsService(managedObjectContext: TestContextManager.sharedInstance().mainContext)
@@ -119,7 +91,7 @@ final class ApproveCommentActionTests: XCTestCase {
     func testExecuteCallsUnapproveWhenIconIsOn() {
         action?.on = true
 
-        action?.execute(context: mockContext())
+        action?.execute(context: mockActionContext())
 
         guard let mockService = action?.actionsService as? MockNotificationActionsService else {
             XCTFail()
@@ -132,7 +104,7 @@ final class ApproveCommentActionTests: XCTestCase {
     func testExecuteUpdatesIconTitleWhenIconIsOn() {
         action?.on = true
 
-        action?.execute(context: mockContext())
+        action?.execute(context: mockActionContext())
 
         XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.unapprove)
     }
@@ -140,7 +112,7 @@ final class ApproveCommentActionTests: XCTestCase {
     func testExecuteUpdatesIconAccessibilityLabelWhenIconIsOn() {
         action?.on = true
 
-        action?.execute(context: mockContext())
+        action?.execute(context: mockActionContext())
 
         XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.unapprove)
     }
@@ -148,7 +120,7 @@ final class ApproveCommentActionTests: XCTestCase {
     func testExecuteUpdatesIconAccessibilityHintWhenIconIsOn() {
         action?.on = true
 
-        action?.execute(context: mockContext())
+        action?.execute(context: mockActionContext())
 
         XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.unapprove)
     }
@@ -156,7 +128,7 @@ final class ApproveCommentActionTests: XCTestCase {
     func testExecuteCallsApproveWhenIconIsOff() {
         action?.on = false
 
-        action?.execute(context: mockContext())
+        action?.execute(context: mockActionContext())
 
         guard let mockService = action?.actionsService as? MockNotificationActionsService else {
             XCTFail()
@@ -169,7 +141,7 @@ final class ApproveCommentActionTests: XCTestCase {
     func testExecuteUpdatesIconTitleWhenIconIsOff() {
         action?.on = false
 
-        action?.execute(context: mockContext())
+        action?.execute(context: mockActionContext())
 
         XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.approve)
     }
@@ -177,7 +149,7 @@ final class ApproveCommentActionTests: XCTestCase {
     func testExecuteUpdatesIconAccessibilityLabelWhenIconIsOff() {
         action?.on = false
 
-        action?.execute(context: mockContext())
+        action?.execute(context: mockActionContext())
 
         XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.approve)
     }
@@ -185,28 +157,8 @@ final class ApproveCommentActionTests: XCTestCase {
     func testExecuteUpdatesIconAccessibilityHintWhenIconIsOff() {
         action?.on = false
 
-        action?.execute(context: mockContext())
+        action?.execute(context: mockActionContext())
 
         XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.approve)
-    }
-
-    private func mockContext() -> ActionContext {
-        return ActionContext(block: mockActionableObject())
-    }
-
-    private func mockActionableObject() -> ActionableObject {
-        return MockActionableObject()
-    }
-
-    private func makeNetworkAvailable() {
-        if let delegate = UIApplication.shared.delegate as? TestingAppDelegate {
-            delegate.connectionAvailable = true
-        }
-    }
-
-    private func makeNetworkUnavailable() {
-        if let delegate = UIApplication.shared.delegate as? TestingAppDelegate {
-            delegate.connectionAvailable = false
-        }
     }
 }
