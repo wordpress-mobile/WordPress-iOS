@@ -889,13 +889,15 @@ private extension ThemeBrowserViewController {
         }
 
         if noResultsViewController == nil {
-            let title = searchController.isActive ? NoResultsTitles.noThemes : NoResultsTitles.fetchingThemes
-            noResultsViewController = NoResultsViewController.controllerWith(title: title)
+            noResultsViewController = NoResultsViewController.controller()
         }
 
         guard let noResultsViewController = noResultsViewController else {
             return
         }
+
+        let title = searchController.isActive ? NoResultsTitles.noThemes : NoResultsTitles.fetchingThemes
+        noResultsViewController.configure(title: title)
 
         addChildViewController(noResultsViewController)
         collectionView.addSubview(noResultsViewController.view)
