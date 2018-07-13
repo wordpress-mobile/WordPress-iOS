@@ -434,7 +434,14 @@ static NSInteger HideSearchMinSites = 3;
 - (void)presentInterfaceForAddingNewSiteFrom:(UIView *)sourceView
 {
     [self.navigationController popToRootViewControllerAnimated:YES];
-    [self showAddSiteAlertFrom:sourceView];
+
+    // there is a display problem when showing this popup alert on iOS 10,
+    // so we show it from the empty screen's action button instead
+    if (@available(iOS 11, *)) {
+        [self showAddSiteAlertFrom:sourceView];
+    } else {
+        [self actionButtonPressed];
+    }
 }
 
 - (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar
