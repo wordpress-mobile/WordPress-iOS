@@ -43,6 +43,9 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
             self?.refreshModel()
         }
 
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(userRefresh), for: .valueChanged)
+
         title = NSLocalizedString("Activity", comment: "Title for the activity list")
     }
 
@@ -83,9 +86,29 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         SVProgressHUD.dismiss()
     }
 
+    @objc func userRefresh() {
+        viewModel.refresh()
+    }
+
     func refreshModel() {
         handler.viewModel = viewModel.tableViewModel(presenter: self)
+        updateRefreshControl()
         updateNoResults()
+    }
+
+    private func updateRefreshControl() {
+        guard let refreshControl = refreshControl else {
+            return
+        }
+
+        switch (viewModel.refreshing, refreshControl.isRefreshing) {
+        case (true, false):
+            refreshControl.beginRefreshing()
+        case (false, true):
+            refreshControl.endRefreshing()
+        default:
+            break
+        }
     }
 
 }
