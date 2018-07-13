@@ -125,7 +125,7 @@ final class LikeCommentActionTests: XCTestCase {
         XCTAssertEqual(action?.icon?.accessibilityHint, LikeComment.TitleHints.like)
     }
 
-    func testExecuteCallsApproveWhenIconIsOff() {
+    func testExecuteCallsLikeWhenIconIsOff() {
         action?.on = false
 
         action?.execute(context: mockActionContext())
