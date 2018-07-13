@@ -1,14 +1,13 @@
 import UIKit
 import WordPressAuthenticator
 
-
-class SiteCreationDomainsViewController: NUXViewController {
+class SiteCreationDomainsViewController: NUXViewController, HidableBottomViewOwner {
 
     // MARK: - Properties
 
     // Used to hide/show the Buttom View
-    @IBOutlet weak var buttonContainerViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var buttonContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomViewHeightConstraint: NSLayoutConstraint!
 
     override var sourceTag: WordPressSupportSourceTag {
         get {
@@ -52,25 +51,6 @@ class SiteCreationDomainsViewController: NUXViewController {
         WPStyleGuide.configureColors(for: view, andTableView: nil)
     }
 
-    private func showButtonView(show: Bool, withAnimation: Bool) {
-
-        let duration = withAnimation ? WPAnimationDurationDefault : 0
-
-        UIView.animate(withDuration: duration, animations: {
-            if show {
-                self.buttonContainerViewBottomConstraint.constant = 0
-            }
-            else {
-                // Move the view down double the height to ensure it's off the screen.
-                // i.e. to defy iPhone X bottom gap.
-                self.buttonContainerViewBottomConstraint.constant +=
-                    self.buttonContainerHeightConstraint.constant * 2
-            }
-
-            // Since the Button View uses auto layout, need to call this so the animation works properly.
-            self.view.layoutIfNeeded()
-        }, completion: nil)
-    }
 
     // MARK: - Navigation
 
