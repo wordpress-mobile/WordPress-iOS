@@ -19,9 +19,6 @@ struct NotificationActionParser: FormattableContentActionParser {
     }
 
     func parse(_ dictionary: [String: AnyObject]?) -> [FormattableContentAction] {
-        print("======== dictionary =======")
-        print(dictionary)
-        print("//////// dictionary =======")
         guard let allKeys = dictionary?.keys else {
             return []
         }

@@ -76,27 +76,67 @@ final class NotificationActionParserTest: XCTestCase {
         XCTAssertTrue(thirdAction.on)
     }
 
-    private func firstAction() -> FormattableContentActionCommand? {
-        guard let actions = subject?.parse(payload) else {
-            return nil
+    func testFourthParsedActionIsTrashComment() {
+        guard let fourthAction = fourthAction() else {
+            XCTFail()
+            return
         }
 
-        return actions.first?.command
+        XCTAssertEqual(fourthAction.identifier, TrashComment.commandIdentifier())
+    }
+
+    func testFourthParsedActionIsOff() {
+        guard let fourthAction = fourthAction() else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertFalse(fourthAction.on)
+    }
+
+    func testFifthParsedActionIsReplyToComment() {
+        guard let fifthAction = fifthAction() else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(fifthAction.identifier, ReplyToComment.commandIdentifier())
+    }
+
+    func testFifthParsedActionIsOn() {
+        guard let fifthAction = fifthAction() else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertTrue(fifthAction.on)
+    }
+
+    private func firstAction() -> FormattableContentActionCommand? {
+        return action(at: 0)
     }
 
     private func secondAction() -> FormattableContentActionCommand? {
-        guard let actions = subject?.parse(payload) else {
-            return nil
-        }
-
-        return actions[1].command
+        return action(at: 1)
     }
 
     private func thirdAction() -> FormattableContentActionCommand? {
+        return action(at: 2)
+    }
+
+    private func fourthAction() -> FormattableContentActionCommand? {
+        return action(at: 3)
+    }
+
+    private func fifthAction() -> FormattableContentActionCommand? {
+        return action(at: 4)
+    }
+
+    private func action(at: Int) -> FormattableContentActionCommand? {
         guard let actions = subject?.parse(payload) else {
             return nil
         }
 
-        return actions[2].command
+        return actions[at].command
     }
 }
