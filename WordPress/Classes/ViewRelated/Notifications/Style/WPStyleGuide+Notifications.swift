@@ -270,6 +270,10 @@ extension WPStyleGuide {
             button.setTitle(normalText, for: .normal)
             button.setTitle(selectedText, for: .selected)
             button.setTitle(selectedText, for: .highlighted)
+
+            // Default accessibility label and hint.
+            button.accessibilityLabel = normalText
+            button.accessibilityHint = NSLocalizedString("Follows the blog.", comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a blog.")
         }
 
 
