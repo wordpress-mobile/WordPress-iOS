@@ -15,7 +15,7 @@ class BadgeContentStyles: FormattableContentStyles {
         return WPStyleGuide.Notifications.badgeBoldStyle
     }
 
-    var rangeStylesMap: [NotificationContentRange.Kind: [NSAttributedStringKey: Any]]? {
+    var rangeStylesMap: [FormattableRangeKind: [NSAttributedStringKey: Any]]? {
         return [
             .user: WPStyleGuide.Notifications.badgeBoldStyle,
             .post: WPStyleGuide.Notifications.badgeItalicsStyle,

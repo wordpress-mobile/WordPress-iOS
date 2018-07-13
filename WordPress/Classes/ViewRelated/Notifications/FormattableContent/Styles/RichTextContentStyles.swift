@@ -19,7 +19,7 @@ class RichTextContentStyles: FormattableContentStyles {
         return WPStyleGuide.Notifications.contentBlockBoldStyle
     }
 
-    var rangeStylesMap: [NotificationContentRange.Kind: [NSAttributedStringKey: Any]]? {
+    var rangeStylesMap: [FormattableRangeKind: [NSAttributedStringKey: Any]]? {
         return [
             .blockquote: WPStyleGuide.Notifications.contentBlockQuotedStyle,
             .noticon: WPStyleGuide.Notifications.blockNoticonStyle,
