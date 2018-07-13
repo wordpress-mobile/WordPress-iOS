@@ -1,23 +1,6 @@
 import XCTest
 @testable import WordPress
 
-fileprivate final class MockNotificationActionsService: NotificationActionsService {
-    override func unapproveCommentWithBlock(_ block: ActionableObject, completion: ((Bool) -> Void)?) {
-        completion?(true)
-    }
-
-    override func approveCommentWithBlock(_ block: ActionableObject, completion: ((Bool) -> Void)?) {
-        completion?(true)
-    }
-}
-
-
-final class TestableApproveComment: ApproveComment {
-    override var actionsService: NotificationActionsService? {
-        return MockNotificationActionsService(managedObjectContext: TestContextManager.sharedInstance().mainContext)
-    }
-}
-
 final class MockActionableObject: ActionableObject {
     var textOverride: String?
 
@@ -47,6 +30,28 @@ final class MockActionableObject: ActionableObject {
 }
 
 final class ApproveCommentActionTests: XCTestCase {
+    private class TestableApproveComment: ApproveComment {
+        let service = MockNotificationActionsService(managedObjectContext: TestContextManager.sharedInstance().mainContext)
+        override var actionsService: NotificationActionsService? {
+            return service
+        }
+    }
+
+    private class MockNotificationActionsService: NotificationActionsService {
+        var unaproveWasCalled: Bool = false
+        var aproveWasCalled: Bool = false
+
+        override func unapproveCommentWithBlock(_ block: ActionableObject, completion: ((Bool) -> Void)?) {
+            unaproveWasCalled = true
+            completion?(true)
+        }
+
+        override func approveCommentWithBlock(_ block: ActionableObject, completion: ((Bool) -> Void)?) {
+            aproveWasCalled = true
+            completion?(true)
+        }
+    }
+
     private var action: ApproveComment?
 
     private struct Constants {
@@ -56,10 +61,12 @@ final class ApproveCommentActionTests: XCTestCase {
     override func setUp() {
         super.setUp()
         action = TestableApproveComment(on: Constants.initialStatus)
+        makeNetworkAvailable()
     }
 
     override func tearDown() {
         action = nil
+        makeNetworkUnavailable()
         super.tearDown()
     }
 
@@ -109,11 +116,36 @@ final class ApproveCommentActionTests: XCTestCase {
         XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.approve)
     }
 
+    func testExecuteCallsUnapproveWhenIconIsOn() {
+        action?.on = true
+
+        action?.execute(context: mockContext())
+
+        guard let mockService = action?.actionsService as? MockNotificationActionsService else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertTrue(mockService.unaproveWasCalled)
+    }
+
     private func mockContext() -> ActionContext {
         return ActionContext(block: mockActionableObject())
     }
 
     private func mockActionableObject() -> ActionableObject {
         return MockActionableObject()
+    }
+
+    private func makeNetworkAvailable() {
+        if let delegate = UIApplication.shared.delegate as? TestingAppDelegate {
+            delegate.connectionAvailable = true
+        }
+    }
+
+    private func makeNetworkUnavailable() {
+        if let delegate = UIApplication.shared.delegate as? TestingAppDelegate {
+            delegate.connectionAvailable = false
+        }
     }
 }
