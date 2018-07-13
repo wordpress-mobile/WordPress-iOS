@@ -901,6 +901,7 @@
 		D81C2F5420F85DB1002AE1F1 /* ApproveCommentActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81C2F5320F85DB1002AE1F1 /* ApproveCommentActionTests.swift */; };
 		D81C2F5620F86C20002AE1F1 /* NotificationActionsMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81C2F5520F86C20002AE1F1 /* NotificationActionsMocks.swift */; };
 		D81C2F5820F86CEA002AE1F1 /* NetworkStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81C2F5720F86CEA002AE1F1 /* NetworkStatus.swift */; };
+		D81C2F5A20F86E94002AE1F1 /* LikeCommentActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81C2F5920F86E94002AE1F1 /* LikeCommentActionTests.swift */; };
 		D8212CB120AA64E1008E8AE8 /* ReaderLikeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CB020AA64E1008E8AE8 /* ReaderLikeAction.swift */; };
 		D8212CB320AA6861008E8AE8 /* ReaderFollowAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CB220AA6861008E8AE8 /* ReaderFollowAction.swift */; };
 		D8212CB520AA68D5008E8AE8 /* ReaderSubscribingNotificationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CB420AA68D5008E8AE8 /* ReaderSubscribingNotificationAction.swift */; };
@@ -2483,6 +2484,7 @@
 		D81C2F5320F85DB1002AE1F1 /* ApproveCommentActionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApproveCommentActionTests.swift; sourceTree = "<group>"; };
 		D81C2F5520F86C20002AE1F1 /* NotificationActionsMocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationActionsMocks.swift; sourceTree = "<group>"; };
 		D81C2F5720F86CEA002AE1F1 /* NetworkStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkStatus.swift; sourceTree = "<group>"; };
+		D81C2F5920F86E94002AE1F1 /* LikeCommentActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeCommentActionTests.swift; sourceTree = "<group>"; };
 		D8212CB020AA64E1008E8AE8 /* ReaderLikeAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderLikeAction.swift; sourceTree = "<group>"; };
 		D8212CB220AA6861008E8AE8 /* ReaderFollowAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderFollowAction.swift; sourceTree = "<group>"; };
 		D8212CB420AA68D5008E8AE8 /* ReaderSubscribingNotificationAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSubscribingNotificationAction.swift; sourceTree = "<group>"; };
@@ -5017,6 +5019,7 @@
 		B5416CF81C17542900006DD8 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				D81C2F5920F86E94002AE1F1 /* LikeCommentActionTests.swift */,
 				D81C2F5320F85DB1002AE1F1 /* ApproveCommentActionTests.swift */,
 				B5882C461D5297D1008E0EAA /* NotificationTests.swift */,
 				B5C0CF3E204DB92F00DB0362 /* NotificationReplyStoreTests.swift */,
@@ -8190,6 +8193,7 @@
 				5948AD111AB73D19006E8882 /* WPAppAnalyticsTests.m in Sources */,
 				FF8032661EE9E22200861F28 /* MediaProgressCoordinatorTests.swift in Sources */,
 				E63C897C1CB9A0D700649C8F /* UITextFieldTextHelperTests.swift in Sources */,
+				D81C2F5A20F86E94002AE1F1 /* LikeCommentActionTests.swift in Sources */,
 				B5C0CF3F204DB92F00DB0362 /* NotificationReplyStoreTests.swift in Sources */,
 				D800D87620999AE700E7C7E5 /* DiscoverMenuItemCreatorTests.swift in Sources */,
 				E15027651E03E54100B847E3 /* PinghubTests.swift in Sources */,
