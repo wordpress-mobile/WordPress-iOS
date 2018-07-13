@@ -39,56 +39,55 @@
                                             </constraint>
                                         </constraints>
                                     </imageView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="v7c-T9-kZq" userLabel="Label Stack View">
-                                        <rect key="frame" x="0.0" y="133.5" width="355" height="48.5"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="gjj-bC-32w">
+                                        <rect key="frame" x="0.0" y="133.5" width="355" height="122.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is the title text." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8BN-gx-7TL">
-                                                <rect key="frame" x="0.0" y="0.0" width="355" height="20.5"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is the subtitle text." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdl-jh-nme">
-                                                <rect key="frame" x="0.0" y="30.5" width="355" height="18"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="v7c-T9-kZq" userLabel="Label Stack View">
+                                                <rect key="frame" x="98" y="0.0" width="159.5" height="48.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is the title text." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8BN-gx-7TL">
+                                                        <rect key="frame" x="0.0" y="0.0" width="159.5" height="20.5"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                        <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is the subtitle text." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sdl-jh-nme">
+                                                        <rect key="frame" x="0.0" y="30.5" width="159.5" height="18"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                        <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <variation key="heightClass=compact" spacing="5"/>
+                                            </stackView>
+                                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CPl-cH-d7b" customClass="NUXButton" customModule="WordPressAuthenticator">
+                                                <rect key="frame" x="135.5" y="78.5" width="84" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="ALu-HJ-Bk4"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                <state key="normal" title="Button title">
+                                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="actionButtonPressed:" destination="m07-8o-jn8" eventType="touchUpInside" id="PLr-qh-sJP"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
-                                        <variation key="heightClass=compact" spacing="5"/>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CPl-cH-d7b" customClass="NUXButton" customModule="WordPressAuthenticator">
-                                        <rect key="frame" x="135.5" y="212" width="84" height="44"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="ALu-HJ-Bk4"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                        <state key="normal" title="Button title">
-                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="actionButtonPressed:" destination="m07-8o-jn8" eventType="touchUpInside" id="PLr-qh-sJP"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="gjj-bC-32w" secondAttribute="bottom" id="9L8-n3-tw3"/>
+                                    <constraint firstItem="gjj-bC-32w" firstAttribute="top" secondItem="Fwm-rl-dKS" secondAttribute="bottom" constant="-30" id="BdA-bk-oTl"/>
                                     <constraint firstItem="Fwm-rl-dKS" firstAttribute="top" secondItem="0Ae-eX-ae9" secondAttribute="top" constant="-55" id="Q94-Bc-Rfs"/>
-                                    <constraint firstItem="v7c-T9-kZq" firstAttribute="leading" secondItem="0Ae-eX-ae9" secondAttribute="leading" id="Qtt-u7-Dee"/>
+                                    <constraint firstItem="gjj-bC-32w" firstAttribute="leading" secondItem="0Ae-eX-ae9" secondAttribute="leading" id="UZP-FI-0Fk"/>
                                     <constraint firstItem="czl-5D-gem" firstAttribute="centerX" secondItem="0Ae-eX-ae9" secondAttribute="centerX" id="V5P-Iz-hPa"/>
-                                    <constraint firstAttribute="trailing" secondItem="v7c-T9-kZq" secondAttribute="trailing" id="WVb-Ww-qsF"/>
-                                    <constraint firstAttribute="bottom" secondItem="CPl-cH-d7b" secondAttribute="bottom" id="YIc-mc-NXm"/>
-                                    <constraint firstItem="CPl-cH-d7b" firstAttribute="top" secondItem="v7c-T9-kZq" secondAttribute="bottom" constant="30" id="gWQ-2j-TIB">
-                                        <variation key="heightClass=compact" constant="10"/>
-                                    </constraint>
                                     <constraint firstItem="Fwm-rl-dKS" firstAttribute="centerX" secondItem="0Ae-eX-ae9" secondAttribute="centerX" id="jdr-4Z-YKV"/>
-                                    <constraint firstItem="CPl-cH-d7b" firstAttribute="centerX" secondItem="0Ae-eX-ae9" secondAttribute="centerX" id="oHJ-eX-SYg"/>
-                                    <constraint firstItem="v7c-T9-kZq" firstAttribute="top" secondItem="Fwm-rl-dKS" secondAttribute="bottom" constant="-30" id="rWL-v8-w8t">
-                                        <variation key="heightClass=compact" constant="-40"/>
-                                    </constraint>
+                                    <constraint firstAttribute="trailing" secondItem="gjj-bC-32w" secondAttribute="trailing" id="mCf-TP-NhY"/>
                                     <constraint firstItem="czl-5D-gem" firstAttribute="top" secondItem="0Ae-eX-ae9" secondAttribute="top" id="zNe-un-uU0"/>
                                 </constraints>
                             </view>
