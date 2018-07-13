@@ -323,7 +323,8 @@ private extension PlanDetailViewController {
         removeNoResultsFromView()
 
         if noResultsViewController == nil {
-            instantiateNoResultsViewController()
+            noResultsViewController = NoResultsViewController.controller()
+            noResultsViewController?.delegate = self
         }
 
         guard let noResultsViewController = noResultsViewController,
@@ -337,12 +338,6 @@ private extension PlanDetailViewController {
         cell.contentView.addSubview(noResultsViewController.view)
         addChildViewController(noResultsViewController)
         noResultsViewController.didMove(toParentViewController: self)
-    }
-
-    func instantiateNoResultsViewController() {
-        let noResultsSB = UIStoryboard(name: "NoResults", bundle: nil)
-        noResultsViewController = noResultsSB.instantiateViewController(withIdentifier: "NoResults") as? NoResultsViewController
-        noResultsViewController?.delegate = self
     }
 
 }

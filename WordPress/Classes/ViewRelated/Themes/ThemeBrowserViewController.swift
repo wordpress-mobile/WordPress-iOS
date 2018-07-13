@@ -882,15 +882,6 @@ private extension ThemeBrowserViewController {
         }
     }
 
-    func setupNoResultsViewController() {
-        let noResultsStoryboard = UIStoryboard(name: "NoResults", bundle: nil)
-        guard let noResultsViewController = noResultsStoryboard.instantiateViewController(withIdentifier: "NoResults") as? NoResultsViewController else {
-            return
-        }
-
-        self.noResultsViewController = noResultsViewController
-    }
-
     func showNoResults() {
 
         guard !noResultsShown else {
@@ -898,7 +889,7 @@ private extension ThemeBrowserViewController {
         }
 
         if noResultsViewController == nil {
-            setupNoResultsViewController()
+            noResultsViewController = NoResultsViewController.controller()
         }
 
         guard let noResultsViewController = noResultsViewController else {
