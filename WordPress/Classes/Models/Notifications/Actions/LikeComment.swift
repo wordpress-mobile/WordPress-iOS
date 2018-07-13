@@ -1,6 +1,6 @@
 import MGSwipeTableCell
 /// Encapsulates logic to Like a comment
-final class LikeComment: DefaultNotificationActionCommand, AccessibleFormattableContentActionCommand {
+class LikeComment: DefaultNotificationActionCommand, AccessibleFormattableContentActionCommand {
     enum TitleStrings {
         static let like = NSLocalizedString("Like", comment: "Likes a Comment")
         static let unlike = NSLocalizedString("Liked", comment: "A comment is marked as liked")
@@ -16,7 +16,7 @@ final class LikeComment: DefaultNotificationActionCommand, AccessibleFormattable
         let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
         button.accessibilityLabel = title
         button.accessibilityTraits = UIAccessibilityTraitButton
-        button.accessibilityHint = TitleHints.unlike
+        button.accessibilityHint = TitleHints.like
         return button
     }()
 
