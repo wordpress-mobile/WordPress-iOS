@@ -434,7 +434,14 @@ static NSInteger HideSearchMinSites = 3;
 - (void)presentInterfaceForAddingNewSiteFrom:(UIView *)sourceView
 {
     [self.navigationController popToRootViewControllerAnimated:YES];
-    [self showAddSiteAlertFromView:sourceView];
+
+    // there is a display problem when showing this popup alert on iOS 10,
+    // so we show it from the empty screen's action button instead
+    if (@available(iOS 11, *)) {
+        [self showAddSiteAlertFrom:sourceView];
+    } else {
+        [self actionButtonPressed];
+    }
 }
 
 - (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar
@@ -862,7 +869,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)addSite
 {
-    [self showAddSiteAlertFromView:self.noResultsViewController.actionButton];
+    [self showAddSiteAlertFrom:self.addSiteButton];
 }
 
 - (UIAlertController *)makeAddSiteAlertController
@@ -976,23 +983,28 @@ static NSInteger HideSearchMinSites = 3;
 #pragma mark - NoResultsViewControllerDelegate
 
 - (void)actionButtonPressed {
-    [self showAddSiteAlertFromView:self.noResultsViewController.actionButton];
+    [self showAddSiteAlertFrom:self.noResultsViewController.actionButton];
 }
 
 #pragma mark - View Delegate Helper
 
-- (void)showAddSiteAlertFromView:(UIView *)sourceView
+- (void)showAddSiteAlertFrom:(id)source
 {
-    if (self.dataSource.allBlogsCount == 0) {
+    if (self.dataSource.allBlogsCount > 0 && self.dataSource.visibleBlogsCount == 0) {
+        [self setEditing:YES animated:YES];
+    } else {
         UIAlertController *addSiteAlertController = [self makeAddSiteAlertController];
-        addSiteAlertController.popoverPresentationController.sourceView = sourceView;
-        addSiteAlertController.popoverPresentationController.sourceRect = sourceView.bounds;
+        if ([source isKindOfClass:[UIView class]]) {
+            UIView *sourceView = (UIView *)source;
+            addSiteAlertController.popoverPresentationController.sourceView = sourceView;
+            addSiteAlertController.popoverPresentationController.sourceRect = sourceView.bounds;
+        } else if ([source isKindOfClass:[UIBarButtonItem class]]) {
+            addSiteAlertController.popoverPresentationController.barButtonItem = source;
+        }
         addSiteAlertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
-        
+
         [self presentViewController:addSiteAlertController animated:YES completion:nil];
         self.addSiteAlertController = addSiteAlertController;
-    } else if (self.dataSource.visibleBlogsCount == 0) {
-        [self setEditing:YES animated:YES];
     }
 }
 
