@@ -14,9 +14,21 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
 
     open var siteName: String?
     open var delegate: SiteCreationDomainsTableViewControllerDelegate?
-    open var suggestOnlyWordPressDotCom: Bool {
-        return true
-    }
+    open var suggestOnlyWordPressDotCom = true
+    open var useFadedColorForParentDomains = true
+    open var sectionTitle = NSLocalizedString(
+        "Step 4 of 4",
+        comment: "Title for last step in the site creation process."
+        ).localizedUppercase
+    open var sectionDescription = NSLocalizedString(
+        "Pick an available \"yourname.wordpress.com\" address to let people find you on the web.",
+        comment: "Description of how to pick a domain name during the site creation process"
+    )
+    open var searchFieldPlaceholder = NSLocalizedString(
+        "Type a keyword for more ideas",
+        comment: "Placeholder text for domain search during site creation."
+    )
+
     private var noResultsViewController: NoResultsViewController?
     private var service: DomainsService?
     private var siteTitleSuggestions: [String] = []
@@ -29,6 +41,10 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
 
     fileprivate enum ViewPadding: CGFloat {
         case noResultsView = 60
+    }
+
+    private var parentDomainColor: UIColor {
+        return useFadedColorForParentDomains ? WPStyleGuide.grey() : WPStyleGuide.darkGrey()
     }
 
     // MARK: - Init
@@ -222,9 +238,8 @@ extension SiteCreationDomainsTableViewController {
     // MARK: table view cells
 
     @objc func titleAndDescriptionCell() -> UITableViewCell {
-        let title = NSLocalizedString("Step 4 of 4", comment: "Title for last step in the site creation process.").localizedUppercase
-        let description = NSLocalizedString("Pick an available \"yourname.wordpress.com\" address to let people find you on the web.", comment: "Description of how to pick a domain name during the site creation process")
-        let cell = LoginSocialErrorCell(title: title, description: description)
+        let cell = LoginSocialErrorCell(title: sectionTitle,
+                                        description: sectionDescription)
         cell.selectionStyle = .none
         return cell
     }
@@ -234,7 +249,7 @@ extension SiteCreationDomainsTableViewController {
             fatalError()
         }
 
-        cell.placeholder = NSLocalizedString("Type a keyword for more ideas", comment: "Placeholder text for domain search during site creation.")
+        cell.placeholder = searchFieldPlaceholder
         cell.delegate = self
         cell.selectionStyle = .none
 
@@ -252,7 +267,7 @@ extension SiteCreationDomainsTableViewController {
         let cell = UITableViewCell()
 
         cell.textLabel?.attributedText = styleDomain(domain)
-        cell.textLabel?.textColor = WPStyleGuide.grey()
+        cell.textLabel?.textColor = parentDomainColor
         cell.indentationWidth = 20.0
         cell.indentationLevel = 1
         return cell
@@ -263,7 +278,9 @@ extension SiteCreationDomainsTableViewController {
         guard let dotPosition = domain.index(of: ".") else {
             return styledDomain
         }
-        styledDomain.addAttribute(.foregroundColor, value: WPStyleGuide.darkGrey(), range: NSMakeRange(0, dotPosition.encodedOffset))
+        styledDomain.addAttribute(.foregroundColor,
+                                  value: WPStyleGuide.darkGrey(),
+                                  range: NSMakeRange(0, dotPosition.encodedOffset))
         return styledDomain
     }
 }

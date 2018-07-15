@@ -4222,7 +4222,6 @@
 			isa = PBXGroup;
 			children = (
 				437EF0C920F79C520086129B /* PickDomainViewController.swift */,
-				435783E720F7CC48006B4580 /* PickDomainTableViewController.swift */,
 				43D74AC920F8F937004AD934 /* RegisterDomainDetailsViewController.swift */,
 				43D74ACB20F904FC004AD934 /* RegisterDomainDetailsViewController+LocalizedStrings.swift */,
 			);

@@ -155,10 +155,10 @@
             </objects>
             <point key="canvasLocation" x="2591" y="95"/>
         </scene>
-        <!--Pick Domain Table View Controller-->
+        <!--Site Creation Domains Table View Controller-->
         <scene sceneID="51P-n6-cRj">
             <objects>
-                <viewController id="2bt-OY-Oy1" customClass="PickDomainTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="2bt-OY-Oy1" customClass="SiteCreationDomainsTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="nsX-rJ-73G">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="563"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

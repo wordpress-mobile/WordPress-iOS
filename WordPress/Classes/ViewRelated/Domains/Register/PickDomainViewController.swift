@@ -7,7 +7,7 @@ class PickDomainViewController: UIViewController, HidableBottomViewOwner {
     @IBOutlet weak var bottomViewHeightConstraint: NSLayoutConstraint!
     private var domain: String?
 
-    private var domainsTableViewController: PickDomainTableViewController?
+    private var domainsTableViewController: SiteCreationDomainsTableViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +30,7 @@ class PickDomainViewController: UIViewController, HidableBottomViewOwner {
         buttonViewController.delegate = self
         buttonViewController.setButtonTitles(
             primary: NSLocalizedString("Choose domain",
-                                       comment: "Title for the Choose domain button")
+                                       comment: "Register domain - Title for the Choose domain button of Suggested domains screen")
         )
         return buttonViewController
     }()
@@ -43,7 +43,7 @@ class PickDomainViewController: UIViewController, HidableBottomViewOwner {
 
     private func configure() {
         title = NSLocalizedString("Register domain",
-                                  comment: "Title for the Register domain screen")
+                                  comment: "Register domain - Title for the Suggested domains screen")
         addCancelBarButtonItem()
         WPStyleGuide.configureColors(for: view, andTableView: nil)
     }
@@ -51,7 +51,7 @@ class PickDomainViewController: UIViewController, HidableBottomViewOwner {
     private func addCancelBarButtonItem() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: NSLocalizedString("Cancel",
-                                     comment: "Navigation bar cancel button for Register domain screen"),
+                                     comment: "Register domain - Navigation bar cancel button for Suggested domains screen"),
             style: .plain,
             target: self,
             action: #selector(cancelBarButtonTapped)
@@ -63,10 +63,21 @@ class PickDomainViewController: UIViewController, HidableBottomViewOwner {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        if let vc = segue.destination as? PickDomainTableViewController {
+        if let vc = segue.destination as? SiteCreationDomainsTableViewController {
+            vc.suggestOnlyWordPressDotCom = false
+            vc.useFadedColorForParentDomains = false
+            vc.sectionTitle = ""
+            vc.sectionDescription = NSLocalizedString(
+                "Pick an available address",
+                comment: "Register domain - Suggested Domain description for the screen"
+            )
+            vc.searchFieldPlaceholder = NSLocalizedString(
+                "Type to get more suggestions",
+                comment: "Register domain - Search field placeholder for the Suggested Domain screen"
+            )
+            vc.delegate = self
+            vc.siteName = nil
             domainsTableViewController = vc
-            domainsTableViewController?.delegate = self
-            domainsTableViewController?.siteName = nil
         }
     }
 
