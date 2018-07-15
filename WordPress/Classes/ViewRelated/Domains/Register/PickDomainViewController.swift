@@ -5,6 +5,7 @@ class PickDomainViewController: UIViewController, HidableBottomViewOwner {
 
     @IBOutlet weak var bottomViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomViewHeightConstraint: NSLayoutConstraint!
+    private var domain: String?
 
     private var domainsTableViewController: PickDomainTableViewController?
 
@@ -81,7 +82,7 @@ class PickDomainViewController: UIViewController, HidableBottomViewOwner {
 
 extension PickDomainViewController: SiteCreationDomainsTableViewControllerDelegate {
     func domainSelected(_ domain: String) {
-        //TODO: keep selected domain
+        self.domain = domain
         showButtonView(show: true, withAnimation: true)
     }
 
@@ -94,6 +95,8 @@ extension PickDomainViewController: SiteCreationDomainsTableViewControllerDelega
 
 extension PickDomainViewController: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
-        // TODO: Proceed
+        let controller = RegisterDomainDetailsViewController()
+        controller.domain = domain
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 }
