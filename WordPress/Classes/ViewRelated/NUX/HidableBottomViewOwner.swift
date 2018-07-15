@@ -1,15 +1,26 @@
 import UIKit
 
+/// Any UIViewControllers who has a bottom view that should have a hiding
+/// ability can conform to this protocol so showing/hiding is already handled.
 protocol HidableBottomViewOwner {
+
+    /// Distance constraint between the hidable view's bottom and the conforming view's bottom
     var bottomViewBottomConstraint: NSLayoutConstraint! { get }
+
+    /// Height constraint of the hidable view
     var bottomViewHeightConstraint: NSLayoutConstraint! { get }
 }
 
 extension HidableBottomViewOwner where Self: UIViewController {
 
-    func showButtonView(show: Bool, withAnimation: Bool) {
+    /// Shows/hides bottom view
+    ///
+    /// - Parameters:
+    ///   - show: true shows, false hides
+    ///   - animation: showing/hiding is done animatedly if true
+    func showButtonView(show: Bool, withAnimation animation: Bool) {
 
-        let duration = withAnimation ? WPAnimationDurationDefault : 0
+        let duration = animation ? WPAnimationDurationDefault : 0
 
         UIView.animate(withDuration: duration, animations: {
             if show {
