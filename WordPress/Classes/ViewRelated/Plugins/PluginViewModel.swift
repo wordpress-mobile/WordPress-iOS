@@ -172,8 +172,11 @@ class PluginViewModel: Observable {
                 subtitle: nil,
                 actionLabel: NSLocalizedString("Install", comment: "Button label to install a plugin"),
                 onButtonTap: { [unowned self] _ in
-                    if isHostedAtWPCom {
-                        guard let atHelper = AutomatedTransferHelper(site: self.site, plugin: directoryEntry) else {
+                    if FeatureFlag.automatedTransfersCustomDomain.enabled {
+                        if self.shouldShowRegisterDomainAlert() {
+                            let alert = self.confirmRegisterDomainAlert()
+                            self.present?(alert)
+                        } else {
                    
                             ActionDispatcher.dispatch(NoticeAction.post(Notice(title: String(format: NSLocalizedString("Error installing %@.", comment: "Notice displayed after attempt to install a plugin fails."), directoryEntry.name))))
                             return
@@ -224,7 +227,7 @@ class PluginViewModel: Observable {
         return versionRow
     }
 
-    private func shouldPopRegisterDomainAlert() -> Bool {
+    private func shouldShowRegisterDomainAlert() -> Bool {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
         if let blog = blogService.blog(byBlogId: NSNumber(value: self.site.siteID)),
@@ -457,15 +460,15 @@ class PluginViewModel: Observable {
 
     private func confirmRegisterDomainAlert() -> UIAlertController {
         let title = NSLocalizedString("Install Plugin", comment: "Install Plugin dialog title.")
-        let message = NSLocalizedString("To install plugins you need to have a custom domain associated with your site", comment: "Install Plugin dialog text.")
+        let message = NSLocalizedString("To install plugins you need to have a custom domain associated with your site.", comment: "Install Plugin dialog text.")
         let registerDomainActionTitle = NSLocalizedString("Register domain", comment: "Install Plugin dialog register domain button text")
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel removing a plugin"))
-        alertController.addDefaultActionWithTitle(registerDomainActionTitle) { [weak self] (action) in
-            self?.routeToRegisterDomain()
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel registering a domain"))
+        let registerDomainAction = alertController.addDefaultActionWithTitle(registerDomainActionTitle) { [weak self] (action) in
+            self?.presentDomainRegistration()
         }
+        alertController.preferredAction = registerDomainAction
         return alertController
     }
 
@@ -501,8 +504,10 @@ class PluginViewModel: Observable {
         return alert
     }
 
-    private func routeToRegisterDomain() {
-        //TODO
+    private func presentDomainRegistration() {
+        let controller = PickDomainViewController.instance()
+        let navigationController = UINavigationController(rootViewController: controller)
+        self.present?(navigationController)
     }
 
     private func presentBrowser(`for` url: URL) {
