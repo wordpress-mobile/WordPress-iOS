@@ -249,6 +249,8 @@
 		43D74ACA20F8F937004AD934 /* RegisterDomainDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D74AC920F8F937004AD934 /* RegisterDomainDetailsViewController.swift */; };
 		43D74ACE20F906DD004AD934 /* InlineEditableNameValueCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43D74ACD20F906DD004AD934 /* InlineEditableNameValueCell.xib */; };
 		43D74AD020F906EE004AD934 /* InlineEditableNameValueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D74ACF20F906EE004AD934 /* InlineEditableNameValueCell.swift */; };
+		43D74AD420FB5ABA004AD934 /* RegisterDomainSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43D74AD320FB5ABA004AD934 /* RegisterDomainSectionHeaderView.xib */; };
+		43D74AD620FB5AD5004AD934 /* RegisterDomainSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D74AD520FB5AD5004AD934 /* RegisterDomainSectionHeaderView.swift */; };
 		43DC0EF12040B23200896C9C /* SignupUsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DC0EF02040B23200896C9C /* SignupUsernameViewController.swift */; };
 		43FB3F411EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FB3F401EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift */; };
 		43FB3F471EC10F1E00FC8A62 /* LoginEpilogueTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FB3F461EC10F1E00FC8A62 /* LoginEpilogueTableViewController.swift */; };
@@ -1617,6 +1619,8 @@
 		43D74AC920F8F937004AD934 /* RegisterDomainDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDomainDetailsViewController.swift; sourceTree = "<group>"; };
 		43D74ACD20F906DD004AD934 /* InlineEditableNameValueCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InlineEditableNameValueCell.xib; sourceTree = "<group>"; };
 		43D74ACF20F906EE004AD934 /* InlineEditableNameValueCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineEditableNameValueCell.swift; sourceTree = "<group>"; };
+		43D74AD320FB5ABA004AD934 /* RegisterDomainSectionHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegisterDomainSectionHeaderView.xib; sourceTree = "<group>"; };
+		43D74AD520FB5AD5004AD934 /* RegisterDomainSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDomainSectionHeaderView.swift; sourceTree = "<group>"; };
 		43DC0EF02040B23200896C9C /* SignupUsernameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupUsernameViewController.swift; sourceTree = "<group>"; };
 		43FB3F401EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueBlogCell.swift; sourceTree = "<group>"; };
 		43FB3F461EC10F1E00FC8A62 /* LoginEpilogueTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueTableViewController.swift; sourceTree = "<group>"; };
@@ -3296,6 +3300,7 @@
 		173BCE711CEB365400AE8817 /* Domains */ = {
 			isa = PBXGroup;
 			children = (
+				43D74AD220FB5A82004AD934 /* Views */,
 				437EF0C820F79C0C0086129B /* Register */,
 				173BCE741CEB369900AE8817 /* Domains.storyboard */,
 				173BCE721CEB368A00AE8817 /* DomainsListViewController.swift */,
@@ -3652,6 +3657,15 @@
 				43D74AC920F8F937004AD934 /* RegisterDomainDetailsViewController.swift */,
 			);
 			path = Register;
+			sourceTree = "<group>";
+		};
+		43D74AD220FB5A82004AD934 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				43D74AD520FB5AD5004AD934 /* RegisterDomainSectionHeaderView.swift */,
+				43D74AD320FB5ABA004AD934 /* RegisterDomainSectionHeaderView.xib */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		45C73C23113C36F50024D0D2 /* Resources-iPad */ = {
@@ -6627,6 +6641,7 @@
 				B51535D41BBB16AA0029B84B /* Launch Screen.storyboard in Resources */,
 				08216FAA1CDBF95100304BA7 /* MenuItemEditing.storyboard in Resources */,
 				747084101E269669002CA726 /* JetpackLoginViewController.xib in Resources */,
+				43D74AD420FB5ABA004AD934 /* RegisterDomainSectionHeaderView.xib in Resources */,
 				5D6C4B021B603D1F005E3C43 /* WPWebViewController.xib in Resources */,
 				982BED981FBCF392000B848E /* SiteCreation.storyboard in Resources */,
 				E6D3E84B1BEBD888002692E8 /* ReaderCrossPostCell.xib in Resources */,
