@@ -231,6 +231,7 @@
 		430693741DD25F31009398A2 /* PostPost.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 430693731DD25F31009398A2 /* PostPost.storyboard */; };
 		4319AADE2090F00C0025D68E /* FancyAlertViewController+NotificationPrimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4319AADD2090F00C0025D68E /* FancyAlertViewController+NotificationPrimer.swift */; };
 		4322A20D203E1885004EA740 /* SignupUsernameTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4322A20C203E1885004EA740 /* SignupUsernameTableViewController.swift */; };
+		4328E7DA20FBCBA40071EBB3 /* RegisterDomain.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4328E7D920FBCBA40071EBB3 /* RegisterDomain.storyboard */; };
 		433432521E9ED18900915988 /* LoginEpilogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433432511E9ED18900915988 /* LoginEpilogueViewController.swift */; };
 		433432541E9EE0B100915988 /* EpilogueSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433432531E9EE0B100915988 /* EpilogueSegue.swift */; };
 		435035971EDCAB99004ECF47 /* jetpack.json in Resources */ = {isa = PBXBuildFile; fileRef = 435035921EDCAB99004ECF47 /* jetpack.json */; };
@@ -239,7 +240,7 @@
 		4350359A1EDCAB99004ECF47 /* reader.json in Resources */ = {isa = PBXBuildFile; fileRef = 435035951EDCAB99004ECF47 /* reader.json */; };
 		4350359B1EDCAB99004ECF47 /* stats.json in Resources */ = {isa = PBXBuildFile; fileRef = 435035961EDCAB99004ECF47 /* stats.json */; };
 		437542E31DD4E19E00D6B727 /* EditPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437542E21DD4E19E00D6B727 /* EditPostViewController.swift */; };
-		437EF0CA20F79C520086129B /* PickDomainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437EF0C920F79C520086129B /* PickDomainViewController.swift */; };
+		437EF0CA20F79C520086129B /* RegisterDomainSuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437EF0C920F79C520086129B /* RegisterDomainSuggestionsViewController.swift */; };
 		4388FEFE20A4E0B900783948 /* NotificationsViewController+AppRatings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388FEFD20A4E0B900783948 /* NotificationsViewController+AppRatings.swift */; };
 		4388FF0020A4E19C00783948 /* NotificationsViewController+PushPrimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388FEFF20A4E19C00783948 /* NotificationsViewController+PushPrimer.swift */; };
 		43AB7C5E1D3E70510066CB6A /* PostListFilterSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */; };
@@ -1601,6 +1602,7 @@
 		430693731DD25F31009398A2 /* PostPost.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PostPost.storyboard; sourceTree = "<group>"; };
 		4319AADD2090F00C0025D68E /* FancyAlertViewController+NotificationPrimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FancyAlertViewController+NotificationPrimer.swift"; sourceTree = "<group>"; };
 		4322A20C203E1885004EA740 /* SignupUsernameTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupUsernameTableViewController.swift; sourceTree = "<group>"; };
+		4328E7D920FBCBA40071EBB3 /* RegisterDomain.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = RegisterDomain.storyboard; sourceTree = "<group>"; };
 		433432511E9ED18900915988 /* LoginEpilogueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueViewController.swift; sourceTree = "<group>"; };
 		433432531E9EE0B100915988 /* EpilogueSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpilogueSegue.swift; sourceTree = "<group>"; };
 		435035921EDCAB99004ECF47 /* jetpack.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = jetpack.json; sourceTree = "<group>"; };
@@ -1609,7 +1611,7 @@
 		435035951EDCAB99004ECF47 /* reader.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = reader.json; sourceTree = "<group>"; };
 		435035961EDCAB99004ECF47 /* stats.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stats.json; sourceTree = "<group>"; };
 		437542E21DD4E19E00D6B727 /* EditPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditPostViewController.swift; sourceTree = "<group>"; };
-		437EF0C920F79C520086129B /* PickDomainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickDomainViewController.swift; sourceTree = "<group>"; };
+		437EF0C920F79C520086129B /* RegisterDomainSuggestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDomainSuggestionsViewController.swift; sourceTree = "<group>"; };
 		4388FEFD20A4E0B900783948 /* NotificationsViewController+AppRatings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationsViewController+AppRatings.swift"; sourceTree = "<group>"; };
 		4388FEFF20A4E19C00783948 /* NotificationsViewController+PushPrimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationsViewController+PushPrimer.swift"; sourceTree = "<group>"; };
 		43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostListFilterSettings.swift; sourceTree = "<group>"; };
@@ -3302,8 +3304,9 @@
 			children = (
 				43D74AD220FB5A82004AD934 /* Views */,
 				437EF0C820F79C0C0086129B /* Register */,
-				173BCE741CEB369900AE8817 /* Domains.storyboard */,
 				173BCE721CEB368A00AE8817 /* DomainsListViewController.swift */,
+				173BCE741CEB369900AE8817 /* Domains.storyboard */,
+				4328E7D920FBCBA40071EBB3 /* RegisterDomain.storyboard */,
 			);
 			path = Domains;
 			sourceTree = "<group>";
@@ -3652,7 +3655,7 @@
 		437EF0C820F79C0C0086129B /* Register */ = {
 			isa = PBXGroup;
 			children = (
-				437EF0C920F79C520086129B /* PickDomainViewController.swift */,
+				437EF0C920F79C520086129B /* RegisterDomainSuggestionsViewController.swift */,
 				43D74AC920F8F937004AD934 /* RegisterDomainDetailsViewController.swift */,
 				43D74ACB20F904FC004AD934 /* RegisterDomainDetailsViewController+LocalizedStrings.swift */,
 			);
@@ -6618,6 +6621,7 @@
 				5DB767411588F64D00EBE36C /* postPreview.html in Resources */,
 				85ED988817DFA00000090D0B /* Images.xcassets in Resources */,
 				E149771A1C0DCB6F0057CD60 /* MediaSizeSliderCell.xib in Resources */,
+				4328E7DA20FBCBA40071EBB3 /* RegisterDomain.storyboard in Resources */,
 				E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */,
 				E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */,
 				B5C66B7A1ACF074600F68370 /* NoteBlockUserTableViewCell.xib in Resources */,
@@ -7265,7 +7269,7 @@
 				FF54D4641D6F3FA900A0DC4D /* EditorSettings.swift in Sources */,
 				D80BC79E20746B4100614A59 /* MediaPickingContext.swift in Sources */,
 				E6D2E16C1B8B423B0000ED14 /* ReaderStreamHeader.swift in Sources */,
-				437EF0CA20F79C520086129B /* PickDomainViewController.swift in Sources */,
+				437EF0CA20F79C520086129B /* RegisterDomainSuggestionsViewController.swift in Sources */,
 				FFD12D5E1FE1998D00F20A00 /* Progress+Helpers.swift in Sources */,
 				170CE7402064478600A48191 /* PostNoticeNavigationCoordinator.swift in Sources */,
 				740516892087B73400252FD0 /* SearchableActivityConvertable.swift in Sources */,

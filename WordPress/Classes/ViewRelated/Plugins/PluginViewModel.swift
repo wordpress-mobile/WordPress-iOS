@@ -450,7 +450,7 @@ class PluginViewModel: Observable {
     }
 
     private func presentDomainRegistration() {
-        let controller = PickDomainViewController.instance()
+        let controller = RegisterDomainSuggestionsViewController.instance()
         let navigationController = UINavigationController(rootViewController: controller)
         self.present?(navigationController)
     }

@@ -111,10 +111,10 @@
             </objects>
             <point key="canvasLocation" x="289" y="141"/>
         </scene>
-        <!--Pick Domain View Controller-->
+        <!--Register Domain Suggestions View Controller-->
         <scene sceneID="Vzz-Rm-G0J">
             <objects>
-                <viewController storyboardIdentifier="PickDomainViewController" id="9E6-Tz-me5" customClass="PickDomainViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RegisterDomainSuggestionsViewController" id="9E6-Tz-me5" customClass="RegisterDomainSuggestionsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ZWr-bx-qHv">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

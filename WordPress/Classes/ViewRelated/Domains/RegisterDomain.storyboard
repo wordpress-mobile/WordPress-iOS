@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Register Domain Suggestions View Controller-->
+        <scene sceneID="Ott-OI-M1X">
+            <objects>
+                <viewController storyboardIdentifier="RegisterDomainSuggestionsViewController" id="czc-f5-zC7" customClass="RegisterDomainSuggestionsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hr1-AR-Kcc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qRW-a0-uEt" userLabel="Table Container View">
+                                <rect key="frame" x="0.0" y="20" width="375" height="563"/>
+                                <connections>
+                                    <segue destination="CFb-K0-jrQ" kind="embed" id="v6Z-QC-UcC"/>
+                                </connections>
+                            </containerView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N47-hP-xDu" userLabel="Button Container View">
+                                <rect key="frame" x="0.0" y="583" width="375" height="84"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="84" placeholder="YES" id="ATd-iH-oJG"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="84" id="j00-iE-vY5"/>
+                                </constraints>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="N47-hP-xDu" firstAttribute="trailing" secondItem="qDC-aT-Sfz" secondAttribute="trailing" id="00z-KU-gma"/>
+                            <constraint firstItem="N47-hP-xDu" firstAttribute="bottom" secondItem="hr1-AR-Kcc" secondAttribute="bottom" id="CbP-Yl-3OZ"/>
+                            <constraint firstItem="qDC-aT-Sfz" firstAttribute="trailing" secondItem="qRW-a0-uEt" secondAttribute="trailing" id="NvV-4f-UXu"/>
+                            <constraint firstItem="qRW-a0-uEt" firstAttribute="leading" secondItem="qDC-aT-Sfz" secondAttribute="leading" id="Owz-yP-dfr"/>
+                            <constraint firstItem="N47-hP-xDu" firstAttribute="leading" secondItem="qDC-aT-Sfz" secondAttribute="leading" id="aq0-ab-Svm"/>
+                            <constraint firstItem="qRW-a0-uEt" firstAttribute="top" secondItem="qDC-aT-Sfz" secondAttribute="top" id="g17-8h-gCH"/>
+                            <constraint firstItem="N47-hP-xDu" firstAttribute="top" secondItem="qRW-a0-uEt" secondAttribute="bottom" id="kYJ-aF-Uio"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="qDC-aT-Sfz"/>
+                    </view>
+                    <connections>
+                        <outlet property="bottomViewBottomConstraint" destination="CbP-Yl-3OZ" id="SgM-zd-bS0"/>
+                        <outlet property="bottomViewHeightConstraint" destination="j00-iE-vY5" id="TES-Ic-0gY"/>
+                        <outlet property="buttonViewContainer" destination="N47-hP-xDu" id="wQG-3m-IgK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="afP-jx-PGK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2591" y="95"/>
+        </scene>
+        <!--Site Creation Domains Table View Controller-->
+        <scene sceneID="MWs-Pg-0fY">
+            <objects>
+                <viewController id="CFb-K0-jrQ" customClass="SiteCreationDomainsTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="UYc-Bx-TlF">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="563"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <connections>
+                            <outlet property="dataSource" destination="CFb-K0-jrQ" id="nek-ye-X4b"/>
+                            <outlet property="delegate" destination="CFb-K0-jrQ" id="d52-Yz-WPF"/>
+                        </connections>
+                    </tableView>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JP9-C9-qhT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3431" y="95"/>
+        </scene>
+    </scenes>
+</document>

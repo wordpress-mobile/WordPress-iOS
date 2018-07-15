@@ -1,7 +1,7 @@
 import UIKit
 import WordPressAuthenticator
 
-class PickDomainViewController: UIViewController, HidableBottomViewOwner {
+class RegisterDomainSuggestionsViewController: NUXViewController, HidableBottomViewOwner {
 
     @IBOutlet weak var bottomViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomViewHeightConstraint: NSLayoutConstraint!
@@ -35,9 +35,9 @@ class PickDomainViewController: UIViewController, HidableBottomViewOwner {
         return buttonViewController
     }()
 
-    static func instance() -> PickDomainViewController {
-        let storyboard = UIStoryboard(name: "Domains", bundle: Bundle.main)
-        let controller = storyboard.instantiateViewController(withIdentifier: "PickDomainViewController") as! PickDomainViewController
+    static func instance() -> RegisterDomainSuggestionsViewController {
+        let storyboard = UIStoryboard(name: "RegisterDomain", bundle: Bundle.main)
+        let controller = storyboard.instantiateViewController(withIdentifier: "RegisterDomainSuggestionsViewController") as! RegisterDomainSuggestionsViewController
         return controller
     }
 
@@ -91,7 +91,7 @@ class PickDomainViewController: UIViewController, HidableBottomViewOwner {
 
 // MARK: - SiteCreationDomainsTableViewControllerDelegate
 
-extension PickDomainViewController: SiteCreationDomainsTableViewControllerDelegate {
+extension RegisterDomainSuggestionsViewController: SiteCreationDomainsTableViewControllerDelegate {
     func domainSelected(_ domain: String) {
         self.domain = domain
         showButtonView(show: true, withAnimation: true)
@@ -104,7 +104,7 @@ extension PickDomainViewController: SiteCreationDomainsTableViewControllerDelega
 
 // MARK: - NUXButtonViewControllerDelegate
 
-extension PickDomainViewController: NUXButtonViewControllerDelegate {
+extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
         let controller = RegisterDomainDetailsViewController()
         controller.domain = domain
