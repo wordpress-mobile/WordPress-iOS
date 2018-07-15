@@ -247,6 +247,8 @@
 		43D54D131DCAA070007F575F /* PostPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D54D121DCAA070007F575F /* PostPostViewController.swift */; };
 		43D74AC820F8D17A004AD934 /* HidableBottomViewOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D74AC720F8D17A004AD934 /* HidableBottomViewOwner.swift */; };
 		43D74ACA20F8F937004AD934 /* RegisterDomainDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D74AC920F8F937004AD934 /* RegisterDomainDetailsViewController.swift */; };
+		43D74ACE20F906DD004AD934 /* InlineEditableNameValueCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43D74ACD20F906DD004AD934 /* InlineEditableNameValueCell.xib */; };
+		43D74AD020F906EE004AD934 /* InlineEditableNameValueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D74ACF20F906EE004AD934 /* InlineEditableNameValueCell.swift */; };
 		43DC0EF12040B23200896C9C /* SignupUsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DC0EF02040B23200896C9C /* SignupUsernameViewController.swift */; };
 		43FB3F411EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FB3F401EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift */; };
 		43FB3F471EC10F1E00FC8A62 /* LoginEpilogueTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FB3F461EC10F1E00FC8A62 /* LoginEpilogueTableViewController.swift */; };
@@ -1613,6 +1615,8 @@
 		43D54D121DCAA070007F575F /* PostPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPostViewController.swift; sourceTree = "<group>"; };
 		43D74AC720F8D17A004AD934 /* HidableBottomViewOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HidableBottomViewOwner.swift; sourceTree = "<group>"; };
 		43D74AC920F8F937004AD934 /* RegisterDomainDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDomainDetailsViewController.swift; sourceTree = "<group>"; };
+		43D74ACD20F906DD004AD934 /* InlineEditableNameValueCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InlineEditableNameValueCell.xib; sourceTree = "<group>"; };
+		43D74ACF20F906EE004AD934 /* InlineEditableNameValueCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineEditableNameValueCell.swift; sourceTree = "<group>"; };
 		43DC0EF02040B23200896C9C /* SignupUsernameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupUsernameViewController.swift; sourceTree = "<group>"; };
 		43FB3F401EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueBlogCell.swift; sourceTree = "<group>"; };
 		43FB3F461EC10F1E00FC8A62 /* LoginEpilogueTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueTableViewController.swift; sourceTree = "<group>"; };
@@ -4189,6 +4193,8 @@
 				8370D10811FA499A009D650F /* WPTableViewActivityCell.h */,
 				8370D10911FA499A009D650F /* WPTableViewActivityCell.m */,
 				1730D4A21E97E3E400326B7C /* MediaItemTableViewCells.swift */,
+				43D74ACD20F906DD004AD934 /* InlineEditableNameValueCell.xib */,
+				43D74ACF20F906EE004AD934 /* InlineEditableNameValueCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -6556,6 +6562,7 @@
 				2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */,
 				E66E2A6A1FE432BC00788F22 /* TitleBadgeDisclosureCell.xib in Resources */,
 				40640046200ED30300106789 /* TextWithAccessoryButtonCell.xib in Resources */,
+				43D74ACE20F906DD004AD934 /* InlineEditableNameValueCell.xib in Resources */,
 				FF00889D204DFF77007CCE66 /* MediaQuotaCell.xib in Resources */,
 				931DF4D618D09A2F00540BDD /* InfoPlist.strings in Resources */,
 				D88106F820C0C9A8001D2F00 /* ReaderSavedPostUndoCell.xib in Resources */,
@@ -7313,6 +7320,7 @@
 				8350E49611D2C71E00A7B073 /* Media.m in Sources */,
 				D8B9B58F204F4EA1003C6042 /* NetworkAware.swift in Sources */,
 				B54346961C6A707D0010B3AD /* LanguageViewController.swift in Sources */,
+				43D74AD020F906EE004AD934 /* InlineEditableNameValueCell.swift in Sources */,
 				D8A3A5B3206A49BF00992576 /* StockPhotosMedia.swift in Sources */,
 				176BB87F20D0068500751DCE /* FancyAlertViewController+SavedPosts.swift in Sources */,
 				E6805D321DCD399600168E4F /* WPRichTextMediaAttachment.swift in Sources */,
