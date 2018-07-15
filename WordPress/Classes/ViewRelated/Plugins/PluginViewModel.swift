@@ -124,7 +124,7 @@ class PluginViewModel: Observable {
         guard let plugin = plugin else {
             // This means we have capabilities to update a Plugin, but we're not looking at an already-installed plugin.
             // We're gonna show a "install plugin" button.
-            guard let directoryEntry = directoryEntry else {
+            guard directoryEntry != nil else {
                 return nil
             }
 
@@ -146,10 +146,10 @@ class PluginViewModel: Observable {
                             let alert = self.confirmRegisterDomainAlert()
                             self.present?(alert)
                         } else {
-                            ActionDispatcher.dispatch(PluginAction.install(plugin: directoryEntry, site: self.site))
+                            self.installPlugin()
                         }
                     } else {
-                        ActionDispatcher.dispatch(PluginAction.install(plugin: directoryEntry, site: self.site))
+                        self.installPlugin()
                     }
                 }
             )
@@ -186,6 +186,14 @@ class PluginViewModel: Observable {
         }
 
         return versionRow
+    }
+
+    private func installPlugin() {
+        guard let directoryEntry = directoryEntry else {
+            return
+        }
+        ActionDispatcher.dispatch(PluginAction.install(plugin: directoryEntry,
+                                                       site: self.site))
     }
 
     private func shouldShowRegisterDomainAlert() -> Bool {
@@ -399,7 +407,9 @@ class PluginViewModel: Observable {
         let registerDomainActionTitle = NSLocalizedString("Register domain", comment: "Install Plugin dialog register domain button text")
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel registering a domain"))
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel registering a domain")) { [weak self] (action) in
+            self?.installPlugin()
+        }
         let registerDomainAction = alertController.addDefaultActionWithTitle(registerDomainActionTitle) { [weak self] (action) in
             self?.presentDomainRegistration()
         }
