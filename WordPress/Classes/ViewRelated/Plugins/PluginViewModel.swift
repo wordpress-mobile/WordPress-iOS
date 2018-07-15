@@ -113,10 +113,12 @@ class PluginViewModel: Observable {
             return nil
         }
 
-        guard let capabilities = capabilities, capabilities.modify == true else {
-            // If we know about versions, but we can't update/install the plugin, just show the version number.
-            return TextRow(title: NSLocalizedString("Plugin version", comment: "Version of an installed plugin"),
-                           value: version)
+        if !FeatureFlag.automatedTransfersCustomDomain.enabled {
+            guard let capabilities = capabilities, capabilities.modify == true else {
+                // If we know about versions, but we can't update/install the plugin, just show the version number.
+                return TextRow(title: NSLocalizedString("Plugin version", comment: "Version of an installed plugin"),
+                               value: version)
+            }
         }
 
         guard let plugin = plugin else {
