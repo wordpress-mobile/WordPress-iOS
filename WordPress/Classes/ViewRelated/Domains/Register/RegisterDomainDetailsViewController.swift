@@ -79,10 +79,12 @@ class RegisterDomainDetailsViewController: UITableViewController {
 // MARK: - Rows
 
 extension RegisterDomainDetailsViewController {
+
     private func tableViewModel() -> ImmuTable {
         return ImmuTable(
             sections: [
-                privacySection()
+                privacySection(),
+                domainContactInfo()
             ]
         )
     }
@@ -116,6 +118,24 @@ extension RegisterDomainDetailsViewController {
 
         return section
     }
+
+    private func domainContactInfo() -> ImmuTableSection {
+        var rows = [ImmuTableRow]()
+
+        for fieldName in Localized.ContactInfo.fields {
+            rows.append(EditableNameValueRow(name: fieldName,
+                                             value: nil,
+                                             action: nil))
+        }
+
+        let section = ImmuTableSection(
+            headerText: nil,
+            rows: rows,
+            footerText: nil
+        )
+
+        return section
+    }
 }
 
 // MARK: - Section Header Footer
@@ -132,6 +152,8 @@ extension RegisterDomainDetailsViewController {
         switch sectionType {
         case .privacyProtection:
             return privacyProtectionSectionHeader()
+        case .contactInfo:
+            return contactInformationSectionHeader()
         default:
             break
         }
@@ -139,13 +161,23 @@ extension RegisterDomainDetailsViewController {
     }
 
     private func privacyProtectionSectionHeader() -> RegisterDomainSectionHeaderView? {
+        return sectionHeader(title: Localized.PrivacySection.title,
+                             description: Localized.PrivacySection.description)
+    }
+
+    private func contactInformationSectionHeader() -> RegisterDomainSectionHeaderView? {
+        return sectionHeader(title: Localized.ContactInfo.title,
+                             description: Localized.ContactInfo.description)
+    }
+
+    private func sectionHeader(title: String, description: String) -> RegisterDomainSectionHeaderView? {
         guard let view = tableView.dequeueReusableHeaderFooterView(
             withIdentifier: RegisterDomainSectionHeaderView.identifier
             ) as? RegisterDomainSectionHeaderView else {
             return nil
         }
-        view.setTitle(Localized.PrivacySection.title)
-        view.setDescription(Localized.PrivacySection.description)
+        view.setTitle(title)
+        view.setDescription(description)
         return view
     }
 }
