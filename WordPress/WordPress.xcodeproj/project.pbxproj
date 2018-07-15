@@ -247,6 +247,7 @@
 		43D54D131DCAA070007F575F /* PostPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D54D121DCAA070007F575F /* PostPostViewController.swift */; };
 		43D74AC820F8D17A004AD934 /* HidableBottomViewOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D74AC720F8D17A004AD934 /* HidableBottomViewOwner.swift */; };
 		43D74ACA20F8F937004AD934 /* RegisterDomainDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D74AC920F8F937004AD934 /* RegisterDomainDetailsViewController.swift */; };
+		43D74ACC20F904FC004AD934 /* RegisterDomainDetailsViewController+LocalizedStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D74ACB20F904FC004AD934 /* RegisterDomainDetailsViewController+LocalizedStrings.swift */; };
 		43D74ACE20F906DD004AD934 /* InlineEditableNameValueCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43D74ACD20F906DD004AD934 /* InlineEditableNameValueCell.xib */; };
 		43D74AD020F906EE004AD934 /* InlineEditableNameValueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D74ACF20F906EE004AD934 /* InlineEditableNameValueCell.swift */; };
 		43D74AD420FB5ABA004AD934 /* RegisterDomainSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43D74AD320FB5ABA004AD934 /* RegisterDomainSectionHeaderView.xib */; };
@@ -1617,6 +1618,7 @@
 		43D54D121DCAA070007F575F /* PostPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPostViewController.swift; sourceTree = "<group>"; };
 		43D74AC720F8D17A004AD934 /* HidableBottomViewOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HidableBottomViewOwner.swift; sourceTree = "<group>"; };
 		43D74AC920F8F937004AD934 /* RegisterDomainDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDomainDetailsViewController.swift; sourceTree = "<group>"; };
+		43D74ACB20F904FC004AD934 /* RegisterDomainDetailsViewController+LocalizedStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterDomainDetailsViewController+LocalizedStrings.swift"; sourceTree = "<group>"; };
 		43D74ACD20F906DD004AD934 /* InlineEditableNameValueCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InlineEditableNameValueCell.xib; sourceTree = "<group>"; };
 		43D74ACF20F906EE004AD934 /* InlineEditableNameValueCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InlineEditableNameValueCell.swift; sourceTree = "<group>"; };
 		43D74AD320FB5ABA004AD934 /* RegisterDomainSectionHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegisterDomainSectionHeaderView.xib; sourceTree = "<group>"; };
@@ -3655,6 +3657,7 @@
 				437EF0C920F79C520086129B /* PickDomainViewController.swift */,
 				435783E720F7CC48006B4580 /* PickDomainTableViewController.swift */,
 				43D74AC920F8F937004AD934 /* RegisterDomainDetailsViewController.swift */,
+				43D74ACB20F904FC004AD934 /* RegisterDomainDetailsViewController+LocalizedStrings.swift */,
 			);
 			path = Register;
 			sourceTree = "<group>";
@@ -7210,6 +7213,7 @@
 				086E1FE01BBB35D2002D86CA /* MenusViewController.m in Sources */,
 				9F3EFCA3208E308A00268758 /* UIViewController+Notice.swift in Sources */,
 				59E1D46F1CEF77B500126697 /* Page+CoreDataProperties.swift in Sources */,
+				43D74AD620FB5AD5004AD934 /* RegisterDomainSectionHeaderView.swift in Sources */,
 				FF00889B204DF3ED007CCE66 /* Blog+Quota.swift in Sources */,
 				C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */,
 				FAFF153D1C98962E007D1C90 /* SiteSettingsViewController+SiteManagement.swift in Sources */,
@@ -7473,6 +7477,7 @@
 				08F8CD2F1EBD29440049D0C0 /* MediaImageExporter.swift in Sources */,
 				E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */,
 				59E1D46E1CEF77B500126697 /* Page.swift in Sources */,
+				43D74ACC20F904FC004AD934 /* RegisterDomainDetailsViewController+LocalizedStrings.swift in Sources */,
 				98F24AE820190506001A80F9 /* SiteCreationSitePreviewViewController.swift in Sources */,
 				7E21C765202BBF4400837CF5 /* SearchAdsAttribution.swift in Sources */,
 				5DF8D26119E82B1000A2CD95 /* ReaderCommentsViewController.m in Sources */,
