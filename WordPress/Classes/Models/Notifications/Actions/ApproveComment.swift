@@ -54,7 +54,9 @@ class ApproveComment: DefaultNotificationActionCommand, AccessibleFormattableCon
 
         ReachabilityUtils.onAvailableInternetConnectionDo {
             actionsService?.unapproveCommentWithBlock(block, completion: { [weak self] success in
-                self?.on = success
+                if success {
+                    self?.switchOnState()
+                }
             })
         }
     }
@@ -66,9 +68,16 @@ class ApproveComment: DefaultNotificationActionCommand, AccessibleFormattableCon
 
         ReachabilityUtils.onAvailableInternetConnectionDo {
             actionsService?.approveCommentWithBlock(block, completion: { [weak self] success in
-                self?.on = success
+                if success {
+                    self?.switchOnState()
+                }
             })
         }
+    }
+
+    private func switchOnState() {
+        on = !on
+        updateVisualState()
     }
 
     private func updateVisualState() {
