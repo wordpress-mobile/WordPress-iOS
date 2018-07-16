@@ -28,9 +28,13 @@ extension FormattingIdentifier: FormatBarItemProvider {
         case .blockquote:
             return Gridicon.iconOfType(.quote)
         case .orderedlist:
-            return Gridicon.iconOfType(.listOrdered)
+            if layoutDirection == .leftToRight {
+                return Gridicon.iconOfType(.listOrdered)
+            } else {
+                return Gridicon.iconOfType(.listOrderedRTL)
+            }
         case .unorderedlist:
-            return Gridicon.iconOfType(.listUnordered)
+            return Gridicon.iconOfType(.listUnordered).imageFlippedForRightToLeftLayoutDirection()
         case .link:
             return Gridicon.iconOfType(.link)
         case .horizontalruler:
@@ -54,6 +58,10 @@ extension FormattingIdentifier: FormatBarItemProvider {
         case .code:
             return Gridicon.iconOfType(.posts)
         }
+    }
+
+    private var layoutDirection: UIUserInterfaceLayoutDirection {
+        return UIView.userInterfaceLayoutDirection(for: .unspecified)
     }
 
     var accessibilityIdentifier: String {
