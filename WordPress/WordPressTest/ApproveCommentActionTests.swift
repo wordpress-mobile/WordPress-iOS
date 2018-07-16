@@ -106,7 +106,7 @@ final class ApproveCommentActionTests: XCTestCase {
 
         action?.execute(context: mockActionContext())
 
-        XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.unapprove)
+        XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.approve)
     }
 
     func testExecuteUpdatesIconAccessibilityLabelWhenIconIsOn() {
@@ -114,7 +114,7 @@ final class ApproveCommentActionTests: XCTestCase {
 
         action?.execute(context: mockActionContext())
 
-        XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.unapprove)
+        XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.approve)
     }
 
     func testExecuteUpdatesIconAccessibilityHintWhenIconIsOn() {
@@ -122,7 +122,7 @@ final class ApproveCommentActionTests: XCTestCase {
 
         action?.execute(context: mockActionContext())
 
-        XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.unapprove)
+        XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.approve)
     }
 
     func testExecuteCallsApproveWhenIconIsOff() {
