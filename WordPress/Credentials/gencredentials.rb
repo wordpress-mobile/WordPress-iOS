@@ -243,8 +243,12 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
     $stderr.puts "warning: Google Plus API key not found"
   end
 
-  if google_id.nil?
+  if google_client.nil?
     $stderr.puts "warning: Google Login Client ID not found"
+  end
+
+  if google_scheme.nil?
+    $stderr.puts "warning: Google Scheme not found"
   end
 
   if configuration == "Release-Internal"
