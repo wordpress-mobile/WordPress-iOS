@@ -8,6 +8,24 @@
  */
 @interface WPCrashlytics : NSObject
 
+#pragma mark - Init
+
 - (instancetype)initWithAPIKey:(NSString *)apiKey;
+
+#pragma mark - User Opt Out
+
+/**
+ *  @brief      Call this method to know if the user has opted out of crashalytics tracking.
+ *
+ *  @returns    YES if the user has opted out, NO otherwise.
+ */
++ (BOOL)userHasOptedOut;
+
+/**
+ *  @brief      Sets user opt out ON or OFF
+ *
+ *  @param      optedOut   The new status for user opt out.
+ */
+- (void)setUserHasOptedOut:(BOOL)optedOut;
 
 @end
