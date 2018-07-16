@@ -20,6 +20,7 @@ struct UniversalLinkRouter {
         NotificationsRoutes +
         ReaderRoutes +
         StatsRoutes +
+        MySitesRoutes +
         AppBannerRoutes)
 
     private static let MeRoutes: [Route] = [
@@ -63,6 +64,11 @@ struct UniversalLinkRouter {
         StatsRoute.dayCategory,
         StatsRoute.annualStats,
         StatsRoute.activityLog
+    ]
+
+    private static let MySitesRoutes: [Route] = [
+        MySitesRoute.pages,
+        MySitesRoute.posts
     ]
 
     private static let AppBannerRoutes: [Route] = [
