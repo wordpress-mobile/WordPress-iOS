@@ -21,7 +21,11 @@ class ActivityDetailViewController: UIViewController {
     @IBOutlet private var timeLabel: UILabel!
     @IBOutlet private var dateLabel: UILabel!
 
-    @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var textView: UITextView! {
+        didSet {
+            textView.delegate = self
+        }
+    }
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var summaryLabel: UILabel!
 
@@ -34,6 +38,10 @@ class ActivityDetailViewController: UIViewController {
     @IBOutlet private var rewindButton: UIButton!
 
     private var activity: Activity?
+
+    lazy var router: Router = {
+        return Router(controller: self, context: ContextManager.sharedInstance().mainContext)
+    }()
 
     override func viewDidLoad() {
         setupFonts()
@@ -155,7 +163,6 @@ class ActivityDetailViewController: UIViewController {
                 }
             }
         }
-
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -170,4 +177,14 @@ class ActivityDetailViewController: UIViewController {
         static let gridiconSize: CGSize = CGSize(width: 24, height: 24)
     }
 
+    func routeTo(_ url: URL) {
+        router.displayWebViewWithURL(url)
+    }
+}
+
+extension ActivityDetailViewController: UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+        routeTo(URL)
+        return false
+    }
 }
