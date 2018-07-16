@@ -21,18 +21,21 @@ class MySitesCoordinator: NSObject {
         mySitesNavigationController.viewControllers = [blogListViewController]
     }
 
-    func showBlogDetails(for blog: Blog) {
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection? = nil) {
         prepareToNavigate()
 
         blogListViewController.setSelectedBlog(blog, animated: false)
+
+        if let subsection = subsection,
+            let blogDetailsViewController = mySitesNavigationController.topViewController as? BlogDetailsViewController {
+            blogDetailsViewController.showDetailView(for: subsection)
+        }
     }
 
-    func showStats(for blog: Blog) {
-        showBlogDetails(for: blog)
+    // MARK: - Stats
 
-        if let blogDetailsViewController = mySitesNavigationController.topViewController as? BlogDetailsViewController {
-            blogDetailsViewController.showDetailView(for: .stats)
-        }
+    func showStats(for blog: Blog) {
+        showBlogDetails(for: blog, then: .stats)
     }
 
     func showStats(for blog: Blog, timePeriod: StatsPeriodType) {
@@ -52,12 +55,18 @@ class MySitesCoordinator: NSObject {
     }
 
     func showActivityLog(for blog: Blog) {
-        showBlogDetails(for: blog)
-
-        if let blogDetailsViewController = mySitesNavigationController.topViewController as? BlogDetailsViewController {
-            blogDetailsViewController.showDetailView(for: .activity)
-        }
+        showBlogDetails(for: blog, then: .activity)
     }
 
     private static let statsPeriodTypeDefaultsKey = "LastSelectedStatsPeriodType"
+
+    // MARK: - My Sites
+
+    func showPages(for blog: Blog) {
+        showBlogDetails(for: blog, then: .pages)
+    }
+
+    func showPosts(for blog: Blog) {
+        showBlogDetails(for: blog, then: .posts)
+    }
 }
