@@ -4,6 +4,8 @@ import WordPressComStatsiOS
 enum MySitesRoute {
     case pages
     case posts
+    case media
+    case comments
 }
 
 extension MySitesRoute: Route {
@@ -17,6 +19,10 @@ extension MySitesRoute: Route {
             return "/pages/:domain"
         case .posts:
             return "/posts/:domain"
+        case .media:
+            return "/media/:domain"
+        case .comments:
+            return "/comments/:domain"
         }
     }
 }
@@ -33,6 +39,10 @@ extension MySitesRoute: NavigationAction {
             coordinator.showPages(for: blog)
         case .posts:
             coordinator.showPosts(for: blog)
+        case .media:
+            coordinator.showMedia(for: blog)
+        case .comments:
+            coordinator.showComments(for: blog)
         }
     }
 

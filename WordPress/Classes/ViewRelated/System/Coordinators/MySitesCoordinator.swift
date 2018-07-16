@@ -69,4 +69,12 @@ class MySitesCoordinator: NSObject {
     func showPosts(for blog: Blog) {
         showBlogDetails(for: blog, then: .posts)
     }
+
+    func showMedia(for blog: Blog) {
+        showBlogDetails(for: blog, then: .media)
+    }
+
+    func showComments(for blog: Blog) {
+        showBlogDetails(for: blog, then: .comments)
+    }
 }

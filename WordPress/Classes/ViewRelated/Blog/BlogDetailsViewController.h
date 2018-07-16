@@ -9,7 +9,8 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
     BlogDetailsSubsectionThemes,
     BlogDetailsSubsectionMedia,
     BlogDetailsSubsectionPages,
-    BlogDetailsSubsectionActivity
+    BlogDetailsSubsectionActivity,
+    BlogDetailsSubsectionComments
 };
 
 @interface BlogDetailsViewController : UITableViewController <UIViewControllerRestoration> {
