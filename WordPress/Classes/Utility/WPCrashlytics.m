@@ -48,10 +48,10 @@ NSString * const WPCrashlyticsKeyNumberOfBlogs = @"number_of_blogs";
 - (void)initializeCrashlytics
 {
     [self initializeOptOutTracking];
+    [[Crashlytics sharedInstance] setDelegate:self];
 
     BOOL userHasOptedOut = [WPCrashlytics userHasOptedOut];
     if (!userHasOptedOut) {
-        [[Crashlytics sharedInstance] setDelegate:self];
         [Fabric with:@[CrashlyticsKit]];
         [self setCommonCrashlyticsParameters];
     }
@@ -168,7 +168,9 @@ NSString * const WPCrashlyticsKeyNumberOfBlogs = @"number_of_blogs";
     [defaults setInteger:crashCount forKey:@"crashCount"];
     [defaults synchronize];
     if (completionHandler) {
-        completionHandler(YES);
+        //  Invoking the completionHandler with NO will cause the detected report to be deleted and not submitted to Crashlytics.
+        BOOL shouldSubmitReportToCrashlytics = ![WPCrashlytics userHasOptedOut];
+        completionHandler(shouldSubmitReportToCrashlytics);
     }
 }
 
