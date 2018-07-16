@@ -16,11 +16,18 @@ class FormattableActivity {
         self.activity = activity
     }
 
-    public func formattedContent(using styles: FormattableContentStyles) -> NSAttributedString {
+    func formattedContent(using styles: FormattableContentStyles) -> NSAttributedString {
         guard let textBlock: FormattableTextContent = contentGroup?.blockOfKind(.text) else {
             return NSAttributedString()
         }
         return formatter.render(content: textBlock, with: styles)
+    }
+
+    func range(with url: URL) -> FormattableContentRange? {
+        let rangesWithURL = contentGroup?.blocks.compactMap {
+            $0.range(with: url)
+        }
+        return rangesWithURL?.first
     }
 }
 
