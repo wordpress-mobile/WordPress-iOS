@@ -3,12 +3,15 @@ import WordPressComStatsiOS
 
 @objc
 class MySitesCoordinator: NSObject {
+    let mySitesSplitViewController: WPSplitViewController
     let mySitesNavigationController: UINavigationController
     let blogListViewController: BlogListViewController
 
     @objc
-    init(mySitesNavigationController: UINavigationController,
+    init(mySitesSplitViewController: WPSplitViewController,
+         mySitesNavigationController: UINavigationController,
          blogListViewController: BlogListViewController) {
+        self.mySitesSplitViewController = mySitesSplitViewController
         self.mySitesNavigationController = mySitesNavigationController
         self.blogListViewController = blogListViewController
 
@@ -88,5 +91,24 @@ class MySitesCoordinator: NSObject {
 
     func showPlugins(for blog: Blog) {
         showBlogDetails(for: blog, then: .plugins)
+    }
+
+    func showManagePlugins(for blog: Blog) {
+        // PerformWithoutAnimation is required here, otherwise the view controllers
+        // potentially get added to the navigation controller out of order
+        // (ShowDetailViewController, used by BlogDetailsViewController is animated)
+        UIView.performWithoutAnimation {
+            showBlogDetails(for: blog, then: .plugins)
+        }
+
+        guard let site = JetpackSiteRef(blog: blog),
+            let navigationController = mySitesSplitViewController.topDetailViewController?.navigationController else {
+            return
+        }
+
+        let query = PluginQuery.all(site: site)
+        let listViewController = PluginListViewController(site: site, query: query)
+
+        navigationController.pushViewController(listViewController, animated: false)
     }
 }

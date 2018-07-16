@@ -9,6 +9,7 @@ enum MySitesRoute {
     case sharing
     case people
     case plugins
+    case managePlugins
 }
 
 extension MySitesRoute: Route {
@@ -32,6 +33,8 @@ extension MySitesRoute: Route {
             return "/people/:domain"
         case .plugins:
             return "/plugins/:domain"
+        case .managePlugins:
+            return "/plugins/manage/:domain"
         }
     }
 }
@@ -58,6 +61,8 @@ extension MySitesRoute: NavigationAction {
             coordinator.showPeople(for: blog)
         case .plugins:
             coordinator.showPlugins(for: blog)
+        case .managePlugins:
+            coordinator.showManagePlugins(for: blog)
         }
     }
 
