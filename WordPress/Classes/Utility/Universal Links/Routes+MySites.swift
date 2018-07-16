@@ -6,6 +6,9 @@ enum MySitesRoute {
     case posts
     case media
     case comments
+    case sharing
+    case people
+    case plugins
 }
 
 extension MySitesRoute: Route {
@@ -23,6 +26,12 @@ extension MySitesRoute: Route {
             return "/media/:domain"
         case .comments:
             return "/comments/:domain"
+        case .sharing:
+            return "/sharing/:domain"
+        case .people:
+            return "/people/:domain"
+        case .plugins:
+            return "/plugins/:domain"
         }
     }
 }
@@ -43,6 +52,12 @@ extension MySitesRoute: NavigationAction {
             coordinator.showMedia(for: blog)
         case .comments:
             coordinator.showComments(for: blog)
+        case .sharing:
+            coordinator.showSharing(for: blog)
+        case .people:
+            coordinator.showPeople(for: blog)
+        case .plugins:
+            coordinator.showPlugins(for: blog)
         }
     }
 
