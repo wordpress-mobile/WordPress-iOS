@@ -177,8 +177,24 @@ class ActivityDetailViewController: UIViewController {
         static let gridiconSize: CGSize = CGSize(width: 24, height: 24)
     }
 
+    func getRange(from url: URL) -> FormattableContentRange? {
+        return formattableActivity?.range(with: url)
+    }
+
     func routeTo(_ url: URL) {
-        router.displayWebViewWithURL(url)
+        guard let range = getRange(from: url) else {
+            return
+        }
+
+        switch range.kind {
+        case .post:
+            guard let postRange = range as? ActivityPostRange else {
+                fallthrough
+            }
+            try? router.displayReaderWithPostId(postRange.postID as NSNumber, siteID: postRange.siteID as NSNumber)
+        default:
+            router.displayWebViewWithURL(url)
+        }
     }
 }
 
