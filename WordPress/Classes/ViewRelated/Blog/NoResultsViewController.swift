@@ -50,6 +50,40 @@ import WordPressAuthenticator
         configureView()
     }
 
+    /// Public method to get controller instance and set view values.
+    ///
+    /// - Parameters:
+    ///   - title:          Main descriptive text. Required.
+    ///   - buttonTitle:    Title of action button. Optional.
+    ///   - subtitle:       Secondary descriptive text. Optional.
+    ///   - image:          Name of image file to use. Optional.
+    ///   - accessoryView:  View to show instead of the image. Optional.
+    ///
+    @objc class func controllerWith(title: String,
+                                    buttonTitle: String? = nil,
+                                    subtitle: String? = nil,
+                                    image: String? = nil,
+                                    accessoryView: UIView? = nil) -> NoResultsViewController {
+
+        let controller = NoResultsViewController.controller()
+        controller.titleText = title
+        controller.subtitleText = subtitle
+        controller.buttonText = buttonTitle
+        controller.imageName = image
+        controller.accessorySubview = accessoryView
+        return controller
+    }
+
+    /// Public method to get controller instance.
+    /// As this only creates the controller, the configure method should be called
+    /// to set the view values before presenting the No Results View.
+    ///
+    @objc class func controller() -> NoResultsViewController {
+        let storyBoard = UIStoryboard(name: "NoResults", bundle: nil)
+        let controller = storyBoard.instantiateViewController(withIdentifier: "NoResults") as! NoResultsViewController
+        return controller
+    }
+
     /// Public method to provide values for text elements.
     ///
     /// - Parameters:
@@ -80,12 +114,22 @@ import WordPressAuthenticator
         navigationItem.leftBarButtonItem = dismissButton
     }
 
-    /// Use the values provided in the actual elements.
+    /// Public method to get the view height when adding the No Results View to a table cell.
     ///
-    private func configureView() {
+    func heightForTableCell() -> CGFloat {
+        return noResultsView.frame.height
+    }
+
+}
+
+private extension NoResultsViewController {
+
+    // MARK: - View
+
+    func configureView() {
 
         guard let titleText = titleText else {
-                return
+            return
         }
 
         titleLabel.text = titleText
@@ -123,17 +167,6 @@ import WordPressAuthenticator
         view.layoutIfNeeded()
     }
 
-    // MARK: - Helpers
-
-    private func accessibilityIdentifier(for string: String) -> String {
-        let buttonIdFormat = NSLocalizedString("%@ Button", comment: "Accessibility identifier for buttons.")
-        return String(format: buttonIdFormat, string)
-    }
-
-    func heightForTableCell() -> CGFloat {
-        return noResultsView.frame.height
-    }
-
     // MARK: - Button Handling
 
     @IBAction func actionButtonPressed(_ sender: Any) {
@@ -142,6 +175,13 @@ import WordPressAuthenticator
 
     @objc func dismissButtonPressed() {
         delegate?.dismissButtonPressed?()
+    }
+
+    // MARK: - Helpers
+
+    func accessibilityIdentifier(for string: String) -> String {
+        let buttonIdFormat = NSLocalizedString("%@ Button", comment: "Accessibility identifier for buttons.")
+        return String(format: buttonIdFormat, string)
     }
 
 }
