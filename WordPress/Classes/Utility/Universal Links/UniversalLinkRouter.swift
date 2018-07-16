@@ -70,7 +70,10 @@ struct UniversalLinkRouter {
         MySitesRoute.pages,
         MySitesRoute.posts,
         MySitesRoute.media,
-        MySitesRoute.comments
+        MySitesRoute.comments,
+        MySitesRoute.sharing,
+        MySitesRoute.people,
+        MySitesRoute.plugins
     ]
 
     private static let AppBannerRoutes: [Route] = [
