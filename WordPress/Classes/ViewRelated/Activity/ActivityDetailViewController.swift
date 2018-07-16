@@ -176,12 +176,12 @@ class ActivityDetailViewController: UIViewController {
     private enum Constants {
         static let gridiconSize: CGSize = CGSize(width: 24, height: 24)
     }
+}
 
-    func getRange(from url: URL) -> FormattableContentRange? {
-        return formattableActivity?.range(with: url)
-    }
+// MARK: - Navigation
 
-    func routeTo(_ url: URL) {
+extension ActivityDetailViewController {
+    private func routeTo(_ url: URL) {
         guard let range = getRange(from: url) else {
             return
         }
@@ -205,7 +205,13 @@ class ActivityDetailViewController: UIViewController {
             router.displayWebViewWithURL(url)
         }
     }
+
+    private func getRange(from url: URL) -> FormattableContentRange? {
+        return formattableActivity?.range(with: url)
+    }
 }
+
+// MARK: - UITextViewDelegate
 
 extension ActivityDetailViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
