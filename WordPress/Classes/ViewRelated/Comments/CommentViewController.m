@@ -422,6 +422,13 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)openWebViewWithURL:(NSURL *)url
 {
+    NSParameterAssert([url isKindOfClass:[NSURL class]]);
+
+    if (![url isKindOfClass:[NSURL class]]) {
+        DDLogError(@"CommentsViewController: Attempted to open an invalid URL [%@]", url);
+        return;
+    }
+
     if (self.comment.blog.jetpack) {
         url = [url appendingHideMasterbarParameters];
     }

@@ -53,6 +53,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     @IBOutlet fileprivate weak var interfaceVerticalSizingHelperView: UIView!
 
     // Action buttons
+
+    @IBOutlet var actionButtons: [UIButton]!
     @IBOutlet fileprivate weak var saveForLaterButton: UIButton!
     @IBOutlet fileprivate weak var visitButton: UIButton!
     @IBOutlet fileprivate weak var likeActionButton: UIButton!
@@ -72,6 +74,16 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     fileprivate let avgWordsPerMinuteRead = 250
     fileprivate let minimumMinutesToRead = 2
     fileprivate var currentLoadedCardImageURL: String?
+    fileprivate var isSmallWidth: Bool {
+        let width = superview?.frame.width ?? 0
+        return  width <= 320
+    }
+    fileprivate var isMediumWidth: Bool {
+        return superview?.frame.width < 480
+    }
+    fileprivate var isBigWidth: Bool {
+        return !isMediumWidth
+    }
 
     // MARK: - Accessors
     @objc open var hidesFollowButton = false
@@ -188,8 +200,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     fileprivate func setupCommentActionButton() {
-        let image = UIImage(named: "icon-reader-comment")
-        let highlightImage = UIImage(named: "icon-reader-comment-highlight")
+        let image = UIImage(named: "icon-reader-comment")?.imageFlippedForRightToLeftLayoutDirection()
+        let highlightImage = UIImage(named: "icon-reader-comment-highlight")?.imageFlippedForRightToLeftLayoutDirection()
         commentActionButton.setImage(image, for: UIControlState())
         commentActionButton.setImage(highlightImage, for: .highlighted)
     }
@@ -207,8 +219,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         let size = CGSize(width: 20, height: 20)
         let title = NSLocalizedString("Visit", comment: "Verb. Button title.  Tap to visit a website.")
         let icon = Gridicon.iconOfType(.external, withSize: size)
-        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
-        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())
+        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())?.imageFlippedForRightToLeftLayoutDirection()
+        let highlightIcon = icon.imageWithTintColor(WPStyleGuide.lightBlue())?.imageFlippedForRightToLeftLayoutDirection()
 
         visitButton.setTitle(title, for: UIControlState())
         visitButton.setImage(tintedIcon, for: .normal)
@@ -406,6 +418,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
         configureCommentActionButton()
         configureLikeActionButton()
+        configureActionButtonsInsets()
 
         if FeatureFlag.saveForLater.enabled {
             configureSaveForLaterButton()
@@ -416,6 +429,17 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         button.setTitle(nil, for: UIControlState())
         button.isSelected = false
         button.isHidden = true
+    }
+
+    private func configureActionButtonsInsets() {
+        actionButtons.forEach { button in
+            if isSmallWidth {
+                button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
+            } else {
+                button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+            }
+            button.setNeedsLayout()
+        }
     }
 
     fileprivate func configureLikeActionButton() {
@@ -493,18 +517,16 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         let likeCount = provider.likeCount()?.intValue ?? 0
         let commentCount = provider.commentCount()?.intValue ?? 0
 
-        if superview?.frame.width < 480 {
+        if !isBigWidth {
             // remove title text
             let likeTitle = likeCount > 0 ?  String(likeCount) : ""
             let commentTitle = commentCount > 0 ? String(commentCount) : ""
             likeActionButton.setTitle(likeTitle, for: .normal)
             commentActionButton.setTitle(commentTitle, for: .normal)
             saveForLaterButton.setTitle("", for: .normal)
-
         } else {
             let likeTitle = WPStyleGuide.likeCountForDisplay(likeCount)
             let commentTitle = WPStyleGuide.commentCountForDisplay(commentCount)
-
 
             likeActionButton.setTitle(likeTitle, for: .normal)
             commentActionButton.setTitle(commentTitle, for: .normal)

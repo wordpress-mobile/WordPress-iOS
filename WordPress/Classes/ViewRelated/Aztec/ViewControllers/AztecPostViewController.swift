@@ -6,9 +6,11 @@ import CocoaLumberjack
 import Gridicons
 import WordPressShared
 import MobileCoreServices
+import WordPressEditor
 import WPMediaPicker
 import SVProgressHUD
 import AVKit
+import MobileCoreServices
 
 
 // MARK: - Aztec's Native Editor!
@@ -449,9 +451,15 @@ class AztecPostViewController: UIViewController, PostEditor {
 
 
     /// Presents whatever happens when FormatBar's more button is selected
+    ///
     fileprivate lazy var moreCoordinator: AztecMediaPickingCoordinator = {
         return AztecMediaPickingCoordinator(delegate: self)
     }()
+
+
+    /// Helps choosing the correct view controller for previewing a media asset
+    ///
+    private let mediaPreviewHelper = MediaPreviewHelper()
 
 
     // MARK: - Initializers
@@ -571,6 +579,9 @@ class AztecPostViewController: UIViewController, PostEditor {
             return
         }
 
+        /// Wire AztecNavigationControllerDelegate
+        ///
+        navigationController.delegate = self
         configureMediaProgressView(in: navigationController.navigationBar)
     }
 
@@ -991,6 +1002,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     }
 }
 
+
 // MARK: - Format Bar Updating
 
 extension AztecPostViewController {
@@ -1048,6 +1060,15 @@ extension AztecPostViewController {
     /// an ActionSheet onscreen.
     ///
     override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+        // Preventing `UIViewControllerHierarchyInconsistency`
+        // Ref.: https://github.com/wordpress-mobile/WordPress-iOS/issues/8995
+        //
+        if viewControllerToPresent is UIAlertController {
+            rememberFirstResponder()
+        }
+
+        /// Ref.: https://github.com/wordpress-mobile/WordPress-iOS/pull/6666
+        ///
         super.present(viewControllerToPresent, animated: flag) {
             if let alert = viewControllerToPresent as? UIAlertController, alert.preferredStyle == .actionSheet {
                 alert.popoverPresentationController?.passthroughViews = nil
@@ -1055,6 +1076,19 @@ extension AztecPostViewController {
 
             completion?()
         }
+    }
+}
+
+
+// MARK: - AztecNavigationControllerDelegate Conformance
+
+extension AztecPostViewController: AztecNavigationControllerDelegate {
+
+    func navigationController(_ navigationController: UINavigationController, didDismiss alertController: UIAlertController) {
+        // Preventing `UIViewControllerHierarchyInconsistency`
+        // Ref.: https://github.com/wordpress-mobile/WordPress-iOS/issues/8995
+        //
+        restoreFirstResponder()
     }
 }
 
@@ -1418,11 +1452,11 @@ private extension AztecPostViewController {
             self.toggleEditingMode()
         }
 
-        alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { [unowned self]  _ in
+        alert.addDefaultActionWithTitle(MoreSheetAlert.previewTitle) { [unowned self] _ in
             self.displayPreview()
         }
 
-        alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [unowned self]  _ in
+        alert.addDefaultActionWithTitle(MoreSheetAlert.postSettingsTitle) { [unowned self] _ in
             self.displayPostSettings()
         }
 
@@ -1430,7 +1464,7 @@ private extension AztecPostViewController {
 
         alert.popoverPresentationController?.barButtonItem = moreBarButtonItem
 
-        present(alert, animated: true, completion: nil)
+        present(alert, animated: true)
     }
 
     func displaySwitchSiteAlert() {
@@ -2261,8 +2295,6 @@ extension AztecPostViewController {
     }
 
     private func showMore(from: FormatBarItem) {
-        rememberFirstResponder()
-
         let moreCoordinatorContext = MediaPickingContext(origin: self, view: view, blog: post.blog)
         moreCoordinator.present(context: moreCoordinatorContext)
     }
@@ -3742,6 +3774,10 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
         updateFormatBarInsertAssetCount()
     }
 
+    func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor assets: [WPMediaAsset], selectedIndex selected: Int) -> UIViewController? {
+        return mediaPreviewHelper.previewViewController(for: assets, selectedIndex: selected)
+    }
+
     private func updateFormatBarInsertAssetCount() {
         guard let assetCount = mediaPickerInputViewController?.mediaPicker.selectedAssets.count else {
             return
@@ -3820,12 +3856,6 @@ extension AztecPostViewController: UIDocumentPickerDelegate {
         if let documentURL = urls.first {
             displayInsertionOpensAlertIfNeeded(for: documentURL)
         }
-    }
-}
-
-extension AztecPostViewController: MediaPickingOptionsDelegate {
-    func didCancel() {
-        restoreFirstResponder()
     }
 }
 
