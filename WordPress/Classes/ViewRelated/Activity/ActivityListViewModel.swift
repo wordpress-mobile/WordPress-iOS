@@ -17,9 +17,16 @@ class ActivityListViewModel: Observable {
 
     private let activitiesReceipt: Receipt
     private let rewindStatusReceipt: Receipt
-    private let storeReceipt: Receipt
+    private var storeReceipt: Receipt?
 
     var errorViewModel: NoResultsViewController.Model?
+    private(set) var refreshing = false {
+        didSet {
+            if refreshing != oldValue {
+                emitChange()
+            }
+        }
+    }
 
     init(site: JetpackSiteRef, store: ActivityStore = StoreContainer.shared.activity) {
         self.site = site
@@ -28,9 +35,18 @@ class ActivityListViewModel: Observable {
         activitiesReceipt = store.query(.activities(site: site))
         rewindStatusReceipt = store.query(.restoreStatus(site: site))
 
-        storeReceipt = store.onChange { [weak changeDispatcher] in
-            changeDispatcher?.dispatch()
+        storeReceipt = store.onChange { [weak self] in
+            self?.updateState()
         }
+    }
+
+    private func updateState() {
+        changeDispatcher.dispatch()
+        refreshing = store.isFetching(site: site)
+    }
+
+    public func refresh() {
+        ActionDispatcher.dispatch(ActivityAction.refreshActivities(site: site))
     }
 
     func noResultsViewModel() -> NoResultsViewController.Model? {
