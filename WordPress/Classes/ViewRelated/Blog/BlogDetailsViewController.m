@@ -438,6 +438,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
+
+    if ([Feature enabled:FeatureFlagWhatsNext]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Quick Start", @"Name of the Quick Start feature that guides users through a few tasks to setup their new website.")
+                                                        image:[Gridicon iconOfType:GridiconTypeStatsAlt]
+                                                     callback:^{
+                                                         [weakSelf startTour];
+                                                     }]];
+    }
+
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
                                                     image:[Gridicon iconOfType:GridiconTypeStatsAlt]
                                                  callback:^{
@@ -1104,6 +1113,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     } else {
         [self showDetailViewController:statsView sender:self];
     }
+}
+
+- (void)startTour
+{
+    BlogNavigationController *blogNav = (BlogNavigationController *) self.navigationController;
+    [blogNav showTestQuickStartNotice];
 }
 
 - (void)showActivity
