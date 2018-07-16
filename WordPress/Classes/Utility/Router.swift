@@ -1,6 +1,9 @@
 
 import WordPressComStatsiOS
 
+/// `Router` is intended to be used to easily navigate and display common elements natively
+/// like Posts, Site streams, Comments, etc...
+///
 struct Router {
 
     enum DisplayError: Error {
