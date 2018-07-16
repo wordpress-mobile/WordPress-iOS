@@ -191,7 +191,16 @@ class ActivityDetailViewController: UIViewController {
             guard let postRange = range as? ActivityPostRange else {
                 fallthrough
             }
-            try? router.displayReaderWithPostId(postRange.postID as NSNumber, siteID: postRange.siteID as NSNumber)
+            let postID = postRange.postID as NSNumber
+            let siteID = postRange.siteID as NSNumber
+            try? router.displayReaderWithPostId(postID, siteID: siteID)
+        case .comment:
+            guard let commentRange = range as? ActivityCommentRange else {
+                fallthrough
+            }
+            let postID = commentRange.postID as NSNumber
+            let siteID = commentRange.siteID as NSNumber
+            try? router.displayCommentsWithPostId(postID, siteID: siteID)
         default:
             router.displayWebViewWithURL(url)
         }
