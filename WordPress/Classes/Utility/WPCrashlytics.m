@@ -65,7 +65,7 @@ NSString * const WPCrashlyticsKeyNumberOfBlogs = @"number_of_blogs";
         return;
     }
 
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:WPAppAnalyticsDefaultsUserOptedOut] == NO) {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:WPAppAnalyticsDefaultsUserOptedOut] == YES) {
         // If the user has already explicitly disabled tracking for analytics, let's ensure we turn off crashalytics tracking as well
         [self setUserHasOptedOutValue:YES];
     } else {
