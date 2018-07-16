@@ -635,12 +635,6 @@ fileprivate extension Blog {
     }
 }
 
-extension MediaLibraryViewController: MediaPickingOptionsDelegate {
-    func didCancel() {
-
-    }
-}
-
 extension MediaLibraryViewController: StockPhotosPickerDelegate {
     func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
         guard assets.count > 0 else {

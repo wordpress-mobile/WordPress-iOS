@@ -950,9 +950,9 @@ private extension NotificationDetailsViewController {
 
     func displayFullscreenImage(_ image: UIImage) {
         let imageViewController = WPImageViewController(image: image)
-        imageViewController?.modalTransitionStyle = .crossDissolve
-        imageViewController?.modalPresentationStyle = .fullScreen
-        present(imageViewController!, animated: true, completion: nil)
+        imageViewController.modalTransitionStyle = .crossDissolve
+        imageViewController.modalPresentationStyle = .fullScreen
+        present(imageViewController, animated: true, completion: nil)
     }
 }
 

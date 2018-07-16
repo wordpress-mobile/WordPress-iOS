@@ -17,7 +17,7 @@ protocol SignupEpilogueTableViewControllerDataSource {
     var username: String? { get }
 }
 
-class SignupEpilogueTableViewController: NUXTableViewController {
+class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInfoCellViewControllerProvider {
 
     // MARK: - Properties
 
@@ -121,8 +121,9 @@ class SignupEpilogueTableViewController: NUXTableViewController {
             }
 
             if let epilogueUserInfo = epilogueUserInfo {
-                cell.configure(userInfo: epilogueUserInfo, showEmail: true)
+                cell.configure(userInfo: epilogueUserInfo, showEmail: true, allowGravatarUploads: true)
             }
+            cell.viewControllerProvider = self
             userInfoCell = cell
             return cell
         }

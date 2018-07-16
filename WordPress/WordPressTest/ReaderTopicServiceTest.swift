@@ -3,29 +3,34 @@ import Foundation
 import CoreData
 import WordPress
 
-class ReaderTopicSwiftTest: XCTestCase {
+final class ReaderTopicSwiftTest: XCTestCase {
 
-    var testContextManager: TestContextManager?
+    private var testContextManager: TestContextManager?
+    private var context: NSManagedObjectContext?
     let expectationTimeout = 5.0
 
     // MARK: - Lifecycle
 
     override func setUp() {
         super.setUp()
-        testContextManager = TestContextManager()
+        testContextManager = TestContextManager.sharedInstance()
+        context = testContextManager?.mainContext
     }
 
     override func tearDown() {
-        super.tearDown()
-        ContextManager.overrideSharedInstance(nil)
+        context = nil
+        TestContextManager.overrideSharedInstance(nil)
         testContextManager = nil
+        super.tearDown()
     }
-
 
     // MARK: - Config / Helpers
 
     func seedTopics() {
-        let context = ContextManager.sharedInstance().mainContext
+        guard let context = context else {
+            XCTFail("Context is nil")
+            return
+        }
 
         let topic1 = NSEntityDescription.insertNewObject(forEntityName: ReaderListTopic.classNameWithoutNamespaces(), into: context) as! ReaderListTopic
         topic1.path = "/list/topic1"
@@ -50,13 +55,19 @@ class ReaderTopicSwiftTest: XCTestCase {
     }
 
     func countTopics() -> Int {
-        let context = ContextManager.sharedInstance().mainContext
+        guard let context = context else {
+            XCTFail("Context is nil")
+            return 0
+        }
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderAbstractTopic.classNameWithoutNamespaces())
         return try! context.count(for: request)
     }
 
     func seedPostsForTopic(_ topic: ReaderAbstractTopic) {
-        let context = ContextManager.sharedInstance().mainContext
+        guard let context = context else {
+            XCTFail("Context is nil")
+            return
+        }
 
         let post1 = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.classNameWithoutNamespaces(), into: context) as! ReaderPost
         post1.postID = NSNumber(value: 1)
@@ -131,11 +142,14 @@ class ReaderTopicSwiftTest: XCTestCase {
     results from the REST API.
     */
     func testUnsubscribedTopicIsRemovedDuringSync() {
+        guard let context = context else {
+            XCTFail("Context is nil")
+            return
+        }
         let remoteTopics = remoteTopicsForTests()
 
         // Setup
         var expect = expectation(description: "topics saved expectation")
-        let context = ContextManager.sharedInstance().mainContext
         let service = ReaderTopicService(managedObjectContext: context)
         service.mergeMenuTopics(remoteTopics, withSuccess: { () -> Void in
             expect.fulfill()
@@ -172,6 +186,10 @@ class ReaderTopicSwiftTest: XCTestCase {
     results from the REST API.
     */
     func testNewlySubscribedTopicIsAddedDuringSync() {
+        guard let context = context else {
+            XCTFail("Context is nil")
+            return
+        }
         var remoteTopics = remoteTopicsForTests()
         let foo = remoteTopics.first
 
@@ -179,7 +197,6 @@ class ReaderTopicSwiftTest: XCTestCase {
 
         // Setup
         var expect = expectation(description: "topics saved expectation")
-        let context = ContextManager.sharedInstance().mainContext
         let service = ReaderTopicService(managedObjectContext: context)
         service.mergeMenuTopics(startingTopics, withSuccess: { () -> Void in
             expect.fulfill()
@@ -217,11 +234,14 @@ class ReaderTopicSwiftTest: XCTestCase {
     Ensure that a default topic can be set and retrieved.
     */
     func testGettingSettingCurrentTopic() {
+        guard let context = context else {
+            XCTFail("Context is nil")
+            return
+        }
         let remoteTopics = remoteAndDefaultTopicForTests()
 
         // Setup
         let expect = expectation(description: "topics saved expectation")
-        let context = ContextManager.sharedInstance().mainContext
         let service = ReaderTopicService(managedObjectContext: context)
         service.currentTopic = nil
 
@@ -252,9 +272,12 @@ class ReaderTopicSwiftTest: XCTestCase {
     Ensure all topics are deleted when an account is changed.
     */
     func testDeleteAllTopics() {
+        guard let context = context else {
+            XCTFail("Context is nil")
+            return
+        }
         seedTopics()
         XCTAssertFalse(countTopics() == 0, "The number of seeded topics should not be zero")
-        let context = ContextManager.sharedInstance().mainContext
         let service = ReaderTopicService(managedObjectContext: context)
         service.deleteAllTopics()
         XCTAssertTrue(countTopics() == 0, "The number of seeded topics should be zero")
@@ -265,7 +288,10 @@ class ReaderTopicSwiftTest: XCTestCase {
     */
     func testPostsDeletedWhenTopicDeleted() {
         // setup
-        let context = ContextManager.sharedInstance().mainContext
+        guard let context = context else {
+            XCTFail("Context is nil")
+            return
+        }
         let topic = NSEntityDescription.insertNewObject(forEntityName: ReaderListTopic.classNameWithoutNamespaces(), into: context) as! ReaderListTopic
         topic.path = "/list/topic"
         topic.title = "topic"
@@ -276,7 +302,7 @@ class ReaderTopicSwiftTest: XCTestCase {
 
         // Save the new topic + posts in the contet
         var expect = expectation(description: "topics saved expectation")
-        ContextManager.sharedInstance().save(context, withCompletionBlock: { () -> Void in
+        testContextManager?.save(context, withCompletionBlock: { () -> Void in
             expect.fulfill()
         })
         waitForExpectations(timeout: expectationTimeout, handler: nil)
@@ -285,22 +311,26 @@ class ReaderTopicSwiftTest: XCTestCase {
         context.delete(topic)
 
         expect = expectation(description: "topics saved expectation")
-        ContextManager.sharedInstance().save(context, withCompletionBlock: { () -> Void in
+        testContextManager?.save(context, withCompletionBlock: { () -> Void in
             expect.fulfill()
         })
         waitForExpectations(timeout: expectationTimeout, handler: nil)
 
-        var request = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderAbstractTopic.classNameWithoutNamespaces())
-        var count = try! context.count(for: request)
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderListTopic.classNameWithoutNamespaces())
+        let count = try! context.count(for: request)
         XCTAssertTrue(count == 0, "Topic was not deleted successfully")
 
-        request = NSFetchRequest(entityName: ReaderPost.classNameWithoutNamespaces())
-        count = try! context.count(for: request)
+        let postRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderPost.classNameWithoutNamespaces())
+        let postRequestCount = try! context.count(for: postRequest)
+        print("pistRequestCount ", postRequestCount)
         XCTAssertTrue(count == 0, "Topic posts were not deleted successfully")
     }
 
     func testTopicTitleFormatting() {
-        let context = ContextManager.sharedInstance().mainContext
+        guard let context = context else {
+            XCTFail("Context is nil")
+            return
+        }
         let service = ReaderTopicService(managedObjectContext: context)
 
         var unformatted = "WordPress"
@@ -328,7 +358,10 @@ class ReaderTopicSwiftTest: XCTestCase {
     }
 
     func testReaderSearchTopicCreated() {
-        let context = ContextManager.sharedInstance().mainContext
+        guard let context = context else {
+            XCTFail("Context is nil")
+            return
+        }
         let service = ReaderTopicService(managedObjectContext: context)
 
         let phrase = "coffee talk"

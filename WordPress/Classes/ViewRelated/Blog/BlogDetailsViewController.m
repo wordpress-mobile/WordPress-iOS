@@ -444,7 +444,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                      [weakSelf showStats];
                                                  }]];
 
-    if ([Feature enabled:FeatureFlagActivity] && [self.blog supports:BlogFeatureActivity]) {
+    if ([self.blog supports:BlogFeatureActivity]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Activity", @"Noun. Links to a blog's Activity screen.")
                                                         image:[Gridicon iconOfType:GridiconTypeHistory]
                                                      callback:^{
@@ -480,7 +480,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blog Posts", @"Noun. Title. Links to the blog's Posts screen.")
                                   accessibilityIdentifier:@"Blog Post Row"
-                                                    image:[Gridicon iconOfType:GridiconTypePosts]
+                                                    image:[[Gridicon iconOfType:GridiconTypePosts] imageFlippedForRightToLeftLayoutDirection]
                                                  callback:^{
                                                      [weakSelf showPostList];
                                                  }]];
@@ -493,7 +493,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                  }]];
 
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Comments", @"Noun. Title. Links to the blog's Comments screen.")
-                                                          image:[Gridicon iconOfType:GridiconTypeComment]
+                                                          image:[[Gridicon iconOfType:GridiconTypeComment] imageFlippedForRightToLeftLayoutDirection]
                                                        callback:^{
                                                            [weakSelf showComments];
                                                        }];
@@ -520,7 +520,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
     if ([self.blog supports:BlogFeatureMenus]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Menus", @"Menus option in the blog details")
-                                                        image:[Gridicon iconOfType:GridiconTypeMenus]
+                                                        image:[[Gridicon iconOfType:GridiconTypeMenus] imageFlippedForRightToLeftLayoutDirection]
                                                      callback:^{
                                                          [weakSelf showMenus];
                                                      }]];

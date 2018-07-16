@@ -1,4 +1,3 @@
-Lecteur : la fonction de recherche a été améliorée pour rechercher aussi bien un site qu'un article.
-Éditeur : meilleur gestion des articles Gutenberg.
-Lecteur : une alerte avec des informations d’utilisation est maintenant affichée la première fois que la fonctionnalité Enregistrer pour plus tard est utilisée.
-Beaucoup d’autres petits ajustements et améliorations de l’interface utilisateur.
+Journal d'activités ! Vous pouvez désormais voir toute l'activité de votre site.
+La prise en charge des GIF animés a été étendue au Lecteur et au sélecteur multimédia.
+Nombreuses modifications de l'interface utilisateur, améliorations de l'accessibilité et résolutions de bugs.
