@@ -38,7 +38,7 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v10.4-whats-new"
+msgctxt "v10.5-whats-new"
 msgid ""
 "Activity Log! You can now see all that has been going on with your site.\n"
 "Animated Gif support has been expanded in Reader and Media Picker.\n"
