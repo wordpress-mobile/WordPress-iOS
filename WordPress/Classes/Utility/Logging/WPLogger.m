@@ -3,6 +3,7 @@
 @import CocoaLumberjack;
 #import "WPCrashlyticsLogger.h"
 #import "WordPressAppDelegate.h"
+#import "WordPress-Swift.h"
 
 @interface WPLogger ()
 @property (nonatomic, strong, readwrite) DDFileLogger *fileLogger;
@@ -59,7 +60,8 @@
         DDFileLogger *fileLogger = [[DDFileLogger alloc] init];
         fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
         fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
-        
+        fileLogger.logFormatter = [[CustomLogFormatter alloc] init];
+
         _fileLogger = fileLogger;
     }
     

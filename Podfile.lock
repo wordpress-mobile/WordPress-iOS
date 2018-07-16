@@ -29,7 +29,7 @@ PODS:
     - CocoaLumberjack/Default
   - Crashlytics (3.10.1):
     - Fabric (~> 1.7.5)
-  - Fabric (1.7.7)
+  - Fabric (1.7.8)
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
@@ -45,7 +45,7 @@ PODS:
     - GoogleToolboxForMac/Defines (= 2.1.4)
     - "GoogleToolboxForMac/NSString+URLArguments (= 2.1.4)"
   - "GoogleToolboxForMac/NSString+URLArguments (2.1.4)"
-  - Gridicons (0.15)
+  - Gridicons (0.16)
   - HockeySDK (5.1.2):
     - HockeySDK/DefaultLib (= 5.1.2)
   - HockeySDK/DefaultLib (5.1.2)
@@ -82,7 +82,7 @@ PODS:
   - Nimble (7.1.2)
   - NSObject-SafeExpectations (0.0.3)
   - "NSURL+IDN (0.3)"
-  - OCMock (3.4.1)
+  - OCMock (3.4.2)
   - OHHTTPStubs (6.1.0):
     - OHHTTPStubs/Default (= 6.1.0)
   - OHHTTPStubs/Core (6.1.0)
@@ -102,9 +102,9 @@ PODS:
   - Starscream (3.0.4)
   - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (0.5.0)
-  - WordPress-Aztec-iOS (1.0.0-beta.20):
-    - WordPress-Aztec-iOS/WordPressEditor (= 1.0.0-beta.20)
-  - WordPress-Aztec-iOS/WordPressEditor (1.0.0-beta.20)
+  - WordPress-Aztec-iOS (1.0.0-beta.23)
+  - WordPress-Editor-iOS (1.0.0-beta.23):
+    - WordPress-Aztec-iOS (= 1.0.0-beta.23)
   - WordPressAuthenticator (1.0.0):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.2)
@@ -126,7 +126,7 @@ PODS:
     - UIDeviceIdentifier (~> 0.4)
     - WordPressShared (~> 1.0.3)
     - wpxmlrpc (= 0.8.3)
-  - WordPressShared (1.0.7):
+  - WordPressShared (1.0.8):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.0.4)
@@ -149,7 +149,7 @@ DEPENDENCIES:
   - Crashlytics (= 3.10.1)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - Gifu (= 3.1.0)
-  - Gridicons (= 0.15)
+  - Gridicons (= 0.16)
   - HockeySDK (= 5.1.2)
   - lottie-ios (= 2.5.0)
   - MGSwipeTableCell (= 1.6.7)
@@ -164,11 +164,11 @@ DEPENDENCIES:
   - Starscream (= 3.0.4)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `74b7557e1949a4dcb7906bd6301ec01fcbef2c1d`)
-  - WordPress-Aztec-iOS/WordPressEditor (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `74b7557e1949a4dcb7906bd6301ec01fcbef2c1d`)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `c0dd5556e2ecca15e7b662dcdd6d400729da30bc`)
+  - WordPress-Aztec-iOS (= 1.0.0-beta.23)
+  - WordPress-Editor-iOS (= 1.0.0-beta.23)
+  - WordPressAuthenticator (= 1.0.0)
   - WordPressKit (= 1.1)
-  - WordPressShared (= 1.0.7)
+  - WordPressShared (= 1.0.8)
   - WordPressUI (= 1.0.4)
   - WPMediaPicker (= 1.1)
   - wpxmlrpc (= 0.8.3)
@@ -201,6 +201,9 @@ SPEC REPOS:
     - Starscream
     - SVProgressHUD
     - UIDeviceIdentifier
+    - WordPress-Aztec-iOS
+    - WordPress-Editor-iOS
+    - WordPressAuthenticator
     - WordPressKit
     - WordPressShared
     - WordPressUI
@@ -212,23 +215,11 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
-  WordPress-Aztec-iOS:
-    :commit: 74b7557e1949a4dcb7906bd6301ec01fcbef2c1d
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
-  WordPressAuthenticator:
-    :commit: c0dd5556e2ecca15e7b662dcdd6d400729da30bc
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
-  WordPress-Aztec-iOS:
-    :commit: 74b7557e1949a4dcb7906bd6301ec01fcbef2c1d
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
-  WordPressAuthenticator:
-    :commit: c0dd5556e2ecca15e7b662dcdd6d400729da30bc
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -238,12 +229,12 @@ SPEC CHECKSUMS:
   BuddyBuildSDK: 8ae12ee721098b356a961ea7dce70ae55f93a7d2
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
   Crashlytics: aee1a064cbbf99b32efa3f056a5f458d846bc8ff
-  Fabric: bda89e242bce1b7b8ab264248cf3407774ce0095
+  Fabric: fba4684a95df789565b0b27fc5b6e68f1755af32
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   Gifu: fd1e9e3a15ac5d90bae0a510e4ed9f94b485ab03
   GoogleSignInRepacked: d357702618c555f38923576924661325eb1ef22b
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
-  Gridicons: 0e5e76ad9fc6f7cbc3da137a9751ef516c5aef73
+  Gridicons: 8cc5cb666d5ad8b8f1771d3c7a93d27ae25b7c2e
   HockeySDK: 38b7e2726af1ea86ae97ce4b5de33ab0817e3500
   lottie-ios: d699fdee68d7b63e721d949388b015fef1aaa4ac
   MGSwipeTableCell: fb20e983988bde2b8d0df29c2d9e1d8ffd10b74a
@@ -251,21 +242,22 @@ SPEC CHECKSUMS:
   Nimble: 3835ba9f459daa6b347f8a8e110aaae8ca1920a8
   NSObject-SafeExpectations: b989b68a8a9b7b9f2b264a8b52ba9d7aab8f3129
   "NSURL+IDN": 82355a0afd532fe1de08f6417c134b49b1a1c4b3
-  OCMock: 2cd0716969bab32a2283ff3a46fd26a8c8b4c5e3
+  OCMock: ebe9ee1dca7fbed0ff9193ac0b3e2d8862ea56f6
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: e506f63067273b08215616cb88c07d8cbbbd88a0
+  WordPress-Aztec-iOS: f2cc5402915e6f62db9681a0872e308ba8c9850c
+  WordPress-Editor-iOS: 4f46c2fa98f3017e9e39ad30ba9f03dbd6612ce4
   WordPressAuthenticator: 4c802aa18781858253daf984f873e3efe0dac7ef
   WordPressKit: a24baaa783c3a221f2d9a51c19318cbb27333373
-  WordPressShared: db964b81e02ff9be1ea2ff65ca9a4d57c49e82ba
+  WordPressShared: 063e1e8b1a7aaf635abf17f091a2d235a068abdc
   WordPressUI: f2348649b63b5a9392a72b1d2f46dd1d72e80ad9
   WPMediaPicker: 5cc9386a4720f906d8fb79c7c4090d216b9f2348
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: a57e1a232e51f404407774dcc2afc1daa6cc5e1a
+PODFILE CHECKSUM: 333f36413a5fb5cc56eb731a6b9d67fae8d78264
 
 COCOAPODS: 1.5.3

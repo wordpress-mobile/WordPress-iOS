@@ -1,0 +1,3 @@
+Aktivitätsprotokoll! Nun siehst du alle Vorgänge im Zusammenhang mit deiner Website.
+Support für animierte GIFs wurde im Reader und Media Picker erweitert.
+Viele UI-Optimierungen, Zugänglichkeitsverbesserungen und Fehlerbehebungen.

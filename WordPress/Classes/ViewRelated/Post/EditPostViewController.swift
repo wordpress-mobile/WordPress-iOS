@@ -140,7 +140,7 @@ class EditPostViewController: UIViewController {
         editor.restorationClass = nil
         editor.restorationIdentifier = nil
 
-        let navController = UINavigationController(rootViewController: editor)
+        let navController = AztecNavigationController(rootViewController: editor)
         navController.modalPresentationStyle = .fullScreen
 
         let generator = UIImpactFeedbackGenerator(style: .medium)

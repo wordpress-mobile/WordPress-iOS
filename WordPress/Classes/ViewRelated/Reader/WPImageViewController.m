@@ -3,6 +3,7 @@
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import "WordPressAppDelegate.h"
 #import "WordPress-Swift.h"
+@import Gridicons;
 
 static CGFloat const MaximumZoomScale = 4.0;
 static CGFloat const MinimumZoomScale = 0.1;
@@ -12,9 +13,11 @@ static CGFloat const MinimumZoomScale = 0.1;
 @property (nonatomic, strong) NSURL *url;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) Media *media;
+@property (nonatomic, strong) PHAsset *asset;
 @property (nonatomic, strong) NSData *data;
 
 @property (nonatomic, assign) BOOL isLoadingImage;
+@property (nonatomic, assign) BOOL isFirstLayout;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) CachedAnimatedImageView *imageView;
 @property (nonatomic, strong) ImageLoader *imageLoader;
@@ -22,6 +25,8 @@ static CGFloat const MinimumZoomScale = 0.1;
 @property (nonatomic, strong) CircularProgressView *activityIndicatorView;
 
 @property (nonatomic) FlingableViewHandler *flingableViewHandler;
+@property (nonatomic, strong) UITapGestureRecognizer *singleTapGesture;
+@property (nonatomic, strong) UITapGestureRecognizer *doubleTapGesture;
 
 @end
 
@@ -44,11 +49,22 @@ static CGFloat const MinimumZoomScale = 0.1;
     return [self initWithImage:nil andMedia:media];
 }
 
+- (instancetype)initWithAsset:(PHAsset *)asset
+{
+    self = [super init];
+    if (self) {
+        _asset = asset;
+        [self commonInit];
+    }
+    return self;
+}
+
 - (instancetype)initWithGifData:(NSData *)data
 {
     self = [super init];
     if (self) {
         _data = data;
+        [self commonInit];
     }
     return self;
 }
@@ -59,6 +75,7 @@ static CGFloat const MinimumZoomScale = 0.1;
     if (self) {
         _image = [image copy];
         _url = url;
+        [self commonInit];
     }
     return self;
 }
@@ -69,8 +86,15 @@ static CGFloat const MinimumZoomScale = 0.1;
     if (self) {
         _image = [image copy];
         _media = media;
+        [self commonInit];
     }
     return self;
+}
+
+- (void)commonInit
+{
+    _shouldDismissWithGestures = YES;
+    _isFirstLayout = YES;
 }
 
 - (void)setIsLoadingImage:(BOOL)isLoadingImage
@@ -89,39 +113,35 @@ static CGFloat const MinimumZoomScale = 0.1;
     [super viewDidLoad];
 
     self.view.backgroundColor = [UIColor blackColor];
-
     CGRect frame = self.view.frame;
     frame = CGRectMake(0.0f, 0.0f, frame.size.width, frame.size.height);
-    self.scrollView = [[UIScrollView alloc] initWithFrame:frame];
-    self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    self.scrollView.maximumZoomScale = MaximumZoomScale;
-    self.scrollView.minimumZoomScale = MinimumZoomScale;
-    self.scrollView.scrollsToTop = NO;
-    self.scrollView.delegate = self;
-    [self.view addSubview:self.scrollView];
 
-    self.imageView = [[CachedAnimatedImageView alloc] initWithFrame:frame];
-    self.imageView.gifStrategy = GIFStrategyLargeGIFs;
-    self.imageView.shouldShowLoadingIndicator = NO;
-    self.imageView.userInteractionEnabled = YES;
-    [self.scrollView addSubview:self.imageView];
+    [self setupScrollView:frame];
+    [self setupImageViewWidth:frame];
+    [self setupImageLoader];
 
-    self.imageLoader = [[ImageLoader alloc] initWithImageView:self.imageView gifStrategy:GIFStrategyLargeGIFs];
+    self.doubleTapGesture = [self setupTapGestureWithNumberOfTaps:2 onView:self.imageView];
+    self.singleTapGesture = [self setupTapGestureWithNumberOfTaps:1 onView:self.scrollView];
+    [self.singleTapGesture requireGestureRecognizerToFail:self.doubleTapGesture];
 
-    UITapGestureRecognizer *tgr2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageDoubleTapped:)];
-    [tgr2 setNumberOfTapsRequired:2];
-    [self.imageView addGestureRecognizer:tgr2];
+    [self setupFlingableView];
+    [self setupActivityIndicator];
+    [self layoutActivityIndicator];
 
-    UITapGestureRecognizer *tgr1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageTapped:)];
-    [tgr1 setNumberOfTapsRequired:1];
-    [tgr1 requireGestureRecognizerToFail:tgr2];
-    [self.scrollView addGestureRecognizer:tgr1];
+    [self loadImage];
+}
 
-    self.flingableViewHandler = [[FlingableViewHandler alloc] initWithTargetView:self.scrollView];
-    self.flingableViewHandler.delegate = self;
-
+- (void)setupActivityIndicator
+{
     self.activityIndicatorView = [[CircularProgressView alloc] initWithStyle:CircularProgressViewStyleWhite];
-    
+    AccessoryView *errorView = [[AccessoryView alloc] init];
+    errorView.imageView.image = [Gridicon iconOfType:GridiconTypeNoticeOutline];
+    errorView.label.text = NSLocalizedString(@"Error", @"Generic error.");
+    self.activityIndicatorView.errorView = errorView;
+}
+
+- (void)layoutActivityIndicator
+{
     self.activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.activityIndicatorView];
     NSArray *constraints = @[
@@ -130,8 +150,46 @@ static CGFloat const MinimumZoomScale = 0.1;
                              ];
 
     [NSLayoutConstraint activateConstraints:constraints];
+}
 
-    [self loadImage];
+- (void)setupFlingableView
+{
+    self.flingableViewHandler = [[FlingableViewHandler alloc] initWithTargetView:self.scrollView];
+    self.flingableViewHandler.delegate = self;
+    self.flingableViewHandler.isActive = self.shouldDismissWithGestures;
+}
+
+- (UITapGestureRecognizer *)setupTapGestureWithNumberOfTaps:(NSInteger)taps onView:(UIView*)view
+{
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                              action:@selector(handleTapGesture:)];
+    [gesture setNumberOfTapsRequired:taps];
+    [view addGestureRecognizer:gesture];
+    return gesture;
+}
+
+- (void)setupScrollView:(CGRect)frame {
+    self.scrollView = [[UIScrollView alloc] initWithFrame:frame];
+    self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    self.scrollView.maximumZoomScale = MaximumZoomScale;
+    self.scrollView.minimumZoomScale = MinimumZoomScale;
+    self.scrollView.scrollsToTop = NO;
+    self.scrollView.delegate = self;
+    [self.view addSubview:self.scrollView];
+}
+
+- (void)setupImageViewWidth:(CGRect)frame
+{
+    self.imageView = [[CachedAnimatedImageView alloc] initWithFrame:frame];
+    self.imageView.gifStrategy = GIFStrategyLargeGIFs;
+    self.imageView.shouldShowLoadingIndicator = NO;
+    self.imageView.userInteractionEnabled = YES;
+    [self.scrollView addSubview:self.imageView];
+}
+
+- (void)setupImageLoader
+{
+    self.imageLoader = [[ImageLoader alloc] initWithImageView:self.imageView gifStrategy:GIFStrategyLargeGIFs];
 }
 
 - (void)loadImage
@@ -146,6 +204,8 @@ static CGFloat const MinimumZoomScale = 0.1;
         [self loadImageFromURL];
     } else if (self.media) {
         [self loadImageFromMedia];
+    } else if (self.asset) {
+        [self loadImageFromPHAsset];
     } else if (self.data) {
         [self loadImageFromGifData];
     }
@@ -162,7 +222,6 @@ static CGFloat const MinimumZoomScale = 0.1;
 - (void)loadImageFromURL
 {
     self.isLoadingImage = YES;
-
     __weak __typeof__(self) weakSelf = self;
     [_imageView setImageWithURLRequest:[NSURLRequest requestWithURL:self.url]
                       placeholderImage:self.image
@@ -191,6 +250,22 @@ static CGFloat const MinimumZoomScale = 0.1;
     }];
 }
 
+- (void)loadImageFromPHAsset
+{
+    self.imageView.image = self.image;
+    self.isLoadingImage = YES;
+    __weak __typeof__(self) weakSelf = self;
+    [self.imageLoader loadImageFromPHAsset:self.asset preferredSize:CGSizeZero placeholder:self.image success:^{
+        weakSelf.isLoadingImage = NO;
+        weakSelf.image = weakSelf.imageView.image;
+        [weakSelf updateImageView];
+    } error:^(NSError * _Nullable error) {
+        [weakSelf.activityIndicatorView showError];
+        [weakSelf.activityIndicatorView showError];
+        DDLogError(@"Error loading image: %@", error);
+    }];
+}
+
 - (void)loadImageFromGifData
 {
     self.isLoadingImage = YES;
@@ -212,7 +287,15 @@ static CGFloat const MinimumZoomScale = 0.1;
     [super viewWillAppear:animated];
 
     [self hideBars:YES animated:animated];
-    [self centerImage];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    if (self.isFirstLayout) {
+        [self centerImage];
+        self.isFirstLayout = NO;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -234,10 +317,27 @@ static CGFloat const MinimumZoomScale = 0.1;
 
 #pragma mark - Instance Methods
 
+- (id<WPMediaAsset>)mediaAsset
+{
+    if (self.asset) {
+        return self.asset;
+    }
+    if (self.media) {
+        return self.media;
+    }
+    return nil;
+}
+
+- (void)setShouldDismissWithGestures:(BOOL)shouldDismissWithGestures
+{
+    _shouldDismissWithGestures = shouldDismissWithGestures;
+    self.flingableViewHandler.isActive = shouldDismissWithGestures;
+}
+
 - (void)hideBars:(BOOL)hide animated:(BOOL)animated
 {
     self.shouldHideStatusBar = hide;
-    
+
     // Force an update of the status bar appearance and visiblity
     if (animated) {
         [UIView animateWithDuration:0.3
@@ -268,12 +368,23 @@ static CGFloat const MinimumZoomScale = 0.1;
     [self scrollViewDidZoom:self.scrollView];
 }
 
-- (void)handleImageTapped:(UITapGestureRecognizer *)tgr
+- (void)handleTapGesture:(UITapGestureRecognizer *)tapGesture
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if ([tapGesture isEqual:self.singleTapGesture]) {
+        [self handleImageTappedWith:tapGesture];
+    } else if ([tapGesture isEqual:self.doubleTapGesture]) {
+        [self handleImageDoubleTappedWidth:tapGesture];
+    }
 }
 
-- (void)handleImageDoubleTapped:(UITapGestureRecognizer *)tgr
+- (void)handleImageTappedWith:(UITapGestureRecognizer *)tgr
+{
+    if (self.shouldDismissWithGestures) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+- (void)handleImageDoubleTappedWidth:(UITapGestureRecognizer *)tgr
 {
     if (self.scrollView.zoomScale > self.scrollView.minimumZoomScale) {
         [self.scrollView setZoomScale:self.scrollView.minimumZoomScale animated:YES];
@@ -296,7 +407,10 @@ static CGFloat const MinimumZoomScale = 0.1;
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
-    return self.imageView;
+    if (self.imageView.image) {
+        return self.imageView;
+    }
+    return nil;
 }
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView
@@ -323,6 +437,9 @@ static CGFloat const MinimumZoomScale = 0.1;
 
 - (void)updateFlingableViewHandlerActiveState
 {
+    if (!self.shouldDismissWithGestures) {
+        return;
+    }
     BOOL isScrollViewZoomedOut = (self.scrollView.zoomScale == self.scrollView.minimumZoomScale);
 
     self.flingableViewHandler.isActive = isScrollViewZoomedOut;
@@ -353,7 +470,7 @@ static CGFloat const MinimumZoomScale = 0.1;
     if (!url) {
         return NO;
     }
-    
+
     // We only support: PNG + JPG + JPEG + GIF
     NSString *absoluteURL = url.absoluteString;
 
@@ -363,7 +480,7 @@ static CGFloat const MinimumZoomScale = 0.1;
             return YES;
         }
     }
-    
+
     return NO;
 }
 

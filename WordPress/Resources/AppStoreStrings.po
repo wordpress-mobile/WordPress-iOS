@@ -13,7 +13,7 @@ msgstr ""
 "Last-Translator: \n"
 "Language-Team: \n"
 
-#. translators: Subtitle to be displayed below the application name in the Apple App Store.
+#. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
 msgctxt "app_store_subtitle"
 msgid "Manage your website anywhere"
 msgstr ""
@@ -38,12 +38,11 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v10.3-whats-new"
+msgctxt "v10.4-whats-new"
 msgid ""
-"Reader: Search function is now improved to allow searching of sites as well as posts.\n"
-"Editor: Better handling of Gutenberg posts.\n"
-"Reader: An alert with usage information is now displayed the first time the Save Posts for Later feature is used.\n"
-"A lot of small UI tweaks and improvements\n"
+"Activity Log! You can now see all that has been going on with your site.\n"
+"Animated Gif support has been expanded in Reader and Media Picker.\n"
+"A bunch of UI tweaks, accessibility improvements and bug fixes.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
@@ -68,4 +67,34 @@ msgid ""
 "It may look the same,\n"
 "but we shined and buffed the code.\n"
 "Small changes add up!"
+msgstr ""
+
+#. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one. 
+msgctxt "app_store_screenshot-1"
+msgid "Enjoy your favourite sites"
+msgstr ""
+
+#. translators: This is a promo message that will be attached on top of the second screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one. 
+msgctxt "app_store_screenshot-2"
+msgid "Get notified in real-time"
+msgstr ""
+
+#. translators: This is a promo message that will be attached on top of the third screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one. 
+msgctxt "app_store_screenshot-3"
+msgid "Manage your site everywhere you go"
+msgstr ""
+
+#. translators: This is a promo message that will be attached on top of the fourth screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one. 
+msgctxt "app_store_screenshot-4"
+msgid "Share your ideas with the world"
+msgstr ""
+
+#. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one. 
+msgctxt "app_store_screenshot-5"
+msgid "All the stats in your hand"
 msgstr ""

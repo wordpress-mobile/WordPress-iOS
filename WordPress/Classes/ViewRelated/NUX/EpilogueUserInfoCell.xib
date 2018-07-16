@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -61,6 +61,26 @@
                     <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="xGK-LG-0cx">
                         <rect key="frame" x="181" y="101" width="20" height="20"/>
                     </activityIndicatorView>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="2Ri-os-5ZW">
+                        <rect key="frame" x="173" y="32" width="37" height="37"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="37" id="9OE-Qz-4LV"/>
+                            <constraint firstAttribute="height" constant="37" id="h6l-wf-0gr"/>
+                        </constraints>
+                    </activityIndicatorView>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar-add-button" translatesAutoresizingMaskIntoConstraints="NO" id="GYR-3W-aku">
+                        <rect key="frame" x="199.5" y="16" width="26" height="26"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="26" id="gm6-03-VBa"/>
+                            <constraint firstAttribute="height" constant="26" id="uxU-Ng-JTY"/>
+                        </constraints>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="11G-E4-8Jh">
+                        <rect key="frame" x="161.5" y="20.5" width="60" height="60"/>
+                        <connections>
+                            <action selector="gravatarTapped" destination="uln-Hd-OJc" eventType="touchUpInside" id="kQu-u7-vJd"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 <constraints>
@@ -72,24 +92,37 @@
                     <constraint firstItem="xGK-LG-0cx" firstAttribute="top" secondItem="SqA-Tm-XVX" secondAttribute="bottom" constant="21" id="Acl-tc-kbv"/>
                     <constraint firstItem="SqA-Tm-XVX" firstAttribute="centerX" secondItem="HfW-Dl-Z89" secondAttribute="centerX" id="FIj-Nh-OhB"/>
                     <constraint firstItem="MbK-Ns-TbF" firstAttribute="centerX" secondItem="HfW-Dl-Z89" secondAttribute="centerX" id="FOE-Sh-cNK"/>
+                    <constraint firstItem="11G-E4-8Jh" firstAttribute="centerY" secondItem="SqA-Tm-XVX" secondAttribute="centerY" id="IxS-CJ-S1j"/>
+                    <constraint firstItem="11G-E4-8Jh" firstAttribute="centerX" secondItem="SqA-Tm-XVX" secondAttribute="centerX" id="M29-uj-sGk"/>
                     <constraint firstItem="xGK-LG-0cx" firstAttribute="centerX" secondItem="HfW-Dl-Z89" secondAttribute="centerX" id="Mwp-7z-bUJ"/>
+                    <constraint firstItem="GYR-3W-aku" firstAttribute="top" secondItem="SqA-Tm-XVX" secondAttribute="top" constant="-4" id="QV1-8T-K0y"/>
                     <constraint firstItem="89f-vg-HlI" firstAttribute="width" secondItem="HfW-Dl-Z89" secondAttribute="width" id="ZdQ-N7-B5U"/>
+                    <constraint firstItem="11G-E4-8Jh" firstAttribute="width" secondItem="SqA-Tm-XVX" secondAttribute="width" id="dBO-2f-cNz"/>
                     <constraint firstItem="89f-vg-HlI" firstAttribute="top" secondItem="MbK-Ns-TbF" secondAttribute="bottom" id="hGl-uc-uSH"/>
                     <constraint firstItem="Ddl-7i-jhj" firstAttribute="top" secondItem="HfW-Dl-Z89" secondAttribute="top" id="jCf-sF-Hsj"/>
+                    <constraint firstItem="2Ri-os-5ZW" firstAttribute="centerY" secondItem="SqA-Tm-XVX" secondAttribute="centerY" id="jFZ-xH-4vw"/>
                     <constraint firstItem="SqA-Tm-XVX" firstAttribute="top" secondItem="HfW-Dl-Z89" secondAttribute="top" constant="20" id="jnf-Zw-TmW"/>
                     <constraint firstAttribute="trailing" secondItem="m3s-Kz-bOH" secondAttribute="trailing" id="m14-pX-Baq"/>
                     <constraint firstItem="MbK-Ns-TbF" firstAttribute="width" secondItem="HfW-Dl-Z89" secondAttribute="width" constant="-40" id="mQP-tr-tpn"/>
                     <constraint firstAttribute="bottom" secondItem="89f-vg-HlI" secondAttribute="bottom" constant="20" id="o6T-dK-g7J"/>
+                    <constraint firstItem="2Ri-os-5ZW" firstAttribute="centerX" secondItem="SqA-Tm-XVX" secondAttribute="centerX" id="tF0-R9-e3X"/>
                     <constraint firstItem="MbK-Ns-TbF" firstAttribute="top" secondItem="SqA-Tm-XVX" secondAttribute="bottom" constant="9" id="tp1-hu-yDU"/>
+                    <constraint firstItem="11G-E4-8Jh" firstAttribute="height" secondItem="SqA-Tm-XVX" secondAttribute="height" id="vjj-dA-RLw"/>
+                    <constraint firstItem="GYR-3W-aku" firstAttribute="trailing" secondItem="SqA-Tm-XVX" secondAttribute="trailing" constant="4" id="wL3-WH-8HH"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="activityIndicator" destination="xGK-LG-0cx" id="cvq-jE-eTh"/>
                 <outlet property="fullNameLabel" destination="MbK-Ns-TbF" id="V0e-0h-jX6"/>
+                <outlet property="gravatarActivityIndicator" destination="2Ri-os-5ZW" id="VjF-HG-SdZ"/>
+                <outlet property="gravatarAddIcon" destination="GYR-3W-aku" id="Sdn-zL-dLo"/>
                 <outlet property="gravatarView" destination="SqA-Tm-XVX" id="ag5-hS-Y5D"/>
                 <outlet property="usernameLabel" destination="89f-vg-HlI" id="u0g-9B-dLf"/>
             </connections>
-            <point key="canvasLocation" x="-206" y="-63"/>
+            <point key="canvasLocation" x="-206.5" y="-63"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="gravatar-add-button" width="26" height="26"/>
+    </resources>
 </document>

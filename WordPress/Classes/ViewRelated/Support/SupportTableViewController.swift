@@ -75,13 +75,6 @@ class SupportTableViewController: UITableViewController {
         dismiss(animated: true, completion: nil)
     }
 
-    // MARK: - Helpers
-
-    // Specifically for WPError, which is ObjC & has the sourceTag as a String.
-    @objc func updateSourceTag(with description: String) {
-        ZendeskUtils.updateSourceTag(with: description)
-    }
-
 }
 
 // MARK: - Private Extension
@@ -217,10 +210,14 @@ private extension SupportTableViewController {
                 return
             }
 
+            WPAnalytics.track(.supportIdentityFormViewed)
             ZendeskUtils.sharedInstance.showSupportEmailPrompt(from: controllerToShowFrom) { success in
                 guard success else {
                     return
                 }
+                // Tracking when the dialog's "OK" button is pressed, not necessarily
+                // if the value changed.
+                WPAnalytics.track(.supportIdentitySet)
                 self.reloadViewModel()
             }
         }

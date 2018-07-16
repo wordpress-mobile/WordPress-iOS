@@ -187,12 +187,11 @@ class MediaItemViewController: UITableViewController {
     }
 
     private func presentImageViewControllerForMedia() {
-        if let controller = WPImageViewController(media: self.media) {
-            controller.modalTransitionStyle = .crossDissolve
-            controller.modalPresentationStyle = .fullScreen
+        let controller = WPImageViewController(media: self.media)
+        controller.modalTransitionStyle = .crossDissolve
+        controller.modalPresentationStyle = .fullScreen
 
-            self.present(controller, animated: true, completion: nil)
-        }
+        self.present(controller, animated: true, completion: nil)
     }
 
     private func presentVideoViewControllerForMedia() {

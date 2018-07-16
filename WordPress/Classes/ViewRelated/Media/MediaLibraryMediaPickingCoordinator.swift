@@ -3,14 +3,11 @@ import WPMediaPicker
 
 /// Prepares the alert controller that will be presented when tapping the "+" button in Media Library
 final class MediaLibraryMediaPickingCoordinator {
-    private weak var delegate: MediaPickingOptionsDelegate?
-
     private let stockPhotos = StockPhotosPicker()
     private let cameraCapture = CameraCaptureCoordinator()
     private let mediaLibrary = MediaLibraryPicker()
 
-    init(delegate: MediaPickingOptionsDelegate & StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate) {
-        self.delegate = delegate
+    init(delegate: StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate) {
         stockPhotos.delegate = delegate
         mediaLibrary.delegate = delegate
     }
@@ -74,9 +71,7 @@ final class MediaLibraryMediaPickingCoordinator {
     }
 
     private func cancelAction() -> UIAlertAction {
-        return UIAlertAction(title: .cancelMoreOptions, style: .cancel, handler: { [weak self] action in
-            self?.delegate?.didCancel()
-        })
+        return UIAlertAction(title: .cancelMoreOptions, style: .cancel, handler: nil)
     }
 
     private func showCameraCapture(origin: UIViewController, blog: Blog) {
