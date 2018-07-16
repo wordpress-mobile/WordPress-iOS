@@ -85,6 +85,13 @@ class ReaderCoordinator: NSObject {
         readerNavigationController.pushViewController(controller, animated: true)
     }
 
+    func showStream(with siteID: Int, isFeed: Bool) {
+        prepareToNavigate()
+
+        let controller = ReaderStreamViewController.controllerWithSiteID(NSNumber(value: siteID), isFeed: isFeed)
+        readerNavigationController.pushViewController(controller, animated: false)
+    }
+
     func showPost(with postID: Int, for feedID: Int, isFeed: Bool) {
         prepareToNavigate()
 
