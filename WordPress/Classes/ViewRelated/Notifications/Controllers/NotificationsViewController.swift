@@ -1052,6 +1052,7 @@ private extension NotificationsViewController {
             button?.setTitle(ApproveComment.TitleStrings.unapprove, for: .normal)
             button?.accessibilityLabel = ApproveComment.TitleStrings.unapprove
             button?.accessibilityHint = ApproveComment.TitleHints.unapprove
+            button?.setPadding(10)
         }
 
         button?.callback = { _ in
