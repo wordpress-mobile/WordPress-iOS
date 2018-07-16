@@ -33,7 +33,8 @@ NSString * const WPCrashlyticsKeyNumberOfBlogs = @"number_of_blogs";
     self = [super init];
     
     if (self) {
-        [self initializeCrashlytics];
+        [[Crashlytics sharedInstance] setDelegate:self];
+        [self startupCrashlyticsIfNeeded];
         [self startObservingNotifications];
     }
     
@@ -43,17 +44,18 @@ NSString * const WPCrashlyticsKeyNumberOfBlogs = @"number_of_blogs";
 #pragma mark - Init helpers
 
 /**
- *  @brief      Initializes crashlytics for WPiOS.
+ *  @brief      Start crashlytics for WPiOS
  */
-- (void)initializeCrashlytics
+- (void)startupCrashlyticsIfNeeded
 {
     [self initializeOptOutTracking];
-    [[Crashlytics sharedInstance] setDelegate:self];
 
     BOOL userHasOptedOut = [WPCrashlytics userHasOptedOut];
     if (!userHasOptedOut) {
-        // Crashalytics opt-in per: https://docs.fabric.io/apple/crashlytics/advanced-setup.html#enable-opt-in-reporting
-        [Fabric with:@[CrashlyticsKit]];
+        // FYI: This method may get called mutiple times (e.g. user toggles the privacy settings on-off-on).
+        // Per the docs, only the first call is honored and subsequent calls are no-ops.
+        [Fabric with:@[CrashlyticsKit]];        
+
         [self setCommonCrashlyticsParameters];
     }
 }
@@ -103,7 +105,7 @@ NSString * const WPCrashlyticsKeyNumberOfBlogs = @"number_of_blogs";
     if (optedOut) {
         [self clearCommonCrashlyticsParameters];
     } else {
-        [self setCommonCrashlyticsParameters];
+        [self startupCrashlyticsIfNeeded];
     }
 }
 
