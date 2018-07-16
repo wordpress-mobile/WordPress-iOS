@@ -40,9 +40,9 @@ msgstr ""
 
 msgctxt "v10.5-whats-new"
 msgid ""
-"Activity Log! You can now see all that has been going on with your site.\n"
-"Animated Gif support has been expanded in Reader and Media Picker.\n"
-"A bunch of UI tweaks, accessibility improvements and bug fixes.\n"
+"Editor: more updates for Gutenberg compatibility.\n"
+"Several improvements to the UI.\n"
+"A bunch of small bug fixes.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
