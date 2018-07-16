@@ -94,6 +94,10 @@ class NotificationDetailsViewController: UIViewController {
         }
     }
 
+    lazy var router: Router = {
+        return Router(controller: self, context: mainContext)
+    }()
+
     /// Whenever the user performs a destructive action, the Deletion Request Callback will be called,
     /// and a closure that will effectively perform the deletion action will be passed over.
     /// In turn, the Deletion Action block also expects (yet another) callback as a parameter, to be called
@@ -696,7 +700,7 @@ private extension NotificationDetailsViewController {
                 return
             }
 
-            self?.displayFullscreenImage(image)
+            self?.router.displayFullscreenImage(image)
         }
 
         // Download the Gravatar
@@ -932,7 +936,7 @@ private extension NotificationDetailsViewController {
                 return
             }
 
-            self?.displayFullscreenImage(image)
+            self?.router.displayFullscreenImage(image)
         }
 
         // Download the Gravatar
@@ -1078,7 +1082,7 @@ private extension NotificationDetailsViewController {
             let range = note.notificationRangeWithUrl(url)
             try displayResourceWithRange(range)
         } catch {
-            displayWebViewWithURL(url)
+            router.displayWebViewWithURL(url)
         }
     }
 
@@ -1091,7 +1095,7 @@ private extension NotificationDetailsViewController {
         do {
             switch note.kind {
             case .Follow:
-                try displayStreamWithSiteID(note.metaSiteID)
+                try router.displayStreamWithSiteID(note.metaSiteID)
             case .Like:
                 fallthrough
             case .Matcher:
@@ -1099,16 +1103,16 @@ private extension NotificationDetailsViewController {
             case .NewPost:
                 fallthrough
             case .Post:
-                try displayReaderWithPostId(note.metaPostID, siteID: note.metaSiteID)
+                try router.displayReaderWithPostId(note.metaPostID, siteID: note.metaSiteID)
             case .Comment:
                 fallthrough
             case .CommentLike:
-                try displayCommentsWithPostId(note.metaPostID, siteID: note.metaSiteID)
+                try router.displayCommentsWithPostId(note.metaPostID, siteID: note.metaSiteID)
             default:
-                throw DisplayError.unsupportedType
+                throw Router.DisplayError.unsupportedType
             }
         } catch {
-            displayWebViewWithURL(resourceURL as URL)
+            router.displayWebViewWithURL(resourceURL as URL)
         }
     }
 
@@ -1123,87 +1127,20 @@ private extension NotificationDetailsViewController {
 
         switch range.kind {
         case .Site:
-            try displayStreamWithSiteID(range.siteID)
+            try router.displayStreamWithSiteID(range.siteID)
         case .Post:
-            try displayReaderWithPostId(range.postID, siteID: range.siteID)
+            try router.displayReaderWithPostId(range.postID, siteID: range.siteID)
         case .Comment:
-            try displayCommentsWithPostId(range.postID, siteID: range.siteID)
+            try router.displayCommentsWithPostId(range.postID, siteID: range.siteID)
         case .Stats:
-            try displayStatsWithSiteID(range.siteID)
+            try router.displayStatsWithSiteID(range.siteID)
         case .Follow:
-            try displayFollowersWithSiteID(range.siteID)
+            try router.displayFollowersWithSiteID(range.siteID, expirationTime: Settings.expirationFiveMinutes)
         case .User:
-            try displayStreamWithSiteID(range.siteID)
+            try router.displayStreamWithSiteID(range.siteID)
         default:
             throw DisplayError.unsupportedType
         }
-    }
-
-
-    // MARK: - Private Helpers
-
-    func displayReaderWithPostId(_ postID: NSNumber?, siteID: NSNumber?) throws {
-        guard let postID = postID, let siteID = siteID else {
-            throw DisplayError.missingParameter
-        }
-
-        let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
-        navigationController?.pushFullscreenViewController(readerViewController, animated: true)
-    }
-
-    func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?) throws {
-        guard let postID = postID, let siteID = siteID else {
-            throw DisplayError.missingParameter
-        }
-
-        let commentsViewController = ReaderCommentsViewController(postID: postID, siteID: siteID)
-        commentsViewController?.allowsPushingPostDetails = true
-        navigationController?.pushViewController(commentsViewController!, animated: true)
-    }
-
-    func displayStatsWithSiteID(_ siteID: NSNumber?) throws {
-        guard let blog = blogWithBlogID(siteID), blog.supports(.stats) else {
-            throw DisplayError.missingParameter
-        }
-
-        let statsViewController = StatsViewController()
-        statsViewController.blog = blog
-        navigationController?.pushViewController(statsViewController, animated: true)
-    }
-
-    func displayFollowersWithSiteID(_ siteID: NSNumber?) throws {
-        guard let blog = blogWithBlogID(siteID) else {
-            throw DisplayError.missingParameter
-        }
-
-        let statsViewController = newStatsViewController()
-        statsViewController.selectedDate = Date()
-        statsViewController.statsSection = .followers
-        statsViewController.statsSubSection = .followersDotCom
-        statsViewController.statsService = newStatsServiceWithBlog(blog)
-        navigationController?.pushViewController(statsViewController, animated: true)
-    }
-
-    func displayStreamWithSiteID(_ siteID: NSNumber?) throws {
-        guard let siteID = siteID else {
-            throw DisplayError.missingParameter
-        }
-
-        let browseViewController = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: false)
-        navigationController?.pushViewController(browseViewController, animated: true)
-    }
-
-    func displayWebViewWithURL(_ url: URL) {
-        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
-        let navController = UINavigationController(rootViewController: webViewController)
-        present(navController, animated: true, completion: nil)
-    }
-
-    func displayFullscreenImage(_ image: UIImage) {
-        let imageViewController = WPImageViewController(image: image)
-        imageViewController.modalTransitionStyle = .crossDissolve
-        imageViewController.modalPresentationStyle = .fullScreen
-        present(imageViewController, animated: true, completion: nil)
     }
 }
 
@@ -1219,32 +1156,6 @@ private extension NotificationDetailsViewController {
 
     func blockGroupForIndexPath(_ indexPath: IndexPath) -> NotificationBlockGroup {
         return note.headerAndBodyBlockGroups[indexPath.row]
-    }
-
-    func blogWithBlogID(_ blogID: NSNumber?) -> Blog? {
-        guard let blogID = blogID else {
-            return nil
-        }
-
-        let service = BlogService(managedObjectContext: mainContext)
-        return service.blog(byBlogId: blogID)
-    }
-
-    func newStatsViewController() -> StatsViewAllTableViewController {
-        let statsBundle = Bundle(for: WPStatsViewController.self)
-        let storyboard = UIStoryboard(name: "SiteStats", bundle: statsBundle)
-        let identifier = StatsViewAllTableViewController.classNameWithoutNamespaces()
-        let statsViewController = storyboard.instantiateViewController(withIdentifier: identifier)
-
-        return statsViewController as! StatsViewAllTableViewController
-    }
-
-    func newStatsServiceWithBlog(_ blog: Blog) -> WPStatsService {
-        let blogService = BlogService(managedObjectContext: mainContext)
-        return WPStatsService(siteId: blog.dotComID,
-                              siteTimeZone: blogService.timeZone(for: blog),
-                              oauth2Token: blog.authToken,
-                              andCacheExpirationInterval: Settings.expirationFiveMinutes)
     }
 }
 
