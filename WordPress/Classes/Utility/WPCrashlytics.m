@@ -52,6 +52,7 @@ NSString * const WPCrashlyticsKeyNumberOfBlogs = @"number_of_blogs";
 
     BOOL userHasOptedOut = [WPCrashlytics userHasOptedOut];
     if (!userHasOptedOut) {
+        // Crashalytics opt-in per: https://docs.fabric.io/apple/crashlytics/advanced-setup.html#enable-opt-in-reporting
         [Fabric with:@[CrashlyticsKit]];
         [self setCommonCrashlyticsParameters];
     }
