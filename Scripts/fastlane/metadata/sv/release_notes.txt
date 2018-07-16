@@ -1,4 +1,3 @@
-Läsare: Sökfunktionen har förbättrats så att man nu kan söka efter både webbplatser och inlägg.
-Redigerare: Hanterar Gutenberg-inlägg bättre.
-Läsare: Ett meddelande med information om användningen visas när man första gången använder funktionen för att spara inlägg till senare.
-En rad mindre ändringar och förbättringar av användargränssnittet
+Aktivitetslogg! Nu kan du se allt som hänt på din webbplats.
+Stödet för animerade gif-filer har breddats till Läsaren och Mediaväljaren.
+Ett antal mindre förändringar av användargränssnitt, tillgänglighet och felrättningar.
