@@ -6,7 +6,7 @@ class ActivityPostRange: ActivityRange {
     init(range: NSRange, siteID: Int, postID: Int) {
         self.postID = postID
         self.siteID = siteID
-        
+
         let url = ActivityPostRange.urlWith(siteID: siteID, postID: postID)
         super.init(kind: .post, range: range, url: url)
     }
