@@ -358,6 +358,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                 [self showActivity];
             }
             break;
+        case BlogDetailsSubsectionComments:
+            self.restorableSelectedIndexPath = indexPath;
+            [self.tableView selectRowAtIndexPath:indexPath
+                                        animated:NO
+                                  scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+            [self showComments];
+            break;
     }
 }
 
@@ -377,6 +384,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             return [NSIndexPath indexPathForRow:2 inSection:1];
         case BlogDetailsSubsectionPages:
             return [NSIndexPath indexPathForRow:0 inSection:0];
+        case BlogDetailsSubsectionComments:
+            return [NSIndexPath indexPathForRow:3 inSection:1];
     }
 }
 

@@ -68,7 +68,9 @@ struct UniversalLinkRouter {
 
     private static let MySitesRoutes: [Route] = [
         MySitesRoute.pages,
-        MySitesRoute.posts
+        MySitesRoute.posts,
+        MySitesRoute.media,
+        MySitesRoute.comments
     ]
 
     private static let AppBannerRoutes: [Route] = [
