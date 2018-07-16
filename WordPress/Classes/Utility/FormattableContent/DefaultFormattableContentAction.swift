@@ -17,6 +17,7 @@ class DefaultFormattableContentAction: FormattableContentAction {
         self.on = on
         self.enabled = true
         self.command = command
+        self.command?.on = on
     }
 
     func execute(context: ActionContext) {
