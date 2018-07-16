@@ -2,7 +2,6 @@ import Foundation
 import CocoaLumberjack
 import WordPressShared.WPAnalytics
 import WordPressShared.WPStyleGuide
-import WordPressShared.WPNoResultsView
 
 /**
  *  @brief      Support for filtering themes by purchasability
@@ -212,18 +211,18 @@ public protocol ThemePresenter: class {
         return nil
     }
 
-    fileprivate lazy var noResultsView: WPNoResultsView = {
-        let noResultsView = WPNoResultsView()
-        let drakeImage = UIImage(named: "theme-empty-results")
-        noResultsView.accessoryView = UIImageView(image: drakeImage)
-
-        return noResultsView
-    }()
-
-    fileprivate var noResultsShown: Bool {
-        return noResultsView.superview != nil
-    }
     fileprivate var presentingTheme: Theme?
+
+    private var noResultsViewController: NoResultsViewController?
+
+    private struct NoResultsTitles {
+        static let noThemes = NSLocalizedString("No Themes Found", comment: "Text displayed when theme name search has no matches")
+        static let fetchingThemes = NSLocalizedString("Fetching Themes...", comment: "Text displayed while fetching themes")
+    }
+
+    private var noResultsShown: Bool {
+        return noResultsViewController?.parent != nil
+    }
 
     /**
      *  @brief      Load theme screenshots at maximum displayed width
@@ -486,45 +485,6 @@ public protocol ThemePresenter: class {
         }
 
         return nil
-    }
-
-    fileprivate func updateResults() {
-        if themeCount == 0 && customThemeCount == 0 {
-            showNoResults()
-        } else {
-            hideNoResults()
-        }
-    }
-
-    fileprivate func showNoResults() {
-        guard !noResultsShown else {
-            return
-        }
-
-        let title: String
-        if searchController.isActive {
-            title = NSLocalizedString("No Themes Found", comment: "Text displayed when theme name search has no matches")
-        } else {
-            title = NSLocalizedString("Fetching Themes...", comment: "Text displayed while fetching themes")
-        }
-        noResultsView.titleText = title
-        view.addSubview(noResultsView)
-        syncMoreThemesIfNeeded(IndexPath(item: 0, section: 0))
-    }
-
-    fileprivate func hideNoResults() {
-        guard noResultsShown else {
-            return
-        }
-
-        noResultsView.removeFromSuperview()
-
-        if searchController.isActive {
-            collectionView?.reloadData()
-        } else {
-            sections = [.search, .info, .customThemes, .themes]
-            collectionView?.collectionViewLayout.invalidateLayout()
-        }
     }
 
     // MARK: - WPContentSyncHelperDelegate
@@ -908,4 +868,63 @@ public protocol ThemePresenter: class {
         activateTheme(presentingTheme)
         presentingTheme = nil
     }
+}
+
+// MARK: - NoResults Handling
+
+private extension ThemeBrowserViewController {
+
+    func updateResults() {
+        if themeCount == 0 && customThemeCount == 0 {
+            showNoResults()
+        } else {
+            hideNoResults()
+        }
+    }
+
+    func showNoResults() {
+
+        guard !noResultsShown else {
+            return
+        }
+
+        if noResultsViewController == nil {
+            noResultsViewController = NoResultsViewController.controller()
+        }
+
+        guard let noResultsViewController = noResultsViewController else {
+            return
+        }
+
+        let title = searchController.isActive ? NoResultsTitles.noThemes : NoResultsTitles.fetchingThemes
+        noResultsViewController.configure(title: title)
+
+        addChildViewController(noResultsViewController)
+        collectionView.addSubview(noResultsViewController.view)
+        noResultsViewController.view.frame = collectionView.frame
+
+        // There is a gap between the search bar and the collection view - https://github.com/wordpress-mobile/WordPress-iOS/issues/9730
+        // This makes the No Results View look vertically off-center. Until that is resolved, we'll move the NRV up by the search bar height.
+        noResultsViewController.view.frame.origin.y -= searchBarHeight
+
+        noResultsViewController.didMove(toParentViewController: self)
+    }
+
+    func hideNoResults() {
+
+        guard noResultsShown else {
+            return
+        }
+
+        noResultsViewController?.view.removeFromSuperview()
+        noResultsViewController?.removeFromParentViewController()
+
+        if searchController.isActive {
+            collectionView?.reloadData()
+        } else {
+            sections = [.search, .info, .customThemes, .themes]
+            collectionView?.collectionViewLayout.invalidateLayout()
+        }
+    }
+
 }

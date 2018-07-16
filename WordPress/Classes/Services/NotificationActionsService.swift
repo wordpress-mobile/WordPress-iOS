@@ -6,7 +6,7 @@ extension NotificationBlock: ActionableObject {
 
 /// This service encapsulates all of the Actions that can be performed with a NotificationBlock
 ///
-open class NotificationActionsService: LocalCoreDataService {
+class NotificationActionsService: LocalCoreDataService {
 
     /// Follows a Site referenced by a given NotificationBlock.
     ///
