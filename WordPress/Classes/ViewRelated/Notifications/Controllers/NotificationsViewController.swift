@@ -1046,14 +1046,6 @@ private extension NotificationsViewController {
 
         let approveAction = block.action(id: ApproveCommentAction.actionIdentifier())
         let button = approveAction?.command?.icon as? MGSwipeButton
-        let approveActionOn = approveAction?.on
-        if approveActionOn == true {
-            button?.backgroundColor = WPStyleGuide.grey()
-            button?.setTitle(ApproveComment.TitleStrings.unapprove, for: .normal)
-            button?.accessibilityLabel = ApproveComment.TitleStrings.unapprove
-            button?.accessibilityHint = ApproveComment.TitleHints.unapprove
-            button?.setPadding(10)
-        }
 
         button?.callback = { _ in
             let actionContext = ActionContext(block: block)
