@@ -46,6 +46,8 @@ struct UniversalLinkRouter {
         ReaderRoute.manageFollowing,
         ReaderRoute.list,
         ReaderRoute.tag,
+        ReaderRoute.feed,
+        ReaderRoute.blog,
         ReaderRoute.feedsPost,
         ReaderRoute.blogsPost
     ]

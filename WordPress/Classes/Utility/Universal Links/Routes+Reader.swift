@@ -9,6 +9,8 @@ enum ReaderRoute {
     case manageFollowing
     case list
     case tag
+    case feed
+    case blog
     case feedsPost
     case blogsPost
 }
@@ -32,6 +34,10 @@ extension ReaderRoute: Route {
             return "/read/list/:username/:list_name"
         case .tag:
             return "/tag/:tag_name"
+        case .feed:
+            return "/read/feeds/:feed_id"
+        case .blog:
+            return "/read/blogs/:blog_id"
         case .feedsPost:
             return "/read/feeds/:feed_id/posts/:post_id"
         case .blogsPost:
@@ -71,6 +77,16 @@ extension ReaderRoute: NavigationAction {
         case .tag:
             if let tagName = values?["tag_name"] {
                 coordinator.showTag(named: tagName)
+            }
+        case .feed:
+            if let feedIDValue = values?["feed_id"],
+                let feedID = Int(feedIDValue) {
+                coordinator.showStream(with: feedID, isFeed: true)
+            }
+        case .blog:
+            if let blogIDValue = values?["blog_id"],
+                let blogID = Int(blogIDValue) {
+                coordinator.showStream(with: blogID, isFeed: false)
             }
         case .feedsPost:
             if let (feedID, postID) = feedAndPostID(from: values) {
