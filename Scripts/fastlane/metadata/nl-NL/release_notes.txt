@@ -1,4 +1,3 @@
-Reader: De zoekfunctie is nu verbeterd en maakt het mogelijk om zowel sites als berichten te zoeken.
-Editor: Betere ondersteuning van Gutenberg-berichten.
-Reader: Er wordt nu een waarschuwing met gebruiksinformatie weergegeven wanneer de functie 'Berichten opslaan voor later' voor het eerst wordt gebruikt.
-Een hoop kleine UI-verbeteringen en verfraaiingen
+Activiteitenlog! Je kunt nu precies zien wat er allemaal gebeurt op je site.
+Ondersteuning voor bewegende gifs toegevoegd aan de Reader en Mediakiezer.
+Een aantal UI-tweaks, toegankelijkheidsverbeteringen en bugfixes.

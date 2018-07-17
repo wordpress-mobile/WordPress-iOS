@@ -1,4 +1,3 @@
-Lettore: La funzione di ricerca è stata migliorata per consentire la ricerca dei siti e di articoli.
-Editor: Gestione migliore degli articoli Gutenberg.
-Lettore: Ora viene visualizzato un avviso con le informazioni di utilizzo al primo utilizzo della funzione Salva articoli per dopo.
-Molti piccoli aggiustamenti e miglioramenti UI
+Log attività! Ora puoi vedere tutto ciò che è avvenuto sul tuo sito.
+Il supporto delle Gif animate è stato espanso nel Reader e nel selezionatore di contenuti multimediali.
+Varie modifiche all'interfaccia utente, miglioramenti all'accessibilità e correzioni di bug.
