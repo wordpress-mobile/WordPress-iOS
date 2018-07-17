@@ -6,6 +6,7 @@ import WordPressFlux
 class NoticePresenter: NSObject {
     private let store: NoticeStore
     private let presentingViewController: UIViewController
+    private var currentContainer: NoticeContainerView?
 
     let generator = UINotificationFeedbackGenerator()
 
@@ -69,38 +70,21 @@ class NoticePresenter: NSObject {
 
         let noticeContainerView = NoticeContainerView(noticeView: noticeView)
         addNoticeContainerToPresentingViewController(noticeContainerView)
+        currentContainer = noticeContainerView
 
-        let bottomConstraint = makeBottomConstraintForNoticeContainer(noticeContainerView)
+        addBottomConstraintToNoticeContainer(noticeContainerView)
 
         NSLayoutConstraint.activate([
             noticeContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             noticeContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomConstraint
         ])
 
-        let fromState = {
-            noticeView.alpha = WPAlphaZero
-            bottomConstraint.constant = self.offscreenBottomOffset
+        let fromState = offscreenState(for: noticeContainerView)
 
-            view.layoutIfNeeded()
-        }
-
-        let toState = {
-            noticeView.alpha = WPAlphaFull
-            bottomConstraint.constant = 0
-
-            view.layoutIfNeeded()
-        }
+        let toState = onscreenState(for: noticeContainerView)
 
         let dismiss = {
-            guard noticeContainerView.superview != nil else {
-                return
-            }
-
-            self.animatePresentation(fromState: {}, toState: fromState, completion: {
-                noticeContainerView.removeFromSuperview()
-                self.dismiss()
-            })
+            self.dismiss(container: noticeContainerView)
         }
 
         noticeView.dismissHandler = dismiss
@@ -110,7 +94,59 @@ class NoticePresenter: NSObject {
         }
 
         animatePresentation(fromState: fromState, toState: toState, completion: {
+            // Quick Start notices don't get automatically dismissed
+            guard notice.style != .quickStart else {
+                return
+            }
+
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Animations.dismissDelay, execute: dismiss)
+        })
+    }
+
+    private func offscreenState(for noticeContainer: NoticeContainerView) -> (() -> ()) {
+        return { [weak self] in
+            guard let strongSelf = self,
+                let view = strongSelf.presentingViewController.view else {
+                return
+            }
+
+            noticeContainer.noticeView.alpha = WPAlphaZero
+            noticeContainer.bottomConstraint?.constant = strongSelf.offscreenBottomOffset
+
+            view.layoutIfNeeded()
+        }
+    }
+
+    private func onscreenState(for noticeContainer: NoticeContainerView)  -> (() -> ()) {
+        return { [weak self] in
+            guard let strongSelf = self,
+                let view = strongSelf.presentingViewController.view else {
+                    return
+            }
+
+            noticeContainer.noticeView.alpha = WPAlphaFull
+            noticeContainer.bottomConstraint?.constant = 0
+
+            view.layoutIfNeeded()
+        }
+    }
+
+    public func dismissCurrentNotice() {
+        guard let currentContainer = currentContainer else {
+            return
+        }
+
+        dismiss(container: currentContainer)
+    }
+
+    private func dismiss(container: NoticeContainerView) {
+        guard container.superview != nil else {
+            return
+        }
+
+        self.animatePresentation(fromState: {}, toState: offscreenState(for: container), completion: {
+            container.removeFromSuperview()
+            self.dismiss()
         })
     }
 
@@ -126,13 +162,16 @@ class NoticePresenter: NSObject {
         }
     }
 
-    private func makeBottomConstraintForNoticeContainer(_ container: UIView) -> NSLayoutConstraint {
+    private func addBottomConstraintToNoticeContainer(_ container: NoticeContainerView) {
+        let constraint: NSLayoutConstraint
         if let tabBarController = presentingViewController as? UITabBarController {
-            return container.bottomAnchor.constraint(equalTo: tabBarController.tabBar.topAnchor)
+            constraint = container.bottomAnchor.constraint(equalTo: tabBarController.tabBar.topAnchor)
+        } else {
+            // Force unwrapping, as the calling method has already guarded against a nil view
+            constraint = container.bottomAnchor.constraint(equalTo: presentingViewController.view!.bottomAnchor)
         }
-
-        // Force unwrapping, as the calling method has already guarded against a nil view
-        return container.bottomAnchor.constraint(equalTo: presentingViewController.view!.bottomAnchor)
+        container.bottomConstraint = constraint
+        constraint.isActive = true
     }
 
     private var offscreenBottomOffset: CGFloat {
@@ -172,6 +211,7 @@ class NoticePresenter: NSObject {
 ///
 private class NoticeContainerView: UIView {
     let containerMargin: CGFloat = 16.0
+    var bottomConstraint: NSLayoutConstraint?
 
     let noticeView: NoticeView
 
