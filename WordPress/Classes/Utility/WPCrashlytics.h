@@ -15,7 +15,7 @@
 #pragma mark - User Opt Out
 
 /**
- *  @brief      Call this method to know if the user has opted out of crashalytics tracking.
+ *  @brief      Call this method to know if the user has opted out of Crashlytics tracking.
  *
  *  @returns    YES if the user has opted out, NO otherwise.
  */
