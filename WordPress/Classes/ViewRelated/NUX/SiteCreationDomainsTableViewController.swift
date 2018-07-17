@@ -287,8 +287,7 @@ private extension SiteCreationDomainsTableViewController {
     func removeNoResultsFromView() {
         noSuggestions = false
         tableView.reloadSections(IndexSet(integer: Sections.suggestions.rawValue), with: .automatic)
-        noResultsViewController?.view.removeFromSuperview()
-        noResultsViewController?.removeFromParentViewController()
+        noResultsViewController?.removeFromView()
     }
 
     func instantiateNoResultsViewController() {
