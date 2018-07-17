@@ -13,7 +13,7 @@ struct Router {
     }
 
     private let mainContext: NSManagedObjectContext
-    private let controller: UIViewController
+    private weak var controller: UIViewController?
 
     init(controller: UIViewController, context: NSManagedObjectContext) {
         self.controller = controller
@@ -26,7 +26,7 @@ struct Router {
         }
 
         let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
-        controller.navigationController?.pushFullscreenViewController(readerViewController, animated: true)
+        controller?.navigationController?.pushFullscreenViewController(readerViewController, animated: true)
     }
 
     func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?) throws {
@@ -36,7 +36,7 @@ struct Router {
 
         let commentsViewController = ReaderCommentsViewController(postID: postID, siteID: siteID)
         commentsViewController?.allowsPushingPostDetails = true
-        controller.navigationController?.pushViewController(commentsViewController!, animated: true)
+        controller?.navigationController?.pushViewController(commentsViewController!, animated: true)
     }
 
     func displayStatsWithSiteID(_ siteID: NSNumber?) throws {
@@ -46,7 +46,7 @@ struct Router {
 
         let statsViewController = StatsViewController()
         statsViewController.blog = blog
-        controller.navigationController?.pushViewController(statsViewController, animated: true)
+        controller?.navigationController?.pushViewController(statsViewController, animated: true)
     }
 
     func displayFollowersWithSiteID(_ siteID: NSNumber?, expirationTime: TimeInterval) throws {
@@ -59,7 +59,7 @@ struct Router {
         statsViewController.statsSection = .followers
         statsViewController.statsSubSection = .followersDotCom
         statsViewController.statsService = newStatsServiceWithBlog(blog, expirationTime: expirationTime)
-        controller.navigationController?.pushViewController(statsViewController, animated: true)
+        controller?.navigationController?.pushViewController(statsViewController, animated: true)
     }
 
     func displayStreamWithSiteID(_ siteID: NSNumber?) throws {
@@ -68,20 +68,20 @@ struct Router {
         }
 
         let browseViewController = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: false)
-        controller.navigationController?.pushViewController(browseViewController, animated: true)
+        controller?.navigationController?.pushViewController(browseViewController, animated: true)
     }
 
     func displayWebViewWithURL(_ url: URL) {
         let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
         let navController = UINavigationController(rootViewController: webViewController)
-        controller.present(navController, animated: true, completion: nil)
+        controller?.present(navController, animated: true, completion: nil)
     }
 
     func displayFullscreenImage(_ image: UIImage) {
         let imageViewController = WPImageViewController(image: image)
         imageViewController.modalTransitionStyle = .crossDissolve
         imageViewController.modalPresentationStyle = .fullScreen
-        controller.present(imageViewController, animated: true, completion: nil)
+        controller?.present(imageViewController, animated: true, completion: nil)
     }
 
     private func blogWithBlogID(_ blogID: NSNumber?) -> Blog? {
