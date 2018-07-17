@@ -2,12 +2,9 @@
 struct ActivityContentRouter: ContentRouter {
     private let coordinator: ContentCoordinator
     private let activity: FormattableActivity
-    private let readerCoordinator: ReaderCoordinator
 
     init(controller: UIViewController, activity: FormattableActivity, context: NSManagedObjectContext) {
         coordinator = ContentCoordinator(controller: controller, context: context)
-        readerCoordinator = ReaderCoordinator(
-            readerNavigationController: controller.navigationController!)
         self.activity = activity
     }
 
