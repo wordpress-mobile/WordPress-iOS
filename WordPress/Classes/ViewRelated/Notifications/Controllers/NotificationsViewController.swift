@@ -1046,6 +1046,7 @@ private extension NotificationsViewController {
 
         let approveAction = block.action(id: ApproveCommentAction.actionIdentifier())
         let button = approveAction?.command?.icon as? MGSwipeButton
+
         button?.callback = { _ in
             let actionContext = ActionContext(block: block)
             approveAction?.execute(context: actionContext)
