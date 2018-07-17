@@ -39,8 +39,8 @@ class ActivityDetailViewController: UIViewController {
 
     private var activity: Activity?
 
-    lazy var router: Router = {
-        return Router(controller: self, context: ContextManager.sharedInstance().mainContext)
+    lazy var router: ContentCoordinator = {
+        return ContentCoordinator(controller: self, context: ContextManager.sharedInstance().mainContext)
     }()
 
     override func viewDidLoad() {
