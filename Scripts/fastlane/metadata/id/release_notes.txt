@@ -1,4 +1,3 @@
-Pembaca: Fungsi pencarian sekarang telah ditingkatkan untuk memungkinkan pencarian situs dan pos.
-Penyunting: Menangani pos Gutenberg dengan lebih baik.
-Pembaca: Pemberitahuan dengan informasi penggunaan sekarang menampilkan fitur Simpan Pos untuk Nanti saat pertama kali digunakan.
-Sejumlah perubahan dan perbaikan kecil pada UI
+Log Aktivitas! Sekarang Anda bisa melihat semua yang sedang terjadi pada situs Anda.
+Dukungan GIF animasi telah diperluas di Pembaca dan Pemilih Media.
+Sejumlah perubahan UI, peningkatan aksesibilitas, dan perbaikan bug.
