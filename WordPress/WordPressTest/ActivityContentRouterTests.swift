@@ -14,7 +14,7 @@ final class ActivityContentRouterTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
     }
-    
+
     func testRouteToComment() {
         let commentActivity = getCommentActivity()
         let router = ActivityContentRouter(activity: commentActivity, coordinator: testCoordinator)
