@@ -3,8 +3,8 @@ struct ActivityContentRouter: ContentRouter {
     private let coordinator: ContentCoordinator
     private let activity: FormattableActivity
 
-    init(controller: UIViewController, activity: FormattableActivity, context: NSManagedObjectContext) {
-        coordinator = ContentCoordinator(controller: controller, context: context)
+    init(activity: FormattableActivity, coordinator: ContentCoordinator) {
+        self.coordinator = coordinator// ContentCoordinator(controller: controller, context: context)
         self.activity = activity
     }
 

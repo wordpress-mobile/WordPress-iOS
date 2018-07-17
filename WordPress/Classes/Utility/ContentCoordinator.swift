@@ -1,10 +1,21 @@
 
 import WordPressComStatsiOS
 
+protocol ContentCoordinator {
+    func displayReaderWithPostId(_ postID: NSNumber?, siteID: NSNumber?) throws
+    func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?) throws
+    func displayStatsWithSiteID(_ siteID: NSNumber?) throws
+    func displayFollowersWithSiteID(_ siteID: NSNumber?, expirationTime: TimeInterval) throws
+    func displayStreamWithSiteID(_ siteID: NSNumber?) throws
+    func displayWebViewWithURL(_ url: URL)
+    func displayFullscreenImage(_ image: UIImage)
+}
+
+
 /// `ContentCoordinator` is intended to be used to easily navigate and display common elements natively
 /// like Posts, Site streams, Comments, etc...
 ///
-struct ContentCoordinator {
+struct DefaultContentCoordinator: ContentCoordinator {
 
     enum DisplayError: Error {
         case missingParameter
