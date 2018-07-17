@@ -6,7 +6,8 @@ class ActivityDetailViewController: UIViewController {
 
     var formattableActivity: FormattableActivity? {
         didSet {
-            activity = formattableActivity?.activity
+            setupActivity()
+            setupRouter()
         }
     }
     var site: JetpackSiteRef?
@@ -39,9 +40,7 @@ class ActivityDetailViewController: UIViewController {
 
     private var activity: Activity?
 
-    lazy var router: ContentCoordinator = {
-        return ContentCoordinator(controller: self, context: ContextManager.sharedInstance().mainContext)
-    }()
+    var router: ActivityContentRouter?
 
     override func viewDidLoad() {
         setupFonts()
@@ -165,6 +164,18 @@ class ActivityDetailViewController: UIViewController {
         }
     }
 
+    func setupRouter() {
+        guard let activity = formattableActivity else {
+            router = nil
+            return
+        }
+        router = ActivityContentRouter(controller: self, activity: activity, context: ContextManager.sharedInstance().mainContext)
+    }
+
+    func setupActivity() {
+        activity = formattableActivity?.activity
+    }
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
@@ -178,44 +189,11 @@ class ActivityDetailViewController: UIViewController {
     }
 }
 
-// MARK: - Navigation
-
-extension ActivityDetailViewController {
-    private func routeTo(_ url: URL) {
-        guard let range = getRange(from: url) else {
-            return
-        }
-
-        switch range.kind {
-        case .post:
-            guard let postRange = range as? ActivityPostRange else {
-                fallthrough
-            }
-            let postID = postRange.postID as NSNumber
-            let siteID = postRange.siteID as NSNumber
-            try? router.displayReaderWithPostId(postID, siteID: siteID)
-        case .comment:
-            guard let commentRange = range as? ActivityCommentRange else {
-                fallthrough
-            }
-            let postID = commentRange.postID as NSNumber
-            let siteID = commentRange.siteID as NSNumber
-            try? router.displayCommentsWithPostId(postID, siteID: siteID)
-        default:
-            router.displayWebViewWithURL(url)
-        }
-    }
-
-    private func getRange(from url: URL) -> FormattableContentRange? {
-        return formattableActivity?.range(with: url)
-    }
-}
-
 // MARK: - UITextViewDelegate
 
 extension ActivityDetailViewController: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
-        routeTo(URL)
+        router?.routeTo(URL)
         return false
     }
 }
