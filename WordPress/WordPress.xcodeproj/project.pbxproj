@@ -527,6 +527,10 @@
 		7E52B7181FC89F2400B55EB8 /* MediaNoResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */; };
 		7E53AB0020FE55A9005796FE /* ActivityContentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E53AAFF20FE55A9005796FE /* ActivityContentRouter.swift */; };
 		7E53AB0220FE5EAE005796FE /* ContentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E53AB0120FE5EAE005796FE /* ContentRouter.swift */; };
+		7E53AB0420FE6681005796FE /* ActivityContentRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E53AB0320FE6681005796FE /* ActivityContentRouterTests.swift */; };
+		7E53AB0620FE6905005796FE /* activity-log-comment.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E53AB0520FE6905005796FE /* activity-log-comment.json */; };
+		7E53AB0820FE6C9C005796FE /* activity-log-post.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E53AB0720FE6C9C005796FE /* activity-log-post.json */; };
+		7E53AB0A20FE83A9005796FE /* MockContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E53AB0920FE83A9005796FE /* MockContentCoordinator.swift */; };
 		7E729C28209A087300F76599 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E729C27209A087200F76599 /* ImageLoader.swift */; };
 		7E729C2A209A241100F76599 /* AbstractPost+PostInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */; };
 		7E7B4CF820459E21001463D6 /* PersonHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7B4CF720459E21001463D6 /* PersonHeaderCell.swift */; };
@@ -2010,6 +2014,10 @@
 		7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaNoResultsView.swift; sourceTree = "<group>"; };
 		7E53AAFF20FE55A9005796FE /* ActivityContentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentRouter.swift; sourceTree = "<group>"; };
 		7E53AB0120FE5EAE005796FE /* ContentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentRouter.swift; sourceTree = "<group>"; };
+		7E53AB0320FE6681005796FE /* ActivityContentRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentRouterTests.swift; sourceTree = "<group>"; };
+		7E53AB0520FE6905005796FE /* activity-log-comment.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "activity-log-comment.json"; sourceTree = "<group>"; };
+		7E53AB0720FE6C9C005796FE /* activity-log-post.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "activity-log-post.json"; sourceTree = "<group>"; };
+		7E53AB0920FE83A9005796FE /* MockContentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockContentCoordinator.swift; sourceTree = "<group>"; };
 		7E729C27209A087200F76599 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+PostInformation.swift"; sourceTree = "<group>"; };
 		7E7B4CF720459E21001463D6 /* PersonHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonHeaderCell.swift; sourceTree = "<group>"; };
@@ -4314,6 +4322,8 @@
 				7E4A772E20F7FDF8001C706D /* ActivityLogTestData.swift */,
 				7E442FC620F677CB00DEACA5 /* ActivityLogRangesTest.swift */,
 				7E442FCE20F6C19000DEACA5 /* ActivityLogFormattableContentTests.swift */,
+				7E53AB0320FE6681005796FE /* ActivityContentRouterTests.swift */,
+				7E53AB0920FE83A9005796FE /* MockContentCoordinator.swift */,
 			);
 			name = ActivityLog;
 			sourceTree = "<group>";
@@ -4328,6 +4338,8 @@
 				7E4A772620F7CDD5001C706D /* activity-log-settings-content.json */,
 				7E4A772A20F7E5FD001C706D /* activity-log-site-content.json */,
 				7E4A772C20F7E8D8001C706D /* activity-log-plugin-content.json */,
+				7E53AB0520FE6905005796FE /* activity-log-comment.json */,
+				7E53AB0720FE6C9C005796FE /* activity-log-post.json */,
 			);
 			name = ActivityLog;
 			sourceTree = "<group>";
@@ -6966,6 +6978,7 @@
 				7E4A772120F7BBBD001C706D /* activity-log-post-content.json in Resources */,
 				748437F01F1D4E9E00E8DDAF /* notifications-load-all.json in Resources */,
 				E11330511A13BAA300D36D84 /* me-sites-with-jetpack.json in Resources */,
+				7E53AB0820FE6C9C005796FE /* activity-log-post.json in Resources */,
 				855408861A6F105700DDBD79 /* app-review-prompt-all-enabled.json in Resources */,
 				748437F11F1D4ECC00E8DDAF /* notifications-last-seen.json in Resources */,
 				74585B9D1F0D591D00E7E667 /* domain-service-all-domain-types.json in Resources */,
@@ -6982,6 +6995,7 @@
 				08DF9C441E8475530058678C /* test-image-portrait.jpg in Resources */,
 				B5AEEC7C1ACACFDA008BF2A4 /* notifications-new-follower.json in Resources */,
 				B5AEEC791ACACFDA008BF2A4 /* notifications-badge.json in Resources */,
+				7E53AB0620FE6905005796FE /* activity-log-comment.json in Resources */,
 				93C882A41EEB18D700227A59 /* rsd.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8276,6 +8290,7 @@
 				D88A64A8208D9733008AE9BC /* ThumbnailCollectionTests.swift in Sources */,
 				748437EE1F1D4A7300E8DDAF /* RichContentFormatterTests.swift in Sources */,
 				D88A649E208D82D2008AE9BC /* XCTestCase+Wait.swift in Sources */,
+				7E53AB0420FE6681005796FE /* ActivityContentRouterTests.swift in Sources */,
 				17AF92251C46634000A99CFB /* BlogSiteVisibilityHelperTest.m in Sources */,
 				1759F1721FE017F20003EC81 /* QueueTests.swift in Sources */,
 				08F8CD3B1EBD2D020049D0C0 /* MediaURLExporterTests.swift in Sources */,
@@ -8367,6 +8382,7 @@
 				E124CE721C86D27100F7BA99 /* StoreTests.swift in Sources */,
 				B5EFB1C91B333C5A007608A3 /* NotificationSettingsServiceTests.swift in Sources */,
 				E6A216931DCE857100E7DF73 /* WPRichTextFormatterTests.swift in Sources */,
+				7E53AB0A20FE83A9005796FE /* MockContentCoordinator.swift in Sources */,
 				BE1071FF1BC75FFA00906AFF /* WPStyleGuide+BlogTests.swift in Sources */,
 				932645A41E7C206600134988 /* EditorSettingsTests.swift in Sources */,
 				933D1F471EA64108009FB462 /* TestingAppDelegate.m in Sources */,

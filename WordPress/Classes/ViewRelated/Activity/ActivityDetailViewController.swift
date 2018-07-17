@@ -169,7 +169,10 @@ class ActivityDetailViewController: UIViewController {
             router = nil
             return
         }
-        router = ActivityContentRouter(controller: self, activity: activity, context: ContextManager.sharedInstance().mainContext)
+        let coordinator = DefaultContentCoordinator(controller: self, context: ContextManager.sharedInstance().mainContext)
+        router = ActivityContentRouter(
+            activity: activity,
+            coordinator: coordinator)
     }
 
     func setupActivity() {
