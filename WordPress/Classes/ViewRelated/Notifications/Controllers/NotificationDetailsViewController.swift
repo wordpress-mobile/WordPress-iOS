@@ -94,8 +94,8 @@ class NotificationDetailsViewController: UIViewController {
         }
     }
 
-    lazy var router: ContentCoordinator = {
-        return ContentCoordinator(controller: self, context: mainContext)
+    lazy var coordinator: ContentCoordinator = {
+        return DefaultContentCoordinator(controller: self, context: mainContext)
     }()
 
     /// Whenever the user performs a destructive action, the Deletion Request Callback will be called,
@@ -700,7 +700,7 @@ private extension NotificationDetailsViewController {
                 return
             }
 
-            self?.router.displayFullscreenImage(image)
+            self?.coordinator.displayFullscreenImage(image)
         }
 
         // Download the Gravatar
@@ -936,7 +936,7 @@ private extension NotificationDetailsViewController {
                 return
             }
 
-            self?.router.displayFullscreenImage(image)
+            self?.coordinator.displayFullscreenImage(image)
         }
 
         // Download the Gravatar
@@ -1082,7 +1082,7 @@ private extension NotificationDetailsViewController {
             let range = note.notificationRangeWithUrl(url)
             try displayResourceWithRange(range)
         } catch {
-            router.displayWebViewWithURL(url)
+            coordinator.displayWebViewWithURL(url)
         }
     }
 
@@ -1095,7 +1095,7 @@ private extension NotificationDetailsViewController {
         do {
             switch note.kind {
             case .Follow:
-                try router.displayStreamWithSiteID(note.metaSiteID)
+                try coordinator.displayStreamWithSiteID(note.metaSiteID)
             case .Like:
                 fallthrough
             case .Matcher:
@@ -1103,16 +1103,16 @@ private extension NotificationDetailsViewController {
             case .NewPost:
                 fallthrough
             case .Post:
-                try router.displayReaderWithPostId(note.metaPostID, siteID: note.metaSiteID)
+                try coordinator.displayReaderWithPostId(note.metaPostID, siteID: note.metaSiteID)
             case .Comment:
                 fallthrough
             case .CommentLike:
-                try router.displayCommentsWithPostId(note.metaPostID, siteID: note.metaSiteID)
+                try coordinator.displayCommentsWithPostId(note.metaPostID, siteID: note.metaSiteID)
             default:
-                throw ContentCoordinator.DisplayError.unsupportedType
+                throw DefaultContentCoordinator.DisplayError.unsupportedType
             }
         } catch {
-            router.displayWebViewWithURL(resourceURL as URL)
+            coordinator.displayWebViewWithURL(resourceURL as URL)
         }
     }
 
@@ -1127,17 +1127,17 @@ private extension NotificationDetailsViewController {
 
         switch range.kind {
         case .Site:
-            try router.displayStreamWithSiteID(range.siteID)
+            try coordinator.displayStreamWithSiteID(range.siteID)
         case .Post:
-            try router.displayReaderWithPostId(range.postID, siteID: range.siteID)
+            try coordinator.displayReaderWithPostId(range.postID, siteID: range.siteID)
         case .Comment:
-            try router.displayCommentsWithPostId(range.postID, siteID: range.siteID)
+            try coordinator.displayCommentsWithPostId(range.postID, siteID: range.siteID)
         case .Stats:
-            try router.displayStatsWithSiteID(range.siteID)
+            try coordinator.displayStatsWithSiteID(range.siteID)
         case .Follow:
-            try router.displayFollowersWithSiteID(range.siteID, expirationTime: Settings.expirationFiveMinutes)
+            try coordinator.displayFollowersWithSiteID(range.siteID, expirationTime: Settings.expirationFiveMinutes)
         case .User:
-            try router.displayStreamWithSiteID(range.siteID)
+            try coordinator.displayStreamWithSiteID(range.siteID)
         default:
             throw DisplayError.unsupportedType
         }
