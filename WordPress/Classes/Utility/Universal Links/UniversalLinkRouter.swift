@@ -20,6 +20,7 @@ struct UniversalLinkRouter {
         NotificationsRoutes +
         ReaderRoutes +
         StatsRoutes +
+        MySitesRoutes +
         AppBannerRoutes)
 
     private static let MeRoutes: [Route] = [
@@ -46,6 +47,8 @@ struct UniversalLinkRouter {
         ReaderRoute.manageFollowing,
         ReaderRoute.list,
         ReaderRoute.tag,
+        ReaderRoute.feed,
+        ReaderRoute.blog,
         ReaderRoute.feedsPost,
         ReaderRoute.blogsPost
     ]
@@ -61,6 +64,17 @@ struct UniversalLinkRouter {
         StatsRoute.dayCategory,
         StatsRoute.annualStats,
         StatsRoute.activityLog
+    ]
+
+    private static let MySitesRoutes: [Route] = [
+        MySitesRoute.pages,
+        MySitesRoute.posts,
+        MySitesRoute.media,
+        MySitesRoute.comments,
+        MySitesRoute.sharing,
+        MySitesRoute.people,
+        MySitesRoute.plugins,
+        MySitesRoute.managePlugins
     ]
 
     private static let AppBannerRoutes: [Route] = [
