@@ -40,7 +40,7 @@ extension FormattableContent {
     func range(with url: URL) -> FormattableContentRange? {
         let linkRanges = ranges.compactMap { $0 as? LinkContentRange }
         for range in linkRanges {
-            if let rangeURL = range.url, (rangeURL as URL == url) {
+            if range.url == url {
                 return range as? FormattableContentRange
             }
         }
