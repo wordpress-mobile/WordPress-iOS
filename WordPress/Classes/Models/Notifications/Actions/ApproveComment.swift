@@ -16,10 +16,12 @@ class ApproveComment: DefaultNotificationActionCommand, AccessibleFormattableCon
 
     override var on: Bool {
         willSet {
-            let newTitle = newValue ? TitleStrings.approve : TitleStrings.unapprove
-            let newHint = newValue ? TitleHints.approve : TitleHints.unapprove
+            let newTitle = newValue ? TitleStrings.unapprove : TitleStrings.approve
+            let newHint = newValue ? TitleHints.unapprove : TitleHints.approve
 
             setIconStrings(title: newTitle, label: newTitle, hint: newHint)
+
+            updateVisualState()
         }
     }
 
@@ -51,7 +53,11 @@ class ApproveComment: DefaultNotificationActionCommand, AccessibleFormattableCon
                        hint: TitleHints.unapprove)
 
         ReachabilityUtils.onAvailableInternetConnectionDo {
-            actionsService?.unapproveCommentWithBlock(block)
+            actionsService?.unapproveCommentWithBlock(block, completion: { [weak self] success in
+                if success {
+                    self?.switchOnState()
+                }
+            })
         }
     }
 
@@ -61,7 +67,36 @@ class ApproveComment: DefaultNotificationActionCommand, AccessibleFormattableCon
                        hint: TitleHints.approve)
 
         ReachabilityUtils.onAvailableInternetConnectionDo {
-            actionsService?.approveCommentWithBlock(block)
+            actionsService?.approveCommentWithBlock(block, completion: { [weak self] success in
+                if success {
+                    self?.switchOnState()
+                }
+            })
         }
+    }
+
+    private func switchOnState() {
+        on = !on
+        updateVisualState()
+    }
+
+    private func updateVisualState() {
+        guard let button = icon as? MGSwipeButton else {
+            return
+        }
+
+        let newBackgroundColor = on ? WPStyleGuide.grey() : WPStyleGuide.wordPressBlue()
+        button.backgroundColor = newBackgroundColor
+
+        resetDefaultPadding()
+    }
+
+    private func resetDefaultPadding() {
+        guard let button = icon as? MGSwipeButton else {
+            return
+        }
+
+        let buttonDefaultPadding: CGFloat = 10
+        button.setPadding(buttonDefaultPadding)
     }
 }
