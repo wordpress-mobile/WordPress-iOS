@@ -300,18 +300,14 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
 private extension PlanDetailViewController {
 
     func updateNoResults() {
-        removeNoResultsFromView()
+        noResultsViewController?.removeFromView()
+        self.noResultsViewModel = nil
+
         if let noResultsViewModel = viewModel.noResultsViewModel {
             self.noResultsViewModel = noResultsViewModel
-        } else {
-            self.noResultsViewModel = nil
         }
     }
 
-    func removeNoResultsFromView() {
-        noResultsViewController?.view.removeFromSuperview()
-        noResultsViewController?.removeFromParentViewController()
-    }
 
     func noResultsCell() -> UITableViewCell {
         let cell = UITableViewCell()
@@ -320,7 +316,7 @@ private extension PlanDetailViewController {
     }
 
     func addNoResultsTo(cell: UITableViewCell) {
-        removeNoResultsFromView()
+        noResultsViewController?.removeFromView()
 
         if noResultsViewController == nil {
             noResultsViewController = NoResultsViewController.controller()
