@@ -94,6 +94,10 @@ class MySitesCoordinator: NSObject {
     }
 
     func showManagePlugins(for blog: Blog) {
+        guard blog.supports(.pluginManagement) else {
+            return
+        }
+
         // PerformWithoutAnimation is required here, otherwise the view controllers
         // potentially get added to the navigation controller out of order
         // (ShowDetailViewController, used by BlogDetailsViewController is animated)
