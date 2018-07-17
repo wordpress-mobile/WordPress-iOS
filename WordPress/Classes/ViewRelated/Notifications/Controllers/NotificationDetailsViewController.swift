@@ -94,8 +94,8 @@ class NotificationDetailsViewController: UIViewController {
         }
     }
 
-    lazy var router: Router = {
-        return Router(controller: self, context: mainContext)
+    lazy var router: ContentCoordinator = {
+        return ContentCoordinator(controller: self, context: mainContext)
     }()
 
     /// Whenever the user performs a destructive action, the Deletion Request Callback will be called,
@@ -1109,7 +1109,7 @@ private extension NotificationDetailsViewController {
             case .CommentLike:
                 try router.displayCommentsWithPostId(note.metaPostID, siteID: note.metaSiteID)
             default:
-                throw Router.DisplayError.unsupportedType
+                throw ContentCoordinator.DisplayError.unsupportedType
             }
         } catch {
             router.displayWebViewWithURL(resourceURL as URL)
