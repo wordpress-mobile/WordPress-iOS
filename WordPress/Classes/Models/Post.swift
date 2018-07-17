@@ -253,6 +253,10 @@ class Post: AbstractPost {
                 return true
             }
 
+            if (geolocation == nil && originalPost.geoLocation) != nil) || (geoLocation != nil && originalPost.geoLocation == nil) {
+                return true
+            }
+
             if publicizeMessage ?? "" != originalPost.publicizeMessage ?? "" {
                 return true
             }
