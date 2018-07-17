@@ -525,6 +525,8 @@
 		7E4A773920F80417001C706D /* ActivityPluginRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4A773320F800ED001C706D /* ActivityPluginRange.swift */; };
 		7E4A773C20F80598001C706D /* ActivityContentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4A773A20F8058F001C706D /* ActivityContentFactory.swift */; };
 		7E52B7181FC89F2400B55EB8 /* MediaNoResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */; };
+		7E53AB0020FE55A9005796FE /* ActivityContentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E53AAFF20FE55A9005796FE /* ActivityContentRouter.swift */; };
+		7E53AB0220FE5EAE005796FE /* ContentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E53AB0120FE5EAE005796FE /* ContentRouter.swift */; };
 		7E729C28209A087300F76599 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E729C27209A087200F76599 /* ImageLoader.swift */; };
 		7E729C2A209A241100F76599 /* AbstractPost+PostInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */; };
 		7E7B4CF820459E21001463D6 /* PersonHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7B4CF720459E21001463D6 /* PersonHeaderCell.swift */; };
@@ -2006,6 +2008,8 @@
 		7E4A773520F80146001C706D /* ActivityRangesFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRangesFactory.swift; sourceTree = "<group>"; };
 		7E4A773A20F8058F001C706D /* ActivityContentFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentFactory.swift; sourceTree = "<group>"; };
 		7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaNoResultsView.swift; sourceTree = "<group>"; };
+		7E53AAFF20FE55A9005796FE /* ActivityContentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentRouter.swift; sourceTree = "<group>"; };
+		7E53AB0120FE5EAE005796FE /* ContentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentRouter.swift; sourceTree = "<group>"; };
 		7E729C27209A087200F76599 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+PostInformation.swift"; sourceTree = "<group>"; };
 		7E7B4CF720459E21001463D6 /* PersonHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonHeaderCell.swift; sourceTree = "<group>"; };
@@ -4285,6 +4289,7 @@
 				7E4123B620F4097B00DF8486 /* FormattableContentStyles.swift */,
 				7E4123B020F4097A00DF8486 /* FormattableMediaContent.swift */,
 				7E4123B320F4097A00DF8486 /* FormattableTextContent.swift */,
+				7E53AB0120FE5EAE005796FE /* ContentRouter.swift */,
 			);
 			path = FormattableContent;
 			sourceTree = "<group>";
@@ -4296,6 +4301,7 @@
 				7E4123C920F4184200DF8486 /* ActivityContentGroup.swift */,
 				7E4123CB20F418A500DF8486 /* ActivityActionsParser.swift */,
 				7E3AB3DA20F52654001F33B6 /* ActivityContentStyles.swift */,
+				7E53AAFF20FE55A9005796FE /* ActivityContentRouter.swift */,
 				7E4A773D20F80625001C706D /* Factory */,
 				7E4A773020F80063001C706D /* Ranges */,
 			);
@@ -7427,6 +7433,7 @@
 				D8A3A5AC2069FE5B00992576 /* StockPhotosStrings.swift in Sources */,
 				C56636E91868D0CE00226AAB /* StatsViewController.m in Sources */,
 				E6805D301DCD399600168E4F /* WPRichTextEmbed.swift in Sources */,
+				7E53AB0020FE55A9005796FE /* ActivityContentRouter.swift in Sources */,
 				F128C31C1AFCC95B008C2404 /* WPNavigationMediaPickerViewController+StatusBarStyle.m in Sources */,
 				E1B9128F1BB05B1D003C25B9 /* PeopleCell.swift in Sources */,
 				313AE4A019E3F20400AAFABE /* CommentViewController.m in Sources */,
@@ -7736,6 +7743,7 @@
 				D8A3A5B7206A563900992576 /* StockPhotosPlaceholder.swift in Sources */,
 				E114D79A153D85A800984182 /* WPError.m in Sources */,
 				5926E1E31AC4468300964783 /* WPCrashlytics.m in Sources */,
+				7E53AB0220FE5EAE005796FE /* ContentRouter.swift in Sources */,
 				E16273E11B2ACEB600088AF7 /* BlogToBlog32to33.swift in Sources */,
 				E678FC151C76241000F55F55 /* WPStyleGuide+ApplicationStyles.swift in Sources */,
 				7EFF208620EAD918009C4699 /* FormattableUserContent.swift in Sources */,
