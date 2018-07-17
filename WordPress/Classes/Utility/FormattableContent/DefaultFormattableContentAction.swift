@@ -2,8 +2,12 @@ class DefaultFormattableContentAction: FormattableContentAction {
     var enabled: Bool
 
     var on: Bool {
-        didSet {
-            command?.on = on
+        set {
+            command?.on = newValue
+        }
+
+        get {
+            return command?.on ?? false
         }
     }
 
@@ -14,10 +18,9 @@ class DefaultFormattableContentAction: FormattableContentAction {
     }
 
     init(on: Bool, command: FormattableContentActionCommand) {
-        self.on = on
         self.enabled = true
         self.command = command
-        self.command?.on = on
+        self.on = on
     }
 
     func execute(context: ActionContext) {
