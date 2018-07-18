@@ -954,6 +954,8 @@
 		D848CBF520FEEE0100A9038F /* Dictionary+JSONPrettify.swift in Sources */ = {isa = PBXBuildFile; fileRef = D848CBF320FEED4B00A9038F /* Dictionary+JSONPrettify.swift */; };
 		D848CBF720FEEE7F00A9038F /* notifications-text-content.json in Resources */ = {isa = PBXBuildFile; fileRef = D848CBF620FEEE7F00A9038F /* notifications-text-content.json */; };
 		D848CBF920FEF82100A9038F /* NotificationsContentFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D848CBF820FEF82100A9038F /* NotificationsContentFactoryTests.swift */; };
+		D848CBFB20FEFA4800A9038F /* notifications-comment-content.json in Resources */ = {isa = PBXBuildFile; fileRef = D848CBFA20FEFA4800A9038F /* notifications-comment-content.json */; };
+		D848CBFD20FEFB4900A9038F /* notifications-user-content.json in Resources */ = {isa = PBXBuildFile; fileRef = D848CBFC20FEFB4900A9038F /* notifications-user-content.json */; };
 		D858F2FD20E1F09F007E8A1C /* NotificationActionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D858F2FC20E1F09F007E8A1C /* NotificationActionParser.swift */; };
 		D858F30120E20106007E8A1C /* LikePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = D858F30020E20106007E8A1C /* LikePost.swift */; };
 		D858F30320E201F4007E8A1C /* EditComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D858F30220E201F4007E8A1C /* EditComment.swift */; };
@@ -2573,6 +2575,8 @@
 		D848CBF320FEED4B00A9038F /* Dictionary+JSONPrettify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+JSONPrettify.swift"; sourceTree = "<group>"; };
 		D848CBF620FEEE7F00A9038F /* notifications-text-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-text-content.json"; sourceTree = "<group>"; };
 		D848CBF820FEF82100A9038F /* NotificationsContentFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsContentFactoryTests.swift; sourceTree = "<group>"; };
+		D848CBFA20FEFA4800A9038F /* notifications-comment-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-comment-content.json"; sourceTree = "<group>"; };
+		D848CBFC20FEFB4900A9038F /* notifications-user-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-user-content.json"; sourceTree = "<group>"; };
 		D858F2FC20E1F09F007E8A1C /* NotificationActionParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationActionParser.swift; sourceTree = "<group>"; };
 		D858F30020E20106007E8A1C /* LikePost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikePost.swift; sourceTree = "<group>"; };
 		D858F30220E201F4007E8A1C /* EditComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditComment.swift; sourceTree = "<group>"; };
@@ -5347,6 +5351,8 @@
 				B5AEEC781ACACFDA008BF2A4 /* notifications-replied-comment.json */,
 				B5EFB1D01B33630C007608A3 /* notifications-settings.json */,
 				D848CBF620FEEE7F00A9038F /* notifications-text-content.json */,
+				D848CBFA20FEFA4800A9038F /* notifications-comment-content.json */,
+				D848CBFC20FEFB4900A9038F /* notifications-user-content.json */,
 			);
 			name = Notifications;
 			sourceTree = "<group>";
@@ -6999,6 +7005,7 @@
 				D88A64AA208D974D008AE9BC /* thumbnail-collection.json in Resources */,
 				08B832421EC130D60079808D /* test-gif.gif in Resources */,
 				748437EB1F1D4A4800E8DDAF /* gallery-reader-post-private.json in Resources */,
+				D848CBFB20FEFA4800A9038F /* notifications-comment-content.json in Resources */,
 				E1E4CE0617739FAB00430844 /* test-image.jpg in Resources */,
 				7E4A772120F7BBBD001C706D /* activity-log-post-content.json in Resources */,
 				748437F01F1D4E9E00E8DDAF /* notifications-load-all.json in Resources */,
@@ -7011,6 +7018,7 @@
 				93C882A31EEB18D700227A59 /* plugin_redirect.html in Resources */,
 				B5DA8A5F20ADAA1D00D5BDE1 /* plugin-directory-jetpack.json in Resources */,
 				084D94AF1EDF842F00C385A6 /* test-video-device-gps.m4v in Resources */,
+				D848CBFD20FEFB4900A9038F /* notifications-user-content.json in Resources */,
 				933D1F6E1EA7A402009FB462 /* TestAssets.xcassets in Resources */,
 				B5EFB1D11B33630C007608A3 /* notifications-settings.json in Resources */,
 				E15027611E03E51500B847E3 /* notes-action-delete.json in Resources */,
