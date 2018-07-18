@@ -960,6 +960,13 @@
 		D848CC0120FF030C00A9038F /* notifications-comment-meta.json in Resources */ = {isa = PBXBuildFile; fileRef = D848CC0020FF030C00A9038F /* notifications-comment-meta.json */; };
 		D848CC0320FF04FA00A9038F /* FormattableUserContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D848CC0220FF04FA00A9038F /* FormattableUserContentTests.swift */; };
 		D848CC0520FF062100A9038F /* notifications-user-content-meta.json in Resources */ = {isa = PBXBuildFile; fileRef = D848CC0420FF062100A9038F /* notifications-user-content-meta.json */; };
+		D848CC0720FF2BE200A9038F /* NotificationContentRangeFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D848CC0620FF2BE200A9038F /* NotificationContentRangeFactoryTests.swift */; };
+		D848CC0920FF2D4400A9038F /* notifications-icon-range.json in Resources */ = {isa = PBXBuildFile; fileRef = D848CC0820FF2D4400A9038F /* notifications-icon-range.json */; };
+		D848CC0B20FF2D5D00A9038F /* notifications-user-range.json in Resources */ = {isa = PBXBuildFile; fileRef = D848CC0A20FF2D5D00A9038F /* notifications-user-range.json */; };
+		D848CC0D20FF2D7C00A9038F /* notifications-post-range.json in Resources */ = {isa = PBXBuildFile; fileRef = D848CC0C20FF2D7B00A9038F /* notifications-post-range.json */; };
+		D848CC0F20FF2D9B00A9038F /* notifications-comment-range.json in Resources */ = {isa = PBXBuildFile; fileRef = D848CC0E20FF2D9B00A9038F /* notifications-comment-range.json */; };
+		D848CC1120FF310400A9038F /* notifications-site-range.json in Resources */ = {isa = PBXBuildFile; fileRef = D848CC1020FF310400A9038F /* notifications-site-range.json */; };
+		D848CC1320FF31BB00A9038F /* notifications-blockquote-range.json in Resources */ = {isa = PBXBuildFile; fileRef = D848CC1220FF31BB00A9038F /* notifications-blockquote-range.json */; };
 		D858F2FD20E1F09F007E8A1C /* NotificationActionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D858F2FC20E1F09F007E8A1C /* NotificationActionParser.swift */; };
 		D858F30120E20106007E8A1C /* LikePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = D858F30020E20106007E8A1C /* LikePost.swift */; };
 		D858F30320E201F4007E8A1C /* EditComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D858F30220E201F4007E8A1C /* EditComment.swift */; };
@@ -2585,6 +2592,13 @@
 		D848CC0020FF030C00A9038F /* notifications-comment-meta.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-comment-meta.json"; sourceTree = "<group>"; };
 		D848CC0220FF04FA00A9038F /* FormattableUserContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattableUserContentTests.swift; sourceTree = "<group>"; };
 		D848CC0420FF062100A9038F /* notifications-user-content-meta.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-user-content-meta.json"; sourceTree = "<group>"; };
+		D848CC0620FF2BE200A9038F /* NotificationContentRangeFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContentRangeFactoryTests.swift; sourceTree = "<group>"; };
+		D848CC0820FF2D4400A9038F /* notifications-icon-range.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-icon-range.json"; sourceTree = "<group>"; };
+		D848CC0A20FF2D5D00A9038F /* notifications-user-range.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-user-range.json"; sourceTree = "<group>"; };
+		D848CC0C20FF2D7B00A9038F /* notifications-post-range.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-post-range.json"; sourceTree = "<group>"; };
+		D848CC0E20FF2D9B00A9038F /* notifications-comment-range.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-comment-range.json"; sourceTree = "<group>"; };
+		D848CC1020FF310400A9038F /* notifications-site-range.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-site-range.json"; sourceTree = "<group>"; };
+		D848CC1220FF31BB00A9038F /* notifications-blockquote-range.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-blockquote-range.json"; sourceTree = "<group>"; };
 		D858F2FC20E1F09F007E8A1C /* NotificationActionParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationActionParser.swift; sourceTree = "<group>"; };
 		D858F30020E20106007E8A1C /* LikePost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikePost.swift; sourceTree = "<group>"; };
 		D858F30220E201F4007E8A1C /* EditComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditComment.swift; sourceTree = "<group>"; };
@@ -5158,6 +5172,7 @@
 		B5416CF81C17542900006DD8 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				D848CC0620FF2BE200A9038F /* NotificationContentRangeFactoryTests.swift */,
 				D848CC0220FF04FA00A9038F /* FormattableUserContentTests.swift */,
 				D848CBFE20FF010F00A9038F /* FormattableCommentContentTests.swift */,
 				D848CBF820FEF82100A9038F /* NotificationsContentFactoryTests.swift */,
@@ -5365,6 +5380,12 @@
 				D848CC0020FF030C00A9038F /* notifications-comment-meta.json */,
 				D848CBFC20FEFB4900A9038F /* notifications-user-content.json */,
 				D848CC0420FF062100A9038F /* notifications-user-content-meta.json */,
+				D848CC0820FF2D4400A9038F /* notifications-icon-range.json */,
+				D848CC0A20FF2D5D00A9038F /* notifications-user-range.json */,
+				D848CC0C20FF2D7B00A9038F /* notifications-post-range.json */,
+				D848CC0E20FF2D9B00A9038F /* notifications-comment-range.json */,
+				D848CC1020FF310400A9038F /* notifications-site-range.json */,
+				D848CC1220FF31BB00A9038F /* notifications-blockquote-range.json */,
 			);
 			name = Notifications;
 			sourceTree = "<group>";
@@ -6998,6 +7019,7 @@
 				D88A64A6208D92B1008AE9BC /* stock-photos-media.json in Resources */,
 				7E4A772520F7C5E5001C706D /* activity-log-theme-content.json in Resources */,
 				D848CBF720FEEE7F00A9038F /* notifications-text-content.json in Resources */,
+				D848CC0F20FF2D9B00A9038F /* notifications-comment-range.json in Resources */,
 				E15027621E03E51500B847E3 /* notes-action-push.json in Resources */,
 				748BD8851F19234300813F9A /* notifications-mark-as-read.json in Resources */,
 				7E442FCA20F678D100DEACA5 /* activity-log-pingback-content.json in Resources */,
@@ -7025,7 +7047,10 @@
 				748437F01F1D4E9E00E8DDAF /* notifications-load-all.json in Resources */,
 				E11330511A13BAA300D36D84 /* me-sites-with-jetpack.json in Resources */,
 				7E53AB0820FE6C9C005796FE /* activity-log-post.json in Resources */,
+				D848CC0B20FF2D5D00A9038F /* notifications-user-range.json in Resources */,
 				855408861A6F105700DDBD79 /* app-review-prompt-all-enabled.json in Resources */,
+				D848CC1320FF31BB00A9038F /* notifications-blockquote-range.json in Resources */,
+				D848CC0D20FF2D7C00A9038F /* notifications-post-range.json in Resources */,
 				748437F11F1D4ECC00E8DDAF /* notifications-last-seen.json in Resources */,
 				74585B9D1F0D591D00E7E667 /* domain-service-all-domain-types.json in Resources */,
 				E131CB5616CACF1E004B0314 /* get-user-blogs_has-blog.json in Resources */,
@@ -7038,10 +7063,12 @@
 				E15027611E03E51500B847E3 /* notes-action-delete.json in Resources */,
 				08F8CD361EBD2AA80049D0C0 /* test-image-device-photo-gps-portrait.jpg in Resources */,
 				B5AEEC7D1ACACFDA008BF2A4 /* notifications-replied-comment.json in Resources */,
+				D848CC0920FF2D4400A9038F /* notifications-icon-range.json in Resources */,
 				E131CB5816CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json in Resources */,
 				08DF9C441E8475530058678C /* test-image-portrait.jpg in Resources */,
 				B5AEEC7C1ACACFDA008BF2A4 /* notifications-new-follower.json in Resources */,
 				B5AEEC791ACACFDA008BF2A4 /* notifications-badge.json in Resources */,
+				D848CC1120FF310400A9038F /* notifications-site-range.json in Resources */,
 				7E53AB0620FE6905005796FE /* activity-log-comment.json in Resources */,
 				93C882A41EEB18D700227A59 /* rsd.xml in Resources */,
 			);
@@ -8354,6 +8381,7 @@
 				E1EBC3731C118ED200F638E0 /* ImmuTableTest.swift in Sources */,
 				E1AB5A091E0BF31E00574B4E /* ArrayTests.swift in Sources */,
 				93B853231B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m in Sources */,
+				D848CC0720FF2BE200A9038F /* NotificationContentRangeFactoryTests.swift in Sources */,
 				82301B8F1E787420009C9C4E /* AppRatingUtilityTests.swift in Sources */,
 				D81C2F5420F85DB1002AE1F1 /* ApproveCommentActionTests.swift in Sources */,
 				74B335EC1F06F9520053A184 /* MockWordPressComRestApi.swift in Sources */,
