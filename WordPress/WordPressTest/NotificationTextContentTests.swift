@@ -13,7 +13,7 @@ final class NotificationTextContentTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        subject = NotificationTextContent(dictionary: mockDictionary(), actions: [], ranges: [], parent: loadLikeNotification())
+        subject = NotificationTextContent(dictionary: mockDictionary(), actions: mockedActions(), ranges: [], parent: loadLikeNotification())
     }
 
     override func tearDown() {
@@ -39,10 +39,43 @@ final class NotificationTextContentTests: XCTestCase {
         XCTAssertEqual(value?.count, 0)
     }
 
-    func testActionsAreEmpty() {
+    func testActionsReturnMockedActions() {
         let value = subject?.actions
+        let mockActionsCount = mockedActions().count
 
-        XCTAssertEqual(value?.count, 0)
+        XCTAssertEqual(value?.count, mockActionsCount)
+    }
+
+    func testMetaReturnsExpectation() {
+        let value = subject?.meta
+
+        XCTAssertNil(value)
+    }
+
+    func testParentReturnsValuePassedAsParameter() {
+        let injectedParent = loadLikeNotification()
+
+        let parent = subject?.parent
+
+        XCTAssertEqual(parent?.uniqueID, injectedParent.uniqueID)
+    }
+
+    func testApproveCommentActionIsOn() {
+        let approveCommentIdentifier = ApproveCommentAction.actionIdentifier()
+        let on = subject?.isActionOn(id: approveCommentIdentifier)
+        XCTAssertTrue(on!)
+    }
+
+    func testApproveCommentActionIsEnabled() {
+        let approveCommentIdentifier = ApproveCommentAction.actionIdentifier()
+        let on = subject?.isActionEnabled(id: approveCommentIdentifier)
+        XCTAssertTrue(on!)
+    }
+
+    func testActionWithIdentifierReturnsExpectedAction() {
+        let approveCommentIdentifier = ApproveCommentAction.actionIdentifier()
+        let action = subject?.action(id: approveCommentIdentifier)
+        XCTAssertEqual(action?.identifier, approveCommentIdentifier)
     }
 
     private func mockDictionary() -> [String: AnyObject] {
@@ -53,7 +86,13 @@ final class NotificationTextContentTests: XCTestCase {
         return contextManager.object(withContentOfFile: fileName) as! [String: AnyObject]
     }
 
-    func loadLikeNotification() -> WordPress.Notification {
+    private func loadLikeNotification() -> WordPress.Notification {
         return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-like.json") as! WordPress.Notification
+    }
+
+    private func mockedActions() -> [FormattableContentAction] {
+        let on = true
+        return [ApproveCommentAction(on: on, command: ApproveComment(on: on)),
+                TrashCommentAction(on: on, command: TrashComment(on: on))]
     }
 }
