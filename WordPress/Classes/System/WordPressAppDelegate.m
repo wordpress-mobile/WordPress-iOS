@@ -52,7 +52,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
 @property (nonatomic, strong, readwrite) PingHubManager                 *pinghubManager;
 @property (nonatomic, strong, readwrite) WP3DTouchShortcutCreator       *shortcutCreator;
-@property (nonatomic, strong, readwrite) NoticePresenter                *noticePresenter;
 
 @end
 
