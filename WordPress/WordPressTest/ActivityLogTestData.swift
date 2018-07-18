@@ -23,8 +23,20 @@ class ActivityLogTestData {
         return "https://wordpress.com/plugins/\(testPluginSlug)/\(testSiteSlug)"
     }
 
+    var testCommentURL: String {
+        return "https://etoledom.wordpress.com/2018/06/02/hola-lima/comment-page-1/#comment-7"
+    }
+
     private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
         return contextManager.object(withContentOfFile: fileName) as! [String: AnyObject]
+    }
+
+    func getCommentEventDictionary() -> [String: AnyObject] {
+        return getDictionaryFromFile(named: "activity-log-comment.json")
+    }
+
+    func getPostEventDictionary() -> [String: AnyObject] {
+        return getDictionaryFromFile(named: "activity-log-post.json")
     }
 
     func getPingbackDictionary() -> [String: AnyObject] {
