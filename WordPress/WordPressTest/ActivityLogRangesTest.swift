@@ -43,9 +43,9 @@ final class ActivityLogRangesTests: XCTestCase {
         let range = ActivityRangesFactory.contentRange(from: commentRangeRaw)
 
         XCTAssertNotNil(range)
-        XCTAssertTrue(range is ActivityRange)
+        XCTAssertTrue(range is ActivityCommentRange)
 
-        let commentRange = range as? ActivityRange
+        let commentRange = range as? ActivityCommentRange
 
         XCTAssertEqual(commentRange?.kind, .comment)
         XCTAssertNotNil(commentRange?.url)
