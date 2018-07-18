@@ -958,6 +958,8 @@
 		D848CBFD20FEFB4900A9038F /* notifications-user-content.json in Resources */ = {isa = PBXBuildFile; fileRef = D848CBFC20FEFB4900A9038F /* notifications-user-content.json */; };
 		D848CBFF20FF010F00A9038F /* FormattableCommentContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D848CBFE20FF010F00A9038F /* FormattableCommentContentTests.swift */; };
 		D848CC0120FF030C00A9038F /* notifications-comment-meta.json in Resources */ = {isa = PBXBuildFile; fileRef = D848CC0020FF030C00A9038F /* notifications-comment-meta.json */; };
+		D848CC0320FF04FA00A9038F /* FormattableUserContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D848CC0220FF04FA00A9038F /* FormattableUserContentTests.swift */; };
+		D848CC0520FF062100A9038F /* notifications-user-content-meta.json in Resources */ = {isa = PBXBuildFile; fileRef = D848CC0420FF062100A9038F /* notifications-user-content-meta.json */; };
 		D858F2FD20E1F09F007E8A1C /* NotificationActionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D858F2FC20E1F09F007E8A1C /* NotificationActionParser.swift */; };
 		D858F30120E20106007E8A1C /* LikePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = D858F30020E20106007E8A1C /* LikePost.swift */; };
 		D858F30320E201F4007E8A1C /* EditComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D858F30220E201F4007E8A1C /* EditComment.swift */; };
@@ -2581,6 +2583,8 @@
 		D848CBFC20FEFB4900A9038F /* notifications-user-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-user-content.json"; sourceTree = "<group>"; };
 		D848CBFE20FF010F00A9038F /* FormattableCommentContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattableCommentContentTests.swift; sourceTree = "<group>"; };
 		D848CC0020FF030C00A9038F /* notifications-comment-meta.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-comment-meta.json"; sourceTree = "<group>"; };
+		D848CC0220FF04FA00A9038F /* FormattableUserContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattableUserContentTests.swift; sourceTree = "<group>"; };
+		D848CC0420FF062100A9038F /* notifications-user-content-meta.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-user-content-meta.json"; sourceTree = "<group>"; };
 		D858F2FC20E1F09F007E8A1C /* NotificationActionParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationActionParser.swift; sourceTree = "<group>"; };
 		D858F30020E20106007E8A1C /* LikePost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikePost.swift; sourceTree = "<group>"; };
 		D858F30220E201F4007E8A1C /* EditComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditComment.swift; sourceTree = "<group>"; };
@@ -5154,6 +5158,7 @@
 		B5416CF81C17542900006DD8 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				D848CC0220FF04FA00A9038F /* FormattableUserContentTests.swift */,
 				D848CBFE20FF010F00A9038F /* FormattableCommentContentTests.swift */,
 				D848CBF820FEF82100A9038F /* NotificationsContentFactoryTests.swift */,
 				D8BA274C20FDEA2E007A5C77 /* NotificationTextContentTests.swift */,
@@ -5357,8 +5362,9 @@
 				B5EFB1D01B33630C007608A3 /* notifications-settings.json */,
 				D848CBF620FEEE7F00A9038F /* notifications-text-content.json */,
 				D848CBFA20FEFA4800A9038F /* notifications-comment-content.json */,
-				D848CBFC20FEFB4900A9038F /* notifications-user-content.json */,
 				D848CC0020FF030C00A9038F /* notifications-comment-meta.json */,
+				D848CBFC20FEFB4900A9038F /* notifications-user-content.json */,
+				D848CC0420FF062100A9038F /* notifications-user-content-meta.json */,
 			);
 			name = Notifications;
 			sourceTree = "<group>";
@@ -6984,6 +6990,7 @@
 				E1EBC3751C118EDE00F638E0 /* ImmuTableTestViewCellWithNib.xib in Resources */,
 				E15027631E03E51500B847E3 /* notes-action-unsupported.json in Resources */,
 				93C882A21EEB18D700227A59 /* html_page_with_link_to_rsd.html in Resources */,
+				D848CC0520FF062100A9038F /* notifications-user-content-meta.json in Resources */,
 				7E4A772320F7BE94001C706D /* activity-log-comment-content.json in Resources */,
 				E12BE5EE1C5235DB000FD5CA /* get-me-settings-v1.1.json in Resources */,
 				933D1F6C1EA7A3AB009FB462 /* TestingMode.storyboard in Resources */,
@@ -8377,6 +8384,7 @@
 				D809E686203F0215001AA0DE /* ReaderPostCardCellTests.swift in Sources */,
 				40E4698F2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift in Sources */,
 				E1AB5A3A1E0C464700574B4E /* DelayTests.swift in Sources */,
+				D848CC0320FF04FA00A9038F /* FormattableUserContentTests.swift in Sources */,
 				5948AD111AB73D19006E8882 /* WPAppAnalyticsTests.m in Sources */,
 				FF8032661EE9E22200861F28 /* MediaProgressCoordinatorTests.swift in Sources */,
 				E63C897C1CB9A0D700649C8F /* UITextFieldTextHelperTests.swift in Sources */,
