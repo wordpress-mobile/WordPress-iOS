@@ -1,21 +1,21 @@
 import XCTest
 @testable import WordPress
 
-final class FormattableCommentContentTests: XCTestCase {
+final class FormattableUserContentTests: XCTestCase {
     private let contextManager = TestContextManager()
     private let entityName = Notification.classNameWithoutNamespaces()
 
-    private var subject: FormattableCommentContent?
+    private var subject: FormattableUserContent?
 
     private struct Expectations {
-        static let text = "This is an unapproved comment"
+        static let text = "someonesomeone"
         static let approveAction = ApproveCommentAction(on: true, command: ApproveComment(on: true))
         static let trashAction = TrashCommentAction(on: true, command: TrashComment(on: true))
     }
 
     override func setUp() {
         super.setUp()
-        subject = FormattableCommentContent(dictionary: mockDictionary(), actions: mockedActions(), ranges: [], parent: loadLikeNotification())
+        subject = FormattableUserContent(dictionary: mockDictionary(), actions: mockedActions(), ranges: [], parent: loadLikeNotification())
     }
 
     override func tearDown() {
@@ -26,7 +26,7 @@ final class FormattableCommentContentTests: XCTestCase {
     func testKindReturnsExpectation() {
         let notificationKind = subject?.kind
 
-        XCTAssertEqual(notificationKind, .comment)
+        XCTAssertEqual(notificationKind, .user)
     }
 
     func testStringReturnsExpectation() {
@@ -51,16 +51,16 @@ final class FormattableCommentContentTests: XCTestCase {
     func testMetaReturnsExpectation() {
         let value = subject!.meta!
         let ids = value["ids"] as? [String: AnyObject]
-        let commentId = ids?["comment"] as? String
-        let postId = ids?["post"] as? String
+        let userId = ids?["user"] as? String
+        let siteId = ids?["site"] as? String
 
         let mockMeta = loadMeta()
         let mockIds = mockMeta["ids"] as? [String: AnyObject]
-        let mockMetaCommentId = mockIds?["comment"] as? String
-        let mockMetaPostId = mockIds?["post"] as? String
+        let mockMetaUserId = mockIds?["user"] as? String
+        let mockMetaSiteId = mockIds?["site"] as? String
 
-        XCTAssertEqual(commentId, mockMetaCommentId)
-        XCTAssertEqual(postId, mockMetaPostId)
+        XCTAssertEqual(userId, mockMetaUserId)
+        XCTAssertEqual(siteId, mockMetaSiteId)
     }
 
     func testParentReturnsValuePassedAsParameter() {
@@ -90,7 +90,7 @@ final class FormattableCommentContentTests: XCTestCase {
     }
 
     private func mockDictionary() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "notifications-comment-content.json")
+        return getDictionaryFromFile(named: "notifications-user-content.json")
     }
 
     private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
@@ -102,7 +102,7 @@ final class FormattableCommentContentTests: XCTestCase {
     }
 
     private func loadMeta() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "notifications-comment-meta.json")
+        return getDictionaryFromFile(named: "notifications-user-content-meta.json")
     }
 
     private func mockedActions() -> [FormattableContentAction] {
