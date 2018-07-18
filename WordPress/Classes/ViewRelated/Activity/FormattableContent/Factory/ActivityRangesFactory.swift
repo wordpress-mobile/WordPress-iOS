@@ -29,6 +29,11 @@ struct ActivityRangesFactory: ContentRangeFactory {
                 fallthrough
             }
             return pluginRange
+        case .comment:
+            guard let commentRange = createCommentRange(with: dictionary, url: url, and: range) else {
+                fallthrough
+            }
+            return commentRange
         default:
             return ActivityRange(kind: kind, range: range, url: url)
         }
@@ -40,6 +45,16 @@ struct ActivityRangesFactory: ContentRangeFactory {
                 return nil
         }
         return ActivityPostRange(range: range, siteID: siteId, postID: postID)
+    }
+
+    private static func createCommentRange(with dictionary: [String: AnyObject], url: URL?, and range: NSRange) -> ActivityCommentRange? {
+        guard let postID = dictionary[RangeKeys.postId] as? Int,
+            let commentID = dictionary[RangeKeys.id] as? Int,
+            let siteId = dictionary[RangeKeys.siteId] as? Int,
+            let url = url else {
+                return nil
+        }
+        return ActivityCommentRange(range: range, siteID: siteId, postID: postID, commentID: commentID, url: url)
     }
 
     private static func createPluginRange(with dictionary: [String: AnyObject], and range: NSRange) -> ActivityPluginRange? {
@@ -61,6 +76,7 @@ private enum RangeKeys {
     static let uri = "uri"
     static let id = "id"
     static let siteId = "site_id"
+    static let postId = "post_id"
     static let slug = "slug"
     static let siteSlug = "site_slug"
 }
