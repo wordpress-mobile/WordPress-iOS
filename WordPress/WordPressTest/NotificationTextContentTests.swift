@@ -2,14 +2,36 @@ import XCTest
 @testable import WordPress
 
 final class NotificationTextContentTests: XCTestCase {
+    private let contextManager = TestContextManager()
+    private let entityName = Notification.classNameWithoutNamespaces()
+
+    private var subject: NotificationTextContent?
 
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        subject = NotificationTextContent(dictionary: mockDictionary(), actions: [], ranges: [], parent: loadFollowerNotification())
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        subject = nil
         super.tearDown()
+    }
+
+    func testKindReturnsExpectation() {
+        let notificationKind = subject?.kind
+
+        XCTAssertEqual(notificationKind, .text)
+    }
+
+    private func mockDictionary() -> [String: AnyObject] {
+        return getDictionaryFromFile(named: "notifications-text-content.json")
+    }
+
+    private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
+        return contextManager.object(withContentOfFile: fileName) as! [String: AnyObject]
+    }
+
+    func loadFollowerNotification() -> WordPress.Notification {
+        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-new-follower.json") as! WordPress.Notification
     }
 }
