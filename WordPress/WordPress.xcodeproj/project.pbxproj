@@ -969,6 +969,7 @@
 		D848CC1320FF31BB00A9038F /* notifications-blockquote-range.json in Resources */ = {isa = PBXBuildFile; fileRef = D848CC1220FF31BB00A9038F /* notifications-blockquote-range.json */; };
 		D848CC1520FF33FC00A9038F /* NotificationContentRangeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D848CC1420FF33FC00A9038F /* NotificationContentRangeTests.swift */; };
 		D848CC1720FF38EA00A9038F /* FormattableCommentRangeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D848CC1620FF38EA00A9038F /* FormattableCommentRangeTests.swift */; };
+		D848CC1920FF3A2400A9038F /* FormattableNotIconTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D848CC1820FF3A2400A9038F /* FormattableNotIconTests.swift */; };
 		D858F2FD20E1F09F007E8A1C /* NotificationActionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D858F2FC20E1F09F007E8A1C /* NotificationActionParser.swift */; };
 		D858F30120E20106007E8A1C /* LikePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = D858F30020E20106007E8A1C /* LikePost.swift */; };
 		D858F30320E201F4007E8A1C /* EditComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D858F30220E201F4007E8A1C /* EditComment.swift */; };
@@ -2603,6 +2604,7 @@
 		D848CC1220FF31BB00A9038F /* notifications-blockquote-range.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-blockquote-range.json"; sourceTree = "<group>"; };
 		D848CC1420FF33FC00A9038F /* NotificationContentRangeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContentRangeTests.swift; sourceTree = "<group>"; };
 		D848CC1620FF38EA00A9038F /* FormattableCommentRangeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattableCommentRangeTests.swift; sourceTree = "<group>"; };
+		D848CC1820FF3A2400A9038F /* FormattableNotIconTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattableNotIconTests.swift; sourceTree = "<group>"; };
 		D858F2FC20E1F09F007E8A1C /* NotificationActionParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationActionParser.swift; sourceTree = "<group>"; };
 		D858F30020E20106007E8A1C /* LikePost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikePost.swift; sourceTree = "<group>"; };
 		D858F30220E201F4007E8A1C /* EditComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditComment.swift; sourceTree = "<group>"; };
@@ -5178,6 +5180,7 @@
 		B5416CF81C17542900006DD8 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				D848CC1820FF3A2400A9038F /* FormattableNotIconTests.swift */,
 				D848CC0620FF2BE200A9038F /* NotificationContentRangeFactoryTests.swift */,
 				D848CC0220FF04FA00A9038F /* FormattableUserContentTests.swift */,
 				D848CBFE20FF010F00A9038F /* FormattableCommentContentTests.swift */,
@@ -8418,6 +8421,7 @@
 				93E9050719E6F3D8005513C9 /* TestContextManager.m in Sources */,
 				D809E686203F0215001AA0DE /* ReaderPostCardCellTests.swift in Sources */,
 				40E4698F2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift in Sources */,
+				D848CC1920FF3A2400A9038F /* FormattableNotIconTests.swift in Sources */,
 				E1AB5A3A1E0C464700574B4E /* DelayTests.swift in Sources */,
 				D848CC0320FF04FA00A9038F /* FormattableUserContentTests.swift in Sources */,
 				5948AD111AB73D19006E8882 /* WPAppAnalyticsTests.m in Sources */,
