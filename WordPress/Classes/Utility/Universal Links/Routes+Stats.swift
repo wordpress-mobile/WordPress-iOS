@@ -117,6 +117,15 @@ extension StatsRoute: NavigationAction {
         let context = ContextManager.sharedInstance().mainContext
         let service = BlogService(managedObjectContext: context)
 
-        return service.blog(byHostname: domain)
+        if let blog = service.blog(byHostname: domain) {
+            return blog
+        }
+
+        // Some stats URLs use a site ID instead
+        if let siteIDValue = Int(domain) {
+            return service.blog(byBlogId: NSNumber(value: siteIDValue))
+        }
+
+        return nil
     }
 }
