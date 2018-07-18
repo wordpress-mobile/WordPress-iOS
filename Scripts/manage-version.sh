@@ -213,9 +213,6 @@ function doBranching() {
 
         # Push to origin
         git push -u origin $releaseBranch >> $logFile 2>&1 || stopOnError
-
-        # Set branch protection
-        ./github-helper.rb set_prot $newMainVer
     fi 
 }
 
@@ -464,6 +461,7 @@ elif [ $cmd == $CMD_BUMP_INTERNAL ]; then
     bumpInternal 
 elif [ $cmd == $CMD_GET_VERSION ]; then
     echo $currentVer 
+    echo $currentIntVer
 else
     showUsage
 fi
