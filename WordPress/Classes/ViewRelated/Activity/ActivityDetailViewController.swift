@@ -6,7 +6,8 @@ class ActivityDetailViewController: UIViewController {
 
     var formattableActivity: FormattableActivity? {
         didSet {
-            activity = formattableActivity?.activity
+            setupActivity()
+            setupRouter()
         }
     }
     var site: JetpackSiteRef?
@@ -21,7 +22,11 @@ class ActivityDetailViewController: UIViewController {
     @IBOutlet private var timeLabel: UILabel!
     @IBOutlet private var dateLabel: UILabel!
 
-    @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var textView: UITextView! {
+        didSet {
+            textView.delegate = self
+        }
+    }
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var summaryLabel: UILabel!
 
@@ -34,6 +39,8 @@ class ActivityDetailViewController: UIViewController {
     @IBOutlet private var rewindButton: UIButton!
 
     private var activity: Activity?
+
+    var router: ActivityContentRouter?
 
     override func viewDidLoad() {
         setupFonts()
@@ -155,7 +162,21 @@ class ActivityDetailViewController: UIViewController {
                 }
             }
         }
+    }
 
+    func setupRouter() {
+        guard let activity = formattableActivity else {
+            router = nil
+            return
+        }
+        let coordinator = DefaultContentCoordinator(controller: self, context: ContextManager.sharedInstance().mainContext)
+        router = ActivityContentRouter(
+            activity: activity,
+            coordinator: coordinator)
+    }
+
+    func setupActivity() {
+        activity = formattableActivity?.activity
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -169,5 +190,13 @@ class ActivityDetailViewController: UIViewController {
     private enum Constants {
         static let gridiconSize: CGSize = CGSize(width: 24, height: 24)
     }
+}
 
+// MARK: - UITextViewDelegate
+
+extension ActivityDetailViewController: UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+        router?.routeTo(URL)
+        return false
+    }
 }

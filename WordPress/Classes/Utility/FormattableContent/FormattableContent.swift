@@ -36,4 +36,15 @@ extension FormattableContent {
             $0.identifier == id
         }.first
     }
+
+    func range(with url: URL) -> FormattableContentRange? {
+        let linkRanges = ranges.compactMap { $0 as? LinkContentRange }
+        for range in linkRanges {
+            if range.url == url {
+                return range as? FormattableContentRange
+            }
+        }
+
+        return nil
+    }
 }
