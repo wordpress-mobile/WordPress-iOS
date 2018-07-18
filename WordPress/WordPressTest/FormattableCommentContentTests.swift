@@ -12,6 +12,8 @@ final class FormattableCommentContentTests: XCTestCase {
         static let approveAction = ApproveCommentAction(on: true, command: ApproveComment(on: true))
         static let trashAction = TrashCommentAction(on: true, command: TrashComment(on: true))
         static let commentID = NSNumber(integerLiteral: 7)
+        static let notificationID = "11111"
+        static let metaSiteId = NSNumber(integerLiteral: 142010142)
     }
 
     override func setUp() {
@@ -98,6 +100,16 @@ final class FormattableCommentContentTests: XCTestCase {
 
     func testIsCommentApprovedReturnsExpectation() {
         XCTAssertTrue(subject!.isCommentApproved)
+    }
+
+    func testNotificationIdReturnsExpectation() {
+        let id = subject?.notificationID
+        XCTAssertEqual(id, Expectations.notificationID)
+    }
+
+    func testMetaSiteIdReturnsExpectation() {
+        let id = subject?.metaSiteID
+        XCTAssertEqual(id, Expectations.metaSiteId)
     }
 
     private func mockDictionary() -> [String: AnyObject] {
