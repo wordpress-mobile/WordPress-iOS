@@ -11,6 +11,10 @@ final class FormattableUserContentTests: XCTestCase {
         static let text = "someonesomeone"
         static let approveAction = ApproveCommentAction(on: true, command: ApproveComment(on: true))
         static let trashAction = TrashCommentAction(on: true, command: TrashComment(on: true))
+        static let metaTitlesHome = "a title"
+        static let metaTitlesHomeURL = URL(string: "http://someone.wordpress.com")
+        static let notificationId = "11111"
+        static let metaSiteId = NSNumber(integerLiteral: 136505344)
     }
 
     override func setUp() {
@@ -87,6 +91,36 @@ final class FormattableUserContentTests: XCTestCase {
         let approveCommentIdentifier = ApproveCommentAction.actionIdentifier()
         let action = subject?.action(id: approveCommentIdentifier)
         XCTAssertEqual(action?.identifier, approveCommentIdentifier)
+    }
+
+    func testMetaTitlesHomeAsStringReturnsExpectation() {
+        let home: String? = subject?.metaTitlesHome
+        XCTAssertEqual(home, Expectations.metaTitlesHome)
+    }
+
+    func testMetaTitlesHomeAsURLReturnsExpectation() {
+        let home: URL? = subject?.metaLinksHome
+        XCTAssertEqual(home, Expectations.metaTitlesHomeURL)
+    }
+
+    func testNotificationIdReturnsExpectation() {
+        let id = subject?.notificationID
+        XCTAssertEqual(id, Expectations.notificationId)
+    }
+
+    func testMetaSiteIdReturnsExpectation() {
+        let id = subject?.metaSiteID
+        XCTAssertEqual(id, Expectations.metaSiteId)
+    }
+
+    func testMetaCommentIdReturnsExpectation() {
+        let id = subject?.metaCommentID
+        XCTAssertNil(id)
+    }
+
+    func testIsCommentApprovedReturnsExpectation() {
+        let value = subject?.isCommentApproved
+        XCTAssertFalse(value!)
     }
 
     private func mockDictionary() -> [String: AnyObject] {
