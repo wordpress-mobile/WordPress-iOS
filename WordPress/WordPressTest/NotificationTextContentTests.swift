@@ -9,6 +9,8 @@ final class NotificationTextContentTests: XCTestCase {
 
     private struct Expectations {
         static let text = "Jennifer Parks and 658 others liked your post Bookmark Posts with Save For Later"
+        static let approveAction = ApproveCommentAction(on: true, command: ApproveComment(on: true))
+        static let trashAction = TrashCommentAction(on: true, command: TrashComment(on: true))
     }
 
     override func setUp() {
@@ -91,8 +93,7 @@ final class NotificationTextContentTests: XCTestCase {
     }
 
     private func mockedActions() -> [FormattableContentAction] {
-        let on = true
-        return [ApproveCommentAction(on: on, command: ApproveComment(on: on)),
-                TrashCommentAction(on: on, command: TrashComment(on: on))]
+        return [Expectations.approveAction,
+                Expectations.trashAction]
     }
 }
