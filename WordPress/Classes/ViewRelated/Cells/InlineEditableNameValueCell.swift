@@ -17,7 +17,12 @@ class InlineEditableNameValueCell: WPTableViewCell {
         valueTextField.font = WPStyleGuide.tableviewTextFont()
         valueTextField.borderStyle = .none
         valueTextField.contentInsets = WPStyleGuide.edgeInsetForLoginTextFields()
-        // swiftlint:disable:next inverse_text_alignment
-        valueTextField.textAlignment = .right
+        if effectiveUserInterfaceLayoutDirection == .leftToRight {
+            // swiftlint:disable:next inverse_text_alignment
+            valueTextField.textAlignment = .right
+        } else {
+            // swiftlint:disable:next natural_text_alignment
+            valueTextField.textAlignment = .left
+        }
     }
 }
