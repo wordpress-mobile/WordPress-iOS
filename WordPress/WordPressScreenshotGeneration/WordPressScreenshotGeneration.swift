@@ -42,13 +42,6 @@ class WordPressScreenshotGeneration: XCTestCase {
             app.alerts.element(boundBy: 0).buttons.element(boundBy: 1).tap() // Tap disconnect
         }
 
-        // Handle Notifications Permissions alert that appears after login
-        addUIInterruptionMonitor(withDescription: "Notifications Permissions Alert") { element in
-            element.buttons.firstMatch.tap()
-            return true
-        }
-
-
         app.buttons["Log In Button"].tap()
         app.buttons["Self Hosted Login Button"].tap()
 
@@ -73,11 +66,13 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         app.buttons["submitButton"].tap()
 
-        // Handle the Notifications permission alert
         sleep(2)
-        app.tap()   // Tap required for the interruption monitor to be triggered
-
         app.buttons["Continue"].tap()
+
+        // Wait for the notification primer, and dismiss if present
+        if app.buttons["cancelAlertButton"].waitForExistence(timeout: 3.0) {
+            app.buttons["cancelAlertButton"].tap()
+        }
 
         // Get Reader Screenshot
         app.tabBars["Main Navigation"].buttons["readerTabButton"].tap(withNumberOfTaps: 2,
