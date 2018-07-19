@@ -33,9 +33,7 @@ private class NavigationControllerDelegateRepeater: NSObject, UINavigationContro
 }
 
 @objc
-class BlogNavigationController: UINavigationController {
-    @objc public let tourGuide = QuickStartTourGuide()
-    private let topVCKeypath = "visibleViewController"
+class ManyDelegateNavigationController: UINavigationController {
     private let delegateRepeater = NavigationControllerDelegateRepeater()
 
     override var delegate: UINavigationControllerDelegate? {

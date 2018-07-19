@@ -1118,11 +1118,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)startTour
 {
     // find the tour guide
-    UIViewController *blogNC = self.navigationController;
-    if ([blogNC isKindOfClass:[BlogNavigationController class]]) {
-        QuickStartTourGuide *tourGuide = ((BlogNavigationController *) blogNC).tourGuide;
+    UITabBarController *tabBarController = self.tabBarController;
+    if ([tabBarController isKindOfClass:[WPTabBarController class]]) {
+        QuickStartTourGuide *tourGuide = ((WPTabBarController *) tabBarController).tourGuide;
         [tourGuide showTestQuickStartNotice];
     }
+
+//    UIViewController *blogNC = self.navigationController;
+//    if ([blogNC isKindOfClass:[ManyDelegateNavigationController class]]) {
+//        QuickStartTourGuide *tourGuide = ((ManyDelegateNavigationController *) blogNC).tourGuide;
+//        [tourGuide showTestQuickStartNotice];
+//    }
 }
 
 - (void)showActivity

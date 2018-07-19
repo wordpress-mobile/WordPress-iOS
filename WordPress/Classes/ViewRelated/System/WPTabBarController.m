@@ -50,10 +50,10 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong) ReaderMenuViewController *readerMenuViewController;
 @property (nonatomic, strong) MeViewController *meViewController;
+@property (nonatomic, strong) QuickStartTourGuide *tourGuide;
 @property (nonatomic, strong) UIViewController *newPostViewController;
 
 @property (nonatomic, strong) UINavigationController *blogListNavigationController;
-@property (nonatomic, strong) QuickStartTourGuide *tourGuide;
 @property (nonatomic, strong) UINavigationController *readerNavigationController;
 @property (nonatomic, strong) UINavigationController *notificationsNavigationController;
 @property (nonatomic, strong) UINavigationController *meNavigationController;
@@ -205,7 +205,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 
     self.blogListViewController = [[BlogListViewController alloc] init];
-    _blogListNavigationController = [[BlogNavigationController alloc] initWithRootViewController:self.blogListViewController];
+    _blogListNavigationController = [[ManyDelegateNavigationController alloc] initWithRootViewController:self.blogListViewController];
     _blogListNavigationController.navigationBar.translucent = NO;
     self.tourGuide = [[QuickStartTourGuide alloc] init];
     _blogListNavigationController.delegate = self.tourGuide;
