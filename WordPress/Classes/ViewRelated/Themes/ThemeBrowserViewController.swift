@@ -916,8 +916,7 @@ private extension ThemeBrowserViewController {
             return
         }
 
-        noResultsViewController?.view.removeFromSuperview()
-        noResultsViewController?.removeFromParentViewController()
+        noResultsViewController?.removeFromView()
 
         if searchController.isActive {
             collectionView?.reloadData()
