@@ -11,7 +11,7 @@ final class ActivityContentFactoryTests: XCTestCase {
     }
 
     private func mockBlock() -> [String: AnyObject] {
-        return getDictionaryFromFile(named: "activity-log-address-content.json")
+        return getDictionaryFromFile(named: "activity-log-activity-content.json")
     }
 
     private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
