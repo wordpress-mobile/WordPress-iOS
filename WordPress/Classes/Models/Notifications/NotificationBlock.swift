@@ -128,7 +128,6 @@ extension NotificationBlock {
     /// Returns YES if the associated comment (if any) is approved. NO otherwise.
     ///
     var isCommentApproved: Bool {
-        //return isActionOn(.Approve) || !isActionEnabled(.Approve)
         let identifier = ApproveCommentAction.actionIdentifier()
         return isActionOn(id: identifier) || !isActionEnabled(id: identifier)
     }
