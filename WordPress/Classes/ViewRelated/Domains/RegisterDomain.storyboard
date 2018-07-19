@@ -54,10 +54,10 @@
             </objects>
             <point key="canvasLocation" x="2591" y="95"/>
         </scene>
-        <!--Site Creation Domains Table View Controller-->
+        <!--Register Domain Suggestions Table View Controller-->
         <scene sceneID="MWs-Pg-0fY">
             <objects>
-                <viewController id="CFb-K0-jrQ" customClass="SiteCreationDomainsTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="CFb-K0-jrQ" customClass="RegisterDomainSuggestionsTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="UYc-Bx-TlF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="563"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

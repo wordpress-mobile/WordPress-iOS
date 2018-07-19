@@ -7,7 +7,7 @@ class RegisterDomainSuggestionsViewController: NUXViewController, HidableBottomV
     @IBOutlet weak var bottomViewHeightConstraint: NSLayoutConstraint!
     private var domain: String?
 
-    private var domainsTableViewController: SiteCreationDomainsTableViewController?
+    private var domainsTableViewController: RegisterDomainSuggestionsTableViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,18 +63,7 @@ class RegisterDomainSuggestionsViewController: NUXViewController, HidableBottomV
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        if let vc = segue.destination as? SiteCreationDomainsTableViewController {
-            vc.suggestOnlyWordPressDotCom = false
-            vc.useFadedColorForParentDomains = false
-            vc.sectionTitle = ""
-            vc.sectionDescription = NSLocalizedString(
-                "Pick an available address",
-                comment: "Register domain - Suggested Domain description for the screen"
-            )
-            vc.searchFieldPlaceholder = NSLocalizedString(
-                "Type to get more suggestions",
-                comment: "Register domain - Search field placeholder for the Suggested Domain screen"
-            )
+        if let vc = segue.destination as? RegisterDomainSuggestionsTableViewController {
             vc.delegate = self
             vc.siteName = nil
             domainsTableViewController = vc
@@ -89,9 +78,9 @@ class RegisterDomainSuggestionsViewController: NUXViewController, HidableBottomV
 
 }
 
-// MARK: - SiteCreationDomainsTableViewControllerDelegate
+// MARK: - DomainSuggestionsTableViewControllerDelegate
 
-extension RegisterDomainSuggestionsViewController: SiteCreationDomainsTableViewControllerDelegate {
+extension RegisterDomainSuggestionsViewController: DomainSuggestionsTableViewControllerDelegate {
     func domainSelected(_ domain: String) {
         self.domain = domain
         showButtonView(show: true, withAnimation: true)

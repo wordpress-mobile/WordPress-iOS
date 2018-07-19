@@ -436,10 +436,10 @@
             </objects>
             <point key="canvasLocation" x="2591" y="95"/>
         </scene>
-        <!--Site Creation Domains Table View Controller-->
+        <!--Site Creation Domain Suggestions Table View Controller-->
         <scene sceneID="8Yr-nW-up1">
             <objects>
-                <viewController id="uS3-8E-y1q" customClass="SiteCreationDomainsTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="uS3-8E-y1q" customClass="SiteCreationDomainSuggestionsTableViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="EAh-Io-1yv">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

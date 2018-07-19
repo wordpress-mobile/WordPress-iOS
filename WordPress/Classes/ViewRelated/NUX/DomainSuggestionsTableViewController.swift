@@ -3,31 +3,35 @@ import SVProgressHUD
 import WordPressAuthenticator
 
 
-protocol SiteCreationDomainsTableViewControllerDelegate {
+protocol DomainSuggestionsTableViewControllerDelegate {
     func domainSelected(_ domain: String)
     func newSearchStarted()
 }
 
-class SiteCreationDomainsTableViewController: NUXTableViewController {
+/// This is intended to be an abstract base class that provides domain
+/// suggestions for the keyword that user searches.
+/// Subclasses should override the open variables to make customizations.
+class DomainSuggestionsTableViewController: NUXTableViewController {
 
     // MARK: - Properties
 
     open var siteName: String?
-    open var delegate: SiteCreationDomainsTableViewControllerDelegate?
-    open var suggestOnlyWordPressDotCom = true
-    open var useFadedColorForParentDomains = true
-    open var sectionTitle = NSLocalizedString(
-        "Step 4 of 4",
-        comment: "Title for last step in the site creation process."
-        ).localizedUppercase
-    open var sectionDescription = NSLocalizedString(
-        "Pick an available \"yourname.wordpress.com\" address to let people find you on the web.",
-        comment: "Description of how to pick a domain name during the site creation process"
-    )
-    open var searchFieldPlaceholder = NSLocalizedString(
-        "Type a keyword for more ideas",
-        comment: "Placeholder text for domain search during site creation."
-    )
+    open var delegate: DomainSuggestionsTableViewControllerDelegate?
+    open var suggestOnlyWordPressDotCom: Bool {
+        return true
+    }
+    open var useFadedColorForParentDomains: Bool {
+        return true
+    }
+    open var sectionTitle: String {
+        return ""
+    }
+    open var sectionDescription: String {
+        return ""
+    }
+    open var searchFieldPlaceholder: String {
+        return ""
+    }
 
     private var noResultsViewController: NoResultsViewController?
     private var service: DomainsService?
@@ -150,7 +154,7 @@ class SiteCreationDomainsTableViewController: NUXTableViewController {
 
 // MARK: - UITableViewDataSource
 
-extension SiteCreationDomainsTableViewController {
+extension DomainSuggestionsTableViewController {
     fileprivate enum Sections: Int {
         case titleAndDescription = 0
         case searchField = 1
@@ -287,7 +291,7 @@ extension SiteCreationDomainsTableViewController {
 
 // MARK: - NoResultsViewController Extension
 
-private extension SiteCreationDomainsTableViewController {
+private extension DomainSuggestionsTableViewController {
 
     func addNoResultsTo(cell: UITableViewCell) {
         if noResultsViewController == nil {
@@ -326,7 +330,7 @@ private extension SiteCreationDomainsTableViewController {
 
 // MARK: - UITableViewDelegate
 
-extension SiteCreationDomainsTableViewController {
+extension DomainSuggestionsTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         var selectedDomain: String
         switch indexPath.section {
@@ -361,7 +365,7 @@ extension SiteCreationDomainsTableViewController {
 
 // MARK: - SearchTableViewCellDelegate
 
-extension SiteCreationDomainsTableViewController: SearchTableViewCellDelegate {
+extension DomainSuggestionsTableViewController: SearchTableViewCellDelegate {
     func startSearch(for searchTerm: String) {
 
         removeNoResultsFromView()

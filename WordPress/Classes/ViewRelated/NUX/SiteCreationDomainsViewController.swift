@@ -15,7 +15,7 @@ class SiteCreationDomainsViewController: NUXViewController, HidableBottomViewOwn
         }
     }
 
-    private var domainsTableViewController: SiteCreationDomainsTableViewController?
+    private var domainsTableViewController: SiteCreationDomainSuggestionsTableViewController?
 
     // MARK: - ButtonViewController
 
@@ -57,7 +57,7 @@ class SiteCreationDomainsViewController: NUXViewController, HidableBottomViewOwn
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        if let vc = segue.destination as? SiteCreationDomainsTableViewController {
+        if let vc = segue.destination as? SiteCreationDomainSuggestionsTableViewController {
             domainsTableViewController = vc
             domainsTableViewController?.delegate = self
             domainsTableViewController?.siteName = SiteCreationFields.sharedInstance.title
@@ -65,9 +65,9 @@ class SiteCreationDomainsViewController: NUXViewController, HidableBottomViewOwn
     }
 }
 
-// MARK: - SiteCreationDomainsTableViewControllerDelegate
+// MARK: - DomainSuggestionsTableViewControllerDelegate
 
-extension SiteCreationDomainsViewController: SiteCreationDomainsTableViewControllerDelegate {
+extension SiteCreationDomainsViewController: DomainSuggestionsTableViewControllerDelegate {
     func domainSelected(_ domain: String) {
         SiteCreationFields.sharedInstance.domain = domain
         showButtonView(show: true, withAnimation: true)
