@@ -8,7 +8,7 @@ extension RegisterDomainDetailsViewController {
                 comment: "Register Domain - Privacy Protection section header title"
             )
             static let description = NSLocalizedString(
-                "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own informations instead of yours and privately forward any comminucation to you",
+                "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you",
                 comment: "Register Domain - Privacy Protection section header description"
             )
             static let registerPrivatelyRowText = NSLocalizedString(
