@@ -1,6 +1,7 @@
 import UIKit
+import WordPressAuthenticator
 
-class RegisterDomainDetailsViewController: UITableViewController {
+class RegisterDomainDetailsViewController: NUXTableViewController {
 
     private enum Constants {
         static let estimatedRowHeight: CGFloat = 62
@@ -56,23 +57,6 @@ class RegisterDomainDetailsViewController: UITableViewController {
     private func configureNavigationBar() {
         title = NSLocalizedString("Register domain",
                                   comment: "Title for the Register domain screen")
-        addCancelBarButtonItem()
-    }
-
-    private func addCancelBarButtonItem() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: NSLocalizedString("Cancel",
-                                     comment: "Navigation bar cancel button for Register domain screen"),
-            style: .plain,
-            target: self,
-            action: #selector(cancelBarButtonTapped)
-        )
-    }
-
-    // MARK: - Actions
-
-    @objc private func cancelBarButtonTapped() {
-        dismiss(animated: true, completion: nil)
     }
 }
 

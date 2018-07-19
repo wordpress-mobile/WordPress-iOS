@@ -44,18 +44,7 @@ class RegisterDomainSuggestionsViewController: NUXViewController, HidableBottomV
     private func configure() {
         title = NSLocalizedString("Register domain",
                                   comment: "Register domain - Title for the Suggested domains screen")
-        addCancelBarButtonItem()
         WPStyleGuide.configureColors(for: view, andTableView: nil)
-    }
-
-    private func addCancelBarButtonItem() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: NSLocalizedString("Cancel",
-                                     comment: "Register domain - Navigation bar cancel button for Suggested domains screen"),
-            style: .plain,
-            target: self,
-            action: #selector(cancelBarButtonTapped)
-        )
     }
 
     // MARK: - Navigation
@@ -69,13 +58,6 @@ class RegisterDomainSuggestionsViewController: NUXViewController, HidableBottomV
             domainsTableViewController = vc
         }
     }
-
-    // MARK: - Actions
-
-    @objc private func cancelBarButtonTapped() {
-        dismiss(animated: true, completion: nil)
-    }
-
 }
 
 // MARK: - DomainSuggestionsTableViewControllerDelegate
