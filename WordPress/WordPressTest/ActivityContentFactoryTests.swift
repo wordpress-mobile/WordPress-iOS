@@ -2,14 +2,23 @@ import XCTest
 @testable import WordPress
 
 final class ActivityContentFactoryTests: XCTestCase {
+    private let contextManager = TestContextManager()
 
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    func testActivityContentFactoryReturnsExpectedImplementationOfFormattableContent() {
+        let subject = ActivityContentFactory.content(from: [mockBlock()], actionsParser: ActivityActionsParser(), parent: mockParent()).first as? FormattableTextContent
+
+        XCTAssertNotNil(subject)
     }
 
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
+    private func mockBlock() -> [String: AnyObject] {
+        return getDictionaryFromFile(named: "activity-log-address-content.json")
+    }
+
+    private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
+        return contextManager.object(withContentOfFile: fileName) as! [String: AnyObject]
+    }
+
+    func mockParent() -> FormattableContentParent {
+        return MockActivityParent()
     }
 }
