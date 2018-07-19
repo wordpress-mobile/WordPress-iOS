@@ -439,7 +439,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
 
-    if ([Feature enabled:FeatureFlagWhatsNext]) {
+    if ([Feature enabled:FeatureFlagQuickStart]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Quick Start", @"Name of the Quick Start feature that guides users through a few tasks to setup their new website.")
                                                         image:[Gridicon iconOfType:GridiconTypeStatsAlt]
                                                      callback:^{
