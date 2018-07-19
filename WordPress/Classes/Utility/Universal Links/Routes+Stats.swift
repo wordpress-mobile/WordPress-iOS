@@ -59,6 +59,8 @@ extension StatsRoute: NavigationAction {
         case .site:
             if let blog = blog(from: values) {
                 coordinator.showStats(for: blog)
+            } else {
+                showStatsForDefaultBlog(from: values, with: coordinator)
             }
         case .daySite:
             if let blog = blog(from: values) {
@@ -127,5 +129,39 @@ extension StatsRoute: NavigationAction {
         }
 
         return nil
+    }
+
+    private func showStatsForDefaultBlog(from values: [String: String]?,
+                                         with coordinator: MySitesCoordinator) {
+        // It's possible that the stats route can come in without a domain
+        // as the last component, if the user is viewing stats for "All My Sites" in Calypso.
+        // In this case, we'll check whether the last component is actually a
+        // time period, and if so we'll show that time period for the default site.
+        guard let component = values?["domain"],
+            let timePeriod = StatsPeriodType.fromString(component),
+            let blog = defaultBlog() else {
+            return
+        }
+
+        coordinator.showStats(for: blog, timePeriod: timePeriod)
+    }
+}
+
+private extension StatsPeriodType {
+    static func fromString(_ string: String) -> StatsPeriodType? {
+        switch string {
+        case "day":
+            return .days
+        case "week":
+            return .weeks
+        case "month":
+            return .months
+        case "year":
+            return .years
+        case "insights":
+            return .insights
+        default:
+            return nil
+        }
     }
 }
