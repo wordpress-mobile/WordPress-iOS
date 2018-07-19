@@ -1,48 +1,53 @@
 import WordPressFlux
 
-public var holder: QuickStartTourGuide?
+/// Allows the use of multiple UINavigationControllerDelegate by resending each message
+private class NavigationControllerDelegateRepeater: NSObject, UINavigationControllerDelegate {
+    private var delegates: [UINavigationControllerDelegate] = []
 
-open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
-    @objc public static var shared = QuickStartTourGuide() {
-        didSet {
-            holder = shared
+    func add(delegate: UINavigationControllerDelegate) {
+        delegates.append(delegate)
+    }
+
+    // MARK: UINavigationControllerDelegate
+
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        for delegate in delegates {
+            delegate.navigationController?(navigationController, willShow: viewController, animated: animated)
         }
     }
 
-    @objc
-    public func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
-        print("blach")
-
-    }
-
-    public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        NSLog("oh my")
-
-
-        switch viewController {
-        case is StatsViewController:
-            dismissTestQuickStartNotice()
-        default:
-            break
+    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+        for delegate in delegates {
+            delegate.navigationController?(navigationController, didShow: viewController, animated: animated)
         }
     }
 
-    // MARK: Quick Start methods
-    @objc
-    func showTestQuickStartNotice() {
-        let notice = Notice(title: "Test Quick Start Notice", message: "Tap stats to dismiss this example message.", style: .quickStart)
-        ActionDispatcher.dispatch(NoticeAction.post(notice))
-    }
-
-    private func findNoticePresenter() -> NoticePresenter? {
-        return (UIApplication.shared.delegate as? WordPressAppDelegate)?.noticePresenter
-    }
-
-    func dismissTestQuickStartNotice() {
-        guard let presenter = findNoticePresenter() else {
-            return
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        for delegate in delegates {
+            if let transitioning = delegate.navigationController?(navigationController, animationControllerFor: operation, from: fromVC, to: toVC) {
+                return transitioning
+            }
         }
+        return nil
+    }
+}
 
-        presenter.dismissCurrentNotice()
+@objc
+class BlogNavigationController: UINavigationController {
+    @objc public let tourGuide = QuickStartTourGuide()
+    private let topVCKeypath = "visibleViewController"
+    private let delegateRepeater = NavigationControllerDelegateRepeater()
+
+    override var delegate: UINavigationControllerDelegate? {
+        set {
+            guard let newDelegate = newValue else {
+                return
+            }
+
+            delegateRepeater.add(delegate: newDelegate)
+        }
+        get {
+            return delegateRepeater
+        }
     }
 }
