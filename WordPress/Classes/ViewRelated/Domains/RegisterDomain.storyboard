@@ -45,8 +45,8 @@
                         <viewLayoutGuide key="safeArea" id="qDC-aT-Sfz"/>
                     </view>
                     <connections>
-                        <outlet property="bottomViewBottomConstraint" destination="CbP-Yl-3OZ" id="SgM-zd-bS0"/>
-                        <outlet property="bottomViewHeightConstraint" destination="j00-iE-vY5" id="TES-Ic-0gY"/>
+                        <outlet property="buttonContainerViewBottomConstraint" destination="CbP-Yl-3OZ" id="SgM-zd-bS0"/>
+                        <outlet property="buttonContainerViewHeightConstraint" destination="j00-iE-vY5" id="TES-Ic-0gY"/>
                         <outlet property="buttonViewContainer" destination="N47-hP-xDu" id="wQG-3m-IgK"/>
                     </connections>
                 </viewController>

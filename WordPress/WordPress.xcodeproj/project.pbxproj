@@ -247,7 +247,7 @@
 		4388FF0020A4E19C00783948 /* NotificationsViewController+PushPrimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388FEFF20A4E19C00783948 /* NotificationsViewController+PushPrimer.swift */; };
 		43AB7C5E1D3E70510066CB6A /* PostListFilterSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */; };
 		43D54D131DCAA070007F575F /* PostPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D54D121DCAA070007F575F /* PostPostViewController.swift */; };
-		43D74AC820F8D17A004AD934 /* HidableBottomViewOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D74AC720F8D17A004AD934 /* HidableBottomViewOwner.swift */; };
+		43D74AC820F8D17A004AD934 /* DomainSuggestionsButtonViewToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D74AC720F8D17A004AD934 /* DomainSuggestionsButtonViewToggle.swift */; };
 		43D74ACA20F8F937004AD934 /* RegisterDomainDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D74AC920F8F937004AD934 /* RegisterDomainDetailsViewController.swift */; };
 		43D74ACC20F904FC004AD934 /* RegisterDomainDetailsViewController+LocalizedStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D74ACB20F904FC004AD934 /* RegisterDomainDetailsViewController+LocalizedStrings.swift */; };
 		43D74ACE20F906DD004AD934 /* InlineEditableNameValueCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43D74ACD20F906DD004AD934 /* InlineEditableNameValueCell.xib */; };
@@ -1620,7 +1620,7 @@
 		4388FEFF20A4E19C00783948 /* NotificationsViewController+PushPrimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationsViewController+PushPrimer.swift"; sourceTree = "<group>"; };
 		43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostListFilterSettings.swift; sourceTree = "<group>"; };
 		43D54D121DCAA070007F575F /* PostPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPostViewController.swift; sourceTree = "<group>"; };
-		43D74AC720F8D17A004AD934 /* HidableBottomViewOwner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HidableBottomViewOwner.swift; sourceTree = "<group>"; };
+		43D74AC720F8D17A004AD934 /* DomainSuggestionsButtonViewToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainSuggestionsButtonViewToggle.swift; sourceTree = "<group>"; };
 		43D74AC920F8F937004AD934 /* RegisterDomainDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDomainDetailsViewController.swift; sourceTree = "<group>"; };
 		43D74ACB20F904FC004AD934 /* RegisterDomainDetailsViewController+LocalizedStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterDomainDetailsViewController+LocalizedStrings.swift"; sourceTree = "<group>"; };
 		43D74ACD20F906DD004AD934 /* InlineEditableNameValueCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InlineEditableNameValueCell.xib; sourceTree = "<group>"; };
@@ -6074,7 +6074,7 @@
 				9827B3B0201FF30700530AF5 /* SiteCreationFields.swift */,
 				B5E51B7A203477DF00151ECD /* WordPressAuthenticationManager.swift */,
 				B5326E6E203F554C007392C3 /* WordPressSupportSourceTag+Helpers.swift */,
-				43D74AC720F8D17A004AD934 /* HidableBottomViewOwner.swift */,
+				43D74AC720F8D17A004AD934 /* DomainSuggestionsButtonViewToggle.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -7565,7 +7565,7 @@
 				E1E49CE41C4902EE002393A4 /* ImmuTableViewController.swift in Sources */,
 				D88A6496208D7B0B008AE9BC /* NullStockPhotosService.swift in Sources */,
 				E616E4B31C480896002C024E /* SharingService.swift in Sources */,
-				43D74AC820F8D17A004AD934 /* HidableBottomViewOwner.swift in Sources */,
+				43D74AC820F8D17A004AD934 /* DomainSuggestionsButtonViewToggle.swift in Sources */,
 				E1FD45E01C030B3800750F4C /* AccountSettingsService.swift in Sources */,
 				E149ABF91CA1A42000A2AD2C /* InAppPurchaseStore.swift in Sources */,
 				E1D0D81616D3B86800E33F4C /* SafariActivity.m in Sources */,

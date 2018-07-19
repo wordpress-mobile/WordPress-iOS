@@ -1,10 +1,10 @@
 import UIKit
 import WordPressAuthenticator
 
-class RegisterDomainSuggestionsViewController: NUXViewController, HidableBottomViewOwner {
+class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggestionsButtonViewToggle {
 
-    @IBOutlet weak var bottomViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var bottomViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var buttonContainerViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
     private var domain: String?
 
     private var domainsTableViewController: RegisterDomainSuggestionsTableViewController?
