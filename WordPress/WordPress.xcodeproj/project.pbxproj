@@ -946,6 +946,7 @@
 		D8212CC520AA83F9008E8AE8 /* ReaderCommentAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CC420AA83F9008E8AE8 /* ReaderCommentAction.swift */; };
 		D8212CC720AA85C1008E8AE8 /* ReaderHeaderAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CC620AA85C1008E8AE8 /* ReaderHeaderAction.swift */; };
 		D8212CC920AA87E5008E8AE8 /* ReaderMenuAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8212CC820AA87E5008E8AE8 /* ReaderMenuAction.swift */; };
+		D821C817210036D9002ED995 /* ActivityContentFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D821C816210036D9002ED995 /* ActivityContentFactoryTests.swift */; };
 		D83CA3A520842CAF0060E310 /* Pageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A420842CAF0060E310 /* Pageable.swift */; };
 		D83CA3A720842CD90060E310 /* ResultsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A620842CD90060E310 /* ResultsPage.swift */; };
 		D83CA3A920842D190060E310 /* StockPhotosPageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A820842D190060E310 /* StockPhotosPageable.swift */; };
@@ -2580,6 +2581,7 @@
 		D8212CC420AA83F9008E8AE8 /* ReaderCommentAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCommentAction.swift; sourceTree = "<group>"; };
 		D8212CC620AA85C1008E8AE8 /* ReaderHeaderAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderHeaderAction.swift; sourceTree = "<group>"; };
 		D8212CC820AA87E5008E8AE8 /* ReaderMenuAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderMenuAction.swift; sourceTree = "<group>"; };
+		D821C816210036D9002ED995 /* ActivityContentFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentFactoryTests.swift; sourceTree = "<group>"; };
 		D83CA3A420842CAF0060E310 /* Pageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pageable.swift; sourceTree = "<group>"; };
 		D83CA3A620842CD90060E310 /* ResultsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsPage.swift; sourceTree = "<group>"; };
 		D83CA3A820842D190060E310 /* StockPhotosPageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosPageable.swift; sourceTree = "<group>"; };
@@ -5178,6 +5180,7 @@
 		B5416CF81C17542900006DD8 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				D821C816210036D9002ED995 /* ActivityContentFactoryTests.swift */,
 				D848CC1820FF3A2400A9038F /* FormattableNotIconTests.swift */,
 				D848CC0620FF2BE200A9038F /* NotificationContentRangeFactoryTests.swift */,
 				D848CC0220FF04FA00A9038F /* FormattableUserContentTests.swift */,
@@ -8408,6 +8411,7 @@
 				93A379EC19FFBF7900415023 /* KeychainTest.m in Sources */,
 				D800D874209997DB00E7C7E5 /* FollowingMenuItemCreatorTests.swift in Sources */,
 				E1A7CA4B1CC9FD7800373E06 /* StoreCoordinatorTests.swift in Sources */,
+				D821C817210036D9002ED995 /* ActivityContentFactoryTests.swift in Sources */,
 				931D26F719ED7F7500114F17 /* ReaderPostServiceTest.m in Sources */,
 				B5772AC61C9C84900031F97E /* GravatarServiceTests.swift in Sources */,
 				937E3AB61E3EBE1600CDA01A /* PostEditorStateTests.swift in Sources */,
