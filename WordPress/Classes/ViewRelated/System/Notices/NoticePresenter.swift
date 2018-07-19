@@ -132,11 +132,11 @@ class NoticePresenter: NSObject {
     }
 
     public func dismissCurrentNotice() {
-        guard let currentContainer = currentContainer else {
+        guard let container = currentContainer else {
             return
         }
 
-        dismiss(container: currentContainer)
+        dismiss(container: container)
     }
 
     private func dismiss(container: NoticeContainerView) {
@@ -145,6 +145,7 @@ class NoticePresenter: NSObject {
         }
 
         self.animatePresentation(fromState: {}, toState: offscreenState(for: container), completion: {
+            self.currentContainer = nil
             container.removeFromSuperview()
             self.dismiss()
         })
