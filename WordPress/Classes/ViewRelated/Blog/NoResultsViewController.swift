@@ -101,6 +101,14 @@ import WordPressAuthenticator
         accessorySubview = accessoryView
     }
 
+    /// Public method to remove No Results View from parent view.
+    ///
+    @objc func removeFromView() {
+        willMove(toParentViewController: nil)
+        view.removeFromSuperview()
+        removeFromParentViewController()
+    }
+
     /// Public method to show a 'Dismiss' button in the navigation bar in place of the 'Back' button.
     ///
     func showDismissButton() {
