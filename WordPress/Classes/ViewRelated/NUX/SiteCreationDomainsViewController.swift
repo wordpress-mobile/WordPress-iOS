@@ -2,13 +2,13 @@ import UIKit
 import WordPressAuthenticator
 import WordPressShared
 
-class SiteCreationDomainsViewController: NUXViewController, HidableBottomViewOwner {
+class SiteCreationDomainsViewController: NUXViewController, DomainSuggestionsButtonViewToggle {
 
     // MARK: - Properties
 
     // Used to hide/show the Buttom View
-    @IBOutlet weak var bottomViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var bottomViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var buttonContainerViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
 
     override var sourceTag: WordPressSupportSourceTag {
         get {
