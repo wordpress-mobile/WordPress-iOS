@@ -104,6 +104,7 @@ import WordPressAuthenticator
     /// Public method to remove No Results View from parent view.
     ///
     @objc func removeFromView() {
+        willMove(toParentViewController: nil)
         view.removeFromSuperview()
         removeFromParentViewController()
     }
