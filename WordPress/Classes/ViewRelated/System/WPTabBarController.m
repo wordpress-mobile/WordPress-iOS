@@ -205,7 +205,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 
     self.blogListViewController = [[BlogListViewController alloc] init];
-    _blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
+    _blogListNavigationController = [[BlogNavigationController alloc] initWithRootViewController:self.blogListViewController];
     _blogListNavigationController.navigationBar.translucent = NO;
     self.tourGuide = [[QuickStartTourGuide alloc] init];
     _blogListNavigationController.delegate = self.tourGuide;
