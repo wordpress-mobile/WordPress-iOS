@@ -45,7 +45,7 @@ final class FormattableNotIconTests: XCTestCase {
         XCTAssertEqual(subject?.postID, Constants.postId)
     }
 
-    func testNoticonReturnsExpoectyedValue() {
+    func testNoticonReturnsExpectedValue() {
         XCTAssertEqual(subject?.value, Constants.icon)
     }
 
