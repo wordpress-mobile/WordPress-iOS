@@ -19,6 +19,7 @@ class NoticePresenter: NSObject {
         super.init()
 
         storeReceipt = store.onChange { [weak self] in
+            self?.dismissCurrentNotice()
             self?.presentNextNoticeIfAvailable()
         }
     }
@@ -84,7 +85,7 @@ class NoticePresenter: NSObject {
         let toState = onscreenState(for: noticeContainerView)
 
         let dismiss = {
-            self.dismiss(container: noticeContainerView)
+            self.dismiss()
         }
 
         noticeView.dismissHandler = dismiss
@@ -131,21 +132,14 @@ class NoticePresenter: NSObject {
         }
     }
 
-    public func dismissCurrentNotice() {
-        guard let container = currentContainer else {
+    private func dismissCurrentNotice() {
+        guard let container = currentContainer,
+            container.superview != nil else {
             return
         }
 
-        dismiss(container: container)
-    }
-
-    private func dismiss(container: NoticeContainerView) {
-        guard container.superview != nil else {
-            return
-        }
-
+        self.currentContainer = nil
         self.animatePresentation(fromState: {}, toState: offscreenState(for: container), completion: {
-            self.currentContainer = nil
             container.removeFromSuperview()
             self.dismiss()
         })
