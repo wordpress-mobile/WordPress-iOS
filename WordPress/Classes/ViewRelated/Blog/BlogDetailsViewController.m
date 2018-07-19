@@ -1118,10 +1118,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)startTour
 {
     // find the tour guide
-    BlogNavigationController *blogNC = (BlogNavigationController *)self.navigationController;
-    QuickStartTourGuide *tourGuide = blogNC.tourGuide;
-
-    [tourGuide showTestQuickStartNotice];
+    UIViewController *blogNC = self.navigationController;
+    if ([blogNC isKindOfClass:[BlogNavigationController class]]) {
+        QuickStartTourGuide *tourGuide = ((BlogNavigationController *) blogNC).tourGuide;
+        [tourGuide showTestQuickStartNotice];
+    }
 }
 
 - (void)showActivity
