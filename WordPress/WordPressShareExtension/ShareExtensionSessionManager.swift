@@ -313,7 +313,13 @@ extension ShareExtensionSessionManager: URLSessionDelegate {
     func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
         if let error = error {
             DDLogError("Background session invalidated by the system. Session:\(session) Error:\(error).")
-            WPAppAnalytics.track(.shareExtensionError, error: error)
+
+            // We are only going to send errors to Tracks that are NOT related to the "lite" tracks client
+            // in the share extension. See https://github.com/wordpress-mobile/WordPress-iOS/issues/9789
+            // for more details.
+            if (error as NSError).description.contains("tracks/record") == false {
+                WPAppAnalytics.track(.shareExtensionError, error: error)
+            }
         } else {
             DDLogError("Background session explicitly invalidated by WPiOS. Session:\(session).")
         }
