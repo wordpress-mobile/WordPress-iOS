@@ -948,6 +948,7 @@
 		D821C817210036D9002ED995 /* ActivityContentFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D821C816210036D9002ED995 /* ActivityContentFactoryTests.swift */; };
 		D821C819210037F8002ED995 /* activity-log-activity-content.json in Resources */ = {isa = PBXBuildFile; fileRef = D821C818210037F8002ED995 /* activity-log-activity-content.json */; };
 		D821C81B21003AE9002ED995 /* FormattableContentGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D821C81A21003AE9002ED995 /* FormattableContentGroupTests.swift */; };
+		D821C81D21004724002ED995 /* NotificationBlockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D821C81C21004724002ED995 /* NotificationBlockTests.swift */; };
 		D83CA3A520842CAF0060E310 /* Pageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A420842CAF0060E310 /* Pageable.swift */; };
 		D83CA3A720842CD90060E310 /* ResultsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A620842CD90060E310 /* ResultsPage.swift */; };
 		D83CA3A920842D190060E310 /* StockPhotosPageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A820842D190060E310 /* StockPhotosPageable.swift */; };
@@ -2585,6 +2586,7 @@
 		D821C816210036D9002ED995 /* ActivityContentFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentFactoryTests.swift; sourceTree = "<group>"; };
 		D821C818210037F8002ED995 /* activity-log-activity-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "activity-log-activity-content.json"; sourceTree = "<group>"; };
 		D821C81A21003AE9002ED995 /* FormattableContentGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattableContentGroupTests.swift; sourceTree = "<group>"; };
+		D821C81C21004724002ED995 /* NotificationBlockTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationBlockTests.swift; sourceTree = "<group>"; };
 		D83CA3A420842CAF0060E310 /* Pageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pageable.swift; sourceTree = "<group>"; };
 		D83CA3A620842CD90060E310 /* ResultsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsPage.swift; sourceTree = "<group>"; };
 		D83CA3A820842D190060E310 /* StockPhotosPageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosPageable.swift; sourceTree = "<group>"; };
@@ -5185,6 +5187,7 @@
 		B5416CF81C17542900006DD8 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				D821C81C21004724002ED995 /* NotificationBlockTests.swift */,
 				D821C81A21003AE9002ED995 /* FormattableContentGroupTests.swift */,
 				D821C816210036D9002ED995 /* ActivityContentFactoryTests.swift */,
 				D848CC1820FF3A2400A9038F /* FormattableNotIconTests.swift */,
@@ -8377,6 +8380,7 @@
 				D81C2F6020F891C4002AE1F1 /* TrashCommentActionTests.swift in Sources */,
 				FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */,
 				08B6E51C1F037ADD00268F57 /* MediaFileManagerTests.swift in Sources */,
+				D821C81D21004724002ED995 /* NotificationBlockTests.swift in Sources */,
 				5981FE051AB8A89A0009E080 /* WPUserAgentTests.m in Sources */,
 				08A2AD7B1CCED8E500E84454 /* PostCategoryServiceTests.m in Sources */,
 				D88A64A8208D9733008AE9BC /* ThumbnailCollectionTests.swift in Sources */,
