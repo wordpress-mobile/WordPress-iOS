@@ -104,33 +104,6 @@ extension StatsRoute: NavigationAction {
         }
     }
 
-    private func defaultBlog() -> Blog? {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = BlogService(managedObjectContext: context)
-
-        return service.lastUsedOrFirstBlog()
-    }
-
-    private func blog(from values: [String: String]?) -> Blog? {
-        guard let domain = values?["domain"] else {
-            return nil
-        }
-
-        let context = ContextManager.sharedInstance().mainContext
-        let service = BlogService(managedObjectContext: context)
-
-        if let blog = service.blog(byHostname: domain) {
-            return blog
-        }
-
-        // Some stats URLs use a site ID instead
-        if let siteIDValue = Int(domain) {
-            return service.blog(byBlogId: NSNumber(value: siteIDValue))
-        }
-
-        return nil
-    }
-
     private func showStatsForDefaultBlog(from values: [String: String]?,
                                          with coordinator: MySitesCoordinator) {
         // It's possible that the stats route can come in without a domain

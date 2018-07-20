@@ -65,15 +65,4 @@ extension MySitesRoute: NavigationAction {
             coordinator.showManagePlugins(for: blog)
         }
     }
-
-    private func blog(from values: [String: String]?) -> Blog? {
-        guard let domain = values?["domain"] else {
-            return nil
-        }
-
-        let context = ContextManager.sharedInstance().mainContext
-        let service = BlogService(managedObjectContext: context)
-
-        return service.blog(byHostname: domain)
-    }
 }
