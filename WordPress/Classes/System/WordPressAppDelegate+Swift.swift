@@ -100,7 +100,8 @@ extension WordPressAppDelegate {
     }
 
     @objc func handleWebActivity(_ activity: NSUserActivity) {
-        guard activity.activityType == NSUserActivityTypeBrowsingWeb,
+        guard AccountHelper.isLoggedIn,
+            activity.activityType == NSUserActivityTypeBrowsingWeb,
             let url = activity.webpageURL else {
                 return
         }
