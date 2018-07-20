@@ -253,7 +253,7 @@ class Post: AbstractPost {
                 return true
             }
 
-            if (geolocation == nil && originalPost.geoLocation) != nil) || (geoLocation != nil && originalPost.geoLocation == nil) {
+            if (geolocation == nil && originalPost.geolocation != nil) || (geolocation != nil && originalPost.geolocation == nil) {
                 return true
             }
 
