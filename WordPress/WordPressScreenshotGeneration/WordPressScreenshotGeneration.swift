@@ -29,8 +29,8 @@ class WordPressScreenshotGeneration: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-
-    func testGenerateScreenshots() {
+    
+    func login() {
         let app = XCUIApplication()
 
         let logInExists = app.buttons["Log In Button"].exists
@@ -73,6 +73,10 @@ class WordPressScreenshotGeneration: XCTestCase {
         if app.buttons["cancelAlertButton"].waitForExistence(timeout: 3.0) {
             app.buttons["cancelAlertButton"].tap()
         }
+    }
+
+    func testGenerateScreenshots() {
+        let app = XCUIApplication()
 
         // Get My Site Screenshot
         // Select blog posts if on an iPad screen
