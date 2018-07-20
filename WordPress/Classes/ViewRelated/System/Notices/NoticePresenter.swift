@@ -144,8 +144,8 @@ class NoticePresenter: NSObject {
             return
         }
 
+        currentContainer = nil
         self.animatePresentation(fromState: {}, toState: offscreenState(for: container), completion: {
-            self.currentContainer = nil
             container.removeFromSuperview()
             self.dismiss()
         })
