@@ -41,8 +41,13 @@ extension MySitesRoute: Route {
 
 extension MySitesRoute: NavigationAction {
     func perform(_ values: [String: String]?) {
-        guard let coordinator = WPTabBarController.sharedInstance().mySitesCoordinator,
-            let blog = blog(from: values) else {
+        guard let coordinator = WPTabBarController.sharedInstance().mySitesCoordinator else {
+            return
+        }
+
+        guard let blog = blog(from: values) else {
+            coordinator.showMySites()
+            postFailureNotice(title: NSLocalizedString("Site not found", comment: "Error notice shown if the app can't find a specific site belonging to the user"))
             return
         }
 

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressFlux
 
 extension NavigationAction {
     func defaultBlog() -> Blog? {
@@ -26,5 +27,12 @@ extension NavigationAction {
         }
 
         return nil
+    }
+
+    func postFailureNotice(title: String) {
+        let notice = Notice(title: title,
+                            feedbackType: .error,
+                            notificationInfo: nil)
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 }
