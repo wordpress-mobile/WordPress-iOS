@@ -245,7 +245,7 @@ static NSInteger HideSearchMinSites = 3;
     NSUInteger visibleSitesCount = self.dataSource.visibleBlogsCount;
     
     // Ensure No Results VC is not shown. Will be shown later if necessary.
-    [self removeNoResultsFromView];
+    [self.noResultsViewController removeFromView];
     
     // If the user has sites, but they're all hidden...
     if (count > 0 && visibleSitesCount == 0 && !self.isEditing) {
@@ -255,14 +255,6 @@ static NSInteger HideSearchMinSites = 3;
     }
     
     [self updateSplitViewAppearanceForSiteCount:count];
-}
-
-- (void)removeNoResultsFromView
-{
-    if (self.noResultsViewController) {
-        [self.noResultsViewController.view removeFromSuperview];
-        [self.noResultsViewController removeFromParentViewController];
-    }
 }
 
 - (void)addNoResultsToView
@@ -282,7 +274,7 @@ static NSInteger HideSearchMinSites = 3;
     // If we've gone from no results to having just one site, the user has
     // added a new site so we should auto-select it
     if (self.noResultsViewController.beingPresented && siteCount == 1) {
-        [self removeNoResultsFromView];
+        [self.noResultsViewController removeFromView];
         [self bypassBlogListViewController];
     }
 
