@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -121,22 +121,19 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="22" translatesAutoresizingMaskIntoConstraints="NO" id="LUm-wG-tAL">
                                                 <rect key="frame" x="0.0" y="474" width="636" height="176"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mew-dP-u74" customClass="NUXSubmitButton" customModule="WordPressAuthenticator">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mew-dP-u74" customClass="FancyButton" customModule="WordPressUI">
                                                         <rect key="frame" x="0.0" y="0.0" width="636" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="J1M-dU-b8B"/>
                                                         </constraints>
                                                         <state key="normal" title="Share" image="icon-posts-share">
-                                                            <color key="titleColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
-                                                        </userDefinedRuntimeAttributes>
                                                         <connections>
                                                             <action selector="shareTapped" destination="0ZV-gF-7z9" eventType="touchUpInside" id="qhf-Zm-wdL"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wfC-rz-tLa" customClass="NUXSubmitButton" customModule="WordPressAuthenticator">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wfC-rz-tLa" customClass="FancyButton" customModule="WordPressUI">
                                                         <rect key="frame" x="0.0" y="66" width="636" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="vDI-tK-HOm"/>
@@ -148,7 +145,7 @@
                                                             <action selector="editTapped" destination="0ZV-gF-7z9" eventType="touchUpInside" id="nBy-5P-2fK"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WGH-Vv-Uun" customClass="NUXSubmitButton" customModule="WordPressAuthenticator">
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WGH-Vv-Uun" customClass="FancyButton" customModule="WordPressUI">
                                                         <rect key="frame" x="0.0" y="132" width="636" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="r9K-HZ-toB"/>
