@@ -24,6 +24,10 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
     }
 
     func dismissTestQuickStartNotice() {
-        ActionDispatcher.dispatch(NoticeAction.dismiss)
+        guard let presenter = findNoticePresenter() else {
+            return
+        }
+
+        presenter.dismissCurrentNotice()
     }
 }
