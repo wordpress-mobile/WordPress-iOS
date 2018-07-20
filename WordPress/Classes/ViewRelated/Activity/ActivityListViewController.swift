@@ -230,10 +230,9 @@ extension ActivityListViewController {
 private extension ActivityListViewController {
 
     func updateNoResults() {
+        noResultsViewController?.removeFromView()
         if let noResultsViewModel = viewModel.noResultsViewModel() {
             showNoResults(noResultsViewModel)
-        } else {
-            hideNoResults()
         }
     }
 
@@ -257,16 +256,6 @@ private extension ActivityListViewController {
         addChildViewController(noResultsViewController)
         noResultsViewController.didMove(toParentViewController: self)
 
-    }
-
-    func hideNoResults() {
-
-        guard let noResultsViewController = noResultsViewController else {
-            return
-        }
-
-        noResultsViewController.view.removeFromSuperview()
-        noResultsViewController.removeFromParentViewController()
     }
 
 }
