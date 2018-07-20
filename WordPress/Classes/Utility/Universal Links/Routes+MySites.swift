@@ -47,7 +47,8 @@ extension MySitesRoute: NavigationAction {
 
         guard let blog = blog(from: values) else {
             coordinator.showMySites()
-            postFailureNotice(title: NSLocalizedString("Site not found", comment: "Error notice shown if the app can't find a specific site belonging to the user"))
+            postFailureNotice(title: NSLocalizedString("Site not found",
+                                                       comment: "Error notice shown if the app can't find a specific site belonging to the user"))
             return
         }
 
