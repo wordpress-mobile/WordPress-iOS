@@ -491,6 +491,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
+
+    if ([Feature enabled:FeatureFlagQuickStart]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Quick Start", @"Name of the Quick Start feature that guides users through a few tasks to setup their new website.")
+                                                        image:[Gridicon iconOfType:GridiconTypeStatsAlt]
+                                                     callback:^{
+                                                         [weakSelf startTour];
+                                                     }]];
+    }
+
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
                                                     image:[Gridicon iconOfType:GridiconTypeStatsAlt]
                                                  callback:^{
@@ -1157,6 +1166,22 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     } else {
         [self showDetailViewController:statsView sender:self];
     }
+}
+
+- (void)startTour
+{
+    // find the tour guide
+    UITabBarController *tabBarController = self.tabBarController;
+    if ([tabBarController isKindOfClass:[WPTabBarController class]]) {
+        QuickStartTourGuide *tourGuide = ((WPTabBarController *) tabBarController).tourGuide;
+        [tourGuide showTestQuickStartNotice];
+    }
+
+//    UIViewController *blogNC = self.navigationController;
+//    if ([blogNC isKindOfClass:[ManyDelegateNavigationController class]]) {
+//        QuickStartTourGuide *tourGuide = ((ManyDelegateNavigationController *) blogNC).tourGuide;
+//        [tourGuide showTestQuickStartNotice];
+//    }
 }
 
 - (void)showActivity
