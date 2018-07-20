@@ -63,45 +63,43 @@ extension StatsRoute: NavigationAction {
                 showStatsForDefaultBlog(from: values, with: coordinator)
             }
         case .daySite:
-            if let blog = blog(from: values) {
-                coordinator.showStats(for: blog,
-                                      timePeriod: StatsPeriodType.days)
-            }
+            showStatsForBlog(from: values, timePeriod: .days, using: coordinator)
         case .weekSite:
-            if let blog = blog(from: values) {
-                coordinator.showStats(for: blog,
-                                      timePeriod: StatsPeriodType.weeks)
-            }
+            showStatsForBlog(from: values, timePeriod: .weeks, using: coordinator)
         case .monthSite:
-            if let blog = blog(from: values) {
-                coordinator.showStats(for: blog,
-                                      timePeriod: StatsPeriodType.months)
-            }
+            showStatsForBlog(from: values, timePeriod: .months, using: coordinator)
         case .yearSite:
-            if let blog = blog(from: values) {
-                coordinator.showStats(for: blog,
-                                      timePeriod: StatsPeriodType.years)
-            }
+            showStatsForBlog(from: values, timePeriod: .years, using: coordinator)
         case .insights:
-            if let blog = blog(from: values) {
-                coordinator.showStats(for: blog,
-                                      timePeriod: StatsPeriodType.insights)
-            }
+            showStatsForBlog(from: values, timePeriod: .insights, using: coordinator)
         case .dayCategory:
-            if let blog = blog(from: values) {
-                coordinator.showStats(for: blog,
-                                      timePeriod: StatsPeriodType.days)
-            }
+            showStatsForBlog(from: values, timePeriod: .days, using: coordinator)
         case .annualStats:
-            if let blog = blog(from: values) {
-                coordinator.showStats(for: blog,
-                                      timePeriod: StatsPeriodType.years)
-            }
+            showStatsForBlog(from: values, timePeriod: .years, using: coordinator)
         case .activityLog:
             if let blog = blog(from: values) {
                 coordinator.showActivityLog(for: blog)
+            } else {
+                showMySitesAndFailureNotice(using: coordinator)
             }
         }
+    }
+
+    private func showStatsForBlog(from values: [String: String]?,
+                                  timePeriod: StatsPeriodType,
+                                  using coordinator: MySitesCoordinator) {
+        if let blog = blog(from: values) {
+            coordinator.showStats(for: blog,
+                                  timePeriod: timePeriod)
+        } else {
+            showMySitesAndFailureNotice(using: coordinator)
+        }
+    }
+
+    private func showMySitesAndFailureNotice(using coordinator: MySitesCoordinator) {
+        coordinator.showMySites()
+        postFailureNotice(title: NSLocalizedString("Site not found",
+                                                   comment: "Error notice shown if the app can't find a specific site belonging to the user"))
     }
 
     private func showStatsForDefaultBlog(from values: [String: String]?,
