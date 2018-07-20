@@ -88,7 +88,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
     // MARK: - NoResults Handling
 
     private func updateNoResults() {
-        hideNoResults()
+        noResultsViewController?.removeFromView()
         if let noResultsViewModel = viewModel.noResultsViewModel {
             showNoResults(noResultsViewModel)
         }
@@ -110,17 +110,6 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         addChildViewController(noResultsViewController)
         noResultsViewController.didMove(toParentViewController: self)
-
-    }
-
-    private func hideNoResults() {
-
-        guard let noResultsViewController = noResultsViewController else {
-            return
-        }
-
-        noResultsViewController.view.removeFromSuperview()
-        noResultsViewController.removeFromParentViewController()
     }
 
 }
