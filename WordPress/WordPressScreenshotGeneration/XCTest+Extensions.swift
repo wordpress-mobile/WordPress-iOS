@@ -1,7 +1,7 @@
 import XCTest
 
 extension XCTestCase {
-    
+
     public func waitForElementToExist(element: XCUIElement, timeout: TimeInterval? = nil) {
         let timeoutValue = timeout ?? 30
         guard element.waitForExistence(timeout: timeoutValue) else {
@@ -9,7 +9,7 @@ extension XCTestCase {
             return
         }
     }
-    
+
     public func waitForElementToNotExist(element: XCUIElement, timeout: TimeInterval? = nil) {
         let notExistsPredicate = NSPredicate(format: "exists == false")
         let expectation = XCTNSPredicateExpectation(predicate: notExistsPredicate,
