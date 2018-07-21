@@ -18,12 +18,12 @@ enum PlanListViewModel {
         case .error:
             let appDelegate = WordPressAppDelegate.sharedInstance()
             if (appDelegate?.connectionAvailable)! {
-                return NoResultsViewController.Model(title: NSLocalizedString("Oops", comment: ""),
-                                                     subtitle: NSLocalizedString("There was an error loading plans", comment: ""),
-                                                     buttonText: NSLocalizedString("Contact support", comment: ""))
+                return NoResultsViewController.Model(title: NSLocalizedString("Oops", comment: "An informal exclaimation that means `something went wrong`."),
+                                                     subtitle: NSLocalizedString("There was an error loading plans", comment: "Text displayed when there is a failure loading the plan list"),
+                                                     buttonText: NSLocalizedString("Contact support", comment: "Button label for contacting support"))
             } else {
                 return NoResultsViewController.Model(title: NSLocalizedString("No connection", comment: "Title for the error view when there's no connection"),
-                                                     subtitle: NSLocalizedString("An active internet connection is required to view plans", comment: ""))
+                                                     subtitle: NSLocalizedString("An active internet connection is required to view plans", comment: "An error message shown when there is no internet connection."))
             }
         }
     }
