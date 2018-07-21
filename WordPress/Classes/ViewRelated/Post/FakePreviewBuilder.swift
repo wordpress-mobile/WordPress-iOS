@@ -41,12 +41,12 @@ class FakePreviewBuilder: NSObject {
 
 private extension FakePreviewBuilder {
     var previewTitle: String {
-        return title?.nonEmptyString() ?? NSLocalizedString("(no title)", comment: "")
+        return title?.nonEmptyString() ?? NSLocalizedString("(no title)", comment: "Placeholder text shown when a post does not have a title.")
     }
 
     var previewContent: String {
         guard var contentText = content?.nonEmptyString() else {
-            let placeholder = NSLocalizedString("No Description available for this Post", comment: "")
+            let placeholder = NSLocalizedString("No Description available for this Post", comment: "Informs the user there is no description for a post being previewed.")
             return "<h1>\(placeholder)</h1>"
         }
         contentText = contentText.replacingOccurrences(of: "\n", with: "<br>")
@@ -54,12 +54,12 @@ private extension FakePreviewBuilder {
     }
 
     var previewTags: String {
-        let tagsLabel = NSLocalizedString("Tags: %@", comment: "")
+        let tagsLabel = NSLocalizedString("Tags: %@", comment: "A label title. Tags associated with a post are shown in order after the colon.  The %@ is a placeholder for the tags.")
         return String(format: tagsLabel, tags.joined(separator: ", "))
     }
 
     var previewCategories: String {
-        let categoriesLabel = NSLocalizedString("Categories: %@", comment: "")
+        let categoriesLabel = NSLocalizedString("Categories: %@", comment: "A label title. Categories associated with a post are shown in order after the colon.  The %@ is a placeholder for the categories.")
         return String(format: categoriesLabel, categories.joined(separator: ", "))
     }
 }
