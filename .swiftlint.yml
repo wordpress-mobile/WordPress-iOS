@@ -151,3 +151,9 @@ custom_rules:
     regex: '\.textAlignment(\s*)=(\s*).right'
     message: "When forcing text alignment to the right, be sure to handle the Right-to-Left layout case properly, and then silence this warning with this line `// swiftlint:disable:next inverse_text_alignment`"
     severity: warning
+
+  localization_missing_comment:
+    name: "Localization Missing Comment"
+    regex: 'NSLocalizedString([^,]+,\s+comment:\s*"")'
+    message: "Localized strings should include a description giving context for how the string is used."
+    severity: warning
