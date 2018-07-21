@@ -93,7 +93,7 @@ struct TimeZoneSelectorViewModel: Observable {
                 return WPNoResultsView.Model(
                     title: NSLocalizedString("Oops", comment: "Title for the view when there's an error loading time zones"),
                     message: NSLocalizedString("There was an error loading time zones", comment: "Error message when time zones can't be loaded"),
-                    buttonTitle: NSLocalizedString("Contact support", comment: "")
+                    buttonTitle: NSLocalizedString("Contact support", comment: "Title of a button. A call to action to contact support for assistance.")
                 )
             } else {
                 return WPNoResultsView.Model(
