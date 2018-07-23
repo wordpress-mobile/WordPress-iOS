@@ -5,7 +5,7 @@ class PluginViewModel: Observable {
     private enum State {
         case plugin(Plugin)
         case directoryEntry(PluginDirectoryEntry)
-        case empty
+        case loading
     }
 
     private var state: State {
@@ -49,12 +49,14 @@ class PluginViewModel: Observable {
     var storeReceipt: Receipt?
     let changeDispatcher = Dispatcher<Void>()
     let queryReceipt: Receipt?
+    let store: PluginStore
 
     init(plugin: Plugin, capabilities: SitePluginCapabilities, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         self.state = .plugin(plugin)
         self.capabilities = capabilities
         self.site = site
         self.isInstallingPlugin = false
+        self.store = store
 
         queryReceipt = nil
         storeReceipt = store.onChange { [weak self] in
@@ -67,37 +69,35 @@ class PluginViewModel: Observable {
         }
     }
 
-    init(directoryEntry: PluginDirectoryEntry, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
+    convenience init(directoryEntry: PluginDirectoryEntry, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
+        let state: State
         if let plugin = store.getPlugin(slug: directoryEntry.slug, site: site) {
-            self.state = .plugin(plugin)
+            state = .plugin(plugin)
         } else {
-            self.state = .directoryEntry(directoryEntry)
+            state = .directoryEntry(directoryEntry)
         }
-        self.capabilities = store.getPlugins(site: site)?.capabilities
-        self.site = site
-        self.isInstallingPlugin = false
-
-        queryReceipt = store.query(.directoryEntry(slug: directoryEntry.slug))
-
-        setupStoreReceipt(with: directoryEntry.slug, store: store, site: site)
+        self.init(with: directoryEntry.slug, state: state, site: site, store: store)
     }
 
-    init(slug: String, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
+    convenience init(slug: String, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
+        let state: State
         if let plugin = store.getPlugin(slug: slug, site: site) {
-            self.state = .plugin(plugin)
+            state = .plugin(plugin)
         } else {
-            self.state = .empty
+            state = .loading
         }
+        self.init(with: slug, state: state, site: site, store: store)
+    }
+
+    private init(with slug: String, state: State, site: JetpackSiteRef, store: PluginStore) {
+        self.state = state
         self.capabilities = store.getPlugins(site: site)?.capabilities
         self.site = site
         self.isInstallingPlugin = false
+        self.store = store
 
         queryReceipt = store.query(.directoryEntry(slug: slug))
 
-        setupStoreReceipt(with: slug, store: store, site: site)
-    }
-
-    private func setupStoreReceipt(with slug: String, store: PluginStore, site: JetpackSiteRef) {
         storeReceipt = store.onChange { [weak self] in
             guard let entry = store.getPluginDirectoryEntry(slug: slug) else {
                 self?.dismiss?()
@@ -195,6 +195,26 @@ class PluginViewModel: Observable {
         }
 
         return versionRow
+    }
+
+    func noResultsViewModel() -> NoResultsViewController.Model? {
+        switch state {
+        case .loading:
+            return NoResultsViewController.Model(title: NSLocalizedString("Loading Plugin...", comment: "Text displayed while loading an specific plugin"))
+        default:
+            return nil
+        }
+
+//        let appDelegate = WordPressAppDelegate.sharedInstance()
+//        if (appDelegate?.connectionAvailable)! {
+//            return NoResultsViewController.Model(title: NSLocalizedString("Oops", comment: "Title for the view when there's an error loading Activity Log"),
+//                                                 subtitle: NSLocalizedString("There was an error loading activities", comment: "Text displayed when there is a failure loading the activity feed"),
+//                                                 buttonText: NSLocalizedString("Contact support", comment: "Button label for contacting support"))
+//        } else {
+//            return NoResultsViewController.Model(title: NSLocalizedString("No connection", comment: "Title for the error view when there's no connection"),
+//                                                 subtitle: NSLocalizedString("An active internet connection is required to view activities", comment: ""))
+//
+//        }
     }
 
     private func headerRow(directoryEntry: PluginDirectoryEntry?) -> ImmuTableRow? {
