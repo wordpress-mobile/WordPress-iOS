@@ -74,31 +74,24 @@ class WordPressScreenshotGeneration: XCTestCase {
             app.buttons["cancelAlertButton"].tap()
         }
 
-        // Get Reader Screenshot
-        app.tabBars["Main Navigation"].buttons["readerTabButton"].tap(withNumberOfTaps: 2,
-                                                                      numberOfTouches: 2)
-        sleep(1)
-        app.tables.cells.element(boundBy: 1).tap() // tap Discover
-        sleep(5)
-        snapshot("1-Reader")
+        // Get My Site Screenshot
+        // Select blog posts if on an iPad screen
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            app.tables.cells["Blog Post Row"].tap()
+            sleep(2)
+        }
+        snapshot("3-My-Site")
 
-        // Get Notifications screenshot
-        app.tabBars["Main Navigation"].buttons["notificationsTabButton"].tap()
-        snapshot("2-Notifications")
-
-        // Get Posts screenshot
-        app.tabBars["Main Navigation"].buttons["mySitesTabButton"].tap()
+        // Get Editor Screenshot
         app.tables.cells["Blog Post Row"].tap() // tap Blog Posts
         sleep(2)
-        snapshot("3-BlogPosts")
 
-        // Get Editor screenshot
         // Tap on the first post to bring up the editor
         app.tables["PostsTable"].tap()
 
         // The title field gets focus automatically
         sleep(2)
-        snapshot("4-PostEditor")
+        snapshot("1-PostEditor")
 
         app.navigationBars["Azctec Editor Navigation Bar"].buttons["Close"].tap()
         // Dismiss Unsaved Changes Alert if it shows up
@@ -112,8 +105,21 @@ class WordPressScreenshotGeneration: XCTestCase {
         if UIDevice.current.userInterfaceIdiom == .phone {
             app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
         }
-        app.tables["Blog Details Table"].cells.element(boundBy: 0).tap()
+        app.tables["Blog Details Table"].cells.element(boundBy: 0).tap() // tap Stats
+        app.segmentedControls.element(boundBy: 0).buttons.element(boundBy: 1).tap() // tap Days
+        sleep(5)
+        snapshot("4-Stats")
+
+        // Get Reader Screenshot
+        app.tabBars["Main Navigation"].buttons["readerTabButton"].tap(withNumberOfTaps: 2,
+                                                                      numberOfTouches: 2)
         sleep(1)
-        snapshot("5-Stats")
+        app.tables.cells.element(boundBy: 1).tap() // tap Discover
+        sleep(5)
+        snapshot("2-Reader")
+
+        // Get Notifications screenshot
+        app.tabBars["Main Navigation"].buttons["notificationsTabButton"].tap()
+        snapshot("5-Notifications")
     }
 }

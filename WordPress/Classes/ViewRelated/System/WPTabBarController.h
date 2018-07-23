@@ -20,6 +20,7 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 @class ReaderCoordinator;
 @class ReaderMenuViewController;
 @class WPSplitViewController;
+@class QuickStartTourGuide;
 
 @interface WPTabBarController : UITabBarController
 
@@ -28,6 +29,7 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 @property (nonatomic, strong, readonly) ReaderMenuViewController *readerMenuViewController;
 @property (nonatomic, strong, readonly) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong, readonly) MeViewController *meViewController;
+@property (nonatomic, strong, readonly) QuickStartTourGuide *tourGuide;
 
 @property (nonatomic, strong, readonly) MySitesCoordinator *mySitesCoordinator;
 @property (nonatomic, strong, readonly) ReaderCoordinator *readerCoordinator;
@@ -45,7 +47,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 - (void)showNotificationsTab;
 - (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia;
 - (void)showReaderTabForPost:(NSNumber *)postId onBlog:(NSNumber *)blogId;
-
 - (void)switchMySitesTabToAddNewSite;
 - (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog;
 - (void)switchMySitesTabToMediaForBlog:(Blog *)blog;
