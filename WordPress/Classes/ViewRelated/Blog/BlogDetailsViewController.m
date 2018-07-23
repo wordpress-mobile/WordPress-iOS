@@ -1177,6 +1177,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [tourGuide showTestQuickStartNotice];
     }
 
+    QuickStartChecklistView *checklist = [[QuickStartChecklistView alloc] init];
+    [self.navigationController pushViewController:checklist animated:YES];
+
+
 //    UIViewController *blogNC = self.navigationController;
 //    if ([blogNC isKindOfClass:[ManyDelegateNavigationController class]]) {
 //        QuickStartTourGuide *tourGuide = ((ManyDelegateNavigationController *) blogNC).tourGuide;
