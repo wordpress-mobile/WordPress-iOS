@@ -10,6 +10,8 @@ class PluginViewController: UITableViewController {
     }()
 
     fileprivate let viewModel: PluginViewModel
+    private var noResultsViewController: NoResultsViewController?
+
     var viewModelReceipt: Receipt?
 
     init(plugin: Plugin, capabilities: SitePluginCapabilities, site: JetpackSiteRef) {
@@ -84,6 +86,7 @@ class PluginViewController: UITableViewController {
     private func bindViewModel() {
         handler.viewModel = viewModel.tableViewModel
         title = viewModel.title
+        updateNoResults()
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -110,5 +113,37 @@ class PluginViewController: UITableViewController {
 
     private enum Constants {
         static var tableViewHeaderHeight: CGFloat = 17.5
+    }
+}
+
+// MARK: - NoResults Handling
+
+private extension PluginViewController {
+    func updateNoResults() {
+        noResultsViewController?.removeFromView()
+        if let noResultsViewModel = viewModel.noResultsViewModel() {
+            showNoResults(noResultsViewModel)
+        }
+    }
+
+    func showNoResults(_ viewModel: NoResultsViewController.Model) {
+
+        if noResultsViewController == nil {
+            noResultsViewController = NoResultsViewController.controller()
+//            noResultsViewController?.delegate = self
+        }
+
+        guard let noResultsViewController = noResultsViewController else {
+            return
+        }
+
+        noResultsViewController.bindViewModel(viewModel)
+
+        if noResultsViewController.view.superview != tableView {
+            tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        }
+
+        addChildViewController(noResultsViewController)
+        noResultsViewController.didMove(toParentViewController: self)
     }
 }
