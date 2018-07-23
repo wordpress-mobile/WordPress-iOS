@@ -5,6 +5,7 @@ class PluginViewModel: Observable {
     private enum State {
         case plugin(Plugin)
         case directoryEntry(PluginDirectoryEntry)
+        case empty
     }
 
     private var state: State {
@@ -78,8 +79,27 @@ class PluginViewModel: Observable {
 
         queryReceipt = store.query(.directoryEntry(slug: directoryEntry.slug))
 
+        setupStoreReceipt(with: directoryEntry.slug, store: store, site: site)
+    }
+
+    init(slug: String, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
+        if let plugin = store.getPlugin(slug: slug, site: site) {
+            self.state = .plugin(plugin)
+        } else {
+            self.state = .empty
+        }
+        self.capabilities = store.getPlugins(site: site)?.capabilities
+        self.site = site
+        self.isInstallingPlugin = false
+
+        queryReceipt = store.query(.directoryEntry(slug: slug))
+
+        setupStoreReceipt(with: slug, store: store, site: site)
+    }
+
+    private func setupStoreReceipt(with slug: String, store: PluginStore, site: JetpackSiteRef) {
         storeReceipt = store.onChange { [weak self] in
-            guard let entry = store.getPluginDirectoryEntry(slug: directoryEntry.slug) else {
+            guard let entry = store.getPluginDirectoryEntry(slug: slug) else {
                 self?.dismiss?()
                 return
             }
@@ -91,7 +111,7 @@ class PluginViewModel: Observable {
             }
 
             self?.capabilities = store.getPlugins(site: site)?.capabilities
-            self?.isInstallingPlugin = store.isInstallingPlugin(site: site, slug: directoryEntry.slug)
+            self?.isInstallingPlugin = store.isInstallingPlugin(site: site, slug: slug)
         }
     }
 
