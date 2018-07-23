@@ -63,6 +63,9 @@ class SignupEpilogueViewController: NUXViewController {
             vc.currentUsername = updatedUsername ?? epilogueUserInfo?.username
             vc.displayName = updatedDisplayName ?? epilogueUserInfo?.fullName
             vc.delegate = self
+
+            // Empty Back Button
+            navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .plain, target: nil, action: nil)
         }
     }
 
