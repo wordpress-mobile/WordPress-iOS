@@ -24,6 +24,12 @@ class PluginViewController: UITableViewController {
         commonInit()
     }
 
+    init(slug: String, site: JetpackSiteRef) {
+        viewModel = PluginViewModel(slug: slug, site: site)
+        super.init(style: .grouped)
+        commonInit()
+    }
+
     private func commonInit() {
         viewModel.present = { [weak self] viewController in
             self?.present(viewController, animated: true)
