@@ -24,6 +24,10 @@ class MySitesCoordinator: NSObject {
         mySitesNavigationController.viewControllers = [blogListViewController]
     }
 
+    func showMySites() {
+        prepareToNavigate()
+    }
+
     func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection? = nil) {
         prepareToNavigate()
 
