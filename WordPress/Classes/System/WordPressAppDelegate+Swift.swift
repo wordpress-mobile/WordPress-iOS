@@ -100,7 +100,8 @@ extension WordPressAppDelegate {
     }
 
     @objc func handleWebActivity(_ activity: NSUserActivity) {
-        guard activity.activityType == NSUserActivityTypeBrowsingWeb,
+        guard AccountHelper.isLoggedIn,
+            activity.activityType == NSUserActivityTypeBrowsingWeb,
             let url = activity.webpageURL else {
                 return
         }
@@ -153,16 +154,6 @@ extension WordPressAppDelegate {
 // MARK: - Helpers
 
 extension WordPressAppDelegate {
-    @objc var noSelfHostedBlogs: Bool {
-        let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-
-        return blogService.blogCountSelfHosted() == 0 && blogService.hasAnyJetpackBlogs() == false
-    }
-
-    @objc var noWordPressDotComAccount: Bool {
-        return !AccountHelper.isDotcomAvailable()
-    }
 
     @objc var currentlySelectedScreen: String {
         // Check if the post editor or login view is up
@@ -255,7 +246,7 @@ extension WordPressAppDelegate {
     }
 
     @objc func toggleExtraDebuggingIfNeeded() {
-        if noSelfHostedBlogs && noWordPressDotComAccount {
+        if !AccountHelper.isLoggedIn {
             // When there are no blogs in the app the settings screen is unavailable.
             // In this case, enable extra_debugging by default to help troubleshoot any issues.
             guard UserDefaults.standard.object(forKey: "orig_extra_debug") == nil else {
