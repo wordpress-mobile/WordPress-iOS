@@ -6,6 +6,7 @@ class PluginViewModel: Observable {
         case plugin(Plugin)
         case directoryEntry(PluginDirectoryEntry)
         case loading
+        case error
     }
 
     private var state: State {
@@ -41,6 +42,15 @@ class PluginViewModel: Observable {
 
         return nil
     }
+
+    private let noResultsLoadingModel = NoResultsViewController.Model(title: String.Loading.title)
+    
+    private let noResultsUnknownErrorModel = NoResultsViewController.Model(title: String.UnknownError.title,
+                                                                           subtitle: String.UnknownError.description,
+                                                                           buttonText: String.UnknownError.buttonTitle)
+
+    private let noResultsConnectivityErrorModel = NoResultsViewController.Model(title: String.NoConnectionError.title,
+                                                                                subtitle: String.NoConnectionError.description)
 
 
     let site: JetpackSiteRef
@@ -100,7 +110,7 @@ class PluginViewModel: Observable {
 
         storeReceipt = store.onChange { [weak self] in
             guard let entry = store.getPluginDirectoryEntry(slug: slug) else {
-                self?.dismiss?()
+                self?.state = .error
                 return
             }
 
@@ -200,21 +210,22 @@ class PluginViewModel: Observable {
     func noResultsViewModel() -> NoResultsViewController.Model? {
         switch state {
         case .loading:
-            return NoResultsViewController.Model(title: NSLocalizedString("Loading Plugin...", comment: "Text displayed while loading an specific plugin"))
+            return noResultsLoadingModel
+        case .error:
+            return getNoResultsErrorModel()
         default:
             return nil
         }
+    }
 
-//        let appDelegate = WordPressAppDelegate.sharedInstance()
-//        if (appDelegate?.connectionAvailable)! {
-//            return NoResultsViewController.Model(title: NSLocalizedString("Oops", comment: "Title for the view when there's an error loading Activity Log"),
-//                                                 subtitle: NSLocalizedString("There was an error loading activities", comment: "Text displayed when there is a failure loading the activity feed"),
-//                                                 buttonText: NSLocalizedString("Contact support", comment: "Button label for contacting support"))
-//        } else {
-//            return NoResultsViewController.Model(title: NSLocalizedString("No connection", comment: "Title for the error view when there's no connection"),
-//                                                 subtitle: NSLocalizedString("An active internet connection is required to view activities", comment: ""))
-//
-//        }
+    private func getNoResultsErrorModel() -> NoResultsViewController.Model {
+        let appDelegate = WordPressAppDelegate.sharedInstance()
+        let hasConnection = appDelegate?.connectionAvailable ?? true //defaults to unknown error.
+        if hasConnection {
+            return noResultsUnknownErrorModel
+        } else {
+            return noResultsConnectivityErrorModel
+        }
     }
 
     private func headerRow(directoryEntry: PluginDirectoryEntry?) -> ImmuTableRow? {
@@ -553,4 +564,22 @@ class PluginViewModel: Observable {
     static var immutableRows: [ImmuTableRow.Type] {
         return [SwitchRow.self, DestructiveButtonRow.self, NavigationItemRow.self, TextRow.self, TextWithButtonRow.self, PluginHeaderRow.self, LinkRow.self, ExpandableRow.self]
     }
+}
+
+private extension String {
+    enum UnknownError {
+        static let title = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading Activity Log")
+        static let description = NSLocalizedString("There was an error loading activities", comment: "Text displayed when there is a failure loading the activity feed")
+        static let buttonTitle = NSLocalizedString("Contact support", comment: "Button label for contacting support")
+    }
+
+    enum NoConnectionError {
+        static let title = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
+        static let description = NSLocalizedString("An active internet connection is required to view activities", comment: "")
+    }
+
+    enum Loading {
+        static let title = NSLocalizedString("Loading Plugin...", comment: "Text displayed while loading an specific plugin")
+    }
+
 }
