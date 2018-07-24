@@ -136,23 +136,34 @@ private extension PluginViewController {
     }
 
     func showNoResults(_ viewModel: NoResultsViewController.Model) {
-
-        if noResultsViewController == nil {
-            noResultsViewController = NoResultsViewController.controller()
-            noResultsViewController?.delegate = self
-        }
-
-        guard let noResultsViewController = noResultsViewController else {
-            return
-        }
+        let noResultsViewController = getNoResultsViewController()
 
         noResultsViewController.bindViewModel(viewModel)
 
-        if noResultsViewController.view.superview != tableView {
-            tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        addAsSubviewIfNeeded(noResultsViewController.view)
+        addChildController(noResultsViewController)
+    }
+
+    private func addAsSubviewIfNeeded(_ view: UIView) {
+        if view.superview != tableView {
+            tableView.addSubview(withFadeAnimation: view)
+        }
+    }
+
+    private func addChildController(_ controller: UIViewController) {
+        addChildViewController(controller)
+        controller.didMove(toParentViewController: self)
+    }
+
+    private func getNoResultsViewController() -> NoResultsViewController {
+        if let noResultsViewController = self.noResultsViewController {
+            return noResultsViewController
         }
 
-        addChildViewController(noResultsViewController)
-        noResultsViewController.didMove(toParentViewController: self)
+        let noResultsViewController = NoResultsViewController.controller()
+        noResultsViewController.delegate = self
+        self.noResultsViewController = noResultsViewController
+        
+        return noResultsViewController
     }
 }
