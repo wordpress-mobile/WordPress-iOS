@@ -20,9 +20,9 @@ class PostPostViewController: UIViewController {
     @IBOutlet var siteIconView: UIImageView!
     @IBOutlet var siteNameLabel: UILabel!
     @IBOutlet var siteUrlLabel: UILabel!
-    @IBOutlet var shareButton: UIButton!
-    @IBOutlet var editButton: UIButton!
-    @IBOutlet var viewButton: UIButton!
+    @IBOutlet var shareButton: FancyButton!
+    @IBOutlet var editButton: FancyButton!
+    @IBOutlet var viewButton: FancyButton!
     @IBOutlet var navBar: UINavigationBar!
     @IBOutlet var postInfoView: UIView!
     @IBOutlet var actionsStackView: UIStackView!
@@ -46,6 +46,11 @@ class PostPostViewController: UIViewController {
         return .lightContent
     }
 
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupActionButtons()
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -77,6 +82,20 @@ class PostPostViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         WPAnalytics.track(.postEpilogueDisplayed)
+    }
+
+    private func setupActionButtons() {
+        shareButton.secondaryTitleColor = WPStyleGuide.wordPressBlue()
+        shareButton.secondaryNormalBackgroundColor = .white
+        shareButton.secondaryHighlightBackgroundColor = .white
+
+        editButton.secondaryTitleColor = .white
+        editButton.secondaryNormalBackgroundColor = .clear
+        editButton.secondaryHighlightBackgroundColor = .clear
+
+        viewButton.secondaryTitleColor = .white
+        viewButton.secondaryNormalBackgroundColor = .clear
+        viewButton.secondaryHighlightBackgroundColor = .clear
     }
 
     @objc func animatePostPost() {
