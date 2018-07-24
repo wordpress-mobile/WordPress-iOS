@@ -59,14 +59,12 @@ class PluginViewModel: Observable {
     var storeReceipt: Receipt?
     let changeDispatcher = Dispatcher<Void>()
     let queryReceipt: Receipt?
-    let store: PluginStore
 
     init(plugin: Plugin, capabilities: SitePluginCapabilities, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         self.state = .plugin(plugin)
         self.capabilities = capabilities
         self.site = site
         self.isInstallingPlugin = false
-        self.store = store
 
         queryReceipt = nil
         storeReceipt = store.onChange { [weak self] in
@@ -104,7 +102,6 @@ class PluginViewModel: Observable {
         self.capabilities = store.getPlugins(site: site)?.capabilities
         self.site = site
         self.isInstallingPlugin = false
-        self.store = store
 
         queryReceipt = store.query(.directoryEntry(slug: slug))
 
