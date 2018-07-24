@@ -163,7 +163,7 @@ private extension PluginViewController {
         let noResultsViewController = NoResultsViewController.controller()
         noResultsViewController.delegate = self
         self.noResultsViewController = noResultsViewController
-        
+
         return noResultsViewController
     }
 }
