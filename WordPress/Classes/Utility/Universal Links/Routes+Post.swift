@@ -6,23 +6,16 @@ struct NewPostRoute: Route {
 }
 
 struct NewPostForSiteRoute: Route {
-    let path = "/post/:\(NewPostRoutePlaceholder.site.rawValue)"
+    let path = "/post/:domain"
     let action: NavigationAction = NewPostNavigationAction()
 }
 
 struct NewPostNavigationAction: NavigationAction {
     func perform(_ values: [String: String]? = nil) {
-        if let site = values?[NewPostRoutePlaceholder.site.rawValue] {
-            let context = ContextManager.sharedInstance().mainContext
-            let service = BlogService(managedObjectContext: context)
-            let blog = service.blog(byHostname: site)
+        if let blog = blog(from: values) {
             WPTabBarController.sharedInstance().showPostTab(for: blog)
         } else {
             WPTabBarController.sharedInstance().showPostTab()
         }
     }
-}
-
-private enum NewPostRoutePlaceholder: String {
-    case site
 }
