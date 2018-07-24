@@ -4,6 +4,7 @@
 @class NotificationsViewController;
 @class WordPressAuthenticationManager;
 @class HockeyManager;
+@class NoticePresenter;
 @class Reachability;
 @class ReaderPostsViewController;
 @class WPUserAgent;
@@ -26,6 +27,7 @@
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
 @property (nonatomic, strong, readwrite) WordPressAuthenticationManager *authManager;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
+@property (nonatomic, strong, readwrite) NoticePresenter                *noticePresenter;
 
 + (WordPressAppDelegate *)sharedInstance;
 
