@@ -8,6 +8,7 @@ class QuickStartChecklistCell: UITableViewCell {
             titleLabel?.text = tour?.title
             descriptionLabel?.text = tour?.description
             iconView?.image = tour?.icon.imageWithTintColor(WPStyleGuide.greyLighten10())
+            accessoryType = .disclosureIndicator
         }
     }
 
