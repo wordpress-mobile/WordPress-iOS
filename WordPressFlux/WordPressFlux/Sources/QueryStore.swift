@@ -58,32 +58,30 @@ open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
                 return inMemoryState
             }
 
-            return initialState
+            // If we purged the in-memory `State` and the `Store` is being asked to do
+            // work again, let's try to reinitialise it from disk.
+            guard let codableInitialState = initialState as? Codable else {
+                // If it's not `Codable`, there's nothing we can do.
+                return initialState
+            }
 
-//            // If we purged the in-memory `State` and the `Store` is being asked to do
-//            // work again, let's try to reinitialise it from disk.
-//            guard let codableInitialState = initialState as? Codable else {
-//                // If it's not `Codable`, there's nothing we can do.
-//                return initialState
-//            }
-//
-//            do {
-//                let persistenceURL = try type(of: self).persistenceURL()
-//
-//                if let persistedState = try type(of: codableInitialState).loadJSON(from: persistenceURL) as? State {
-//                    // When reading from disk has succeeded, set the result as `inMemoryState` and return it.
-//                    inMemoryState = persistedState
-//                    return persistedState
-//                } else {
-//                    // If there isn't a state for us to read from disk, but there wasn't any error thrown,
-//                    // let's just return the initial state too.
-//                    return initialState
-//                }
-//            } catch {
-//                // If reading persisted state fails, let's just fail over to `initialState`.
-//                logError("[\(type(of: self)) Error] \(error)")
-//                return initialState
-//            }
+            do {
+                let persistenceURL = try type(of: self).persistenceURL()
+
+                if let persistedState = try type(of: codableInitialState).loadJSON(from: persistenceURL) as? State {
+                    // When reading from disk has succeeded, set the result as `inMemoryState` and return it.
+                    inMemoryState = persistedState
+                    return persistedState
+                } else {
+                    // If there isn't a state for us to read from disk, but there wasn't any error thrown,
+                    // let's just return the initial state too.
+                    return initialState
+                }
+            } catch {
+                // If reading persisted state fails, let's just fail over to `initialState`.
+                logError("[\(type(of: self)) Error] \(error)")
+                return initialState
+            }
         }
         set {
             inMemoryState = newValue
