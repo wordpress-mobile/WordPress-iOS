@@ -40,4 +40,8 @@ class MockContentCoordinator: ContentCoordinator {
     func displayFullscreenImage(_ image: UIImage) {
 
     }
+
+    func displayPlugin(withSlug pluginSlug: String, on siteSlug: String) throws {
+
+    }
 }
