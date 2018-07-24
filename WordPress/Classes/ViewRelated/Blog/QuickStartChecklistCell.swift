@@ -7,7 +7,7 @@ class QuickStartChecklistCell: UITableViewCell {
         didSet {
             titleLabel?.text = tour?.title
             descriptionLabel?.text = tour?.description
-            iconView?.image = tour?.icon
+            iconView?.image = tour?.icon.imageWithTintColor(WPStyleGuide.greyLighten10())
         }
     }
 
