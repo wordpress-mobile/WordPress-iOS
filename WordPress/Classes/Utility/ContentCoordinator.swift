@@ -9,7 +9,7 @@ protocol ContentCoordinator {
     func displayStreamWithSiteID(_ siteID: NSNumber?) throws
     func displayWebViewWithURL(_ url: URL)
     func displayFullscreenImage(_ image: UIImage)
-    func displayPlugin(withSlug pluginSlug: String, on siteSlug: String)
+    func displayPlugin(withSlug pluginSlug: String, on siteSlug: String) throws
 }
 
 
@@ -96,14 +96,20 @@ struct DefaultContentCoordinator: ContentCoordinator {
         controller?.present(imageViewController, animated: true, completion: nil)
     }
 
-    func displayPlugin(withSlug pluginSlug: String, on siteSlug: String) {
-        let service = BlogService(managedObjectContext: mainContext)
-        guard let blog = service.blog(byHostname: siteSlug), let jetpack = JetpackSiteRef(blog: blog) else {
-            return
+    func displayPlugin(withSlug pluginSlug: String, on siteSlug: String) throws {
+        guard let jetpack = jetpackSiteReff(with: siteSlug) else {
+            throw DisplayError.missingParameter
         }
-
         let pluginVC = PluginViewController(slug: pluginSlug, site: jetpack)
         controller?.navigationController?.pushViewController(pluginVC, animated: true)
+    }
+
+    private func jetpackSiteReff(with slug: String) -> JetpackSiteRef? {
+        let service = BlogService(managedObjectContext: mainContext)
+        guard let blog = service.blog(byHostname: slug), let jetpack = JetpackSiteRef(blog: blog) else {
+            return nil
+        }
+        return jetpack
     }
 
     private func blogWithBlogID(_ blogID: NSNumber?) -> Blog? {
