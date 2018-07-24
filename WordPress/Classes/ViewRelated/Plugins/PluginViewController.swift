@@ -116,6 +116,15 @@ class PluginViewController: UITableViewController {
     }
 }
 
+// MARK: - NoResultsViewControllerDelegate
+
+extension PluginViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        let supportVC = SupportTableViewController()
+        supportVC.showFromTabBar()
+    }
+}
+
 // MARK: - NoResults Handling
 
 private extension PluginViewController {
@@ -130,7 +139,7 @@ private extension PluginViewController {
 
         if noResultsViewController == nil {
             noResultsViewController = NoResultsViewController.controller()
-//            noResultsViewController?.delegate = self
+            noResultsViewController?.delegate = self
         }
 
         guard let noResultsViewController = noResultsViewController else {

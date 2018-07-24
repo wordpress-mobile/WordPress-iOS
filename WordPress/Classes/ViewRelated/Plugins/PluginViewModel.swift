@@ -44,7 +44,7 @@ class PluginViewModel: Observable {
     }
 
     private let noResultsLoadingModel = NoResultsViewController.Model(title: String.Loading.title)
-    
+
     private let noResultsUnknownErrorModel = NoResultsViewController.Model(title: String.UnknownError.title,
                                                                            subtitle: String.UnknownError.description,
                                                                            buttonText: String.UnknownError.buttonTitle)
@@ -224,7 +224,7 @@ class PluginViewModel: Observable {
         if hasConnection {
             return noResultsUnknownErrorModel
         } else {
-            return noResultsConnectivityErrorModel
+            return noResultsUnknownErrorModel
         }
     }
 
@@ -568,18 +568,17 @@ class PluginViewModel: Observable {
 
 private extension String {
     enum UnknownError {
-        static let title = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading Activity Log")
-        static let description = NSLocalizedString("There was an error loading activities", comment: "Text displayed when there is a failure loading the activity feed")
+        static let title = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading the plugin")
+        static let description = NSLocalizedString("There was an error loading this plugin", comment: "Text displayed when there is a failure loading the plugin")
         static let buttonTitle = NSLocalizedString("Contact support", comment: "Button label for contacting support")
     }
 
     enum NoConnectionError {
         static let title = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
-        static let description = NSLocalizedString("An active internet connection is required to view activities", comment: "")
+        static let description = NSLocalizedString("An active internet connection is required to view plugins", comment: "")
     }
 
     enum Loading {
         static let title = NSLocalizedString("Loading Plugin...", comment: "Text displayed while loading an specific plugin")
     }
-
 }
