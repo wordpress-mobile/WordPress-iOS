@@ -42,6 +42,7 @@ extension NSNotification.Name {
     private var userEmail: String?
     private var deviceID: String?
     private var haveUserIdentity = false
+    private var alertNameField: UITextField?
 
     private static var zdAppID: String?
     private static var zdUrl: String?
@@ -749,6 +750,8 @@ private extension ZendeskUtils {
                 textField.clearButtonMode = .always
                 textField.placeholder = LocalizedText.namePlaceholder
                 textField.text = ZendeskUtils.sharedInstance.userName
+                textField.delegate = ZendeskUtils.sharedInstance
+                ZendeskUtils.sharedInstance.alertNameField = textField
             }
         }
 
@@ -885,6 +888,7 @@ private extension ZendeskUtils {
         static let profileEmailKey = "email"
         static let profileNameKey = "name"
         static let userDefaultsZendeskUnreadNotifications = "wp_zendesk_unread_notifications"
+        static let nameFieldCharacterLimit = 50
     }
 
     // Zendesk expects these as NSNumber. However, they are defined as UInt64 to satisfy 32-bit devices (ex: iPhone 5).
@@ -931,6 +935,22 @@ extension ZendeskUtils: ZDKHelpCenterConversationsUIDelegate {
     func conversationsBarButtonImage() -> UIImage! {
         // Nothing to do here, but this method is required for ZDKHelpCenterConversationsUIDelegate.
         return UIImage()
+    }
+
+}
+
+// MARK: - UITextFieldDelegate
+
+extension ZendeskUtils: UITextFieldDelegate {
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard textField == ZendeskUtils.sharedInstance.alertNameField,
+        let text = textField.text else {
+            return true
+        }
+
+        let newLength = text.count + string.count - range.length
+        return newLength <= Constants.nameFieldCharacterLimit
     }
 
 }
