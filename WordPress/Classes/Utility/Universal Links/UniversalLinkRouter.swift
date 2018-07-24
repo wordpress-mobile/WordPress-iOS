@@ -92,13 +92,19 @@ struct UniversalLinkRouter {
     func handle(url: URL, shouldTrack track: Bool = true) {
         let matches = matcher.routesMatching(url)
 
+        if track {
+            trackDeepLink(matchCount: matches.count, url: url)
+        }
+
         for matchedRoute in matches {
             matchedRoute.action.perform(matchedRoute.values)
         }
+    }
 
-        if track && matches.count > 0 {
-            WPAppAnalytics.track(.deepLinked,
-                                 withProperties: ["url": url.absoluteString])
-        }
+    private func trackDeepLink(matchCount: Int, url: URL) {
+        let stat: WPAnalyticsStat = (matchCount > 0) ? .deepLinked : .deepLinkFailed
+        let properties = ["url": url.absoluteString]
+
+        WPAppAnalytics.track(stat, withProperties: properties)
     }
 }
