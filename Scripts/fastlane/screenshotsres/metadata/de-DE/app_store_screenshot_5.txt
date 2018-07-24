@@ -1,1 +1,2 @@
-Erhalte Benachrichtigungen in Echtzeit
+Erhalte Benachrichtigungen
+in Echtzeit
