@@ -224,7 +224,7 @@ class PluginViewModel: Observable {
         if hasConnection {
             return noResultsUnknownErrorModel
         } else {
-            return noResultsUnknownErrorModel
+            return noResultsConnectivityErrorModel
         }
     }
 
