@@ -17,4 +17,21 @@ import Foundation
 
         return available
     }
+
+    @objc static var isLoggedIn: Bool {
+        get {
+            return !(noSelfHostedBlogs && noWordPressDotComAccount)
+        }
+    }
+
+    @objc static var noSelfHostedBlogs: Bool {
+        let context = ContextManager.sharedInstance().mainContext
+        let blogService = BlogService(managedObjectContext: context)
+
+        return blogService.blogCountSelfHosted() == 0 && blogService.hasAnyJetpackBlogs() == false
+    }
+
+    @objc static var noWordPressDotComAccount: Bool {
+        return !AccountHelper.isDotcomAvailable()
+    }
 }
