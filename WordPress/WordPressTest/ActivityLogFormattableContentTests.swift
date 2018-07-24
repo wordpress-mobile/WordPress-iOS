@@ -22,14 +22,6 @@ final class ActivityLogFormattableContentTests: XCTestCase {
     let parent = MockActivityParent()
     let actionsParser = ActivityActionsParser()
 
-    override func setUp() {
-        super.setUp()
-    }
-
-    override func tearDown() {
-        super.tearDown()
-    }
-
     func testPingbackContentIsParsedCorrectly() {
         let dictionary = testData.getPingbackDictionary()
 
