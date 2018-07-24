@@ -72,5 +72,4 @@ WordPress/Images.xcassets/AppIcon-Internal.appiconset
 Scripts/fastlane/Preview.html
 Scripts/fastlane/report.xml
 Scripts/fastlane/README.md
-Scripts/fastlane/.env*
 Scripts/Preview.html
