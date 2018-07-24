@@ -575,7 +575,7 @@ private extension String {
 
     enum NoConnectionError {
         static let title = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
-        static let description = NSLocalizedString("An active internet connection is required to view plugins", comment: "")
+        static let description = NSLocalizedString("An active internet connection is required to view plugins", comment: "Error message when the user tries to visualize a plugin without internet connection")
     }
 
     enum Loading {
