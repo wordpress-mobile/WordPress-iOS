@@ -11,14 +11,14 @@ struct QuickStartCreateTour: QuickStartTour {
     let key = "quick-start-create-tour"
     let title = NSLocalizedString("Create your site", comment: "Title of a Quick Start Tour")
     let description = NSLocalizedString("Get your site up and running", comment: "Description of a Quick Start Tour")
-    let icon = Gridicon.iconOfType(.globe)
+    let icon = Gridicon.iconOfType(.plus)
 }
 
 struct QuickStartViewTour: QuickStartTour {
     let key = "quick-start-view-tour"
     let title = NSLocalizedString("View your site", comment: "Title of a Quick Start Tour")
     let description = NSLocalizedString("Preview your new site to see what your visitors will see.", comment: "Description of a Quick Start Tour")
-    let icon = Gridicon.iconOfType(.globe)
+    let icon = Gridicon.iconOfType(.external)
 }
 
 struct QuickStartThemeTour: QuickStartTour {
@@ -32,7 +32,7 @@ struct QuickStartCustomizeTour: QuickStartTour {
     let key = "quick-start-customize-tour"
     let title = NSLocalizedString("Customize your site", comment: "Title of a Quick Start Tour")
     let description = NSLocalizedString("Change colors, fonts, and images for a perfectly personalized site.", comment: "Description of a Quick Start Tour")
-    let icon = Gridicon.iconOfType(.themes)
+    let icon = Gridicon.iconOfType(.customize)
 }
 
 struct QuickStartShareTour: QuickStartTour {
@@ -53,5 +53,5 @@ struct QuickStartFollowTour: QuickStartTour {
     let key = "quick-start-follow-tour"
     let title = NSLocalizedString("Follow other sites", comment: "Title of a Quick Start Tour")
     let description = NSLocalizedString("Find sites that speak to you, and follow them to get updates when they publish.", comment: "Description of a Quick Start Tour")
-    let icon = Gridicon.iconOfType(.reader)
+    let icon = Gridicon.iconOfType(.readerFollow)
 }
