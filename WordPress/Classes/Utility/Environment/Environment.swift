@@ -15,13 +15,9 @@ struct Environment {
 
     // MARK: - Static current environment implementation
 
-    /// The current environment
+    /// The current environment. Use this to access the app globals.
     ///
-    static var current: Environment {
-        return _current ?? replaceEnvironment()
-    }
-
-    private static var _current: Environment?
+    static private(set) var current = Environment()
 
     // MARK: - Initialization
 
@@ -39,14 +35,13 @@ extension Environment {
     ///
     @discardableResult
     static func replaceEnvironment(
-        appRatingUtility: AppRatingUtilityType = AppRatingUtility.shared,
-        mainContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) -> Environment {
+        appRatingUtility: AppRatingUtilityType = Environment.current.appRatingUtility,
+        mainContext: NSManagedObjectContext = Environment.current.mainContext) -> Environment {
 
-        let current = Environment(
+        current = Environment(
             appRatingUtility: appRatingUtility,
             mainContext: mainContext
         )
-        _current = current
         return current
     }
 }
