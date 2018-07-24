@@ -19,14 +19,15 @@ struct AppBannerRoute: Route {
 
 extension AppBannerRoute: NavigationAction {
     func perform(_ values: [String: String]?) {
-        guard let fragment = values?[MatchedRouteURLComponentKey.fragment.rawValue] else {
+        guard let fragmentValue = values?[MatchedRouteURLComponentKey.fragment.rawValue],
+        let fragment = fragmentValue.removingPercentEncoding else {
             return
         }
 
         // Convert the fragment into a URL and ask the link router to handle
         // it like a normal route.
         var components = URLComponents()
-        components.path = "/" + fragment
+        components.path = fragment
 
         if let url = components.url {
             UniversalLinkRouter.shared.handle(url: url)
