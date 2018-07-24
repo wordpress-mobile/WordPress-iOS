@@ -37,7 +37,7 @@ struct ActivityContentRouter: ContentRouter {
             }
             let siteSlug = pluginRange.siteSlug
             let pluginSlug = pluginRange.pluginSlug
-            coordinator.displayPlugin(withSlug: pluginSlug, on: siteSlug)
+            try? coordinator.displayPlugin(withSlug: pluginSlug, on: siteSlug)
         default:
             coordinator.displayWebViewWithURL(url)
         }
