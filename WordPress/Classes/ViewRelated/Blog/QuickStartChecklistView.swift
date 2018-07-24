@@ -7,7 +7,7 @@ class QuickStartChecklistView: UITableViewController {
         let tableView = UITableView(frame: .zero)
         tableView.dataSource = dataSource
         self.tableView = tableView
-        
+
         let cellNib = UINib(nibName: "QuickStartChecklistCell", bundle: Bundle(for: QuickStartChecklistCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: QuickStartChecklistCell.reuseIdentifier)
     }
