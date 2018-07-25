@@ -19,7 +19,7 @@ final class NotificationBlockTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        subject = NotificationBlock(dictionary: mockDictionary(), actions: mockActions(), parent: loadLikeNotification())
+        subject = NotificationBlock(dictionary: mockDictionary(), parent: loadLikeNotification())
     }
 
     override func tearDown() {
@@ -49,15 +49,6 @@ final class NotificationBlockTests: XCTestCase {
         let textOverride = subject?.textOverride
 
         XCTAssertNil(textOverride)
-    }
-
-    func testActionsContainsActionsProvided() {
-        let actions = subject!.actions
-
-        let actionIds = actions!.map { $0.identifier }
-        let mockActionIds = mockActions().map { $0.identifier }
-
-        XCTAssertEqual(actionIds, mockActionIds)
     }
 
     func testKindReturnsExpectedKind() {
@@ -106,27 +97,6 @@ final class NotificationBlockTests: XCTestCase {
         let notificationID = subject!.notificationID
 
         XCTAssertEqual(notificationID, Expectations.notificationID)
-    }
-
-    func testActionReturnsExpectedAction() {
-        let approveIdentifier = Expectations.approveAction.identifier
-        let action = subject!.action(id: approveIdentifier)
-
-        XCTAssertEqual(action?.identifier, approveIdentifier)
-    }
-
-    func testActionOnReturnsExpectation() {
-        let approveIdentifier = Expectations.approveAction.identifier
-        let on = subject!.isActionOn(id: approveIdentifier)
-
-        XCTAssertEqual(on, Expectations.approveAction.on)
-    }
-
-    func testActionEnabledReturnsExpectation() {
-        let approveIdentifier = Expectations.approveAction.identifier
-        let enabled = subject!.isActionEnabled(id: approveIdentifier)
-
-        XCTAssertEqual(enabled, Expectations.approveAction.enabled)
     }
 
     private func mockDictionary() -> [String: AnyObject] {
