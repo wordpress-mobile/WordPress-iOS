@@ -33,8 +33,8 @@ platform :ios do
       "fr-FR" => {},
       "id" => {},
       "it" => {},
-      "ja" => {},
-      "ko" => {},
+      "ja" => {font: "/Library/Fonts/Arial Unicode.ttf", text_size: 60},
+      "ko" => {font: "/Library/Fonts/Arial Unicode.ttf", text_size: 60},
       "no" => {},
       "nl-NL" => {},
       "pt-BR" => {},
@@ -43,8 +43,8 @@ platform :ios do
       "sv" => {},
       "th" => {},
       "tr" => {},
-      "zh-Hans" => {},
-      "zh-Hant" => {}
+      "zh-Hans" => {font: "/Library/Fonts/Arial Unicode.ttf", text_size: 60},
+      "zh-Hant" => {font: "/Library/Fonts/Arial Unicode.ttf", text_size: 60}
     }
 
     config_data = [
