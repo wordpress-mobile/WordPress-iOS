@@ -3,6 +3,11 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 77
+
+- @nheagy 2018-07-25
+- Added `QuickStartCompletedTour` for tracking completed Quick Start tours
+
 ## WordPress 76
 
 - @frosty 2018-05-16

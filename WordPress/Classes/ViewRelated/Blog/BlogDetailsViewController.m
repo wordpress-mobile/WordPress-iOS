@@ -1178,7 +1178,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     QuickStartChecklistView *checklist = [[QuickStartChecklistView alloc] init];
-    checklist.dotComID = self.blog.dotComID;
+    checklist.blog = self.blog;
     [self.navigationController pushViewController:checklist animated:YES];
 }
 
