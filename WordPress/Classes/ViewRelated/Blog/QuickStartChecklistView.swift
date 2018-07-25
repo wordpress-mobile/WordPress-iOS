@@ -41,20 +41,27 @@ class QuickStartChecklistView: UITableViewController {
 
 private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
     private var blogID: Int
+    private var completedTours = Set<String>()
 
     init(blogID: Int) {
         self.blogID = blogID
-        // load storage here
+
+        super.init()
+        getCompletedTours()
     }
 
     func getCompletedTours() {
         let context = ContextManager.sharedInstance().mainContext
         let fetchRequest = NSFetchRequest<QuickStartCompletedTour>(entityName: QuickStartCompletedTour.entityName())
-        fetchRequest.predicate = NSPredicate(format: "blog.blogID = %@", blogID)
+        fetchRequest.predicate = NSPredicate(format: "blog.blogID = %d", blogID)
 
-        let results = try? context.fetch(fetchRequest)
+        guard let results = try? context.fetch(fetchRequest) else {
+            return
+        }
 
-        // todo: remember which are done, so they look crossed out
+        for result in results {
+            completedTours.insert(result.tourID)
+        }
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -63,7 +70,11 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: QuickStartChecklistCell.reuseIdentifier) as? QuickStartChecklistCell {
-            cell.tour = QuickStartTourGuide.checklistTours[indexPath.row]
+            let tour = QuickStartTourGuide.checklistTours[indexPath.row]
+            cell.tour = tour
+            if completedTours.contains(tour.key) {
+                cell.completed = true
+            }
             return cell
         }
         return UITableViewCell()
