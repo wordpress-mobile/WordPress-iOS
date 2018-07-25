@@ -503,12 +503,18 @@ extension NotificationDetailsViewController {
     var shouldAttachReplyView: Bool {
         // Attach the Reply component only if the noficiation has a comment, and it can be replied-to
         //
-        guard let block = note.blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
-            return false
+        if FeatureFlag.extractNotifications.enabled == true {
+            guard let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
+                return false
+            }
+            return block.action(id: ReplyToCommentAction.actionIdentifier())?.on ?? false
+        } else {
+            guard let block = note.blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
+                return false
+            }
+            return block.isActionOn(.Reply)
         }
 
-        //return block.isActionOn(.Reply)
-        return block.action(id: ReplyToCommentAction.actionIdentifier())?.on ?? false
     }
 
     func storeNotificationReplyIfNeeded() {
@@ -602,9 +608,14 @@ private extension NotificationDetailsViewController {
 
 
 
-// MARK: - UITableViewCell Subclass Setup
+// MARK: - UITableViewCell Subclass Setup (To be removed)
 //
 private extension NotificationDetailsViewController {
+    private func rememberRemoveExtension() {
+        //Please remove this whole extension when the Notification extraction feature flag is removed
+        _ = FeatureFlag.extractNotifications.enabled
+    }
+
     func setupCell(_ cell: NoteBlockTableViewCell, blockGroup: NotificationBlockGroup) {
         switch cell {
         case let cell as NoteBlockHeaderTableViewCell:

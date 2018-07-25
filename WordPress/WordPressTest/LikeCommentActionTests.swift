@@ -165,15 +165,21 @@ final class LikeCommentActionTests: XCTestCase {
         XCTAssertEqual(action?.icon?.accessibilityHint, LikeComment.TitleHints.unlike)
     }
 
-    func testCommentNotificationHasTrashAction() {
+    func testCommentNotificationHasActions() {
         let commentNotification = utility.loadCommentNotification()
         let commentContent: FormattableCommentContent? = commentNotification.contentGroup(ofKind: .comment)?.blockOfKind(.comment)
         XCTAssertNotNil(commentContent)
 
         let trashAction = commentContent?.action(id: TrashCommentAction.actionIdentifier())
         let approveAction = commentContent?.action(id: ApproveCommentAction.actionIdentifier())
+        let replyAction = commentContent?.action(id: ReplyToCommentAction.actionIdentifier())
+        let likeAction = commentContent?.action(id: LikeCommentAction.actionIdentifier())
+        let markAsSpam = commentContent?.action(id: MarkAsSpamAction.actionIdentifier())
 
         XCTAssertNotNil(trashAction)
         XCTAssertNotNil(approveAction)
+        XCTAssertNotNil(replyAction)
+        XCTAssertNotNil(likeAction)
+        XCTAssertNotNil(markAsSpam)
     }
 }
