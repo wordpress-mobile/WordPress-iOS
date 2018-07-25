@@ -41,7 +41,7 @@ class PlanDetailViewController: UIViewController {
         let label = UILabel()
         label.font = WPFontManager.systemSemiBoldFont(ofSize: 13.0)
         label.textColor = WPStyleGuide.validGreen()
-        label.text = NSLocalizedString("Current Plan", comment: "").localizedUppercase
+        label.text = NSLocalizedString("Current Plan", comment: "Label title. Refers to the current WordPress.com plan for a user's site.").localizedUppercase
         label.translatesAutoresizingMaskIntoConstraints = false
 
         // Wrapper view required for spacing to work out correctly, as the header stackview

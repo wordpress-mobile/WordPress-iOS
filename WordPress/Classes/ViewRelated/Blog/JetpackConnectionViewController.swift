@@ -78,7 +78,7 @@ open class JetpackConnectionViewController: UITableViewController {
             let alertController = UIAlertController(title: nil,
                                                     message: message,
                                                     preferredStyle: .alert)
-            alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: ""))
+            alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Verb. A button title. Tapping cancels an action."))
             alertController.addDestructiveActionWithTitle(NSLocalizedString("Disconnect",
                                                                             comment: "Title for button that disconnects Jetpack from the site"),
                                                           handler: { action in

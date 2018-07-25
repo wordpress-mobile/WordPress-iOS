@@ -188,7 +188,7 @@ extension ActivityListViewController: ActivityRewindPresenter {
         let alertController = UIAlertController(title: title,
                                                 message: message,
                                                 preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: ""))
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Verb. A button title."))
         alertController.addDestructiveActionWithTitle(NSLocalizedString("Confirm Rewind",
                                                                         comment: "Confirm Rewind button title"),
                                                       handler: { action in
