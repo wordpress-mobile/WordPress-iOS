@@ -27,16 +27,16 @@ class NotificationBlock: Equatable {
 
     /// Available Actions collection.
     ///
-    //fileprivate let actions: [String: AnyObject]?
+    fileprivate let actions_old: [String: AnyObject]?
     let actions: [FormattableContentAction]?
 
     /// Action Override Values
     ///
-//    fileprivate var actionsOverride = [Action: Bool]() {
-//        didSet {
-//            parent?.didChangeOverrides()
-//        }
-//    }
+    fileprivate var actionsOverride = [Action: Bool]() {
+        didSet {
+            parent?.didChangeOverrides()
+        }
+    }
 
     /// Helper used by the +Interface Extension.
     ///
@@ -62,6 +62,7 @@ class NotificationBlock: Equatable {
         let rawRanges   = dictionary[BlockKeys.Ranges] as? [[String: AnyObject]]
 
         actions = commandActions
+        actions_old = dictionary[BlockKeys.Actions] as? [String: AnyObject]
         media   = NotificationMedia.mediaFromArray(rawMedia)
         meta    = dictionary[BlockKeys.Meta] as? [String: AnyObject]
         ranges  = NotificationRange.rangesFromArray(rawRanges)
@@ -87,6 +88,7 @@ class NotificationBlock: Equatable {
         self.actions = nil
         self.meta = nil
         self.type = nil
+        self.actions_old = nil
     }
 }
 
@@ -185,6 +187,43 @@ extension NotificationBlock {
     }
 }
 
+extension NotificationBlock { // Old implementation
+    /// Allows us to set a local override for a remote value. This is used to fake the UI, while
+    /// there's a BG call going on.
+    ///
+    func setOverrideValue(_ value: Bool, forAction action: Action) {
+        actionsOverride[action] = value
+    }
+
+    /// Removes any local (temporary) value that might have been set by means of *setActionOverrideValue*.
+    ///
+    func removeOverrideValueForAction(_ action: Action) {
+        actionsOverride.removeValue(forKey: action)
+    }
+
+    /// Returns the Notification Block status for a given action. Will return any *Override* that might be set, if any.
+    ///
+    fileprivate func valueForAction(_ action: Action) -> Bool? {
+        if let overrideValue = actionsOverride[action] {
+            return overrideValue
+        }
+
+        let value = actions_old?[action.rawValue] as? NSNumber
+        return value?.boolValue
+    }
+
+    /// Returns *true* if a given action is available.
+    ///
+    func isActionEnabled(_ action: Action) -> Bool {
+        return valueForAction(action) != nil
+    }
+
+    /// Returns *true* if a given action is toggled on. (I.e.: Approval = On >> the comment is currently approved).
+    ///
+    func isActionOn(_ action: Action) -> Bool {
+        return valueForAction(action) ?? false
+    }
+}
 
 
 // MARK: - NotificationBlock Methods
@@ -280,6 +319,17 @@ extension NotificationBlock {
         case image      // Includes Badges and Images
         case user
         case comment
+    }
+
+    /// Known kinds of Actions
+    ///
+    enum Action: String {
+        case Approve            = "approve-comment"
+        case Follow             = "follow"
+        case Like               = "like-comment"
+        case Reply              = "replyto-comment"
+        case Spam               = "spam-comment"
+        case Trash              = "trash-comment"
     }
 
     /// Parsing Keys
