@@ -89,8 +89,8 @@ class BodyContentGroup: FormattableContentGroup {
         var properties = NotificationContentRange.Properties(range: textRange)
         properties.url = url
 
-        let ranges = [
-            FormattableNoticonRange(value: "\u{f442}", properties: NotificationContentRange.Properties(range: zeroRange)),
+        let ranges: [FormattableContentRange] = [
+            FormattableNoticonRange(value: "\u{f442}", range: zeroRange),
             NotificationContentRange(kind: .link, properties: properties)
         ]
 
