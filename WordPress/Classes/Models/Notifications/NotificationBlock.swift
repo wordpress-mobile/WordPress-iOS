@@ -27,8 +27,7 @@ class NotificationBlock: Equatable {
 
     /// Available Actions collection.
     ///
-    fileprivate let actions_old: [String: AnyObject]?
-    let actions: [FormattableContentAction]?
+    fileprivate let actions: [String: AnyObject]?
 
     /// Action Override Values
     ///
@@ -57,12 +56,11 @@ class NotificationBlock: Equatable {
 
     /// Designated Initializer.
     ///
-    init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], parent note: Notification) {
+    init(dictionary: [String: AnyObject], parent note: Notification) {
         let rawMedia    = dictionary[BlockKeys.Media] as? [[String: AnyObject]]
         let rawRanges   = dictionary[BlockKeys.Ranges] as? [[String: AnyObject]]
 
-        actions = commandActions
-        actions_old = dictionary[BlockKeys.Actions] as? [String: AnyObject]
+        actions = dictionary[BlockKeys.Actions] as? [String: AnyObject]
         media   = NotificationMedia.mediaFromArray(rawMedia)
         meta    = dictionary[BlockKeys.Meta] as? [String: AnyObject]
         ranges  = NotificationRange.rangesFromArray(rawRanges)
@@ -88,7 +86,6 @@ class NotificationBlock: Equatable {
         self.actions = nil
         self.meta = nil
         self.type = nil
-        self.actions_old = nil
     }
 }
 
@@ -130,8 +127,7 @@ extension NotificationBlock {
     /// Returns YES if the associated comment (if any) is approved. NO otherwise.
     ///
     var isCommentApproved: Bool {
-        let identifier = ApproveCommentAction.actionIdentifier()
-        return isActionOn(id: identifier) || !isActionEnabled(id: identifier)
+        return isActionOn(.Approve) || !isActionEnabled(.Approve)
     }
 
     /// Comment ID, if any.
@@ -187,7 +183,11 @@ extension NotificationBlock {
     }
 }
 
-extension NotificationBlock { // Old implementation
+
+
+// MARK: - NotificationBlock Methods
+//
+extension NotificationBlock {
     /// Allows us to set a local override for a remote value. This is used to fake the UI, while
     /// there's a BG call going on.
     ///
@@ -208,7 +208,7 @@ extension NotificationBlock { // Old implementation
             return overrideValue
         }
 
-        let value = actions_old?[action.rawValue] as? NSNumber
+        let value = actions?[action.rawValue] as? NSNumber
         return value?.boolValue
     }
 
@@ -222,31 +222,6 @@ extension NotificationBlock { // Old implementation
     ///
     func isActionOn(_ action: Action) -> Bool {
         return valueForAction(action) ?? false
-    }
-}
-
-
-// MARK: - NotificationBlock Methods
-//
-extension NotificationBlock {
-    /// Gets a command by identifier
-    ///
-    func action(id: Identifier) -> FormattableContentAction? {
-        return actions?.filter {
-            $0.identifier == id
-        }.first
-    }
-
-    /// Indicated if a command is active
-    ///
-    func isActionOn(id: Identifier) -> Bool {
-        return action(id: id)?.on ?? false
-    }
-
-    /// Indicates if a command is enabled
-    ///
-    func isActionEnabled(id: Identifier) -> Bool {
-        return action(id: id)?.enabled ?? false
     }
 
     // Dynamic Attribute Cache: Used internally by the Interface Extension, as an optimization.
@@ -300,12 +275,9 @@ extension NotificationBlock {
     ///
     class func blocksFromArray(_ blocks: [[String: AnyObject]], parent: Notification) -> [NotificationBlock] {
         return blocks.compactMap {
-            let actions = actionParser.parse($0[BlockKeys.Actions] as? [String: AnyObject])
-            return NotificationBlock(dictionary: $0, actions: actions, parent: parent)
+            return NotificationBlock(dictionary: $0, parent: parent)
         }
     }
-
-    private static let actionParser = NotificationActionParser()
 }
 
 
@@ -356,6 +328,10 @@ extension NotificationBlock {
         static let Reply        = "reply_comment"
         static let Home         = "home"
     }
+}
+
+extension NotificationBlock: ActionableObject {
+    
 }
 
 

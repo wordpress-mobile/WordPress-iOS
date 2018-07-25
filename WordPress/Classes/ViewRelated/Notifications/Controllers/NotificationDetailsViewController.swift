@@ -246,7 +246,7 @@ extension NotificationDetailsViewController: UIViewControllerRestoration {
         let context = ContextManager.sharedInstance().mainContext
         guard let noteURI = coder.decodeObject(forKey: Restoration.noteIdKey) as? URL,
             let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: noteURI) else {
-            return nil
+                return nil
         }
 
         let notification = try? context.existingObject(with: objectID)
@@ -544,7 +544,7 @@ private extension NotificationDetailsViewController {
             suggestionsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             suggestionsTableView.topAnchor.constraint(equalTo: view.topAnchor),
             suggestionsTableView.bottomAnchor.constraint(equalTo: replyTextView.topAnchor)
-        ])
+            ])
     }
 
     var shouldAttachSuggestionsView: Bool {
@@ -677,8 +677,8 @@ private extension NotificationDetailsViewController {
         cell.accessoryType = hasHomeURL ? .disclosureIndicator : .none
         cell.name = userBlock.text
         cell.blogTitle = hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome?.host
-        cell.isFollowEnabled = userBlock.isActionEnabled(id: FollowAction.actionIdentifier())
-        cell.isFollowOn = userBlock.isActionOn(id: FollowAction.actionIdentifier())
+        cell.isFollowEnabled = userBlock.isActionEnabled(.Follow)
+        cell.isFollowOn = userBlock.isActionOn(.Follow)
 
         cell.onFollowClick = { [weak self] in
             self?.followSiteWithBlock(userBlock)
@@ -758,14 +758,14 @@ private extension NotificationDetailsViewController {
         // Setup: Properties
         // Note: Approve Action is actually a synonym for 'Edit' (Based on Calypso's basecode)
         //
-        cell.isReplyEnabled     = UIDevice.isPad() && commentBlock.isActionOn(id: ReplyToCommentAction.actionIdentifier())
-        cell.isLikeEnabled      = commentBlock.isActionEnabled(id: LikeCommentAction.actionIdentifier())
-        cell.isApproveEnabled   = commentBlock.isActionEnabled(id: ApproveCommentAction.actionIdentifier())
-        cell.isTrashEnabled     = commentBlock.isActionEnabled(id: TrashCommentAction.actionIdentifier())
-        cell.isSpamEnabled      = commentBlock.isActionEnabled(id: MarkAsSpamAction.actionIdentifier())
-        cell.isEditEnabled      = commentBlock.isActionOn(id: ApproveCommentAction.actionIdentifier())
-        cell.isLikeOn           = commentBlock.isActionOn(id: LikeCommentAction.actionIdentifier())
-        cell.isApproveOn        = commentBlock.isActionOn(id: ApproveCommentAction.actionIdentifier())
+        cell.isReplyEnabled     = UIDevice.isPad() && commentBlock.isActionOn(.Reply)
+        cell.isLikeEnabled      = commentBlock.isActionEnabled(.Like)
+        cell.isApproveEnabled   = commentBlock.isActionEnabled(.Approve)
+        cell.isTrashEnabled     = commentBlock.isActionEnabled(.Trash)
+        cell.isSpamEnabled      = commentBlock.isActionEnabled(.Spam)
+        cell.isEditEnabled      = commentBlock.isActionOn(.Approve)
+        cell.isLikeOn           = commentBlock.isActionOn(.Like)
+        cell.isApproveOn        = commentBlock.isActionOn(.Approve)
 
         // Setup: Callbacks
         cell.onReplyClick = { [weak self] _ in
@@ -914,7 +914,7 @@ private extension NotificationDetailsViewController {
         cell.isFollowEnabled = userBlock.isActionEnabled(id: FollowAction.actionIdentifier())
         cell.isFollowOn = userBlock.isActionOn(id: FollowAction.actionIdentifier())
 
-         cell.onFollowClick = { [weak self] in
+        cell.onFollowClick = { [weak self] in
             self?.followSiteWithBlock(userBlock)
         }
 
@@ -1076,6 +1076,7 @@ private extension NotificationDetailsViewController {
 }
 
 
+
 // MARK: - Notification Helpers
 //
 extension NotificationDetailsViewController {
@@ -1213,7 +1214,7 @@ private extension NotificationDetailsViewController {
             //
             UIView.animate(withDuration: Media.duration, delay: Media.delay, options: Media.options, animations: { [weak self] in
                 self?.tableView.reloadRows(at: [indexPath], with: .fade)
-            }, completion: nil)
+                }, completion: nil)
         }
 
         mediaDownloader.downloadMedia(urls: imageUrls, maximumWidth: maxMediaEmbedWidth, completion: completion)
@@ -1252,19 +1253,19 @@ private extension NotificationDetailsViewController {
 // MARK: - Action Handlers
 //
 private extension NotificationDetailsViewController {
-    func followSiteWithBlock(_ block: ActionableObject) {
+    func followSiteWithBlock(_ block: FormattableUserContent) {
         UINotificationFeedbackGenerator().notificationOccurred(.success)
 
         actionsService.followSiteWithBlock(block)
         WPAppAnalytics.track(.notificationsSiteFollowAction, withBlogID: block.metaSiteID)
     }
 
-    func unfollowSiteWithBlock(_ block: ActionableObject) {
+    func unfollowSiteWithBlock(_ block: FormattableUserContent) {
         actionsService.unfollowSiteWithBlock(block)
         WPAppAnalytics.track(.notificationsSiteUnfollowAction, withBlogID: block.metaSiteID)
     }
 
-    func likeCommentWithBlock(_ block: ActionableObject) {
+    func likeCommentWithBlock(_ block: FormattableCommentContent) {
         guard let likeAction = block.action(id: LikeCommentAction.actionIdentifier()) else {
             return
         }
@@ -1273,7 +1274,7 @@ private extension NotificationDetailsViewController {
         WPAppAnalytics.track(.notificationsCommentLiked, withBlogID: block.metaSiteID)
     }
 
-    func unlikeCommentWithBlock(_ block: ActionableObject) {
+    func unlikeCommentWithBlock(_ block: FormattableCommentContent) {
         guard let likeAction = block.action(id: LikeCommentAction.actionIdentifier()) else {
             return
         }
@@ -1282,7 +1283,7 @@ private extension NotificationDetailsViewController {
         WPAppAnalytics.track(.notificationsCommentUnliked, withBlogID: block.metaSiteID)
     }
 
-    func approveCommentWithBlock(_ block: ActionableObject) {
+    func approveCommentWithBlock(_ block: FormattableCommentContent) {
         guard let approveAction = block.action(id: ApproveCommentAction.actionIdentifier()) else {
             return
         }
@@ -1292,7 +1293,7 @@ private extension NotificationDetailsViewController {
         WPAppAnalytics.track(.notificationsCommentApproved, withBlogID: block.metaSiteID)
     }
 
-    func unapproveCommentWithBlock(_ block: ActionableObject) {
+    func unapproveCommentWithBlock(_ block: FormattableCommentContent) {
         guard let approveAction = block.action(id: ApproveCommentAction.actionIdentifier()) else {
             return
         }
@@ -1302,7 +1303,7 @@ private extension NotificationDetailsViewController {
         WPAppAnalytics.track(.notificationsCommentUnapproved, withBlogID: block.metaSiteID)
     }
 
-    func spamCommentWithBlock(_ block: ActionableObject) {
+    func spamCommentWithBlock(_ block: FormattableCommentContent) {
         precondition(onDeletionRequestCallback != nil)
 
         guard let spamAction = block.action(id: MarkAsSpamAction.actionIdentifier()) else {
@@ -1323,7 +1324,7 @@ private extension NotificationDetailsViewController {
         _ = navigationController?.popToRootViewController(animated: true)
     }
 
-    func trashCommentWithBlock(_ block: ActionableObject) {
+    func trashCommentWithBlock(_ block: FormattableCommentContent) {
         precondition(onDeletionRequestCallback != nil)
 
         guard let trashAction = block.action(id: TrashCommentAction.actionIdentifier()) else {
@@ -1344,7 +1345,7 @@ private extension NotificationDetailsViewController {
         _ = navigationController?.popToRootViewController(animated: true)
     }
 
-    func replyCommentWithBlock(_ block: ActionableObject, content: String) {
+    func replyCommentWithBlock(_ block: FormattableCommentContent, content: String) {
         guard let replyAction = block.action(id: ReplyToCommentAction.actionIdentifier()) else {
             return
         }
@@ -1359,14 +1360,14 @@ private extension NotificationDetailsViewController {
                 SVProgressHUD.showDismissibleSuccess(withStatus: message)
             } else {
                 generator.notificationOccurred(.error)
-                self?.displayReplyErrorWithBlock(block, content: content)
+                self?.displayReplyError(with: block, content: content)
             }
         }
 
         replyAction.execute(context: actionContext)
     }
 
-    func updateCommentWithBlock(_ block: ActionableObject, content: String) {
+    func updateCommentWithBlock(_ block: FormattableCommentContent, content: String) {
         guard let editCommentAction = block.action(id: EditCommentAction.actionIdentifier()) else {
             return
         }
@@ -1388,15 +1389,142 @@ private extension NotificationDetailsViewController {
     }
 }
 
+// MARK: - OLD Action Handlers
+//
+private extension NotificationDetailsViewController {
+    func followSiteWithBlock(_ block: NotificationBlock) {
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+
+        actionsService.followSiteWithBlock(block)
+        WPAppAnalytics.track(.notificationsSiteFollowAction, withBlogID: block.metaSiteID)
+    }
+
+    func unfollowSiteWithBlock(_ block: NotificationBlock) {
+        actionsService.unfollowSiteWithBlock(block)
+        WPAppAnalytics.track(.notificationsSiteUnfollowAction, withBlogID: block.metaSiteID)
+    }
+
+    func likeCommentWithBlock(_ block: NotificationBlock) {
+        actionsService.likeCommentWithBlock(block)
+        WPAppAnalytics.track(.notificationsCommentLiked, withBlogID: block.metaSiteID)
+    }
+
+    func unlikeCommentWithBlock(_ block: NotificationBlock) {
+        actionsService.unlikeCommentWithBlock(block)
+        WPAppAnalytics.track(.notificationsCommentUnliked, withBlogID: block.metaSiteID)
+    }
+
+    func approveCommentWithBlock(_ block: NotificationBlock) {
+        actionsService.approveCommentWithBlock(block)
+        WPAppAnalytics.track(.notificationsCommentApproved, withBlogID: block.metaSiteID)
+    }
+
+    func unapproveCommentWithBlock(_ block: NotificationBlock) {
+        actionsService.unapproveCommentWithBlock(block)
+        WPAppAnalytics.track(.notificationsCommentUnapproved, withBlogID: block.metaSiteID)
+    }
+
+    func spamCommentWithBlock(_ block: NotificationBlock) {
+        precondition(onDeletionRequestCallback != nil)
+
+        let request = NotificationDeletionRequest(kind: .spamming, action: { onCompletion in
+            let mainContext = ContextManager.sharedInstance().mainContext
+            let service = NotificationActionsService(managedObjectContext: mainContext)
+            service.spamCommentWithBlock(block) { (success) in
+                onCompletion(success)
+            }
+
+            WPAppAnalytics.track(.notificationsCommentFlaggedAsSpam, withBlogID: block.metaSiteID)
+        })
+
+        onDeletionRequestCallback?(request)
+
+        // We're thru
+        _ = navigationController?.popToRootViewController(animated: true)
+    }
+
+    func trashCommentWithBlock(_ block: NotificationBlock) {
+        precondition(onDeletionRequestCallback != nil)
+
+        // Hit the DeletionRequest Callback
+        let request = NotificationDeletionRequest(kind: .deletion, action: { onCompletion in
+            let mainContext = ContextManager.sharedInstance().mainContext
+            let service = NotificationActionsService(managedObjectContext: mainContext)
+            service.deleteCommentWithBlock(block) { (success) in
+                onCompletion(success)
+            }
+
+            WPAppAnalytics.track(.notificationsCommentTrashed, withBlogID: block.metaSiteID)
+        })
+
+        onDeletionRequestCallback?(request)
+
+        // We're thru
+        _ = navigationController?.popToRootViewController(animated: true)
+    }
+
+    func replyCommentWithBlock(_ block: NotificationBlock, content: String) {
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+        generator.notificationOccurred(.success)
+
+        actionsService.replyCommentWithBlock(block, content: content, completion: { success in
+            guard success else {
+                generator.notificationOccurred(.error)
+                self.displayReplyErrorWithBlock(block, content: content)
+                return
+            }
+
+            let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
+            SVProgressHUD.showDismissibleSuccess(withStatus: message)
+        })
+    }
+
+    func updateCommentWithBlock(_ block: NotificationBlock, content: String) {
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+        generator.notificationOccurred(.success)
+
+        actionsService.updateCommentWithBlock(block, content: content, completion: { success in
+            guard success == false else {
+                return
+            }
+
+            generator.notificationOccurred(.error)
+            self.displayCommentUpdateErrorWithBlock(block, content: content)
+        })
+    }
+}
+
 
 // MARK: - Replying Comments
 //
 private extension NotificationDetailsViewController {
-    func focusOnReplyTextViewWithBlock(_ block: ActionableObject) {
+    func focusOnReplyTextViewWithBlock(_ content: FormattableContent) {
         let _ = replyTextView.becomeFirstResponder()
     }
 
-    func displayReplyErrorWithBlock(_ block: ActionableObject, content: String) {
+    func focusOnReplyTextViewWithBlock(_ block: NotificationBlock) {
+        let _ = replyTextView.becomeFirstResponder()
+    }
+
+    func displayReplyError(with block: FormattableCommentContent, content: String) {
+        let message     = NSLocalizedString("There has been an unexpected error while sending your reply",
+                                            comment: "Reply Failure Message")
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancels an Action")
+        let retryTitle  = NSLocalizedString("Try Again", comment: "Retries sending a reply")
+
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        alertController.addCancelActionWithTitle(cancelTitle)
+        alertController.addDefaultActionWithTitle(retryTitle) { action in
+            self.replyCommentWithBlock(block, content: content)
+        }
+
+        // Note: This viewController might not be visible anymore
+        alertController.presentFromRootViewController()
+    }
+
+    func displayReplyErrorWithBlock(_ block: NotificationBlock, content: String) {
         let message     = NSLocalizedString("There has been an unexpected error while sending your reply",
                                             comment: "Reply Failure Message")
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancels an Action")
@@ -1418,6 +1546,15 @@ private extension NotificationDetailsViewController {
 // MARK: - Editing Comments
 //
 private extension NotificationDetailsViewController {
+
+    func updateComment(with object: ActionableObject, content: String) {
+        if let block = object as? NotificationBlock {
+            self.updateCommentWithBlock(block, content: content)
+        } else if let block = object as? FormattableCommentContent {
+            self.updateCommentWithBlock(block, content: content)
+        }
+    }
+
     func displayCommentEditorWithBlock(_ block: ActionableObject) {
         let editViewController = EditCommentViewController.newEdit()
         editViewController?.content = block.text
@@ -1426,8 +1563,8 @@ private extension NotificationDetailsViewController {
                 guard hasNewContent else {
                     return
                 }
-
-                self.updateCommentWithBlock(block, content: newContent!)
+                let newContent = newContent ?? ""
+                self.updateComment(with: block, content: newContent)
             })
         }
 
@@ -1451,7 +1588,7 @@ private extension NotificationDetailsViewController {
             self.refreshInterface()
         }
         alertController.addDefaultActionWithTitle(retryTitle) { action in
-            self.updateCommentWithBlock(block, content: content)
+            self.updateComment(with: block, content: content)
         }
 
         // Note: This viewController might not be visible anymore

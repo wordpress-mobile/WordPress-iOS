@@ -7,7 +7,6 @@ protocol ActionableObject: AnyObject {
     var isCommentApproved: Bool { get }
     var text: String? { get }
     var textOverride: String? { get set }
-    func action(id: Identifier) -> FormattableContentAction?
 }
 
 protocol FormattableContentActionParser {
