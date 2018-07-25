@@ -35,4 +35,8 @@ class NotificationUtility {
     func loadCommentNotification() -> WordPress.Notification {
         return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-replied-comment.json") as! WordPress.Notification
     }
+
+    func loadPingbackNotification() -> WordPress.Notification {
+        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-pingback.json") as! WordPress.Notification
+    }
 }
