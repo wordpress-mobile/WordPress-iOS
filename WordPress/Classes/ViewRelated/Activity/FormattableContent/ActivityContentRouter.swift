@@ -4,7 +4,7 @@ struct ActivityContentRouter: ContentRouter {
     private let activity: FormattableActivity
 
     init(activity: FormattableActivity, coordinator: ContentCoordinator) {
-        self.coordinator = coordinator// ContentCoordinator(controller: controller, context: context)
+        self.coordinator = coordinator
         self.activity = activity
     }
 
