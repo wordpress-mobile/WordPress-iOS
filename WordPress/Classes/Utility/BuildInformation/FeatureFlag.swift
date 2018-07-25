@@ -20,7 +20,7 @@ enum FeatureFlag: Int {
         case .extractNotifications:
             return BuildConfiguration.current == .localDeveloper
         case .quickStart:
-            return BuildConfiguration.current == .localDeveloper
+            return false
         }
     }
 }
