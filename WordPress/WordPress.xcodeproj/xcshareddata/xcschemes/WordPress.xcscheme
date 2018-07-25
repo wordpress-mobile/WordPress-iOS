@@ -40,7 +40,53 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      codeCoverageEnabled = "YES"
+      onlyGenerateCoverageForSpecifiedTargets = "YES"
       shouldUseLaunchSchemeArgsEnv = "NO">
+      <CodeCoverageTargets>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
+            BuildableName = "WordPress.app"
+            BlueprintName = "WordPress"
+            ReferencedContainer = "container:WordPress.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "74576671202B558C00F42E40"
+            BuildableName = "WordPressDraftActionExtension.appex"
+            BlueprintName = "WordPressDraftActionExtension"
+            ReferencedContainer = "container:WordPress.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "932225A61C7CE50300443B02"
+            BuildableName = "WordPressShareExtension.appex"
+            BlueprintName = "WordPressShareExtension"
+            ReferencedContainer = "container:WordPress.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "93E5283919A7741A003A1A9C"
+            BuildableName = "WordPressTodayWidget.appex"
+            BlueprintName = "WordPressTodayWidget"
+            ReferencedContainer = "container:WordPress.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "931CFFC71EBCB016005E6BB4"
+            BuildableName = "WordPressComStatsiOS.framework"
+            BlueprintName = "WordPressComStatsiOS"
+            ReferencedContainer = "container:../WordPressComStatsiOS/WordPressComStatsiOS.xcodeproj">
+         </BuildableReference>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "E12F96E81FBC67AC00329E2E"
+            BuildableName = "WordPressFlux.framework"
+            BlueprintName = "WordPressFlux"
+            ReferencedContainer = "container:../WordPressFlux/WordPressFlux.xcodeproj">
+         </BuildableReference>
+      </CodeCoverageTargets>
       <Testables>
          <TestableReference
             skipped = "NO">
