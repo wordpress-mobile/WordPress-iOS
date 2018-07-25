@@ -14,7 +14,7 @@
 # update_fastlane
 
 default_platform(:ios)
-require 'dotenv'
+fastlane_require 'dotenv'
 
 platform :ios do
 ########################################################################
@@ -24,7 +24,7 @@ Dotenv.load('~/.wpios-env.default')
 ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
 
 ########################################################################
-# Includes
+# Screenshots 
 ########################################################################
 import "./ScreenshotFastfile"
 
