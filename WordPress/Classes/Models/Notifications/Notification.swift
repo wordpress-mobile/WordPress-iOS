@@ -214,25 +214,48 @@ extension Notification {
     /// Verifies if the current notification is a Pingback.
     ///
     var isPingback: Bool {
-        guard let subjectRanges = subjectBlock?.ranges, subjectRanges.count == 2 else {
-            return false
-        }
+        if FeatureFlag.extractNotifications.enabled {
+            guard subjectContentGroup?.blocks.count == 1 else {
+                return false
+            }
+            guard let ranges = subjectContentGroup?.blocks.first?.ranges, ranges.count == 2 else {
+                return false
+            }
+            return ranges.first?.kind == .site && ranges.last?.kind == .post
+        } else {
+            guard let subjectRanges = subjectBlock?.ranges, subjectRanges.count == 2 else {
+                return false
+            }
 
-        return subjectRanges.first?.kind == .Site && subjectRanges.last?.kind == .Post
+            return subjectRanges.first?.kind == .Site && subjectRanges.last?.kind == .Post
+        }
     }
 
     /// Verifies if the current notification is actually a Badge one.
     /// Note: Sorry about the following snippet. I'm (and will always be) against Duck Typing.
     ///
     @objc var isBadge: Bool {
-        let blocks = bodyBlockGroups.flatMap { $0.blocks }
-        for block in blocks {
-            for media in block.media where media.kind == .Badge {
-                return true
+        if FeatureFlag.extractNotifications.enabled {
+            let blocks = bodyContentGroups.flatMap { $0.blocks }
+            for block in blocks where block is FormattableMediaContent {
+                guard let mediaBlock = block as? FormattableMediaContent else {
+                    continue
+                }
+                for media in mediaBlock.media where media.kind == .badge {
+                    return true
+                }
             }
-        }
+            return false
+        } else {
+            let blocks = bodyBlockGroups.flatMap { $0.blocks }
+            for block in blocks {
+                for media in block.media where media.kind == .Badge {
+                    return true
+                }
+            }
 
-        return false
+            return false
+        }
     }
 
     /// Verifies if the current notification is a Comment-Y note, and if it has been replied to.
