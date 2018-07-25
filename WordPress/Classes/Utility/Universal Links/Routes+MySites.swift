@@ -49,6 +49,7 @@ extension MySitesRoute: NavigationAction {
             coordinator.showMySites()
             postFailureNotice(title: NSLocalizedString("Site not found",
                                                        comment: "Error notice shown if the app can't find a specific site belonging to the user"))
+            WPAppAnalytics.track(.deepLinkFailed, withProperties: ["route": path])
             return
         }
 
