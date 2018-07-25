@@ -77,7 +77,7 @@ ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
     end
 
     # Check local repo status
-    #ensure_git_status_clean()
+    ensure_git_status_clean()
 
     # Return the current version
     ios_get_public_version_number(version:current_version)
