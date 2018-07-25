@@ -24,17 +24,30 @@ class QuickStartChecklistView: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let cell = dataSource?.tableView(tableView, cellForRowAt: indexPath) as? QuickStartChecklistCell,
-            let tour = cell.tour,
-            let blog = blog {
-            let context = ContextManager.sharedInstance().mainContext
-            let newCompletion = NSEntityDescription.insertNewObject(forEntityName: QuickStartCompletedTour.entityName(), into: context) as! QuickStartCompletedTour
-            newCompletion.blog = blog
-            newCompletion.tourID = tour.key
 
-            ContextManager.sharedInstance().saveContextAndWait(ContextManager.sharedInstance().mainContext)
+        // don't start a tour if it's already completed
+        guard let tour = dataSource?.tour(at: indexPath),
+            let blog = blog,
+            let isCompleted = dataSource?.isCompleted(tour: tour),
+            !isCompleted else {
+                return
+        }
 
-            self.navigationController?.popViewController(animated: true)
+        // make the tour as complete
+        let context = ContextManager.sharedInstance().mainContext
+        let newCompletion = NSEntityDescription.insertNewObject(forEntityName: QuickStartCompletedTour.entityName(), into: context) as! QuickStartCompletedTour
+        newCompletion.blog = blog
+        newCompletion.tourID = tour.key
+
+        ContextManager.sharedInstance().saveContextAndWait(ContextManager.sharedInstance().mainContext)
+
+        self.navigationController?.popViewController(animated: true)
+
+        // show the tour
+        // - find the tour guide
+        if let tabBarController = tabBarController as? WPTabBarController,
+            let tourGuide = tabBarController.tourGuide {
+            tourGuide.showTestQuickStartNotice()
         }
     }
 }
@@ -47,10 +60,10 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
         self.blogID = blogID
 
         super.init()
-        getCompletedTours()
+        loadCompletedTours()
     }
 
-    func getCompletedTours() {
+    func loadCompletedTours() {
         let context = ContextManager.sharedInstance().mainContext
         let fetchRequest = NSFetchRequest<QuickStartCompletedTour>(entityName: QuickStartCompletedTour.entityName())
         fetchRequest.predicate = NSPredicate(format: "blog.blogID = %d", blogID)
@@ -64,6 +77,18 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
         }
     }
 
+    // managing tours
+
+    func tour(at indexPath: IndexPath) -> QuickStartTour {
+        return QuickStartTourGuide.checklistTours[indexPath.row]
+    }
+
+    func isCompleted(tour: QuickStartTour) -> Bool {
+        return completedTours.contains(tour.key)
+    }
+
+    // UITableViewDataSource
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return QuickStartTourGuide.checklistTours.count
     }
@@ -72,7 +97,7 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
         if let cell = tableView.dequeueReusableCell(withIdentifier: QuickStartChecklistCell.reuseIdentifier) as? QuickStartChecklistCell {
             let tour = QuickStartTourGuide.checklistTours[indexPath.row]
             cell.tour = tour
-            if completedTours.contains(tour.key) {
+            if isCompleted(tour: tour) {
                 cell.completed = true
             }
             return cell
