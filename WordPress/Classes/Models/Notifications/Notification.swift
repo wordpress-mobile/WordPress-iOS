@@ -152,6 +152,16 @@ class Notification: NSManagedObject {
 
     /// Returns the first BlockGroup of the specified type, if any.
     ///
+    func contentGroup(ofKind kind: FormattableContentGroup.Kind) -> FormattableContentGroup? {
+        for contentGroup in bodyContentGroups where contentGroup.kind == kind {
+            return contentGroup
+        }
+
+        return nil
+    }
+
+    /// Returns the first BlockGroup of the specified type, if any.
+    ///
     func blockGroupOfKind(_ kind: NotificationBlockGroup.Kind) -> NotificationBlockGroup? {
         for blockGroup in bodyBlockGroups where blockGroup.kind == kind {
             return blockGroup
