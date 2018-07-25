@@ -11,11 +11,13 @@ final class FormattableContentGroupTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        ContextManager.overrideSharedInstance(nil)
         subject = FormattableContentGroup(blocks: [mockContent()], kind: Constants.kind)
     }
 
     override func tearDown() {
         subject = nil
+        ContextManager.overrideSharedInstance(nil)
         super.tearDown()
     }
 
@@ -47,6 +49,34 @@ final class FormattableContentGroupTests: XCTestCase {
         let obtainedBlock: FormattableTextContent? = subject?.blockOfKind(.image)
 
         XCTAssertNil(obtainedBlock)
+    }
+
+    func testLikeNotificationContainsUserContentGroupsInTheBody() {
+        let note = loadLikeNotification()
+        for group in note.bodyContentGroups {
+            XCTAssertTrue(group.kind == .user)
+        }
+    }
+
+    func testFollowerNotificationContainsUserAndFooterGroupsInTheBody() {
+        let note = loadFollowerNotification()
+
+        // Note: Account for 'View All Followers'
+        for group in note.bodyContentGroups {
+            XCTAssertTrue(group.kind == .user || group.kind == .footer)
+        }
+    }
+
+    var entityName: String {
+        return Notification.classNameWithoutNamespaces()
+    }
+
+    func loadLikeNotification() -> WordPress.Notification {
+        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-like.json") as! WordPress.Notification
+    }
+
+    func loadFollowerNotification() -> WordPress.Notification {
+        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-new-follower.json") as! WordPress.Notification
     }
 
     private func mockContent() -> FormattableTextContent {

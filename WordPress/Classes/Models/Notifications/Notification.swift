@@ -177,6 +177,24 @@ class Notification: NSManagedObject {
 
         return nil
     }
+
+    /// Attempts to find the Notification Range associated with a given URL.
+    ///
+    func contentRange(with url: URL) -> FormattableContentRange? {
+        var groups = bodyContentGroups
+        if let headerBlockGroup = headerContentGroup {
+            groups.append(headerBlockGroup)
+        }
+
+        let blocks = groups.flatMap { $0.blocks }
+        for block in blocks {
+            if let range = block.range(with: url) {
+                return range
+            }
+        }
+
+        return nil
+    }
 }
 
 // MARK: - Notification Computed Properties
