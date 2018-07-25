@@ -30,7 +30,9 @@ extension AppBannerRoute: NavigationAction {
         components.path = fragment
 
         if let url = components.url {
-            UniversalLinkRouter.shared.handle(url: url)
+            // We disable tracking when passing the URL back through the router,
+            // otherwise we'd be posting two stats events.
+            UniversalLinkRouter.shared.handle(url: url, shouldTrack: false)
         }
     }
 }
