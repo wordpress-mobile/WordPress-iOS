@@ -98,6 +98,10 @@ class NotificationDetailsViewController: UIViewController {
         return DefaultContentCoordinator(controller: self, context: mainContext)
     }()
 
+    lazy var router: NotificationContentRouter = {
+        return NotificationContentRouter(activity: note, coordinator: coordinator)
+    }()
+
     /// Whenever the user performs a destructive action, the Deletion Request Callback will be called,
     /// and a closure that will effectively perform the deletion action will be passed over.
     /// In turn, the Deletion Action block also expects (yet another) callback as a parameter, to be called
@@ -726,8 +730,7 @@ private extension NotificationDetailsViewController {
             guard let image = attachment.image else {
                 return
             }
-
-            self?.coordinator.displayFullscreenImage(image)
+            self?.router.routeTo(image)
         }
 
         // Download the Gravatar
@@ -962,8 +965,7 @@ private extension NotificationDetailsViewController {
             guard let image = attachment.image else {
                 return
             }
-
-            self?.coordinator.displayFullscreenImage(image)
+            self?.router.routeTo(image)
         }
 
         // Download the Gravatar
@@ -1103,48 +1105,29 @@ private extension NotificationDetailsViewController {
             return
         }
 
+        if FeatureFlag.extractNotifications.enabled {
+            router.routeTo(url)
+        } else {
+            old_displayURL(url)
+        }
+    }
+
+    func old_displayURL(_ url: URL) {
         // Attempt to infer the NotificationRange associated: Recover Metadata + Push Native Views!
         //
         do {
-            if FeatureFlag.extractNotifications.enabled {
-                let range = note.contentRange(with: url)
-                try displayResourceWithRange(range)
-            } else {
-                let range = note.notificationRangeWithUrl(url)
-                try displayResourceWithRange(range)
-            }
+            let range = note.notificationRangeWithUrl(url)
+            try displayResourceWithRange(range)
         } catch {
             coordinator.displayWebViewWithURL(url)
         }
     }
 
     func displayNotificationSource() {
-        guard let resourceURL = note.resourceURL else {
-            tableView.deselectSelectedRowWithAnimation(true)
-            return
-        }
-
         do {
-            switch note.kind {
-            case .Follow:
-                try coordinator.displayStreamWithSiteID(note.metaSiteID)
-            case .Like:
-                fallthrough
-            case .Matcher:
-                fallthrough
-            case .NewPost:
-                fallthrough
-            case .Post:
-                try coordinator.displayReaderWithPostId(note.metaPostID, siteID: note.metaSiteID)
-            case .Comment:
-                fallthrough
-            case .CommentLike:
-                try coordinator.displayCommentsWithPostId(note.metaPostID, siteID: note.metaSiteID)
-            default:
-                throw DefaultContentCoordinator.DisplayError.unsupportedType
-            }
+            try router.routeToNotificationSource()
         } catch {
-            coordinator.displayWebViewWithURL(resourceURL as URL)
+            tableView.deselectSelectedRowWithAnimation(true)
         }
     }
 
@@ -1169,29 +1152,6 @@ private extension NotificationDetailsViewController {
         case .Follow:
             try coordinator.displayFollowersWithSiteID(range.siteID, expirationTime: Settings.expirationFiveMinutes)
         case .User:
-            try coordinator.displayStreamWithSiteID(range.siteID)
-        default:
-            throw DisplayError.unsupportedType
-        }
-    }
-
-    func displayResourceWithRange(_ range: FormattableContentRange?) throws {
-        guard let range = range as? NotificationContentRange else {
-            throw DisplayError.missingParameter
-        }
-
-        switch range.kind {
-        case .site:
-            try coordinator.displayStreamWithSiteID(range.siteID)
-        case .post:
-            try coordinator.displayReaderWithPostId(range.postID, siteID: range.siteID)
-        case .comment:
-            try coordinator.displayCommentsWithPostId(range.postID, siteID: range.siteID)
-        case .stats:
-            try coordinator.displayStatsWithSiteID(range.siteID)
-        case .follow:
-            try coordinator.displayFollowersWithSiteID(range.siteID, expirationTime: Settings.expirationFiveMinutes)
-        case .user:
             try coordinator.displayStreamWithSiteID(range.siteID)
         default:
             throw DisplayError.unsupportedType
