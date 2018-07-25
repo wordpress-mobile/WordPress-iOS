@@ -331,7 +331,7 @@ extension NotificationBlock {
 }
 
 extension NotificationBlock: ActionableObject {
-    
+
 }
 
 

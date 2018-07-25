@@ -30,7 +30,7 @@ class FormattableTextContent: FormattableContent {
         meta = dictionary[Constants.BlockKeys.Meta] as? [String: AnyObject]
     }
 
-    init(text: String, ranges: [NotificationContentRange]) {
+    init(text: String, ranges: [FormattableContentRange]) {
         self.internalText = text
         self.ranges = ranges
     }

@@ -10,14 +10,11 @@ final class FormattableNotIconTests: XCTestCase {
         static let kind = FormattableRangeKind("noticon")
         static let icon = "🦄"
         static let range = NSRange(location: 32, length: 41)
-        static let userId = NSNumber(integerLiteral: 1)
-        static let siteId = NSNumber(integerLiteral: 2)
-        static let postId = NSNumber(integerLiteral: 3)
     }
 
     override func setUp() {
         super.setUp()
-        subject = FormattableNoticonRange(value: Constants.icon, properties: mockProperties())
+        subject = FormattableNoticonRange(value: Constants.icon, range: Constants.range)
     }
 
     override func tearDown() {
@@ -33,27 +30,11 @@ final class FormattableNotIconTests: XCTestCase {
         XCTAssertEqual(subject?.range, Constants.range)
     }
 
-    func testUserIDIsNotMutated() {
-        XCTAssertEqual(subject?.userID, Constants.userId)
-    }
-
-    func testSiteIDIsNotMutated() {
-        XCTAssertEqual(subject?.siteID, Constants.siteId)
-    }
-
-    func testPostIDIsNotMutated() {
-        XCTAssertEqual(subject?.postID, Constants.postId)
-    }
-
     func testNoticonReturnsExpectedValue() {
         XCTAssertEqual(subject?.value, Constants.icon)
     }
 
     private func mockProperties() -> NotificationContentRange.Properties {
-        var properties = NotificationContentRange.Properties(range: Constants.range)
-        properties.userID = Constants.userId
-        properties.siteID = Constants.siteId
-        properties.postID = Constants.postId
-        return properties
+        return NotificationContentRange.Properties(range: Constants.range)
     }
 }

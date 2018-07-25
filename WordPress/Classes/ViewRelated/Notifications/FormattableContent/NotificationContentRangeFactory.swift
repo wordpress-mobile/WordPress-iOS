@@ -54,7 +54,7 @@ struct NotificationContentRangeFactory: ContentRangeFactory {
         return properties
     }
 
-    private static func contentRange(ofKind type: String, with properties: NotificationContentRange.Properties, from dictionary: [String: AnyObject]) -> NotificationContentRange? {
+    private static func contentRange(ofKind type: String, with properties: NotificationContentRange.Properties, from dictionary: [String: AnyObject]) -> FormattableContentRange? {
         var properties = properties
         let kind = FormattableRangeKind(type)
 
@@ -66,7 +66,7 @@ struct NotificationContentRangeFactory: ContentRangeFactory {
             guard let value = dictionary[RangeKeys.value] as? String else {
                 fallthrough
             }
-            return FormattableNoticonRange(value: value, properties: properties)
+            return FormattableNoticonRange(value: value, range: properties.range)
         case .post:
             properties.postID = dictionary[RangeKeys.id] as? NSNumber
             return NotificationContentRange(kind: kind, properties: properties)
