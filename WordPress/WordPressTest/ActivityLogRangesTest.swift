@@ -27,6 +27,14 @@ final class ActivityLogRangesTests: XCTestCase {
         XCTAssertEqual(pluginRange.url?.absoluteString, testData.testPluginUrl)
     }
 
+    func testPluginRangeSavesSlugs() {
+        let range = NSRange(location: 0, length: 0)
+        let pluginRange = ActivityPluginRange(range: range, pluginSlug: testData.testPluginSlug, siteSlug: testData.testSiteSlug)
+
+        XCTAssertEqual(pluginRange.pluginSlug, testData.testPluginSlug)
+        XCTAssertEqual(pluginRange.siteSlug, testData.testSiteSlug)
+    }
+
     func testDefaultRange() {
         let range = NSRange(location: 0, length: 0)
         let url = URL(string: testData.testPostUrl)!
