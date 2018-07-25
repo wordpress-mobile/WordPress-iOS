@@ -215,6 +215,17 @@ class NotificationTests: XCTestCase {
         XCTAssertNotNil(range)
     }
 
+    func testPingbackNotificationIsPingback() {
+        let notification = utility.loadPingbackNotification()
+        XCTAssertTrue(notification.isPingback)
+    }
+
+    func testPingbackBodyContainsFooter() {
+        let notification = utility.loadPingbackNotification()
+        let footer = notification.bodyContentGroups.filter { $0.kind == .footer }
+        XCTAssertEqual(footer.count, 1)
+    }
+
 
     // MARK: - Helpers
 
