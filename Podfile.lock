@@ -126,7 +126,7 @@ PODS:
     - UIDeviceIdentifier (~> 0.4)
     - WordPressShared (~> 1.0.3)
     - wpxmlrpc (= 0.8.3)
-  - WordPressShared (1.0.8):
+  - WordPressShared (1.0.9):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.0.6)
@@ -168,7 +168,7 @@ DEPENDENCIES:
   - WordPress-Editor-iOS (= 1.0.0-beta.23)
   - WordPressAuthenticator (= 1.0.4)
   - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `c2ae16bbc3fb759e0684fc9e5642d52390d00285`)
-  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `924689b554d6414050e743081b8fcd734aed4a4e`)
+  - WordPressShared (= 1.0.9)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, commit `7a5b1a3fb44f62416fbc2e5f0de623b87b613aae`)
   - WPMediaPicker (= 1.1)
   - wpxmlrpc (= 0.8.3)
@@ -204,6 +204,7 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
+    - WordPressShared
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskSDK
@@ -215,9 +216,6 @@ EXTERNAL SOURCES:
   WordPressKit:
     :commit: c2ae16bbc3fb759e0684fc9e5642d52390d00285
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
-  WordPressShared:
-    :commit: 924689b554d6414050e743081b8fcd734aed4a4e
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   WordPressUI:
     :commit: 7a5b1a3fb44f62416fbc2e5f0de623b87b613aae
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
@@ -229,9 +227,6 @@ CHECKOUT OPTIONS:
   WordPressKit:
     :commit: c2ae16bbc3fb759e0684fc9e5642d52390d00285
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
-  WordPressShared:
-    :commit: 924689b554d6414050e743081b8fcd734aed4a4e
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   WordPressUI:
     :commit: 7a5b1a3fb44f62416fbc2e5f0de623b87b613aae
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
@@ -267,12 +262,12 @@ SPEC CHECKSUMS:
   WordPress-Editor-iOS: 4f46c2fa98f3017e9e39ad30ba9f03dbd6612ce4
   WordPressAuthenticator: 2825f0c56f83a17470564dbec427991fa5cac5af
   WordPressKit: a24baaa783c3a221f2d9a51c19318cbb27333373
-  WordPressShared: 063e1e8b1a7aaf635abf17f091a2d235a068abdc
+  WordPressShared: e5ea8a1ed3329735e40bd6623830960f63dd10fd
   WordPressUI: af141587ec444f9af753a00605bd0d3f14d8d8a3
   WPMediaPicker: 5cc9386a4720f906d8fb79c7c4090d216b9f2348
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: 4a850f5712cfddddbdf29fb2d56a4bdcd444044b
+PODFILE CHECKSUM: d49dbb4ef6438960438d031aeea9531ce0dc843b
 
 COCOAPODS: 1.5.3
