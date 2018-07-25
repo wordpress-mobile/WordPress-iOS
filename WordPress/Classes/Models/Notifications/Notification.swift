@@ -244,13 +244,20 @@ extension Notification {
     //// Check if this note is a comment and in 'Unapproved' status
     ///
     @objc var isUnapprovedComment: Bool {
-        guard let block = blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
-            return false
+        if FeatureFlag.extractNotifications.enabled {
+            guard let block: FormattableCommentContent = contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
+                return false
+            }
+            let commandId = ApproveCommentAction.actionIdentifier()
+            return block.isActionEnabled(id: commandId) && !block.isActionOn(id: commandId)
+        } else {
+            guard let block = blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
+                return false
+            }
+
+            return block.isActionEnabled(.Approve) && !block.isActionOn(.Approve)
         }
 
-        //return block.isActionEnabled(.Approve) && !block.isActionOn(.Approve)
-        let commandId = ApproveCommentAction.actionIdentifier()
-        return block.isActionEnabled(id: commandId) && !block.isActionOn(id: commandId)
     }
 
     var kind: ParentKind {
