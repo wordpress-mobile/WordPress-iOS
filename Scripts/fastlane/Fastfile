@@ -88,6 +88,7 @@ ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
     sh("cd ../.. && ./Scripts/localize.py")
     sh("cd ../.. && git add ./WordPress/Resources/.")
     sh("git commit -m \"Updates strings for localization\"")
+    sh("git push")
   end
 
   desc "Gets the app version from the project settings"
