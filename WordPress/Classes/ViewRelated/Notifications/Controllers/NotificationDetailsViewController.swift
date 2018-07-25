@@ -325,8 +325,17 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let group = blockGroupForIndexPath(indexPath)
 
+        if FeatureFlag.extractNotifications.enabled {
+            let group = contentGroup(for: indexPath)
+            displayContent(group)
+        } else {
+            let group = blockGroupForIndexPath(indexPath)
+            old_displayContent(group)
+        }
+    }
+
+    func old_displayContent(_ group: NotificationBlockGroup) {
         switch group.kind {
         case .header:
             displayNotificationSource()
@@ -337,6 +346,24 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
             // By convention, the last range is the one that always contains the targetURL
             let targetURL = group.blockOfKind(.text)?.ranges.last?.url
             displayURL(targetURL)
+        default:
+            tableView.deselectSelectedRowWithAnimation(true)
+        }
+    }
+
+    func displayContent(_ contentGroup: FormattableContentGroup) {
+        switch contentGroup.kind {
+        case .header:
+            displayNotificationSource()
+        case .user:
+            let content: FormattableUserContent? = contentGroup.blockOfKind(.user)
+            let url = content?.metaLinksHome
+            displayURL(url)
+        case .footer:
+            let content: FormattableTextContent? = contentGroup.blockOfKind(.text)
+            let lastRange = content?.ranges.last as? LinkContentRange
+            let url = lastRange?.url
+            displayURL(url)
         default:
             tableView.deselectSelectedRowWithAnimation(true)
         }
@@ -1079,8 +1106,13 @@ private extension NotificationDetailsViewController {
         // Attempt to infer the NotificationRange associated: Recover Metadata + Push Native Views!
         //
         do {
-            let range = note.notificationRangeWithUrl(url)
-            try displayResourceWithRange(range)
+            if FeatureFlag.extractNotifications.enabled {
+                let range = note.contentRange(with: url)
+                try displayResourceWithRange(range)
+            } else {
+                let range = note.notificationRangeWithUrl(url)
+                try displayResourceWithRange(range)
+            }
         } catch {
             coordinator.displayWebViewWithURL(url)
         }
@@ -1137,6 +1169,29 @@ private extension NotificationDetailsViewController {
         case .Follow:
             try coordinator.displayFollowersWithSiteID(range.siteID, expirationTime: Settings.expirationFiveMinutes)
         case .User:
+            try coordinator.displayStreamWithSiteID(range.siteID)
+        default:
+            throw DisplayError.unsupportedType
+        }
+    }
+
+    func displayResourceWithRange(_ range: FormattableContentRange?) throws {
+        guard let range = range as? NotificationContentRange else {
+            throw DisplayError.missingParameter
+        }
+
+        switch range.kind {
+        case .site:
+            try coordinator.displayStreamWithSiteID(range.siteID)
+        case .post:
+            try coordinator.displayReaderWithPostId(range.postID, siteID: range.siteID)
+        case .comment:
+            try coordinator.displayCommentsWithPostId(range.postID, siteID: range.siteID)
+        case .stats:
+            try coordinator.displayStatsWithSiteID(range.siteID)
+        case .follow:
+            try coordinator.displayFollowersWithSiteID(range.siteID, expirationTime: Settings.expirationFiveMinutes)
+        case .user:
             try coordinator.displayStreamWithSiteID(range.siteID)
         default:
             throw DisplayError.unsupportedType
