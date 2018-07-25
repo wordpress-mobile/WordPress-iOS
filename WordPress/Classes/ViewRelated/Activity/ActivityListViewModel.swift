@@ -65,7 +65,7 @@ class ActivityListViewModel: Observable {
                                                  buttonText: NSLocalizedString("Contact support", comment: "Button label for contacting support"))
         } else {
             return NoResultsViewController.Model(title: NSLocalizedString("No connection", comment: "Title for the error view when there's no connection"),
-                                                 subtitle: NSLocalizedString("An active internet connection is required to view activities", comment: ""))
+                                                 subtitle: NSLocalizedString("An active internet connection is required to view activities", comment: "Error message when the user tries to visualize the acitiviy log list without internet connection"))
 
         }
     }
