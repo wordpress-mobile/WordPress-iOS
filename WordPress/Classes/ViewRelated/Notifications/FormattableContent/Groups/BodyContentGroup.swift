@@ -20,7 +20,8 @@ class BodyContentGroup: FormattableContentGroup {
             if isFooter {
                 return FooterContentGroup(blocks: [block])
             }
-            return FormattableContentGroup(blocks: [block], kind: .text)
+
+            return FormattableContentGroup(blocks: [block], kind: Kind(block.kind.rawValue))
         }
     }
 

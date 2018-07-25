@@ -98,6 +98,10 @@ class NotificationDetailsViewController: UIViewController {
         return DefaultContentCoordinator(controller: self, context: mainContext)
     }()
 
+    lazy var router: NotificationContentRouter = {
+        return NotificationContentRouter(activity: note, coordinator: coordinator)
+    }()
+
     /// Whenever the user performs a destructive action, the Deletion Request Callback will be called,
     /// and a closure that will effectively perform the deletion action will be passed over.
     /// In turn, the Deletion Action block also expects (yet another) callback as a parameter, to be called
@@ -325,8 +329,17 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let group = blockGroupForIndexPath(indexPath)
 
+        if FeatureFlag.extractNotifications.enabled {
+            let group = contentGroup(for: indexPath)
+            displayContent(group)
+        } else {
+            let group = blockGroupForIndexPath(indexPath)
+            old_displayContent(group)
+        }
+    }
+
+    func old_displayContent(_ group: NotificationBlockGroup) {
         switch group.kind {
         case .header:
             displayNotificationSource()
@@ -337,6 +350,24 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
             // By convention, the last range is the one that always contains the targetURL
             let targetURL = group.blockOfKind(.text)?.ranges.last?.url
             displayURL(targetURL)
+        default:
+            tableView.deselectSelectedRowWithAnimation(true)
+        }
+    }
+
+    func displayContent(_ contentGroup: FormattableContentGroup) {
+        switch contentGroup.kind {
+        case .header:
+            displayNotificationSource()
+        case .user:
+            let content: FormattableUserContent? = contentGroup.blockOfKind(.user)
+            let url = content?.metaLinksHome
+            displayURL(url)
+        case .footer:
+            let content: FormattableTextContent? = contentGroup.blockOfKind(.text)
+            let lastRange = content?.ranges.last as? LinkContentRange
+            let url = lastRange?.url
+            displayURL(url)
         default:
             tableView.deselectSelectedRowWithAnimation(true)
         }
@@ -699,8 +730,7 @@ private extension NotificationDetailsViewController {
             guard let image = attachment.image else {
                 return
             }
-
-            self?.coordinator.displayFullscreenImage(image)
+            self?.router.routeTo(image)
         }
 
         // Download the Gravatar
@@ -935,8 +965,7 @@ private extension NotificationDetailsViewController {
             guard let image = attachment.image else {
                 return
             }
-
-            self?.coordinator.displayFullscreenImage(image)
+            self?.router.routeTo(image)
         }
 
         // Download the Gravatar
@@ -1076,6 +1105,14 @@ private extension NotificationDetailsViewController {
             return
         }
 
+        if FeatureFlag.extractNotifications.enabled {
+            router.routeTo(url)
+        } else {
+            old_displayURL(url)
+        }
+    }
+
+    func old_displayURL(_ url: URL) {
         // Attempt to infer the NotificationRange associated: Recover Metadata + Push Native Views!
         //
         do {
@@ -1087,32 +1124,10 @@ private extension NotificationDetailsViewController {
     }
 
     func displayNotificationSource() {
-        guard let resourceURL = note.resourceURL else {
-            tableView.deselectSelectedRowWithAnimation(true)
-            return
-        }
-
         do {
-            switch note.kind {
-            case .Follow:
-                try coordinator.displayStreamWithSiteID(note.metaSiteID)
-            case .Like:
-                fallthrough
-            case .Matcher:
-                fallthrough
-            case .NewPost:
-                fallthrough
-            case .Post:
-                try coordinator.displayReaderWithPostId(note.metaPostID, siteID: note.metaSiteID)
-            case .Comment:
-                fallthrough
-            case .CommentLike:
-                try coordinator.displayCommentsWithPostId(note.metaPostID, siteID: note.metaSiteID)
-            default:
-                throw DefaultContentCoordinator.DisplayError.unsupportedType
-            }
+            try router.routeToNotificationSource()
         } catch {
-            coordinator.displayWebViewWithURL(resourceURL as URL)
+            tableView.deselectSelectedRowWithAnimation(true)
         }
     }
 
