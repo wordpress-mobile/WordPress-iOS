@@ -25,7 +25,6 @@ final class LikeCommentActionTests: XCTestCase {
     }
 
     private var action: LikeComment?
-    private var utility = NotificationUtility()
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -33,7 +32,6 @@ final class LikeCommentActionTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        utility.setUp()
         action = TestableLikeComment(on: Constants.initialStatus)
         makeNetworkAvailable()
     }
@@ -41,7 +39,6 @@ final class LikeCommentActionTests: XCTestCase {
     override func tearDown() {
         action = nil
         makeNetworkUnavailable()
-        utility.tearDown()
         super.tearDown()
     }
 
@@ -163,23 +160,5 @@ final class LikeCommentActionTests: XCTestCase {
         action?.execute(context: mockActionContext())
 
         XCTAssertEqual(action?.icon?.accessibilityHint, LikeComment.TitleHints.unlike)
-    }
-
-    func testCommentNotificationHasActions() {
-        let commentNotification = utility.loadCommentNotification()
-        let commentContent: FormattableCommentContent? = commentNotification.contentGroup(ofKind: .comment)?.blockOfKind(.comment)
-        XCTAssertNotNil(commentContent)
-
-        let trashAction = commentContent?.action(id: TrashCommentAction.actionIdentifier())
-        let approveAction = commentContent?.action(id: ApproveCommentAction.actionIdentifier())
-        let replyAction = commentContent?.action(id: ReplyToCommentAction.actionIdentifier())
-        let likeAction = commentContent?.action(id: LikeCommentAction.actionIdentifier())
-        let markAsSpam = commentContent?.action(id: MarkAsSpamAction.actionIdentifier())
-
-        XCTAssertNotNil(trashAction)
-        XCTAssertNotNil(approveAction)
-        XCTAssertNotNil(replyAction)
-        XCTAssertNotNil(likeAction)
-        XCTAssertNotNil(markAsSpam)
     }
 }
