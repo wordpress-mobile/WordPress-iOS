@@ -504,6 +504,10 @@
         <attribute name="serviceID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="QuickStartCompletedTour" representedClassName="QuickStartCompletedTour" syncable="YES">
+        <attribute name="tourID" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" syncable="YES"/>
+    </entity>
     <entity name="ReaderAbstractTopic" representedClassName="WordPress.ReaderAbstractTopic" isAbstract="YES" syncable="YES">
         <attribute name="algorithm" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="following" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
@@ -690,6 +694,7 @@
         <element name="PostType" positionX="27" positionY="153" width="128" height="105"/>
         <element name="PublicizeConnection" positionX="27" positionY="162" width="128" height="330"/>
         <element name="PublicizeService" positionX="18" positionY="153" width="128" height="195"/>
+        <element name="QuickStartCompletedTour" positionX="36" positionY="162" width="128" height="75"/>
         <element name="ReaderAbstractTopic" positionX="9" positionY="153" width="128" height="180"/>
         <element name="ReaderCrossPostMeta" positionX="18" positionY="153" width="128" height="135"/>
         <element name="ReaderDefaultTopic" positionX="18" positionY="162" width="128" height="45"/>
