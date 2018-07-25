@@ -30,4 +30,14 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
 
         presenter.dismissCurrentNotice()
     }
+
+    static let checklistTours: [QuickStartTour] = [
+        QuickStartCreateTour(),
+        QuickStartViewTour(),
+        QuickStartThemeTour(),
+        QuickStartCustomizeTour(),
+        QuickStartShareTour(),
+        QuickStartPublishTour(),
+        QuickStartFollowTour()
+    ]
 }
