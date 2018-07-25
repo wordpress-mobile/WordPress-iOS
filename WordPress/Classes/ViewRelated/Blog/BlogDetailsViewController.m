@@ -494,7 +494,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if ([Feature enabled:FeatureFlagQuickStart]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Quick Start", @"Name of the Quick Start feature that guides users through a few tasks to setup their new website.")
-                                                        image:[Gridicon iconOfType:GridiconTypeStatsAlt]
+                                                        image:[Gridicon iconOfType:GridiconTypeListCheckmark]
                                                      callback:^{
                                                          [weakSelf startTour];
                                                      }]];
@@ -1177,11 +1177,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [tourGuide showTestQuickStartNotice];
     }
 
-//    UIViewController *blogNC = self.navigationController;
-//    if ([blogNC isKindOfClass:[ManyDelegateNavigationController class]]) {
-//        QuickStartTourGuide *tourGuide = ((ManyDelegateNavigationController *) blogNC).tourGuide;
-//        [tourGuide showTestQuickStartNotice];
-//    }
+    QuickStartChecklistView *checklist = [[QuickStartChecklistView alloc] init];
+    [self.navigationController pushViewController:checklist animated:YES];
 }
 
 - (void)showActivity

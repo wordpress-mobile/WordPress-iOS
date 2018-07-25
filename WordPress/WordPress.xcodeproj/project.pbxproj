@@ -247,7 +247,11 @@
 		437542E31DD4E19E00D6B727 /* EditPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437542E21DD4E19E00D6B727 /* EditPostViewController.swift */; };
 		4388FEFE20A4E0B900783948 /* NotificationsViewController+AppRatings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388FEFD20A4E0B900783948 /* NotificationsViewController+AppRatings.swift */; };
 		4388FF0020A4E19C00783948 /* NotificationsViewController+PushPrimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388FEFF20A4E19C00783948 /* NotificationsViewController+PushPrimer.swift */; };
+		4395A1592106389800844E8E /* QuickStartTours.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4395A1582106389800844E8E /* QuickStartTours.swift */; };
+		4395A15B21066DCD00844E8E /* QuickStartChecklistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4395A15A21066DCD00844E8E /* QuickStartChecklistCell.xib */; };
+		4395A15D2106718900844E8E /* QuickStartChecklistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4395A15C2106718900844E8E /* QuickStartChecklistCell.swift */; };
 		43AB7C5E1D3E70510066CB6A /* PostListFilterSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */; };
+		43C9908E21067E22009EFFEB /* QuickStartChecklistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C9908D21067E22009EFFEB /* QuickStartChecklistView.swift */; };
 		43D54D131DCAA070007F575F /* PostPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D54D121DCAA070007F575F /* PostPostViewController.swift */; };
 		43DC0EF12040B23200896C9C /* SignupUsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DC0EF02040B23200896C9C /* SignupUsernameViewController.swift */; };
 		43FB3F411EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FB3F401EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift */; };
@@ -1712,7 +1716,11 @@
 		437542E21DD4E19E00D6B727 /* EditPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditPostViewController.swift; sourceTree = "<group>"; };
 		4388FEFD20A4E0B900783948 /* NotificationsViewController+AppRatings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationsViewController+AppRatings.swift"; sourceTree = "<group>"; };
 		4388FEFF20A4E19C00783948 /* NotificationsViewController+PushPrimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationsViewController+PushPrimer.swift"; sourceTree = "<group>"; };
+		4395A1582106389800844E8E /* QuickStartTours.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartTours.swift; sourceTree = "<group>"; };
+		4395A15A21066DCD00844E8E /* QuickStartChecklistCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartChecklistCell.xib; sourceTree = "<group>"; };
+		4395A15C2106718900844E8E /* QuickStartChecklistCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistCell.swift; sourceTree = "<group>"; };
 		43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostListFilterSettings.swift; sourceTree = "<group>"; };
+		43C9908D21067E22009EFFEB /* QuickStartChecklistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistView.swift; sourceTree = "<group>"; };
 		43D54D121DCAA070007F575F /* PostPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPostViewController.swift; sourceTree = "<group>"; };
 		43DC0EF02040B23200896C9C /* SignupUsernameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupUsernameViewController.swift; sourceTree = "<group>"; };
 		43FB3F401EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueBlogCell.swift; sourceTree = "<group>"; };
@@ -3839,6 +3847,19 @@
 			path = Animations;
 			sourceTree = "<group>";
 		};
+		4395A15E210672C900844E8E /* QuickStart */ = {
+			isa = PBXGroup;
+			children = (
+				4348C88221002FBD00735DC0 /* QuickStartTourGuide.swift */,
+				433A550320F6AC5600757928 /* QuickStartNoticeView.swift */,
+				4395A1582106389800844E8E /* QuickStartTours.swift */,
+				4395A15A21066DCD00844E8E /* QuickStartChecklistCell.xib */,
+				4395A15C2106718900844E8E /* QuickStartChecklistCell.swift */,
+				43C9908D21067E22009EFFEB /* QuickStartChecklistView.swift */,
+			);
+			name = QuickStart;
+			sourceTree = "<group>";
+		};
 		45C73C23113C36F50024D0D2 /* Resources-iPad */ = {
 			isa = PBXGroup;
 			children = (
@@ -5043,8 +5064,7 @@
 				FF1933FE1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.m */,
 				82B85DF81EDDB807004FD510 /* SiteIconPickerPresenter.swift */,
 				433A550120F693A100757928 /* ManyDelegateNavigationController.swift */,
-				4348C88221002FBD00735DC0 /* QuickStartTourGuide.swift */,
-				433A550320F6AC5600757928 /* QuickStartNoticeView.swift */,
+				4395A15E210672C900844E8E /* QuickStart */,
 			);
 			path = Blog;
 			sourceTree = "<group>";
@@ -6959,6 +6979,7 @@
 				85ED988817DFA00000090D0B /* Images.xcassets in Resources */,
 				E149771A1C0DCB6F0057CD60 /* MediaSizeSliderCell.xib in Resources */,
 				E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */,
+				4395A15B21066DCD00844E8E /* QuickStartChecklistCell.xib in Resources */,
 				E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */,
 				B5C66B7A1ACF074600F68370 /* NoteBlockUserTableViewCell.xib in Resources */,
 				E6D2E1631B8AAA340000ED14 /* ReaderListStreamHeader.xib in Resources */,
@@ -7528,6 +7549,7 @@
 				74FA4BE51FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */,
 				986CC4D220E1B2F6004F300E /* CustomLogFormatter.swift in Sources */,
 				433432521E9ED18900915988 /* LoginEpilogueViewController.swift in Sources */,
+				4395A1592106389800844E8E /* QuickStartTours.swift in Sources */,
 				E1DD4CCB1CAE41B800C3863E /* PagedViewController.swift in Sources */,
 				B549BA681CF7447E0086C608 /* InvitePersonViewController.swift in Sources */,
 				B535209B1AF7BBB800B33BA8 /* PushAuthenticationManager.swift in Sources */,
@@ -8050,6 +8072,7 @@
 				FF0A4FEA1F16C9BD00D6CC69 /* ImageAttachment+WordPress.swift in Sources */,
 				B5B68BD41C19AAED00EB59E0 /* InteractiveNotificationsManager.swift in Sources */,
 				B54E1DF01A0A7BAA00807537 /* ReplyBezierView.swift in Sources */,
+				4395A15D2106718900844E8E /* QuickStartChecklistCell.swift in Sources */,
 				8261B4CC1EA8E13700668298 /* SVProgressHUD+Dismiss.m in Sources */,
 				596C035E1B84F21D00899EEB /* ThemeBrowserViewController.swift in Sources */,
 				E2E7EB46185FB140004F5E72 /* WPBlogSelectorButton.m in Sources */,
@@ -8174,6 +8197,7 @@
 				B518E1651CCAA19200ADFE75 /* Blog+Capabilities.swift in Sources */,
 				982BED9A1FBCF976000B848E /* SiteCreationNavigationController.swift in Sources */,
 				08216FC91CDBF96000304BA7 /* MenuItemCategoriesViewController.m in Sources */,
+				43C9908E21067E22009EFFEB /* QuickStartChecklistView.swift in Sources */,
 				082635BB1CEA69280088030C /* MenuItemsViewController.m in Sources */,
 				822876F11E929CFD00696BF7 /* ReachabilityUtils+OnlineActions.swift in Sources */,
 				E15632CC1EB9ECF40035A099 /* TableViewKeyboardObserver.swift in Sources */,
