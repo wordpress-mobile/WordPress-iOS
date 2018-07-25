@@ -9,11 +9,55 @@ struct NotificationContentRouter {
         self.notification = activity
     }
 
-    func routeTo(_ url: URL) throws {
+    func routeTo(_ url: URL) {
         guard let range = getRange(with: url) else {
             return
         }
-        try displayContent(of: range, with: url)
+        do {
+            try displayContent(of: range, with: url)
+        } catch {
+            coordinator.displayWebViewWithURL(url)
+        }
+    }
+
+    /// Route to the controller that best represents the notification source.
+    ///
+    /// - Throws: throws if the notification doesn't have a resource URL
+    ///
+    func routeToNotificationSource() throws {
+        guard let fallbackURL = notification.resourceURL else {
+            throw DefaultContentCoordinator.DisplayError.missingParameter
+        }
+        do {
+            try displayNotificationSource()
+        } catch {
+            coordinator.displayWebViewWithURL(fallbackURL)
+        }
+    }
+
+    func routeTo(_ image: UIImage) {
+        coordinator.displayFullscreenImage(image)
+    }
+
+    private func displayNotificationSource() throws {
+        switch notification.kind {
+        case .Follow:
+            try coordinator.displayStreamWithSiteID(notification.metaSiteID)
+        case .Like:
+            fallthrough
+        case .Matcher:
+            fallthrough
+        case .NewPost:
+            fallthrough
+        case .Post:
+            try coordinator.displayReaderWithPostId(notification.metaPostID, siteID: notification.metaSiteID)
+        case .Comment:
+            fallthrough
+        case .CommentLike:
+            try coordinator.displayCommentsWithPostId(notification.metaPostID, siteID: notification.metaSiteID)
+        default:
+            throw DefaultContentCoordinator.DisplayError.unsupportedType
+        }
     }
 
     private func displayContent(of range: FormattableContentRange, with url: URL) throws {
