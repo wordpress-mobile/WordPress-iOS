@@ -8,17 +8,15 @@ import XCTest
 ///
 class NotificationTests: XCTestCase {
 
-    var contextManager: TestContextManager!
+    let utility = NotificationUtility()
 
     override func setUp() {
         super.setUp()
-        contextManager = TestContextManager()
+        utility.setUp()
     }
 
     override func tearDown() {
-        // Note: We'll force TestContextManager override reset, since, for (unknown reasons) the TestContextManager
-        // might be retained more than expected, and it may break other core data based tests.
-        ContextManager.overrideSharedInstance(nil)
+        utility.tearDown()
         super.tearDown()
     }
 
@@ -220,23 +218,19 @@ class NotificationTests: XCTestCase {
 
     // MARK: - Helpers
 
-    var entityName: String {
-        return Notification.classNameWithoutNamespaces()
-    }
-
     func loadBadgeNotification() -> WordPress.Notification {
-        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-badge.json") as! WordPress.Notification
+        return utility.loadBadgeNotification()
     }
 
     func loadLikeNotification() -> WordPress.Notification {
-        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-like.json") as! WordPress.Notification
+        return utility.loadLikeNotification()
     }
 
     func loadFollowerNotification() -> WordPress.Notification {
-        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-new-follower.json") as! WordPress.Notification
+        return utility.loadFollowerNotification()
     }
 
     func loadCommentNotification() -> WordPress.Notification {
-        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-replied-comment.json") as! WordPress.Notification
+        return utility.loadCommentNotification()
     }
 }

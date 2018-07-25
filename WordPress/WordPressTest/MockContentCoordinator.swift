@@ -29,8 +29,11 @@ class MockContentCoordinator: ContentCoordinator {
 
     }
 
+    var streamWasDisplayed = false
+    var streamSiteID: NSNumber?
     func displayStreamWithSiteID(_ siteID: NSNumber?) throws {
-
+        streamWasDisplayed = true
+        streamSiteID = siteID
     }
 
     func displayWebViewWithURL(_ url: URL) {
