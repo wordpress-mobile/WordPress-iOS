@@ -54,7 +54,7 @@ struct PlanListRow: ImmuTableRow {
                     .font: WPFontManager.systemSemiBoldFont(ofSize: 11.0),
                     .foregroundColor: WPStyleGuide.validGreen()
                 ]
-                let currentPlan = NSLocalizedString("Current Plan", comment: "").localizedUppercase
+                let currentPlan = NSLocalizedString("Current Plan", comment: "Label title. Refers to the current WordPress.com plan for a user's site.").localizedUppercase
                 let attributedCurrentPlan = NSAttributedString(string: currentPlan, attributes: currentPlanAttributes)
                 attributedTitle.append(attributedCurrentPlan)
             } else if !price.isEmpty {
