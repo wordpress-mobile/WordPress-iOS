@@ -94,13 +94,8 @@ extension RegisterDomainDetailsViewController {
                 }
             )
         )
-        let section = ImmuTableSection(
-            headerText: nil,
-            rows: rows,
-            footerText: nil
-        )
 
-        return section
+        return ImmuTableSection(rows: rows)
     }
 
     private func domainContactInfo() -> ImmuTableSection {
@@ -112,13 +107,7 @@ extension RegisterDomainDetailsViewController {
                                              action: nil))
         }
 
-        let section = ImmuTableSection(
-            headerText: nil,
-            rows: rows,
-            footerText: nil
-        )
-
-        return section
+        return ImmuTableSection(rows: rows)
     }
 }
 
