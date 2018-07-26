@@ -2,7 +2,7 @@ import UIKit
 
 /// UIViewController subclasses who has a bottom view that should have a hiding
 /// ability can conform to this protocol so showing/hiding is already handled.
-protocol DomainSuggestionsButtonViewToggle {
+protocol DomainSuggestionsButtonViewPresenter {
 
     /// Distance constraint between the hidable view's bottom and the conforming view's bottom
     var buttonContainerViewBottomConstraint: NSLayoutConstraint! { get }
@@ -11,7 +11,7 @@ protocol DomainSuggestionsButtonViewToggle {
     var buttonContainerViewHeightConstraint: NSLayoutConstraint! { get }
 }
 
-extension DomainSuggestionsButtonViewToggle where Self: UIViewController {
+extension DomainSuggestionsButtonViewPresenter where Self: UIViewController {
 
     /// Shows/hides bottom view
     ///

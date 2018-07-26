@@ -1,7 +1,7 @@
 import UIKit
 import WordPressAuthenticator
 
-class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggestionsButtonViewToggle {
+class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggestionsButtonViewPresenter {
 
     @IBOutlet weak var buttonContainerViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
