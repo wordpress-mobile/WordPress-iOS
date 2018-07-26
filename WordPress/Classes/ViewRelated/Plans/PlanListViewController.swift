@@ -87,18 +87,8 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
 
     // MARK: - NoResults Handling
 
-    private func setupNoResultsViewController() {
-        let noResultsStoryboard = UIStoryboard(name: "NoResults", bundle: nil)
-        guard let noResultsViewController = noResultsStoryboard.instantiateViewController(withIdentifier: "NoResults") as? NoResultsViewController else {
-            return
-        }
-
-        noResultsViewController.delegate = self
-        self.noResultsViewController = noResultsViewController
-    }
-
     private func updateNoResults() {
-        hideNoResults()
+        noResultsViewController?.removeFromView()
         if let noResultsViewModel = viewModel.noResultsViewModel {
             showNoResults(noResultsViewModel)
         }
@@ -107,7 +97,8 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
     private func showNoResults(_ viewModel: NoResultsViewController.Model) {
 
         if noResultsViewController == nil {
-            setupNoResultsViewController()
+            noResultsViewController = NoResultsViewController.controller()
+            noResultsViewController?.delegate = self
         }
 
         guard let noResultsViewController = noResultsViewController else {
@@ -119,17 +110,6 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         addChildViewController(noResultsViewController)
         noResultsViewController.didMove(toParentViewController: self)
-
-    }
-
-    private func hideNoResults() {
-
-        guard let noResultsViewController = noResultsViewController else {
-            return
-        }
-
-        noResultsViewController.view.removeFromSuperview()
-        noResultsViewController.removeFromParentViewController()
     }
 
 }

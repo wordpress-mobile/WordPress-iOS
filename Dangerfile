@@ -1,6 +1,9 @@
 # A PR should have at least one label
 warn("PR is missing at least one label.") if github.pr_labels.empty?
 
+# A PR shouldn't be merged with the 'DO NOT MERGE' label
+warn("This PR is tagged with 'DO NOT MERGE'.") if github.pr_labels.include? "[Status] DO NOT MERGE"
+
 # Warn when there is a big PR
 warn("PR has more than 500 lines of code changing. Consider splitting into smaller PRs if possible.") if git.lines_of_code > 500
 

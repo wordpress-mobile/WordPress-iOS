@@ -5,9 +5,9 @@ enum FeatureFlag: Int {
     case exampleFeature
     case jetpackDisconnect
     case saveForLater
-    case gifSupportInReaderDetail
     case extractNotifications
     case automatedTransfersCustomDomain
+    case quickStart
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -18,11 +18,11 @@ enum FeatureFlag: Int {
             return BuildConfiguration.current == .localDeveloper
         case .saveForLater:
             return true
-        case .gifSupportInReaderDetail:
-            return true
         case .extractNotifications:
             return BuildConfiguration.current == .localDeveloper
         case .automatedTransfersCustomDomain:
+            return BuildConfiguration.current == .localDeveloper
+        case .quickStart:
             return BuildConfiguration.current == .localDeveloper
         }
     }

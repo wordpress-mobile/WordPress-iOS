@@ -61,7 +61,6 @@
     
     [super viewDidLoad];
     [self setupWebView];
-    [self setupNoResultsViewController];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -101,12 +100,6 @@
         self.webView.delegate = self;
     }
     [self.view addSubview:self.webView];
-}
-
-- (void)setupNoResultsViewController {
-    UIStoryboard *noResultsSB = [UIStoryboard storyboardWithName:@"NoResults" bundle:nil];
-    self.noResultsViewController = [noResultsSB instantiateViewControllerWithIdentifier:@"NoResults"];
-    self.noResultsViewController.delegate = self;
 }
 
 #pragma mark - Loading
@@ -217,17 +210,17 @@
 
 - (void)preview:(PostPreviewGenerator *)generator loadHTML:(NSString *)html {
     [self.webView loadHTMLString:html baseURL:nil];
-    [self hideNoResults];
+    [self.noResultsViewController removeFromView];
 }
 
 - (void)preview:(PostPreviewGenerator *)generator attemptRequest:(NSURLRequest *)request {
     [self startLoading];
     [self.webView loadRequest:request];
-    [self hideNoResults];
+    [self.noResultsViewController removeFromView];
 }
 
 - (void)previewFailed:(PostPreviewGenerator *)generator message:(NSString *)message {
-    [self showNoResultsWithTite:message];
+    [self showNoResultsWithTitle:message];
     [self reloadWhenConnectionRestored];
 }
 
@@ -235,27 +228,24 @@
 
 - (void)actionButtonPressed {
     [self stopWaitingForConnectionRestored];
-    [self hideNoResults];
+    [self.noResultsViewController removeFromView];
     [self refreshWebView];
 }
 
-- (void)showNoResultsWithTite:(NSString *)title {
-    [self.noResultsViewController configureWithTitle:title
-                                         buttonTitle:NSLocalizedString(@"Retry", @"Button to retry a preview that failed to load")
-                                            subtitle:nil
-                                               image:nil
-                                       accessoryView:nil];
+- (void)showNoResultsWithTitle:(NSString *)title {
+    self.noResultsViewController = [NoResultsViewController controllerWithTitle:title
+                                                                    buttonTitle:NSLocalizedString(@"Retry", @"Button to retry a preview that failed to load")
+                                                                       subtitle:nil
+                                                                          image:nil
+                                                                  accessoryView:nil];
+    self.noResultsViewController.delegate = self;
+
     [self.view layoutIfNeeded];
     [self addChildViewController:self.noResultsViewController];
 
     [self.view addSubview:self.noResultsViewController.view];
     self.noResultsViewController.view.frame = self.view.bounds;
     [self.noResultsViewController didMoveToParentViewController:self];
-}
-
-- (void)hideNoResults {
-    [self.noResultsViewController.view removeFromSuperview];
-    [self.noResultsViewController removeFromParentViewController];
 }
 
 #pragma mark - Custom UI elements

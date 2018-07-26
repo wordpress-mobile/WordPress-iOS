@@ -464,16 +464,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mysites-nosites" translatesAutoresizingMaskIntoConstraints="NO" id="Erg-tS-MMs" userLabel=" Image">
-                                <rect key="frame" x="12.5" y="146.5" width="350" height="219"/>
+                                <rect key="frame" x="74.5" y="249.5" width="226" height="116"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="350" id="RHZ-Z4-JMd">
-                                        <variation key="heightClass=compact" constant="325"/>
-                                    </constraint>
-                                    <constraint firstAttribute="width" secondItem="Erg-tS-MMs" secondAttribute="height" multiplier="8:5" id="TGb-sH-RGu"/>
+                                    <constraint firstAttribute="width" secondItem="Erg-tS-MMs" secondAttribute="height" multiplier="113:58" id="FOn-SI-40f"/>
+                                    <constraint firstAttribute="width" constant="226" id="in7-mh-nz6"/>
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="OQN-Yl-sBD" userLabel="Label Stack View">
-                                <rect key="frame" x="0.0" y="345.5" width="375" height="110"/>
+                                <rect key="frame" x="0.0" y="375.5" width="375" height="110"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Laying site foundation..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XpK-EE-vff">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="18"/>
@@ -511,7 +509,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="OQN-Yl-sBD" firstAttribute="leading" secondItem="FHN-yR-aWh" secondAttribute="leading" id="6cn-X9-rnW"/>
-                            <constraint firstItem="OQN-Yl-sBD" firstAttribute="top" secondItem="FHN-yR-aWh" secondAttribute="centerY" constant="-20" id="aph-Bm-eob"/>
+                            <constraint firstItem="OQN-Yl-sBD" firstAttribute="top" secondItem="FHN-yR-aWh" secondAttribute="centerY" constant="10" id="aph-Bm-eob"/>
                             <constraint firstItem="Erg-tS-MMs" firstAttribute="centerX" secondItem="FHN-yR-aWh" secondAttribute="centerX" id="czu-4c-YOM"/>
                             <constraint firstItem="Erg-tS-MMs" firstAttribute="bottom" secondItem="FHN-yR-aWh" secondAttribute="centerY" id="dkr-Ic-wNQ"/>
                             <constraint firstItem="FHN-yR-aWh" firstAttribute="trailing" secondItem="OQN-Yl-sBD" secondAttribute="trailing" id="zNT-Lb-pfF"/>
@@ -677,7 +675,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="mysites-nosites" width="400" height="250"/>
+        <image name="mysites-nosites" width="226" height="116"/>
         <image name="site-creation-confetti" width="400" height="250"/>
     </resources>
 </document>

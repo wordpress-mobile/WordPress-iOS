@@ -4,7 +4,7 @@ import WordPressShared
 extension WPStyleGuide {
 
     @objc public class func configureSearchBar(_ searchBar: UISearchBar) {
-        searchBar.accessibilityIdentifier = NSLocalizedString("Search", comment: "")
+        searchBar.accessibilityIdentifier = "Search"
         searchBar.autocapitalizationType = .none
         searchBar.autocorrectionType = .no
         searchBar.isTranslucent = false

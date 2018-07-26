@@ -20,6 +20,7 @@ struct UniversalLinkRouter {
         NotificationsRoutes +
         ReaderRoutes +
         StatsRoutes +
+        MySitesRoutes +
         AppBannerRoutes)
 
     private static let MeRoutes: [Route] = [
@@ -46,6 +47,8 @@ struct UniversalLinkRouter {
         ReaderRoute.manageFollowing,
         ReaderRoute.list,
         ReaderRoute.tag,
+        ReaderRoute.feed,
+        ReaderRoute.blog,
         ReaderRoute.feedsPost,
         ReaderRoute.blogsPost
     ]
@@ -63,6 +66,17 @@ struct UniversalLinkRouter {
         StatsRoute.activityLog
     ]
 
+    private static let MySitesRoutes: [Route] = [
+        MySitesRoute.pages,
+        MySitesRoute.posts,
+        MySitesRoute.media,
+        MySitesRoute.comments,
+        MySitesRoute.sharing,
+        MySitesRoute.people,
+        MySitesRoute.plugins,
+        MySitesRoute.managePlugins
+    ]
+
     private static let AppBannerRoutes: [Route] = [
         AppBannerRoute()
     ]
@@ -70,11 +84,27 @@ struct UniversalLinkRouter {
     /// Attempts to find a Route that matches the url's path, and perform its
     /// associated action.
     ///
-    func handle(url: URL) {
+    /// - parameter url: The URL to match against a route.
+    /// - parameter track: If false, don't post an analytics event for this URL.
+    ///
+    /// - returns: True if the route was handled, or false if it didn't match any routes.
+    ///
+    func handle(url: URL, shouldTrack track: Bool = true) {
         let matches = matcher.routesMatching(url)
+
+        if track {
+            trackDeepLink(matchCount: matches.count, url: url)
+        }
 
         for matchedRoute in matches {
             matchedRoute.action.perform(matchedRoute.values)
         }
+    }
+
+    private func trackDeepLink(matchCount: Int, url: URL) {
+        let stat: WPAnalyticsStat = (matchCount > 0) ? .deepLinked : .deepLinkFailed
+        let properties = ["url": url.absoluteString]
+
+        WPAppAnalytics.track(stat, withProperties: properties)
     }
 }

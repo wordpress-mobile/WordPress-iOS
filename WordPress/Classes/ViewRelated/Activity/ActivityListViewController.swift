@@ -188,7 +188,7 @@ extension ActivityListViewController: ActivityRewindPresenter {
         let alertController = UIAlertController(title: title,
                                                 message: message,
                                                 preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: ""))
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Verb. A button title."))
         alertController.addDestructiveActionWithTitle(NSLocalizedString("Confirm Rewind",
                                                                         comment: "Confirm Rewind button title"),
                                                       handler: { action in
@@ -229,28 +229,18 @@ extension ActivityListViewController {
 
 private extension ActivityListViewController {
 
-    func setupNoResultsViewController() {
-        let noResultsStoryboard = UIStoryboard(name: "NoResults", bundle: nil)
-        guard let noResultsViewController = noResultsStoryboard.instantiateViewController(withIdentifier: "NoResults") as? NoResultsViewController else {
-            return
-        }
-
-        noResultsViewController.delegate = self
-        self.noResultsViewController = noResultsViewController
-    }
-
     func updateNoResults() {
+        noResultsViewController?.removeFromView()
         if let noResultsViewModel = viewModel.noResultsViewModel() {
             showNoResults(noResultsViewModel)
-        } else {
-            hideNoResults()
         }
     }
 
     func showNoResults(_ viewModel: NoResultsViewController.Model) {
 
         if noResultsViewController == nil {
-            setupNoResultsViewController()
+            noResultsViewController = NoResultsViewController.controller()
+            noResultsViewController?.delegate = self
         }
 
         guard let noResultsViewController = noResultsViewController else {
@@ -266,16 +256,6 @@ private extension ActivityListViewController {
         addChildViewController(noResultsViewController)
         noResultsViewController.didMove(toParentViewController: self)
 
-    }
-
-    func hideNoResults() {
-
-        guard let noResultsViewController = noResultsViewController else {
-            return
-        }
-
-        noResultsViewController.view.removeFromSuperview()
-        noResultsViewController.removeFromParentViewController()
     }
 
 }
