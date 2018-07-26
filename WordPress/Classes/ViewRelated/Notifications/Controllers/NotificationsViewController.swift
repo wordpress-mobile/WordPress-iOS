@@ -954,12 +954,20 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         if UIView.userInterfaceLayoutDirection(for: view.semanticContentAttribute) == .leftToRight {
             cell.leftButtons = leadingButtons(note: note)
             cell.leftExpansion.buttonIndex = leadingExpansionButton
-            cell.rightButtons = trailingButtons(note: note)
+            if FeatureFlag.extractNotifications.enabled {
+                cell.rightButtons = trailingButtons(note: note)
+            } else {
+                cell.rightButtons = old_trailingButtons(note: note)
+            }
             cell.rightExpansion.buttonIndex = trailingExpansionButton
         } else {
             cell.rightButtons = leadingButtons(note: note)
             cell.rightExpansion.buttonIndex = trailingExpansionButton
-            cell.leftButtons = trailingButtons(note: note)
+            if FeatureFlag.extractNotifications.enabled {
+                cell.leftButtons = trailingButtons(note: note)
+            } else {
+                cell.leftButtons = old_trailingButtons(note: note)
+            }
             cell.leftExpansion.buttonIndex = trailingExpansionButton
         }
     }
@@ -1018,10 +1026,68 @@ private extension NotificationsViewController {
         ]
     }
 
-    func trailingButtons(note: Notification) -> [MGSwipeButton] {
+    func old_trailingButtons(note: Notification) -> [MGSwipeButton] {
         var rightButtons = [MGSwipeButton]()
 
         guard let block = note.blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
+            return []
+        }
+
+        // Comments: Trash
+        if block.isActionEnabled(.Trash) {
+            let trashButton = MGSwipeButton(title: NSLocalizedString("Trash", comment: "Trashes a comment"), backgroundColor: WPStyleGuide.errorRed(), callback: { [weak self] _ in
+                ReachabilityUtils.onAvailableInternetConnectionDo {
+                    let request = NotificationDeletionRequest(kind: .deletion, action: { [weak self] onCompletion in
+                        self?.actionsService.deleteCommentWithBlock(block) { success in
+                            onCompletion(success)
+                        }
+                    })
+
+                    self?.showUndeleteForNoteWithID(note.objectID, request: request)
+                }
+                return true
+            })
+            rightButtons.append(trashButton)
+        }
+
+        guard block.isActionEnabled(.Approve) else {
+            return rightButtons
+        }
+
+        // Comments: Unapprove
+        if block.isActionOn(.Approve) {
+            let title = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
+
+            let unapproveButton = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.grey(), callback: { [weak self] _ in
+                ReachabilityUtils.onAvailableInternetConnectionDo {
+                    self?.actionsService.unapproveCommentWithBlock(block)
+                }
+                return true
+            })
+
+            rightButtons.append(unapproveButton)
+
+            // Comments: Approve
+        } else {
+            let title = NSLocalizedString("Approve", comment: "Approves a Comment")
+
+            let approveButton = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue(), callback: { [weak self] _ in
+                ReachabilityUtils.onAvailableInternetConnectionDo {
+                    self?.actionsService.approveCommentWithBlock(block)
+                }
+                return true
+            })
+
+            rightButtons.append(approveButton)
+        }
+
+        return rightButtons
+    }
+
+    func trailingButtons(note: Notification) -> [MGSwipeButton] {
+        var rightButtons = [MGSwipeButton]()
+
+        guard let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
             return []
         }
 

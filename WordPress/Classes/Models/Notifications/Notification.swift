@@ -152,6 +152,16 @@ class Notification: NSManagedObject {
 
     /// Returns the first BlockGroup of the specified type, if any.
     ///
+    func contentGroup(ofKind kind: FormattableContentGroup.Kind) -> FormattableContentGroup? {
+        for contentGroup in bodyContentGroups where contentGroup.kind == kind {
+            return contentGroup
+        }
+
+        return nil
+    }
+
+    /// Returns the first BlockGroup of the specified type, if any.
+    ///
     func blockGroupOfKind(_ kind: NotificationBlockGroup.Kind) -> NotificationBlockGroup? {
         for blockGroup in bodyBlockGroups where blockGroup.kind == kind {
             return blockGroup
@@ -204,25 +214,48 @@ extension Notification {
     /// Verifies if the current notification is a Pingback.
     ///
     var isPingback: Bool {
-        guard let subjectRanges = subjectBlock?.ranges, subjectRanges.count == 2 else {
-            return false
-        }
+        if FeatureFlag.extractNotifications.enabled {
+            guard subjectContentGroup?.blocks.count == 1 else {
+                return false
+            }
+            guard let ranges = subjectContentGroup?.blocks.first?.ranges, ranges.count == 2 else {
+                return false
+            }
+            return ranges.first?.kind == .site && ranges.last?.kind == .post
+        } else {
+            guard let subjectRanges = subjectBlock?.ranges, subjectRanges.count == 2 else {
+                return false
+            }
 
-        return subjectRanges.first?.kind == .Site && subjectRanges.last?.kind == .Post
+            return subjectRanges.first?.kind == .Site && subjectRanges.last?.kind == .Post
+        }
     }
 
     /// Verifies if the current notification is actually a Badge one.
     /// Note: Sorry about the following snippet. I'm (and will always be) against Duck Typing.
     ///
     @objc var isBadge: Bool {
-        let blocks = bodyBlockGroups.flatMap { $0.blocks }
-        for block in blocks {
-            for media in block.media where media.kind == .Badge {
-                return true
+        if FeatureFlag.extractNotifications.enabled {
+            let blocks = bodyContentGroups.flatMap { $0.blocks }
+            for block in blocks where block is FormattableMediaContent {
+                guard let mediaBlock = block as? FormattableMediaContent else {
+                    continue
+                }
+                for media in mediaBlock.media where media.kind == .badge {
+                    return true
+                }
             }
-        }
+            return false
+        } else {
+            let blocks = bodyBlockGroups.flatMap { $0.blocks }
+            for block in blocks {
+                for media in block.media where media.kind == .Badge {
+                    return true
+                }
+            }
 
-        return false
+            return false
+        }
     }
 
     /// Verifies if the current notification is a Comment-Y note, and if it has been replied to.
@@ -234,13 +267,20 @@ extension Notification {
     //// Check if this note is a comment and in 'Unapproved' status
     ///
     @objc var isUnapprovedComment: Bool {
-        guard let block = blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
-            return false
+        if FeatureFlag.extractNotifications.enabled {
+            guard let block: FormattableCommentContent = contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
+                return false
+            }
+            let commandId = ApproveCommentAction.actionIdentifier()
+            return block.isActionEnabled(id: commandId) && !block.isActionOn(id: commandId)
+        } else {
+            guard let block = blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
+                return false
+            }
+
+            return block.isActionEnabled(.Approve) && !block.isActionOn(.Approve)
         }
 
-        //return block.isActionEnabled(.Approve) && !block.isActionOn(.Approve)
-        let commandId = ApproveCommentAction.actionIdentifier()
-        return block.isActionEnabled(id: commandId) && !block.isActionOn(id: commandId)
     }
 
     var kind: ParentKind {

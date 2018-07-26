@@ -82,31 +82,32 @@ public class FormattableCommentRange: NotificationContentRange {
     }
 }
 
-public class FormattableNoticonRange: NotificationContentRange {
+public class FormattableNoticonRange: FormattableContentRange {
+    public var kind: FormattableRangeKind = .noticon
+    public var range: NSRange
     public let value: String
 
     private var noticon: String {
         return value + " "
     }
 
-    public init(value: String, properties: Properties) {
+    public init(value: String, range: NSRange) {
         self.value = value
-        super.init(kind: .noticon, properties: properties)
+        self.range = range
     }
 
-    public func apply(_ styles: FormattableContentStyles, to string: NSMutableAttributedString, withShift shift: Int) -> Shift {
-
+    public func apply(_ styles: FormattableContentStyles, to string: NSMutableAttributedString, withShift shift: Int) -> FormattableContentRange.Shift {
         let shiftedRange = rangeShifted(by: shift)
-        string.replaceCharacters(in: shiftedRange, with: noticon)
+        insertIcon(to: string, at: shiftedRange)
 
-        let superShift = super.apply(styles, to: string, withShift: shift)
+        let longerRange = NSMakeRange(shiftedRange.location, shiftedRange.length + noticon.count)
+        apply(styles, to: string, at: longerRange)
 
-        return noticon.count + superShift
+        return noticon.count
     }
 
-    func apply(_ styles: FormattableContentStyles, to string: NSMutableAttributedString, at shiftedRange: NSRange) {
-        let longerRange = NSMakeRange(shiftedRange.location, shiftedRange.length + noticon.count)
-        super.apply(styles, to: string, at: longerRange)
+    func insertIcon(to string: NSMutableAttributedString, at shiftedRange: NSRange) {
+        string.replaceCharacters(in: shiftedRange, with: noticon)
     }
 }
 

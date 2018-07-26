@@ -6,6 +6,7 @@ final class FormattableCommentContentTests: XCTestCase {
     private let entityName = Notification.classNameWithoutNamespaces()
 
     private var subject: FormattableCommentContent?
+    private var utility = NotificationUtility()
 
     private struct Expectations {
         static let text = "This is an unapproved comment"
@@ -18,11 +19,13 @@ final class FormattableCommentContentTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        utility.setUp()
         subject = FormattableCommentContent(dictionary: mockDictionary(), actions: mockedActions(), ranges: [], parent: loadLikeNotification())
     }
 
     override func tearDown() {
         subject = nil
+        utility.tearDown()
         super.tearDown()
     }
 
@@ -112,6 +115,24 @@ final class FormattableCommentContentTests: XCTestCase {
         XCTAssertEqual(id, Expectations.metaSiteId)
     }
 
+    func testCommentNotificationHasActions() {
+        let commentNotification = utility.loadCommentNotification()
+        let commentContent: FormattableCommentContent? = commentNotification.contentGroup(ofKind: .comment)?.blockOfKind(.comment)
+        XCTAssertNotNil(commentContent)
+
+        let trashAction = commentContent?.action(id: TrashCommentAction.actionIdentifier())
+        let approveAction = commentContent?.action(id: ApproveCommentAction.actionIdentifier())
+        let replyAction = commentContent?.action(id: ReplyToCommentAction.actionIdentifier())
+        let likeAction = commentContent?.action(id: LikeCommentAction.actionIdentifier())
+        let markAsSpam = commentContent?.action(id: MarkAsSpamAction.actionIdentifier())
+
+        XCTAssertNotNil(trashAction)
+        XCTAssertNotNil(approveAction)
+        XCTAssertNotNil(replyAction)
+        XCTAssertNotNil(likeAction)
+        XCTAssertNotNil(markAsSpam)
+    }
+
     private func mockDictionary() -> [String: AnyObject] {
         return getDictionaryFromFile(named: "notifications-comment-content.json")
     }
@@ -121,7 +142,7 @@ final class FormattableCommentContentTests: XCTestCase {
     }
 
     private func loadLikeNotification() -> WordPress.Notification {
-        return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-like.json") as! WordPress.Notification
+        return utility.loadLikeNotification()
     }
 
     private func loadMeta() -> [String: AnyObject] {

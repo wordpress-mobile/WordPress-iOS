@@ -30,7 +30,7 @@ public class FormattableMediaItem {
                 return nil
         }
 
-        kind = Kind(rawValue: type) ?? .Image
+        kind = Kind(rawValue: type) ?? .image
         range = NSMakeRange(start, end - start)
 
         if let url = dictionary[MediaKeys.URL] as? String {
@@ -65,8 +65,8 @@ public extension FormattableMediaItem {
     /// Known kinds of Media Entities
     ///
     public enum Kind: String {
-        case Image              = "image"
-        case Badge              = "badge"
+        case image              = "image"
+        case badge              = "badge"
     }
 
     /// Parsing Keys

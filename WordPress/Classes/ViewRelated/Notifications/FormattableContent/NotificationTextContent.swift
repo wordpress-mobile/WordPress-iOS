@@ -18,7 +18,7 @@ protocol FormattableMediaContent {
 extension FormattableMediaContent where Self: FormattableContent {
     var imageUrls: [URL] {
         return media.compactMap {
-            guard $0.kind == .Image && $0.mediaURL != nil else {
+            guard $0.kind == .image && $0.mediaURL != nil else {
                 return nil
             }
 
@@ -57,7 +57,7 @@ class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
     }
 
     override var kind: FormattableContentKind {
-        if let firstMedia = media.first, (firstMedia.kind == .Image || firstMedia.kind == .Badge) {
+        if let firstMedia = media.first, (firstMedia.kind == .image || firstMedia.kind == .badge) {
             return .image
         }
         return .text

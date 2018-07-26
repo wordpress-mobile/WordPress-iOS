@@ -27,16 +27,15 @@ class NotificationBlock: Equatable {
 
     /// Available Actions collection.
     ///
-    //fileprivate let actions: [String: AnyObject]?
-    let actions: [FormattableContentAction]?
+    fileprivate let actions: [String: AnyObject]?
 
     /// Action Override Values
     ///
-//    fileprivate var actionsOverride = [Action: Bool]() {
-//        didSet {
-//            parent?.didChangeOverrides()
-//        }
-//    }
+    fileprivate var actionsOverride = [Action: Bool]() {
+        didSet {
+            parent?.didChangeOverrides()
+        }
+    }
 
     /// Helper used by the +Interface Extension.
     ///
@@ -57,11 +56,11 @@ class NotificationBlock: Equatable {
 
     /// Designated Initializer.
     ///
-    init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], parent note: Notification) {
+    init(dictionary: [String: AnyObject], parent note: Notification) {
         let rawMedia    = dictionary[BlockKeys.Media] as? [[String: AnyObject]]
         let rawRanges   = dictionary[BlockKeys.Ranges] as? [[String: AnyObject]]
 
-        actions = commandActions
+        actions = dictionary[BlockKeys.Actions] as? [String: AnyObject]
         media   = NotificationMedia.mediaFromArray(rawMedia)
         meta    = dictionary[BlockKeys.Meta] as? [String: AnyObject]
         ranges  = NotificationRange.rangesFromArray(rawRanges)
@@ -128,8 +127,7 @@ extension NotificationBlock {
     /// Returns YES if the associated comment (if any) is approved. NO otherwise.
     ///
     var isCommentApproved: Bool {
-        let identifier = ApproveCommentAction.actionIdentifier()
-        return isActionOn(id: identifier) || !isActionEnabled(id: identifier)
+        return isActionOn(.Approve) || !isActionEnabled(.Approve)
     }
 
     /// Comment ID, if any.
@@ -190,24 +188,40 @@ extension NotificationBlock {
 // MARK: - NotificationBlock Methods
 //
 extension NotificationBlock {
-    /// Gets a command by identifier
+    /// Allows us to set a local override for a remote value. This is used to fake the UI, while
+    /// there's a BG call going on.
     ///
-    func action(id: Identifier) -> FormattableContentAction? {
-        return actions?.filter {
-            $0.identifier == id
-        }.first
+    func setOverrideValue(_ value: Bool, forAction action: Action) {
+        actionsOverride[action] = value
     }
 
-    /// Indicated if a command is active
+    /// Removes any local (temporary) value that might have been set by means of *setActionOverrideValue*.
     ///
-    func isActionOn(id: Identifier) -> Bool {
-        return action(id: id)?.on ?? false
+    func removeOverrideValueForAction(_ action: Action) {
+        actionsOverride.removeValue(forKey: action)
     }
 
-    /// Indicates if a command is enabled
+    /// Returns the Notification Block status for a given action. Will return any *Override* that might be set, if any.
     ///
-    func isActionEnabled(id: Identifier) -> Bool {
-        return action(id: id)?.enabled ?? false
+    fileprivate func valueForAction(_ action: Action) -> Bool? {
+        if let overrideValue = actionsOverride[action] {
+            return overrideValue
+        }
+
+        let value = actions?[action.rawValue] as? NSNumber
+        return value?.boolValue
+    }
+
+    /// Returns *true* if a given action is available.
+    ///
+    func isActionEnabled(_ action: Action) -> Bool {
+        return valueForAction(action) != nil
+    }
+
+    /// Returns *true* if a given action is toggled on. (I.e.: Approval = On >> the comment is currently approved).
+    ///
+    func isActionOn(_ action: Action) -> Bool {
+        return valueForAction(action) ?? false
     }
 
     // Dynamic Attribute Cache: Used internally by the Interface Extension, as an optimization.
@@ -261,12 +275,9 @@ extension NotificationBlock {
     ///
     class func blocksFromArray(_ blocks: [[String: AnyObject]], parent: Notification) -> [NotificationBlock] {
         return blocks.compactMap {
-            let actions = actionParser.parse($0[BlockKeys.Actions] as? [String: AnyObject])
-            return NotificationBlock(dictionary: $0, actions: actions, parent: parent)
+            return NotificationBlock(dictionary: $0, parent: parent)
         }
     }
-
-    private static let actionParser = NotificationActionParser()
 }
 
 
@@ -280,6 +291,17 @@ extension NotificationBlock {
         case image      // Includes Badges and Images
         case user
         case comment
+    }
+
+    /// Known kinds of Actions
+    ///
+    enum Action: String {
+        case Approve            = "approve-comment"
+        case Follow             = "follow"
+        case Like               = "like-comment"
+        case Reply              = "replyto-comment"
+        case Spam               = "spam-comment"
+        case Trash              = "trash-comment"
     }
 
     /// Parsing Keys
@@ -306,6 +328,10 @@ extension NotificationBlock {
         static let Reply        = "reply_comment"
         static let Home         = "home"
     }
+}
+
+extension NotificationBlock: ActionableObject {
+
 }
 
 
