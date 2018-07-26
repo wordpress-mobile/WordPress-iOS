@@ -2,7 +2,7 @@ import UIKit
 import WordPressAuthenticator
 import WordPressShared
 
-class SiteCreationDomainsViewController: NUXViewController, DomainSuggestionsButtonViewToggle {
+class SiteCreationDomainsViewController: NUXViewController, DomainSuggestionsButtonViewPresenter {
 
     // MARK: - Properties
 
