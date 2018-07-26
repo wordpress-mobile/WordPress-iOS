@@ -8,7 +8,7 @@ extension RegisterDomainDetailsViewController {
                 comment: "Register Domain - Privacy Protection section header title"
             )
             static let description = NSLocalizedString(
-                "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you",
+                "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you.",
                 comment: "Register Domain - Privacy Protection section header description"
             )
             static let registerPrivatelyRowText = NSLocalizedString(
@@ -30,8 +30,8 @@ extension RegisterDomainDetailsViewController {
                 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain.",
                 comment: "Register Domain - Domain contact information section header description"
             )
-            static let firstName = NSLocalizedString("First name", comment: "Register Domain - Domain contact information field First name")
-            static let lastName = NSLocalizedString("Last name", comment: "Register Domain - Domain contact information field Last name")
+            static let firstName = NSLocalizedString("First Name", comment: "Register Domain - Domain contact information field First name")
+            static let lastName = NSLocalizedString("Last Name", comment: "Register Domain - Domain contact information field Last name")
             static let email = NSLocalizedString("Email", comment: "Register Domain - Domain contact information field Email")
             static let phone = NSLocalizedString("Phone", comment: "Register Domain - Domain contact information field Phone")
             static let country = NSLocalizedString("Country", comment: "Register Domain - Domain contact information field Country")
