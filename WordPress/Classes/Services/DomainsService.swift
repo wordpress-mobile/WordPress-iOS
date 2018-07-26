@@ -22,12 +22,10 @@ struct DomainsService {
     }
 
     func getDomainSuggestions(base: String,
-                              includeWordPressDotCom: Bool = true,
-                              onlyWordPressDotCom: Bool = true,
+                              domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = .onlyWordPressDotCom,
                               success: @escaping ([String]) -> Void, failure: @escaping (Error) -> Void) {
         remote.getDomainSuggestions(base: base,
-                                    includeWordPressDotCom: includeWordPressDotCom,
-                                    onlyWordPressDotCom: onlyWordPressDotCom,
+                                    domainSuggestionType: domainSuggestionType,
                                     success: { suggestions in
             success(suggestions)
         }) { error in
