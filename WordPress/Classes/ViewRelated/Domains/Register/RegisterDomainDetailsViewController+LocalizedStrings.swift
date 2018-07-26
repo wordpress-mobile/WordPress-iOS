@@ -21,7 +21,7 @@ extension RegisterDomainDetailsViewController {
             )
         }
 
-        enum ContactInfo {
+        enum ContactInformation {
             static let title = NSLocalizedString(
                 "Domain contact information",
                 comment: "Register Domain - Domain contact information section header title"
