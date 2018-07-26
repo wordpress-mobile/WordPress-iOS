@@ -119,7 +119,7 @@ import WordPressShared
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = NSLocalizedString("Reader", comment: "")
+        navigationItem.title = NSLocalizedString("Reader", comment: "Noun. Title of the Reader feature in the app.")
 
         configureTableView()
         syncTopics()
