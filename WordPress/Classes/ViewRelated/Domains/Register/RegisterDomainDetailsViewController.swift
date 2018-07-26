@@ -9,7 +9,7 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
 
     private enum Section: Int {
         case privacyProtection = 0
-        case contactInfo
+        case contactInformation
         case address
     }
 
@@ -68,7 +68,7 @@ extension RegisterDomainDetailsViewController {
         return ImmuTable(
             sections: [
                 privacySection(),
-                domainContactInfo()
+                domainContactInformation()
             ]
         )
     }
@@ -98,10 +98,10 @@ extension RegisterDomainDetailsViewController {
         return ImmuTableSection(rows: rows)
     }
 
-    private func domainContactInfo() -> ImmuTableSection {
+    private func domainContactInformation() -> ImmuTableSection {
         var rows = [ImmuTableRow]()
 
-        for fieldName in Localized.ContactInfo.fields {
+        for fieldName in Localized.ContactInformation.fields {
             rows.append(EditableNameValueRow(name: fieldName,
                                              value: nil,
                                              action: nil))
@@ -125,8 +125,8 @@ extension RegisterDomainDetailsViewController {
         switch sectionType {
         case .privacyProtection:
             return privacyProtectionSectionHeader()
-        case .contactInfo:
-            return contactInformationSectionHeader()
+        case .contactInformation:
+            return ContactInformationSectionHeader()
         default:
             break
         }
@@ -138,9 +138,9 @@ extension RegisterDomainDetailsViewController {
                              description: Localized.PrivacySection.description)
     }
 
-    private func contactInformationSectionHeader() -> RegisterDomainSectionHeaderView? {
-        return sectionHeader(title: Localized.ContactInfo.title,
-                             description: Localized.ContactInfo.description)
+    private func ContactInformationSectionHeader() -> RegisterDomainSectionHeaderView? {
+        return sectionHeader(title: Localized.ContactInformation.title,
+                             description: Localized.ContactInformation.description)
     }
 
     private func sectionHeader(title: String, description: String) -> RegisterDomainSectionHeaderView? {
