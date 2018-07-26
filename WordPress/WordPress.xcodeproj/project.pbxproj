@@ -546,6 +546,7 @@
 		7E7B4CF820459E21001463D6 /* PersonHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7B4CF720459E21001463D6 /* PersonHeaderCell.swift */; };
 		7E846FF120FD0A0500881F5A /* ContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E846FF020FD0A0500881F5A /* ContentCoordinator.swift */; };
 		7E846FF320FD37BD00881F5A /* ActivityCommentRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E846FF220FD37BD00881F5A /* ActivityCommentRange.swift */; };
+		7E92828921090E9A00BBD8A3 /* notifications-pingback.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E92828821090E9A00BBD8A3 /* notifications-pingback.json */; };
 		7E987F562108017B00CAFB88 /* NotificationContentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E987F552108017B00CAFB88 /* NotificationContentRouter.swift */; };
 		7E987F58210811CC00CAFB88 /* NotificationContentRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E987F57210811CC00CAFB88 /* NotificationContentRouterTests.swift */; };
 		7E987F5A2108122A00CAFB88 /* NotificationUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E987F592108122A00CAFB88 /* NotificationUtility.swift */; };
@@ -2071,6 +2072,7 @@
 		7E7B4CF720459E21001463D6 /* PersonHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonHeaderCell.swift; sourceTree = "<group>"; };
 		7E846FF020FD0A0500881F5A /* ContentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentCoordinator.swift; sourceTree = "<group>"; };
 		7E846FF220FD37BD00881F5A /* ActivityCommentRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityCommentRange.swift; sourceTree = "<group>"; };
+		7E92828821090E9A00BBD8A3 /* notifications-pingback.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "notifications-pingback.json"; sourceTree = "<group>"; };
 		7E987F552108017B00CAFB88 /* NotificationContentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContentRouter.swift; sourceTree = "<group>"; };
 		7E987F57210811CC00CAFB88 /* NotificationContentRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContentRouterTests.swift; sourceTree = "<group>"; };
 		7E987F592108122A00CAFB88 /* NotificationUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationUtility.swift; sourceTree = "<group>"; };
@@ -5425,6 +5427,7 @@
 				E150275E1E03E51500B847E3 /* notes-action-delete.json */,
 				E150275F1E03E51500B847E3 /* notes-action-push.json */,
 				E15027601E03E51500B847E3 /* notes-action-unsupported.json */,
+				7E92828821090E9A00BBD8A3 /* notifications-pingback.json */,
 				B5AEEC741ACACFDA008BF2A4 /* notifications-badge.json */,
 				748BD8881F1923D500813F9A /* notifications-last-seen.json */,
 				B5AEEC751ACACFDA008BF2A4 /* notifications-like.json */,
@@ -7092,6 +7095,7 @@
 				855408881A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json in Resources */,
 				D88A64A4208D8FB6008AE9BC /* stock-photos-search-response.json in Resources */,
 				D88A64AE208D9CF5008AE9BC /* stock-photos-pageable.json in Resources */,
+				7E92828921090E9A00BBD8A3 /* notifications-pingback.json in Resources */,
 				93C882A11EEB18D700227A59 /* html_page_with_link_to_rsd_non_standard.html in Resources */,
 				8554088A1A6F107D00DDBD79 /* app-review-prompt-global-disable.json in Resources */,
 				7E4A772B20F7E5FD001C706D /* activity-log-site-content.json in Resources */,

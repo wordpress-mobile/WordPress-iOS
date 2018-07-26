@@ -1,9 +1,6 @@
 import Foundation
 import CocoaLumberjack
 
-extension NotificationBlock: ActionableObject {
-}
-
 /// This service encapsulates all of the Actions that can be performed with a NotificationBlock
 ///
 class NotificationActionsService: LocalCoreDataService {
