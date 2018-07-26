@@ -2,8 +2,8 @@ import Foundation
 
 class SiteCreationDomainSuggestionsTableViewController: DomainSuggestionsTableViewController {
 
-    override open var suggestOnlyWordPressDotCom: Bool {
-        return true
+    override open var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType {
+        return .onlyWordPressDotCom
     }
     override open var useFadedColorForParentDomains: Bool {
         return true

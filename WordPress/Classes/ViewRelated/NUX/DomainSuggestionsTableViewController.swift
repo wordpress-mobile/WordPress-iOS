@@ -17,8 +17,8 @@ class DomainSuggestionsTableViewController: NUXTableViewController {
 
     open var siteName: String?
     open var delegate: DomainSuggestionsTableViewControllerDelegate?
-    open var suggestOnlyWordPressDotCom: Bool {
-        return true
+    open var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType {
+        return .onlyWordPressDotCom
     }
     open var useFadedColorForParentDomains: Bool {
         return true
@@ -116,7 +116,7 @@ class DomainSuggestionsTableViewController: NUXTableViewController {
         SVProgressHUD.show(withStatus: NSLocalizedString("Loading domains", comment: "Shown while the app waits for the domain suggestions web service to return during the site creation process."))
 
         service.getDomainSuggestions(base: searchTerm,
-                                     onlyWordPressDotCom: suggestOnlyWordPressDotCom,
+                                     domainSuggestionType: domainSuggestionType,
                                      success: { [weak self] (suggestions) in
             self?.isSearching = false
             self?.noSuggestions = false
