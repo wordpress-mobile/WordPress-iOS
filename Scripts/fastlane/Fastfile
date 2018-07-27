@@ -42,7 +42,7 @@ ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
 ########################################################################
 # Helper Lanes
 ########################################################################
-  desc "Bump the version for a new relase"
+  desc "Bump the version for a new release"
   lane :bump_version_release do
     sh("cd .. && ./manage-version.sh bump-release")
     sh("cd ../.. && git add ./config/.")
