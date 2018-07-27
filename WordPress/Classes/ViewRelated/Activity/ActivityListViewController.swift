@@ -230,14 +230,14 @@ extension ActivityListViewController {
 private extension ActivityListViewController {
 
     func updateNoResults() {
-        noResultsViewController?.removeFromView()
         if let noResultsViewModel = viewModel.noResultsViewModel() {
             showNoResults(noResultsViewModel)
+        } else {
+            noResultsViewController?.removeFromView()
         }
     }
 
     func showNoResults(_ viewModel: NoResultsViewController.Model) {
-
         if noResultsViewController == nil {
             noResultsViewController = NoResultsViewController.controller()
             noResultsViewController?.delegate = self
