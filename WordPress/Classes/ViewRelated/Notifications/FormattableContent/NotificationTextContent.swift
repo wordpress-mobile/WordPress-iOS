@@ -60,7 +60,7 @@ class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
         if let firstMedia = media.first, (firstMedia.kind == .image || firstMedia.kind == .badge) {
             return .image
         }
-        return .text
+        return super.kind
     }
 
     required init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], ranges: [FormattableContentRange], parent note: FormattableContentParent) {

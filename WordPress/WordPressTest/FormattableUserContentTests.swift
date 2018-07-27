@@ -15,6 +15,11 @@ final class FormattableUserContentTests: XCTestCase {
         static let metaTitlesHomeURL = URL(string: "http://someone.wordpress.com")
         static let notificationId = "11111"
         static let metaSiteId = NSNumber(integerLiteral: 136505344)
+
+        static let imageURL = URL(string: "https://2.gravatar.com/avatar/1111")!
+        static let testImage = UIImage()
+        static let imageRange = NSRange(location: 0, length: 0)
+        static let mappedMediaRanges = [NSValue(range: imageRange): testImage]
     }
 
     override func setUp() {
@@ -50,6 +55,17 @@ final class FormattableUserContentTests: XCTestCase {
         let mockActionsCount = mockedActions().count
 
         XCTAssertEqual(value?.count, mockActionsCount)
+    }
+
+    func testBuildRangesToImagesMapsCorrectly() {
+        let mediaMap = [Expectations.imageURL: Expectations.testImage]
+        let value = subject?.buildRangesToImagesMap(mediaMap)
+        XCTAssertNotNil(value)
+        XCTAssertEqual(value!, Expectations.mappedMediaRanges)
+    }
+
+    func testImageUrlsReturnExpectations() {
+        XCTAssertEqual(subject?.imageUrls, [Expectations.imageURL])
     }
 
     func testMetaReturnsExpectation() {
