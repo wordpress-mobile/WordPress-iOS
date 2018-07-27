@@ -62,7 +62,7 @@ class ActivityListViewModel: Observable {
 
         if let activites = store.getActivities(site: site), activites.isEmpty {
             return NoResultsViewController.Model(title: NSLocalizedString("This is your Activity Log", comment: "Title for the view when there aren't any Activities to display in the Activity Log"),
-                                                 subtitle: NSLocalizedString("Events happening at your site will appear here.", comment: "Text display when the view when there aren't any Activities to display in the Activity Log"),
+                                                 subtitle: NSLocalizedString("Events happening on your site will appear here.", comment: "Text display when the view when there aren't any Activities to display in the Activity Log"),
                                                  imageName: "wp-illustration-empty-results")
         }
 
