@@ -11,8 +11,8 @@ class BodyContentGroup: FormattableContentGroup {
         }
     }
 
-    private class func groupsForNonCommentBodyBlocks(_ blocks: [FormattableContent], parent: FormattableContentParent) -> [FormattableContentGroup] {
-        let parentKindsWithFooters: [ParentKind] = [.Follow, .Like, .CommentLike]
+    private class func groupsForNonCommentBodyBlocks(_ blocks: [FormattableContent], parent: Notification) -> [FormattableContentGroup] {
+        let parentKindsWithFooters: [Notification.Kind] = [.Follow, .Like, .CommentLike]
         let parentMayContainFooter = parentKindsWithFooters.contains(parent.kind)
 
         return blocks.enumerated().map { index, block in
@@ -25,7 +25,7 @@ class BodyContentGroup: FormattableContentGroup {
         }
     }
 
-    private class func groupsForCommentBodyBlocks(_ blocks: [FormattableContent], parent: FormattableContentParent) -> [FormattableContentGroup] {
+    private class func groupsForCommentBodyBlocks(_ blocks: [FormattableContent], parent: Notification) -> [FormattableContentGroup] {
 
         guard let comment: FormattableCommentContent = blockOfKind(.comment, from: blocks), let user: FormattableUserContent = blockOfKind(.user, from: blocks) else {
             return []
