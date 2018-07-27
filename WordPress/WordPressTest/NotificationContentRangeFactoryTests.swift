@@ -5,7 +5,7 @@ final class NotificationContentRangeFactoryTests: XCTestCase {
     private let contextManager = TestContextManager()
 
     func testCommentRangeReturnsExpectedImplementationOfFormattableContentRange() {
-        let subject = NotificationContentRangeFactory.contentRange(from: mockCommentRange()) as? FormattableCommentRange
+        let subject = NotificationContentRangeFactory.contentRange(from: mockCommentRange()) as? NotificationCommentRange
 
         XCTAssertNotNil(subject)
     }
