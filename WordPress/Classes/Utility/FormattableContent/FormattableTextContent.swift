@@ -15,17 +15,15 @@ class FormattableTextContent: FormattableContent {
     }
 
     let ranges: [FormattableContentRange]
-    var parent: FormattableContentParent?
     var actions: [FormattableContentAction]?
     var meta: [String: AnyObject]?
 
     private let internalText: String?
 
-    required init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], ranges: [FormattableContentRange], parent note: FormattableContentParent) {
+    init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], ranges: [FormattableContentRange]) {
 
         actions = commandActions
         self.ranges = ranges
-        parent = note
         internalText = dictionary[Constants.BlockKeys.Text] as? String
         meta = dictionary[Constants.BlockKeys.Meta] as? [String: AnyObject]
     }
