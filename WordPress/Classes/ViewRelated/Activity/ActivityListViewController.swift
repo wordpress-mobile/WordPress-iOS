@@ -11,6 +11,7 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
     let isFreeWPCom: Bool
 
     var changeReceipt: Receipt?
+    var isUserTriggeredRefresh: Bool = false
 
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -84,6 +85,7 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
     }
 
     @objc func userRefresh() {
+        isUserTriggeredRefresh = true
         viewModel.refresh()
     }
 
@@ -100,7 +102,10 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
         switch (viewModel.refreshing, refreshControl.isRefreshing) {
         case (true, false):
-            refreshControl.beginRefreshing()
+            if isUserTriggeredRefresh {
+                refreshControl.beginRefreshing()
+                isUserTriggeredRefresh = false
+            }
         case (false, true):
             refreshControl.endRefreshing()
         default:
