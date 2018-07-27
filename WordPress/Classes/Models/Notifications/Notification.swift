@@ -283,8 +283,8 @@ extension Notification {
 
     }
 
-    var kind: ParentKind {
-        guard let type = type, let kind = ParentKind(rawValue: type) else {
+    var kind: Kind {
+        guard let type = type, let kind = Kind(rawValue: type) else {
             return .Unknown
         }
         return kind
@@ -531,7 +531,6 @@ extension Notification {
         meta = remote.meta
     }
 }
-
 
 // MARK: - Notification Types
 //
