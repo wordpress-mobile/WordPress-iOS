@@ -50,22 +50,40 @@ class ActivityListViewModel: Observable {
     }
 
     func noResultsViewModel() -> NoResultsViewController.Model? {
-        guard store.getActivities(site: site) == nil else {
+        guard store.getActivities(site: site) == nil ||
+              store.getActivities(site: site)?.isEmpty == true else {
             return nil
         }
 
         if store.isFetching(site: site) {
-            return NoResultsViewController.Model(title: NSLocalizedString("Loading Activities...", comment: "Text displayed while loading the activity feed for a site"))
+            return NoResultsViewController.Model(title: NSLocalizedString("Loading Activities...", comment: "Text displayed while loading the activity feed for a site"),
+                                                 subtitle: " ",
+                                                 // the space is apparently load-bearing.
+                                                 // UISV sometimes freaks out a bit if you:
+                                                 // * have a label with an empty string
+                                                 // * update it to a new string
+                                                 // * set `isHidden` on the label (even if re-setting it to the same value!)
+                                                 // in rare cases it won't re-layout properly and will keep the label hidden.
+                                                 // using a single space instead fixes it. magic ✨!
+                                                 imageName: "wp-illustration-empty-results")
+        }
+
+        if let activites = store.getActivities(site: site), activites.isEmpty {
+            return NoResultsViewController.Model(title: NSLocalizedString("This is your Activity Log", comment: "Title for the view when there aren't any Activities to display in the Activity Log"),
+                                                 subtitle: NSLocalizedString("Events happening on your site will appear here.", comment: "Text display when the view when there aren't any Activities to display in the Activity Log"),
+                                                 imageName: "wp-illustration-empty-results")
         }
 
         let appDelegate = WordPressAppDelegate.sharedInstance()
         if (appDelegate?.connectionAvailable)! {
             return NoResultsViewController.Model(title: NSLocalizedString("Oops", comment: "Title for the view when there's an error loading Activity Log"),
                                                  subtitle: NSLocalizedString("There was an error loading activities", comment: "Text displayed when there is a failure loading the activity feed"),
-                                                 buttonText: NSLocalizedString("Contact support", comment: "Button label for contacting support"))
+                                                 buttonText: NSLocalizedString("Contact support", comment: "Button label for contacting support"),
+                                                 imageName: "wp-illustration-empty-results")
         } else {
             return NoResultsViewController.Model(title: NSLocalizedString("No connection", comment: "Title for the error view when there's no connection"),
-                                                 subtitle: NSLocalizedString("An active internet connection is required to view activities", comment: "Error message shown when trying to view the Activity Log feature and there is no internet connection."))
+                                                 subtitle: NSLocalizedString("An active internet connection is required to view activities", comment: "Error message shown when trying to view the Activity Log feature and there is no internet connection."),
+                                                 imageName: "wp-illustration-empty-results")
 
         }
     }
