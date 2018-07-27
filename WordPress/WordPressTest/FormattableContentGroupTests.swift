@@ -92,7 +92,8 @@ final class FormattableContentGroupTests: XCTestCase {
     }
 
     private func mockContent() -> FormattableTextContent {
-        return FormattableTextContent(dictionary: mockActivity(), actions: [], ranges: [])
+        let text = mockActivity()["text"] as? String ?? ""
+        return FormattableTextContent(text: text, ranges: [], actions: [])
     }
 
     private func mockActivity() -> [String: AnyObject] {

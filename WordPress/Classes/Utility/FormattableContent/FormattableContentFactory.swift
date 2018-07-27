@@ -11,9 +11,14 @@ extension FormattableContentFactory {
     static func getRawRanges(from dictionary: [String: AnyObject]) -> [[String: AnyObject]]? {
         return dictionary[Constants.Ranges] as? [[String: AnyObject]]
     }
+
+    static func getText(from dictionary: [String: AnyObject]) -> String {
+        return dictionary[Constants.Text] as? String ?? ""
+    }
 }
 
 private enum Constants {
     static let ActionsKey = "actions"
-    static let Ranges       = "ranges"
+    static let Ranges = "ranges"
+    static let Text = "text"
 }
