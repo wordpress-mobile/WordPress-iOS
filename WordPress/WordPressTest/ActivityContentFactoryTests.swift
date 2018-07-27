@@ -17,8 +17,4 @@ final class ActivityContentFactoryTests: XCTestCase {
     private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
         return contextManager.object(withContentOfFile: fileName) as! [String: AnyObject]
     }
-
-    func mockParent() -> FormattableContentParent {
-        return MockActivityParent()
-    }
 }
