@@ -579,3 +579,16 @@ private extension String {
         static let title = NSLocalizedString("Loading Plugin...", comment: "Text displayed while loading an specific plugin")
     }
 }
+
+extension NetworkStatusDelegate where Self: PluginViewController {
+    func observeNetworkStatus() {
+        // Do something here in order to observe changes in the network status
+    }
+}
+
+extension PluginViewController: NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        //updateNoResults()
+        print("network status did change")
+    }
+}
