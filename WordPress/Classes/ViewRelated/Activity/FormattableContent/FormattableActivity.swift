@@ -31,39 +31,6 @@ class FormattableActivity {
     }
 }
 
-extension FormattableActivity: FormattableContentParent {
-    public func isEqual(to other: FormattableContentParent) -> Bool {
-        guard let otherActivity = other as? FormattableActivity else {
-            return false
-        }
-        return self.activity == otherActivity.activity
-    }
-
-    public var metaCommentID: NSNumber? {
-        return 0
-    }
-
-    public var uniqueID: String? {
-        return activity.activityID
-    }
-
-    public var kind: ParentKind {
-        return .Unknown
-    }
-
-    public var metaReplyID: NSNumber? {
-        return 0
-    }
-
-    public var isPingback: Bool {
-        return false
-    }
-
-    public func didChangeOverrides() {
-
-    }
-}
-
 extension Activity: Equatable {
     public static func == (lhs: Activity, rhs: Activity) -> Bool {
         return lhs.activityID == rhs.activityID
