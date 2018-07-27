@@ -16,22 +16,15 @@ class FormattableTextContent: FormattableContent {
 
     let ranges: [FormattableContentRange]
     var actions: [FormattableContentAction]?
-    var meta: [String: AnyObject]?
 
     private let internalText: String?
 
-    init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], ranges: [FormattableContentRange]) {
-
+    init(text: String, ranges: [FormattableContentRange], actions commandActions: [FormattableContentAction]? = nil) {
+        internalText = text
         actions = commandActions
         self.ranges = ranges
-        internalText = dictionary[Constants.BlockKeys.Text] as? String
-        meta = dictionary[Constants.BlockKeys.Meta] as? [String: AnyObject]
     }
 
-    init(text: String, ranges: [FormattableContentRange]) {
-        self.internalText = text
-        self.ranges = ranges
-    }
 
     private static func rangesFrom(_ rawRanges: [[String: AnyObject]]?) -> [FormattableContentRange] {
         let parsed = rawRanges?.compactMap(NotificationContentRangeFactory.contentRange)
@@ -46,13 +39,5 @@ extension FormattableMediaItem {
         static let Indices      = "indices"
         static let Width        = "width"
         static let Height       = "height"
-    }
-}
-
-private enum Constants {
-    fileprivate enum BlockKeys {
-        static let Meta         = "meta"
-        static let Ranges       = "ranges"
-        static let Text         = "text"
     }
 }
