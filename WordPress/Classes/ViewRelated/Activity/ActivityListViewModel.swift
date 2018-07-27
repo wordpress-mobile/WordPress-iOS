@@ -57,6 +57,14 @@ class ActivityListViewModel: Observable {
 
         if store.isFetching(site: site) {
             return NoResultsViewController.Model(title: NSLocalizedString("Loading Activities...", comment: "Text displayed while loading the activity feed for a site"),
+                                                 subtitle: " ",
+                                                 // the space is apparently load-bearing.
+                                                 // UISV sometimes freaks out a bit if you:
+                                                 // * have a label with an empty string
+                                                 // * update it to a new string
+                                                 // * set `isHidden` on the label (even if re-setting it to the same value!)
+                                                 // in rare cases it won't re-layout properly and will keep the label hidden.
+                                                 // using a single space instead fixes it. magic ✨!
                                                  imageName: "wp-illustration-empty-results")
         }
 

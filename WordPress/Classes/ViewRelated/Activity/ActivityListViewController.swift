@@ -271,8 +271,6 @@ private extension ActivityListViewController {
 
         if noResultsViewController.view.superview != tableView {
             tableView.addSubview(withFadeAnimation: noResultsViewController.view)
-        } else if noResultsViewController.titleLabel.text != viewModel.titleText {
-            noResultsViewController.view.fadeInWithAnimation()
         }
 
         addChildViewController(noResultsViewController)
