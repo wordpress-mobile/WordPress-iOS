@@ -580,13 +580,13 @@ private extension String {
     }
 }
 
-extension NetworkStatusDelegate where Self: PluginViewController {
+extension NetworkStatusDelegate where Self: PluginViewModel {
     func observeNetworkStatus() {
         // Do something here in order to observe changes in the network status
     }
 }
 
-extension PluginViewController: NetworkStatusDelegate {
+extension PluginViewModel: NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {
         //updateNoResults()
         print("network status did change")
