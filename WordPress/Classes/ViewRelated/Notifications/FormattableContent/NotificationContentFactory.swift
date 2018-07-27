@@ -15,7 +15,9 @@ extension Notification {
 }
 
 class NotificationContentFactory: FormattableContentFactory {
-    static func content(from blocks: [[String: AnyObject]], actionsParser parser: FormattableContentActionParser, parent: FormattableContentParent) -> [FormattableContent] {
+    typealias ParentType = Notification
+    
+    static func content(from blocks: [[String: AnyObject]], actionsParser parser: FormattableContentActionParser, parent: Notification) -> [FormattableContent] {
         return blocks.compactMap { rawBlock in
             let actions = parser.parse(rawBlock[Constants.Actions] as? [String: AnyObject])
 
@@ -33,7 +35,7 @@ class NotificationContentFactory: FormattableContentFactory {
         return parsed ?? []
     }
 
-    private static func content(for type: String, with rawBlock: [String: AnyObject], actions: [FormattableContentAction], ranges: [FormattableContentRange], parent: FormattableContentParent) -> FormattableContent? {
+    private static func content(for type: String, with rawBlock: [String: AnyObject], actions: [FormattableContentAction], ranges: [FormattableContentRange], parent: Notification) -> FormattableContent? {
         guard let type = Notification.ContentType(rawValue: type) else {
             return NotificationTextContent(dictionary: rawBlock, actions: actions, ranges: ranges, parent: parent)
         }

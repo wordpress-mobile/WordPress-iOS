@@ -92,7 +92,7 @@ final class FormattableContentGroupTests: XCTestCase {
     }
 
     private func mockContent() -> FormattableTextContent {
-        return FormattableTextContent(dictionary: mockActivity(), actions: [], ranges: [], parent: mockParent())
+        return FormattableTextContent(dictionary: mockActivity(), actions: [], ranges: [])
     }
 
     private func mockActivity() -> [String: AnyObject] {

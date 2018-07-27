@@ -9,7 +9,7 @@ class FormattableActivity {
         guard let content = activity.content as? [String: AnyObject], content.isEmpty == false else {
             return nil
         }
-        return ActivityContentGroup.create(with: [content], parent: self)
+        return ActivityContentGroup.create(with: [content])
     }
 
     init(with activity: Activity) {
