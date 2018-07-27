@@ -75,6 +75,8 @@ class PluginViewModel: Observable {
 
             self?.state = .plugin(plugin)
         }
+
+        observeNetworkStatus()
     }
 
     convenience init(directoryEntry: PluginDirectoryEntry, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
