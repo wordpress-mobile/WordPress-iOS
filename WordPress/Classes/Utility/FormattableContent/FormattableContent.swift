@@ -3,12 +3,9 @@ import Foundation
 protocol FormattableContent {
     var text: String? { get }
     var ranges: [FormattableContentRange] { get }
-    var parent: FormattableContentParent? { get }
     var actions: [FormattableContentAction]? { get }
     var meta: [String: AnyObject]? { get }
     var kind: FormattableContentKind { get }
-
-    init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], ranges: [FormattableContentRange], parent note: FormattableContentParent)
 
     func action(id: Identifier) -> FormattableContentAction?
     func isActionEnabled(id: Identifier) -> Bool

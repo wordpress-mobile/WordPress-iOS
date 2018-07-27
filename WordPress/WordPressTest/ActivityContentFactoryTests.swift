@@ -5,7 +5,7 @@ final class ActivityContentFactoryTests: XCTestCase {
     private let contextManager = TestContextManager()
 
     func testActivityContentFactoryReturnsExpectedImplementationOfFormattableContent() {
-        let subject = ActivityContentFactory.content(from: [mockBlock()], actionsParser: ActivityActionsParser(), parent: mockParent()).first as? FormattableTextContent
+        let subject = ActivityContentFactory.content(from: [mockBlock()], actionsParser: ActivityActionsParser()).first as? FormattableTextContent
 
         XCTAssertNotNil(subject)
     }
