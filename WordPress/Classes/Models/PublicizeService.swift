@@ -6,6 +6,7 @@ open class PublicizeService: NSManagedObject {
 
     @NSManaged open var connectURL: String
     @NSManaged open var detail: String
+    @NSManaged open var externalUsersOnly: Bool
     @NSManaged open var icon: String
     @NSManaged open var jetpackSupport: Bool
     @NSManaged open var jetpackModuleRequired: String
