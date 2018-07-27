@@ -8,7 +8,8 @@ struct ActivityContentFactory: FormattableContentFactory {
             let rawActions = getRawActions(from: $0)
             let actions = parser.parse(rawActions)
             let ranges = rangesFrom($0)
-            return FormattableTextContent(dictionary: $0, actions: actions, ranges: ranges)
+            let text = getText(from: $0)
+            return FormattableTextContent(text: text, ranges: ranges, actions: actions)
         }
     }
 

@@ -4,7 +4,6 @@ protocol FormattableContent {
     var text: String? { get }
     var ranges: [FormattableContentRange] { get }
     var actions: [FormattableContentAction]? { get }
-    var meta: [String: AnyObject]? { get }
     var kind: FormattableContentKind { get }
 
     func action(id: Identifier) -> FormattableContentAction?
