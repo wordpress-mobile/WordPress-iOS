@@ -44,6 +44,14 @@ class NotificationTests: XCTestCase {
         XCTAssertEqual(subjectBlock, note.subjectBlock!)
     }
 
+    func testBadgeNotificationProperlyLoadsItsSubjectContent() {
+        let note = utility.loadBadgeNotification()
+
+        XCTAssert(note.subjectContentGroup?.blocks.count == 1)
+        XCTAssertNotNil(note.subjectContentGroup?.blocks.first)
+        XCTAssertNotNil(note.renderSubject())
+    }
+
     func testBadgeNotificationContainsOneImageBlockGroup() {
         let note = loadBadgeNotification()
         let group = note.blockGroupOfKind(.image)
@@ -55,6 +63,19 @@ class NotificationTests: XCTestCase {
         let media = imageBlock!.media.first
         XCTAssertNotNil(media)
         XCTAssertNotNil(media!.mediaURL)
+    }
+
+    func testBadgeNotificationContainsOneImageContentGroup() {
+        let note = utility.loadBadgeNotification()
+        let group = note.contentGroup(ofKind: .image)
+        XCTAssertNotNil(group)
+
+        let imageBlock = group?.blocks.first as? FormattableMediaContent
+        XCTAssertNotNil(imageBlock)
+
+        let media = imageBlock?.media.first
+        XCTAssertNotNil(media)
+        XCTAssertNotNil(media?.mediaURL)
     }
 
     func testLikeNotificationReturnsTheProperKindValue() {
@@ -91,6 +112,13 @@ class NotificationTests: XCTestCase {
         }
     }
 
+    func testLikeNotificationContainsUserContentGroupsInTheBody() {
+        let note = utility.loadLikeNotification()
+        for group in note.bodyContentGroups {
+            XCTAssertTrue(group.kind == .user)
+        }
+    }
+
     func testLikeNotificationContainsPostAndSiteID() {
         let note = loadLikeNotification()
         XCTAssertNotNil(note.metaSiteID)
@@ -113,6 +141,14 @@ class NotificationTests: XCTestCase {
         XCTAssertNotNil(note.subjectBlock!.text)
     }
 
+    func testFollowerNotificationContainsOneSubjectContent() {
+        let note = loadFollowerNotification()
+
+        let content = note.subjectContentGroup?.blocks.first
+        XCTAssertNotNil(content)
+        XCTAssertNotNil(content?.text)
+    }
+
     func testFollowerNotificationContainsSiteID() {
         let note = loadFollowerNotification()
         XCTAssertNotNil(note.metaSiteID)
@@ -123,6 +159,15 @@ class NotificationTests: XCTestCase {
 
         // Note: Account for 'View All Followers'
         for group in note.bodyBlockGroups {
+            XCTAssertTrue(group.kind == .user || group.kind == .footer)
+        }
+    }
+
+    func testFollowerNotificationContainsUserAndFooterGroupsInTheBody() {
+        let note = utility.loadFollowerNotification()
+
+        // Note: Account for 'View All Followers'
+        for group in note.bodyContentGroups {
             XCTAssertTrue(group.kind == .user || group.kind == .footer)
         }
     }
@@ -144,6 +189,23 @@ class NotificationTests: XCTestCase {
         XCTAssert(range!.kind == .Follow)
     }
 
+    func testFollowerNotificationContainsFooterContentWithFollowRangeAtTheEnd() {
+        let note = loadFollowerNotification()
+
+        let lastGroup = note.bodyContentGroups.last
+        XCTAssertNotNil(lastGroup)
+        XCTAssertTrue(lastGroup!.kind == .footer)
+
+        let block = lastGroup?.blocks.first
+        XCTAssertNotNil(block)
+        XCTAssertNotNil(block?.text)
+        XCTAssertNotNil(block?.ranges)
+
+        let range = block?.ranges.last
+        XCTAssertNotNil(range)
+        XCTAssert(range?.kind == .follow)
+    }
+
     func testCommentNotificationReturnsTheProperKindValue() {
         let note = loadCommentNotification()
         XCTAssert(note.kind == .Comment)
@@ -161,6 +223,13 @@ class NotificationTests: XCTestCase {
         XCTAssertNotNil(note.snippetBlock)
         XCTAssertNotNil(note.subjectBlock!.text)
         XCTAssertNotNil(note.snippetBlock!.text)
+    }
+
+    func testCommentNotificationRendersSubjectWithSnippet() {
+        let note = loadCommentNotification()
+
+        XCTAssertNotNil(note.renderSubject())
+        XCTAssertNotNil(note.renderSnippet())
     }
 
     func testCommentNotificationContainsHeader() {
@@ -182,6 +251,25 @@ class NotificationTests: XCTestCase {
         XCTAssertNotNil(snippetBlock!.text)
     }
 
+    func testCommentNotificationContainsHeaderContent() {
+        let note = loadCommentNotification()
+
+        let header = note.headerContentGroup
+        XCTAssertNotNil(header)
+
+        let gravatarBlock: NotificationTextContent? = header?.blockOfKind(.image)
+        XCTAssertNotNil(gravatarBlock)
+        XCTAssertNotNil(gravatarBlock?.text)
+
+        let media = gravatarBlock!.media.first
+        XCTAssertNotNil(media)
+        XCTAssertNotNil(media!.mediaURL)
+
+        let snippetBlock: NotificationTextContent? = header?.blockOfKind(.text)
+        XCTAssertNotNil(snippetBlock)
+        XCTAssertNotNil(snippetBlock?.text)
+    }
+
     func testCommentNotificationContainsCommentAndSiteID() {
         let note = loadCommentNotification()
         XCTAssertNotNil(note.metaSiteID)
@@ -191,6 +279,16 @@ class NotificationTests: XCTestCase {
     func testCommentNotificationProperlyChecksIfItWasRepliedTo() {
         let note = loadCommentNotification()
         XCTAssert(note.isRepliedComment)
+    }
+
+    func testCommentNotificationIsUnapproved() {
+        let note = utility.loadUnapprovedCommentNotification()
+        XCTAssertTrue(note.isUnapprovedComment)
+    }
+
+    func testCommentNotificationIsApproved() {
+        let note = utility.loadCommentNotification()
+        XCTAssertFalse(note.isUnapprovedComment)
     }
 
     func testFindingNotificationRangeSearchingByReplyCommentID() {
@@ -207,10 +305,35 @@ class NotificationTests: XCTestCase {
         XCTAssertNotNil(replyRange)
     }
 
+    func testFindingContentRangeSearchingByReplyCommentID() {
+        let note = loadCommentNotification()
+        XCTAssertNotNil(note.metaReplyID)
+
+        let textBlock: FormattableTextContent? = note.contentGroup(ofKind: .footer)?.blockOfKind(.text)
+        XCTAssertNotNil(textBlock)
+
+        let replyID = note.metaReplyID
+        XCTAssertNotNil(replyID)
+
+        XCTAssertTrue(textBlock is NotificationTextContent)
+        let mediaBlock = textBlock as? NotificationTextContent
+        let replyRange = mediaBlock?.formattableContentRangeWithCommentId(replyID!)
+
+        XCTAssertNotNil(replyRange)
+    }
+
     func testFindingNotificationRangeSearchingByURL() {
         let note = loadBadgeNotification()
         let targetURL = URL(string: "http://www.wordpress.com")!
         let range = note.notificationRangeWithUrl(targetURL)
+
+        XCTAssertNotNil(range)
+    }
+
+    func testFindingContentRangeSearchingByURL() {
+        let note = loadBadgeNotification()
+        let targetURL = URL(string: "http://www.wordpress.com")!
+        let range = note.contentRange(with: targetURL)
 
         XCTAssertNotNil(range)
     }
@@ -225,6 +348,16 @@ class NotificationTests: XCTestCase {
         let footer = notification.bodyContentGroups.filter { $0.kind == .footer }
         XCTAssertEqual(footer.count, 1)
     }
+
+    func testHeaderAndBodyContentGroups() {
+        let note = utility.loadCommentNotification()
+        let headerGroupsCount = note.headerContentGroup != nil ? 1 : 0
+        let bodyGroupsCount = note.bodyContentGroups.count
+        let totalGroupsCount = headerGroupsCount + bodyGroupsCount
+
+        XCTAssertEqual(note.headerAndBodyContentGroups.count, totalGroupsCount)
+    }
+
 
 
     // MARK: - Helpers
