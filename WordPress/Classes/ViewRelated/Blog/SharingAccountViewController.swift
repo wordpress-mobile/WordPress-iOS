@@ -83,9 +83,9 @@ import WordPressShared
 
     fileprivate func showNoResultsViewController() {
         let title = NSLocalizedString("No Accounts Found",
-                                      comment:"Title of an error message. There were no third-party service accounts found to setup sharing.")
+                                      comment: "Title of an error message. There were no third-party service accounts found to setup sharing.")
         let message = NSLocalizedString("Sorry. The social service did not tell us which account could be used for sharing.",
-                                        comment:"An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing.")
+                                        comment: "An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing.")
         noResultsViewController.configure(title: title, buttonTitle: nil, subtitle: message, image: nil, accessoryView: nil)
     }
 
@@ -326,8 +326,7 @@ import WordPressShared
 }
 
 
-extension SharingAccountViewController: NoResultsViewControllerDelegate
-{
+extension SharingAccountViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         if let url = URL(string: "https://en.support.wordpress.com/publicize/#facebook-pages") {
             UIApplication.shared.open(url)
