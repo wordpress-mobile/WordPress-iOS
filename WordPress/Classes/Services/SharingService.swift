@@ -358,6 +358,7 @@ open class SharingService: LocalCoreDataService {
         }
         pubService?.connectURL = remoteService.connectURL
         pubService?.detail = remoteService.detail
+        pubService?.externalUsersOnly = remoteService.externalUsersOnly
         pubService?.icon = remoteService.icon
         pubService?.jetpackModuleRequired = remoteService.jetpackModuleRequired
         pubService?.jetpackSupport = remoteService.jetpackSupport
