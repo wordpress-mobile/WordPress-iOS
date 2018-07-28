@@ -28,4 +28,8 @@ open class PublicizeConnection: NSManagedObject {
     @objc open func isBroken() -> Bool {
         return status == "broken"
     }
+
+    @objc open func mustDisconnect() -> Bool {
+        return status == "must-disconnect"
+    }
 }
