@@ -193,7 +193,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
     // Check if any of the connections are broken.
     for (PublicizeConnection *pubConn in connections) {
-        if ([pubConn isBroken]) {
+        if ([pubConn isBroken] || [pubConn mustDisconnect]) {
             cell.accessoryView = [WPStyleGuide sharingCellWarningAccessoryImageView];
             break;
         }
