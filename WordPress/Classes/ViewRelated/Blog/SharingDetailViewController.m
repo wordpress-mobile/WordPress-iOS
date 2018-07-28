@@ -60,6 +60,17 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 #pragma mark - Instance Methods
 
+- (BOOL)mustDisconnectFacebook
+{
+    return [self.publicizeConnection mustDisconnect] && [[self.publicizeConnection service] isEqualToString: [PublicizeService facebookServiceID]];
+}
+
+- (void)openFacebookFAQ
+{
+    NSURL *url = [NSURL URLWithString:@"https://en.blog.wordpress.com/2018/07/23/sharing-options-from-wordpress-com-to-facebook-are-changing/"];
+    [[UIApplication sharedApplication] openURL:url options:[NSDictionary new] completionHandler:nil];
+}
+
 - (NSManagedObjectContext *)managedObjectContext
 {
     return self.blog.managedObjectContext;
@@ -70,7 +81,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if ([self.publicizeConnection isBroken]) {
+    if ([self.publicizeConnection isBroken] || [self mustDisconnectFacebook]) {
         return 3;
     }
 
@@ -96,10 +107,19 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     if (section == 0) {
         return NSLocalizedString(@"Allow this connection to be used by all admins and users of your site.", @"");
     }
-    if (section == 1 && [self.publicizeConnection isBroken]) {
-        NSString *title = NSLocalizedString(@"There is an issue connecting to %@. Reconnect to continue publicizing.", @"Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name.");
-        return [NSString stringWithFormat:title, self.publicizeConnection.label];
+
+    if (section == 1) {
+        if ([self mustDisconnectFacebook]) {
+            NSString *title = NSLocalizedString(@"As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged.", @"Message shown to users who have an old publicize connection to a facebook profile.");
+            return [NSString stringWithFormat:title, self.publicizeConnection.label];
+        }
+
+        if ([self.publicizeConnection isBroken]) {
+            NSString *title = NSLocalizedString(@"There is an issue connecting to %@. Reconnect to continue publicizing.", @"Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name.");
+            return [NSString stringWithFormat:title, self.publicizeConnection.label];
+        }
     }
+
     return nil;
 }
 
@@ -119,11 +139,18 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     if (indexPath.section == 0) {
         cell = [self switchTableViewCell];
 
-    } else if (indexPath.section == 1 && [self.publicizeConnection isBroken]) {
-        cell.textLabel.text = NSLocalizedString(@"Reconnect", @"Verb. Text label. Tapping attempts to reconnect a third-party sharing service to the user's blog.");
-        [WPStyleGuide configureTableViewActionCell:cell];
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        cell.textLabel.textColor = [WPStyleGuide jazzyOrange];
+    } else if (indexPath.section == 1) {
+        if ([self.publicizeConnection isBroken]) {
+            cell.textLabel.text = NSLocalizedString(@"Reconnect", @"Verb. Text label. Tapping attempts to reconnect a third-party sharing service to the user's blog.");
+            [WPStyleGuide configureTableViewActionCell:cell];
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            cell.textLabel.textColor = [WPStyleGuide jazzyOrange];
+        } else if ([self mustDisconnectFacebook]) {
+            cell.textLabel.text = NSLocalizedString(@"Learn More", @"Title of a button. Tapping allows the user to learn more about the specific error.");
+            [WPStyleGuide configureTableViewActionCell:cell];
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            cell.textLabel.textColor = [WPStyleGuide wordPressBlue];
+        }
 
     } else {
         cell.textLabel.text = NSLocalizedString(@"Disconnect", @"Verb. Text label. Tapping disconnects a third-party sharing service from the user's blog.");
@@ -137,9 +164,12 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (indexPath.section == 1 && [self.publicizeConnection isBroken]) {
-        [self reconnectPublicizeConnection];
-
+    if (indexPath.section == 1) {
+        if ([self.publicizeConnection isBroken]) {
+            [self reconnectPublicizeConnection];
+        } else if ([self mustDisconnectFacebook]) {
+            [self openFacebookFAQ];
+        }
     } else {
         [self promptToConfirmDisconnect];
     }
