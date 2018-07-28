@@ -12,6 +12,15 @@ import WordPressShared
     @objc var immutableHandler: ImmuTableViewHandler!
     @objc var delegate: SharingAccountSelectionDelegate?
 
+    lazy var noResultsViewController: NoResultsViewController = {
+        let controller = NoResultsViewController.controller()
+        controller.view.frame = view.frame
+        addChildViewController(controller)
+        view.addSubview(controller.view)
+        controller.didMove(toParentViewController: self)
+        return controller
+    }()
+
 
     // MARK: - Lifecycle Methods
 
@@ -77,12 +86,17 @@ import WordPressShared
                                       comment:"Title of an error message. There were no third-party service accounts found to setup sharing.")
         let message = NSLocalizedString("Sorry. The social service did not tell us which account could be used for sharing.",
                                         comment:"An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing.")
+        noResultsViewController.configure(title: title, buttonTitle: nil, subtitle: message, image: nil, accessoryView: nil)
+    }
 
-        let noResultsViewController = NoResultsViewController.controllerWith(title: title, buttonTitle: nil, subtitle: message, image: nil, accessoryView: nil)
-        noResultsViewController.view.frame = view.frame
-        addChildViewController(noResultsViewController)
-        view.addSubview(noResultsViewController.view)
-        noResultsViewController.didMove(toParentViewController: self)
+
+    fileprivate func showFacebookNotice() {
+        let message = NSLocalizedString("The Facebook connection could not be made because this account does not have access to any pages. Facebook supports sharing connections to Facebook Pages, but not to Facebook Profiles.",
+                                       comment: "Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages.")
+
+        let buttonTitle = NSLocalizedString("Learn more", comment: "A button title.")
+        noResultsViewController.configure(title: "", buttonTitle: buttonTitle, subtitle: message, image: nil, accessoryView: nil)
+        noResultsViewController.delegate = self
     }
 
 
@@ -100,7 +114,7 @@ import WordPressShared
 
         if accounts.count == 0 {
             if publicizeService.externalUsersOnly && publicizeService.serviceID == PublicizeService.facebookServiceID {
-                // TODO: Show Facebook notice
+                showFacebookNotice()
             } else {
                 showNoResultsViewController()
             }
@@ -309,4 +323,15 @@ import WordPressShared
 @objc protocol SharingAccountSelectionDelegate: NSObjectProtocol {
     func didDismissSharingAccountViewController(_ controller: SharingAccountViewController)
     func sharingAccountViewController(_ controller: SharingAccountViewController, selectedKeyringConnection keyringConnection: KeyringConnection, externalID: String?)
+}
+
+
+extension SharingAccountViewController: NoResultsViewControllerDelegate
+{
+    func actionButtonPressed() {
+        if let url = URL(string: "https://en.support.wordpress.com/publicize/#facebook-pages") {
+            UIApplication.shared.open(url)
+        }
+        dismiss(animated: true, completion: nil)
+    }
 }
