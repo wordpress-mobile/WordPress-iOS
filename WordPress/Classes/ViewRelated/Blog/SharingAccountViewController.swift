@@ -72,6 +72,20 @@ import WordPressShared
     }
 
 
+    fileprivate func showNoResultsViewController() {
+        let title = NSLocalizedString("No Accounts Found",
+                                      comment:"Title of an error message. There were no third-party service accounts found to setup sharing.")
+        let message = NSLocalizedString("Sorry. The social service did not tell us which account could be used for sharing.",
+                                        comment:"An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing.")
+
+        let noResultsViewController = NoResultsViewController.controllerWith(title: title, buttonTitle: nil, subtitle: message, image: nil, accessoryView: nil)
+        noResultsViewController.view.frame = view.frame
+        addChildViewController(noResultsViewController)
+        view.addSubview(noResultsViewController.view)
+        noResultsViewController.didMove(toParentViewController: self)
+    }
+
+
     // MARK: - View Model Wrangling
 
 
@@ -83,6 +97,15 @@ import WordPressShared
         var sections = [ImmuTableSection]()
         var connectedAccounts = [KeyringAccount]()
         var accounts = keyringAccountsFromKeyringConnections(keyringConnections)
+
+        if accounts.count == 0 {
+            if publicizeService.externalUsersOnly && publicizeService.serviceID == PublicizeService.facebookServiceID {
+                // TODO: Show Facebook notice
+            } else {
+                showNoResultsViewController()
+            }
+            return ImmuTable(sections: [])
+        }
 
         // Filter out connected accounts into a different Array
         for (idx, acct) in accounts.enumerated() {
@@ -196,7 +219,11 @@ import WordPressShared
 
         for connection in connections {
             let acct = KeyringAccount(name: connection.externalDisplay, externalID: nil, externalIDForConnection: connection.externalID, keyringConnection: connection)
-            accounts.append(acct)
+
+            // Do not include the service if it only supports external users.
+            if !publicizeService.externalUsersOnly {
+                accounts.append(acct)
+            }
 
             for externalUser in connection.additionalExternalUsers {
                 let acct = KeyringAccount(name: externalUser.externalName, externalID: externalUser.externalID, externalIDForConnection: externalUser.externalID, keyringConnection: connection)
