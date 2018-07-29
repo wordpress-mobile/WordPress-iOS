@@ -16,6 +16,7 @@ class RegisterDomainSectionHeaderView: UITableViewHeaderFooterView {
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
         descriptionLabel.textColor = WPStyleGuide.darkGrey()
         descriptionLabel.numberOfLines = 0
+        contentView.backgroundColor = WPStyleGuide.greyLighten30()
     }
 
     func setTitle(_ title: String?) {
