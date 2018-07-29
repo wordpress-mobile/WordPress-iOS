@@ -450,7 +450,7 @@ class PluginViewModel: Observable {
     }
 
     private func presentDomainRegistration() {
-        let controller = RegisterDomainSuggestionsViewController.instance()
+        let controller = RegisterDomainSuggestionsViewController.instance(siteName: suggestionSiteName())
         let navigationController = UINavigationController(rootViewController: controller)
         self.present?(navigationController)
     }
@@ -478,10 +478,30 @@ class PluginViewModel: Observable {
     }
 
     private func getSiteTitle() -> String? {
+        return getBlog()?.settings?.name?.nonEmptyString()
+    }
+
+    private func getSiteUrl() -> String? {
+        return getBlog()?.url
+    }
+
+    private func suggestionSiteName() -> String? {
+        if let siteTitle = getSiteTitle() {
+            return siteTitle
+        }
+        if let siteUrl = getSiteUrl() {
+            let components = URLComponents(string: siteUrl)
+            if let firstComponent = components?.host?.split(separator: ".").first {
+                return String(firstComponent)
+            }
+        }
+        return nil
+    }
+
+    private func getBlog() -> Blog? {
         let context = ContextManager.sharedInstance().mainContext
         let service = BlogService(managedObjectContext: context)
-        let blog = service.blog(byBlogId: site.siteID as NSNumber)
-        return blog?.settings?.name?.nonEmptyString()
+        return service.blog(byBlogId: site.siteID as NSNumber)
     }
 
     private func setHTMLTextAttributes(_ htmlText: NSAttributedString) -> NSAttributedString {

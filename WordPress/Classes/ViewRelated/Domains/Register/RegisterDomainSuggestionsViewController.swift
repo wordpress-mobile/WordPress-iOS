@@ -6,7 +6,7 @@ class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggesti
     @IBOutlet weak var buttonContainerViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
     private var domain: String?
-
+    private var siteName: String?
     private var domainsTableViewController: RegisterDomainSuggestionsTableViewController?
 
     override func viewDidLoad() {
@@ -35,9 +35,10 @@ class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggesti
         return buttonViewController
     }()
 
-    static func instance() -> RegisterDomainSuggestionsViewController {
+    static func instance(siteName: String? = nil) -> RegisterDomainSuggestionsViewController {
         let storyboard = UIStoryboard(name: "RegisterDomain", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "RegisterDomainSuggestionsViewController") as! RegisterDomainSuggestionsViewController
+        controller.siteName = siteName
         return controller
     }
 
@@ -54,7 +55,7 @@ class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggesti
 
         if let vc = segue.destination as? RegisterDomainSuggestionsTableViewController {
             vc.delegate = self
-            vc.siteName = nil
+            vc.siteName = siteName
             domainsTableViewController = vc
         }
     }
