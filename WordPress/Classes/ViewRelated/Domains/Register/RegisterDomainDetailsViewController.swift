@@ -40,6 +40,10 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
             UINib(nibName: RegisterDomainSectionHeaderView.identifier, bundle: nil),
             forHeaderFooterViewReuseIdentifier: RegisterDomainSectionHeaderView.identifier
         )
+        tableView.register(
+            UINib(nibName: EpilogueSectionHeaderFooter.identifier, bundle: nil),
+            forHeaderFooterViewReuseIdentifier: EpilogueSectionHeaderFooter.identifier
+        )
 
         ImmuTable.registerRows([EditableNameValueRow.self,
                                 CheckmarkRow.self],
@@ -47,6 +51,13 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
         tableHandler = ImmuTableViewHandler(takeOver: self)
         // remove empty cells
         tableView.tableFooterView = UIView()
+
+        tableView.estimatedSectionHeaderHeight = Constants.estimatedRowHeight
+        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+
+        tableView.estimatedSectionFooterHeight = Constants.estimatedRowHeight
+        tableView.sectionFooterHeight = UITableViewAutomaticDimension
+
         reloadViewModel()
     }
 
@@ -114,7 +125,30 @@ extension RegisterDomainDetailsViewController {
 // MARK: - Section Header Footer
 
 extension RegisterDomainDetailsViewController {
+
+    open override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        guard let sectionType = Section(rawValue: section) else {
+            return 0
+        }
+        switch sectionType {
+        case .privacyProtection:
+            return UITableViewAutomaticDimension
+        default:
+            break
+        }
+        return 0
+    }
+
     open override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard let sectionType = Section(rawValue: section) else {
+            return nil
+        }
+        switch sectionType {
+        case .privacyProtection:
+            return privacyProtectionSectionFooter()
+        default:
+            break
+        }
         return nil
     }
 
@@ -152,5 +186,44 @@ extension RegisterDomainDetailsViewController {
         view.setTitle(title)
         view.setDescription(description)
         return view
+    }
+
+    private func privacyProtectionSectionFooter() -> EpilogueSectionHeaderFooter? {
+        guard let view = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: EpilogueSectionHeaderFooter.identifier
+            ) as? EpilogueSectionHeaderFooter else {
+                return nil
+        }
+        view.titleLabel?.attributedText = termsAndConditionsFooterTitle
+        view.titleLabel?.numberOfLines = 0
+        view.titleLabel?.lineBreakMode = .byWordWrapping
+        view.topConstraint.constant = 8
+        view.contentView.backgroundColor = WPStyleGuide.greyLighten30()
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTermsAndConditionsTap(_:)))
+        view.addGestureRecognizer(tap)
+        return view
+    }
+
+    @objc func handleTermsAndConditionsTap(_ sender: UITapGestureRecognizer) {
+        //TODO
+    }
+
+    private var termsAndConditionsFooterTitle: NSAttributedString {
+        let bodyColor = WPStyleGuide.greyDarken20()
+        let linkColor = WPStyleGuide.darkGrey()
+        let font = UIFont.preferredFont(forTextStyle: .footnote)
+
+        let attributes: StyledHTMLAttributes = [
+            .BodyAttribute: [.font: font,
+                             .foregroundColor: bodyColor],
+            .ATagAttribute: [.underlineStyle: NSUnderlineStyle.styleSingle.rawValue,
+                             .foregroundColor: linkColor]
+        ]
+        let attributedTerms = NSAttributedString.attributedStringWithHTML(
+            Localized.PrivacySection.termsAndConditions,
+            attributes: attributes
+        )
+
+        return attributedTerms
     }
 }

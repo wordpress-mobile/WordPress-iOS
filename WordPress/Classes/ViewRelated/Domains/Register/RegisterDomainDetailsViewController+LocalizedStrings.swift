@@ -19,6 +19,10 @@ extension RegisterDomainDetailsViewController {
                 "Register publicly",
                 comment: "Register Domain - Register publicly option title"
             )
+            static let termsAndConditions = NSLocalizedString(
+                "By registering this domain you agree to our <a>Terms&nbsp;and&nbsp;Conditions</a>.",
+                comment: "Terms of Service link displayed when a user is registering domain. Text inside <a> tags will be highlighted."
+            )
         }
 
         enum ContactInformation {
