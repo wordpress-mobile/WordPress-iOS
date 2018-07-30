@@ -76,6 +76,7 @@ class PluginViewController: UITableViewController {
         tableView.estimatedRowHeight = 44
 
         bindViewModel()
+        observeNetworkStatus()
     }
 
     private func setupViews() {
@@ -165,5 +166,14 @@ private extension PluginViewController {
         self.noResultsViewController = noResultsViewController
 
         return noResultsViewController
+    }
+}
+
+extension PluginViewController: NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        print("====== network status changed =====")
+        if active {
+            print("----- reload all the things")
+        }
     }
 }
