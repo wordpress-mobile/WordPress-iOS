@@ -635,6 +635,9 @@ private extension ZendeskUtils {
             tags.append(sourceTagOrigin)
         }
 
+        // Add platformTag
+        tags.append(Constants.platformTag)
+
         return tags
     }
 
@@ -868,6 +871,7 @@ private extension ZendeskUtils {
         static let noValue = "none"
         static let mobileCategoryID = "360000041586"
         static let articleLabel = "iOS"
+        static let platformTag = "iOS"
         static let ticketSubject = NSLocalizedString("WordPress for iOS Support", comment: "Subject of new Zendesk ticket.")
         static let blogSeperator = "\n----------\n"
         static let jetpackTag = "jetpack"

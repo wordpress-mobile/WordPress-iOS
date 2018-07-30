@@ -1,3 +1,3 @@
-Aktivitetslogg! Nu kan du se allt som hänt på din webbplats.
-Stödet för animerade gif-filer har breddats till Läsaren och Mediaväljaren.
-Ett antal mindre förändringar av användargränssnitt, tillgänglighet och felrättningar.
+Redigeraren: ytterligare uppdateringar för kompatibilitet med Gutenberg.
+Flera förbättringar av användargränssnittet.
+Ett antal mindre felrättningar.

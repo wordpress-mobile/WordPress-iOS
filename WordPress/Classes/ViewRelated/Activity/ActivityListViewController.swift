@@ -43,6 +43,9 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
             self?.refreshModel()
         }
 
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(userRefresh), for: .valueChanged)
+
         title = NSLocalizedString("Activity", comment: "Title for the activity list")
     }
 
@@ -83,9 +86,29 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         SVProgressHUD.dismiss()
     }
 
+    @objc func userRefresh() {
+        viewModel.refresh()
+    }
+
     func refreshModel() {
         handler.viewModel = viewModel.tableViewModel(presenter: self)
+        updateRefreshControl()
         updateNoResults()
+    }
+
+    private func updateRefreshControl() {
+        guard let refreshControl = refreshControl else {
+            return
+        }
+
+        switch (viewModel.refreshing, refreshControl.isRefreshing) {
+        case (true, false):
+            refreshControl.beginRefreshing()
+        case (false, true):
+            refreshControl.endRefreshing()
+        default:
+            break
+        }
     }
 
 }
@@ -206,16 +229,6 @@ extension ActivityListViewController {
 
 private extension ActivityListViewController {
 
-    func setupNoResultsViewController() {
-        let noResultsStoryboard = UIStoryboard(name: "NoResults", bundle: nil)
-        guard let noResultsViewController = noResultsStoryboard.instantiateViewController(withIdentifier: "NoResults") as? NoResultsViewController else {
-            return
-        }
-
-        noResultsViewController.delegate = self
-        self.noResultsViewController = noResultsViewController
-    }
-
     func updateNoResults() {
         if let noResultsViewModel = viewModel.noResultsViewModel() {
             showNoResults(noResultsViewModel)
@@ -227,7 +240,8 @@ private extension ActivityListViewController {
     func showNoResults(_ viewModel: NoResultsViewController.Model) {
 
         if noResultsViewController == nil {
-            setupNoResultsViewController()
+            noResultsViewController = NoResultsViewController.controller()
+            noResultsViewController?.delegate = self
         }
 
         guard let noResultsViewController = noResultsViewController else {

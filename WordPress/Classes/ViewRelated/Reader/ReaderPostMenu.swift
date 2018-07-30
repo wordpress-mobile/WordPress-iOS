@@ -15,7 +15,7 @@ struct ReaderPostMenuButtonTitles {
 
 
 open class ReaderPostMenu {
-    open static let BlockSiteNotification = "ReaderPostMenuBlockSiteNotification"
+    public static let BlockSiteNotification = "ReaderPostMenuBlockSiteNotification"
 
     open class func showMenuForPost(_ post: ReaderPost, topic: ReaderSiteTopic? = nil, fromView anchorView: UIView, inViewController viewController: UIViewController?) {
 

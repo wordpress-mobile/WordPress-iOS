@@ -117,13 +117,18 @@ extension URL {
     }
 
     func appendingHideMasterbarParameters() -> URL? {
-        guard var components = URLComponents(url: self, resolvingAgainstBaseURL: false) else {
+        guard let components = URLComponents(url: self, resolvingAgainstBaseURL: false) else {
             return nil
         }
-        var queryItems = components.queryItems ?? []
-        queryItems.append(URLQueryItem(name: "preview", value: "true"))
-        queryItems.append(URLQueryItem(name: "iframe", value: "true"))
-        components.queryItems = queryItems
+        // FIXME: This code is commented out because of a menu navigation issue that can occur while
+        // viewing a site within the webview. See https://github.com/wordpress-mobile/WordPress-iOS/issues/9796
+        // for more details.
+        //
+        // var queryItems = components.queryItems ?? []
+        // queryItems.append(URLQueryItem(name: "preview", value: "true"))
+        // queryItems.append(URLQueryItem(name: "iframe", value: "true"))
+        // components.queryItems = queryItems
+        /////
         return components.url
     }
 }
