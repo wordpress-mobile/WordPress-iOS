@@ -247,6 +247,9 @@
 		435035991EDCAB99004ECF47 /* post.json in Resources */ = {isa = PBXBuildFile; fileRef = 435035941EDCAB99004ECF47 /* post.json */; };
 		4350359A1EDCAB99004ECF47 /* reader.json in Resources */ = {isa = PBXBuildFile; fileRef = 435035951EDCAB99004ECF47 /* reader.json */; };
 		4350359B1EDCAB99004ECF47 /* stats.json in Resources */ = {isa = PBXBuildFile; fileRef = 435035961EDCAB99004ECF47 /* stats.json */; };
+		436D55D9210F85DD00CEAA33 /* NibLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D55D8210F85DD00CEAA33 /* NibLoadable.swift */; };
+		436D55DB210F862A00CEAA33 /* NibReusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D55DA210F862A00CEAA33 /* NibReusable.swift */; };
+		436D55DF210F866900CEAA33 /* StoryboardLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D55DE210F866900CEAA33 /* StoryboardLoadable.swift */; };
 		437542E31DD4E19E00D6B727 /* EditPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437542E21DD4E19E00D6B727 /* EditPostViewController.swift */; };
 		437EF0CA20F79C520086129B /* RegisterDomainSuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437EF0C920F79C520086129B /* RegisterDomainSuggestionsViewController.swift */; };
 		4388FEFE20A4E0B900783948 /* NotificationsViewController+AppRatings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388FEFD20A4E0B900783948 /* NotificationsViewController+AppRatings.swift */; };
@@ -1630,6 +1633,9 @@
 		435035941EDCAB99004ECF47 /* post.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = post.json; sourceTree = "<group>"; };
 		435035951EDCAB99004ECF47 /* reader.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = reader.json; sourceTree = "<group>"; };
 		435035961EDCAB99004ECF47 /* stats.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stats.json; sourceTree = "<group>"; };
+		436D55D8210F85DD00CEAA33 /* NibLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibLoadable.swift; sourceTree = "<group>"; };
+		436D55DA210F862A00CEAA33 /* NibReusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibReusable.swift; sourceTree = "<group>"; };
+		436D55DE210F866900CEAA33 /* StoryboardLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardLoadable.swift; sourceTree = "<group>"; };
 		437542E21DD4E19E00D6B727 /* EditPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditPostViewController.swift; sourceTree = "<group>"; };
 		437EF0C920F79C520086129B /* RegisterDomainSuggestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDomainSuggestionsViewController.swift; sourceTree = "<group>"; };
 		4388FEFD20A4E0B900783948 /* NotificationsViewController+AppRatings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationsViewController+AppRatings.swift"; sourceTree = "<group>"; };
@@ -3678,6 +3684,16 @@
 			path = Animations;
 			sourceTree = "<group>";
 		};
+		436D55D7210F85C200CEAA33 /* ViewLoading */ = {
+			isa = PBXGroup;
+			children = (
+				436D55D8210F85DD00CEAA33 /* NibLoadable.swift */,
+				436D55DA210F862A00CEAA33 /* NibReusable.swift */,
+				436D55DE210F866900CEAA33 /* StoryboardLoadable.swift */,
+			);
+			name = ViewLoading;
+			sourceTree = "<group>";
+		};
 		437EF0C820F79C0C0086129B /* Register */ = {
 			isa = PBXGroup;
 			children = (
@@ -3687,15 +3703,6 @@
 				4308ACFE210109C40059EA64 /* RegisterDomainSuggestionsTableViewController.swift */,
 			);
 			path = Register;
-			sourceTree = "<group>";
-		};
-		43D74AD220FB5A82004AD934 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				43D74AD520FB5AD5004AD934 /* RegisterDomainSectionHeaderView.swift */,
-				43D74AD320FB5ABA004AD934 /* RegisterDomainSectionHeaderView.xib */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		4395A15E210672C900844E8E /* QuickStart */ = {
@@ -3709,6 +3716,15 @@
 				43C9908D21067E22009EFFEB /* QuickStartChecklistView.swift */,
 			);
 			name = QuickStart;
+			sourceTree = "<group>";
+		};
+		43D74AD220FB5A82004AD934 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				43D74AD520FB5AD5004AD934 /* RegisterDomainSectionHeaderView.swift */,
+				43D74AD320FB5ABA004AD934 /* RegisterDomainSectionHeaderView.xib */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		45C73C23113C36F50024D0D2 /* Resources-iPad */ = {
@@ -4356,6 +4372,7 @@
 		8584FDB4192437160019C02E /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				436D55D7210F85C200CEAA33 /* ViewLoading */,
 				1797373920EBDA1100377B4E /* Universal Links */,
 				984B4EF120742FB900F87888 /* Zendesk */,
 				7E21C763202BBE9F00837CF5 /* iAds */,
@@ -7367,6 +7384,7 @@
 				43FF64EF20DAA0840060A69A /* GravatarUploader.swift in Sources */,
 				B5899ADE1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift in Sources */,
 				D8A3A5AA2069E53900992576 /* AztecMediaPickingCoordinator.swift in Sources */,
+				436D55DB210F862A00CEAA33 /* NibReusable.swift in Sources */,
 				82FC61241FA8ADAD00A1757E /* ActivityTableViewCell.swift in Sources */,
 				E1ECE34F1FA88DA2007FA37A /* StoreContainer.swift in Sources */,
 				FAE4201A1C5AEFE100C1D036 /* StartOverViewController.swift in Sources */,
@@ -7408,6 +7426,7 @@
 				83FEFC7611FF6C5A0078B462 /* SiteSettingsViewController.m in Sources */,
 				B56994451B7A7EF200FF26FA /* WPStyleGuide+Comments.swift in Sources */,
 				74AF4D741FE417D200E3EBFE /* MediaUploadOperation.swift in Sources */,
+				436D55D9210F85DD00CEAA33 /* NibLoadable.swift in Sources */,
 				D8D7DF5A20AD18A400B40A2D /* ImgUploadProcessor.swift in Sources */,
 				E15644ED1CE0E4FE00D96E64 /* PlanListRow.swift in Sources */,
 				98656BD82037A1770079DE67 /* SignupEpilogueViewController.swift in Sources */,
@@ -7820,6 +7839,7 @@
 				E6431DE71C4E892900FD8D90 /* SharingViewController.m in Sources */,
 				FF286C761DE70A4500383A62 /* NSURL+Exporters.swift in Sources */,
 				E1A03EE217422DCF0085D192 /* BlogToAccount.m in Sources */,
+				436D55DF210F866900CEAA33 /* StoryboardLoadable.swift in Sources */,
 				D8212CC320AA7F57008E8AE8 /* ReaderBlockSiteAction.swift in Sources */,
 				5D44EB381986D8BA008B7175 /* ReaderSiteService.m in Sources */,
 				B518E1651CCAA19200ADFE75 /* Blog+Capabilities.swift in Sources */,
