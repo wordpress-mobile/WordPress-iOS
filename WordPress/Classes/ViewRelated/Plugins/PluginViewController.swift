@@ -171,9 +171,9 @@ private extension PluginViewController {
 
 extension PluginViewController: NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {
-        print("====== network status changed =====")
         if active {
-            print("----- reload all the things")
+            viewModel.reloadPlugin()
+            updateNoResults()
         }
     }
 }
