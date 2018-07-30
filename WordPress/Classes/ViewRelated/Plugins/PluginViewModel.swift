@@ -75,8 +75,6 @@ class PluginViewModel: Observable {
 
             self?.state = .plugin(plugin)
         }
-
-        observeNetworkStatus()
     }
 
     convenience init(directoryEntry: PluginDirectoryEntry, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
@@ -579,18 +577,5 @@ private extension String {
 
     enum Loading {
         static let title = NSLocalizedString("Loading Plugin...", comment: "Text displayed while loading an specific plugin")
-    }
-}
-
-extension NetworkStatusDelegate where Self: PluginViewModel {
-    func observeNetworkStatus() {
-        // Do something here in order to observe changes in the network status
-    }
-}
-
-extension PluginViewModel: NetworkStatusDelegate {
-    func networkStatusDidChange(active: Bool) {
-        //updateNoResults()
-        print("network status did change")
     }
 }
