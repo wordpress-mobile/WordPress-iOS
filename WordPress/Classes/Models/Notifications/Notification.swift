@@ -67,22 +67,18 @@ class Notification: NSManagedObject {
 
     /// Subject Blocks Transient Storage.
     ///
-    fileprivate var cachedSubjectBlockGroup: NotificationBlockGroup?
     fileprivate var cachedSubjectContentGroup: FormattableContentGroup?
 
     /// Header Blocks Transient Storage.
     ///
-    fileprivate var cachedHeaderBlockGroup: NotificationBlockGroup?
     fileprivate var cachedHeaderContentGroup: FormattableContentGroup?
 
     /// Body Blocks Transient Storage.
     ///
-    fileprivate var cachedBodyBlockGroups: [NotificationBlockGroup]?
     fileprivate var cachedBodyContentGroups: [FormattableContentGroup]?
 
     /// Header + Body Blocks Transient Storage.
     ///
-    fileprivate var cachedHeaderAndBodyBlockGroups: [NotificationBlockGroup]?
     fileprivate var cachedHeaderAndBodyContentGroup: [FormattableContentGroup]?
 
     /// Array that contains the Cached Property Names
@@ -148,34 +144,6 @@ class Notification: NSManagedObject {
     func contentGroup(ofKind kind: FormattableContentGroup.Kind) -> FormattableContentGroup? {
         for contentGroup in bodyContentGroups where contentGroup.kind == kind {
             return contentGroup
-        }
-
-        return nil
-    }
-
-    /// Returns the first BlockGroup of the specified type, if any.
-    ///
-    func blockGroupOfKind(_ kind: NotificationBlockGroup.Kind) -> NotificationBlockGroup? {
-        for blockGroup in bodyBlockGroups where blockGroup.kind == kind {
-            return blockGroup
-        }
-
-        return nil
-    }
-
-    /// Attempts to find the Notification Range associated with a given URL.
-    ///
-    func notificationRangeWithUrl(_ url: URL) -> NotificationRange? {
-        var groups = bodyBlockGroups
-        if let headerBlockGroup = headerBlockGroup {
-            groups.append(headerBlockGroup)
-        }
-
-        let blocks = groups.flatMap { $0.blocks }
-        for block in blocks {
-            if let range = block.notificationRangeWithUrl(url) {
-                return range
-            }
         }
 
         return nil
@@ -345,21 +313,6 @@ extension Notification {
         return cachedSubjectContentGroup
     }
 
-    /// Returns the Subject Block Group, if any.
-    ///
-    var subjectBlockGroup: NotificationBlockGroup? {
-        if let subjectBlockGroup = cachedSubjectBlockGroup {
-            return subjectBlockGroup
-        }
-
-        guard let subject = subject as? [[String: AnyObject]], subject.isEmpty == false else {
-            return nil
-        }
-
-        cachedSubjectBlockGroup = NotificationBlockGroup.groupFromSubject(subject, parent: self)
-        return cachedSubjectBlockGroup
-    }
-
     var headerContentGroup: FormattableContentGroup? {
         if let group = cachedHeaderContentGroup {
             return group
@@ -371,21 +324,6 @@ extension Notification {
 
         cachedHeaderContentGroup = HeaderContentGroup.createGroup(from: header, parent: self)
         return cachedHeaderContentGroup
-    }
-
-    /// Returns the Header Block Group, if any.
-    ///
-    var headerBlockGroup: NotificationBlockGroup? {
-        if let headerBlockGroup = cachedHeaderBlockGroup {
-            return headerBlockGroup
-        }
-
-        guard let header = header as? [[String: AnyObject]], header.isEmpty == false else {
-            return nil
-        }
-
-        cachedHeaderBlockGroup = NotificationBlockGroup.groupFromHeader(header, parent: self)
-        return cachedHeaderBlockGroup
     }
 
     var bodyContentGroups: [FormattableContentGroup] {
@@ -400,22 +338,6 @@ extension Notification {
         cachedBodyContentGroups = BodyContentGroup.create(from: body, parent: self)
         return cachedBodyContentGroups ?? []
     }
-
-    /// Returns the Body Block Groups, if any.
-    ///
-    var bodyBlockGroups: [NotificationBlockGroup] {
-        if let bodyBlockGroups = cachedBodyBlockGroups {
-            return bodyBlockGroups
-        }
-
-        guard let body = body as? [[String: AnyObject]], body.isEmpty == false else {
-            return []
-        }
-
-        cachedBodyBlockGroups = NotificationBlockGroup.groupsFromBody(body, parent: self)
-        return cachedBodyBlockGroups ?? []
-    }
-
 
     var headerAndBodyContentGroups: [FormattableContentGroup] {
         if let groups = cachedHeaderAndBodyContentGroup {
@@ -432,45 +354,12 @@ extension Notification {
 
         return mergedGroups
     }
-    /// Returns the Header + Body Block Groups, if any. This is done for convenience.
-    ///
-    var headerAndBodyBlockGroups: [NotificationBlockGroup] {
-        if let headerAndBodyBlockGroups = cachedHeaderAndBodyBlockGroups {
-            return headerAndBodyBlockGroups
-        }
-
-        var mergedGroups = [NotificationBlockGroup]()
-        if let header = headerBlockGroup {
-            mergedGroups.append(header)
-        }
-
-        mergedGroups.append(contentsOf: bodyBlockGroups)
-        cachedHeaderAndBodyBlockGroups = mergedGroups
-
-        return mergedGroups
-    }
-
-    /// Returns the Subject Block, if any.
-    ///
-    var subjectBlock: NotificationBlock? {
-        return subjectBlockGroup?.blocks.first
-    }
 
     var snippetContent: FormattableContent? {
         guard let content = subjectContentGroup?.blocks, content.count > 1 else {
             return nil
         }
         return content.last
-    }
-
-    /// Returns the Snippet Block, if any.
-    ///
-    var snippetBlock: NotificationBlock? {
-        guard let subjectBlocks = subjectBlockGroup?.blocks, subjectBlocks.count > 1 else {
-            return nil
-        }
-
-        return subjectBlocks.last
     }
 }
 

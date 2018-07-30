@@ -751,7 +751,6 @@
 		B538F37F1EF44017001003D5 /* VideoAttachment+WordPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = B538F37E1EF44017001003D5 /* VideoAttachment+WordPress.swift */; };
 		B538F3841EF45B13001003D5 /* OptionsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B538F3831EF45B13001003D5 /* OptionsTableView.swift */; };
 		B538F3891EF46EC8001003D5 /* UnknownEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B538F3881EF46EC8001003D5 /* UnknownEditorViewController.swift */; };
-		B53971501D537763006135EC /* NotificationBlockGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B539714F1D537763006135EC /* NotificationBlockGroup.swift */; };
 		B53971521D537B22006135EC /* NotificationBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53971511D537B22006135EC /* NotificationBlock.swift */; };
 		B53AD9BC1BE95687009AB87E /* SettingsTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B53AD9B91BE95687009AB87E /* SettingsTextViewController.m */; };
 		B53AD9BF1BE9584B009AB87E /* SettingsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B53AD9BE1BE9584A009AB87E /* SettingsSelectionViewController.m */; };
@@ -2373,7 +2372,6 @@
 		B538F37E1EF44017001003D5 /* VideoAttachment+WordPress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VideoAttachment+WordPress.swift"; sourceTree = "<group>"; };
 		B538F3831EF45B13001003D5 /* OptionsTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionsTableView.swift; sourceTree = "<group>"; };
 		B538F3881EF46EC8001003D5 /* UnknownEditorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnknownEditorViewController.swift; sourceTree = "<group>"; };
-		B539714F1D537763006135EC /* NotificationBlockGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationBlockGroup.swift; sourceTree = "<group>"; };
 		B53971511D537B22006135EC /* NotificationBlock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationBlock.swift; sourceTree = "<group>"; };
 		B53AD9B81BE95687009AB87E /* SettingsTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTextViewController.h; sourceTree = "<group>"; };
 		B53AD9B91BE95687009AB87E /* SettingsTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTextViewController.m; sourceTree = "<group>"; };
@@ -5293,7 +5291,6 @@
 			children = (
 				D816C1EA20E0884100C4D82F /* Actions */,
 				B5722E401D51A28100F40C5E /* Notification.swift */,
-				B539714F1D537763006135EC /* NotificationBlockGroup.swift */,
 				B53971511D537B22006135EC /* NotificationBlock.swift */,
 				B500A4821D5B8D5E00FC8A96 /* NotificationMedia.swift */,
 				B500A4831D5B8D5E00FC8A96 /* NotificationRange.swift */,
@@ -7505,7 +7502,6 @@
 			files = (
 				B50C0C621EF42AF200372C65 /* TextList+WordPress.swift in Sources */,
 				B5722E421D51A28100F40C5E /* Notification.swift in Sources */,
-				B53971501D537763006135EC /* NotificationBlockGroup.swift in Sources */,
 				1759F1801FE1460C0003EC81 /* NoticeView.swift in Sources */,
 				B53971521D537B22006135EC /* NotificationBlock.swift in Sources */,
 				7E4A773920F80417001C706D /* ActivityPluginRange.swift in Sources */,

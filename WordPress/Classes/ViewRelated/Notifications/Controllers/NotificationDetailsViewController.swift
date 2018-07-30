@@ -280,7 +280,7 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return note.headerAndBodyBlockGroups.count
+        return note.headerAndBodyContentGroups.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -410,7 +410,8 @@ extension NotificationDetailsViewController {
         replyTextView.accessibilityIdentifier = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
         replyTextView.delegate = self
         replyTextView.onReply = { [weak self] content in
-            guard let block = self?.note.blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
+            let group = self?.note.contentGroup(ofKind: .comment)
+            guard let block: FormattableCommentContent = group?.blockOfKind(.comment) else {
                 return
             }
             self?.replyCommentWithBlock(block, content: content)
@@ -570,7 +571,7 @@ private extension NotificationDetailsViewController {
 
     func setupSeparators(_ cell: NoteBlockTableViewCell, indexPath: IndexPath) {
         cell.isBadge = note.isBadge
-        cell.isLastRow = (indexPath.row >= note.headerAndBodyBlockGroups.count - 1)
+        cell.isLastRow = (indexPath.row >= note.headerAndBodyContentGroups.count - 1)
     }
 }
 
@@ -911,27 +912,6 @@ private extension NotificationDetailsViewController {
         let filtered = content.filter { kindSet.contains($0.kind) }
         let imageUrls = filtered.compactMap { ($0 as? NotificationTextContent)?.imageUrls }.flatMap { $0 }
         return Set(imageUrls)
-    }
-
-    func downloadAndResizeMedia(_ indexPath: IndexPath, blockGroup: NotificationBlockGroup) {
-        //  Notes:
-        //  -   We'll *only* download Media for Text and Comment Blocks
-        //  -   Plus, we'll also resize the downloaded media cache *if needed*. This is meant to adjust images to
-        //      better fit onscreen, whenever the device orientation changes (and in turn, the maxMediaEmbedWidth changes too).
-        //
-        let imageUrls = blockGroup.imageUrlsFromBlocksInKindSet(Media.richBlockTypes)
-
-        let completion = {
-            // Workaround: Performing the reload call, multiple times, without the .BeginFromCurrentState might
-            // lead to a state in which the cell remains not visible.
-            //
-            UIView.animate(withDuration: Media.duration, delay: Media.delay, options: Media.options, animations: { [weak self] in
-                self?.tableView.reloadRows(at: [indexPath], with: .fade)
-                }, completion: nil)
-        }
-
-        mediaDownloader.downloadMedia(urls: imageUrls, maximumWidth: maxMediaEmbedWidth, completion: completion)
-        mediaDownloader.resizeMediaWithIncorrectSize(maxMediaEmbedWidth, completion: completion)
     }
 
     func downloadAndResizeMedia(at indexPath: IndexPath, from contentGroup: FormattableContentGroup) {
