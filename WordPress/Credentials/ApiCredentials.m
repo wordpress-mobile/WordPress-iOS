@@ -33,6 +33,10 @@
     return @"";
 }
 
++ (NSString *)googleLoginSchemeId {
+    return @"";
+}
+
 + (NSString *)googleLoginServerClientId {
     return @"";
 }

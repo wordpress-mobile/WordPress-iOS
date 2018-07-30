@@ -38,11 +38,11 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v10.4-whats-new"
+msgctxt "v10.5-whats-new"
 msgid ""
-"Activity Log! You can now see all that has been going on with your site.\n"
-"Animated Gif support has been expanded in Reader and Media Picker.\n"
-"A bunch of UI tweaks, accessibility improvements and bug fixes.\n"
+"Editor: more updates for Gutenberg compatibility.\n"
+"Several improvements to the UI.\n"
+"A bunch of small bug fixes.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
@@ -72,7 +72,7 @@ msgstr ""
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one. 
 msgctxt "app_store_screenshot-1"
-msgid "Enjoy your favourite sites"
+msgid "Enjoy your favorite sites"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the second screenshot in the App Store.

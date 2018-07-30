@@ -780,7 +780,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     
     self.postSiteID = siteID;
     
-    [service fetchPost:postID.integerValue forSite:siteID.integerValue success:^(ReaderPost *post) {
+    [service fetchPost:postID.integerValue forSite:siteID.integerValue isFeed:NO success:^(ReaderPost *post) {
 
         [weakSelf setPost:post];
         [weakSelf refreshAndSync];

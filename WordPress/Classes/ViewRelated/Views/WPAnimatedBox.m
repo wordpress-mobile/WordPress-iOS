@@ -1,16 +1,14 @@
 #import "WPAnimatedBox.h"
 
 @interface WPAnimatedBox () {
-
     UIImageView *_container;
     UIImageView *_containerBack;
-    UIImageView *_page1;
-    UIImageView *_page2;
-    UIImageView *_page3;
 }
 
 @property (nonatomic, assign, readwrite) BOOL isAnimating;
-
+@property (nonatomic, retain) UIImageView *page1;
+@property (nonatomic, retain) UIImageView *page2;
+@property (nonatomic, retain) UIImageView *page3;
 @end
 
 @implementation WPAnimatedBox
@@ -35,6 +33,11 @@ static CGFloat const WPAnimatedBoxYPosPage3 = WPAnimatedBoxAnimationTolerance + 
     }
     
     return self;
+}
+
+- (void)dealloc
+{
+    _isAnimating = NO;
 }
 
 - (void)setupView
@@ -96,17 +99,25 @@ static CGFloat const WPAnimatedBoxYPosPage3 = WPAnimatedBoxAnimationTolerance + 
 {
     self.isAnimating = YES;
 
+    __weak __typeof(self) weakSelf = self;
+
     [UIView animateWithDuration:1.4 delay:0.1 usingSpringWithDamping:0.5 initialSpringVelocity:0.1 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        self->_page1.transform = CGAffineTransformIdentity;
+        weakSelf.page1.transform = CGAffineTransformIdentity;
     } completion:nil];
     [UIView animateWithDuration:1 delay:0.0 usingSpringWithDamping:0.65 initialSpringVelocity:0.01 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        self->_page2.transform = CGAffineTransformIdentity;
-    } completion: ^void(BOOL finished) {
-        self.isAnimating = NO;
-    }];
-    [UIView animateWithDuration:1.2 delay:0.2 usingSpringWithDamping:0.5 initialSpringVelocity:0.1 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        self->_page3.transform = CGAffineTransformIdentity;
+        weakSelf.page2.transform = CGAffineTransformIdentity;
     } completion:nil];
+    [UIView animateWithDuration:1.2 delay:0.2 usingSpringWithDamping:0.5 initialSpringVelocity:0.1 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        weakSelf.page3.transform = CGAffineTransformIdentity;
+    } completion:^void(BOOL finished) {
+        [UIView animateWithDuration:0.8 delay:2.0 usingSpringWithDamping:0.8 initialSpringVelocity:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            [weakSelf moveAnimationToFirstFrame];
+        } completion:^(BOOL finished) {
+            if (weakSelf.isAnimating) {
+                [weakSelf playAnimation];
+            }
+        }];
+    }];
 }
 
 - (void)animate

@@ -53,7 +53,7 @@ import Gridicons
     // MARK: - State Restoration
 
 
-    open static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+    public static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
         guard let path = coder.decodeObject(forKey: restorableSearchTopicPathKey) as? String else {
             return ReaderSearchViewController.controller()
         }
