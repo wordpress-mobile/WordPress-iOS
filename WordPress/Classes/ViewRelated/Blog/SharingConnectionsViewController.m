@@ -196,7 +196,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     PublicizeConnection *connection = [[self connectionsForService] objectAtIndex:indexPath.row];
     cell.textLabel.text = connection.externalDisplay;
 
-    if ([connection isBroken] || [connection mustDisconnect]) {
+    if ([connection requiresUserAction]) {
         cell.accessoryView = [WPStyleGuide sharingCellWarningAccessoryImageView];
     }
 }
