@@ -24,25 +24,87 @@ Dotenv.load('~/.wpios-env.default')
 ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
 
 ########################################################################
-# Master Lanes
+# Release Lanes
 ########################################################################
-  lane :protect_branch do | options |
-    setbranchprotection(repository:GHHELPER_REPO, branch: options[:branch])
-  end
+  desc "Creates a new release branch from the current develop"
+  lane :code_freeze do | options |
+    old_version = code_freeze_prechecks(options)
+    
+    bump_version_release()
+    new_version = get_app_version()
+    setbranchprotection(repository:GHHELPER_REPO, branch: "release/#{new_version}")
+    setfrozentag(repository:GHHELPER_REPO, milestone: new_version)
 
-  lane :set_frozen do | options |
-    setfrozentag(repository:GHHELPER_REPO, milestone: options[:milestone])
-  end
-
-  lane :unset_frozen do | options |
-    setfrozentag(repository:GHHELPER_REPO, milestone: options[:milestone], freeze: false)
+    localize_project()
+    get_prs_list(repository:GHHELPER_REPO, start_tag:"#{old_version}", report_path:"#{File.expand_path('~')}/wpios_prs_list_#{old_version}_#{new_version}.txt")
   end
 
 ########################################################################
 # Helper Lanes
 ########################################################################
+  desc "Bump the version for a new release"
+  lane :bump_version_release do
+    sh("cd .. && ./manage-version.sh bump-release")
+    sh("cd ../.. && git add ./config/.")
+    sh("git add Deliverfile")
+    sh("git add download_metadata.swift")
+    sh("git add ../../WordPress/Resources/AppStoreStrings.po")
+    sh("git commit -m \"Updates versions\"")
+  end
+
+  desc "Get a list of pull request from `start_tag` to the current state"
+  lane :get_pullrequests_list do | options |
+    get_prs_list(repository:GHHELPER_REPO, start_tag:"#{options[:start_tag]}", report_path:"#{File.expand_path('~')}/wpios_prs_list.txt")
+  end
 
 ########################################################################
 # Private Lanes
 ########################################################################
+  desc "Updates develop and checks the current version"
+  private_lane :code_freeze_prechecks do | options |
+    # Checkout develop and update
+    sh("git checkout develop")
+    sh("git pull")
+
+    # Read the current version from the project files
+    current_version = sh("cd .. && ./manage-version.sh get-version").split("\n")[1]
+    
+    # Ask user confirmation
+    if (options[:skip_confirm] != true)
+      if (!UI.confirm("Building a new release branch starting from develop.\nCurrent version is #{current_version}: the new version will be calculated from this one.\nDo you want to continue?"))
+        UI.user_error!("Aborted by user request")
+      end
+    end
+
+    # Check local repo status
+    ensure_git_status_clean()
+
+    # Return the current version
+    ios_get_public_version_number(version:current_version)
+  end
+
+  desc "Runs the localizer script"
+  private_lane :localize_project do
+    sh("cd ../.. && ./Scripts/localize.py")
+    sh("cd ../.. && git add ./WordPress/Resources/.")
+    sh("git commit -m \"Updates strings for localization\"")
+    sh("git push")
+  end
+
+  desc "Gets the app version from the project settings"
+  private_lane :get_app_version do 
+    version_strings = sh("cd .. && ./manage-version.sh get-version").split("\n")
+    ios_get_public_version_number(version:version_strings[1])
+  end
+
+  desc "Extracts the app version from the test version string"
+  private_lane :ios_get_public_version_number do | options |
+    parts = options[:version].split(".")
+    if (parts.length > 2) && (parts[2] != "0") then
+      public_version_number = "#{parts[0]}.#{parts[1]}.#{parts[2]}"
+    else
+      public_version_number = "#{parts[0]}.#{parts[1]}"
+    end
+    public_version_number
+  end
 end
