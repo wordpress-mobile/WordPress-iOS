@@ -77,7 +77,7 @@ class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
     }
 
     func formattableContentRangeWithCommentId(_ commentID: NSNumber) -> NotificationContentRange? {
-        for range in ranges.compactMap({ $0 as? FormattableCommentRange }) {
+        for range in ranges.compactMap({ $0 as? NotificationCommentRange }) {
             if let commentID = range.commentID, commentID.isEqual(commentID) {
                 return range
             }
