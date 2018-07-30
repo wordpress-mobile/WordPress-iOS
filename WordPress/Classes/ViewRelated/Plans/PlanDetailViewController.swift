@@ -8,6 +8,9 @@ class PlanDetailViewController: UIViewController {
     fileprivate let tableViewHorizontalMargin: CGFloat = 24.0
     fileprivate let planImageDropshadowRadius: CGFloat = 3.0
 
+    private var noResultsViewController: NoResultsViewController?
+    private var noResultsViewModel: NoResultsViewController.Model?
+
     fileprivate var tableViewModel = ImmuTable.Empty {
         didSet {
             tableView?.reloadData()
@@ -23,29 +26,6 @@ class PlanDetailViewController: UIViewController {
                 updateNoResults()
             }
         }
-    }
-
-    fileprivate let noResultsView = WPNoResultsView()
-
-    @objc func updateNoResults() {
-        if let noResultsViewModel = viewModel.noResultsViewModel {
-            showNoResults(noResultsViewModel)
-        } else {
-            hideNoResults()
-        }
-    }
-    func showNoResults(_ viewModel: WPNoResultsView.Model) {
-        noResultsView.bindViewModel(viewModel)
-        if noResultsView.isDescendant(of: tableView) {
-            noResultsView.centerInSuperview()
-        } else {
-            noResultsView.delegate = self
-            tableView.addSubview(withFadeAnimation: noResultsView)
-        }
-    }
-
-    @objc func hideNoResults() {
-        noResultsView.removeFromSuperview()
     }
 
     @IBOutlet weak var tableView: UITableView!
@@ -247,23 +227,41 @@ class PlanDetailViewController: UIViewController {
             alert.presentFromRootViewController()
         }
     }
+
 }
 
 // MARK: Table View Data Source / Delegate
+
 extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return tableViewModel.sections.count
+        return noResultsViewModel != nil ? 1 : tableViewModel.sections.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableViewModel.sections[section].rows.count
+        return noResultsViewModel != nil ? 1 : tableViewModel.sections[section].rows.count
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+
+        guard noResultsViewModel != nil,
+            let noResultsViewController = noResultsViewController else {
+                return tableView.estimatedRowHeight
+        }
+
+        return noResultsViewController.heightForTableCell()
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let row = tableViewModel.rowAtIndexPath(indexPath)
-        let cell = tableView.dequeueReusableCell(withIdentifier: row.reusableIdentifier, for: indexPath)
 
-        row.configureCell(cell)
+        let cell: UITableViewCell
+
+        if noResultsViewModel != nil {
+            cell = noResultsCell()
+        } else {
+            let row = tableViewModel.rowAtIndexPath(indexPath)
+            cell = tableView.dequeueReusableCell(withIdentifier: row.reusableIdentifier, for: indexPath)
+            row.configureCell(cell)
+        }
 
         return cell
     }
@@ -289,7 +287,7 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return tableViewModel.sections[section].headerText
+        return noResultsViewModel != nil ? nil : tableViewModel.sections[section].headerText
     }
 
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
@@ -297,8 +295,57 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-extension PlanDetailViewController: WPNoResultsViewDelegate {
-    func didTap(_ noResultsView: WPNoResultsView!) {
+// MARK: - No Results Handling Private Extension
+
+private extension PlanDetailViewController {
+
+    func updateNoResults() {
+        removeNoResultsFromView()
+        if let noResultsViewModel = viewModel.noResultsViewModel {
+            self.noResultsViewModel = noResultsViewModel
+        } else {
+            self.noResultsViewModel = nil
+        }
+    }
+
+    func removeNoResultsFromView() {
+        noResultsViewController?.view.removeFromSuperview()
+        noResultsViewController?.removeFromParentViewController()
+    }
+
+    func noResultsCell() -> UITableViewCell {
+        let cell = UITableViewCell()
+        addNoResultsTo(cell: cell)
+        return cell
+    }
+
+    func addNoResultsTo(cell: UITableViewCell) {
+        removeNoResultsFromView()
+
+        if noResultsViewController == nil {
+            noResultsViewController = NoResultsViewController.controller()
+            noResultsViewController?.delegate = self
+        }
+
+        guard let noResultsViewController = noResultsViewController,
+            let noResultsViewModel = noResultsViewModel else {
+                return
+        }
+
+        noResultsViewController.bindViewModel(noResultsViewModel)
+        noResultsViewController.view.backgroundColor =  .white
+        noResultsViewController.view.frame = cell.frame
+        cell.contentView.addSubview(noResultsViewController.view)
+        addChildViewController(noResultsViewController)
+        noResultsViewController.didMove(toParentViewController: self)
+    }
+
+}
+
+// MARK: - NoResultsViewControllerDelegate
+
+extension PlanDetailViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
         let supportVC = SupportTableViewController()
         supportVC.showFromTabBar()
     }

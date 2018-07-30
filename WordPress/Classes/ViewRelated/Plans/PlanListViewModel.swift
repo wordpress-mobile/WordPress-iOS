@@ -95,7 +95,7 @@ enum PlanListViewModel {
                 ImmuTableSection(
                     headerText: NSLocalizedString("WordPress.com Plans", comment: "Title for the Plans list header"),
                     rows: rows,
-                    footerText: NSLocalizedString("Manage your plan at WordPress.com/plans", comment: "Footer for Plans list"))
+                    footerText: String())
                 ])
         }
     }

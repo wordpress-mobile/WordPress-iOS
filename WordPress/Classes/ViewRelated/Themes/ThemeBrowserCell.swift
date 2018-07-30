@@ -70,7 +70,7 @@ public enum ThemeAction {
 open class ThemeBrowserCell: UICollectionViewCell {
     // MARK: - Constants
 
-    @objc open static let reuseIdentifier = "ThemeBrowserCell"
+    @objc public static let reuseIdentifier = "ThemeBrowserCell"
 
     // MARK: - Private Aliases
 
