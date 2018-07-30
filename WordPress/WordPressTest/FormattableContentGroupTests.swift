@@ -54,45 +54,9 @@ final class FormattableContentGroupTests: XCTestCase {
         XCTAssertNil(obtainedBlock)
     }
 
-    func testBadgeNotificationProperlyLoadsItsSubjectContent() {
-        let note = utility.loadBadgeNotification()
-
-        XCTAssert(note.subjectContentGroup?.blocks.count == 1)
-        XCTAssertNotNil(note.subjectContentGroup?.blocks.first)
-        XCTAssertNotNil(note.renderSubject())
-    }
-
-    func testBadgeNotificationContainsOneImageContentGroup() {
-        let note = utility.loadBadgeNotification()
-        let group = note.contentGroup(ofKind: .image)
-        XCTAssertNotNil(group)
-
-        let imageBlock = group?.blocks.first as? FormattableMediaContent
-        XCTAssertNotNil(imageBlock)
-
-        let media = imageBlock?.media.first
-        XCTAssertNotNil(media)
-        XCTAssertNotNil(media?.mediaURL)
-    }
-
-    func testLikeNotificationContainsUserContentGroupsInTheBody() {
-        let note = utility.loadLikeNotification()
-        for group in note.bodyContentGroups {
-            XCTAssertTrue(group.kind == .user)
-        }
-    }
-
-    func testFollowerNotificationContainsUserAndFooterGroupsInTheBody() {
-        let note = utility.loadFollowerNotification()
-
-        // Note: Account for 'View All Followers'
-        for group in note.bodyContentGroups {
-            XCTAssertTrue(group.kind == .user || group.kind == .footer)
-        }
-    }
-
     private func mockContent() -> FormattableTextContent {
-        return FormattableTextContent(dictionary: mockActivity(), actions: [], ranges: [], parent: mockParent())
+        let text = mockActivity()["text"] as? String ?? ""
+        return FormattableTextContent(text: text, ranges: [], actions: [])
     }
 
     private func mockActivity() -> [String: AnyObject] {
@@ -101,9 +65,5 @@ final class FormattableContentGroupTests: XCTestCase {
 
     private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
         return contextManager.object(withContentOfFile: fileName) as! [String: AnyObject]
-    }
-
-    func mockParent() -> FormattableContentParent {
-        return MockActivityParent()
     }
 }

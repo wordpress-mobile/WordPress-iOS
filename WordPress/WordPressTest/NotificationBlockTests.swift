@@ -12,7 +12,7 @@ final class NotificationBlockTests: XCTestCase {
         static let trashAction = TrashCommentAction(on: true, command: TrashComment(on: true))
         static let mediaCount = 0
         static let rangesCount = 2
-        static let text = "Jennifer Parks and 658 others liked your post Bookmark Posts with Save For Later"
+        static let text = "xxxxxx xxxxxx and 658 others liked your post Bookmark Posts with Save For Later"
         static let kind = NotificationBlock.Kind.text
         static let notificationID = "11111"
     }

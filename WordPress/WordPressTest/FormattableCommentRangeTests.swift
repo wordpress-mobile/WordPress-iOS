@@ -1,10 +1,10 @@
 import XCTest
 @testable import WordPress
 
-final class FormattableCommentRangeTests: XCTestCase {
+final class NotificationCommentRangeTests: XCTestCase {
     private let contextManager = TestContextManager()
 
-    private var subject: FormattableCommentRange?
+    private var subject: NotificationCommentRange?
 
     private struct Constants {
         static let kind = FormattableRangeKind("comment")
@@ -17,7 +17,7 @@ final class FormattableCommentRangeTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        subject = FormattableCommentRange(commentID: Constants.commentId, properties: mockProperties())
+        subject = NotificationCommentRange(commentID: Constants.commentId, properties: mockProperties())
     }
 
     override func tearDown() {

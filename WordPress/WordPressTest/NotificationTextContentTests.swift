@@ -8,7 +8,7 @@ final class NotificationTextContentTests: XCTestCase {
     private var subject: NotificationTextContent?
 
     private struct Expectations {
-        static let text = "Jennifer Parks and 658 others liked your post Bookmark Posts with Save For Later"
+        static let text = "xxxxxx xxxxxx and 658 others liked your post Bookmark Posts with Save For Later"
         static let approveAction = ApproveCommentAction(on: true, command: ApproveComment(on: true))
         static let trashAction = TrashCommentAction(on: true, command: TrashComment(on: true))
     }
@@ -59,7 +59,7 @@ final class NotificationTextContentTests: XCTestCase {
 
         let parent = subject?.parent
 
-        XCTAssertEqual(parent?.uniqueID, injectedParent.uniqueID)
+        XCTAssertEqual(parent?.notificationId, injectedParent.notificationId)
     }
 
     func testApproveCommentActionIsOn() {
