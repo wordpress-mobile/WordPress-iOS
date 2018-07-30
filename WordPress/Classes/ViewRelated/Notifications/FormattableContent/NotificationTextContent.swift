@@ -51,6 +51,8 @@ extension FormattableMediaContent where Self: FormattableContent {
 class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
     var textOverride: String?
     let media: [FormattableMediaItem]
+    let parent: Notification
+    let meta: [String: AnyObject]?
 
     override var text: String? {
         return textOverride ?? super.text
@@ -63,11 +65,15 @@ class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
         return super.kind
     }
 
-    required init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], ranges: [FormattableContentRange], parent note: FormattableContentParent) {
+    init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], ranges: [FormattableContentRange], parent note: Notification) {
         let rawMedia = dictionary[Constants.BlockKeys.Media] as? [[String: AnyObject]]
-        media = FormattableMediaItem.mediaFromArray(rawMedia)
+        let text = dictionary[Constants.BlockKeys.Text] as? String ?? ""
 
-        super.init(dictionary: dictionary, actions: commandActions, ranges: ranges, parent: note)
+        meta = dictionary[Constants.BlockKeys.Meta] as? [String: AnyObject]
+        media = FormattableMediaItem.mediaFromArray(rawMedia)
+        parent = note
+
+        super.init(text: text, ranges: ranges, actions: commandActions)
     }
 
     func formattableContentRangeWithCommentId(_ commentID: NSNumber) -> NotificationContentRange? {
@@ -84,5 +90,7 @@ class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
 private enum Constants {
     fileprivate enum BlockKeys {
         static let Media = "media"
+        static let Text = "text"
+        static let Meta = "meta"
     }
 }

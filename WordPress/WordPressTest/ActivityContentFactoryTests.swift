@@ -5,7 +5,7 @@ final class ActivityContentFactoryTests: XCTestCase {
     private let contextManager = TestContextManager()
 
     func testActivityContentFactoryReturnsExpectedImplementationOfFormattableContent() {
-        let subject = ActivityContentFactory.content(from: [mockBlock()], actionsParser: ActivityActionsParser(), parent: mockParent()).first as? FormattableTextContent
+        let subject = ActivityContentFactory.content(from: [mockBlock()], actionsParser: ActivityActionsParser()).first as? FormattableTextContent
 
         XCTAssertNotNil(subject)
     }
@@ -16,9 +16,5 @@ final class ActivityContentFactoryTests: XCTestCase {
 
     private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
         return contextManager.object(withContentOfFile: fileName) as! [String: AnyObject]
-    }
-
-    func mockParent() -> FormattableContentParent {
-        return MockActivityParent()
     }
 }

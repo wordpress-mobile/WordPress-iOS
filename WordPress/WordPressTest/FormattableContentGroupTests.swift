@@ -55,7 +55,8 @@ final class FormattableContentGroupTests: XCTestCase {
     }
 
     private func mockContent() -> FormattableTextContent {
-        return FormattableTextContent(dictionary: mockActivity(), actions: [], ranges: [], parent: mockParent())
+        let text = mockActivity()["text"] as? String ?? ""
+        return FormattableTextContent(text: text, ranges: [], actions: [])
     }
 
     private func mockActivity() -> [String: AnyObject] {
@@ -64,9 +65,5 @@ final class FormattableContentGroupTests: XCTestCase {
 
     private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
         return contextManager.object(withContentOfFile: fileName) as! [String: AnyObject]
-    }
-
-    func mockParent() -> FormattableContentParent {
-        return MockActivityParent()
     }
 }
