@@ -40,9 +40,10 @@ msgstr ""
 
 msgctxt "v10.6-whats-new"
 msgid ""
-"Editor: more updates for Gutenberg compatibility.\n"
-"Several improvements to the UI.\n"
-"A bunch of small bug fixes.\n"
+"You can now jump from WordPress.com in Safari to the same content in the WordPress for iOS app with easy. Just look out for the banner at the top of WordPress.com pages!.\n"
+"Activity Log that are now available for free WordPress.com sites.\n"
+"Some small UI improvements.\n"
+"A bunch of bug fixes.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
