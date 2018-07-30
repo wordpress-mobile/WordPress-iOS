@@ -43,4 +43,15 @@ class NotificationUtility {
     func loadPingbackNotification() -> WordPress.Notification {
         return contextManager.loadEntityNamed(entityName, withContentsOfFile: "notifications-pingback.json") as! WordPress.Notification
     }
+
+    func mockCommentContent() -> FormattableCommentContent {
+        let dictionary = contextManager.object(withContentOfFile: "notifications-replied-comment.json") as! [String: AnyObject]
+        let body = dictionary["body"]
+        let blocks = NotificationContentFactory.content(from: body as! [[String : AnyObject]], actionsParser: NotificationActionParser(), parent: WordPress.Notification(context: contextManager.mainContext))
+        return blocks.filter{ $0.kind == .comment }.first! as! FormattableCommentContent
+    }
+
+    func mockCommentContext() -> ActionContext<FormattableCommentContent> {
+        return ActionContext(block: mockCommentContent())
+    }
 }
