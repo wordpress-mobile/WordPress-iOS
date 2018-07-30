@@ -91,11 +91,7 @@ target 'WordPress' do
 
         pod 'WordPress-Aztec-iOS', '1.0.0-beta.23'
         pod 'WordPress-Editor-iOS', '1.0.0-beta.23'
-<<<<<<< HEAD
-        pod 'WordPressUI', '1.0.4'
-=======
         pod 'WordPressUI', '1.0.6'
->>>>>>> release/10.5
         pod 'Gridicons', '0.16'
     end
 
@@ -111,11 +107,7 @@ target 'WordPress' do
 
         pod 'WordPress-Aztec-iOS', '1.0.0-beta.23'
         pod 'WordPress-Editor-iOS', '1.0.0-beta.23'
-<<<<<<< HEAD
-        pod 'WordPressUI', '1.0.4'
-=======
         pod 'WordPressUI', '1.0.6'
->>>>>>> release/10.5
         pod 'Gridicons', '0.16'
     end
 
