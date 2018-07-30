@@ -202,9 +202,10 @@ class PluginViewModel: Observable {
     }
 
     private func autoUpdatesRow(plugin: Plugin?, capabilities: SitePluginCapabilities?) -> ImmuTableRow? {
+        // Note: All plugins on atomic sites are autoupdated, so we do not want to show the switch
         guard let autoUpdatePlugin = plugin,
             let siteCapabilities = capabilities,
-            siteCapabilities.autoupdate && !autoUpdatePlugin.state.automanaged else { return nil }
+            !isAutomatedTransfer(site: site) && siteCapabilities.autoupdate && !autoUpdatePlugin.state.automanaged else { return nil }
 
         return SwitchRow(
             title: NSLocalizedString("Autoupdates", comment: "Whether a plugin has enabled automatic updates"),
@@ -424,6 +425,13 @@ class PluginViewModel: Observable {
         } else {
             ActionDispatcher.dispatch(PluginAction.disableAutoupdates(id: plugin.id, site: site))
         }
+    }
+
+    private func isAutomatedTransfer(site: JetpackSiteRef) -> Bool {
+        let context = ContextManager.sharedInstance().mainContext
+        let predicate = NSPredicate(format: "blogID = %i AND account.username = %@", site.siteID, site.username)
+        let blog = context.firstObject(ofType: Blog.self, matching: predicate)
+        return blog?.isAutomatedTransfer() ?? false
     }
 
     private func getSiteTitle() -> String? {
