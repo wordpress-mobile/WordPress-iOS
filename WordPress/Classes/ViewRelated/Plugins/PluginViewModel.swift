@@ -579,3 +579,11 @@ private extension String {
         static let title = NSLocalizedString("Loading Plugin...", comment: "Text displayed while loading an specific plugin")
     }
 }
+
+extension PluginViewModel {
+    func reloadPlugin() {
+        state = .loading
+        let store = StoreContainer.shared.plugin
+        store.processQueries()
+    }
+}
