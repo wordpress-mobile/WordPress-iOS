@@ -1,31 +1,15 @@
 import XCTest
 @testable import WordPress
 
-class MockActivityParent: FormattableContentParent {
-    var metaCommentID: NSNumber? = nil
-    var uniqueID: String? = nil
-    var kind: ParentKind = .Unknown
-    var metaReplyID: NSNumber? = nil
-    var isPingback: Bool = false
-
-    func didChangeOverrides() {
-    }
-
-    func isEqual(to other: FormattableContentParent) -> Bool {
-        return false
-    }
-}
-
 final class ActivityLogFormattableContentTests: XCTestCase {
 
     let testData = ActivityLogTestData()
-    let parent = MockActivityParent()
     let actionsParser = ActivityActionsParser()
 
     func testPingbackContentIsParsedCorrectly() {
         let dictionary = testData.getPingbackDictionary()
 
-        let pingbackContent = ActivityContentFactory.content(from: [dictionary], actionsParser: actionsParser, parent: parent)
+        let pingbackContent = ActivityContentFactory.content(from: [dictionary], actionsParser: actionsParser)
 
         XCTAssertEqual(pingbackContent.count, 1)
 
@@ -39,7 +23,7 @@ final class ActivityLogFormattableContentTests: XCTestCase {
 
     func testPostContentIsParsedCorrectly() {
         let dictionary = testData.getPostContentDictionary()
-        let postContent = ActivityContentFactory.content(from: [dictionary], actionsParser: actionsParser, parent: parent)
+        let postContent = ActivityContentFactory.content(from: [dictionary], actionsParser: actionsParser)
 
         XCTAssertEqual(postContent.count, 1)
 
@@ -52,7 +36,7 @@ final class ActivityLogFormattableContentTests: XCTestCase {
 
     func testCommentContentIsParsedCorrectly() {
         let dictionary = testData.getCommentContentDictionary()
-        let commentContent = ActivityContentFactory.content(from: [dictionary], actionsParser: actionsParser, parent: parent)
+        let commentContent = ActivityContentFactory.content(from: [dictionary], actionsParser: actionsParser)
 
         XCTAssertEqual(commentContent.count, 1)
 
@@ -66,7 +50,7 @@ final class ActivityLogFormattableContentTests: XCTestCase {
 
     func testThemeContentIsParsedCorrectly() {
         let dictionary = testData.getThemeContentDictionary()
-        let themeContent = ActivityContentFactory.content(from: [dictionary], actionsParser: actionsParser, parent: parent)
+        let themeContent = ActivityContentFactory.content(from: [dictionary], actionsParser: actionsParser)
 
         XCTAssertEqual(themeContent.count, 1)
 
@@ -79,7 +63,7 @@ final class ActivityLogFormattableContentTests: XCTestCase {
 
     func testSettingContentIsParsedCorrectly() {
         let dictionary = testData.getSettingsContentDictionary()
-        let settingsContent = ActivityContentFactory.content(from: [dictionary], actionsParser: actionsParser, parent: parent)
+        let settingsContent = ActivityContentFactory.content(from: [dictionary], actionsParser: actionsParser)
 
         XCTAssertEqual(settingsContent.count, 1)
 
@@ -93,7 +77,7 @@ final class ActivityLogFormattableContentTests: XCTestCase {
 
     func testSiteContentIsParsedCorreclty() {
         let dictionary = testData.getSiteContentDictionary()
-        let siteContent = ActivityContentFactory.content(from: [dictionary], actionsParser: actionsParser, parent: parent)
+        let siteContent = ActivityContentFactory.content(from: [dictionary], actionsParser: actionsParser)
 
         XCTAssertEqual(siteContent.count, 1)
 
@@ -106,7 +90,7 @@ final class ActivityLogFormattableContentTests: XCTestCase {
 
     func testPluginContentIsParsedCorreclty() {
         let dictionary = testData.getPluginContentDictionary()
-        let pluginContent = ActivityContentFactory.content(from: [dictionary], actionsParser: actionsParser, parent: parent)
+        let pluginContent = ActivityContentFactory.content(from: [dictionary], actionsParser: actionsParser)
 
         XCTAssertEqual(pluginContent.count, 1)
 
