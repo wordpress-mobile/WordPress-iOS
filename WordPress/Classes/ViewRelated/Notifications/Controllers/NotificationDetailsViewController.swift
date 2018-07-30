@@ -860,33 +860,6 @@ private extension NotificationDetailsViewController {
             tableView.deselectSelectedRowWithAnimation(true)
         }
     }
-
-
-
-    // MARK: - Displaying Ranges!
-
-    func displayResourceWithRange(_ range: NotificationRange?) throws {
-        guard let range = range else {
-            throw DisplayError.missingParameter
-        }
-
-        switch range.kind {
-        case .Site:
-            try coordinator.displayStreamWithSiteID(range.siteID)
-        case .Post:
-            try coordinator.displayReaderWithPostId(range.postID, siteID: range.siteID)
-        case .Comment:
-            try coordinator.displayCommentsWithPostId(range.postID, siteID: range.siteID)
-        case .Stats:
-            try coordinator.displayStatsWithSiteID(range.siteID)
-        case .Follow:
-            try coordinator.displayFollowersWithSiteID(range.siteID, expirationTime: Settings.expirationFiveMinutes)
-        case .User:
-            try coordinator.displayStreamWithSiteID(range.siteID)
-        default:
-            throw DisplayError.unsupportedType
-        }
-    }
 }
 
 
