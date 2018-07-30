@@ -12,7 +12,7 @@ import WordPressShared
     @objc var immutableHandler: ImmuTableViewHandler!
     @objc var delegate: SharingAccountSelectionDelegate?
 
-    lazy var noResultsViewController: NoResultsViewController = {
+    fileprivate lazy var noResultsViewController: NoResultsViewController = {
         let controller = NoResultsViewController.controller()
         controller.view.frame = view.frame
         addChildViewController(controller)
@@ -113,7 +113,7 @@ import WordPressShared
         var accounts = keyringAccountsFromKeyringConnections(keyringConnections)
 
         if accounts.count == 0 {
-            if publicizeService.externalUsersOnly && publicizeService.serviceID == PublicizeService.facebookServiceID {
+            if publicizeService.serviceID == PublicizeService.facebookServiceID {
                 showFacebookNotice()
             } else {
                 showNoResultsViewController()
