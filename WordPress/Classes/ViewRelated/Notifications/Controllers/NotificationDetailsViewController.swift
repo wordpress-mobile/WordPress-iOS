@@ -926,7 +926,7 @@ private extension NotificationDetailsViewController {
             // Workaround: Performing the reload call, multiple times, without the .BeginFromCurrentState might
             // lead to a state in which the cell remains not visible.
             //
-            UIView.animate(withDuration: Media.duration, delay: Media.delay, options: Media.options, animations: { [weak self] in
+            UIView.animate(withDuration: ContentMedia.duration, delay: ContentMedia.delay, options: ContentMedia.options, animations: { [weak self] in
                 self?.tableView.reloadRows(at: [indexPath], with: .fade)
                 }, completion: nil)
         }
@@ -1082,114 +1082,6 @@ private extension NotificationDetailsViewController {
     }
 }
 
-// MARK: - OLD Action Handlers
-//
-private extension NotificationDetailsViewController {
-    func followSiteWithBlock(_ block: NotificationBlock) {
-        UINotificationFeedbackGenerator().notificationOccurred(.success)
-
-        actionsService.followSiteWithBlock(block)
-        WPAppAnalytics.track(.notificationsSiteFollowAction, withBlogID: block.metaSiteID)
-    }
-
-    func unfollowSiteWithBlock(_ block: NotificationBlock) {
-        actionsService.unfollowSiteWithBlock(block)
-        WPAppAnalytics.track(.notificationsSiteUnfollowAction, withBlogID: block.metaSiteID)
-    }
-
-    func likeCommentWithBlock(_ block: NotificationBlock) {
-        actionsService.likeCommentWithBlock(block)
-        WPAppAnalytics.track(.notificationsCommentLiked, withBlogID: block.metaSiteID)
-    }
-
-    func unlikeCommentWithBlock(_ block: NotificationBlock) {
-        actionsService.unlikeCommentWithBlock(block)
-        WPAppAnalytics.track(.notificationsCommentUnliked, withBlogID: block.metaSiteID)
-    }
-
-    func approveCommentWithBlock(_ block: NotificationBlock) {
-        actionsService.approveCommentWithBlock(block)
-        WPAppAnalytics.track(.notificationsCommentApproved, withBlogID: block.metaSiteID)
-    }
-
-    func unapproveCommentWithBlock(_ block: NotificationBlock) {
-        actionsService.unapproveCommentWithBlock(block)
-        WPAppAnalytics.track(.notificationsCommentUnapproved, withBlogID: block.metaSiteID)
-    }
-
-    func spamCommentWithBlock(_ block: NotificationBlock) {
-        precondition(onDeletionRequestCallback != nil)
-
-        let request = NotificationDeletionRequest(kind: .spamming, action: { onCompletion in
-            let mainContext = ContextManager.sharedInstance().mainContext
-            let service = NotificationActionsService(managedObjectContext: mainContext)
-            service.spamCommentWithBlock(block) { (success) in
-                onCompletion(success)
-            }
-
-            WPAppAnalytics.track(.notificationsCommentFlaggedAsSpam, withBlogID: block.metaSiteID)
-        })
-
-        onDeletionRequestCallback?(request)
-
-        // We're thru
-        _ = navigationController?.popToRootViewController(animated: true)
-    }
-
-    func trashCommentWithBlock(_ block: NotificationBlock) {
-        precondition(onDeletionRequestCallback != nil)
-
-        // Hit the DeletionRequest Callback
-        let request = NotificationDeletionRequest(kind: .deletion, action: { onCompletion in
-            let mainContext = ContextManager.sharedInstance().mainContext
-            let service = NotificationActionsService(managedObjectContext: mainContext)
-            service.deleteCommentWithBlock(block) { (success) in
-                onCompletion(success)
-            }
-
-            WPAppAnalytics.track(.notificationsCommentTrashed, withBlogID: block.metaSiteID)
-        })
-
-        onDeletionRequestCallback?(request)
-
-        // We're thru
-        _ = navigationController?.popToRootViewController(animated: true)
-    }
-
-    func replyCommentWithBlock(_ block: NotificationBlock, content: String) {
-        let generator = UINotificationFeedbackGenerator()
-        generator.prepare()
-        generator.notificationOccurred(.success)
-
-        actionsService.replyCommentWithBlock(block, content: content, completion: { success in
-            guard success else {
-                generator.notificationOccurred(.error)
-                self.displayReplyErrorWithBlock(block, content: content)
-                return
-            }
-
-            let message = NSLocalizedString("Reply Sent!", comment: "The app successfully sent a comment")
-            SVProgressHUD.showDismissibleSuccess(withStatus: message)
-        })
-    }
-
-    func updateCommentWithBlock(_ block: NotificationBlock, content: String) {
-        let generator = UINotificationFeedbackGenerator()
-        generator.prepare()
-        generator.notificationOccurred(.success)
-
-        actionsService.updateCommentWithBlock(block, content: content, completion: { success in
-            guard success == false else {
-                return
-            }
-
-            generator.notificationOccurred(.error)
-            self.displayCommentUpdateErrorWithBlock(block, content: content)
-        })
-    }
-}
-
-
 // MARK: - Replying Comments
 //
 private extension NotificationDetailsViewController {
@@ -1197,27 +1089,7 @@ private extension NotificationDetailsViewController {
         let _ = replyTextView.becomeFirstResponder()
     }
 
-    func focusOnReplyTextViewWithBlock(_ block: NotificationBlock) {
-        let _ = replyTextView.becomeFirstResponder()
-    }
-
     func displayReplyError(with block: FormattableCommentContent, content: String) {
-        let message     = NSLocalizedString("There has been an unexpected error while sending your reply",
-                                            comment: "Reply Failure Message")
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancels an Action")
-        let retryTitle  = NSLocalizedString("Try Again", comment: "Retries sending a reply")
-
-        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(cancelTitle)
-        alertController.addDefaultActionWithTitle(retryTitle) { action in
-            self.replyCommentWithBlock(block, content: content)
-        }
-
-        // Note: This viewController might not be visible anymore
-        alertController.presentFromRootViewController()
-    }
-
-    func displayReplyErrorWithBlock(_ block: NotificationBlock, content: String) {
         let message     = NSLocalizedString("There has been an unexpected error while sending your reply",
                                             comment: "Reply Failure Message")
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancels an Action")
@@ -1240,15 +1112,11 @@ private extension NotificationDetailsViewController {
 //
 private extension NotificationDetailsViewController {
 
-    func updateComment(with object: ActionableObject, content: String) {
-        if let block = object as? NotificationBlock {
-            self.updateCommentWithBlock(block, content: content)
-        } else if let block = object as? FormattableCommentContent {
-            self.updateCommentWithBlock(block, content: content)
-        }
+    func updateComment(with commentContent: FormattableCommentContent, content: String) {
+            self.updateCommentWithBlock(commentContent, content: content)
     }
 
-    func displayCommentEditorWithBlock(_ block: ActionableObject) {
+    func displayCommentEditorWithBlock(_ block: FormattableCommentContent) {
         let editViewController = EditCommentViewController.newEdit()
         editViewController?.content = block.text
         editViewController?.onCompletion = { (hasNewContent, newContent) in
@@ -1269,7 +1137,7 @@ private extension NotificationDetailsViewController {
         present(navController, animated: true, completion: nil)
     }
 
-    func displayCommentUpdateErrorWithBlock(_ block: ActionableObject, content: String) {
+    func displayCommentUpdateErrorWithBlock(_ block: FormattableCommentContent, content: String) {
         let message     = NSLocalizedString("There has been an unexpected error while updating your comment",
                                             comment: "Displayed whenever a Comment Update Fails")
         let cancelTitle = NSLocalizedString("Give Up", comment: "Cancel")
@@ -1377,13 +1245,6 @@ private extension NotificationDetailsViewController {
         case missingParameter
         case unsupportedFeature
         case unsupportedType
-    }
-
-    enum Media {
-        static let richBlockTypes           = Set(arrayLiteral: NotificationBlock.Kind.text, NotificationBlock.Kind.comment)
-        static let duration                 = TimeInterval(0.25)
-        static let delay                    = TimeInterval(0)
-        static let options: UIViewAnimationOptions = [.overrideInheritedDuration, .beginFromCurrentState]
     }
 
     enum ContentMedia {
