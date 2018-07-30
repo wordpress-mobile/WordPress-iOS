@@ -128,18 +128,11 @@ class Notification: NSManagedObject {
     func resetCachedAttributes() {
         cachedTimestampAsDate = nil
 
-        if FeatureFlag.extractNotifications.enabled {
-            formatter.resetCache()
-            cachedBodyContentGroups = nil
-            cachedHeaderContentGroup = nil
-            cachedSubjectContentGroup = nil
-            cachedHeaderAndBodyContentGroup = nil
-        } else {
-            cachedSubjectBlockGroup = nil
-            cachedHeaderBlockGroup = nil
-            cachedBodyBlockGroups = nil
-            cachedHeaderAndBodyBlockGroups = nil
-        }
+        formatter.resetCache()
+        cachedBodyContentGroups = nil
+        cachedHeaderContentGroup = nil
+        cachedSubjectContentGroup = nil
+        cachedHeaderAndBodyContentGroup = nil
     }
 
     // This is a NO-OP that will force NSFetchedResultsController to reload the row for this object.
@@ -214,48 +207,29 @@ extension Notification {
     /// Verifies if the current notification is a Pingback.
     ///
     var isPingback: Bool {
-        if FeatureFlag.extractNotifications.enabled {
-            guard subjectContentGroup?.blocks.count == 1 else {
-                return false
-            }
-            guard let ranges = subjectContentGroup?.blocks.first?.ranges, ranges.count == 2 else {
-                return false
-            }
-            return ranges.first?.kind == .site && ranges.last?.kind == .post
-        } else {
-            guard let subjectRanges = subjectBlock?.ranges, subjectRanges.count == 2 else {
-                return false
-            }
-
-            return subjectRanges.first?.kind == .Site && subjectRanges.last?.kind == .Post
+        guard subjectContentGroup?.blocks.count == 1 else {
+            return false
         }
+        guard let ranges = subjectContentGroup?.blocks.first?.ranges, ranges.count == 2 else {
+            return false
+        }
+        return ranges.first?.kind == .site && ranges.last?.kind == .post
     }
 
     /// Verifies if the current notification is actually a Badge one.
     /// Note: Sorry about the following snippet. I'm (and will always be) against Duck Typing.
     ///
     @objc var isBadge: Bool {
-        if FeatureFlag.extractNotifications.enabled {
-            let blocks = bodyContentGroups.flatMap { $0.blocks }
-            for block in blocks where block is FormattableMediaContent {
-                guard let mediaBlock = block as? FormattableMediaContent else {
-                    continue
-                }
-                for media in mediaBlock.media where media.kind == .badge {
-                    return true
-                }
+        let blocks = bodyContentGroups.flatMap { $0.blocks }
+        for block in blocks where block is FormattableMediaContent {
+            guard let mediaBlock = block as? FormattableMediaContent else {
+                continue
             }
-            return false
-        } else {
-            let blocks = bodyBlockGroups.flatMap { $0.blocks }
-            for block in blocks {
-                for media in block.media where media.kind == .Badge {
-                    return true
-                }
+            for media in mediaBlock.media where media.kind == .badge {
+                return true
             }
-
-            return false
         }
+        return false
     }
 
     /// Verifies if the current notification is a Comment-Y note, and if it has been replied to.
@@ -267,20 +241,11 @@ extension Notification {
     //// Check if this note is a comment and in 'Unapproved' status
     ///
     @objc var isUnapprovedComment: Bool {
-        if FeatureFlag.extractNotifications.enabled {
-            guard let block: FormattableCommentContent = contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
-                return false
-            }
-            let commandId = ApproveCommentAction.actionIdentifier()
-            return block.isActionEnabled(id: commandId) && !block.isActionOn(id: commandId)
-        } else {
-            guard let block = blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
-                return false
-            }
-
-            return block.isActionEnabled(.Approve) && !block.isActionOn(.Approve)
+        guard let block: FormattableCommentContent = contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
+            return false
         }
-
+        let commandId = ApproveCommentAction.actionIdentifier()
+        return block.isActionEnabled(id: commandId) && !block.isActionOn(id: commandId)
     }
 
     var kind: Kind {

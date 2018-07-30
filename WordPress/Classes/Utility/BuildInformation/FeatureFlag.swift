@@ -5,7 +5,6 @@ enum FeatureFlag: Int {
     case exampleFeature
     case jetpackDisconnect
     case saveForLater
-    case extractNotifications
     case quickStart
 
     /// Returns a boolean indicating if the feature is enabled
@@ -17,8 +16,6 @@ enum FeatureFlag: Int {
             return BuildConfiguration.current == .localDeveloper
         case .saveForLater:
             return true
-        case .extractNotifications:
-            return BuildConfiguration.current == .localDeveloper
         case .quickStart:
             return BuildConfiguration.current == .localDeveloper
         }
