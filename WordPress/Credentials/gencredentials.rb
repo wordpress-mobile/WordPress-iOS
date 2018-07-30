@@ -89,7 +89,15 @@ print <<-EOF
 EOF
 end
 
-def print_google_login(client_id)
+def print_google_login_scheme(scheme_id)
+print <<-EOF
++ (NSString *)googleLoginSchemeId {
+    return @"#{scheme_id}";
+}
+EOF
+end
+
+def print_google_login_client(client_id)
 print <<-EOF
 + (NSString *)googleLoginClientId {
     return @"#{client_id}";
@@ -129,7 +137,7 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
+def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
   print <<-EOF
 #import "ApiCredentials.h"
 @implementation ApiCredentials
@@ -140,7 +148,8 @@ EOF
   print_crashlytics(crashlytics)
   print_hockeyapp(hockeyapp)
   print_googleplus(googleplus)
-  print_google_login(google_id)
+  print_google_login_client(google_client)
+  print_google_login_scheme(google_scheme)
   print_google_login_server(google_login_server)
   print_debugging_key(debugging_key)
   print_zendesk_app_id(zendesk_app_id)
@@ -167,7 +176,8 @@ pocket = nil
 crashlytics = nil
 hockeyapp = nil
 googleplus = nil
-google_id = nil
+google_client = nil
+google_scheme = nil
 google_login_server = nil
 debugging_key = nil
 zendesk_app_id = nil
@@ -191,7 +201,9 @@ File.open(path) do |f|
     elsif k == "GOOGLE_PLUS_CLIENT_ID"
       googleplus = value
     elsif k == "GOOGLE_LOGIN_CLIENT_ID"
-      google_id = value
+      google_client = value
+    elsif k == "GOOGLE_LOGIN_SCHEME_ID"
+      google_scheme = value
     elsif k == "GOOGLE_LOGIN_SERVER_ID"
       google_login_server = value
     elsif k == "DEBUGGING_KEY"
@@ -231,8 +243,12 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
     $stderr.puts "warning: Google Plus API key not found"
   end
 
-  if google_id.nil?
+  if google_client.nil?
     $stderr.puts "warning: Google Login Client ID not found"
+  end
+
+  if google_scheme.nil?
+    $stderr.puts "warning: Google Scheme not found"
   end
 
   if configuration == "Release-Internal"
@@ -246,4 +262,4 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   end
 end
 
-print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_id, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
+print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
