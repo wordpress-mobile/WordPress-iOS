@@ -60,11 +60,14 @@ class PluginViewModel: Observable {
     let changeDispatcher = Dispatcher<Void>()
     let queryReceipt: Receipt?
 
+    private let store: PluginStore
+
     init(plugin: Plugin, capabilities: SitePluginCapabilities, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         self.state = .plugin(plugin)
         self.capabilities = capabilities
         self.site = site
         self.isInstallingPlugin = false
+        self.store = store
 
         queryReceipt = nil
         storeReceipt = store.onChange { [weak self] in
@@ -98,27 +101,28 @@ class PluginViewModel: Observable {
     }
 
     private init(with slug: String, state: State, site: JetpackSiteRef, store: PluginStore) {
+        self.store = store
         self.state = state
-        self.capabilities = store.getPlugins(site: site)?.capabilities
+        self.capabilities = self.store.getPlugins(site: site)?.capabilities
         self.site = site
         self.isInstallingPlugin = false
 
-        queryReceipt = store.query(.directoryEntry(slug: slug))
+        queryReceipt = self.store.query(.directoryEntry(slug: slug))
 
-        storeReceipt = store.onChange { [weak self] in
-            guard let entry = store.getPluginDirectoryEntry(slug: slug) else {
+        storeReceipt = self.store.onChange { [weak self] in
+            guard let entry = self?.store.getPluginDirectoryEntry(slug: slug) else {
                 self?.state = .error
                 return
             }
 
-            if let plugin = store.getPlugin(slug: entry.slug, site: site) {
+            if let plugin = self?.store.getPlugin(slug: entry.slug, site: site) {
                 self?.state = .plugin(plugin)
             } else {
                 self?.state = .directoryEntry(entry)
             }
 
-            self?.capabilities = store.getPlugins(site: site)?.capabilities
-            self?.isInstallingPlugin = store.isInstallingPlugin(site: site, slug: slug)
+            self?.capabilities = self?.store.getPlugins(site: site)?.capabilities
+            self?.isInstallingPlugin = self?.store.isInstallingPlugin(site: site, slug: slug) ?? false
         }
     }
 
@@ -581,9 +585,10 @@ private extension String {
 }
 
 extension PluginViewModel {
-    func reloadPlugin() {
-        state = .loading
-        let store = StoreContainer.shared.plugin
-        store.processQueries()
+    func networkStatusDidChange(active: Bool) {
+        if active {
+            state = .loading
+            store.processQueries()
+        }
     }
 }
