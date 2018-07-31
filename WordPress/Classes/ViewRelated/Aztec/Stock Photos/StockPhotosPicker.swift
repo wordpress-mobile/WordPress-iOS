@@ -24,7 +24,7 @@ final class StockPhotosPicker: NSObject {
     private var blog: Blog?
     private var observerToken: NSObjectProtocol?
 
-    private let searchHint = StockPhotosPlaceholder()
+    private let searchHint = NoResultsViewController.controller()
 
     private var pickerOptions: WPMediaPickerOptions = {
         let options = WPMediaPickerOptions()
@@ -46,6 +46,7 @@ final class StockPhotosPicker: NSObject {
     }()
 
     func presentPicker(origin: UIViewController, blog: Blog) {
+        searchHint.configureAsIntro()
         self.blog = blog
 
         origin.present(picker, animated: true) {
@@ -73,6 +74,7 @@ final class StockPhotosPicker: NSObject {
     }
 
     private func updateHintView() {
+        searchHint.removeFromView()
         if shouldShowNoResults() {
             searchHint.configureAsNoSearchResults(for: dataSource.searchQuery)
         } else {
@@ -99,7 +101,7 @@ extension StockPhotosPicker: WPMediaPickerViewControllerDelegate {
         hideKeyboard(from: picker.searchBar)
     }
 
-    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
+    func emptyViewController(forMediaPickerController picker: WPMediaPickerViewController) -> UIViewController? {
         return searchHint
     }
 
