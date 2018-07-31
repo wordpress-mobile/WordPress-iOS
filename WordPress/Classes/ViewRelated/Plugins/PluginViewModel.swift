@@ -478,15 +478,13 @@ class PluginViewModel: Observable {
     }
 
     private func isAutomatedTransfer(site: JetpackSiteRef) -> Bool {
-        let context = ContextManager.sharedInstance().mainContext
-        let predicate = NSPredicate(format: "blogID = %i AND account.username = %@", site.siteID, site.username)
-        let blog = context.firstObject(ofType: Blog.self, matching: predicate)
+        let service = BlogService.withMainContext()
+        let blog = service.blog(byBlogId: site.siteID as NSNumber, andUsername: site.username)
         return blog?.isAutomatedTransfer() ?? false
     }
 
     private func getSiteTitle() -> String? {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = BlogService(managedObjectContext: context)
+        let service = BlogService.withMainContext()
         let blog = service.blog(byBlogId: site.siteID as NSNumber)
         return blog?.settings?.name?.nonEmptyString()
     }
