@@ -5,6 +5,8 @@ class PluginViewModel: Observable {
     private enum State {
         case plugin(Plugin)
         case directoryEntry(PluginDirectoryEntry)
+        case loading
+        case error
     }
 
     private var state: State {
@@ -41,6 +43,15 @@ class PluginViewModel: Observable {
         return nil
     }
 
+    private let noResultsLoadingModel = NoResultsViewController.Model(title: String.Loading.title)
+
+    private let noResultsUnknownErrorModel = NoResultsViewController.Model(title: String.UnknownError.title,
+                                                                           subtitle: String.UnknownError.description,
+                                                                           buttonText: String.UnknownError.buttonTitle)
+
+    private let noResultsConnectivityErrorModel = NoResultsViewController.Model(title: String.NoConnectionError.title,
+                                                                                subtitle: String.NoConnectionError.description)
+
 
     let site: JetpackSiteRef
     var capabilities: SitePluginCapabilities?
@@ -66,21 +77,37 @@ class PluginViewModel: Observable {
         }
     }
 
-    init(directoryEntry: PluginDirectoryEntry, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
+    convenience init(directoryEntry: PluginDirectoryEntry, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
+        let state: State
         if let plugin = store.getPlugin(slug: directoryEntry.slug, site: site) {
-            self.state = .plugin(plugin)
+            state = .plugin(plugin)
         } else {
-            self.state = .directoryEntry(directoryEntry)
+            state = .directoryEntry(directoryEntry)
         }
+        self.init(with: directoryEntry.slug, state: state, site: site, store: store)
+    }
+
+    convenience init(slug: String, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
+        let state: State
+        if let plugin = store.getPlugin(slug: slug, site: site) {
+            state = .plugin(plugin)
+        } else {
+            state = .loading
+        }
+        self.init(with: slug, state: state, site: site, store: store)
+    }
+
+    private init(with slug: String, state: State, site: JetpackSiteRef, store: PluginStore) {
+        self.state = state
         self.capabilities = store.getPlugins(site: site)?.capabilities
         self.site = site
         self.isInstallingPlugin = false
 
-        queryReceipt = store.query(.directoryEntry(slug: directoryEntry.slug))
+        queryReceipt = store.query(.directoryEntry(slug: slug))
 
         storeReceipt = store.onChange { [weak self] in
-            guard let entry = store.getPluginDirectoryEntry(slug: directoryEntry.slug) else {
-                self?.dismiss?()
+            guard let entry = store.getPluginDirectoryEntry(slug: slug) else {
+                self?.state = .error
                 return
             }
 
@@ -91,7 +118,7 @@ class PluginViewModel: Observable {
             }
 
             self?.capabilities = store.getPlugins(site: site)?.capabilities
-            self?.isInstallingPlugin = store.isInstallingPlugin(site: site, slug: directoryEntry.slug)
+            self?.isInstallingPlugin = store.isInstallingPlugin(site: site, slug: slug)
         }
     }
 
@@ -175,6 +202,27 @@ class PluginViewModel: Observable {
         }
 
         return versionRow
+    }
+
+    func noResultsViewModel() -> NoResultsViewController.Model? {
+        switch state {
+        case .loading:
+            return noResultsLoadingModel
+        case .error:
+            return getNoResultsErrorModel()
+        default:
+            return nil
+        }
+    }
+
+    private func getNoResultsErrorModel() -> NoResultsViewController.Model {
+        let appDelegate = WordPressAppDelegate.sharedInstance()
+        let hasConnection = appDelegate?.connectionAvailable ?? true //defaults to unknown error.
+        if hasConnection {
+            return noResultsUnknownErrorModel
+        } else {
+            return noResultsConnectivityErrorModel
+        }
     }
 
     private func headerRow(directoryEntry: PluginDirectoryEntry?) -> ImmuTableRow? {
@@ -520,5 +568,22 @@ class PluginViewModel: Observable {
 
     static var immutableRows: [ImmuTableRow.Type] {
         return [SwitchRow.self, DestructiveButtonRow.self, NavigationItemRow.self, TextRow.self, TextWithButtonRow.self, PluginHeaderRow.self, LinkRow.self, ExpandableRow.self]
+    }
+}
+
+private extension String {
+    enum UnknownError {
+        static let title = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading the plugin")
+        static let description = NSLocalizedString("There was an error loading this plugin", comment: "Text displayed when there is a failure loading the plugin")
+        static let buttonTitle = NSLocalizedString("Contact support", comment: "Button label for contacting support")
+    }
+
+    enum NoConnectionError {
+        static let title = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
+        static let description = NSLocalizedString("An active internet connection is required to view plugins", comment: "Error message when the user tries to visualize a plugin without internet connection")
+    }
+
+    enum Loading {
+        static let title = NSLocalizedString("Loading Plugin...", comment: "Text displayed while loading an specific plugin")
     }
 }
