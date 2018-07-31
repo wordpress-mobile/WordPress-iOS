@@ -1,5 +1,5 @@
 
-struct ActivityRangesFactory: ContentRangeFactory {
+struct ActivityRangesFactory: FormattableRangesFactory {
     static func contentRange(from dictionary: [String: AnyObject]) -> FormattableContentRange? {
         guard let range = rangeFrom(dictionary) else {
             return nil
