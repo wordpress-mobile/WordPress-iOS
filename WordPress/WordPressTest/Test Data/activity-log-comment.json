@@ -1,0 +1,66 @@
+{
+    "summary": "Comment approved",
+    "content": {
+        "text": "Comment by aaaaaaaaaa on Hola Lima! 🇵🇪: Great post! True talent!",
+        "ranges": [
+                   {
+                   "type": "comment",
+                   "indices": [
+                               0,
+                               7
+                               ],
+                   "url": "https://etoledom.wordpress.com/2018/06/02/hola-lima/comment-page-1/#comment-7",
+                   "site_id": 137726971,
+                   "post_id": 441,
+                   "id": 7
+                   },
+                   {
+                   "type": "post",
+                   "indices": [
+                               25,
+                               40
+                               ],
+                   "url": "Array",
+                   "site_id": 137726971,
+                   "id": 441
+                   }
+                   ]
+    },
+    "name": "comment__approved",
+    "actor": {
+        "type": "Person",
+        "name": "etoledom",
+        "external_user_id": 0,
+        "wpcom_user_id": 129935412,
+        "icon": {
+            "type": "Image",
+            "url": "https://secure.gravatar.com/avatar/8e06b8f61330e7bc0e5eb4e67aa68e0f?s=96&d=identicon&r=g",
+            "width": 96,
+            "height": 96
+        },
+        "role": "administrator"
+    },
+    "type": "Accept",
+    "published": "2018-06-29T20:38:55.277+00:00",
+    "generator": {
+        "jetpack_version": 0,
+        "blog_id": 137726971
+    },
+    "is_rewindable": false,
+    "rewind_id": "1530304735.2771",
+    "gridicon": "comment",
+    "status": null,
+    "activity_id": "AWRNRTAUjEqjFGbx8DZj",
+    "object": {
+        "type": "Comment",
+        "object_id": 7
+    },
+    "target": {
+        "type": "Article",
+        "name": "Hola Lima! 🇵🇪",
+        "post_id": 229,
+        "post_type": "post",
+        "post_status": "publish"
+    },
+    "is_discarded": false
+}

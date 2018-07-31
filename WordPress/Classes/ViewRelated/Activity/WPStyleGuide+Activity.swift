@@ -10,6 +10,20 @@ extension WPStyleGuide {
 
         // MARK: - Public Properties
 
+        public static let linkColor = WPStyleGuide.baseLighterBlue()
+
+        public static var contentRegularStyle: [NSAttributedStringKey: Any] {
+            return  [.paragraphStyle: contentParagraph,
+                     .font: contentRegularFont,
+                     .foregroundColor: contentTextColor ]
+        }
+
+        public static var contentItalicStyle: [NSAttributedStringKey: Any] {
+            return  [.paragraphStyle: contentParagraph,
+                     .font: contentItalicFont,
+                     .foregroundColor: contentTextColor ]
+        }
+
         public static func gravatarPlaceholderImage() -> UIImage {
             return gravatar
         }
@@ -69,6 +83,37 @@ extension WPStyleGuide {
         }
 
         // MARK: - Private Properties
+
+        private static let contentTextColor = WPStyleGuide.littleEddieGrey()
+
+        private static var minimumLineHeight: CGFloat {
+            return contentFontSize * 1.3
+        }
+
+        private static let contentParagraph = NSMutableParagraphStyle(
+            minLineHeight: minimumLineHeight, lineBreakMode: .byWordWrapping, alignment: .natural
+        )
+
+        private static var contentFontSize: CGFloat {
+            return  UIFont.preferredFont(forTextStyle: .body).pointSize
+        }
+
+        private static var contentRegularFont: UIFont {
+            if #available(iOS 11.0, *) {
+                return WPStyleGuide.fontForTextStyle(.body)
+
+            } else {
+                return WPFontManager.systemRegularFont(ofSize: contentFontSize)
+            }
+        }
+
+        private static var contentItalicFont: UIFont {
+            if #available(iOS 11.0, *) {
+                return  WPStyleGuide.fontForTextStyle(.body, symbolicTraits: .traitItalic)
+            } else {
+                return WPFontManager.systemItalicFont(ofSize: contentFontSize)
+            }
+        }
 
         fileprivate static let gravatar = UIImage(named: "gravatar")!
 
