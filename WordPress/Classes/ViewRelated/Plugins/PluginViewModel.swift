@@ -253,7 +253,9 @@ class PluginViewModel: Observable {
         // Note: All plugins on atomic sites are autoupdated, so we do not want to show the switch
         guard let autoUpdatePlugin = plugin,
             let siteCapabilities = capabilities,
-            !isAutomatedTransfer(site: site) && siteCapabilities.autoupdate && !autoUpdatePlugin.state.automanaged else { return nil }
+            !isAutomatedTransfer(site: site),
+            siteCapabilities.autoupdate,
+            !autoUpdatePlugin.state.automanaged else { return nil }
 
         return SwitchRow(
             title: NSLocalizedString("Autoupdates", comment: "Whether a plugin has enabled automatic updates"),
