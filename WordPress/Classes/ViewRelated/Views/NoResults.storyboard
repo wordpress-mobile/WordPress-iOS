@@ -30,7 +30,7 @@
                                             <constraint firstAttribute="width" secondItem="czl-5D-gem" secondAttribute="height" multiplier="1:1" id="OOu-9J-9cx"/>
                                         </constraints>
                                     </view>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mysites-nosites" translatesAutoresizingMaskIntoConstraints="NO" id="Fwm-rl-dKS" userLabel="Image View">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mysites-nosites" translatesAutoresizingMaskIntoConstraints="NO" id="Fwm-rl-dKS" userLabel="Image View">
                                         <rect key="frame" x="64.5" y="10" width="226" height="116"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="Fwm-rl-dKS" secondAttribute="height" multiplier="113:58" id="LtV-EW-4bR"/>
