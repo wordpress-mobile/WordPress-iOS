@@ -22,7 +22,7 @@ import WordPressAuthenticator
     @IBOutlet weak var noResultsView: UIView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var subtitleTextView: UITextView!
     @IBOutlet weak var actionButton: NUXButton!
     @IBOutlet weak var accessoryView: UIView!
 
@@ -153,16 +153,17 @@ private extension NoResultsViewController {
         titleLabel.text = titleText
 
         if let subtitleText = subtitleText {
-            subtitleLabel.text = subtitleText
+            subtitleTextView.text = subtitleText
+            subtitleTextView.isSelectable = false
         }
 
         if let attributedSubtitleText = attributedSubtitleText {
-            subtitleLabel.attributedText = applyMessageStyleTo(attributedString: attributedSubtitleText)
-            subtitleLabel.isUserInteractionEnabled = true
+            subtitleTextView.attributedText = applyMessageStyleTo(attributedString: attributedSubtitleText)
+            subtitleTextView.isSelectable = true
         }
 
         let showSubtitle = subtitleText != nil || attributedSubtitleText != nil
-        subtitleLabel.isHidden = !showSubtitle
+        subtitleTextView.isHidden = !showSubtitle
 
         if let buttonText = buttonText {
             actionButton?.setTitle(buttonText, for: UIControlState())
@@ -209,11 +210,11 @@ private extension NoResultsViewController {
 
     func applyMessageStyleTo(attributedString: NSAttributedString) -> NSAttributedString {
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = subtitleLabel.textAlignment
+        paragraphStyle.alignment = subtitleTextView.textAlignment
 
         let attributes: [NSAttributedStringKey: Any] = [
-            .font: subtitleLabel.font,
-            .foregroundColor: subtitleLabel.textColor,
+            .font: subtitleTextView.font!,
+            .foregroundColor: subtitleTextView.textColor!,
             .paragraphStyle: paragraphStyle
         ]
 
