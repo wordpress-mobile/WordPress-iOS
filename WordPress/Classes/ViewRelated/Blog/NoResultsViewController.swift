@@ -29,6 +29,7 @@ import WordPressAuthenticator
     // To allow storing values until view is loaded.
     private var titleText: String?
     private var subtitleText: String?
+    private var attributedSubtitleText: NSAttributedString?
     private var buttonText: String?
     private var imageName: String?
     private var accessorySubview: UIView?
@@ -53,21 +54,23 @@ import WordPressAuthenticator
     /// Public method to get controller instance and set view values.
     ///
     /// - Parameters:
-    ///   - title:          Main descriptive text. Required.
-    ///   - buttonTitle:    Title of action button. Optional.
-    ///   - subtitle:       Secondary descriptive text. Optional.
-    ///   - image:          Name of image file to use. Optional.
-    ///   - accessoryView:  View to show instead of the image. Optional.
+    ///   - title:              Main descriptive text. Required.
+    ///   - buttonTitle:        Title of action button. Optional.
+    ///   - subtitle:           Secondary descriptive text. Optional.
+    ///   - attributedSubtitle: Secondary descriptive attributed text. Optional.
+    ///   - image:              Name of image file to use. Optional.
+    ///   - accessoryView:      View to show instead of the image. Optional.
     ///
     @objc class func controllerWith(title: String,
                                     buttonTitle: String? = nil,
                                     subtitle: String? = nil,
+                                    attributedSubtitle: NSAttributedString? = nil,
                                     image: String? = nil,
                                     accessoryView: UIView? = nil) -> NoResultsViewController {
-
         let controller = NoResultsViewController.controller()
         controller.titleText = title
         controller.subtitleText = subtitle
+        controller.attributedSubtitleText = attributedSubtitle
         controller.buttonText = buttonTitle
         controller.imageName = image
         controller.accessorySubview = accessoryView
@@ -87,15 +90,22 @@ import WordPressAuthenticator
     /// Public method to provide values for text elements.
     ///
     /// - Parameters:
-    ///   - title:          Main descriptive text. Required.
-    ///   - buttonTitle:    Title of action button. Optional.
-    ///   - subtitle:       Secondary descriptive text. Optional.
-    ///   - image:          Name of image file to use. Optional.
-    ///   - accessoryView:  View to show instead of the image. Optional.
+    ///   - title:              Main descriptive text. Required.
+    ///   - buttonTitle:        Title of action button. Optional.
+    ///   - subtitle:           Secondary descriptive text. Optional.
+    ///   - attributedSubtitle: Secondary descriptive attributed text. Optional.
+    ///   - image:              Name of image file to use. Optional.
+    ///   - accessoryView:      View to show instead of the image. Optional.
     ///
-    @objc func configure(title: String, buttonTitle: String? = nil, subtitle: String? = nil, image: String? = nil, accessoryView: UIView? = nil) {
+    @objc func configure(title: String,
+                         buttonTitle: String? = nil,
+                         subtitle: String? = nil,
+                         attributedSubtitle: NSAttributedString? = nil,
+                         image: String? = nil,
+                         accessoryView: UIView? = nil) {
         titleText = title
         subtitleText = subtitle
+        attributedSubtitleText = attributedSubtitle
         buttonText = buttonTitle
         imageName = image
         accessorySubview = accessoryView
@@ -144,10 +154,15 @@ private extension NoResultsViewController {
 
         if let subtitleText = subtitleText {
             subtitleLabel.text = subtitleText
-            subtitleLabel.isHidden = false
-        } else {
-            subtitleLabel.isHidden = true
         }
+
+        if let attributedSubtitleText = attributedSubtitleText {
+            subtitleLabel.attributedText = applyMessageStyleTo(attributedString: attributedSubtitleText)
+            subtitleLabel.isUserInteractionEnabled = true
+        }
+
+        let showSubtitle = subtitleText != nil || attributedSubtitleText != nil
+        subtitleLabel.isHidden = !showSubtitle
 
         if let buttonText = buttonText {
             actionButton?.setTitle(buttonText, for: UIControlState())
@@ -192,4 +207,20 @@ private extension NoResultsViewController {
         return String(format: buttonIdFormat, string)
     }
 
+    func applyMessageStyleTo(attributedString: NSAttributedString) -> NSAttributedString {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = subtitleLabel.textAlignment
+
+        let attributes: [NSAttributedStringKey: Any] = [
+            .font: subtitleLabel.font,
+            .foregroundColor: subtitleLabel.textColor,
+            .paragraphStyle: paragraphStyle
+        ]
+
+        let fullTextRange = attributedString.string.foundationRangeOfEntireString
+        let finalAttributedString = NSMutableAttributedString(attributedString: attributedString)
+        finalAttributedString.addAttributes(attributes, range: fullTextRange)
+
+        return finalAttributedString
+    }
 }
