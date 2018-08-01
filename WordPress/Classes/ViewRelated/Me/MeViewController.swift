@@ -525,7 +525,7 @@ private extension MeViewController {
                                                             comment: "Warning displayed before logging out. The %d placeholder will contain the number of local posts (SINGULAR!)")
         static let unsavedTitlePlural = NSLocalizedString("You have changes to %d posts that haven’t been uploaded to your site. Logging out now will delete those changes. Log out anyway?",
                                                           comment: "Warning displayed before logging out. The %d placeholder will contain the number of local posts (PLURAL!)")
-        static let cancelAction = NSLocalizedString("Cancel", comment: "")
+        static let cancelAction = NSLocalizedString("Cancel", comment: "Verb. A button title. Tapping cancels an action.")
         static let logoutAction = NSLocalizedString("Log Out", comment: "Button for confirming logging out from WordPress.com account")
     }
 }
