@@ -24,12 +24,6 @@ class FormattableTextContent: FormattableContent {
         actions = commandActions
         self.ranges = ranges
     }
-
-
-    private static func rangesFrom(_ rawRanges: [[String: AnyObject]]?) -> [FormattableContentRange] {
-        let parsed = rawRanges?.compactMap(NotificationContentRangeFactory.contentRange)
-        return parsed ?? []
-    }
 }
 
 extension FormattableMediaItem {
