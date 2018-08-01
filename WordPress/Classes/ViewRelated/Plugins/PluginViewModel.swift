@@ -586,7 +586,7 @@ private extension String {
 
 extension PluginViewModel {
     func networkStatusDidChange(active: Bool) {
-        if active {
+        if active, case .error = state {
             state = .loading
             store.processQueries()
         }
