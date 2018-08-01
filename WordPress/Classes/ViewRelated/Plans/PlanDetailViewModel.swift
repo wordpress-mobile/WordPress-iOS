@@ -87,11 +87,11 @@ struct PlanDetailViewModel {
 
     private struct LocalizedText {
         static let loadingTitle = NSLocalizedString("Loading Plan...", comment: "Text displayed while loading plans details")
-        static let errorTitle = NSLocalizedString("Oops", comment: "")
+        static let errorTitle = NSLocalizedString("Oops", comment: "An informal exclaimation that means `something went wrong`.")
         static let errorSubtitle = NSLocalizedString("There was an error loading the plan", comment: "Text displayed when there is a failure loading the plan details")
         static let errorButtonText = NSLocalizedString("Contact support", comment: "Button label for contacting support")
-        static let noConnectionTitle = NSLocalizedString("No connection", comment: "")
-        static let noConnectionSubtitle = NSLocalizedString("An active internet connection is required to view plans", comment: "")
+        static let noConnectionTitle = NSLocalizedString("No connection", comment: "An error message title shown when there is no internet connection.")
+        static let noConnectionSubtitle = NSLocalizedString("An active internet connection is required to view plans", comment: "An error message shown when there is no internet connection.")
         static let price = NSLocalizedString("%@ per year", comment: "Plan yearly price")
     }
 

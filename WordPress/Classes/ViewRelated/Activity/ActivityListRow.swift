@@ -7,12 +7,21 @@ struct ActivityListRow: ImmuTableRow {
         return ImmuTableCell.nib(nib, CellType.self)
     }()
 
-    let activity: Activity
+    var activity: Activity {
+        return formattableActivity.activity
+    }
     let action: ImmuTableAction?
+
+    private let formattableActivity: FormattableActivity
+
+    init(formattableActivity: FormattableActivity, action: ImmuTableAction?) {
+        self.formattableActivity = formattableActivity
+        self.action = action
+    }
 
     func configureCell(_ cell: UITableViewCell) {
         let cell = cell as! CellType
-        cell.configureCell(activity)
+        cell.configureCell(formattableActivity)
         cell.selectionStyle = .none
     }
 }

@@ -205,14 +205,14 @@ class PluginListViewModel: Observable {
             let appDelegate = WordPressAppDelegate.sharedInstance()
             if (appDelegate?.connectionAvailable)! {
                 return WPNoResultsView.Model(
-                    title: NSLocalizedString("Oops", comment: ""),
-                    message: NSLocalizedString("There was an error loading plugins", comment: ""),
-                    buttonTitle: NSLocalizedString("Contact support", comment: "")
+                    title: NSLocalizedString("Oops", comment: "An informal exclaimation that means `something went wrong`."),
+                    message: NSLocalizedString("There was an error loading plugins", comment: "Text displayed when there is a failure loading plugins"),
+                    buttonTitle: NSLocalizedString("Contact support", comment: "Button label for contacting support")
                 )
             } else {
                 return WPNoResultsView.Model(
                     title: NSLocalizedString("No connection", comment: "Title for the error view when there's no connection"),
-                    message: NSLocalizedString("An active internet connection is required to view plugins", comment: "")
+                    message: NSLocalizedString("An active internet connection is required to view plugins", comment: "Error message shown when trying to view the Plugins feature and there is no internet connection.")
                 )
             }
         }
