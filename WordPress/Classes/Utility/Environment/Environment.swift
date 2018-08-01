@@ -31,7 +31,7 @@ struct Environment {
 }
 
 extension Environment {
-    /// Creates a new Environment, changin just a subset of the current global dependencies.
+    /// Creates a new Environment, changing just a subset of the current global dependencies.
     ///
     @discardableResult
     static func replaceEnvironment(
