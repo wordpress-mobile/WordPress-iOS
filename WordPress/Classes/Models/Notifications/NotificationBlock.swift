@@ -306,7 +306,7 @@ extension NotificationBlock {
 
     /// Parsing Keys
     ///
-    fileprivate enum BlockKeys {
+    enum BlockKeys {
         static let Actions      = "actions"
         static let Media        = "media"
         static let Meta         = "meta"
@@ -328,6 +328,10 @@ extension NotificationBlock {
         static let Reply        = "reply_comment"
         static let Home         = "home"
     }
+}
+
+extension NotificationBlock: ActionableObject {
+
 }
 
 

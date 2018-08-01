@@ -10,6 +10,8 @@ class PluginViewController: UITableViewController {
     }()
 
     fileprivate let viewModel: PluginViewModel
+    private var noResultsViewController: NoResultsViewController?
+
     var viewModelReceipt: Receipt?
 
     init(plugin: Plugin, capabilities: SitePluginCapabilities, site: JetpackSiteRef) {
@@ -20,6 +22,12 @@ class PluginViewController: UITableViewController {
 
     init(directoryEntry: PluginDirectoryEntry, site: JetpackSiteRef) {
         viewModel = PluginViewModel(directoryEntry: directoryEntry, site: site)
+        super.init(style: .grouped)
+        commonInit()
+    }
+
+    init(slug: String, site: JetpackSiteRef) {
+        viewModel = PluginViewModel(slug: slug, site: site)
         super.init(style: .grouped)
         commonInit()
     }
@@ -78,6 +86,7 @@ class PluginViewController: UITableViewController {
     private func bindViewModel() {
         handler.viewModel = viewModel.tableViewModel
         title = viewModel.title
+        updateNoResults()
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -104,5 +113,57 @@ class PluginViewController: UITableViewController {
 
     private enum Constants {
         static var tableViewHeaderHeight: CGFloat = 17.5
+    }
+}
+
+// MARK: - NoResultsViewControllerDelegate
+
+extension PluginViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        let supportVC = SupportTableViewController()
+        supportVC.showFromTabBar()
+    }
+}
+
+// MARK: - NoResults Handling
+
+private extension PluginViewController {
+    func updateNoResults() {
+        noResultsViewController?.removeFromView()
+        if let noResultsViewModel = viewModel.noResultsViewModel() {
+            showNoResults(noResultsViewModel)
+        }
+    }
+
+    func showNoResults(_ viewModel: NoResultsViewController.Model) {
+        let noResultsViewController = getNoResultsViewController()
+
+        noResultsViewController.bindViewModel(viewModel)
+
+        addAsSubviewIfNeeded(noResultsViewController.view)
+        addChildController(noResultsViewController)
+    }
+
+    private func addAsSubviewIfNeeded(_ view: UIView) {
+        if view.superview != tableView {
+            tableView.addSubview(withFadeAnimation: view)
+        }
+    }
+
+    private func addChildController(_ controller: UIViewController) {
+        addChildViewController(controller)
+        controller.didMove(toParentViewController: self)
+    }
+
+    private func getNoResultsViewController() -> NoResultsViewController {
+        if let noResultsViewController = self.noResultsViewController {
+            return noResultsViewController
+        }
+
+        let noResultsViewController = NoResultsViewController.controller()
+        noResultsViewController.delegate = self
+        self.noResultsViewController = noResultsViewController
+
+        return noResultsViewController
     }
 }
