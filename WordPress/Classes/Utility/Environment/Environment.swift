@@ -10,8 +10,14 @@ struct Environment {
     /// A type that helps tracking whether or not a user should be prompted for an app review
     let appRatingUtility: AppRatingUtilityType
 
-    /// The main Core Data context
-    let mainContext: NSManagedObjectContext
+    /// A type to create derived context, save context, etc...
+    let contextManagerType: ContextManagerType.Type
+
+    /// The mainContext that has concurrency type NSMainQueueConcurrencyType and should be used
+    /// for UI elements and fetched results controllers.
+    var mainContext: NSManagedObjectContext {
+        return contextManagerType.shared.mainContext
+    }
 
     // MARK: - Static current environment implementation
 
@@ -23,10 +29,10 @@ struct Environment {
 
     private init(
         appRatingUtility: AppRatingUtilityType = AppRatingUtility.shared,
-        mainContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
+        contextManagerType: ContextManagerType.Type = ContextManager.self) {
 
         self.appRatingUtility = appRatingUtility
-        self.mainContext = mainContext
+        self.contextManagerType = contextManagerType
     }
 }
 
@@ -36,11 +42,11 @@ extension Environment {
     @discardableResult
     static func replaceEnvironment(
         appRatingUtility: AppRatingUtilityType = Environment.current.appRatingUtility,
-        mainContext: NSManagedObjectContext = Environment.current.mainContext) -> Environment {
+        contextManagerType: ContextManagerType.Type = Environment.current.contextManagerType) -> Environment {
 
         current = Environment(
             appRatingUtility: appRatingUtility,
-            mainContext: mainContext
+            contextManagerType: contextManagerType
         )
         return current
     }
