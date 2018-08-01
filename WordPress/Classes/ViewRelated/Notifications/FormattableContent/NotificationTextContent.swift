@@ -85,6 +85,11 @@ class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
 
         return nil
     }
+
+    private static func rangesFrom(_ rawRanges: [[String: AnyObject]]?) -> [FormattableContentRange] {
+        let parsed = rawRanges?.compactMap(NotificationContentRangeFactory.contentRange)
+        return parsed ?? []
+    }
 }
 
 private enum Constants {
