@@ -15,7 +15,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     fileprivate let pickerDataSource: MediaLibraryPickerDataSource
 
     fileprivate var isLoading: Bool = false
-    fileprivate let noResultsView = MediaNoResultsView()
+    fileprivate let noResultsView = NoResultsViewController.controller()
 
     fileprivate var selectedAsset: Media? = nil
 
@@ -86,6 +86,8 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
         registerChangeObserver()
         registerUploadCoordinatorObserver()
+
+        noResultsView.configureForNoAssets(userCanUploadMedia: blog.userCanUploadMedia)
         noResultsView.delegate = self
 
         updateViewState(for: pickerDataSource.totalAssetCount)
@@ -157,14 +159,16 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     }
 
     fileprivate func updateNoResultsView(for assetCount: Int) {
+
+        noResultsView.removeFromView()
         guard assetCount == 0 else { return }
 
         if isLoading {
-            noResultsView.updateForFetching()
+            noResultsView.configureForFetching()
         } else if hasSearchQuery {
-            noResultsView.updateForNoSearchResult(with: pickerDataSource.searchQuery)
+            noResultsView.configureForNoSearchResult(with: pickerDataSource.searchQuery)
         } else {
-            noResultsView.updateForNoAssets(userCanUploadMedia: blog.userCanUploadMedia)
+            noResultsView.configureForNoAssets(userCanUploadMedia: blog.userCanUploadMedia)
         }
     }
 
@@ -424,10 +428,10 @@ extension MediaLibraryViewController: UIDocumentPickerDelegate {
     }
 }
 
-// MARK: - WPNoResultsViewDelegate
+// MARK: - NoResultsViewControllerDelegate
 
-extension MediaLibraryViewController: WPNoResultsViewDelegate {
-    func didTap(_ noResultsView: WPNoResultsView!) {
+extension MediaLibraryViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
         addTapped()
     }
 }
@@ -436,7 +440,7 @@ extension MediaLibraryViewController: WPNoResultsViewDelegate {
 
 extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
 
-    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
+    func emptyViewController(forMediaPickerController picker: WPMediaPickerViewController) -> UIViewController? {
         return noResultsView
     }
 
