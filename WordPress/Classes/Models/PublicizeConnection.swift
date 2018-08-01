@@ -28,4 +28,16 @@ open class PublicizeConnection: NSManagedObject {
     @objc open func isBroken() -> Bool {
         return status == "broken"
     }
+
+    @objc open func mustDisconnect() -> Bool {
+        return status == "must-disconnect"
+    }
+
+    @objc open func requiresUserAction() -> Bool {
+        return isBroken() || mustDisconnect()
+    }
+
+    @objc open func mustDisconnectFacebook() -> Bool {
+        return mustDisconnect() && service == PublicizeService.facebookServiceID
+    }
 }

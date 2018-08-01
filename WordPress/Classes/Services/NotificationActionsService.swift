@@ -3,14 +3,14 @@ import CocoaLumberjack
 
 /// This service encapsulates all of the Actions that can be performed with a NotificationBlock
 ///
-open class NotificationActionsService: LocalCoreDataService {
+class NotificationActionsService: LocalCoreDataService {
 
     /// Follows a Site referenced by a given NotificationBlock.
     ///
     /// - Parameter block: The Notification's Site Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func followSiteWithBlock(_ block: NotificationBlock, completion: ((Bool) -> Void)? = nil) {
+    func followSiteWithBlock(_ block: ActionableObject, completion: ((Bool) -> Void)? = nil) {
         guard let siteID = block.metaSiteID?.uintValue else {
             completion?(false)
             return
@@ -23,11 +23,11 @@ open class NotificationActionsService: LocalCoreDataService {
 
         }, failure: { error in
             DDLogError("Error while trying to follow site: \(String(describing: error))")
-            block.removeOverrideValueForAction(.Follow)
+            //block.removeOverrideValueForAction(.Follow)
             completion?(false)
         })
 
-        block.setOverrideValue(true, forAction: .Follow)
+        //block.setOverrideValue(true, forAction: .Follow)
     }
 
 
@@ -36,7 +36,7 @@ open class NotificationActionsService: LocalCoreDataService {
     /// - Parameter block: The Notification's Site Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func unfollowSiteWithBlock(_ block: NotificationBlock, completion: ((Bool) -> Void)? = nil) {
+    func unfollowSiteWithBlock(_ block: ActionableObject, completion: ((Bool) -> Void)? = nil) {
         guard let siteID = block.metaSiteID?.uintValue else {
             completion?(false)
             return
@@ -49,11 +49,11 @@ open class NotificationActionsService: LocalCoreDataService {
 
         }, failure: { error in
             DDLogError("Error while trying to unfollow site: \(String(describing: error))")
-            block.removeOverrideValueForAction(.Follow)
+            //block.removeOverrideValueForAction(.Follow)
             completion?(false)
         })
 
-        block.setOverrideValue(false, forAction: .Follow)
+        //block.setOverrideValue(false, forAction: .Follow)
     }
 
 
@@ -63,7 +63,7 @@ open class NotificationActionsService: LocalCoreDataService {
     /// - Parameter content: The Reply's Content
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func replyCommentWithBlock(_ block: NotificationBlock, content: String, completion: ((Bool) -> Void)? = nil) {
+    func replyCommentWithBlock(_ block: ActionableObject, content: String, completion: ((Bool) -> Void)? = nil) {
         guard let commentID = block.metaCommentID, let siteID = block.metaSiteID else {
             completion?(false)
             return
@@ -87,7 +87,7 @@ open class NotificationActionsService: LocalCoreDataService {
     /// - Parameter content: The Comment's New Content
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func updateCommentWithBlock(_ block: NotificationBlock, content: String, completion: ((Bool) -> Void)? = nil) {
+    func updateCommentWithBlock(_ block: ActionableObject, content: String, completion: ((Bool) -> Void)? = nil) {
         guard let commentID = block.metaCommentID, let siteID = block.metaSiteID else {
             completion?(false)
             return
@@ -114,7 +114,7 @@ open class NotificationActionsService: LocalCoreDataService {
     /// - Parameter block: The Notification's Comment Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func likeCommentWithBlock(_ block: NotificationBlock, completion: ((Bool) -> Void)? = nil) {
+    func likeCommentWithBlock(_ block: ActionableObject, completion: ((Bool) -> Void)? = nil) {
         guard let commentID = block.metaCommentID, let siteID = block.metaSiteID else {
             completion?(false)
             return
@@ -133,11 +133,11 @@ open class NotificationActionsService: LocalCoreDataService {
 
         }, failure: { error in
             DDLogError("Error while trying to like comment: \(String(describing: error))")
-            block.removeOverrideValueForAction(.Like)
+            //block.removeOverrideValueForAction(.Like)
             completion?(false)
         })
 
-        block.setOverrideValue(true, forAction: .Like)
+        //block.setOverrideValue(true, forAction: .Like)
     }
 
 
@@ -146,7 +146,7 @@ open class NotificationActionsService: LocalCoreDataService {
     /// - Parameter block: The Notification's Comment Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func unlikeCommentWithBlock(_ block: NotificationBlock, completion: ((Bool) -> Void)? = nil) {
+    func unlikeCommentWithBlock(_ block: ActionableObject, completion: ((Bool) -> Void)? = nil) {
         guard let commentID = block.metaCommentID, let siteID = block.metaSiteID else {
             completion?(false)
             return
@@ -159,11 +159,11 @@ open class NotificationActionsService: LocalCoreDataService {
 
         }, failure: { error in
             DDLogError("Error while trying to unlike comment: \(String(describing: error))")
-            block.removeOverrideValueForAction(.Like)
+            //block.removeOverrideValueForAction(.Like)
             completion?(false)
         })
 
-        block.setOverrideValue(false, forAction: .Like)
+        //block.setOverrideValue(false, forAction: .Like)
     }
 
 
@@ -172,7 +172,7 @@ open class NotificationActionsService: LocalCoreDataService {
     /// - Parameter block: The Notification's Comment Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func approveCommentWithBlock(_ block: NotificationBlock, completion: ((Bool) -> Void)? = nil) {
+    func approveCommentWithBlock(_ block: ActionableObject, completion: ((Bool) -> Void)? = nil) {
         guard let commentID = block.metaCommentID, let siteID = block.metaSiteID else {
             completion?(false)
             return
@@ -185,11 +185,11 @@ open class NotificationActionsService: LocalCoreDataService {
 
         }, failure: { error in
             DDLogError("Error while trying to moderate comment: \(String(describing: error))")
-            block.removeOverrideValueForAction(.Approve)
+            //block.removeOverrideValueForAction(.Approve)
             completion?(false)
         })
 
-        block.setOverrideValue(true, forAction: .Approve)
+        //block.setOverrideValue(true, forAction: .Approve)
     }
 
 
@@ -198,7 +198,7 @@ open class NotificationActionsService: LocalCoreDataService {
     /// - Parameter block: The Notification's Comment Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func unapproveCommentWithBlock(_ block: NotificationBlock, completion: ((Bool) -> Void)? = nil) {
+    func unapproveCommentWithBlock(_ block: ActionableObject, completion: ((Bool) -> Void)? = nil) {
         guard let commentID = block.metaCommentID, let siteID = block.metaSiteID else {
             completion?(false)
             return
@@ -211,11 +211,11 @@ open class NotificationActionsService: LocalCoreDataService {
 
         }, failure: { error in
             DDLogError("Error while trying to moderate comment: \(String(describing: error))")
-            block.removeOverrideValueForAction(.Approve)
+            //block.removeOverrideValueForAction(.Approve)
             completion?(false)
         })
 
-        block.setOverrideValue(false, forAction: .Approve)
+        //block.setOverrideValue(false, forAction: .Approve)
     }
 
 
@@ -224,7 +224,7 @@ open class NotificationActionsService: LocalCoreDataService {
     /// - Parameter block: The Notification's Comment Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func spamCommentWithBlock(_ block: NotificationBlock, completion: ((Bool) -> Void)? = nil) {
+    func spamCommentWithBlock(_ block: ActionableObject, completion: ((Bool) -> Void)? = nil) {
         guard let commentID = block.metaCommentID, let siteID = block.metaSiteID else {
             completion?(false)
             return
@@ -247,7 +247,7 @@ open class NotificationActionsService: LocalCoreDataService {
     /// - Parameter block: The Notification's Comment Block
     /// - Parameter completion: Closure block to be executed on completion, indicating if we've succeeded or not.
     ///
-    func deleteCommentWithBlock(_ block: NotificationBlock, completion: ((Bool) -> Void)? = nil) {
+    func deleteCommentWithBlock(_ block: ActionableObject, completion: ((Bool) -> Void)? = nil) {
         guard let commentID = block.metaCommentID, let siteID = block.metaSiteID else {
             completion?(false)
             return
@@ -279,7 +279,7 @@ private extension NotificationActionsService {
     ///
     /// - Parameter block: child NotificationBlock object of the Notification-to-be-refreshed.
     ///
-    func invalidateCacheAndForceSyncNotification(with block: NotificationBlock) {
+    func invalidateCacheAndForceSyncNotification(with block: ActionableObject) {
         guard let notificationID = block.notificationID, let mediator = NotificationSyncMediator() else {
             return
         }
