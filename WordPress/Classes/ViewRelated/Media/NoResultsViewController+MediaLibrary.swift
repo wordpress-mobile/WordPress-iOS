@@ -19,7 +19,7 @@ extension NoResultsViewController {
     }
 
     private enum Constants {
-        static let imageName = "media-free-photos-no-results"
+        static let imageName = "media-no-results"
         static let animatedBoxDelay = 0.1
     }
 
