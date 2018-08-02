@@ -594,9 +594,19 @@ private extension String {
 
 extension PluginViewModel {
     func networkStatusDidChange(active: Bool) {
-        if active, case .error = state {
-            state = .loading
+        guard active else {
+            return
+        }
+
+        switch state {
+        case .error:
             store.processQueries()
+            state = .loading
+        case .directoryEntry(let entry):
+            store.processQueries()
+            state = .directoryEntry(entry)
+        default:
+            break
         }
     }
 }
