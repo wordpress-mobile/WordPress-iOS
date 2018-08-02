@@ -941,6 +941,7 @@
 		D816B8D12112D5960052CE4D /* DefaultNewsManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8D02112D5960052CE4D /* DefaultNewsManagerTests.swift */; };
 		D816B8D42112D6E70052CE4D /* NewsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8D22112D6E70052CE4D /* NewsCard.swift */; };
 		D816B8D52112D6E70052CE4D /* NewsCard.xib in Resources */ = {isa = PBXBuildFile; fileRef = D816B8D32112D6E70052CE4D /* NewsCard.xib */; };
+		D816B8D72112D75C0052CE4D /* NewsCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8D62112D75C0052CE4D /* NewsCardTests.swift */; };
 		D816C1E920E0880400C4D82F /* NotificationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816C1E820E0880400C4D82F /* NotificationAction.swift */; };
 		D816C1EC20E0887C00C4D82F /* ApproveComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816C1EB20E0887C00C4D82F /* ApproveComment.swift */; };
 		D816C1EE20E0892200C4D82F /* Follow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816C1ED20E0892200C4D82F /* Follow.swift */; };
@@ -2606,6 +2607,7 @@
 		D816B8D02112D5960052CE4D /* DefaultNewsManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNewsManagerTests.swift; sourceTree = "<group>"; };
 		D816B8D22112D6E70052CE4D /* NewsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCard.swift; sourceTree = "<group>"; };
 		D816B8D32112D6E70052CE4D /* NewsCard.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsCard.xib; sourceTree = "<group>"; };
+		D816B8D62112D75C0052CE4D /* NewsCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCardTests.swift; sourceTree = "<group>"; };
 		D816C1E820E0880400C4D82F /* NotificationAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAction.swift; sourceTree = "<group>"; };
 		D816C1EB20E0887C00C4D82F /* ApproveComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApproveComment.swift; sourceTree = "<group>"; };
 		D816C1ED20E0892200C4D82F /* Follow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Follow.swift; sourceTree = "<group>"; };
@@ -4068,6 +4070,7 @@
 		5D7A577D1AFBFD7C0097C028 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D816B8D62112D75C0052CE4D /* NewsCardTests.swift */,
 				D816B8D02112D5960052CE4D /* DefaultNewsManagerTests.swift */,
 				D816B8C92112D2FD0052CE4D /* LocalNewsServiceTests.swift */,
 				D816B8C52112D0130052CE4D /* ResultTypeTests.swift */,
@@ -8568,6 +8571,7 @@
 				7E4A772F20F7FDF8001C706D /* ActivityLogTestData.swift in Sources */,
 				B59D40A61DB522DF003D2D79 /* NSAttributedStringTests.swift in Sources */,
 				93E9050719E6F3D8005513C9 /* TestContextManager.m in Sources */,
+				D816B8D72112D75C0052CE4D /* NewsCardTests.swift in Sources */,
 				D809E686203F0215001AA0DE /* ReaderPostCardCellTests.swift in Sources */,
 				40E4698F2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift in Sources */,
 				D848CC1920FF3A2400A9038F /* FormattableNotIconTests.swift in Sources */,
