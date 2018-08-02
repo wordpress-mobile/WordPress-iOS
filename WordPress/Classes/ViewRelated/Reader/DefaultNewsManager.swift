@@ -10,6 +10,10 @@ final class DefaultNewsManager: NewsManager {
         print("dismiss the card")
     }
 
+    func shouldPresentCard() -> Bool {
+        return true
+    }
+
     func load(then completion: @escaping (Result<NewsItem>) -> Void) {
         service.load { newsItem in
             completion(newsItem)
