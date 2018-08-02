@@ -173,7 +173,6 @@ extension PluginViewController: NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {
         if active {
             viewModel.networkStatusDidChange(active: active)
-            updateNoResults()
         }
     }
 }
