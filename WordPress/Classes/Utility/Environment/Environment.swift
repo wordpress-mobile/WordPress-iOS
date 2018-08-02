@@ -11,12 +11,12 @@ struct Environment {
     let appRatingUtility: AppRatingUtilityType
 
     /// A type to create derived context, save context, etc...
-    let contextManagerType: ContextManagerType.Type
+    let contextManager: ContextManagerType
 
     /// The mainContext that has concurrency type NSMainQueueConcurrencyType and should be used
     /// for UI elements and fetched results controllers.
     var mainContext: NSManagedObjectContext {
-        return contextManagerType.shared.mainContext
+        return contextManager.mainContext
     }
 
     // MARK: - Static current environment implementation
@@ -29,10 +29,10 @@ struct Environment {
 
     private init(
         appRatingUtility: AppRatingUtilityType = AppRatingUtility.shared,
-        contextManagerType: ContextManagerType.Type = ContextManager.self) {
+        contextManager: ContextManagerType = ContextManager.shared) {
 
         self.appRatingUtility = appRatingUtility
-        self.contextManagerType = contextManagerType
+        self.contextManager = contextManager
     }
 }
 
@@ -42,11 +42,11 @@ extension Environment {
     @discardableResult
     static func replaceEnvironment(
         appRatingUtility: AppRatingUtilityType = Environment.current.appRatingUtility,
-        contextManagerType: ContextManagerType.Type = Environment.current.contextManagerType) -> Environment {
+        contextManager: ContextManagerType = Environment.current.contextManager) -> Environment {
 
         current = Environment(
             appRatingUtility: appRatingUtility,
-            contextManagerType: contextManagerType
+            contextManager: contextManager
         )
         return current
     }
