@@ -929,6 +929,8 @@
 		D80EE63A203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80EE639203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift */; };
 		D81322B32050F9110067714D /* NotificationName+Names.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81322B22050F9110067714D /* NotificationName+Names.swift */; };
 		D8160442209C1B0F00ABAFFA /* ReaderSaveForLaterAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8160441209C1B0F00ABAFFA /* ReaderSaveForLaterAction.swift */; };
+		D816B8BE2112CC000052CE4D /* NewsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8BD2112CC000052CE4D /* NewsItem.swift */; };
+		D816B8C02112CC930052CE4D /* NewsItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8BF2112CC930052CE4D /* NewsItemTests.swift */; };
 		D816C1E920E0880400C4D82F /* NotificationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816C1E820E0880400C4D82F /* NotificationAction.swift */; };
 		D816C1EC20E0887C00C4D82F /* ApproveComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816C1EB20E0887C00C4D82F /* ApproveComment.swift */; };
 		D816C1EE20E0892200C4D82F /* Follow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816C1ED20E0892200C4D82F /* Follow.swift */; };
@@ -2582,6 +2584,8 @@
 		D80EE639203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderFollowedSitesStreamHeaderTests.swift; sourceTree = "<group>"; };
 		D81322B22050F9110067714D /* NotificationName+Names.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Names.swift"; sourceTree = "<group>"; };
 		D8160441209C1B0F00ABAFFA /* ReaderSaveForLaterAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSaveForLaterAction.swift; sourceTree = "<group>"; };
+		D816B8BD2112CC000052CE4D /* NewsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsItem.swift; sourceTree = "<group>"; };
+		D816B8BF2112CC930052CE4D /* NewsItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsItemTests.swift; sourceTree = "<group>"; };
 		D816C1E820E0880400C4D82F /* NotificationAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAction.swift; sourceTree = "<group>"; };
 		D816C1EB20E0887C00C4D82F /* ApproveComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApproveComment.swift; sourceTree = "<group>"; };
 		D816C1ED20E0892200C4D82F /* Follow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Follow.swift; sourceTree = "<group>"; };
@@ -3790,6 +3794,7 @@
 				E125F1E61E8E59C800320B67 /* SharePost+UIActivityItemSource.swift */,
 				E6311C421ECA017E00122529 /* UserProfile.swift */,
 				E6FACB1D1EC675E300284AC7 /* GravatarProfile.swift */,
+				D816B8BD2112CC000052CE4D /* NewsItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4041,6 +4046,7 @@
 		5D7A577D1AFBFD7C0097C028 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D816B8BF2112CC930052CE4D /* NewsItemTests.swift */,
 				D848CC1620FF38EA00A9038F /* FormattableCommentRangeTests.swift */,
 				D848CC1420FF33FC00A9038F /* NotificationContentRangeTests.swift */,
 				D800D87B20999CA200E7C7E5 /* SearchMenuItemCreatorTests.swift */,
@@ -8288,6 +8294,7 @@
 				E1B912831BB01047003C25B9 /* PeopleRoleBadgeLabel.swift in Sources */,
 				40FC6B7F2072E3EC00B9A1CD /* ActivityDetailViewController.swift in Sources */,
 				E16FB7E11F8B5D7D0004DD9F /* WebViewControllerConfiguration.swift in Sources */,
+				D816B8BE2112CC000052CE4D /* NewsItem.swift in Sources */,
 				B5416D011C17693B00006DD8 /* UIApplication+Helpers.m in Sources */,
 				08D345501CD7F50900358E8C /* MenusSelectionDetailView.m in Sources */,
 				591AA5021CEF9BF20074934F /* Post+CoreDataProperties.swift in Sources */,
@@ -8549,6 +8556,7 @@
 				BEA0E4851BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift in Sources */,
 				D81C2F5820F86CEA002AE1F1 /* NetworkStatus.swift in Sources */,
 				E1C545801C6C79BB001CEB0E /* MediaSettingsTests.swift in Sources */,
+				D816B8C02112CC930052CE4D /* NewsItemTests.swift in Sources */,
 				7E987F5A2108122A00CAFB88 /* NotificationUtility.swift in Sources */,
 				7E442FC720F677CB00DEACA5 /* ActivityLogRangesTest.swift in Sources */,
 				D80EE63A203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift in Sources */,
