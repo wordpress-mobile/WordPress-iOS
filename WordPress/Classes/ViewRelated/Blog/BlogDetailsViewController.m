@@ -501,6 +501,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     }
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
+                                  accessibilityIdentifier:@"Stats Row"
                                                     image:[Gridicon iconOfType:GridiconTypeStatsAlt]
                                                  callback:^{
                                                      [weakSelf showStats];
