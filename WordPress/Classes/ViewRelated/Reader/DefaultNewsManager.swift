@@ -1,0 +1,18 @@
+/// Default implementation of the NewsManager protocol
+final class DefaultNewsManager: NewsManager {
+    private let service: NewsService
+
+    init(service: NewsService) {
+        self.service = service
+    }
+
+    func dismiss() {
+        print("dismiss the card")
+    }
+
+    func load(then completion: @escaping (Result<NewsItem>) -> Void) {
+        service.load { newsItem in
+            completion(newsItem)
+        }
+    }
+}
