@@ -74,7 +74,7 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
         onCompletion?(nil)
     }
-    
+
     func emptyViewController(forMediaPickerController picker: WPMediaPickerViewController) -> UIViewController? {
         let noResultsView = NoResultsViewController.controller()
         noResultsView.configureForNoAssets(userCanUploadMedia: false)
