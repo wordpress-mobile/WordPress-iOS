@@ -15,6 +15,8 @@ extension NoResultsViewController {
                   attributedSubtitle: attributedSubtitle(),
                   image: Constants.imageName,
                   accessoryView: nil)
+
+        view.layoutIfNeeded()
     }
 
     private func attributedSubtitle() -> NSAttributedString {
@@ -31,6 +33,8 @@ extension NoResultsViewController {
                   attributedSubtitle: nil,
                   image: Constants.imageName,
                   accessoryView: nil)
+
+        view.layoutIfNeeded()
     }
 
     func configureAsNoSearchResults(for string: String) {
@@ -40,6 +44,8 @@ extension NoResultsViewController {
                   attributedSubtitle: nil,
                   image: Constants.imageName,
                   accessoryView: nil)
+
+        view.layoutIfNeeded()
     }
 
     private func configureSearchResultTitle(for string: String) -> String {
