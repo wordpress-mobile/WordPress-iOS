@@ -125,6 +125,19 @@ end
 
 
 
+## Notification Service Extension
+## ==============================
+##
+target 'WordPressNotificationServiceExtension' do
+	project 'WordPress/WordPress.xcodeproj'
+	
+	inherit! :search_paths
+
+	shared_with_networking_pods
+end
+
+
+
 ## WordPress.com Stats
 ## ===================
 ##
