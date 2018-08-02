@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Ae-eX-ae9" userLabel="No Results View">
-                                <rect key="frame" x="10" y="211" width="355" height="266.5"/>
+                                <rect key="frame" x="10" y="207" width="355" height="274.5"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="czl-5D-gem" userLabel="Accessory View">
                                         <rect key="frame" x="127.5" y="0.5" width="100" height="100"/>
@@ -37,20 +37,20 @@
                                             <constraint firstAttribute="width" constant="226" id="zgJ-Vl-MiN"/>
                                         </constraints>
                                     </imageView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="gjj-bC-32w">
-                                        <rect key="frame" x="0.0" y="136.5" width="355" height="130.5"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="gjj-bC-32w">
+                                        <rect key="frame" x="0.0" y="136.5" width="355" height="138.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="v7c-T9-kZq" userLabel="Label Stack View">
-                                                <rect key="frame" x="93" y="0.0" width="169.5" height="56.5"/>
+                                                <rect key="frame" x="93" y="0.0" width="169.5" height="64.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is the title text." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8BN-gx-7TL">
-                                                        <rect key="frame" x="0.0" y="0.0" width="169.5" height="20.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="169.5" height="24.5"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                         <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="This is the subtitle text." textAlignment="center" adjustsFontForContentSizeCategory="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pAg-XC-9IM" userLabel="Subtitle Text View">
-                                                        <rect key="frame" x="0.0" y="20.5" width="169.5" height="36"/>
+                                                        <rect key="frame" x="0.0" y="24.5" width="169.5" height="40"/>
                                                         <color key="textColor" red="0.30980392159999998" green="0.4549019608" blue="0.5568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -58,7 +58,7 @@
                                                 </subviews>
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CPl-cH-d7b" customClass="NUXButton" customModule="WordPressAuthenticator">
-                                                <rect key="frame" x="135.5" y="86.5" width="84" height="44"/>
+                                                <rect key="frame" x="135.5" y="94.5" width="84" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="ALu-HJ-Bk4"/>
                                                 </constraints>
