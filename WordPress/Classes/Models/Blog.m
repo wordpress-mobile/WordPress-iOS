@@ -25,6 +25,7 @@ NSString * const ActiveModulesKeyPublicize = @"publicize";
 NSString * const ActiveModulesKeySharingButtons = @"sharedaddy";
 NSString * const OptionsKeyActiveModules = @"active_modules";
 NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled";
+NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
 
 @interface Blog ()
 
@@ -106,6 +107,11 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 
 #pragma mark -
 #pragma mark Custom methods
+
+- (BOOL)isAutomatedTransfer
+{
+    return [self getOptionValue:OptionsKeyIsAutomatedTransfer];
+}
 
 - (NSString *)icon
 {

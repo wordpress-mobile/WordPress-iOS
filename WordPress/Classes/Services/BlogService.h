@@ -12,12 +12,19 @@ extern NSString *const WPBlogUpdatedNotification;
 
 @interface BlogService : LocalCoreDataService
 
++ (instancetype)serviceWithMainContext;
+
 - (instancetype) init __attribute__((unavailable("must use initWithManagedObjectContext")));
 
 /**
  Returns the blog that matches with a given blogID
  */
 - (nullable Blog *)blogByBlogId:(NSNumber *)blogID;
+
+/**
+ Returns the blog that matches with a given blogID and account.username
+ */
+- (nullable Blog *)blogByBlogId:(NSNumber *)blogID andUsername:(NSString *)username;
 
 /**
  Returns the blog that matches with a given hostname
