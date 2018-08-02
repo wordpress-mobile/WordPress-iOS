@@ -939,6 +939,8 @@
 		D816B8CD2112D4AA0052CE4D /* NewsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8CC2112D4AA0052CE4D /* NewsManager.swift */; };
 		D816B8CF2112D4F90052CE4D /* DefaultNewsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8CE2112D4F90052CE4D /* DefaultNewsManager.swift */; };
 		D816B8D12112D5960052CE4D /* DefaultNewsManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8D02112D5960052CE4D /* DefaultNewsManagerTests.swift */; };
+		D816B8D42112D6E70052CE4D /* NewsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8D22112D6E70052CE4D /* NewsCard.swift */; };
+		D816B8D52112D6E70052CE4D /* NewsCard.xib in Resources */ = {isa = PBXBuildFile; fileRef = D816B8D32112D6E70052CE4D /* NewsCard.xib */; };
 		D816C1E920E0880400C4D82F /* NotificationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816C1E820E0880400C4D82F /* NotificationAction.swift */; };
 		D816C1EC20E0887C00C4D82F /* ApproveComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816C1EB20E0887C00C4D82F /* ApproveComment.swift */; };
 		D816C1EE20E0892200C4D82F /* Follow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816C1ED20E0892200C4D82F /* Follow.swift */; };
@@ -2602,6 +2604,8 @@
 		D816B8CC2112D4AA0052CE4D /* NewsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsManager.swift; sourceTree = "<group>"; };
 		D816B8CE2112D4F90052CE4D /* DefaultNewsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNewsManager.swift; sourceTree = "<group>"; };
 		D816B8D02112D5960052CE4D /* DefaultNewsManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNewsManagerTests.swift; sourceTree = "<group>"; };
+		D816B8D22112D6E70052CE4D /* NewsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCard.swift; sourceTree = "<group>"; };
+		D816B8D32112D6E70052CE4D /* NewsCard.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsCard.xib; sourceTree = "<group>"; };
 		D816C1E820E0880400C4D82F /* NotificationAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAction.swift; sourceTree = "<group>"; };
 		D816C1EB20E0887C00C4D82F /* ApproveComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApproveComment.swift; sourceTree = "<group>"; };
 		D816C1ED20E0892200C4D82F /* Follow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Follow.swift; sourceTree = "<group>"; };
@@ -6046,6 +6050,8 @@
 			children = (
 				D816B8CC2112D4AA0052CE4D /* NewsManager.swift */,
 				D816B8CE2112D4F90052CE4D /* DefaultNewsManager.swift */,
+				D816B8D22112D6E70052CE4D /* NewsCard.swift */,
+				D816B8D32112D6E70052CE4D /* NewsCard.xib */,
 			);
 			name = "News Card";
 			sourceTree = "<group>";
@@ -7057,6 +7063,7 @@
 				E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */,
 				4395A15B21066DCD00844E8E /* QuickStartChecklistCell.xib in Resources */,
 				E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */,
+				D816B8D52112D6E70052CE4D /* NewsCard.xib in Resources */,
 				B5C66B7A1ACF074600F68370 /* NoteBlockUserTableViewCell.xib in Resources */,
 				E6D2E1631B8AAA340000ED14 /* ReaderListStreamHeader.xib in Resources */,
 				CE1CCB2F2050502B000EE3AC /* MyProfileHeaderView.xib in Resources */,
@@ -7545,6 +7552,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D816B8D42112D6E70052CE4D /* NewsCard.swift in Sources */,
 				B50C0C621EF42AF200372C65 /* TextList+WordPress.swift in Sources */,
 				B5722E421D51A28100F40C5E /* Notification.swift in Sources */,
 				B53971501D537763006135EC /* NotificationBlockGroup.swift in Sources */,
