@@ -11,6 +11,7 @@ extension NoResultsViewController {
         let animatedBox = WPAnimatedBox()
         animatedBox.animate(afterDelay: Constants.animatedBoxDelay)
         configure(title: LocalizedText.fetchingTitle, buttonTitle: nil, subtitle: nil, attributedSubtitle: nil, image: nil, accessoryView: animatedBox)
+        view.layoutIfNeeded()
     }
 
     func configureForNoSearchResult(with searchQuery: String) {

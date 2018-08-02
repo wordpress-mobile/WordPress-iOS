@@ -160,15 +160,18 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     fileprivate func updateNoResultsView(for assetCount: Int) {
 
-        noResultsView.removeFromView()
         guard assetCount == 0 else { return }
 
         if isLoading {
             noResultsView.configureForFetching()
-        } else if hasSearchQuery {
-            noResultsView.configureForNoSearchResult(with: pickerDataSource.searchQuery)
         } else {
-            noResultsView.configureForNoAssets(userCanUploadMedia: blog.userCanUploadMedia)
+            noResultsView.removeFromView()
+
+            if hasSearchQuery {
+                noResultsView.configureForNoSearchResult(with: pickerDataSource.searchQuery)
+            } else {
+                noResultsView.configureForNoAssets(userCanUploadMedia: blog.userCanUploadMedia)
+            }
         }
     }
 
