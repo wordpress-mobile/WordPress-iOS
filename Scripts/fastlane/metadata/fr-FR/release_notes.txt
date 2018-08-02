@@ -1,3 +1,3 @@
-Journal d'activités ! Vous pouvez désormais voir toute l'activité de votre site.
-La prise en charge des GIF animés a été étendue au Lecteur et au sélecteur multimédia.
-Nombreuses modifications de l'interface utilisateur, améliorations de l'accessibilité et résolutions de bugs.
+Éditeur : plusieurs mises à jour pour la compatibilité de Gutenberg.
+Quelques améliorations de l’interface utilisateur.
+Un série de petits correctifs de bogues.
