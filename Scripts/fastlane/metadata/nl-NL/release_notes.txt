@@ -1,3 +1,3 @@
-Activiteitenlog! Je kunt nu precies zien wat er allemaal gebeurt op je site.
-Ondersteuning voor bewegende gifs toegevoegd aan de Reader en Mediakiezer.
-Een aantal UI-tweaks, toegankelijkheidsverbeteringen en bugfixes.
+Editor: meer updates voor Gutenberg compatibiliteit.
+Meerdere verbeteringen aan de UI.
+Een stel kleinere bug fixes.
