@@ -10,7 +10,7 @@ final class LocalNewsServiceTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        service = LocalNewsService(content: Constants.content)
+        service = LocalNewsService(fileName: Constants.content)
     }
 
     override func tearDown() {
