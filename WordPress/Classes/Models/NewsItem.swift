@@ -23,3 +23,15 @@ extension NewsItem {
         self.init(title: title, content: content, extendedInfoURL: url)
     }
 }
+
+extension NewsItem: CustomStringConvertible {
+    var description: String {
+        return "\(title): \(content)"
+    }
+}
+
+extension NewsItem: CustomDebugStringConvertible {
+    var debugDescription: String {
+        return description
+    }
+}
