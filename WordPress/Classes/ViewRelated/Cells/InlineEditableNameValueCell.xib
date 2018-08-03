@@ -47,12 +47,12 @@
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="aoI-Bw-gsZ" secondAttribute="bottom" id="6sO-Yu-79x"/>
                     <constraint firstItem="aoI-Bw-gsZ" firstAttribute="leading" secondItem="7hQ-Qd-7gD" secondAttribute="trailing" id="7da-If-Hjk"/>
-                    <constraint firstItem="7hQ-Qd-7gD" firstAttribute="width" secondItem="aoI-Bw-gsZ" secondAttribute="width" multiplier="0.4" id="T1g-JA-BoX"/>
+                    <constraint firstItem="7hQ-Qd-7gD" firstAttribute="width" secondItem="aoI-Bw-gsZ" secondAttribute="width" multiplier="0.45" id="T1g-JA-BoX"/>
                     <constraint firstItem="aoI-Bw-gsZ" firstAttribute="top" secondItem="6tg-46-1kN" secondAttribute="top" id="cht-u8-Mxn"/>
                     <constraint firstItem="7hQ-Qd-7gD" firstAttribute="leading" secondItem="6tg-46-1kN" secondAttribute="leading" id="jfM-h3-9Cc"/>
                     <constraint firstAttribute="bottom" secondItem="7hQ-Qd-7gD" secondAttribute="bottom" id="kAm-Mb-ESq"/>
                     <constraint firstItem="7hQ-Qd-7gD" firstAttribute="top" secondItem="6tg-46-1kN" secondAttribute="top" id="kuV-uc-XHs"/>
-                    <constraint firstAttribute="trailing" secondItem="aoI-Bw-gsZ" secondAttribute="trailing" constant="5" id="kve-lr-n0n"/>
+                    <constraint firstAttribute="trailing" secondItem="aoI-Bw-gsZ" secondAttribute="trailing" id="kve-lr-n0n"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
