@@ -2,6 +2,7 @@ import UIKit
 import XCTest
 
 class WordPressScreenshotGeneration: XCTestCase {
+    let imagesWaitTime: UInt32 = 10
 
     override func setUp() {
         super.setUp()
@@ -89,7 +90,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         if UIDevice.current.userInterfaceIdiom == .pad {
             blogDetailsTable.cells["Blog Post Row"].tap()
             waitForElementToExist(element: app.tables["PostsTable"])
-            sleep(5) // Wait for posts to load
+            sleep(imagesWaitTime) // Wait for post images to load
         }
         snapshot("3-My-Site")
 
@@ -102,7 +103,7 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         let editorNavigationBar = app.navigationBars["Azctec Editor Navigation Bar"]
         XCTAssert(editorNavigationBar.exists, "Post editor not found")
-        sleep(5) // wait for post images to load
+        sleep(imagesWaitTime) // wait for post images to load
         // The title field gets focus automatically
         snapshot("1-PostEditor")
 
@@ -138,7 +139,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         discoverCell.tap() // tap Discover
 
         waitForElementToExist(element: app.tables["Reader"])
-        sleep(5) // Wait for content to load
+        sleep(imagesWaitTime) // Wait for images to load
         snapshot("2-Reader")
 
         // Get Notifications screenshot
