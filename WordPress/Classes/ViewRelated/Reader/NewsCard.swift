@@ -16,5 +16,13 @@ final class NewsCard: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .red
+
+        loadContent()
+    }
+
+    private func loadContent() {
+        manager.load { newsItem in
+            print("news item")
+        }
     }
 }
