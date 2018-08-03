@@ -8,7 +8,7 @@ final class LocalNewsService: NewsService {
     }
 
     func load(then completion: @escaping (Result<NewsItem>) -> Void) {
-        let newsItem = NewsItem(content: content)
+        let newsItem = NewsItem(title: "A title", content: content, extendedInfoURL: URL(string: "")!)
         let result: Result = .success(newsItem)
         completion(result)
     }
