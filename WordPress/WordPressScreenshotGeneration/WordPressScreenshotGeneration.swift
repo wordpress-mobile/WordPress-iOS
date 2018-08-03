@@ -38,10 +38,7 @@ class WordPressScreenshotGeneration: XCTestCase {
 
         // Logout first if needed
         if !loginButton.waitForExistence(timeout: 3.0) {
-            // Log out
-            app.tabBars["Main Navigation"].buttons["meTabButton"].tap()
-            app.tables.element(boundBy: 0).cells.element(boundBy: 5).tap() // Tap disconnect
-            app.alerts.element(boundBy: 0).buttons.element(boundBy: 1).tap() // Tap disconnect
+            logout()
         }
 
         loginButton.tap()
@@ -78,6 +75,28 @@ class WordPressScreenshotGeneration: XCTestCase {
         if cancelAlertButton.waitForExistence(timeout: 3.0) {
             cancelAlertButton.tap()
         }
+    }
+
+    func logout() {
+        let app = XCUIApplication()
+        app.tabBars["Main Navigation"].buttons["meTabButton"].tap()
+
+        let loginButton = app.buttons["Log In Button"]
+        let logoutButton = app.tables.element(boundBy: 0).cells.element(boundBy: 5)
+        let logoutAlert = app.alerts.element(boundBy: 0)
+
+        // The order of cancel and log out in the alert varies by language
+        // There is no way to set accessibility identifers on them, so we must try both
+        logoutButton.tap()
+        logoutAlert.buttons.buttons.element(boundBy: 1).tap()
+
+        if !loginButton.waitForExistence(timeout: 3.0) {
+            // Still not logged out, try the other button
+            logoutButton.tap()
+            logoutAlert.buttons.buttons.element(boundBy: 0).tap()
+        }
+
+        waitForElementToExist(element: loginButton)
     }
 
     func testGenerateScreenshots() {
