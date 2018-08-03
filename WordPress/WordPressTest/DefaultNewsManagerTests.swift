@@ -3,7 +3,7 @@ import XCTest
 
 final class DefaultNewsManagerTests: XCTestCase {
     private struct Constants {
-        static let content = "🤨🤦🏻‍♂️"
+        static let title = "This is an awesome new feature!"
     }
 
     private var manager: NewsManager?
@@ -11,7 +11,7 @@ final class DefaultNewsManagerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        service = LocalNewsService(fileName: Constants.content)
+        service = LocalNewsService(fileName: "News")
         manager = DefaultNewsManager(service: service!)
     }
 
@@ -27,7 +27,7 @@ final class DefaultNewsManagerTests: XCTestCase {
             case .error:
                 XCTFail()
             case .success(let newsItem):
-                XCTAssertEqual(newsItem.content, Constants.content)
+                XCTAssertEqual(newsItem.title, Constants.title)
             }
         })
     }
