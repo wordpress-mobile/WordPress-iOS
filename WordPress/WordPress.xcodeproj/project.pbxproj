@@ -358,9 +358,6 @@
 		7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 7059CD200F332B6500A0660B /* WPCategoryTree.m */; };
 		722F5726ACB4A276B0CF3C83 /* Pods_WordPress.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 556E3A9C1600564F6A3CADF6 /* Pods_WordPress.framework */; };
 		7326718B210F75D2001FA866 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7326718D210F75D2001FA866 /* Localizable.strings */; };
-		734740792114C296007FDDFF /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 734740762114C296007FDDFF /* Info.plist */; };
-		7347407A2114C296007FDDFF /* Info-Alpha.plist in Resources */ = {isa = PBXBuildFile; fileRef = 734740772114C296007FDDFF /* Info-Alpha.plist */; };
-		7347407B2114C296007FDDFF /* Info-Internal.plist in Resources */ = {isa = PBXBuildFile; fileRef = 734740782114C296007FDDFF /* Info-Internal.plist */; };
 		7358E6BF210BD318002323EB /* WordPressNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7358E6B8210BD318002323EB /* WordPressNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7360018F20A265C7001E5E31 /* String+Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7360018E20A265C7001E5E31 /* String+Files.swift */; };
 		73713583208EA4B900CCDFC8 /* Blog+Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73713582208EA4B900CCDFC8 /* Blog+Files.swift */; };
@@ -7159,10 +7156,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				734740792114C296007FDDFF /* Info.plist in Resources */,
 				7326718B210F75D2001FA866 /* Localizable.strings in Resources */,
-				7347407A2114C296007FDDFF /* Info-Alpha.plist in Resources */,
-				7347407B2114C296007FDDFF /* Info-Internal.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
