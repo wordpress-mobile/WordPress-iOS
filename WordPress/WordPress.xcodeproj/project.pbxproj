@@ -363,6 +363,7 @@
 		7360018F20A265C7001E5E31 /* String+Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7360018E20A265C7001E5E31 /* String+Files.swift */; };
 		73713583208EA4B900CCDFC8 /* Blog+Files.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73713582208EA4B900CCDFC8 /* Blog+Files.swift */; };
 		7396FE66210F730600496D0D /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7396FE65210F730600496D0D /* NotificationService.swift */; };
+		73ACDF992114FE4500233AD4 /* NotificationSupportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73ACDF982114FE4500233AD4 /* NotificationSupportService.swift */; };
 		740219FE202E12F4006CC39F /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741E22441FC0CC55007967AB /* UploadOperation.swift */; };
 		740219FF202E12F4006CC39F /* PostUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF4D711FE417D200E3EBFE /* PostUploadOperation.swift */; };
 		74021A00202E12F4006CC39F /* MediaUploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF4D6D1FE417D200E3EBFE /* MediaUploadOperation.swift */; };
@@ -1930,6 +1931,7 @@
 		7360018E20A265C7001E5E31 /* String+Files.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Files.swift"; sourceTree = "<group>"; };
 		73713582208EA4B900CCDFC8 /* Blog+Files.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+Files.swift"; sourceTree = "<group>"; };
 		7396FE65210F730600496D0D /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		73ACDF982114FE4500233AD4 /* NotificationSupportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSupportService.swift; sourceTree = "<group>"; };
 		73FEFF1991AE9912FB2DA9BC /* Pods-WordPressNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressNotificationServiceExtension.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressNotificationServiceExtension/Pods-WordPressNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		740516882087B73400252FD0 /* SearchableActivityConvertable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableActivityConvertable.swift; sourceTree = "<group>"; };
 		740BD8331A0D4C3600F04D18 /* WPUploadStatusButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPUploadStatusButton.h; sourceTree = "<group>"; };
@@ -4981,6 +4983,7 @@
 				08AAD69E1CBEA47D002B2418 /* MenusService.m */,
 				B5015C571D4FDBB300C9449E /* NotificationActionsService.swift */,
 				B5EFB1C11B31B98E007608A3 /* NotificationSettingsService.swift */,
+				73ACDF982114FE4500233AD4 /* NotificationSupportService.swift */,
 				B5F67AC61DB7D81300482C62 /* NotificationSyncMediator.swift */,
 				E1209FA31BB4978B00D69778 /* PeopleService.swift */,
 				E1D7FF371C74EB0E00E7E5E5 /* PlanService.swift */,
@@ -7959,6 +7962,7 @@
 				93414DE51E2D25AE003143A3 /* PostEditorState.swift in Sources */,
 				1707CE421F3121750020B7FE /* UICollectionViewCell+Tint.swift in Sources */,
 				B5176CC31CDCE1C30083CF2D /* ManagedPerson+CoreDataProperties.swift in Sources */,
+				73ACDF992114FE4500233AD4 /* NotificationSupportService.swift in Sources */,
 				08D345531CD7F50900358E8C /* MenusSelectionView.m in Sources */,
 				5D6C4B131B604190005E3C43 /* UITextView+RichTextView.swift in Sources */,
 				98D60B9F1FFEE3D800145190 /* SiteCreationThemeSelectionHeaderView.swift in Sources */,
