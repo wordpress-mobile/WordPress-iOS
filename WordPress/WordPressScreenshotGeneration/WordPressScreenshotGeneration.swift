@@ -118,7 +118,7 @@ class WordPressScreenshotGeneration: XCTestCase {
         if UIDevice.current.userInterfaceIdiom == .phone {
             app.navigationBars.element(boundBy: 0).buttons.element(boundBy: 0).tap() // back button
         }
-        blogDetailsTable.cells.element(boundBy: 0).tap() // tap Stats
+        blogDetailsTable.cells["Stats Row"].tap() // tap Stats
         app.segmentedControls.element(boundBy: 0).buttons.element(boundBy: 1).tap() // tap Days
 
         // Wait for stats to be loaded
