@@ -3,14 +3,16 @@ import XCTest
 
 final class LocalNewsServiceTests: XCTestCase {
     private struct Constants {
-        static let content = "😳🎉"
+        static let title = "This is an awesome new feature!"
+        static let content = "This is long form content. Here we explain why this feature is awesome"
+        static let url = URL(string: "https://wordpress.com")!
     }
 
     private var service: NewsService?
 
     override func setUp() {
         super.setUp()
-        service = LocalNewsService(fileName: Constants.content)
+        service = LocalNewsService(fileName: "News")
     }
 
     override func tearDown() {
@@ -21,10 +23,11 @@ final class LocalNewsServiceTests: XCTestCase {
     func testServiceReturnsExpectedContent() {
         service?.load(then: { result in
             switch result {
-            case .error:
+            case .error (let error):
+                print(error)
                 XCTFail()
             case .success(let newsItem):
-                XCTAssertEqual(newsItem.content, Constants.content)
+                XCTAssertEqual(newsItem.title, Constants.title)
             }
         })
     }

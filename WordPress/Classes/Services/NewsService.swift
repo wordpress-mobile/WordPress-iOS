@@ -2,3 +2,8 @@
 protocol NewsService {
     func load(then completion: @escaping (Result<NewsItem>) -> Void)
 }
+
+enum NewsError: Error {
+    case fileNotFound
+    case invalidContent
+}
