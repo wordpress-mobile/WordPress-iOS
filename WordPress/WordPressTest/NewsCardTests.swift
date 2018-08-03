@@ -11,7 +11,7 @@ final class NewsCardTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        manager = DefaultNewsManager(service: LocalNewsService(content: Constants.content))
+        manager = DefaultNewsManager(service: LocalNewsService(fileName: Constants.content))
         subject = NewsCard(manager: manager!)
         let _ = subject?.view
     }

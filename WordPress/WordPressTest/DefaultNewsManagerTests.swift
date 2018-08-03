@@ -11,7 +11,7 @@ final class DefaultNewsManagerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        service = LocalNewsService(content: Constants.content)
+        service = LocalNewsService(fileName: Constants.content)
         manager = DefaultNewsManager(service: service!)
     }
 
