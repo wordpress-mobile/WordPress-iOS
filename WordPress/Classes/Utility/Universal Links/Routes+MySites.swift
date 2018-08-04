@@ -41,8 +41,15 @@ extension MySitesRoute: Route {
 
 extension MySitesRoute: NavigationAction {
     func perform(_ values: [String: String]?) {
-        guard let coordinator = WPTabBarController.sharedInstance().mySitesCoordinator,
-            let blog = blog(from: values) else {
+        guard let coordinator = WPTabBarController.sharedInstance().mySitesCoordinator else {
+            return
+        }
+
+        guard let blog = blog(from: values) else {
+            coordinator.showMySites()
+            postFailureNotice(title: NSLocalizedString("Site not found",
+                                                       comment: "Error notice shown if the app can't find a specific site belonging to the user"))
+            WPAppAnalytics.track(.deepLinkFailed, withProperties: ["route": path])
             return
         }
 
@@ -64,16 +71,5 @@ extension MySitesRoute: NavigationAction {
         case .managePlugins:
             coordinator.showManagePlugins(for: blog)
         }
-    }
-
-    private func blog(from values: [String: String]?) -> Blog? {
-        guard let domain = values?["domain"] else {
-            return nil
-        }
-
-        let context = ContextManager.sharedInstance().mainContext
-        let service = BlogService(managedObjectContext: context)
-
-        return service.blog(byHostname: domain)
     }
 }

@@ -1,0 +1,19 @@
+{
+    "ranges" : [
+                {
+                "url" : "https:\/\/ctarda.com",
+                "indices" : [
+                             35,
+                             53
+                             ]
+                },
+                {
+                "type" : "i",
+                "indices" : [
+                             35,
+                             53
+                             ]
+                }
+                ],
+    "text" : "Website address (home url) set to \"https:\/\/ctarda.com\""
+}

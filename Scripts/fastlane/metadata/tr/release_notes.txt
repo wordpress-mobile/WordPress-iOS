@@ -1,3 +1,3 @@
-Etkinlik günlüğü! Artık sitenizde olan her şeyi görebilirsiniz.
-Animasyonlu gif desteği, Okuyucu ve ortam seçicide genişletildi.
-Bir grup kullanıcı arayüz düzeltmeleri, erişilebilirlik iyileştirmeleri ve hata düzeltmeleri.
+Editör: Gutenberg uyumluluğu için daha fazla güncelleme.
+UI üzerinde pek çok iyileştirmeler.
+Bir kaç küçük hata düzeltmesi.
