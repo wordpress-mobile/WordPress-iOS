@@ -818,6 +818,12 @@ fileprivate extension ShareModularViewController {
     }
 
     fileprivate func prepareForPublishing() {
+        // We are preemptively logging the Tracks posted event here because if handled in a completion handler,
+        // there is a good chance iOS will invalidate that network call and the event is never received server-side.
+        // See https://github.com/wordpress-mobile/WordPress-iOS/issues/9789 for more details.
+        self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
+        ////
+
         isPublishingPost = true
         sitesTableView.refreshControl = nil
         clearSiteDataAndRefreshSitesTable()
@@ -836,7 +842,6 @@ fileprivate extension ShareModularViewController {
                                          status: shareData.postStatus.rawValue,
                                          siteID: siteID,
                                          onComplete: {
-                                            self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
                                             self.dismiss()
         }, onFailure: {
             let error = self.createErrorWithDescription("Failed to save and upload post with no media.")
@@ -869,7 +874,6 @@ fileprivate extension ShareModularViewController {
                                     siteID: siteID,
                                     localMediaFileURLs: localImageURLs,
                                     requestEnqueued: {
-                                        self.tracks.trackExtensionPosted(self.shareData.postStatus.rawValue)
                                         self.dismiss()
         }, onFailure: {
             let error = self.createErrorWithDescription("Failed to save and upload post with media.")

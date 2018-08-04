@@ -12,6 +12,7 @@ static CGFloat const AxisPadding = 18.0f;
         self.backgroundColor = [UIColor whiteColor];
         self.contentMode = UIViewContentModeRedraw;
         self.accessibilityLabel = NSLocalizedString(@"Visitors and Views Graph", @"Accessibility label for visitors and views graph view");
+        self.accessibilityIdentifier = @"visitorsViewsGraph";
         self.isAccessibilityElement = YES;
     }
     return self;

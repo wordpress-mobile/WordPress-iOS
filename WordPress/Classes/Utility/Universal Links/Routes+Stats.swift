@@ -59,73 +59,81 @@ extension StatsRoute: NavigationAction {
         case .site:
             if let blog = blog(from: values) {
                 coordinator.showStats(for: blog)
+            } else {
+                showStatsForDefaultBlog(from: values, with: coordinator)
             }
         case .daySite:
-            if let blog = blog(from: values) {
-                coordinator.showStats(for: blog,
-                                      timePeriod: StatsPeriodType.days)
-            }
+            showStatsForBlog(from: values, timePeriod: .days, using: coordinator)
         case .weekSite:
-            if let blog = blog(from: values) {
-                coordinator.showStats(for: blog,
-                                      timePeriod: StatsPeriodType.weeks)
-            }
+            showStatsForBlog(from: values, timePeriod: .weeks, using: coordinator)
         case .monthSite:
-            if let blog = blog(from: values) {
-                coordinator.showStats(for: blog,
-                                      timePeriod: StatsPeriodType.months)
-            }
+            showStatsForBlog(from: values, timePeriod: .months, using: coordinator)
         case .yearSite:
-            if let blog = blog(from: values) {
-                coordinator.showStats(for: blog,
-                                      timePeriod: StatsPeriodType.years)
-            }
+            showStatsForBlog(from: values, timePeriod: .years, using: coordinator)
         case .insights:
-            if let blog = blog(from: values) {
-                coordinator.showStats(for: blog,
-                                      timePeriod: StatsPeriodType.insights)
-            }
+            showStatsForBlog(from: values, timePeriod: .insights, using: coordinator)
         case .dayCategory:
-            if let blog = blog(from: values) {
-                coordinator.showStats(for: blog,
-                                      timePeriod: StatsPeriodType.days)
-            }
+            showStatsForBlog(from: values, timePeriod: .days, using: coordinator)
         case .annualStats:
-            if let blog = blog(from: values) {
-                coordinator.showStats(for: blog,
-                                      timePeriod: StatsPeriodType.years)
-            }
+            showStatsForBlog(from: values, timePeriod: .years, using: coordinator)
         case .activityLog:
             if let blog = blog(from: values) {
                 coordinator.showActivityLog(for: blog)
+            } else {
+                showMySitesAndFailureNotice(using: coordinator)
             }
         }
     }
 
-    private func defaultBlog() -> Blog? {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = BlogService(managedObjectContext: context)
-
-        return service.lastUsedOrFirstBlog()
+    private func showStatsForBlog(from values: [String: String]?,
+                                  timePeriod: StatsPeriodType,
+                                  using coordinator: MySitesCoordinator) {
+        if let blog = blog(from: values) {
+            coordinator.showStats(for: blog,
+                                  timePeriod: timePeriod)
+        } else {
+            showMySitesAndFailureNotice(using: coordinator)
+        }
     }
 
-    private func blog(from values: [String: String]?) -> Blog? {
-        guard let domain = values?["domain"] else {
+    private func showMySitesAndFailureNotice(using coordinator: MySitesCoordinator) {
+        coordinator.showMySites()
+        postFailureNotice(title: NSLocalizedString("Site not found",
+                                                   comment: "Error notice shown if the app can't find a specific site belonging to the user"))
+        WPAppAnalytics.track(.deepLinkFailed, withProperties: ["route": path])
+    }
+
+    private func showStatsForDefaultBlog(from values: [String: String]?,
+                                         with coordinator: MySitesCoordinator) {
+        // It's possible that the stats route can come in without a domain
+        // as the last component, if the user is viewing stats for "All My Sites" in Calypso.
+        // In this case, we'll check whether the last component is actually a
+        // time period, and if so we'll show that time period for the default site.
+        guard let component = values?["domain"],
+            let timePeriod = StatsPeriodType.fromString(component),
+            let blog = defaultBlog() else {
+            return
+        }
+
+        coordinator.showStats(for: blog, timePeriod: timePeriod)
+    }
+}
+
+private extension StatsPeriodType {
+    static func fromString(_ string: String) -> StatsPeriodType? {
+        switch string {
+        case "day":
+            return .days
+        case "week":
+            return .weeks
+        case "month":
+            return .months
+        case "year":
+            return .years
+        case "insights":
+            return .insights
+        default:
             return nil
         }
-
-        let context = ContextManager.sharedInstance().mainContext
-        let service = BlogService(managedObjectContext: context)
-
-        if let blog = service.blog(byHostname: domain) {
-            return blog
-        }
-
-        // Some stats URLs use a site ID instead
-        if let siteIDValue = Int(domain) {
-            return service.blog(byBlogId: NSNumber(value: siteIDValue))
-        }
-
-        return nil
     }
 }

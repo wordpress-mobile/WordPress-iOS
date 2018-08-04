@@ -26,7 +26,7 @@ class PostPreviewGenerator: NSObject {
         }
 
         guard WordPressAppDelegate.sharedInstance().connectionAvailable else {
-            delegate?.previewFailed(self, message: NSLocalizedString("The internet connection appears to be offline.", comment: ""))
+            delegate?.previewFailed(self, message: NSLocalizedString("The internet connection appears to be offline.", comment: "An error message."))
             return
         }
 
@@ -34,7 +34,7 @@ class PostPreviewGenerator: NSObject {
     }
 
     @objc func previewRequestFailed(error: NSError) {
-        delegate?.previewFailed(self, message: NSLocalizedString("There has been an error while trying to reach your site.", comment: ""))
+        delegate?.previewFailed(self, message: NSLocalizedString("There has been an error while trying to reach your site.", comment: "An error message."))
     }
 
     @objc func interceptRedirect(request: URLRequest) -> URLRequest? {

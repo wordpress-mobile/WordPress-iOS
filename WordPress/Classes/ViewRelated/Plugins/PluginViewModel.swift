@@ -5,6 +5,8 @@ class PluginViewModel: Observable {
     private enum State {
         case plugin(Plugin)
         case directoryEntry(PluginDirectoryEntry)
+        case loading
+        case error
     }
 
     private var state: State {
@@ -41,6 +43,15 @@ class PluginViewModel: Observable {
         return nil
     }
 
+    private let noResultsLoadingModel = NoResultsViewController.Model(title: String.Loading.title)
+
+    private let noResultsUnknownErrorModel = NoResultsViewController.Model(title: String.UnknownError.title,
+                                                                           subtitle: String.UnknownError.description,
+                                                                           buttonText: String.UnknownError.buttonTitle)
+
+    private let noResultsConnectivityErrorModel = NoResultsViewController.Model(title: String.NoConnectionError.title,
+                                                                                subtitle: String.NoConnectionError.description)
+
 
     let site: JetpackSiteRef
     var capabilities: SitePluginCapabilities?
@@ -49,11 +60,14 @@ class PluginViewModel: Observable {
     let changeDispatcher = Dispatcher<Void>()
     let queryReceipt: Receipt?
 
+    private let store: PluginStore
+
     init(plugin: Plugin, capabilities: SitePluginCapabilities, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         self.state = .plugin(plugin)
         self.capabilities = capabilities
         self.site = site
         self.isInstallingPlugin = false
+        self.store = store
 
         queryReceipt = nil
         storeReceipt = store.onChange { [weak self] in
@@ -66,32 +80,49 @@ class PluginViewModel: Observable {
         }
     }
 
-    init(directoryEntry: PluginDirectoryEntry, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
+    convenience init(directoryEntry: PluginDirectoryEntry, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
+        let state: State
         if let plugin = store.getPlugin(slug: directoryEntry.slug, site: site) {
-            self.state = .plugin(plugin)
+            state = .plugin(plugin)
         } else {
-            self.state = .directoryEntry(directoryEntry)
+            state = .directoryEntry(directoryEntry)
         }
-        self.capabilities = store.getPlugins(site: site)?.capabilities
+        self.init(with: directoryEntry.slug, state: state, site: site, store: store)
+    }
+
+    convenience init(slug: String, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
+        let state: State
+        if let plugin = store.getPlugin(slug: slug, site: site) {
+            state = .plugin(plugin)
+        } else {
+            state = .loading
+        }
+        self.init(with: slug, state: state, site: site, store: store)
+    }
+
+    private init(with slug: String, state: State, site: JetpackSiteRef, store: PluginStore) {
+        self.store = store
+        self.state = state
+        self.capabilities = self.store.getPlugins(site: site)?.capabilities
         self.site = site
         self.isInstallingPlugin = false
 
-        queryReceipt = store.query(.directoryEntry(slug: directoryEntry.slug))
+        queryReceipt = self.store.query(.directoryEntry(slug: slug))
 
-        storeReceipt = store.onChange { [weak self] in
-            guard let entry = store.getPluginDirectoryEntry(slug: directoryEntry.slug) else {
-                self?.dismiss?()
+        storeReceipt = self.store.onChange { [weak self] in
+            guard let entry = self?.store.getPluginDirectoryEntry(slug: slug) else {
+                self?.state = .error
                 return
             }
 
-            if let plugin = store.getPlugin(slug: entry.slug, site: site) {
+            if let plugin = self?.store.getPlugin(slug: entry.slug, site: site) {
                 self?.state = .plugin(plugin)
             } else {
                 self?.state = .directoryEntry(entry)
             }
 
-            self?.capabilities = store.getPlugins(site: site)?.capabilities
-            self?.isInstallingPlugin = store.isInstallingPlugin(site: site, slug: directoryEntry.slug)
+            self?.capabilities = self?.store.getPlugins(site: site)?.capabilities
+            self?.isInstallingPlugin = self?.store.isInstallingPlugin(site: site, slug: slug) ?? false
         }
     }
 
@@ -177,6 +208,27 @@ class PluginViewModel: Observable {
         return versionRow
     }
 
+    func noResultsViewModel() -> NoResultsViewController.Model? {
+        switch state {
+        case .loading:
+            return noResultsLoadingModel
+        case .error:
+            return getNoResultsErrorModel()
+        default:
+            return nil
+        }
+    }
+
+    private func getNoResultsErrorModel() -> NoResultsViewController.Model {
+        let appDelegate = WordPressAppDelegate.sharedInstance()
+        let hasConnection = appDelegate?.connectionAvailable ?? true //defaults to unknown error.
+        if hasConnection {
+            return noResultsUnknownErrorModel
+        } else {
+            return noResultsConnectivityErrorModel
+        }
+    }
+
     private func headerRow(directoryEntry: PluginDirectoryEntry?) -> ImmuTableRow? {
         guard let entry = directoryEntry else { return nil }
 
@@ -202,9 +254,12 @@ class PluginViewModel: Observable {
     }
 
     private func autoUpdatesRow(plugin: Plugin?, capabilities: SitePluginCapabilities?) -> ImmuTableRow? {
+        // Note: All plugins on atomic sites are autoupdated, so we do not want to show the switch
         guard let autoUpdatePlugin = plugin,
             let siteCapabilities = capabilities,
-            siteCapabilities.autoupdate && !autoUpdatePlugin.state.automanaged else { return nil }
+            !isAutomatedTransfer(site: site),
+            siteCapabilities.autoupdate,
+            !autoUpdatePlugin.state.automanaged else { return nil }
 
         return SwitchRow(
             title: NSLocalizedString("Autoupdates", comment: "Whether a plugin has enabled automatic updates"),
@@ -426,9 +481,14 @@ class PluginViewModel: Observable {
         }
     }
 
+    private func isAutomatedTransfer(site: JetpackSiteRef) -> Bool {
+        let service = BlogService.withMainContext()
+        let blog = service.blog(byBlogId: site.siteID as NSNumber, andUsername: site.username)
+        return blog?.isAutomatedTransfer() ?? false
+    }
+
     private func getSiteTitle() -> String? {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = BlogService(managedObjectContext: context)
+        let service = BlogService.withMainContext()
         let blog = service.blog(byBlogId: site.siteID as NSNumber)
         return blog?.settings?.name?.nonEmptyString()
     }
@@ -512,5 +572,41 @@ class PluginViewModel: Observable {
 
     static var immutableRows: [ImmuTableRow.Type] {
         return [SwitchRow.self, DestructiveButtonRow.self, NavigationItemRow.self, TextRow.self, TextWithButtonRow.self, PluginHeaderRow.self, LinkRow.self, ExpandableRow.self]
+    }
+}
+
+private extension String {
+    enum UnknownError {
+        static let title = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading the plugin")
+        static let description = NSLocalizedString("There was an error loading this plugin", comment: "Text displayed when there is a failure loading the plugin")
+        static let buttonTitle = NSLocalizedString("Contact support", comment: "Button label for contacting support")
+    }
+
+    enum NoConnectionError {
+        static let title = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
+        static let description = NSLocalizedString("An active internet connection is required to view plugins", comment: "Error message when the user tries to visualize a plugin without internet connection")
+    }
+
+    enum Loading {
+        static let title = NSLocalizedString("Loading Plugin...", comment: "Text displayed while loading an specific plugin")
+    }
+}
+
+extension PluginViewModel {
+    func networkStatusDidChange(active: Bool) {
+        guard active else {
+            return
+        }
+
+        switch state {
+        case .error:
+            store.processQueries()
+            state = .loading
+        case .directoryEntry(let entry):
+            store.processQueries()
+            state = .directoryEntry(entry)
+        default:
+            break
+        }
     }
 }
