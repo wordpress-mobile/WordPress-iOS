@@ -387,7 +387,7 @@ private extension InteractiveNotificationsManager {
                 return UNTextInputNotificationAction(identifier: identifier,
                                                      title: description,
                                                      options: notificationActionOptions,
-                                                     textInputButtonTitle: NSLocalizedString("Reply", comment: ""),
+                                                     textInputButtonTitle: NSLocalizedString("Reply", comment: "Verb. Button title. Reply to a comment."),
                                                      textInputPlaceholder: NSLocalizedString("Write a reply…", comment: "Placeholder text for inline compose view"))
             default:
                 return UNNotificationAction(identifier: identifier, title: description, options: notificationActionOptions)

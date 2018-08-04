@@ -29,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param      filename    The name of the JSON file to be loaded.
  */
 - (NSManagedObject *)loadEntityNamed:(NSString *)entityName withContentsOfFile:(NSString *)filename;
+- (NSDictionary *)objectWithContentOfFile:(NSString *)filename;
 
 @end
 
