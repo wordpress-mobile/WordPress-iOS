@@ -164,6 +164,13 @@ class WordPressScreenshotGeneration: XCTestCase {
         // Get Notifications screenshot
         app.tabBars["Main Navigation"].buttons["notificationsTabButton"].tap()
         XCTAssert(app.tables["Notifications Table"].exists, "Notifications Table not found")
+        
+        //Tap the "Not Now" button to dismiss the notifications prompt
+        let notNowButton = app.buttons["no-button"]
+        if notNowButton.exists{
+            notNowButton.tap()
+        }
+        
         snapshot("5-Notifications")
     }
 }
