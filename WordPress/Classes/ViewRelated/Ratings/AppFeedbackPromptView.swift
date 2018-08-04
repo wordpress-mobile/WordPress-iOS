@@ -52,6 +52,7 @@ class AppFeedbackPromptView: UIView {
         leftButton.tintColor = .white
         leftButton.setTitleColor(UIColor.white, for: .normal)
         leftButton.titleLabel?.font = textFont
+        leftButton.accessibilityIdentifier = "yes-button"
         buttonStack.addArrangedSubview(leftButton)
 
         // Could be Better Button
@@ -60,6 +61,7 @@ class AppFeedbackPromptView: UIView {
         rightButton.tintColor = .white
         rightButton.setTitleColor(UIColor.white, for: .normal)
         rightButton.titleLabel?.font = textFont
+        rightButton.accessibilityIdentifier = "no-button"
         buttonStack.addArrangedSubview(rightButton)
 
         setupConstraints()
