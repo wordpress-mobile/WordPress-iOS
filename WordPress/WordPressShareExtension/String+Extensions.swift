@@ -87,4 +87,9 @@ extension String {
 
         return self + returnURLString
     }
+
+    /// Returns true if this String consists of digits
+    var isNumeric: Bool {
+        return !isEmpty && rangeOfCharacter(from: CharacterSet.decimalDigits.inverted) == nil
+    }
 }
