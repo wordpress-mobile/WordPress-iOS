@@ -253,6 +253,7 @@
 		436D55E521148C2A00CEAA33 /* RegisterDomainDetailsFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 436D55E421148C2A00CEAA33 /* RegisterDomainDetailsFooterView.xib */; };
 		436D55E721148C6A00CEAA33 /* RegisterDomainDetailsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D55E621148C6A00CEAA33 /* RegisterDomainDetailsFooterView.swift */; };
 		436D56002116FC4F00CEAA33 /* UIView+Autolayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D55FF2116FC4F00CEAA33 /* UIView+Autolayout.swift */; };
+		436D56022116FC6F00CEAA33 /* UIViewController+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D56012116FC6F00CEAA33 /* UIViewController+Additions.swift */; };
 		437542E31DD4E19E00D6B727 /* EditPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437542E21DD4E19E00D6B727 /* EditPostViewController.swift */; };
 		437EF0CA20F79C520086129B /* RegisterDomainSuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437EF0C920F79C520086129B /* RegisterDomainSuggestionsViewController.swift */; };
 		4388FEFE20A4E0B900783948 /* NotificationsViewController+AppRatings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388FEFD20A4E0B900783948 /* NotificationsViewController+AppRatings.swift */; };
@@ -1642,6 +1643,7 @@
 		436D55E421148C2A00CEAA33 /* RegisterDomainDetailsFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegisterDomainDetailsFooterView.xib; sourceTree = "<group>"; };
 		436D55E621148C6A00CEAA33 /* RegisterDomainDetailsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDomainDetailsFooterView.swift; sourceTree = "<group>"; };
 		436D55FF2116FC4F00CEAA33 /* UIView+Autolayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Autolayout.swift"; sourceTree = "<group>"; };
+		436D56012116FC6F00CEAA33 /* UIViewController+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Additions.swift"; sourceTree = "<group>"; };
 		437542E21DD4E19E00D6B727 /* EditPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditPostViewController.swift; sourceTree = "<group>"; };
 		437EF0C920F79C520086129B /* RegisterDomainSuggestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDomainSuggestionsViewController.swift; sourceTree = "<group>"; };
 		4388FEFD20A4E0B900783948 /* NotificationsViewController+AppRatings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationsViewController+AppRatings.swift"; sourceTree = "<group>"; };
@@ -5139,6 +5141,7 @@
 				9F3EFCA2208E308900268758 /* UIViewController+Notice.swift */,
 				B5969E2120A49E86005E9DF1 /* UIAlertController+Helpers.swift */,
 				E14DF70520C922F200959BA9 /* NotificationCenter+ObserveOnce.swift */,
+				436D56012116FC6F00CEAA33 /* UIViewController+Additions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -7919,6 +7922,7 @@
 				7E729C2A209A241100F76599 /* AbstractPost+PostInformation.swift in Sources */,
 				8236EB502024ED8C007C7CF9 /* NotificationsViewController+JetpackPrompt.swift in Sources */,
 				5D732F971AE84E3C00CD89E7 /* PostListFooterView.m in Sources */,
+				436D56022116FC6F00CEAA33 /* UIViewController+Additions.swift in Sources */,
 				1767494E1D3633A000B8D1D1 /* ThemeBrowserSearchHeaderView.swift in Sources */,
 				0857C2781CE5375F0014AE99 /* MenuItemInsertionView.m in Sources */,
 				B532D4EA199D4357006E4DF6 /* NoteBlockHeaderTableViewCell.swift in Sources */,
