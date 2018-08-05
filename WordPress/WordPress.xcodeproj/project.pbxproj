@@ -253,11 +253,13 @@
 		436D56022116FC6F00CEAA33 /* UIViewController+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D56012116FC6F00CEAA33 /* UIViewController+Additions.swift */; };
 		436D561F2117312700CEAA33 /* RegisterDomainSuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D560C2117312600CEAA33 /* RegisterDomainSuggestionsViewController.swift */; };
 		436D56202117312700CEAA33 /* RegisterDomainSuggestionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D560D2117312600CEAA33 /* RegisterDomainSuggestionsTableViewController.swift */; };
+		436D56222117312700CEAA33 /* RegisterDomainDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D56112117312700CEAA33 /* RegisterDomainDetailsViewModel.swift */; };
 		436D56282117312700CEAA33 /* RegisterDomainDetailsViewController+LocalizedStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D56182117312700CEAA33 /* RegisterDomainDetailsViewController+LocalizedStrings.swift */; };
 		436D562A2117312700CEAA33 /* RegisterDomainDetailsFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 436D561B2117312700CEAA33 /* RegisterDomainDetailsFooterView.xib */; };
 		436D562B2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D561C2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.swift */; };
 		436D562C2117312700CEAA33 /* RegisterDomainDetailsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D561D2117312700CEAA33 /* RegisterDomainDetailsFooterView.swift */; };
 		436D562D2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.xib in Resources */ = {isa = PBXBuildFile; fileRef = 436D561E2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.xib */; };
+		436D562E2117347C00CEAA33 /* RegisterDomainDetailsViewModel+RowDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D56122117312700CEAA33 /* RegisterDomainDetailsViewModel+RowDefinitions.swift */; };
 		437542E31DD4E19E00D6B727 /* EditPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437542E21DD4E19E00D6B727 /* EditPostViewController.swift */; };
 		4388FEFE20A4E0B900783948 /* NotificationsViewController+AppRatings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388FEFD20A4E0B900783948 /* NotificationsViewController+AppRatings.swift */; };
 		4388FF0020A4E19C00783948 /* NotificationsViewController+PushPrimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388FEFF20A4E19C00783948 /* NotificationsViewController+PushPrimer.swift */; };
@@ -1645,6 +1647,8 @@
 		436D56012116FC6F00CEAA33 /* UIViewController+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Additions.swift"; sourceTree = "<group>"; };
 		436D560C2117312600CEAA33 /* RegisterDomainSuggestionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterDomainSuggestionsViewController.swift; sourceTree = "<group>"; };
 		436D560D2117312600CEAA33 /* RegisterDomainSuggestionsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterDomainSuggestionsTableViewController.swift; sourceTree = "<group>"; };
+		436D56112117312700CEAA33 /* RegisterDomainDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterDomainDetailsViewModel.swift; sourceTree = "<group>"; };
+		436D56122117312700CEAA33 /* RegisterDomainDetailsViewModel+RowDefinitions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RegisterDomainDetailsViewModel+RowDefinitions.swift"; sourceTree = "<group>"; };
 		436D56182117312700CEAA33 /* RegisterDomainDetailsViewController+LocalizedStrings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RegisterDomainDetailsViewController+LocalizedStrings.swift"; sourceTree = "<group>"; };
 		436D561B2117312700CEAA33 /* RegisterDomainDetailsFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterDomainDetailsFooterView.xib; sourceTree = "<group>"; };
 		436D561C2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterDomainDetailsErrorSectionFooter.swift; sourceTree = "<group>"; };
@@ -3735,6 +3739,8 @@
 		436D560F2117312700CEAA33 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				436D56112117312700CEAA33 /* RegisterDomainDetailsViewModel.swift */,
+				436D56122117312700CEAA33 /* RegisterDomainDetailsViewModel+RowDefinitions.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -7972,6 +7978,7 @@
 				E1EBC36F1C118EA500F638E0 /* ImmuTable.swift in Sources */,
 				B59B18751CC7FB8D0055EB7C /* PersonViewController.swift in Sources */,
 				40D7823A206AEA880015A3A1 /* Scheduler.swift in Sources */,
+				436D562E2117347C00CEAA33 /* RegisterDomainDetailsViewModel+RowDefinitions.swift in Sources */,
 				E6FACB1E1EC675E300284AC7 /* GravatarProfile.swift in Sources */,
 				D8212CB720AA7703008E8AE8 /* ReaderShareAction.swift in Sources */,
 				827704F11F607C0E002E8A03 /* JetpackConnectionViewController.swift in Sources */,
