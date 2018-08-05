@@ -16,3 +16,5 @@ public extension Reusable {
 /// Protocol to conform for both reusable and nib loadable views.
 /// (`Reusable` + `NibLoadable`)
 public protocol NibReusable: Reusable, NibLoadable { /* Convenience */ }
+
+extension WPReusableTableViewCell: Reusable { }
