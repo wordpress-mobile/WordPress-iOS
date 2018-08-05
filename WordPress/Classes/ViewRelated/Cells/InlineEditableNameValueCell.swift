@@ -4,6 +4,8 @@ import WordPressAuthenticator
 protocol InlineEditableNameValueCellDelegate: class {
     func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
                                      valueTextFieldDidChange valueTextField: UITextField)
+    func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
+                                     valueTextFieldEditingDidEnd valueTextField: UITextField)
 }
 
 class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
@@ -49,6 +51,9 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
         valueTextField.borderStyle = .none
         valueTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)),
                                  for: UIControlEvents.editingChanged)
+        valueTextField.addTarget(self, action: #selector(textEditingDidEnd(textField:)),
+                                 for: UIControlEvents.editingDidEnd)
+
         accessoryType = .none
         if effectiveUserInterfaceLayoutDirection == .leftToRight {
             // swiftlint:disable:next inverse_text_alignment
@@ -61,6 +66,10 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
     @objc func textFieldDidChange(textField: UITextField) {
         delegate?.inlineEditableNameValueCell(self, valueTextFieldDidChange: textField)
+    }
+
+    @objc func textEditingDidEnd(textField: UITextField) {
+        delegate?.inlineEditableNameValueCell(self, valueTextFieldEditingDidEnd: textField)
     }
 }
 
