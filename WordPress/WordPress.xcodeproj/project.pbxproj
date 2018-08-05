@@ -252,6 +252,7 @@
 		436D55DF210F866900CEAA33 /* StoryboardLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D55DE210F866900CEAA33 /* StoryboardLoadable.swift */; };
 		436D55E521148C2A00CEAA33 /* RegisterDomainDetailsFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 436D55E421148C2A00CEAA33 /* RegisterDomainDetailsFooterView.xib */; };
 		436D55E721148C6A00CEAA33 /* RegisterDomainDetailsFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D55E621148C6A00CEAA33 /* RegisterDomainDetailsFooterView.swift */; };
+		436D56002116FC4F00CEAA33 /* UIView+Autolayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D55FF2116FC4F00CEAA33 /* UIView+Autolayout.swift */; };
 		437542E31DD4E19E00D6B727 /* EditPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437542E21DD4E19E00D6B727 /* EditPostViewController.swift */; };
 		437EF0CA20F79C520086129B /* RegisterDomainSuggestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437EF0C920F79C520086129B /* RegisterDomainSuggestionsViewController.swift */; };
 		4388FEFE20A4E0B900783948 /* NotificationsViewController+AppRatings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388FEFD20A4E0B900783948 /* NotificationsViewController+AppRatings.swift */; };
@@ -1640,6 +1641,7 @@
 		436D55DE210F866900CEAA33 /* StoryboardLoadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardLoadable.swift; sourceTree = "<group>"; };
 		436D55E421148C2A00CEAA33 /* RegisterDomainDetailsFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegisterDomainDetailsFooterView.xib; sourceTree = "<group>"; };
 		436D55E621148C6A00CEAA33 /* RegisterDomainDetailsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDomainDetailsFooterView.swift; sourceTree = "<group>"; };
+		436D55FF2116FC4F00CEAA33 /* UIView+Autolayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Autolayout.swift"; sourceTree = "<group>"; };
 		437542E21DD4E19E00D6B727 /* EditPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditPostViewController.swift; sourceTree = "<group>"; };
 		437EF0C920F79C520086129B /* RegisterDomainSuggestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDomainSuggestionsViewController.swift; sourceTree = "<group>"; };
 		4388FEFD20A4E0B900783948 /* NotificationsViewController+AppRatings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationsViewController+AppRatings.swift"; sourceTree = "<group>"; };
@@ -5113,6 +5115,7 @@
 				FF70A3211FD5840500BC270D /* UIImage+Export.swift */,
 				B5E94D141FE04815000E7C20 /* UIImageView+SiteIcon.swift */,
 				1790A4521E28F0ED00AE54C2 /* UINavigationController+Helpers.swift */,
+				436D55FF2116FC4F00CEAA33 /* UIView+Autolayout.swift */,
 				0845B8C51E833C56001BA771 /* URL+Helpers.swift */,
 				E1C9AA501C10419200732665 /* Math.swift */,
 				E177807F1C97FA9500FA7E14 /* StoreKit+Debug.swift */,
@@ -7758,6 +7761,7 @@
 				E1F47D4D1FE0290C00C1D44E /* PluginListCell.swift in Sources */,
 				5D42A3E0175E7452005CFF05 /* BasePost.m in Sources */,
 				5D000DE11AC0879600A7BAF9 /* PostCardActionBarItem.m in Sources */,
+				436D56002116FC4F00CEAA33 /* UIView+Autolayout.swift in Sources */,
 				E1CB6DA3200F376400945457 /* TimeZoneStore.swift in Sources */,
 				D80BC7A4207487F200614A59 /* MediaLibraryPicker.swift in Sources */,
 				E663D1901C65383E0017F109 /* SharingAccountViewController.swift in Sources */,
