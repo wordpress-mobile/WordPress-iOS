@@ -21,6 +21,7 @@ class RegisterDomainDetailsViewModel {
         case addNewAddressLineEnabled(indexPath: IndexPath)
         case addNewAddressLineReplaced(indexPath: IndexPath)
         case checkMarkRowsUpdated(sectionIndex: Int)
+        case registerSucceeded(items: [String:String])
     }
 
     enum SectionIndex: Int {
@@ -137,5 +138,45 @@ class RegisterDomainDetailsViewModel {
         }
 
         //TODO call service
+        onChange?(.registerSucceeded(items: jsonRepresentation()))
+    }
+
+    private func jsonRepresentation() -> [String: String] {
+        var dict: [String: String] = [:]
+        if let privacySectionSelectedItem = privacySectionSelectedItem() {
+            dict[privacySectionSelectedItem.jsonKey] = String(privacySectionSelectedItem.rawValue)
+        }
+        dict.merge(sectionJson(sectionIndex: .contactInformation), uniquingKeysWith: { (first, _) in first })
+        dict.merge(sectionJson(sectionIndex: .address), uniquingKeysWith: { (first, _) in first })
+        return dict
+    }
+
+    private func privacySectionSelectedItem() -> CellIndex.PrivacyProtection? {
+        let privacySection = sections[SectionIndex.privacyProtection.rawValue]
+        for (index, row) in privacySection.rows.enumerated() {
+            switch row {
+            case .checkMark(let checkMarkRow):
+                if checkMarkRow.isSelected {
+                    return CellIndex.PrivacyProtection(rawValue: index)
+                }
+            default:
+                break
+            }
+        }
+        return nil
+    }
+
+    private func sectionJson(sectionIndex: SectionIndex) -> [String: String] {
+        var dict: [String: String] = [:]
+        let section = sections[sectionIndex.rawValue]
+        for row in section.rows {
+            switch row {
+            case .inlineEditable(let editableRow):
+                dict[editableRow.jsonKey] = editableRow.value
+            default:
+                break
+            }
+        }
+        return dict
     }
 }

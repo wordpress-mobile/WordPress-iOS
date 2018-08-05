@@ -71,6 +71,7 @@ extension RegisterDomainDetailsViewModel {
             }
 
             var key: String
+            var jsonKey: String
             var value: String? {
                 didSet {
                    validate()
@@ -86,12 +87,14 @@ extension RegisterDomainDetailsViewModel {
             }
 
             init(key: String,
+                 jsonKey: String,
                  value: String?,
                  placeholder: String?,
                  editingStyle: EditingStyle,
                  validationRules: [ValidationRule]? = nil) {
 
                 self.key = key
+                self.jsonKey = jsonKey
                 self.value = value
                 self.placeholder = placeholder
                 self.editingStyle = editingStyle

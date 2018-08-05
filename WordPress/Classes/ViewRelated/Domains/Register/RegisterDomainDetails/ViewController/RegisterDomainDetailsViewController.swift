@@ -109,6 +109,14 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
         case .checkMarkRowsUpdated(let sectionIndex):
             let indexes: IndexSet = [sectionIndex]
             tableView.reloadSections(indexes, with: .none)
+        case .registerSucceeded(let items):
+            //TODO: temporarily show as an alert
+            let alertViewController = UIAlertController(title: "Success",
+                                                        message: items.description,
+                                                        preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .cancel)
+            alertViewController.addAction(okAction)
+            present(alertViewController, animated: true, completion: nil)
         default:
             break
         }
