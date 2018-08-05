@@ -33,6 +33,7 @@ extension RegisterDomainDetailsViewModel {
         return [
             .inlineEditable(.init(
                 key: Localized.ContactInformation.firstName,
+                jsonKey: "first_name",
                 value: nil,
                 placeholder: Localized.ContactInformation.firstName,
                 editingStyle: .inline,
@@ -40,6 +41,7 @@ extension RegisterDomainDetailsViewModel {
                 )),
             .inlineEditable(.init(
                 key: Localized.ContactInformation.lastName,
+                jsonKey: "last_name",
                 value: nil,
                 placeholder: Localized.ContactInformation.lastName,
                 editingStyle: .inline,
@@ -47,12 +49,14 @@ extension RegisterDomainDetailsViewModel {
                 )),
             .inlineEditable(.init(
                 key: Localized.ContactInformation.organization,
+                jsonKey: "organization",
                 value: nil,
                 placeholder: Localized.ContactInformation.organizationPlaceholder,
                 editingStyle: .inline
                 )),
             .inlineEditable(.init(
                 key: Localized.ContactInformation.email,
+                jsonKey: "email",
                 value: nil,
                 placeholder: Localized.ContactInformation.email,
                 editingStyle: .inline,
@@ -64,6 +68,7 @@ extension RegisterDomainDetailsViewModel {
                 )),
             .inlineEditable(.init(
                 key: Localized.ContactInformation.phone,
+                jsonKey: "phone",
                 value: nil,
                 placeholder: Localized.ContactInformation.phone,
                 editingStyle: .inline,
@@ -74,6 +79,7 @@ extension RegisterDomainDetailsViewModel {
                 )),
             .inlineEditable(.init(
                 key: Localized.ContactInformation.country,
+                jsonKey: "country_code",
                 value: nil,
                 placeholder: Localized.ContactInformation.countryPlaceholder,
                 editingStyle: .multipleChoice,
@@ -84,6 +90,7 @@ extension RegisterDomainDetailsViewModel {
     static func addressLine(row: Int, optional: Bool = true) -> RowType {
         return .inlineEditable(.init(
             key: String(format: Localized.Address.addressLine, "\(row + 1)"),
+            jsonKey: String(format: "address_%@", "\(row + 1)"),
             value: nil,
             placeholder: Localized.Address.addressPlaceholder,
             editingStyle: .inline,
@@ -96,6 +103,7 @@ extension RegisterDomainDetailsViewModel {
             addressLine(row: 0, optional: false),
             .inlineEditable(.init(
                 key: Localized.Address.city,
+                jsonKey: "city",
                 value: nil,
                 placeholder: Localized.Address.city,
                 editingStyle: .inline,
@@ -103,6 +111,7 @@ extension RegisterDomainDetailsViewModel {
                 )),
             .inlineEditable(.init(
                 key: Localized.Address.state,
+                jsonKey: "state",
                 value: nil,
                 placeholder: Localized.Address.statePlaceHolder,
                 editingStyle: .multipleChoice,
@@ -110,6 +119,7 @@ extension RegisterDomainDetailsViewModel {
                 )),
             .inlineEditable(.init(
                 key: Localized.Address.postalCode,
+                jsonKey: "postal_code",
                 value: nil,
                 placeholder: Localized.Address.postalCode,
                 editingStyle: .inline,

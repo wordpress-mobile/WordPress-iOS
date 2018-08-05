@@ -3,6 +3,16 @@ import Foundation
 extension RegisterDomainDetailsViewModel {
 
     enum CellIndex {
+
+        enum PrivacyProtection: Int {
+            case privately
+            case publicly
+
+            var jsonKey: String {
+                return "privacyProtection"
+            }
+        }
+
         enum ContactInformation: Int {
             case firstName
             case lastName
