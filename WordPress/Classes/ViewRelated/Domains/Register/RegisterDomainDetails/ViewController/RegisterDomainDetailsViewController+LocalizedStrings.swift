@@ -1,7 +1,9 @@
 import UIKit
 
-extension RegisterDomainDetailsViewController {
+enum RegisterDomainDetails {
     enum Localized {
+        static let buttonTitle = NSLocalizedString("Register domain",
+                                                   comment: "Register domain - Title for the Register domain button")
         enum PrivacySection {
             static let title = NSLocalizedString(
                 "Privacy Protection",
@@ -36,14 +38,26 @@ extension RegisterDomainDetailsViewController {
             )
             static let firstName = NSLocalizedString("First Name", comment: "Register Domain - Domain contact information field First name")
             static let lastName = NSLocalizedString("Last Name", comment: "Register Domain - Domain contact information field Last name")
+            static let organization = NSLocalizedString("Organization", comment: "Register Domain - Domain contact information field Organization")
+            static let organizationPlaceholder = NSLocalizedString("Organization (Optional)", comment: "Register Domain - Domain contact information field placeholder for Organization")
             static let email = NSLocalizedString("Email", comment: "Register Domain - Domain contact information field Email")
             static let phone = NSLocalizedString("Phone", comment: "Register Domain - Domain contact information field Phone")
             static let country = NSLocalizedString("Country", comment: "Register Domain - Domain contact information field Country")
-            static let fields: [String] = [firstName,
-                                           lastName,
-                                           email,
-                                           phone,
-                                           country]
+            static let countryPlaceholder = NSLocalizedString("Select Country", comment: "Register Domain - Domain contact information field placeholder for Country")
+            static let emailValidationError = NSLocalizedString("Please enter a valid Email Address", comment: "Register Domain - Domain contact information validation error message for Email")
+            static let phoneValidationError = NSLocalizedString("Please enter a valid Phone Number", comment: "Register Domain - Domain contact information validation error message for Phone")
+        }
+
+        enum Address {
+            static let headerTitle = NSLocalizedString("ADDRESS", comment: "Register Domain - Address information field section header title")
+            static let addressLine = NSLocalizedString("Address line %@", comment: "Register Domain - Address information field Address line")
+            static let addNewAddressLine = NSLocalizedString("+ Address line %@", comment: "Register Domain - Address information field add new address line")
+            static let addressPlaceholder = NSLocalizedString("Address", comment: "Register Domain - Address information field placeholder for Address line")
+            static let city = NSLocalizedString("City", comment: "Register Domain - Address information field City")
+            static let postalCode = NSLocalizedString("Postal Code", comment: "Register Domain - Address information field Postal Code")
+            static let state = NSLocalizedString("State", comment: "Register Domain - Domain Address field State")
+            static let statePlaceHolder = NSLocalizedString("Select State", comment: "Register Domain - Address information field placeholder for State")
+            static let postalCodeValidationError = NSLocalizedString("Please enter a valid Postal Code", comment: "Register Domain - Address information validation error message for Postal Code")
         }
     }
 }
