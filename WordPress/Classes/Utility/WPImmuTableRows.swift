@@ -305,21 +305,3 @@ class ExpandableRow: ImmuTableRow {
         cell.urlCallback = onLinkTap
     }
 }
-
-struct EditableNameValueRow: ImmuTableRow {
-    static let cell = ImmuTableCell.nib(
-        UINib(nibName: "InlineEditableNameValueCell",
-              bundle: nil),
-        InlineEditableNameValueCell.self
-    )
-
-    let name: String
-    let value: String?
-    let action: ImmuTableAction?
-
-    func configureCell(_ cell: UITableViewCell) {
-        let cell = cell as! InlineEditableNameValueCell
-        cell.nameLabel.text = name
-        cell.valueTextField.text = value
-    }
-}
