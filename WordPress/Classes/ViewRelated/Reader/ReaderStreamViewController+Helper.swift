@@ -9,10 +9,23 @@ extension ReaderStreamViewController {
     }
 
     public class func headerWithNewsCardForStream(_ topic: ReaderAbstractTopic) -> ReaderStreamHeader? {
-        let returnValue = headerForStream(topic)
-        returnValue?.backgroundColor = .red
+        let newsManager = DefaultNewsManager(service: LocalNewsService(fileName: "News"))
+        let newsCard = NewsCard(manager: newsManager)
+        let news = News(manager: newsManager, ui: newsCard)
 
-        return returnValue as? ReaderStreamHeader
+        let header = headerForStream(topic)
+        header?.backgroundColor = .red
+
+        guard let card = news.card else {
+            header?.backgroundColor = .red
+            return header as? ReaderStreamHeader
+        }
+
+
+        header?.backgroundColor = .green
+
+        return header as? ReaderStreamHeader
+
     }
 
 
