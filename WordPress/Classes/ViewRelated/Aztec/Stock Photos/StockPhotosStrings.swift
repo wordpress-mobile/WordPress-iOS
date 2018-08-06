@@ -29,4 +29,8 @@ extension String {
     static var freePhotosSearchNoResult: String {
         return NSLocalizedString("No media files match your search for", comment: "Phrase to show when the user search for images but there are no result to show. This will be followed by the phrase the user used to search. (i.e. No media files match your search for Ugly kitten). This search phrase will be always appended at the end.")
     }
+
+    static var freePhotosSearchLoading: String {
+        return NSLocalizedString("Loading Photos...", comment: "Phrase to show when the user has searched for images and they are being loaded.")
+    }
 }

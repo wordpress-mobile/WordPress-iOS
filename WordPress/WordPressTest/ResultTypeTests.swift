@@ -8,7 +8,7 @@ final class ResultTypeTests: XCTestCase {
     }
 
     func testSuccessContainsValue() {
-        let result: Result = .success(Constants.value)
+        let result = success()
 
         switch result {
         case .success(let data):
@@ -19,7 +19,7 @@ final class ResultTypeTests: XCTestCase {
     }
 
     func testErrorContainsExpectedError() {
-        let result: Result<String> = .error(Constants.error)
+        let result = failure()
 
         switch result {
         case .success:
@@ -27,5 +27,13 @@ final class ResultTypeTests: XCTestCase {
         case .error(let value):
             XCTAssertEqual(value.localizedDescription, Constants.error.localizedDescription)
         }
+    }
+
+    private func success() -> Result<String> {
+        return .success(Constants.value)
+    }
+
+    private func failure() -> Result<String> {
+        return .error(Constants.error)
     }
 }
