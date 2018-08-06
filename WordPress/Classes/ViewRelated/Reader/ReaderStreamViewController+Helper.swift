@@ -8,6 +8,13 @@ extension ReaderStreamViewController {
         var message: String
     }
 
+    public class func headerWithNewsCardForStream(_ topic: ReaderAbstractTopic) -> ReaderStreamHeader? {
+        let returnValue = headerForStream(topic)
+        returnValue?.backgroundColor = .red
+
+        return returnValue as? ReaderStreamHeader
+    }
+
 
     /// Returns the ReaderStreamHeader appropriate for a particular ReaderTopic or nil if there is not one.
     /// The caller is expected to configure the returned header.
@@ -16,7 +23,7 @@ extension ReaderStreamViewController {
     ///
     /// - Returns: An unconfigured instance of a ReaderStreamHeader.
     ///
-    public class func headerForStream(_ topic: ReaderAbstractTopic) -> ReaderStreamHeader? {
+    public class func headerForStream(_ topic: ReaderAbstractTopic) -> UIView? {
         if ReaderHelpers.topicIsFreshlyPressed(topic) || ReaderHelpers.topicIsLiked(topic) {
             // no header for these special lists
             return nil
