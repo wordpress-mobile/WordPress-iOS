@@ -44,8 +44,8 @@ class NotificationService: UNNotificationServiceExtension {
 
             if let remoteNotifications = notifications,
                 remoteNotifications.count == 1,
-                let notification = remoteNotifications.first
-            {
+                let notification = remoteNotifications.first {
+
                 let identifier = notification.notificationId
                 if
                     let title = notification.title,
@@ -71,10 +71,10 @@ class NotificationService: UNNotificationServiceExtension {
 
     override func serviceExtensionTimeWillExpire() {
         notificationService?.wordPressComRestApi.invalidateAndCancelTasks()
-        
+
         if let contentHandler = contentHandler,
-            let bestAttemptContent = bestAttemptContent
-        {
+            let bestAttemptContent = bestAttemptContent {
+
             contentHandler(bestAttemptContent)
         }
     }
