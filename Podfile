@@ -70,7 +70,7 @@ target 'WordPress' do
     pod 'WordPressAuthenticator', '1.0.4'
     pod 'WordPress-Aztec-iOS', '=1.0.0-beta.24'
 	  pod 'WordPress-Editor-iOS', '=1.0.0-beta.24'
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '76e75f5c1a347711ab11bb5c034fb72b578be83f'
+    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '079e456591fe2d7ba203871195590801bf93a597'
 
     target 'WordPressTest' do
         inherit! :search_paths
