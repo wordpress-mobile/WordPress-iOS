@@ -49,14 +49,14 @@ extension NSNotification.Name {
     private static var zdClientId: String?
     private static var presentInController: UIViewController?
 
-    private static let sourcePlatform = "iOS"
+    private static let sourcePlatform = "Mobile – iOS"
     private static var appVersion: String {
         return Bundle.main.shortVersionString() ?? Constants.unknownValue
     }
 
     private static var appLanguage: String {
         guard let lang = Locale.current.languageCode else {
-            return ""
+            return Constants.unknownValue
         }
         return lang
     }
