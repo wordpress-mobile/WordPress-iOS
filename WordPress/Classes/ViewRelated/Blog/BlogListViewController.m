@@ -285,6 +285,7 @@ static NSInteger HideSearchMinSites = 3;
             [self.noResultsViewController configureWithTitle: NSLocalizedString(@"Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.", "Text shown when the account has no sites.")
                                                  buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.")
                                                     subtitle:nil
+                                          attributedSubtitle:nil
                                                        image:nil
                                                accessoryView:nil];
         [self addNoResultsToView];
@@ -309,12 +310,14 @@ static NSInteger HideSearchMinSites = 3;
         [self.noResultsViewController configureWithTitle:singularTitle
                                              buttonTitle:buttonTitle
                                                 subtitle:singularSubtitle
+                                      attributedSubtitle:nil
                                                    image:nil
                                            accessoryView:nil];
     } else {
         [self.noResultsViewController configureWithTitle:multipleTitle
                                              buttonTitle:buttonTitle
                                                 subtitle:multipleSubtitle
+                                      attributedSubtitle:nil
                                                    image:nil
                                            accessoryView:nil];
     }
