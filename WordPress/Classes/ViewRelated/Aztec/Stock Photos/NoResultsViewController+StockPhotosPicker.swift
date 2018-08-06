@@ -5,7 +5,7 @@ extension NoResultsViewController {
     private enum Constants {
         static let companyUrl = "https://www.pexels.com"
         static let companyName = "Pexels"
-        static let imageName = "media-free-photos-no-results"
+        static let imageName = "media-no-results"
     }
 
     func configureAsIntro() {
