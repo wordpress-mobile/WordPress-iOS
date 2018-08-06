@@ -143,7 +143,7 @@ class NotificationDetailsViewController: UIViewController {
         setupSuggestionsView()
         setupKeyboardManager()
 
-        AppRatingUtility.shared.incrementSignificantEvent(section: "notifications")
+        Environment.current.appRatingUtility.incrementSignificantEvent(section: "notifications")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -243,7 +243,7 @@ class NotificationDetailsViewController: UIViewController {
 //
 extension NotificationDetailsViewController: UIViewControllerRestoration {
     class func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
-        let context = ContextManager.sharedInstance().mainContext
+        let context = Environment.current.mainContext
         guard let noteURI = coder.decodeObject(forKey: Restoration.noteIdKey) as? URL,
             let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: noteURI) else {
                 return nil
