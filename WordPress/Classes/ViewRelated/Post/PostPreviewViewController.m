@@ -236,6 +236,7 @@
     self.noResultsViewController = [NoResultsViewController controllerWithTitle:title
                                                                     buttonTitle:NSLocalizedString(@"Retry", @"Button to retry a preview that failed to load")
                                                                        subtitle:nil
+                                                             attributedSubtitle:nil
                                                                           image:nil
                                                                   accessoryView:nil];
     self.noResultsViewController.delegate = self;

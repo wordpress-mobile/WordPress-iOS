@@ -136,7 +136,6 @@ import WordPressFlux
         return controller
     }
 
-
     /// Convenience method for instantiating an instance of ReaderStreamViewController
     /// to preview a tag.
     ///
@@ -384,16 +383,27 @@ import WordPressFlux
 
     // MARK: - Handling Loading and No Results
 
+    private func setStatusViewTitle(_ title: String, message: String) {
+        // Potential fix for a crash where it seems we attempted to update the status view
+        // title or message before the IBOutlets were connected: https://github.com/wordpress-mobile/WordPress-iOS/issues/9745
+        guard isViewLoaded else {
+            return
+        }
+
+        resultsStatusView.titleText = title
+        resultsStatusView.messageText = message
+    }
+
     @objc func displayLoadingStream() {
-        resultsStatusView.titleText = NSLocalizedString("Loading stream...", comment: "A short message to inform the user the requested stream is being loaded.")
-        resultsStatusView.messageText = ""
+        setStatusViewTitle(NSLocalizedString("Loading stream...", comment: "A short message to inform the user the requested stream is being loaded."),
+                                             message: "")
         displayResultsStatus()
     }
 
 
     @objc func displayLoadingStreamFailed() {
-        resultsStatusView.titleText = NSLocalizedString("Problem loading stream", comment: "Error message title informing the user that a stream could not be loaded.")
-        resultsStatusView.messageText = NSLocalizedString("Sorry. The stream could not be loaded.", comment: "A short error message leting the user know the requested stream could not be loaded.")
+        setStatusViewTitle(NSLocalizedString("Problem loading stream", comment: "Error message title informing the user that a stream could not be loaded."),
+                           message: NSLocalizedString("Sorry. The stream could not be loaded.", comment: "A short error message leting the user know the requested stream could not be loaded."))
         displayResultsStatus()
     }
 
