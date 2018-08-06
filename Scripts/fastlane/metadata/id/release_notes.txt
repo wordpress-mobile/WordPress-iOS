@@ -1,3 +1,3 @@
-Log Aktivitas! Sekarang Anda bisa melihat semua yang sedang terjadi pada situs Anda.
-Dukungan GIF animasi telah diperluas di Pembaca dan Pemilih Media.
-Sejumlah perubahan UI, peningkatan aksesibilitas, dan perbaikan bug.
+Penyunting: lebih banyak pembaruan untuk komunitas Gutenberg.
+Beberapa peningkatan UI.
+Sejumlah perbaikan bug kecil.

@@ -1,0 +1,27 @@
+{
+    "edit_comment_link" : "https:\/\/wordpress.com\/comment\/supportctarda.wordpress.com\/7?action=edit",
+    "actions" : {
+        "spam-comment" : false,
+        "trash-comment" : false,
+        "edit-comment" : true,
+        "approve-comment" : true,
+        "replyto-comment" : true,
+        "like-comment" : false
+    },
+    "type" : "comment",
+    "text" : "This is an unapproved comment",
+    "meta" : {
+        "ids" : {
+            "comment" : 7,
+            "post" : 31,
+            "site" : 142010142
+        },
+        "links" : {
+            "comment" : "https:\/\/public-api.wordpress.com\/rest\/v1\/comments\/7",
+            "post" : "https:\/\/public-api.wordpress.com\/rest\/v1\/posts\/31",
+            "site" : "https:\/\/public-api.wordpress.com\/rest\/v1\/sites\/142010142"
+        }
+    },
+    "nest_level" : 0
+}
+
