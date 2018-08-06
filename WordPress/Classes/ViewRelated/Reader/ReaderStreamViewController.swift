@@ -647,7 +647,7 @@ import WordPressFlux
     /// Scrolls to the top of the list of posts.
     ///
     @objc open func scrollViewToTop() {
-        tableView.setContentOffset(CGPoint.zero, animated: true)
+        tableView.setContentOffset(.zero, animated: true)
     }
 
 
