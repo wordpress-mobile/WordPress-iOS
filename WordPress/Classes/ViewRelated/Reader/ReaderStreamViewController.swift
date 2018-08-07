@@ -212,10 +212,6 @@ import WordPressFlux
         // pull to refresh animation.
         view.isUserInteractionEnabled = readerTopic != nil
 
-        print("======= reader topic =====")
-        print(readerTopic)
-        print("======= reader topic =====")
-
         NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
         refreshImageRequestAuthToken()
 
