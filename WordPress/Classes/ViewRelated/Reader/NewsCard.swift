@@ -20,7 +20,6 @@ final class NewsCard: UIViewController {
     }
 
     override func viewDidLoad() {
-        print("==== card did load ====")
         super.viewDidLoad()
         view.backgroundColor = .red
         initIllustration()
@@ -32,8 +31,23 @@ final class NewsCard: UIViewController {
     }
 
     private func loadContent() {
-        manager.load { newsItem in
-            print("news item")
+        manager.load { [weak self] newsItem in
+            switch newsItem {
+            case .error(let error):
+                self?.errorLoading(error)
+            case .success(let item):
+                self?.populate(item)
+            }
         }
+    }
+
+    private func errorLoading(_ error: Error) {
+        print("=== error loading ====")
+    }
+
+    private func populate(_ item: NewsItem) {
+        newsTitle.text = item.title
+        newsSubtitle.text = item.content
+        newsAction.text = "More"
     }
 }
