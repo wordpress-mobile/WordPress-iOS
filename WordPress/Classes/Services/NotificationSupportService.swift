@@ -19,7 +19,7 @@ open class NotificationSupportService: NSObject {
         }
     }
 
-    /// Attempts to the current WPCOM OAuth Token
+    /// Attempts to delete the current WPCOM OAuth Token.
     ///
     @objc
     class func deleteExtensionToken() {
