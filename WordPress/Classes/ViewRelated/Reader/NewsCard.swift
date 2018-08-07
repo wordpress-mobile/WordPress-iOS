@@ -20,10 +20,15 @@ final class NewsCard: UIViewController {
     }
 
     override func viewDidLoad() {
+        print("==== card did load ====")
         super.viewDidLoad()
         view.backgroundColor = .red
-
+        initIllustration()
         loadContent()
+    }
+
+    private func initIllustration() {
+        illustration.image = UIImage(named: "wp-illustration-notifications")
     }
 
     private func loadContent() {
