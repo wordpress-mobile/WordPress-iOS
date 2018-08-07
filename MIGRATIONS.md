@@ -3,10 +3,13 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress 77
-
+## WordPress 78
 - @nheagy 2018-07-25
 - Added `QuickStartCompletedTour` for tracking completed Quick Start tours
+
+## WordPress 77
+- @aerych 2018-07-27
+- `SharingService` added `externalUsersOnly` (bool) property. A new field returned by the API.
 
 ## WordPress 76
 
