@@ -1,33 +1,14 @@
 import UIKit
 
 /// UI of the New Card
-final class NewsCard: UIViewController, ReaderStreamHeader {
+final class NewsCard: UIViewController {
     @IBOutlet weak var dismiss: UIButton!
     @IBOutlet weak var illustration: UIImageView!
-    @IBOutlet weak var title: UILabel!
-    @IBOutlet weak var subtitle: UILabel!
-    @IBOutlet weak var action: UILabel!
-
-    var delegate: ReaderStreamHeaderDelegate? {
-        get {
-            return decorated?.delegate
-        }
-        set {
-            decorated?.delegate = delegate
-        }
-    }
-
-    func enableLoggedInFeatures(_ enable: Bool) {
-        decorated?.enableLoggedInFeatures(enable)
-    }
-
-    func configureHeader(_ topic: ReaderAbstractTopic) {
-        decorated?.configureHeader(topic)
-    }
+    @IBOutlet weak var newsTitle: UILabel!
+    @IBOutlet weak var newsSubtitle: UILabel!
+    @IBOutlet weak var newsAction: UILabel!
 
     private let manager: NewsManager
-
-    var decorated: ReaderStreamHeader?
 
     init(manager: NewsManager) {
         self.manager = manager
