@@ -15,7 +15,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     fileprivate let pickerDataSource: MediaLibraryPickerDataSource
 
     fileprivate var isLoading: Bool = false
-    fileprivate let noResultsView = MediaNoResultsView()
+    fileprivate let noResultsView = NoResultsViewController.controller()
 
     fileprivate var selectedAsset: Media? = nil
 
@@ -86,6 +86,8 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
         registerChangeObserver()
         registerUploadCoordinatorObserver()
+
+        noResultsView.configureForNoAssets(userCanUploadMedia: blog.userCanUploadMedia)
         noResultsView.delegate = self
 
         updateViewState(for: pickerDataSource.totalAssetCount)
@@ -157,14 +159,19 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     }
 
     fileprivate func updateNoResultsView(for assetCount: Int) {
+
         guard assetCount == 0 else { return }
 
         if isLoading {
-            noResultsView.updateForFetching()
-        } else if hasSearchQuery {
-            noResultsView.updateForNoSearchResult(with: pickerDataSource.searchQuery)
+            noResultsView.configureForFetching()
         } else {
-            noResultsView.updateForNoAssets(userCanUploadMedia: blog.userCanUploadMedia)
+            noResultsView.removeFromView()
+
+            if hasSearchQuery {
+                noResultsView.configureForNoSearchResult(with: pickerDataSource.searchQuery)
+            } else {
+                noResultsView.configureForNoAssets(userCanUploadMedia: blog.userCanUploadMedia)
+            }
         }
     }
 
@@ -265,7 +272,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
         let alertController = UIAlertController(title: nil,
                                                 message: message,
                                                 preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: ""))
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Verb. Button title. Tapping cancels an action."))
         alertController.addDestructiveActionWithTitle(NSLocalizedString("Delete", comment: "Title for button that permanently deletes one or more media items (photos / videos)"), handler: { action in
             self.deleteSelectedItems()
         })
@@ -325,7 +332,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             }
         }
 
-        alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: ""))
+        alertController.addCancelActionWithTitle(NSLocalizedString("Dismiss", comment: "Verb. Button title. Tapping dismisses a prmopt."))
 
         present(alertController, animated: true, completion: nil)
     }
@@ -424,10 +431,10 @@ extension MediaLibraryViewController: UIDocumentPickerDelegate {
     }
 }
 
-// MARK: - WPNoResultsViewDelegate
+// MARK: - NoResultsViewControllerDelegate
 
-extension MediaLibraryViewController: WPNoResultsViewDelegate {
-    func didTap(_ noResultsView: WPNoResultsView!) {
+extension MediaLibraryViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
         addTapped()
     }
 }
@@ -436,7 +443,7 @@ extension MediaLibraryViewController: WPNoResultsViewDelegate {
 
 extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
 
-    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
+    func emptyViewController(forMediaPickerController picker: WPMediaPickerViewController) -> UIViewController? {
         return noResultsView
     }
 

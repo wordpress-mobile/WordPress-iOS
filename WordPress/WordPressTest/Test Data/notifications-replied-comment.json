@@ -22,7 +22,7 @@
                     "type": "user",
                     "indices": [
                         0,
-                        4
+                        3
                     ],
                     "url": "http:\/\/some.one.com",
                     "site_id": 4,
@@ -32,8 +32,8 @@
                 {
                     "type": "comment",
                     "indices": [
-                        29,
-                        127
+                        28,
+                        32
                     ],
                     "url": "https:\/\/some.thing.here/comment-url",
                     "site_id": 2929292929,

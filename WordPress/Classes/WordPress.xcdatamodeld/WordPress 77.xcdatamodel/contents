@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17F77" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17G65" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="dateModified" optional="YES" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
@@ -495,6 +495,7 @@
     <entity name="PublicizeService" representedClassName="WordPress.PublicizeService" syncable="YES">
         <attribute name="connectURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="externalUsersOnly" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="jetpackModuleRequired" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="jetpackSupport" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
@@ -503,10 +504,6 @@
         <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="serviceID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
-    </entity>
-    <entity name="QuickStartCompletedTour" representedClassName="QuickStartCompletedTour" syncable="YES">
-        <attribute name="tourID" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" syncable="YES"/>
     </entity>
     <entity name="ReaderAbstractTopic" representedClassName="WordPress.ReaderAbstractTopic" isAbstract="YES" syncable="YES">
         <attribute name="algorithm" optional="YES" attributeType="String" syncable="YES"/>
@@ -693,8 +690,7 @@
         <element name="PostTag" positionX="27" positionY="153" width="128" height="135"/>
         <element name="PostType" positionX="27" positionY="153" width="128" height="105"/>
         <element name="PublicizeConnection" positionX="27" positionY="162" width="128" height="330"/>
-        <element name="PublicizeService" positionX="18" positionY="153" width="128" height="195"/>
-        <element name="QuickStartCompletedTour" positionX="36" positionY="162" width="128" height="75"/>
+        <element name="PublicizeService" positionX="18" positionY="153" width="128" height="210"/>
         <element name="ReaderAbstractTopic" positionX="9" positionY="153" width="128" height="180"/>
         <element name="ReaderCrossPostMeta" positionX="18" positionY="153" width="128" height="135"/>
         <element name="ReaderDefaultTopic" positionX="18" positionY="162" width="128" height="45"/>
