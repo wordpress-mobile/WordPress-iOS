@@ -38,21 +38,14 @@ extension NoResultsViewController {
     }
 
     func configureAsNoSearchResults(for string: String) {
-        configure(title: configureSearchResultTitle(for: string),
+        configure(title: .freePhotosSearchNoResult,
                   buttonTitle: nil,
-                  subtitle: nil,
+                  subtitle: string,
                   attributedSubtitle: nil,
                   image: Constants.imageName,
                   accessoryView: nil)
 
         view.layoutIfNeeded()
-    }
-
-    private func configureSearchResultTitle(for string: String) -> String {
-        //Translators could add an empty space at the end of this phrase.
-        let sanitizedNoResultString = String.freePhotosSearchNoResult.trimmingCharacters(in: .whitespaces)
-        let titleText = sanitizedNoResultString + " " + string
-        return titleText
     }
 
 }
