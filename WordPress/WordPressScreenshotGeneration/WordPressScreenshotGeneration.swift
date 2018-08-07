@@ -44,8 +44,11 @@ class WordPressScreenshotGeneration: XCTestCase {
         loginButton.tap()
         app.buttons["Self Hosted Login Button"].tap()
 
-        let username = ""
-        let password = ""
+        // Use the same login here that you did when you created an App
+        // in the WordPress.com Application Manager. If you're not sure how to do that,
+        // you can read more here: https://github.com/wordpress-mobile/WordPress-iOS#setup-credentials
+        let username: String = <# Your Wordpress.com Email #>
+        let password: String = <# Your Wordpress.com Password #>
 
         // We have to login by site address, due to security issues with the
         // shared testing account which prevent us from signing in by email address.
