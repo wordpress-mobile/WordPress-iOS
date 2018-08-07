@@ -502,10 +502,6 @@ import WordPressFlux
             return
         }
 
-//        header.enableLoggedInFeatures(isLoggedIn)
-//        header.configureHeader(topic)
-//        header.delegate = self
-
         tableView.tableHeaderView = header
     }
 
