@@ -16,9 +16,9 @@
                 <outlet property="borderedView" destination="7Cb-NM-WoN" id="gqx-Gr-W56"/>
                 <outlet property="dismiss" destination="0k3-KZ-dKQ" id="xVD-Ue-Mwg"/>
                 <outlet property="illustration" destination="58s-bz-Teb" id="iA5-rY-Os1"/>
-                <outlet property="newsAction" destination="PfD-b1-vPj" id="dvp-7n-VDZ"/>
                 <outlet property="newsSubtitle" destination="gf2-Wv-Ozo" id="QkY-3c-trz"/>
                 <outlet property="newsTitle" destination="aSK-uI-6js" id="0Cr-pL-4zi"/>
+                <outlet property="readMore" destination="WFs-AW-Uc0" id="BhZ-2D-g0t"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -34,37 +34,35 @@
                             <rect key="frame" x="6" y="6" width="365" height="174"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="9hi-UA-p04">
-                                    <rect key="frame" x="0.0" y="0.0" width="42" height="81.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="46" height="91"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSK-uI-6js" userLabel="NewsTitle">
-                                            <rect key="frame" x="0.0" y="0.0" width="42" height="20.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="46" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="900" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gf2-Wv-Ozo" userLabel="NewsSubtitle">
-                                            <rect key="frame" x="0.0" y="30.5" width="42" height="20.5"/>
+                                            <rect key="frame" x="0.0" y="30.5" width="46" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PfD-b1-vPj" userLabel="NewsAction">
-                                            <rect key="frame" x="0.0" y="61" width="42" height="20.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WFs-AW-Uc0">
+                                            <rect key="frame" x="0.0" y="61" width="46" height="30"/>
+                                            <state key="normal" title="Button"/>
+                                        </button>
                                     </subviews>
                                 </stackView>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="58s-bz-Teb">
-                                    <rect key="frame" x="52" y="0.0" width="130" height="130"/>
+                                    <rect key="frame" x="56" y="0.0" width="130" height="130"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="58s-bz-Teb" secondAttribute="height" multiplier="1:1" id="Hdv-k8-lBE"/>
                                         <constraint firstAttribute="width" constant="130" id="mBb-U9-zfe"/>
                                     </constraints>
                                 </imageView>
                                 <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="900" verticalCompressionResistancePriority="900" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0k3-KZ-dKQ">
-                                    <rect key="frame" x="192" y="0.0" width="173" height="30"/>
+                                    <rect key="frame" x="196" y="0.0" width="169" height="30"/>
                                     <state key="normal" title="Button"/>
                                 </button>
                             </subviews>
