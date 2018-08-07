@@ -8,7 +8,7 @@ final class NewsCard: UIViewController {
     @IBOutlet weak var illustration: UIImageView!
     @IBOutlet weak var newsTitle: UILabel!
     @IBOutlet weak var newsSubtitle: UILabel!
-    @IBOutlet weak var newsAction: UILabel!
+    @IBOutlet weak var readMore: UIButton!
     @IBOutlet weak var borderedView: UIView!
 
     private let manager: NewsManager
@@ -33,6 +33,7 @@ final class NewsCard: UIViewController {
         styleBackground()
         styleBorderedView()
         styleLabels()
+        styleReadMoreButton()
         styleDismissButton()
     }
 
@@ -65,6 +66,10 @@ final class NewsCard: UIViewController {
         WPStyleGuide.applyReaderStreamHeaderDetailStyle(newsSubtitle)
     }
 
+    private func styleReadMoreButton() {
+        readMore.setTitle("Read More", for: .normal)
+    }
+
     private func styleDismissButton() {
         let dismissIcon = Gridicon.iconOfType(.crossCircle, withSize: CGSize(width: 40, height: 40))
         dismiss.setImage(dismissIcon, for: .normal)
@@ -78,6 +83,5 @@ final class NewsCard: UIViewController {
     private func populate(_ item: NewsItem) {
         newsTitle.text = item.title
         newsSubtitle.text = item.content
-        newsAction.text = "More"
     }
 }
