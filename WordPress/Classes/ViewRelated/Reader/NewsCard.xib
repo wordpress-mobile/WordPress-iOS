@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewsCard" customModule="WordPress" customModuleProvider="target">
             <connections>
+                <outlet property="borderedView" destination="7Cb-NM-WoN" id="gqx-Gr-W56"/>
                 <outlet property="dismiss" destination="0k3-KZ-dKQ" id="xVD-Ue-Mwg"/>
                 <outlet property="illustration" destination="58s-bz-Teb" id="iA5-rY-Os1"/>
                 <outlet property="newsAction" destination="PfD-b1-vPj" id="dvp-7n-VDZ"/>
@@ -25,58 +26,60 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="Ewo-7I-oMB">
-                    <rect key="frame" x="6" y="6" width="363" height="188"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Cb-NM-WoN" userLabel="BorderedView">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="9hi-UA-p04">
-                            <rect key="frame" x="0.0" y="0.0" width="132" height="188"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="Ewo-7I-oMB">
+                            <rect key="frame" x="1" y="1" width="373" height="191"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSK-uI-6js" userLabel="NewsTitle">
-                                    <rect key="frame" x="0.0" y="0.0" width="42" height="62.5"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gf2-Wv-Ozo" userLabel="NewsSubtitle">
-                                    <rect key="frame" x="0.0" y="62.5" width="42" height="63"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PfD-b1-vPj" userLabel="NewsAction">
-                                    <rect key="frame" x="0.0" y="125.5" width="42" height="62.5"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <nil key="textColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="9hi-UA-p04">
+                                    <rect key="frame" x="0.0" y="0.0" width="142" height="61.5"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSK-uI-6js" userLabel="NewsTitle">
+                                            <rect key="frame" x="0.0" y="0.0" width="42" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gf2-Wv-Ozo" userLabel="NewsSubtitle">
+                                            <rect key="frame" x="0.0" y="20.5" width="42" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PfD-b1-vPj" userLabel="NewsAction">
+                                            <rect key="frame" x="0.0" y="41" width="42" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </stackView>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="58s-bz-Teb">
+                                    <rect key="frame" x="142" y="0.0" width="185" height="172"/>
+                                </imageView>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0k3-KZ-dKQ">
+                                    <rect key="frame" x="327" y="0.0" width="46" height="30"/>
+                                    <state key="normal" title="Button"/>
+                                </button>
                             </subviews>
                         </stackView>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="58s-bz-Teb">
-                            <rect key="frame" x="132" y="0.0" width="185" height="188"/>
-                        </imageView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0k3-KZ-dKQ">
-                            <rect key="frame" x="317" y="0.0" width="46" height="30"/>
-                            <state key="normal" title="Button"/>
-                        </button>
                     </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="58s-bz-Teb" firstAttribute="leading" secondItem="9hi-UA-p04" secondAttribute="trailing" id="1qj-yY-POK"/>
-                        <constraint firstAttribute="bottom" secondItem="9hi-UA-p04" secondAttribute="bottom" id="8dr-DO-UTe"/>
-                        <constraint firstItem="58s-bz-Teb" firstAttribute="leading" secondItem="9hi-UA-p04" secondAttribute="trailing" id="cdL-7N-c4N"/>
-                        <constraint firstItem="9hi-UA-p04" firstAttribute="top" secondItem="Ewo-7I-oMB" secondAttribute="top" id="iBK-XO-BZq"/>
-                        <constraint firstItem="0k3-KZ-dKQ" firstAttribute="leading" secondItem="58s-bz-Teb" secondAttribute="trailing" id="j7J-LH-kXH"/>
-                        <constraint firstAttribute="bottom" secondItem="58s-bz-Teb" secondAttribute="bottom" id="ldQ-Ax-p81"/>
-                        <constraint firstItem="9hi-UA-p04" firstAttribute="leading" secondItem="Ewo-7I-oMB" secondAttribute="leading" id="t4E-LX-Fpl"/>
-                        <constraint firstItem="58s-bz-Teb" firstAttribute="top" secondItem="Ewo-7I-oMB" secondAttribute="top" id="wxW-lA-fa9"/>
+                        <constraint firstItem="Ewo-7I-oMB" firstAttribute="top" secondItem="7Cb-NM-WoN" secondAttribute="top" constant="1" id="BAq-Af-FVe"/>
+                        <constraint firstAttribute="trailing" secondItem="Ewo-7I-oMB" secondAttribute="trailing" constant="1" id="E0T-Xu-Q6G"/>
+                        <constraint firstAttribute="bottom" secondItem="Ewo-7I-oMB" secondAttribute="bottom" constant="8" id="oYE-ro-nHj"/>
+                        <constraint firstItem="Ewo-7I-oMB" firstAttribute="leading" secondItem="7Cb-NM-WoN" secondAttribute="leading" constant="1" id="tch-Na-yH9"/>
                     </constraints>
-                </stackView>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Ewo-7I-oMB" secondAttribute="trailing" constant="6" id="PC0-M6-yz1"/>
-                <constraint firstItem="Ewo-7I-oMB" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="6" id="RNb-bg-Ymr"/>
-                <constraint firstItem="Ewo-7I-oMB" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="6" id="lRv-U5-X4v"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Ewo-7I-oMB" secondAttribute="bottom" constant="6" id="pIb-Cf-B06"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="7Cb-NM-WoN" secondAttribute="trailing" id="P0M-DD-7Dt"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="7Cb-NM-WoN" secondAttribute="bottom" id="T95-Ed-fHv"/>
+                <constraint firstItem="7Cb-NM-WoN" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="kkG-td-wVU"/>
+                <constraint firstItem="7Cb-NM-WoN" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="qpB-34-98o"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

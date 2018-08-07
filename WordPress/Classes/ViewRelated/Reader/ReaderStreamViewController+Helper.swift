@@ -14,11 +14,9 @@ extension ReaderStreamViewController {
         let news = News(manager: newsManager, ui: newsCard)
 
         let header = headerForStream(topic)
-        header?.backgroundColor = .red
 
         guard let cardUI = news.card?.view else {
             // No news
-            header?.backgroundColor = .red
             let headerAsStreamHeader = header as? ReaderStreamHeader
             headerAsStreamHeader?.configureHeader(topic)
             headerAsStreamHeader?.enableLoggedInFeatures(isLoggedIn)
@@ -27,17 +25,10 @@ extension ReaderStreamViewController {
             return headerAsStreamHeader as? UIView
         }
 
-
-        header?.backgroundColor = .green
-        //card.decorated = header as? ReaderStreamHeader
-
-
         let headerAsStreamHeader = header as? ReaderStreamHeader
         headerAsStreamHeader?.configureHeader(topic)
         headerAsStreamHeader?.enableLoggedInFeatures(isLoggedIn)
         headerAsStreamHeader?.delegate = delegate
-
-        //return headerAsStreamHeader as? UIView
 
         guard let sectionHeader = header else {
             return cardUI

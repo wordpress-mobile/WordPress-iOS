@@ -1,4 +1,6 @@
 import UIKit
+import WordPressShared.WPStyleGuide
+import Gridicons
 
 /// UI of the New Card
 final class NewsCard: UIViewController {
@@ -7,6 +9,7 @@ final class NewsCard: UIViewController {
     @IBOutlet weak var newsTitle: UILabel!
     @IBOutlet weak var newsSubtitle: UILabel!
     @IBOutlet weak var newsAction: UILabel!
+    @IBOutlet weak var borderedView: UIView!
 
     private let manager: NewsManager
 
@@ -21,7 +24,7 @@ final class NewsCard: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
+        applyStyles()
         initIllustration()
         loadContent()
     }
@@ -39,6 +42,17 @@ final class NewsCard: UIViewController {
                 self?.populate(item)
             }
         }
+    }
+
+    private func applyStyles() {
+        view.backgroundColor = WPStyleGuide.greyLighten30()
+        borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
+        borderedView.layer.borderWidth = 1.0
+        WPStyleGuide.applyReaderStreamHeaderTitleStyle(newsTitle)
+        WPStyleGuide.applyReaderStreamHeaderDetailStyle(newsSubtitle)
+
+        dismiss.setImage(Gridicon.iconOfType(.crossCircle, withSize: CGSize(width: 40, height: 40)), for: .normal)
+        dismiss.setTitle(nil, for: .normal)
     }
 
     private func errorLoading(_ error: Error) {
