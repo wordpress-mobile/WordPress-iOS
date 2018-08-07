@@ -501,16 +501,16 @@ import WordPressFlux
             return
         }
 
-        guard let header = ReaderStreamViewController.headerWithNewsCardForStream(topic) else {
+        guard let header = ReaderStreamViewController.headerWithNewsCardForStream(topic, isLoggedIn: isLoggedIn, delegate: self) else {
             tableView.tableHeaderView = nil
             return
         }
 
-        header.enableLoggedInFeatures(isLoggedIn)
-        header.configureHeader(topic)
-        header.delegate = self
+//        header.enableLoggedInFeatures(isLoggedIn)
+//        header.configureHeader(topic)
+//        header.delegate = self
 
-        tableView.tableHeaderView = header as? UIView
+        tableView.tableHeaderView = header
     }
 
 

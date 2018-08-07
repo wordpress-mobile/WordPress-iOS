@@ -8,7 +8,7 @@ extension ReaderStreamViewController {
         var message: String
     }
 
-    public class func headerWithNewsCardForStream(_ topic: ReaderAbstractTopic) -> ReaderStreamHeader? {
+    public class func headerWithNewsCardForStream(_ topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamViewController) -> UIView? {
         let newsManager = DefaultNewsManager(service: LocalNewsService(fileName: "News"))
         let newsCard = NewsCard(manager: newsManager)
         let news = News(manager: newsManager, ui: newsCard)
@@ -18,14 +18,25 @@ extension ReaderStreamViewController {
 
         guard let card = news.card else {
             header?.backgroundColor = .red
-            return header as? ReaderStreamHeader
+            let headerAsStreamHeader = header as? ReaderStreamHeader
+            headerAsStreamHeader?.configureHeader(topic)
+            headerAsStreamHeader?.enableLoggedInFeatures(isLoggedIn)
+            headerAsStreamHeader?.delegate = delegate
+
+            return headerAsStreamHeader as? UIView
         }
 
 
         header?.backgroundColor = .green
         //card.decorated = header as? ReaderStreamHeader
 
-        return header as? ReaderStreamHeader
+
+        let headerAsStreamHeader = header as? ReaderStreamHeader
+        headerAsStreamHeader?.configureHeader(topic)
+        headerAsStreamHeader?.enableLoggedInFeatures(isLoggedIn)
+        headerAsStreamHeader?.delegate = delegate
+
+        return headerAsStreamHeader as? UIView
     }
 
 
