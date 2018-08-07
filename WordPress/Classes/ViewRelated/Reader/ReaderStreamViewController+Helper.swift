@@ -23,7 +23,7 @@ extension ReaderStreamViewController {
 
 
         header?.backgroundColor = .green
-        card.decorated = header as? ReaderStreamHeader
+        //card.decorated = header as? ReaderStreamHeader
 
         return header as? ReaderStreamHeader
     }
