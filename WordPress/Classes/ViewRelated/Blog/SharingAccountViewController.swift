@@ -12,6 +12,15 @@ import WordPressShared
     @objc var immutableHandler: ImmuTableViewHandler!
     @objc var delegate: SharingAccountSelectionDelegate?
 
+    fileprivate lazy var noResultsViewController: NoResultsViewController = {
+        let controller = NoResultsViewController.controller()
+        controller.view.frame = view.frame
+        addChildViewController(controller)
+        view.addSubview(controller.view)
+        controller.didMove(toParentViewController: self)
+        return controller
+    }()
+
 
     // MARK: - Lifecycle Methods
 
@@ -72,6 +81,25 @@ import WordPressShared
     }
 
 
+    fileprivate func showNoResultsViewController() {
+        let title = NSLocalizedString("No Accounts Found",
+                                      comment: "Title of an error message. There were no third-party service accounts found to setup sharing.")
+        let message = NSLocalizedString("Sorry. The social service did not tell us which account could be used for sharing.",
+                                        comment: "An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing.")
+        noResultsViewController.configure(title: title, buttonTitle: nil, subtitle: message, image: nil, accessoryView: nil)
+    }
+
+
+    fileprivate func showFacebookNotice() {
+        let message = NSLocalizedString("The Facebook connection could not be made because this account does not have access to any pages. Facebook supports sharing connections to Facebook Pages, but not to Facebook Profiles.",
+                                       comment: "Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages.")
+
+        let buttonTitle = NSLocalizedString("Learn more", comment: "A button title.")
+        noResultsViewController.configure(title: "", buttonTitle: buttonTitle, subtitle: message, image: nil, accessoryView: nil)
+        noResultsViewController.delegate = self
+    }
+
+
     // MARK: - View Model Wrangling
 
 
@@ -83,6 +111,15 @@ import WordPressShared
         var sections = [ImmuTableSection]()
         var connectedAccounts = [KeyringAccount]()
         var accounts = keyringAccountsFromKeyringConnections(keyringConnections)
+
+        if accounts.count == 0 {
+            if publicizeService.serviceID == PublicizeService.facebookServiceID {
+                showFacebookNotice()
+            } else {
+                showNoResultsViewController()
+            }
+            return ImmuTable(sections: [])
+        }
 
         // Filter out connected accounts into a different Array
         for (idx, acct) in accounts.enumerated() {
@@ -125,8 +162,8 @@ import WordPressShared
         var title =  NSLocalizedString("Connecting %@", comment: "Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name")
         title = NSString(format: title as NSString, publicizeService.label) as String
 
-        let manyAccountFooter = NSLocalizedString("Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account.", comment: "")
-        let oneAccountFooter = NSLocalizedString("Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account.", comment: "")
+        let manyAccountFooter = NSLocalizedString("Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account.", comment: "Instructional text about the Sharing feature.")
+        let oneAccountFooter = NSLocalizedString("Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account.", comment: "Instructional text about the Sharing feature.")
         let footer = rows.count > 1 ? manyAccountFooter : oneAccountFooter
 
         return ImmuTableSection(headerText: title, rows: rows, footerText: footer)
@@ -196,7 +233,11 @@ import WordPressShared
 
         for connection in connections {
             let acct = KeyringAccount(name: connection.externalDisplay, externalID: nil, externalIDForConnection: connection.externalID, keyringConnection: connection)
-            accounts.append(acct)
+
+            // Do not include the service if it only supports external users.
+            if !publicizeService.externalUsersOnly {
+                accounts.append(acct)
+            }
 
             for externalUser in connection.additionalExternalUsers {
                 let acct = KeyringAccount(name: externalUser.externalName, externalID: externalUser.externalID, externalIDForConnection: externalUser.externalID, keyringConnection: connection)
@@ -282,4 +323,14 @@ import WordPressShared
 @objc protocol SharingAccountSelectionDelegate: NSObjectProtocol {
     func didDismissSharingAccountViewController(_ controller: SharingAccountViewController)
     func sharingAccountViewController(_ controller: SharingAccountViewController, selectedKeyringConnection keyringConnection: KeyringConnection, externalID: String?)
+}
+
+
+extension SharingAccountViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        if let url = URL(string: "https://en.support.wordpress.com/publicize/#facebook-pages") {
+            UIApplication.shared.open(url)
+        }
+        dismiss(animated: true, completion: nil)
+    }
 }

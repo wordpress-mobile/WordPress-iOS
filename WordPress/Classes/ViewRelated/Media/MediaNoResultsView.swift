@@ -14,7 +14,7 @@ class MediaNoResultsView: WPNoResultsView {
     }
 
     @objc func updateForNoSearchResult(with searchQuery: String) {
-        accessoryView = UIImageView(image: UIImage(named: "media-no-results"))
+        accessoryView = UIImageView(image: UIImage(named: "media-library-no-results"))
         let text = NSLocalizedString("No media files match your search for %@", comment: "Message displayed when no results are returned from a media library search. Should match Calypso.")
         titleText = String.localizedStringWithFormat(text, searchQuery)
         messageText = nil
@@ -24,7 +24,7 @@ class MediaNoResultsView: WPNoResultsView {
 
     @objc(updateForNoMediaAssetsShowingUploadMediaButton:)
     func updateForNoAssets(userCanUploadMedia: Bool) {
-        accessoryView = UIImageView(image: UIImage(named: "media-no-results"))
+        accessoryView = UIImageView(image: UIImage(named: "media-library-no-results"))
         titleText = NSLocalizedString("You don't have any media.", comment: "Title displayed when the user doesn't have any media in their media library. Should match Calypso.")
 
         if userCanUploadMedia {
