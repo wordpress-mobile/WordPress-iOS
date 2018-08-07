@@ -29,6 +29,13 @@ final class NewsCard: UIViewController {
         loadContent()
     }
 
+    private func applyStyles() {
+        styleBackground()
+        styleBorderedView()
+        styleLabels()
+        styleDismissButton()
+    }
+
     private func initIllustration() {
         illustration.image = UIImage(named: "wp-illustration-notifications")
     }
@@ -44,14 +51,23 @@ final class NewsCard: UIViewController {
         }
     }
 
-    private func applyStyles() {
+    private func styleBackground() {
         view.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+
+    private func styleBorderedView() {
         borderedView.layer.borderColor = WPStyleGuide.readerCardCellBorderColor().cgColor
         borderedView.layer.borderWidth = 1.0
+    }
+
+    private func styleLabels() {
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(newsTitle)
         WPStyleGuide.applyReaderStreamHeaderDetailStyle(newsSubtitle)
+    }
 
-        dismiss.setImage(Gridicon.iconOfType(.crossCircle, withSize: CGSize(width: 40, height: 40)), for: .normal)
+    private func styleDismissButton() {
+        let dismissIcon = Gridicon.iconOfType(.crossCircle, withSize: CGSize(width: 40, height: 40))
+        dismiss.setImage(dismissIcon, for: .normal)
         dismiss.setTitle(nil, for: .normal)
     }
 
