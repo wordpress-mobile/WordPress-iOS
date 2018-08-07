@@ -16,7 +16,8 @@ extension ReaderStreamViewController {
         let header = headerForStream(topic)
         header?.backgroundColor = .red
 
-        guard let card = news.card else {
+        guard let cardUI = news.card?.view else {
+            // No news
             header?.backgroundColor = .red
             let headerAsStreamHeader = header as? ReaderStreamHeader
             headerAsStreamHeader?.configureHeader(topic)
@@ -36,7 +37,16 @@ extension ReaderStreamViewController {
         headerAsStreamHeader?.enableLoggedInFeatures(isLoggedIn)
         headerAsStreamHeader?.delegate = delegate
 
-        return headerAsStreamHeader as? UIView
+        //return headerAsStreamHeader as? UIView
+
+        guard let sectionHeader = header else {
+            return cardUI
+        }
+
+
+        let stackView = UIStackView(arrangedSubviews: [cardUI, sectionHeader])
+        return stackView
+
     }
 
 
