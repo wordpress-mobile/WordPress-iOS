@@ -1,5 +1,6 @@
 import XCTest
 @testable import WordPress
+@testable import WordPressShared.WPStyleGuide
 
 final class NewsCardTests: XCTestCase {
     private struct Constants {
@@ -23,6 +24,6 @@ final class NewsCardTests: XCTestCase {
     }
 
     func testViewHasTheExpectedBackgroundColor() {
-        XCTAssertEqual(subject?.view.backgroundColor, .red)
+        XCTAssertEqual(subject?.view.backgroundColor, WPStyleGuide.greyLighten30())
     }
 }
