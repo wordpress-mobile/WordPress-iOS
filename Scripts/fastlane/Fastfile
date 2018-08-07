@@ -39,6 +39,28 @@ ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
     get_prs_list(repository:GHHELPER_REPO, start_tag:"#{old_version}", report_path:"#{File.expand_path('~')}/wpios_prs_list_#{old_version}_#{new_version}.txt")
   end
 
+  desc "Updates the AppStoreStrings.po file with the latest data"
+  lane :update_appstore_strings do | options |
+    prj_folder = Pathname.new(File.join(Dir.pwd, "../..")).expand_path.to_s
+    source_metadata_folder = File.join(prj_folder, "Scripts/fastlane/appstoreres/metadata/source")
+
+    files = {
+      whats_new: File.join(prj_folder,  "/WordPress/Resources/release_notes.txt"),
+      app_store_subtitle: File.join(source_metadata_folder, "subtitle.txt"),
+      app_store_desc: File.join(source_metadata_folder, "description.txt"),
+      app_store_keywords: File.join(source_metadata_folder, "keywords.txt"),
+      "app_store_screenshot-1" => File.join(source_metadata_folder, "promo_screenshot_1.txt"),
+      "app_store_screenshot-2" => File.join(source_metadata_folder, "promo_screenshot_2.txt"),
+      "app_store_screenshot-3" => File.join(source_metadata_folder, "promo_screenshot_3.txt"),
+      "app_store_screenshot-4" => File.join(source_metadata_folder, "promo_screenshot_4.txt"),
+      "app_store_screenshot-5" => File.join(source_metadata_folder, "promo_screenshot_5.txt")
+    }
+
+  gp_update_metadata_source(po_file_path: prj_folder + "/WordPress/Resources/AppStoreStrings.po", 
+    source_files: files, 
+    release_version: options[:version])
+  end
+
 ########################################################################
 # Helper Lanes
 ########################################################################

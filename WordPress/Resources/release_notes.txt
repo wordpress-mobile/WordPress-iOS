@@ -1,0 +1,4 @@
+You can now jump from WordPress.com in Safari to the same content in the WordPress for iOS app with ease. Just look out for the banner at the top of WordPress.com pages!.
+Activity Log are now available for free WordPress.com sites.
+Some small UI improvements.
+A bunch of bug fixes.
