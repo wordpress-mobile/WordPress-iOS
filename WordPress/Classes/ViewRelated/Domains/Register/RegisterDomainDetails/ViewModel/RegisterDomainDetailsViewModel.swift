@@ -36,9 +36,9 @@ class RegisterDomainDetailsViewModel {
 
     var onChange: ((Change) -> Void)?
     private(set) var addressSectionIndexHelper = CellIndex.AddressSectionIndexHelper()
-    private(set) var domain: String?
+    private(set) var domain: String
 
-    init(domain: String?) {
+    init(domain: String) {
         self.domain = domain
     }
 
