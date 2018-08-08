@@ -1,11 +1,12 @@
 module Fastlane
-  module Actions    
-    class IosBumpVersionReleaseAction < Action
+  module Actions
+    class IosBumpVersionHotfixAction < Action
       def self.run(params)
-        # fastlane will take care of reading in the parameter and fetching the environment variable:
-        UI.message "Bumping app release version..."
+        UI.message "Bumping app release version for hotfix..."
         
-        other_action.sh(command: "./manage-version.sh bump-release")
+        require_relative '../helpers/ios_git_helper.rb'
+        Fastlane::Helpers::IosGitHelper::branch_for_hotfix(params[:previous_version], params[:version])
+        other_action.sh(command: "./manage-version.sh update #{params[:version]}")
         other_action.sh(command: "cd .. && git add ./config/.")
         other_action.sh(command: "git add fastlane/Deliverfile")
         other_action.sh(command: "git add fastlane/download_metadata.swift")
@@ -29,7 +30,19 @@ module Fastlane
       end
 
       def self.available_options
+        # Define all options your action supports. 
         
+        # Below a few examples
+        [
+          FastlaneCore::ConfigItem.new(key: :version,
+                                       env_name: "FL_IOS_BUMP_VERSION_HOTFIX_VERSION", 
+                                       description: "The version of the hotfix", 
+                                       is_string: true),
+          FastlaneCore::ConfigItem.new(key: :previous_version,
+                                       env_name: "FL_IOS_BUMP_VERSION_HOTFIX_PREVIOUS VERSION",
+                                       description: "The version to branch from",
+                                       is_string: true) # the default value if the user didn't provide one
+        ]
       end
 
       def self.output

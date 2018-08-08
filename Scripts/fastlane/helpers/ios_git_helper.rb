@@ -18,6 +18,11 @@ module Fastlane
         end
       end
 
+      def self.branch_for_hotfix(tag_version, new_version)
+        Action.sh("git checkout #{tag_version}")
+        Action.sh("git checkout -b release/#{new_version}")
+        Action.sh("git push origin release/#{new_version}")
+      end
     end
   end
 end
