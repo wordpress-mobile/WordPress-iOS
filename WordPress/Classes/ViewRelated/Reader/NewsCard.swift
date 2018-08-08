@@ -24,8 +24,8 @@ final class NewsCard: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
         applyStyles()
-        initIllustration()
         loadContent()
     }
 
@@ -37,8 +37,21 @@ final class NewsCard: UIViewController {
         styleDismissButton()
     }
 
-    private func initIllustration() {
+    private func setupUI() {
+        setUpDismissButton()
+        populateIllustration()
+    }
+
+    private func setUpDismissButton() {
+        dismiss.addTarget(self, action: #selector(dismissAction), for: .touchUpInside)
+    }
+
+    private func populateIllustration() {
         illustration.image = UIImage(named: "wp-illustration-notifications")
+    }
+
+    @objc private func dismissAction() {
+        manager.dismiss()
     }
 
     private func loadContent() {
@@ -77,7 +90,7 @@ final class NewsCard: UIViewController {
     }
 
     private func errorLoading(_ error: Error) {
-        print("=== error loading ====")
+        manager.dismiss()
     }
 
     private func populate(_ item: NewsItem) {
