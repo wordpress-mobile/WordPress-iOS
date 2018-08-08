@@ -102,19 +102,14 @@ ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
   # bundle exec fastlane new_beta_release skip_confirm:true
   # bundle exec fastlane new_beta_release base_version:10.6.1
   #####################################################################################
-  desc "Creates a new release branch from the current develop"
+  desc "Updates a release branch for a new beta release"
   lane :new_beta_release do | options |
-    old_version = ios_betabuild_prechecks(options)
-    
-    ios_bump_version_release()
-    new_version = ios_get_app_version()
-    setbranchprotection(repository:GHHELPER_REPO, branch: "release/#{new_version}")
-    setfrozentag(repository:GHHELPER_REPO, milestone: new_version)
-
-    ios_localize_project()
+    ios_betabuild_prechecks(options)
+    ios_bump_version_beta()
     ios_tag_build()
-    get_prs_list(repository:GHHELPER_REPO, start_tag:"#{old_version}", report_path:"#{File.expand_path('~')}/wpios_prs_list_#{old_version}_#{new_version}.txt")
   end
+
+  
 
 ########################################################################
 # Helper Lanes
