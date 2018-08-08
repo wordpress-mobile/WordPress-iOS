@@ -7,7 +7,6 @@ final class DefaultNewsManager: NewsManager {
     }
 
     func dismiss() {
-        print("dismiss the card")
     }
 
     func shouldPresentCard() -> Bool {
