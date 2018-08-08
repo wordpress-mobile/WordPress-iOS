@@ -341,7 +341,9 @@ extension DomainSuggestionsTableViewController {
         }
 
         // Remove ".wordpress.com" before sending it to the delegate
-        selectedDomain = selectedDomain.components(separatedBy: ".")[0]
+        if domainSuggestionType == .onlyWordPressDotCom {
+            selectedDomain = selectedDomain.components(separatedBy: ".")[0]
+        }
         delegate?.domainSelected(selectedDomain)
 
         tableView.deselectSelectedRowWithAnimation(true)

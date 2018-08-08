@@ -81,6 +81,9 @@ extension RegisterDomainSuggestionsViewController: DomainSuggestionsTableViewCon
 
 extension RegisterDomainSuggestionsViewController: NUXButtonViewControllerDelegate {
     func primaryButtonPressed() {
+        guard let domain = domain else {
+            return
+        }
         let controller = RegisterDomainDetailsViewController()
         controller.viewModel = RegisterDomainDetailsViewModel(domain: domain)
         self.navigationController?.pushViewController(controller, animated: true)
