@@ -26,6 +26,18 @@ ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
 ########################################################################
 # Release Lanes
 ########################################################################
+  #####################################################################################
+  # code_freeze
+  # -----------------------------------------------------------------------------------
+  # This lane executes the steps planned on code freeze
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane code_freeze [skip_confirm:<skip confirm>]
+  #
+  # Example:
+  # bundle exec fastlane code_freeze
+  # bundle exec fastlane code_freeze skip_confirm:true
+  #####################################################################################
   desc "Creates a new release branch from the current develop"
   lane :code_freeze do | options |
     old_version = ios_codefreeze_prechecks(options)
@@ -40,6 +52,18 @@ ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
     get_prs_list(repository:GHHELPER_REPO, start_tag:"#{old_version}", report_path:"#{File.expand_path('~')}/wpios_prs_list_#{old_version}_#{new_version}.txt")
   end
 
+  #####################################################################################
+  # update_appstore_strings
+  # -----------------------------------------------------------------------------------
+  # This lane updates the AppStoreStrings.po files with the latest content from
+  # the release_notes.txt file and the other text sources
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane update_appstore_strings version:<release note version>
+  #
+  # Example:
+  # bundle exec fastlane update_appstore_strings version:10.7
+  #####################################################################################
   desc "Updates the AppStoreStrings.po file with the latest data"
   lane :update_appstore_strings do | options |
     prj_folder = Pathname.new(File.join(Dir.pwd, "../..")).expand_path.to_s
@@ -57,9 +81,39 @@ ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
       "app_store_screenshot-5" => File.join(source_metadata_folder, "promo_screenshot_5.txt")
     }
 
-  gp_update_metadata_source(po_file_path: prj_folder + "/WordPress/Resources/AppStoreStrings.po", 
-    source_files: files, 
-    release_version: options[:version])
+    gp_update_metadata_source(po_file_path: prj_folder + "/WordPress/Resources/AppStoreStrings.po", 
+      source_files: files, 
+      release_version: options[:version])
+  end
+
+  #####################################################################################
+  # new_beta_release
+  # -----------------------------------------------------------------------------------
+  # This lane updates the release branch for a new beta release. It will update the
+  # current release branch by default. If you want to update a different branch
+  # (i.e. hotfix branch) pass the related version with the 'base_version' param
+  # (example: base_version:10.6.1 will work on the 10.6.1 branch)
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane new_beta_release [skip_confirm:<skip confirm>] [base_version:<version>]
+  #
+  # Example:
+  # bundle exec fastlane new_beta_release
+  # bundle exec fastlane new_beta_release skip_confirm:true
+  # bundle exec fastlane new_beta_release base_version:10.6.1
+  #####################################################################################
+  desc "Creates a new release branch from the current develop"
+  lane :new_beta_release do | options |
+    old_version = ios_betabuild_prechecks(options)
+    
+    ios_bump_version_release()
+    new_version = ios_get_app_version()
+    setbranchprotection(repository:GHHELPER_REPO, branch: "release/#{new_version}")
+    setfrozentag(repository:GHHELPER_REPO, milestone: new_version)
+
+    ios_localize_project()
+    ios_tag_build()
+    get_prs_list(repository:GHHELPER_REPO, start_tag:"#{old_version}", report_path:"#{File.expand_path('~')}/wpios_prs_list_#{old_version}_#{new_version}.txt")
   end
 
 ########################################################################
