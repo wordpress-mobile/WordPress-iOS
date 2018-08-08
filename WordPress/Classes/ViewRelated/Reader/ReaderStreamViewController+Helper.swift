@@ -22,30 +22,34 @@ extension ReaderStreamViewController {
     public class func headerWithNewsCardForStream(_ topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamHeaderDelegate) -> UIView? {
 
         let header = headerForStream(topic)
+        let configuredHeader = configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: delegate)
 
+        // Feature flag is not active
         if !FeatureFlag.newsCard.enabled {
-            return configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: delegate)
+            return configuredHeader
         }
 
         let newsManager = DefaultNewsManager(service: LocalNewsService(fileName: "News"))
 
+        // News card should not be presented: return configured stream header
         guard newsManager.shouldPresentCard() else {
-            return configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: delegate)
+            return configuredHeader
         }
 
         let newsCard = NewsCard(manager: newsManager)
         let news = News(manager: newsManager, ui: newsCard)
 
+        // The news card is not available: return configured stream header
         guard let cardUI = news.card?.view else {
-            // No news
-            return configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: delegate)
+            return configuredHeader
         }
 
-        guard let sectionHeader = configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: delegate) else {
+        // This stream does not have a header: return news card
+        guard let sectionHeader = configuredHeader else {
             return cardUI
         }
 
-
+        // Return NewsCard and header
         let stackView = UIStackView(arrangedSubviews: [cardUI, sectionHeader])
         stackView.axis = .vertical
         return stackView
