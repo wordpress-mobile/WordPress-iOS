@@ -90,7 +90,8 @@ final class NewsCard: UIViewController {
     }
 
     private func styleReadMoreButton() {
-        readMore.setTitle("Read More", for: .normal)
+        let title = NSLocalizedString("Read More", comment: "Button providing More information in the News Card")
+        readMore.setTitle(title, for: .normal)
     }
 
     private func styleDismissButton() {
