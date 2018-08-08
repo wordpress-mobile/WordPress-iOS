@@ -54,6 +54,13 @@ protocol NotificationIdentifiable {
     var notificationIdentifier: String { get }
 }
 
+/// RemoteNotification is located in WordPressKit
+extension RemoteNotification: NotificationIdentifiable {
+    var notificationIdentifier: String {
+        return notificationId
+    }
+}
+
 class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
     var textOverride: String?
     let media: [FormattableMediaItem]
