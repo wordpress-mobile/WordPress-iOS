@@ -24,31 +24,24 @@ extension ReaderStreamViewController {
         let header = headerForStream(topic)
 
         if !FeatureFlag.newsCard.enabled {
-            header?.configureHeader(topic)
-            header?.enableLoggedInFeatures(isLoggedIn)
-            header?.delegate = delegate
-
-            return header
+            return configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: delegate)
         }
 
         let newsManager = DefaultNewsManager(service: LocalNewsService(fileName: "News"))
+
+        guard newsManager.shouldPresentCard() else {
+            return configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: delegate)
+        }
+
         let newsCard = NewsCard(manager: newsManager)
         let news = News(manager: newsManager, ui: newsCard)
 
         guard let cardUI = news.card?.view else {
             // No news
-            header?.configureHeader(topic)
-            header?.enableLoggedInFeatures(isLoggedIn)
-            header?.delegate = delegate
-
-            return header
+            return configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: delegate)
         }
 
-        header?.configureHeader(topic)
-        header?.enableLoggedInFeatures(isLoggedIn)
-        header?.delegate = delegate
-
-        guard let sectionHeader = header else {
+        guard let sectionHeader = configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: delegate) else {
             return cardUI
         }
 
@@ -56,6 +49,14 @@ extension ReaderStreamViewController {
         let stackView = UIStackView(arrangedSubviews: [cardUI, sectionHeader])
         stackView.axis = .vertical
         return stackView
+    }
+
+    private class func configure(_ header: Header?, topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamHeaderDelegate) -> Header? {
+        header?.configureHeader(topic)
+        header?.enableLoggedInFeatures(isLoggedIn)
+        header?.delegate = delegate
+
+        return header
     }
 
     private class func headerForStream(_ topic: ReaderAbstractTopic) -> Header? {
