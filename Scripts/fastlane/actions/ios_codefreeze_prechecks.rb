@@ -6,10 +6,10 @@ module Fastlane
         UI.message "Skip confirm on code freeze: #{params[:skip_confirm]}"
 
         require_relative '../helpers/ios_version_helper.rb'
+        require_relative '../helpers/ios_git_helper.rb'
 
         # Checkout develop and update
-        other_action.sh(command: "git checkout develop")
-        other_action.sh(command:"git pull")
+        Fastlane::Helpers::IosGitHelper("develop")
 
         # Create versions
         current_version = Fastlane::Helpers::IosVersionHelper::get_public_version
