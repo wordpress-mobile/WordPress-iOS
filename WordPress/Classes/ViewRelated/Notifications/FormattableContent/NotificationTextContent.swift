@@ -48,10 +48,16 @@ extension FormattableMediaContent where Self: FormattableContent {
     }
 }
 
+/// This protocol represents the identifying traits of a local or remote notification.
+protocol NotificationIdentifiable {
+    /// the unique identifier for the notification
+    var notificationIdentifier: String { get }
+}
+
 class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
     var textOverride: String?
     let media: [FormattableMediaItem]
-    let parent: Notification
+    let parent: NotificationIdentifiable
     let meta: [String: AnyObject]?
 
     override var text: String? {
@@ -65,7 +71,7 @@ class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
         return super.kind
     }
 
-    init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], ranges: [FormattableContentRange], parent note: Notification) {
+    init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], ranges: [FormattableContentRange], parent note: NotificationIdentifiable) {
         let rawMedia = dictionary[Constants.BlockKeys.Media] as? [[String: AnyObject]]
         let text = dictionary[Constants.BlockKeys.Text] as? String ?? ""
 
