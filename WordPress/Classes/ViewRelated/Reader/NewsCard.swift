@@ -53,7 +53,7 @@ final class NewsCard: UIViewController {
     }
 
     private func populateIllustration() {
-        illustration.image = UIImage(named: "wp-illustration-notifications")
+        illustration.image = UIImage(named: "wp-illustration-notifications")?.imageFlippedForRightToLeftLayoutDirection()
     }
 
     @objc private func dismissAction() {
