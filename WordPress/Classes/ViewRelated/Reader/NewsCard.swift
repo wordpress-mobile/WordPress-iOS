@@ -27,6 +27,7 @@ final class NewsCard: UIViewController {
         setupUI()
         applyStyles()
         loadContent()
+        prepareForVoiceOver()
     }
 
     private func applyStyles() {
@@ -94,7 +95,43 @@ final class NewsCard: UIViewController {
     }
 
     private func populate(_ item: NewsItem) {
-        newsTitle.text = item.title
-        newsSubtitle.text = item.content
+        let title = item.title
+        let content = item.content
+
+        newsTitle.text = title
+        newsSubtitle.text = content
+
+        prepareTitleForVoiceOver(label: title)
+        prepareSubtitleForVoiceOver(label: content)
+    }
+}
+
+// MARK: - Accessibility
+extension NewsCard: Accessible {
+    func prepareForVoiceOver() {
+        prepareDismissButtonForVoiceOver()
+        prepareReadMoreButtonForVoiceOver()
+    }
+
+    private func prepareDismissButtonForVoiceOver() {
+        dismiss.accessibilityLabel = NSLocalizedString("Dismiss", comment: "Accessibility label for the Dismiss button on Reader's News Card")
+        dismiss.accessibilityTraits = UIAccessibilityTraitButton
+        dismiss.accessibilityHint = NSLocalizedString("Dimisses the News Card.", comment: "Accessibility hint for the dismiss button on Reader's News Card")
+    }
+
+    fileprivate func prepareTitleForVoiceOver(label: String) {
+        newsTitle.accessibilityLabel = label
+        newsTitle.accessibilityTraits = UIAccessibilityTraitStaticText
+    }
+
+    fileprivate func prepareSubtitleForVoiceOver(label: String) {
+        newsSubtitle.accessibilityLabel = label
+        newsSubtitle.accessibilityTraits = UIAccessibilityTraitStaticText
+    }
+
+    private func prepareReadMoreButtonForVoiceOver() {
+        readMore.accessibilityLabel = NSLocalizedString("Read More", comment: "Accessibility label for the Read More button on Reader's News Card")
+        dismiss.accessibilityTraits = UIAccessibilityTraitButton
+        dismiss.accessibilityHint = NSLocalizedString("Provides more information.", comment: "Accessibility hint for the Read More button on Reader's News Card")
     }
 }
