@@ -1,6 +1,8 @@
 import Foundation
 
 extension ReaderStreamViewController {
+    // Convenience type for Reader's headers
+    private typealias Header = UIView & ReaderStreamHeader
 
     // A simple struct defining a title and message for use with a WPNoResultsView
     public struct NoResultsResponse {
@@ -8,17 +10,25 @@ extension ReaderStreamViewController {
         var message: String
     }
 
-    public class func headerWithNewsCardForStream(_ topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamViewController) -> UIView? {
+    /// Returns the ReaderStreamHeader appropriate for a particular ReaderTopic, including News Card, or nil if there is not one.
+    /// The header is returned already configured
+    ///
+    /// - Parameter topic: A ReaderTopic
+    /// - Parameter isLoggedIn: A boolean flag indicating if the user is logged in
+    /// - Parameter delegate: The header delegate
+    ///
+    /// - Returns: A configured instance of UIView.
+    ///
+    public class func headerWithNewsCardForStream(_ topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamHeaderDelegate) -> UIView? {
 
         let header = headerForStream(topic)
 
         if !FeatureFlag.newsCard.enabled {
-            let headerAsStreamHeader = header as? ReaderStreamHeader
-            headerAsStreamHeader?.configureHeader(topic)
-            headerAsStreamHeader?.enableLoggedInFeatures(isLoggedIn)
-            headerAsStreamHeader?.delegate = delegate
+            header?.configureHeader(topic)
+            header?.enableLoggedInFeatures(isLoggedIn)
+            header?.delegate = delegate
 
-            return headerAsStreamHeader as? UIView
+            return header
         }
 
         let newsManager = DefaultNewsManager(service: LocalNewsService(fileName: "News"))
@@ -27,18 +37,16 @@ extension ReaderStreamViewController {
 
         guard let cardUI = news.card?.view else {
             // No news
-            let headerAsStreamHeader = header as? ReaderStreamHeader
-            headerAsStreamHeader?.configureHeader(topic)
-            headerAsStreamHeader?.enableLoggedInFeatures(isLoggedIn)
-            headerAsStreamHeader?.delegate = delegate
+            header?.configureHeader(topic)
+            header?.enableLoggedInFeatures(isLoggedIn)
+            header?.delegate = delegate
 
-            return headerAsStreamHeader as? UIView
+            return header
         }
 
-        let headerAsStreamHeader = header as? ReaderStreamHeader
-        headerAsStreamHeader?.configureHeader(topic)
-        headerAsStreamHeader?.enableLoggedInFeatures(isLoggedIn)
-        headerAsStreamHeader?.delegate = delegate
+        header?.configureHeader(topic)
+        header?.enableLoggedInFeatures(isLoggedIn)
+        header?.delegate = delegate
 
         guard let sectionHeader = header else {
             return cardUI
@@ -50,15 +58,7 @@ extension ReaderStreamViewController {
         return stackView
     }
 
-
-    /// Returns the ReaderStreamHeader appropriate for a particular ReaderTopic or nil if there is not one.
-    /// The caller is expected to configure the returned header.
-    ///
-    /// - Parameter topic: A ReaderTopic
-    ///
-    /// - Returns: An unconfigured instance of a ReaderStreamHeader.
-    ///
-    public class func headerForStream(_ topic: ReaderAbstractTopic) -> UIView? {
+    private class func headerForStream(_ topic: ReaderAbstractTopic) -> Header? {
         if ReaderHelpers.topicIsFreshlyPressed(topic) || ReaderHelpers.topicIsLiked(topic) {
             // no header for these special lists
             return nil
