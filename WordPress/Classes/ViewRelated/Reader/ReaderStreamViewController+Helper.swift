@@ -38,7 +38,6 @@ extension ReaderStreamViewController {
         let stackView = UIStackView(arrangedSubviews: [cardUI, sectionHeader])
         stackView.axis = .vertical
         return stackView
-
     }
 
 
