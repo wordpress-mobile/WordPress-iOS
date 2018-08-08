@@ -9,11 +9,21 @@ extension ReaderStreamViewController {
     }
 
     public class func headerWithNewsCardForStream(_ topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamViewController) -> UIView? {
+
+        let header = headerForStream(topic)
+
+        if !FeatureFlag.newsCard.enabled {
+            let headerAsStreamHeader = header as? ReaderStreamHeader
+            headerAsStreamHeader?.configureHeader(topic)
+            headerAsStreamHeader?.enableLoggedInFeatures(isLoggedIn)
+            headerAsStreamHeader?.delegate = delegate
+
+            return headerAsStreamHeader as? UIView
+        }
+
         let newsManager = DefaultNewsManager(service: LocalNewsService(fileName: "News"))
         let newsCard = NewsCard(manager: newsManager)
         let news = News(manager: newsManager, ui: newsCard)
-
-        let header = headerForStream(topic)
 
         guard let cardUI = news.card?.view else {
             // No news
