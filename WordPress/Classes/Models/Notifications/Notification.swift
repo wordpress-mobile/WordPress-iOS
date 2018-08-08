@@ -566,3 +566,9 @@ extension Notification {
         static let Home     = "home"
     }
 }
+
+extension Notification: NotificationIdentifiable {
+    var notificationIdentifier: String {
+        return notificationId
+    }
+}
