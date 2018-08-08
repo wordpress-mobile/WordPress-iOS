@@ -52,6 +52,7 @@ extension ReaderStreamViewController {
         // Return NewsCard and header
         let stackView = UIStackView(arrangedSubviews: [cardUI, sectionHeader])
         stackView.axis = .vertical
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }
 
