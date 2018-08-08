@@ -9,6 +9,9 @@ final class DefaultNewsManager: NewsManager {
     func dismiss() {
     }
 
+    func readMore() {
+    }
+
     func shouldPresentCard() -> Bool {
         return true
     }

@@ -40,11 +40,16 @@ final class NewsCard: UIViewController {
 
     private func setupUI() {
         setUpDismissButton()
+        setUpReadMoreButton()
         populateIllustration()
     }
 
     private func setUpDismissButton() {
         dismiss.addTarget(self, action: #selector(dismissAction), for: .touchUpInside)
+    }
+
+    private func setUpReadMoreButton() {
+        readMore.addTarget(self, action: #selector(readMoreAction), for: .touchUpInside)
     }
 
     private func populateIllustration() {
@@ -53,6 +58,10 @@ final class NewsCard: UIViewController {
 
     @objc private func dismissAction() {
         manager.dismiss()
+    }
+
+    @objc private func readMoreAction() {
+        manager.readMore()
     }
 
     private func loadContent() {
