@@ -92,7 +92,6 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="x31-wL-G0k" firstAttribute="trailing" secondItem="0Ae-eX-ae9" secondAttribute="trailing" constant="10" id="8y0-se-MDj"/>
-                            <constraint firstItem="0Ae-eX-ae9" firstAttribute="centerX" secondItem="x31-wL-G0k" secondAttribute="centerX" id="NfW-1n-R2j"/>
                             <constraint firstItem="0Ae-eX-ae9" firstAttribute="leading" secondItem="x31-wL-G0k" secondAttribute="leading" constant="10" id="Yvc-NG-l0P"/>
                             <constraint firstItem="0Ae-eX-ae9" firstAttribute="centerY" secondItem="x31-wL-G0k" secondAttribute="centerY" id="bvr-5b-sAb"/>
                         </constraints>
