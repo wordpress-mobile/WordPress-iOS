@@ -11,10 +11,15 @@ final class NewsCardTests: XCTestCase {
 
     private class MockNewsManager: NewsManager {
         var dismissed: Bool = false
+        var readMoreTapped: Bool = false
         var cardIsVisible: Bool = true
 
         func dismiss() {
             dismissed = true
+        }
+
+        func readMore() {
+            readMoreTapped = true
         }
 
         func shouldPresentCard() -> Bool {
@@ -62,5 +67,11 @@ final class NewsCardTests: XCTestCase {
         subject?.dismiss.sendActions(for: .touchUpInside)
 
         XCTAssertTrue(manager!.dismissed)
+    }
+
+    func testTappingReadMoreButtonCallsReadMoreInManager() {
+        subject?.readMore.sendActions(for: .touchUpInside)
+
+        XCTAssertTrue(manager!.readMoreTapped)
     }
 }
