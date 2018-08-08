@@ -517,11 +517,10 @@ import WordPressFlux
     // Refresh the header of a site topic when returning in case the
     // topic's following status changed.
     @objc func refreshTableHeaderIfNeeded() {
-        guard let topic = readerTopic,
-            let header = tableView.tableHeaderView as? ReaderStreamHeader else {
+        guard let _ = readerTopic else {
             return
         }
-        header.configureHeader(topic)
+        configureStreamHeader()
     }
 
 
