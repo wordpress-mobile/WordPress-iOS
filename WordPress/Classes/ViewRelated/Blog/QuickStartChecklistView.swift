@@ -104,8 +104,4 @@ private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
         }
         return UITableViewCell()
     }
-
-    private enum Keys: String {
-        case quickStartTourProgress = "quickStartTourProgress"
-    }
 }
