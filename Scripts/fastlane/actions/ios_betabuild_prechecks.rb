@@ -2,7 +2,6 @@ module Fastlane
   module Actions
     class IosBetabuildPrechecksAction < Action
       def self.run(params)
-        # fastlane will take care of reading in the parameter and fetching the environment variable:
         UI.message "Skip confirm: #{params[:skip_confirm]}"
         UI.message "Work on version: #{params[:base_version]}" unless params[:base_version].nil?
         
@@ -61,9 +60,6 @@ module Fastlane
       end
 
       def self.available_options
-        # Define all options your action supports. 
-        
-        # Below a few examples
         [
           FastlaneCore::ConfigItem.new(key: :base_version,
                                        env_name: "FL_IOS_BETABUILD_PRECHECKS_BASE_VERSION", 
