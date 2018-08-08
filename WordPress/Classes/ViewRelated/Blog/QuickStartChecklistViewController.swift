@@ -1,16 +1,15 @@
-class QuickStartChecklistView: UITableViewController {
+class QuickStartChecklistViewController: UITableViewController {
     private var dataSource: QuickStartChecklistDataSource? {
         didSet {
             self.tableView?.dataSource = dataSource
         }
     }
-    @objc public var blog: Blog? {
-        didSet {
-            guard let dotComID = blog?.dotComID else {
-                return
-            }
-            dataSource = QuickStartChecklistDataSource(blogID: dotComID.intValue)
-        }
+    private var blog: Blog?
+
+    @objc
+    convenience init(blog: Blog) {
+        self.init()
+        self.blog = blog
     }
 
     override func viewDidLoad() {
@@ -21,6 +20,12 @@ class QuickStartChecklistView: UITableViewController {
 
         let cellNib = UINib(nibName: "QuickStartChecklistCell", bundle: Bundle(for: QuickStartChecklistCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: QuickStartChecklistCell.reuseIdentifier)
+
+        guard let blog = blog,
+            let dotComID = blog.dotComID else {
+            return
+        }
+        dataSource = QuickStartChecklistDataSource(blogID: dotComID.intValue)
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

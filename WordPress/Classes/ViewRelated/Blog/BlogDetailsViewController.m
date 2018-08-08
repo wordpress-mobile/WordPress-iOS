@@ -1171,8 +1171,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)startTour
 {
-    QuickStartChecklistView *checklist = [[QuickStartChecklistView alloc] init];
-    checklist.blog = self.blog;
+    QuickStartChecklistViewController *checklist = [[QuickStartChecklistViewController alloc] initWithBlog:self.blog];
     [self.navigationController pushViewController:checklist animated:YES];
 }
 
