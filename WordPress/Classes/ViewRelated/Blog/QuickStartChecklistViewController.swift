@@ -21,11 +21,10 @@ class QuickStartChecklistViewController: UITableViewController {
         let cellNib = UINib(nibName: "QuickStartChecklistCell", bundle: Bundle(for: QuickStartChecklistCell.self))
         tableView.register(cellNib, forCellReuseIdentifier: QuickStartChecklistCell.reuseIdentifier)
 
-        guard let blog = blog,
-            let dotComID = blog.dotComID else {
+        guard let blog = blog else {
             return
         }
-        dataSource = QuickStartChecklistDataSource(blogID: dotComID.intValue)
+        dataSource = QuickStartChecklistDataSource(blog: blog)
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -58,27 +57,23 @@ class QuickStartChecklistViewController: UITableViewController {
 }
 
 private class QuickStartChecklistDataSource: NSObject, UITableViewDataSource {
-    private var blogID: Int
+    private var blog: Blog
     private var completedTours = Set<String>()
 
-    init(blogID: Int) {
-        self.blogID = blogID
+    init(blog: Blog) {
+        self.blog = blog
 
         super.init()
         loadCompletedTours()
     }
 
     func loadCompletedTours() {
-        let context = ContextManager.sharedInstance().mainContext
-        let fetchRequest = NSFetchRequest<QuickStartCompletedTour>(entityName: QuickStartCompletedTour.entityName())
-        fetchRequest.predicate = NSPredicate(format: "blog.blogID = %d", blogID)
-
-        guard let results = try? context.fetch(fetchRequest) else {
+        guard let tours = blog.completedQuickStartTours else {
             return
         }
 
-        for result in results {
-            completedTours.insert(result.tourID)
+        for tour in tours {
+            completedTours.insert(tour.tourID)
         }
     }
 

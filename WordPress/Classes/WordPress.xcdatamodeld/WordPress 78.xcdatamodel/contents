@@ -143,7 +143,7 @@
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Comment" inverseName="blog" inverseEntity="Comment" indexed="YES">
             <userInfo/>
         </relationship>
-        <relationship name="completedQuickStartTours" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="QuickStartCompletedTour" inverseName="blog" inverseEntity="QuickStartCompletedTour" syncable="YES"/>
+        <relationship name="completedQuickStartTours" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="QuickStartCompletedTour" inverseName="blog" inverseEntity="QuickStartCompletedTour" syncable="YES"/>
         <relationship name="connections" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PublicizeConnection" inverseName="blog" inverseEntity="PublicizeConnection" syncable="YES"/>
         <relationship name="domains" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Domain" inverseName="blog" inverseEntity="Domain" syncable="YES"/>
         <relationship name="media" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Media" inverseName="blog" inverseEntity="Media" indexed="YES">
