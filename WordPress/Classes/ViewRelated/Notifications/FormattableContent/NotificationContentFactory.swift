@@ -16,7 +16,7 @@ extension Notification {
 
 class NotificationContentFactory: FormattableContentFactory {
 
-    static func content(from blocks: [[String: AnyObject]], actionsParser parser: FormattableContentActionParser, parent: Notification) -> [FormattableContent] {
+    static func content(from blocks: [[String: AnyObject]], actionsParser parser: FormattableContentActionParser, parent: NotificationIdentifiable) -> [FormattableContent] {
         return blocks.compactMap { rawBlock in
             let actions = parser.parse(rawBlock[Constants.Actions] as? [String: AnyObject])
             let ranges = rangesFrom(rawBlock)
@@ -29,12 +29,12 @@ class NotificationContentFactory: FormattableContentFactory {
     }
 
     private static func rangesFrom(_ rawBlock: [String: AnyObject]) -> [FormattableContentRange] {
-        let rawRanges   = rawBlock[Constants.Ranges] as? [[String: AnyObject]]
+        let rawRanges = rawBlock[Constants.Ranges] as? [[String: AnyObject]]
         let parsed = rawRanges?.compactMap(NotificationContentRangeFactory.contentRange)
         return parsed ?? []
     }
 
-    private static func content(for type: String, with rawBlock: [String: AnyObject], actions: [FormattableContentAction], ranges: [FormattableContentRange], parent: Notification) -> FormattableContent? {
+    private static func content(for type: String, with rawBlock: [String: AnyObject], actions: [FormattableContentAction], ranges: [FormattableContentRange], parent: NotificationIdentifiable) -> FormattableContent? {
         guard let type = Notification.ContentType(rawValue: type) else {
             return NotificationTextContent(dictionary: rawBlock, actions: actions, ranges: ranges, parent: parent)
         }
