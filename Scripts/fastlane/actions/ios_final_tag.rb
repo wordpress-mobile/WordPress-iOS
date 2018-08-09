@@ -5,8 +5,9 @@ module Fastlane
         version = other_action.ios_get_app_version()
         UI.message("Tagging final #{version}...")
 
-        other_action.sh("git tag #{version}")
-        other_action.sh("git push origin #{version}")
+        require_relative '../helpers/ios_git_helper.rb'
+        Fastlane::Helpers::IosGitHelper.final_tag()
+        
         other_action.ios_clear_intermediate_tags(version: version)
       end
 

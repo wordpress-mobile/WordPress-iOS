@@ -5,14 +5,8 @@ module Fastlane
         UI.message "Bumping app release version for hotfix..."
         
         require_relative '../helpers/ios_git_helper.rb'
-        Fastlane::Helpers::IosGitHelper::branch_for_hotfix(params[:previous_version], params[:version])
-        other_action.sh(command: "./manage-version.sh update #{params[:version]}")
-        other_action.sh(command: "cd .. && git add ./config/.")
-        other_action.sh(command: "git add fastlane/Deliverfile")
-        other_action.sh(command: "git add fastlane/download_metadata.swift")
-        other_action.sh(command: "git add ../WordPress/Resources/AppStoreStrings.po")
-        other_action.sh(command: "git commit -m \"Bump version number\"")
-        ohter_action.sh("git push")
+        Fastlane::Helpers::IosGitHelper.branch_for_hotfix(params[:previous_version], params[:version])
+        Fastlane::Helpers::IosGitHelper.bump_version_hotfix()
         
         UI.message "Done."
       end
