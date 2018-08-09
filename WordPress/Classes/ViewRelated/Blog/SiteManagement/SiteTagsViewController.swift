@@ -399,7 +399,12 @@ private extension SiteTagsViewController {
     }
 
     func setupLoadingView() {
-        noResultsViewController?.configure(title: loadingMessage())
+        noResultsViewController?.configure(title: loadingMessage(),
+                                           buttonTitle: nil,
+                                           subtitle: nil,
+                                           attributedSubtitle: nil,
+                                           image: nil,
+                                           accessoryView: loadingAccessoryView())
     }
 
     func setupEmptyResultsView() {
@@ -431,10 +436,6 @@ private extension SiteTagsViewController {
         return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views tags in blog settings and there are no tags")
     }
 
-    func noResultsAccessoryView() -> UIView {
-        return UIImageView(image: UIImage(named: "illustration-posts"))
-    }
-
     func noResultsImageName() -> String {
         return "illustration-posts"
     }
@@ -445,6 +446,12 @@ private extension SiteTagsViewController {
 
     func loadingMessage() -> String {
         return NSLocalizedString("Loading...", comment: "Loading tags.")
+    }
+
+    func loadingAccessoryView() -> UIView {
+        let animatedBox = WPAnimatedBox()
+        animatedBox.animate(afterDelay: 0.1)
+        return animatedBox
     }
 
 }
