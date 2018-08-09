@@ -229,6 +229,23 @@ ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
   lane :build_and_upload_itc do | options |
     ios_build_prechecks(skip_confirm: options[:skip_confirm], external: true)
     ios_build_preflight()
+    gym(scheme: "WordPress", workspace: "../WordPress.xcworkspace",
+      clean: true, export_team_id: ENV["EXT_EXPORT_TEAM_ID"], 
+      export_options: {
+        method: "app-store",
+        provisioningProfiles: { 
+          "org.wordpress" => "WordPress App Store",
+          "org.wordpress.WordPressShare" => "WordPress Share App Store Distribution",
+          "org.wordpress.WordPressDraftAction" => "WordPress Draft Action App Store Distribution",
+          "org.wordpress.WordPressTodayWidget" => "WordPress Today Widget App Store Distribution"
+        }
+      }
+    )
+    
+    testflight(skip_waiting_for_build_processing: true)
+    sh("cd .. && rm WordPress.ipa")
+    upload_symbols_to_crashlytics(dsym_path: "./WordPress.app.dSYM.zip", api_token: ENV["FABRIC_APP_TOKEN"])
+    sh("cd .. && rm WordPress.app.dSYM.zip")
   end
 
 ########################################################################
