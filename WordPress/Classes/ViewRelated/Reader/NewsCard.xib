@@ -61,7 +61,7 @@
                                 <constraint firstAttribute="width" constant="130" id="mBb-U9-zfe"/>
                             </constraints>
                         </imageView>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0k3-KZ-dKQ">
+                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="900" verticalCompressionResistancePriority="900" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0k3-KZ-dKQ">
                             <rect key="frame" x="196" y="0.0" width="179" height="30"/>
                             <state key="normal" title="Button"/>
                         </button>
@@ -72,8 +72,8 @@
             <constraints>
                 <constraint firstItem="7Cb-NM-WoN" firstAttribute="trailing" secondItem="Ewo-7I-oMB" secondAttribute="trailing" constant="-1" id="0mS-Y2-K1k"/>
                 <constraint firstItem="7Cb-NM-WoN" firstAttribute="bottom" secondItem="Ewo-7I-oMB" secondAttribute="bottom" constant="1" id="GS1-Uv-aDu"/>
-                <constraint firstItem="Ewo-7I-oMB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="VXv-J0-G6H"/>
-                <constraint firstAttribute="trailing" secondItem="Ewo-7I-oMB" secondAttribute="trailing" id="cHv-Vm-pu8"/>
+                <constraint firstAttribute="trailing" secondItem="Ewo-7I-oMB" secondAttribute="trailing" id="MWh-IA-qVO"/>
+                <constraint firstItem="Ewo-7I-oMB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="RZm-GG-kTH"/>
                 <constraint firstItem="7Cb-NM-WoN" firstAttribute="leading" secondItem="Ewo-7I-oMB" secondAttribute="leading" constant="-1" id="epM-Oc-CcO"/>
                 <constraint firstAttribute="bottom" secondItem="Ewo-7I-oMB" secondAttribute="bottom" constant="8" id="sY7-h9-Rt9"/>
                 <constraint firstItem="Ewo-7I-oMB" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="uqd-4p-RoN"/>
