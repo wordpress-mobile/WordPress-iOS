@@ -4,7 +4,7 @@ class BodyContentGroup: FormattableContentGroup {
         let blocks = NotificationContentFactory.content(from: body, actionsParser: NotificationActionParser(), parent: parent)
 
         switch parent.kind {
-        case .Comment:
+        case .comment:
             return groupsForCommentBodyBlocks(blocks, parent: parent)
         default:
             return groupsForNonCommentBodyBlocks(blocks, parent: parent)
@@ -12,7 +12,7 @@ class BodyContentGroup: FormattableContentGroup {
     }
 
     private class func groupsForNonCommentBodyBlocks(_ blocks: [FormattableContent], parent: Notification) -> [FormattableContentGroup] {
-        let parentKindsWithFooters: [Notification.Kind] = [.Follow, .Like, .CommentLike]
+        let parentKindsWithFooters: [NotificationKind] = [.follow, .like, .commentLike]
         let parentMayContainFooter = parentKindsWithFooters.contains(parent.kind)
 
         return blocks.enumerated().map { index, block in
