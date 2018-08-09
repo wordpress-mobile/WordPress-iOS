@@ -7,7 +7,7 @@ module Fastlane
         other_action.sh(command: "cd .. && ./Scripts/localize.py")
         other_action.sh(command: "cd .. && git add ./WordPress/Resources/.")
         other_action.sh(command: "git commit -m \"Updates strings for localization\"")
-        ohter_action.sh("git push")
+        other_action.sh(command: "git push")
         
         UI.message "Done."
       end
