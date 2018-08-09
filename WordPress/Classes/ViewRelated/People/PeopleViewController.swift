@@ -23,7 +23,8 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
 
     /// NoResults Helper
     ///
-    fileprivate let noResultsView = WPNoResultsView()
+    private let noResultsViewController = NoResultsViewController.controller()
+
 
     /// Indicates whether there are more results that can be retrieved, or not.
     ///
@@ -338,17 +339,20 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
 
     // MARK: - No Results Helpers
 
-    fileprivate func refreshNoResultsView() {
+    private func refreshNoResultsView() {
+
+        noResultsViewController.removeFromView()
+
         guard resultsController.fetchedObjects?.count == 0 else {
-            noResultsView.removeFromSuperview()
             return
         }
 
-        noResultsView.titleText = noResultsTitle()
+        noResultsViewController.configure(title: noResultsTitle(), buttonTitle: nil, subtitle: nil, attributedSubtitle: nil, image: nil, accessoryView: nil)
 
-        if noResultsView.superview == nil {
-            tableView.addSubview(withFadeAnimation: noResultsView)
-        }
+        addChildViewController(noResultsViewController)
+        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        noResultsViewController.view.frame = tableView.bounds
+        noResultsViewController.didMove(toParentViewController: self)
     }
 
     private func noResultsTitle() -> String {
