@@ -82,7 +82,7 @@ struct TimeZoneSelectorViewModel: Observable {
     var noResultsViewModel: NoResultsViewController.Model? {
         switch state {
         case .loading:
-            return NoResultsViewController.Model(title: LocalizedText.loadingTitle)
+            return NoResultsViewController.Model(title: LocalizedText.loadingTitle, accessoryView: noResultsAccessoryView())
         case .ready:
             return nil
         case .error:
@@ -96,6 +96,12 @@ struct TimeZoneSelectorViewModel: Observable {
                                                      subtitle: LocalizedText.noConnectionSubtitle)
             }
         }
+    }
+
+    func noResultsAccessoryView() -> UIView {
+        let animatedBox = WPAnimatedBox()
+        animatedBox.animate(afterDelay: 0.1)
+        return animatedBox
     }
 
     struct LocalizedText {
