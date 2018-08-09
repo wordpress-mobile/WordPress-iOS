@@ -5,13 +5,8 @@ module Fastlane
         # fastlane will take care of reading in the parameter and fetching the environment variable:
         UI.message "Bumping app release version..."
         
-        other_action.sh(command: "./manage-version.sh bump-release")
-        other_action.sh(command: "cd .. && git add ./config/.")
-        other_action.sh(command: "git add fastlane/Deliverfile")
-        other_action.sh(command: "git add fastlane/download_metadata.swift")
-        other_action.sh(command: "git add ../WordPress/Resources/AppStoreStrings.po")
-        other_action.sh(command: "git commit -m \"Bump version number\"")
-        other_action.sh(command: "git push")
+        require_relative '../helpers/ios_git_helper.rb'
+        Fastlane::Helpers::IosGitHelper.bump_version_release()
         
         UI.message "Done."
       end
