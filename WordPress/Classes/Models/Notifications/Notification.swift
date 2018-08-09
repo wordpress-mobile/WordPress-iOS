@@ -100,7 +100,7 @@ class Notification: NSManagedObject {
         guard let snippetContent = snippetContent else {
             return nil
         }
-        return formatter.render(content: snippetContent, with: SnipetsContentStyles())
+        return formatter.render(content: snippetContent, with: SnippetsContentStyles())
     }
 
     /// When needed, nukes cached attributes
