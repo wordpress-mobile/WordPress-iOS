@@ -35,8 +35,8 @@ module Fastlane
         Action.sh("git push")
       end
 
-      def self.bump_version_hotfix()
-        Action.sh("./manage-version.sh update #{params[:version]}")
+      def self.bump_version_hotfix(version)
+        Action.sh("./manage-version.sh update #{version}")
         Action.sh("cd .. && git add ./config/.")
         Action.sh("git add fastlane/Deliverfile")
         Action.sh("git add fastlane/download_metadata.swift")
