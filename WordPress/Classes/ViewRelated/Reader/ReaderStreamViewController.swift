@@ -509,7 +509,8 @@ import WordPressFlux
         header.widthAnchor.constraint(equalTo: tableView.widthAnchor).isActive = true
         header.topAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
 
-        refreshTableViewHeaderLayout()
+        tableView.tableHeaderView?.layoutIfNeeded()
+        tableView.tableHeaderView = tableView.tableHeaderView
     }
 
 
