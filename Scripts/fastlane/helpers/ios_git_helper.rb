@@ -87,7 +87,7 @@ module Fastlane
         Action.sh("cd ../WordPress && git add .")
         Action.sh("git commit -m \"Updates translation\"")
 
-        Action.sh("./download_metadata.swift")
+        Action.sh("./fastlane/download_metadata.swift")
         Action.sh("git add ./fastlane/metadata/.")
         Action.sh("git commit -m \"Updates metadata translation\"")
 
