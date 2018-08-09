@@ -48,14 +48,14 @@ extension FormattableMediaContent where Self: FormattableContent {
     }
 }
 
-/// This protocol represents the identifying traits of a local or remote notification.
-protocol NotificationIdentifiable {
-    /// the unique identifier for the notification
+/// This protocol represents the traits of a local or remote notification.
+protocol Notifiable {
+    /// the unique identifier for the notification; `note_id` in the APNS payload, `notificationId` in Core Data
     var notificationIdentifier: String { get }
 }
 
 /// RemoteNotification is located in WordPressKit
-extension RemoteNotification: NotificationIdentifiable {
+extension RemoteNotification: Notifiable {
     var notificationIdentifier: String {
         return notificationId
     }
@@ -64,7 +64,7 @@ extension RemoteNotification: NotificationIdentifiable {
 class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
     var textOverride: String?
     let media: [FormattableMediaItem]
-    let parent: NotificationIdentifiable
+    let parent: Notifiable
     let meta: [String: AnyObject]?
 
     override var text: String? {
@@ -78,7 +78,7 @@ class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
         return super.kind
     }
 
-    init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], ranges: [FormattableContentRange], parent note: NotificationIdentifiable) {
+    init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], ranges: [FormattableContentRange], parent note: Notifiable) {
         let rawMedia = dictionary[Constants.BlockKeys.Media] as? [[String: AnyObject]]
         let text = dictionary[Constants.BlockKeys.Text] as? String ?? ""
 
