@@ -2,6 +2,7 @@
 final class DefaultNewsManager: NewsManager {
     private let service: NewsService
     private var result: Result<NewsItem>?
+    private var dismissed = false
 
     init(service: NewsService) {
         self.service = service
@@ -9,19 +10,14 @@ final class DefaultNewsManager: NewsManager {
     }
 
     func dismiss() {
+        dismissed = true
     }
 
     func readMore() {
     }
 
     func shouldPresentCard() -> Bool {
-        print("matching build ==== ", cardVersionMatchesBuild())
-        return true
-//        guard cardVersionMatchesBuild() else {
-//            return false
-//        }
-//
-//        return !cardWasDismissed()
+        return cardVersionMatchesBuild() && !cardWasDismissed()
     }
 
     private func load() {
@@ -62,5 +58,9 @@ final class DefaultNewsManager: NewsManager {
         }
 
         return Decimal(string: version)
+    }
+
+    private func cardWasDismissed() -> Bool {
+        return dismissed
     }
 }
