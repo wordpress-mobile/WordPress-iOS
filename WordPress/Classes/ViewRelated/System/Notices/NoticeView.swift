@@ -1,10 +1,15 @@
 import UIKit
 
-class NoticeView: UIView {
+protocol DismissableNoticeView: AnyObject {
+    init(notice: Notice)
+    var dismissHandler: (() -> Void)? { get set }
+}
+
+class NoticeView: UIView, DismissableNoticeView {
     private let contentStackView = UIStackView()
 
     private let backgroundContainerView = UIView()
-    private let backgroundView =  UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
+    private let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
     private let actionBackgroundView = UIView()
     private let shadowLayer = CAShapeLayer()
     private let shadowMaskLayer = CAShapeLayer()
@@ -17,7 +22,7 @@ class NoticeView: UIView {
 
     var dismissHandler: (() -> Void)?
 
-    init(notice: Notice) {
+    required init(notice: Notice) {
         self.notice = notice
 
         super.init(frame: .zero)
@@ -36,7 +41,7 @@ class NoticeView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func configureBackgroundViews() {
+    internal func configureBackgroundViews() {
         addSubview(backgroundContainerView)
         backgroundContainerView.translatesAutoresizingMaskIntoConstraints = false
         pinSubviewToAllEdges(backgroundContainerView)
@@ -86,7 +91,7 @@ class NoticeView: UIView {
         backgroundView.contentView.pinSubviewToAllEdges(contentStackView)
     }
 
-    private func configureLabels() {
+    public func configureLabels() {
         let labelStackView = UIStackView()
         labelStackView.translatesAutoresizingMaskIntoConstraints = false
         labelStackView.alignment = .leading
