@@ -524,7 +524,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
                                          buttonTitle:nil
                                             subtitle:nil
                                   attributedSubtitle:nil
-                                               image:nil
+                                               image:@"wp-illustration-empty-results"
                                        accessoryView:nil];
     
     [self addChildViewController:self.noResultsViewController];
