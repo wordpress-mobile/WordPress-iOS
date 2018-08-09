@@ -83,7 +83,7 @@ class Notification: NSManagedObject {
     /// Header + Body Blocks Transient Storage.
     ///
     fileprivate var cachedHeaderAndBodyBlockGroups: [NotificationBlockGroup]?
-    fileprivate var cachedHeaderAndBodyContentGroup: [FormattableContentGroup]?
+    fileprivate var cachedHeaderAndBodyContentGroups: [FormattableContentGroup]?
 
     /// Array that contains the Cached Property Names
     ///
@@ -133,7 +133,7 @@ class Notification: NSManagedObject {
             cachedBodyContentGroups = nil
             cachedHeaderContentGroup = nil
             cachedSubjectContentGroup = nil
-            cachedHeaderAndBodyContentGroup = nil
+            cachedHeaderAndBodyContentGroups = nil
         } else {
             cachedSubjectBlockGroup = nil
             cachedHeaderBlockGroup = nil
@@ -453,7 +453,7 @@ extension Notification {
 
 
     var headerAndBodyContentGroups: [FormattableContentGroup] {
-        if let groups = cachedHeaderAndBodyContentGroup {
+        if let groups = cachedHeaderAndBodyContentGroups {
             return groups
         }
 
@@ -463,7 +463,7 @@ extension Notification {
         }
 
         mergedGroups.append(contentsOf: bodyContentGroups)
-        cachedHeaderAndBodyContentGroup = mergedGroups
+        cachedHeaderAndBodyContentGroups = mergedGroups
 
         return mergedGroups
     }
@@ -564,5 +564,11 @@ extension Notification {
         static let Comment  = "comment"
         static let Reply    = "reply_comment"
         static let Home     = "home"
+    }
+}
+
+extension Notification: NotificationIdentifiable {
+    var notificationIdentifier: String {
+        return notificationId
     }
 }
