@@ -4,17 +4,9 @@ module Fastlane
       def self.run(params)
         UI.message("Deleting tags for version: #{params[:version]}")
         
-        other_action.sh("git tag | xargs git tag -d; git fetch --tags")
-        tags = other_action.sh("git tag")
-        tags.split("\n").each do | tag |
-          if (tag.split(".").length == 4) then
-            if tag.start_with?(params[:version]) then
-              UI.message("Removing: #{tag}")
-              other_action.sh("git tag -d #{tag}")
-              other_action.sh("git push origin :refs/tags/#{tag}")
-            end
-          end
-        end
+        require_relative '../helpers/ios_git_helper.rb'
+        Fastlane::Helpers::IosGitHelper.delete_tags(params[:version])
+
       end
 
       #####################################################

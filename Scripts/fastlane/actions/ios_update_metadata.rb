@@ -6,15 +6,9 @@ module Fastlane
 
     class IosUpdateMetadataAction < Action
       def self.run(params)
-        other_action.sh("cd .. && ./Scripts/update-translations.rb")
-        other_action.sh("cd ../WordPress && git add .")
-        other_action.sh("git commit -m \"Updates translation\"")
+        require_relative '../helpers/ios_git_helper.rb'
 
-        other_action.sh("./download_metadata.swift")
-        other_action.sh("git add ./fastlane/metadata/.")
-        other_action.sh("git commit -m \"Updates metadata translation\"")
-
-        other_action.sh("git push")
+        Fastlane::Helpers::IosGitHelper.update_metadata()
       end
 
       #####################################################

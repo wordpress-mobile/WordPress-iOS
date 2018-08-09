@@ -4,10 +4,8 @@ module Fastlane
       def self.run(params)
         UI.message "Updating project localisation..."
 
-        other_action.sh(command: "cd .. && ./Scripts/localize.py")
-        other_action.sh(command: "cd .. && git add ./WordPress/Resources/.")
-        other_action.sh(command: "git commit -m \"Updates strings for localization\"")
-        other_action.sh(command: "git push")
+        require_relative '../helpers/ios_git_helper.rb'
+        Fastlane::Helpers::IosGitHelper.localize_project()
         
         UI.message "Done."
       end
