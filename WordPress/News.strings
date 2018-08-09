@@ -8,4 +8,4 @@
 "URL" = "https://wordpress.com";
 
 /* Build version this card applies to. */
-"build" = "10.7"
+"version" = "10.7";
