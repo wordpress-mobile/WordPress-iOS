@@ -6,7 +6,7 @@ module Fastlane
         
         require_relative '../helpers/ios_git_helper.rb'
         Fastlane::Helpers::IosGitHelper.branch_for_hotfix(params[:previous_version], params[:version])
-        Fastlane::Helpers::IosGitHelper.bump_version_hotfix()
+        Fastlane::Helpers::IosGitHelper.bump_version_hotfix(params[:version])
         
         UI.message "Done."
       end
