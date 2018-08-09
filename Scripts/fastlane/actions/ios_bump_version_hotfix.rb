@@ -33,7 +33,7 @@ module Fastlane
                                        description: "The version of the hotfix", 
                                        is_string: true),
           FastlaneCore::ConfigItem.new(key: :previous_version,
-                                       env_name: "FL_IOS_BUMP_VERSION_HOTFIX_PREVIOUS VERSION",
+                                       env_name: "FL_IOS_BUMP_VERSION_HOTFIX_PREVIOUS_VERSION",
                                        description: "The version to branch from",
                                        is_string: true) # the default value if the user didn't provide one
         ]
