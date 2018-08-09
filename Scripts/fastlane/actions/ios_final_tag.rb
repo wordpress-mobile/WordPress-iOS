@@ -2,11 +2,13 @@ module Fastlane
   module Actions
     class IosFinalTagAction < Action
       def self.run(params)
-        version = other_action.ios_get_app_version()
+        require_relative '../helpers/ios_git_helper.rb'
+        require_relative '../helpers/ios_version_helper.rb'
+        version = Fastlane::Helpers::IosVersionHelper::get_public_version
+        
         UI.message("Tagging final #{version}...")
 
-        require_relative '../helpers/ios_git_helper.rb'
-        Fastlane::Helpers::IosGitHelper.final_tag()
+        Fastlane::Helpers::IosGitHelper.final_tag(version)
         
         other_action.ios_clear_intermediate_tags(version: version)
       end
