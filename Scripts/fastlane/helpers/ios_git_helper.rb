@@ -26,13 +26,13 @@ module Fastlane
       end
 
       def self.bump_version_release()
-        Action.sh(command: "./manage-version.sh bump-release")
-        Action.sh(command: "cd .. && git add ./config/.")
-        Action.sh(command: "git add fastlane/Deliverfile")
-        Action.sh(command: "git add fastlane/download_metadata.swift")
-        Action.sh(command: "git add ../WordPress/Resources/AppStoreStrings.po")
-        Action.sh(command: "git commit -m \"Bump version number\"")
-        Action.sh(command: "git push")
+        Action.sh("./manage-version.sh bump-release")
+        Action.sh("cd .. && git add ./config/.")
+        Action.sh("git add fastlane/Deliverfile")
+        Action.sh("git add fastlane/download_metadata.swift")
+        Action.sh("git add ../WordPress/Resources/AppStoreStrings.po")
+        Action.sh("git commit -m \"Bump version number\"")
+        Action.sh("git push")
       end
     end
   end
