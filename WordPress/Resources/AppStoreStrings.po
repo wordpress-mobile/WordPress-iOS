@@ -75,7 +75,7 @@ msgstr ""
 msgctxt "app_store_screenshot-1"
 msgid ""
 "Enjoy your\n"
-"favorite sites\n"
+"favorite sites"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the second screenshot in the App Store.
@@ -83,7 +83,7 @@ msgstr ""
 msgctxt "app_store_screenshot-2"
 msgid ""
 "Get notified\n"
-"in real-time\n"
+"in real-time"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the third screenshot in the App Store.
@@ -91,7 +91,7 @@ msgstr ""
 msgctxt "app_store_screenshot-3"
 msgid ""
 "Manage your site\n"
-"everywhere you go\n"
+"everywhere you go"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fourth screenshot in the App Store.
@@ -99,7 +99,7 @@ msgstr ""
 msgctxt "app_store_screenshot-4"
 msgid ""
 "Share your ideas\n"
-"with the world\n"
+"with the world"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
@@ -107,6 +107,6 @@ msgstr ""
 msgctxt "app_store_screenshot-5"
 msgid ""
 "All the stats\n"
-"in your hand\n"
+"in your hand"
 msgstr ""
 
