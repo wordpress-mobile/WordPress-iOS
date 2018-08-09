@@ -79,30 +79,34 @@ struct TimeZoneSelectorViewModel: Observable {
         )
     }
 
-    var noResultsViewModel: WPNoResultsView.Model? {
+    var noResultsViewModel: NoResultsViewController.Model? {
         switch state {
         case .loading:
-            return WPNoResultsView.Model(
-                title: NSLocalizedString("Loading...", comment: "Text displayed while loading time zones")
-            )
+            return NoResultsViewController.Model(title: LocalizedText.loadingTitle)
         case .ready:
             return nil
         case .error:
             let appDelegate = WordPressAppDelegate.sharedInstance()
             if (appDelegate?.connectionAvailable)! {
-                return WPNoResultsView.Model(
-                    title: NSLocalizedString("Oops", comment: "Title for the view when there's an error loading time zones"),
-                    message: NSLocalizedString("There was an error loading time zones", comment: "Error message when time zones can't be loaded"),
-                    buttonTitle: NSLocalizedString("Contact support", comment: "Title of a button. A call to action to contact support for assistance.")
-                )
+                return NoResultsViewController.Model(title: LocalizedText.errorTitle,
+                                                     subtitle: LocalizedText.errorSubtitle,
+                                                     buttonText: LocalizedText.buttonText)
             } else {
-                return WPNoResultsView.Model(
-                    title: NSLocalizedString("No connection", comment: "Title for the error view when there's no connection"),
-                    message: NSLocalizedString("An active internet connection is required", comment: "Error message when loading failed because there's no connection")
-                )
+                return NoResultsViewController.Model(title: LocalizedText.noConnectionTitle,
+                                                     subtitle: LocalizedText.noConnectionSubtitle)
             }
         }
     }
+
+    struct LocalizedText {
+        static let loadingTitle = NSLocalizedString("Loading...", comment: "Text displayed while loading time zones")
+        static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading time zones")
+        static let errorSubtitle = NSLocalizedString("There was an error loading time zones", comment: "Error message when time zones can't be loaded")
+        static let buttonText = NSLocalizedString("Contact support", comment: "Title of a button. A call to action to contact support for assistance.")
+        static let noConnectionTitle = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
+        static let noConnectionSubtitle = NSLocalizedString("An active internet connection is required", comment: "Error message when loading failed because there's no connection")
+    }
+
 }
 
 class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpdating {
@@ -124,7 +128,7 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
         return ImmuTableViewHandler(takeOver: self)
     }()
 
-    fileprivate let noResultsView = WPNoResultsView()
+    private var noResultsViewController: NoResultsViewController?
 
     private let searchController: UISearchController = {
         let controller = UISearchController(searchResultsController: nil)
@@ -138,7 +142,6 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
         super.init(style: .grouped)
         searchController.searchResultsUpdater = self
         title = NSLocalizedString("Time Zone", comment: "Title for the time zone selector")
-        noResultsView.delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -179,27 +182,6 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
         updateNoResults()
     }
 
-    func updateNoResults() {
-        if let noResultsViewModel = viewModel.noResultsViewModel {
-            showNoResults(noResultsViewModel)
-        } else {
-            hideNoResults()
-        }
-    }
-
-    func showNoResults(_ viewModel: WPNoResultsView.Model) {
-        noResultsView.bindViewModel(viewModel)
-        if noResultsView.isDescendant(of: tableView) {
-            noResultsView.centerInSuperview()
-        } else {
-            tableView.addSubview(withFadeAnimation: noResultsView)
-        }
-    }
-
-    func hideNoResults() {
-        noResultsView.removeFromSuperview()
-    }
-
     var searchFilter: String? {
         guard searchController.isActive else {
             return nil
@@ -207,17 +189,43 @@ class TimeZoneSelectorViewController: UITableViewController, UISearchResultsUpda
         return searchController.searchBar.text?.nonEmptyString()
     }
 
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        noResultsView.centerInSuperview()
+}
+
+// MARK: - No Results Handling
+
+private extension TimeZoneSelectorViewController {
+
+    func updateNoResults() {
+        noResultsViewController?.removeFromView()
+        if let noResultsViewModel = viewModel.noResultsViewModel {
+            showNoResults(noResultsViewModel)
+        }
+    }
+
+    private func showNoResults(_ viewModel: NoResultsViewController.Model) {
+
+        if noResultsViewController == nil {
+            noResultsViewController = NoResultsViewController.controller()
+            noResultsViewController?.delegate = self
+        }
+
+        guard let noResultsViewController = noResultsViewController else {
+            return
+        }
+
+        noResultsViewController.bindViewModel(viewModel)
+
+        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        addChildViewController(noResultsViewController)
+        noResultsViewController.didMove(toParentViewController: self)
     }
 
 }
 
-// MARK: - WPNoResultsViewDelegate
+// MARK: - NoResultsViewControllerDelegate
 
-extension TimeZoneSelectorViewController: WPNoResultsViewDelegate {
-    func didTap(_ noResultsView: WPNoResultsView!) {
+extension TimeZoneSelectorViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
         let supportVC = SupportTableViewController()
         supportVC.showFromTabBar()
     }
