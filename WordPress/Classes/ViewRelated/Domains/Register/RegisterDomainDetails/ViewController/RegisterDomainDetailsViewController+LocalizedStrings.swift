@@ -60,6 +60,14 @@ enum RegisterDomainDetails {
             static let countryPlaceholder = NSLocalizedString("Select Country", comment: "Register Domain - Domain contact information field placeholder for Country")
         }
 
+        enum PhoneNumber {
+            static let headerTitle = NSLocalizedString("PHONE", comment: "Register Domain - Phone number section header title")
+            static let countryCode = NSLocalizedString("Country Code", comment: "Register Domain - Address information field Country Code")
+            static let countryCodePlaceholder = NSLocalizedString("eg. 44", comment: "Register Domain - Address information field Country Code placeholder")
+            static let number = NSLocalizedString("Number", comment: "Register Domain - Address information field Number")
+            static let numberPlaceholder = NSLocalizedString("eg. 1122334455", comment: "Register Domain - Address information field Number placeholder")
+        }
+
         enum Address {
             static let headerTitle = NSLocalizedString("ADDRESS", comment: "Register Domain - Address information field section header title")
             static let addressLine = NSLocalizedString("Address line %@", comment: "Register Domain - Address information field Address line")

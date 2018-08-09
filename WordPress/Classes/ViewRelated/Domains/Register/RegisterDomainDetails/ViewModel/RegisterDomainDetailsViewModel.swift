@@ -5,6 +5,10 @@ class RegisterDomainDetailsViewModel {
 
     typealias Localized = RegisterDomainDetails.Localized
 
+    enum Constant {
+        static let phoneNumberCountryCodePrefix = "+"
+        static let phoneNumberConnectingChar = "."
+    }
     enum ValidationRuleTag: String {
 
         //Tag for rules to decide if we should enable submit button
@@ -31,6 +35,7 @@ class RegisterDomainDetailsViewModel {
     enum SectionIndex: Int {
         case privacyProtection
         case contactInformation
+        case phone
         case address
     }
 
@@ -77,6 +82,11 @@ class RegisterDomainDetailsViewModel {
         Section(
             rows: RegisterDomainDetailsViewModel.contactInformationRows,
             sectionIndex: .contactInformation,
+            onChange: sectionChangeHandler
+        ),
+        Section(
+            rows: RegisterDomainDetailsViewModel.phoneNumberRows,
+            sectionIndex: .phone,
             onChange: sectionChangeHandler
         ),
         Section(
@@ -181,6 +191,7 @@ class RegisterDomainDetailsViewModel {
         if let privacySectionSelectedItem = privacySectionSelectedItem() {
             dict[privacySectionSelectedItem.jsonKey] = String(privacySectionSelectedItem.rawValue)
         }
+        dict.merge(phoneNumberSectionJson(), uniquingKeysWith: { (first, _) in first })
         dict.merge(sectionJson(sectionIndex: .contactInformation), uniquingKeysWith: { (first, _) in first })
         dict.merge(sectionJson(sectionIndex: .address), uniquingKeysWith: { (first, _) in first })
         return dict
@@ -213,6 +224,22 @@ class RegisterDomainDetailsViewModel {
             }
         }
         return dict
+    }
+
+    private func phoneNumberSectionJson() -> [String: String] {
+        let section = sections[SectionIndex.phone.rawValue]
+        let jsonKey = section.rows[CellIndex.PhoneNumber.number.rawValue].editableRow?.jsonKey ?? ""
+        var dict: [String: String] = [:]
+        dict[jsonKey] = formattedPhoneNumber()
+        return dict
+    }
+
+    private func formattedPhoneNumber() -> String {
+        let section = sections[SectionIndex.phone.rawValue]
+        let countryCode = section.rows[CellIndex.PhoneNumber.countryCode.rawValue].editableRow?.value ?? ""
+        let number = section.rows[CellIndex.PhoneNumber.number.rawValue].editableRow?.value ?? ""
+        return Constant.phoneNumberCountryCodePrefix + countryCode +
+            Constant.phoneNumberConnectingChar + number
     }
 }
 
@@ -266,7 +293,15 @@ extension RegisterDomainDetailsViewModel {
             return
         }
         updateContactInformationValidationErrors(messages: messages)
+        updatePhoneNumberValidationErrors(messages: messages)
         updateAddressSectionValidationErrors(messages: messages)
+    }
+
+    fileprivate func updatePhoneNumberValidationErrors(messages: ValidateDomainContactInformationResponse.Messages) {
+        let rows = sections[SectionIndex.phone.rawValue].rows
+        rows[CellIndex.PhoneNumber.number.rawValue].editableRow?.firstRule(
+            forTag: ValidationRuleTag.proceedSubmit.rawValue
+            )?.isValid = messages.isValidPhoneNumber()
     }
 
     fileprivate func updateContactInformationValidationErrors(messages: ValidateDomainContactInformationResponse.Messages) {
@@ -298,6 +333,7 @@ extension ValidateDomainContactInformationResponse.Messages {
 
     typealias ContactInformation = RegisterDomainDetailsViewModel.CellIndex.ContactInformation
     typealias AddressField = RegisterDomainDetailsViewModel.CellIndex.AddressField
+    typealias PhoneNumber = RegisterDomainDetailsViewModel.CellIndex.PhoneNumber
 
     func isValid(for index: ContactInformation) -> Bool {
         switch index {
@@ -309,11 +345,13 @@ extension ValidateDomainContactInformationResponse.Messages {
             return firstName?.isEmpty ?? true
         case .lastName:
             return lastName?.isEmpty ?? true
-        case .phone:
-            return phone?.isEmpty ?? true
         default:
             return true
         }
+    }
+
+    func isValidPhoneNumber() -> Bool {
+        return phone?.isEmpty ?? true
     }
 
     func isValid(addressField: AddressField) -> Bool {
