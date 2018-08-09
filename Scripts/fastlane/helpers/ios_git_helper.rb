@@ -12,6 +12,7 @@ module Fastlane
         Action.sh("git pull")
         begin
           Action.sh("git checkout #{branch_name}")
+          Action.sh("git pull origin #{branch_name}")
           return true
         rescue
           return false
