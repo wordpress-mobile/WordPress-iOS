@@ -37,7 +37,7 @@ module Fastlane
         other_action.ensure_git_status_clean()
 
         # Return the current version
-        current_version
+        build_version
       end
 
       def self.get_user_build_version(version, message)
