@@ -24,6 +24,8 @@ class RegisterDomainDetailsViewModel {
         case checkMarkRowsUpdated(sectionIndex: Int)
         case registerSucceeded(items: [String:String])
         case loading(Bool)
+        case prefillSuccess
+        case prefillError(message: String)
     }
 
     enum SectionIndex: Int {
@@ -146,6 +148,32 @@ class RegisterDomainDetailsViewModel {
             //TODO: Call the registeration service here
             strongSelf.onChange?(.registerSucceeded(items: strongSelf.jsonRepresentation()))
         })
+    }
+
+    func prefill() {
+        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let api = accountService.defaultWordPressComAccount()?.wordPressComRestApi ?? WordPressComRestApi(oAuthToken: "")
+        let remoteService = DomainsServiceRemote(wordPressComRestApi: api)
+        isLoading = true
+        remoteService.getDomainContactInformation(
+            success: { [weak self] (domainContactInformation) in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.isLoading = false
+                strongSelf.update(with: domainContactInformation)
+                strongSelf.onChange?(.prefillSuccess)
+        }) { [weak self] (error) in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf.isLoading = false
+            strongSelf.onChange?(.prefillError(message: Localized.prefillError))
+        }
+    }
+
+    private func update(with domainContactInformation: DomainContactInformation) {
+        //TODO
     }
 
     private func jsonRepresentation() -> [String: String] {

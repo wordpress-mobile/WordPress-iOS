@@ -51,6 +51,7 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
         viewModel.onChange = { [unowned self] (change) in
             self.handle(change: change)
         }
+        viewModel.prefill()
         setupEditingEndingTapGestureRecognizer()
     }
 
@@ -99,9 +100,7 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
             }
             break
         case .registerFailedBecauseOfValidation:
-            let indexes: IndexSet = [SectionIndex.contactInformation.rawValue,
-                                     SectionIndex.address.rawValue]
-            tableView.reloadSections(indexes, with: .none)
+            reloadDataSections()
         case .addNewAddressLineEnabled(let indexPath):
             tableView.insertRows(at: [indexPath], with: .none)
         case .addNewAddressLineReplaced(let indexPath):
@@ -111,25 +110,19 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
             tableView.reloadSections(indexes, with: .none)
         case .registerSucceeded(let items):
             //TODO: temporarily show as an alert
-            let alertViewController = UIAlertController(title: "Success",
-                                                        message: items.description,
-                                                        preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .cancel)
-            alertViewController.addAction(okAction)
-            present(alertViewController, animated: true, completion: nil)
+            showAlert(title: "Success", message: items.description)
         case .unexpectedError(let message):
-            let alertViewController = UIAlertController(title: nil,
-                                                        message: message,
-                                                        preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .cancel)
-            alertViewController.addAction(okAction)
-            present(alertViewController, animated: true, completion: nil)
+            showAlert(message: message)
         case .loading(let isLoading):
             if isLoading {
                 SVProgressHUD.show()
             } else {
                 SVProgressHUD.dismiss()
             }
+        case .prefillSuccess:
+            reloadDataSections()
+        case .prefillError(let message):
+            showAlert(message: message)
         default:
             break
         }
@@ -142,6 +135,27 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
     private func configureNavigationBar() {
         title = NSLocalizedString("Register domain",
                                   comment: "Title for the Register domain screen")
+    }
+
+    private func reloadDataSections() {
+        let indexes: IndexSet = [SectionIndex.contactInformation.rawValue,
+                                 SectionIndex.address.rawValue]
+        tableView.reloadSections(indexes, with: .none)
+    }
+
+    private func showAlert(title: String? = nil, message: String) {
+        let alertCancel = NSLocalizedString(
+            "OK",
+            comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt."
+        )
+        let alertController = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        alertController.addCancelActionWithTitle(alertCancel, handler: nil)
+        alertController.presentFromRootViewController()
+        present(alertController, animated: true, completion: nil)
     }
 }
 
