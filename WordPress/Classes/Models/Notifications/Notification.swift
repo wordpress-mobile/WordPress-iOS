@@ -567,7 +567,7 @@ extension Notification {
     }
 }
 
-extension Notification: NotificationIdentifiable {
+extension Notification: Notifiable {
     var notificationIdentifier: String {
         return notificationId
     }
