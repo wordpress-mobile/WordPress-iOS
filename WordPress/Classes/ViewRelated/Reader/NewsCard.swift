@@ -126,7 +126,7 @@ extension NewsCard: Accessible {
     private func prepareDismissButtonForVoiceOver() {
         dismiss.accessibilityLabel = NSLocalizedString("Dismiss", comment: "Accessibility label for the Dismiss button on Reader's News Card")
         dismiss.accessibilityTraits = UIAccessibilityTraitButton
-        dismiss.accessibilityHint = NSLocalizedString("Dimisses the News Card.", comment: "Accessibility hint for the dismiss button on Reader's News Card")
+        dismiss.accessibilityHint = NSLocalizedString("Dismisses the News Card.", comment: "Accessibility hint for the dismiss button on Reader's News Card")
     }
 
     fileprivate func prepareTitleForVoiceOver(label: String) {
