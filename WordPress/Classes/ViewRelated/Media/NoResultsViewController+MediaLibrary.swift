@@ -15,8 +15,7 @@ extension NoResultsViewController {
     }
 
     func configureForNoSearchResult(with searchQuery: String) {
-        let title = String.localizedStringWithFormat(LocalizedText.noResultsTitle, searchQuery)
-        configure(title: title, buttonTitle: nil, subtitle: nil, attributedSubtitle: nil, image: Constants.imageName, accessoryView: nil)
+        configure(title: LocalizedText.noResultsTitle, buttonTitle: nil, subtitle: searchQuery, attributedSubtitle: nil, image: Constants.imageName, accessoryView: nil)
     }
 
     private enum Constants {
@@ -28,7 +27,7 @@ extension NoResultsViewController {
         static let noAssetsTitle = NSLocalizedString("You don't have any media.", comment: "Title displayed when the user doesn't have any media in their media library. Should match Calypso.")
         static let uploadButtonTitle = NSLocalizedString("Upload Media", comment: "Title for button displayed when the user has an empty media library")
         static let fetchingTitle = NSLocalizedString("Fetching media...", comment: "Title displayed whilst fetching media from the user's media library")
-        static let noResultsTitle = NSLocalizedString("No media files match your search for %@", comment: "Message displayed when no results are returned from a media library search. Should match Calypso.")
+        static let noResultsTitle = NSLocalizedString("No media files match your search for:", comment: "Message displayed when no results are returned from a media library search. Should match Calypso.")
     }
 
 }
