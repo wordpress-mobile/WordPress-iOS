@@ -347,7 +347,12 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
             return
         }
 
-        noResultsViewController.configure(title: noResultsTitle(), buttonTitle: nil, subtitle: nil, attributedSubtitle: nil, image: nil, accessoryView: nil)
+        noResultsViewController.configure(title: noResultsTitle(),
+                                          buttonTitle: nil,
+                                          subtitle: nil,
+                                          attributedSubtitle: nil,
+                                          image: "wp-illustration-empty-results",
+                                          accessoryView: nil)
 
         addChildViewController(noResultsViewController)
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
@@ -356,13 +361,11 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
     }
 
     private func noResultsTitle() -> String {
-        let noPeopleFormat = NSLocalizedString("No %@ Yet",
-            comment: "Empty state message (People Management). %@ can be Users or Followers")
-        let noPeople = String(format: noPeopleFormat, filter.title)
+        let noPeopleFormat = NSLocalizedString("No %@ yet",
+            comment: "Empty state message (People Management). %@ can be 'users' or 'followers'")
+        let noPeople = String(format: noPeopleFormat, filter.title.lowercased())
 
-        let noNetwork = noConnectionMessage()
-
-        return connectionAvailable() ? noPeople : noNetwork
+        return connectionAvailable() ? noPeople : noConnectionMessage()
     }
 
     private func handleLoadError(_ forError: Error) {
