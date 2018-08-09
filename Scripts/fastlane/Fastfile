@@ -85,7 +85,7 @@ ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
       "app_store_screenshot-5" => File.join(source_metadata_folder, "promo_screenshot_5.txt")
     }
 
-    gp_update_metadata_source(po_file_path: prj_folder + "/WordPress/Resources/AppStoreStrings.po", 
+    ios_update_metadata_source(po_file_path: prj_folder + "/WordPress/Resources/AppStoreStrings.po", 
       source_files: files, 
       release_version: options[:version])
   end
@@ -122,9 +122,8 @@ ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
   # bundle exec fastlane new_hotfix_release [skip_confirm:<skip confirm>] [version:<version>]
   #
   # Example:
-  # bundle exec fastlane new_beta_release
-  # bundle exec fastlane new_beta_release skip_confirm:true
-  # bundle exec fastlane new_beta_release version:10.6.1
+  # bundle exec fastlane new_hotfix_release version:10.6.1
+  # bundle exec fastlane new_hotfix_release skip_confirm:true version:10.6.1
   #####################################################################################
   desc "Creates a new hotfix branch from the given tag"
   lane :new_hotfix_release do | options |
@@ -134,6 +133,27 @@ ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
     })
     ios_bump_version_hotfix(merged_options)
     ios_tag_build()
+  end
+
+  #####################################################################################
+  # finalize_release
+  # -----------------------------------------------------------------------------------
+  # This lane finalize a release: updates store metadata, pushes the final tag and  
+  # cleans all the temp ones
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane finalize_release [skip_confirm:<skip confirm>] [version:<version>] 
+  #
+  # Example:
+  # bundle exec fastlane finalize_release 
+  # bundle exec fastlane finalize_release skip_confirm:true 
+  #####################################################################################
+  desc "Removes all the temp tags and puts the final one"
+  lane :finalize_release do | options |
+    ios_finalize_prechecks(options)
+    ios_update_metadata(options) unless ios_current_branch_is_hotfix
+    deliver(skip_binary_upload: true, skip_screenshots: true)
+    ios_final_tag(options)
   end
 
 ########################################################################
