@@ -9,12 +9,12 @@ module Fastlane
         require_relative '../helpers/ios_git_helper.rb'
 
         # Checkout develop and update
-        Fastlane::Helpers::IosGitHelper("develop")
+        Fastlane::Helpers::IosGitHelper.git_checkout_and_pull("develop")
 
         # Create versions
-        current_version = Fastlane::Helpers::IosVersionHelper::get_public_version
-        current_build_version = Fastlane::Helpers::IosVersionHelper::get_build_version
-        next_version = Fastlane::Helpers::IosVersionHelper::calc_next_release_version(current_version)
+        current_version = Fastlane::Helpers::IosVersionHelper.get_public_version
+        current_build_version = Fastlane::Helpers::IosVersionHelper.get_build_version
+        next_version = Fastlane::Helpers::IosVersionHelper.calc_next_release_version(current_version)
 
         # Ask user confirmation
         if (!params[:skip_confirm])
