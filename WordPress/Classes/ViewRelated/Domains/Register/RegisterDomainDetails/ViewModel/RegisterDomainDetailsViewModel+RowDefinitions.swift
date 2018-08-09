@@ -12,17 +12,6 @@ extension RegisterDomainDetailsViewModel {
             }
             return false
         }
-        static var email: RowValidationBlock = { (text) in
-            return text?.isValidEmail() ?? false
-        }
-        static var phone: RowValidationBlock = { (text) in
-            //TODO: fix
-            return text?.isNumeric ?? false
-        }
-        static var postalCode: RowValidationBlock = { (text) in
-            //TODO: fix
-            return text?.isNumeric ?? false
-        }
     }
 
     class ValidationRule {
@@ -128,6 +117,17 @@ extension RegisterDomainDetailsViewModel {
                         }
                     }
                 }
+            }
+
+            func firstRule(forTag tag: String) -> ValidationRule? {
+                if let rules = validationRules {
+                    for (index, rule) in rules.enumerated() {
+                        if rule.tag == tag {
+                            return rules[index]
+                        }
+                    }
+                }
+                return nil
             }
 
             func validationErrors(forTag tag: String) -> [String] {

@@ -8,6 +8,15 @@ extension RegisterDomainDetailsViewModel {
         case checkMark(Row.CheckMarkRow)
         case inlineEditable(Row.EditableKeyValueRow)
         case addAddressLine(title: String?)
+
+        var editableRow: Row.EditableKeyValueRow? {
+            switch self {
+            case .inlineEditable(let row):
+                return row
+            default:
+                return nil
+            }
+        }
     }
 
     static var privacyProtectionRows: [RowType] {
@@ -29,6 +38,12 @@ extension RegisterDomainDetailsViewModel {
                               errorMessage: nil)
     }
 
+    static func proceedRule(with key: String) -> ValidationRule {
+        return ValidationRule(tag: ValidationRuleTag.proceedSubmit.rawValue,
+                              validationBlock: nil, //validation is handled on serverside
+                              errorMessage: String(format: Localized.validationError, key))
+    }
+
     static var contactInformationRows: [RowType] {
         return [
             .inlineEditable(.init(
@@ -37,7 +52,8 @@ extension RegisterDomainDetailsViewModel {
                 value: nil,
                 placeholder: Localized.ContactInformation.firstName,
                 editingStyle: .inline,
-                validationRules: [nonEmptyRule]
+                validationRules: [nonEmptyRule,
+                                  proceedRule(with: Localized.ContactInformation.firstName)]
                 )),
             .inlineEditable(.init(
                 key: Localized.ContactInformation.lastName,
@@ -45,7 +61,8 @@ extension RegisterDomainDetailsViewModel {
                 value: nil,
                 placeholder: Localized.ContactInformation.lastName,
                 editingStyle: .inline,
-                validationRules: [nonEmptyRule]
+                validationRules: [nonEmptyRule,
+                                  proceedRule(with: Localized.ContactInformation.lastName)]
                 )),
             .inlineEditable(.init(
                 key: Localized.ContactInformation.organization,
@@ -61,10 +78,7 @@ extension RegisterDomainDetailsViewModel {
                 placeholder: Localized.ContactInformation.email,
                 editingStyle: .inline,
                 validationRules: [nonEmptyRule,
-                                  ValidationRule(tag: ValidationRuleTag.proceedSubmit.rawValue,
-                                                 validationBlock: ValidationBlock.email,
-                                                 errorMessage: Localized.ContactInformation.emailValidationError)
-                ]
+                                  proceedRule(with: Localized.ContactInformation.email)]
                 )),
             .inlineEditable(.init(
                 key: Localized.ContactInformation.phone,
@@ -73,9 +87,7 @@ extension RegisterDomainDetailsViewModel {
                 placeholder: Localized.ContactInformation.phone,
                 editingStyle: .inline,
                 validationRules: [nonEmptyRule,
-                                  ValidationRule(tag: ValidationRuleTag.proceedSubmit.rawValue,
-                                                 validationBlock: ValidationBlock.phone,
-                                                 errorMessage: Localized.ContactInformation.phoneValidationError)]
+                                  proceedRule(with: Localized.ContactInformation.phone)]
                 )),
             .inlineEditable(.init(
                 key: Localized.ContactInformation.country,
@@ -83,18 +95,20 @@ extension RegisterDomainDetailsViewModel {
                 value: nil,
                 placeholder: Localized.ContactInformation.countryPlaceholder,
                 editingStyle: .multipleChoice,
-                validationRules: [nonEmptyRule]
+                validationRules: [nonEmptyRule,
+                                  proceedRule(with: Localized.ContactInformation.country)]
                 ))]
     }
 
     static func addressLine(row: Int, optional: Bool = true) -> RowType {
+        let key = String(format: Localized.Address.addressLine, "\(row + 1)")
         return .inlineEditable(.init(
-            key: String(format: Localized.Address.addressLine, "\(row + 1)"),
+            key: key,
             jsonKey: String(format: "address_%@", "\(row + 1)"),
             value: nil,
             placeholder: Localized.Address.addressPlaceholder,
             editingStyle: .inline,
-            validationRules: optional ? nil : [nonEmptyRule]
+            validationRules: optional ? nil : [nonEmptyRule, proceedRule(with: key)]
             ))
     }
 
@@ -107,7 +121,7 @@ extension RegisterDomainDetailsViewModel {
                 value: nil,
                 placeholder: Localized.Address.city,
                 editingStyle: .inline,
-                validationRules: [nonEmptyRule]
+                validationRules: [nonEmptyRule, proceedRule(with: Localized.Address.city)]
                 )),
             .inlineEditable(.init(
                 key: Localized.Address.state,
@@ -115,7 +129,7 @@ extension RegisterDomainDetailsViewModel {
                 value: nil,
                 placeholder: Localized.Address.statePlaceHolder,
                 editingStyle: .multipleChoice,
-                validationRules: [nonEmptyRule]
+                validationRules: [nonEmptyRule, proceedRule(with: Localized.Address.state)]
                 )),
             .inlineEditable(.init(
                 key: Localized.Address.postalCode,
@@ -123,10 +137,7 @@ extension RegisterDomainDetailsViewModel {
                 value: nil,
                 placeholder: Localized.Address.postalCode,
                 editingStyle: .inline,
-                validationRules: [nonEmptyRule,
-                                  ValidationRule(tag: ValidationRuleTag.proceedSubmit.rawValue,
-                                                 validationBlock: ValidationBlock.postalCode,
-                                                 errorMessage: Localized.Address.postalCodeValidationError)]
+                validationRules: [nonEmptyRule, proceedRule(with: Localized.Address.postalCode)]
                 ))
         ]
     }
