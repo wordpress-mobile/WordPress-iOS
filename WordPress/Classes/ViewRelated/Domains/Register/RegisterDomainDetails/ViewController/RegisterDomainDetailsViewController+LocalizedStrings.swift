@@ -2,8 +2,18 @@ import UIKit
 
 enum RegisterDomainDetails {
     enum Localized {
-        static let buttonTitle = NSLocalizedString("Register domain",
-                                                   comment: "Register domain - Title for the Register domain button")
+        static let validationError = NSLocalizedString(
+            "Please enter a valid %@",
+            comment: "Register Domain - Domain contact information validation error message for an input field"
+        )
+        static let buttonTitle = NSLocalizedString(
+            "Register domain",
+            comment: "Register domain - Title for the Register domain button"
+        )
+        static let unexpectedError = NSLocalizedString(
+            "There has been an unexpected error while registering your domain",
+            comment: "Register domain - Error message displayed whenever registering domain fails unexpectedly"
+        )
         enum PrivacySection {
             static let title = NSLocalizedString(
                 "Privacy Protection",
@@ -44,8 +54,6 @@ enum RegisterDomainDetails {
             static let phone = NSLocalizedString("Phone", comment: "Register Domain - Domain contact information field Phone")
             static let country = NSLocalizedString("Country", comment: "Register Domain - Domain contact information field Country")
             static let countryPlaceholder = NSLocalizedString("Select Country", comment: "Register Domain - Domain contact information field placeholder for Country")
-            static let emailValidationError = NSLocalizedString("Please enter a valid Email Address", comment: "Register Domain - Domain contact information validation error message for Email")
-            static let phoneValidationError = NSLocalizedString("Please enter a valid Phone Number", comment: "Register Domain - Domain contact information validation error message for Phone")
         }
 
         enum Address {
@@ -57,7 +65,6 @@ enum RegisterDomainDetails {
             static let postalCode = NSLocalizedString("Postal Code", comment: "Register Domain - Address information field Postal Code")
             static let state = NSLocalizedString("State", comment: "Register Domain - Domain Address field State")
             static let statePlaceHolder = NSLocalizedString("Select State", comment: "Register Domain - Address information field placeholder for State")
-            static let postalCodeValidationError = NSLocalizedString("Please enter a valid Postal Code", comment: "Register Domain - Address information validation error message for Postal Code")
         }
     }
 }

@@ -18,10 +18,12 @@ class RegisterDomainDetailsViewModel {
         case rowValidation(tag: ValidationRuleTag, indexPath: IndexPath, isValid: Bool, errorMessage: String?)
         case wholeValidation(tag: ValidationRuleTag, isValid: Bool)
         case registerFailedBecauseOfValidation
+        case unexpectedError(message: String)
         case addNewAddressLineEnabled(indexPath: IndexPath)
         case addNewAddressLineReplaced(indexPath: IndexPath)
         case checkMarkRowsUpdated(sectionIndex: Int)
         case registerSucceeded(items: [String:String])
+        case loading(Bool)
     }
 
     enum SectionIndex: Int {
@@ -37,6 +39,11 @@ class RegisterDomainDetailsViewModel {
     var onChange: ((Change) -> Void)?
     private(set) var addressSectionIndexHelper = CellIndex.AddressSectionIndexHelper()
     private(set) var domain: String
+    private(set) var isLoading: Bool = false {
+        didSet {
+            onChange?(.loading(isLoading))
+        }
+    }
 
     init(domain: String) {
         self.domain = domain
@@ -48,9 +55,9 @@ class RegisterDomainDetailsViewModel {
         switch change {
         case let .rowValidation(tag, indexPath, isValid, errorMessage):
             strongSelf.onChange?(.rowValidation(tag: tag,
-                                           indexPath: indexPath,
-                                           isValid: isValid,
-                                           errorMessage: errorMessage))
+                                                indexPath: indexPath,
+                                                isValid: isValid,
+                                                errorMessage: errorMessage))
         case let .sectionValidation(tag, sectionIndex, isSectionValid):
             let valid = strongSelf.isValid(forTag: tag)
             strongSelf.onChange?(.wholeValidation(tag: tag, isValid: valid))
@@ -132,13 +139,13 @@ class RegisterDomainDetailsViewModel {
     }
 
     func register() {
-        guard isValid(forTag: .proceedSubmit) else {
-            onChange?(.registerFailedBecauseOfValidation)
-            return
-        }
-
-        //TODO call service
-        onChange?(.registerSucceeded(items: jsonRepresentation()))
+        validateRemotely(successCompletion: { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            //TODO: Call the registeration service here
+            strongSelf.onChange?(.registerSucceeded(items: strongSelf.jsonRepresentation()))
+        })
     }
 
     private func jsonRepresentation() -> [String: String] {
@@ -178,5 +185,121 @@ class RegisterDomainDetailsViewModel {
             }
         }
         return dict
+    }
+}
+
+// MARK: - Validate remotely
+
+extension RegisterDomainDetailsViewModel {
+
+    fileprivate func validateRemotely(successCompletion: @escaping () -> Void) {
+        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let api = accountService.defaultWordPressComAccount()?.wordPressComRestApi ?? WordPressComRestApi(oAuthToken: "")
+        let remoteService = DomainsServiceRemote(wordPressComRestApi: api)
+        isLoading = true
+        remoteService.validateDomainContactInformation(
+            contactInformation: jsonRepresentation(),
+            domainNames: [domain],
+            success: { [weak self] (response) in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.isLoading = false
+                if response.success {
+                    strongSelf.clearValidationErrors()
+                    successCompletion()
+                } else {
+                    strongSelf.updateValidationErrors(with: response.messages)
+                    strongSelf.onChange?(.registerFailedBecauseOfValidation)
+                }
+        }) { [weak self] (error) in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf.isLoading = false
+            strongSelf.onChange?(.unexpectedError(message: Localized.unexpectedError))
+        }
+    }
+
+    fileprivate func clearValidationErrors() {
+        for section in sections {
+            for row in section.rows {
+                if let editableRow = row.editableRow {
+                    editableRow.firstRule(
+                        forTag: ValidationRuleTag.proceedSubmit.rawValue
+                        )?.isValid = true
+                }
+            }
+        }
+    }
+
+    fileprivate func updateValidationErrors(with messages: ValidateDomainContactInformationResponse.Messages?) {
+        guard let messages = messages else {
+            return
+        }
+        updateContactInformationValidationErrors(messages: messages)
+        updateAddressSectionValidationErrors(messages: messages)
+    }
+
+    fileprivate func updateContactInformationValidationErrors(messages: ValidateDomainContactInformationResponse.Messages) {
+        let rows = sections[SectionIndex.contactInformation.rawValue].rows
+        for (index, row) in rows.enumerated() {
+            if let editableRow = row.editableRow,
+                let cellIndex = CellIndex.ContactInformation(rawValue: index) {
+                editableRow.firstRule(
+                    forTag: ValidationRuleTag.proceedSubmit.rawValue
+                    )?.isValid = messages.isValid(for: cellIndex)
+            }
+        }
+    }
+
+    fileprivate func updateAddressSectionValidationErrors(messages: ValidateDomainContactInformationResponse.Messages) {
+        let rows = sections[SectionIndex.address.rawValue].rows
+        for (index, row) in rows.enumerated() {
+            if let editableRow = row.editableRow {
+                let addressField = addressSectionIndexHelper.addressField(for: index)
+                editableRow.firstRule(
+                    forTag: ValidationRuleTag.proceedSubmit.rawValue
+                    )?.isValid = messages.isValid(addressField: addressField)
+            }
+        }
+    }
+}
+
+extension ValidateDomainContactInformationResponse.Messages {
+
+    typealias ContactInformation = RegisterDomainDetailsViewModel.CellIndex.ContactInformation
+    typealias AddressField = RegisterDomainDetailsViewModel.CellIndex.AddressField
+
+    func isValid(for index: ContactInformation) -> Bool {
+        switch index {
+        case .country:
+            return countryCode?.isEmpty ?? true
+        case .email:
+            return email?.isEmpty ?? true
+        case .firstName:
+            return firstName?.isEmpty ?? true
+        case .lastName:
+            return lastName?.isEmpty ?? true
+        case .phone:
+            return phone?.isEmpty ?? true
+        default:
+            return true
+        }
+    }
+
+    func isValid(addressField: AddressField) -> Bool {
+        switch addressField {
+        case .addressLine:
+            return address1?.isEmpty ?? true
+        case .city:
+            return city?.isEmpty ?? true
+        case .postalCode:
+            return postalCode?.isEmpty ?? true
+        case .state:
+            return postalCode?.isEmpty ?? true
+        default:
+            return true
+        }
     }
 }

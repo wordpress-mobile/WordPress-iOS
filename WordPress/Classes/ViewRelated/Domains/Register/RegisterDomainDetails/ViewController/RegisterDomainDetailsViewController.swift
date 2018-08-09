@@ -117,6 +117,19 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
             let okAction = UIAlertAction(title: "OK", style: .cancel)
             alertViewController.addAction(okAction)
             present(alertViewController, animated: true, completion: nil)
+        case .unexpectedError(let message):
+            let alertViewController = UIAlertController(title: nil,
+                                                        message: message,
+                                                        preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .cancel)
+            alertViewController.addAction(okAction)
+            present(alertViewController, animated: true, completion: nil)
+        case .loading(let isLoading):
+            if isLoading {
+                SVProgressHUD.show()
+            } else {
+                SVProgressHUD.dismiss()
+            }
         default:
             break
         }
