@@ -23,6 +23,8 @@ class NoticePresenter: NSObject {
         }
     }
 
+    typealias NoticePresentationView = DismissableNoticeView & UIView
+
     @objc convenience init(presentingViewController: UIViewController) {
         self.init(store: StoreContainer.shared.notice, presentingViewController: presentingViewController)
     }
@@ -65,7 +67,7 @@ class NoticePresenter: NSObject {
 
         generator.prepare()
 
-        let noticeView = NoticeView(notice: notice)
+        let noticeView = getNoticeView(for: notice)
         noticeView.translatesAutoresizingMaskIntoConstraints = false
 
         let noticeContainerView = NoticeContainerView(noticeView: noticeView)
@@ -101,6 +103,13 @@ class NoticePresenter: NSObject {
 
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Animations.dismissDelay, execute: dismiss)
         })
+    }
+
+    private func getNoticeView(for notice: Notice) -> NoticePresentationView {
+        if notice.style == .quickStart {
+            return QuickStartNoticeView(notice: notice)
+        }
+        return NoticeView(notice: notice)
     }
 
     private func offscreenState(for noticeContainer: NoticeContainerView) -> (() -> ()) {
@@ -214,9 +223,9 @@ private class NoticeContainerView: UIView {
     let containerMargin: CGFloat = 16.0
     var bottomConstraint: NSLayoutConstraint?
 
-    let noticeView: NoticeView
+    let noticeView: UIView
 
-    init(noticeView: NoticeView) {
+    init(noticeView: UIView) {
         self.noticeView = noticeView
 
         super.init(frame: .zero)
