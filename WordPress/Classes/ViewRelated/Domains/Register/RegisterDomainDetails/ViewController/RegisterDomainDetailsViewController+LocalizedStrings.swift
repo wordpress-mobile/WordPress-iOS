@@ -6,6 +6,10 @@ enum RegisterDomainDetails {
             "Please enter a valid %@",
             comment: "Register Domain - Domain contact information validation error message for an input field"
         )
+        static let prefillError = NSLocalizedString(
+            "Error occurred fetching domain contact information",
+            comment: "Register Domain - Domain contact information error message shown to indicate an error during fetching domain contact information"
+        )
         static let buttonTitle = NSLocalizedString(
             "Register domain",
             comment: "Register domain - Title for the Register domain button"
