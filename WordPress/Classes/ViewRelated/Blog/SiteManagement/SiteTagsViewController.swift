@@ -400,10 +400,6 @@ private extension SiteTagsViewController {
 
     func setupLoadingView() {
         noResultsViewController?.configure(title: loadingMessage(),
-                                           buttonTitle: nil,
-                                           subtitle: nil,
-                                           attributedSubtitle: nil,
-                                           image: nil,
                                            accessoryView: loadingAccessoryView())
     }
 
@@ -411,9 +407,7 @@ private extension SiteTagsViewController {
         noResultsViewController?.configure(title: noResultsTitle(),
                                            buttonTitle: noResultsButtonTitle(),
                                            subtitle: noResultsMessage(),
-                                           attributedSubtitle: nil,
-                                           image: noResultsImageName(),
-                                           accessoryView: nil)
+                                           image: noResultsImageName())
     }
 
     func showNoResults() {
