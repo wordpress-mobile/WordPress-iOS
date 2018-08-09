@@ -128,10 +128,7 @@ ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
   desc "Creates a new hotfix branch from the given tag"
   lane :new_hotfix_release do | options |
     prev_ver = ios_hotfix_prechecks(options)
-    merged_options = options.merge({
-      previous_version: prev_ver
-    })
-    ios_bump_version_hotfix(merged_options)
+    ios_bump_version_hotfix(previous_version: prev_ver, version: options[:version])
     ios_tag_build()
   end
 
