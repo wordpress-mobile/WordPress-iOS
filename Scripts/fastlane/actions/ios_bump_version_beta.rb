@@ -4,10 +4,8 @@ module Fastlane
       def self.run(params)
         UI.message "Bumping app release version..."
          
-        other_action.sh(command: "./manage-version.sh bump-internal")
-        other_action.sh(command: "cd .. && git add ./config/.")
-        other_action.sh(command: "git commit -m \"Bump version number\"")
-        ohter_action.sh("git push")
+        require_relative '../helpers/ios_git_helper.rb'
+        Fastlane::Helpers::IosGitHelper.bump_version_beta
         
         UI.message "Done."
       end

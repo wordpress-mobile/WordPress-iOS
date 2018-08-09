@@ -3,10 +3,11 @@ module Fastlane
     class IosTagBuildAction < Action
       def self.run(params)
         require_relative '../helpers/ios_version_helper.rb'
-        
-        itc_ver = Fastlane::Helpers::IosVersionHelper::get_build_version
-        int_ver = Fastlane::Helpers::IosVersionHelper::get_internal_version
-        other_action.sh(command: "cd .. && git tag #{itc_ver} && git tag #{int_ver} && git push origin #{itc_ver} && git push origin #{int_ver}") 
+        require_relative '../helpers/ios_git_helper.rb'
+
+        itc_ver = Fastlane::Helpers::IosVersionHelper.get_build_version()
+        int_ver = Fastlane::Helpers::IosVersionHelper.get_internal_version()
+        Fastlane::Helpers::IosGitHelper.tag_build(itc_ver, int_ver)
       end
 
       #####################################################
