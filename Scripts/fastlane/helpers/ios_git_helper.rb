@@ -24,6 +24,16 @@ module Fastlane
         Action.sh("git checkout -b release/#{new_version}")
         Action.sh("git push origin release/#{new_version}")
       end
+
+      def self.bump_version_release()
+        Action.sh(command: "./manage-version.sh bump-release")
+        Action.sh(command: "cd .. && git add ./config/.")
+        Action.sh(command: "git add fastlane/Deliverfile")
+        Action.sh(command: "git add fastlane/download_metadata.swift")
+        Action.sh(command: "git add ../WordPress/Resources/AppStoreStrings.po")
+        Action.sh(command: "git commit -m \"Bump version number\"")
+        Action.sh(command: "git push")
+      end
     end
   end
 end
