@@ -2,12 +2,12 @@ module Fastlane
   module Actions
     class IosFinalTagAction < Action
       def self.run(params)
-        # fastlane will take care of reading in the parameter and fetching the environment variable:
-        UI.message "Parameter API Token: #{params[:api_token]}"
+        version = other_action.ios_get_app_version()
+        UI.message("Tagging final #{version}...")
 
-        # sh "shellcommand ./path"
-
-        # Actions.lane_context[SharedValues::IOS_FINAL_TAG_CUSTOM_VALUE] = "my_val"
+        other_action.sh("git tag #{version}")
+        other_action.sh("git push origin #{version}")
+        other_action.ios_clear_intermediate_tags(version: version)
       end
 
       #####################################################
