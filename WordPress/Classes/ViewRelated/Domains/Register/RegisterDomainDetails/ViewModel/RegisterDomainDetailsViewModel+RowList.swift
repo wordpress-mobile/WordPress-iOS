@@ -81,15 +81,6 @@ extension RegisterDomainDetailsViewModel {
                                   proceedRule(with: Localized.ContactInformation.email)]
                 )),
             .inlineEditable(.init(
-                key: Localized.ContactInformation.phone,
-                jsonKey: "phone",
-                value: nil,
-                placeholder: Localized.ContactInformation.phone,
-                editingStyle: .inline,
-                validationRules: [nonEmptyRule,
-                                  proceedRule(with: Localized.ContactInformation.phone)]
-                )),
-            .inlineEditable(.init(
                 key: Localized.ContactInformation.country,
                 jsonKey: "country_code",
                 value: nil,
@@ -98,6 +89,29 @@ extension RegisterDomainDetailsViewModel {
                 validationRules: [nonEmptyRule,
                                   proceedRule(with: Localized.ContactInformation.country)]
                 ))]
+    }
+
+    static var phoneNumberRows: [RowType] {
+        return [
+            .inlineEditable(.init(
+                key: Localized.PhoneNumber.countryCode,
+                jsonKey: "phone_number",
+                value: nil,
+                placeholder: Localized.PhoneNumber.countryCodePlaceholder,
+                editingStyle: .inline,
+                validationRules: [nonEmptyRule,
+                                  proceedRule(with: Localized.ContactInformation.phone)]
+                )),
+            .inlineEditable(.init(
+                key: Localized.PhoneNumber.number,
+                jsonKey: "phone_number",
+                value: nil,
+                placeholder: Localized.PhoneNumber.numberPlaceholder,
+                editingStyle: .inline,
+                validationRules: [nonEmptyRule,
+                                  proceedRule(with: Localized.ContactInformation.phone)]
+                ))
+        ]
     }
 
     static func addressLine(row: Int, optional: Bool = true) -> RowType {

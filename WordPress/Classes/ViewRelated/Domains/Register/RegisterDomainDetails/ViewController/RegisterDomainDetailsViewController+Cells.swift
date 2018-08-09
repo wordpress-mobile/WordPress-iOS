@@ -66,6 +66,8 @@ extension RegisterDomainDetailsViewController {
                 return
             }
             cell.valueTextField.keyboardType = index.keyboardType
+        case .phone:
+            cell.valueTextField.keyboardType = .numberPad
         default:
             break
         }

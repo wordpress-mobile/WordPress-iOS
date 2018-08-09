@@ -139,6 +139,7 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
 
     private func reloadDataSections() {
         let indexes: IndexSet = [SectionIndex.contactInformation.rawValue,
+                                 SectionIndex.phone.rawValue,
                                  SectionIndex.address.rawValue]
         tableView.reloadSections(indexes, with: .none)
     }
@@ -254,6 +255,8 @@ extension RegisterDomainDetailsViewController {
             default:
                 break
             }
+        case .phone:
+            break
         }
     }
 
@@ -347,6 +350,8 @@ extension RegisterDomainDetailsViewController {
         switch sectionType {
         case .address:
             return Localized.Address.headerTitle
+        case .phone:
+            return Localized.PhoneNumber.headerTitle
         default:
             break
         }

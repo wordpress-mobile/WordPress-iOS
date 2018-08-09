@@ -18,7 +18,6 @@ extension RegisterDomainDetailsViewModel {
             case lastName
             case organization
             case email
-            case phone
             case country
 
             var indexPath: IndexPath {
@@ -30,12 +29,15 @@ extension RegisterDomainDetailsViewModel {
                 switch self {
                 case .email:
                     return .emailAddress
-                case .phone:
-                    return .phonePad
                 default:
                     return UIKeyboardType.default
                 }
             }
+        }
+
+        enum PhoneNumber: Int {
+            case countryCode
+            case number
         }
 
         enum AddressField {
