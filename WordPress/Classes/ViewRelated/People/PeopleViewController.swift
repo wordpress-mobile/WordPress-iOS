@@ -348,11 +348,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         }
 
         noResultsViewController.configure(title: noResultsTitle(),
-                                          buttonTitle: nil,
-                                          subtitle: nil,
-                                          attributedSubtitle: nil,
-                                          image: "wp-illustration-empty-results",
-                                          accessoryView: nil)
+                                          image: "wp-illustration-empty-results")
 
         addChildViewController(noResultsViewController)
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
