@@ -429,19 +429,19 @@ private extension SiteTagsViewController {
     }
 
     func noResultsTitle() -> String {
-        return NSLocalizedString("No Tags Yet", comment: "Empty state. Tags management (Settings > Writing > Tags)")
+        return NSLocalizedString("You don't have any tags", comment: "Empty state. Tags management (Settings > Writing > Tags)")
     }
 
     func noResultsMessage() -> String {
-        return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views tags in blog settings and there are no tags")
+        return NSLocalizedString("Tags created here can be quickly added to new posts", comment: "Displayed when the user views tags in blog settings and there are no tags")
     }
 
     func noResultsImageName() -> String {
-        return "illustration-posts"
+        return "wp-illustration-empty-results"
     }
 
     func noResultsButtonTitle() -> String {
-        return NSLocalizedString("Add New Tag", comment: "Title of the button in the placeholder for an empty list of blog tags.")
+        return NSLocalizedString("Create a Tag", comment: "Title of the button in the placeholder for an empty list of blog tags.")
     }
 
     func loadingMessage() -> String {
