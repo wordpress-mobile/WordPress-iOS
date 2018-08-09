@@ -1171,14 +1171,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (void)startTour
 {
-    // find the tour guide
-    UITabBarController *tabBarController = self.tabBarController;
-    if ([tabBarController isKindOfClass:[WPTabBarController class]]) {
-        QuickStartTourGuide *tourGuide = ((WPTabBarController *) tabBarController).tourGuide;
-        [tourGuide showTestQuickStartNotice];
-    }
-
-    QuickStartChecklistView *checklist = [[QuickStartChecklistView alloc] init];
+    QuickStartChecklistViewController *checklist = [[QuickStartChecklistViewController alloc] initWithBlog:self.blog];
     [self.navigationController pushViewController:checklist animated:YES];
 }
 
