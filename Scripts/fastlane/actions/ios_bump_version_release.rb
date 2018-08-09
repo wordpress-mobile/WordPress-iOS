@@ -11,7 +11,7 @@ module Fastlane
         other_action.sh(command: "git add fastlane/download_metadata.swift")
         other_action.sh(command: "git add ../WordPress/Resources/AppStoreStrings.po")
         other_action.sh(command: "git commit -m \"Bump version number\"")
-        other_action.sh("git push")
+        other_action.sh(command: "git push")
         
         UI.message "Done."
       end
