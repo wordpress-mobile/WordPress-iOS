@@ -44,13 +44,17 @@ class RegisterDomainDetailsViewModel {
     }
 
     var onChange: ((Change) -> Void)?
+    var registerDomainDetailsService: RegisterDomainDetailsServiceProxyProtocol = RegisterDomainDetailsServiceProxy()
     private(set) var addressSectionIndexHelper = CellIndex.AddressSectionIndexHelper()
     private(set) var domain: String
+    private(set) var states: [State]?
+    private(set) var countries: [Country]?
     private(set) var isLoading: Bool = false {
         didSet {
             onChange?(.loading(isLoading))
         }
     }
+    private var dispatchGroup = DispatchGroup()
 
     init(domain: String) {
         self.domain = domain
@@ -161,24 +165,42 @@ class RegisterDomainDetailsViewModel {
     }
 
     func prefill() {
-        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        let api = accountService.defaultWordPressComAccount()?.wordPressComRestApi ?? WordPressComRestApi(oAuthToken: "")
-        let remoteService = DomainsServiceRemote(wordPressComRestApi: api)
         isLoading = true
-        remoteService.getDomainContactInformation(
+
+        dispatchGroup.enter()
+        registerDomainDetailsService.getDomainContactInformation(
             success: { [weak self] (domainContactInformation) in
                 guard let strongSelf = self else {
                     return
                 }
-                strongSelf.isLoading = false
+                strongSelf.dispatchGroup.leave()
                 strongSelf.update(with: domainContactInformation)
                 strongSelf.onChange?(.prefillSuccess)
         }) { [weak self] (error) in
             guard let strongSelf = self else {
                 return
             }
-            strongSelf.isLoading = false
+            strongSelf.dispatchGroup.leave()
             strongSelf.onChange?(.prefillError(message: Localized.prefillError))
+        }
+
+        dispatchGroup.enter()
+        registerDomainDetailsService.getSupportedCountries(success: { [weak self] (countryList) in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf.dispatchGroup.leave()
+            strongSelf.countries = countryList
+        }) { [weak self] (error) in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf.dispatchGroup.leave()
+            strongSelf.onChange?(.prefillError(message: Localized.prefillError))
+        }
+
+        dispatchGroup.notify(queue: .main) { [weak self] in
+            self?.isLoading = false
         }
     }
 
@@ -248,11 +270,8 @@ class RegisterDomainDetailsViewModel {
 extension RegisterDomainDetailsViewModel {
 
     fileprivate func validateRemotely(successCompletion: @escaping () -> Void) {
-        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        let api = accountService.defaultWordPressComAccount()?.wordPressComRestApi ?? WordPressComRestApi(oAuthToken: "")
-        let remoteService = DomainsServiceRemote(wordPressComRestApi: api)
         isLoading = true
-        remoteService.validateDomainContactInformation(
+        registerDomainDetailsService.validateDomainContactInformation(
             contactInformation: jsonRepresentation(),
             domainNames: [domain],
             success: { [weak self] (response) in
