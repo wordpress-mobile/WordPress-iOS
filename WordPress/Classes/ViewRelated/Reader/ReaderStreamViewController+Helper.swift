@@ -29,11 +29,13 @@ extension ReaderStreamViewController {
             return configuredHeader
         }
 
+        let containerIdentifier = Identifier(value: topic.title)
+
         let database = UserDefaults.standard
         let newsManager = DefaultNewsManager(service: LocalNewsService(fileName: "News"), database: database)
 
         // News card should not be presented: return configured stream header
-        guard newsManager.shouldPresentCard() else {
+        guard newsManager.shouldPresentCard(containerId: containerIdentifier) else {
             return configuredHeader
         }
 
@@ -41,7 +43,7 @@ extension ReaderStreamViewController {
         let news = News(manager: newsManager, ui: newsCard)
 
         // The news card is not available: return configured stream header
-        guard let cardUI = news.card?.view else {
+        guard let cardUI = news.card(containerId: containerIdentifier)?.view else {
             return configuredHeader
         }
 

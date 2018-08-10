@@ -2,6 +2,6 @@
 protocol NewsManager {
     func dismiss()
     func readMore()
-    func shouldPresentCard() -> Bool
+    func shouldPresentCard(containerId: Identifier) -> Bool
     func load(then completion: @escaping (Result<NewsItem>) -> Void)
 }
