@@ -49,7 +49,7 @@ extension NSNotification.Name {
     private static var zdClientId: String?
     private static var presentInController: UIViewController?
 
-    private static let sourcePlatform = "Mobile – iOS"
+    private static let sourcePlatform = "mobile_-_ios"
     private static var appVersion: String {
         return Bundle.main.shortVersionString() ?? Constants.unknownValue
     }
@@ -912,7 +912,7 @@ private extension ZendeskUtils {
         static let networkInformation: UInt64 = 360000086966
         static let logs: UInt64 = 22871957
         static let currentSite: UInt64 = 360000103103
-        static let sourcePlatform: UInt64 = 25176023
+        static let sourcePlatform: UInt64 = 360009311651
         static let appLanguage: UInt64 = 360008583691
     }
 
