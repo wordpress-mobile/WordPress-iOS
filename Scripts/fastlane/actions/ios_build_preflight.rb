@@ -3,6 +3,7 @@ module Fastlane
     class IosBuildPreflightAction < Action
       def self.run(params) 
         Action.sh("cd .. && rm -rf ~/Library/Developer/Xcode/DerivedData")
+        Action.sh("rake clobber")
         Action.sh("rake dependencies")
         other_action.cocoapods()
       end
