@@ -42,7 +42,9 @@ final class DefaultNewsManager: NewsManager {
     }
 
     func shouldPresentCard(contextId: Identifier) -> Bool {
-        return currentCardVersionIsGreaterThanLastDismissedCardVersion() && cardVersionMatchesBuild()
+        return cardIsAllowedIncontext(contextId: contextId) &&
+                currentCardVersionIsGreaterThanLastDismissedCardVersion() &&
+                cardVersionMatchesBuild()
     }
 
     private func load() {
@@ -61,6 +63,18 @@ final class DefaultNewsManager: NewsManager {
             self?.result = newResult
             completion(newResult)
         }
+    }
+
+    private func cardIsAllowedInContext(contextId: Identifier) -> Bool {
+        return savedCardContext() == contextId
+    }
+
+    private func savedCardContext() -> Identifier {
+        guard let savedCardContext = database.object(forKey: DatabaseKeys.cardContainerIdentifier) as? String else {
+            return Identifier(value: "")
+        }
+
+        return Identifier(value: savedCardContext)
     }
 
     private func cardVersionMatchesBuild() -> Bool {
