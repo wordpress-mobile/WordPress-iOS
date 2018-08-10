@@ -42,11 +42,6 @@ final class DefaultNewsManager: NewsManager {
     }
 
     func shouldPresentCard(contextId: Identifier) -> Bool {
-        print("===== should present card +++++" )
-        print("card is Allowed in context ", cardIsAllowedInContext(contextId: contextId))
-        print("current card version is greaterthandimisssed ", currentCardVersionIsGreaterThanLastDismissedCardVersion())
-        print("card version matches build ", cardVersionMatchesBuild())
-        print("///// should present card +++++" )
         let canPresentCard = cardIsAllowedInContext(contextId: contextId) &&
                                 currentCardVersionIsGreaterThanLastDismissedCardVersion() &&
                                 cardVersionMatchesBuild()
@@ -84,7 +79,6 @@ final class DefaultNewsManager: NewsManager {
     }
 
     private func savedCardContext() -> Identifier {
-        print("database object =", database.object(forKey: DatabaseKeys.cardContainerIdentifier))
         guard let savedCardContext = database.object(forKey: DatabaseKeys.cardContainerIdentifier) as? String else {
             return Identifier.empty()
         }
