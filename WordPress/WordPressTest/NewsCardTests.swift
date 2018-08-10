@@ -26,7 +26,7 @@ final class NewsCardTests: XCTestCase {
             readMoreTapped = true
         }
 
-        func shouldPresentCard() -> Bool {
+        func shouldPresentCard(contextId: Identifier) -> Bool {
             return cardIsVisible
         }
 

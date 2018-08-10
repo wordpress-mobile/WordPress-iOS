@@ -4,6 +4,7 @@ import XCTest
 final class DefaultNewsManagerTests: XCTestCase {
     private struct Constants {
         static let title = "This is an awesome new feature!"
+        static let contextId = "context"
     }
 
     private var manager: NewsManager?
@@ -33,6 +34,6 @@ final class DefaultNewsManagerTests: XCTestCase {
     }
 
     func testManagerShouldPresentUI() {
-        XCTAssertTrue(manager!.shouldPresentCard())
+        XCTAssertTrue(manager!.shouldPresentCard(contextId: Identifier(value: Constants.contextId)))
     }
 }
