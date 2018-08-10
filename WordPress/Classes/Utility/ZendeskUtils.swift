@@ -49,9 +49,19 @@ extension NSNotification.Name {
     private static var zdClientId: String?
     private static var presentInController: UIViewController?
 
+    private static let sourcePlatform = "mobile_-_ios"
     private static var appVersion: String {
         return Bundle.main.shortVersionString() ?? Constants.unknownValue
     }
+
+    private static var appLanguage: String {
+        guard let lang = Locale.current.languageCode else {
+            return Constants.unknownValue
+        }
+        return lang
+    }
+
+
 
     // MARK: - Public Methods
 
@@ -426,7 +436,8 @@ private extension ZendeskUtils {
             ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.networkInformation as NSNumber, andValue: ZendeskUtils.getNetworkInformation()))
             ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.logs as NSNumber, andValue: ZendeskUtils.getLogFile()))
             ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.currentSite as NSNumber, andValue: ZendeskUtils.getCurrentSiteDescription()))
-
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.sourcePlatform as NSNumber, andValue: ZendeskUtils.sourcePlatform))
+            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.appLanguage as NSNumber, andValue: ZendeskUtils.appLanguage))
             ZDKConfig.instance().customTicketFields = ticketFields
 
             // Set tags
@@ -901,6 +912,8 @@ private extension ZendeskUtils {
         static let networkInformation: UInt64 = 360000086966
         static let logs: UInt64 = 22871957
         static let currentSite: UInt64 = 360000103103
+        static let sourcePlatform: UInt64 = 360009311651
+        static let appLanguage: UInt64 = 360008583691
     }
 
     struct LocalizedText {
