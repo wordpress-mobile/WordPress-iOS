@@ -21,7 +21,7 @@ final class DefaultNewsManager: NewsManager {
     }
 
     func shouldPresentCard() -> Bool {
-        return currentCardVersionIsGreaterThanSavedCardVersion() && cardVersionMatchesBuild()
+        return currentCardVersionIsGreaterThanLastDismissedCardVersion() && cardVersionMatchesBuild()
     }
 
     private func load() {
@@ -77,7 +77,7 @@ final class DefaultNewsManager: NewsManager {
         }
     }
 
-    private func currentCardVersionIsGreaterThanSavedCardVersion() -> Bool {
+    private func currentCardVersionIsGreaterThanLastDismissedCardVersion() -> Bool {
         guard let lastSavedVersion = database.object(forKey: type(of: self).databaseKey) as? Decimal else {
             return true
         }
