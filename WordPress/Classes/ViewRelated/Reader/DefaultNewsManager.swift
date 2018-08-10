@@ -8,7 +8,9 @@
  * If users tap dismiss, the card disappears and will never be displayed again for the same app version
  */
 final class DefaultNewsManager: NewsManager {
-    private static let databaseKey = "com.wordpress.newscard.version"
+    private enum DatabaseKeys {
+        static let lastDismissedCardVersion = "com.wordpress.newscard.last-dismissed-card-version"
+    }
 
     private let service: NewsService
     private let database: KeyValueDatabase
@@ -96,7 +98,7 @@ final class DefaultNewsManager: NewsManager {
     }
 
     private func currentCardVersionIsGreaterThanLastDismissedCardVersion() -> Bool {
-        guard let lastSavedVersion = database.object(forKey: type(of: self).databaseKey) as? Decimal else {
+        guard let lastSavedVersion = database.object(forKey: DatabaseKeys.lastDismissedCardVersion) as? Decimal else {
             return true
         }
 
@@ -112,7 +114,7 @@ final class DefaultNewsManager: NewsManager {
         case .error:
             return
         case .success(let newsItem):
-            database.set(newsItem.version, forKey: type(of: self).databaseKey)
+            database.set(newsItem.version, forKey: DatabaseKeys.lastDismissedCardVersion)
         }
     }
 }
