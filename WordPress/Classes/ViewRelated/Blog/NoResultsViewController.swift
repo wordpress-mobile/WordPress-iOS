@@ -153,6 +153,7 @@ private extension NoResultsViewController {
         titleLabel.text = titleText
 
         if let subtitleText = subtitleText {
+            subtitleTextView.attributedText = nil
             subtitleTextView.text = subtitleText
             subtitleTextView.isSelectable = false
         }
