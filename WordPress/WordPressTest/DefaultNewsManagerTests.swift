@@ -34,6 +34,6 @@ final class DefaultNewsManagerTests: XCTestCase {
     }
 
     func testManagerShouldPresentUI() {
-        XCTAssertTrue(manager!.shouldPresentCard(contextId: Identifier(value: Constants.contextId)))
+        XCTAssertTrue(manager!.shouldPresentCard(contextId: Identifier.empty()))
     }
 }
