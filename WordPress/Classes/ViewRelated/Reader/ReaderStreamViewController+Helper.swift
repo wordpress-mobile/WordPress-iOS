@@ -31,7 +31,7 @@ extension ReaderStreamViewController {
 
         let containerIdentifier = Identifier(value: topic.title)
 
-        return ReaderNewsCard().newsCard(containerIdentifier: containerIdentifier, header: header)
+        return ReaderNewsCard.newsCard(containerIdentifier: containerIdentifier, header: header)
     }
 
     private class func configure(_ header: ReaderHeader?, topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamHeaderDelegate) -> ReaderHeader? {

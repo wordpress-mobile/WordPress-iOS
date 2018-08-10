@@ -1,8 +1,8 @@
 /// Bootstraps a news card specific for the reader.
 final class ReaderNewsCard {
-    private let fileName = "News"
+    private static let fileName = "News"
 
-    func newsCard(containerIdentifier: Identifier, header: ReaderStreamViewController.ReaderHeader?) -> UIView? {
+    class func newsCard(containerIdentifier: Identifier, header: ReaderStreamViewController.ReaderHeader?) -> UIView? {
         let database = UserDefaults.standard
         let newsManager = DefaultNewsManager(service: LocalNewsService(fileName: fileName), database: database)
 
