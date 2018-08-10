@@ -79,7 +79,8 @@ module Fastlane
       end
 
       def self.tag_build(itc_version, internal_version)
-        Action.sh("cd .. && git tag #{itc_version} && git tag #{internal_version} && git push origin #{itc_version} && git push origin #{internal_version}") 
+        tag_and_push(itc_version)
+        tag_and_push(internal_version)
       end
 
       def self.update_metadata()
@@ -92,6 +93,11 @@ module Fastlane
         Action.sh("git commit -m \"Updates metadata translation\"")
 
         Action.sh("git push")
+      end
+
+      private
+      def self.tag_and_push(version)
+        Action.sh("cd .. && git tag #{version} && git push origin #{version}") 
       end
     end
   end
