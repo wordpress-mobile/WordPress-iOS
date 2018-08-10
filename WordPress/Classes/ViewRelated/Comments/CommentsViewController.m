@@ -9,7 +9,6 @@
 #import "WPGUIConstants.h"
 #import "UIView+Subviews.h"
 #import "ContextManager.h"
-#import <WordPressShared/WPNoResultsView.h>
 #import <WordPressShared/WPStyleGuide.h>
 #import <WordPressUI/WordPressUI.h>
 
@@ -27,7 +26,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 @interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate>
 @property (nonatomic, strong) WPTableViewHandler        *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper       *syncHelper;
-@property (nonatomic, strong) WPNoResultsView           *noResultsView;
+@property (nonatomic, strong) NoResultsViewController   *noResultsViewController;
 @property (nonatomic, strong) UIActivityIndicatorView   *footerActivityIndicator;
 @property (nonatomic, strong) UIView                    *footerView;
 @property (nonatomic, strong) NSCache                   *estimatedRowHeights;
@@ -119,19 +118,13 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (void)configureNoResultsView
 {
-    WPNoResultsView *noResultsView          = [WPNoResultsView new];
-    noResultsView.titleText                 = [self noResultsViewTitle];
-    self.noResultsView                      = noResultsView;
-    
-    [self.view addSubview:noResultsView];
+    self.noResultsViewController = [NoResultsViewController controller];
 }
 
 - (NSString *)noResultsViewTitle
 {
     NSString *noCommentsMessage = NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
-    NSString *noConnectionMessage = [self noConnectionMessage];
-
-    return [ReachabilityUtils isInternetReachable] ? noCommentsMessage : noConnectionMessage;
+    return [ReachabilityUtils isInternetReachable] ? noCommentsMessage : [self noConnectionMessage];
 }
 
 - (void)configureRefreshControl
@@ -521,24 +514,31 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (void)refreshNoResultsView
 {
-    BOOL isTableViewEmpty = [self contentIsEmpty];
-    BOOL shouldPerformAnimation = self.noResultsView.hidden;
+    [self.noResultsViewController removeFromView];
     
-    self.noResultsView.hidden = !isTableViewEmpty;
-    
-    if (!isTableViewEmpty) {
+    if (![self contentIsEmpty]) {
         return;
     }
-    
-    // Display NoResultsView
-    self.noResultsView.titleText = [self noResultsViewTitle];
-    
-    self.noResultsView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.tableView pinSubviewAtCenter:self.noResultsView];
 
-    if (shouldPerformAnimation) {
-        [self.noResultsView fadeInWithAnimation];
+    [self.noResultsViewController configureWithTitle:[self noResultsViewTitle]
+                                         buttonTitle:nil
+                                            subtitle:nil
+                                  attributedSubtitle:nil
+                                               image:@"wp-illustration-empty-results"
+                                       accessoryView:nil];
+    
+    [self addChildViewController:self.noResultsViewController];
+    [self.tableView addSubviewWithFadeAnimation:self.noResultsViewController.view];
+    self.noResultsViewController.view.frame = self.tableView.frame;
+
+    // Adjust the NRV placement based on the tableHeader to accommodate for the refreshControl.
+    if (!self.tableView.tableHeaderView) {
+        CGRect noResultsFrame = self.noResultsViewController.view.frame;
+        noResultsFrame.origin.y -= self.refreshControl.frame.size.height;
+        self.noResultsViewController.view.frame = noResultsFrame;
     }
+    
+    [self.noResultsViewController didMoveToParentViewController:self];
 }
 
 @end
