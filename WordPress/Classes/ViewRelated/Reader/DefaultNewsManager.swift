@@ -41,7 +41,7 @@ final class DefaultNewsManager: NewsManager {
         }
     }
 
-    func shouldPresentCard(containerId: Identifier) -> Bool {
+    func shouldPresentCard(contextId: Identifier) -> Bool {
         return currentCardVersionIsGreaterThanLastDismissedCardVersion() && cardVersionMatchesBuild()
     }
 
