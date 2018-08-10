@@ -529,7 +529,15 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     
     [self addChildViewController:self.noResultsViewController];
     [self.tableView addSubviewWithFadeAnimation:self.noResultsViewController.view];
-    self.noResultsViewController.view.frame = self.tableView.bounds;
+    self.noResultsViewController.view.frame = self.tableView.frame;
+
+    // Adjust the NRV placement based on the tableHeader to accommodate for the refreshControl.
+    if (!self.tableView.tableHeaderView) {
+        CGRect noResultsFrame = self.noResultsViewController.view.frame;
+        noResultsFrame.origin.y -= self.refreshControl.frame.size.height;
+        self.noResultsViewController.view.frame = noResultsFrame;
+    }
+    
     [self.noResultsViewController didMoveToParentViewController:self];
 }
 
