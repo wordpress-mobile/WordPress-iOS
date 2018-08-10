@@ -18,7 +18,7 @@ class SiteIconPickerPresenter: NSObject {
 
     /// MARK: - Private Properties
 
-    fileprivate let noResultsView = MediaNoResultsView()
+    fileprivate let noResultsView = NoResultsViewController.controller()
     fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
 
     /// Media Library Data Source
@@ -55,6 +55,7 @@ class SiteIconPickerPresenter: NSObject {
     ///
     @objc init(blog: Blog) {
         self.blog = blog
+        noResultsView.configureForNoAssets(userCanUploadMedia: false)
         super.init()
     }
 
@@ -139,7 +140,8 @@ class SiteIconPickerPresenter: NSObject {
             let hasNoAssets = self?.mediaLibraryDataSource.numberOfAssets() == 0
 
             if isNotSearching && hasNoAssets {
-                self?.noResultsView.updateForNoAssets(userCanUploadMedia: false)
+                self?.noResultsView.removeFromView()
+                self?.noResultsView.configureForNoAssets(userCanUploadMedia: false)
             }
         })
     }
@@ -170,17 +172,19 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerControllerWillBeginLoadingData(_ picker: WPMediaPickerViewController) {
         updateSearchBar(mediaPicker: picker)
-        noResultsView.updateForFetching()
+        noResultsView.configureForFetching()
     }
 
     func mediaPickerControllerDidEndLoadingData(_ picker: WPMediaPickerViewController) {
-        noResultsView.updateForNoAssets(userCanUploadMedia: false)
+        noResultsView.removeFromView()
+        noResultsView.configureForNoAssets(userCanUploadMedia: false)
         updateSearchBar(mediaPicker: picker)
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didUpdateSearchWithAssetCount assetCount: Int) {
         if let searchQuery = mediaLibraryDataSource.searchQuery {
-            noResultsView.updateForNoSearchResult(with: searchQuery)
+            noResultsView.removeFromView()
+            noResultsView.configureForNoSearchResult(with: searchQuery)
         }
     }
 
@@ -237,7 +241,7 @@ extension SiteIconPickerPresenter: WPMediaPickerViewControllerDelegate {
         }
     }
 
-    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
+    func emptyViewController(forMediaPickerController picker: WPMediaPickerViewController) -> UIViewController? {
         return noResultsView
     }
 }
