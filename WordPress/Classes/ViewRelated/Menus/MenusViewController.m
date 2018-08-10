@@ -526,7 +526,21 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 - (void)showNoResultsWithTitle:(NSString *) title
 {
     [self.noResultsViewController removeFromView];
-    [self.noResultsViewController configureWithTitle:title buttonTitle:nil subtitle:nil attributedSubtitle:nil image:nil accessoryView:nil];
+
+    // If loading, show an animation.
+    WPAnimatedBox *accessoryView = nil;
+    if ([title isEqualToString:[self noResultsLoadingTitle]]) {
+        accessoryView = [[WPAnimatedBox alloc] init];
+        [accessoryView animateAfterDelay:0.1];
+    }
+
+    [self.noResultsViewController configureWithTitle:title
+                                         buttonTitle:nil
+                                            subtitle:nil
+                                  attributedSubtitle:nil
+                                               image:nil
+                                       accessoryView:accessoryView];
+
     [self addChildViewController:self.noResultsViewController];
     [self.view addSubviewWithFadeAnimation:self.noResultsViewController.view];
     [self.noResultsViewController didMoveToParentViewController:self];
