@@ -8,7 +8,7 @@
  * If users tap dismiss, the card disappears and will never be displayed again for the same app version
  */
 final class DefaultNewsManager: NewsManager {
-    private enum DatabaseKeys {
+    enum DatabaseKeys {
         static let lastDismissedCardVersion = "com.wordpress.newscard.last-dismissed-card-version"
         static let cardContainerIdentifier = "com.wordpress.newscard.cardcontaineridentifier"
     }
