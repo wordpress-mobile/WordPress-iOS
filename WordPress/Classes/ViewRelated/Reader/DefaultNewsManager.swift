@@ -47,9 +47,15 @@ final class DefaultNewsManager: NewsManager {
         print("current card version is greaterthandimisssed ", currentCardVersionIsGreaterThanLastDismissedCardVersion())
         print("card version matches build ", cardVersionMatchesBuild())
         print("///// should present card +++++" )
-        return cardIsAllowedInContext(contextId: contextId) &&
-                currentCardVersionIsGreaterThanLastDismissedCardVersion() &&
-                cardVersionMatchesBuild()
+        let canPresentCard = cardIsAllowedInContext(contextId: contextId) &&
+                                currentCardVersionIsGreaterThanLastDismissedCardVersion() &&
+                                cardVersionMatchesBuild()
+
+        if canPresentCard {
+            saveCardContext(contextId)
+        }
+
+        return canPresentCard
     }
 
     private func load() {
@@ -72,6 +78,7 @@ final class DefaultNewsManager: NewsManager {
 
     private func cardIsAllowedInContext(contextId: Identifier) -> Bool {
         let savedContext = savedCardContext()
+
         return savedContext == contextId ||
                 savedContext == Identifier.empty()
     }
@@ -139,5 +146,9 @@ final class DefaultNewsManager: NewsManager {
         case .success(let newsItem):
             database.set(newsItem.version, forKey: DatabaseKeys.lastDismissedCardVersion)
         }
+    }
+
+    private func saveCardContext(_ identifier: Identifier) {
+        database.set(identifier.description, forKey: DatabaseKeys.cardContainerIdentifier)
     }
 }
