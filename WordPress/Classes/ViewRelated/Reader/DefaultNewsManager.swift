@@ -18,6 +18,16 @@ final class DefaultNewsManager: NewsManager {
     }
 
     func readMore() {
+        guard let actualResult = result else {
+            return
+        }
+
+        switch actualResult {
+        case .success(let value):
+            UniversalLinkRouter.shared.handle(url: value.extendedInfoURL)
+        case .error:
+            return
+        }
     }
 
     func shouldPresentCard() -> Bool {
