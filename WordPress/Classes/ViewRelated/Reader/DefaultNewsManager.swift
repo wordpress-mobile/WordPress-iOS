@@ -71,7 +71,7 @@ final class DefaultNewsManager: NewsManager {
 
     private func savedCardContext() -> Identifier {
         guard let savedCardContext = database.object(forKey: DatabaseKeys.cardContainerIdentifier) as? String else {
-            return Identifier(value: "")
+            return Identifier.empty()
         }
 
         return Identifier(value: savedCardContext)
