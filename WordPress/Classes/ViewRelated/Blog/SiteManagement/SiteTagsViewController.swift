@@ -9,7 +9,7 @@ final class SiteTagsViewController: UITableViewController {
     }
     private let blog: Blog
 
-    private var noResultsViewController: NoResultsViewController?
+    private var noResultsViewController = NoResultsViewController.controller()
 
     fileprivate lazy var context: NSManagedObjectContext = {
         return ContextManager.sharedInstance().mainContext
@@ -58,8 +58,7 @@ final class SiteTagsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        noResultsViewController = NoResultsViewController.controller()
-        noResultsViewController?.delegate = self
+        noResultsViewController.delegate = self
 
         setAccessibilityIdentifier()
         applyStyleGuide()
@@ -379,7 +378,7 @@ extension SiteTagsViewController {
 private extension SiteTagsViewController {
 
     func refreshNoResultsView() {
-        noResultsViewController?.removeFromView()
+        noResultsViewController.removeFromView()
 
         if let count = resultsController.fetchedObjects?.count,
             count > 0 || searchController.isActive {
@@ -399,23 +398,18 @@ private extension SiteTagsViewController {
     }
 
     func setupLoadingView() {
-        noResultsViewController?.configure(title: loadingMessage(),
+        noResultsViewController.configure(title: loadingMessage(),
                                            accessoryView: loadingAccessoryView())
     }
 
     func setupEmptyResultsView() {
-        noResultsViewController?.configure(title: noResultsTitle(),
+        noResultsViewController.configure(title: noResultsTitle(),
                                            buttonTitle: noResultsButtonTitle(),
                                            subtitle: noResultsMessage(),
                                            image: noResultsImageName())
     }
 
     func showNoResults() {
-
-        guard let noResultsViewController = noResultsViewController else {
-            return
-        }
-
         addChildViewController(noResultsViewController)
         noResultsViewController.view.frame = tableView.bounds
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
