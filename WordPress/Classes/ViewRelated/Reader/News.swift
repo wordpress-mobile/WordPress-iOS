@@ -9,7 +9,7 @@ final class News {
     }
 
     func card(containerId: Identifier) -> NewsCard? {
-        guard manager.shouldPresentCard(containerId: containerId) else {
+        guard manager.shouldPresentCard(contextId: containerId) else {
             return nil
         }
 
