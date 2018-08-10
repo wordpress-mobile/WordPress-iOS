@@ -1,10 +1,11 @@
 /// Default implementation of the NewsManager protocol
 final class DefaultNewsManager: NewsManager {
+    private static let databaseKey = "com.wordpress.newscard.version"
+
     private let service: NewsService
     private let database: KeyValueDatabase
 
     private var result: Result<NewsItem>?
-    private var dismissed = false
 
     init(service: NewsService, database: KeyValueDatabase) {
         self.service = service
@@ -13,14 +14,14 @@ final class DefaultNewsManager: NewsManager {
     }
 
     func dismiss() {
-        dismissed = true
+        deactivateCurrentCard()
     }
 
     func readMore() {
     }
 
     func shouldPresentCard() -> Bool {
-        return cardVersionMatchesBuild() && !cardWasDismissed()
+        return currentCardVersionIsGreaterThanSavedCardVersion() && cardVersionMatchesBuild()
     }
 
     private func load() {
@@ -48,13 +49,13 @@ final class DefaultNewsManager: NewsManager {
 
         switch actualResult {
         case .success(let value):
-            return currentVersion() == value.version
+            return currentBuildVersion() == value.version
         case .error:
             return false
         }
     }
 
-    private func currentVersion() -> Decimal? {
+    private func currentBuildVersion() -> Decimal? {
         guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
             DDLogError("No CFBundleShortVersionString found in Info.plist")
             return nil
@@ -63,7 +64,37 @@ final class DefaultNewsManager: NewsManager {
         return Decimal(string: version)
     }
 
-    private func cardWasDismissed() -> Bool {
-        return dismissed
+    private func currentCardVersion() -> Decimal {
+        guard let actualResult = result else {
+            return Decimal(floatLiteral: 0.0)
+        }
+
+        switch actualResult {
+        case .error:
+            return Decimal(floatLiteral: 0.0)
+        case .success(let newsItem):
+            return newsItem.version
+        }
+    }
+
+    private func currentCardVersionIsGreaterThanSavedCardVersion() -> Bool {
+        guard let lastSavedVersion = database.object(forKey: type(of: self).databaseKey) as? Decimal else {
+            return true
+        }
+
+        return lastSavedVersion < currentCardVersion()
+    }
+
+    private func deactivateCurrentCard() {
+        guard let actualResult = result else {
+            return
+        }
+
+        switch actualResult {
+        case .error:
+            return
+        case .success(let newsItem):
+            database.set(newsItem.version, forKey: type(of: self).databaseKey)
+        }
     }
 }
