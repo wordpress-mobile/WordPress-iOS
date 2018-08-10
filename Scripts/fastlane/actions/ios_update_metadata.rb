@@ -1,9 +1,5 @@
 module Fastlane
   module Actions
-    module SharedValues
-      IOS_UPDATE_METADATA_CUSTOM_VALUE = :IOS_UPDATE_METADATA_CUSTOM_VALUE
-    end
-
     class IosUpdateMetadataAction < Action
       def self.run(params)
         require_relative '../helpers/ios_git_helper.rb'
