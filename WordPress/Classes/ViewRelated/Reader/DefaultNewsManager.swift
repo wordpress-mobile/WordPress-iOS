@@ -1,4 +1,12 @@
-/// Default implementation of the NewsManager protocol
+/** Default implementation of the NewsManager protocol.
+ * The card is shown if it has not been dismissed yet
+ * AND
+ * The card is shown on the first Reader filter that users navigate to
+ * AND
+ * If users navigate to another Reader filter, or another screen, the card disappears, but if they navigate back to the filter where it was presented first, it’ll be visible again
+ * AND
+ * If users tap dismiss, the card disappears and will never be displayed again for the same app version
+ */
 final class DefaultNewsManager: NewsManager {
     private static let databaseKey = "com.wordpress.newscard.version"
 
