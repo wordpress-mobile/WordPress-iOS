@@ -29,7 +29,8 @@ extension ReaderStreamViewController {
             return configuredHeader
         }
 
-        let newsManager = DefaultNewsManager(service: LocalNewsService(fileName: "News"))
+        let database = UserDefaults.standard
+        let newsManager = DefaultNewsManager(service: LocalNewsService(fileName: "News"), database: database)
 
         // News card should not be presented: return configured stream header
         guard newsManager.shouldPresentCard() else {

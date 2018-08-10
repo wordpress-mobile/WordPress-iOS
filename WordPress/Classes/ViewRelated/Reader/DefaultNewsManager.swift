@@ -1,11 +1,14 @@
 /// Default implementation of the NewsManager protocol
 final class DefaultNewsManager: NewsManager {
     private let service: NewsService
+    private let database: KeyValueDatabase
+
     private var result: Result<NewsItem>?
     private var dismissed = false
 
-    init(service: NewsService) {
+    init(service: NewsService, database: KeyValueDatabase) {
         self.service = service
+        self.database = database
         load()
     }
 
