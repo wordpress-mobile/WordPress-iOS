@@ -12,7 +12,7 @@ final class DefaultNewsManagerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         service = LocalNewsService(fileName: "News")
-        manager = DefaultNewsManager(service: service!)
+        manager = DefaultNewsManager(service: service!, database: NullMockUserDefaults())
     }
 
     override func tearDown() {
