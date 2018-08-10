@@ -1,3 +1,4 @@
-編輯器：更多 Gutenberg 相容性更新。
-改善多個 UI。
-修正許多小錯誤。
+你現在可以輕鬆從 Safari 的 WordPress.com 跳到 iOS 應用程式專用的 WordPress 查看相同內容。只要尋找 WordPress.com 頁面頂端的橫幅即可！
+WordPress.com 免費網站現已支援活動記錄功能。
+改善部分小型 UI。
+修正許多錯誤。

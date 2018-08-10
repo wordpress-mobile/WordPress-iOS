@@ -1,3 +1,4 @@
-Editör: Gutenberg uyumluluğu için daha fazla güncelleme.
-UI üzerinde pek çok iyileştirmeler.
-Bir kaç küçük hata düzeltmesi.
+Artık Safari'de WordPress.com'u ziyaret ettiğinizde iOS için WordPress uygulamasında aynı içeriğe kolaylıkla geçiş yapabilirsiniz. Gözünüz WordPress.com sayfalarının üst kısmındaki reklam bandında olsun!
+Artık ücretsiz WordPress.com sitelerinde Etkinlik Günlüğü mevcut.
+Ufak çaplı kullanıcı arayüzü geliştirmeleri.
+Bir dizi hata düzeltmesi.
