@@ -74,7 +74,7 @@ msgstr ""
 #. No specified characters limit here, but try to keep as short as the source one. 
 msgctxt "app_store_screenshot-1"
 msgid ""
-"Enjoy your\n" 
+"Enjoy your\n"
 "favorite sites"
 msgstr ""
 
@@ -82,7 +82,7 @@ msgstr ""
 #. No specified characters limit here, but try to keep as short as the source one. 
 msgctxt "app_store_screenshot-2"
 msgid ""
-"Get notified\n" 
+"Get notified\n"
 "in real-time"
 msgstr ""
 
@@ -90,7 +90,7 @@ msgstr ""
 #. No specified characters limit here, but try to keep as short as the source one. 
 msgctxt "app_store_screenshot-3"
 msgid ""
-"Manage your site\n" 
+"Manage your site\n"
 "everywhere you go"
 msgstr ""
 
@@ -98,14 +98,15 @@ msgstr ""
 #. No specified characters limit here, but try to keep as short as the source one. 
 msgctxt "app_store_screenshot-4"
 msgid ""
-"Share your ideas\n" 
+"Share your ideas\n"
 "with the world"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one. 
 msgctxt "app_store_screenshot-5"
-msgid "" 
-"All the stats\n" 
+msgid ""
+"All the stats\n"
 "in your hand"
 msgstr ""
+
