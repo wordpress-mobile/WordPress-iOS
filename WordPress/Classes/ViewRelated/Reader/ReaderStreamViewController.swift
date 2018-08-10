@@ -497,27 +497,30 @@ import WordPressFlux
             return
         }
 
-        guard let header = ReaderStreamViewController.headerForStream(topic) else {
+        guard let header = ReaderStreamViewController.headerWithNewsCardForStream(topic, isLoggedIn: isLoggedIn, delegate: self) else {
             tableView.tableHeaderView = nil
             return
         }
 
-        header.enableLoggedInFeatures(isLoggedIn)
-        header.configureHeader(topic)
-        header.delegate = self
+        tableView.tableHeaderView = header
 
-        tableView.tableHeaderView = header as? UIView
+        // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
+        header.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
+        header.widthAnchor.constraint(equalTo: tableView.widthAnchor).isActive = true
+        header.topAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
+
+        tableView.tableHeaderView?.layoutIfNeeded()
+        tableView.tableHeaderView = tableView.tableHeaderView
     }
 
 
     // Refresh the header of a site topic when returning in case the
     // topic's following status changed.
     @objc func refreshTableHeaderIfNeeded() {
-        guard let topic = readerTopic,
-            let header = tableView.tableHeaderView as? ReaderStreamHeader else {
+        guard let _ = readerTopic else {
             return
         }
-        header.configureHeader(topic)
+        configureStreamHeader()
     }
 
 
@@ -647,7 +650,7 @@ import WordPressFlux
     /// Scrolls to the top of the list of posts.
     ///
     @objc open func scrollViewToTop() {
-        tableView.setContentOffset(CGPoint.zero, animated: true)
+        tableView.setContentOffset(.zero, animated: true)
     }
 
 

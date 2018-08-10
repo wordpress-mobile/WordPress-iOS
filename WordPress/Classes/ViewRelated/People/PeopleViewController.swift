@@ -23,7 +23,8 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
 
     /// NoResults Helper
     ///
-    fileprivate let noResultsView = WPNoResultsView()
+    private let noResultsViewController = NoResultsViewController.controller()
+
 
     /// Indicates whether there are more results that can be retrieved, or not.
     ///
@@ -338,27 +339,29 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
 
     // MARK: - No Results Helpers
 
-    fileprivate func refreshNoResultsView() {
+    private func refreshNoResultsView() {
+
+        noResultsViewController.removeFromView()
+
         guard resultsController.fetchedObjects?.count == 0 else {
-            noResultsView.removeFromSuperview()
             return
         }
 
-        noResultsView.titleText = noResultsTitle()
+        noResultsViewController.configure(title: noResultsTitle(),
+                                          image: "wp-illustration-empty-results")
 
-        if noResultsView.superview == nil {
-            tableView.addSubview(withFadeAnimation: noResultsView)
-        }
+        addChildViewController(noResultsViewController)
+        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        noResultsViewController.view.frame = tableView.bounds
+        noResultsViewController.didMove(toParentViewController: self)
     }
 
     private func noResultsTitle() -> String {
-        let noPeopleFormat = NSLocalizedString("No %@ Yet",
-            comment: "Empty state message (People Management). %@ can be Users or Followers")
-        let noPeople = String(format: noPeopleFormat, filter.title)
+        let noPeopleFormat = NSLocalizedString("No %@ yet",
+            comment: "Empty state message (People Management). %@ can be 'users' or 'followers'")
+        let noPeople = String(format: noPeopleFormat, filter.title.lowercased())
 
-        let noNetwork = noConnectionMessage()
-
-        return connectionAvailable() ? noPeople : noNetwork
+        return connectionAvailable() ? noPeople : noConnectionMessage()
     }
 
     private func handleLoadError(_ forError: Error) {
