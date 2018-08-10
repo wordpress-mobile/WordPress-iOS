@@ -10,6 +10,7 @@
 final class DefaultNewsManager: NewsManager {
     private enum DatabaseKeys {
         static let lastDismissedCardVersion = "com.wordpress.newscard.last-dismissed-card-version"
+        static let cardContainerIdentifier = "com.wordpress.newscard.cardcontaineridentifier"
     }
 
     private let service: NewsService
