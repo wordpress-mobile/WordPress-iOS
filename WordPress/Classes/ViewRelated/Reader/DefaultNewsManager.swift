@@ -42,7 +42,7 @@ final class DefaultNewsManager: NewsManager {
     }
 
     func shouldPresentCard(contextId: Identifier) -> Bool {
-        return cardIsAllowedIncontext(contextId: contextId) &&
+        return cardIsAllowedInContext(contextId: contextId) &&
                 currentCardVersionIsGreaterThanLastDismissedCardVersion() &&
                 cardVersionMatchesBuild()
     }
