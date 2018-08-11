@@ -22,7 +22,7 @@ class RegisterDomainDetailsViewModel {
     enum Change: Equatable {
         case rowValidation(tag: ValidationRuleTag, indexPath: IndexPath, isValid: Bool, errorMessage: String?)
         case wholeValidation(tag: ValidationRuleTag, isValid: Bool)
-        case registerFailedBecauseOfValidation
+        case sectionValidation(tag: ValidationRuleTag, sectionIndex: Int, isValid: Bool)
         case multipleChoiceRowValueChanged(indexPath: IndexPath)
         case unexpectedError(message: String)
         case addNewAddressLineEnabled(indexPath: IndexPath)
@@ -79,8 +79,8 @@ class RegisterDomainDetailsViewModel {
                                                 isValid: isValid,
                                                 errorMessage: errorMessage))
         case let .sectionValidation(tag, sectionIndex, isSectionValid):
-            let valid = strongSelf.isValid(forTag: tag)
-            strongSelf.onChange?(.wholeValidation(tag: tag, isValid: valid))
+            strongSelf.onChange?(.sectionValidation(tag: tag, sectionIndex: sectionIndex.rawValue, isValid: isSectionValid))
+            strongSelf.onChange?(.wholeValidation(tag: tag, isValid: strongSelf.isValid(forTag: tag)))
         case let .checkMarkRowsUpdated(sectionIndex):
             strongSelf.onChange?(.checkMarkRowsUpdated(sectionIndex: sectionIndex.rawValue))
         case let .rowValueChanged(indexPath, row):
@@ -365,7 +365,6 @@ extension RegisterDomainDetailsViewModel {
                     successCompletion()
                 } else {
                     strongSelf.updateValidationErrors(with: response.messages)
-                    strongSelf.onChange?(.registerFailedBecauseOfValidation)
                 }
         }) { [weak self] (error) in
             guard let strongSelf = self else {
@@ -399,9 +398,12 @@ extension RegisterDomainDetailsViewModel {
 
     fileprivate func updatePhoneNumberValidationErrors(messages: ValidateDomainContactInformationResponse.Messages) {
         let rows = sections[SectionIndex.phone.rawValue].rows
-        rows[CellIndex.PhoneNumber.number.rawValue].editableRow?.firstRule(
-            forTag: ValidationRuleTag.proceedSubmit.rawValue
-            )?.isValid = messages.isValidPhoneNumber()
+        let isValid = messages.isValidPhoneNumber()
+        for row in rows {
+            row.editableRow?.firstRule(
+                forTag: ValidationRuleTag.proceedSubmit.rawValue
+                )?.isValid = isValid
+        }
     }
 
     fileprivate func updateContactInformationValidationErrors(messages: ValidateDomainContactInformationResponse.Messages) {
@@ -463,7 +465,7 @@ extension ValidateDomainContactInformationResponse.Messages {
         case .postalCode:
             return postalCode?.isEmpty ?? true
         case .state:
-            return postalCode?.isEmpty ?? true
+            return state?.isEmpty ?? true
         default:
             return true
         }

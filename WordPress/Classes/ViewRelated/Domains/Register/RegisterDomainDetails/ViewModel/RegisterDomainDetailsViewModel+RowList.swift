@@ -38,10 +38,10 @@ extension RegisterDomainDetailsViewModel {
                               errorMessage: nil)
     }
 
-    static func proceedRule(with key: String) -> ValidationRule {
+    static func proceedRule(with key: String, hasErrorMessage: Bool = true) -> ValidationRule {
         return ValidationRule(tag: ValidationRuleTag.proceedSubmit.rawValue,
                               validationBlock: nil, //validation is handled on serverside
-                              errorMessage: String(format: Localized.validationError, key))
+            errorMessage: hasErrorMessage ? String(format: Localized.validationError, key) : nil)
     }
 
     static var contactInformationRows: [RowType] {
@@ -95,16 +95,16 @@ extension RegisterDomainDetailsViewModel {
         return [
             .inlineEditable(.init(
                 key: Localized.PhoneNumber.countryCode,
-                jsonKey: "phone_number",
+                jsonKey: "phone",
                 value: nil,
                 placeholder: Localized.PhoneNumber.countryCodePlaceholder,
                 editingStyle: .inline,
                 validationRules: [nonEmptyRule,
-                                  proceedRule(with: Localized.ContactInformation.phone)]
+                                  proceedRule(with: Localized.ContactInformation.phone, hasErrorMessage: false)]
                 )),
             .inlineEditable(.init(
                 key: Localized.PhoneNumber.number,
-                jsonKey: "phone_number",
+                jsonKey: "phone",
                 value: nil,
                 placeholder: Localized.PhoneNumber.numberPlaceholder,
                 editingStyle: .inline,
@@ -143,7 +143,7 @@ extension RegisterDomainDetailsViewModel {
                 value: nil,
                 placeholder: Localized.Address.statePlaceHolder,
                 editingStyle: .multipleChoice,
-                validationRules: [nonEmptyRule, proceedRule(with: Localized.Address.state)]
+                validationRules: [proceedRule(with: Localized.Address.state)]
                 )),
             .inlineEditable(.init(
                 key: Localized.Address.postalCode,

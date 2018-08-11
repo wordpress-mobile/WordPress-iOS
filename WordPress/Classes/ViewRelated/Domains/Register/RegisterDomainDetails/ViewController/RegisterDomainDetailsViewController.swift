@@ -99,8 +99,14 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
                 break
             }
             break
-        case .registerFailedBecauseOfValidation:
-            reloadDataSections()
+        case let .sectionValidation(tag, sectionIndex, _):
+            switch tag {
+            case .proceedSubmit:
+                let indexes: IndexSet = [sectionIndex]
+                tableView.reloadSections(indexes, with: .none)
+            default:
+                break
+            }
         case .addNewAddressLineEnabled(let indexPath):
             tableView.insertRows(at: [indexPath], with: .none)
         case .addNewAddressLineReplaced(let indexPath):
@@ -193,7 +199,8 @@ extension RegisterDomainDetailsViewController: InlineEditableNameValueCellDelega
             let addressField = viewModel.addressSectionIndexHelper.addressField(for: indexPath.row)
             switch addressField {
             case .addressLine:
-                if !(valueTextField.text?.isEmpty ?? true) && indexPath.row == viewModel.addressSectionIndexHelper.extraAddressLineCount {
+                if !(valueTextField.text?.isEmpty ?? true)
+                    && indexPath.row == viewModel.addressSectionIndexHelper.extraAddressLineCount {
                     viewModel.enableAddAddressRow()
                 }
             default:

@@ -31,14 +31,6 @@ extension RegisterDomainDetailsViewModel {
             }
         }
 
-        private(set) var shouldProceedSubmit: Bool = false {
-            didSet {
-                if shouldProceedSubmit != oldValue {
-                    onChange?(.sectionValidation(tag: .proceedSubmit, sectionIndex: sectionIndex, isValid: shouldProceedSubmit))
-                }
-            }
-        }
-
         private(set) var rows: [RowType]
 
         let sectionIndex: SectionIndex
@@ -60,7 +52,9 @@ extension RegisterDomainDetailsViewModel {
             case .enableSubmit:
                 strongSelf.shouldEnableSubmit = strongSelf.isValid(forTag: ruleTag)
             case .proceedSubmit:
-                strongSelf.shouldProceedSubmit = strongSelf.isValid(forTag: ruleTag)
+                strongSelf.onChange?(.sectionValidation(tag: .proceedSubmit,
+                                                        sectionIndex: strongSelf.sectionIndex,
+                                                        isValid: strongSelf.isValid(forTag: ruleTag)))
             }
         }
 

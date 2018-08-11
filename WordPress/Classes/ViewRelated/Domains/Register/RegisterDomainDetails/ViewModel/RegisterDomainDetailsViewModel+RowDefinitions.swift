@@ -39,7 +39,7 @@ extension RegisterDomainDetailsViewModel {
         }
 
         func validate(text: String?) {
-            isValid = validationBlock?(text) ?? true
+            isValid = validationBlock?(text) ?? isValid
         }
     }
 
