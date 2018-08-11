@@ -68,8 +68,16 @@ extension RegisterDomainDetailsViewController {
             cell.valueTextField.keyboardType = index.keyboardType
         case .phone:
             cell.valueTextField.keyboardType = .numberPad
+        case .address:
+            let addressField = viewModel.addressSectionIndexHelper.addressField(for: indexPath.row)
+            switch addressField {
+            case .postalCode:
+                cell.valueTextField.keyboardType = .numbersAndPunctuation
+            default:
+                cell.valueTextField.keyboardType = .default
+            }
         default:
-            break
+            cell.valueTextField.keyboardType = .default
         }
     }
 }
