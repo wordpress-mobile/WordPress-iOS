@@ -54,7 +54,6 @@ extension RegisterDomainDetailsViewController {
     func errorShowingSectionFooter(section: Int) -> RegisterDomainDetailsErrorSectionFooter? {
         let errors = viewModel.sections[section].validationErrors(forTag: .proceedSubmit)
         guard registerButtonTapped,
-            errors.count > 0,
             let view = tableView.dequeueReusableHeaderFooterView(
                 withIdentifier: RegisterDomainDetailsErrorSectionFooter.defaultReuseID
                 ) as? RegisterDomainDetailsErrorSectionFooter else {
