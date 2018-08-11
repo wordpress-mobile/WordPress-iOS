@@ -8,7 +8,7 @@ class RegisterDomainDetailsViewModel {
 
     enum Constant {
         static let phoneNumberCountryCodePrefix = "+"
-        static let phoneNumberConnectingChar = "."
+        static let phoneNumberConnectingChar: Character = "."
     }
     enum ValidationRuleTag: String {
 
@@ -30,6 +30,7 @@ class RegisterDomainDetailsViewModel {
         case checkMarkRowsUpdated(sectionIndex: Int)
         case registerSucceeded(items: [String:String])
         case loading(Bool)
+        case proceedSubmitValidation
         case prefillSuccess
         case prefillError(message: String)
     }
@@ -286,7 +287,39 @@ class RegisterDomainDetailsViewModel {
     }
 
     private func update(with domainContactInformation: DomainContactInformation) {
-        //TODO
+        updateAddressSection(with: domainContactInformation)
+        updatePhoneSection(with: domainContactInformation)
+        updateContactInformationSection(with: domainContactInformation)
+    }
+
+    private func updateAddressSection(with domainContactInformation: DomainContactInformation) {
+        let section = sections[SectionIndex.address.rawValue]
+        section.rows[safe: addressSectionIndexHelper.cityIndex]?.editableRow?.value = domainContactInformation.city
+        section.rows[safe: addressSectionIndexHelper.postalCodeIndex]?.editableRow?.value = domainContactInformation.postalCode
+        section.rows[safe: addressSectionIndexHelper.addressLine1]?.editableRow?.value = domainContactInformation.address1
+    }
+
+    private func updatePhoneSection(with domainContactInformation: DomainContactInformation) {
+        let section = sections[SectionIndex.phone.rawValue]
+        if let phone = domainContactInformation.phone {
+            let phoneNumberParts = phone.replacingMatches(of: Constant.phoneNumberCountryCodePrefix, with: "").split(separator: Constant.phoneNumberConnectingChar)
+            if phoneNumberParts.count == 2 {
+                section.rows[safe: CellIndex.PhoneNumber.countryCode.rawValue]?.editableRow?.value = String(phoneNumberParts[safe: 0] ?? "")
+                section.rows[safe: CellIndex.PhoneNumber.number.rawValue]?.editableRow?.value = String(phoneNumberParts[safe: 1] ?? "")
+            }
+        }
+    }
+
+    private func updateContactInformationSection(with domainContactInformation: DomainContactInformation) {
+        let section = sections[SectionIndex.contactInformation.rawValue]
+        section.rows[safe: CellIndex.ContactInformation.country.rawValue]?.editableRow?.idValue = domainContactInformation.countryCode
+        section.rows[safe: CellIndex.ContactInformation.country.rawValue]?.editableRow?.value = countries?.filter {
+            return $0.code == domainContactInformation.countryCode
+            }.first?.name
+        section.rows[safe: CellIndex.ContactInformation.email.rawValue]?.editableRow?.value = domainContactInformation.email
+        section.rows[safe: CellIndex.ContactInformation.firstName.rawValue]?.editableRow?.value = domainContactInformation.firstName
+        section.rows[safe: CellIndex.ContactInformation.lastName.rawValue]?.editableRow?.value = domainContactInformation.lastName
+        section.rows[safe: CellIndex.ContactInformation.organization.rawValue]?.editableRow?.value = domainContactInformation.organization
     }
 
     private func jsonRepresentation() -> [String: String] {
@@ -342,7 +375,7 @@ class RegisterDomainDetailsViewModel {
         let countryCode = section.rows[CellIndex.PhoneNumber.countryCode.rawValue].editableRow?.value ?? ""
         let number = section.rows[CellIndex.PhoneNumber.number.rawValue].editableRow?.value ?? ""
         return Constant.phoneNumberCountryCodePrefix + countryCode +
-            Constant.phoneNumberConnectingChar + number
+            String(Constant.phoneNumberConnectingChar) + number
     }
 }
 
@@ -366,6 +399,7 @@ extension RegisterDomainDetailsViewModel {
                 } else {
                     strongSelf.updateValidationErrors(with: response.messages)
                 }
+                strongSelf.onChange?(.proceedSubmitValidation)
         }) { [weak self] (error) in
             guard let strongSelf = self else {
                 return
