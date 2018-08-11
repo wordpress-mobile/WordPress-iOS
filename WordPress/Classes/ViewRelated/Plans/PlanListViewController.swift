@@ -31,7 +31,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
     }
 
     @objc let siteID: Int
-    let service: PlanService<StoreKitStore>
+    var service: PlanService<StoreKitStore>
     init(siteID: Int, service: PlanService<StoreKitStore>) {
         self.siteID = siteID
         self.service = service

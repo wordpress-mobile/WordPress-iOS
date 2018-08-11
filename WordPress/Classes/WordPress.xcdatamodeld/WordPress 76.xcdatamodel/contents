@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14133" systemVersion="17C88" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17G65" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="dateModified" optional="YES" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
@@ -89,6 +89,7 @@
         </attribute>
         <attribute name="capabilities" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="currentThemeId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hasDomainCredit" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="hasOlderPages" transient="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO">
             <userInfo/>
         </attribute>
@@ -673,7 +674,7 @@
         <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="225"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="285"/>
-        <element name="Blog" positionX="0" positionY="0" width="128" height="705"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="720"/>
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="855"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>

@@ -200,7 +200,8 @@ class PluginViewModel: Observable {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
         if let blog = blogService.blog(byBlogId: NSNumber(value: self.site.siteID)),
-            blog.isHostedAtWPcom {
+            blog.isHostedAtWPcom,
+            blog.hasDomainCredit {
             return true
         }
         return false

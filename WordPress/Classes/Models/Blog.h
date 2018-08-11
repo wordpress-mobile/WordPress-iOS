@@ -115,6 +115,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, assign, readwrite) BOOL videoPressEnabled;
 @property (nonatomic, assign, readwrite) BOOL isMultiAuthor;
 @property (nonatomic, assign, readwrite) BOOL isHostedAtWPcom;
+@property (nonatomic, assign, readwrite) BOOL hasDomainCredit;
 @property (nonatomic, strong, readwrite, nullable) NSString *icon;
 @property (nonatomic, assign, readwrite) SiteVisibility siteVisibility;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *planID;

@@ -13,8 +13,16 @@ struct PlanService<S: InAppPurchaseStore> {
 //    typealias S = StoreKitStore
     let store: S
     let remote: PlanServiceRemote
-
     fileprivate let featuresRemote: PlanFeatureServiceRemote
+
+    private lazy var restApi: WordPressComRestApi = {
+        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        return accountService.defaultWordPressComAccount()?.wordPressComRestApi ?? WordPressComRestApi(oAuthToken: "")
+    }()
+
+    private lazy var remote_v1_3: PlanServiceRemote_ApiVersion1_3 = {
+        return PlanServiceRemote_ApiVersion1_3(wordPressComRestApi: restApi)
+    }()
 
     init(store: S, remote: PlanServiceRemote, featuresRemote: PlanFeatureServiceRemote) {
         self.store = store
@@ -22,7 +30,7 @@ struct PlanService<S: InAppPurchaseStore> {
         self.featuresRemote = featuresRemote
     }
 
-    func plansWithPricesForBlog(_ siteID: Int, success: @escaping (SitePricedPlans) -> Void, failure: @escaping (Error) -> Void) {
+    mutating func plansWithPricesForBlog(_ siteID: Int, success: @escaping (SitePricedPlans) -> Void, failure: @escaping (Error) -> Void) {
         remote.getPlansForSite(siteID,
             success: {
                 activePlan, availablePlans in
@@ -33,6 +41,21 @@ struct PlanService<S: InAppPurchaseStore> {
                 let result = (siteID: siteID, activePlan: activePlan, availablePlans: pricedPlans)
                 success(result)
             }, failure: failure)
+
+        if FeatureFlag.automatedTransfersCustomDomain.enabled {
+            remote_v1_3.getPlansForSite(
+                siteID,
+                success: { (plans) in
+                    guard let planId = plans.activePlan.planID,
+                        let planIdInt = Int(planId) else {
+                            return
+                    }
+                    PlanStorage.updateHasDomainCredit(planIdInt,
+                                                      forSite: siteID,
+                                                      hasDomainCredit: plans.activePlan.hasDomainCredit ?? false)
+            },
+            failure: failure)
+        }
     }
 
     func verifyPurchase(_ siteID: Int, productID: String, receipt: Data, completion: (Bool) -> Void) {
@@ -83,6 +106,24 @@ struct PlanStorage {
             }
             if blog.planID?.intValue != planID {
                 blog.planID = NSNumber(value: planID)
+                manager.saveContextAndWait(context)
+            }
+        }
+    }
+
+    static func updateHasDomainCredit(_ planID: PlanID, forSite siteID: Int, hasDomainCredit: Bool) {
+        let manager = ContextManager.sharedInstance()
+        let context = manager.newDerivedContext()
+        let service = BlogService(managedObjectContext: context)
+        context.performAndWait {
+            guard let blog = service.blog(byBlogId: NSNumber(value: siteID)) else {
+                let error = "Tried to update a plan for a non-existing site (ID: \(siteID))"
+                assertionFailure(error)
+                DDLogError(error)
+                return
+            }
+            if blog.hasDomainCredit != hasDomainCredit {
+                blog.hasDomainCredit = hasDomainCredit
                 manager.saveContextAndWait(context)
             }
         }
