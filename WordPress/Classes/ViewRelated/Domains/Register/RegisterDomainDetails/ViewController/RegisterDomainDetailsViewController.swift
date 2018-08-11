@@ -99,14 +99,6 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
                 break
             }
             break
-        case let .sectionValidation(tag, sectionIndex, _):
-            switch tag {
-            case .proceedSubmit:
-                let indexes: IndexSet = [sectionIndex]
-                tableView.reloadSections(indexes, with: .none)
-            default:
-                break
-            }
         case .addNewAddressLineEnabled(let indexPath):
             tableView.insertRows(at: [indexPath], with: .none)
         case .addNewAddressLineReplaced(let indexPath):
@@ -126,11 +118,13 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
                 SVProgressHUD.dismiss()
             }
         case .prefillSuccess:
-            reloadDataSections()
+            tableView.reloadData()
         case .prefillError(let message):
             showAlert(message: message)
         case .multipleChoiceRowValueChanged(let indexPath):
             tableView.reloadRows(at: [indexPath], with: .none)
+        case .proceedSubmitValidation:
+            tableView.reloadData()
         default:
             break
         }
@@ -143,13 +137,6 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
     private func configureNavigationBar() {
         title = NSLocalizedString("Register domain",
                                   comment: "Title for the Register domain screen")
-    }
-
-    private func reloadDataSections() {
-        let indexes: IndexSet = [SectionIndex.contactInformation.rawValue,
-                                 SectionIndex.phone.rawValue,
-                                 SectionIndex.address.rawValue]
-        tableView.reloadSections(indexes, with: .none)
     }
 
     private func showAlert(title: String? = nil, message: String) {
@@ -208,16 +195,6 @@ extension RegisterDomainDetailsViewController: InlineEditableNameValueCellDelega
             }
         default:
             break
-        }
-    }
-
-    func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
-                                     valueTextFieldEditingDidEnd valueTextField: UITextField) {
-        guard let indexPath = tableView.indexPath(for: cell) else {
-            return
-        }
-        if viewModel.sections[indexPath.section].isValid(forTag: .proceedSubmit) {
-            tableView.reloadSections(IndexSet(integer: indexPath.section), with: .none)
         }
     }
 }
