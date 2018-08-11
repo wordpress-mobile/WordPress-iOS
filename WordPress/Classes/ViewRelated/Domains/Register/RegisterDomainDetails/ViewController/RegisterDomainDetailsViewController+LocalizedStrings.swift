@@ -10,6 +10,10 @@ enum RegisterDomainDetails {
             "Error occurred fetching domain contact information",
             comment: "Register Domain - Domain contact information error message shown to indicate an error during fetching domain contact information"
         )
+        static let statesFetchingError = NSLocalizedString(
+            "Error occurred fetching states",
+            comment: "Register Domain - Domain contact information error message shown to indicate an error during fetching list of states"
+        )
         static let buttonTitle = NSLocalizedString(
             "Register domain",
             comment: "Register domain - Title for the Register domain button"

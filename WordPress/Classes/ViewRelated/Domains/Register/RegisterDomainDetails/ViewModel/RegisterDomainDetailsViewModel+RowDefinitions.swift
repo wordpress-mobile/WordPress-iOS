@@ -53,6 +53,7 @@ extension RegisterDomainDetailsViewModel {
         class EditableKeyValueRow: Equatable {
 
             typealias ValidationStateChangedHandler = ((EditableKeyValueRow, ValidationRule) -> Void)
+            typealias ValueChangeHandler = ((EditableKeyValueRow) -> Void)
 
             enum EditingStyle: Int {
                 case inline
@@ -63,7 +64,17 @@ extension RegisterDomainDetailsViewModel {
             var jsonKey: String
             var value: String? {
                 didSet {
-                   validate()
+                    validate()
+                    valueChangeHandler?(self)
+                }
+            }
+            var idValue: String?
+            var jsonValue: String? {
+                switch editingStyle {
+                case .inline:
+                    return value
+                case .multipleChoice:
+                    return idValue
                 }
             }
             var placeholder: String?
@@ -74,6 +85,7 @@ extension RegisterDomainDetailsViewModel {
                     registerForValidationStateChangedEvent()
                 }
             }
+            var valueChangeHandler: ValueChangeHandler?
 
             init(key: String,
                  jsonKey: String,

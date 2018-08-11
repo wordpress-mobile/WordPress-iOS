@@ -123,6 +123,8 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
             reloadDataSections()
         case .prefillError(let message):
             showAlert(message: message)
+        case .multipleChoiceRowValueChanged(let indexPath):
+            tableView.reloadRows(at: [indexPath], with: .none)
         default:
             break
         }
@@ -155,7 +157,6 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
             preferredStyle: .alert
         )
         alertController.addCancelActionWithTitle(alertCancel, handler: nil)
-        alertController.presentFromRootViewController()
         present(alertController, animated: true, completion: nil)
     }
 }
@@ -231,12 +232,11 @@ extension RegisterDomainDetailsViewController {
             }
             switch field {
             case .country:
-                //TODO: fix mock data
-                showItemSelectionPage(onSelectionAt: indexPath,
-                                      title: Localized.ContactInformation.country,
-                                      items: ["Country 1",
-                                              "Country 2",
-                                              "Country 3"])
+                if viewModel.countryNames.count > 0 {
+                    showItemSelectionPage(onSelectionAt: indexPath,
+                                          title: Localized.ContactInformation.country,
+                                          items: viewModel.countryNames)
+                }
             default:
                 break
             }
@@ -246,12 +246,11 @@ extension RegisterDomainDetailsViewController {
             case .addNewAddressLine:
                 viewModel.replaceAddNewAddressLine()
             case .state:
-                //TODO: fix mock data
-                showItemSelectionPage(onSelectionAt: indexPath,
-                                      title: Localized.Address.state,
-                                      items: ["State 1",
-                                              "State 2",
-                                              "State 3"])
+                if viewModel.stateNames.count > 0 {
+                    showItemSelectionPage(onSelectionAt: indexPath,
+                                          title: Localized.Address.state,
+                                          items: viewModel.stateNames)
+                }
             default:
                 break
             }
@@ -282,8 +281,16 @@ extension RegisterDomainDetailsViewController {
         viewController.onSelect = { [weak self] (index) in
             self?.navigationController?.popViewController(animated: true)
             self?.selectedItemIndex[indexPath] = index
-            self?.viewModel.updateValue(items[index], at: indexPath)
-            self?.tableView.reloadRows(at: [indexPath], with: .none)
+            if let section = SectionIndex(rawValue: indexPath.section) {
+                switch section {
+                case .address:
+                    self?.viewModel.selectState(at: index)
+                case .contactInformation:
+                    self?.viewModel.selectCountry(at: index)
+                default:
+                    break
+                }
+            }
         }
         navigationController?.pushViewController(viewController, animated: true)
     }

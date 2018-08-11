@@ -4,6 +4,7 @@ import Foundation
 class RegisterDomainDetailsViewModel {
 
     typealias Localized = RegisterDomainDetails.Localized
+    typealias CodeNameTuple = (code: String, name: String)
 
     enum Constant {
         static let phoneNumberCountryCodePrefix = "+"
@@ -22,6 +23,7 @@ class RegisterDomainDetailsViewModel {
         case rowValidation(tag: ValidationRuleTag, indexPath: IndexPath, isValid: Bool, errorMessage: String?)
         case wholeValidation(tag: ValidationRuleTag, isValid: Bool)
         case registerFailedBecauseOfValidation
+        case multipleChoiceRowValueChanged(indexPath: IndexPath)
         case unexpectedError(message: String)
         case addNewAddressLineEnabled(indexPath: IndexPath)
         case addNewAddressLineReplaced(indexPath: IndexPath)
@@ -47,8 +49,15 @@ class RegisterDomainDetailsViewModel {
     var registerDomainDetailsService: RegisterDomainDetailsServiceProxyProtocol = RegisterDomainDetailsServiceProxy()
     private(set) var addressSectionIndexHelper = CellIndex.AddressSectionIndexHelper()
     private(set) var domain: String
-    private(set) var states: [State]?
-    private(set) var countries: [Country]?
+    private(set) var states: [CodeNameTuple]?
+    private(set) var countries: [CodeNameTuple]?
+    var countryNames: [String] {
+        return countries?.map { $0.name } ?? []
+    }
+    var stateNames: [String] {
+        return states?.map { $0.name } ?? []
+    }
+
     private(set) var isLoading: Bool = false {
         didSet {
             onChange?(.loading(isLoading))
@@ -74,6 +83,10 @@ class RegisterDomainDetailsViewModel {
             strongSelf.onChange?(.wholeValidation(tag: tag, isValid: valid))
         case let .checkMarkRowsUpdated(sectionIndex):
             strongSelf.onChange?(.checkMarkRowsUpdated(sectionIndex: sectionIndex.rawValue))
+        case let .rowValueChanged(indexPath, row):
+            if row.editingStyle == .multipleChoice {
+                strongSelf.onChange?(.multipleChoiceRowValueChanged(indexPath: indexPath))
+            }
         }
     }
 
@@ -164,6 +177,33 @@ class RegisterDomainDetailsViewModel {
         })
     }
 
+    func selectCountry(at index: Int) {
+        let section = sections[SectionIndex.contactInformation.rawValue]
+        if let row = section.rows[CellIndex.ContactInformation.country.rawValue].editableRow,
+            let country = countries?[safe: index] {
+            row.idValue = country.code
+            row.value = country.name
+            fetchStates(countryCode: country.code)
+        }
+    }
+
+    func selectState(at index: Int) {
+        if let state = states?[safe: index] {
+            stateRow?.idValue = state.code
+            stateRow?.value = state.name
+        }
+    }
+
+    private func clearStateSelection() {
+        stateRow?.idValue = nil
+        stateRow?.value = nil
+    }
+
+    private var stateRow: EditableKeyValueRow? {
+        let section = sections[SectionIndex.address.rawValue]
+        return section.rows[safe: addressSectionIndexHelper.stateIndex]?.editableRow
+    }
+
     func prefill() {
         isLoading = true
 
@@ -185,12 +225,22 @@ class RegisterDomainDetailsViewModel {
         }
 
         dispatchGroup.enter()
-        registerDomainDetailsService.getSupportedCountries(success: { [weak self] (countryList) in
+        registerDomainDetailsService.getSupportedCountries(success: { [weak self] (countriesResponse) in
             guard let strongSelf = self else {
                 return
             }
             strongSelf.dispatchGroup.leave()
-            strongSelf.countries = countryList
+            var result: [CodeNameTuple] = []
+            //Filter empty records
+            for country in countriesResponse {
+                if let code = country.code,
+                    let name = country.name,
+                    !code.isEmpty,
+                    !name.isEmpty {
+                    result.append((code: code, name: name))
+                }
+            }
+            strongSelf.countries = result
         }) { [weak self] (error) in
             guard let strongSelf = self else {
                 return
@@ -201,6 +251,37 @@ class RegisterDomainDetailsViewModel {
 
         dispatchGroup.notify(queue: .main) { [weak self] in
             self?.isLoading = false
+        }
+    }
+
+    private func fetchStates(countryCode: String) {
+        isLoading = true
+        states = nil
+        clearStateSelection()
+        registerDomainDetailsService.getStates(
+            for: countryCode,
+            success: { [weak self] (statesResponse) in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.isLoading = false
+                var result: [CodeNameTuple] = []
+                //Filter empty records
+                for state in statesResponse {
+                    if let code = state.code,
+                        let name = state.name,
+                        !code.isEmpty,
+                        !name.isEmpty {
+                        result.append((code: code, name: name))
+                    }
+                }
+                strongSelf.states = result
+        }) { [weak self] (error) in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf.isLoading = false
+            strongSelf.onChange?(.unexpectedError(message: Localized.statesFetchingError))
         }
     }
 
@@ -240,7 +321,7 @@ class RegisterDomainDetailsViewModel {
         for row in section.rows {
             switch row {
             case .inlineEditable(let editableRow):
-                dict[editableRow.jsonKey] = editableRow.value
+                dict[editableRow.jsonKey] = editableRow.jsonValue
             default:
                 break
             }
