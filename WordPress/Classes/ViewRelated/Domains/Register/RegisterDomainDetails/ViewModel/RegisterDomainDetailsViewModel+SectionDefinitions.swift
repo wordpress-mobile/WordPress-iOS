@@ -1,11 +1,3 @@
-//
-//  RegisterDomainDetailsViewModel+Section.swift
-//  WordPress
-//
-//  Created by Olgucp on 3.08.2018.
-//  Copyright © 2018 WordPress. All rights reserved.
-//
-
 import Foundation
 
 // MARK: - Section definition

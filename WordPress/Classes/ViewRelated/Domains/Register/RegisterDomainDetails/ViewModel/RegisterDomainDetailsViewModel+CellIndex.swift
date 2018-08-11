@@ -49,7 +49,9 @@ extension RegisterDomainDetailsViewModel {
         }
 
         struct AddressSectionIndexHelper {
-            static let addressLine = 0
+            var addressLine1: Int {
+                return 0
+            }
             private(set) var extraAddressLineCount = 0
             var isAddNewAddressVisible = false
 
