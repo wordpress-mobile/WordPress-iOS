@@ -18,6 +18,7 @@ extension RegisterDomainDetailsViewModel {
 
         enum Change: Equatable {
             case rowValidation(tag: ValidationRuleTag, indexPath: IndexPath, isValid: Bool, errorMessage: String?)
+            case rowValueChanged(indexPath: IndexPath, row: EditableKeyValueRow)
             case sectionValidation(tag: ValidationRuleTag, sectionIndex: SectionIndex, isValid: Bool)
             case checkMarkRowsUpdated(sectionIndex: SectionIndex)
         }
@@ -63,6 +64,15 @@ extension RegisterDomainDetailsViewModel {
             }
         }
 
+        lazy var valueChangeHandler: EditableKeyValueRow.ValueChangeHandler = { [weak self] (editableRow) in
+            guard let strongSelf = self,
+                let rowIndex = strongSelf.rowIndex(of: editableRow) else {
+                    return
+            }
+            let indexPath = IndexPath(row: rowIndex, section: strongSelf.sectionIndex.rawValue)
+            strongSelf.onChange?(.rowValueChanged(indexPath: indexPath, row: editableRow))
+        }
+
         func rowIndex(of editableRow: Row.EditableKeyValueRow) -> Int? {
             for (index, row) in rows.enumerated() {
                 switch row {
@@ -99,6 +109,7 @@ extension RegisterDomainDetailsViewModel {
                 switch row {
                 case .inlineEditable(let editableRow):
                     editableRow.validationStateChangedHandler = self.editableRowValidationStateChangeHandler
+                    editableRow.valueChangeHandler = self.valueChangeHandler
                 default:
                     break
                 }
