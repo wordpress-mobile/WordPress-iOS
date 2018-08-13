@@ -210,13 +210,13 @@
 
 - (void)preview:(PostPreviewGenerator *)generator loadHTML:(NSString *)html {
     [self.webView loadHTMLString:html baseURL:nil];
-    [self hideNoResults];
+    [self.noResultsViewController removeFromView];
 }
 
 - (void)preview:(PostPreviewGenerator *)generator attemptRequest:(NSURLRequest *)request {
     [self startLoading];
     [self.webView loadRequest:request];
-    [self hideNoResults];
+    [self.noResultsViewController removeFromView];
 }
 
 - (void)previewFailed:(PostPreviewGenerator *)generator message:(NSString *)message {
@@ -228,7 +228,7 @@
 
 - (void)actionButtonPressed {
     [self stopWaitingForConnectionRestored];
-    [self hideNoResults];
+    [self.noResultsViewController removeFromView];
     [self refreshWebView];
 }
 
@@ -246,11 +246,6 @@
     [self.view addSubview:self.noResultsViewController.view];
     self.noResultsViewController.view.frame = self.view.bounds;
     [self.noResultsViewController didMoveToParentViewController:self];
-}
-
-- (void)hideNoResults {
-    [self.noResultsViewController.view removeFromSuperview];
-    [self.noResultsViewController removeFromParentViewController];
 }
 
 #pragma mark - Custom UI elements

@@ -314,7 +314,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
     }
 
     private func handleUpdateError() {
-        let title       = NSLocalizedString("Oops!", comment: "")
+        let title       = NSLocalizedString("Oops!", comment: "An informal exclaimation meaning `something went wrong`.")
         let message     = NSLocalizedString("There has been an unexpected error while updating your Notification Settings",
                                             comment: "Displayed after a failed Notification Settings call")
         let cancelText  = NSLocalizedString("Cancel", comment: "Cancel. Action.")

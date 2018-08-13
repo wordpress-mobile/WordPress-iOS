@@ -52,7 +52,6 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
 @property (nonatomic, strong, readwrite) PingHubManager                 *pinghubManager;
 @property (nonatomic, strong, readwrite) WP3DTouchShortcutCreator       *shortcutCreator;
-@property (nonatomic, strong, readwrite) NoticePresenter                *noticePresenter;
 
 @end
 
@@ -412,7 +411,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     // Configure Extensions
     [self setupWordPressExtensions];
 
-    [self.shortcutCreator createShortcutsIf3DTouchAvailable:[self isLoggedIn]];
+    [self.shortcutCreator createShortcutsIf3DTouchAvailable:[AccountHelper isLoggedIn]];
     
     self.window.rootViewController = [WPTabBarController sharedInstance];
 
@@ -459,14 +458,9 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 #pragma mark - Custom methods
 
-- (BOOL)isLoggedIn
-{
-    return !([self noSelfHostedBlogs] && [self noWordPressDotComAccount]);
-}
-
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated
 {
-    if ([self isWelcomeScreenVisible] || !([self noSelfHostedBlogs] && [self noWordPressDotComAccount])) {
+    if ([self isWelcomeScreenVisible] || AccountHelper.isLoggedIn) {
         return;
     }
     
@@ -553,7 +547,7 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
 
 - (void)trackLogoutIfNeeded
 {
-    if (![self isLoggedIn]) {
+    if (![AccountHelper isLoggedIn]) {
         [WPAnalytics track:WPAnalyticsStatLogout];
     }
 }

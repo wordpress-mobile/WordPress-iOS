@@ -470,11 +470,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
             return [self supportsRestApi] && [self isAdmin];
         case BlogFeatureActivity: {
             // For now Activity is suported for admin users
-            BOOL supportsAL = [self supportsRestApi] && [self isAdmin];
-            BOOL isJetpack = ![self isHostedAtWPcom];
-            BOOL isPaidWPCom = [self isHostedAtWPcom] && [self hasPaidPlan];
-
-            return supportsAL && (isJetpack || isPaidWPCom);
+            return [self supportsRestApi] && [self isAdmin];
         }
         case BlogFeatureCustomThemes:
             return [self supportsRestApi] && [self isAdmin] && ![self isHostedAtWPcom];
