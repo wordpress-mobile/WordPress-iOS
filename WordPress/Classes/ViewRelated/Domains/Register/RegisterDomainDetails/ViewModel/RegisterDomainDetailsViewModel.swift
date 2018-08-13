@@ -84,7 +84,7 @@ class RegisterDomainDetailsViewModel {
             strongSelf.onChange?(.wholeValidation(tag: tag, isValid: strongSelf.isValid(forTag: tag)))
         case let .checkMarkRowsUpdated(sectionIndex):
             strongSelf.onChange?(.checkMarkRowsUpdated(sectionIndex: sectionIndex.rawValue))
-        case let .rowValueChanged(indexPath, row):
+        case let .multipleChoiceRowValueChanged(indexPath, row):
             if row.editingStyle == .multipleChoice {
                 strongSelf.onChange?(.multipleChoiceRowValueChanged(indexPath: indexPath))
             }

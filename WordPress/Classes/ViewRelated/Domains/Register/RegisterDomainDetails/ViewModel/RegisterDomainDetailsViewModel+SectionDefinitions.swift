@@ -10,7 +10,7 @@ extension RegisterDomainDetailsViewModel {
 
         enum Change: Equatable {
             case rowValidation(tag: ValidationRuleTag, indexPath: IndexPath, isValid: Bool, errorMessage: String?)
-            case rowValueChanged(indexPath: IndexPath, row: EditableKeyValueRow)
+            case multipleChoiceRowValueChanged(indexPath: IndexPath, row: EditableKeyValueRow)
             case sectionValidation(tag: ValidationRuleTag, sectionIndex: SectionIndex, isValid: Bool)
             case checkMarkRowsUpdated(sectionIndex: SectionIndex)
         }
@@ -55,8 +55,13 @@ extension RegisterDomainDetailsViewModel {
                 let rowIndex = strongSelf.rowIndex(of: editableRow) else {
                     return
             }
-            let indexPath = IndexPath(row: rowIndex, section: strongSelf.sectionIndex.rawValue)
-            strongSelf.onChange?(.rowValueChanged(indexPath: indexPath, row: editableRow))
+            switch editableRow.editingStyle {
+            case .multipleChoice:
+                let indexPath = IndexPath(row: rowIndex, section: strongSelf.sectionIndex.rawValue)
+                strongSelf.onChange?(.multipleChoiceRowValueChanged(indexPath: indexPath, row: editableRow))
+            default:
+                break
+            }
         }
 
         func rowIndex(of editableRow: Row.EditableKeyValueRow) -> Int? {
