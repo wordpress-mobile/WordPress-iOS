@@ -38,6 +38,11 @@ extension RegisterDomainDetailsViewModel {
         enum PhoneNumber: Int {
             case countryCode
             case number
+
+            var indexPath: IndexPath {
+                return IndexPath(row: rawValue,
+                                 section: SectionIndex.phone.rawValue)
+            }
         }
 
         enum AddressField {
