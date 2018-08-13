@@ -40,7 +40,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="WWz-Oe-Kaz"/>
             <connections>
-                <outlet property="nuxButton" destination="aWW-fc-OkB" id="fb0-mr-Inn"/>
+                <outlet property="submitButton" destination="aWW-fc-OkB" id="DEN-2Z-ph6"/>
             </connections>
             <point key="canvasLocation" x="-5.5" y="-480"/>
         </view>
