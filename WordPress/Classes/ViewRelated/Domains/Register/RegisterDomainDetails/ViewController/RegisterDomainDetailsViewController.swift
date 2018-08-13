@@ -20,13 +20,13 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
     private(set) var registerButtonTapped = false
     private(set) lazy var footerView: RegisterDomainDetailsFooterView = {
         let buttonView = RegisterDomainDetailsFooterView.loadFromNib()
-        buttonView.nuxButton.isEnabled = false
-        buttonView.nuxButton.addTarget(
+        buttonView.submitButton.isEnabled = false
+        buttonView.submitButton.addTarget(
             self,
             action: #selector(registerDomainButtonTapped(sender:)),
             for: .touchUpInside
         )
-        buttonView.nuxButton.setTitle(Localized.buttonTitle, for: .normal)
+        buttonView.submitButton.setTitle(Localized.buttonTitle, for: .normal)
         return buttonView
     }()
 
@@ -94,7 +94,7 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
         case let .wholeValidation(tag, isValid):
             switch tag {
             case .enableSubmit:
-                footerView.nuxButton.isEnabled = isValid
+                footerView.submitButton.isEnabled = isValid
             default:
                 break
             }

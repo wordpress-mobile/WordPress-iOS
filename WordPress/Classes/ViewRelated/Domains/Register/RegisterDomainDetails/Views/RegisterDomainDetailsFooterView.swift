@@ -3,11 +3,11 @@ import WordPressAuthenticator
 
 class RegisterDomainDetailsFooterView: UIView, NibLoadable {
 
-    @IBOutlet weak var nuxButton: NUXButton!
+    @IBOutlet weak var submitButton: NUXButton!
 
     override func awakeFromNib() {
         super.awakeFromNib()
         clipsToBounds = false
-        nuxButton.isPrimary = true
+        submitButton.isPrimary = true
     }
 }
