@@ -7,6 +7,49 @@ protocol QuickStartTour {
     var icon: UIImage { get }
 }
 
+fileprivate enum Constants {
+    static let iconOffset: CGFloat = -1.0
+    static let highlightColor = WPStyleGuide.lightBlue()
+}
+
+
+extension QuickStartTour {
+    func createHighlightMessage(base normalString: String, highlight: String, icon: UIImage) -> NSAttributedString {
+        let normalParts = normalString.components(separatedBy: "%@")
+        guard normalParts.count > 0 else {
+            // if the provided base doesn't contain %@ then we don't know where to place the highlight
+            return NSAttributedString(string: normalString)
+        }
+        let resultString = NSMutableAttributedString(string: normalParts[0])
+
+        let font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+
+        let iconAttachment = NSTextAttachment()
+        iconAttachment.image = icon.imageWithTintColor(Constants.highlightColor)
+        iconAttachment.bounds = CGRect(x: 0.0, y: font.descender + Constants.iconOffset, width: icon.size.width, height: icon.size.height)
+        let iconStr = NSAttributedString(attachment: iconAttachment)
+
+        let highlightStr = NSAttributedString(string: highlight, attributes: [.foregroundColor: Constants.highlightColor])
+
+        switch UIView.userInterfaceLayoutDirection(for: .unspecified) {
+        case .rightToLeft:
+            resultString.append(highlightStr)
+            resultString.append(NSAttributedString(string: " "))
+            resultString.append(iconStr)
+        default:
+            resultString.append(iconStr)
+            resultString.append(NSAttributedString(string: " "))
+            resultString.append(highlightStr)
+        }
+
+        if normalParts.count > 1 {
+            resultString.append(NSAttributedString(string: normalParts[1]))
+        }
+
+        return resultString
+    }
+}
+
 struct QuickStartCreateTour: QuickStartTour {
     let key = "quick-start-create-tour"
     let title = NSLocalizedString("Create your site", comment: "Title of a Quick Start Tour")

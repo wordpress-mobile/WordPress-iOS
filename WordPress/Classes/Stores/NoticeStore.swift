@@ -54,7 +54,7 @@ struct Notice {
 
     public enum Style {
         case normal
-        case quickStart
+        case quickStart(NSAttributedString?)
     }
 }
 

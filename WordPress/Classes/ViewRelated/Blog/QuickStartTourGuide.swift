@@ -1,4 +1,5 @@
 import WordPressFlux
+import Gridicons
 
 @objc
 open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
@@ -15,7 +16,8 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
     // MARK: Quick Start methods
     @objc
     func showTestQuickStartNotice() {
-        let notice = Notice(title: "Test Quick Start Notice", message: "Tap stats to dismiss this example message.", style: .quickStart)
+        let exampleLabelStr = QuickStartTourGuide.checklistTours[0].createHighlightMessage(base: "Tap %@ to see your checklist", highlight: "Quick Start", icon: Gridicon.iconOfType(.listCheckmark))
+        let notice = Notice(title: "Test Quick Start Notice", style: .quickStart(exampleLabelStr))
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
