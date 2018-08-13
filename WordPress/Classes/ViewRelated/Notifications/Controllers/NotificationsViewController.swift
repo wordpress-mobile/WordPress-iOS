@@ -1177,7 +1177,7 @@ private extension NotificationsViewController {
         }
 
         // Refresh its properties: The user may have signed into WordPress.com
-        noResultsViewController.configure(title: noResultsTitleText, buttonTitle: noResultsButtonText, subtitle: noResultsMessageText)
+        noResultsViewController.configure(title: noResultsTitleText, buttonTitle: noResultsButtonText, subtitle: noResultsMessageText, image: "wp-illustration-notifications")
         addNoResultsToView()
     }
 
@@ -1547,15 +1547,15 @@ private extension NotificationsViewController {
 
         var noResultsTitle: String {
             switch self {
-            case .none:     return NSLocalizedString("No notifications yet.",
+            case .none:     return NSLocalizedString("No notifications yet",
                                                      comment: "Displayed in the Notifications Tab as a title, when there are no notifications")
-            case .unread:   return NSLocalizedString("You're all caught up!",
+            case .unread:   return NSLocalizedString("You're all up to date!",
                                                      comment: "Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title")
-            case .comment:  return NSLocalizedString("No comments yet.",
+            case .comment:  return NSLocalizedString("No comments yet",
                                                      comment: "Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications")
-            case .follow:   return NSLocalizedString("No followers to report yet.",
+            case .follow:   return NSLocalizedString("No followers yet",
                                                      comment: "Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications")
-            case .like:     return NSLocalizedString("No likes to show yet.",
+            case .like:     return NSLocalizedString("No likes yet",
                                                      comment: "Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications")
             }
         }
@@ -1579,9 +1579,9 @@ private extension NotificationsViewController {
             case .none,
                  .comment,
                  .follow,
-                 .like:     return NSLocalizedString("View Reader",
+                 .like:     return NSLocalizedString("Go to Reader",
                                                      comment: "Displayed in the Notifications Tab as a button title, when there are no notifications")
-            case .unread:   return NSLocalizedString("New Post",
+            case .unread:   return NSLocalizedString("Create a Post",
                                                      comment: "Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications")
             }
         }
