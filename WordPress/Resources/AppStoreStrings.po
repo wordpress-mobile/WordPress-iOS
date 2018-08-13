@@ -40,9 +40,8 @@ msgstr ""
 
 msgctxt "v10.7-whats-new"
 msgid ""
-"You can now jump from WordPress.com in Safari to the same content in the WordPress for iOS app with ease. Just look out for the banner at the top of WordPress.com pages!.\n"
-"Activity Log are now available for free WordPress.com sites.\n"
-"Some small UI improvements.\n"
+"Editor: Improvements in images handling\n"
+"Several improvements to the UI\n"
 "A bunch of bug fixes.\n"
 msgstr ""
 
