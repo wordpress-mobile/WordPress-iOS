@@ -1,3 +1,4 @@
-Redigeraren: ytterligare uppdateringar för kompatibilitet med Gutenberg.
-Flera förbättringar av användargränssnittet.
-Ett antal mindre felrättningar.
+Nu kan du enkelt hoppa från WordPress.com i Safari till samma innehåll i appen WordPress för iOS. Håll bara utsikt efter bannern längst upp på WordPress.com-sidor!.
+Nu är aktivitetsloggen tillgänglig för gratis WordPress.com-webbplatser.
+Några mindre förbättringar av användargränssnittet.
+En bunt fel har rättats.
