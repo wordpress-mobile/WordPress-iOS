@@ -167,7 +167,7 @@ DEPENDENCIES:
   - WordPress-Aztec-iOS (= 1.0.0-beta.23)
   - WordPress-Editor-iOS (= 1.0.0-beta.23)
   - WordPressAuthenticator (= 1.0.4)
-  - WordPressKit (from `https://github.com/pinar1234/WordPressKit-iOS.git`, commit `2ccc979d313026b373f2d60412233ec48e078af2`)
+  - WordPressKit (from `https://github.com/pinar1234/WordPressKit-iOS.git`, commit `a1befa8c6d9a09dcbb86f900f430c2340941521a`)
   - WordPressShared (= 1.0.9)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, commit `7a5b1a3fb44f62416fbc2e5f0de623b87b613aae`)
   - WPMediaPicker (= 1.1)
@@ -214,7 +214,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   WordPressKit:
-    :commit: 2ccc979d313026b373f2d60412233ec48e078af2
+    :commit: a1befa8c6d9a09dcbb86f900f430c2340941521a
     :git: https://github.com/pinar1234/WordPressKit-iOS.git
   WordPressUI:
     :commit: 7a5b1a3fb44f62416fbc2e5f0de623b87b613aae
@@ -225,7 +225,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   WordPressKit:
-    :commit: 2ccc979d313026b373f2d60412233ec48e078af2
+    :commit: a1befa8c6d9a09dcbb86f900f430c2340941521a
     :git: https://github.com/pinar1234/WordPressKit-iOS.git
   WordPressUI:
     :commit: 7a5b1a3fb44f62416fbc2e5f0de623b87b613aae
@@ -268,6 +268,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: 2b49cb35bb8df3747b0b67c2a7c5edbeefc63fea
+PODFILE CHECKSUM: 76b19806a34d3425e504bb13a884e6090d22c24e
 
 COCOAPODS: 1.5.3

@@ -269,6 +269,7 @@
 		436D562E2117347C00CEAA33 /* RegisterDomainDetailsViewModel+RowDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D56122117312700CEAA33 /* RegisterDomainDetailsViewModel+RowDefinitions.swift */; };
 		436D56302117410C00CEAA33 /* RegisterDomainDetailsViewModel+CellIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D562F2117410C00CEAA33 /* RegisterDomainDetailsViewModel+CellIndex.swift */; };
 		436D564F211E122D00CEAA33 /* RegisterDomainDetailsServiceProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D564E211E122D00CEAA33 /* RegisterDomainDetailsServiceProxy.swift */; };
+		436D5655212209D600CEAA33 /* RegisterDomainDetailsServiceProxyMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D5654212209D600CEAA33 /* RegisterDomainDetailsServiceProxyMock.swift */; };
 		437542E31DD4E19E00D6B727 /* EditPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437542E21DD4E19E00D6B727 /* EditPostViewController.swift */; };
 		4388FEFE20A4E0B900783948 /* NotificationsViewController+AppRatings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388FEFD20A4E0B900783948 /* NotificationsViewController+AppRatings.swift */; };
 		4388FF0020A4E19C00783948 /* NotificationsViewController+PushPrimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388FEFF20A4E19C00783948 /* NotificationsViewController+PushPrimer.swift */; };
@@ -1671,6 +1672,7 @@
 		436D561E2117312700CEAA33 /* RegisterDomainDetailsErrorSectionFooter.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterDomainDetailsErrorSectionFooter.xib; sourceTree = "<group>"; };
 		436D562F2117410C00CEAA33 /* RegisterDomainDetailsViewModel+CellIndex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RegisterDomainDetailsViewModel+CellIndex.swift"; sourceTree = "<group>"; };
 		436D564E211E122D00CEAA33 /* RegisterDomainDetailsServiceProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDomainDetailsServiceProxy.swift; sourceTree = "<group>"; };
+		436D5654212209D600CEAA33 /* RegisterDomainDetailsServiceProxyMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDomainDetailsServiceProxyMock.swift; sourceTree = "<group>"; };
 		437542E21DD4E19E00D6B727 /* EditPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditPostViewController.swift; sourceTree = "<group>"; };
 		4388FEFD20A4E0B900783948 /* NotificationsViewController+AppRatings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationsViewController+AppRatings.swift"; sourceTree = "<group>"; };
 		4388FEFF20A4E19C00783948 /* NotificationsViewController+PushPrimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationsViewController+PushPrimer.swift"; sourceTree = "<group>"; };
@@ -3731,6 +3733,7 @@
 			children = (
 				436D55EF2115CB6800CEAA33 /* RegisterDomainDetailsSectionTests.swift */,
 				436D55F4211632B700CEAA33 /* RegisterDomainDetailsViewModelTests.swift */,
+				436D5654212209D600CEAA33 /* RegisterDomainDetailsServiceProxyMock.swift */,
 			);
 			name = RegisterDomain;
 			sourceTree = "<group>";
@@ -8204,6 +8207,7 @@
 				E1C9AA561C10427100732665 /* MathTest.swift in Sources */,
 				93A379EC19FFBF7900415023 /* KeychainTest.m in Sources */,
 				D800D874209997DB00E7C7E5 /* FollowingMenuItemCreatorTests.swift in Sources */,
+				436D5655212209D600CEAA33 /* RegisterDomainDetailsServiceProxyMock.swift in Sources */,
 				E1A7CA4B1CC9FD7800373E06 /* StoreCoordinatorTests.swift in Sources */,
 				931D26F719ED7F7500114F17 /* ReaderPostServiceTest.m in Sources */,
 				B5772AC61C9C84900031F97E /* GravatarServiceTests.swift in Sources */,
