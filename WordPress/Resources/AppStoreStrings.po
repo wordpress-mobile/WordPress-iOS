@@ -38,7 +38,7 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v10.6-whats-new"
+msgctxt "v10.7-whats-new"
 msgid ""
 "You can now jump from WordPress.com in Safari to the same content in the WordPress for iOS app with ease. Just look out for the banner at the top of WordPress.com pages!.\n"
 "Activity Log are now available for free WordPress.com sites.\n"
