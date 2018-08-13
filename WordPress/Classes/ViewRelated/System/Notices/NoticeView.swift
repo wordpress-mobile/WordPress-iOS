@@ -1,7 +1,6 @@
 import UIKit
 
 protocol DismissableNoticeView: AnyObject {
-    init(notice: Notice)
     var dismissHandler: (() -> Void)? { get set }
 }
 
