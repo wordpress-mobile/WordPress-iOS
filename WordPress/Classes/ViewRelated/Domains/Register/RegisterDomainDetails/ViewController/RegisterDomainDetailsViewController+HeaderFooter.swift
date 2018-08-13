@@ -2,6 +2,10 @@ import UIKit
 
 extension RegisterDomainDetailsViewController {
 
+    private enum Constant {
+        static let privacyProtectionSectionTitleTopDistance: CGFloat = 8
+    }
+
     func configureTableFooterView() {
         //Creating a UIView with a custom frame because table tableFooterView doesn't support autolayout
         let footer = UIView(frame: CGRect(x: 0,
@@ -44,7 +48,7 @@ extension RegisterDomainDetailsViewController {
         view.titleLabel?.attributedText = termsAndConditionsFooterTitle
         view.titleLabel?.numberOfLines = 0
         view.titleLabel?.lineBreakMode = .byWordWrapping
-        view.topConstraint.constant = 8
+        view.topConstraint.constant = Constant.privacyProtectionSectionTitleTopDistance
         view.contentView.backgroundColor = WPStyleGuide.greyLighten30()
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTermsAndConditionsTap(_:)))
         view.addGestureRecognizer(tap)
