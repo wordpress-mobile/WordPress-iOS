@@ -6,11 +6,13 @@ class QuickStartNoticeView: UIView, DismissableNoticeView {
     private let messageLabel = UILabel()
     private let yesButton = UIButton(type: .system)
     private let noButton = UIButton(type: .system)
+    private let formattedMessage: NSAttributedString?
 
     private let notice: Notice
 
-    required init(notice: Notice) {
+    required init(notice: Notice, message formattedMessage: NSAttributedString?) {
         self.notice = notice
+        self.formattedMessage = formattedMessage
 
         super.init(frame: .zero)
 
@@ -40,7 +42,7 @@ private extension QuickStartNoticeView {
     }
 
     func configureBackgroundViews() {
-        backgroundView.backgroundColor = UIColor.black
+        backgroundView.backgroundColor = Colors.backgroundColor
 
         addSubview(backgroundContainerView)
         backgroundContainerView.translatesAutoresizingMaskIntoConstraints = false
@@ -77,24 +79,20 @@ private extension QuickStartNoticeView {
         titleLabel.font = Fonts.titleLabelFont
         messageLabel.font = Fonts.messageLabelFont
 
-        titleLabel.textColor = UIColor.white
-        messageLabel.textColor = UIColor.white
+        titleLabel.textColor = Colors.titleColor
+        messageLabel.textColor = Colors.messageColor
     }
 
 
     private func configureForNotice() {
         titleLabel.text = notice.title
 
-        if let message = notice.message {
+        if let message = formattedMessage {
+            messageLabel.attributedText = message
+        } else if let message = notice.message {
             messageLabel.text = message
         } else {
             titleLabel.numberOfLines = 2
-        }
-
-        if let actionTitle = notice.actionTitle {
-            yesButton.setTitle(actionTitle, for: .normal)
-        } else {
-//            actionBackgroundView.isHidden = true
         }
     }
 
@@ -104,8 +102,15 @@ private extension QuickStartNoticeView {
         static let messageLabelFont = UIFont.systemFont(ofSize: 14.0)
     }
 
+//    enum colors
+    enum Colors {
+        static let backgroundColor = WPStyleGuide.darkGrey()
+        static let titleColor = UIColor.white
+        static let messageColor = WPStyleGuide.greyLighten20()
+    }
+
     enum Metrics {
-        static let cornerRadius: CGFloat = 13.0
+        static let cornerRadius: CGFloat = 14.0
         static let layoutMargins = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
         static let labelLineSpacing: CGFloat = 18.0
     }

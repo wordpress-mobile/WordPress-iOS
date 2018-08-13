@@ -97,7 +97,7 @@ class NoticePresenter: NSObject {
 
         animatePresentation(fromState: fromState, toState: toState, completion: {
             // Quick Start notices don't get automatically dismissed
-            guard notice.style != .quickStart else {
+            guard case .quickStart = notice.style else {
                 return
             }
 
@@ -106,10 +106,12 @@ class NoticePresenter: NSObject {
     }
 
     private func getNoticeView(for notice: Notice) -> NoticePresentationView {
-        if notice.style == .quickStart {
-            return QuickStartNoticeView(notice: notice)
+        switch notice.style {
+        case .quickStart(let formattedMessage):
+            return QuickStartNoticeView(notice: notice, message: formattedMessage)
+        default:
+            return NoticeView(notice: notice)
         }
-        return NoticeView(notice: notice)
     }
 
     private func offscreenState(for noticeContainer: NoticeContainerView) -> (() -> ()) {
