@@ -103,9 +103,8 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
             tableView.insertRows(at: [indexPath], with: .none)
         case .addNewAddressLineReplaced(let indexPath):
             tableView.reloadRows(at: [indexPath], with: .none)
-        case .checkMarkRowsUpdated(let sectionIndex):
-            let indexes: IndexSet = [sectionIndex]
-            tableView.reloadSections(indexes, with: .none)
+        case .checkMarkRowsUpdated:
+            tableView.reloadData()
         case .registerSucceeded(let items):
             //TODO: temporarily show as an alert
             showAlert(title: "Success", message: items.description)
