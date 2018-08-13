@@ -1,3 +1,4 @@
-Éditeur : plusieurs mises à jour pour la compatibilité de Gutenberg.
-Quelques améliorations de l’interface utilisateur.
-Un série de petits correctifs de bogues.
+Vous pouvez à présent passer facilement de WordPress.com dans Safari au même contenu dans l’application WordPress. Regardez simplement la bannière e haut de la page WordPress.com !
+Le journal d’activités est maintenant disponible pour les sites gratuit WordPress.com.
+Quelques petites améliorations de l’interface utilisateur (UI).
+Un lot de corrections de bogues.
