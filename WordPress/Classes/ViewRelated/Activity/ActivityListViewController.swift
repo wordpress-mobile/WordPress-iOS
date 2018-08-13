@@ -7,12 +7,11 @@ import WordPressFlux
 class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
     let site: JetpackSiteRef
-
     let store: ActivityStore
-    let activitiesReceipt: Receipt
-    let restoreStatusReceipt: Receipt
+    let isFreeWPCom: Bool
 
     var changeReceipt: Receipt?
+    var isUserTriggeredRefresh: Bool = false
 
     fileprivate lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
@@ -29,13 +28,11 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
     // MARK: - Constructors
 
-    init(site: JetpackSiteRef, store: ActivityStore) {
+    init(site: JetpackSiteRef, store: ActivityStore, isFreeWPCom: Bool = false) {
         self.site = site
         self.store = store
-        self.viewModel = ActivityListViewModel(site: site)
-
-        self.activitiesReceipt = store.query(.activities(site: site))
-        self.restoreStatusReceipt = store.query(.restoreStatus(site: site))
+        self.isFreeWPCom = isFreeWPCom
+        self.viewModel = ActivityListViewModel(site: site, store: store)
 
         super.init(style: .plain)
 
@@ -60,13 +57,16 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         }
 
 
-        self.init(site: siteRef, store: StoreContainer.shared.activity)
+        let isFreeWPCom = blog.isHostedAtWPcom && !blog.hasPaidPlan
+        self.init(site: siteRef, store: StoreContainer.shared.activity, isFreeWPCom: isFreeWPCom)
     }
 
     // MARK: - View lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        refreshModel()
 
         tableView.estimatedRowHeight = Constants.estimatedRowHeight
 
@@ -78,7 +78,6 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         // Magic to avoid cell separators being displayed while a plain table loads
         tableView.tableFooterView = UIView()
 
-        refreshModel()
         WPAnalytics.track(.activityLogViewed)
     }
 
@@ -87,6 +86,7 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
     }
 
     @objc func userRefresh() {
+        isUserTriggeredRefresh = true
         viewModel.refresh()
     }
 
@@ -103,7 +103,10 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
         switch (viewModel.refreshing, refreshControl.isRefreshing) {
         case (true, false):
-            refreshControl.beginRefreshing()
+            if isUserTriggeredRefresh {
+                refreshControl.beginRefreshing()
+                isUserTriggeredRefresh = false
+            }
         case (false, true):
             refreshControl.endRefreshing()
         default:
@@ -117,8 +120,26 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
 
 extension ActivityListViewController {
 
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let isLastSection = handler.viewModel.sections.count == section + 1
+
+        guard isFreeWPCom, isLastSection, let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: ActivityListSectionHeaderView.identifier) as? ActivityListSectionHeaderView else {
+            return nil
+        }
+
+        cell.titleLabel.text = NSLocalizedString("Since you're on a free plan, you'll see limited events in your Activity Log.", comment: "Text displayed as a footer of a table view with Activities when user is on a free plan")
+
+        return cell
+    }
+
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0.0
+        let isLastSection = handler.viewModel.sections.count == section + 1
+
+        guard isFreeWPCom, isLastSection else {
+            return 0.0
+        }
+
+        return UITableViewAutomaticDimension
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -188,7 +209,7 @@ extension ActivityListViewController: ActivityRewindPresenter {
         let alertController = UIAlertController(title: title,
                                                 message: message,
                                                 preferredStyle: .alert)
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: ""))
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Verb. A button title."))
         alertController.addDestructiveActionWithTitle(NSLocalizedString("Confirm Rewind",
                                                                         comment: "Confirm Rewind button title"),
                                                       handler: { action in
@@ -233,12 +254,11 @@ private extension ActivityListViewController {
         if let noResultsViewModel = viewModel.noResultsViewModel() {
             showNoResults(noResultsViewModel)
         } else {
-            hideNoResults()
+            noResultsViewController?.removeFromView()
         }
     }
 
     func showNoResults(_ viewModel: NoResultsViewController.Model) {
-
         if noResultsViewController == nil {
             noResultsViewController = NoResultsViewController.controller()
             noResultsViewController?.delegate = self
@@ -257,16 +277,6 @@ private extension ActivityListViewController {
         addChildViewController(noResultsViewController)
         noResultsViewController.didMove(toParentViewController: self)
 
-    }
-
-    func hideNoResults() {
-
-        guard let noResultsViewController = noResultsViewController else {
-            return
-        }
-
-        noResultsViewController.view.removeFromSuperview()
-        noResultsViewController.removeFromParentViewController()
     }
 
 }

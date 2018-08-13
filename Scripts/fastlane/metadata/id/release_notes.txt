@@ -1,3 +1,4 @@
-Penyunting: lebih banyak pembaruan untuk komunitas Gutenberg.
-Beberapa peningkatan UI.
-Sejumlah perbaikan bug kecil.
+Kini Anda dapat berpindah dari WordPress.com di Safari ke konten yang sama di aplikasi WordPress untuk iOS dengan mudah. Cari spanduknya di bagian atas halaman WordPress.com!
+Log Aktivitas kini tersedia untuk situs WordPress.com gratis.
+Beberapa peningkatan kecil untuk UI.
+Sejumlah perbaikan bug.

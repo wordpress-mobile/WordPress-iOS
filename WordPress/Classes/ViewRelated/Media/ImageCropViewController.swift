@@ -29,7 +29,7 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
 
         // Title
-        title = NSLocalizedString("Resize & Crop", comment: "")
+        title = NSLocalizedString("Resize & Crop", comment: "Screen title. Resize and crop an image.")
 
         // Setup: NavigationItem
         let useButtonTitle = NSLocalizedString("Use", comment: "Use the current image")

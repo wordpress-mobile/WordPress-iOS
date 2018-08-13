@@ -12,7 +12,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def shared_with_all_pods
-    pod 'WordPressShared', '1.0.8'
+    pod 'WordPressShared', '1.0.9'
     pod 'CocoaLumberjack', '3.4.2'
     pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
     pod 'NSObject-SafeExpectations', '0.0.3'
@@ -67,10 +67,10 @@ target 'WordPress' do
     pod 'Gridicons', '0.16'
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '1.1'
-    pod 'WordPressAuthenticator', '1.0.2'
-    pod 'WordPress-Aztec-iOS', '1.0.0-beta.23'
-	pod 'WordPress-Editor-iOS', '1.0.0-beta.23'
-    pod 'WordPressUI', '1.0.6'
+    pod 'WordPressAuthenticator', '1.0.4'
+    pod 'WordPress-Aztec-iOS', '=1.0.0-beta.24'
+	  pod 'WordPress-Editor-iOS', '=1.0.0-beta.24'
+    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
 
     target 'WordPressTest' do
         inherit! :search_paths
@@ -89,9 +89,9 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
 
-        pod 'WordPress-Aztec-iOS', '1.0.0-beta.23'
-        pod 'WordPress-Editor-iOS', '1.0.0-beta.23'
-        pod 'WordPressUI', '1.0.6'
+        pod 'WordPress-Aztec-iOS', '=1.0.0-beta.24'
+        pod 'WordPress-Editor-iOS', '=1.0.0-beta.24'
+        pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
         pod 'Gridicons', '0.16'
     end
 
@@ -105,9 +105,9 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
 
-        pod 'WordPress-Aztec-iOS', '1.0.0-beta.23'
-        pod 'WordPress-Editor-iOS', '1.0.0-beta.23'
-        pod 'WordPressUI', '1.0.6'
+        pod 'WordPress-Aztec-iOS', '=1.0.0-beta.24'
+        pod 'WordPress-Editor-iOS', '=1.0.0-beta.24'
+        pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
         pod 'Gridicons', '0.16'
     end
 
@@ -137,7 +137,7 @@ target 'WordPressComStatsiOS' do
     ## Automattic libraries
     ## ====================
     ##
-    pod 'WordPressUI', '1.0.6'
+    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
 
     target 'WordPressComStatsiOSTests' do
         inherit! :search_paths

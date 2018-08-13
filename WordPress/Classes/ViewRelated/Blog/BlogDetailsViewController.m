@@ -358,6 +358,40 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                 [self showActivity];
             }
             break;
+        case BlogDetailsSubsectionComments:
+            self.restorableSelectedIndexPath = indexPath;
+            [self.tableView selectRowAtIndexPath:indexPath
+                                        animated:NO
+                                  scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+            [self showComments];
+            break;
+        case BlogDetailsSubsectionSharing:
+            if ([self.blog supports:BlogFeatureSharing]) {
+                self.restorableSelectedIndexPath = indexPath;
+                [self.tableView selectRowAtIndexPath:indexPath
+                                            animated:NO
+                                      scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+                [self showSharing];
+            }
+            break;
+        case BlogDetailsSubsectionPeople:
+            if ([self.blog supports:BlogFeaturePeople]) {
+                self.restorableSelectedIndexPath = indexPath;
+                [self.tableView selectRowAtIndexPath:indexPath
+                                            animated:NO
+                                      scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+                [self showPeople];
+            }
+            break;
+        case BlogDetailsSubsectionPlugins:
+            if ([self.blog supports:BlogFeaturePluginManagement]) {
+                self.restorableSelectedIndexPath = indexPath;
+                [self.tableView selectRowAtIndexPath:indexPath
+                                            animated:NO
+                                      scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
+                [self showPlugins];
+            }
+            break;
     }
 }
 
@@ -377,6 +411,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             return [NSIndexPath indexPathForRow:2 inSection:1];
         case BlogDetailsSubsectionPages:
             return [NSIndexPath indexPathForRow:0 inSection:0];
+        case BlogDetailsSubsectionComments:
+            return [NSIndexPath indexPathForRow:3 inSection:1];
+        case BlogDetailsSubsectionSharing:
+            return [NSIndexPath indexPathForRow:0 inSection:3];
+        case BlogDetailsSubsectionPeople:
+            return [NSIndexPath indexPathForRow:1 inSection:3];
+        case BlogDetailsSubsectionPlugins:
+            return [NSIndexPath indexPathForRow:2 inSection:3];
     }
 }
 
@@ -449,6 +491,15 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
+
+    if ([Feature enabled:FeatureFlagQuickStart]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Quick Start", @"Name of the Quick Start feature that guides users through a few tasks to setup their new website.")
+                                                        image:[Gridicon iconOfType:GridiconTypeListCheckmark]
+                                                     callback:^{
+                                                         [weakSelf startTour];
+                                                     }]];
+    }
+
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
                                                     image:[Gridicon iconOfType:GridiconTypeStatsAlt]
                                                  callback:^{
@@ -1115,6 +1166,19 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     } else {
         [self showDetailViewController:statsView sender:self];
     }
+}
+
+- (void)startTour
+{
+    // find the tour guide
+    UITabBarController *tabBarController = self.tabBarController;
+    if ([tabBarController isKindOfClass:[WPTabBarController class]]) {
+        QuickStartTourGuide *tourGuide = ((WPTabBarController *) tabBarController).tourGuide;
+        [tourGuide showTestQuickStartNotice];
+    }
+
+    QuickStartChecklistView *checklist = [[QuickStartChecklistView alloc] init];
+    [self.navigationController pushViewController:checklist animated:YES];
 }
 
 - (void)showActivity
