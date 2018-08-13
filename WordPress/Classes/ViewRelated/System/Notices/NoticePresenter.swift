@@ -97,7 +97,7 @@ class NoticePresenter: NSObject {
 
         animatePresentation(fromState: fromState, toState: toState, completion: {
             // Quick Start notices don't get automatically dismissed
-            guard case .quickStart = notice.style else {
+            if case .quickStart(_) = notice.style {
                 return
             }
 
