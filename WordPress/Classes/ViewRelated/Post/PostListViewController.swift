@@ -633,43 +633,27 @@ private extension PostListViewController {
             return NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         }
 
-        let filter = filterSettings.currentPostListFilter()
-        let titles = noResultsTitles()
-        let title = titles[filter.filterType]
+        if isSearching() {
+            return NSLocalizedString("No posts matching your search", comment: "Displayed when the user is searching the posts list and there are no matching posts")
+        }
 
-        return title ?? ""
+
+        return noResultsFilteredTitle()
+
     }
 
-    func noResultsTitles() -> [PostListFilter.Status: String] {
-        if isSearching() {
-            return noResultsTitlesWhenSearching()
-        } else {
-            return noResultsTitlesWhenFiltering()
+    func noResultsFilteredTitle() -> String {
+        let filterType = filterSettings.currentPostListFilter().filterType
+        switch filterType {
+        case .draft:
+            return NSLocalizedString("You don't have any draft posts", comment: "Displayed when the user views drafts in the posts list and there are no posts")
+        case .scheduled:
+            return NSLocalizedString("You don't have any scheduled posts", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
+        case .trashed:
+            return NSLocalizedString("You don't have any binned posts", comment: "Displayed when the user views trashed in the posts list and there are no posts")
+        case .published:
+            return NSLocalizedString("You haven't published any posts yet", comment: "Displayed when the user views published posts in the posts list and there are no posts")
         }
     }
 
-    func noResultsTitlesWhenSearching() -> [PostListFilter.Status: String] {
-        let draftMessage = String(format: NSLocalizedString("No drafts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
-        let scheduledMessage = String(format: NSLocalizedString("No scheduled posts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
-        let trashedMessage = String(format: NSLocalizedString("No trashed posts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
-        let publishedMessage = String(format: NSLocalizedString("No posts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
-
-        return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
-    }
-
-    func noResultsTitlesWhenFiltering() -> [PostListFilter.Status: String] {
-        let draftMessage = NSLocalizedString("You don't have any draft posts", comment: "Displayed when the user views drafts in the posts list and there are no posts")
-        let scheduledMessage = NSLocalizedString("You don't have any scheduled posts", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
-        let trashedMessage = NSLocalizedString("You don't have any binned posts", comment: "Displayed when the user views trashed in the posts list and there are no posts")
-        let publishedMessage = NSLocalizedString("You haven't published any posts yet", comment: "Displayed when the user views published posts in the posts list and there are no posts")
-
-        return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
-    }
-
-    func noResultsTitles(_ draft: String, scheduled: String, trashed: String, published: String) -> [PostListFilter.Status: String] {
-        return [.draft: draft,
-                .scheduled: scheduled,
-                .trashed: trashed,
-                .published: published]
-    }
 }
