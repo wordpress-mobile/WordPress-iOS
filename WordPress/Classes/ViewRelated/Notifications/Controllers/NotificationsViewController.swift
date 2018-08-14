@@ -1192,13 +1192,11 @@ private extension NotificationsViewController {
         tableView.insertSubview(noResultsViewController.view, belowSubview: tableHeaderView)
         noResultsViewController.view.frame = tableView.frame
 
-        // If the segmented control is showing, adjust the NRV height accordingly.
-        if shouldDisplayFilters == true {
-            if traitCollection.verticalSizeClass == .regular {
-                noResultsViewController.view.frame.origin.y -= self.tableHeaderView.frame.height
-            } else {
-                noResultsViewController.view.frame.origin.y -= self.tableHeaderView.frame.height/2
-            }
+        // Adjust the NRV to accommodate for the segmented control/refresh control.
+        if traitCollection.verticalSizeClass == .regular {
+            noResultsViewController.view.frame.origin.y -= self.tableHeaderView.frame.height
+        } else {
+            noResultsViewController.view.frame.origin.y -= self.tableHeaderView.frame.height/2
         }
 
         noResultsViewController.didMove(toParentViewController: self)
