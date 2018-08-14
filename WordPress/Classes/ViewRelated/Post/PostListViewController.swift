@@ -101,9 +101,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         precondition(segue.destination is UITableViewController)
 
-        super.refreshNoResultsView = { [weak self] noResultsView in
-            self?.handleRefreshNoResultsView(noResultsView)
+        super.refreshNoResultsViewController = { [weak self] noResultsViewController in
+            self?.handleRefreshNoResultsViewController(noResultsViewController)
         }
+
         super.tableViewController = (segue.destination as! UITableViewController)
     }
 
@@ -587,45 +588,40 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - Refreshing noResultsView
 
-    fileprivate func handleRefreshNoResultsView(_ noResultsView: WPNoResultsView) {
+    private func handleRefreshNoResultsViewController(_ noResultsViewController: NoResultsViewController) {
+
         guard connectionAvailable() else {
-            showNoConnectionView()
+            noResultsViewController.configure(title: noConnectionMessage())
             return
         }
 
-        noResultsView.titleText = noResultsTitle()
-        noResultsView.messageText = noResultsMessage()
-        noResultsView.accessoryView = noResultsAccessoryView()
-        noResultsView.buttonTitle = noResultsButtonTitle()
-    }
-
-    private func showNoConnectionView() {
-        noResultsView.titleText = noConnectionMessage()
-        noResultsView.messageText = ""
-        noResultsView.accessoryView = nil
+        noResultsViewController.configure(title: noResultsTitle(),
+                                          buttonTitle: noResultsButtonTitle(),
+                                          subtitle: noResultsMessage(),
+                                          accessoryView: noResultsAccessoryView())
     }
 
     // MARK: - NoResultsView Customizer helpers
 
-    fileprivate func noResultsAccessoryView() -> UIView {
+    fileprivate func noResultsAccessoryView() -> UIView? {
         if syncHelper.isSyncing {
             animatedBox.animate(afterDelay: 0.1)
             return animatedBox
         }
 
-        return UIImageView(image: UIImage(named: "illustration-posts"))
+        return nil
     }
 
-    @objc func noResultsButtonTitle() -> String {
+    @objc func noResultsButtonTitle() -> String? {
         if syncHelper.isSyncing == true || isSearching() {
-            return ""
+            return nil
         }
 
         let filterType = filterSettings.currentPostListFilter().filterType
 
         switch filterType {
         case .trashed:
-            return ""
+            return nil
         default:
             return NSLocalizedString("Start a Post", comment: "Button title, encourages users to create their first post on their blog.")
         }
