@@ -14,7 +14,7 @@ fileprivate enum Constants {
 
 
 extension QuickStartTour {
-    func createHighlightMessage(base normalString: String, highlight: String, icon: UIImage) -> NSAttributedString {
+    func makeHighlightMessage(base normalString: String, highlight: String, icon: UIImage) -> NSAttributedString {
         let normalParts = normalString.components(separatedBy: "%@")
         guard normalParts.count > 0 else {
             // if the provided base doesn't contain %@ then we don't know where to place the highlight

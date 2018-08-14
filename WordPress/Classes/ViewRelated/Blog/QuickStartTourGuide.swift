@@ -16,7 +16,7 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
     // MARK: Quick Start methods
     @objc
     func showTestQuickStartNotice() {
-        let exampleLabelStr = QuickStartTourGuide.checklistTours[0].createHighlightMessage(base: "Tap %@ to see your checklist", highlight: "Quick Start", icon: Gridicon.iconOfType(.listCheckmark))
+        let exampleLabelStr = QuickStartTourGuide.checklistTours[0].makeHighlightMessage(base: "Tap %@ to see your checklist", highlight: "Quick Start", icon: Gridicon.iconOfType(.listCheckmark))
         let notice = Notice(title: "Test Quick Start Notice", style: .quickStart(exampleLabelStr))
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }

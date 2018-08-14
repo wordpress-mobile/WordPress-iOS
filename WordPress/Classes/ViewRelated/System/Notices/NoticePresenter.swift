@@ -67,7 +67,7 @@ class NoticePresenter: NSObject {
 
         generator.prepare()
 
-        let noticeView = getNoticeView(for: notice)
+        let noticeView = makeNoticeView(for: notice)
         noticeView.translatesAutoresizingMaskIntoConstraints = false
 
         let noticeContainerView = NoticeContainerView(noticeView: noticeView)
@@ -105,7 +105,7 @@ class NoticePresenter: NSObject {
         })
     }
 
-    private func getNoticeView(for notice: Notice) -> NoticePresentationView {
+    private func makeNoticeView(for notice: Notice) -> NoticePresentationView {
         switch notice.style {
         case .quickStart(let formattedMessage):
             return QuickStartNoticeView(notice: notice, message: formattedMessage)
