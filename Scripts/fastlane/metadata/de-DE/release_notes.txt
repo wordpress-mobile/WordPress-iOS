@@ -1,3 +1,4 @@
-Aktivitätsprotokoll! Nun siehst du alle Vorgänge im Zusammenhang mit deiner Website.
-Support für animierte GIFs wurde im Reader und Media Picker erweitert.
-Viele UI-Optimierungen, Zugänglichkeitsverbesserungen und Fehlerbehebungen.
+Du kannst jetzt problemlos von WordPress.com in Safari zu den gleichen Inhalten in der WordPress for iOS-App wechseln. Achte nur auf das Banner oben auf WordPress.com-Seiten!
+Für kostenlose WordPress.com-Websites ist jetzt das Aktivitätsprotokoll verfügbar.
+Einige kleine UI-Verbesserungen.
+Viele Fehlerkorrekturen.

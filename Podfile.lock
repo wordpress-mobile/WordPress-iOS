@@ -102,10 +102,10 @@ PODS:
   - Starscream (3.0.4)
   - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (0.5.0)
-  - WordPress-Aztec-iOS (1.0.0-beta.24)
-  - WordPress-Editor-iOS (1.0.0-beta.24):
-    - WordPress-Aztec-iOS (= 1.0.0-beta.24)
-  - WordPressAuthenticator (1.0.4):
+  - WordPress-Aztec-iOS (1.0.0-beta.25)
+  - WordPress-Editor-iOS (1.0.0-beta.25):
+    - WordPress-Aztec-iOS (= 1.0.0-beta.25)
+  - WordPressAuthenticator (1.0.5):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.2)
     - CocoaLumberjack (= 3.4.2)
@@ -130,7 +130,7 @@ PODS:
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.0.6)
-  - WPMediaPicker (1.1)
+  - WPMediaPicker (1.3)
   - wpxmlrpc (0.8.3)
   - ZendeskSDK (1.11.2.1):
     - ZendeskSDK/Providers (= 1.11.2.1)
@@ -164,13 +164,13 @@ DEPENDENCIES:
   - Starscream (= 3.0.4)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (= 1.0.0-beta.24)
-  - WordPress-Editor-iOS (= 1.0.0-beta.24)
-  - WordPressAuthenticator (= 1.0.4)
+  - WordPress-Aztec-iOS (= 1.0.0-beta.25)
+  - WordPress-Editor-iOS (= 1.0.0-beta.25)
+  - WordPressAuthenticator (= 1.0.5)
   - WordPressKit (= 1.2.1)
   - WordPressShared (= 1.0.9)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, commit `7a5b1a3fb44f62416fbc2e5f0de623b87b613aae`)
-  - WPMediaPicker (= 1.1)
+  - WPMediaPicker (= 1.3)
   - wpxmlrpc (= 0.8.3)
   - ZendeskSDK (= 1.11.2.1)
 
@@ -253,13 +253,13 @@ SPEC CHECKSUMS:
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: b019a2ee94d7a7c300b463776b5009682cd13e9c
-  WordPress-Editor-iOS: d110040c64267ab002c3551cc343b8dfe6f59f3a
-  WordPressAuthenticator: 2825f0c56f83a17470564dbec427991fa5cac5af
+  WordPress-Aztec-iOS: 99dbfb3dbf14c2d33771f562c506e42fdd4880d6
+  WordPress-Editor-iOS: ff5815378c280ab5176a8e4af4591fed9b0dd484
+  WordPressAuthenticator: e6e1c80aff95f1b2ad11e4477fcfe9f61aa8c49a
   WordPressKit: a4a3849684f631a3abf579f6d3f15a32677cbb30
   WordPressShared: e5ea8a1ed3329735e40bd6623830960f63dd10fd
   WordPressUI: af141587ec444f9af753a00605bd0d3f14d8d8a3
-  WPMediaPicker: 5cc9386a4720f906d8fb79c7c4090d216b9f2348
+  WPMediaPicker: c54791e04af3b41e473e9b340784be48a505bb38
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 

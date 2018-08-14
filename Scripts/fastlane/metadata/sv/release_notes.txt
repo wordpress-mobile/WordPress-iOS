@@ -1,3 +1,4 @@
-Aktivitetslogg! Nu kan du se allt som hänt på din webbplats.
-Stödet för animerade gif-filer har breddats till Läsaren och Mediaväljaren.
-Ett antal mindre förändringar av användargränssnitt, tillgänglighet och felrättningar.
+Nu kan du enkelt hoppa från WordPress.com i Safari till samma innehåll i appen WordPress för iOS. Håll bara utsikt efter bannern längst upp på WordPress.com-sidor!.
+Nu är aktivitetsloggen tillgänglig för gratis WordPress.com-webbplatser.
+Några mindre förbättringar av användargränssnittet.
+En bunt fel har rättats.

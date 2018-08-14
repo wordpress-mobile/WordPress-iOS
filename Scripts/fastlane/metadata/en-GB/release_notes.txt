@@ -1,3 +1,4 @@
-Activity Log! You can now see all that has been going on with your site.
-Animated GIF support has been expanded in Reader and Media Picker.
-A bunch of UI tweaks, accessibility improvements and bug fixes.
+You can now jump from WordPress.com in Safari to the same content in the WordPress for iOS app with ease. Just look out for the banner at the top of WordPress.com pages!.
+Activity Log is now available for free WordPress.com sites.
+Some small UI improvements.
+A bunch of bug fixes.

@@ -136,7 +136,6 @@ import WordPressFlux
         return controller
     }
 
-
     /// Convenience method for instantiating an instance of ReaderStreamViewController
     /// to preview a tag.
     ///
@@ -384,16 +383,27 @@ import WordPressFlux
 
     // MARK: - Handling Loading and No Results
 
+    private func setStatusViewTitle(_ title: String, message: String) {
+        // Potential fix for a crash where it seems we attempted to update the status view
+        // title or message before the IBOutlets were connected: https://github.com/wordpress-mobile/WordPress-iOS/issues/9745
+        guard isViewLoaded else {
+            return
+        }
+
+        resultsStatusView.titleText = title
+        resultsStatusView.messageText = message
+    }
+
     @objc func displayLoadingStream() {
-        resultsStatusView.titleText = NSLocalizedString("Loading stream...", comment: "A short message to inform the user the requested stream is being loaded.")
-        resultsStatusView.messageText = ""
+        setStatusViewTitle(NSLocalizedString("Loading stream...", comment: "A short message to inform the user the requested stream is being loaded."),
+                                             message: "")
         displayResultsStatus()
     }
 
 
     @objc func displayLoadingStreamFailed() {
-        resultsStatusView.titleText = NSLocalizedString("Problem loading stream", comment: "Error message title informing the user that a stream could not be loaded.")
-        resultsStatusView.messageText = NSLocalizedString("Sorry. The stream could not be loaded.", comment: "A short error message leting the user know the requested stream could not be loaded.")
+        setStatusViewTitle(NSLocalizedString("Problem loading stream", comment: "Error message title informing the user that a stream could not be loaded."),
+                           message: NSLocalizedString("Sorry. The stream could not be loaded.", comment: "A short error message leting the user know the requested stream could not be loaded."))
         displayResultsStatus()
     }
 
@@ -487,27 +497,30 @@ import WordPressFlux
             return
         }
 
-        guard let header = ReaderStreamViewController.headerForStream(topic) else {
+        guard let header = ReaderStreamViewController.headerWithNewsCardForStream(topic, isLoggedIn: isLoggedIn, delegate: self) else {
             tableView.tableHeaderView = nil
             return
         }
 
-        header.enableLoggedInFeatures(isLoggedIn)
-        header.configureHeader(topic)
-        header.delegate = self
+        tableView.tableHeaderView = header
 
-        tableView.tableHeaderView = header as? UIView
+        // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
+        header.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
+        header.widthAnchor.constraint(equalTo: tableView.widthAnchor).isActive = true
+        header.topAnchor.constraint(equalTo: tableView.topAnchor).isActive = true
+
+        tableView.tableHeaderView?.layoutIfNeeded()
+        tableView.tableHeaderView = tableView.tableHeaderView
     }
 
 
     // Refresh the header of a site topic when returning in case the
     // topic's following status changed.
     @objc func refreshTableHeaderIfNeeded() {
-        guard let topic = readerTopic,
-            let header = tableView.tableHeaderView as? ReaderStreamHeader else {
+        guard let _ = readerTopic else {
             return
         }
-        header.configureHeader(topic)
+        configureStreamHeader()
     }
 
 
@@ -637,7 +650,7 @@ import WordPressFlux
     /// Scrolls to the top of the list of posts.
     ///
     @objc open func scrollViewToTop() {
-        tableView.setContentOffset(CGPoint.zero, animated: true)
+        tableView.setContentOffset(.zero, animated: true)
     }
 
 
