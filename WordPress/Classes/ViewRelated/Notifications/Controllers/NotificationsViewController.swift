@@ -183,6 +183,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         // on the next redraw tick, which seems to be required.
         DispatchQueue.main.async {
             self.setupTableHeaderView()
+            self.showNoResultsViewIfNeeded()
         }
 
         if splitViewControllerIsHorizontallyCompact {
@@ -1188,12 +1189,12 @@ private extension NotificationsViewController {
 
     func addNoResultsToView() {
         addChildViewController(noResultsViewController)
-        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        tableView.insertSubview(noResultsViewController.view, belowSubview: tableHeaderView)
         noResultsViewController.view.frame = tableView.frame
 
         // If the segmented control is showing, adjust the NRV height accordingly.
-        if shouldDisplayFilters == true {
-            noResultsViewController.view.frame.size.height -= self.tableHeaderView.frame.height
+        if shouldDisplayFilters == true && view.traitCollection.verticalSizeClass == .regular {
+            noResultsViewController.view.frame.origin.y -= self.tableHeaderView.frame.height
         }
 
         noResultsViewController.didMove(toParentViewController: self)
