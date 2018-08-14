@@ -43,6 +43,11 @@ NSString *const WPAppGroupName                                      = @"group.or
 NSString *const WPAppKeychainAccessGroup                            = @"3TMU3BH3NK.org.wordpress";
 #endif
 
+/// Notification Service Extension Constants
+///
+NSString *const WPNotificationServiceExtensionKeychainTokenKey      = @"OAuth2Token";
+NSString *const WPNotificationServiceExtensionKeychainServiceName   = @"NotificationServiceExtension";
+
 /// Share Extension Constants
 ///
 NSString *const WPShareExtensionKeychainUsernameKey                 = @"Username";
