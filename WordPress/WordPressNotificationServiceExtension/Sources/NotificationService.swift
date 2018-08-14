@@ -20,12 +20,16 @@ class NotificationService: UNNotificationServiceExtension {
         guard
             let notificationContent = self.bestAttemptContent,
             let noteID = notificationContent.userInfo["note_id"] as? Int,
+            let aps = notificationContent.userInfo["aps"] as? NSDictionary,
+            let apsAlert = aps["alert"] as? String,
             let token = readExtensionToken()
         else
         {
             contentHandler(request.content)
             return
         }
+
+        notificationContent.title = apsAlert
 
         let api = WordPressComRestApi(oAuthToken: token)
         let service = NotificationSyncServiceRemote(wordPressComRestApi: api)
@@ -44,26 +48,22 @@ class NotificationService: UNNotificationServiceExtension {
 
             if let remoteNotifications = notifications,
                 remoteNotifications.count == 1,
-                let notification = remoteNotifications.first {
+                let notification = remoteNotifications.first,
+                notification.kind == .comment,
+                let body = notification.body,
+                let bodyBlocks = body as? [[String: AnyObject]] {
 
-                let identifier = notification.notificationId
-                if
-                    let title = notification.title,
-                    let type = notification.type
-                {
-                    notificationContent.title = "\(title) (\(identifier)) | \(type)"
-                }
+                let parser = RemoteNotificationActionParser()
+                let blocks = NotificationContentFactory.content(
+                    from: bodyBlocks,
+                    actionsParser: parser,
+                    parent: notification)
 
-                if let subtitle = notification.timestamp {
-                    notificationContent.subtitle = subtitle
-                }
+                if let comment: FormattableCommentContent = FormattableContentGroup.blockOfKind(.comment, from: blocks),
+                    let notificationText = comment.text,
+                    !notificationText.isEmpty {
 
-                if let body = notification.url {
-                    notificationContent.body = body
-                }
-
-                if let metadata = notification.meta {
-                    notificationContent.userInfo["meta"] = metadata
+                    notificationContent.body = notificationText
                 }
             }
         }
