@@ -40,9 +40,9 @@ msgstr ""
 
 msgctxt "v10.7-whats-new"
 msgid ""
-"* There’s better image handling in the editor. Whether you drag-and-drop a file or add one with the media picker, uploading and inserting is smooth and fast.\n"
-"* Small UI improvements in a bunch of spots to make your experience more intuitive — you probably won’t notice them, and that’s the point!\n"
-"* Bug squashing.\n"
+"There’s better image handling in the editor. Whether you drag-and-drop a file or add one with the media picker, uploading and inserting is smooth and fast.\n"
+"Small UI improvements in a bunch of spots to make your experience more intuitive — you probably won’t notice them, and that’s the point!\n"
+"Bug squashing.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
