@@ -17,12 +17,8 @@ class QuickStartNoticeView: UIView, DismissableNoticeView {
         super.init(frame: .zero)
 
         configureBackgroundViews()
-//        configureShadow()
         configureContentStackView()
         configureLabels()
-//        configureActionButton()
-//        configureDismissRecognizer()
-
         configureForNotice()
     }
 
@@ -103,7 +99,6 @@ private extension QuickStartNoticeView {
         static let messageLabelFont = UIFont.systemFont(ofSize: 14.0)
     }
 
-//    enum colors
     enum Colors {
         static let backgroundColor = WPStyleGuide.darkGrey()
         static let titleColor = UIColor.white
