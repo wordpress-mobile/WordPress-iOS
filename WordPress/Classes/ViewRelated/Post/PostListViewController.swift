@@ -215,10 +215,10 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     fileprivate func noResultsTitlesWhenFiltering() -> [PostListFilter.Status: String] {
-        let draftMessage = NSLocalizedString("You don't have any drafts.", comment: "Displayed when the user views drafts in the posts list and there are no posts")
-        let scheduledMessage = NSLocalizedString("You don't have any scheduled posts.", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
-        let trashedMessage = NSLocalizedString("You don't have any posts in your trash folder.", comment: "Displayed when the user views trashed in the posts list and there are no posts")
-        let publishedMessage = NSLocalizedString("You haven't published any posts yet.", comment: "Displayed when the user views published posts in the posts list and there are no posts")
+        let draftMessage = NSLocalizedString("You don't have any draft posts", comment: "Displayed when the user views drafts in the posts list and there are no posts")
+        let scheduledMessage = NSLocalizedString("You don't have any scheduled posts", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
+        let trashedMessage = NSLocalizedString("You don't have any binned posts", comment: "Displayed when the user views trashed in the posts list and there are no posts")
+        let publishedMessage = NSLocalizedString("You haven't published any posts yet", comment: "Displayed when the user views published posts in the posts list and there are no posts")
 
         return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
     }
@@ -597,7 +597,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
         noResultsViewController.configure(title: noResultsTitle(),
                                           buttonTitle: noResultsButtonTitle(),
-                                          subtitle: noResultsMessage(),
                                           image: "posts-no-results",
                                           accessoryView: noResultsAccessoryView())
     }
@@ -624,7 +623,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         case .trashed:
             return nil
         default:
-            return NSLocalizedString("Start a Post", comment: "Button title, encourages users to create their first post on their blog.")
+            return NSLocalizedString("Create a Post", comment: "Button title, encourages users to create their first post on their blog.")
         }
     }
 
@@ -638,25 +637,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let title = titles[filter.filterType]
 
         return title ?? ""
-    }
-
-    @objc func noResultsMessage() -> String {
-        if syncHelper.isSyncing == true || isSearching() {
-            return ""
-        }
-
-        let filterType = filterSettings.currentPostListFilter().filterType
-
-        switch filterType {
-        case .draft:
-            return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views drafts in the posts list and there are no posts")
-        case .scheduled:
-            return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
-        case .trashed:
-            return NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed posts in the posts list and there are no posts")
-        default:
-            return NSLocalizedString("Would you like to publish your first post?", comment: "Displayed when the user views published posts in the posts list and there are no posts")
-        }
     }
 
     // MARK: - UISearchControllerDelegate
