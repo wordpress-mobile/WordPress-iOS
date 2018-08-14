@@ -619,41 +619,43 @@ private extension PostListViewController {
         }
 
         let filterType = filterSettings.currentPostListFilter().filterType
-
-        switch filterType {
-        case .trashed:
-            return nil
-        default:
-            return NSLocalizedString("Create a Post", comment: "Button title, encourages users to create their first post on their blog.")
-        }
+        return filterType == .trashed ? nil : NoResultsText.buttonTitle
     }
 
     func noResultsTitle() -> String {
         if syncHelper.isSyncing == true {
-            return NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
+            return NoResultsText.fetchingTitle
         }
 
         if isSearching() {
-            return NSLocalizedString("No posts matching your search", comment: "Displayed when the user is searching the posts list and there are no matching posts")
+            return NoResultsText.noMatchesTitle
         }
 
-
         return noResultsFilteredTitle()
-
     }
 
     func noResultsFilteredTitle() -> String {
         let filterType = filterSettings.currentPostListFilter().filterType
         switch filterType {
         case .draft:
-            return NSLocalizedString("You don't have any draft posts", comment: "Displayed when the user views drafts in the posts list and there are no posts")
+            return NoResultsText.noDraftsTitle
         case .scheduled:
-            return NSLocalizedString("You don't have any scheduled posts", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
+            return NoResultsText.noScheduledTitle
         case .trashed:
-            return NSLocalizedString("You don't have any binned posts", comment: "Displayed when the user views trashed in the posts list and there are no posts")
+            return NoResultsText.noTrashedTitle
         case .published:
-            return NSLocalizedString("You haven't published any posts yet", comment: "Displayed when the user views published posts in the posts list and there are no posts")
+            return NoResultsText.noPublishedTitle
         }
+    }
+
+    struct NoResultsText {
+        static let buttonTitle = NSLocalizedString("Create a Post", comment: "Button title, encourages users to create their first post on their blog.")
+        static let fetchingTitle = NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
+        static let noMatchesTitle = NSLocalizedString("No posts matching your search", comment: "Displayed when the user is searching the posts list and there are no matching posts")
+        static let noDraftsTitle = NSLocalizedString("You don't have any draft posts", comment: "Displayed when the user views drafts in the posts list and there are no posts")
+        static let noScheduledTitle = NSLocalizedString("You don't have any scheduled posts", comment: "Displayed when the user views scheduled posts in the posts list and there are no posts")
+        static let noTrashedTitle = NSLocalizedString("You don't have any binned posts", comment: "Displayed when the user views trashed in the posts list and there are no posts")
+        static let noPublishedTitle = NSLocalizedString("You haven't published any posts yet", comment: "Displayed when the user views published posts in the posts list and there are no posts")
     }
 
 }
