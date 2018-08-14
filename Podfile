@@ -133,7 +133,8 @@ target 'WordPressNotificationServiceExtension' do
 	
 	inherit! :search_paths
 
-	shared_with_networking_pods
+	pod 'WordPressKit', '1.2.1'
+	pod 'WordPressShared', '1.0.9'
 end
 
 
