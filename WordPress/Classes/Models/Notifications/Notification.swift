@@ -100,7 +100,7 @@ class Notification: NSManagedObject {
         guard let snippetContent = snippetContent else {
             return nil
         }
-        return formatter.render(content: snippetContent, with: SnipetsContentStyles())
+        return formatter.render(content: snippetContent, with: SnippetsContentStyles())
     }
 
     /// When needed, nukes cached attributes
@@ -261,7 +261,7 @@ extension Notification {
     /// Verifies if the current notification is a Comment-Y note, and if it has been replied to.
     ///
     @objc var isRepliedComment: Bool {
-        return kind == .Comment && metaReplyID != nil
+        return kind == .comment && metaReplyID != nil
     }
 
     //// Check if this note is a comment and in 'Unapproved' status
@@ -280,23 +280,6 @@ extension Notification {
 
             return block.isActionEnabled(.Approve) && !block.isActionOn(.Approve)
         }
-
-    }
-
-    var kind: Kind {
-        guard let type = type, let kind = Kind(rawValue: type) else {
-            return .Unknown
-        }
-        return kind
-    }
-
-    /// Parses the Notification.type field into a Swift Native enum. Returns .Unknown on failure.
-    ///
-    var notificationKind: Kind {
-        guard let type = type, let kind = Kind(rawValue: type) else {
-            return .Unknown
-        }
-        return kind
     }
 
     /// Returns the Meta ID's collection, if any.
@@ -535,24 +518,6 @@ extension Notification {
 // MARK: - Notification Types
 //
 extension Notification {
-    /// Known kinds of Notifications
-    ///
-    enum Kind: String {
-        case Comment        = "comment"
-        case CommentLike    = "comment_like"
-        case Follow         = "follow"
-        case Like           = "like"
-        case Matcher        = "automattcher"
-        case NewPost        = "new_post"
-        case Post           = "post"
-        case User           = "user"
-        case Unknown        = "unknown"
-
-        var toTypeValue: String {
-            return rawValue
-        }
-    }
-
     /// Meta Parsing Keys
     ///
     fileprivate enum MetaKeys {
@@ -567,7 +532,9 @@ extension Notification {
     }
 }
 
-extension Notification: NotificationIdentifiable {
+// MARK: - Notifiable
+
+extension Notification: Notifiable {
     var notificationIdentifier: String {
         return notificationId
     }
