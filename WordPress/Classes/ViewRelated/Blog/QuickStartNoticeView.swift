@@ -89,6 +89,7 @@ private extension QuickStartNoticeView {
 
         if let message = formattedMessage {
             messageLabel.attributedText = message
+            titleLabel.isHidden = true
         } else if let message = notice.message {
             messageLabel.text = message
         } else {
