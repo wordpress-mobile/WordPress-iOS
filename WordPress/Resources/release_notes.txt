@@ -1,3 +1,3 @@
-* There’s better image handling in the editor. Whether you drag-and-drop a file or add one with the media picker, uploading and inserting is smooth and fast.
-* Small UI improvements in a bunch of spots to make your experience more intuitive — you probably won’t notice them, and that’s the point!
-* Bug squashing.
+There’s better image handling in the editor. Whether you drag-and-drop a file or add one with the media picker, uploading and inserting is smooth and fast.
+Small UI improvements in a bunch of spots to make your experience more intuitive — you probably won’t notice them, and that’s the point!
+Bug squashing.
