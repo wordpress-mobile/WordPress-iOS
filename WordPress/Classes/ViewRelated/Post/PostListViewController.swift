@@ -598,6 +598,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         noResultsViewController.configure(title: noResultsTitle(),
                                           buttonTitle: noResultsButtonTitle(),
                                           subtitle: noResultsMessage(),
+                                          image: "posts-no-results",
                                           accessoryView: noResultsAccessoryView())
     }
 
