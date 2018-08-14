@@ -34,7 +34,7 @@ final class GiphyPicker: NSObject {
     }()
 
     func presentPicker(origin: UIViewController, blog: Blog) {
-        searchHint.configureAsIntro()
+        NoResultsStockPhotosConfiguration.configureAsIntro(searchHint)
         self.blog = blog
 
         origin.present(picker, animated: true) {
@@ -54,9 +54,9 @@ final class GiphyPicker: NSObject {
     private func updateHintView() {
         searchHint.removeFromView()
         if shouldShowNoResults() {
-            searchHint.configureAsNoSearchResults(for: dataSource.searchQuery)
+            NoResultsStockPhotosConfiguration.configure(searchHint, asNoSearchResultsFor: dataSource.searchQuery)
         } else {
-            searchHint.configureAsIntro()
+            NoResultsStockPhotosConfiguration.configureAsIntro(searchHint)
         }
     }
 }
