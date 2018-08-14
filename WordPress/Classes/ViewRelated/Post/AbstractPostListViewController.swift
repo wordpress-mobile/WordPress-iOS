@@ -427,6 +427,12 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             tableViewController.addChildViewController(noResultsViewController)
             tableView.addSubview(withFadeAnimation: noResultsViewController.view)
             noResultsViewController.view.frame = tableView.frame
+
+            // Adjust the NRV to accommodate for the refresh control.
+            if let refreshControl = refreshControl {
+                noResultsViewController.view.frame.origin.y += refreshControl.frame.height/2
+            }
+
             noResultsViewController.didMove(toParentViewController: tableViewController)
         }
 
