@@ -7,6 +7,7 @@ enum FeatureFlag: Int {
     case saveForLater
     case extractNotifications
     case quickStart
+    case newsCard
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -21,6 +22,8 @@ enum FeatureFlag: Int {
             return BuildConfiguration.current == .localDeveloper
         case .quickStart:
             return BuildConfiguration.current == .localDeveloper
+        case .newsCard:
+            return false
         }
     }
 }

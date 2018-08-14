@@ -1,3 +1,4 @@
-Etkinlik günlüğü! Artık sitenizde olan her şeyi görebilirsiniz.
-Animasyonlu gif desteği, Okuyucu ve ortam seçicide genişletildi.
-Bir grup kullanıcı arayüz düzeltmeleri, erişilebilirlik iyileştirmeleri ve hata düzeltmeleri.
+Artık Safari'de WordPress.com'u ziyaret ettiğinizde iOS için WordPress uygulamasında aynı içeriğe kolaylıkla geçiş yapabilirsiniz. Gözünüz WordPress.com sayfalarının üst kısmındaki reklam bandında olsun!
+Artık ücretsiz WordPress.com sitelerinde Etkinlik Günlüğü mevcut.
+Ufak çaplı kullanıcı arayüzü geliştirmeleri.
+Bir dizi hata düzeltmesi.

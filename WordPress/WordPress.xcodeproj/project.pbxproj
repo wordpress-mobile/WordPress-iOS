@@ -251,7 +251,8 @@
 		4395A15B21066DCD00844E8E /* QuickStartChecklistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4395A15A21066DCD00844E8E /* QuickStartChecklistCell.xib */; };
 		4395A15D2106718900844E8E /* QuickStartChecklistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4395A15C2106718900844E8E /* QuickStartChecklistCell.swift */; };
 		43AB7C5E1D3E70510066CB6A /* PostListFilterSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */; };
-		43C9908E21067E22009EFFEB /* QuickStartChecklistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C9908D21067E22009EFFEB /* QuickStartChecklistView.swift */; };
+		43AF2F972107D3810069C012 /* QuickStartCompletedTour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AF2F962107D3800069C012 /* QuickStartCompletedTour.swift */; };
+		43C9908E21067E22009EFFEB /* QuickStartChecklistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C9908D21067E22009EFFEB /* QuickStartChecklistViewController.swift */; };
 		43D54D131DCAA070007F575F /* PostPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D54D121DCAA070007F575F /* PostPostViewController.swift */; };
 		43DC0EF12040B23200896C9C /* SignupUsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DC0EF02040B23200896C9C /* SignupUsernameViewController.swift */; };
 		43FB3F411EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FB3F401EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift */; };
@@ -561,13 +562,14 @@
 		7E4A773820F80414001C706D /* ActivityPostRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4A773120F800CB001C706D /* ActivityPostRange.swift */; };
 		7E4A773920F80417001C706D /* ActivityPluginRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4A773320F800ED001C706D /* ActivityPluginRange.swift */; };
 		7E4A773C20F80598001C706D /* ActivityContentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4A773A20F8058F001C706D /* ActivityContentFactory.swift */; };
-		7E52B7181FC89F2400B55EB8 /* MediaNoResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */; };
 		7E53AB0020FE55A9005796FE /* ActivityContentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E53AAFF20FE55A9005796FE /* ActivityContentRouter.swift */; };
 		7E53AB0220FE5EAE005796FE /* ContentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E53AB0120FE5EAE005796FE /* ContentRouter.swift */; };
 		7E53AB0420FE6681005796FE /* ActivityContentRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E53AB0320FE6681005796FE /* ActivityContentRouterTests.swift */; };
 		7E53AB0620FE6905005796FE /* activity-log-comment.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E53AB0520FE6905005796FE /* activity-log-comment.json */; };
 		7E53AB0820FE6C9C005796FE /* activity-log-post.json in Resources */ = {isa = PBXBuildFile; fileRef = 7E53AB0720FE6C9C005796FE /* activity-log-post.json */; };
 		7E53AB0A20FE83A9005796FE /* MockContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E53AB0920FE83A9005796FE /* MockContentCoordinator.swift */; };
+		7E58879A20FE8D9300DB6F80 /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E58879920FE8D9300DB6F80 /* Environment.swift */; };
+		7E5887A020FE956100DB6F80 /* AppRatingUtilityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E58879F20FE956100DB6F80 /* AppRatingUtilityType.swift */; };
 		7E729C28209A087300F76599 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E729C27209A087200F76599 /* ImageLoader.swift */; };
 		7E729C2A209A241100F76599 /* AbstractPost+PostInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */; };
 		7E7947A9210BAC1D005BB851 /* NotificationContentRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7947A8210BAC1D005BB851 /* NotificationContentRange.swift */; };
@@ -581,6 +583,7 @@
 		7E987F562108017B00CAFB88 /* NotificationContentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E987F552108017B00CAFB88 /* NotificationContentRouter.swift */; };
 		7E987F58210811CC00CAFB88 /* NotificationContentRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E987F57210811CC00CAFB88 /* NotificationContentRouterTests.swift */; };
 		7E987F5A2108122A00CAFB88 /* NotificationUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E987F592108122A00CAFB88 /* NotificationUtility.swift */; };
+		7E9B90F821127CA400AF83E6 /* ContextManagerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9B90F721127CA400AF83E6 /* ContextManagerType.swift */; };
 		7EAD7CD0206D761200BEDCFD /* MediaExternalExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAD7CCF206D761200BEDCFD /* MediaExternalExporter.swift */; };
 		7EB5824720EC41B200002702 /* NotificationContentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB5824620EC41B200002702 /* NotificationContentFactory.swift */; };
 		7EBB4126206C388100012D98 /* StockPhotosService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBB4125206C388100012D98 /* StockPhotosService.swift */; };
@@ -701,6 +704,7 @@
 		98077B5A2075561800109F95 /* SupportTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98077B592075561800109F95 /* SupportTableViewController.swift */; };
 		9808655A203D075E00D58786 /* EpilogueUserInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98086559203D075D00D58786 /* EpilogueUserInfoCell.xib */; };
 		9808655C203D079B00D58786 /* EpilogueUserInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9808655B203D079A00D58786 /* EpilogueUserInfoCell.swift */; };
+		981D092A211259840014ECAF /* NoResultsViewController+MediaLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981D0929211259840014ECAF /* NoResultsViewController+MediaLibrary.swift */; };
 		9827B3B1201FF30700530AF5 /* SiteCreationFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9827B3B0201FF30700530AF5 /* SiteCreationFields.swift */; };
 		982A4C3520227D6700B5518E /* NoResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982A4C3420227D6700B5518E /* NoResultsViewController.swift */; };
 		982BED981FBCF392000B848E /* SiteCreation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 982BED971FBCF392000B848E /* SiteCreation.storyboard */; };
@@ -729,6 +733,7 @@
 		98D60B9F1FFEE3D800145190 /* SiteCreationThemeSelectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D60B9D1FFEE3D800145190 /* SiteCreationThemeSelectionHeaderView.swift */; };
 		98EB126A20D2DC2500D2D5B5 /* NoResultsViewController+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98EB126920D2DC2500D2D5B5 /* NoResultsViewController+Model.swift */; };
 		98EDB5FB2016627C00E2D25A /* SiteCreationCreateSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98EDB5FA2016627C00E2D25A /* SiteCreationCreateSiteViewController.swift */; };
+		98F1B12A2111017A00139493 /* NoResultsViewController+StockPhotosPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F1B1292111017900139493 /* NoResultsViewController+StockPhotosPicker.swift */; };
 		98F24AE820190506001A80F9 /* SiteCreationSitePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F24AE720190506001A80F9 /* SiteCreationSitePreviewViewController.swift */; };
 		9F3EFC9E208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3EFC9D208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift */; };
 		9F3EFCA1208E305E00268758 /* ReaderTopicService+Subscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3EFCA0208E305D00268758 /* ReaderTopicService+Subscriptions.swift */; };
@@ -935,6 +940,7 @@
 		CE1CCB2F2050502B000EE3AC /* MyProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE1CCB2E2050502B000EE3AC /* MyProfileHeaderView.xib */; };
 		CE39E17220CB117B00CABA05 /* RemoteBlog+Capabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE39E17120CB117B00CABA05 /* RemoteBlog+Capabilities.swift */; };
 		CE39E17320CB117B00CABA05 /* RemoteBlog+Capabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE39E17120CB117B00CABA05 /* RemoteBlog+Capabilities.swift */; };
+		CE46018B21139E8300F242B6 /* FooterTextContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE46018A21139E8300F242B6 /* FooterTextContent.swift */; };
 		CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */ = {isa = PBXBuildFile; fileRef = CEBD3EAA0FF1BA3B00C1396E /* Blog.m */; };
 		D800D86420997BA100E7C7E5 /* ReaderMenuItemCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800D86320997BA100E7C7E5 /* ReaderMenuItemCreator.swift */; };
 		D800D86620997C6E00E7C7E5 /* FollowingMenuItemCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D800D86520997C6E00E7C7E5 /* FollowingMenuItemCreator.swift */; };
@@ -958,6 +964,20 @@
 		D80EE63A203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80EE639203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift */; };
 		D81322B32050F9110067714D /* NotificationName+Names.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81322B22050F9110067714D /* NotificationName+Names.swift */; };
 		D8160442209C1B0F00ABAFFA /* ReaderSaveForLaterAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8160441209C1B0F00ABAFFA /* ReaderSaveForLaterAction.swift */; };
+		D816B8BE2112CC000052CE4D /* NewsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8BD2112CC000052CE4D /* NewsItem.swift */; };
+		D816B8C02112CC930052CE4D /* NewsItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8BF2112CC930052CE4D /* NewsItemTests.swift */; };
+		D816B8C22112CEBE0052CE4D /* NewsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8C12112CEBE0052CE4D /* NewsService.swift */; };
+		D816B8C42112CFAE0052CE4D /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8C32112CFAE0052CE4D /* Result.swift */; };
+		D816B8C62112D0130052CE4D /* ResultTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8C52112D0130052CE4D /* ResultTypeTests.swift */; };
+		D816B8C82112D2290052CE4D /* LocalNewsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8C72112D2290052CE4D /* LocalNewsService.swift */; };
+		D816B8CA2112D2FD0052CE4D /* LocalNewsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8C92112D2FD0052CE4D /* LocalNewsServiceTests.swift */; };
+		D816B8CD2112D4AA0052CE4D /* NewsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8CC2112D4AA0052CE4D /* NewsManager.swift */; };
+		D816B8CF2112D4F90052CE4D /* DefaultNewsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8CE2112D4F90052CE4D /* DefaultNewsManager.swift */; };
+		D816B8D12112D5960052CE4D /* DefaultNewsManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8D02112D5960052CE4D /* DefaultNewsManagerTests.swift */; };
+		D816B8D42112D6E70052CE4D /* NewsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8D22112D6E70052CE4D /* NewsCard.swift */; };
+		D816B8D52112D6E70052CE4D /* NewsCard.xib in Resources */ = {isa = PBXBuildFile; fileRef = D816B8D32112D6E70052CE4D /* NewsCard.xib */; };
+		D816B8D72112D75C0052CE4D /* NewsCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8D62112D75C0052CE4D /* NewsCardTests.swift */; };
+		D816B8D92112D85F0052CE4D /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816B8D82112D85F0052CE4D /* News.swift */; };
 		D816C1E920E0880400C4D82F /* NotificationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816C1E820E0880400C4D82F /* NotificationAction.swift */; };
 		D816C1EC20E0887C00C4D82F /* ApproveComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816C1EB20E0887C00C4D82F /* ApproveComment.swift */; };
 		D816C1EE20E0892200C4D82F /* Follow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D816C1ED20E0892200C4D82F /* Follow.swift */; };
@@ -994,6 +1014,8 @@
 		D821C819210037F8002ED995 /* activity-log-activity-content.json in Resources */ = {isa = PBXBuildFile; fileRef = D821C818210037F8002ED995 /* activity-log-activity-content.json */; };
 		D821C81B21003AE9002ED995 /* FormattableContentGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D821C81A21003AE9002ED995 /* FormattableContentGroupTests.swift */; };
 		D821C81D21004724002ED995 /* NotificationBlockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D821C81C21004724002ED995 /* NotificationBlockTests.swift */; };
+		D82247F92113EF5C00918CEB /* News.strings in Resources */ = {isa = PBXBuildFile; fileRef = D82247F82113EF5C00918CEB /* News.strings */; };
+		D82247FB2113F50600918CEB /* News.strings in Resources */ = {isa = PBXBuildFile; fileRef = D82247FA2113F50600918CEB /* News.strings */; };
 		D83CA3A520842CAF0060E310 /* Pageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A420842CAF0060E310 /* Pageable.swift */; };
 		D83CA3A720842CD90060E310 /* ResultsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A620842CD90060E310 /* ResultsPage.swift */; };
 		D83CA3A920842D190060E310 /* StockPhotosPageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83CA3A820842D190060E310 /* StockPhotosPageable.swift */; };
@@ -1045,7 +1067,6 @@
 		D8A3A5B1206A49A100992576 /* StockPhotosMediaGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5B0206A49A100992576 /* StockPhotosMediaGroup.swift */; };
 		D8A3A5B3206A49BF00992576 /* StockPhotosMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5B2206A49BF00992576 /* StockPhotosMedia.swift */; };
 		D8A3A5B5206A4C7800992576 /* StockPhotosPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5B4206A4C7800992576 /* StockPhotosPicker.swift */; };
-		D8A3A5B7206A563900992576 /* StockPhotosPlaceholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A3A5B6206A563900992576 /* StockPhotosPlaceholder.swift */; };
 		D8B6BEB7203E11F2007C8A19 /* Bundle+LoadFromNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B6BEB6203E11F2007C8A19 /* Bundle+LoadFromNib.swift */; };
 		D8B9B58F204F4EA1003C6042 /* NetworkAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B9B58E204F4EA1003C6042 /* NetworkAware.swift */; };
 		D8B9B591204F658A003C6042 /* CommentsViewController+NetworkAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B9B590204F658A003C6042 /* CommentsViewController+NetworkAware.swift */; };
@@ -1765,7 +1786,9 @@
 		4395A15A21066DCD00844E8E /* QuickStartChecklistCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickStartChecklistCell.xib; sourceTree = "<group>"; };
 		4395A15C2106718900844E8E /* QuickStartChecklistCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistCell.swift; sourceTree = "<group>"; };
 		43AB7C5D1D3E70510066CB6A /* PostListFilterSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostListFilterSettings.swift; sourceTree = "<group>"; };
-		43C9908D21067E22009EFFEB /* QuickStartChecklistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistView.swift; sourceTree = "<group>"; };
+		43AF2F962107D3800069C012 /* QuickStartCompletedTour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartCompletedTour.swift; sourceTree = "<group>"; };
+		43C8831B211A47DB003125C7 /* WordPress 78.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 78.xcdatamodel"; sourceTree = "<group>"; };
+		43C9908D21067E22009EFFEB /* QuickStartChecklistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartChecklistViewController.swift; sourceTree = "<group>"; };
 		43D54D121DCAA070007F575F /* PostPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPostViewController.swift; sourceTree = "<group>"; };
 		43DC0EF02040B23200896C9C /* SignupUsernameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupUsernameViewController.swift; sourceTree = "<group>"; };
 		43FB3F401EBD215C00FC8A62 /* LoginEpilogueBlogCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueBlogCell.swift; sourceTree = "<group>"; };
@@ -2114,13 +2137,14 @@
 		7E4A773320F800ED001C706D /* ActivityPluginRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityPluginRange.swift; sourceTree = "<group>"; };
 		7E4A773520F80146001C706D /* ActivityRangesFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRangesFactory.swift; sourceTree = "<group>"; };
 		7E4A773A20F8058F001C706D /* ActivityContentFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentFactory.swift; sourceTree = "<group>"; };
-		7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaNoResultsView.swift; sourceTree = "<group>"; };
 		7E53AAFF20FE55A9005796FE /* ActivityContentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentRouter.swift; sourceTree = "<group>"; };
 		7E53AB0120FE5EAE005796FE /* ContentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentRouter.swift; sourceTree = "<group>"; };
 		7E53AB0320FE6681005796FE /* ActivityContentRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentRouterTests.swift; sourceTree = "<group>"; };
 		7E53AB0520FE6905005796FE /* activity-log-comment.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "activity-log-comment.json"; sourceTree = "<group>"; };
 		7E53AB0720FE6C9C005796FE /* activity-log-post.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "activity-log-post.json"; sourceTree = "<group>"; };
 		7E53AB0920FE83A9005796FE /* MockContentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockContentCoordinator.swift; sourceTree = "<group>"; };
+		7E58879920FE8D9300DB6F80 /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
+		7E58879F20FE956100DB6F80 /* AppRatingUtilityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRatingUtilityType.swift; sourceTree = "<group>"; };
 		7E729C27209A087200F76599 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		7E729C29209A241100F76599 /* AbstractPost+PostInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+PostInformation.swift"; sourceTree = "<group>"; };
 		7E7947A8210BAC1D005BB851 /* NotificationContentRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContentRange.swift; sourceTree = "<group>"; };
@@ -2134,6 +2158,7 @@
 		7E987F552108017B00CAFB88 /* NotificationContentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContentRouter.swift; sourceTree = "<group>"; };
 		7E987F57210811CC00CAFB88 /* NotificationContentRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContentRouterTests.swift; sourceTree = "<group>"; };
 		7E987F592108122A00CAFB88 /* NotificationUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationUtility.swift; sourceTree = "<group>"; };
+		7E9B90F721127CA400AF83E6 /* ContextManagerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextManagerType.swift; sourceTree = "<group>"; };
 		7EAD7CCF206D761200BEDCFD /* MediaExternalExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaExternalExporter.swift; sourceTree = "<group>"; };
 		7EB5824620EC41B200002702 /* NotificationContentFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationContentFactory.swift; sourceTree = "<group>"; };
 		7EBB4125206C388100012D98 /* StockPhotosService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosService.swift; sourceTree = "<group>"; };
@@ -2330,6 +2355,7 @@
 		98077B592075561800109F95 /* SupportTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportTableViewController.swift; sourceTree = "<group>"; };
 		98086559203D075D00D58786 /* EpilogueUserInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EpilogueUserInfoCell.xib; sourceTree = "<group>"; };
 		9808655B203D079A00D58786 /* EpilogueUserInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpilogueUserInfoCell.swift; sourceTree = "<group>"; };
+		981D0929211259840014ECAF /* NoResultsViewController+MediaLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NoResultsViewController+MediaLibrary.swift"; sourceTree = "<group>"; };
 		9827B3B0201FF30700530AF5 /* SiteCreationFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationFields.swift; sourceTree = "<group>"; };
 		982A4C3420227D6700B5518E /* NoResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoResultsViewController.swift; sourceTree = "<group>"; };
 		982BED971FBCF392000B848E /* SiteCreation.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SiteCreation.storyboard; sourceTree = "<group>"; };
@@ -2358,6 +2384,7 @@
 		98D60B9D1FFEE3D800145190 /* SiteCreationThemeSelectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationThemeSelectionHeaderView.swift; sourceTree = "<group>"; };
 		98EB126920D2DC2500D2D5B5 /* NoResultsViewController+Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NoResultsViewController+Model.swift"; sourceTree = "<group>"; };
 		98EDB5FA2016627C00E2D25A /* SiteCreationCreateSiteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationCreateSiteViewController.swift; sourceTree = "<group>"; };
+		98F1B1292111017900139493 /* NoResultsViewController+StockPhotosPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NoResultsViewController+StockPhotosPicker.swift"; sourceTree = "<group>"; };
 		98F24AE720190506001A80F9 /* SiteCreationSitePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationSitePreviewViewController.swift; sourceTree = "<group>"; };
 		99D675225C3282AC88B89F04 /* Pods-WordPressTodayWidget.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTodayWidget.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget.release-internal.xcconfig"; sourceTree = "<group>"; };
 		9F3EFC9D208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderSiteInfoSubscriptions.swift; sourceTree = "<group>"; };
@@ -2611,6 +2638,7 @@
 		CE1CCB2C204DDD18000EE3AC /* MyProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileHeaderView.swift; sourceTree = "<group>"; };
 		CE1CCB2E2050502B000EE3AC /* MyProfileHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyProfileHeaderView.xib; sourceTree = "<group>"; };
 		CE39E17120CB117B00CABA05 /* RemoteBlog+Capabilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemoteBlog+Capabilities.swift"; sourceTree = "<group>"; };
+		CE46018A21139E8300F242B6 /* FooterTextContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterTextContent.swift; sourceTree = "<group>"; };
 		CEBD3EA90FF1BA3B00C1396E /* Blog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blog.h; sourceTree = "<group>"; };
 		CEBD3EAA0FF1BA3B00C1396E /* Blog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Blog.m; sourceTree = "<group>"; };
 		D61CEAC1CB25AE65B26BDC68 /* Pods-WordPressShareExtension.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShareExtension.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension.release-alpha.xcconfig"; sourceTree = "<group>"; };
@@ -2636,6 +2664,20 @@
 		D80EE639203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderFollowedSitesStreamHeaderTests.swift; sourceTree = "<group>"; };
 		D81322B22050F9110067714D /* NotificationName+Names.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationName+Names.swift"; sourceTree = "<group>"; };
 		D8160441209C1B0F00ABAFFA /* ReaderSaveForLaterAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderSaveForLaterAction.swift; sourceTree = "<group>"; };
+		D816B8BD2112CC000052CE4D /* NewsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsItem.swift; sourceTree = "<group>"; };
+		D816B8BF2112CC930052CE4D /* NewsItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsItemTests.swift; sourceTree = "<group>"; };
+		D816B8C12112CEBE0052CE4D /* NewsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsService.swift; sourceTree = "<group>"; };
+		D816B8C32112CFAE0052CE4D /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		D816B8C52112D0130052CE4D /* ResultTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultTypeTests.swift; sourceTree = "<group>"; };
+		D816B8C72112D2290052CE4D /* LocalNewsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNewsService.swift; sourceTree = "<group>"; };
+		D816B8C92112D2FD0052CE4D /* LocalNewsServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNewsServiceTests.swift; sourceTree = "<group>"; };
+		D816B8CC2112D4AA0052CE4D /* NewsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsManager.swift; sourceTree = "<group>"; };
+		D816B8CE2112D4F90052CE4D /* DefaultNewsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNewsManager.swift; sourceTree = "<group>"; };
+		D816B8D02112D5960052CE4D /* DefaultNewsManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNewsManagerTests.swift; sourceTree = "<group>"; };
+		D816B8D22112D6E70052CE4D /* NewsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCard.swift; sourceTree = "<group>"; };
+		D816B8D32112D6E70052CE4D /* NewsCard.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsCard.xib; sourceTree = "<group>"; };
+		D816B8D62112D75C0052CE4D /* NewsCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCardTests.swift; sourceTree = "<group>"; };
+		D816B8D82112D85F0052CE4D /* News.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
 		D816C1E820E0880400C4D82F /* NotificationAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAction.swift; sourceTree = "<group>"; };
 		D816C1EB20E0887C00C4D82F /* ApproveComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApproveComment.swift; sourceTree = "<group>"; };
 		D816C1ED20E0892200C4D82F /* Follow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Follow.swift; sourceTree = "<group>"; };
@@ -2672,6 +2714,8 @@
 		D821C818210037F8002ED995 /* activity-log-activity-content.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "activity-log-activity-content.json"; sourceTree = "<group>"; };
 		D821C81A21003AE9002ED995 /* FormattableContentGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormattableContentGroupTests.swift; sourceTree = "<group>"; };
 		D821C81C21004724002ED995 /* NotificationBlockTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationBlockTests.swift; sourceTree = "<group>"; };
+		D82247F82113EF5C00918CEB /* News.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = News.strings; sourceTree = "<group>"; };
+		D82247FA2113F50600918CEB /* News.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = News.strings; sourceTree = "<group>"; };
 		D83CA3A420842CAF0060E310 /* Pageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pageable.swift; sourceTree = "<group>"; };
 		D83CA3A620842CD90060E310 /* ResultsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsPage.swift; sourceTree = "<group>"; };
 		D83CA3A820842D190060E310 /* StockPhotosPageable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosPageable.swift; sourceTree = "<group>"; };
@@ -2723,7 +2767,6 @@
 		D8A3A5B0206A49A100992576 /* StockPhotosMediaGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosMediaGroup.swift; sourceTree = "<group>"; };
 		D8A3A5B2206A49BF00992576 /* StockPhotosMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosMedia.swift; sourceTree = "<group>"; };
 		D8A3A5B4206A4C7800992576 /* StockPhotosPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosPicker.swift; sourceTree = "<group>"; };
-		D8A3A5B6206A563900992576 /* StockPhotosPlaceholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockPhotosPlaceholder.swift; sourceTree = "<group>"; };
 		D8B6BEB6203E11F2007C8A19 /* Bundle+LoadFromNib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+LoadFromNib.swift"; sourceTree = "<group>"; };
 		D8B9B58E204F4EA1003C6042 /* NetworkAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkAware.swift; sourceTree = "<group>"; };
 		D8B9B590204F658A003C6042 /* CommentsViewController+NetworkAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommentsViewController+NetworkAware.swift"; sourceTree = "<group>"; };
@@ -2777,35 +2820,35 @@
 		E131CB5716CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "get-user-blogs_doesnt-have-blog.json"; sourceTree = "<group>"; };
 		E133DB40137AE180003C0AF9 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E135965C1E7152D1006C6606 /* RecentSitesServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentSitesServiceTests.swift; sourceTree = "<group>"; };
-		E135CD6E1E54BC0A0021E79F /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD6F1E54BC0C0021E79F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD711E54BCA70021E79F /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD721E54BD300021E79F /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD731E54BD350021E79F /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD741E54BD410021E79F /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD751E54BD4C0021E79F /* en-AU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-AU"; path = "en-AU.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		E135CD761E54BD4F0021E79F /* en-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-CA"; path = "en-CA.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		E135CD771E54BD510021E79F /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		E135CD781E54BD530021E79F /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		E135CD791E54BD590021E79F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		E135CD7A1E54BD5B0021E79F /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		E135CD7B1E54BD620021E79F /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD7C1E54BD6D0021E79F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD7D1E54BD730021E79F /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD7E1E54BD7B0021E79F /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD7F1E54BD810021E79F /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD801E54BD860021E79F /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD811E54BD8A0021E79F /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD821E54BD910021E79F /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD831E54BD980021E79F /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD841E54BD9D0021E79F /* sq */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sq; path = sq.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD851E54BDA30021E79F /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD861E54BDAC0021E79F /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD871E54BDE40021E79F /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD881E54BDE60021E79F /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD891E54BDEB0021E79F /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD8A1E54BDED0021E79F /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E135CD8B1E54BDEF0021E79F /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = is; path = is.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD6E1E54BC0A0021E79F /* fr */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD6F1E54BC0C0021E79F /* de */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD711E54BCA70021E79F /* bg */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = bg; path = bg.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD721E54BD300021E79F /* cs */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = cs; path = cs.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD731E54BD350021E79F /* cy */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = cy; path = cy.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD741E54BD410021E79F /* da */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD751E54BD4C0021E79F /* en-AU */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = "en-AU"; path = "en-AU.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E135CD761E54BD4F0021E79F /* en-CA */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = "en-CA"; path = "en-CA.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E135CD771E54BD510021E79F /* en-GB */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = "en-GB"; path = "en-GB.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E135CD781E54BD530021E79F /* pt-BR */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E135CD791E54BD590021E79F /* zh-Hans */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E135CD7A1E54BD5B0021E79F /* zh-Hant */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E135CD7B1E54BD620021E79F /* it */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD7C1E54BD6D0021E79F /* ko */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD7D1E54BD730021E79F /* nb */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD7E1E54BD7B0021E79F /* nl */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD7F1E54BD810021E79F /* pl */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD801E54BD860021E79F /* pt */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD811E54BD8A0021E79F /* sv */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD821E54BD910021E79F /* ro */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD831E54BD980021E79F /* ru */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD841E54BD9D0021E79F /* sq */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = sq; path = sq.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD851E54BDA30021E79F /* th */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = th; path = th.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD861E54BDAC0021E79F /* tr */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD871E54BDE40021E79F /* he */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD881E54BDE60021E79F /* hr */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD891E54BDEB0021E79F /* hu */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = hu; path = hu.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD8A1E54BDED0021E79F /* id */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = id; path = id.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E135CD8B1E54BDEF0021E79F /* is */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = is; path = is.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E136F3981F1F6FF800AD2DD3 /* WordPress 62.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 62.xcdatamodel"; sourceTree = "<group>"; };
 		E137B1651F8B77D4006AC7FC /* WebNavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebNavigationDelegate.swift; sourceTree = "<group>"; };
 		E1389ADA1C59F7C200FB2466 /* PlanListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanListViewController.swift; sourceTree = "<group>"; };
@@ -2859,8 +2902,8 @@
 		E16273E01B2ACEB600088AF7 /* BlogToBlog32to33.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogToBlog32to33.swift; sourceTree = "<group>"; };
 		E16273E21B2AD89A00088AF7 /* MIGRATIONS.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = MIGRATIONS.md; path = ../MIGRATIONS.md; sourceTree = "<group>"; };
 		E163AF9E1ED45B100035317E /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E163AF9F1ED45B110035317E /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E163AFA01ED45B110035317E /* sk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sk; path = sk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E163AF9F1ED45B110035317E /* sk */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = sk; path = sk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E163AFA01ED45B110035317E /* sk */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = sk; path = sk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E166FA1A1BB0656B00374B5B /* PeopleCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleCellViewModel.swift; sourceTree = "<group>"; };
 		E167745A1377F24300EE44DD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E167745B1377F25500EE44DD /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2912,7 +2955,7 @@
 		E1AB5A061E0BF17500574B4E /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		E1AB5A081E0BF31E00574B4E /* ArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayTests.swift; sourceTree = "<group>"; };
 		E1AB5A391E0C464700574B4E /* DelayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelayTests.swift; sourceTree = "<group>"; };
-		E1AC8CB91E54B891006FD056 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1AC8CB91E54B891006FD056 /* ar */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E1ADE0EA20A9EF6200D6AADC /* PrivacySettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettingsViewController.swift; sourceTree = "<group>"; };
 		E1AFA8C21E8E34230004A323 /* WordPressShare.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = WordPressShare.js; path = WordPressShareExtension/WordPressShare.js; sourceTree = SOURCE_ROOT; };
 		E1B23B071BFB3B370006559B /* MyProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
@@ -2924,8 +2967,8 @@
 		E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWebViewController.m; sourceTree = "<group>"; };
 		E1B642121EFA5113001DC6D7 /* ModelTestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelTestHelper.swift; sourceTree = "<group>"; };
 		E1B6A9CD1E54B6B2008FD47E /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1B6AA571E54B83D008FD47E /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1B6AA581E54B840008FD47E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1B6AA571E54B83D008FD47E /* ja */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1B6AA581E54B840008FD47E /* es */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E1B84EFF1E02E94D00BF6434 /* PingHubManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PingHubManager.swift; sourceTree = "<group>"; };
 		E1B912801BB00EFD003C25B9 /* People.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = People.storyboard; sourceTree = "<group>"; };
 		E1B912821BB01047003C25B9 /* PeopleRoleBadgeLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleRoleBadgeLabel.swift; sourceTree = "<group>"; };
@@ -2943,38 +2986,38 @@
 		E1C5457D1C6B962D001CEB0E /* MediaSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSettings.swift; sourceTree = "<group>"; };
 		E1C5457F1C6C79BB001CEB0E /* MediaSettingsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSettingsTests.swift; sourceTree = "<group>"; };
 		E1C5B2121E54C28C00052319 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2141E54C37800052319 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2151E54C37C00052319 /* bg */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = bg; path = bg.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2161E54C37F00052319 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2171E54C38200052319 /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2181E54C3A200052319 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2191E54C3A300052319 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B21A1E54C3A500052319 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B21B1E54C3A700052319 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B21C1E54C3A900052319 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B21D1E54C3AB00052319 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B21E1E54C3AC00052319 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B21F1E54C3AE00052319 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		E1C5B2201E54C3AF00052319 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2211E54C3B100052319 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2221E54C3B200052319 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2231E54C3B300052319 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		E1C5B2241E54C3B500052319 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2251E54C3B600052319 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2261E54C3B700052319 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2271E54C3B900052319 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2281E54C3BB00052319 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2291E54C3BC00052319 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B22A1E54C3C400052319 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		E1C5B22B1E54C3C500052319 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B22C1E54C3C700052319 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B22D1E54C3C800052319 /* en-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-CA"; path = "en-CA.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		E1C5B22E1E54C3CA00052319 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B22F1E54C3CC00052319 /* sq */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sq; path = sq.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2301E54C3CD00052319 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = is; path = is.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2311E54C3CF00052319 /* en-AU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-AU"; path = "en-AU.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		E1C5B2321E54C3D000052319 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
-		E1C5B2331E54C3E500052319 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E1C5B2141E54C37800052319 /* ar */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B2151E54C37C00052319 /* bg */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = bg; path = bg.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B2161E54C37F00052319 /* cs */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = cs; path = cs.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B2171E54C38200052319 /* cy */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = cy; path = cy.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B2181E54C3A200052319 /* ja */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B2191E54C3A300052319 /* fr */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B21A1E54C3A500052319 /* de */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B21B1E54C3A700052319 /* es */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B21C1E54C3A900052319 /* it */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B21D1E54C3AB00052319 /* pt */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B21E1E54C3AC00052319 /* sv */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B21F1E54C3AE00052319 /* zh-Hans */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E1C5B2201E54C3AF00052319 /* nb */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B2211E54C3B100052319 /* tr */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B2221E54C3B200052319 /* id */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = id; path = id.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B2231E54C3B300052319 /* zh-Hant */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E1C5B2241E54C3B500052319 /* hu */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = hu; path = hu.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B2251E54C3B600052319 /* pl */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B2261E54C3B700052319 /* ru */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B2271E54C3B900052319 /* da */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B2281E54C3BB00052319 /* th */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = th; path = th.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B2291E54C3BC00052319 /* nl */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B22A1E54C3C400052319 /* pt-BR */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E1C5B22B1E54C3C500052319 /* hr */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B22C1E54C3C700052319 /* he */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = he; path = he.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B22D1E54C3C800052319 /* en-CA */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = "en-CA"; path = "en-CA.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E1C5B22E1E54C3CA00052319 /* ro */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = ro; path = ro.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B22F1E54C3CC00052319 /* sq */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = sq; path = sq.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B2301E54C3CD00052319 /* is */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = is; path = is.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B2311E54C3CF00052319 /* en-AU */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = "en-AU"; path = "en-AU.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E1C5B2321E54C3D000052319 /* ko */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E1C5B2331E54C3E500052319 /* en-GB */ = {isa = PBXFileReference; explicitFileType = file.bplist; name = "en-GB"; path = "en-GB.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E1C807471696F72E00E545A6 /* WordPress 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 9.xcdatamodel"; sourceTree = "<group>"; };
 		E1C9AA501C10419200732665 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Math.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		E1C9AA551C10427100732665 /* MathTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathTest.swift; sourceTree = "<group>"; };
@@ -3707,6 +3750,7 @@
 				930C6374182BD86400976C21 /* WordPress-Internal-Info.plist */,
 				E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */,
 				8546B44C1BEAD3EC00193C07 /* Wordpress-Alpha-Info.plist */,
+				D82247F82113EF5C00918CEB /* News.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -3857,6 +3901,9 @@
 				E125F1E61E8E59C800320B67 /* SharePost+UIActivityItemSource.swift */,
 				E6311C421ECA017E00122529 /* UserProfile.swift */,
 				E6FACB1D1EC675E300284AC7 /* GravatarProfile.swift */,
+				43AF2F962107D3800069C012 /* QuickStartCompletedTour.swift */,
+				D816B8BD2112CC000052CE4D /* NewsItem.swift */,
+				D816B8C32112CFAE0052CE4D /* Result.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3937,7 +3984,7 @@
 				4395A1582106389800844E8E /* QuickStartTours.swift */,
 				4395A15A21066DCD00844E8E /* QuickStartChecklistCell.xib */,
 				4395A15C2106718900844E8E /* QuickStartChecklistCell.swift */,
-				43C9908D21067E22009EFFEB /* QuickStartChecklistView.swift */,
+				43C9908D21067E22009EFFEB /* QuickStartChecklistViewController.swift */,
 			);
 			name = QuickStart;
 			sourceTree = "<group>";
@@ -4072,6 +4119,7 @@
 		5D5A6E901B613C1800DAF819 /* Cards */ = {
 			isa = PBXGroup;
 			children = (
+				D816B8CB2112D4960052CE4D /* News Card */,
 				5D5A6E911B613CA400DAF819 /* ReaderPostCardCell.swift */,
 				5D5A6E921B613CA400DAF819 /* ReaderPostCardCell.xib */,
 				5D2B30B81B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift */,
@@ -4108,6 +4156,11 @@
 		5D7A577D1AFBFD7C0097C028 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D816B8D62112D75C0052CE4D /* NewsCardTests.swift */,
+				D816B8D02112D5960052CE4D /* DefaultNewsManagerTests.swift */,
+				D816B8C92112D2FD0052CE4D /* LocalNewsServiceTests.swift */,
+				D816B8C52112D0130052CE4D /* ResultTypeTests.swift */,
+				D816B8BF2112CC930052CE4D /* NewsItemTests.swift */,
 				D848CC1620FF38EA00A9038F /* FormattableCommentRangeTests.swift */,
 				D848CC1420FF33FC00A9038F /* NotificationContentRangeTests.swift */,
 				D800D87B20999CA200E7C7E5 /* SearchMenuItemCreatorTests.swift */,
@@ -4164,7 +4217,7 @@
 				17BB26AD1E6D8321008CD031 /* MediaLibraryViewController.swift */,
 				1782BE831E70063100A91E7D /* MediaItemViewController.swift */,
 				177074841FB209F100951A4A /* CircularProgressView.swift */,
-				7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */,
+				981D0929211259840014ECAF /* NoResultsViewController+MediaLibrary.swift */,
 				17D5C3F61FFCF2D800EB70FF /* MediaProgressCoordinatorNoticeViewModel.swift */,
 				1750BD6C201144DB0050F13A /* MediaNoticeNavigationCoordinator.swift */,
 				D80BC79B207464D200614A59 /* MediaLibraryMediaPickingCoordinator.swift */,
@@ -4478,6 +4531,7 @@
 				7EFF207F20EAC59D009C4699 /* Groups */,
 				7E7947A7210BABF5005BB851 /* Ranges */,
 				7E3E7A5E20E44E110075D159 /* Styles */,
+				CE46018A21139E8300F242B6 /* FooterTextContent.swift */,
 				7EFF208B20EADF68009C4699 /* FormattableCommentContent.swift */,
 				7EFF208520EAD918009C4699 /* FormattableUserContent.swift */,
 				73BFDA89211D054800907245 /* Notifiable.swift */,
@@ -4579,6 +4633,24 @@
 				7E4A773520F80146001C706D /* ActivityRangesFactory.swift */,
 			);
 			path = Factory;
+			sourceTree = "<group>";
+		};
+		7E58879820FE8D8300DB6F80 /* Environment */ = {
+			isa = PBXGroup;
+			children = (
+				7E58879D20FE954600DB6F80 /* Protocols */,
+				7E58879920FE8D9300DB6F80 /* Environment.swift */,
+			);
+			path = Environment;
+			sourceTree = "<group>";
+		};
+		7E58879D20FE954600DB6F80 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				7E58879F20FE956100DB6F80 /* AppRatingUtilityType.swift */,
+				7E9B90F721127CA400AF83E6 /* ContextManagerType.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		7E7947A6210BAB9F005BB851 /* Actions */ = {
@@ -4778,6 +4850,7 @@
 		8584FDB4192437160019C02E /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				7E58879820FE8D8300DB6F80 /* Environment */,
 				7E4123AB20F4096200DF8486 /* FormattableContent */,
 				1797373920EBDA1100377B4E /* Universal Links */,
 				984B4EF120742FB900F87888 /* Zendesk */,
@@ -5008,6 +5081,7 @@
 				1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */,
 				930284B618EAF7B600CB0BF4 /* LocalCoreDataService.h */,
 				FFC6ADD91B56F366002F3C84 /* LocalCoreDataService.m */,
+				D816B8C72112D2290052CE4D /* LocalNewsService.swift */,        
 				17876B1C1F9A131200F774C7 /* MediaCoordinator.swift */,
 				0815CF451E96F22600069916 /* MediaImportService.swift */,
 				5DA3EE141925090A00294E0B /* MediaService.h */,
@@ -5019,6 +5093,7 @@
 				087EBFA71F02313E001F7ACE /* MediaThumbnailService.swift */,
 				08AAD69D1CBEA47D002B2418 /* MenusService.h */,
 				08AAD69E1CBEA47D002B2418 /* MenusService.m */,
+				D816B8C12112CEBE0052CE4D /* NewsService.swift */,        
 				B5015C571D4FDBB300C9449E /* NotificationActionsService.swift */,
 				B5EFB1C11B31B98E007608A3 /* NotificationSettingsService.swift */,
 				73ACDF982114FE4500233AD4 /* NotificationSupportService.swift */,
@@ -6134,6 +6209,18 @@
 			name = ReaderPostActions;
 			sourceTree = "<group>";
 		};
+		D816B8CB2112D4960052CE4D /* News Card */ = {
+			isa = PBXGroup;
+			children = (
+				D816B8CC2112D4AA0052CE4D /* NewsManager.swift */,
+				D816B8CE2112D4F90052CE4D /* DefaultNewsManager.swift */,
+				D816B8D22112D6E70052CE4D /* NewsCard.swift */,
+				D816B8D32112D6E70052CE4D /* NewsCard.xib */,
+				D816B8D82112D85F0052CE4D /* News.swift */,
+			);
+			name = "News Card";
+			sourceTree = "<group>";
+		};
 		D816C1EA20E0884100C4D82F /* Actions */ = {
 			isa = PBXGroup;
 			children = (
@@ -6177,7 +6264,7 @@
 				D8A3A5B0206A49A100992576 /* StockPhotosMediaGroup.swift */,
 				D8A3A5B2206A49BF00992576 /* StockPhotosMedia.swift */,
 				D8A3A5B4206A4C7800992576 /* StockPhotosPicker.swift */,
-				D8A3A5B6206A563900992576 /* StockPhotosPlaceholder.swift */,
+				98F1B1292111017900139493 /* NoResultsViewController+StockPhotosPicker.swift */,
 				D80BC79D20746B4100614A59 /* MediaPickingContext.swift */,
 				D83CA3A420842CAF0060E310 /* Pageable.swift */,
 				D83CA3A620842CD90060E310 /* ResultsPage.swift */,
@@ -6425,6 +6512,7 @@
 				D88A64A9208D974D008AE9BC /* thumbnail-collection.json */,
 				D88A64AD208D9CF5008AE9BC /* stock-photos-pageable.json */,
 				D81C2F5520F86C20002AE1F1 /* NotificationActionsMocks.swift */,
+				D82247FA2113F50600918CEB /* News.strings */,
 			);
 			name = "Mock Data";
 			path = "Test Data";
@@ -7174,6 +7262,7 @@
 				E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */,
 				4395A15B21066DCD00844E8E /* QuickStartChecklistCell.xib in Resources */,
 				E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */,
+				D816B8D52112D6E70052CE4D /* NewsCard.xib in Resources */,
 				B5C66B7A1ACF074600F68370 /* NoteBlockUserTableViewCell.xib in Resources */,
 				E6D2E1631B8AAA340000ED14 /* ReaderListStreamHeader.xib in Resources */,
 				CE1CCB2F2050502B000EE3AC /* MyProfileHeaderView.xib in Resources */,
@@ -7187,6 +7276,7 @@
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
 				E1B912811BB00EFD003C25B9 /* People.storyboard in Resources */,
 				5D2FB2831AE98C4600F1D4ED /* RestorePostTableViewCell.xib in Resources */,
+				D82247F92113EF5C00918CEB /* News.strings in Resources */,
 				1724DDCC1C6121D00099D273 /* Plans.storyboard in Resources */,
 				40A2778120191B5E00D078D5 /* PluginDirectoryCollectionViewCell.xib in Resources */,
 				173BCE751CEB369900AE8817 /* Domains.storyboard in Resources */,
@@ -7287,6 +7377,7 @@
 				7E92828921090E9A00BBD8A3 /* notifications-pingback.json in Resources */,
 				93C882A11EEB18D700227A59 /* html_page_with_link_to_rsd_non_standard.html in Resources */,
 				8554088A1A6F107D00DDBD79 /* app-review-prompt-global-disable.json in Resources */,
+				D82247FB2113F50600918CEB /* News.strings in Resources */,
 				7E4A772B20F7E5FD001C706D /* activity-log-site-content.json in Resources */,
 				7EF2EEA0210A67B60007A76B /* notifications-unapproved-comment.json in Resources */,
 				748437EC1F1D4A4800E8DDAF /* gallery-reader-post-public.json in Resources */,
@@ -7688,6 +7779,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D816B8D42112D6E70052CE4D /* NewsCard.swift in Sources */,
 				B50C0C621EF42AF200372C65 /* TextList+WordPress.swift in Sources */,
 				B5722E421D51A28100F40C5E /* Notification.swift in Sources */,
 				B53971501D537763006135EC /* NotificationBlockGroup.swift in Sources */,
@@ -7805,6 +7897,7 @@
 				B5015C581D4FDBB300C9449E /* NotificationActionsService.swift in Sources */,
 				A0E293F10E21027E00C6919C /* WPAddPostCategoryViewController.m in Sources */,
 				E6BDEA731CE4824300682885 /* ReaderSearchTopic.swift in Sources */,
+				43AF2F972107D3810069C012 /* QuickStartCompletedTour.swift in Sources */,
 				5D5A6E931B613CA400DAF819 /* ReaderPostCardCell.swift in Sources */,
 				7E4123C020F4097B00DF8486 /* FormattableTextContent.swift in Sources */,
 				E10520581F2B1CC900A948F6 /* WordPress-61-62.xcmappingmodel in Sources */,
@@ -7845,6 +7938,7 @@
 				1750BD6D201144DB0050F13A /* MediaNoticeNavigationCoordinator.swift in Sources */,
 				E6ED09091D46AD29003283C4 /* ReaderFollowedSitesStreamHeader.swift in Sources */,
 				E66969E41B9E68B200EC9C00 /* ReaderPostToReaderPost37to38.swift in Sources */,
+				7E5887A020FE956100DB6F80 /* AppRatingUtilityType.swift in Sources */,
 				08216FD01CDBF96000304BA7 /* MenuItemSourceFooterView.m in Sources */,
 				17F0AE301F091563007D5A6B /* ConfettiView.swift in Sources */,
 				5DED0E181B432E0400431FCD /* SourcePostAttribution.m in Sources */,
@@ -8067,6 +8161,7 @@
 				D8212CB120AA64E1008E8AE8 /* ReaderLikeAction.swift in Sources */,
 				D8212CC920AA87E5008E8AE8 /* ReaderMenuAction.swift in Sources */,
 				593F26611CAB00CA00F14073 /* PostSharingController.swift in Sources */,
+				98F1B12A2111017A00139493 /* NoResultsViewController+StockPhotosPicker.swift in Sources */,
 				7360018F20A265C7001E5E31 /* String+Files.swift in Sources */,
 				FF70A3231FD5840500BC270D /* UIImage+Export.swift in Sources */,
 				D81322B32050F9110067714D /* NotificationName+Names.swift in Sources */,
@@ -8106,7 +8201,6 @@
 				5DF8D26119E82B1000A2CD95 /* ReaderCommentsViewController.m in Sources */,
 				7E3E7A6020E44E490075D159 /* FooterContentGroup.swift in Sources */,
 				59A3CADD1CD2FF0C009BFA1B /* BasePageListCell.m in Sources */,
-				D8A3A5B7206A563900992576 /* StockPhotosPlaceholder.swift in Sources */,
 				E114D79A153D85A800984182 /* WPError.m in Sources */,
 				5926E1E31AC4468300964783 /* WPCrashlytics.m in Sources */,
 				7E53AB0220FE5EAE005796FE /* ContentRouter.swift in Sources */,
@@ -8194,6 +8288,7 @@
 				741E22461FC0CC55007967AB /* UploadOperation.swift in Sources */,
 				7E442FCD20F6AB9C00DEACA5 /* ActivityRange.swift in Sources */,
 				FF0AAE0D1A16550D0089841D /* WPMediaProgressTableViewController.m in Sources */,
+				7E58879A20FE8D9300DB6F80 /* Environment.swift in Sources */,
 				591232691CCEAA5100B86207 /* AbstractPostListViewController.swift in Sources */,
 				E14200781C117A2E00B3B115 /* ManagedAccountSettings.swift in Sources */,
 				08B6D6F31C8F7DCE0052C52B /* PostType.m in Sources */,
@@ -8204,7 +8299,6 @@
 				B50421E91B68170F008EEA82 /* NoteUndoOverlayView.swift in Sources */,
 				B5D889411BEBE30A007C4684 /* BlogSettings.swift in Sources */,
 				5DF7F7781B223916003A05C8 /* PostToPost30To31.m in Sources */,
-				7E52B7181FC89F2400B55EB8 /* MediaNoResultsView.swift in Sources */,
 				1746D7771D2165AE00B11D77 /* ForcePopoverPresenter.swift in Sources */,
 				D858F30120E20106007E8A1C /* LikePost.swift in Sources */,
 				1703D04C20ECD93800D292E9 /* Routes+Post.swift in Sources */,
@@ -8238,6 +8332,7 @@
 				9872CB30203B8A730066A293 /* SignupEpilogueTableViewController.swift in Sources */,
 				E1B23B081BFB3B370006559B /* MyProfileViewController.swift in Sources */,
 				B5CC05F61962150600975CAC /* Constants.m in Sources */,
+				D816B8C82112D2290052CE4D /* LocalNewsService.swift in Sources */,
 				7E729C28209A087300F76599 /* ImageLoader.swift in Sources */,
 				5D146EBB189857ED0068FDC6 /* FeaturedImageViewController.m in Sources */,
 				D817799020ABF26800330998 /* ReaderCellConfiguration.swift in Sources */,
@@ -8285,6 +8380,7 @@
 				086103961EE09C91004D7C01 /* MediaVideoExporter.swift in Sources */,
 				E126C81F1F95FC1B00A5F464 /* PluginViewController.swift in Sources */,
 				E61084C11B9B47BA008050C5 /* ReaderSiteTopic.swift in Sources */,
+				D816B8CD2112D4AA0052CE4D /* NewsManager.swift in Sources */,
 				5DAE40AD19EC70930011A0AE /* ReaderPostHeaderView.m in Sources */,
 				B50C0C641EF42B3A00372C65 /* Header+WordPress.swift in Sources */,
 				17FCA6811FD84B4600DBA9C8 /* NoticeStore.swift in Sources */,
@@ -8337,11 +8433,13 @@
 				B53B02B31CAC3AAC003190A0 /* GravatarPickerViewController.swift in Sources */,
 				D81879D920ABC647000CFA95 /* ReaderTableConfiguration.swift in Sources */,
 				E6D2E1691B8AAD9B0000ED14 /* ReaderListStreamHeader.swift in Sources */,
+				981D092A211259840014ECAF /* NoResultsViewController+MediaLibrary.swift in Sources */,
 				D83CA3B02084CAAF0060E310 /* StockPhotosDataLoader.swift in Sources */,
 				E66969DA1B9E55AB00EC9C00 /* ReaderTopicToReaderTagTopic37to38.swift in Sources */,
 				D800D86620997C6E00E7C7E5 /* FollowingMenuItemCreator.swift in Sources */,
 				172797D91CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift in Sources */,
 				7EFF208A20EADCB6009C4699 /* NotificationTextContent.swift in Sources */,
+				D816B8CF2112D4F90052CE4D /* DefaultNewsManager.swift in Sources */,
 				B5176CC11CDCE1B90083CF2D /* ManagedPerson.swift in Sources */,
 				B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */,
 				08216FCA1CDBF96000304BA7 /* MenuItemEditingFooterView.m in Sources */,
@@ -8352,11 +8450,14 @@
 				08216FD11CDBF96000304BA7 /* MenuItemSourceResultsViewController.m in Sources */,
 				E1209FA41BB4978B00D69778 /* PeopleService.swift in Sources */,
 				E13A8C9B1C3E6EF2005BB1C1 /* ImmuTable+WordPress.swift in Sources */,
+				D816B8C42112CFAE0052CE4D /* Result.swift in Sources */,
 				B5899AE41B422D990075A3D6 /* NotificationSettings.swift in Sources */,
 				7E3E7A5720E44D130075D159 /* HeaderContentStyles.swift in Sources */,
 				403269922027719C00608441 /* PluginDirectoryAccessoryItem.swift in Sources */,
 				FFB1FAA01BF0EC4E0090C761 /* PHAsset+Exporters.swift in Sources */,
+				D816B8D92112D85F0052CE4D /* News.swift in Sources */,
 				8298F38F1EEF2B15008EB7F0 /* AppFeedbackPromptView.swift in Sources */,
+				D816B8C22112CEBE0052CE4D /* NewsService.swift in Sources */,
 				E1823E6C1E42231C00C19F53 /* UIEdgeInsets.swift in Sources */,
 				5D18FE9F1AFBB17400EFEED0 /* RestorePageTableViewCell.m in Sources */,
 				B54C02241F38F50100574572 /* String+RegEx.swift in Sources */,
@@ -8377,6 +8478,7 @@
 				9859DF86202107C600FB848E /* SiteCreationCategoryTableViewCells.swift in Sources */,
 				7435CE7320A4B9170075A1B9 /* AnimatedImageCache.swift in Sources */,
 				43AB7C5E1D3E70510066CB6A /* PostListFilterSettings.swift in Sources */,
+				CE46018B21139E8300F242B6 /* FooterTextContent.swift in Sources */,
 				B5EEDB971C91F10400676B2B /* Blog+Interface.swift in Sources */,
 				5D839AA8187F0D6B00811F4A /* PostFeaturedImageCell.m in Sources */,
 				171909E4206CFFCD0054DF0B /* FancyAlertViewController+Async.swift in Sources */,
@@ -8397,6 +8499,7 @@
 				B574CE151B5E8EA800A84FFD /* NSMutableAttributedString+Helpers.swift in Sources */,
 				B5416CF51C171D7100006DD8 /* PushNotificationsManager.swift in Sources */,
 				08216FCD1CDBF96000304BA7 /* MenuItemPagesViewController.m in Sources */,
+				7E9B90F821127CA400AF83E6 /* ContextManagerType.swift in Sources */,
 				43D54D131DCAA070007F575F /* PostPostViewController.swift in Sources */,
 				7E3E7A5B20E44D950075D159 /* RichTextContentStyles.swift in Sources */,
 				7E846FF120FD0A0500881F5A /* ContentCoordinator.swift in Sources */,
@@ -8422,7 +8525,7 @@
 				B518E1651CCAA19200ADFE75 /* Blog+Capabilities.swift in Sources */,
 				982BED9A1FBCF976000B848E /* SiteCreationNavigationController.swift in Sources */,
 				08216FC91CDBF96000304BA7 /* MenuItemCategoriesViewController.m in Sources */,
-				43C9908E21067E22009EFFEB /* QuickStartChecklistView.swift in Sources */,
+				43C9908E21067E22009EFFEB /* QuickStartChecklistViewController.swift in Sources */,
 				082635BB1CEA69280088030C /* MenuItemsViewController.m in Sources */,
 				822876F11E929CFD00696BF7 /* ReachabilityUtils+OnlineActions.swift in Sources */,
 				E15632CC1EB9ECF40035A099 /* TableViewKeyboardObserver.swift in Sources */,
@@ -8471,6 +8574,7 @@
 				E1B912831BB01047003C25B9 /* PeopleRoleBadgeLabel.swift in Sources */,
 				40FC6B7F2072E3EC00B9A1CD /* ActivityDetailViewController.swift in Sources */,
 				E16FB7E11F8B5D7D0004DD9F /* WebViewControllerConfiguration.swift in Sources */,
+				D816B8BE2112CC000052CE4D /* NewsItem.swift in Sources */,
 				B5416D011C17693B00006DD8 /* UIApplication+Helpers.m in Sources */,
 				08D345501CD7F50900358E8C /* MenusSelectionDetailView.m in Sources */,
 				591AA5021CEF9BF20074934F /* Post+CoreDataProperties.swift in Sources */,
@@ -8681,6 +8785,7 @@
 				5981FE051AB8A89A0009E080 /* WPUserAgentTests.m in Sources */,
 				08A2AD7B1CCED8E500E84454 /* PostCategoryServiceTests.m in Sources */,
 				D88A64A8208D9733008AE9BC /* ThumbnailCollectionTests.swift in Sources */,
+				D816B8D12112D5960052CE4D /* DefaultNewsManagerTests.swift in Sources */,
 				748437EE1F1D4A7300E8DDAF /* RichContentFormatterTests.swift in Sources */,
 				D88A649E208D82D2008AE9BC /* XCTestCase+Wait.swift in Sources */,
 				7E53AB0420FE6681005796FE /* ActivityContentRouterTests.swift in Sources */,
@@ -8718,6 +8823,7 @@
 				7E987F58210811CC00CAFB88 /* NotificationContentRouterTests.swift in Sources */,
 				E1C9AA561C10427100732665 /* MathTest.swift in Sources */,
 				93A379EC19FFBF7900415023 /* KeychainTest.m in Sources */,
+				D816B8C62112D0130052CE4D /* ResultTypeTests.swift in Sources */,
 				D800D874209997DB00E7C7E5 /* FollowingMenuItemCreatorTests.swift in Sources */,
 				E1A7CA4B1CC9FD7800373E06 /* StoreCoordinatorTests.swift in Sources */,
 				D821C817210036D9002ED995 /* ActivityContentFactoryTests.swift in Sources */,
@@ -8728,6 +8834,7 @@
 				7E4A772F20F7FDF8001C706D /* ActivityLogTestData.swift in Sources */,
 				B59D40A61DB522DF003D2D79 /* NSAttributedStringTests.swift in Sources */,
 				93E9050719E6F3D8005513C9 /* TestContextManager.m in Sources */,
+				D816B8D72112D75C0052CE4D /* NewsCardTests.swift in Sources */,
 				D809E686203F0215001AA0DE /* ReaderPostCardCellTests.swift in Sources */,
 				40E4698F2017E0700030DB5F /* PluginDirectoryEntryStateTests.swift in Sources */,
 				D848CC1920FF3A2400A9038F /* FormattableNotIconTests.swift in Sources */,
@@ -8757,12 +8864,14 @@
 				E10F3DA11E5C2CE0008FAADA /* PostListFilterTests.swift in Sources */,
 				93EF094C19ED533500C89770 /* ContextManagerTests.swift in Sources */,
 				D800D87820999B6D00E7C7E5 /* LikedMenuItemCreatorTests.swift in Sources */,
+				D816B8CA2112D2FD0052CE4D /* LocalNewsServiceTests.swift in Sources */,
 				D800D87A20999C0500E7C7E5 /* OtherMenuItemCreatorTests.swift in Sources */,
 				B5552D821CD1061F00B26DF6 /* StringExtensionsTests.swift in Sources */,
 				08AAD6A11CBEA610002B2418 /* MenusServiceTests.m in Sources */,
 				BEA0E4851BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift in Sources */,
 				D81C2F5820F86CEA002AE1F1 /* NetworkStatus.swift in Sources */,
 				E1C545801C6C79BB001CEB0E /* MediaSettingsTests.swift in Sources */,
+				D816B8C02112CC930052CE4D /* NewsItemTests.swift in Sources */,
 				7E987F5A2108122A00CAFB88 /* NotificationUtility.swift in Sources */,
 				7E442FC720F677CB00DEACA5 /* ActivityLogRangesTest.swift in Sources */,
 				D80EE63A203DEE1B0094C34C /* ReaderFollowedSitesStreamHeaderTests.swift in Sources */,
@@ -11188,6 +11297,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				43C8831B211A47DB003125C7 /* WordPress 78.xcdatamodel */,
 				E699E530210BB719008ED8A7 /* WordPress 77.xcdatamodel */,
 				17F2A5D020ACC70D00F0BE10 /* WordPress 76.xcdatamodel */,
 				17E553B520910791000D3005 /* WordPress 75.xcdatamodel */,
@@ -11266,7 +11376,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = E699E530210BB719008ED8A7 /* WordPress 77.xcdatamodel */;
+			currentVersion = 43C8831B211A47DB003125C7 /* WordPress 78.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
