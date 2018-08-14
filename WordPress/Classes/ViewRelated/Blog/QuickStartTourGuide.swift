@@ -6,7 +6,7 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
 
     public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         switch viewController {
-        case is StatsViewController:
+        case is QuickStartChecklistViewController:
             dismissTestQuickStartNotice()
         default:
             break
