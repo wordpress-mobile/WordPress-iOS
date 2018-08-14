@@ -594,13 +594,14 @@ private extension PostListViewController {
     func handleRefreshNoResultsViewController(_ noResultsViewController: NoResultsViewController) {
 
         guard connectionAvailable() else {
-            noResultsViewController.configure(title: noConnectionMessage())
+            noResultsViewController.configure(title: noConnectionMessage(),
+                                              image: noResultsImageName)
             return
         }
 
         noResultsViewController.configure(title: noResultsTitle(),
                                           buttonTitle: noResultsButtonTitle(),
-                                          image: "posts-no-results",
+                                          image: noResultsImageName,
                                           accessoryView: noResultsAccessoryView())
     }
 
@@ -611,6 +612,10 @@ private extension PostListViewController {
         }
 
         return nil
+    }
+
+    var noResultsImageName: String {
+        return "posts-no-results"
     }
 
     func noResultsButtonTitle() -> String? {
