@@ -4138,6 +4138,7 @@
 		5DA5BF4A18E32DE2005F11F9 /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				D8A3A5AD206A059100992576 /* Stock Photos */,
 				FF8A04DF1D9BFE7400523BC4 /* CachedAnimatedImageView.swift */,
 				7435CE7220A4B9170075A1B9 /* AnimatedImageCache.swift */,
 				B5FF3BE61CAD881100C1D597 /* ImageCropOverlayView.swift */,
@@ -5180,7 +5181,6 @@
 		B50C0C441EF429D500372C65 /* Aztec */ = {
 			isa = PBXGroup;
 			children = (
-				D8A3A5AD206A059100992576 /* Stock Photos */,
 				40F88F651F86C27600AE3FAF /* Helpers */,
 				B50C0C601EF42ADE00372C65 /* Extensions */,
 				B50C0C581EF42A2600372C65 /* Media */,
