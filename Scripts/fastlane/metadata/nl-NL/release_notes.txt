@@ -1,3 +1,4 @@
-Activiteitenlog! Je kunt nu precies zien wat er allemaal gebeurt op je site.
-Ondersteuning voor bewegende gifs toegevoegd aan de Reader en Mediakiezer.
-Een aantal UI-tweaks, toegankelijkheidsverbeteringen en bugfixes.
+Je kunt nu eenvoudig vanuit WordPress.com in Safari doorgaan met dezelfde content in de WordPress voor iOS-app. Let op de banner bovenaan de WordPress.com-pagina's!
+Activiteitenlogboeken zijn nu beschikbaar voor gratis WordPress.com-sites.
+Een aantal kleine UI-verbeteringen.
+Een paar bugfixes.

@@ -50,8 +50,10 @@ class BodyContentGroup: FormattableContentGroup {
             if let commentContent = block as? NotificationTextContent,
                 let parentReplyID = parent.metaReplyID,
                 commentContent.formattableContentRangeWithCommentId(parentReplyID) != nil {
-
-                groups.append(FooterContentGroup(blocks: [block]))
+                if let text = block.text {
+                    let footerContent = FooterTextContent(text: text, ranges: block.ranges, actions: block.actions)
+                    groups.append(FooterContentGroup(blocks: [footerContent]))
+                }
             } else {
                 groups.append(FormattableContentGroup(blocks: [block], kind: .text))
             }

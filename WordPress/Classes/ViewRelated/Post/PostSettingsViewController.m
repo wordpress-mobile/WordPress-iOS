@@ -88,7 +88,7 @@ FeaturedImageViewControllerDelegate>
 @property (nonatomic, strong) PostGeolocationCell *postGeoLocationCell;
 @property (nonatomic, strong) WPTableViewCell *setGeoLocationCell;
 
-@property (nonatomic, strong) MediaNoResultsView *noResultsView;
+@property (nonatomic, strong) NoResultsViewController *noResultsView;
 @property (nonatomic, strong) NSObject *mediaLibraryChangeObserverKey;
 
 #pragma mark - Properties: Services
@@ -148,7 +148,6 @@ FeaturedImageViewControllerDelegate>
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
     [self.tableView registerClass:[WPProgressTableViewCell class] forCellReuseIdentifier:TableViewProgressCellIdentifier];
     [self.tableView registerClass:[PostFeaturedImageCell class] forCellReuseIdentifier:TableViewFeaturedImageCellIdentifier];
-
 
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 44.0)]; // add some vertical padding
 
@@ -1350,10 +1349,10 @@ FeaturedImageViewControllerDelegate>
     return NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.");
 }
 
-- (MediaNoResultsView *)noResultsView
+- (NoResultsViewController *)noResultsView
 {
     if (!_noResultsView) {
-        _noResultsView = [[MediaNoResultsView alloc] init];
+        _noResultsView = [NoResultsViewController controller];
     }
     return _noResultsView;
 }
@@ -1369,7 +1368,8 @@ FeaturedImageViewControllerDelegate>
         BOOL hasNoAsset = [weakSelf.mediaDataSource numberOfAssets] == 0;
 
         if (hasNoAsset && isNotSearching) {
-            [weakSelf.noResultsView updateForNoMediaAssetsShowingUploadMediaButton:NO];
+            [weakSelf.noResultsView removeFromView];
+            [weakSelf.noResultsView configureForNoAssetsWithUserCanUploadMedia:NO];
         }
     }];
 }
@@ -1451,7 +1451,7 @@ FeaturedImageViewControllerDelegate>
 
 #pragma mark - WPMediaPickerViewControllerDelegate methods
 
-- (UIView *)emptyViewForMediaPickerController:(WPMediaPickerViewController *)picker
+- (UIViewController *)emptyViewControllerForMediaPickerController:(WPMediaPickerViewController *)picker
 {
     return self.noResultsView;
 }
@@ -1459,19 +1459,21 @@ FeaturedImageViewControllerDelegate>
 - (void)mediaPickerControllerWillBeginLoadingData:(WPMediaPickerViewController *)picker
 {
     [self updateSearchBarForPicker:picker];
-    [self.noResultsView updateForFetching];
+    [self.noResultsView configureForFetching];
 }
 
 - (void)mediaPickerControllerDidEndLoadingData:(WPMediaPickerViewController *)picker
 {
     [self updateSearchBarForPicker:picker];
-    [self.noResultsView updateForNoMediaAssetsShowingUploadMediaButton:NO];
+    [self.noResultsView removeFromView];
+    [self.noResultsView configureForNoAssetsWithUserCanUploadMedia:NO];
 }
 
 - (void)mediaPickerController:(WPMediaPickerViewController *)picker didUpdateSearchWithAssetCount:(NSInteger)assetCount
 {
     if (self.mediaDataSource.searchQuery) {
-        [self.noResultsView updateForNoSearchResultWith:self.mediaDataSource.searchQuery];
+        [self.noResultsView removeFromView];
+        [self.noResultsView configureForNoSearchResultWith:self.mediaDataSource.searchQuery];
     }
 }
 
