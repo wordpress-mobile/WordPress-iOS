@@ -34,7 +34,7 @@ final class GiphyPicker: NSObject {
     }()
 
     func presentPicker(origin: UIViewController, blog: Blog) {
-        NoResultsStockPhotosConfiguration.configureAsIntro(searchHint)
+        NoResultsGiphyConfiguration.configureAsIntro(searchHint)
         self.blog = blog
 
         origin.present(picker, animated: true) {
@@ -54,16 +54,16 @@ final class GiphyPicker: NSObject {
     private func updateHintView() {
         searchHint.removeFromView()
         if shouldShowNoResults() {
-            NoResultsStockPhotosConfiguration.configure(searchHint, asNoSearchResultsFor: dataSource.searchQuery)
+            NoResultsGiphyConfiguration.configure(searchHint, asNoSearchResultsFor: dataSource.searchQuery)
         } else {
-            NoResultsStockPhotosConfiguration.configureAsIntro(searchHint)
+            NoResultsGiphyConfiguration.configureAsIntro(searchHint)
         }
     }
 }
 
 extension GiphyPicker: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
-        guard let giphyMedia = assets as? [GiphyMedia] else {
+        guard let _ = assets as? [GiphyMedia] else {
             assertionFailure("assets should be of type `[GiphyMedia]`")
             return
         }

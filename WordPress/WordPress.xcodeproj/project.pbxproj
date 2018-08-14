@@ -138,6 +138,7 @@
 		173BCE731CEB368A00AE8817 /* DomainsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173BCE721CEB368A00AE8817 /* DomainsListViewController.swift */; };
 		173BCE751CEB369900AE8817 /* Domains.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 173BCE741CEB369900AE8817 /* Domains.storyboard */; };
 		173BCE791CEB780800AE8817 /* Domain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173BCE781CEB780800AE8817 /* Domain.swift */; };
+		173F6DFC21232F2A00A4C8E2 /* NoResultsGiphyConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173F6DFB21232F2A00A4C8E2 /* NoResultsGiphyConfiguration.swift */; };
 		1746D7771D2165AE00B11D77 /* ForcePopoverPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1746D7761D2165AE00B11D77 /* ForcePopoverPresenter.swift */; };
 		174C9697205A846E00CEEF6E /* PostNoticeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 174C9696205A846E00CEEF6E /* PostNoticeViewModel.swift */; };
 		1750BD6D201144DB0050F13A /* MediaNoticeNavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1750BD6C201144DB0050F13A /* MediaNoticeNavigationCoordinator.swift */; };
@@ -1614,6 +1615,7 @@
 		173BCE721CEB368A00AE8817 /* DomainsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsListViewController.swift; sourceTree = "<group>"; };
 		173BCE741CEB369900AE8817 /* Domains.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Domains.storyboard; sourceTree = "<group>"; };
 		173BCE781CEB780800AE8817 /* Domain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Domain.swift; sourceTree = "<group>"; };
+		173F6DFB21232F2A00A4C8E2 /* NoResultsGiphyConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoResultsGiphyConfiguration.swift; sourceTree = "<group>"; };
 		1746D7761D2165AE00B11D77 /* ForcePopoverPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForcePopoverPresenter.swift; sourceTree = "<group>"; };
 		174C9696205A846E00CEEF6E /* PostNoticeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNoticeViewModel.swift; sourceTree = "<group>"; };
 		1750BD6C201144DB0050F13A /* MediaNoticeNavigationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaNoticeNavigationCoordinator.swift; sourceTree = "<group>"; };
@@ -3589,6 +3591,7 @@
 				177B4C282123181400CF8084 /* GiphyDataSource.swift */,
 				177B4C2A2123185300CF8084 /* GiphyMediaGroup.swift */,
 				177B4C2C2123192200CF8084 /* GiphyMedia.swift */,
+				173F6DFB21232F2A00A4C8E2 /* NoResultsGiphyConfiguration.swift */,
 			);
 			path = Giphy;
 			sourceTree = "<group>";
@@ -8381,6 +8384,7 @@
 				4319AADE2090F00C0025D68E /* FancyAlertViewController+NotificationPrimer.swift in Sources */,
 				E1CECE021E6EC7A8009C6695 /* FakePreviewBuilder.swift in Sources */,
 				171963401D378D5100898E8B /* SearchWrapperView.swift in Sources */,
+				173F6DFC21232F2A00A4C8E2 /* NoResultsGiphyConfiguration.swift in Sources */,
 				0815CF461E96F22600069916 /* MediaImportService.swift in Sources */,
 				B56F25881FBDE502005C33E4 /* NSAttributedStringKey+Conversion.swift in Sources */,
 				D8212CBD20AA7A7A008E8AE8 /* ReaderVisitSiteAction.swift in Sources */,
