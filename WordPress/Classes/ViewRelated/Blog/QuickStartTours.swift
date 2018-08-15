@@ -8,8 +8,14 @@ protocol QuickStartTour {
 }
 
 fileprivate enum Constants {
-    static let iconOffset: CGFloat = -1.0
+    static let iconOffset: CGFloat = 1.0
+    static let iconSize: CGFloat = 16.0
     static let highlightColor = WPStyleGuide.lightBlue()
+    static var highlightFont: UIFont {
+        get {
+            return WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
+        }
+    }
 }
 
 
@@ -26,10 +32,10 @@ extension QuickStartTour {
 
         let iconAttachment = NSTextAttachment()
         iconAttachment.image = icon.imageWithTintColor(Constants.highlightColor)
-        iconAttachment.bounds = CGRect(x: 0.0, y: font.descender + Constants.iconOffset, width: icon.size.width, height: icon.size.height)
+        iconAttachment.bounds = CGRect(x: 0.0, y: font.descender + Constants.iconOffset, width: Constants.iconSize, height: Constants.iconSize)
         let iconStr = NSAttributedString(attachment: iconAttachment)
 
-        let highlightStr = NSAttributedString(string: highlight, attributes: [.foregroundColor: Constants.highlightColor])
+        let highlightStr = NSAttributedString(string: highlight, attributes: [.foregroundColor: Constants.highlightColor, .font: Constants.highlightFont])
 
         switch UIView.userInterfaceLayoutDirection(for: .unspecified) {
         case .rightToLeft:
