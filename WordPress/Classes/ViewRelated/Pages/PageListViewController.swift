@@ -129,41 +129,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.scrollIndicatorInsets.top = searchController.searchBar.bounds.height
     }
 
-    fileprivate func noResultsTitles() -> [PostListFilter.Status: String] {
-        if isSearching() {
-            return noResultsTitlesWhenSearching()
-        } else {
-            return noResultsTitlesWhenFiltering()
-        }
-    }
-
-    fileprivate func noResultsTitlesWhenSearching() -> [PostListFilter.Status: String] {
-
-        let draftMessage = String(format: NSLocalizedString("No drafts match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
-        let scheduledMessage = String(format: NSLocalizedString("No scheduled pages match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
-        let trashedMessage = String(format: NSLocalizedString("No trashed pages match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
-        let publishedMessage = String(format: NSLocalizedString("No pages match your search for %@", comment: "The '%@' is a placeholder for the search term."), currentSearchTerm()!)
-
-        return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
-    }
-
-    fileprivate func noResultsTitlesWhenFiltering() -> [PostListFilter.Status: String] {
-
-        let draftMessage = NSLocalizedString("You don't have any drafts.", comment: "Displayed when the user views drafts in the pages list and there are no pages")
-        let scheduledMessage = NSLocalizedString("You don't have any scheduled pages.", comment: "Displayed when the user views scheduled pages in the pages list and there are no pages")
-        let trashedMessage = NSLocalizedString("You don't have any pages in your trash folder.", comment: "Displayed when the user views trashed in the pages list and there are no pages")
-        let publishedMessage = NSLocalizedString("You haven't published any pages yet.", comment: "Displayed when the user views published pages in the pages list and there are no pages")
-
-        return noResultsTitles(draftMessage, scheduled: scheduledMessage, trashed: trashedMessage, published: publishedMessage)
-    }
-
-    fileprivate func noResultsTitles(_ draft: String, scheduled: String, trashed: String, published: String) -> [PostListFilter.Status: String] {
-        return [.draft: draft,
-                .scheduled: scheduled,
-                .trashed: trashed,
-                .published: published]
-    }
-
     override func configureAuthorFilter() {
         // Noop
     }
@@ -637,7 +602,6 @@ private extension PageListViewController {
 
         noResultsViewController.configure(title: noResultsTitle(),
                                           buttonTitle: noResultsButtonTitle(),
-                                          subtitle: noResultsMessage(),
                                           image: noResultsImageName,
                                           accessoryView: noResultsAccessoryView())
     }
@@ -655,48 +619,49 @@ private extension PageListViewController {
         return "pages-no-results"
     }
 
-    func noResultsButtonTitle() -> String {
+    func noResultsButtonTitle() -> String? {
         if syncHelper.isSyncing == true || isSearching() {
-            return ""
+            return nil
         }
 
         let filterType = filterSettings.currentPostListFilter().filterType
-
-        switch filterType {
-        case .trashed:
-            return ""
-        default:
-            return NSLocalizedString("Start a Page", comment: "Button title, encourages users to create their first page on their blog.")
-        }
+        return filterType == .trashed ? nil : NoResultsText.buttonTitle
     }
 
     func noResultsTitle() -> String {
         if syncHelper.isSyncing == true {
-            return NSLocalizedString("Fetching pages...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.")
+            return NoResultsText.fetchingTitle
         }
 
-        let filter = filterSettings.currentPostListFilter()
-        let titles = noResultsTitles()
-        let title = titles[filter.filterType]
-        return title ?? ""
+        if isSearching() {
+            return NoResultsText.noMatchesTitle
+        }
+
+        return noResultsFilteredTitle()
     }
 
-    func noResultsMessage() -> String {
-        if syncHelper.isSyncing == true || isSearching() {
-            return ""
-        }
-
+    func noResultsFilteredTitle() -> String {
         let filterType = filterSettings.currentPostListFilter().filterType
-
         switch filterType {
         case .draft:
-            return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views drafts in the pages list and there are no pages")
+            return NoResultsText.noDraftsTitle
         case .scheduled:
-            return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views scheduled pages in the pages list and there are no pages")
+            return NoResultsText.noScheduledTitle
         case .trashed:
-            return NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed pages in the pages list and there are no pages")
-        default:
-            return NSLocalizedString("Would you like to publish your first page?", comment: "Displayed when the user views published pages in the pages list and there are no pages")
+            return NoResultsText.noTrashedTitle
+        case .published:
+            return NoResultsText.noPublishedTitle
         }
     }
+
+    struct NoResultsText {
+        static let buttonTitle = NSLocalizedString("Create a Page", comment: "Button title, encourages users to create their first page on their blog.")
+        static let fetchingTitle = NSLocalizedString("Fetching pages...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.")
+        static let noMatchesTitle = NSLocalizedString("No pages matching your search", comment: "Displayed when the user is searching the pages list and there are no matching pages")
+        static let noDraftsTitle = NSLocalizedString("You don't have any draft pages", comment: "Displayed when the user views drafts in the pages list and there are no pages")
+        static let noScheduledTitle = NSLocalizedString("You don't have any scheduled pages", comment: "Displayed when the user views scheduled pages in the pages list and there are no pages")
+        static let noTrashedTitle = NSLocalizedString("You don't have any binned pages", comment: "Displayed when the user views trashed in the pages list and there are no pages")
+        static let noPublishedTitle = NSLocalizedString("You haven't published any pages yet", comment: "Displayed when the user views published pages in the pages list and there are no pages")
+    }
+
 }
