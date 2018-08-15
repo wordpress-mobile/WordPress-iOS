@@ -41,7 +41,7 @@ class NotificationService: UNNotificationServiceExtension {
         self.notificationService = service
 
         let identifiers = [ String(noteID) ]
-        service.loadNotes(noteIds: identifiers) { error, notifications in
+        service.loadNotes(noteIds: identifiers) { [tracks] error, notifications in
             defer {
                 contentHandler(notificationContent)
             }
@@ -70,6 +70,8 @@ class NotificationService: UNNotificationServiceExtension {
 
                     notificationContent.body = notificationText
                 }
+
+                tracks.trackNotificationAssembled()
             }
         }
     }
