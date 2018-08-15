@@ -28,6 +28,19 @@ extension Tracks {
         trackEvent(ServiceExtensionEvents.launched, properties: properties as [String: AnyObject]?)
     }
 
+    /// Tracks the failure to retrieve a notification via the REST API.
+    ///
+    /// - Parameters:
+    ///   - notificationIdentifier: the value of the `note_id` from the APNS payload
+    ///   - errorDescription: description of the error encountered, ideally localized
+    func trackNotificationRetrievalFailed(notificationIdentifier: Int, errorDescription: String) {
+        let properties = [
+            "note_id": String(notificationIdentifier),
+            "error": errorDescription
+        ]
+        trackEvent(ServiceExtensionEvents.failed, properties: properties as [String: AnyObject]?)
+    }
+
     /// Tracks the successful retrieval & assembly of a rich notification.
     func trackNotificationAssembled() {
         trackEvent(ServiceExtensionEvents.assembled)
