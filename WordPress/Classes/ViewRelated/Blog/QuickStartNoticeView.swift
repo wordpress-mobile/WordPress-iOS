@@ -7,6 +7,8 @@ class QuickStartNoticeView: UIView, DismissableNoticeView {
     private let yesButton = UIButton(type: .system)
     private let noButton = UIButton(type: .system)
     private let formattedMessage: NSAttributedString?
+    private let shadowLayer = CAShapeLayer()
+    private let shadowMaskLayer = CAShapeLayer()
 
     private let notice: Notice
 
@@ -17,6 +19,7 @@ class QuickStartNoticeView: UIView, DismissableNoticeView {
         super.init(frame: .zero)
 
         configureBackgroundViews()
+        configureShadow()
         configureContentStackView()
         configureLabels()
         configureForNotice()
@@ -27,6 +30,12 @@ class QuickStartNoticeView: UIView, DismissableNoticeView {
     }
 
     var dismissHandler: (() -> Void)?
+
+    override var bounds: CGRect {
+        didSet {
+            updateShadowPath()
+        }
+    }
 }
 private extension QuickStartNoticeView {
 
@@ -50,6 +59,36 @@ private extension QuickStartNoticeView {
 
         backgroundContainerView.layer.cornerRadius = Metrics.cornerRadius
         backgroundContainerView.layer.masksToBounds = true
+    }
+
+    private func configureShadow() {
+        shadowLayer.shadowPath = UIBezierPath(roundedRect: layer.bounds, cornerRadius: Metrics.cornerRadius).cgPath
+        shadowLayer.shadowColor = ShadowAppearance.shadowColor.cgColor
+        shadowLayer.shadowOpacity = ShadowAppearance.shadowOpacity
+        shadowLayer.shadowRadius = ShadowAppearance.shadowRadius
+        shadowLayer.shadowOffset = ShadowAppearance.shadowOffset
+        layer.insertSublayer(shadowLayer, at: 0)
+
+        shadowMaskLayer.fillRule = kCAFillRuleEvenOdd
+        shadowLayer.mask = shadowMaskLayer
+
+        updateShadowPath()
+    }
+
+    private func updateShadowPath() {
+        let shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: Metrics.cornerRadius).cgPath
+        shadowLayer.shadowPath = shadowPath
+
+        // Construct a mask path with the notice's roundrect cut out of a larger padding rect.
+        // This, combined with the `kCAFillRuleEvenOdd` gives us an inverted mask, so
+        // the shadow only appears _outside_ of the notice roundrect, and doesn't appear underneath
+        // and obscure the blur visual effect view.
+        let maskPath = CGMutablePath()
+        let leftInset = Metrics.layoutMargins.left * 2
+        let topInset = Metrics.layoutMargins.top * 2
+        maskPath.addRect(bounds.insetBy(dx: -leftInset, dy: -topInset))
+        maskPath.addPath(shadowPath)
+        shadowMaskLayer.path = maskPath
     }
 
     func configureLabels() {
@@ -109,5 +148,12 @@ private extension QuickStartNoticeView {
         static let cornerRadius: CGFloat = 14.0
         static let layoutMargins = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
         static let labelLineSpacing: CGFloat = 18.0
+    }
+
+    enum ShadowAppearance {
+        static let shadowColor: UIColor = .black
+        static let shadowOpacity: Float = 0.25
+        static let shadowRadius: CGFloat = 8.0
+        static let shadowOffset = CGSize(width: 0.0, height: 2.0)
     }
 }
