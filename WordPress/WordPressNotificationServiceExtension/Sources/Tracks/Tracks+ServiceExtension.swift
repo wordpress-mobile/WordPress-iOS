@@ -28,6 +28,11 @@ extension Tracks {
         trackEvent(ServiceExtensionEvents.launched, properties: properties as [String: AnyObject]?)
     }
 
+    /// Tracks the successful retrieval & assembly of a rich notification.
+    func trackNotificationAssembled() {
+        trackEvent(ServiceExtensionEvents.assembled)
+    }
+
     /// Utility method to capture an event & submit it to Tracks.
     ///
     /// - Parameters:
