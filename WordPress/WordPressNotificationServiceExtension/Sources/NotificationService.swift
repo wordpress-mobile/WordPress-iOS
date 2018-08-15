@@ -47,7 +47,7 @@ class NotificationService: UNNotificationServiceExtension {
             }
 
             if let error = error {
-                debugPrint("Unable to retrieve notifications for Note ID : \(noteID) | Error : \(error.localizedDescription)")
+                tracks.trackNotificationRetrievalFailed(notificationIdentifier: noteID, errorDescription: error.localizedDescription)
                 return
             }
 
