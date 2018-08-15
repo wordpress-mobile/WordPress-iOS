@@ -55,7 +55,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                 return nil
         }
 
-        return self.controllerWithBlog(restoredBlog)
+        return controllerWithBlog(restoredBlog)
     }
 
     // MARK: - UIStateRestoring
@@ -562,7 +562,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     override func willPresentSearchController(_ searchController: UISearchController) {
         super.willPresentSearchController(searchController)
 
-        self.filterTabBar.alpha = WPAlphaZero
+        filterTabBar.alpha = WPAlphaZero
         filterTabBarBottomConstraint.isActive = false
         tableViewTopConstraint.isActive = true
     }
