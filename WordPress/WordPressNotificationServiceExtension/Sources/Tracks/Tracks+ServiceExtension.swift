@@ -28,6 +28,17 @@ extension Tracks {
         trackEvent(ServiceExtensionEvents.launched, properties: properties as [String: AnyObject]?)
     }
 
+    /// Tracks that a notification type was discarded due to lack of support.
+    /// It will still be delivered as before, but not as a rich notification.
+    ///
+    /// - Parameter notificationType: the value of the `note_id` from the APNS payload
+    func trackNotificationDiscarded(notificationType: String) {
+        let properties = [
+            "note_type": notificationType
+        ]
+        trackEvent(ServiceExtensionEvents.discarded, properties: properties as [String: AnyObject]?)
+    }
+
     /// Tracks the failure to retrieve a notification via the REST API.
     ///
     /// - Parameters:
