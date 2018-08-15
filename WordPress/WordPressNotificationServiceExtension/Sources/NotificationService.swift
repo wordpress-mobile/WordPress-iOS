@@ -6,6 +6,8 @@ class NotificationService: UNNotificationServiceExtension {
 
     // MARK: Properties
 
+    private let tracks = Tracks(appGroupName: WPAppGroupName)
+
     private var notificationService: NotificationSyncServiceRemote?
 
     private var contentHandler: ((UNNotificationContent) -> Void)?
@@ -17,12 +19,15 @@ class NotificationService: UNNotificationServiceExtension {
         self.contentHandler = contentHandler
         self.bestAttemptContent = request.content.mutableCopy() as? UNMutableNotificationContent
 
+        let token = readExtensionToken()
+        tracks.trackExtensionLaunched(token != nil)
+
         guard
             let notificationContent = self.bestAttemptContent,
             let noteID = notificationContent.userInfo["note_id"] as? Int,
             let aps = notificationContent.userInfo["aps"] as? NSDictionary,
             let apsAlert = aps["alert"] as? String,
-            let token = readExtensionToken()
+            token != nil
         else
         {
             contentHandler(request.content)

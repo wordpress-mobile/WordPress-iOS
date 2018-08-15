@@ -15,6 +15,25 @@ private enum ServiceExtensionEvents: String {
     case assembled  = "wpios_notification_service_extension_assembled"
 }
 
-// MARK: - Support for tracking notification service extension support.
+// MARK: - Supports tracking notification service extension events.
 
-extension Tracks {}
+extension Tracks {
+    /// Tracks the successful launch of the notification service extension.
+    ///
+    /// - Parameter wpcomAvailable: `true` if an OAuth token exists, `false` otherwise
+    func trackExtensionLaunched(_ wpcomAvailable: Bool) {
+        let properties = [
+            "is_configured_dotcom": wpcomAvailable
+        ]
+        trackEvent(ServiceExtensionEvents.launched, properties: properties as [String: AnyObject]?)
+    }
+
+    /// Utility method to capture an event & submit it to Tracks.
+    ///
+    /// - Parameters:
+    ///   - event: the event to track
+    ///   - properties: any accompanying metadata
+    private func trackEvent(_ event: ServiceExtensionEvents, properties: [String: AnyObject]? = nil) {
+        track(event.rawValue, properties: properties)
+    }
+}
