@@ -288,8 +288,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             self?.refreshControl?.endRefreshing()
         }
 
+        hideNoResultsView()
         if tableViewHandler.resultsController.fetchedObjects?.count > 0 {
-            hideNoResultsView()
             if forcingNetworkAlerts {
                 presentNoNetworkAlert()
             }
