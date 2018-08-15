@@ -630,13 +630,15 @@ private extension PageListViewController {
     func handleRefreshNoResultsViewController(_ noResultsViewController: NoResultsViewController) {
 
         guard connectionAvailable() else {
-            noResultsViewController.configure(title: noConnectionMessage())
+            noResultsViewController.configure(title: noConnectionMessage(),
+                                              image: noResultsImageName)
             return
         }
 
         noResultsViewController.configure(title: noResultsTitle(),
                                           buttonTitle: noResultsButtonTitle(),
                                           subtitle: noResultsMessage(),
+                                          image: noResultsImageName,
                                           accessoryView: noResultsAccessoryView())
     }
 
@@ -647,6 +649,10 @@ private extension PageListViewController {
         }
 
         return nil
+    }
+
+    var noResultsImageName: String {
+        return "pages-no-results"
     }
 
     func noResultsButtonTitle() -> String {
