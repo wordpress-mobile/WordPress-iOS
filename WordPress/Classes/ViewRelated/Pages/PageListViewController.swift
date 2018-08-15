@@ -592,77 +592,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         restorePost(page)
     }
 
-    // MARK: - Refreshing noResultsView
-
-    func handleRefreshNoResultsViewController(_ noResultsViewController: NoResultsViewController) {
-
-        guard connectionAvailable() else {
-            noResultsViewController.configure(title: noConnectionMessage())
-            return
-        }
-
-        noResultsViewController.configure(title: noResultsTitle(),
-                                          buttonTitle: noResultsButtonTitle(),
-                                          subtitle: noResultsMessage(),
-                                          accessoryView: noResultsAccessoryView())
-    }
-
-    // MARK: - NoResultsView Customizer helpers
-
-    fileprivate func noResultsAccessoryView() -> UIView? {
-        if syncHelper.isSyncing {
-            animatedBox.animate(afterDelay: 0.1)
-            return animatedBox
-        }
-
-        return nil
-    }
-
-    fileprivate func noResultsButtonTitle() -> String {
-        if syncHelper.isSyncing == true || isSearching() {
-            return ""
-        }
-
-        let filterType = filterSettings.currentPostListFilter().filterType
-
-        switch filterType {
-        case .trashed:
-            return ""
-        default:
-            return NSLocalizedString("Start a Page", comment: "Button title, encourages users to create their first page on their blog.")
-        }
-    }
-
-    fileprivate func noResultsTitle() -> String {
-        if syncHelper.isSyncing == true {
-            return NSLocalizedString("Fetching pages...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.")
-        }
-
-        let filter = filterSettings.currentPostListFilter()
-        let titles = noResultsTitles()
-        let title = titles[filter.filterType]
-        return title ?? ""
-    }
-
-    fileprivate func noResultsMessage() -> String {
-        if syncHelper.isSyncing == true || isSearching() {
-            return ""
-        }
-
-        let filterType = filterSettings.currentPostListFilter().filterType
-
-        switch filterType {
-        case .draft:
-            return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views drafts in the pages list and there are no pages")
-        case .scheduled:
-            return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views scheduled pages in the pages list and there are no pages")
-        case .trashed:
-            return NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed pages in the pages list and there are no pages")
-        default:
-            return NSLocalizedString("Would you like to publish your first page?", comment: "Displayed when the user views published pages in the pages list and there are no pages")
-        }
-    }
-
     // MARK: - UISearchControllerDelegate
 
     override func willPresentSearchController(_ searchController: UISearchController) {
@@ -691,5 +620,77 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     enum Animations {
         static let searchDismissDuration: TimeInterval = 0.3
+    }
+}
+
+// MARK: - No Results Handling
+
+private extension PageListViewController {
+
+    func handleRefreshNoResultsViewController(_ noResultsViewController: NoResultsViewController) {
+
+        guard connectionAvailable() else {
+            noResultsViewController.configure(title: noConnectionMessage())
+            return
+        }
+
+        noResultsViewController.configure(title: noResultsTitle(),
+                                          buttonTitle: noResultsButtonTitle(),
+                                          subtitle: noResultsMessage(),
+                                          accessoryView: noResultsAccessoryView())
+    }
+
+    func noResultsAccessoryView() -> UIView? {
+        if syncHelper.isSyncing {
+            animatedBox.animate(afterDelay: 0.1)
+            return animatedBox
+        }
+
+        return nil
+    }
+
+    func noResultsButtonTitle() -> String {
+        if syncHelper.isSyncing == true || isSearching() {
+            return ""
+        }
+
+        let filterType = filterSettings.currentPostListFilter().filterType
+
+        switch filterType {
+        case .trashed:
+            return ""
+        default:
+            return NSLocalizedString("Start a Page", comment: "Button title, encourages users to create their first page on their blog.")
+        }
+    }
+
+    func noResultsTitle() -> String {
+        if syncHelper.isSyncing == true {
+            return NSLocalizedString("Fetching pages...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.")
+        }
+
+        let filter = filterSettings.currentPostListFilter()
+        let titles = noResultsTitles()
+        let title = titles[filter.filterType]
+        return title ?? ""
+    }
+
+    func noResultsMessage() -> String {
+        if syncHelper.isSyncing == true || isSearching() {
+            return ""
+        }
+
+        let filterType = filterSettings.currentPostListFilter().filterType
+
+        switch filterType {
+        case .draft:
+            return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views drafts in the pages list and there are no pages")
+        case .scheduled:
+            return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views scheduled pages in the pages list and there are no pages")
+        case .trashed:
+            return NSLocalizedString("Everything you write is solid gold.", comment: "Displayed when the user views trashed pages in the pages list and there are no pages")
+        default:
+            return NSLocalizedString("Would you like to publish your first page?", comment: "Displayed when the user views published pages in the pages list and there are no pages")
+        }
     }
 }
