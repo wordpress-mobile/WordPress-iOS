@@ -134,8 +134,12 @@ private extension QuickStartNoticeView {
 
     enum Fonts {
         static let actionButtonFont = UIFont.systemFont(ofSize: 14.0)
-        static let titleLabelFont = UIFont.boldSystemFont(ofSize: 14.0)
-        static let messageLabelFont = UIFont.systemFont(ofSize: 14.0)
+        static let titleLabelFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
+        static var messageLabelFont: UIFont {
+            get {
+                return WPStyleGuide.fontForTextStyle(.subheadline)
+            }
+        }
     }
 
     enum Colors {
