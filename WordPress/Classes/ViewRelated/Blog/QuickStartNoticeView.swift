@@ -100,7 +100,7 @@ private extension QuickStartNoticeView {
     }
 
     enum Colors {
-        static let backgroundColor = WPStyleGuide.darkGrey()
+        static let backgroundColor = WPStyleGuide.darkGrey().withAlphaComponent(0.88)
         static let titleColor = UIColor.white
         static let messageColor = WPStyleGuide.greyLighten20()
     }
