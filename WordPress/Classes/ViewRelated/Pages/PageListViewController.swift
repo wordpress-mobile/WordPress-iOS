@@ -72,8 +72,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     // MARK: - UIViewController
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.refreshNoResultsView = { [weak self] noResultsView in
-            self?.handleRefreshNoResultsView(noResultsView)
+        super.refreshNoResultsViewController = { [weak self] noResultsViewController in
+            self?.handleRefreshNoResultsViewController(noResultsViewController)
         }
         super.tableViewController = (segue.destination as! UITableViewController)
     }
@@ -594,33 +594,28 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - Refreshing noResultsView
 
-    @objc func handleRefreshNoResultsView(_ noResultsView: WPNoResultsView) {
+    func handleRefreshNoResultsViewController(_ noResultsViewController: NoResultsViewController) {
+
         guard connectionAvailable() else {
-            showNoConnectionView()
+            noResultsViewController.configure(title: noConnectionMessage())
             return
         }
 
-        noResultsView.titleText = noResultsTitle()
-        noResultsView.messageText = noResultsMessage()
-        noResultsView.accessoryView = noResultsAccessoryView()
-        noResultsView.buttonTitle = noResultsButtonTitle()
-    }
-
-    private func showNoConnectionView() {
-        noResultsView.titleText = noConnectionMessage()
-        noResultsView.messageText = ""
-        noResultsView.accessoryView = nil
+        noResultsViewController.configure(title: noResultsTitle(),
+                                          buttonTitle: noResultsButtonTitle(),
+                                          subtitle: noResultsMessage(),
+                                          accessoryView: noResultsAccessoryView())
     }
 
     // MARK: - NoResultsView Customizer helpers
 
-    fileprivate func noResultsAccessoryView() -> UIView {
+    fileprivate func noResultsAccessoryView() -> UIView? {
         if syncHelper.isSyncing {
             animatedBox.animate(afterDelay: 0.1)
             return animatedBox
         }
 
-        return UIImageView(image: UIImage(named: "illustration-posts"))
+        return nil
     }
 
     fileprivate func noResultsButtonTitle() -> String {
