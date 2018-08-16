@@ -2005,6 +2005,8 @@
 		73D5AC5F212622B200ADDDD2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		73D5AC60212622B200ADDDD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		73D5AC62212622B200ADDDD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		73D5AC662126236600ADDDD2 /* Info-Alpha.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Alpha.plist"; sourceTree = "<group>"; };
+		73D5AC672126236600ADDDD2 /* Info-Internal.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Internal.plist"; sourceTree = "<group>"; };
 		73E40D8B21238C520012ABA6 /* Tracks+ServiceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tracks+ServiceExtension.swift"; sourceTree = "<group>"; };
 		73FEFF1991AE9912FB2DA9BC /* Pods-WordPressNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressNotificationServiceExtension.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressNotificationServiceExtension/Pods-WordPressNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		740516882087B73400252FD0 /* SearchableActivityConvertable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableActivityConvertable.swift; sourceTree = "<group>"; };
@@ -4414,6 +4416,8 @@
 			isa = PBXGroup;
 			children = (
 				733F360D2126197800988727 /* Info.plist */,
+				73D5AC662126236600ADDDD2 /* Info-Alpha.plist */,
+				73D5AC672126236600ADDDD2 /* Info-Internal.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -9600,7 +9604,7 @@
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = WordPressNotificationContentExtension/Info.plist;
+				INFOPLIST_FILE = "WordPressNotificationContentExtension/Info-Internal.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -9642,7 +9646,7 @@
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				INFOPLIST_FILE = WordPressNotificationContentExtension/Info.plist;
+				INFOPLIST_FILE = "WordPressNotificationContentExtension/Info-Alpha.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
