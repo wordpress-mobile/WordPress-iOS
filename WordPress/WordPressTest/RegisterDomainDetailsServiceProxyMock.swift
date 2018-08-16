@@ -3,6 +3,23 @@ import Foundation
 
 class RegisterDomainDetailsServiceProxyMock: RegisterDomainDetailsServiceProxyProtocol {
 
+    enum MockData {
+        static let firstName = "First"
+        static let lastName = "Last"
+        static let phone = "+90.2334432"
+        static let phoneCountryCode = "90"
+        static let phoneNumber = "2334432"
+        static let city = "Istanbul"
+        static let email = "pinar@yahoo.com"
+        static let countryCode = "US"
+        static let countryName = "United States"
+        static let stateCode = "AL"
+        static let stateName = "Alabama"
+        static let address1 = "address1"
+        static let organization = "organization"
+        static let postalCode = "12345"
+    }
+
     var success: Bool
     var emptyPrefillData: Bool
 
@@ -36,8 +53,16 @@ class RegisterDomainDetailsServiceProxyMock: RegisterDomainDetailsServiceProxyPr
             success(contactInformation)
         } else {
             var contactInformation = DomainContactInformation()
-            contactInformation.firstName = "First"
-            contactInformation.lastName = "Last"
+            contactInformation.firstName = MockData.firstName
+            contactInformation.lastName = MockData.lastName
+            contactInformation.phone = MockData.phone
+            contactInformation.city = MockData.city
+            contactInformation.email = MockData.email
+            contactInformation.countryCode = MockData.countryCode
+            contactInformation.state = MockData.stateCode
+            contactInformation.address1 = MockData.address1
+            contactInformation.organization = MockData.organization
+            contactInformation.postalCode = MockData.postalCode
             success(contactInformation)
         }
     }
@@ -52,8 +77,8 @@ class RegisterDomainDetailsServiceProxyMock: RegisterDomainDetailsServiceProxyPr
         country1.code = "TR"
         country1.name = "Turkey"
         let country2 = Country()
-        country2.code = "US"
-        country2.name = "United States"
+        country2.code = MockData.countryCode
+        country2.name = MockData.countryName
         success([country1, country2])
     }
 
@@ -65,8 +90,8 @@ class RegisterDomainDetailsServiceProxyMock: RegisterDomainDetailsServiceProxyPr
             return
         }
         let state1 = State()
-        state1.code = "AL"
-        state1.name = "Alabama"
+        state1.code = MockData.stateCode
+        state1.name = MockData.stateName
         let state2 = State()
         state2.code = "AK"
         state2.name = "Alaska"

@@ -64,7 +64,6 @@ class RegisterDomainDetailsViewModel {
             onChange?(.loading(isLoading))
         }
     }
-    private var dispatchGroup = DispatchGroup()
 
     init(domain: String) {
         self.domain = domain
@@ -206,31 +205,46 @@ class RegisterDomainDetailsViewModel {
     }
 
     func prefill() {
-        isLoading = true
+        fetchCountries { [weak self] in
+            self?.fetchDomainContactInformation()
+        }
+    }
 
-        dispatchGroup.enter()
+    private func fetchDomainContactInformation() {
+        isLoading = true
         registerDomainDetailsService.getDomainContactInformation(
             success: { [weak self] (domainContactInformation) in
                 guard let strongSelf = self else {
                     return
                 }
-                strongSelf.dispatchGroup.leave()
-                strongSelf.update(with: domainContactInformation)
-                strongSelf.onChange?(.prefillSuccess)
+                strongSelf.isLoading = false
+                let prefillSuccessBlock = {
+                    strongSelf.update(with: domainContactInformation)
+                    strongSelf.onChange?(.prefillSuccess)
+                }
+                if let countryCode = domainContactInformation.countryCode {
+                    strongSelf.fetchStates(countryCode: countryCode) {
+                        prefillSuccessBlock()
+                    }
+                } else {
+                    prefillSuccessBlock()
+                }
         }) { [weak self] (error) in
             guard let strongSelf = self else {
                 return
             }
-            strongSelf.dispatchGroup.leave()
+            strongSelf.isLoading = false
             strongSelf.onChange?(.prefillError(message: Localized.prefillError))
         }
+    }
 
-        dispatchGroup.enter()
+    private func fetchCountries(successCompletion: @escaping () -> Void) {
+        isLoading = true
         registerDomainDetailsService.getSupportedCountries(success: { [weak self] (countriesResponse) in
             guard let strongSelf = self else {
                 return
             }
-            strongSelf.dispatchGroup.leave()
+            strongSelf.isLoading = false
             var result: [CodeNameTuple] = []
             //Filter empty records
             for country in countriesResponse {
@@ -242,20 +256,17 @@ class RegisterDomainDetailsViewModel {
                 }
             }
             strongSelf.countries = result
+            successCompletion()
         }) { [weak self] (error) in
             guard let strongSelf = self else {
                 return
             }
-            strongSelf.dispatchGroup.leave()
+            strongSelf.isLoading = false
             strongSelf.onChange?(.prefillError(message: Localized.prefillError))
-        }
-
-        dispatchGroup.notify(queue: .main) { [weak self] in
-            self?.isLoading = false
         }
     }
 
-    private func fetchStates(countryCode: String) {
+    private func fetchStates(countryCode: String, successCompletion: (() -> Void)? = nil) {
         isLoading = true
         states = nil
         clearStateSelection()
@@ -277,6 +288,7 @@ class RegisterDomainDetailsViewModel {
                     }
                 }
                 strongSelf.states = result
+                successCompletion?()
         }) { [weak self] (error) in
             guard let strongSelf = self else {
                 return
@@ -297,6 +309,10 @@ class RegisterDomainDetailsViewModel {
         section.rows[safe: addressSectionIndexHelper.cityIndex]?.editableRow?.value = domainContactInformation.city
         section.rows[safe: addressSectionIndexHelper.postalCodeIndex]?.editableRow?.value = domainContactInformation.postalCode
         section.rows[safe: addressSectionIndexHelper.addressLine1]?.editableRow?.value = domainContactInformation.address1
+        section.rows[safe: addressSectionIndexHelper.stateIndex]?.editableRow?.idValue = domainContactInformation.state
+        section.rows[safe: addressSectionIndexHelper.stateIndex]?.editableRow?.value = states?.filter {
+            return $0.code == domainContactInformation.state
+            }.first?.name
     }
 
     private func updatePhoneSection(with domainContactInformation: DomainContactInformation) {
