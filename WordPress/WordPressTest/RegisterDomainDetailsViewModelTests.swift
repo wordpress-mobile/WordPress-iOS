@@ -8,6 +8,7 @@ class RegisterDomainDetailsViewModelTests: XCTestCase {
     typealias RowType = RegisterDomainDetailsViewModel.RowType
     typealias Localized = RegisterDomainDetailsViewModel.Localized
     typealias EditableKeyValueRow = RegisterDomainDetailsViewModel.Row.EditableKeyValueRow
+    typealias MockData = RegisterDomainDetailsServiceProxyMock.MockData
 
     var viewModel: RegisterDomainDetailsViewModel!
     var changeArray: [Change] = []
@@ -141,5 +142,31 @@ class RegisterDomainDetailsViewModelTests: XCTestCase {
                                                                                            section: SectionIndex.address.rawValue)))
 
         XCTAssert(viewModel.isValid(forTag: .enableSubmit))
+    }
+
+    func testPrefillData() {
+        viewModel.registerDomainDetailsService = RegisterDomainDetailsServiceProxyMock(success: true, emptyPrefillData: false)
+
+        viewModel.prefill()
+
+        let contactInformationSection = viewModel.sections[SectionIndex.contactInformation.rawValue]
+        let addressSection = viewModel.sections[SectionIndex.address.rawValue]
+        let phoneSection = viewModel.sections[SectionIndex.phone.rawValue]
+
+        XCTAssert(contactInformationSection.rows[CellIndex.ContactInformation.country.rawValue].editableRow?.jsonValue == MockData.countryCode)
+        XCTAssert(contactInformationSection.rows[CellIndex.ContactInformation.country.rawValue].editableRow?.value == MockData.countryName)
+        XCTAssert(contactInformationSection.rows[CellIndex.ContactInformation.email.rawValue].editableRow?.value == MockData.email)
+        XCTAssert(contactInformationSection.rows[CellIndex.ContactInformation.firstName.rawValue].editableRow?.value == MockData.firstName)
+        XCTAssert(contactInformationSection.rows[CellIndex.ContactInformation.lastName.rawValue].editableRow?.value == MockData.lastName)
+        XCTAssert(contactInformationSection.rows[CellIndex.ContactInformation.organization.rawValue].editableRow?.value == MockData.organization)
+
+        XCTAssert(addressSection.rows[viewModel.addressSectionIndexHelper.cityIndex].editableRow?.value == MockData.city)
+        XCTAssert(addressSection.rows[viewModel.addressSectionIndexHelper.addressLine1].editableRow?.value == MockData.address1)
+        XCTAssert(addressSection.rows[viewModel.addressSectionIndexHelper.postalCodeIndex].editableRow?.value == MockData.postalCode)
+        XCTAssert(addressSection.rows[viewModel.addressSectionIndexHelper.stateIndex].editableRow?.jsonValue == MockData.stateCode)
+        XCTAssert(addressSection.rows[viewModel.addressSectionIndexHelper.stateIndex].editableRow?.value == MockData.stateName)
+
+        XCTAssert(phoneSection.rows[CellIndex.PhoneNumber.countryCode.rawValue].editableRow?.value == MockData.phoneCountryCode)
+        XCTAssert(phoneSection.rows[CellIndex.PhoneNumber.number.rawValue].editableRow?.value == MockData.phoneNumber)
     }
 }
