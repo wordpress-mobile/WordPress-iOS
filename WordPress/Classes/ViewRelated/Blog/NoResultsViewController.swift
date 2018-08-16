@@ -51,6 +51,11 @@ import WordPressAuthenticator
         configureView()
     }
 
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        setAccessoryViewsVisibility()
+    }
+
     /// Public method to get controller instance and set view values.
     ///
     /// - Parameters:
@@ -138,9 +143,13 @@ import WordPressAuthenticator
         return noResultsView.frame.height
     }
 
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        setAccessoryViewsVisibility()
+    /// Public method to get an attributed string styled for No Results.
+    ///
+    /// - Parameters:
+    ///   - attributedString: The attributed string to be styled.
+    ///
+    func styledTextFor(attributedString: NSAttributedString) -> NSAttributedString {
+        return applyMessageStyleTo(attributedString: attributedString)
     }
 
 }
