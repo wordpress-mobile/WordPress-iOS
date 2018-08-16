@@ -73,6 +73,14 @@ print <<-EOF
 EOF
 end
 
+def print_giphy(giphy)
+print <<-EOF
++ (NSString *)giphyAppId {
+    return @"#{giphy}";
+}
+EOF
+end
+
 def print_googleplus(googleplus)
 print <<-EOF
 + (NSString *)googlePlusClientId {
@@ -137,7 +145,7 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
+def print_class(client, secret, pocket, crashlytics, hockeyapp, giphy, googleplus, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
   print <<-EOF
 #import "ApiCredentials.h"
 @implementation ApiCredentials
@@ -147,6 +155,7 @@ EOF
   print_pocket(pocket)
   print_crashlytics(crashlytics)
   print_hockeyapp(hockeyapp)
+  print_giphy(giphy)
   print_googleplus(googleplus)
   print_google_login_client(google_client)
   print_google_login_scheme(google_scheme)
@@ -175,6 +184,7 @@ secret = nil
 pocket = nil
 crashlytics = nil
 hockeyapp = nil
+giphy = nil
 googleplus = nil
 google_client = nil
 google_scheme = nil
@@ -198,6 +208,8 @@ File.open(path) do |f|
       crashlytics = value
     elsif k == "HOCKEYAPP_APP_ID"
       hockeyapp = value
+    elsif k == "GIPHY_APP_ID"
+      giphy = value
     elsif k == "GOOGLE_PLUS_CLIENT_ID"
       googleplus = value
     elsif k == "GOOGLE_LOGIN_CLIENT_ID"
@@ -262,4 +274,4 @@ if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration
   end
 end
 
-print_class(client, secret, pocket, crashlytics, hockeyapp, googleplus, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
+print_class(client, secret, pocket, crashlytics, hockeyapp, giphy, googleplus, google_client, google_scheme, google_login_server, debugging_key, zendesk_app_id, zendesk_url, zendesk_client_id)
