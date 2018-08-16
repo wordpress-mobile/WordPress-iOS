@@ -24,8 +24,13 @@
 	<dict>
 		<key>NSExtensionAttributes</key>
 		<dict>
-			<key>UNNotificationExtensionCategory</key>
-			<string>myNotificationCategory</string>
+            <key>UNNotificationExtensionCategory</key>
+            <array>
+                <string>approve-comment</string>
+                <string>like-comment</string>
+                <string>replyto-comment</string>
+                <string>replyto-like-comment</string>
+            </array>
 			<key>UNNotificationExtensionInitialContentSizeRatio</key>
 			<real>1</real>
 		</dict>
