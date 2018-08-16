@@ -29,7 +29,7 @@ PODS:
     - CocoaLumberjack/Default
   - Crashlytics (3.10.1):
     - Fabric (~> 1.7.5)
-  - Fabric (1.7.9)
+  - Fabric (1.7.11)
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
@@ -105,7 +105,7 @@ PODS:
   - WordPress-Aztec-iOS (1.0.0-beta.25)
   - WordPress-Editor-iOS (1.0.0-beta.25):
     - WordPress-Aztec-iOS (= 1.0.0-beta.25)
-  - WordPressAuthenticator (1.0.5):
+  - WordPressAuthenticator (1.0.6):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.2)
     - CocoaLumberjack (= 3.4.2)
@@ -166,7 +166,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Aztec-iOS (= 1.0.0-beta.25)
   - WordPress-Editor-iOS (= 1.0.0-beta.25)
-  - WordPressAuthenticator (= 1.0.5)
+  - WordPressAuthenticator (= 1.0.6)
   - WordPressKit (= 1.2.1)
   - WordPressShared (= 1.0.9)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, commit `7a5b1a3fb44f62416fbc2e5f0de623b87b613aae`)
@@ -234,7 +234,7 @@ SPEC CHECKSUMS:
   BuddyBuildSDK: 8ae12ee721098b356a961ea7dce70ae55f93a7d2
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
   Crashlytics: aee1a064cbbf99b32efa3f056a5f458d846bc8ff
-  Fabric: a2917d3895e4c1569b9c3170de7320ea1b1e6661
+  Fabric: f233c9492b3bbc1f04e3882986740f7988a58edb
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   Gifu: fd1e9e3a15ac5d90bae0a510e4ed9f94b485ab03
   GoogleSignInRepacked: d357702618c555f38923576924661325eb1ef22b
@@ -255,7 +255,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-Aztec-iOS: 99dbfb3dbf14c2d33771f562c506e42fdd4880d6
   WordPress-Editor-iOS: ff5815378c280ab5176a8e4af4591fed9b0dd484
-  WordPressAuthenticator: e6e1c80aff95f1b2ad11e4477fcfe9f61aa8c49a
+  WordPressAuthenticator: 56538a229185640b41912c10c3f1891c2cc9bbb9
   WordPressKit: a4a3849684f631a3abf579f6d3f15a32677cbb30
   WordPressShared: e5ea8a1ed3329735e40bd6623830960f63dd10fd
   WordPressUI: af141587ec444f9af753a00605bd0d3f14d8d8a3
@@ -263,6 +263,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: 5334de32d403330afb0ae1bc9ec962aad791bc95
+PODFILE CHECKSUM: c4214abccbba1d340f96dc465bc7432fb426ab88
 
 COCOAPODS: 1.5.3
