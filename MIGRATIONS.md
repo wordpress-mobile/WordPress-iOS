@@ -3,6 +3,18 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 79
+@frosty 2018-08-15
+- Re-added `PublicizeService.externalUsersOnly` property from model 77, which was omitted from model 78.
+
+## WordPress 78
+- @nheagy 2018-07-25
+- Added `QuickStartCompletedTour` for tracking completed Quick Start tours
+
+## WordPress 77
+- @aerych 2018-07-27
+- `PublicizeService` added `externalUsersOnly` (bool) property. A new field returned by the API.
+
 ## WordPress 76
 
 - @frosty 2018-05-16

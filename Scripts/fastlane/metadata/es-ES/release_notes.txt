@@ -1,3 +1,4 @@
-¡Registro de actividad! Ahora puedes ver todo lo que ha pasado en tu sitio.
-La compatibilidad con Gifs animados se a expandido en el Lector y en el selector de medios.
-Un montón de mejoras de la interfaz y accesibilidad, y soluciones a fallos.
+Ahora puedes ir desde WordPress.com en Safari al mismo contenido de la aplicación de WordPress para iOS con facilidad. ¡Simplemente echa un vistazo al banner de la parte superior de las páginas de WordPress.com!
+El registro de actividad ahora está disponible para los sitios gratuitos de WordPress.com.
+Algunas pequeñas mejoras en la interfaz de usuario.
+Un montón de soluciones a fallos.

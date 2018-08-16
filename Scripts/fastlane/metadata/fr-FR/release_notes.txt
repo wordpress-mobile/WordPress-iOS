@@ -1,3 +1,4 @@
-Journal d'activités ! Vous pouvez désormais voir toute l'activité de votre site.
-La prise en charge des GIF animés a été étendue au Lecteur et au sélecteur multimédia.
-Nombreuses modifications de l'interface utilisateur, améliorations de l'accessibilité et résolutions de bugs.
+Vous pouvez à présent passer facilement de WordPress.com dans Safari au même contenu dans l’application WordPress. Regardez simplement la bannière e haut de la page WordPress.com !
+Le journal d’activités est maintenant disponible pour les sites gratuit WordPress.com.
+Quelques petites améliorations de l’interface utilisateur (UI).
+Un lot de corrections de bogues.

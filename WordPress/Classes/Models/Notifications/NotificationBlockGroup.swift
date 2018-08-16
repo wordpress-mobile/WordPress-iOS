@@ -1,7 +1,5 @@
 import Foundation
 
-
-
 // MARK: - NotificationBlockGroup: Adapter to match 1 View <> 1 BlockGroup
 //
 class NotificationBlockGroup {
@@ -66,7 +64,7 @@ extension NotificationBlockGroup {
         let blocks = NotificationBlock.blocksFromArray(body, parent: parent)
 
         switch parent.kind {
-        case .Comment:
+        case .comment:
             return groupsForCommentBodyBlocks(blocks, parent: parent)
         default:
             return groupsForNonCommentBodyBlocks(blocks, parent: parent)
@@ -86,7 +84,7 @@ private extension NotificationBlockGroup {
     ///     -   Footers are visually represented as `View All Followers` / `View All Likers`
     ///
     class func groupsForNonCommentBodyBlocks(_ blocks: [NotificationBlock], parent: Notification) -> [NotificationBlockGroup] {
-        let parentKindsWithFooters: [Notification.Kind] = [.Follow, .Like, .CommentLike]
+        let parentKindsWithFooters: [NotificationKind] = [.follow, .like, .commentLike]
         let parentMayContainFooter = parentKindsWithFooters.contains(parent.kind)
 
         return blocks.map { block in
@@ -172,7 +170,6 @@ private extension NotificationBlockGroup {
         return NotificationBlockGroup(blocks: [block], kind: .footer)
     }
 }
-
 
 // MARK: - NotificationBlockGroup Types
 //

@@ -5,7 +5,6 @@ import MGSwipeTableCell
 import WordPressShared
 import WordPressAuthenticator
 
-
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account.
 ///
@@ -18,6 +17,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     @objc static let selectedSegmentIndexRestorationIdentifier   = "NotificationsSelectedSegmentIndexKey"
 
     // MARK: - Properties
+
+    let formatter = FormattableContentFormatter()
 
     /// TableHeader
     ///
@@ -553,7 +554,7 @@ extension NotificationsViewController {
 
         // Display Details
         //
-        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher || note.kind == .NewPost {
+        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .matcher || note.kind == .newPost {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
             showDetailViewController(readerViewController, sender: nil)
             return
@@ -922,8 +923,13 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         let deletionRequest         = deletionRequestForNoteWithID(note.objectID)
         let isLastRow               = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
 
-        cell.attributedSubject      = note.subjectBlock?.attributedSubjectText
-        cell.attributedSnippet      = note.snippetBlock?.attributedSnippetText
+        if FeatureFlag.extractNotifications.enabled {
+            cell.attributedSubject = note.renderSubject()
+            cell.attributedSnippet = note.renderSnippet()
+        } else {
+            cell.attributedSubject      = note.subjectBlock?.attributedSubjectText
+            cell.attributedSnippet      = note.snippetBlock?.attributedSnippetText
+        }
         cell.read                   = note.read
         cell.noticon                = note.noticon
         cell.unapproved             = note.isUnapprovedComment
@@ -948,12 +954,20 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         if UIView.userInterfaceLayoutDirection(for: view.semanticContentAttribute) == .leftToRight {
             cell.leftButtons = leadingButtons(note: note)
             cell.leftExpansion.buttonIndex = leadingExpansionButton
-            cell.rightButtons = trailingButtons(note: note)
+            if FeatureFlag.extractNotifications.enabled {
+                cell.rightButtons = trailingButtons(note: note)
+            } else {
+                cell.rightButtons = old_trailingButtons(note: note)
+            }
             cell.rightExpansion.buttonIndex = trailingExpansionButton
         } else {
             cell.rightButtons = leadingButtons(note: note)
             cell.rightExpansion.buttonIndex = trailingExpansionButton
-            cell.leftButtons = trailingButtons(note: note)
+            if FeatureFlag.extractNotifications.enabled {
+                cell.leftButtons = trailingButtons(note: note)
+            } else {
+                cell.leftButtons = old_trailingButtons(note: note)
+            }
             cell.leftExpansion.buttonIndex = trailingExpansionButton
         }
     }
@@ -1012,7 +1026,7 @@ private extension NotificationsViewController {
         ]
     }
 
-    func trailingButtons(note: Notification) -> [MGSwipeButton] {
+    func old_trailingButtons(note: Notification) -> [MGSwipeButton] {
         var rightButtons = [MGSwipeButton]()
 
         guard let block = note.blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
@@ -1066,6 +1080,46 @@ private extension NotificationsViewController {
 
             rightButtons.append(approveButton)
         }
+
+        return rightButtons
+    }
+
+    func trailingButtons(note: Notification) -> [MGSwipeButton] {
+        var rightButtons = [MGSwipeButton]()
+
+        guard let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
+            return []
+        }
+
+        // Comments: Trash
+        if let trashAction = block.action(id: TrashCommentAction.actionIdentifier()), let button = trashAction.command?.icon as? MGSwipeButton {
+            button.callback = { [weak self] _ in
+                let actionContext = ActionContext(block: block, completion: { [weak self] (request, success) in
+                    guard let request = request else {
+                        return
+                    }
+                    self?.showUndeleteForNoteWithID(note.objectID, request: request)
+                })
+                trashAction.execute(context: actionContext)
+                return true
+            }
+            rightButtons.append(button)
+        }
+
+        guard let approveEnabled = block.action(id: ApproveCommentAction.actionIdentifier())?.enabled, approveEnabled == true else {
+            return rightButtons
+        }
+
+        let approveAction = block.action(id: ApproveCommentAction.actionIdentifier())
+        let button = approveAction?.command?.icon as? MGSwipeButton
+
+        button?.callback = { _ in
+            let actionContext = ActionContext(block: block)
+            approveAction?.execute(context: actionContext)
+            return true
+        }
+
+        rightButtons.append(button!)
 
         return rightButtons
     }
@@ -1309,7 +1363,7 @@ private extension NotificationsViewController {
         }
 
         func notMatcher(_ note: Notification) -> Bool {
-            return note.kind != .Matcher
+            return note.kind != .matcher
         }
 
         if delta > 0 {
@@ -1359,7 +1413,7 @@ extension NotificationsViewController: WPSplitViewControllerDetailProvider {
         trackWillPushDetails(for: note)
         ensureNotificationsListIsOnscreen()
 
-        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher || note.kind == .NewPost {
+        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .matcher || note.kind == .newPost {
             return ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
         }
 
@@ -1424,8 +1478,6 @@ extension NotificationsViewController: SearchableActivityConvertable {
 // MARK: - Private Properties
 //
 private extension NotificationsViewController {
-    typealias NoteKind = Notification.Kind
-
     var mainContext: NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
     }
@@ -1470,9 +1522,9 @@ private extension NotificationsViewController {
             switch self {
             case .none:     return nil
             case .unread:   return "read = NO"
-            case .comment:  return "type = '\(NoteKind.Comment.toTypeValue)'"
-            case .follow:   return "type = '\(NoteKind.Follow.toTypeValue)'"
-            case .like:     return "type = '\(NoteKind.Like.toTypeValue)' OR type = '\(NoteKind.CommentLike.toTypeValue)'"
+            case .comment:  return "type = '\(NotificationKind.comment.rawValue)'"
+            case .follow:   return "type = '\(NotificationKind.follow.rawValue)'"
+            case .like:     return "type = '\(NotificationKind.like.rawValue)' OR type = '\(NotificationKind.commentLike.rawValue)'"
             }
         }
 

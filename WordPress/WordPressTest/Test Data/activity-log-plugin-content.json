@@ -1,0 +1,15 @@
+{
+    "text": "WP Job Manager 1.31.1",
+    "ranges": [
+               {
+               "type": "plugin",
+               "indices": [
+                           0,
+                           21
+                           ],
+               "slug": "wp-job-manager",
+               "version": "1.31.1",
+               "site_slug": "etoledomatomicsite01.blog"
+               }
+               ]
+}
