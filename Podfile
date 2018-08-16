@@ -125,6 +125,17 @@ end
 
 
 
+## Notification Content Extension
+## ==============================
+##
+target 'WordPressNotificationContentExtension' do
+	project 'WordPress/WordPress.xcodeproj'
+	
+	inherit! :search_paths
+end
+
+
+
 ## Notification Service Extension
 ## ==============================
 ##
