@@ -1984,6 +1984,9 @@
 		712D0A17BC83B9730BD7CCC0 /* Pods-WordPressDraftActionExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressDraftActionExtension.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressDraftActionExtension/Pods-WordPressDraftActionExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		7326718E210F75F0001FA866 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7326718F210F7601001FA866 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		732D4E1D2126253900BF7F11 /* WordPressNotificationContentExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WordPressNotificationContentExtension.entitlements; sourceTree = "<group>"; };
+		732D4E1E212625A100BF7F11 /* WordPressNotificationContentExtension-Alpha.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "WordPressNotificationContentExtension-Alpha.entitlements"; sourceTree = "<group>"; };
+		732D4E1F212625A100BF7F11 /* WordPressNotificationContentExtension-Internal.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "WordPressNotificationContentExtension-Internal.entitlements"; sourceTree = "<group>"; };
 		7335AC5F21220D550012EF2D /* RemoteNotificationActionParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteNotificationActionParser.swift; sourceTree = "<group>"; };
 		733F36032126197800988727 /* WordPressNotificationContentExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WordPressNotificationContentExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		733F36052126197800988727 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
@@ -4418,6 +4421,9 @@
 				733F360D2126197800988727 /* Info.plist */,
 				73D5AC662126236600ADDDD2 /* Info-Alpha.plist */,
 				73D5AC672126236600ADDDD2 /* Info-Internal.plist */,
+				732D4E1D2126253900BF7F11 /* WordPressNotificationContentExtension.entitlements */,
+				732D4E1E212625A100BF7F11 /* WordPressNotificationContentExtension-Alpha.entitlements */,
+				732D4E1F212625A100BF7F11 /* WordPressNotificationContentExtension-Internal.entitlements */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -7153,6 +7159,14 @@
 					733F36022126197800988727 = {
 						CreatedOnToolsVersion = 9.4.1;
 						ProvisioningStyle = Manual;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 					7358E6B7210BD318002323EB = {
 						CreatedOnToolsVersion = 9.4.1;
@@ -9503,6 +9517,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = WordPressNotificationContentExtension/WordPressNotificationContentExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -9548,6 +9563,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = WordPressNotificationContentExtension/WordPressNotificationContentExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc. (PZYM8XX95Q)";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -9590,6 +9606,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "WordPressNotificationContentExtension/WordPressNotificationContentExtension-Internal.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
@@ -9632,6 +9649,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = "WordPressNotificationContentExtension/WordPressNotificationContentExtension-Alpha.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
