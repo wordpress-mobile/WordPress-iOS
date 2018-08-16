@@ -302,7 +302,7 @@ class RegisterDomainDetailsViewModel {
     private func updatePhoneSection(with domainContactInformation: DomainContactInformation) {
         let section = sections[SectionIndex.phone.rawValue]
         if let phone = domainContactInformation.phone {
-            let phoneNumberParts = phone.replacingMatches(of: Constant.phoneNumberCountryCodePrefix, with: "").split(separator: Constant.phoneNumberConnectingChar)
+            let phoneNumberParts = phone.replacingOccurrences(of: Constant.phoneNumberCountryCodePrefix, with: "").split(separator: Constant.phoneNumberConnectingChar)
             if phoneNumberParts.count == 2 {
                 section.rows[safe: CellIndex.PhoneNumber.countryCode.rawValue]?.editableRow?.value = String(phoneNumberParts[safe: 0] ?? "")
                 section.rows[safe: CellIndex.PhoneNumber.number.rawValue]?.editableRow?.value = String(phoneNumberParts[safe: 1] ?? "")
