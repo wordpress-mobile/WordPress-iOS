@@ -1420,13 +1420,11 @@ extension ReaderStreamViewController: SearchableActivityConvertable {
 private extension ReaderStreamViewController {
 
     func displayLoadingStream() {
-        resultsStatusView.configure(title: ResultsStatusText.loadingStreamTitle, accessoryView: resultsStatusAccessoryView())
-        displayResultsStatus()
+        configureAndDisplayResultsStatus(title: ResultsStatusText.loadingStreamTitle, accessoryView: resultsStatusAccessoryView())
     }
 
     func displayLoadingStreamFailed() {
-        resultsStatusView.configure(title: ResultsStatusText.loadingErrorTitle, subtitle: ResultsStatusText.loadingErrorMessage)
-        displayResultsStatus()
+        configureAndDisplayResultsStatus(title: ResultsStatusText.loadingErrorTitle, subtitle: ResultsStatusText.loadingErrorMessage)
     }
 
     func displayLoadingViewIfNeeded() {
@@ -1435,9 +1433,7 @@ private extension ReaderStreamViewController {
         }
 
         tableView.tableHeaderView?.isHidden = true
-
-        resultsStatusView.configure(title: ResultsStatusText.fetchingPostsTitle, accessoryView: resultsStatusAccessoryView())
-        displayResultsStatus()
+        configureAndDisplayResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: resultsStatusAccessoryView())
     }
 
     func displayNoResultsView() {
@@ -1456,22 +1452,24 @@ private extension ReaderStreamViewController {
 
         let response: NoResultsResponse = ReaderStreamViewController.responseForNoResults(topic)
 
-        let buttonTitle: String? = {
-            if ReaderHelpers.topicIsFollowing(topic) {
-                return ResultsStatusText.buttonTitle
-            }
-            return nil
-        }()
+        let buttonTitle = ReaderHelpers.topicIsFollowing(topic) ? ResultsStatusText.buttonTitle : nil
+        let imageName = ReaderHelpers.topicIsFollowing(topic) ? readerEmptyImageName : nil
 
-        resultsStatusView.configure(title: response.title,
-                                    buttonTitle: buttonTitle,
-                                    subtitle: response.message)
-
-        displayResultsStatus()
+        configureAndDisplayResultsStatus(title: response.title, subtitle: response.message, buttonTitle: buttonTitle, imageName: imageName)
     }
 
     func displayNoConnectionView() {
-        resultsStatusView.configure(title: ResultsStatusText.noConnectionTitle, subtitle: noConnectionMessage())
+        configureAndDisplayResultsStatus(title: ResultsStatusText.noConnectionTitle, subtitle: noConnectionMessage())
+    }
+
+    func configureAndDisplayResultsStatus(title: String,
+                                          subtitle: String? = nil,
+                                          buttonTitle: String? = nil,
+                                          imageName: String? = nil,
+                                          accessoryView: UIView? = nil) {
+
+        let displayImageName = imageName ?? defaultEmptyImageName
+        resultsStatusView.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, image: displayImageName, accessoryView: accessoryView)
         displayResultsStatus()
     }
 
@@ -1503,6 +1501,14 @@ private extension ReaderStreamViewController {
         static let loadingErrorMessage = NSLocalizedString("Sorry. The stream could not be loaded.", comment: "A short error message letting the user know the requested stream could not be loaded.")
         static let buttonTitle = NSLocalizedString("Manage Sites", comment: "Button title. Tapping lets the user manage the sites they follow.")
         static let noConnectionTitle = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+    }
+
+    var readerEmptyImageName: String {
+      return "wp-illustration-reader-empty"
+    }
+
+    var defaultEmptyImageName: String {
+        return "wp-illustration-empty-results"
     }
 }
 
