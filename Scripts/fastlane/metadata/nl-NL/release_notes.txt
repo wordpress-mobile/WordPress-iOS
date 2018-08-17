@@ -1,3 +1,4 @@
-Editor: meer updates voor Gutenberg compatibiliteit.
-Meerdere verbeteringen aan de UI.
-Een stel kleinere bug fixes.
+Je kunt nu eenvoudig vanuit WordPress.com in Safari doorgaan met dezelfde content in de WordPress voor iOS-app. Let op de banner bovenaan de WordPress.com-pagina's!
+Activiteitenlogboeken zijn nu beschikbaar voor gratis WordPress.com-sites.
+Een aantal kleine UI-verbeteringen.
+Een paar bugfixes.

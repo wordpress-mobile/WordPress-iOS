@@ -41,19 +41,19 @@ struct NotificationContentRouter {
 
     private func displayNotificationSource() throws {
         switch notification.kind {
-        case .Follow:
+        case .follow:
             try coordinator.displayStreamWithSiteID(notification.metaSiteID)
-        case .Like:
+        case .like:
             fallthrough
-        case .Matcher:
+        case .matcher:
             fallthrough
-        case .NewPost:
+        case .newPost:
             fallthrough
-        case .Post:
+        case .post:
             try coordinator.displayReaderWithPostId(notification.metaPostID, siteID: notification.metaSiteID)
-        case .Comment:
+        case .comment:
             fallthrough
-        case .CommentLike:
+        case .commentLike:
             try coordinator.displayCommentsWithPostId(notification.metaPostID, siteID: notification.metaSiteID)
         default:
             throw DefaultContentCoordinator.DisplayError.unsupportedType
