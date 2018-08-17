@@ -1,10 +1,6 @@
 import UIKit
 
-protocol DismissableNoticeView: AnyObject {
-    var dismissHandler: (() -> Void)? { get set }
-}
-
-class NoticeView: UIView, DismissableNoticeView {
+class NoticeView: UIView {
     internal let contentStackView = UIStackView()
     internal let backgroundContainerView = UIView()
     internal let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
