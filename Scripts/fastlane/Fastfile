@@ -170,6 +170,8 @@ ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
       internal: true,
       external: true)
     ios_build_preflight()
+    build_and_upload_internal(skip_prechecks: true, skip_confirm: options[:skip_confirm])
+    build_and_upload_itc(skip_prechecks: true, skip_confirm: options[:skip_confirm])
   end
 
   #####################################################################################
@@ -186,8 +188,8 @@ ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
   #####################################################################################
   desc "Builds and updates for distribution"
   lane :build_and_upload_internal do | options |
-    ios_build_prechecks(skip_confirm: options[:skip_confirm], internal: true)
-    ios_build_preflight()
+    ios_build_prechecks(skip_confirm: options[:skip_confirm], internal: true) unless (options[:skip_prechecks])
+    ios_build_preflight() unless (options[:skip_prechecks])
     
     gym(scheme: "WordPress Internal", workspace: "../WordPress.xcworkspace",
       export_method: "enterprise", clean: true,
@@ -227,8 +229,9 @@ ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
   #####################################################################################
   desc "Builds and updates for distribution"
   lane :build_and_upload_itc do | options |
-    ios_build_prechecks(skip_confirm: options[:skip_confirm], external: true)
-    ios_build_preflight()
+    ios_build_prechecks(skip_confirm: options[:skip_confirm], external: true) unless (options[:skip_prechecks])
+    ios_build_preflight() unless (options[:skip_prechecks])
+
     gym(scheme: "WordPress", workspace: "../WordPress.xcworkspace",
       clean: true, export_team_id: ENV["EXT_EXPORT_TEAM_ID"], 
       export_options: {
