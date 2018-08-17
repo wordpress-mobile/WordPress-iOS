@@ -54,6 +54,7 @@ target 'WordPress' do
     pod 'Crashlytics', '3.10.1'
     pod 'BuddyBuildSDK', '1.0.17', :configurations => ['Release-Alpha']
     pod 'Gifu', '3.1.0'
+    pod 'GiphyCoreSDK', '~> 1.2.0'
     pod 'MGSwipeTableCell', '1.6.7'
     pod 'lottie-ios', '2.5.0'
     pod 'Starscream', '3.0.4'
