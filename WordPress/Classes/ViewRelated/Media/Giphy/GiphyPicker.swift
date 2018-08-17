@@ -1,16 +1,23 @@
 import WPMediaPicker
+import MobileCoreServices
 
 protocol GiphyPickerDelegate: AnyObject {
+    func giphyPicker(_ picker: GiphyPicker, didFinishPicking assets: [GiphyMedia])
 }
 
 /// Presents the Giphy main interface
 final class GiphyPicker: NSObject {
     private lazy var dataSource: GiphyDataSource = {
-        return GiphyDataSource()
+        return GiphyDataSource(service: giphyService)
+    }()
+
+    private lazy var giphyService: GiphyService = {
+        return GiphyService()
     }()
 
     weak var delegate: GiphyPickerDelegate?
     private var blog: Blog?
+    private var observerToken: NSObjectProtocol?
 
     private let searchHint = NoResultsViewController.controller()
 
@@ -20,6 +27,7 @@ final class GiphyPicker: NSObject {
         options.filter = [.all]
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
+        options.badgedUTTypes = [String(kUTTypeGIF)]
         return options
     }()
 
@@ -45,6 +53,15 @@ final class GiphyPicker: NSObject {
     }
 
     private func observeDataSource() {
+        observerToken = dataSource.registerChangeObserverBlock { [weak self] (_, _, _, _, assets) in
+            self?.updateHintView()
+        }
+        dataSource.onStartLoading = { [weak self] in
+            NoResultsGiphyConfiguration.configureAsLoading(self!.searchHint)
+        }
+        dataSource.onStopLoading = { [weak self] in
+            self?.updateHintView()
+        }
     }
 
     private func shouldShowNoResults() -> Bool {
@@ -59,6 +76,12 @@ final class GiphyPicker: NSObject {
             NoResultsGiphyConfiguration.configureAsIntro(searchHint)
         }
     }
+
+    deinit {
+        if let token = observerToken {
+            dataSource.unregisterChangeObserver(token)
+        }
+    }
 }
 
 extension GiphyPicker: WPMediaPickerViewControllerDelegate {
@@ -69,7 +92,7 @@ extension GiphyPicker: WPMediaPickerViewControllerDelegate {
         }
         // TODO: Notify delegate that assets were picked
         picker.dismiss(animated: true)
-        // TODO: Clear data source search
+        dataSource.clearSearch(notifyObservers: false)
         hideKeyboard(from: picker.searchBar)
     }
 
@@ -85,7 +108,7 @@ extension GiphyPicker: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {
         picker.dismiss(animated: true)
-        // TODO: Clear data source search
+        dataSource.clearSearch(notifyObservers: false)
         hideKeyboard(from: picker.searchBar)
     }
 
