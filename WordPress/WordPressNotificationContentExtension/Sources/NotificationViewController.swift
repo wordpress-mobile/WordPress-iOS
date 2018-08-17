@@ -2,11 +2,25 @@ import UIKit
 import UserNotifications
 import UserNotificationsUI
 
-class NotificationViewController: UIViewController, UNNotificationContentExtension {
+@objc(NotificationViewController)
+class NotificationViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
-    @IBOutlet var label: UILabel?
+        view.backgroundColor = UIColor.orange
 
+        let currentRect = view.frame
+        let viewRect = CGRect(
+            x: currentRect.origin.x,
+            y: currentRect.origin.y,
+            width: currentRect.width,
+            height: 44)
+        view.frame = viewRect
+    }
+}
+
+extension NotificationViewController: UNNotificationContentExtension {
     func didReceive(_ notification: UNNotification) {
-        self.label?.text = notification.request.content.body
+        debugPrint(#function)
     }
 }
