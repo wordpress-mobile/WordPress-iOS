@@ -9,6 +9,52 @@ class QuickStartNoticeView: NoticeView {
         configureLabels()
         configureForNotice()
     }
+
+    static func makeHighlightMessage(base normalString: String, highlight: String, icon: UIImage) -> NSAttributedString {
+        let normalParts = normalString.components(separatedBy: "%@")
+        guard normalParts.count > 0 else {
+            // if the provided base doesn't contain %@ then we don't know where to place the highlight
+            return NSAttributedString(string: normalString)
+        }
+        let resultString = NSMutableAttributedString(string: normalParts[0])
+
+        let font = WPStyleGuide.mediumWeightFont(forStyle: .subheadline)
+
+        let iconAttachment = NSTextAttachment()
+        iconAttachment.image = icon.imageWithTintColor(HighlightConstants.highlightColor)
+        iconAttachment.bounds = CGRect(x: 0.0, y: font.descender + HighlightConstants.iconOffset, width: HighlightConstants.iconSize, height: HighlightConstants.iconSize)
+        let iconStr = NSAttributedString(attachment: iconAttachment)
+
+        let highlightStr = NSAttributedString(string: highlight, attributes: [.foregroundColor: HighlightConstants.highlightColor, .font: HighlightConstants.highlightFont])
+
+        switch UIView.userInterfaceLayoutDirection(for: .unspecified) {
+        case .rightToLeft:
+            resultString.append(highlightStr)
+            resultString.append(NSAttributedString(string: " "))
+            resultString.append(iconStr)
+        default:
+            resultString.append(iconStr)
+            resultString.append(NSAttributedString(string: " "))
+            resultString.append(highlightStr)
+        }
+
+        if normalParts.count > 1 {
+            resultString.append(NSAttributedString(string: normalParts[1]))
+        }
+
+        return resultString
+    }
+
+    private enum HighlightConstants {
+        static let iconOffset: CGFloat = 1.0
+        static let iconSize: CGFloat = 16.0
+        static let highlightColor = WPStyleGuide.lightBlue()
+        static var highlightFont: UIFont {
+            get {
+                return WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
+            }
+        }
+    }
 }
 
 private extension QuickStartNoticeView {
