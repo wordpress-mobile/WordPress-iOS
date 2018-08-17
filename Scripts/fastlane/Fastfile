@@ -152,6 +152,105 @@ ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
     ios_final_tag(options)
   end
 
+  #####################################################################################
+  # build_and_upload_release
+  # -----------------------------------------------------------------------------------
+  # This lane builds the app and upload it for both internal and external distribution 
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_and_upload_release [skip_confirm:<skip confirm>]
+  #
+  # Example:
+  # bundle exec fastlane build_and_upload_release 
+  # bundle exec fastlane build_and_upload_release skip_confirm:true 
+  #####################################################################################
+  desc "Builds and updates for distribution"
+  lane :build_and_upload_release do | options |
+    ios_build_prechecks(skip_confirm: options[:skip_confirm], 
+      internal: true,
+      external: true)
+    ios_build_preflight()
+    build_and_upload_internal(skip_prechecks: true, skip_confirm: options[:skip_confirm])
+    build_and_upload_itc(skip_prechecks: true, skip_confirm: options[:skip_confirm])
+  end
+
+  #####################################################################################
+  # build_and_upload_internal
+  # -----------------------------------------------------------------------------------
+  # This lane builds the app and upload it for internal testing  
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_and_upload_internal [skip_confirm:<skip confirm>]
+  #
+  # Example:
+  # bundle exec fastlane build_and_upload_internal 
+  # bundle exec fastlane build_and_upload_internal skip_confirm:true 
+  #####################################################################################
+  desc "Builds and updates for distribution"
+  lane :build_and_upload_internal do | options |
+    ios_build_prechecks(skip_confirm: options[:skip_confirm], internal: true) unless (options[:skip_prechecks])
+    ios_build_preflight() unless (options[:skip_prechecks])
+    
+    gym(scheme: "WordPress Internal", workspace: "../WordPress.xcworkspace",
+      export_method: "enterprise", clean: true,
+      output_directory: "../build/", export_team_id: ENV["INT_EXPORT_TEAM"],
+      export_options: {
+        method: "enterprise",
+        provisioningProfiles: { 
+          "org.wordpress.internal" => "WordPress Internal Distribution",
+          "org.wordpress.internal.WordPressShare" => "WordPress Internal Share Distribution",
+          "org.wordpress.internal.WordPressDraftAction" => "WordPress Internal Draft Action Distribution",
+          "org.wordpress.internal.WordPressTodayWidget" => "WordPress Internal Today Widget Distribution"
+      }})
+
+    sh("mv ../../build/WordPress.ipa \"../../build/WordPress Internal.ipa\"")
+
+    hockey(
+        api_token: ENV["HOCKEY_API_TOKEN"],        
+        public_identifier: ENV["HOCKEY_PUBLIC_ID"],
+        notify: "0",
+        status: "1",
+        ipa: "../build/WordPress Internal.ipa",
+        dsym: "../build/WordPress.app.dSYM.zip")
+    
+  end
+
+  #####################################################################################
+  # build_and_upload_itc
+  # -----------------------------------------------------------------------------------
+  # This lane builds the app and upload it for external distribution  
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_and_upload_itc [skip_confirm:<skip confirm>]
+  #
+  # Example:
+  # bundle exec fastlane build_and_upload_itc 
+  # bundle exec fastlane build_and_upload_itc skip_confirm:true 
+  #####################################################################################
+  desc "Builds and updates for distribution"
+  lane :build_and_upload_itc do | options |
+    ios_build_prechecks(skip_confirm: options[:skip_confirm], external: true) unless (options[:skip_prechecks])
+    ios_build_preflight() unless (options[:skip_prechecks])
+
+    gym(scheme: "WordPress", workspace: "../WordPress.xcworkspace",
+      clean: true, export_team_id: ENV["EXT_EXPORT_TEAM_ID"], 
+      export_options: {
+        method: "app-store",
+        provisioningProfiles: { 
+          "org.wordpress" => "WordPress App Store",
+          "org.wordpress.WordPressShare" => "WordPress Share App Store Distribution",
+          "org.wordpress.WordPressDraftAction" => "WordPress Draft Action App Store Distribution",
+          "org.wordpress.WordPressTodayWidget" => "WordPress Today Widget App Store Distribution"
+        }
+      }
+    )
+    
+    testflight(skip_waiting_for_build_processing: true)
+    sh("cd .. && rm WordPress.ipa")
+    upload_symbols_to_crashlytics(dsym_path: "./WordPress.app.dSYM.zip", api_token: ENV["FABRIC_APP_TOKEN"])
+    sh("cd .. && rm WordPress.app.dSYM.zip")
+  end
+
 ########################################################################
 # Helper Lanes
 ########################################################################  
