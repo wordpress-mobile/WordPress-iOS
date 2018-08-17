@@ -63,9 +63,9 @@ platform :ios do
     }
 
     config_data = [
-      {device: "iPhone 8 Plus", template: "./fastlane/screenshotsres/assets/ios-phone-5-5-template.png", comp_size: "924x1640", comp_offset: "+161+568"},
-      {device: "iPhone X", template: "./fastlane/screenshotsres/assets/ios-phone-5-8-template.png", comp_size: "833x1803", comp_offset: "+146+632", text_offset: 90},
-      {device: "iPad Pro (12.9-inch)", template: "./fastlane/screenshotsres/assets/ios-tab12-landscape-template.png", comp_size: "2298x1723", comp_offset: "+221+322", text_offset: 20, text_adj: 80}
+      {device: "iPhone 8 Plus", template: "./fastlane/appstoreres/assets/ios-phone-5-5-template.png", comp_size: "924x1640", comp_offset: "+161+568"},
+      {device: "iPhone X", template: "./fastlane/appstoreres/assets/ios-phone-5-8-template.png", comp_size: "833x1803", comp_offset: "+146+632", text_offset: 90},
+      {device: "iPad Pro (12.9-inch)", template: "./fastlane/appstoreres/assets/ios-tab12-landscape-template.png", comp_size: "2298x1723", comp_offset: "+221+322", text_offset: 20, text_adj: 80}
     ]
 
     orig_folder = "./screenshots_orig"
@@ -85,7 +85,7 @@ platform :ios do
       locales: locales,
       device_config: config_data,
       default_locale: "en-US", 
-      metadata_folder: "./fastlane/screenshotsres/metadata")  
+      metadata_folder: "./fastlane/appstoreres/metadata")  
   end 
 
   #####################################################################################
@@ -138,7 +138,7 @@ platform :ios do
     gp_downloadmetadata(project_url: "https://translate.wordpress.org/projects/apps/ios/release-notes/", 
       target_files: files, 
       locales: metadata_locales,
-      download_path: "./fastlane/screenshotsres/metadata")
+      download_path: "./fastlane/appstoreres/metadata")
   end 
 
 end
