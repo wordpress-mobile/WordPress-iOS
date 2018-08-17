@@ -395,7 +395,6 @@
 		73BFDA8A211D054800907245 /* Notifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BFDA89211D054800907245 /* Notifiable.swift */; };
 		73D5AC63212622B200ADDDD2 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73D5AC5C212622B200ADDDD2 /* NotificationViewController.swift */; };
 		73D5AC64212622B200ADDDD2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 73D5AC5E212622B200ADDDD2 /* Localizable.strings */; };
-		73D5AC65212622B200ADDDD2 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73D5AC61212622B200ADDDD2 /* MainInterface.storyboard */; };
 		73E40D8921238BF50012ABA6 /* Tracks.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FA22821C99F6180016CA7C /* Tracks.swift */; };
 		73E40D8C21238C520012ABA6 /* Tracks+ServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E40D8B21238C520012ABA6 /* Tracks+ServiceExtension.swift */; };
 		740219FE202E12F4006CC39F /* UploadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741E22441FC0CC55007967AB /* UploadOperation.swift */; };
@@ -2011,7 +2010,6 @@
 		73D5AC5C212622B200ADDDD2 /* NotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
 		73D5AC5F212622B200ADDDD2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		73D5AC60212622B200ADDDD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
-		73D5AC62212622B200ADDDD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		73D5AC662126236600ADDDD2 /* Info-Alpha.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Alpha.plist"; sourceTree = "<group>"; };
 		73D5AC672126236600ADDDD2 /* Info-Internal.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Internal.plist"; sourceTree = "<group>"; };
 		73E40D8B21238C520012ABA6 /* Tracks+ServiceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tracks+ServiceExtension.swift"; sourceTree = "<group>"; };
@@ -3734,7 +3732,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				F14B5F6F208E648200439554 /* config */,
@@ -4448,7 +4446,6 @@
 			isa = PBXGroup;
 			children = (
 				73D5AC5E212622B200ADDDD2 /* Localizable.strings */,
-				73D5AC61212622B200ADDDD2 /* MainInterface.storyboard */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -7307,7 +7304,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -7435,7 +7432,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				73D5AC64212622B200ADDDD2 /* Localizable.strings in Resources */,
-				73D5AC65212622B200ADDDD2 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9193,14 +9189,6 @@
 			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
-		73D5AC61212622B200ADDDD2 /* MainInterface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				73D5AC62212622B200ADDDD2 /* Base */,
-			);
-			name = MainInterface.storyboard;
-			sourceTree = "<group>";
-		};
 		74E44ADE2031EFD600556205 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -10325,7 +10313,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				WPCOM_CONFIG = "$HOME/.wpcom_alpha_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_alpha_app_credentials;
 			};
 			name = "Release-Alpha";
 		};
@@ -10807,7 +10795,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				WPCOM_CONFIG = "$HOME/.wpcom_internal_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_internal_app_credentials;
 			};
 			name = "Release-Internal";
 		};
@@ -11156,7 +11144,7 @@
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 3.0;
-				WPCOM_CONFIG = "$HOME/.wpcom_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
 			name = Debug;
 		};
@@ -11209,7 +11197,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
-				WPCOM_CONFIG = "$HOME/.wpcom_app_credentials";
+				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 			};
 			name = Release;
 		};
