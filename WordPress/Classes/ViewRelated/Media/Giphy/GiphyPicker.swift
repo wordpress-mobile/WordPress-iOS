@@ -86,11 +86,11 @@ final class GiphyPicker: NSObject {
 
 extension GiphyPicker: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
-        guard let _ = assets as? [GiphyMedia] else {
+        guard let assets = assets as? [GiphyMedia] else {
             assertionFailure("assets should be of type `[GiphyMedia]`")
             return
         }
-        // TODO: Notify delegate that assets were picked
+        delegate?.giphyPicker(self, didFinishPicking: assets)
         picker.dismiss(animated: true)
         dataSource.clearSearch(notifyObservers: false)
         hideKeyboard(from: picker.searchBar)
