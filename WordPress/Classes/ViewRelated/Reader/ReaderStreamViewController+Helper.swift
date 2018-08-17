@@ -111,7 +111,7 @@ extension ReaderStreamViewController {
         // if liked
         if ReaderHelpers.topicIsLiked(topic) {
             return NoResultsResponse(
-                title: NSLocalizedString("No likes yet", comment: "A message title"),
+                title: NSLocalizedString("Nothing liked yet", comment: "A message title"),
                 message: NSLocalizedString("Posts that you like will appear here.", comment: "A message explaining the Posts I Like feature in the reader")
             )
         }
