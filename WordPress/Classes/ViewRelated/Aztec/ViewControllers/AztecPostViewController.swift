@@ -445,7 +445,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// The view to show when media picker has no assets to show.
     ///
-    fileprivate let noResultsView = MediaNoResultsView()
+    fileprivate let noResultsView = NoResultsViewController.controller()
 
     fileprivate var mediaLibraryChangeObserverKey: NSObjectProtocol? = nil
 
@@ -479,7 +479,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         self.restorationIdentifier = Restoration.restorationIdentifier
         self.restorationClass = type(of: self)
-        self.shouldRemovePostOnDismiss = post.shouldRemoveOnDismiss
+        self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
 
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         addObservers(toPost: post)
@@ -517,6 +517,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         configureNavigationBar()
         configureView()
         configureSubviews()
+        noResultsView.configureForNoAssets(userCanUploadMedia: false)
 
         // UI elements might get their properties reset when the view is effectively loaded. Refresh it all!
         refreshInterface()
@@ -920,7 +921,8 @@ class AztecPostViewController: UIViewController, PostEditor {
             let hasNoAssets = self?.mediaLibraryDataSource.numberOfAssets() == 0
 
             if isNotSearching && hasNoAssets {
-                self?.noResultsView.updateForNoAssets(userCanUploadMedia: false)
+                self?.noResultsView.removeFromView()
+                self?.noResultsView.configureForNoAssets(userCanUploadMedia: false)
             }
         })
     }
@@ -3702,7 +3704,7 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
 //
 extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
-    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
+    func emptyViewController(forMediaPickerController picker: WPMediaPickerViewController) -> UIViewController? {
         if picker != mediaPickerInputViewController?.mediaPicker {
             return noResultsView
         }
@@ -3711,18 +3713,20 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didUpdateSearchWithAssetCount assetCount: Int) {
         if let searchQuery = mediaLibraryDataSource.searchQuery {
-            noResultsView.updateForNoSearchResult(with: searchQuery)
+            noResultsView.removeFromView()
+            noResultsView.configureForNoSearchResult(with: searchQuery)
         }
     }
 
     func mediaPickerControllerWillBeginLoadingData(_ picker: WPMediaPickerViewController) {
         updateSearchBar(mediaPicker: picker)
-        noResultsView.updateForFetching()
+        noResultsView.configureForFetching()
     }
 
     func mediaPickerControllerDidEndLoadingData(_ picker: WPMediaPickerViewController) {
         updateSearchBar(mediaPicker: picker)
-        noResultsView.updateForNoAssets(userCanUploadMedia: false)
+        noResultsView.removeFromView()
+        noResultsView.configureForNoAssets(userCanUploadMedia: false)
     }
 
     func mediaPickerControllerDidCancel(_ picker: WPMediaPickerViewController) {

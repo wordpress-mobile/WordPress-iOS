@@ -66,10 +66,10 @@ target 'WordPress' do
     pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.3'
     pod 'Gridicons', '0.16'
     pod 'NSURL+IDN', '0.3'
-    pod 'WPMediaPicker', '1.1'
-    pod 'WordPressAuthenticator', '1.0.4'
-    pod 'WordPress-Aztec-iOS', '=1.0.0-beta.24'
-	  pod 'WordPress-Editor-iOS', '=1.0.0-beta.24'
+    pod 'WPMediaPicker', '1.3'
+    pod 'WordPressAuthenticator', '1.0.6'
+    pod 'WordPress-Aztec-iOS', '=1.0.0-beta.25'
+	  pod 'WordPress-Editor-iOS', '=1.0.0-beta.25'
     pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
 
     target 'WordPressTest' do
@@ -89,8 +89,8 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
 
-        pod 'WordPress-Aztec-iOS', '=1.0.0-beta.24'
-        pod 'WordPress-Editor-iOS', '=1.0.0-beta.24'
+        pod 'WordPress-Aztec-iOS', '=1.0.0-beta.25'
+        pod 'WordPress-Editor-iOS', '=1.0.0-beta.25'
         pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
         pod 'Gridicons', '0.16'
     end
@@ -105,8 +105,8 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
 
-        pod 'WordPress-Aztec-iOS', '=1.0.0-beta.24'
-        pod 'WordPress-Editor-iOS', '=1.0.0-beta.24'
+        pod 'WordPress-Aztec-iOS', '=1.0.0-beta.25'
+        pod 'WordPress-Editor-iOS', '=1.0.0-beta.25'
         pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
         pod 'Gridicons', '0.16'
     end
@@ -121,6 +121,20 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
     end
+end
+
+
+
+## Notification Service Extension
+## ==============================
+##
+target 'WordPressNotificationServiceExtension' do
+	project 'WordPress/WordPress.xcodeproj'
+	
+	inherit! :search_paths
+
+	pod 'WordPressKit', '1.2.1'
+	pod 'WordPressShared', '1.0.9'
 end
 
 

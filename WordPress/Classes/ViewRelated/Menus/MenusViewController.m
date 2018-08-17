@@ -12,7 +12,6 @@
 #import "ContextManager.h"
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
-#import <WordPressShared/WPNoResultsView.h>
 #import <WordPressShared/WPFontManager.h>
 #import <WordPressShared/WPStyleGuide.h>
 #import <WordPressUI/WordPressUI.h>
@@ -30,7 +29,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 @property (nonatomic, weak, readonly) MenuDetailsViewController *detailsViewController;
 @property (nonatomic, weak, readonly) MenuItemsViewController *itemsViewController;
 
-@property (nonatomic, strong, readonly) WPNoResultsView *loadingView;
+@property (nonatomic, strong, readonly) NoResultsViewController *noResultsViewController;
 @property (nonatomic, strong, readonly) UILabel *itemsLoadingLabel;
 @property (nonatomic, strong, readonly) UIBarButtonItem *saveButtonItem;
 
@@ -102,7 +101,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     self.itemsViewController.delegate = self;
 
     [self setupSaveButtonItem];
-    [self setupLoadingView];
+    [self setupNoResultsView];
     [self setupItemsLoadingLabel];
 
     [self syncWithBlogMenus];
@@ -116,11 +115,9 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     _saveButtonItem = button;
 }
 
-- (void)setupLoadingView
+- (void)setupNoResultsView
 {
-    WPNoResultsView *loadingView = [[WPNoResultsView alloc] init];
-    loadingView.titleText = NSLocalizedString(@"Loading Menus...", @"Menus label text displayed while menus are loading");;
-    _loadingView = loadingView;
+    _noResultsViewController = [NoResultsViewController controller];
 }
 
 - (void)setupItemsLoadingLabel
@@ -240,8 +237,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 
 - (void)syncWithBlogMenus
 {
-    [self.loadingView showInView:self.view];
-    [self.loadingView centerInSuperview];
+    [self showNoResultsWithTitle:[self noResultsLoadingTitle]];
 
     [self.menusService syncMenusForBlog:self.blog
                                 success:^{
@@ -249,18 +245,18 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
                                 }
                                 failure:^(NSError *error) {
                                     DDLogDebug(@"MenusViewController could not sync menus for blog");
-                                    self.loadingView.titleText = NSLocalizedString(@"An error occurred loading menus, please check your internet connection.", @"Menus text shown when an error occurred loading menus from the server.");
+                                    [self showNoResultsWithTitle:[self noResultsErrorTitle]];
                                 }];
 }
 
 - (void)didSyncBlog
 {
     if (!self.blog.menuLocations.count) {
-        self.loadingView.titleText = NSLocalizedString(@"No menus available", @"Menus text shown when no menus were available for loading the Menus editor.");
+        [self showNoResultsWithTitle:[self noResultsNoMenusTitle]];
         return;
     }
 
-    [self.loadingView removeFromSuperview];
+    [self.noResultsViewController removeFromView];
 
     self.headerViewController.blog = self.blog;
     MenuLocation *selectedLocation = [self.blog.menuLocations firstObject];
@@ -523,6 +519,46 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     };
     controller.onSelectedToCancel = dismiss;
     return controller;
+}
+
+#pragma mark - No Results handling
+
+- (void)showNoResultsWithTitle:(NSString *) title
+{
+    [self.noResultsViewController removeFromView];
+
+    // If loading, show an animation.
+    WPAnimatedBox *accessoryView = nil;
+    if ([title isEqualToString:[self noResultsLoadingTitle]]) {
+        accessoryView = [[WPAnimatedBox alloc] init];
+        [accessoryView animateAfterDelay:0.1];
+    }
+
+    [self.noResultsViewController configureWithTitle:title
+                                         buttonTitle:nil
+                                            subtitle:nil
+                                  attributedSubtitle:nil
+                                               image:nil
+                                       accessoryView:accessoryView];
+
+    [self addChildViewController:self.noResultsViewController];
+    [self.view addSubviewWithFadeAnimation:self.noResultsViewController.view];
+    [self.noResultsViewController didMoveToParentViewController:self];
+}
+
+- (NSString *)noResultsLoadingTitle
+{
+    return NSLocalizedString(@"Loading Menus...", @"Menus label text displayed while menus are loading");
+}
+
+- (NSString *)noResultsErrorTitle
+{
+    return NSLocalizedString(@"An error occurred loading menus, please check your internet connection.", @"Menus text shown when an error occurred loading menus from the server.");
+}
+
+- (NSString *)noResultsNoMenusTitle
+{
+    return NSLocalizedString(@"No menus available", @"Menus text shown when no menus were available for loading the Menus editor.");
 }
 
 #pragma mark - Bar button items
