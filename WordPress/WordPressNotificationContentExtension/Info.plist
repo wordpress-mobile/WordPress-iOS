@@ -31,7 +31,9 @@
                 <string>replyto-comment</string>
                 <string>replyto-like-comment</string>
             </array>
-			<key>UNNotificationExtensionInitialContentSizeRatio</key>
+            <key>UNNotificationExtensionDefaultContentHidden</key>
+            <true/>
+            <key>UNNotificationExtensionInitialContentSizeRatio</key>
 			<real>1</real>
 		</dict>
         <key>NSExtensionPrincipalClass</key>
