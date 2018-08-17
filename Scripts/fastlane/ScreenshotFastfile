@@ -18,8 +18,23 @@ default_platform(:ios)
 
 platform :ios do
 ########################################################################
-# Sreenshot Lanes
+# Screenshot Lanes
 ########################################################################
+  #####################################################################################
+  # create_promo_screenshots
+  # -----------------------------------------------------------------------------------
+  # This lane generates the promo screenshots. 
+  # Source plain screenshots are supposed to be in the screenshots_orig folder
+  # If this folder doesn't exist, the system will ask to use the standard screenshot
+  # folder. If the user confirms, the pictures in the screenshots folder will be 
+  # copied to a new screenshots_orig folder.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane create_promo_screenshots 
+  #
+  # Example:
+  # bundle exec fastlane create_promo_screenshots
+  #####################################################################################
   desc "Creates promo screenshots"
   lane :create_promo_screenshots do |options| 
     locales = {
@@ -73,6 +88,18 @@ platform :ios do
       metadata_folder: "./fastlane/screenshotsres/metadata")  
   end 
 
+  #####################################################################################
+  # download_promo_strings
+  # -----------------------------------------------------------------------------------
+  # This lane downloads the promo strings to use for the creation of the enhanced 
+  # screenshots.
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane download_promo_strings 
+  #
+  # Example:
+  # bundle exec fastlane download_promo_strings
+  #####################################################################################
   desc "Downloads translated promo strings from GlotPress"
   lane :download_promo_strings do |options| 
     files = {
