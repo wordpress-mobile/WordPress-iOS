@@ -38,12 +38,11 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v10.6-whats-new"
+msgctxt "v10.7-whats-new"
 msgid ""
-"You can now jump from WordPress.com in Safari to the same content in the WordPress for iOS app with ease. Just look out for the banner at the top of WordPress.com pages!.\n"
-"Activity Log are now available for free WordPress.com sites.\n"
-"Some small UI improvements.\n"
-"A bunch of bug fixes.\n"
+"There’s better image handling in the editor. Whether you drag-and-drop a file or add one with the media picker, uploading and inserting is smooth and fast.\n"
+"Small UI improvements in a bunch of spots to make your experience more intuitive — you probably won’t notice them, and that’s the point!\n"
+"Bug squashing.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

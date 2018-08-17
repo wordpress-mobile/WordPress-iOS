@@ -533,7 +533,6 @@
 		7E4A773820F80414001C706D /* ActivityPostRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4A773120F800CB001C706D /* ActivityPostRange.swift */; };
 		7E4A773920F80417001C706D /* ActivityPluginRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4A773320F800ED001C706D /* ActivityPluginRange.swift */; };
 		7E4A773C20F80598001C706D /* ActivityContentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4A773A20F8058F001C706D /* ActivityContentFactory.swift */; };
-		7E52B7181FC89F2400B55EB8 /* MediaNoResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */; };
 		7E53AB0020FE55A9005796FE /* ActivityContentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E53AAFF20FE55A9005796FE /* ActivityContentRouter.swift */; };
 		7E53AB0220FE5EAE005796FE /* ContentRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E53AB0120FE5EAE005796FE /* ContentRouter.swift */; };
 		7E53AB0420FE6681005796FE /* ActivityContentRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E53AB0320FE6681005796FE /* ActivityContentRouterTests.swift */; };
@@ -2085,7 +2084,6 @@
 		7E4A773320F800ED001C706D /* ActivityPluginRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityPluginRange.swift; sourceTree = "<group>"; };
 		7E4A773520F80146001C706D /* ActivityRangesFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityRangesFactory.swift; sourceTree = "<group>"; };
 		7E4A773A20F8058F001C706D /* ActivityContentFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentFactory.swift; sourceTree = "<group>"; };
-		7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaNoResultsView.swift; sourceTree = "<group>"; };
 		7E53AAFF20FE55A9005796FE /* ActivityContentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentRouter.swift; sourceTree = "<group>"; };
 		7E53AB0120FE5EAE005796FE /* ContentRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentRouter.swift; sourceTree = "<group>"; };
 		7E53AB0320FE6681005796FE /* ActivityContentRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityContentRouterTests.swift; sourceTree = "<group>"; };
@@ -4152,7 +4150,6 @@
 				17BB26AD1E6D8321008CD031 /* MediaLibraryViewController.swift */,
 				1782BE831E70063100A91E7D /* MediaItemViewController.swift */,
 				177074841FB209F100951A4A /* CircularProgressView.swift */,
-				7E52B7171FC89F2400B55EB8 /* MediaNoResultsView.swift */,
 				981D0929211259840014ECAF /* NoResultsViewController+MediaLibrary.swift */,
 				17D5C3F61FFCF2D800EB70FF /* MediaProgressCoordinatorNoticeViewModel.swift */,
 				1750BD6C201144DB0050F13A /* MediaNoticeNavigationCoordinator.swift */,
@@ -8119,7 +8116,6 @@
 				B50421E91B68170F008EEA82 /* NoteUndoOverlayView.swift in Sources */,
 				B5D889411BEBE30A007C4684 /* BlogSettings.swift in Sources */,
 				5DF7F7781B223916003A05C8 /* PostToPost30To31.m in Sources */,
-				7E52B7181FC89F2400B55EB8 /* MediaNoResultsView.swift in Sources */,
 				1746D7771D2165AE00B11D77 /* ForcePopoverPresenter.swift in Sources */,
 				D858F30120E20106007E8A1C /* LikePost.swift in Sources */,
 				1703D04C20ECD93800D292E9 /* Routes+Post.swift in Sources */,
