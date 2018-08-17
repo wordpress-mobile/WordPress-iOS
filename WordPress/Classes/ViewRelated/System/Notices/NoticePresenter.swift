@@ -107,8 +107,8 @@ class NoticePresenter: NSObject {
 
     private func makeNoticeView(for notice: Notice) -> NoticePresentationView {
         switch notice.style {
-        case .quickStart(let formattedMessage):
-            return QuickStartNoticeView(notice: notice, message: formattedMessage)
+        case .quickStart(_):
+            return QuickStartNoticeView(notice: notice)
         default:
             return NoticeView(notice: notice)
         }

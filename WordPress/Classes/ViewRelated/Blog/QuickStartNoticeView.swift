@@ -1,53 +1,26 @@
-class QuickStartNoticeView: UIView, DismissableNoticeView {
-    private let contentStackView = UIStackView()
-    private let backgroundContainerView = UIView()
-    private let backgroundView = UIView()
-    private let titleLabel = UILabel()
-    private let messageLabel = UILabel()
+class QuickStartNoticeView: NoticeView {
     private let yesButton = UIButton(type: .system)
     private let noButton = UIButton(type: .system)
-    private let formattedMessage: NSAttributedString?
-    private let shadowLayer = CAShapeLayer()
-    private let shadowMaskLayer = CAShapeLayer()
 
-    private let notice: Notice
-
-    required init(notice: Notice, message formattedMessage: NSAttributedString?) {
-        self.notice = notice
-        self.formattedMessage = formattedMessage
-
-        super.init(frame: .zero)
-
+    override func configure() {
         configureBackgroundViews()
         configureShadow()
         configureContentStackView()
         configureLabels()
         configureForNotice()
     }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    var dismissHandler: (() -> Void)?
-
-    override var bounds: CGRect {
-        didSet {
-            updateShadowPath()
-        }
-    }
 }
+
 private extension QuickStartNoticeView {
 
-    private func configureContentStackView() {
-        contentStackView.axis = .horizontal
-        contentStackView.translatesAutoresizingMaskIntoConstraints = false
-        backgroundView.addSubview(contentStackView)
-        backgroundView.pinSubviewToAllEdges(contentStackView)
-    }
-
     func configureBackgroundViews() {
-        backgroundView.backgroundColor = Colors.backgroundColor
+        // dark background view
+        let backgroundColorView = UIView()
+        backgroundColorView.backgroundColor = Colors.backgroundColor
+        backgroundView.contentView.addSubview(backgroundColorView)
+        backgroundColorView.layer.cornerRadius = Metrics.cornerRadius
+        backgroundColorView.translatesAutoresizingMaskIntoConstraints = false
+        backgroundView.contentView.pinSubviewToAllEdges(backgroundColorView)
 
         addSubview(backgroundContainerView)
         backgroundContainerView.translatesAutoresizingMaskIntoConstraints = false
@@ -57,41 +30,11 @@ private extension QuickStartNoticeView {
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         pinSubviewToAllEdges(backgroundView)
 
-        backgroundContainerView.layer.cornerRadius = Metrics.cornerRadius
+        backgroundContainerView.layer.cornerRadius = Metrics.cornerRadius //**
         backgroundContainerView.layer.masksToBounds = true
     }
 
-    private func configureShadow() {
-        shadowLayer.shadowPath = UIBezierPath(roundedRect: layer.bounds, cornerRadius: Metrics.cornerRadius).cgPath
-        shadowLayer.shadowColor = ShadowAppearance.shadowColor.cgColor
-        shadowLayer.shadowOpacity = ShadowAppearance.shadowOpacity
-        shadowLayer.shadowRadius = ShadowAppearance.shadowRadius
-        shadowLayer.shadowOffset = ShadowAppearance.shadowOffset
-        layer.insertSublayer(shadowLayer, at: 0)
-
-        shadowMaskLayer.fillRule = kCAFillRuleEvenOdd
-        shadowLayer.mask = shadowMaskLayer
-
-        updateShadowPath()
-    }
-
-    private func updateShadowPath() {
-        let shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: Metrics.cornerRadius).cgPath
-        shadowLayer.shadowPath = shadowPath
-
-        // Construct a mask path with the notice's roundrect cut out of a larger padding rect.
-        // This, combined with the `kCAFillRuleEvenOdd` gives us an inverted mask, so
-        // the shadow only appears _outside_ of the notice roundrect, and doesn't appear underneath
-        // and obscure the blur visual effect view.
-        let maskPath = CGMutablePath()
-        let leftInset = Metrics.layoutMargins.left * 2
-        let topInset = Metrics.layoutMargins.top * 2
-        maskPath.addRect(bounds.insetBy(dx: -leftInset, dy: -topInset))
-        maskPath.addPath(shadowPath)
-        shadowMaskLayer.path = maskPath
-    }
-
-    func configureLabels() {
+    func configureLabels() { // **
         let labelStackView = UIStackView()
         labelStackView.translatesAutoresizingMaskIntoConstraints = false
         labelStackView.alignment = .leading
@@ -119,10 +62,10 @@ private extension QuickStartNoticeView {
     }
 
 
-    private func configureForNotice() {
+    func configureForNotice() {
         titleLabel.text = notice.title
 
-        if let message = formattedMessage {
+        if case .quickStart(let message) = notice.style {
             messageLabel.attributedText = message
             titleLabel.isHidden = true
         } else if let message = notice.message {
@@ -130,10 +73,12 @@ private extension QuickStartNoticeView {
         } else {
             titleLabel.numberOfLines = 2
         }
+        titleLabel.font = Fonts.titleLabelFont
+        messageLabel.font = Fonts.messageLabelFont
+        messageLabel.textColor = Colors.messageColor
     }
 
     enum Fonts {
-        static let actionButtonFont = UIFont.systemFont(ofSize: 14.0)
         static let titleLabelFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
         static var messageLabelFont: UIFont {
             get {
@@ -152,12 +97,5 @@ private extension QuickStartNoticeView {
         static let cornerRadius: CGFloat = 14.0
         static let layoutMargins = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
         static let labelLineSpacing: CGFloat = 18.0
-    }
-
-    enum ShadowAppearance {
-        static let shadowColor: UIColor = .black
-        static let shadowOpacity: Float = 0.25
-        static let shadowRadius: CGFloat = 8.0
-        static let shadowOffset = CGSize(width: 0.0, height: 2.0)
     }
 }
