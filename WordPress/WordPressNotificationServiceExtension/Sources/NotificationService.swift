@@ -71,10 +71,6 @@ class NotificationService: UNNotificationServiceExtension {
                     notificationContent.body = notificationText
                 }
 
-                // NB: placeholder pending `note_type`
-                let placeholderNoteType = "replyto-like-comment"
-                notificationContent.categoryIdentifier = placeholderNoteType
-
                 tracks.trackNotificationAssembled()
             }
         }
