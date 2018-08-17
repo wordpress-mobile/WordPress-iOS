@@ -18,17 +18,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
     fileprivate let cellIdentifier = "CellIdentifier"
 
-    @objc lazy var noResultsView: WPNoResultsView = {
-        let title = NSLocalizedString("No Sites", comment: "Title of a message explaining that the user is not currently following any blogs in their reader.")
-        let message = NSLocalizedString("You are not following any sites yet. Why not follow one now?", comment: "A suggestion to the user that they try following a site in their reader.")
-        return WPNoResultsView(title: title, message: message, accessoryView: nil, buttonTitle: nil)
-    }()
-
-    @objc lazy var loadingView: WPNoResultsView = {
-        let title = NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their followed sites is being fetched..")
-        return WPNoResultsView(title: title, message: nil, accessoryView: nil, buttonTitle: nil)
-    }()
-
+    private let noResultsViewController = NoResultsViewController.controller()
 
     /// Convenience method for instantiating an instance of ReaderFollowedSitesViewController
     ///
@@ -124,24 +114,6 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         searchBar.setImage(UIImage(named: "icon-clear-textfield"), for: .clear, state: UIControlState())
         searchBar.setImage(UIImage(named: "icon-reader-search-plus"), for: .search, state: UIControlState())
     }
-
-
-    @objc func configureNoResultsView() {
-        noResultsView.removeFromSuperview()
-        loadingView.removeFromSuperview()
-        if let count = tableViewHandler.resultsController.fetchedObjects?.count, count > 0 {
-            return
-        }
-
-        if isSyncing {
-            view.addSubview(loadingView)
-            loadingView.centerInSuperview()
-        } else {
-            view.addSubview(noResultsView)
-            noResultsView.centerInSuperview()
-        }
-    }
-
 
     // MARK: - Instance Methods
 
@@ -279,6 +251,46 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     }
 }
 
+// MARK: - No Results Handling
+
+private extension ReaderFollowedSitesViewController {
+
+    func configureNoResultsView() {
+        noResultsViewController.removeFromView()
+
+        if let count = tableViewHandler.resultsController.fetchedObjects?.count, count > 0 {
+            return
+        }
+
+        if isSyncing {
+            noResultsViewController.configure(title: NoResultsText.loadingTitle, accessoryView: loadingAccessoryView())
+        } else {
+            noResultsViewController.configure(title: NoResultsText.noResultsTitle, subtitle: NoResultsText.noResultsMessage, image: "wp-illustration-empty-results")
+        }
+
+        showNoResultView()
+    }
+
+    func showNoResultView() {
+        tableViewController.addChildViewController(noResultsViewController)
+        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        noResultsViewController.view.frame = tableView.frame
+        noResultsViewController.didMove(toParentViewController: tableViewController)
+    }
+
+    func loadingAccessoryView() -> UIView {
+        let boxView = WPAnimatedBox()
+        boxView.animate(afterDelay: 0.3)
+        return boxView
+    }
+
+    struct NoResultsText {
+        static let noResultsTitle = NSLocalizedString("No followed sites", comment: "Title of a message explaining that the user is not currently following any blogs in their reader.")
+        static let noResultsMessage = NSLocalizedString("You are not following any sites yet. Why not follow one now?", comment: "A suggestion to the user that they try following a site in their reader.")
+        static let loadingTitle = NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their followed sites is being fetched..")
+    }
+
+}
 
 extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
