@@ -1,3 +1,4 @@
-Editor: più aggiornamenti per la compatibilità con Gutenberg.
-Numerosi miglioramenti alla UI.
-Molte piccole correzioni di bug.
+Ora puoi passare con semplicità da WordPress.com in Safari al medesimo contenuto in WordPress per l’app iOS. Basta cercare il banner nella parte superiore delle pagine WordPress.com!.
+Il log attività è ora disponibile per i siti WordPress.com gratuiti.
+Alcuni piccoli miglioramenti alla UI.
+Alcune correzioni di bug.

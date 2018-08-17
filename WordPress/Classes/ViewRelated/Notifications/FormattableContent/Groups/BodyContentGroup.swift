@@ -4,7 +4,7 @@ class BodyContentGroup: FormattableContentGroup {
         let blocks = NotificationContentFactory.content(from: body, actionsParser: NotificationActionParser(), parent: parent)
 
         switch parent.kind {
-        case .Comment:
+        case .comment:
             return groupsForCommentBodyBlocks(blocks, parent: parent)
         default:
             return groupsForNonCommentBodyBlocks(blocks, parent: parent)
@@ -12,7 +12,7 @@ class BodyContentGroup: FormattableContentGroup {
     }
 
     private class func groupsForNonCommentBodyBlocks(_ blocks: [FormattableContent], parent: Notification) -> [FormattableContentGroup] {
-        let parentKindsWithFooters: [Notification.Kind] = [.Follow, .Like, .CommentLike]
+        let parentKindsWithFooters: [NotificationKind] = [.follow, .like, .commentLike]
         let parentMayContainFooter = parentKindsWithFooters.contains(parent.kind)
 
         return blocks.enumerated().map { index, block in
@@ -50,8 +50,10 @@ class BodyContentGroup: FormattableContentGroup {
             if let commentContent = block as? NotificationTextContent,
                 let parentReplyID = parent.metaReplyID,
                 commentContent.formattableContentRangeWithCommentId(parentReplyID) != nil {
-
-                groups.append(FooterContentGroup(blocks: [block]))
+                if let text = block.text {
+                    let footerContent = FooterTextContent(text: text, ranges: block.ranges, actions: block.actions)
+                    groups.append(FooterContentGroup(blocks: [footerContent]))
+                }
             } else {
                 groups.append(FormattableContentGroup(blocks: [block], kind: .text))
             }
@@ -81,7 +83,7 @@ class BodyContentGroup: FormattableContentGroup {
         }
     }
 
-    public class func pingbackReadMoreGroup(for url: URL) -> FormattableContentGroup {
+    private class func pingbackReadMoreGroup(for url: URL) -> FormattableContentGroup {
         let text = NSLocalizedString("Read the source post", comment: "Displayed at the footer of a Pingback Notification.")
         let textRange = NSRange(location: 0, length: text.count)
         let zeroRange = NSRange(location: 0, length: 0)

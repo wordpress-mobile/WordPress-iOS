@@ -80,7 +80,7 @@ class NotificationTests: XCTestCase {
 
     func testLikeNotificationReturnsTheProperKindValue() {
         let note = loadLikeNotification()
-        XCTAssert(note.kind == .Like)
+        XCTAssert(note.kind == .like)
     }
 
     func testLikeNotificationContainsOneSubjectBlock() {
@@ -127,12 +127,12 @@ class NotificationTests: XCTestCase {
 
     func testFollowerNotificationReturnsTheProperKindValue() {
         let note = loadFollowerNotification()
-        XCTAssert(note.kind == .Follow)
+        XCTAssert(note.kind == .follow)
     }
 
     func testFollowerNotificationHasFollowFlagSetToTrue() {
         let note = loadFollowerNotification()
-        XCTAssertTrue(note.kind == .Follow)
+        XCTAssertTrue(note.kind == .follow)
     }
 
     func testFollowerNotificationContainsOneSubjectBlock() {
@@ -208,12 +208,12 @@ class NotificationTests: XCTestCase {
 
     func testCommentNotificationReturnsTheProperKindValue() {
         let note = loadCommentNotification()
-        XCTAssert(note.kind == .Comment)
+        XCTAssert(note.kind == .comment)
     }
 
     func testCommentNotificationHasCommentFlagSetToTrue() {
         let note = loadCommentNotification()
-        XCTAssertTrue(note.kind == .Comment)
+        XCTAssertTrue(note.kind == .comment)
     }
 
     func testCommentNotificationContainsSubjectWithSnippet() {
@@ -305,21 +305,11 @@ class NotificationTests: XCTestCase {
         XCTAssertNotNil(replyRange)
     }
 
-    func testFindingContentRangeSearchingByReplyCommentID() {
+    func testFooterContentIsIdentifiedAndCreated() {
         let note = loadCommentNotification()
-        XCTAssertNotNil(note.metaReplyID)
+        let footerBlock: FooterTextContent? = note.contentGroup(ofKind: .footer)?.blockOfKind(.text)
 
-        let textBlock: FormattableTextContent? = note.contentGroup(ofKind: .footer)?.blockOfKind(.text)
-        XCTAssertNotNil(textBlock)
-
-        let replyID = note.metaReplyID
-        XCTAssertNotNil(replyID)
-
-        XCTAssertTrue(textBlock is NotificationTextContent)
-        let mediaBlock = textBlock as? NotificationTextContent
-        let replyRange = mediaBlock?.formattableContentRangeWithCommentId(replyID!)
-
-        XCTAssertNotNil(replyRange)
+        XCTAssertNotNil(footerBlock)
     }
 
     func testFindingNotificationRangeSearchingByURL() {
