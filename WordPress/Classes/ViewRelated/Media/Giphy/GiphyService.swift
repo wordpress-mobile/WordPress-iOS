@@ -18,7 +18,10 @@ struct GiphyService {
     }()
 
     func search(params: GiphySearchParams, completion: @escaping (GiphyResultsPage) -> Void) {
-        GiphyService.giphy.search(params.text, rating: .ratedG) { (response, error) in
+        let offset = params.pageable?.pageIndex ?? 0
+        let pageSize = params.pageable?.pageSize ?? GiphyPageable.defaultPageSize
+
+        GiphyService.giphy.search(params.text, offset: offset, limit: pageSize, rating: .ratedG) { (response, error) in
             DispatchQueue.main.async {
                 if let _ = error as NSError? {
                     completion(GiphyResultsPage.empty())
@@ -27,8 +30,9 @@ struct GiphyService {
 
                 if let response = response, let data = response.data {
                     let media = data.compactMap({ GiphyMedia(gphMedia: $0) })
+                    let page = GiphyPageable(gphPagination: response.pagination)
 
-                    completion(GiphyResultsPage(results: media))
+                    completion(GiphyResultsPage(results: media, pageable: page))
                 } else {
                     completion(GiphyResultsPage.empty())
                 }
@@ -48,5 +52,21 @@ extension GiphyMedia {
                   url: imageURL,
                   size: CGSize(width: image.width, height: image.height),
                   date: gphMedia.updateDate)
+    }
+}
+
+extension GiphyPageable {
+    init?(gphPagination: GPHPagination?) {
+        guard let pagination = gphPagination else {
+            return nil
+        }
+
+        let newOffset = pagination.offset + pagination.count
+        guard newOffset < pagination.totalCount else {
+            return nil
+        }
+
+        self.init(itemsPerPage: GiphyPageable.defaultPageSize,
+                  pageHandle: newOffset)
     }
 }

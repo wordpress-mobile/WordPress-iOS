@@ -24,6 +24,7 @@ final class GiphyDataLoader {
 
     func search(_ params: GiphySearchParams) {
         request = params
+        let isFirstPage = request?.pageable?.pageIndex == GiphyPageable.defaultPageIndex
         state = .loading
         DispatchQueue.main.async { [weak self] in
             // TODO: Add Analytics
@@ -32,7 +33,7 @@ final class GiphyDataLoader {
                 self?.request = GiphySearchParams(text: self?.request?.text, pageable: resultsPage.nextPageable())
 
                 if let content = resultsPage.content() {
-                    self?.delegate?.didLoad(media: content, reset: true)
+                    self?.delegate?.didLoad(media: content, reset: isFirstPage)
                 }
             }
         }

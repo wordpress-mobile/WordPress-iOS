@@ -38,7 +38,7 @@ final class GiphyDataSource: NSObject, WPMediaCollectionDataSource {
         }
 
         scheduler.debounce { [weak self] in
-            let params = GiphySearchParams(text: searchText, pageable: nil)
+            let params = GiphySearchParams(text: searchText, pageable: GiphyPageable.first())
             self?.search(params)
             self?.onStartLoading?()
         }
