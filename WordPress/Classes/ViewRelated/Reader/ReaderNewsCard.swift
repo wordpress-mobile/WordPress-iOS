@@ -1,23 +1,32 @@
 /// Bootstraps a news card specific for the reader.
 final class ReaderNewsCard {
-    private static let fileName = "News"
+    private let fileName = "News"
 
-    class func newsCard(containerIdentifier: Identifier, header: ReaderStreamViewController.ReaderHeader?) -> UIView? {
+    private lazy var newsManager: NewsManager = {
         let database = UserDefaults.standard
-        let newsManager = DefaultNewsManager(service: LocalNewsService(fileName: fileName), database: database)
+        let returnValue = DefaultNewsManager(service: LocalNewsService(fileName: fileName), database: database)
 
+        return returnValue
+    }()
+
+    private lazy var newsCard: NewsCard = {
+        return NewsCard(manager: self.newsManager)
+    }()
+
+    func newsCard(containerIdentifier: Identifier, header: ReaderStreamViewController.ReaderHeader?, container: UIViewController) -> UIView? {
         // News card should not be presented: return configured stream header
         guard newsManager.shouldPresentCard(contextId: containerIdentifier) else {
             return header
         }
 
-        let newsCard = NewsCard(manager: newsManager)
         let news = News(manager: newsManager, ui: newsCard)
 
         // The news card is not available: return configured stream header
         guard let cardUI = news.card(containerId: containerIdentifier)?.view else {
             return header
         }
+
+        container.addChildViewController(newsCard)
 
         // This stream does not have a header: return news card
         guard let sectionHeader = header else {
