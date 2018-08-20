@@ -15,20 +15,17 @@ final class DefaultNewsManager: NewsManager {
         static let cardContainerIdentifier = "com.wordpress.newscard.cardcontaineridentifier"
     }
 
-    enum StatsKeys {
-        static let origin = "origin"
-        static let version = "version"
-    }
-
     private let service: NewsService
     private let database: KeyValueDatabase
     private weak var delegate: NewsManagerDelegate?
+    private let stats: NewsStats
 
     private var result: Result<NewsItem>?
 
-    init(service: NewsService, database: KeyValueDatabase, delegate: NewsManagerDelegate?) {
+    init(service: NewsService, database: KeyValueDatabase, stats: NewsStats, delegate: NewsManagerDelegate?) {
         self.service = service
         self.database = database
+        self.stats = stats
         self.delegate = delegate
         load()
     }
@@ -161,32 +158,14 @@ final class DefaultNewsManager: NewsManager {
     }
 
     private func trackCardPresented() {
-        track(event: .newsCardViewed)
+        stats.trackPresented(news: result)
     }
 
     private func trackCardDismissed() {
-        track(event: .newsCardDismissed)
+        stats.trackDismissed(news: result)
     }
 
     private func trackRequestedExtendedInfo() {
-        track(event: .newsCardRequestedExtendedInfo)
-    }
-
-    private func eventProperties(version: Decimal) -> [AnyHashable: Any] {
-        return [StatsKeys.origin: "reader",
-                StatsKeys.version: version.description]
-    }
-
-    private func track(event: WPAnalyticsStat) {
-        guard let actualResult = result else {
-            return
-        }
-
-        switch actualResult {
-        case .error:
-            return
-        case .success(let newsItem):
-            WPAppAnalytics.track(event, withProperties: eventProperties(version: newsItem.version))
-        }
+        stats.trackRequestedExtendedInfo(news: result)
     }
 }
