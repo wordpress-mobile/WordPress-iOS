@@ -31,6 +31,8 @@ extension ReaderStreamViewController {
 
         let containerIdentifier = Identifier(value: topic.title)
 
+        let newsCard = ReaderNewsCard()
+
         return newsCard.newsCard(containerIdentifier: containerIdentifier, header: header, container: self)
     }
 
