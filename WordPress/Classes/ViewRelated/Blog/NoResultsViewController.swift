@@ -138,6 +138,14 @@ import WordPressAuthenticator
         return noResultsView.frame.height
     }
 
+    /// Public method to get an animated box to show while loading.
+    ///
+    func loadingAccessoryView() -> UIView {
+        let boxView = WPAnimatedBox()
+        boxView.animate(afterDelay: 0.3)
+        return boxView
+    }
+
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         setAccessoryViewsVisibility()
