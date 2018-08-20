@@ -26,19 +26,44 @@ ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
 ########################################################################
 # Release Lanes
 ########################################################################
+  #####################################################################################
+  # code_freeze
+  # -----------------------------------------------------------------------------------
+  # This lane executes the steps planned on code freeze
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane code_freeze [skip_confirm:<skip confirm>]
+  #
+  # Example:
+  # bundle exec fastlane code_freeze
+  # bundle exec fastlane code_freeze skip_confirm:true
+  #####################################################################################
   desc "Creates a new release branch from the current develop"
   lane :code_freeze do | options |
-    old_version = code_freeze_prechecks(options)
+    old_version = ios_codefreeze_prechecks(options)
     
-    bump_version_release()
-    new_version = get_app_version()
+    ios_bump_version_release()
+    new_version = ios_get_app_version()
     setbranchprotection(repository:GHHELPER_REPO, branch: "release/#{new_version}")
     setfrozentag(repository:GHHELPER_REPO, milestone: new_version)
 
-    localize_project()
+    ios_localize_project()
+    ios_tag_build()
     get_prs_list(repository:GHHELPER_REPO, start_tag:"#{old_version}", report_path:"#{File.expand_path('~')}/wpios_prs_list_#{old_version}_#{new_version}.txt")
   end
 
+  #####################################################################################
+  # update_appstore_strings
+  # -----------------------------------------------------------------------------------
+  # This lane updates the AppStoreStrings.po files with the latest content from
+  # the release_notes.txt file and the other text sources
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane update_appstore_strings version:<release note version>
+  #
+  # Example:
+  # bundle exec fastlane update_appstore_strings version:10.7
+  #####################################################################################
   desc "Updates the AppStoreStrings.po file with the latest data"
   lane :update_appstore_strings do | options |
     prj_folder = Pathname.new(File.join(Dir.pwd, "../..")).expand_path.to_s
@@ -60,77 +85,178 @@ ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
       "app_store_screenshot-5" => File.join(source_metadata_folder, "promo_screenshot_5.txt")
     }
 
-  gp_update_metadata_source(po_file_path: prj_folder + "/WordPress/Resources/AppStoreStrings.po", 
-    source_files: files, 
-    release_version: options[:version])
+    ios_update_metadata_source(po_file_path: prj_folder + "/WordPress/Resources/AppStoreStrings.po", 
+      source_files: files, 
+      release_version: options[:version])
+  end
+
+  #####################################################################################
+  # new_beta_release
+  # -----------------------------------------------------------------------------------
+  # This lane updates the release branch for a new beta release. It will update the
+  # current release branch by default. If you want to update a different branch
+  # (i.e. hotfix branch) pass the related version with the 'base_version' param
+  # (example: base_version:10.6.1 will work on the 10.6.1 branch)
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane new_beta_release [skip_confirm:<skip confirm>] [base_version:<version>]
+  #
+  # Example:
+  # bundle exec fastlane new_beta_release
+  # bundle exec fastlane new_beta_release skip_confirm:true
+  # bundle exec fastlane new_beta_release base_version:10.6.1
+  #####################################################################################
+  desc "Updates a release branch for a new beta release"
+  lane :new_beta_release do | options |
+    ios_betabuild_prechecks(options)
+    ios_bump_version_beta()
+    ios_tag_build()
+  end
+
+  #####################################################################################
+  # new_hotfix_release
+  # -----------------------------------------------------------------------------------
+  # This lane updates the release branch for a new hotix release. 
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane new_hotfix_release [skip_confirm:<skip confirm>] [version:<version>]
+  #
+  # Example:
+  # bundle exec fastlane new_hotfix_release version:10.6.1
+  # bundle exec fastlane new_hotfix_release skip_confirm:true version:10.6.1
+  #####################################################################################
+  desc "Creates a new hotfix branch from the given tag"
+  lane :new_hotfix_release do | options |
+    prev_ver = ios_hotfix_prechecks(options)
+    ios_bump_version_hotfix(previous_version: prev_ver, version: options[:version])
+    ios_tag_build()
+  end
+
+  #####################################################################################
+  # finalize_release
+  # -----------------------------------------------------------------------------------
+  # This lane finalize a release: updates store metadata, pushes the final tag and  
+  # cleans all the temp ones
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane finalize_release [skip_confirm:<skip confirm>] [version:<version>] 
+  #
+  # Example:
+  # bundle exec fastlane finalize_release 
+  # bundle exec fastlane finalize_release skip_confirm:true 
+  #####################################################################################
+  desc "Removes all the temp tags and puts the final one"
+  lane :finalize_release do | options |
+    ios_finalize_prechecks(options)
+    ios_update_metadata(options) unless ios_current_branch_is_hotfix
+    ios_final_tag(options)
+  end
+
+  #####################################################################################
+  # build_and_upload_release
+  # -----------------------------------------------------------------------------------
+  # This lane builds the app and upload it for both internal and external distribution 
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_and_upload_release [skip_confirm:<skip confirm>]
+  #
+  # Example:
+  # bundle exec fastlane build_and_upload_release 
+  # bundle exec fastlane build_and_upload_release skip_confirm:true 
+  #####################################################################################
+  desc "Builds and updates for distribution"
+  lane :build_and_upload_release do | options |
+    ios_build_prechecks(skip_confirm: options[:skip_confirm], 
+      internal: true,
+      external: true)
+    ios_build_preflight()
+    build_and_upload_internal(skip_prechecks: true, skip_confirm: options[:skip_confirm])
+    build_and_upload_itc(skip_prechecks: true, skip_confirm: options[:skip_confirm])
+  end
+
+  #####################################################################################
+  # build_and_upload_internal
+  # -----------------------------------------------------------------------------------
+  # This lane builds the app and upload it for internal testing  
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_and_upload_internal [skip_confirm:<skip confirm>]
+  #
+  # Example:
+  # bundle exec fastlane build_and_upload_internal 
+  # bundle exec fastlane build_and_upload_internal skip_confirm:true 
+  #####################################################################################
+  desc "Builds and updates for distribution"
+  lane :build_and_upload_internal do | options |
+    ios_build_prechecks(skip_confirm: options[:skip_confirm], internal: true) unless (options[:skip_prechecks])
+    ios_build_preflight() unless (options[:skip_prechecks])
+    
+    gym(scheme: "WordPress Internal", workspace: "../WordPress.xcworkspace",
+      export_method: "enterprise", clean: true,
+      output_directory: "../build/", export_team_id: ENV["INT_EXPORT_TEAM"],
+      export_options: {
+        method: "enterprise",
+        provisioningProfiles: { 
+          "org.wordpress.internal" => "WordPress Internal Distribution",
+          "org.wordpress.internal.WordPressShare" => "WordPress Internal Share Distribution",
+          "org.wordpress.internal.WordPressDraftAction" => "WordPress Internal Draft Action Distribution",
+          "org.wordpress.internal.WordPressTodayWidget" => "WordPress Internal Today Widget Distribution"
+      }})
+
+    sh("mv ../../build/WordPress.ipa \"../../build/WordPress Internal.ipa\"")
+
+    hockey(
+        api_token: ENV["HOCKEY_API_TOKEN"],        
+        public_identifier: ENV["HOCKEY_PUBLIC_ID"],
+        notify: "0",
+        status: "1",
+        ipa: "../build/WordPress Internal.ipa",
+        dsym: "../build/WordPress.app.dSYM.zip")
+    
+  end
+
+  #####################################################################################
+  # build_and_upload_itc
+  # -----------------------------------------------------------------------------------
+  # This lane builds the app and upload it for external distribution  
+  # -----------------------------------------------------------------------------------
+  # Usage:
+  # bundle exec fastlane build_and_upload_itc [skip_confirm:<skip confirm>]
+  #
+  # Example:
+  # bundle exec fastlane build_and_upload_itc 
+  # bundle exec fastlane build_and_upload_itc skip_confirm:true 
+  #####################################################################################
+  desc "Builds and updates for distribution"
+  lane :build_and_upload_itc do | options |
+    ios_build_prechecks(skip_confirm: options[:skip_confirm], external: true) unless (options[:skip_prechecks])
+    ios_build_preflight() unless (options[:skip_prechecks])
+
+    gym(scheme: "WordPress", workspace: "../WordPress.xcworkspace",
+      clean: true, export_team_id: ENV["EXT_EXPORT_TEAM_ID"], 
+      export_options: {
+        method: "app-store",
+        provisioningProfiles: { 
+          "org.wordpress" => "WordPress App Store",
+          "org.wordpress.WordPressShare" => "WordPress Share App Store Distribution",
+          "org.wordpress.WordPressDraftAction" => "WordPress Draft Action App Store Distribution",
+          "org.wordpress.WordPressTodayWidget" => "WordPress Today Widget App Store Distribution"
+        }
+      }
+    )
+    
+    testflight(skip_waiting_for_build_processing: true)
+    sh("cd .. && rm WordPress.ipa")
+    upload_symbols_to_crashlytics(dsym_path: "./WordPress.app.dSYM.zip", api_token: ENV["FABRIC_APP_TOKEN"])
+    sh("cd .. && rm WordPress.app.dSYM.zip")
   end
 
 ########################################################################
 # Helper Lanes
-########################################################################
-  desc "Bump the version for a new release"
-  lane :bump_version_release do
-    sh("cd .. && ./manage-version.sh bump-release")
-    sh("cd ../.. && git add ./config/.")
-    sh("git add Deliverfile")
-    sh("git add download_metadata.swift")
-    sh("git add ../../WordPress/Resources/AppStoreStrings.po")
-    sh("git commit -m \"Updates versions\"")
-  end
-
+########################################################################  
   desc "Get a list of pull request from `start_tag` to the current state"
   lane :get_pullrequests_list do | options |
     get_prs_list(repository:GHHELPER_REPO, start_tag:"#{options[:start_tag]}", report_path:"#{File.expand_path('~')}/wpios_prs_list.txt")
   end
 
-########################################################################
-# Private Lanes
-########################################################################
-  desc "Updates develop and checks the current version"
-  private_lane :code_freeze_prechecks do | options |
-    # Checkout develop and update
-    sh("git checkout develop")
-    sh("git pull")
-
-    # Read the current version from the project files
-    current_version = sh("cd .. && ./manage-version.sh get-version").split("\n")[1]
-    
-    # Ask user confirmation
-    if (options[:skip_confirm] != true)
-      if (!UI.confirm("Building a new release branch starting from develop.\nCurrent version is #{current_version}: the new version will be calculated from this one.\nDo you want to continue?"))
-        UI.user_error!("Aborted by user request")
-      end
-    end
-
-    # Check local repo status
-    ensure_git_status_clean()
-
-    # Return the current version
-    ios_get_public_version_number(version:current_version)
-  end
-
-  desc "Runs the localizer script"
-  private_lane :localize_project do
-    sh("cd ../.. && ./Scripts/localize.py")
-    sh("cd ../.. && git add ./WordPress/Resources/.")
-    sh("git commit -m \"Updates strings for localization\"")
-    sh("git push")
-  end
-
-  desc "Gets the app version from the project settings"
-  private_lane :get_app_version do 
-    version_strings = sh("cd .. && ./manage-version.sh get-version").split("\n")
-    ios_get_public_version_number(version:version_strings[1])
-  end
-
-  desc "Extracts the app version from the test version string"
-  private_lane :ios_get_public_version_number do | options |
-    parts = options[:version].split(".")
-    if (parts.length > 2) && (parts[2] != "0") then
-      public_version_number = "#{parts[0]}.#{parts[1]}.#{parts[2]}"
-    else
-      public_version_number = "#{parts[0]}.#{parts[1]}"
-    end
-    public_version_number
-  end
 end

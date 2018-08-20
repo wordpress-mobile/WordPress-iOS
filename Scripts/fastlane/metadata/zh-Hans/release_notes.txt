@@ -1,3 +1,4 @@
-编辑器：更多关于 Gutenberg 兼容性的更新。
-用户界面的几项改进。
-修复了一系列小错误。
+您现在可以轻松从 Safari 中的 WordPress.com 跳转至 iOS 版 WordPress 应用程序中的相同内容。只需留意 WordPress.com 页面顶部的横幅！
+活动日志现在可用于免费的 WordPress.com 站点。
+对用户界面做了一些小改进。
+修复了一系列错误。

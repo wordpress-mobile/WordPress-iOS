@@ -21,7 +21,8 @@ class FormattableCommentContent: NotificationTextContent {
 
 extension FormattableCommentContent: Equatable {
     static func == (lhs: FormattableCommentContent, rhs: FormattableCommentContent) -> Bool {
-        return lhs.isEqual(to: rhs) && lhs.parent == rhs.parent
+        return lhs.isEqual(to: rhs) &&
+            lhs.parent.notificationIdentifier == rhs.parent.notificationIdentifier
     }
 
     private func isEqual(to other: FormattableTextContent) -> Bool {
@@ -32,7 +33,7 @@ extension FormattableCommentContent: Equatable {
 
 extension FormattableCommentContent: ActionableObject {
     var notificationID: String? {
-        return parent.notificationId
+        return parent.notificationIdentifier
     }
 
     var metaSiteID: NSNumber? {
