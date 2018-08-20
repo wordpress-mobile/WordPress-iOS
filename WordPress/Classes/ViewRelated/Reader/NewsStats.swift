@@ -1,9 +1,11 @@
+/// Abstract stats tracking
 protocol NewsStats {
     func trackPresented(news: Result<NewsItem>?)
     func trackDismissed(news: Result<NewsItem>?)
     func trackRequestedExtendedInfo(news: Result<NewsItem>?)
 }
 
+/// Implementation of the NewsStats protocol that provides Tracks integration for the NewsCard
 final class TracksNewsStats: NewsStats {
     private let origin: String
 
