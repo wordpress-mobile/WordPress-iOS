@@ -263,7 +263,7 @@ private extension ReaderFollowedSitesViewController {
         }
 
         if isSyncing {
-            noResultsViewController.configure(title: NoResultsText.loadingTitle, accessoryView: loadingAccessoryView())
+            noResultsViewController.configure(title: NoResultsText.loadingTitle, accessoryView: noResultsViewController.loadingAccessoryView())
         } else {
             noResultsViewController.configure(title: NoResultsText.noResultsTitle, subtitle: NoResultsText.noResultsMessage, image: "wp-illustration-empty-results")
         }
@@ -276,12 +276,6 @@ private extension ReaderFollowedSitesViewController {
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         noResultsViewController.view.frame = tableView.frame
         noResultsViewController.didMove(toParentViewController: tableViewController)
-    }
-
-    func loadingAccessoryView() -> UIView {
-        let boxView = WPAnimatedBox()
-        boxView.animate(afterDelay: 0.3)
-        return boxView
     }
 
     struct NoResultsText {
