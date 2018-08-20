@@ -41,21 +41,31 @@ final class DefaultNewsManagerTests: XCTestCase {
         }
     }
 
+    private final class MockDelegate: NewsManagerDelegate {
+        var dismissed = false
+        func didDismissNews() {
+            dismissed = true
+        }
+    }
+
     private var manager: NewsManager?
     private var service: NewsService?
     private var database: MockInMemoryDefaults?
+    private var delegate: MockDelegate?
 
     override func setUp() {
         super.setUp()
         service = MockNewsService()
         database = MockInMemoryDefaults()
-        manager = DefaultNewsManager(service: service!, database: database!)
+        delegate = MockDelegate()
+        manager = DefaultNewsManager(service: service!, database: database!, delegate: delegate!)
     }
 
     override func tearDown() {
         manager = nil
         service = nil
         database = nil
+        delegate = nil
         super.tearDown()
     }
 
@@ -102,6 +112,12 @@ final class DefaultNewsManagerTests: XCTestCase {
         let newContext = Identifier(value: Constants.contextId)
 
         XCTAssertTrue(manager!.shouldPresentCard(contextId: newContext))
+    }
+
+    func testManagerCallsDelegateMethodWhenDismissing() {
+        manager?.dismiss()
+
+        XCTAssertTrue(delegate!.dismissed)
     }
 
     private static func currentBuildVersion() -> Decimal? {
