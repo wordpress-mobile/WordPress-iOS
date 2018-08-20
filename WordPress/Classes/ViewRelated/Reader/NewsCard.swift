@@ -58,6 +58,9 @@ final class NewsCard: UIViewController {
 
     @objc private func dismissAction() {
         manager.dismiss()
+        willMove(toParentViewController: nil)
+        view.removeFromSuperview()
+        removeFromParentViewController()
     }
 
     @objc private func readMoreAction() {
