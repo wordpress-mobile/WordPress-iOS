@@ -1,3 +1,5 @@
+import WordPressShared
+
 /** Default implementation of the NewsManager protocol.
  * The card is shown if it has not been dismissed yet
  * AND
@@ -11,6 +13,11 @@ final class DefaultNewsManager: NewsManager {
     enum DatabaseKeys {
         static let lastDismissedCardVersion = "com.wordpress.newscard.last-dismissed-card-version"
         static let cardContainerIdentifier = "com.wordpress.newscard.cardcontaineridentifier"
+    }
+
+    enum StatsKeys {
+        static let origin = "origin"
+        static let version = "version"
     }
 
     private let service: NewsService
@@ -29,6 +36,8 @@ final class DefaultNewsManager: NewsManager {
     func dismiss() {
         deactivateCurrentCard()
         delegate?.didDismissNews()
+
+        trackCardDismissed()
     }
 
     func readMore() {
@@ -38,6 +47,7 @@ final class DefaultNewsManager: NewsManager {
 
         switch actualResult {
         case .success(let value):
+            trackRequestedExtendedInfo()
             UniversalLinkRouter.shared.handle(url: value.extendedInfoURL)
         case .error:
             return
@@ -51,6 +61,7 @@ final class DefaultNewsManager: NewsManager {
 
         if canPresentCard {
             saveCardContext(contextId)
+            trackCardPresented()
         }
 
         return canPresentCard
@@ -147,5 +158,35 @@ final class DefaultNewsManager: NewsManager {
 
     private func saveCardContext(_ identifier: Identifier) {
         database.set(identifier.description, forKey: DatabaseKeys.cardContainerIdentifier)
+    }
+
+    private func trackCardPresented() {
+        track(event: .newsCardViewed)
+    }
+
+    private func trackCardDismissed() {
+        track(event: .newsCardDismissed)
+    }
+
+    private func trackRequestedExtendedInfo() {
+        track(event: .newsCardRequestedExtendedInfo)
+    }
+
+    private func eventProperties(version: Decimal) -> [AnyHashable: Any] {
+        return [StatsKeys.origin: "reader",
+                StatsKeys.version: version.description]
+    }
+
+    private func track(event: WPAnalyticsStat) {
+        guard let actualResult = result else {
+            return
+        }
+
+        switch actualResult {
+        case .error:
+            return
+        case .success(let newsItem):
+            WPAppAnalytics.track(event, withProperties: eventProperties(version: newsItem.version))
+        }
     }
 }
