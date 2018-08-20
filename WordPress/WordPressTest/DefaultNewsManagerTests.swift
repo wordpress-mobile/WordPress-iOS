@@ -5,8 +5,6 @@ final class DefaultNewsManagerTests: XCTestCase {
     private struct Constants {
         static let title = "This is an awesome new feature!"
         static let contextId = "context"
-        static let buildNumber = "10.6"
-        static let cardBuildNumber = "10.6"
         static let previousCardBuildNumber = "10.5"
         static let cardTitle = "Hello"
         static let cardContent = "How is your day going so far?"
@@ -18,7 +16,7 @@ final class DefaultNewsManagerTests: XCTestCase {
             let newsItem = NewsItem(title: Constants.title,
                                     content: Constants.contextId,
                                     extendedInfoURL: Constants.cardURL,
-                                    version: Decimal(string: Constants.cardBuildNumber)!)
+                                    version: currentBuildVersion()!)
 
             let result: Result<NewsItem> = .success(newsItem)
             completion(result)
@@ -104,5 +102,13 @@ final class DefaultNewsManagerTests: XCTestCase {
         let newContext = Identifier(value: Constants.contextId)
 
         XCTAssertTrue(manager!.shouldPresentCard(contextId: newContext))
+    }
+
+    private static func currentBuildVersion() -> Decimal? {
+        guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
+            return nil
+        }
+
+        return Decimal(string: version)
     }
 }
