@@ -22,7 +22,7 @@ class NoticePresenter: NSObject {
             self?.presentNextNoticeIfAvailable()
         }
     }
-    
+
     @objc convenience init(presentingViewController: UIViewController) {
         self.init(store: StoreContainer.shared.notice, presentingViewController: presentingViewController)
     }
@@ -105,7 +105,7 @@ class NoticePresenter: NSObject {
 
     private func makeNoticeView(for notice: Notice) -> NoticeView {
         switch notice.style {
-        case .quickStart(let formattedMessage):
+        case .quickStart:
             return QuickStartNoticeView(notice: notice)
         default:
             return NoticeView(notice: notice)
