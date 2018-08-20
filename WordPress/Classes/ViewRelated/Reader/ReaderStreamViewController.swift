@@ -54,8 +54,6 @@ import WordPressFlux
     /// Actions
     private var postCellActions: ReaderPostCellActions?
 
-    let newsCard = ReaderNewsCard()
-
     /// Used for fetching content.
     fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
 
