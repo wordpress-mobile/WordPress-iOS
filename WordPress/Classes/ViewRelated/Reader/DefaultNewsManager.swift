@@ -105,6 +105,7 @@ final class DefaultNewsManager: NewsManager {
             return nil
         }
 
+        print("==== currentBuildVersion ====", version)
         return Decimal(string: version)
     }
 
@@ -122,11 +123,11 @@ final class DefaultNewsManager: NewsManager {
     }
 
     private func currentCardVersionIsGreaterThanLastDismissedCardVersion() -> Bool {
-        guard let lastSavedVersion = database.object(forKey: DatabaseKeys.lastDismissedCardVersion) as? Decimal else {
+        guard let lastSavedVersion = database.object(forKey: DatabaseKeys.lastDismissedCardVersion) as? NSNumber else {
             return true
         }
 
-        return lastSavedVersion < currentCardVersion()
+        return Decimal(floatLiteral: lastSavedVersion.doubleValue) < currentCardVersion()
     }
 
     private func deactivateCurrentCard() {
