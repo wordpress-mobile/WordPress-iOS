@@ -1,10 +1,12 @@
 /// Bootstraps a news card specific for the reader.
 final class ReaderNewsCard {
     private let fileName = "News"
+    private let tracksOrigin = "reader"
 
     func newsCard(containerIdentifier: Identifier, header: ReaderStreamViewController.ReaderHeader?, container: UIViewController, delegate: NewsManagerDelegate) -> UIView? {
         let database = UserDefaults.standard
-        let newsManager = DefaultNewsManager(service: LocalNewsService(fileName: fileName), database: database, delegate: delegate)
+        let stats = TracksNewsStats(origin: tracksOrigin)
+        let newsManager = DefaultNewsManager(service: LocalNewsService(fileName: fileName), database: database, stats: stats, delegate: delegate)
 
         // News card should not be presented: return configured stream header
         guard newsManager.shouldPresentCard(contextId: containerIdentifier) else {
