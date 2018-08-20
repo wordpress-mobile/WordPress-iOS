@@ -15,17 +15,20 @@ final class DefaultNewsManager: NewsManager {
 
     private let service: NewsService
     private let database: KeyValueDatabase
+    private weak var delegate: NewsManagerDelegate?
 
     private var result: Result<NewsItem>?
 
-    init(service: NewsService, database: KeyValueDatabase) {
+    init(service: NewsService, database: KeyValueDatabase, delegate: NewsManagerDelegate?) {
         self.service = service
         self.database = database
+        self.delegate = delegate
         load()
     }
 
     func dismiss() {
         deactivateCurrentCard()
+        delegate?.didDismissNews()
     }
 
     func readMore() {
@@ -105,7 +108,6 @@ final class DefaultNewsManager: NewsManager {
             return nil
         }
 
-        print("==== currentBuildVersion ====", version)
         return Decimal(string: version)
     }
 

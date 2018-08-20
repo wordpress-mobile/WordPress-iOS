@@ -2,23 +2,16 @@
 final class ReaderNewsCard {
     private let fileName = "News"
 
-    private lazy var newsManager: NewsManager = {
+    func newsCard(containerIdentifier: Identifier, header: ReaderStreamViewController.ReaderHeader?, container: UIViewController, delegate: NewsManagerDelegate) -> UIView? {
         let database = UserDefaults.standard
-        let returnValue = DefaultNewsManager(service: LocalNewsService(fileName: fileName), database: database)
+        let newsManager = DefaultNewsManager(service: LocalNewsService(fileName: fileName), database: database, delegate: delegate)
 
-        return returnValue
-    }()
-
-    private lazy var newsCard: NewsCard = {
-        return NewsCard(manager: self.newsManager)
-    }()
-
-    func newsCard(containerIdentifier: Identifier, header: ReaderStreamViewController.ReaderHeader?, container: UIViewController) -> UIView? {
         // News card should not be presented: return configured stream header
         guard newsManager.shouldPresentCard(contextId: containerIdentifier) else {
             return header
         }
 
+        let newsCard = NewsCard(manager: newsManager)
         let news = News(manager: newsManager, ui: newsCard)
 
         // The news card is not available: return configured stream header
