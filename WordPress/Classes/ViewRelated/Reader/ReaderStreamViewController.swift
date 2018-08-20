@@ -54,6 +54,8 @@ import WordPressFlux
     /// Actions
     private var postCellActions: ReaderPostCellActions?
 
+    let newsCard = ReaderNewsCard()
+
     /// Used for fetching content.
     fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
 
@@ -386,7 +388,7 @@ import WordPressFlux
             return
         }
 
-        guard let header = ReaderStreamViewController.headerWithNewsCardForStream(topic, isLoggedIn: isLoggedIn, delegate: self) else {
+        guard let header = headerWithNewsCardForStream(topic, isLoggedIn: isLoggedIn, delegate: self) else {
             tableView.tableHeaderView = nil
             return
         }
