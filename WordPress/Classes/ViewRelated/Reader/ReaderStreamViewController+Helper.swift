@@ -19,7 +19,7 @@ extension ReaderStreamViewController {
     ///
     /// - Returns: A configured instance of UIView.
     ///
-    public class func headerWithNewsCardForStream(_ topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamHeaderDelegate) -> UIView? {
+    func headerWithNewsCardForStream(_ topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamHeaderDelegate) -> UIView? {
 
         let header = headerForStream(topic)
         let configuredHeader = configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: delegate)
@@ -31,10 +31,10 @@ extension ReaderStreamViewController {
 
         let containerIdentifier = Identifier(value: topic.title)
 
-        return ReaderNewsCard.newsCard(containerIdentifier: containerIdentifier, header: header)
+        return newsCard.newsCard(containerIdentifier: containerIdentifier, header: header, container: self)
     }
 
-    private class func configure(_ header: ReaderHeader?, topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamHeaderDelegate) -> ReaderHeader? {
+    func configure(_ header: ReaderHeader?, topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamHeaderDelegate) -> ReaderHeader? {
         header?.configureHeader(topic)
         header?.enableLoggedInFeatures(isLoggedIn)
         header?.delegate = delegate
@@ -42,7 +42,7 @@ extension ReaderStreamViewController {
         return header
     }
 
-    private class func headerForStream(_ topic: ReaderAbstractTopic) -> ReaderHeader? {
+    func headerForStream(_ topic: ReaderAbstractTopic) -> ReaderHeader? {
         if ReaderHelpers.topicIsFreshlyPressed(topic) || ReaderHelpers.topicIsLiked(topic) {
             // no header for these special lists
             return nil
