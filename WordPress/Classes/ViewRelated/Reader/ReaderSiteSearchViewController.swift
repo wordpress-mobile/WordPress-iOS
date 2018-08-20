@@ -225,7 +225,7 @@ private extension ReaderSiteSearchViewController {
     }
 
     func showLoadingView() {
-        configureAndDisplayStatus(title: StatusText.loadingTitle, accessoryView: loadingAccessoryView())
+        configureAndDisplayStatus(title: StatusText.loadingTitle, accessoryView: statusViewController.loadingAccessoryView())
     }
 
     func showLoadingFailedView() {
@@ -255,12 +255,6 @@ private extension ReaderSiteSearchViewController {
 
     func hideStatusView() {
         statusViewController.removeFromView()
-    }
-
-    func loadingAccessoryView() -> UIView {
-        let boxView = WPAnimatedBox()
-        boxView.animate(afterDelay: 0.3)
-        return boxView
     }
 
     struct StatusText {
