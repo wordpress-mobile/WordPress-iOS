@@ -386,7 +386,7 @@ import WordPressFlux
             return
         }
 
-        guard let header = headerWithNewsCardForStream(topic, isLoggedIn: isLoggedIn, delegate: self) else {
+        guard let header = headerWithNewsCardForStream(topic, isLoggedIn: isLoggedIn, container: tableViewController) else {
             tableView.tableHeaderView = nil
             return
         }
@@ -1129,6 +1129,11 @@ extension ReaderStreamViewController: ReaderStreamHeaderDelegate {
     }
 }
 
+extension ReaderStreamViewController: NewsManagerDelegate {
+    func didDismissNews() {
+        refreshTableHeaderIfNeeded()
+    }
+}
 
 // MARK: - WPContentSyncHelperDelegate
 

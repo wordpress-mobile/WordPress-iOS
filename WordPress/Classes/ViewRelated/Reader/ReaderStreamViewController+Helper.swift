@@ -19,10 +19,10 @@ extension ReaderStreamViewController {
     ///
     /// - Returns: A configured instance of UIView.
     ///
-    func headerWithNewsCardForStream(_ topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamHeaderDelegate) -> UIView? {
+    func headerWithNewsCardForStream(_ topic: ReaderAbstractTopic, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
 
         let header = headerForStream(topic)
-        let configuredHeader = configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: delegate)
+        let configuredHeader = configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: self)
 
         // Feature flag is not active
         if !FeatureFlag.newsCard.enabled {
@@ -33,7 +33,7 @@ extension ReaderStreamViewController {
 
         let newsCard = ReaderNewsCard()
 
-        return newsCard.newsCard(containerIdentifier: containerIdentifier, header: header, container: self)
+        return newsCard.newsCard(containerIdentifier: containerIdentifier, header: header, container: container, delegate: self)
     }
 
     func configure(_ header: ReaderHeader?, topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamHeaderDelegate) -> ReaderHeader? {
