@@ -24,7 +24,7 @@ enum FeatureFlag: Int {
         case .quickStart:
             return BuildConfiguration.current == .localDeveloper
         case .newsCard:
-            return BuildConfiguration.current == .localDeveloper
+            return false
         case .giphy:
             return BuildConfiguration.current == .localDeveloper
         }
