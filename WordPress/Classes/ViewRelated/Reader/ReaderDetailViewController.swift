@@ -70,6 +70,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     fileprivate let sharingController = PostSharingController()
 
+    private let noResultsViewController = NoResultsViewController.controller()
+
     @objc var currentPreferredStatusBarStyle = UIStatusBarStyle.lightContent {
         didSet {
             setNeedsStatusBarAppearanceUpdate()
@@ -300,12 +302,12 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         view.layoutIfNeeded()
     }
 
-
     // MARK: - Setup
 
     @objc open func setupWithPostID(_ postID: NSNumber, siteID: NSNumber, isFeed: Bool) {
-        let title = NSLocalizedString("Loading Post...", comment: "Text displayed while loading a post.")
-        WPNoResultsView.displayAnimatedBox(withTitle: title, message: nil, view: view)
+
+        configureAndDisplayLoadingView(title: LoadingText.loadingTitle, accessoryView: noResultsViewController.loadingAccessoryView())
+
         textView.alpha = 0.0
 
         let context = ContextManager.sharedInstance().mainContext
@@ -316,14 +318,12 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         forSite: siteID.uintValue,
         isFeed: isFeed,
         success: {[weak self] (post: ReaderPost?) in
-                WPNoResultsView.remove(from: self?.view)
+                self?.hideLoadingView()
                 self?.textView.alpha = 1.0
                 self?.post = post
             }, failure: {[weak self] (error: Error?) in
                 DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
-
-                let title = NSLocalizedString("Error Loading Post", comment: "Text displayed when load post fails.")
-                WPNoResultsView.displayAnimatedBox(withTitle: title, message: nil, view: self?.view)
+                self?.configureAndDisplayLoadingView(title: LoadingText.errorLoadingTitle)
             }
         )
     }
@@ -1131,6 +1131,33 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             }
         }
     }
+}
+
+// MARK: - Loading View Handling
+
+private extension ReaderDetailViewController {
+
+    func configureAndDisplayLoadingView(title: String, accessoryView: UIView? = nil) {
+        noResultsViewController.configure(title: title, image: "wp-illustration-empty-results", accessoryView: accessoryView)
+        showLoadingView()
+    }
+
+    func showLoadingView() {
+        hideLoadingView()
+        addChildViewController(noResultsViewController)
+        view.addSubview(withFadeAnimation: noResultsViewController.view)
+        noResultsViewController.didMove(toParentViewController: self)
+    }
+
+    func hideLoadingView() {
+        noResultsViewController.removeFromView()
+    }
+
+    struct LoadingText {
+        static let loadingTitle = NSLocalizedString("Loading Post...", comment: "Text displayed while loading a post.")
+        static let errorLoadingTitle = NSLocalizedString("Error Loading Post", comment: "Text displayed when load post fails.")
+    }
+
 }
 
 // MARK: - ReaderCardDiscoverAttributionView Delegate Methods
