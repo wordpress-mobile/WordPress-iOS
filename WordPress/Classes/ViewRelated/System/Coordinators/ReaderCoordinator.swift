@@ -77,6 +77,7 @@ class ReaderCoordinator: NSObject {
         prepareToNavigate()
 
         let streamViewController = ReaderStreamViewController.controllerWithTopic(topic)
+
         streamViewController.streamLoadFailureBlock = failureBlock
 
         readerSplitViewController.showDetailViewController(streamViewController, sender: nil)
@@ -111,7 +112,6 @@ class ReaderCoordinator: NSObject {
         let detailViewController = ReaderDetailViewController.controllerWithPostID(postID as NSNumber,
                                                                                        siteID: feedID as NSNumber,
                                                                                        isFeed: isFeed)
-
         detailViewController.postLoadFailureBlock = { [weak self, failureBlock] in
             self?.topNavigationController.popViewController(animated: false)
             failureBlock?()
