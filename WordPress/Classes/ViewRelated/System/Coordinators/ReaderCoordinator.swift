@@ -3,12 +3,15 @@ import UIKit
 @objc
 class ReaderCoordinator: NSObject {
     let readerNavigationController: UINavigationController
+    let readerSplitViewController: WPSplitViewController
     let readerMenuViewController: ReaderMenuViewController
 
     @objc
     init(readerNavigationController: UINavigationController,
+         readerSplitViewController: WPSplitViewController,
          readerMenuViewController: ReaderMenuViewController) {
         self.readerNavigationController = readerNavigationController
+        self.readerSplitViewController = readerSplitViewController
         self.readerMenuViewController = readerMenuViewController
 
         super.init()
@@ -16,7 +19,7 @@ class ReaderCoordinator: NSObject {
     private func prepareToNavigate() {
         WPTabBarController.sharedInstance().showReaderTab()
 
-        readerNavigationController.popToRootViewController(animated: false)
+        topNavigationController.popToRootViewController(animated: false)
     }
 
     func showReaderTab() {
@@ -55,7 +58,7 @@ class ReaderCoordinator: NSObject {
 
         readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .followed, animated: false)
 
-        if let followedViewController = readerNavigationController.topViewController as? ReaderStreamViewController {
+        if let followedViewController = topNavigationController.topViewController as? ReaderStreamViewController {
             followedViewController.showManageSites(animated: false)
         }
     }
@@ -71,8 +74,7 @@ class ReaderCoordinator: NSObject {
         prepareToNavigate()
 
         let streamViewController = ReaderStreamViewController.controllerWithTopic(topic)
-        readerNavigationController.pushViewController(streamViewController,
-                                                      animated: false)
+        readerSplitViewController.showDetailViewController(streamViewController, sender: nil)
     }
 
     func showTag(named tagName: String) {
@@ -82,14 +84,14 @@ class ReaderCoordinator: NSObject {
         let slug = remote.slug(forTopicName: tagName) ?? tagName.lowercased()
         let controller = ReaderStreamViewController.controllerWithTagSlug(slug)
 
-        readerNavigationController.pushViewController(controller, animated: true)
+        readerSplitViewController.showDetailViewController(controller, sender: nil)
     }
 
     func showStream(with siteID: Int, isFeed: Bool) {
         prepareToNavigate()
 
         let controller = ReaderStreamViewController.controllerWithSiteID(NSNumber(value: siteID), isFeed: isFeed)
-        readerNavigationController.pushViewController(controller, animated: false)
+        readerSplitViewController.showDetailViewController(controller, sender: nil)
     }
 
     func showPost(with postID: Int, for feedID: Int, isFeed: Bool) {
@@ -98,7 +100,17 @@ class ReaderCoordinator: NSObject {
         let detailViewController = ReaderDetailViewController.controllerWithPostID(postID as NSNumber,
                                                                                        siteID: feedID as NSNumber,
                                                                                        isFeed: isFeed)
-        readerNavigationController.pushFullscreenViewController(detailViewController, animated: true)
+
+        topNavigationController.pushFullscreenViewController(detailViewController, animated: false)
+    }
+
+    private var topNavigationController: UINavigationController {
+        if readerMenuViewController.splitViewControllerIsHorizontallyCompact == false,
+            let navigationController = readerSplitViewController.topDetailViewController?.navigationController {
+            return navigationController
+        }
+
+        return readerNavigationController
     }
 }
 
