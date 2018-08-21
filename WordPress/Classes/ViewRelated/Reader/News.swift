@@ -8,8 +8,8 @@ final class News {
         self.ui = ui
     }
 
-    var card: NewsCard? {
-        guard manager.shouldPresentCard() else {
+    func card(containerId: Identifier) -> NewsCard? {
+        guard manager.shouldPresentCard(contextId: containerId) else {
             return nil
         }
 
