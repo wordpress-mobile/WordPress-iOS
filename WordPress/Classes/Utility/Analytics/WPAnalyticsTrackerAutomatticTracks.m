@@ -687,6 +687,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatMySitesTabAccessed:
             eventName = @"my_site_tab_accessed";
             break;
+        case WPAnalyticsStatNewsCardViewed:
+            eventName = @"news_card_shown";
+            break;
+        case WPAnalyticsStatNewsCardDismissed:
+            eventName = @"news_card_dismissed";
+            break;
+        case WPAnalyticsStatNewsCardRequestedExtendedInfo:
+            eventName = @"news_card_extended_info_requested";
+            break;
         case WPAnalyticsStatNotificationsCommentApproved:
             eventName = @"notifications_approved";
             break;

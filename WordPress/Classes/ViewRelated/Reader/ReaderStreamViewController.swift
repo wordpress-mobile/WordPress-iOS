@@ -237,8 +237,6 @@ import WordPressFlux
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // Trigger layouts, if needed, to correct for any inherited layout changes, such as margins.
-        refreshTableHeaderIfNeeded()
         syncIfAppropriate()
     }
 

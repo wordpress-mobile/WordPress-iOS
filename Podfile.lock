@@ -168,7 +168,7 @@ DEPENDENCIES:
   - WordPress-Editor-iOS (= 1.0.0-beta.25)
   - WordPressAuthenticator (= 1.0.6)
   - WordPressKit (= 1.2.1)
-  - WordPressShared (= 1.0.9)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `c51f53ef91127b5225064023e7207fad66b02ea4`)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, commit `7a5b1a3fb44f62416fbc2e5f0de623b87b613aae`)
   - WPMediaPicker (= 1.3)
   - wpxmlrpc (= 0.8.3)
@@ -205,7 +205,6 @@ SPEC REPOS:
     - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
-    - WordPressShared
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskSDK
@@ -214,6 +213,9 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
+  WordPressShared:
+    :commit: c51f53ef91127b5225064023e7207fad66b02ea4
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   WordPressUI:
     :commit: 7a5b1a3fb44f62416fbc2e5f0de623b87b613aae
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
@@ -222,6 +224,9 @@ CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
+  WordPressShared:
+    :commit: c51f53ef91127b5225064023e7207fad66b02ea4
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
   WordPressUI:
     :commit: 7a5b1a3fb44f62416fbc2e5f0de623b87b613aae
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
@@ -263,6 +268,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: c1d1aefacdd6ab6445d7415f1d04af2503a527c1
+PODFILE CHECKSUM: 6722f636f2fcab0fde24c4f4441e761ecb648e8a
 
 COCOAPODS: 1.5.3
