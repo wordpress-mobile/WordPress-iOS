@@ -157,11 +157,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         setupFeaturedImageView()
         setupVisitButton()
 
-        if FeatureFlag.saveForLater.enabled {
-            setupSaveForLaterButton()
-        } else {
-            setupShareButton()
-        }
+        setupSaveForLaterButton()
 
         setupMenuButton()
         setupSummaryLabel()
@@ -229,18 +225,6 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 
     fileprivate func setupSaveForLaterButton() {
         WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
-    }
-
-    fileprivate func setupShareButton() {
-        let size = CGSize(width: 20, height: 20)
-        let icon = Gridicon.iconOfType(.share, withSize: size)
-        let highlightedIcon = icon
-
-        let tintedIcon = icon.imageWithTintColor(WPStyleGuide.greyLighten10())
-        let tintedHighlightedIcon = highlightedIcon.imageWithTintColor(WPStyleGuide.mediumBlue())
-
-        saveForLaterButton.setImage(tintedIcon, for: .normal)
-        saveForLaterButton.setImage(tintedHighlightedIcon, for: .selected)
     }
 
     fileprivate func setupMenuButton() {
@@ -420,9 +404,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         configureLikeActionButton()
         configureActionButtonsInsets()
 
-        if FeatureFlag.saveForLater.enabled {
-            configureSaveForLaterButton()
-        }
+        configureSaveForLaterButton()
     }
 
     fileprivate func resetActionButton(_ button: UIButton) {
@@ -531,12 +513,7 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
             likeActionButton.setTitle(likeTitle, for: .normal)
             commentActionButton.setTitle(commentTitle, for: .normal)
 
-            if FeatureFlag.saveForLater.enabled {
-                WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
-            } else {
-                let shareTitle = NSLocalizedString("Share", comment: "Verb. Button title.  Tap to share a post.")
-                saveForLaterButton.setTitle(shareTitle, for: .normal)
-            }
+            WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
         }
     }
 
@@ -603,12 +580,8 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
         guard let provider = contentProvider else {
             return
         }
-        if FeatureFlag.saveForLater.enabled {
-            delegate?.readerCell(self, saveActionForProvider: provider)
-            configureSaveForLaterButton()
-        } else {
-            delegate?.readerCell(self, shareActionForProvider: provider, fromView: sender)
-        }
+        delegate?.readerCell(self, saveActionForProvider: provider)
+        configureSaveForLaterButton()
     }
 
     @IBAction func didTapActionButton(_ sender: UIButton) {
@@ -655,11 +628,7 @@ extension ReaderPostCardCell: Accessible {
     func prepareForVoiceOver() {
         prepareCardForVoiceOver()
         prepareHeaderButtonForVoiceOver()
-        if FeatureFlag.saveForLater.enabled {
-            prepareSaveForLaterForVoiceOver()
-        } else {
-            prepareShareForVoiceOver()
-        }
+        prepareSaveForLaterForVoiceOver()
         prepareCommentsForVoiceOver()
         prepareLikeForVoiceOver()
         prepareMenuForVoiceOver()
@@ -720,12 +689,6 @@ extension ReaderPostCardCell: Accessible {
         let isSavedForLater = contentProvider?.isSavedForLater() ?? false
         saveForLaterButton.accessibilityLabel = isSavedForLater ? NSLocalizedString("Saved Post", comment: "Accessibility label for the 'Save Post' button when a post has been saved.") : NSLocalizedString("Save post", comment: "Accessibility label for the 'Save Post' button.")
         saveForLaterButton.accessibilityHint = isSavedForLater ? NSLocalizedString("Remove this post from my saved posts.", comment: "Accessibility hint for the 'Save Post' button when a post is already saved.") : NSLocalizedString("Saves this post for later.", comment: "Accessibility hint for the 'Save Post' button.")
-        saveForLaterButton.accessibilityTraits = UIAccessibilityTraitButton
-    }
-
-    private func prepareShareForVoiceOver() {
-        saveForLaterButton.accessibilityLabel = NSLocalizedString("Share", comment: "Spoken accessibility label")
-        saveForLaterButton.accessibilityHint = NSLocalizedString("Shares this post", comment: "Spoken accessibility hint for Share buttons")
         saveForLaterButton.accessibilityTraits = UIAccessibilityTraitButton
     }
 

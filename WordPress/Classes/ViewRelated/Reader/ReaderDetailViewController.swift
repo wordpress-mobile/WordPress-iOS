@@ -801,11 +801,6 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
     fileprivate func configureSaveForLaterButton() {
-        guard FeatureFlag.saveForLater.enabled else {
-            saveForLaterButton.isHidden = true
-            return
-        }
-
         WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
         WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
 
