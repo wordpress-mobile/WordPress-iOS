@@ -148,7 +148,7 @@ final class DefaultNewsManagerTests: XCTestCase {
     }
 
     func testPresentCallsStats() {
-        let _ = manager?.shouldPresentCard(contextId: Identifier(value: ""))
+        let _ = manager?.didPresentCard()
 
         XCTAssertTrue(stats!.presentTracked)
     }
