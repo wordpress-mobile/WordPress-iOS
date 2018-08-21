@@ -58,10 +58,13 @@ final class DefaultNewsManager: NewsManager {
 
         if canPresentCard {
             saveCardContext(contextId)
-            trackCardPresented()
         }
 
         return canPresentCard
+    }
+
+    func didPresentCard() {
+        trackCardPresented()
     }
 
     private func load() {
