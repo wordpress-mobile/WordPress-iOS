@@ -34,7 +34,7 @@
 			<key>UNNotificationExtensionDefaultContentHidden</key>
 			<true/>
 			<key>UNNotificationExtensionInitialContentSizeRatio</key>
-			<real>1</real>
+			<real>0.5</real>
 		</dict>
 		<key>NSExtensionPrincipalClass</key>
 		<string>NotificationViewController</string>
