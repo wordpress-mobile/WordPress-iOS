@@ -391,6 +391,10 @@ import WordPressFlux
             return
         }
 
+        if let tableHeaderView = tableView.tableHeaderView {
+            header.isHidden = tableHeaderView.isHidden
+        }
+
         tableView.tableHeaderView = header
 
         // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
