@@ -33,6 +33,7 @@ import WordPressAuthenticator
     private var buttonText: String?
     private var imageName: String?
     private var accessorySubview: UIView?
+    private var hideImage = false
 
     // MARK: - View
 
@@ -146,6 +147,12 @@ import WordPressAuthenticator
         return boxView
     }
 
+    /// Public method to always hide the image view.
+    ///
+    func hideImageView() {
+        hideImage = true
+    }
+
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         setAccessoryViewsVisibility()
@@ -209,9 +216,9 @@ private extension NoResultsViewController {
             accessoryView.isHidden = true
         } else {
             // If there is an accessory view, show that.
-            // Otherwise, show the image view.
             accessoryView.isHidden = accessorySubview == nil
-            imageView.isHidden = !accessoryView.isHidden
+            // Otherwise, show the image view, unless it's set never to show.
+            imageView.isHidden = (hideImage == true) ? true : !accessoryView.isHidden
         }
     }
 
