@@ -8,6 +8,7 @@ final class NewsCardTests: XCTestCase {
         static let title = "😳"
         static let content = "😳😳"
         static let url = URL(string: "http://wordpress.com")!
+        static let version = Decimal(floatLiteral: 10.7)
         static let readMore = "Read More"
         static let dismiss = "Dismiss"
     }
@@ -25,12 +26,12 @@ final class NewsCardTests: XCTestCase {
             readMoreTapped = true
         }
 
-        func shouldPresentCard() -> Bool {
+        func shouldPresentCard(contextId: Identifier) -> Bool {
             return cardIsVisible
         }
 
         func load(then completion: @escaping (Result<NewsItem>) -> Void) {
-            let newsItem = NewsItem(title: Constants.title, content: Constants.content, extendedInfoURL: Constants.url)
+            let newsItem = NewsItem(title: Constants.title, content: Constants.content, extendedInfoURL: Constants.url, version: Constants.version)
             let result: Result<NewsItem> = .success(newsItem)
 
             completion(result)
