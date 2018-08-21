@@ -48,17 +48,37 @@ final class DefaultNewsManagerTests: XCTestCase {
         }
     }
 
+    private final class MockStats: NewsStats {
+        var presentTracked = false
+        var dismissTracked = false
+        var requestExtraInfoTracked = false
+
+        func trackPresented(news: Result<NewsItem>?) {
+            presentTracked = true
+        }
+
+        func trackDismissed(news: Result<NewsItem>?) {
+            dismissTracked = true
+        }
+
+        func trackRequestedExtendedInfo(news: Result<NewsItem>?) {
+            requestExtraInfoTracked = true
+        }
+    }
+
     private var manager: NewsManager?
     private var service: NewsService?
     private var database: MockInMemoryDefaults?
     private var delegate: MockDelegate?
+    private var stats: MockStats?
 
     override func setUp() {
         super.setUp()
         service = MockNewsService()
         database = MockInMemoryDefaults()
         delegate = MockDelegate()
-        manager = DefaultNewsManager(service: service!, database: database!, delegate: delegate!)
+        stats = MockStats()
+        manager = DefaultNewsManager(service: service!, database: database!, stats: stats!, delegate: delegate!)
     }
 
     override func tearDown() {
@@ -66,6 +86,7 @@ final class DefaultNewsManagerTests: XCTestCase {
         service = nil
         database = nil
         delegate = nil
+        stats = nil
         super.tearDown()
     }
 
@@ -118,6 +139,24 @@ final class DefaultNewsManagerTests: XCTestCase {
         manager?.dismiss()
 
         XCTAssertTrue(delegate!.dismissed)
+    }
+
+    func testDismissCallsStats() {
+        manager?.dismiss()
+
+        XCTAssertTrue(stats!.dismissTracked)
+    }
+
+    func testPresentCallsStats() {
+        let _ = manager?.didPresentCard()
+
+        XCTAssertTrue(stats!.presentTracked)
+    }
+
+    func testRequestExtraInfoCallsStats() {
+        manager?.readMore()
+
+        XCTAssertTrue(stats!.requestExtraInfoTracked)
     }
 
     private static func currentBuildVersion() -> Decimal? {
