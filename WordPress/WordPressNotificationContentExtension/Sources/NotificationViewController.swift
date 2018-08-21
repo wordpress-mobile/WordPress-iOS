@@ -6,16 +6,7 @@ import UserNotificationsUI
 class NotificationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = UIColor.orange
-
-        let currentRect = view.frame
-        let viewRect = CGRect(
-            x: currentRect.origin.x,
-            y: currentRect.origin.y,
-            width: currentRect.width,
-            height: 44)
-        view.frame = viewRect
+        view.backgroundColor = UIColor.groupTableViewBackground
     }
 }
 
