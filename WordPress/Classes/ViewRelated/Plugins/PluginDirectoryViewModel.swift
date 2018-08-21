@@ -91,6 +91,7 @@ class PluginDirectoryViewModel: Observable {
 
         let noResultsView = NoResultsViewController.controller()
         noResultsView.delegate = noResultsDelegate
+        noResultsView.hideImageView()
         let model: NoResultsViewController.Model
 
         if isFetching(for: query) {
