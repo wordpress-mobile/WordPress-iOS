@@ -6,11 +6,16 @@ class NotificationService: UNNotificationServiceExtension {
 
     // MARK: Properties
 
+    /// Manages analytics calls via Tracks
     private let tracks = Tracks(appGroupName: WPAppGroupName)
 
+    /// The service used to retrieve remote notifications
     private var notificationService: NotificationSyncServiceRemote?
 
+    /// The content handler received from the extension
     private var contentHandler: ((UNNotificationContent) -> Void)?
+
+    /// The pending rich notification content
     private var bestAttemptContent: UNMutableNotificationContent?
 
     // MARK: UNNotificationServiceExtension
@@ -24,9 +29,8 @@ class NotificationService: UNNotificationServiceExtension {
 
         guard
             let notificationContent = self.bestAttemptContent,
-            let noteID = notificationContent.userInfo["note_id"] as? Int,
-            let aps = notificationContent.userInfo["aps"] as? NSDictionary,
-            let apsAlert = aps["alert"] as? String,
+            let apsAlert = notificationContent.apsAlert,
+            let noteID = notificationContent.noteID,
             token != nil
         else
         {
@@ -40,39 +44,30 @@ class NotificationService: UNNotificationServiceExtension {
         let service = NotificationSyncServiceRemote(wordPressComRestApi: api)
         self.notificationService = service
 
-        let identifiers = [ String(noteID) ]
-        service.loadNotes(noteIds: identifiers) { [tracks] error, notifications in
-            defer {
-                contentHandler(notificationContent)
-            }
-
+        service.loadNotes(noteIds: [noteID]) { [tracks] error, notifications in
             if let error = error {
                 tracks.trackNotificationRetrievalFailed(notificationIdentifier: noteID, errorDescription: error.localizedDescription)
                 return
             }
 
-            if let remoteNotifications = notifications,
+            guard
+                let remoteNotifications = notifications,
                 remoteNotifications.count == 1,
                 let notification = remoteNotifications.first,
-                notification.kind == .comment,
-                let body = notification.body,
-                let bodyBlocks = body as? [[String: AnyObject]] {
-
-                let parser = RemoteNotificationActionParser()
-                let blocks = NotificationContentFactory.content(
-                    from: bodyBlocks,
-                    actionsParser: parser,
-                    parent: notification)
-
-                if let comment: FormattableCommentContent = FormattableContentGroup.blockOfKind(.comment, from: blocks),
-                    let notificationText = comment.text,
-                    !notificationText.isEmpty {
-
-                    notificationContent.body = notificationText
-                }
-
-                tracks.trackNotificationAssembled()
+                notification.kind == .comment
+            else
+            {
+                return
             }
+
+            let contentFormatter = RichNotificationContentFormatter(notification: notification)
+            guard let bodyText = contentFormatter.formatBody() else { return }
+
+            notificationContent.body = bodyText
+
+            tracks.trackNotificationAssembled()
+
+            contentHandler(notificationContent)
         }
     }
 
@@ -85,9 +80,9 @@ class NotificationService: UNNotificationServiceExtension {
             contentHandler(bestAttemptContent)
         }
     }
-}
 
-private extension NotificationService {
+    // MARK: Private behavior
+
     /// Retrieves the WPCOM OAuth Token, meant for Extension usage.
     ///
     /// - Returns: the token if found; `nil` otherwise
