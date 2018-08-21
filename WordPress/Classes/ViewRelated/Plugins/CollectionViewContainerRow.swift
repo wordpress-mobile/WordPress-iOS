@@ -147,7 +147,7 @@ class CollectionViewContainerCell: UITableViewCell {
             addSubview(containerView)
 
             containerView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.spacing * 3).isActive = true
-            containerView.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor).isActive = true
+            containerView.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: -Constants.spacing).isActive = true
             containerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
             containerView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         }
