@@ -65,7 +65,7 @@ class NoticePresenter: NSObject {
 
         generator.prepare()
 
-        let noticeView = makeNoticeView(for: notice)
+        let noticeView = NoticeView(notice: notice)
         noticeView.translatesAutoresizingMaskIntoConstraints = false
 
         let noticeContainerView = NoticeContainerView(noticeView: noticeView)
@@ -95,21 +95,12 @@ class NoticePresenter: NSObject {
 
         animatePresentation(fromState: fromState, toState: toState, completion: {
             // Quick Start notices don't get automatically dismissed
-            if case .quickStart(_) = notice.style {
+            guard notice.style.isDismissable else {
                 return
             }
 
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Animations.dismissDelay, execute: dismiss)
         })
-    }
-
-    private func makeNoticeView(for notice: Notice) -> NoticeView {
-        switch notice.style {
-        case .quickStart:
-            return QuickStartNoticeView(notice: notice)
-        default:
-            return NoticeView(notice: notice)
-        }
     }
 
     private func offscreenState(for noticeContainer: NoticeContainerView) -> (() -> ()) {

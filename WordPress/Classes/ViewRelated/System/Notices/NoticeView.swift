@@ -34,12 +34,27 @@ class NoticeView: UIView {
         configureShadow()
         configureContentStackView()
         configureLabels()
-        configureActionButton()
-        configureDismissRecognizer()
         configureForNotice()
+
+        if notice.actionTitle != nil {
+            configureActionButton()
+        }
+        
+        if notice.style.isDismissable {
+            configureDismissRecognizer()
+        }
     }
 
     private func configureBackgroundViews() {
+        if notice.style.backgroundColor != .clear {
+            let backgroundColorView = UIView()
+            backgroundColorView.backgroundColor = notice.style.backgroundColor
+            backgroundView.contentView.addSubview(backgroundColorView)
+            backgroundColorView.layer.cornerRadius = Metrics.cornerRadius
+            backgroundColorView.translatesAutoresizingMaskIntoConstraints = false
+            backgroundView.contentView.pinSubviewToAllEdges(backgroundColorView)
+        }
+
         addSubview(backgroundContainerView)
         backgroundContainerView.translatesAutoresizingMaskIntoConstraints = false
         pinSubviewToAllEdges(backgroundContainerView)
@@ -89,7 +104,7 @@ class NoticeView: UIView {
         backgroundView.contentView.pinSubviewToAllEdges(contentStackView)
     }
 
-    private func configureLabels() { //**
+    private func configureLabels() {
         let labelStackView = UIStackView()
         labelStackView.translatesAutoresizingMaskIntoConstraints = false
         labelStackView.alignment = .leading
@@ -109,11 +124,11 @@ class NoticeView: UIView {
             labelStackView.bottomAnchor.constraint(equalTo: backgroundView.contentView.bottomAnchor)
             ])
 
-        titleLabel.font = Fonts.titleLabelFont
-        messageLabel.font = Fonts.messageLabelFont
+        titleLabel.font = notice.style.titleLabelFont
+        messageLabel.font = notice.style.messageLabelFont
 
-        titleLabel.textColor = WPStyleGuide.darkGrey()
-        messageLabel.textColor = WPStyleGuide.darkGrey()
+        titleLabel.textColor = notice.style.titleColor
+        messageLabel.textColor = notice.style.messageColor
     }
 
     private func configureActionButton() {
@@ -133,7 +148,7 @@ class NoticeView: UIView {
 
         actionBackgroundView.pinSubviewToAllEdgeMargins(actionButton)
 
-        actionButton.titleLabel?.font = Fonts.actionButtonFont
+        actionButton.titleLabel?.font = notice.style.actionButtonFont
         actionButton.setTitleColor(WPStyleGuide.mediumBlue(), for: .normal)
         actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
         actionButton.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -147,7 +162,10 @@ class NoticeView: UIView {
     private func configureForNotice() {
         titleLabel.text = notice.title
 
-        if let message = notice.message {
+        if let attributedMessage = notice.style.attributedMessage {
+            messageLabel.attributedText = attributedMessage
+            titleLabel.isHidden = true
+        } else if let message = notice.message {
             messageLabel.text = message
         } else {
             titleLabel.numberOfLines = 2
@@ -181,12 +199,6 @@ class NoticeView: UIView {
         static let cornerRadius: CGFloat = 13.0
         static let layoutMargins = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
         static let labelLineSpacing: CGFloat = 18.0
-    }
-
-    private enum Fonts {
-        static let actionButtonFont = UIFont.systemFont(ofSize: 14.0)
-        static let titleLabelFont = UIFont.boldSystemFont(ofSize: 14.0)
-        static let messageLabelFont = UIFont.systemFont(ofSize: 14.0)
     }
 
     private enum Appearance {
