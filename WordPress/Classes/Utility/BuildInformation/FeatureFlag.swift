@@ -17,7 +17,7 @@ enum FeatureFlag: Int {
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
         case .extractNotifications:
-            return BuildConfiguration.current == .localDeveloper
+            return true
         case .quickStart:
             return BuildConfiguration.current == .localDeveloper
         case .newsCard:
