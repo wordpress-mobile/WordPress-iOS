@@ -238,12 +238,12 @@
 		40F88F641F86C26600AE3FAF /* AztecVerificationPromptHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F88F631F86C26600AE3FAF /* AztecVerificationPromptHelper.swift */; };
 		40FC6B7F2072E3EC00B9A1CD /* ActivityDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FC6B7E2072E3EB00B9A1CD /* ActivityDetailViewController.swift */; };
 		430693741DD25F31009398A2 /* PostPost.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 430693731DD25F31009398A2 /* PostPost.storyboard */; };
+		430D50BE212B7AAE008F15F4 /* NoticeStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430D50BD212B7AAE008F15F4 /* NoticeStyle.swift */; };
 		4319AADE2090F00C0025D68E /* FancyAlertViewController+NotificationPrimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4319AADD2090F00C0025D68E /* FancyAlertViewController+NotificationPrimer.swift */; };
 		4322A20D203E1885004EA740 /* SignupUsernameTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4322A20C203E1885004EA740 /* SignupUsernameTableViewController.swift */; };
 		433432521E9ED18900915988 /* LoginEpilogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433432511E9ED18900915988 /* LoginEpilogueViewController.swift */; };
 		433432541E9EE0B100915988 /* EpilogueSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433432531E9EE0B100915988 /* EpilogueSegue.swift */; };
 		433A550220F693A100757928 /* ManyDelegateNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433A550120F693A100757928 /* ManyDelegateNavigationController.swift */; };
-		433A550420F6AC5600757928 /* QuickStartNoticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433A550320F6AC5600757928 /* QuickStartNoticeView.swift */; };
 		4348C88321002FBD00735DC0 /* QuickStartTourGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4348C88221002FBD00735DC0 /* QuickStartTourGuide.swift */; };
 		435035971EDCAB99004ECF47 /* jetpack.json in Resources */ = {isa = PBXBuildFile; fileRef = 435035921EDCAB99004ECF47 /* jetpack.json */; };
 		435035981EDCAB99004ECF47 /* notifications.json in Resources */ = {isa = PBXBuildFile; fileRef = 435035931EDCAB99004ECF47 /* notifications.json */; };
@@ -1783,12 +1783,12 @@
 		40F88F631F86C26600AE3FAF /* AztecVerificationPromptHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AztecVerificationPromptHelper.swift; sourceTree = "<group>"; };
 		40FC6B7E2072E3EB00B9A1CD /* ActivityDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityDetailViewController.swift; sourceTree = "<group>"; };
 		430693731DD25F31009398A2 /* PostPost.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = PostPost.storyboard; sourceTree = "<group>"; };
+		430D50BD212B7AAE008F15F4 /* NoticeStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeStyle.swift; sourceTree = "<group>"; };
 		4319AADD2090F00C0025D68E /* FancyAlertViewController+NotificationPrimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FancyAlertViewController+NotificationPrimer.swift"; sourceTree = "<group>"; };
 		4322A20C203E1885004EA740 /* SignupUsernameTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupUsernameTableViewController.swift; sourceTree = "<group>"; };
 		433432511E9ED18900915988 /* LoginEpilogueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEpilogueViewController.swift; sourceTree = "<group>"; };
 		433432531E9EE0B100915988 /* EpilogueSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpilogueSegue.swift; sourceTree = "<group>"; };
 		433A550120F693A100757928 /* ManyDelegateNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManyDelegateNavigationController.swift; sourceTree = "<group>"; };
-		433A550320F6AC5600757928 /* QuickStartNoticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartNoticeView.swift; sourceTree = "<group>"; };
 		4348C88221002FBD00735DC0 /* QuickStartTourGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartTourGuide.swift; sourceTree = "<group>"; };
 		435035921EDCAB99004ECF47 /* jetpack.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = jetpack.json; sourceTree = "<group>"; };
 		435035931EDCAB99004ECF47 /* notifications.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = notifications.json; sourceTree = "<group>"; };
@@ -3650,6 +3650,7 @@
 			children = (
 				172E27D21FD98135003EA321 /* NoticePresenter.swift */,
 				1759F17F1FE1460C0003EC81 /* NoticeView.swift */,
+				430D50BD212B7AAE008F15F4 /* NoticeStyle.swift */,
 			);
 			path = Notices;
 			sourceTree = "<group>";
@@ -4012,7 +4013,6 @@
 			isa = PBXGroup;
 			children = (
 				4348C88221002FBD00735DC0 /* QuickStartTourGuide.swift */,
-				433A550320F6AC5600757928 /* QuickStartNoticeView.swift */,
 				4395A1582106389800844E8E /* QuickStartTours.swift */,
 				4395A15A21066DCD00844E8E /* QuickStartChecklistCell.xib */,
 				4395A15C2106718900844E8E /* QuickStartChecklistCell.swift */,
@@ -8297,7 +8297,6 @@
 				17BEE0041FC867C20074C124 /* WordPressAppDelegate+Swift.swift in Sources */,
 				08472A201C727E020040769D /* PostServiceOptions.m in Sources */,
 				7E4123BA20F4097B00DF8486 /* FormattableContentGroup.swift in Sources */,
-				433A550420F6AC5600757928 /* QuickStartNoticeView.swift in Sources */,
 				08216FD21CDBF96000304BA7 /* MenuItemSourceViewController.m in Sources */,
 				74558369201A1FD3007809BB /* WPReusableTableViewCells.swift in Sources */,
 				E6DAABDD1CF632EC0069D933 /* ReaderSearchSuggestionsViewController.swift in Sources */,
@@ -8491,6 +8490,7 @@
 				08216FD11CDBF96000304BA7 /* MenuItemSourceResultsViewController.m in Sources */,
 				E1209FA41BB4978B00D69778 /* PeopleService.swift in Sources */,
 				E13A8C9B1C3E6EF2005BB1C1 /* ImmuTable+WordPress.swift in Sources */,
+				430D50BE212B7AAE008F15F4 /* NoticeStyle.swift in Sources */,
 				D816B8C42112CFAE0052CE4D /* Result.swift in Sources */,
 				B5899AE41B422D990075A3D6 /* NotificationSettings.swift in Sources */,
 				7E3E7A5720E44D130075D159 /* HeaderContentStyles.swift in Sources */,
