@@ -326,7 +326,7 @@ private extension ReaderSavedPostsViewController {
 
         // Get attributed string styled for No Results so it gets the correct font attributes added to it.
         // The font is used by the attributed string `replace(_:with:)` method below to correctly position the icon.
-        let styledText = noResultsViewController.styledTextFor(attributedString: messageText)
+        let styledText = noResultsViewController.applyMessageStyleTo(attributedString: messageText)
         messageText = NSMutableAttributedString(attributedString: styledText)
 
         let icon = Gridicon.iconOfType(.bookmarkOutline, withSize: CGSize(width: 18, height: 18))
