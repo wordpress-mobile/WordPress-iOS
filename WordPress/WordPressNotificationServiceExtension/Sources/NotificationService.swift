@@ -2,6 +2,7 @@ import UserNotifications
 
 import WordPressKit
 
+/// Responsible for enrich the content of designated push notifications.
 class NotificationService: UNNotificationServiceExtension {
 
     // MARK: Properties
@@ -61,9 +62,16 @@ class NotificationService: UNNotificationServiceExtension {
             }
 
             let contentFormatter = RichNotificationContentFormatter(notification: notification)
-            guard let bodyText = contentFormatter.formatBody() else { return }
 
+            guard let bodyText = contentFormatter.formatBody() else { return }
             notificationContent.body = bodyText
+
+            let viewModel = RichNotificationViewModel(
+                attributedBody: contentFormatter.formatAttributedBody(),
+                attributedSubject: contentFormatter.formatAttributedSubject(),
+                gravatarURLString: notification.icon,
+                noticon: notification.noticon)
+            viewModel.encodeToUserInfo(notificationContent: notificationContent)
 
             tracks.trackNotificationAssembled()
 
@@ -87,14 +95,15 @@ class NotificationService: UNNotificationServiceExtension {
     ///
     /// - Returns: the token if found; `nil` otherwise
     ///
-    func readExtensionToken() -> String? {
+    private func readExtensionToken() -> String? {
         guard
             let oauthToken = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationServiceExtensionKeychainTokenKey,
                                                                            andServiceName: WPNotificationServiceExtensionKeychainServiceName,
                                                                            accessGroup: WPAppKeychainAccessGroup)
-            else {
-                debugPrint("Unable to retrieve Notification Service Extension OAuth token")
-                return nil
+        else
+        {
+            debugPrint("Unable to retrieve Notification Service Extension OAuth token")
+            return nil
         }
 
         return oauthToken
