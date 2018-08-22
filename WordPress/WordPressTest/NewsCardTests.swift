@@ -17,6 +17,7 @@ final class NewsCardTests: XCTestCase {
         var dismissed: Bool = false
         var readMoreTapped: Bool = false
         var cardIsVisible: Bool = true
+        var cardWasPresented: Bool = false
 
         func dismiss() {
             dismissed = true
@@ -24,6 +25,10 @@ final class NewsCardTests: XCTestCase {
 
         func readMore() {
             readMoreTapped = true
+        }
+
+        func didPresentCard() {
+            cardWasPresented = true
         }
 
         func shouldPresentCard(contextId: Identifier) -> Bool {
