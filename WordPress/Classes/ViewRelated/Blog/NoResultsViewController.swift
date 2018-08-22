@@ -10,7 +10,9 @@ import WordPressAuthenticator
 /// A view to show when there are no results for a given situation.
 /// Ex: My Sites > account has no sites; My Sites > all sites are hidden.
 /// The title will always show.
-/// The image will always show unless an accessoryView is provided.
+/// The image will always show unless:
+///     - an accessoryView is provided.
+///     - hideImage is set to true.
 /// The action button is shown by default, but will be hidden if button title is not provided.
 /// The subtitle is optional and will only show if provided.
 ///
@@ -33,6 +35,7 @@ import WordPressAuthenticator
     private var buttonText: String?
     private var imageName: String?
     private var accessorySubview: UIView?
+    private var hideImage = false
 
     // MARK: - View
 
@@ -152,6 +155,20 @@ import WordPressAuthenticator
         return applyMessageStyleTo(attributedString: attributedString)
     }
 
+    /// Public method to get an animated box to show while loading.
+    ///
+    @objc func loadingAccessoryView() -> UIView {
+        let boxView = WPAnimatedBox()
+        boxView.animate(afterDelay: 0.3)
+        return boxView
+    }
+
+    /// Public method to always hide the image view.
+    ///
+    func hideImageView() {
+        hideImage = true
+    }
+
 }
 
 private extension NoResultsViewController {
@@ -210,9 +227,9 @@ private extension NoResultsViewController {
             accessoryView.isHidden = true
         } else {
             // If there is an accessory view, show that.
-            // Otherwise, show the image view.
             accessoryView.isHidden = accessorySubview == nil
-            imageView.isHidden = !accessoryView.isHidden
+            // Otherwise, show the image view, unless it's set never to show.
+            imageView.isHidden = (hideImage == true) ? true : !accessoryView.isHidden
         }
     }
 

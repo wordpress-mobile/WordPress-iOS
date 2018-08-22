@@ -95,7 +95,7 @@ class NoticePresenter: NSObject {
 
         animatePresentation(fromState: fromState, toState: toState, completion: {
             // Quick Start notices don't get automatically dismissed
-            guard notice.style != .quickStart else {
+            guard notice.style.isDismissable else {
                 return
             }
 
@@ -214,9 +214,9 @@ private class NoticeContainerView: UIView {
     let containerMargin: CGFloat = 16.0
     var bottomConstraint: NSLayoutConstraint?
 
-    let noticeView: NoticeView
+    let noticeView: UIView
 
-    init(noticeView: NoticeView) {
+    init(noticeView: UIView) {
         self.noticeView = noticeView
 
         super.init(frame: .zero)
