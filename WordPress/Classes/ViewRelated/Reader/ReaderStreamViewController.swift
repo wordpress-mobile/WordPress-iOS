@@ -237,8 +237,6 @@ import WordPressFlux
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // Trigger layouts, if needed, to correct for any inherited layout changes, such as margins.
-        refreshTableHeaderIfNeeded()
         syncIfAppropriate()
     }
 
@@ -386,9 +384,13 @@ import WordPressFlux
             return
         }
 
-        guard let header = ReaderStreamViewController.headerWithNewsCardForStream(topic, isLoggedIn: isLoggedIn, delegate: self) else {
+        guard let header = headerWithNewsCardForStream(topic, isLoggedIn: isLoggedIn, container: tableViewController) else {
             tableView.tableHeaderView = nil
             return
+        }
+
+        if let tableHeaderView = tableView.tableHeaderView {
+            header.isHidden = tableHeaderView.isHidden
         }
 
         tableView.tableHeaderView = header
@@ -1129,6 +1131,11 @@ extension ReaderStreamViewController: ReaderStreamHeaderDelegate {
     }
 }
 
+extension ReaderStreamViewController: NewsManagerDelegate {
+    func didDismissNews() {
+        refreshTableHeaderIfNeeded()
+    }
+}
 
 // MARK: - WPContentSyncHelperDelegate
 
@@ -1420,7 +1427,7 @@ extension ReaderStreamViewController: SearchableActivityConvertable {
 private extension ReaderStreamViewController {
 
     func displayLoadingStream() {
-        configureAndDisplayResultsStatus(title: ResultsStatusText.loadingStreamTitle, accessoryView: resultsStatusAccessoryView())
+        configureAndDisplayResultsStatus(title: ResultsStatusText.loadingStreamTitle, accessoryView: resultsStatusView.loadingAccessoryView())
     }
 
     func displayLoadingStreamFailed() {
@@ -1433,7 +1440,7 @@ private extension ReaderStreamViewController {
         }
 
         tableView.tableHeaderView?.isHidden = true
-        configureAndDisplayResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: resultsStatusAccessoryView())
+        configureAndDisplayResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: resultsStatusView.loadingAccessoryView())
     }
 
     func displayNoResultsView() {
@@ -1486,12 +1493,6 @@ private extension ReaderStreamViewController {
         resultsStatusView.removeFromView()
         footerView.isHidden = false
         tableView.tableHeaderView?.isHidden = false
-    }
-
-    func resultsStatusAccessoryView() -> UIView {
-        let boxView = WPAnimatedBox()
-        boxView.animate(afterDelay: 0.3)
-        return boxView
     }
 
     struct ResultsStatusText {
