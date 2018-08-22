@@ -175,7 +175,7 @@ class PluginListViewModel: Observable {
     var noResultsViewModel: NoResultsViewController.Model? {
         switch state {
         case .loading:
-            return NoResultsViewController.Model(title: NoResultsText.loadingTitle, accessoryView: nil)
+            return NoResultsViewController.Model(title: NoResultsText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
 
         case .ready(let plugins):
             guard case .feed(let feedType) = query,

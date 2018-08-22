@@ -73,7 +73,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         noResultsViewController.bindViewModel(viewModel)
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         addChildViewController(noResultsViewController)
-        
+
         // Adjust view to center it vertically
         if case .feed(let feedType) = query, case .search = feedType {
             // If searching, use tableView.bounds to account for the search bar.
