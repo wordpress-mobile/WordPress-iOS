@@ -10,7 +10,9 @@ import WordPressAuthenticator
 /// A view to show when there are no results for a given situation.
 /// Ex: My Sites > account has no sites; My Sites > all sites are hidden.
 /// The title will always show.
-/// The image will always show unless an accessoryView is provided.
+/// The image will always show unless:
+///     - an accessoryView is provided.
+///     - hideImage is set to true.
 /// The action button is shown by default, but will be hidden if button title is not provided.
 /// The subtitle is optional and will only show if provided.
 ///
