@@ -96,7 +96,7 @@ class PluginDirectoryViewModel: Observable {
 
         if isFetching(for: query) {
             model = NoResultsViewController.Model(title: NSLocalizedString("Loading plugins...", comment: "Messaged displayed when fetching plugins."),
-                                                  accessoryView: noResultsView.loadingAccessoryView())
+                                                  accessoryView: NoResultsViewController.loadingAccessoryView())
         } else {
             model = NoResultsViewController.Model(title: NSLocalizedString("Error loading plugins", comment: "Messaged displayed when fetching plugins failed."),
                                                   buttonText: NSLocalizedString("Try again", comment: "Button that lets users try to reload the plugin directory after loading failure"))
