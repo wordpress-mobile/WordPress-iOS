@@ -389,6 +389,10 @@ import WordPressFlux
             return
         }
 
+        if let tableHeaderView = tableView.tableHeaderView {
+            header.isHidden = tableHeaderView.isHidden
+        }
+
         tableView.tableHeaderView = header
 
         // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
@@ -1423,7 +1427,7 @@ extension ReaderStreamViewController: SearchableActivityConvertable {
 private extension ReaderStreamViewController {
 
     func displayLoadingStream() {
-        configureAndDisplayResultsStatus(title: ResultsStatusText.loadingStreamTitle, accessoryView: resultsStatusAccessoryView())
+        configureAndDisplayResultsStatus(title: ResultsStatusText.loadingStreamTitle, accessoryView: resultsStatusView.loadingAccessoryView())
     }
 
     func displayLoadingStreamFailed() {
@@ -1436,7 +1440,7 @@ private extension ReaderStreamViewController {
         }
 
         tableView.tableHeaderView?.isHidden = true
-        configureAndDisplayResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: resultsStatusAccessoryView())
+        configureAndDisplayResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: resultsStatusView.loadingAccessoryView())
     }
 
     func displayNoResultsView() {
@@ -1489,12 +1493,6 @@ private extension ReaderStreamViewController {
         resultsStatusView.removeFromView()
         footerView.isHidden = false
         tableView.tableHeaderView?.isHidden = false
-    }
-
-    func resultsStatusAccessoryView() -> UIView {
-        let boxView = WPAnimatedBox()
-        boxView.animate(afterDelay: 0.3)
-        return boxView
     }
 
     struct ResultsStatusText {
