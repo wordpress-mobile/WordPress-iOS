@@ -138,6 +138,19 @@ import WordPressAuthenticator
         return noResultsView.frame.height
     }
 
+    /// Public method to get an animated box to show while loading.
+    ///
+    @objc func loadingAccessoryView() -> UIView {
+        let boxView = WPAnimatedBox()
+        boxView.animate(afterDelay: 0.3)
+        return boxView
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        setAccessoryViewsVisibility()
+    }
+
 }
 
 private extension NoResultsViewController {
@@ -184,12 +197,22 @@ private extension NoResultsViewController {
             imageView.image = UIImage(named: imageName)
         }
 
-        // If there is an accessorySubview, show that.
-        // Otherwise, show the imageView.
-        accessoryView.isHidden = accessorySubview == nil
-        imageView.isHidden = !accessoryView.isHidden
-
         view.layoutIfNeeded()
+    }
+
+    func setAccessoryViewsVisibility() {
+        let hideAll = UIDeviceOrientationIsLandscape(UIDevice.current.orientation) && WPDeviceIdentification.isiPhone()
+
+        if hideAll == true {
+            // Hide the accessory and image views in iPhone landscape to ensure entire view fits on screen
+            imageView.isHidden = true
+            accessoryView.isHidden = true
+        } else {
+            // If there is an accessory view, show that.
+            // Otherwise, show the image view.
+            accessoryView.isHidden = accessorySubview == nil
+            imageView.isHidden = !accessoryView.isHidden
+        }
     }
 
     // MARK: - Button Handling
