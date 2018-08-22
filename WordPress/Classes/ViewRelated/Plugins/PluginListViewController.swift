@@ -73,6 +73,18 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         noResultsViewController.bindViewModel(viewModel)
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         addChildViewController(noResultsViewController)
+        
+        // Adjust view to center it vertically
+        if case .feed(let feedType) = query, case .search = feedType {
+            // If searching, use tableView.bounds to account for the search bar.
+            noResultsViewController.view.frame = tableView.bounds
+        } else {
+            // Otherwise use the tableView.frame
+            noResultsViewController.view.frame = tableView.frame
+            // And since the tableView doesn't start at the top, adjust the NRV accordingly.
+            noResultsViewController.view.frame.origin.y = 0
+        }
+
         noResultsViewController.didMove(toParentViewController: self)
     }
 
