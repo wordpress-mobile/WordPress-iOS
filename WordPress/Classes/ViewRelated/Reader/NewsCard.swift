@@ -30,6 +30,11 @@ final class NewsCard: UIViewController {
         prepareForVoiceOver()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        manager.didPresentCard()
+    }
+
     private func applyStyles() {
         styleBackground()
         styleBorderedView()

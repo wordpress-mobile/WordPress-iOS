@@ -1,3 +1,5 @@
+import WordPressShared
+
 /** Default implementation of the NewsManager protocol.
  * The card is shown if it has not been dismissed yet
  * AND
@@ -16,12 +18,14 @@ final class DefaultNewsManager: NewsManager {
     private let service: NewsService
     private let database: KeyValueDatabase
     private weak var delegate: NewsManagerDelegate?
+    private let stats: NewsStats
 
     private var result: Result<NewsItem>?
 
-    init(service: NewsService, database: KeyValueDatabase, delegate: NewsManagerDelegate?) {
+    init(service: NewsService, database: KeyValueDatabase, stats: NewsStats, delegate: NewsManagerDelegate?) {
         self.service = service
         self.database = database
+        self.stats = stats
         self.delegate = delegate
         load()
     }
@@ -29,6 +33,8 @@ final class DefaultNewsManager: NewsManager {
     func dismiss() {
         deactivateCurrentCard()
         delegate?.didDismissNews()
+
+        trackCardDismissed()
     }
 
     func readMore() {
@@ -38,6 +44,7 @@ final class DefaultNewsManager: NewsManager {
 
         switch actualResult {
         case .success(let value):
+            trackRequestedExtendedInfo()
             UniversalLinkRouter.shared.handle(url: value.extendedInfoURL)
         case .error:
             return
@@ -54,6 +61,10 @@ final class DefaultNewsManager: NewsManager {
         }
 
         return canPresentCard
+    }
+
+    func didPresentCard() {
+        trackCardPresented()
     }
 
     private func load() {
@@ -147,5 +158,17 @@ final class DefaultNewsManager: NewsManager {
 
     private func saveCardContext(_ identifier: Identifier) {
         database.set(identifier.description, forKey: DatabaseKeys.cardContainerIdentifier)
+    }
+
+    private func trackCardPresented() {
+        stats.trackPresented(news: result)
+    }
+
+    private func trackCardDismissed() {
+        stats.trackDismissed(news: result)
+    }
+
+    private func trackRequestedExtendedInfo() {
+        stats.trackRequestedExtendedInfo(news: result)
     }
 }
