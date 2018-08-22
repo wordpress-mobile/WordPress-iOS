@@ -49,13 +49,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"url CONTAINS %@", hostname];
     NSArray <Blog *>* blogs = [self blogsWithPredicate:predicate];
-    for (Blog *blog in blogs) {
-        if ([blog.hostname isEqualToString:hostname]) {
-            return blog;
-        }
-    }
-
-    return nil;
+    return [blogs firstObject];
 }
 
 - (Blog *)lastUsedOrFirstBlog
