@@ -39,7 +39,7 @@ class NoticeView: UIView {
         if notice.actionTitle != nil {
             configureActionButton()
         }
-        
+
         if notice.style.isDismissable {
             configureDismissRecognizer()
         }
