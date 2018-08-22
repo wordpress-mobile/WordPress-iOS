@@ -12,7 +12,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def shared_with_all_pods
-    pod 'WordPressShared', '1.0.9'
+    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => 'c51f53ef91127b5225064023e7207fad66b02ea4'
     pod 'CocoaLumberjack', '3.4.2'
     pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
     pod 'NSObject-SafeExpectations', '0.0.3'
@@ -68,7 +68,7 @@ target 'WordPress' do
     pod 'Gridicons', '0.16'
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '1.3'
-    pod 'WordPressAuthenticator', '1.0.5'
+    pod 'WordPressAuthenticator', '1.0.6'
     pod 'WordPress-Aztec-iOS', '=1.0.0-beta.25'
 	  pod 'WordPress-Editor-iOS', '=1.0.0-beta.25'
     pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
@@ -135,7 +135,7 @@ target 'WordPressNotificationServiceExtension' do
 	inherit! :search_paths
 
 	pod 'WordPressKit', '1.2.1'
-	pod 'WordPressShared', '1.0.9'
+    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => 'c51f53ef91127b5225064023e7207fad66b02ea4'
 end
 
 
