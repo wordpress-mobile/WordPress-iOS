@@ -54,6 +54,11 @@ import WordPressAuthenticator
         configureView()
     }
 
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        setAccessoryViewsVisibility()
+    }
+
     /// Public method to get controller instance and set view values.
     ///
     /// - Parameters:
@@ -141,6 +146,28 @@ import WordPressAuthenticator
         return noResultsView.frame.height
     }
 
+    /// Public method to get an attributed string styled for No Results.
+    ///
+    /// - Parameters:
+    ///   - attributedString: The attributed string to be styled.
+    ///
+    func applyMessageStyleTo(attributedString: NSAttributedString) -> NSAttributedString {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = subtitleTextView.textAlignment
+
+        let attributes: [NSAttributedStringKey: Any] = [
+            .font: subtitleTextView.font!,
+            .foregroundColor: subtitleTextView.textColor!,
+            .paragraphStyle: paragraphStyle
+        ]
+
+        let fullTextRange = attributedString.string.foundationRangeOfEntireString
+        let finalAttributedString = NSMutableAttributedString(attributedString: attributedString)
+        finalAttributedString.addAttributes(attributes, range: fullTextRange)
+
+        return finalAttributedString
+    }
+
     /// Public method to get an animated box to show while loading.
     ///
     @objc func loadingAccessoryView() -> UIView {
@@ -153,11 +180,6 @@ import WordPressAuthenticator
     ///
     func hideImageView() {
         hideImage = true
-    }
-
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        setAccessoryViewsVisibility()
     }
 
 }
@@ -241,20 +263,4 @@ private extension NoResultsViewController {
         return String(format: buttonIdFormat, string)
     }
 
-    func applyMessageStyleTo(attributedString: NSAttributedString) -> NSAttributedString {
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = subtitleTextView.textAlignment
-
-        let attributes: [NSAttributedStringKey: Any] = [
-            .font: subtitleTextView.font!,
-            .foregroundColor: subtitleTextView.textColor!,
-            .paragraphStyle: paragraphStyle
-        ]
-
-        let fullTextRange = attributedString.string.foundationRangeOfEntireString
-        let finalAttributedString = NSMutableAttributedString(attributedString: attributedString)
-        finalAttributedString.addAttributes(attributes, range: fullTextRange)
-
-        return finalAttributedString
-    }
 }
