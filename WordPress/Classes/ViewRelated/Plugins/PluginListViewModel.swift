@@ -90,6 +90,11 @@ class PluginListViewModel: Observable {
             stateChangeDispatcher.dispatch(State.changed(from: oldValue, to: state))
         }
     }
+
+    var currentState: State {
+        return state
+    }
+
     private(set) var refreshing = false {
         didSet {
             if refreshing != oldValue {
