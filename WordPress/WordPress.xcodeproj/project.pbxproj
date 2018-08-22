@@ -133,6 +133,7 @@
 		1724DDC81C60F1200099D273 /* PlanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */; };
 		1724DDCC1C6121D00099D273 /* Plans.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1724DDCB1C6121D00099D273 /* Plans.storyboard */; };
 		172797D91CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172797D81CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift */; };
+		172D7825212D93B800D513F7 /* GiphyPageableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172D7824212D93B800D513F7 /* GiphyPageableTests.swift */; };
 		172E27D31FD98135003EA321 /* NoticePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 172E27D21FD98135003EA321 /* NoticePresenter.swift */; };
 		1730D4A31E97E3E400326B7C /* MediaItemTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1730D4A21E97E3E400326B7C /* MediaItemTableViewCells.swift */; };
 		173BCE731CEB368A00AE8817 /* DomainsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173BCE721CEB368A00AE8817 /* DomainsListViewController.swift */; };
@@ -1651,6 +1652,7 @@
 		1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanDetailViewController.swift; sourceTree = "<group>"; };
 		1724DDCB1C6121D00099D273 /* Plans.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Plans.storyboard; sourceTree = "<group>"; };
 		172797D81CE5D0CD00CB8057 /* PlansLoadingIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlansLoadingIndicatorView.swift; sourceTree = "<group>"; };
+		172D7824212D93B800D513F7 /* GiphyPageableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiphyPageableTests.swift; sourceTree = "<group>"; };
 		172E27D21FD98135003EA321 /* NoticePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticePresenter.swift; sourceTree = "<group>"; };
 		1730D4A21E97E3E400326B7C /* MediaItemTableViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaItemTableViewCells.swift; sourceTree = "<group>"; };
 		173BCE721CEB368A00AE8817 /* DomainsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsListViewController.swift; sourceTree = "<group>"; };
@@ -3638,6 +3640,14 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
+		172D7823212D937F00D513F7 /* Giphy */ = {
+			isa = PBXGroup;
+			children = (
+				172D7824212D93B800D513F7 /* GiphyPageableTests.swift */,
+			);
+			name = Giphy;
+			sourceTree = "<group>";
+		};
 		173BCE711CEB365400AE8817 /* Domains */ = {
 			isa = PBXGroup;
 			children = (
@@ -5121,7 +5131,7 @@
 				1751E5901CE0E552000CA08D /* KeyValueDatabase.swift */,
 				930284B618EAF7B600CB0BF4 /* LocalCoreDataService.h */,
 				FFC6ADD91B56F366002F3C84 /* LocalCoreDataService.m */,
-				D816B8C72112D2290052CE4D /* LocalNewsService.swift */,        
+				D816B8C72112D2290052CE4D /* LocalNewsService.swift */,
 				17876B1C1F9A131200F774C7 /* MediaCoordinator.swift */,
 				0815CF451E96F22600069916 /* MediaImportService.swift */,
 				5DA3EE141925090A00294E0B /* MediaService.h */,
@@ -5133,7 +5143,7 @@
 				087EBFA71F02313E001F7ACE /* MediaThumbnailService.swift */,
 				08AAD69D1CBEA47D002B2418 /* MenusService.h */,
 				08AAD69E1CBEA47D002B2418 /* MenusService.m */,
-				D816B8C12112CEBE0052CE4D /* NewsService.swift */,        
+				D816B8C12112CEBE0052CE4D /* NewsService.swift */,
 				B5015C571D4FDBB300C9449E /* NotificationActionsService.swift */,
 				B5EFB1C11B31B98E007608A3 /* NotificationSettingsService.swift */,
 				73ACDF982114FE4500233AD4 /* NotificationSupportService.swift */,
@@ -6325,6 +6335,7 @@
 		E1239B7B176A2E0F00D37220 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				172D7823212D937F00D513F7 /* Giphy */,
 				7E442FC520F677A300DEACA5 /* ActivityLog */,
 				D88A6490208D79F1008AE9BC /* Stock Photos */,
 				FF7691661EE06CF500713F4B /* Aztec */,
@@ -8835,6 +8846,7 @@
 				D821C81D21004724002ED995 /* NotificationBlockTests.swift in Sources */,
 				5981FE051AB8A89A0009E080 /* WPUserAgentTests.m in Sources */,
 				08A2AD7B1CCED8E500E84454 /* PostCategoryServiceTests.m in Sources */,
+				172D7825212D93B800D513F7 /* GiphyPageableTests.swift in Sources */,
 				D88A64A8208D9733008AE9BC /* ThumbnailCollectionTests.swift in Sources */,
 				D816B8D12112D5960052CE4D /* DefaultNewsManagerTests.swift in Sources */,
 				748437EE1F1D4A7300E8DDAF /* RichContentFormatterTests.swift in Sources */,

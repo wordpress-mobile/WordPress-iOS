@@ -55,8 +55,21 @@ extension GiphyMedia {
     }
 }
 
+protocol GPHPaginationType {
+    /// Total Result Count.
+    var totalCount: Int { get }
+
+    /// Actual Result Count (not always == limit)
+    var count: Int { get }
+
+    /// Offset to start next set of results.
+    var offset: Int { get }
+}
+
+extension GPHPagination: GPHPaginationType {}
+
 extension GiphyPageable {
-    init?(gphPagination: GPHPagination?) {
+    init?(gphPagination: GPHPaginationType?) {
         guard let pagination = gphPagination else {
             return nil
         }
