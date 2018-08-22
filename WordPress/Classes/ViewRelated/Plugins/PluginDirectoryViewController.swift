@@ -179,8 +179,8 @@ extension PluginDirectoryViewController: UISearchResultsUpdating {
     }
 }
 
-extension PluginDirectoryViewController: WPNoResultsViewDelegate {
-    func didTap(_ noResultsView: WPNoResultsView!) {
+extension PluginDirectoryViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
         viewModel.reloadFailed()
     }
 }

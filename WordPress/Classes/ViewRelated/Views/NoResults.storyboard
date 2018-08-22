@@ -20,25 +20,30 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Ae-eX-ae9" userLabel="No Results View">
-                                <rect key="frame" x="10" y="211.5" width="355" height="264.5"/>
+                                <rect key="frame" x="10" y="172" width="355" height="344"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="czl-5D-gem" userLabel="Accessory View">
-                                        <rect key="frame" x="127.5" y="0.5" width="100" height="100"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="100" id="AYV-Gw-aKL"/>
-                                            <constraint firstAttribute="width" secondItem="czl-5D-gem" secondAttribute="height" multiplier="1:1" id="OOu-9J-9cx"/>
-                                        </constraints>
-                                    </view>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mysites-nosites" translatesAutoresizingMaskIntoConstraints="NO" id="Fwm-rl-dKS" userLabel="Image View">
-                                        <rect key="frame" x="64.5" y="10.5" width="226" height="116"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="Fwm-rl-dKS" secondAttribute="height" multiplier="113:58" id="LtV-EW-4bR"/>
-                                            <constraint firstAttribute="width" constant="226" id="zgJ-Vl-MiN"/>
-                                        </constraints>
-                                    </imageView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="gjj-bC-32w">
-                                        <rect key="frame" x="0.0" y="146.5" width="355" height="118.5"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3Mp-LB-oOz" userLabel="Accessory Stack View">
+                                        <rect key="frame" x="0.0" y="0.0" width="355" height="216"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="czl-5D-gem" userLabel="Accessory View">
+                                                <rect key="frame" x="127.5" y="0.0" width="100" height="100"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="100" id="AYV-Gw-aKL"/>
+                                                    <constraint firstAttribute="width" secondItem="czl-5D-gem" secondAttribute="height" multiplier="1:1" id="OOu-9J-9cx"/>
+                                                </constraints>
+                                            </view>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mysites-nosites" translatesAutoresizingMaskIntoConstraints="NO" id="Fwm-rl-dKS" userLabel="Image View">
+                                                <rect key="frame" x="64.5" y="100" width="226" height="116"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="Fwm-rl-dKS" secondAttribute="height" multiplier="113:58" id="LtV-EW-4bR"/>
+                                                    <constraint firstAttribute="width" constant="226" id="zgJ-Vl-MiN"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="gjj-bC-32w" userLabel="Label Button Stack View">
+                                        <rect key="frame" x="0.0" y="226" width="355" height="118.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="v7c-T9-kZq" userLabel="Label Stack View">
                                                 <rect key="frame" x="93" y="0.0" width="169.5" height="54.5"/>
@@ -79,31 +84,13 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="gjj-bC-32w" secondAttribute="bottom" id="9L8-n3-tw3"/>
-                                    <constraint firstItem="gjj-bC-32w" firstAttribute="top" secondItem="Fwm-rl-dKS" secondAttribute="bottom" constant="20" id="BdA-bk-oTl"/>
-                                    <constraint firstItem="gjj-bC-32w" firstAttribute="top" secondItem="0Ae-eX-ae9" secondAttribute="top" id="D2z-6C-CJE"/>
-                                    <constraint firstItem="Fwm-rl-dKS" firstAttribute="top" secondItem="0Ae-eX-ae9" secondAttribute="top" constant="10" id="Q94-Bc-Rfs"/>
                                     <constraint firstItem="gjj-bC-32w" firstAttribute="leading" secondItem="0Ae-eX-ae9" secondAttribute="leading" id="UZP-FI-0Fk"/>
-                                    <constraint firstItem="czl-5D-gem" firstAttribute="centerX" secondItem="0Ae-eX-ae9" secondAttribute="centerX" id="V5P-Iz-hPa"/>
-                                    <constraint firstItem="Fwm-rl-dKS" firstAttribute="centerX" secondItem="0Ae-eX-ae9" secondAttribute="centerX" id="jdr-4Z-YKV"/>
+                                    <constraint firstAttribute="trailing" secondItem="3Mp-LB-oOz" secondAttribute="trailing" id="fy4-as-vTK"/>
+                                    <constraint firstItem="3Mp-LB-oOz" firstAttribute="leading" secondItem="0Ae-eX-ae9" secondAttribute="leading" id="guT-w9-2ZG"/>
+                                    <constraint firstItem="3Mp-LB-oOz" firstAttribute="top" secondItem="0Ae-eX-ae9" secondAttribute="top" id="h6n-h9-V55"/>
                                     <constraint firstAttribute="trailing" secondItem="gjj-bC-32w" secondAttribute="trailing" id="mCf-TP-NhY"/>
-                                    <constraint firstItem="czl-5D-gem" firstAttribute="top" secondItem="0Ae-eX-ae9" secondAttribute="top" id="zNe-un-uU0"/>
+                                    <constraint firstItem="gjj-bC-32w" firstAttribute="top" secondItem="3Mp-LB-oOz" secondAttribute="bottom" constant="10" id="uMU-Y3-ncz"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="BdA-bk-oTl"/>
-                                        <exclude reference="D2z-6C-CJE"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=compact">
-                                    <mask key="constraints">
-                                        <include reference="D2z-6C-CJE"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular">
-                                    <mask key="constraints">
-                                        <include reference="BdA-bk-oTl"/>
-                                    </mask>
-                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
