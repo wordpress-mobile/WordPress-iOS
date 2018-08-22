@@ -147,10 +147,12 @@ class CollectionViewContainerCell: UITableViewCell {
             containerView.addSubview(noResultsView.view)
             addSubview(containerView)
 
-            containerView.topAnchor.constraint(equalTo: collectionView.topAnchor).isActive = true
-            containerView.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor).isActive = true
-            containerView.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor).isActive = true
-            containerView.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor).isActive = true
+            NSLayoutConstraint.activate([
+                containerView.topAnchor.constraint(equalTo: collectionView.topAnchor),
+                containerView.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor),
+                containerView.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
+                containerView.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor)
+                ])
         }
     }
 
