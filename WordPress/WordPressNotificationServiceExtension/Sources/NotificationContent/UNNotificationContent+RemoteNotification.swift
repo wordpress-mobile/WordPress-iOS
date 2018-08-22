@@ -4,8 +4,8 @@ import UserNotifications
 // MARK: - Describes userInfo keys within the APNS payload
 
 private extension CodingUserInfoKey {
-    static let alert = CodingUserInfoKey(rawValue: "alert")!
-    static let aps = CodingUserInfoKey(rawValue: "aps")!
+    static let alert    = CodingUserInfoKey(rawValue: "alert")!
+    static let aps      = CodingUserInfoKey(rawValue: "aps")!
 }
 
 // MARK: - Supports standard APNS notification content
