@@ -137,19 +137,20 @@ class CollectionViewContainerCell: UITableViewCell {
                     return
             }
 
-            let containerView = UIView(frame: .zero)
+            let containerView = UIView(frame: collectionView.frame)
             containerView.translatesAutoresizingMaskIntoConstraints = false
 
-            noResultsView.view.backgroundColor = .white
+            noResultsView.view.backgroundColor = .clear
             noResultsView.view.frame = containerView.frame
+            noResultsView.view.frame.origin.y = 0
 
             containerView.addSubview(noResultsView.view)
             addSubview(containerView)
 
-            containerView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.spacing * 3).isActive = true
-            containerView.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: -Constants.spacing).isActive = true
-            containerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-            containerView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+            containerView.topAnchor.constraint(equalTo: collectionView.topAnchor).isActive = true
+            containerView.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor).isActive = true
+            containerView.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor).isActive = true
+            containerView.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor).isActive = true
         }
     }
 
