@@ -75,6 +75,7 @@ class ReaderCoordinator: NSObject {
 
         let streamViewController = ReaderStreamViewController.controllerWithTopic(topic)
         readerSplitViewController.showDetailViewController(streamViewController, sender: nil)
+        readerMenuViewController.deselectSelectedRow(animated: false)
     }
 
     func showTag(named tagName: String) {
@@ -85,6 +86,7 @@ class ReaderCoordinator: NSObject {
         let controller = ReaderStreamViewController.controllerWithTagSlug(slug)
 
         readerSplitViewController.showDetailViewController(controller, sender: nil)
+        readerMenuViewController.deselectSelectedRow(animated: false)
     }
 
     func showStream(with siteID: Int, isFeed: Bool) {
@@ -92,6 +94,7 @@ class ReaderCoordinator: NSObject {
 
         let controller = ReaderStreamViewController.controllerWithSiteID(NSNumber(value: siteID), isFeed: isFeed)
         readerSplitViewController.showDetailViewController(controller, sender: nil)
+        readerMenuViewController.deselectSelectedRow(animated: false)
     }
 
     func showPost(with postID: Int, for feedID: Int, isFeed: Bool) {
@@ -102,6 +105,7 @@ class ReaderCoordinator: NSObject {
                                                                                        isFeed: isFeed)
 
         topNavigationController.pushFullscreenViewController(detailViewController, animated: false)
+        readerMenuViewController.deselectSelectedRow(animated: false)
     }
 
     private var topNavigationController: UINavigationController {
