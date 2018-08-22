@@ -5,4 +5,7 @@
 "Content" = "This is long form content. Here we explain why this feature is awesome";
 
 /* News Card link. */
-"URL" = "https://wordpress.com";
+"URL" = "http://wordpress.com/me";
+
+/* Build version this card applies to. */
+"version" = "10.7";
