@@ -64,7 +64,9 @@ class NotificationContentView: UIView {
 
         label.translatesAutoresizingMaskIntoConstraints = false
 
-        label.font = UIFont.systemFont(ofSize: Metrics.noticonFontSize)
+        label.font = UIFont(name: "Noticons", size: Metrics.noticonFontSize)!
+        label.text = viewModel.noticon ?? ""
+
         label.textColor = .white
         label.textAlignment = .center
         label.numberOfLines = 1
