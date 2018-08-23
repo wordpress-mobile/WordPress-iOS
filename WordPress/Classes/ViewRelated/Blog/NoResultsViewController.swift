@@ -10,7 +10,9 @@ import WordPressAuthenticator
 /// A view to show when there are no results for a given situation.
 /// Ex: My Sites > account has no sites; My Sites > all sites are hidden.
 /// The title will always show.
-/// The image will always show unless an accessoryView is provided.
+/// The image will always show unless:
+///     - an accessoryView is provided.
+///     - hideImage is set to true.
 /// The action button is shown by default, but will be hidden if button title is not provided.
 /// The subtitle is optional and will only show if provided.
 ///
@@ -33,6 +35,7 @@ import WordPressAuthenticator
     private var buttonText: String?
     private var imageName: String?
     private var accessorySubview: UIView?
+    private var hideImage = false
 
     // MARK: - View
 
@@ -49,6 +52,11 @@ import WordPressAuthenticator
     override func didMove(toParentViewController parent: UIViewController?) {
         super.didMove(toParentViewController: parent)
         configureView()
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        setAccessoryViewsVisibility()
     }
 
     /// Public method to get controller instance and set view values.
@@ -138,6 +146,28 @@ import WordPressAuthenticator
         return noResultsView.frame.height
     }
 
+    /// Public method to get an attributed string styled for No Results.
+    ///
+    /// - Parameters:
+    ///   - attributedString: The attributed string to be styled.
+    ///
+    func applyMessageStyleTo(attributedString: NSAttributedString) -> NSAttributedString {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = subtitleTextView.textAlignment
+
+        let attributes: [NSAttributedStringKey: Any] = [
+            .font: subtitleTextView.font!,
+            .foregroundColor: subtitleTextView.textColor!,
+            .paragraphStyle: paragraphStyle
+        ]
+
+        let fullTextRange = attributedString.string.foundationRangeOfEntireString
+        let finalAttributedString = NSMutableAttributedString(attributedString: attributedString)
+        finalAttributedString.addAttributes(attributes, range: fullTextRange)
+
+        return finalAttributedString
+    }
+
     /// Public method to get an animated box to show while loading.
     ///
     @objc func loadingAccessoryView() -> UIView {
@@ -146,9 +176,10 @@ import WordPressAuthenticator
         return boxView
     }
 
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        setAccessoryViewsVisibility()
+    /// Public method to always hide the image view.
+    ///
+    func hideImageView() {
+        hideImage = true
     }
 
 }
@@ -209,9 +240,9 @@ private extension NoResultsViewController {
             accessoryView.isHidden = true
         } else {
             // If there is an accessory view, show that.
-            // Otherwise, show the image view.
             accessoryView.isHidden = accessorySubview == nil
-            imageView.isHidden = !accessoryView.isHidden
+            // Otherwise, show the image view, unless it's set never to show.
+            imageView.isHidden = (hideImage == true) ? true : !accessoryView.isHidden
         }
     }
 
@@ -232,20 +263,4 @@ private extension NoResultsViewController {
         return String(format: buttonIdFormat, string)
     }
 
-    func applyMessageStyleTo(attributedString: NSAttributedString) -> NSAttributedString {
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = subtitleTextView.textAlignment
-
-        let attributes: [NSAttributedStringKey: Any] = [
-            .font: subtitleTextView.font!,
-            .foregroundColor: subtitleTextView.textColor!,
-            .paragraphStyle: paragraphStyle
-        ]
-
-        let fullTextRange = attributedString.string.foundationRangeOfEntireString
-        let finalAttributedString = NSMutableAttributedString(attributedString: attributedString)
-        finalAttributedString.addAttributes(attributes, range: fullTextRange)
-
-        return finalAttributedString
-    }
 }
