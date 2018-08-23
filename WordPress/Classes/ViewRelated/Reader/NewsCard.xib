@@ -33,16 +33,16 @@
                 <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Ewo-7I-oMB">
                     <rect key="frame" x="0.0" y="8" width="375" height="184"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="240" horizontalCompressionResistancePriority="740" axis="vertical" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="9hi-UA-p04">
+                        <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="240" verticalHuggingPriority="275" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="740" axis="vertical" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="9hi-UA-p04">
                             <rect key="frame" x="16" y="20" width="149" height="91"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSK-uI-6js" userLabel="NewsTitle">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSK-uI-6js" userLabel="NewsTitle">
                                     <rect key="frame" x="0.0" y="0.0" width="149" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="900" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gf2-Wv-Ozo" userLabel="NewsSubtitle">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gf2-Wv-Ozo" userLabel="NewsSubtitle">
                                     <rect key="frame" x="0.0" y="30.5" width="149" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
@@ -50,6 +50,9 @@
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WFs-AW-Uc0">
                                     <rect key="frame" x="0.0" y="61" width="149" height="30"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="30" id="m6f-Pp-yMs"/>
+                                    </constraints>
                                     <state key="normal" title="Button"/>
                                 </button>
                             </subviews>
@@ -70,10 +73,6 @@
                             <state key="normal" title="Button"/>
                         </button>
                     </subviews>
-                    <constraints>
-                        <constraint firstAttribute="bottom" secondItem="9hi-UA-p04" secondAttribute="bottom" id="4l3-YZ-ohk"/>
-                        <constraint firstItem="9hi-UA-p04" firstAttribute="top" secondItem="Ewo-7I-oMB" secondAttribute="top" id="sjJ-gO-bpU"/>
-                    </constraints>
                     <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                 </stackView>
             </subviews>
