@@ -8,9 +8,10 @@ final class MediaLibraryMediaPickingCoordinator {
     private let cameraCapture = CameraCaptureCoordinator()
     private let mediaLibrary = MediaLibraryPicker()
 
-    init(delegate: StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate) {
+    init(delegate: StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate & GiphyPickerDelegate) {
         stockPhotos.delegate = delegate
         mediaLibrary.delegate = delegate
+        giphy.delegate = delegate
     }
 
     func present(context: MediaPickingContext) {
