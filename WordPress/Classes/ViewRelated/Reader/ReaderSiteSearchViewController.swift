@@ -225,7 +225,7 @@ private extension ReaderSiteSearchViewController {
     }
 
     func showLoadingView() {
-        configureAndDisplayStatus(title: StatusText.loadingTitle, accessoryView: statusViewController.loadingAccessoryView())
+        configureAndDisplayStatus(title: StatusText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
     }
 
     func showLoadingFailedView() {
