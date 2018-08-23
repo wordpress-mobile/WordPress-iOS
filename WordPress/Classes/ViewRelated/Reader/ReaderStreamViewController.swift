@@ -54,6 +54,8 @@ import WordPressFlux
     /// Actions
     private var postCellActions: ReaderPostCellActions?
 
+    let news = ReaderNewsCard()
+
     /// Used for fetching content.
     fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
 
@@ -113,7 +115,7 @@ import WordPressFlux
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderStreamViewController") as! ReaderStreamViewController
         controller.readerTopic = topic
-
+        controller.checkNewsCardAvailability(topic: topic)
         return controller
     }
 
@@ -376,7 +378,6 @@ import WordPressFlux
     }
 
     // MARK: - Configuration / Topic Presentation
-
 
     @objc func configureStreamHeader() {
         guard let topic = readerTopic else {
