@@ -918,8 +918,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void) hideReaderBadge:(NSNotification *)notification
 {
-    NSLog(@"====== hiding reader badge");
-    NSLog(@"====== stop");
     UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
     self.readerNavigationController.tabBarItem.image = readerTabBarImage;
 }
