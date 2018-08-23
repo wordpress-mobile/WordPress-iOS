@@ -1,8 +1,8 @@
 /* News Card title. */
-"Title" = "This is an awesome new feature!";
+"Title" = "Howdy Hogwarts!";
 
 /* News Card content. */
-"Content" = "This is long form content. Here we explain why this feature is awesome";
+"Content" = "I am not trying to be mean, but Ravenclaw is the awesomest team within Hogwarts.";
 
 /* News Card link. */
 "URL" = "http://wordpress.com/me";
