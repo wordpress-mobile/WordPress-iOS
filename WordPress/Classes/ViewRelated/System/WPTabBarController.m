@@ -130,6 +130,16 @@ static CGFloat const WPTabBarIconSize = 32.0f;
                                                    object:nil];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateIconIndicators:)
+                                                     name:NSNotification.NewsCardAvailable
+                                                   object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateIconIndicators:)
+                                                     name:NSNotification.NewsCardNotAvailable
+                                                   object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(defaultAccountDidChange:)
                                                      name:WPAccountDefaultWordPressComAccountChangedNotification
                                                    object:nil];
@@ -863,6 +873,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     [self updateMeNotificationIcon];
     [self updateNotificationBadgeVisibility];
+    [self updateReaderBadgeVisibility];
 }
 
 #pragma mark - Default Account Notifications
@@ -895,6 +906,11 @@ static CGFloat const WPTabBarIconSize = 32.0f;
         notificationsTabBarItem.image = self.notificationsTabBarImage;
         notificationsTabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
     }
+}
+
+- (void) updateReaderBadgeVisibility
+{
+    NSLog(@"====== updating reader badge");
 }
 
 - (void)updateMeNotificationIcon
