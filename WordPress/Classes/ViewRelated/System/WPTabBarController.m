@@ -130,12 +130,12 @@ static CGFloat const WPTabBarIconSize = 32.0f;
                                                    object:nil];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(updateIconIndicators:)
+                                                 selector:@selector(showReaderBadge:)
                                                      name:NSNotification.NewsCardAvailable
                                                    object:nil];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(updateIconIndicators:)
+                                                 selector:@selector(hideReaderBadge:)
                                                      name:NSNotification.NewsCardNotAvailable
                                                    object:nil];
 
@@ -873,7 +873,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 {
     [self updateMeNotificationIcon];
     [self updateNotificationBadgeVisibility];
-    [self updateReaderBadgeVisibility];
 }
 
 #pragma mark - Default Account Notifications
@@ -908,9 +907,21 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 }
 
-- (void) updateReaderBadgeVisibility
+- (void) showReaderBadge:(NSNotification *)notification
 {
-    NSLog(@"====== updating reader badge");
+    NSLog(@"====== showing reader badge");
+    NSLog(@"====== stop");
+
+    UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader-unread"];
+    self.readerNavigationController.tabBarItem.image = readerTabBarImage;
+}
+
+- (void) hideReaderBadge:(NSNotification *)notification
+{
+    NSLog(@"====== hiding reader badge");
+    NSLog(@"====== stop");
+    UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
+    self.readerNavigationController.tabBarItem.image = readerTabBarImage;
 }
 
 - (void)updateMeNotificationIcon
