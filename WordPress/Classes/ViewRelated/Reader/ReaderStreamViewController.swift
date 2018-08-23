@@ -1427,7 +1427,7 @@ extension ReaderStreamViewController: SearchableActivityConvertable {
 private extension ReaderStreamViewController {
 
     func displayLoadingStream() {
-        configureAndDisplayResultsStatus(title: ResultsStatusText.loadingStreamTitle, accessoryView: resultsStatusView.loadingAccessoryView())
+        configureAndDisplayResultsStatus(title: ResultsStatusText.loadingStreamTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
     }
 
     func displayLoadingStreamFailed() {
@@ -1440,7 +1440,7 @@ private extension ReaderStreamViewController {
         }
 
         tableView.tableHeaderView?.isHidden = true
-        configureAndDisplayResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: resultsStatusView.loadingAccessoryView())
+        configureAndDisplayResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
     }
 
     func displayNoResultsView() {

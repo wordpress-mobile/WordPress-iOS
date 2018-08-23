@@ -306,7 +306,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     @objc open func setupWithPostID(_ postID: NSNumber, siteID: NSNumber, isFeed: Bool) {
 
-        configureAndDisplayLoadingView(title: LoadingText.loadingTitle, accessoryView: noResultsViewController.loadingAccessoryView())
+        configureAndDisplayLoadingView(title: LoadingText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
 
         textView.alpha = 0.0
 
