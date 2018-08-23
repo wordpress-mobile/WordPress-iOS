@@ -65,6 +65,10 @@ final class DefaultNewsManager: NewsManager {
 
     func didPresentCard() {
         trackCardPresented()
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+            NotificationCenter.default.post(name: NSNotification.NewsCardNotAvailable, object: nil)
+        })
     }
 
     private func load() {
