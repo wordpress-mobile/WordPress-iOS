@@ -3,9 +3,9 @@ import XCTest
 
 final class LocalNewsServiceTests: XCTestCase {
     private struct Constants {
-        static let title = "This is an awesome new feature!"
-        static let content = "This is long form content. Here we explain why this feature is awesome"
-        static let url = URL(string: "https://wordpress.com")!
+        static let title = "Howdy Hogwarts!"
+        static let content = "I am not trying to be mean, but Ravenclaw is the awesomest team within Hogwarts."
+        static let url = URL(string: "http://wordpress.com/me")!
     }
 
     private var service: NewsService?
