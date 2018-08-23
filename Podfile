@@ -132,6 +132,9 @@ target 'WordPressNotificationContentExtension' do
 	project 'WordPress/WordPress.xcodeproj'
 	
 	inherit! :search_paths
+	
+	pod 'WordPressShared', '1.0.9'
+	pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'	
 end
 
 
