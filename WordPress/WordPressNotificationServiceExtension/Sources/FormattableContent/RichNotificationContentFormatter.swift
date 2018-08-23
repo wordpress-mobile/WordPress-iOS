@@ -51,7 +51,7 @@ class RichNotificationContentFormatter {
         }
 
         let trimmedText = replaceCommonWhitespaceIssues(in: commentText)
-        let styles = SubjectContentStyles()
+        let styles = RemoteNotificationStyles()
         let attributedText = NSMutableAttributedString(string: trimmedText, attributes: styles.attributes)
 
         var lengthShift = 0
@@ -93,7 +93,7 @@ class RichNotificationContentFormatter {
         }
 
         let trimmedText = replaceCommonWhitespaceIssues(in: subjectText)
-        let styles = SubjectContentStyles()
+        let styles = RemoteNotificationStyles()
         let attributedText = NSMutableAttributedString(string: trimmedText, attributes: styles.attributes)
 
         var lengthShift = 0
