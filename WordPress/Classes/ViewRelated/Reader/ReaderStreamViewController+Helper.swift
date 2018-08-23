@@ -18,6 +18,8 @@ extension ReaderStreamViewController {
             print("===================")
             print("Checking news card")
             print("===================")
+            let userInfo = ["news": true]
+            NotificationCenter.default.post(name: NSNotification.NewsCardAvailable, object: nil, userInfo: userInfo)
         }
     }
 
@@ -42,7 +44,6 @@ extension ReaderStreamViewController {
 
         let containerIdentifier = Identifier(value: topic.title)
 
-        print("====== initializing the news card =====")
         return news.newsCard(containerIdentifier: containerIdentifier, header: header, container: container, delegate: self)
     }
 
