@@ -3,13 +3,29 @@ final class ReaderNewsCard {
     private let fileName = "News"
     private let tracksOrigin = "reader"
 
+    private lazy var database = {
+        return UserDefaults.standard
+    }()
+
+    private lazy var stats = {
+        return TracksNewsStats(origin: tracksOrigin)
+    }()
+
+    private lazy var newsManager = {
+        return DefaultNewsManager(service: LocalNewsService(fileName: fileName), database: self.database, stats: self.stats)
+    }()
+
+    func shouldPresentCard(containerIdentifier: Identifier) -> Bool {
+        return newsManager.shouldPresentCard(contextId: containerIdentifier)
+    }
+
     func newsCard(containerIdentifier: Identifier, header: ReaderStreamViewController.ReaderHeader?, container: UIViewController, delegate: NewsManagerDelegate) -> UIView? {
-        let database = UserDefaults.standard
-        let stats = TracksNewsStats(origin: tracksOrigin)
-        let newsManager = DefaultNewsManager(service: LocalNewsService(fileName: fileName), database: database, stats: stats, delegate: delegate)
+
+        //Set up the delegate, otherwise the actions associated to the buttons in the news card will not be triggered
+        newsManager.delegate = delegate
 
         // News card should not be presented: return configured stream header
-        guard newsManager.shouldPresentCard(contextId: containerIdentifier) else {
+        guard shouldPresentCard(containerIdentifier: containerIdentifier) else {
             return header
         }
 

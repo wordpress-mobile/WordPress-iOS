@@ -17,12 +17,12 @@ final class DefaultNewsManager: NewsManager {
 
     private let service: NewsService
     private let database: KeyValueDatabase
-    private weak var delegate: NewsManagerDelegate?
+    weak var delegate: NewsManagerDelegate?
     private let stats: NewsStats
 
     private var result: Result<NewsItem>?
 
-    init(service: NewsService, database: KeyValueDatabase, stats: NewsStats, delegate: NewsManagerDelegate?) {
+    init(service: NewsService, database: KeyValueDatabase, stats: NewsStats, delegate: NewsManagerDelegate? = nil) {
         self.service = service
         self.database = database
         self.stats = stats
