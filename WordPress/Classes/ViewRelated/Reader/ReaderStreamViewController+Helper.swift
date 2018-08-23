@@ -12,14 +12,21 @@ extension ReaderStreamViewController {
 
     func checkNewsCardAvailability(topic: ReaderAbstractTopic) {
         let containerIdentifier = Identifier(value: topic.title)
-        if news.shouldPresentCard(containerIdentifier: containerIdentifier) {
+        let mustBadge = news.shouldPresentCard(containerIdentifier: containerIdentifier)
+        if mustBadge {
             print("===================")
             print("===================")
             print("===================")
             print("Checking news card")
             print("===================")
-            let userInfo = ["news": true]
-            NotificationCenter.default.post(name: NSNotification.NewsCardAvailable, object: nil, userInfo: userInfo)
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                NotificationCenter.default.post(name: NSNotification.NewsCardAvailable, object: nil)
+            })
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                NotificationCenter.default.post(name: NSNotification.NewsCardNotAvailable, object: nil)
+            })
         }
     }
 
