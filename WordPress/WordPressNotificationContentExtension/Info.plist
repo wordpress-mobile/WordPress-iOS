@@ -40,10 +40,10 @@
 		<string>NotificationViewController</string>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.usernotifications.content-extension</string>
-        <key>UIAppFonts</key>
-        <array>
-            <string>Noticons.ttf</string>
-        </array>
 	</dict>
+    <key>UIAppFonts</key>
+    <array>
+        <string>Noticons.ttf</string>
+    </array>
 </dict>
 </plist>
