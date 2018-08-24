@@ -30,8 +30,9 @@ class NotificationViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        _ = view.subviews.map { $0.removeFromSuperview() }
+        view.subviews.forEach { $0.removeFromSuperview() }
         viewModel = nil
+        contentView = nil
     }
 
     // MARK: Private behavior
