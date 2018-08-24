@@ -21,8 +21,8 @@ class NotificationContentView: UIView {
     }
 
     private struct Styles {
-        /// Extracted from https://bettertogethermobile.wordpress.com/2018/06/25/ios12-rich-er-notification-design-v1-5/ via Digital Color Meter
-        static let noticonBackgroundColor = UIColor(red: (82/255.0), green: (180/255.0), blue: (231/255.0), alpha: 1.0)
+        // NB: Matches noticonUnreadColor in NoteTableViewCell
+        static let noticonBackgroundColor = UIColor(red: 0x25/255.0, green: 0x9C/255.0, blue: 0xCF/255.0, alpha: 0xFF/255.0)
     }
 
     private let viewModel: RichNotificationViewModel
