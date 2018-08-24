@@ -211,6 +211,7 @@ private extension NoResultsViewController {
         subtitleTextView.isHidden = !showSubtitle
 
         if let buttonText = buttonText {
+            configureButton()
             actionButton?.setTitle(buttonText, for: UIControlState())
             actionButton?.setTitle(buttonText, for: .highlighted)
             actionButton?.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -229,6 +230,61 @@ private extension NoResultsViewController {
         }
 
         view.layoutIfNeeded()
+    }
+
+    func configureButton() {
+        actionButton.contentEdgeInsets = DefaultRenderMetrics.contentInsets
+
+        let normalImage = renderBackgroundImage(fill: WPStyleGuide.mediumBlue(), border: WPStyleGuide.wordPressBlue())
+        let highlightedImage = renderBackgroundImage(fill: WPStyleGuide.wordPressBlue(), border: WPStyleGuide.wordPressBlue())
+
+        actionButton.setBackgroundImage(normalImage, for: .normal)
+        actionButton.setBackgroundImage(highlightedImage, for: .highlighted)
+    }
+
+    func renderBackgroundImage(fill: UIColor, border: UIColor) -> UIImage {
+
+        let renderer = UIGraphicsImageRenderer(size: DefaultRenderMetrics.backgroundImageSize)
+        let image = renderer.image { context in
+
+            let lineWidthInPixels = 1 / UIScreen.main.scale
+            let cgContext = context.cgContext
+
+            // Apply a 1px inset to the bounds, for our bezier (so that the border doesn't fall outside)
+            var bounds = renderer.format.bounds
+            bounds.origin.x += lineWidthInPixels
+            bounds.origin.y += lineWidthInPixels
+            bounds.size.height -= lineWidthInPixels * 2 + DefaultRenderMetrics.backgroundShadowOffset.height
+            bounds.size.width -= lineWidthInPixels * 2 + DefaultRenderMetrics.backgroundShadowOffset.width
+
+            let path = UIBezierPath(roundedRect: bounds, cornerRadius: DefaultRenderMetrics.backgroundCornerRadius)
+
+            // Draw: Background + Shadow
+            cgContext.saveGState()
+            cgContext.setShadow(offset: DefaultRenderMetrics.backgroundShadowOffset,
+                                blur: DefaultRenderMetrics.backgroundShadowBlurRadius,
+                                color: border.cgColor)
+            fill.setFill()
+
+            path.fill()
+
+            cgContext.restoreGState()
+
+            // Draw: Border
+            border.setStroke()
+            path.stroke()
+        }
+
+        return image.resizableImage(withCapInsets: DefaultRenderMetrics.backgroundCapInsets)
+    }
+
+    struct DefaultRenderMetrics {
+        public static let backgroundImageSize = CGSize(width: 44, height: 44)
+        public static let backgroundCornerRadius = CGFloat(8)
+        public static let backgroundCapInsets = UIEdgeInsets(top: 18, left: 18, bottom: 18, right: 18)
+        public static let backgroundShadowOffset = CGSize(width: 0, height: 2)
+        public static let backgroundShadowBlurRadius = CGFloat(0)
+        public static let contentInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
     }
 
     func setAccessoryViewsVisibility() {
