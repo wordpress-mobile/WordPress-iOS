@@ -107,6 +107,12 @@ class PluginDirectoryViewModel: Observable {
     }
 
     private func installedRow(presenter: PluginPresenter & PluginListPresenter) -> ImmuTableRow? {
+        guard !isHostedAtWPCom(site: site) else {
+            // If it's a (probably) AT-eligible site, but not a Jetpack site yet, hide the "installed" row.
+            return nil
+        }
+
+
         let title = NSLocalizedString("Installed", comment: "Header of section in Plugin Directory showing installed plugins")
         let secondaryTitle = NSLocalizedString("Manage", comment: "Button leading to a screen where users can manage their installed plugins")
         let query = PluginQuery.all(site: site)
@@ -269,6 +275,12 @@ class PluginDirectoryViewModel: Observable {
             return nil
         }
         return Array(newest.prefix(6))
+    }
+
+    private func isHostedAtWPCom(site: JetpackSiteRef) -> Bool {
+        let service = BlogService.withMainContext()
+        let blog = service.blog(byBlogId: site.siteID as NSNumber, andUsername: site.username)
+        return blog?.isHostedAtWPcom ?? false
     }
 
     private func accessoryView(`for` directoryEntry: PluginDirectoryEntry) -> UIView {
