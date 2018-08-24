@@ -144,7 +144,7 @@ class PluginViewModel: Observable {
             return nil
         }
 
-        guard let capabilities = capabilities, capabilities.modify == true else {
+        guard isHostedAtWPCom(site: site) || capabilities?.modify == true else {
             // If we know about versions, but we can't update/install the plugin, just show the version number.
             return TextRow(title: NSLocalizedString("Plugin version", comment: "Version of an installed plugin"),
                            value: version)
@@ -170,7 +170,18 @@ class PluginViewModel: Observable {
                 subtitle: nil,
                 actionLabel: NSLocalizedString("Install", comment: "Button label to install a plugin"),
                 onButtonTap: { [unowned self] _ in
-                    ActionDispatcher.dispatch(PluginAction.install(plugin: directoryEntry, site: self.site))
+                    if self.isHostedAtWPCom(site: self.site) {
+                        guard let atHelper = AutomatedTransferHelper(site: self.site, plugin: directoryEntry) else {
+                            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: String(format: NSLocalizedString("Error installing %@.", comment: "Notice displayed after attempt to install a plugin fails."), directoryEntry.name))))
+                            return
+                        }
+
+                        let alertController = atHelper.automatedTransferConfirmationPrompt()
+                        self.present?(alertController)
+                    }
+                    else {
+                        ActionDispatcher.dispatch(PluginAction.install(plugin: directoryEntry, site: self.site))
+                    }
                 }
             )
         }
@@ -479,6 +490,12 @@ class PluginViewModel: Observable {
         } else {
             ActionDispatcher.dispatch(PluginAction.disableAutoupdates(id: plugin.id, site: site))
         }
+    }
+
+    private func isHostedAtWPCom(site: JetpackSiteRef) -> Bool {
+        let service = BlogService.withMainContext()
+        let blog = service.blog(byBlogId: site.siteID as NSNumber, andUsername: site.username)
+        return blog?.isHostedAtWPcom ?? false
     }
 
     private func isAutomatedTransfer(site: JetpackSiteRef) -> Bool {
