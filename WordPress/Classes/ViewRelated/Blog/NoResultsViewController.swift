@@ -16,7 +16,7 @@ import WordPressAuthenticator
 /// The action button is shown by default, but will be hidden if button title is not provided.
 /// The subtitle is optional and will only show if provided.
 ///
-@objc class NoResultsViewController: NUXViewController {
+@objc class NoResultsViewController: UIViewController {
 
     // MARK: - Properties
 
