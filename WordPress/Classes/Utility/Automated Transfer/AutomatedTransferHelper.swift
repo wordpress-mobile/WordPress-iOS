@@ -206,6 +206,7 @@ class AutomatedTransferHelper {
 
             DDLogInfo("[AT] Incrementing retry counter.")
             wrapper.increment()
+            self.delayWrapper = wrapper
         })
     }
 
@@ -250,6 +251,7 @@ class AutomatedTransferHelper {
 
             DDLogInfo("[AT] Incrementing retry counter.")
             wrapper.increment()
+            self.delayWrapper = wrapper
         })
     }
 
