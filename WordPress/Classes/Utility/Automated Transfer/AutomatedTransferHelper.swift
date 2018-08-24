@@ -33,6 +33,7 @@ class AutomatedTransferHelper {
 
 
         alertController.addCancelActionWithTitle(Constants.alertCancel, handler: { _ in
+            WPAnalytics.track(.automatedTransferDialogCancelled)
             DDLogInfo("[AT] User cancelled.")
         })
         alertController.addDefaultActionWithTitle(Constants.alertInstall, handler: { _ in
@@ -65,6 +66,8 @@ class AutomatedTransferHelper {
     private func verifyEligibility(success: @escaping (() -> ()), failure: @escaping (() -> ())) {
         DDLogInfo("[AT] Starting eligibility check.")
 
+        WPAnalytics.track(.automatedTransferEligibilityCheckInitiated)
+
         automatedTransferService.checkTransferEligibility(
             siteID: site.siteID,
             success: {
@@ -73,6 +76,8 @@ class AutomatedTransferHelper {
         },
             failure: { (error) in
                 DDLogInfo(("[AT] Site ineligible for AT, error: \(error)"))
+
+                WPAnalytics.track(.automatedTransferSiteIneligible)
 
                 let errorMessage: String
 
@@ -107,8 +112,12 @@ class AutomatedTransferHelper {
     private func initiateAutomatedTransfer() {
         DDLogInfo("[AT] Initiating Automated Transfer.")
 
+        WPAnalytics.track(.automatedTransferInitiate)
+
         automatedTransferService.initiateAutomatedTransfer(siteID: site.siteID, pluginSlug: plugin.slug, success: { transferID, status in
             DDLogInfo("[AT] Succesfully started Automated Transfer process. Transfer ID: \(transferID), status: \(status)")
+
+            WPAnalytics.track(.automatedTransferInitiated)
 
             // Also an arbitrary number, to show progress. "real progress" should start at 14% (there are currently 7 steps, 100/7 ~= 14).
             SVProgressHUD.showProgress(0.08, status: Constants.progressHudTitle(self.plugin.name))
@@ -121,19 +130,42 @@ class AutomatedTransferHelper {
 
         }, failure: { (error) in
             DDLogInfo(("[AT] Failed to initiate Automated Transfer: \(error)"))
+
+            WPAnalytics.track(.automatedTransferInitiationFailed)
+
             SVProgressHUD.dismiss()
             ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.genericErrorMessage(self.plugin.name))))
         })
     }
 
     private func updateAutomatedTransferStatus() {
+        // Definining this here, because we also want to be able to call it if we "sucesfully" fetch a status update
+        // and the resulting status is `failed`.
+        let failureBlock: ((Error?) -> ()) = { (error) in
+            DDLogInfo("[AT] Status update failed: \(String(describing: error))")
+
+            WPAnalytics.track(.automatedTransferStatusFailed)
+
+            SVProgressHUD.dismiss()
+            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.genericErrorMessage(self.plugin.name))))
+        }
+
+
         automatedTransferService.fetchAutomatedTransferStatus(siteID: site.siteID, success: { (status) in
             DDLogInfo("[AT] Received AT status update: \(status)")
+
+            guard status.status != .error else {
+                failureBlock(nil)
+                return
+            }
 
             // This means the AT process itself is done. It's now a JP site, so we need to refresh it
             // to make sure we have correct (and latest) data.
             if status.status == .complete {
                 DDLogInfo("[AT] AT remote process complete. Refreshing the site.")
+
+                WPAnalytics.track(.automatedTransferStatusComplete)
+
                 SVProgressHUD.showProgress(0.99, status: Constants.installAlmostDone)
                 self.refreshSite()
                 return
@@ -151,10 +183,7 @@ class AutomatedTransferHelper {
                 DDLogInfo("[AT] Scheduling status update.")
                 self.updateAutomatedTransferStatus()
             }
-        }, failure: { (error) in
-            SVProgressHUD.dismiss()
-            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.genericErrorMessage(self.plugin.name))))
-        })
+        }, failure: failureBlock)
     }
 
     private func refreshSite() {
@@ -218,6 +247,8 @@ class AutomatedTransferHelper {
             // This was the last step in the process! The transfer is complete. Time to celebrate 🎇🎉✨
             DDLogInfo("[AT] Sucesfully fetched plugins.")
             DDLogInfo("[AT] AT Process complete.")
+
+            WPAnalytics.track(.automatedTransferFlowComplete)
 
             ActionDispatcher.dispatch(PluginAction.receivePlugins(site: self.site, plugins: plugins))
             SVProgressHUD.dismiss()
