@@ -25,7 +25,7 @@ import WordPressAuthenticator
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleTextView: UITextView!
-    @IBOutlet weak var actionButton: NUXButton!
+    @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var accessoryView: UIView!
 
     // To allow storing values until view is loaded.
