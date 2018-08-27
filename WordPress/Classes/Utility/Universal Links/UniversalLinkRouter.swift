@@ -89,7 +89,7 @@ struct UniversalLinkRouter {
     ///
     /// - returns: True if the route was handled, or false if it didn't match any routes.
     ///
-    func handle(url: URL, shouldTrack track: Bool = true) {
+    func handle(url: URL, shouldTrack track: Bool = true, source: UIViewController? = nil) {
         let matches = matcher.routesMatching(url)
 
         if track {
@@ -97,7 +97,7 @@ struct UniversalLinkRouter {
         }
 
         for matchedRoute in matches {
-            matchedRoute.action.perform(matchedRoute.values)
+            matchedRoute.action.perform(matchedRoute.values, source: source)
         }
     }
 
