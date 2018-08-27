@@ -119,6 +119,10 @@
  */
 - (void)showExplanationAlertForReAuthenticationDueToMissingAuthToken
 {
+    UIWindow *alertWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    alertWindow.rootViewController = [UIViewController new];
+    [alertWindow makeKeyAndVisible];
+    
     NSString *alertTitle = NSLocalizedString(@"Oops!",
                                              @"Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.");
     NSString *alertMessage = NSLocalizedString(@"There was a problem connecting to WordPress.com. Please log in again.",
@@ -134,9 +138,9 @@
                                                        style:UIAlertActionStyleDefault
                                                      handler:^(UIAlertAction *action){}];
     [alertController addAction:okAction];
-    [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController
-                                                                                   animated:YES
-                                                                                 completion:nil];
+    alertController.modalPresentationStyle = UIModalPresentationPopover;
+    
+    [alertWindow.rootViewController presentViewController:alertController animated:YES completion:nil];
 }
 
 @end
