@@ -1,3 +1,4 @@
+import WordPressShared
 
 class SnippetsContentStyles: FormattableContentStyles {
     var attributes: [NSAttributedStringKey: Any] {
