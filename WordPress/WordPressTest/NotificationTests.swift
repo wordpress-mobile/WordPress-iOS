@@ -80,7 +80,7 @@ class NotificationTests: XCTestCase {
 
     func testLikeNotificationReturnsTheProperKindValue() {
         let note = loadLikeNotification()
-        XCTAssert(note.kind == .like)
+        XCTAssert(note.kind == .Like)
     }
 
     func testLikeNotificationContainsOneSubjectBlock() {
@@ -127,12 +127,12 @@ class NotificationTests: XCTestCase {
 
     func testFollowerNotificationReturnsTheProperKindValue() {
         let note = loadFollowerNotification()
-        XCTAssert(note.kind == .follow)
+        XCTAssert(note.kind == .Follow)
     }
 
     func testFollowerNotificationHasFollowFlagSetToTrue() {
         let note = loadFollowerNotification()
-        XCTAssertTrue(note.kind == .follow)
+        XCTAssertTrue(note.kind == .Follow)
     }
 
     func testFollowerNotificationContainsOneSubjectBlock() {
@@ -208,12 +208,12 @@ class NotificationTests: XCTestCase {
 
     func testCommentNotificationReturnsTheProperKindValue() {
         let note = loadCommentNotification()
-        XCTAssert(note.kind == .comment)
+        XCTAssert(note.kind == .Comment)
     }
 
     func testCommentNotificationHasCommentFlagSetToTrue() {
         let note = loadCommentNotification()
-        XCTAssertTrue(note.kind == .comment)
+        XCTAssertTrue(note.kind == .Comment)
     }
 
     func testCommentNotificationContainsSubjectWithSnippet() {

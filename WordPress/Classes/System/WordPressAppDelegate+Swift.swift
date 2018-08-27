@@ -310,12 +310,10 @@ extension WordPressAppDelegate {
         // If the notification object is not nil, then it's a login
         if notification.object != nil {
             setupShareExtensionToken()
-            configureNotificationExtension()
         } else {
             trackLogoutIfNeeded()
             removeTodayWidgetConfiguration()
             removeShareExtensionConfiguration()
-            removeNotificationExtensionConfiguration()
             showWelcomeScreenIfNeeded(animated: false)
         }
 
@@ -373,22 +371,5 @@ extension WordPressAppDelegate {
     @objc func saveRecentSitesForExtensions() {
         let recentSites = RecentSitesService().recentSites
         ShareExtensionService.configureShareExtensionRecentSites(recentSites)
-    }
-
-    // MARK: - Notification Service Extension
-
-    @objc
-    func configureNotificationExtension() {
-        let context = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: context)
-
-        if let account = accountService.defaultWordPressComAccount() {
-            NotificationSupportService.insertExtensionToken(account.authToken)
-        }
-    }
-
-    @objc
-    func removeNotificationExtensionConfiguration() {
-        NotificationSupportService.deleteExtensionToken()
     }
 }
