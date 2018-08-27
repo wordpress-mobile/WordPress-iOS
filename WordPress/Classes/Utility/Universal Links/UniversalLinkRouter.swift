@@ -6,7 +6,7 @@ import Foundation
 struct UniversalLinkRouter {
     private let matcher: RouteMatcher
 
-    private init(routes: [Route]) {
+    init(routes: [Route]) {
         matcher = RouteMatcher(routes: routes)
     }
 
@@ -23,22 +23,22 @@ struct UniversalLinkRouter {
         MySitesRoutes +
         AppBannerRoutes)
 
-    private static let MeRoutes: [Route] = [
+    static let MeRoutes: [Route] = [
         MeRoute(),
         MeAccountSettingsRoute(),
         MeNotificationSettingsRoute()
     ]
 
-    private static let NewPostRoutes: [Route] = [
+    static let NewPostRoutes: [Route] = [
         NewPostRoute(),
         NewPostForSiteRoute()
     ]
 
-    private static let NotificationsRoutes: [Route] = [
+    static let NotificationsRoutes: [Route] = [
         NotificationsRoute()
     ]
 
-    private static let ReaderRoutes: [Route] = [
+    static let ReaderRoutes: [Route] = [
         ReaderRoute.root,
         ReaderRoute.discover,
         ReaderRoute.search,
@@ -53,7 +53,7 @@ struct UniversalLinkRouter {
         ReaderRoute.blogsPost
     ]
 
-    private static let StatsRoutes: [Route] = [
+    static let StatsRoutes: [Route] = [
         StatsRoute.root,
         StatsRoute.site,
         StatsRoute.daySite,
@@ -66,7 +66,7 @@ struct UniversalLinkRouter {
         StatsRoute.activityLog
     ]
 
-    private static let MySitesRoutes: [Route] = [
+    static let MySitesRoutes: [Route] = [
         MySitesRoute.pages,
         MySitesRoute.posts,
         MySitesRoute.media,
@@ -77,9 +77,23 @@ struct UniversalLinkRouter {
         MySitesRoute.managePlugins
     ]
 
-    private static let AppBannerRoutes: [Route] = [
+    static let AppBannerRoutes: [Route] = [
         AppBannerRoute()
     ]
+
+    /// - returns: True if the URL routing system can handle the given URL,
+    ///            but does not perform any actions or tracking.
+    ///
+    func canHandle(url: URL) -> Bool {
+        let matcherCanHandle = matcher.routesMatching(url).count > 0
+
+        guard let host = url.host else {
+            return matcherCanHandle
+        }
+
+        // If there's a hostname, check it's WordPress.com
+        return host == "wordpress.com" && matcherCanHandle
+    }
 
     /// Attempts to find a Route that matches the url's path, and perform its
     /// associated action.
