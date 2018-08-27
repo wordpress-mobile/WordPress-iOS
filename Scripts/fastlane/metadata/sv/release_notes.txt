@@ -1,4 +1,3 @@
-Nu kan du enkelt hoppa från WordPress.com i Safari till samma innehåll i appen WordPress för iOS. Håll bara utsikt efter bannern längst upp på WordPress.com-sidor!.
-Nu är aktivitetsloggen tillgänglig för gratis WordPress.com-webbplatser.
-Några mindre förbättringar av användargränssnittet.
-En bunt fel har rättats.
+Vi har förbättrat bildhanteringen i redigeraren. Oavsett om du drar och släpper en fil eller lägger till den med hjälp av mediaväljaren går det smidigt och snabbt att ladda upp och infoga media.
+Små förbättringar av användargränssnittet på en rad ställen som gör din upplevelse mer intuitiv. Du kommer antagligen inte ens att märka dem, och det är just det som är vitsen!
+Felrättningar.
