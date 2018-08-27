@@ -8,6 +8,14 @@ class ReaderCoordinator: NSObject {
 
     var failureBlock: (() -> Void)? = nil
 
+    var source: UIViewController? = nil {
+        didSet {
+            isNavigatingFromSource = (source != nil && source == topNavigationController.topViewController)
+        }
+    }
+
+    private var isNavigatingFromSource = false
+
     @objc
     init(readerNavigationController: UINavigationController,
          readerSplitViewController: WPSplitViewController,
@@ -21,7 +29,7 @@ class ReaderCoordinator: NSObject {
     private func prepareToNavigate() {
         WPTabBarController.sharedInstance().showReaderTab()
 
-        topNavigationController.popToRootViewController(animated: false)
+        topNavigationController.popToRootViewController(animated: isNavigatingFromSource)
     }
 
     func showReaderTab() {
@@ -32,27 +40,27 @@ class ReaderCoordinator: NSObject {
         prepareToNavigate()
 
         readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .discover,
-                                                               animated: false)
+                                                               animated: isNavigatingFromSource)
     }
 
     func showSearch() {
         prepareToNavigate()
 
         readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .search,
-                                                               animated: false)
+                                                               animated: isNavigatingFromSource)
     }
 
     func showA8CTeam() {
         prepareToNavigate()
 
-        readerMenuViewController.showSectionForTeam(withSlug: ReaderTeamTopic.a8cTeamSlug, animated: false)
+        readerMenuViewController.showSectionForTeam(withSlug: ReaderTeamTopic.a8cTeamSlug, animated: isNavigatingFromSource)
     }
 
     func showMyLikes() {
         prepareToNavigate()
 
         readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .likes,
-                                                               animated: false)
+                                                               animated: isNavigatingFromSource)
     }
 
     func showManageFollowing() {
@@ -61,7 +69,7 @@ class ReaderCoordinator: NSObject {
         readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .followed, animated: false)
 
         if let followedViewController = topNavigationController.topViewController as? ReaderStreamViewController {
-            followedViewController.showManageSites(animated: false)
+            followedViewController.showManageSites(animated: isNavigatingFromSource)
         }
     }
 
@@ -107,7 +115,9 @@ class ReaderCoordinator: NSObject {
     }
 
     func showPost(with postID: Int, for feedID: Int, isFeed: Bool) {
-        prepareToNavigate()
+        if !isNavigatingFromSource {
+            prepareToNavigate()
+        }
 
         let detailViewController = ReaderDetailViewController.controllerWithPostID(postID as NSNumber,
                                                                                        siteID: feedID as NSNumber,
@@ -117,7 +127,7 @@ class ReaderCoordinator: NSObject {
             failureBlock?()
         }
 
-        topNavigationController.pushFullscreenViewController(detailViewController, animated: false)
+        topNavigationController.pushFullscreenViewController(detailViewController, animated: isNavigatingFromSource)
         readerMenuViewController.deselectSelectedRow(animated: false)
     }
 

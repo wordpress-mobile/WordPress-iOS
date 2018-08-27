@@ -60,6 +60,8 @@ extension ReaderRoute: NavigationAction {
             self.failAndBounce(values)
         }
 
+        coordinator.source = source
+
         switch self {
         case .root:
             coordinator.showReaderTab()
