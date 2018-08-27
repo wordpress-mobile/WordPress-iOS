@@ -38,7 +38,7 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v10.7-whats-new"
+msgctxt "v10.8-whats-new"
 msgid ""
 "There’s better image handling in the editor. Whether you drag-and-drop a file or add one with the media picker, uploading and inserting is smooth and fast.\n"
 "Small UI improvements in a bunch of spots to make your experience more intuitive — you probably won’t notice them, and that’s the point!\n"
