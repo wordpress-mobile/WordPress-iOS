@@ -59,7 +59,7 @@ final class NotificationTextContentTests: XCTestCase {
 
         let parent = subject?.parent
 
-        XCTAssertEqual(parent?.notificationIdentifier, injectedParent.notificationIdentifier)
+        XCTAssertEqual(parent?.notificationId, injectedParent.notificationId)
     }
 
     func testApproveCommentActionIsOn() {
