@@ -51,7 +51,7 @@ extension ReaderRoute: Route {
 }
 
 extension ReaderRoute: NavigationAction {
-    func perform(_ values: [String: String]?) {
+    func perform(_ values: [String: String]?, source: UIViewController? = nil) {
         guard let coordinator = WPTabBarController.sharedInstance().readerCoordinator else {
             return
         }
