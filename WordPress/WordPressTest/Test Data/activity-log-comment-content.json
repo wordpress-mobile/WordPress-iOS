@@ -2,24 +2,27 @@
     "text": "Comment by levitoledo on Hola Lima! 🇵🇪: Great post! True talent!",
     "ranges": [
                {
-               "type": "comment",
+               "url": "https://wordpress.com/comment/137726971/7",
                "indices": [
                            0,
                            7
                            ],
-               "url": "https://etoledom.wordpress.com/2018/06/02/hola-lima/comment-page-1/#comment-7",
                "site_id": 137726971,
+               "section": "comment",
+               "intent": "edit",
                "post_id": 229,
                "id": 7
                },
                {
-               "type": "post",
+               "url": "https://wordpress.com/edit/post/137726971/229",
                "indices": [
                            25,
                            40
                            ],
-               "url": "Array",
                "site_id": 137726971,
+               "section": "post",
+               "intent": "edit",
+               "context": "single",
                "id": 229
                }
                ]
