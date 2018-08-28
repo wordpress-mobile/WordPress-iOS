@@ -27,5 +27,9 @@
 		<key>NSExtensionPrincipalClass</key>
 		<string>$(PRODUCT_MODULE_NAME).NotificationService</string>
 	</dict>
+    <key>UIAppFonts</key>
+    <array>
+        <string>Noticons.ttf</string>
+    </array>
 </dict>
 </plist>
