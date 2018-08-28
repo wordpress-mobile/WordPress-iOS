@@ -55,13 +55,8 @@ extension NSNotification.Name {
     }
 
     private static var appLanguage: String {
-        guard let lang = Locale.current.languageCode else {
-            return Constants.unknownValue
-        }
-        return lang
+        return Locale.preferredLanguages[0]
     }
-
-
 
     // MARK: - Public Methods
 
