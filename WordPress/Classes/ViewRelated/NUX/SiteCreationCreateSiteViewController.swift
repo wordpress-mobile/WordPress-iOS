@@ -79,7 +79,11 @@ class SiteCreationCreateSiteViewController: NUXViewController {
             vc.delegate = self
             vc.configure(title: title, buttonTitle: errorButtonTitle, subtitle: errorMessage, image: imageName)
             vc.showDismissButton()
-            vc.addWordPressLogoToNavController()
+
+            // Add the WP logo to the navigation bar
+            let image = WordPressAuthenticator.shared.style.navBarImage
+            let imageView = UIImageView(image: image.imageWithTintColor(UIColor.white))
+            vc.navigationItem.titleView = imageView
         }
     }
 
