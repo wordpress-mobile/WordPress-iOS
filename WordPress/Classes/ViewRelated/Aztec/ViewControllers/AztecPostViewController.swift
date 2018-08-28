@@ -2016,18 +2016,6 @@ extension AztecPostViewController {
         richTextView.removeLink(inRange: range)
     }
 
-    @objc func alertTextFieldDidChange(_ textField: UITextField) {
-        guard
-            let alertController = presentedViewController as? UIAlertController,
-            let urlFieldText = alertController.textFields?.first?.text,
-            let insertAction = alertController.actions.first
-            else {
-                return
-        }
-
-        insertAction.isEnabled = !urlFieldText.isEmpty
-    }
-
     private var mediaInputToolbar: UIToolbar {
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: Constants.toolbarHeight))
         toolbar.barTintColor = WPStyleGuide.aztecFormatBarBackgroundColor
