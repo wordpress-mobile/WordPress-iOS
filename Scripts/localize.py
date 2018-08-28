@@ -137,7 +137,8 @@ def localize(path, language, include_pods_and_frameworks):
         find_cmd = 'find . ../Pods/WordPress* ../Pods/WPMediaPicker ../WordPressComStatsiOS/WordPressComStatsiOS ../WordPressShared/WordPressShared -name "*.m" -o -name "*.swift" | grep -v Vendor'
     else:
         find_cmd = 'find . -name "*.m" -o -name "*.swift" | grep -v Vendor'
-    filelist = os.popen(find_cmd).read().replace("\n", " ")
+    filelist = os.popen(find_cmd).read().split('\n')
+    filelist = '"{0}"'.format('" "'.join(filelist))
 
     if os.path.isfile(original):
         os.rename(original, old)
