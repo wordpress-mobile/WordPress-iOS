@@ -126,20 +126,6 @@ end
 
 
 
-## Notification Service Extension
-## ==============================
-##
-target 'WordPressNotificationServiceExtension' do
-	project 'WordPress/WordPress.xcodeproj'
-	
-	inherit! :search_paths
-
-	pod 'WordPressKit', '1.2.1'
-    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => 'c51f53ef91127b5225064023e7207fad66b02ea4'
-end
-
-
-
 ## WordPress.com Stats
 ## ===================
 ##
