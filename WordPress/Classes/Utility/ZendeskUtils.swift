@@ -1,5 +1,6 @@
 import Foundation
 import ZendeskSDK
+import ZendeskCoreSDK
 import CoreTelephony
 import WordPressAuthenticator
 
@@ -49,7 +50,6 @@ extension NSNotification.Name {
     private static var zdClientId: String?
     private static var presentInController: UIViewController?
 
-    private static let sourcePlatform = "mobile_-_ios"
     private static var appVersion: String {
         return Bundle.main.shortVersionString() ?? Constants.unknownValue
     }
@@ -123,19 +123,17 @@ extension NSNotification.Name {
     /// Displays the Zendesk New Request view from the given controller, for users to submit new tickets.
     ///
     func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
-
-        ZendeskUtils.configureViewController(controller)
-
         ZendeskUtils.createIdentity { success in
             guard success else {
                 return
             }
 
             self.sourceTag = sourceTag
-
-            ZDKRequests.presentRequestCreation(with: ZendeskUtils.presentInController)
             WPAnalytics.track(.supportNewRequestViewed)
-            self.createRequest()
+
+            let newRequestConfig = self.createRequest()
+            let newRequestController = RequestUi.buildRequestUi(with: [newRequestConfig])
+            ZendeskUtils.showZendeskView(newRequestController, from: controller)
         }
     }
 
@@ -407,36 +405,32 @@ private extension ZendeskUtils {
         }
     }
 
-    func createRequest() {
+    func createRequest() -> RequestUiConfiguration {
 
-        ZDKRequests.configure { (account, requestCreationConfig) in
+        let requestConfig = RequestUiConfiguration()
 
-            guard let requestCreationConfig = requestCreationConfig else {
-                DDLogInfo("Zendesk requestCreationConfig creation failed.")
-                return
-            }
+        // Set Zendesk ticket form to use
+        requestConfig.ticketFormID = TicketFieldIDs.form as NSNumber
 
-            // Set Zendesk ticket form to use
-            ZDKConfig.instance().ticketFormId = TicketFieldIDs.form as NSNumber
+        // Set form field values
+        var ticketFields = [ZDKCustomField]()
+        ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.appVersion as NSNumber, andValue: ZendeskUtils.appVersion))
+        ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.allBlogs as NSNumber, andValue: ZendeskUtils.getBlogInformation()))
+        ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.deviceFreeSpace as NSNumber, andValue: ZendeskUtils.getDeviceFreeSpace()))
+        ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.networkInformation as NSNumber, andValue: ZendeskUtils.getNetworkInformation()))
+        ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.logs as NSNumber, andValue: ZendeskUtils.getLogFile()))
+        ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.currentSite as NSNumber, andValue: ZendeskUtils.getCurrentSiteDescription()))
+        ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.sourcePlatform as NSNumber, andValue: Constants.sourcePlatform))
+        ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.appLanguage as NSNumber, andValue: ZendeskUtils.appLanguage))
+        requestConfig.fields = ticketFields
 
-            // Set form field values
-            var ticketFields = [ZDKCustomField]()
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.appVersion as NSNumber, andValue: ZendeskUtils.appVersion))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.allBlogs as NSNumber, andValue: ZendeskUtils.getBlogInformation()))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.deviceFreeSpace as NSNumber, andValue: ZendeskUtils.getDeviceFreeSpace()))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.networkInformation as NSNumber, andValue: ZendeskUtils.getNetworkInformation()))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.logs as NSNumber, andValue: ZendeskUtils.getLogFile()))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.currentSite as NSNumber, andValue: ZendeskUtils.getCurrentSiteDescription()))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.sourcePlatform as NSNumber, andValue: ZendeskUtils.sourcePlatform))
-            ticketFields.append(ZDKCustomField(fieldId: TicketFieldIDs.appLanguage as NSNumber, andValue: ZendeskUtils.appLanguage))
-            ZDKConfig.instance().customTicketFields = ticketFields
+        // Set tags
+        requestConfig.tags = ZendeskUtils.getTags()
 
-            // Set tags
-            requestCreationConfig.tags = ZendeskUtils.getTags()
+        // Set the ticket subject
+        requestConfig.subject = Constants.ticketSubject
 
-            // Set the ticket subject
-            requestCreationConfig.subject = Constants.ticketSubject
-        }
+        return requestConfig
     }
 
     // MARK: - View
@@ -881,6 +875,7 @@ private extension ZendeskUtils {
         static let profileNameKey = "name"
         static let userDefaultsZendeskUnreadNotifications = "wp_zendesk_unread_notifications"
         static let nameFieldCharacterLimit = 50
+        static let sourcePlatform = "mobile_-_ios"
     }
 
     // Zendesk expects these as NSNumber. However, they are defined as UInt64 to satisfy 32-bit devices (ex: iPhone 5).
