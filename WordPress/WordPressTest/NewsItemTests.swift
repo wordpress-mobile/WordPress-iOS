@@ -6,13 +6,14 @@ final class NewsItemTests: XCTestCase {
         static let title = "🦄"
         static let content = "🦄"
         static let infoURL = URL(string: "https://wordpress.com")!
+        static let version: Decimal = Decimal(floatLiteral: 10.7)
     }
 
     private var subject: NewsItem?
 
     override func setUp() {
         super.setUp()
-        subject = NewsItem(title: Constants.title, content: Constants.content, extendedInfoURL: Constants.infoURL)
+        subject = NewsItem(title: Constants.title, content: Constants.content, extendedInfoURL: Constants.infoURL, version: Constants.version)
     }
 
     override func tearDown() {
@@ -30,5 +31,9 @@ final class NewsItemTests: XCTestCase {
 
     func testURLMatchesExpectation() {
         XCTAssertEqual(subject?.extendedInfoURL, Constants.infoURL)
+    }
+
+    func testVersionMatchesExpectation() {
+        XCTAssertEqual(subject?.version, Constants.version)
     }
 }

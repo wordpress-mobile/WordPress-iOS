@@ -13,7 +13,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     fileprivate var viewModel: PluginListViewModel
     fileprivate var tableViewModel = ImmuTable.Empty
 
-    fileprivate let noResultsView = WPNoResultsView()
+    private let noResultsViewController = NoResultsViewController.controller()
     var viewModelStateChangeReceipt: Receipt?
     var viewModelChangeReceipt: Receipt?
 
@@ -25,7 +25,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         super.init(style: .grouped)
 
         title = viewModel.title
-        noResultsView.delegate = self
+        noResultsViewController.delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -37,6 +37,8 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         ImmuTable.registerRows(PluginListViewModel.immutableRows, tableView: tableView)
+        setupRefreshControl()
+
         viewModelStateChangeReceipt = viewModel.onStateChange { [weak self] (change) in
             self?.refreshModel(change: change)
         }
@@ -47,8 +49,6 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 72
 
-        refreshModel(change: .replace)
-        setupRefreshControl()
         updateRefreshControl()
     }
 
@@ -61,25 +61,31 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         viewModel.refresh()
     }
 
-    func updateNoResults() {
+    private func updateNoResults() {
+        noResultsViewController.removeFromView()
+
         if let noResultsViewModel = viewModel.noResultsViewModel {
             showNoResults(noResultsViewModel)
-        } else {
-            hideNoResults()
         }
     }
 
-    func showNoResults(_ viewModel: WPNoResultsView.Model) {
-        noResultsView.bindViewModel(viewModel)
-        if noResultsView.isDescendant(of: tableView) {
-            noResultsView.centerInSuperview()
-        } else {
-            tableView.addSubview(withFadeAnimation: noResultsView)
-        }
-    }
+    private func showNoResults(_ viewModel: NoResultsViewController.Model) {
+        noResultsViewController.bindViewModel(viewModel)
+        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        addChildViewController(noResultsViewController)
 
-    func hideNoResults() {
-        noResultsView.removeFromSuperview()
+        // Adjust view to center it vertically
+        if case .feed(let feedType) = query, case .search = feedType {
+            // If searching, use tableView.bounds to account for the search bar.
+            noResultsViewController.view.frame = tableView.bounds
+        } else {
+            // Otherwise use the tableView.frame
+            noResultsViewController.view.frame = tableView.frame
+            // And since the tableView doesn't start at the top, adjust the NRV accordingly.
+            noResultsViewController.view.frame.origin.y = 0
+        }
+
+        noResultsViewController.didMove(toParentViewController: self)
     }
 
     func refreshModel(change: PluginListViewModel.StateChange) {
@@ -92,11 +98,18 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
             let indexPaths = changedRows.map({ IndexPath(row: $0, section: 0) })
             tableView.reloadRows(at: indexPaths, with: .none)
         }
+        setupRefreshControl()
         updateNoResults()
     }
 
     private func setupRefreshControl() {
+        if viewModel.currentState == .loading {
+            refreshControl = nil
+            return
+        }
+
         if case .feed(let feedType) = query, case .search = feedType {
+            refreshControl = nil
             return
         }
 
@@ -148,10 +161,10 @@ extension PluginListViewController {
     }
 }
 
-// MARK: - WPNoResultsViewDelegate
+// MARK: - NoResultsViewControllerDelegate
 
-extension PluginListViewController: WPNoResultsViewDelegate {
-    func didTap(_ noResultsView: WPNoResultsView!) {
+extension PluginListViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
         let supportVC = SupportTableViewController()
         supportVC.showFromTabBar()
     }
