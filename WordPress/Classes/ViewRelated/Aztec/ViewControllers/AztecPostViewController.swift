@@ -1981,7 +1981,7 @@ extension AztecPostViewController {
             guard let strongSelf = self else {
                 return
             }
-            strongSelf.navigationController?.popViewController(animated: true)
+            strongSelf.dismiss(animated: true, completion: nil)
             switch action {
                 case .insert, .update:
                     strongSelf.insertLink(url: settings.url, text: settings.text, range: range)
@@ -1991,7 +1991,17 @@ extension AztecPostViewController {
                     strongSelf.richTextView.becomeFirstResponder()
             }
         })
-        navigationController?.pushViewController(linkController, animated: true)
+
+        let navigationController = UINavigationController(rootViewController: linkController)
+        navigationController.modalPresentationStyle = .popover
+        navigationController.popoverPresentationController?.permittedArrowDirections = [.any]
+        navigationController.popoverPresentationController?.sourceView = richTextView
+        navigationController.popoverPresentationController?.backgroundColor = WPStyleGuide.aztecFormatPickerBackgroundColor
+        if let textRange = richTextView.selectedTextRange, let selectionRect = richTextView.selectionRects(for: textRange).first as? UITextSelectionRect {
+            navigationController.popoverPresentationController?.sourceRect = selectionRect.rect
+        }
+        present(navigationController, animated: true)
+        richTextView.resignFirstResponder()
     }
 
     func insertLink(url: String, text: String?, range: NSRange) {
