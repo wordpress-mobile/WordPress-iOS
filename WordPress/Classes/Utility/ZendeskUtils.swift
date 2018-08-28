@@ -390,11 +390,12 @@ private extension ZendeskUtils {
 
     static func registerDeviceIfNeeded() {
 
-        guard let deviceID = ZendeskUtils.sharedInstance.deviceID else {
+        guard let deviceID = ZendeskUtils.sharedInstance.deviceID,
+        let zendeskInstance = Zendesk.instance else {
             return
         }
 
-        ZDKConfig.instance().enablePush(withDeviceID: deviceID) { pushResponse, error in
+        ZDKPushProvider(zendesk: zendeskInstance).register(deviceIdentifier: deviceID, locale: appLanguage) { (pushResponse, error) in
             if let error = error {
                 DDLogInfo("Zendesk couldn't register device: \(deviceID). Error: \(error)")
             } else {
