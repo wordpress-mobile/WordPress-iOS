@@ -55,8 +55,8 @@ class LinkSettingsViewController: UITableViewController {
 
     private func setupNavigation() {
         title = NSLocalizedString("Link Settings", comment: "Noun. Title for screen in editor that allows to configure link options")
-        let insertTitle = NSLocalizedString("Insert Link", comment: "Label action for inserting a link on the editor")
-        let updateTitle = NSLocalizedString("Update Link", comment: "Label action for updating a link on the editor")
+        let insertTitle = NSLocalizedString("Insert", comment: "Label action for inserting a link on the editor")
+        let updateTitle = NSLocalizedString("Update", comment: "Label action for updating a link on the editor")
 
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelChanges))
 
