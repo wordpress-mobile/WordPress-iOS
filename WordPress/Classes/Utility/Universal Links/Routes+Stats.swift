@@ -80,7 +80,8 @@ extension StatsRoute: NavigationAction {
             if let blog = blog(from: values) {
                 coordinator.showActivityLog(for: blog)
             } else {
-                showMySitesAndFailureNotice(using: coordinator)
+                showMySitesAndFailureNotice(using: coordinator,
+                                            values: values)
             }
         }
     }
@@ -92,15 +93,20 @@ extension StatsRoute: NavigationAction {
             coordinator.showStats(for: blog,
                                   timePeriod: timePeriod)
         } else {
-            showMySitesAndFailureNotice(using: coordinator)
+            showMySitesAndFailureNotice(using: coordinator,
+                                        values: values)
         }
     }
 
-    private func showMySitesAndFailureNotice(using coordinator: MySitesCoordinator) {
-        coordinator.showMySites()
-        postFailureNotice(title: NSLocalizedString("Site not found",
-                                                   comment: "Error notice shown if the app can't find a specific site belonging to the user"))
+    private func showMySitesAndFailureNotice(using coordinator: MySitesCoordinator,
+                                             values: [String: String]?) {
         WPAppAnalytics.track(.deepLinkFailed, withProperties: ["route": path])
+
+        if failAndBounce(values) == false {
+            coordinator.showMySites()
+            postFailureNotice(title: NSLocalizedString("Site not found",
+                                                       comment: "Error notice shown if the app can't find a specific site belonging to the user"))
+        }
     }
 
     private func showStatsForDefaultBlog(from values: [String: String]?,
