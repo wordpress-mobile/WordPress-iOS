@@ -68,7 +68,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 /**
  Used to store the sticky post property status
  */
-@property (nonatomic, assign, readonly) BOOL isStickyPost;
+@property (nonatomic, assign) BOOL isStickyPost;
 
 /**
  *  @brief      Call this method to know whether this post has a revision or not.
