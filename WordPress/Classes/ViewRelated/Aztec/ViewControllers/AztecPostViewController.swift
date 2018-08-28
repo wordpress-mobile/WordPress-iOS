@@ -1946,6 +1946,7 @@ extension AztecPostViewController {
         return nil
     }
 
+    // MARK: Link Actions
 
     @objc func toggleLink() {
         trackFormatBarAnalytics(stat: .editorTappedLink)
@@ -1963,12 +1964,7 @@ extension AztecPostViewController {
         showLinkDialog(forURL: linkURL, title: linkTitle, range: linkRange)
     }
 
-
     func showLinkDialog(forURL url: URL?, title: String?, range: NSRange) {
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel button")
-        let removeTitle = NSLocalizedString("Remove Link", comment: "Label action for removing a link from the editor")
-        let insertTitle = NSLocalizedString("Insert Link", comment: "Label action for inserting a link on the editor")
-        let updateTitle = NSLocalizedString("Update Link", comment: "Label action for updating a link on the editor")
 
         let isInsertingNewLink = (url == nil)
         var urlToUse = url
@@ -1980,68 +1976,44 @@ extension AztecPostViewController {
             }
         }
 
-        let insertButtonTitle = isInsertingNewLink ? insertTitle : updateTitle
-
-        let alertController = UIAlertController(title: insertButtonTitle, message: nil, preferredStyle: .alert)
-
-        // TextField: URL
-        alertController.addTextField(configurationHandler: { [weak self] textField in
-            textField.clearButtonMode = .always
-            textField.placeholder = NSLocalizedString("URL", comment: "URL text field placeholder")
-            textField.text = urlToUse?.absoluteString
-
-            textField.addTarget(self,
-                action: #selector(AztecPostViewController.alertTextFieldDidChange),
-                for: UIControlEvents.editingChanged)
-            })
-
-        // TextField: Link Name
-        alertController.addTextField(configurationHandler: { textField in
-            textField.clearButtonMode = .always
-            textField.placeholder = NSLocalizedString("Link Name", comment: "Link name field placeholder")
-            textField.isSecureTextEntry = false
-            textField.autocapitalizationType = .sentences
-            textField.autocorrectionType = .default
-            textField.spellCheckingType = .default
-            textField.text = title
-        })
-
-
-        // Action: Insert
-        let insertAction = alertController.addDefaultActionWithTitle(insertButtonTitle) { [weak self] action in
-            self?.richTextView.becomeFirstResponder()
-            let linkURLString = alertController.textFields?.first?.text
-            var linkTitle = alertController.textFields?.last?.text
-
-            if linkTitle == nil || linkTitle!.isEmpty {
-                linkTitle = linkURLString
-            }
-
-            guard let urlString = linkURLString, let url = URL(string: urlString), let title = linkTitle else {
+        let linkSettings = LinkSettings(url: urlToUse?.absoluteString ?? "", text: title ?? "", openInNewWindow: false, isNewLink: isInsertingNewLink)
+        let linkController = LinkSettingsViewController(settings: linkSettings, callback: { [weak self](action, settings) in
+            guard let strongSelf = self else {
                 return
             }
-
-            self?.richTextView.setLink(url.normalizedURLForWordPressLink(), title: title, inRange: range)
-        }
-
-        // Disabled until url is entered into field
-        insertAction.isEnabled = urlToUse?.absoluteString.isEmpty == false
-
-        // Action: Remove
-        if !isInsertingNewLink {
-            alertController.addDestructiveActionWithTitle(removeTitle) { [weak self] action in
-                self?.trackFormatBarAnalytics(stat: .editorTappedUnlink)
-                self?.richTextView.becomeFirstResponder()
-                self?.richTextView.removeLink(inRange: range)
+            strongSelf.navigationController?.popViewController(animated: true)
+            switch action {
+                case .insert, .update:
+                    strongSelf.insertLink(url: settings.url, text: settings.text, range: range)
+                case .remove:
+                    strongSelf.removeLink(in: range)
+                case .cancel:
+                    strongSelf.richTextView.becomeFirstResponder()
             }
+        })
+        navigationController?.pushViewController(linkController, animated: true)
+    }
+
+    func insertLink(url: String, text: String?, range: NSRange) {
+        richTextView.becomeFirstResponder()
+        let linkURLString = url
+        var linkText = text
+
+        if linkText == nil || linkText!.isEmpty {
+            linkText = linkURLString
         }
 
-        // Action: Cancel
-        alertController.addCancelActionWithTitle(cancelTitle) { [weak self] _ in
-            self?.richTextView.becomeFirstResponder()
+        guard let url = URL(string: linkURLString), let title = linkText else {
+            return
         }
 
-        present(alertController, animated: true, completion: nil)
+        richTextView.setLink(url.normalizedURLForWordPressLink(), title: title, inRange: range)
+    }
+
+    func removeLink(in range: NSRange) {
+        trackFormatBarAnalytics(stat: .editorTappedUnlink)
+        richTextView.becomeFirstResponder()
+        richTextView.removeLink(inRange: range)
     }
 
     @objc func alertTextFieldDidChange(_ textField: UITextField) {
