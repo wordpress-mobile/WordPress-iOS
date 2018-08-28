@@ -44,9 +44,9 @@ extension Tracks {
     /// - Parameters:
     ///   - notificationIdentifier: the value of the `note_id` from the APNS payload
     ///   - errorDescription: description of the error encountered, ideally localized
-    func trackNotificationRetrievalFailed(notificationIdentifier: Int, errorDescription: String) {
+    func trackNotificationRetrievalFailed(notificationIdentifier: String, errorDescription: String) {
         let properties = [
-            "note_id": String(notificationIdentifier),
+            "note_id": notificationIdentifier,
             "error": errorDescription
         ]
         trackEvent(ServiceExtensionEvents.failed, properties: properties as [String: AnyObject]?)
