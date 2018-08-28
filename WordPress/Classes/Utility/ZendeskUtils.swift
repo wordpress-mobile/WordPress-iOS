@@ -142,18 +142,16 @@ extension NSNotification.Name {
     /// Displays the Zendesk Request List view from the given controller, allowing user to access their tickets.
     ///
     func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
-
-        ZendeskUtils.configureViewController(controller)
-
         ZendeskUtils.createIdentity { success in
             guard success else {
                 return
             }
 
             self.sourceTag = sourceTag
-
-            ZDKRequests.presentRequestList(with: ZendeskUtils.presentInController)
             WPAnalytics.track(.supportTicketListViewed)
+
+            let requestListController = RequestUi.buildRequestList()
+            ZendeskUtils.showZendeskView(requestListController, from: controller)
         }
     }
 
