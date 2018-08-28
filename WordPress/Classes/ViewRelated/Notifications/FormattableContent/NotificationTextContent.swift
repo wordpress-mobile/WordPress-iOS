@@ -51,7 +51,7 @@ extension FormattableMediaContent where Self: FormattableContent {
 class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
     var textOverride: String?
     let media: [FormattableMediaItem]
-    let parent: Notifiable
+    let parent: Notification
     let meta: [String: AnyObject]?
 
     override var text: String? {
@@ -65,7 +65,7 @@ class NotificationTextContent: FormattableTextContent, FormattableMediaContent {
         return super.kind
     }
 
-    init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], ranges: [FormattableContentRange], parent note: Notifiable) {
+    init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], ranges: [FormattableContentRange], parent note: Notification) {
         let rawMedia = dictionary[Constants.BlockKeys.Media] as? [[String: AnyObject]]
         let text = dictionary[Constants.BlockKeys.Text] as? String ?? ""
 

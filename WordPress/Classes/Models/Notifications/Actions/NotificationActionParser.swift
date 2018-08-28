@@ -1,6 +1,6 @@
 import WordPressKit
 
-/// Parses the Notification payload. Behaves as a factory that creates different instances of FormattableContentAction for different types of notifications
+/// Parses the Notification payload. Behaveds as a factory that creates different instanved of FormattableContentAction for different types of notifications
 struct NotificationActionParser: FormattableContentActionParser {
     private enum Action: String {
         case approve = "approve-comment"
