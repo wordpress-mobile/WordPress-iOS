@@ -100,32 +100,24 @@ extension NSNotification.Name {
     ///
     func showHelpCenterIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
 
-        ZendeskUtils.configureViewController(controller)
-
         // Since user information is not needed to display the Help Center,
         // if a user identity has not been created, create an empty identity.
         if !ZendeskUtils.sharedInstance.haveUserIdentity {
-            let zendeskIdentity = ZDKAnonymousIdentity()
-            ZDKConfig.instance().userIdentity = zendeskIdentity
+            let zendeskIdentity = Identity.createAnonymous()
+            Zendesk.instance?.setIdentity(zendeskIdentity)
         }
 
         self.sourceTag = sourceTag
-
-        guard let helpCenterContentModel = ZDKHelpCenterOverviewContentModel.defaultContent() else {
-            DDLogInfo("Zendesk helpCenterContentModel creation failed.")
-            return
-        }
-
-        helpCenterContentModel.groupType = .category
-        helpCenterContentModel.groupIds = [Constants.mobileCategoryID]
-        helpCenterContentModel.labels = [Constants.articleLabel]
         WPAnalytics.track(.supportHelpCenterViewed)
 
-        // Set the ability to 'Contact Us' from the Help Center according to usingAnonymousIDForHelpCenter.
-        ZDKHelpCenter.setUIDelegate(self)
-        _ = active()
+        let helpCenterConfig = HelpCenterUiConfiguration()
+        helpCenterConfig.groupType = .category
+        helpCenterConfig.groupIds = [Constants.mobileCategoryID as NSNumber]
+        helpCenterConfig.labels = [Constants.articleLabel]
 
-        ZDKHelpCenter.presentOverview(ZendeskUtils.presentInController, with: helpCenterContentModel)
+        let helpCenterController = HelpCenterUi.buildHelpCenterOverview(withConfigs: [helpCenterConfig])
+        helpCenterController.uiDelegate = self
+        ZendeskUtils.showZendeskView(helpCenterController, from: controller)
     }
 
     /// Displays the Zendesk New Request view from the given controller, for users to submit new tickets.
@@ -450,6 +442,16 @@ private extension ZendeskUtils {
     }
 
     // MARK: - View
+
+    static func showZendeskView(_ zendeskView: UIViewController, from controller: UIViewController) {
+        ZendeskUtils.configureViewController(controller)
+
+        if let controller = controller as? UINavigationController {
+            controller.pushViewController(zendeskView, animated: true)
+        } else {
+            // TODO - handle non-nav controller.
+        }
+    }
 
     static func configureViewController(_ controller: UIViewController) {
         // If the controller is a UIViewController, set the modal display for iPad.
@@ -864,7 +866,7 @@ private extension ZendeskUtils {
     struct Constants {
         static let unknownValue = "unknown"
         static let noValue = "none"
-        static let mobileCategoryID = "360000041586"
+        static let mobileCategoryID: UInt64 = 360000041586
         static let articleLabel = "iOS"
         static let platformTag = "iOS"
         static let ticketSubject = NSLocalizedString("WordPress for iOS Support", comment: "Subject of new Zendesk ticket.")
