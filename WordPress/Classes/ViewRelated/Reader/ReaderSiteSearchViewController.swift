@@ -38,12 +38,7 @@ class ReaderSiteSearchViewController: UITableViewController, UIViewControllerRes
 
     // MARK: Views
 
-    fileprivate let statusView: WPNoResultsView = {
-        let view = WPNoResultsView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
+    private let statusViewController = NoResultsViewController.controller()
     fileprivate let headerView = ReaderSiteSearchHeaderView()
     fileprivate let footerView = ReaderSiteSearchFooterView()
 
@@ -135,10 +130,10 @@ class ReaderSiteSearchViewController: UITableViewController, UIViewControllerRes
         footerView.isHidden = noFeeds
         headerView.isHidden = noFeeds
 
+        hideStatusView()
         if noFeeds {
             showNoResultsView()
         } else {
-            hideStatusView()
             footerView.showSpinner(hasMoreResults)
         }
     }
@@ -150,48 +145,6 @@ class ReaderSiteSearchViewController: UITableViewController, UIViewControllerRes
 
         syncHelper.hasMoreContent = false
         footerView.showSpinner(false)
-    }
-
-    // MARK: - Status View
-
-    private func showNoResultsView() {
-        statusView.titleText = NSLocalizedString("No sites found", comment: "A message title")
-
-        let localizedMessageText = NSLocalizedString("No sites found matching %@ in your language.", comment: "Message shown when the reader finds no sites for the specified search phrase. The %@ is a placeholder for the search phrase.")
-        statusView.messageText = NSString(format: localizedMessageText as NSString, searchQuery ?? "") as String
-
-        statusView.accessoryView = nil
-        statusView.buttonTitle = nil
-
-        showStatusView()
-    }
-
-    private func showLoadingView() {
-        statusView.titleText = NSLocalizedString("Fetching sites...", comment: "A brief prompt when the user is searching for sites in the Reader.")
-        statusView.messageText = ""
-        statusView.buttonTitle = nil
-
-        let boxView = WPAnimatedBox()
-        statusView.accessoryView = boxView
-        showStatusView()
-        boxView.animate(afterDelay: 0.3)
-    }
-
-    private func showLoadingFailedView() {
-        statusView.titleText = NSLocalizedString("Problem loading sites", comment: "Error message title informing the user that a search for sites in the Reader could not be loaded.")
-        statusView.messageText = NSLocalizedString("Sorry. Your search results could not be loaded.", comment: "A short error message leting the user know the requested search could not be performed.")
-        showStatusView()
-    }
-
-    private func showStatusView() {
-        if !statusView.isDescendant(of: tableView) {
-            tableView.addSubview(withFadeAnimation: statusView)
-            tableView.pinSubviewAtCenter(statusView)
-        }
-    }
-
-    private func hideStatusView() {
-        statusView.removeFromSuperview()
     }
 
     // MARK: - UITableViewDataSource
@@ -260,6 +213,58 @@ class ReaderSiteSearchViewController: UITableViewController, UIViewControllerRes
 
         return nil
     }
+}
+
+// MARK: - Status View
+
+private extension ReaderSiteSearchViewController {
+
+    func showNoResultsView() {
+        let messageText = String(format: StatusText.messageFormat, searchQuery ?? "")
+        configureAndDisplayStatus(title: StatusText.noResultsTitle, subtitle: messageText)
+    }
+
+    func showLoadingView() {
+        configureAndDisplayStatus(title: StatusText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+    }
+
+    func showLoadingFailedView() {
+        configureAndDisplayStatus(title: StatusText.loadingFailedTitle, subtitle: StatusText.loadingFailedMessage)
+    }
+
+    func configureAndDisplayStatus(title: String,
+                                   subtitle: String? = nil,
+                                   accessoryView: UIView? = nil) {
+
+        statusViewController.configure(title: title, subtitle: subtitle, image: "wp-illustration-empty-results", accessoryView: accessoryView)
+        showStatusView()
+    }
+
+    func showStatusView() {
+        hideStatusView()
+        addChildViewController(statusViewController)
+        tableView.addSubview(withFadeAnimation: statusViewController.view)
+        statusViewController.view.frame = tableView.frame
+
+        // The tableView doesn't start at y = 0, making the No Results View vertically off-center.
+        // So adjust the NRV accordingly.
+        statusViewController.view.frame.origin.y -= tableView.frame.origin.y
+
+        statusViewController.didMove(toParentViewController: self)
+    }
+
+    func hideStatusView() {
+        statusViewController.removeFromView()
+    }
+
+    struct StatusText {
+        static let loadingTitle = NSLocalizedString("Fetching sites...", comment: "A brief prompt when the user is searching for sites in the Reader.")
+        static let loadingFailedTitle = NSLocalizedString("Problem loading sites", comment: "Error message title informing the user that a search for sites in the Reader could not be loaded.")
+        static let loadingFailedMessage = NSLocalizedString("Sorry. Your search results could not be loaded.", comment: "A short error message leting the user know the requested search could not be performed.")
+        static let noResultsTitle = NSLocalizedString("No sites found", comment: "A message title")
+        static let messageFormat = NSLocalizedString("No sites found matching %@ in your language.", comment: "Message shown when the reader finds no sites for the specified search phrase. The %@ is a placeholder for the search phrase.")
+    }
+
 }
 
 // MARK: - WPContentSyncHelperDelegate

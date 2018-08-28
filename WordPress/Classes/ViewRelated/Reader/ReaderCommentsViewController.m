@@ -13,7 +13,6 @@
 #import "SuggestionService.h"
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
-#import <WordPressShared/WPNoResultsView.h>
 #import <WordPressUI/WordPressUI.h>
 
 
@@ -44,7 +43,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
-@property (nonatomic, strong) WPNoResultsView *noResultsView;
+@property (nonatomic, strong) NoResultsViewController *noResultsViewController;
 @property (nonatomic, strong) ReplyTextView *replyTextView;
 @property (nonatomic, strong) KeyboardDismissHelper *keyboardManager;
 @property (nonatomic, strong) SuggestionsTableView *suggestionsTableView;
@@ -182,10 +181,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    // Remove the no results view or else the position will abruptly adjust after rotation
-    // due to the table view sizing for image preloading
-    [self refreshNoResultsView];
-
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 
     [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
@@ -198,7 +193,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 #pragma clang diagnostic pop
             [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
-        [self refreshNoResultsView];
     }];
 }
 
@@ -308,10 +302,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)configureNoResultsView
 {
-    self.noResultsView = [[WPNoResultsView alloc] init];
-    self.noResultsView.hidden = YES;
-    self.noResultsView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.noResultsView];
+    self.noResultsViewController = [NoResultsViewController controller];
 }
 
 - (void)configureReplyTextView
@@ -462,6 +453,15 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     return NSLocalizedString(@"Be the first to leave a comment.", @"Message shown encouraging the user to leave a comment on a post in the reader.");
 }
 
+- (UIView *)noResultsAccessoryView
+{
+    UIView *loadingAccessoryView = nil;
+    if (self.isLoadingPost || self.syncHelper.isSyncing) {
+        loadingAccessoryView = [NoResultsViewController loadingAccessoryView];
+    }
+    return loadingAccessoryView;
+}
+
 - (void)checkIfLoggedIn
 {
     self.isLoggedIn = [AccountHelper isDotcomAvailable];
@@ -610,22 +610,25 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 - (void)refreshNoResultsView
 {
+    [self.noResultsViewController removeFromView];
+
     BOOL isTableViewEmpty = (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
-    BOOL shouldPerformAnimation = self.noResultsView.hidden;
-    
-    self.noResultsView.hidden = !isTableViewEmpty;
-    
     if (!isTableViewEmpty) {
         return;
     }
-    
-    // Refresh the NoResultsView Properties
-    self.noResultsView.titleText = self.noResultsTitleText;
-    [self.noResultsView centerInSuperview];
-    
-    if (shouldPerformAnimation) {
-        [self.noResultsView fadeInWithAnimation];
-    }
+
+    [self.noResultsViewController configureWithTitle:self.noResultsTitleText
+                                         buttonTitle:nil
+                                            subtitle:nil
+                                  attributedSubtitle:nil
+                                               image:@"wp-illustration-empty-results"
+                                       accessoryView:[self noResultsAccessoryView]];
+
+    [self.noResultsViewController.view setBackgroundColor:[UIColor clearColor]];
+    [self addChildViewController:self.noResultsViewController];
+    [self.view addSubviewWithFadeAnimation:self.noResultsViewController.view];
+    self.noResultsViewController.view.frame = self.tableView.frame;
+    [self.noResultsViewController didMoveToParentViewController:self];
 }
 
 

@@ -12,7 +12,7 @@ class PluginDirectoryViewModel: Observable {
 
     let changeDispatcher = Dispatcher<Void>()
 
-    weak var noResultsDelegate: WPNoResultsViewDelegate?
+    weak var noResultsDelegate: NoResultsViewControllerDelegate?
 
     private let store: PluginStore
 
@@ -84,25 +84,22 @@ class PluginDirectoryViewModel: Observable {
         }
     }
 
-    private func noResultsView(for query: PluginQuery) -> WPNoResultsView? {
+    private func noResultsView(for query: PluginQuery) -> NoResultsViewController? {
         guard hasResults(for: query) == false else {
             return nil
         }
 
-        let noResultsView = WPNoResultsView()
+        let noResultsView = NoResultsViewController.controller()
         noResultsView.delegate = noResultsDelegate
-        let model: WPNoResultsView.Model
+        noResultsView.hideImageView()
+        let model: NoResultsViewController.Model
 
         if isFetching(for: query) {
-            let indicatorView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-            indicatorView.startAnimating()
-
-            model = WPNoResultsView.Model(title: "",
-                                          accessoryView: indicatorView)
-
+            model = NoResultsViewController.Model(title: NSLocalizedString("Loading plugins...", comment: "Messaged displayed when fetching plugins."),
+                                                  accessoryView: NoResultsViewController.loadingAccessoryView())
         } else {
-            model = WPNoResultsView.Model(title: NSLocalizedString("Error loading plugins.", comment: "Messaged displayed when fetching plugins failed."),
-                                          buttonTitle: NSLocalizedString("Try again", comment: "Button that lets users try to reload the plugin directory after loading failure"))
+            model = NoResultsViewController.Model(title: NSLocalizedString("Error loading plugins", comment: "Messaged displayed when fetching plugins failed."),
+                                                  buttonText: NSLocalizedString("Try again", comment: "Button that lets users try to reload the plugin directory after loading failure"))
         }
 
         noResultsView.bindViewModel(model)
@@ -367,7 +364,7 @@ private extension CollectionViewContainerRow where Item == Any, CollectionViewCe
          secondaryTitle: String?,
          site: JetpackSiteRef,
          listViewQuery: PluginQuery?,
-         noResultsView: WPNoResultsView,
+         noResultsView: NoResultsViewController,
          presenter: PluginPresenter & PluginListPresenter) {
 
         let actionClosure: ImmuTableAction = { [weak presenter] _ in

@@ -25,7 +25,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 @property (nonatomic, assign) BOOL offline;
 @property (nonatomic, strong) UINavigationController *statsNavVC;
 @property (nonatomic, strong) WPStatsViewController *statsVC;
-@property (nonatomic, weak) WPNoResultsView *noResultsView;
+@property (nonatomic, weak) NoResultsViewController *noResultsViewController;
 @property (nonatomic, strong) UIActivityIndicatorView *loadingIndicator;
 
 @end
@@ -103,7 +103,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 {
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     if (!appDelegate.connectionAvailable) {
-        [self showNoResultsWithTitle:NSLocalizedString(@"No Connection", @"") message:NSLocalizedString(@"An active internet connection is required to view stats", @"")];
+        [self showNoResults];
         self.offline = YES;
         return;
     }
@@ -216,12 +216,24 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 }
 
 
-- (void)showNoResultsWithTitle:(NSString *)title message:(NSString *)message
+- (void)showNoResults
 {
-    [self.noResultsView removeFromSuperview];
-    WPNoResultsView *noResultsView = [WPNoResultsView noResultsViewWithTitle:title message:message accessoryView:nil buttonTitle:nil];
-    self.noResultsView = noResultsView;
-    [self.view addSubview:self.noResultsView];
+    [self.noResultsViewController removeFromView];
+
+    NSString *title = NSLocalizedString(@"No Connection", @"Title for the error view when there's no connection");
+    NSString *subtitle = NSLocalizedString(@"An active internet connection is required to view stats",
+                                           @"Error message shown when trying to view Stats and there is no internet connection.");
+
+    self.noResultsViewController = [NoResultsViewController controllerWithTitle:title
+                                                                    buttonTitle:nil
+                                                                       subtitle:subtitle
+                                                             attributedSubtitle:nil
+                                                                          image:nil
+                                                                  accessoryView:nil];
+
+    [self addChildViewController:self.noResultsViewController];
+    [self.view addSubviewWithFadeAnimation:self.noResultsViewController.view];
+    [self.noResultsViewController didMoveToParentViewController:self];
 }
 
 - (void)reachabilityChanged:(NSNotification *)notification

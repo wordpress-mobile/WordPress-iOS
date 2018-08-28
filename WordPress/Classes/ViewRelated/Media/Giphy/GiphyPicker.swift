@@ -1,26 +1,21 @@
 import WPMediaPicker
+import MobileCoreServices
 
-protocol StockPhotosPickerDelegate: AnyObject {
-    func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia])
+protocol GiphyPickerDelegate: AnyObject {
+    func giphyPicker(_ picker: GiphyPicker, didFinishPicking assets: [GiphyMedia])
 }
 
-/// Presents the Stock Photos main interface
-final class StockPhotosPicker: NSObject {
-    private lazy var dataSource: StockPhotosDataSource = {
-        return StockPhotosDataSource(service: stockPhotosService)
+/// Presents the Giphy main interface
+final class GiphyPicker: NSObject {
+    private lazy var dataSource: GiphyDataSource = {
+        return GiphyDataSource(service: giphyService)
     }()
 
-    private lazy var stockPhotosService: StockPhotosService = {
-        guard let api = self.blog?.wordPressComRestApi() else {
-            //TO DO. Shall we present a user facing error (although in theory we should never reach this case if we limit Stock Photos to Jetpack blogs only)
-            // At this moment, what we do is return a null implementation of the StockPhotosService. The user-facing effect will be that there are no results
-            return NullStockPhotosService()
-        }
-
-        return DefaultStockPhotosService(api: api)
+    private lazy var giphyService: GiphyService = {
+        return GiphyService()
     }()
 
-    weak var delegate: StockPhotosPickerDelegate?
+    weak var delegate: GiphyPickerDelegate?
     private var blog: Blog?
     private var observerToken: NSObjectProtocol?
 
@@ -32,6 +27,7 @@ final class StockPhotosPicker: NSObject {
         options.filter = [.all]
         options.allowCaptureOfMedia = false
         options.showSearchBar = true
+        options.badgedUTTypes = [String(kUTTypeGIF)]
         return options
     }()
 
@@ -46,7 +42,7 @@ final class StockPhotosPicker: NSObject {
     }()
 
     func presentPicker(origin: UIViewController, blog: Blog) {
-        searchHint.configureAsIntro()
+        NoResultsGiphyConfiguration.configureAsIntro(searchHint)
         self.blog = blog
 
         origin.present(picker, animated: true) {
@@ -54,7 +50,6 @@ final class StockPhotosPicker: NSObject {
         }
 
         observeDataSource()
-        trackAccess()
     }
 
     private func observeDataSource() {
@@ -62,7 +57,7 @@ final class StockPhotosPicker: NSObject {
             self?.updateHintView()
         }
         dataSource.onStartLoading = { [weak self] in
-            self?.searchHint.configureAsLoading()
+            NoResultsGiphyConfiguration.configureAsLoading(self!.searchHint)
         }
         dataSource.onStopLoading = { [weak self] in
             self?.updateHintView()
@@ -76,9 +71,9 @@ final class StockPhotosPicker: NSObject {
     private func updateHintView() {
         searchHint.removeFromView()
         if shouldShowNoResults() {
-            searchHint.configureAsNoSearchResults(for: dataSource.searchQuery)
+            NoResultsGiphyConfiguration.configure(searchHint, asNoSearchResultsFor: dataSource.searchQuery)
         } else {
-            searchHint.configureAsIntro()
+            NoResultsGiphyConfiguration.configureAsIntro(searchHint)
         }
     }
 
@@ -89,13 +84,13 @@ final class StockPhotosPicker: NSObject {
     }
 }
 
-extension StockPhotosPicker: WPMediaPickerViewControllerDelegate {
+extension GiphyPicker: WPMediaPickerViewControllerDelegate {
     func mediaPickerController(_ picker: WPMediaPickerViewController, didFinishPicking assets: [WPMediaAsset]) {
-        guard let stockPhotosMedia = assets as? [StockPhotosMedia] else {
-            assertionFailure("assets should be of type `[StockPhotosMedia]`")
+        guard let assets = assets as? [GiphyMedia] else {
+            assertionFailure("assets should be of type `[GiphyMedia]`")
             return
         }
-        delegate?.stockPhotosPicker(self, didFinishPicking: stockPhotosMedia)
+        delegate?.giphyPicker(self, didFinishPicking: assets)
         picker.dismiss(animated: true)
         dataSource.clearSearch(notifyObservers: false)
         hideKeyboard(from: picker.searchBar)
@@ -132,12 +127,5 @@ extension StockPhotosPicker: WPMediaPickerViewControllerDelegate {
                 view.resignFirstResponder()
             }
         }
-    }
-}
-
-// MARK: - Tracks
-extension StockPhotosPicker {
-    fileprivate func trackAccess() {
-        WPAnalytics.track(.stockMediaAccessed)
     }
 }
