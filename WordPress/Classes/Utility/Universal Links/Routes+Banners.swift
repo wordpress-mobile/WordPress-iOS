@@ -27,6 +27,8 @@ extension AppBannerRoute: NavigationAction {
         // Convert the fragment into a URL and ask the link router to handle
         // it like a normal route.
         var components = URLComponents()
+        components.scheme = "https"
+        components.host = "wordpress.com"
         components.path = fragment
 
         if let url = components.url {
