@@ -65,9 +65,16 @@ extension NSNotification.Name {
             return
         }
 
-        ZDKConfig.instance().initialize(withAppId: zdAppID,
-                                        zendeskUrl: zdUrl,
-                                        clientId: zdClientId)
+        guard let appId = zdAppID,
+            let url = zdUrl,
+            let clientId = zdClientId else {
+                DDLogInfo("Unable to set up Zendesk.")
+                toggleZendesk(enabled: false)
+                return
+        }
+
+        Zendesk.initialize(appId: appId, clientId: clientId, zendeskUrl: url)
+        Support.initialize(withZendesk: Zendesk.instance)
 
         ZendeskUtils.sharedInstance.haveUserIdentity = getUserProfile()
         toggleZendesk(enabled: true)
