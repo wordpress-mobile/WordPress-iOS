@@ -350,8 +350,13 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                                       bottomLayoutConstraint:self.replyTextViewBottomConstraint];
 
     __weak UITableView *weakTableView = self.tableView;
+    __weak ReaderCommentsViewController *weakSelf = self;
     self.keyboardManager.onWillHide = ^{
         [weakTableView deselectSelectedRowWithAnimation:YES];
+        [weakSelf refreshNoResultsView];
+    };
+    self.keyboardManager.onWillShow = ^{
+        [weakSelf refreshNoResultsView];
     };
 }
 
