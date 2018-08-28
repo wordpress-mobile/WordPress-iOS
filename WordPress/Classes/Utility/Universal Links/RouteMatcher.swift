@@ -51,6 +51,9 @@ class RouteMatcher {
                 values[MatchedRouteURLComponentKey.fragment.rawValue] = fragment
             }
 
+            // Add in the original URL
+            values[MatchedRouteURLComponentKey.url.rawValue] = url.absoluteString
+
             return route.matched(with: values)
         })
     }
@@ -104,4 +107,5 @@ extension Route {
 
 enum MatchedRouteURLComponentKey: String {
     case fragment = "matched-route-fragment"
+    case url = "matched-route-url"
 }
