@@ -554,7 +554,7 @@ extension NotificationsViewController {
 
         // Display Details
         //
-        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .matcher || note.kind == .newPost {
+        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher || note.kind == .NewPost {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
             showDetailViewController(readerViewController, sender: nil)
             return
@@ -1371,7 +1371,7 @@ private extension NotificationsViewController {
         }
 
         func notMatcher(_ note: Notification) -> Bool {
-            return note.kind != .matcher
+            return note.kind != .Matcher
         }
 
         if delta > 0 {
@@ -1421,7 +1421,7 @@ extension NotificationsViewController: WPSplitViewControllerDetailProvider {
         trackWillPushDetails(for: note)
         ensureNotificationsListIsOnscreen()
 
-        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .matcher || note.kind == .newPost {
+        if let postID = note.metaPostID, let siteID = note.metaSiteID, note.kind == .Matcher || note.kind == .NewPost {
             return ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
         }
 
@@ -1486,6 +1486,8 @@ extension NotificationsViewController: SearchableActivityConvertable {
 // MARK: - Private Properties
 //
 private extension NotificationsViewController {
+    typealias NoteKind = Notification.Kind
+
     var mainContext: NSManagedObjectContext {
         return ContextManager.sharedInstance().mainContext
     }
@@ -1530,9 +1532,9 @@ private extension NotificationsViewController {
             switch self {
             case .none:     return nil
             case .unread:   return "read = NO"
-            case .comment:  return "type = '\(NotificationKind.comment.rawValue)'"
-            case .follow:   return "type = '\(NotificationKind.follow.rawValue)'"
-            case .like:     return "type = '\(NotificationKind.like.rawValue)' OR type = '\(NotificationKind.commentLike.rawValue)'"
+            case .comment:  return "type = '\(NoteKind.Comment.toTypeValue)'"
+            case .follow:   return "type = '\(NoteKind.Follow.toTypeValue)'"
+            case .like:     return "type = '\(NoteKind.Like.toTypeValue)' OR type = '\(NoteKind.CommentLike.toTypeValue)'"
             }
         }
 

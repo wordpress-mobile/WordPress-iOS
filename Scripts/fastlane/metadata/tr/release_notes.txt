@@ -1,4 +1,3 @@
-Artık Safari'de WordPress.com'u ziyaret ettiğinizde iOS için WordPress uygulamasında aynı içeriğe kolaylıkla geçiş yapabilirsiniz. Gözünüz WordPress.com sayfalarının üst kısmındaki reklam bandında olsun!
-Artık ücretsiz WordPress.com sitelerinde Etkinlik Günlüğü mevcut.
-Ufak çaplı kullanıcı arayüzü geliştirmeleri.
-Bir dizi hata düzeltmesi.
+Editörde daha iyi görüntü işleme. Bir dosyayı sürükleyip bırakın veya ortam seçiciyle bir tane ekleyin, yükleme ve ekleme işlemi sorunsuz ve hızlıdır.
+Deneyimlerinizi daha sezgisel hale getirmek için birkaç noktadaki küçük UI geliştirmeleri - muhtemelen onları fark etmeyeceksiniz, işte mesele bu!
+Hata düzeltmeleri.
