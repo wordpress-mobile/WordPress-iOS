@@ -375,16 +375,15 @@ private extension ZendeskUtils {
 
         guard let userEmail = ZendeskUtils.sharedInstance.userEmail else {
             DDLogInfo("No user email to create Zendesk identity with.")
-            ZDKConfig.instance().userIdentity = nil
+            let identity = Identity.createAnonymous()
+            Zendesk.instance?.setIdentity(identity)
             completion(false)
             return
         }
 
-        let zendeskIdentity = ZDKAnonymousIdentity()
-        zendeskIdentity.email = userEmail
-        zendeskIdentity.name = ZendeskUtils.sharedInstance.userName
-        ZDKConfig.instance().userIdentity = zendeskIdentity
-        DDLogDebug("Zendesk identity created with email '\(zendeskIdentity.email ?? "")' and name '\(zendeskIdentity.name ?? "")'.")
+        let zendeskIdentity = Identity.createAnonymous(name: ZendeskUtils.sharedInstance.userName, email: userEmail)
+        Zendesk.instance?.setIdentity(zendeskIdentity)
+        DDLogDebug("Zendesk identity created with email '\(userEmail)' and name '\(ZendeskUtils.sharedInstance.userName ?? "")'.")
         registerDeviceIfNeeded()
         completion(true)
     }
