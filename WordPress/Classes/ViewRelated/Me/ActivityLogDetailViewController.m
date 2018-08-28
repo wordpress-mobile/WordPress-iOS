@@ -1,5 +1,7 @@
 #import "ActivityLogDetailViewController.h"
 
+#import "WordPress-Swift.h"
+
 @interface ActivityLogDetailViewController ()
 
 @property (nonatomic, strong) NSString *logText;
@@ -77,29 +79,31 @@
  @return a collection of all supported activity types
  */
 - (NSArray<UIActivityType> *)allActivityTypes {
-    NSArray<UIActivityType> *defaultActivityTypes = @[
-                                                      UIActivityTypePostToFacebook,
-                                                      UIActivityTypePostToTwitter,
-                                                      UIActivityTypePostToWeibo,
-                                                      UIActivityTypeMessage,
-                                                      UIActivityTypeMail,
-                                                      UIActivityTypePrint,
-                                                      UIActivityTypeCopyToPasteboard,
-                                                      UIActivityTypeAssignToContact,
-                                                      UIActivityTypeSaveToCameraRoll,
-                                                      UIActivityTypeAddToReadingList,
-                                                      UIActivityTypePostToFlickr,
-                                                      UIActivityTypePostToVimeo,
-                                                      UIActivityTypePostToTencentWeibo,
-                                                      UIActivityTypeAirDrop,
-                                                      UIActivityTypeOpenInIBooks,
-                                                      ];
+    NSArray<UIActivityType> *systemActivityTypes = @[
+                                                     UIActivityTypePostToFacebook,
+                                                     UIActivityTypePostToTwitter,
+                                                     UIActivityTypePostToWeibo,
+                                                     UIActivityTypeMessage,
+                                                     UIActivityTypeMail,
+                                                     UIActivityTypePrint,
+                                                     UIActivityTypeCopyToPasteboard,
+                                                     UIActivityTypeAssignToContact,
+                                                     UIActivityTypeSaveToCameraRoll,
+                                                     UIActivityTypeAddToReadingList,
+                                                     UIActivityTypePostToFlickr,
+                                                     UIActivityTypePostToVimeo,
+                                                     UIActivityTypePostToTencentWeibo,
+                                                     UIActivityTypeAirDrop,
+                                                     UIActivityTypeOpenInIBooks,
+                                                     ];
 
-    NSMutableArray<UIActivityType> *activityTypes = [NSMutableArray arrayWithArray:defaultActivityTypes];
+    NSMutableArray<UIActivityType> *activityTypes = [NSMutableArray arrayWithArray:systemActivityTypes];
 
     if (@available(iOS 11, *)) {
         [activityTypes addObject:UIActivityTypeMarkupAsPDF];
     }
+
+    [activityTypes addObject:[SharePost activityType]];
 
     return activityTypes;
 }
@@ -107,13 +111,17 @@
 /**
  Specifies the activity types that should be excluded when the view controller is presented.
 
- @return in practice, this should only return `UIActivityTypeCopyToPasteboard`.
+ @return in practice, this should only return `UIActivityTypeCopyToPasteboard` & `UIActivityTypeMail`.
  */
 - (NSArray<UIActivityType> *)assembleExcludedSupportTypes {
     NSMutableSet<UIActivityType> *activityTypes = [NSMutableSet setWithArray:[self allActivityTypes]];
 
-    NSSet<UIActivityType> *supportedActivityTypes = [NSSet setWithArray:@[UIActivityTypeCopyToPasteboard]];
-    [activityTypes minusSet:supportedActivityTypes];
+    NSArray<UIActivityType> *supportedActivityTypes = @[
+                                                        UIActivityTypeCopyToPasteboard,
+                                                        UIActivityTypeMail
+                                                        ];
+    NSSet<UIActivityType> *supportedActivityTypeSet = [NSSet setWithArray:supportedActivityTypes];
+    [activityTypes minusSet:supportedActivityTypeSet];
 
     return [activityTypes allObjects];
 }
