@@ -926,11 +926,6 @@ extension ZendeskUtils: ZDKHelpCenterConversationsUIDelegate {
         return .articleListAndArticle
     }
 
-    func conversationsBarButtonImage() -> UIImage! {
-        // Nothing to do here, but this method is required for ZDKHelpCenterConversationsUIDelegate.
-        return UIImage()
-    }
-
 }
 
 // MARK: - UITextFieldDelegate
