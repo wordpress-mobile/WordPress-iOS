@@ -9,6 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class WordPressComRestApi;
 @class WordPressOrgXMLRPCApi;
 @class Role;
+@class QuickStartCompletedTour;
 
 extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
@@ -122,6 +123,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, assign, readwrite) BOOL hasPaidPlan;
 @property (nonatomic, strong, readwrite, nullable) NSSet *sharingButtons;
 @property (nonatomic, strong, readwrite, nullable) NSDictionary *capabilities;
+@property (nonatomic, strong, readwrite, nullable) NSSet<QuickStartCompletedTour *> *completedQuickStartTours;
 /// The blog's user ID for the current user
 @property (nonatomic, strong, readwrite, nullable) NSNumber *userID;
 /// Disk quota for site, this is only available for WP.com sites
@@ -183,6 +185,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (readonly) BOOL hasIcon;
 
 #pragma mark - Blog information
+- (BOOL)isAutomatedTransfer;
 - (BOOL)isPrivate;
 - (nullable NSArray *)sortedCategories;
 - (nullable id)getOptionValue:(NSString *) name;

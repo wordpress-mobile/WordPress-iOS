@@ -72,6 +72,14 @@ class ArrayTests: XCTestCase {
         XCTAssertEqual(result[2].1[0], test[3])
     }
 
+    func testUniqueRemovesDuplicates() {
+        let test = ["🦄", "🦄", "🌈"]
+
+        let result = test.unique
+
+        XCTAssertTrue(result.count == 2 && result.contains("🦄") && result.contains("🌈"))
+    }
+
 }
 
 class TestElement: Equatable {

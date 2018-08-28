@@ -1,0 +1,16 @@
+{
+    "text": "Spatial",
+    "ranges": [
+               {
+               "type": "theme",
+               "indices": [
+                           0,
+                           7
+                           ],
+               "slug": "premium/spatial",
+               "version": "1.1.0",
+               "site_slug": "etoledom.wordpress.com",
+               "uri": "https://themetry.com/themes/spatial/"
+               }
+               ]
+}

@@ -421,6 +421,11 @@ import WordPressShared
         dismiss(animated: true, completion: nil)
     }
 
+    func deselectSelectedRow(animated: Bool) {
+        tableView.deselectSelectedRowWithAnimation(animated)
+        restorableSelectedIndexPath = defaultIndexPath
+    }
+
     // MARK: - Tag Wrangling
 
 
