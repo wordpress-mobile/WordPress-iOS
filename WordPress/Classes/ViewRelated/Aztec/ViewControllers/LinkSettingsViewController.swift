@@ -51,6 +51,7 @@ class LinkSettingsViewController: UITableViewController {
         viewHandler = ImmuTableViewHandler(takeOver: self)
         setupNavigation()
         setupViewModel()
+        updateNavigation()
     }
 
     private func setupNavigation() {
@@ -99,7 +100,12 @@ class LinkSettingsViewController: UITableViewController {
 
     private func reloadViewModel() {
         setupViewModel()
+        updateNavigation()
         tableView.reloadData()
+    }
+
+    private func updateNavigation() {
+        self.navigationItem.rightBarButtonItem!.isEnabled = !self.linkSettings.url.isEmpty
     }
 
     private func editURL(row: ImmuTableRow) {
