@@ -187,24 +187,19 @@ extension NSNotification.Name {
     // MARK: - Push Notifications
 
     /// This handles in-app Zendesk push notifications.
-    /// If a Zendesk view is being displayed, an alert will appear allowing
-    /// the user to view the updated ticket.
+    /// If the updated ticket or the ticket list is being displayed,
+    /// the view will be refreshed.
     ///
     static func handlePushNotification(_ userInfo: NSDictionary) {
         WPAnalytics.track(.supportReceivedResponseFromSupport)
         guard zendeskEnabled == true,
-            let payload = userInfo as? [AnyHashable: Any] else {
+            let payload = userInfo as? [AnyHashable: Any],
+            let requestId = payload["zendesk_sdk_request_id"] as? String else {
                 DDLogInfo("Zendesk push notification payload invalid.")
                 return
         }
 
-        ZDKPushUtil.handlePush(payload,
-                               for: UIApplication.shared,
-                               presentationStyle: .formSheet,
-                               layoutGuide: ZDKLayoutRespectTop,
-                               withAppId: zdAppID,
-                               zendeskUrl: zdUrl,
-                               clientId: zdClientId)
+        let _ = Support.instance?.refreshRequest(requestId:requestId)
     }
 
     /// This handles all Zendesk push notifications. (The in-app flow goes through here as well.)
