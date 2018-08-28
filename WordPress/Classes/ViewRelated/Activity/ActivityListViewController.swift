@@ -221,14 +221,14 @@ extension ActivityListViewController: ActivityRewindPresenter {
 }
 extension ActivityListViewController: ActivityDetailPresenter {
 
-    func presentDetailsFor(activity: Activity) {
+    func presentDetailsFor(activity: FormattableActivity) {
         let activityStoryboard = UIStoryboard(name: "Activity", bundle: nil)
         guard let detailVC = activityStoryboard.instantiateViewController(withIdentifier: "ActivityDetailViewController") as? ActivityDetailViewController else {
             return
         }
 
         detailVC.site = site
-        detailVC.activity = activity
+        detailVC.formattableActivity = activity
         detailVC.rewindPresenter = self
 
         self.navigationController?.pushViewController(detailVC, animated: true)

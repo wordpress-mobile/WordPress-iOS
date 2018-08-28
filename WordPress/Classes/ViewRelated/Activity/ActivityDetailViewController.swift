@@ -4,7 +4,12 @@ import WordPressUI
 
 class ActivityDetailViewController: UIViewController {
 
-    var activity: Activity?
+    var formattableActivity: FormattableActivity? {
+        didSet {
+            setupActivity()
+            setupRouter()
+        }
+    }
     var site: JetpackSiteRef?
 
     weak var rewindPresenter: ActivityRewindPresenter?
@@ -17,6 +22,11 @@ class ActivityDetailViewController: UIViewController {
     @IBOutlet private var timeLabel: UILabel!
     @IBOutlet private var dateLabel: UILabel!
 
+    @IBOutlet weak var textView: UITextView! {
+        didSet {
+            textView.delegate = self
+        }
+    }
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var summaryLabel: UILabel!
 
@@ -27,6 +37,10 @@ class ActivityDetailViewController: UIViewController {
     @IBOutlet private var bottomConstaint: NSLayoutConstraint!
 
     @IBOutlet private var rewindButton: UIButton!
+
+    private var activity: Activity?
+
+    var router: ActivityContentRouter?
 
     override func viewDidLoad() {
         setupFonts()
@@ -44,13 +58,24 @@ class ActivityDetailViewController: UIViewController {
         nameLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .footnote).pointSize,
                                            weight: .semibold)
 
-        textLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize,
-                                           weight: .semibold)
+        if FeatureFlag.extractNotifications.enabled == false {
+            textLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize,
+                                               weight: .semibold)
+        }
     }
 
     private func setupViews() {
         guard let activity = activity else {
             return
+        }
+
+        let showFormattedText = FeatureFlag.extractNotifications.enabled
+        textLabel.isHidden = showFormattedText
+        textView.isHidden = !showFormattedText
+
+        if showFormattedText {
+            textView.textContainerInset = .zero
+            textView.textContainer.lineFragmentPadding = 0
         }
 
         if activity.isRewindable {
@@ -83,7 +108,11 @@ class ActivityDetailViewController: UIViewController {
         nameLabel.text = activity.actor?.displayName
         roleLabel.text = activity.actor?.role.localizedCapitalized
 
-        textLabel.text = activity.text
+        if FeatureFlag.extractNotifications.enabled {
+            textView.attributedText = formattableActivity?.formattedContent(using: ActivityContentStyles())
+        } else {
+            textLabel.text = activity.text
+        }
         summaryLabel.text = activity.summary
 
         rewindButton.setTitle(NSLocalizedString("Rewind", comment: "Title for button allowing user to rewind their Jetpack site"),
@@ -133,7 +162,21 @@ class ActivityDetailViewController: UIViewController {
                 }
             }
         }
+    }
 
+    func setupRouter() {
+        guard let activity = formattableActivity else {
+            router = nil
+            return
+        }
+        let coordinator = DefaultContentCoordinator(controller: self, context: ContextManager.sharedInstance().mainContext)
+        router = ActivityContentRouter(
+            activity: activity,
+            coordinator: coordinator)
+    }
+
+    func setupActivity() {
+        activity = formattableActivity?.activity
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -147,5 +190,13 @@ class ActivityDetailViewController: UIViewController {
     private enum Constants {
         static let gridiconSize: CGSize = CGSize(width: 24, height: 24)
     }
+}
 
+// MARK: - UITextViewDelegate
+
+extension ActivityDetailViewController: UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+        router?.routeTo(URL)
+        return false
+    }
 }

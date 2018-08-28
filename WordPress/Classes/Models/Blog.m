@@ -25,6 +25,7 @@ NSString * const ActiveModulesKeyPublicize = @"publicize";
 NSString * const ActiveModulesKeySharingButtons = @"sharedaddy";
 NSString * const OptionsKeyActiveModules = @"active_modules";
 NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled";
+NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
 
 @interface Blog ()
 
@@ -75,6 +76,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @dynamic hasPaidPlan;
 @dynamic sharingButtons;
 @dynamic capabilities;
+@dynamic completedQuickStartTours;
 @dynamic userID;
 @dynamic quotaSpaceAllowed;
 @dynamic quotaSpaceUsed;
@@ -106,6 +108,12 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 
 #pragma mark -
 #pragma mark Custom methods
+
+- (BOOL)isAutomatedTransfer
+{
+    NSNumber *value = (NSNumber *)[self getOptionValue:OptionsKeyIsAutomatedTransfer];
+    return [value boolValue];
+}
 
 - (NSString *)icon
 {

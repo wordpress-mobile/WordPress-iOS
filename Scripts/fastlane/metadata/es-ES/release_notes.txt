@@ -1,4 +1,3 @@
-Ahora puedes ir desde WordPress.com en Safari al mismo contenido de la aplicación de WordPress para iOS con facilidad. ¡Simplemente echa un vistazo al banner de la parte superior de las páginas de WordPress.com!
-El registro de actividad ahora está disponible para los sitios gratuitos de WordPress.com.
-Algunas pequeñas mejoras en la interfaz de usuario.
-Un montón de soluciones a fallos.
+Hay una mejor gestión de imágenes en el editor. Ya arrastres un archivo o añadas uno al selector de medios, subir e insertar es fácil y rápido.
+Pequeñas mejoras de la interfaz en un montón de sitios para hacer tu experiencia más intuitiva - probablemente no te des cuenta de ellas, y ¡esa es la idea!
+Machacando fallos.

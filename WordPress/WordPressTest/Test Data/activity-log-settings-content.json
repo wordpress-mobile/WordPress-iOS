@@ -1,0 +1,19 @@
+{
+    "text": "Default post category changed from \"subcategory\" to \"viajes\"",
+    "ranges": [
+               {
+               "type": "i",
+               "indices": [
+                           36,
+                           47
+                           ]
+               },
+               {
+               "type": "i",
+               "indices": [
+                           53,
+                           59
+                           ]
+               }
+               ]
+}

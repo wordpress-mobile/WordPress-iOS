@@ -1,0 +1,11 @@
+{
+    "url" : "http:\/\/somesite.com",
+    "email" : "somesite@gmail.com",
+    "site_id" : 124625450,
+    "id" : 23260004,
+    "type" : "user",
+    "indices" : [
+                 0,
+                 6
+                 ]
+}
