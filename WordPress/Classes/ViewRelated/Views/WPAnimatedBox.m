@@ -122,12 +122,7 @@ static CGFloat const WPAnimatedBoxYPosPage3 = WPAnimatedBoxAnimationTolerance + 
 
 - (void)animate
 {
-    if (self.isAnimating) {
-        return;
-    }
-    
-    [self moveAnimationToFirstFrame];
-    [self playAnimation];
+    [self animateAfterDelay:0];
 }
 
 - (void)animateAfterDelay:(NSTimeInterval)delayInSeconds
