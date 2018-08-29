@@ -531,7 +531,6 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
     WPAnimatedBox *accessoryView = nil;
     if ([title isEqualToString:[self noResultsLoadingTitle]]) {
         accessoryView = [[WPAnimatedBox alloc] init];
-        [accessoryView animateAfterDelay:0.1];
     }
 
     [self.noResultsViewController configureWithTitle:title
