@@ -166,8 +166,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.4)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `d6228dccfe62dc7ea7bc771ce02a8827bc6c21de`)
-  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `d6228dccfe62dc7ea7bc771ce02a8827bc6c21de`)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `8d412d58945d0cc25791415651a5a63fd57eb9c6`)
+  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `8d412d58945d0cc25791415651a5a63fd57eb9c6`)
   - WordPressAuthenticator (= 1.0.6)
   - WordPressKit (= 1.2.1)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `c51f53ef91127b5225064023e7207fad66b02ea4`)
@@ -215,10 +215,10 @@ EXTERNAL SOURCES:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   WordPress-Aztec-iOS:
-    :commit: d6228dccfe62dc7ea7bc771ce02a8827bc6c21de
+    :commit: 8d412d58945d0cc25791415651a5a63fd57eb9c6
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPress-Editor-iOS:
-    :commit: d6228dccfe62dc7ea7bc771ce02a8827bc6c21de
+    :commit: 8d412d58945d0cc25791415651a5a63fd57eb9c6
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressShared:
     :commit: c51f53ef91127b5225064023e7207fad66b02ea4
@@ -232,10 +232,10 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
   WordPress-Aztec-iOS:
-    :commit: d6228dccfe62dc7ea7bc771ce02a8827bc6c21de
+    :commit: 8d412d58945d0cc25791415651a5a63fd57eb9c6
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPress-Editor-iOS:
-    :commit: d6228dccfe62dc7ea7bc771ce02a8827bc6c21de
+    :commit: 8d412d58945d0cc25791415651a5a63fd57eb9c6
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressShared:
     :commit: c51f53ef91127b5225064023e7207fad66b02ea4
@@ -282,6 +282,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: 88500c47798a66be941ffeed9eb71a392d6a8953
+PODFILE CHECKSUM: ecbb20a992987c986be7b0d1597ecdc929f4437c
 
 COCOAPODS: 1.5.3
