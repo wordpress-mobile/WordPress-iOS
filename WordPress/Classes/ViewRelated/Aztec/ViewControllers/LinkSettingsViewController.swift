@@ -81,11 +81,15 @@ class LinkSettingsViewController: UITableViewController {
                                            value: linkSettings.openInNewWindow,
                                            onChange: editOpenInNewWindow)
 
+        let linkToExistingContentRow = EditableTextRow(title: NSLocalizedString("Link to existing content", comment: "Action. Label for navigate and display links to other posts on the site"),
+                                      value: "",
+                                      action: editTitle)
+
         let removeLinkRow = DestructiveButtonRow(title: NSLocalizedString("Remove Link", comment: "Label action for removing a link from the editor"),
                                               action: removeLink,
                                               accessibilityIdentifier: "RemoveLink")
 
-        let editSection = ImmuTableSection(rows: [urlRow, textRow, openInNewWindowRow])
+        let editSection = ImmuTableSection(rows: [urlRow, textRow, openInNewWindowRow, linkToExistingContentRow])
         var sections = [editSection]
         if !linkSettings.isNewLink {
             sections.append(ImmuTableSection(rows: [removeLinkRow]))
