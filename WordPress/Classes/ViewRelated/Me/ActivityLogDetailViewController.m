@@ -111,7 +111,7 @@
 /**
  Specifies the activity types that should be excluded when the view controller is presented.
 
- @return in practice, this should only return `UIActivityTypeCopyToPasteboard` & `UIActivityTypeMail`.
+ @return in practice, this will return all but `UIActivityTypeCopyToPasteboard` & `UIActivityTypeMail`.
  */
 - (NSArray<UIActivityType> *)assembleExcludedSupportTypes {
     NSMutableSet<UIActivityType> *activityTypes = [NSMutableSet setWithArray:[self allActivityTypes]];
