@@ -273,16 +273,14 @@ private extension NoResultsViewController {
     // MARK: - `WPAnimatedBox` resource management
 
     private func startAnimatingIfNeeded() {
-        guard let animatedBox = accessorySubview as? WPAnimatedBox else { return }
+        guard let animatedBox = accessorySubview as? WPAnimatedBox else {
+            return
+        }
         animatedBox.animate(afterDelay: 0.1)
     }
 
     private func stopAnimatingIfNeeded() {
-        guard
-            let accessorySubview = accessorySubview,
-            let animatedBox = accessorySubview as? WPAnimatedBox
-        else
-        {
+        guard let animatedBox = accessorySubview as? WPAnimatedBox else {
             return
         }
         animatedBox.suspendAnimation()
