@@ -119,10 +119,22 @@ class WPRichTextFormatter {
             let attachmentString = NSMutableAttributedString(attributedString: NSAttributedString(attachment: attachment))
             attachmentString.addAttributes(attributes, range: NSRange(location: 0, length: attachmentString.length))
 
+            if needsAppendNewLine(to: str, at: range) {
+                attachmentString.append(NSAttributedString(string: "\n"))
+            }
+
             attrString.replaceCharacters(in: range, with: attachmentString)
         }
 
         return attrString
+    }
+
+    func needsAppendNewLine(to string: String, at nsRange: NSRange) -> Bool {
+        let nextCharRange = NSRange(location: nsRange.location + nsRange.length, length: 1)
+        guard let range = Range(nextCharRange, in: string) else {
+            return false
+        }
+        return string[range] != "\n"
     }
 
 
