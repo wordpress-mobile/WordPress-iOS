@@ -22,6 +22,9 @@ import WordPressFlux
 
     // MARK: - Properties
 
+    /// Called if the stream or tag fails to load
+    var streamLoadFailureBlock: (() -> Void)? = nil
+
     fileprivate var tableView: UITableView!
     fileprivate var refreshControl: UIRefreshControl!
     fileprivate var syncHelper: WPContentSyncHelper!
@@ -296,6 +299,7 @@ import WordPressFlux
                 guard let objectID = objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                     DDLogError("Reader: Error retriving an existing site topic by its objectID")
                     self?.displayLoadingStreamFailed()
+                    self?.streamLoadFailureBlock?()
                     return
                 }
                 self?.readerTopic = topic
@@ -303,6 +307,7 @@ import WordPressFlux
             },
             failure: { [weak self] (error: Error?) in
                 self?.displayLoadingStreamFailed()
+                self?.streamLoadFailureBlock?()
             })
     }
 
@@ -322,6 +327,7 @@ import WordPressFlux
                 guard let objectID = objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                     DDLogError("Reader: Error retriving an existing tag topic by its objectID")
                     self?.displayLoadingStreamFailed()
+                    self?.streamLoadFailureBlock?()
                     return
                 }
                 self?.readerTopic = topic
@@ -329,6 +335,7 @@ import WordPressFlux
             },
             failure: { [weak self] (error: Error?) in
                 self?.displayLoadingStreamFailed()
+                self?.streamLoadFailureBlock?()
             })
     }
 
@@ -1171,6 +1178,7 @@ extension ReaderStreamViewController: WPContentSyncHelperDelegate {
         if let count = content.content?.count,
             count == 0 {
             displayLoadingStreamFailed()
+            streamLoadFailureBlock?()
         }
     }
 }

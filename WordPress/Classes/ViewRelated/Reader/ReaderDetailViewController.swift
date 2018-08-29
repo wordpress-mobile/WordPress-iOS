@@ -28,6 +28,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     // MARK: - Properties & Accessors
 
+    // Callbacks
+    /// Called if the view controller's post fails to load
+    var postLoadFailureBlock: (() -> Void)? = nil
+
     // Footer views
     @IBOutlet fileprivate weak var footerView: UIView!
     @IBOutlet fileprivate weak var tagButton: UIButton!
@@ -324,6 +328,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             }, failure: {[weak self] (error: Error?) in
                 DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
                 self?.configureAndDisplayLoadingView(title: LoadingText.errorLoadingTitle)
+                self?.postLoadFailureBlock?()
             }
         )
     }
