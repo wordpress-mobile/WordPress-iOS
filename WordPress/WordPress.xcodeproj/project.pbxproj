@@ -5070,12 +5070,9 @@
 				93DEB88019E5BF7100F9546D /* TodayExtensionService.h */,
 				93DEB88119E5BF7100F9546D /* TodayExtensionService.m */,
 				E6311C401EC9FF4A00122529 /* UsersService.swift */,
-				17876B1C1F9A131200F774C7 /* MediaCoordinator.swift */,
 				B543D2B420570B5A00D3D4CC /* WordPressComSyncService.swift */,
 				FF4C069E206560E500E0B2BC /* MediaThumbnailCoordinator.swift */,
 				FF0D8145205809C8000EE505 /* PostCoordinator.swift */,
-				D816B8C12112CEBE0052CE4D /* NewsService.swift */,
-				D816B8C72112D2290052CE4D /* LocalNewsService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
