@@ -601,6 +601,10 @@
     {
         return YES;
     }
+    
+    if (self.isStickyPost != original.isStickyPost) {
+        return YES;
+    }
 
     return NO;
 }
