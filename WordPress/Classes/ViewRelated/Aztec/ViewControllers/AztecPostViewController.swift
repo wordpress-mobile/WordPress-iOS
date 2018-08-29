@@ -1993,6 +1993,7 @@ extension AztecPostViewController {
                     strongSelf.richTextView.becomeFirstResponder()
             }
         })
+        linkController.blog = self.post.blog
 
         let navigationController = UINavigationController(rootViewController: linkController)
         navigationController.modalPresentationStyle = .popover
