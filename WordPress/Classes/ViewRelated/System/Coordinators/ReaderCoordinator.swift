@@ -6,6 +6,8 @@ class ReaderCoordinator: NSObject {
     let readerSplitViewController: WPSplitViewController
     let readerMenuViewController: ReaderMenuViewController
 
+    var failureBlock: (() -> Void)? = nil
+
     @objc
     init(readerNavigationController: UINavigationController,
          readerSplitViewController: WPSplitViewController,
@@ -68,12 +70,18 @@ class ReaderCoordinator: NSObject {
         let service = ReaderTopicService(managedObjectContext: context)
 
         guard let topic = service.topicForList(named: listName, forUser: user) else {
+            failureBlock?()
             return
         }
 
         prepareToNavigate()
 
         let streamViewController = ReaderStreamViewController.controllerWithTopic(topic)
+
+        streamViewController.streamLoadFailureBlock = { [failureBlock] in
+            failureBlock?()
+        }
+
         readerSplitViewController.showDetailViewController(streamViewController, sender: nil)
         readerMenuViewController.deselectSelectedRow(animated: false)
     }
@@ -85,6 +93,10 @@ class ReaderCoordinator: NSObject {
         let slug = remote.slug(forTopicName: tagName) ?? tagName.lowercased()
         let controller = ReaderStreamViewController.controllerWithTagSlug(slug)
 
+        controller.streamLoadFailureBlock = { [failureBlock] in
+            failureBlock?()
+        }
+
         readerSplitViewController.showDetailViewController(controller, sender: nil)
         readerMenuViewController.deselectSelectedRow(animated: false)
     }
@@ -93,6 +105,11 @@ class ReaderCoordinator: NSObject {
         prepareToNavigate()
 
         let controller = ReaderStreamViewController.controllerWithSiteID(NSNumber(value: siteID), isFeed: isFeed)
+
+        controller.streamLoadFailureBlock = { [failureBlock] in
+            failureBlock?()
+        }
+
         readerSplitViewController.showDetailViewController(controller, sender: nil)
         readerMenuViewController.deselectSelectedRow(animated: false)
     }
@@ -103,6 +120,11 @@ class ReaderCoordinator: NSObject {
         let detailViewController = ReaderDetailViewController.controllerWithPostID(postID as NSNumber,
                                                                                        siteID: feedID as NSNumber,
                                                                                        isFeed: isFeed)
+
+        detailViewController.postLoadFailureBlock = { [weak self, failureBlock] in
+            self?.topNavigationController.popViewController(animated: false)
+            failureBlock?()
+        }
 
         topNavigationController.pushFullscreenViewController(detailViewController, animated: false)
         readerMenuViewController.deselectSelectedRow(animated: false)

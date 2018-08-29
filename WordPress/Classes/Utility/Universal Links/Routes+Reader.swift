@@ -56,6 +56,10 @@ extension ReaderRoute: NavigationAction {
             return
         }
 
+        coordinator.failureBlock = {
+            self.failAndBounce(values)
+        }
+
         switch self {
         case .root:
             coordinator.showReaderTab()
