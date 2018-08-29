@@ -612,7 +612,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     }
 }
 
-
 - (void)refreshNoResultsView
 {
     [self.noResultsViewController removeFromView];
@@ -629,6 +628,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                                image:@"wp-illustration-empty-results"
                                        accessoryView:[self noResultsAccessoryView]];
 
+    [self.noResultsViewController hideImageView:WPDeviceIdentification.isiPhone];
+    
     [self.noResultsViewController.view setBackgroundColor:[UIColor clearColor]];
     [self addChildViewController:self.noResultsViewController];
     [self.view addSubviewWithFadeAnimation:self.noResultsViewController.view];
