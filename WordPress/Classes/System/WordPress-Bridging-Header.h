@@ -106,6 +106,7 @@
 #import "WPError.h"
 #import "WPGUIConstants.h"
 #import "WPImageViewController.h"
+#import "WPNoResultsView+AnimatedBox.h"
 #import "WPScrollableViewController.h"
 #import "WPStyleGuide+Posts.h"
 #import "WPStyleGuide+ReadableMargins.h"
