@@ -537,8 +537,9 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     post.permaLink = [remotePost.URL absoluteString];
     post.content = remotePost.content;
     post.status = remotePost.status;
-    post.password = remotePost.password;    
-    if (remotePost.postThumbnailID != nil) {        
+    post.password = remotePost.password;
+    post.isStickyPost = remotePost.isStickyPost;
+    if (remotePost.postThumbnailID != nil) {
         post.featuredImage = [Media existingOrStubMediaWithMediaID: remotePost.postThumbnailID inBlog:post.blog];
     } else {
         post.featuredImage = nil;
@@ -634,6 +635,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     remotePost.authorAvatarURL = post.authorAvatarURL;
     remotePost.excerpt = post.mt_excerpt;
     remotePost.slug = post.wp_slug;
+    remotePost.isStickyPost = post.isStickyPost;
 
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;
