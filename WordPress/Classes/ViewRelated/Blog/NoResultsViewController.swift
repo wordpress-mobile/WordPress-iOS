@@ -176,10 +176,10 @@ import WordPressAuthenticator
         return boxView
     }
 
-    /// Public method to always hide the image view.
+    /// Public method to hide/show the image view.
     ///
-    func hideImageView() {
-        hideImage = true
+    @objc func hideImageView(_ hide: Bool = true) {
+        hideImage = hide
     }
 
 }
