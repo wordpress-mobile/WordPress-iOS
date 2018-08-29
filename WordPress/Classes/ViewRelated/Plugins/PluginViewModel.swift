@@ -176,6 +176,8 @@ class PluginViewModel: Observable {
                             return
                         }
 
+                        WPAnalytics.track(.automatedTransferDialogShown)
+
                         let alertController = atHelper.automatedTransferConfirmationPrompt()
                         self.present?(alertController)
                     }
