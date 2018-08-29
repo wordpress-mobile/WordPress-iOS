@@ -1953,18 +1953,20 @@ extension AztecPostViewController {
 
         var linkTitle = ""
         var linkURL: URL? = nil
+        var linkTarget: String?
         var linkRange = richTextView.selectedRange
         // Let's check if the current range already has a link assigned to it.
         if let expandedRange = richTextView.linkFullRange(forRange: richTextView.selectedRange) {
             linkRange = expandedRange
             linkURL = richTextView.linkURL(forRange: expandedRange)
+            linkTarget = richTextView.linkTarget(forRange: expandedRange)
         }
 
         linkTitle = richTextView.attributedText.attributedSubstring(from: linkRange).string
-        showLinkDialog(forURL: linkURL, title: linkTitle, range: linkRange)
+        showLinkDialog(forURL: linkURL, title: linkTitle, target: linkTarget, range: linkRange)
     }
 
-    func showLinkDialog(forURL url: URL?, title: String?, range: NSRange) {
+    func showLinkDialog(forURL url: URL?, title: String?, target: String?, range: NSRange) {
 
         let isInsertingNewLink = (url == nil)
         var urlToUse = url
@@ -1976,7 +1978,7 @@ extension AztecPostViewController {
             }
         }
 
-        let linkSettings = LinkSettings(url: urlToUse?.absoluteString ?? "", text: title ?? "", openInNewWindow: false, isNewLink: isInsertingNewLink)
+        let linkSettings = LinkSettings(url: urlToUse?.absoluteString ?? "", text: title ?? "", openInNewWindow: target != nil, isNewLink: isInsertingNewLink)
         let linkController = LinkSettingsViewController(settings: linkSettings, callback: { [weak self](action, settings) in
             guard let strongSelf = self else {
                 return
@@ -1984,7 +1986,7 @@ extension AztecPostViewController {
             strongSelf.dismiss(animated: true, completion: nil)
             switch action {
                 case .insert, .update:
-                    strongSelf.insertLink(url: settings.url, text: settings.text, range: range)
+                    strongSelf.insertLink(url: settings.url, text: settings.text, target: settings.openInNewWindow ? "_blank" : nil, range: range)
                 case .remove:
                     strongSelf.removeLink(in: range)
                 case .cancel:
@@ -2004,7 +2006,7 @@ extension AztecPostViewController {
         richTextView.resignFirstResponder()
     }
 
-    func insertLink(url: String, text: String?, range: NSRange) {
+    func insertLink(url: String, text: String?, target: String?, range: NSRange) {
         richTextView.becomeFirstResponder()
         let linkURLString = url
         var linkText = text
@@ -2017,7 +2019,7 @@ extension AztecPostViewController {
             return
         }
 
-        richTextView.setLink(url.normalizedURLForWordPressLink(), title: title, inRange: range)
+        richTextView.setLink(url.normalizedURLForWordPressLink(), title: title, target: target, inRange: range)
     }
 
     func removeLink(in range: NSRange) {
