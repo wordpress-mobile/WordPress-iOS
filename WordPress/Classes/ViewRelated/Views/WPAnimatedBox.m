@@ -139,4 +139,9 @@ static CGFloat const WPAnimatedBoxYPosPage3 = WPAnimatedBoxAnimationTolerance + 
     });
 }
 
+- (void)suspendAnimation
+{
+    self.isAnimating = NO;
+}
+
 @end
