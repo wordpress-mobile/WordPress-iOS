@@ -15,7 +15,7 @@ open class NotificationSupportService: NSObject {
                                                 accessGroup: WPAppKeychainAccessGroup,
                                                 updateExisting: true)
         } catch {
-            DDLogDebug("Error while saving Notification Service Extension OAuth token: \(error)")
+            DDLogDebug("Error while saving Notification Content Extension OAuth token: \(error)")
         }
     }
 
@@ -36,7 +36,7 @@ open class NotificationSupportService: NSObject {
         }
     }
 
-    /// Attempts to delete the current WPCOM OAuth Token.
+    /// Attempts to delete the current WPCOM OAuth Token used by the Notification Content Extension.
     ///
     @objc
     class func deleteContentExtensionToken() {
@@ -45,11 +45,11 @@ open class NotificationSupportService: NSObject {
                                              andServiceName: WPNotificationContentExtensionKeychainServiceName,
                                              accessGroup: WPAppKeychainAccessGroup)
         } catch {
-            DDLogDebug("Error while removing Notification Service Extension OAuth token: \(error)")
+            DDLogDebug("Error while removing Notification Content Extension OAuth token: \(error)")
         }
     }
 
-    /// Attempts to delete the current WPCOM OAuth Token.
+    /// Attempts to delete the current WPCOM OAuth Token used by the Notification Service Extension.
     ///
     @objc
     class func deleteServiceExtensionToken() {
