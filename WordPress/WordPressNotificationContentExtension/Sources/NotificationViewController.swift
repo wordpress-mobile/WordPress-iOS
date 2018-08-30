@@ -68,6 +68,9 @@ extension NotificationViewController: UNNotificationContentExtension {
         let notificationContent = notification.request.content
         viewModel = RichNotificationViewModel(notificationContent: notificationContent)
 
+        let username = readExtensionUsername()
+        tracks.wpcomUsername = username
+
         let token = readExtensionToken()
         tracks.trackExtensionLaunched(token != nil)
     }
@@ -89,5 +92,23 @@ private extension NotificationViewController {
         }
 
         return oauthToken
+    }
+
+    /// Retrieves the WPCOM username, meant for Extension usage.
+    ///
+    /// - Returns: the username if found; `nil` otherwise
+    ///
+    private func readExtensionUsername() -> String? {
+        guard
+            let username = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationContentExtensionKeychainUsernameKey,
+                                                                         andServiceName: WPNotificationServiceExtensionKeychainServiceName,
+                                                                         accessGroup: WPAppKeychainAccessGroup)
+            else
+        {
+            debugPrint("Unable to retrieve Notification Content Extension username")
+            return nil
+        }
+
+        return username
     }
 }
