@@ -91,8 +91,9 @@ class LinkSettingsViewController: UITableViewController {
                                               action: removeLink,
                                               accessibilityIdentifier: "RemoveLink")
 
-        let editSection = ImmuTableSection(rows: [urlRow, textRow, openInNewWindowRow, linkToExistingContentRow])
-        var sections = [editSection]
+        let editSection = ImmuTableSection(rows: [urlRow, textRow, openInNewWindowRow])
+        let linkSection = ImmuTableSection(rows: [linkToExistingContentRow])
+        var sections = [editSection, linkSection]
         if !linkSettings.isNewLink {
             sections.append(ImmuTableSection(rows: [removeLinkRow]))
         }
