@@ -27,29 +27,29 @@ class AutomatedTransferHelper {
     }
 
     func automatedTransferConfirmationPrompt() -> UIAlertController {
-        let alertController = UIAlertController(title: Constants.installFirstPluginPrompt,
+        let alertController = UIAlertController(title: Constants.PromptMessages.installFirstPluginPrompt,
                                                 message: nil,
                                                 preferredStyle: .alert)
 
 
-        alertController.addCancelActionWithTitle(Constants.alertCancel, handler: { _ in
+        alertController.addCancelActionWithTitle(Constants.PromptMessages.alertCancel, handler: { _ in
             WPAnalytics.track(.automatedTransferDialogCancelled)
             DDLogInfo("[AT] User cancelled.")
         })
-        alertController.addDefaultActionWithTitle(Constants.alertInstall, handler: { _ in
+        alertController.addDefaultActionWithTitle(Constants.PromptMessages.alertInstall, handler: { _ in
             DDLogInfo("[AT] User confirmed, proceeding with install.")
-            self.kickOffAutomatedTransfer()
+            self.startAutomatedTransferProcess()
         })
 
         DDLogInfo("[AT] Prompting user for confirmation of transfer.")
         return alertController
     }
 
-    private func kickOffAutomatedTransfer() {
+    private func startAutomatedTransferProcess() {
         DDLogInfo("[AT] Kicking off the AT process.")
 
         // fake coefficient, just so it doesn't look weird empty!
-        SVProgressHUD.showProgress(0.02, status: Constants.progressHudTitle(plugin.name))
+        SVProgressHUD.showProgress(0.02, status: Constants.PluginNameStrings.progressHudTitle(plugin.name))
 
 
         verifyEligibility(
@@ -59,7 +59,7 @@ class AutomatedTransferHelper {
         },
             failure: {
                 SVProgressHUD.dismiss()
-                ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.genericErrorMessage(self.plugin.name))))
+                ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.PluginNameStrings.genericErrorMessage(self.plugin.name))))
         })
     }
 
@@ -71,7 +71,6 @@ class AutomatedTransferHelper {
         automatedTransferService.checkTransferEligibility(
             siteID: site.siteID,
             success: {
-                DDLogInfo("[AT] Site confirmed eligible.")
                 success()
         },
             failure: { (error) in
@@ -83,25 +82,25 @@ class AutomatedTransferHelper {
 
                 switch error {
                 case .unverifiedEmail:
-                    errorMessage = Constants.eligibilityUnverifiedEmailError
+                    errorMessage = Constants.EligibilityErrors.eligibilityUnverifiedEmailError
                 case .excessiveDiskSpaceUsage:
-                    errorMessage = Constants.eligibilityExcessiveUsageError
+                    errorMessage = Constants.EligibilityErrors.eligibilityExcessiveUsageError
                 case .noBusinessPlan:
-                    errorMessage = Constants.eligibilityNoBusinessPlanError
+                    errorMessage = Constants.EligibilityErrors.eligibilityNoBusinessPlanError
                 case .VIPSite:
-                    errorMessage = Constants.eligibilityVIPSitesError
+                    errorMessage = Constants.EligibilityErrors.eligibilityVIPSitesError
                 case .notAdmin:
-                    errorMessage = Constants.eligibilityNotAdminError
+                    errorMessage = Constants.EligibilityErrors.eligibilityNotAdminError
                 case .notDomainOwner:
-                    errorMessage = Constants.eligibilityNotDomainOwnerError
+                    errorMessage = Constants.EligibilityErrors.eligibilityNotDomainOwnerError
                 case .noCustomDomain:
-                    errorMessage = Constants.eligibilityNoCustomDomainError
+                    errorMessage = Constants.EligibilityErrors.eligibilityNoCustomDomainError
                 case .greylistedSite:
-                    errorMessage = Constants.eligibilityGreyListedError
+                    errorMessage = Constants.EligibilityErrors.eligibilityGreyListedError
                 case .privateSite:
-                    errorMessage = Constants.eligibilityPrivateSiteError
+                    errorMessage = Constants.EligibilityErrors.eligibilityPrivateSiteError
                 case .unknown:
-                    errorMessage = Constants.eligibilityEligibilityGenericError
+                    errorMessage = Constants.EligibilityErrors.eligibilityEligibilityGenericError
                 }
 
                 SVProgressHUD.dismiss()
@@ -120,7 +119,7 @@ class AutomatedTransferHelper {
             WPAnalytics.track(.automatedTransferInitiated)
 
             // Also an arbitrary number, to show progress. "real progress" should start at 14% (there are currently 7 steps, 100/7 ~= 14).
-            SVProgressHUD.showProgress(0.08, status: Constants.progressHudTitle(self.plugin.name))
+            SVProgressHUD.showProgress(0.08, status: Constants.PluginNameStrings.progressHudTitle(self.plugin.name))
 
             // Refresh status after 3 seconds.
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Constants.refreshInterval)) {
@@ -134,7 +133,7 @@ class AutomatedTransferHelper {
             WPAnalytics.track(.automatedTransferInitiationFailed)
 
             SVProgressHUD.dismiss()
-            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.genericErrorMessage(self.plugin.name))))
+            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.PluginNameStrings.genericErrorMessage(self.plugin.name))))
         })
     }
 
@@ -147,7 +146,7 @@ class AutomatedTransferHelper {
             WPAnalytics.track(.automatedTransferStatusFailed)
 
             SVProgressHUD.dismiss()
-            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.genericErrorMessage(self.plugin.name))))
+            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.PluginNameStrings.genericErrorMessage(self.plugin.name))))
         }
 
 
@@ -166,7 +165,7 @@ class AutomatedTransferHelper {
 
                 WPAnalytics.track(.automatedTransferStatusComplete)
 
-                SVProgressHUD.showProgress(0.99, status: Constants.installAlmostDone)
+                SVProgressHUD.showProgress(0.99, status: Constants.PromptMessages.installAlmostDone)
                 self.refreshSite()
                 return
             }
@@ -175,7 +174,7 @@ class AutomatedTransferHelper {
                 DDLogInfo("[AT] Updating AT progress indicator.")
 
                 let progressFraction = Float(step) / Float(totalSteps)
-                SVProgressHUD.showProgress(progressFraction, status: Constants.progressHudTitle(self.plugin.name))
+                SVProgressHUD.showProgress(progressFraction, status: Constants.PluginNameStrings.progressHudTitle(self.plugin.name))
             }
 
 
@@ -195,7 +194,7 @@ class AutomatedTransferHelper {
             DDLogInfo("[AT] Couldn't find a blog with provided JetpackSiteRef. This definitely shouldn't have happened. Bailing.")
 
             SVProgressHUD.dismiss()
-            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.genericErrorMessage(self.plugin.name))))
+            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.PluginNameStrings.genericErrorMessage(self.plugin.name))))
             return
         }
 
@@ -229,7 +228,7 @@ class AutomatedTransferHelper {
                 self.delayWrapper = nil
 
                 SVProgressHUD.dismiss()
-                ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.genericErrorMessage(self.plugin.name))))
+                ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.PluginNameStrings.genericErrorMessage(self.plugin.name))))
                 return
             }
 
@@ -252,7 +251,7 @@ class AutomatedTransferHelper {
 
             ActionDispatcher.dispatch(PluginAction.receivePlugins(site: self.site, plugins: plugins))
             SVProgressHUD.dismiss()
-            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.successMessage(self.plugin.name))))
+            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.PromptMessages.successMessage(self.plugin.name))))
         }, failure: { (error) in
             DDLogInfo("[AT] Failed to fetch plugins, error: \(error)")
 
@@ -276,7 +275,7 @@ class AutomatedTransferHelper {
                 self.delayWrapper = nil
 
                 SVProgressHUD.dismiss()
-                ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.genericErrorMessage(self.plugin.name))))
+                ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.PluginNameStrings.genericErrorMessage(self.plugin.name))))
                 return
             }
 
@@ -288,42 +287,45 @@ class AutomatedTransferHelper {
 
     private struct Constants {
 
-        // Prompt messages.
-        static let installFirstPluginPrompt = NSLocalizedString("Installing the first plugin on your site can take up to 1 minute.\nDuring this time you won’t be able to make changes to your site.", comment: "Message displayed in an alert when user tries to install a first plugin on their site.")
-        static let alertCancel = NSLocalizedString("Cancel", comment: "Cancel button.")
-        static let alertInstall = NSLocalizedString("Install", comment: "Confirmation button displayd in alert displayed when user installs their first plugin.")
+        struct PromptMessages {
+            static let installFirstPluginPrompt = NSLocalizedString("Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site.", comment: "Message displayed in an alert when user tries to install a first plugin on their site.")
+            static let alertCancel = NSLocalizedString("Cancel", comment: "Cancel button.")
+            static let alertInstall = NSLocalizedString("Install", comment: "Confirmation button displayd in alert displayed when user installs their first plugin.")
+            static let installAlmostDone = NSLocalizedString("We're doing the final setup—almost done…", comment: "Title of progress label displayed when a first plugin on a site is almost done installing.")
+        }
 
-        // Eligibility errors.
-        static let eligibilityUnverifiedEmailError = NSLocalizedString("Plugin feature requires a verified email address.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
-        static let eligibilityExcessiveUsageError = NSLocalizedString("Plugin cannot be installed due to disk space limitations.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
-        static let eligibilityNoBusinessPlanError = NSLocalizedString("Plugin feature requires a business plan.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
-        static let eligibilityVIPSitesError = NSLocalizedString("Plugin cannot be installed on VIP sites.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
-        static let eligibilityNotAdminError = NSLocalizedString("Plugin feature requires admin privileges.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
-        static let eligibilityNotDomainOwnerError = NSLocalizedString("Plugin feature requires primary domain subscription to be associated with this user.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
-        static let eligibilityNoCustomDomainError = NSLocalizedString("Plugin feature requires a custom domain.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
-        static let eligibilityGreyListedError = NSLocalizedString("Plugin feature requires the site to be in good standing.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
-        static let eligibilityPrivateSiteError = NSLocalizedString("Plugin feature requires the site to be public.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
-        static let eligibilityEligibilityGenericError = NSLocalizedString("Plugin feature is not available for this site.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+        struct EligibilityErrors {
+            static let eligibilityUnverifiedEmailError = NSLocalizedString("Plugin feature requires a verified email address.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+            static let eligibilityExcessiveUsageError = NSLocalizedString("Plugin cannot be installed due to disk space limitations.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+            static let eligibilityNoBusinessPlanError = NSLocalizedString("Plugin feature requires a business plan.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+            static let eligibilityVIPSitesError = NSLocalizedString("Plugin cannot be installed on VIP sites.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+            static let eligibilityNotAdminError = NSLocalizedString("Plugin feature requires admin privileges.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+            static let eligibilityNotDomainOwnerError = NSLocalizedString("Plugin feature requires primary domain subscription to be associated with this user.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+            static let eligibilityNoCustomDomainError = NSLocalizedString("Plugin feature requires a custom domain.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+            static let eligibilityGreyListedError = NSLocalizedString("Plugin feature requires the site to be in good standing.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+            static let eligibilityPrivateSiteError = NSLocalizedString("Plugin feature requires the site to be public.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+            static let eligibilityEligibilityGenericError = NSLocalizedString("Plugin feature is not available for this site.", comment: "Error displayed when trying to install a plugin on a site for the first time.")
+        }
+
+        struct PluginNameStrings {
+            // Strings that take plugin name in as a parameter.
+            static func progressHudTitle(_ pluginName: String) -> String {
+                return String(format: NSLocalizedString("Installing %@…", comment: "Title of a progress view displayed while the first plugin for a site is being installed."), pluginName)
+            }
+
+            static func genericErrorMessage(_ pluginName: String) -> String {
+                return String(format: NSLocalizedString("Error installing %@.", comment: "Notice displayed after attempt to install a plugin fails."), pluginName)
+            }
+
+            static func successMessage(_ pluginName: String) -> String {
+                return String(format: NSLocalizedString("Successfully installed %@.", comment: "Notice displayed after installing a plug-in."), pluginName)
+            }
+        }
 
         // Other
         static let refreshInterval: Int = 3
         static let delaySequence = [Constants.refreshInterval]
         static let maxRetries = 10
-        static let installAlmostDone = NSLocalizedString("We're doing the final setup — almost done…", comment: "Title of progress label displayed when a first plugin on a site is almost done installing.")
-
-        // Strings that take a plugin name as a parameter.
-
-        static func progressHudTitle(_ pluginName: String) -> String {
-            return String(format: NSLocalizedString("Installing %@…", comment: "Title of a progress view displayed while the first plugin for a site is being installed."), pluginName)
-        }
-
-        static func genericErrorMessage(_ pluginName: String) -> String {
-            return String(format: NSLocalizedString("Error installing %@.", comment: "Notice displayed after attempt to install a plugin fails."), pluginName)
-        }
-
-        static func successMessage(_ pluginName: String) -> String {
-            return String(format: NSLocalizedString("Successfully installed %@.", comment: "Notice displayed after installing a plug-in."), pluginName)
-        }
     }
 
 
