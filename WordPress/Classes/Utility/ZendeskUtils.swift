@@ -445,7 +445,7 @@ private extension ZendeskUtils {
         // If the controller is a UIViewController, set the modal display for iPad.
         if !presentInController.isKind(of: UINavigationController.self) && WPDeviceIdentification.isiPad() {
             let navController = UINavigationController(rootViewController: zendeskView)
-            navController.modalPresentationStyle = .formSheet
+            navController.modalPresentationStyle = .fullScreen
             navController.modalTransitionStyle = .crossDissolve
             presentInController.present(navController, animated: true)
             return
