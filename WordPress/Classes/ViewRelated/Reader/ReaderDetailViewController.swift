@@ -147,6 +147,14 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         return controller
     }
 
+    @objc open class func controllerWithPostURL(_ url: URL) -> ReaderDetailViewController {
+
+        let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
+        let controller = storyboard.instantiateViewController(withIdentifier: "ReaderDetailViewController") as! ReaderDetailViewController
+        controller.setupWithPostURL(url)
+
+        return controller
+    }
 
     // MARK: - State Restoration
 
@@ -333,6 +341,25 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                 self?.reportPostLoadFailure()
             }
         )
+    }
+
+    @objc open func setupWithPostURL(_ postURL: URL) {
+        configureAndDisplayLoadingView(title: LoadingText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+
+        textView.alpha = 0.0
+
+        let context = ContextManager.sharedInstance().mainContext
+        let service = ReaderPostService(managedObjectContext: context)
+
+        service.fetchPost(at: postURL,
+                          success: { [weak self] post in
+                            self?.hideLoadingView()
+                            self?.textView.alpha = 1.0
+                            self?.post = post
+        }, failure: {[weak self] (error: Error?) in
+            DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
+            self?.configureAndDisplayLoadingView(title: LoadingText.errorLoadingTitle)
+        })
     }
 
 
@@ -837,6 +864,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     // MARK: - Instance Methods
 
+    @objc func presentReaderDetailViewControllerWithURL(_ url: URL) {
+        let viewController = ReaderDetailViewController.controllerWithPostURL(url)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+
     @objc func presentWebViewControllerWithURL(_ url: URL) {
         var url = url
         if url.host == nil {
@@ -1195,6 +1227,8 @@ extension ReaderDetailViewController: WPRichContentViewDelegate {
             shareController.shareURL(url: URL as NSURL, fromRect: frame, inView: textView, inViewController: self)
         } else if readerLinkRouter.canHandle(url: URL) {
             readerLinkRouter.handle(url: URL, shouldTrack: false, source: self)
+        } else if URL.hasWordPressDotComHostname {
+            presentReaderDetailViewControllerWithURL(URL)
         } else {
             presentWebViewControllerWithURL(URL)
         }
