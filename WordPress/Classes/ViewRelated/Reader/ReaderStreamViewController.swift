@@ -299,7 +299,7 @@ import WordPressFlux
                 guard let objectID = objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                     DDLogError("Reader: Error retriving an existing site topic by its objectID")
                     self?.displayLoadingStreamFailed()
-                    self?.streamLoadFailureBlock?()
+                    self?.reportStreamLoadFailure()
                     return
                 }
                 self?.readerTopic = topic
@@ -307,7 +307,7 @@ import WordPressFlux
             },
             failure: { [weak self] (error: Error?) in
                 self?.displayLoadingStreamFailed()
-                self?.streamLoadFailureBlock?()
+                self?.reportStreamLoadFailure()
             })
     }
 
@@ -327,7 +327,7 @@ import WordPressFlux
                 guard let objectID = objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                     DDLogError("Reader: Error retriving an existing tag topic by its objectID")
                     self?.displayLoadingStreamFailed()
-                    self?.streamLoadFailureBlock?()
+                    self?.reportStreamLoadFailure()
                     return
                 }
                 self?.readerTopic = topic
@@ -335,7 +335,7 @@ import WordPressFlux
             },
             failure: { [weak self] (error: Error?) in
                 self?.displayLoadingStreamFailed()
-                self?.streamLoadFailureBlock?()
+                self?.reportStreamLoadFailure()
             })
     }
 
@@ -1178,8 +1178,15 @@ extension ReaderStreamViewController: WPContentSyncHelperDelegate {
         if let count = content.content?.count,
             count == 0 {
             displayLoadingStreamFailed()
-            streamLoadFailureBlock?()
+            reportStreamLoadFailure()
         }
+    }
+
+    fileprivate func reportStreamLoadFailure() {
+        streamLoadFailureBlock?()
+
+        // We'll nil out the failure block so we don't perform multiple callbacks
+        streamLoadFailureBlock = nil
     }
 }
 
