@@ -26,13 +26,11 @@ class RouteMatcher {
         let pathComponents = url.pathComponents
 
         return routes.compactMap({ route in
+            let values = valuesDictionary(forURL: url)
+
             // If the paths are the same, we definitely have a match
             if route.path == url.path {
-                if let fragment = url.fragment {
-                    return route.matched(with: [MatchedRouteURLComponentKey.fragment.rawValue: fragment])
-                } else {
-                    return route.matched()
-                }
+                return route.matched(with: values)
             }
 
             let routeComponents = route.components
@@ -42,17 +40,28 @@ class RouteMatcher {
                 return nil
             }
 
-            guard var values = placeholderDictionary(forKeyComponents: routeComponents,
-                                                     valueComponents: pathComponents) else {
-                                                        return nil
+            guard let placeholderValues = placeholderDictionary(forKeyComponents: routeComponents,
+                                                                valueComponents: pathComponents) else {
+                                                                    return nil
             }
 
-            if let fragment = url.fragment {
-                values[MatchedRouteURLComponentKey.fragment.rawValue] = fragment
-            }
+            let allValues = values.merging(placeholderValues,
+                                           uniquingKeysWith: { (current, _) in current })
 
-            return route.matched(with: values)
+            return route.matched(with: allValues)
         })
+    }
+
+    private func valuesDictionary(forURL url: URL) -> [String: String] {
+        var values: [String: String] = [
+            MatchedRouteURLComponentKey.url.rawValue: url.absoluteString
+        ]
+
+        if let fragment = url.fragment {
+            values[MatchedRouteURLComponentKey.fragment.rawValue] = fragment
+        }
+
+        return values
     }
 
     private func isPlaceholder(_ component: String) -> Bool {
@@ -104,4 +113,5 @@ extension Route {
 
 enum MatchedRouteURLComponentKey: String {
     case fragment = "matched-route-fragment"
+    case url = "matched-route-url"
 }
