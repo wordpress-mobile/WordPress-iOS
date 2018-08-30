@@ -1983,15 +1983,17 @@ extension AztecPostViewController {
             guard let strongSelf = self else {
                 return
             }
-            strongSelf.dismiss(animated: true, completion: nil)
-            switch action {
+            strongSelf.dismiss(animated: true, completion: {
+                strongSelf.richTextView.becomeFirstResponder()
+                switch action {
                 case .insert, .update:
                     strongSelf.insertLink(url: settings.url, text: settings.text, target: settings.openInNewWindow ? "_blank" : nil, range: range)
                 case .remove:
                     strongSelf.removeLink(in: range)
                 case .cancel:
-                    strongSelf.richTextView.becomeFirstResponder()
-            }
+                    break
+                }
+            })
         })
 
         let navigationController = UINavigationController(rootViewController: linkController)
@@ -2010,7 +2012,6 @@ extension AztecPostViewController {
     }
 
     func insertLink(url: String, text: String?, target: String?, range: NSRange) {
-        richTextView.becomeFirstResponder()
         let linkURLString = url
         var linkText = text
 
@@ -2027,7 +2028,6 @@ extension AztecPostViewController {
 
     func removeLink(in range: NSRange) {
         trackFormatBarAnalytics(stat: .editorTappedUnlink)
-        richTextView.becomeFirstResponder()
         richTextView.removeLink(inRange: range)
     }
 
