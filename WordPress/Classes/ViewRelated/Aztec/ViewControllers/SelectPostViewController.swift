@@ -4,6 +4,8 @@ class SelectPostViewController: UITableViewController, UISearchResultsUpdating {
 
     private var blog: Blog!
 
+    private var selectedLink: String?
+
     private lazy var searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
@@ -21,8 +23,9 @@ class SelectPostViewController: UITableViewController, UISearchResultsUpdating {
 
     private var callback: SelectPostCallback?
 
-    init(blog: Blog, callback: SelectPostCallback? = nil) {
+    init(blog: Blog, selectedLink: String? = nil, callback: SelectPostCallback? = nil) {
         self.blog = blog
+        self.selectedLink = selectedLink
         self.callback = callback
         super.init(style: .plain)
     }
@@ -34,7 +37,6 @@ class SelectPostViewController: UITableViewController, UISearchResultsUpdating {
         super.viewDidLoad()
 
         self.tableView.tableHeaderView = searchController.searchBar
-        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "PostCell")
     }
 
     // MARK: - Table view data source
@@ -55,9 +57,27 @@ class SelectPostViewController: UITableViewController, UISearchResultsUpdating {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath)
+        var reusableCell = tableView.dequeueReusableCell(withIdentifier: "PostCell")
+        if reusableCell == nil {
+            reusableCell = UITableViewCell(style: .subtitle, reuseIdentifier: "PostCell")
+            WPStyleGuide.configureTableViewCell(reusableCell)
+        }
+        guard let cell = reusableCell else {
+            preconditionFailure("Unable to create cell!")
+        }
 
-        cell.textLabel?.text = fetchController.object(at: indexPath).titleForDisplay()
+        let post = fetchController.object(at: indexPath)
+        cell.textLabel?.text = post.titleForDisplay()
+        if post is Page {
+            cell.detailTextLabel?.text = NSLocalizedString("Page", comment: "Noun. Type of content being selected is a blog page")
+        } else {
+            cell.detailTextLabel?.text = NSLocalizedString("Post", comment: "Noun. Type of content being selected is a blog post")
+        }
+        if post.permaLink == self.selectedLink {
+            cell.accessoryType = .checkmark
+        } else {
+            cell.accessoryType = .none
+        }
 
         return cell
     }
