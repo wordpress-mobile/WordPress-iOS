@@ -140,7 +140,7 @@ class LinkSettingsViewController: UITableViewController {
         guard let blog = blog else {
             return
         }
-        let selectPostViewController = SelectPostViewController(blog: blog, callback: { [weak self] (url, title) in
+        let selectPostViewController = SelectPostViewController(blog: blog, selectedLink: linkSettings.url, callback: { [weak self] (url, title) in
             guard let strongSelf = self else {
                 return
             }
