@@ -131,6 +131,14 @@ extension URL {
         /////
         return components.url
     }
+
+    var hasWordPressDotComHostname: Bool {
+        guard let host = host else {
+            return false
+        }
+
+        return host.contains("wordpress.com")
+    }
 }
 
 extension NSURL {
