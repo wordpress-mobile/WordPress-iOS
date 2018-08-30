@@ -2,6 +2,7 @@ source 'https://rubygems.org' do
   gem 'rake'
   gem 'cocoapods', '1.5.3'
   gem 'xcpretty-travis-formatter'
+  gem 'danger-swiftlint'
   gem 'danger'
   gem 'octokit', "~> 4.0"
   gem 'fastlane'
