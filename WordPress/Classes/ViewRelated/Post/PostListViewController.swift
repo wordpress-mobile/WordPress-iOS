@@ -607,7 +607,6 @@ private extension PostListViewController {
 
     func noResultsAccessoryView() -> UIView? {
         if syncHelper.isSyncing {
-            animatedBox.animate(afterDelay: 0.1)
             return animatedBox
         }
 
