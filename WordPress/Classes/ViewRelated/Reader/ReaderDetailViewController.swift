@@ -328,7 +328,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             }, failure: {[weak self] (error: Error?) in
                 DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
                 self?.configureAndDisplayLoadingView(title: LoadingText.errorLoadingTitle)
-                self?.postLoadFailureBlock?()
+                self?.reportPostLoadFailure()
             }
         )
     }
@@ -936,6 +936,13 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
 
         SearchManager.shared.indexItem(post)
+    }
+
+    private func reportPostLoadFailure() {
+        postLoadFailureBlock?()
+
+        // We'll nil out the failure block so we don't perform multiple callbacks
+        postLoadFailureBlock = nil
     }
 
     // MARK: - Analytics
