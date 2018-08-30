@@ -70,6 +70,15 @@ class LinkSettingsViewController: UITableViewController {
         }
     }
 
+    private func titleOfExistingContent() -> String {
+        var titleOfPost: String = ""
+        let permaLink = linkSettings.url
+        if let blog = blog, !permaLink.isEmpty {
+            titleOfPost = PostCoordinator.shared.titleOfPost(withPermaLink: linkSettings.url, in: blog) ?? ""
+        }
+        return titleOfPost
+    }
+
     private func setupViewModel() {
         ImmuTable.registerRows([EditableTextRow.self, SwitchRow.self, DestructiveButtonRow.self], tableView: tableView)
 
@@ -83,8 +92,9 @@ class LinkSettingsViewController: UITableViewController {
                                            value: linkSettings.openInNewWindow,
                                            onChange: editOpenInNewWindow)
 
+
         let linkToExistingContentRow = EditableTextRow(title: NSLocalizedString("Link to existing content", comment: "Action. Label for navigate and display links to other posts on the site"),
-                                      value: "",
+                                      value: titleOfExistingContent(),
                                       action: selectExistingContent)
 
         let removeLinkRow = DestructiveButtonRow(title: NSLocalizedString("Remove Link", comment: "Label action for removing a link from the editor"),
