@@ -100,7 +100,7 @@ extension NSNotification.Name {
     ///
     func showHelpCenterIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
 
-        ZendeskUtils.configureViewController(controller)
+        ZendeskUtils.presentInController = controller
 
         // Since user information is not needed to display the Help Center,
         // if a user identity has not been created, create an empty identity.
@@ -119,14 +119,14 @@ extension NSNotification.Name {
 
         let helpCenterController = HelpCenterUi.buildHelpCenterOverview(withConfigs: [helpCenterConfig])
         helpCenterController.uiDelegate = self
-        ZendeskUtils.showZendeskView(helpCenterController, from: controller)
+        ZendeskUtils.showZendeskView(helpCenterController)
     }
 
     /// Displays the Zendesk New Request view from the given controller, for users to submit new tickets.
     ///
     func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
 
-        ZendeskUtils.configureViewController(controller)
+        ZendeskUtils.presentInController = controller
 
         ZendeskUtils.createIdentity { success in
             guard success else {
@@ -138,7 +138,7 @@ extension NSNotification.Name {
 
             let newRequestConfig = self.createRequest()
             let newRequestController = RequestUi.buildRequestUi(with: [newRequestConfig])
-            ZendeskUtils.showZendeskView(newRequestController, from: controller)
+            ZendeskUtils.showZendeskView(newRequestController)
         }
     }
 
@@ -146,7 +146,7 @@ extension NSNotification.Name {
     ///
     func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
 
-        ZendeskUtils.configureViewController(controller)
+        ZendeskUtils.presentInController = controller
 
         ZendeskUtils.createIdentity { success in
             guard success else {
@@ -157,14 +157,14 @@ extension NSNotification.Name {
             WPAnalytics.track(.supportTicketListViewed)
 
             let requestListController = RequestUi.buildRequestList()
-            ZendeskUtils.showZendeskView(requestListController, from: controller)
+            ZendeskUtils.showZendeskView(requestListController)
         }
     }
 
     /// Displays an alert allowing the user to change their Support email address.
     ///
     func showSupportEmailPrompt(from controller: UIViewController, completion: @escaping (Bool) -> Void) {
-        ZendeskUtils.configureViewController(controller)
+        ZendeskUtils.presentInController = controller
 
         ZendeskUtils.getUserInformationAndShowPrompt(withName: false) { success in
             completion(success)
@@ -437,22 +437,23 @@ private extension ZendeskUtils {
 
     // MARK: - View
 
-    static func showZendeskView(_ zendeskView: UIViewController, from controller: UIViewController) {
-        if let controller = controller as? UINavigationController {
-            controller.pushViewController(zendeskView, animated: true)
-        } else {
-            // TODO - handle non-nav controller.
+    static func showZendeskView(_ zendeskView: UIViewController) {
+        guard let presentInController = presentInController else {
+            return
         }
-    }
 
-    static func configureViewController(_ controller: UIViewController) {
         // If the controller is a UIViewController, set the modal display for iPad.
-        // If the controller is a UINavigationController, do nothing as the ZD views will inherit from that.
-        if !controller.isKind(of: UINavigationController.self) && WPDeviceIdentification.isiPad() {
-            controller.modalPresentationStyle = .formSheet
-            controller.modalTransitionStyle = .crossDissolve
+        if !presentInController.isKind(of: UINavigationController.self) && WPDeviceIdentification.isiPad() {
+            let navController = UINavigationController(rootViewController: zendeskView)
+            navController.modalPresentationStyle = .formSheet
+            navController.modalTransitionStyle = .crossDissolve
+            presentInController.present(navController, animated: true)
+            return
         }
-        presentInController = controller
+
+        if let navController = presentInController as? UINavigationController {
+            navController.pushViewController(zendeskView, animated: true)
+        }
     }
 
     // MARK: - Get User Information
