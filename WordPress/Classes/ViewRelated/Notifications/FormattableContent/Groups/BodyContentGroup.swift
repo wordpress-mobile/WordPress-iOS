@@ -4,7 +4,7 @@ class BodyContentGroup: FormattableContentGroup {
         let blocks = NotificationContentFactory.content(from: body, actionsParser: NotificationActionParser(), parent: parent)
 
         switch parent.kind {
-        case .comment:
+        case .Comment:
             return groupsForCommentBodyBlocks(blocks, parent: parent)
         default:
             return groupsForNonCommentBodyBlocks(blocks, parent: parent)
@@ -12,7 +12,7 @@ class BodyContentGroup: FormattableContentGroup {
     }
 
     private class func groupsForNonCommentBodyBlocks(_ blocks: [FormattableContent], parent: Notification) -> [FormattableContentGroup] {
-        let parentKindsWithFooters: [NotificationKind] = [.follow, .like, .commentLike]
+        let parentKindsWithFooters: [Notification.Kind] = [.Follow, .Like, .CommentLike]
         let parentMayContainFooter = parentKindsWithFooters.contains(parent.kind)
 
         return blocks.enumerated().map { index, block in
@@ -83,7 +83,7 @@ class BodyContentGroup: FormattableContentGroup {
         }
     }
 
-    private class func pingbackReadMoreGroup(for url: URL) -> FormattableContentGroup {
+    public class func pingbackReadMoreGroup(for url: URL) -> FormattableContentGroup {
         let text = NSLocalizedString("Read the source post", comment: "Displayed at the footer of a Pingback Notification.")
         let textRange = NSRange(location: 0, length: text.count)
         let zeroRange = NSRange(location: 0, length: 0)
