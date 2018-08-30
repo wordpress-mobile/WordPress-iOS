@@ -17,6 +17,13 @@ class ReaderCoordinator: NSObject {
         super.init()
     }
     private func prepareToNavigate() {
+        let test : String? = nil
+        guard let testTest = test else{ return }
+
+        if (test == "Hello") {
+            print("Test")
+        }
+
         WPTabBarController.sharedInstance().showReaderTab()
 
         topNavigationController.popToRootViewController(animated: false)
