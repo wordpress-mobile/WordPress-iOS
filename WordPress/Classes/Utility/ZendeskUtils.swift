@@ -175,13 +175,12 @@ extension NSNotification.Name {
     /// Unregisters the device ID from Zendesk for push notifications.
     ///
     static func unregisterDevice(_ identifier: String) {
-        ZDKConfig.instance().disablePush(identifier) { status, error in
-            if let error = error {
-                DDLogInfo("Zendesk couldn't unregistered device: \(identifier). Error: \(error)")
-            } else {
-                DDLogDebug("Zendesk successfully unregistered device: \(identifier)")
-            }
+        guard let zendeskInstance = Zendesk.instance else {
+            DDLogInfo("No Zendesk instance. Unable to unregister device.")
+            return
         }
+
+        ZDKPushProvider(zendesk: zendeskInstance).unregisterForPush()
     }
 
     // MARK: - Push Notifications
@@ -199,7 +198,7 @@ extension NSNotification.Name {
                 return
         }
 
-        let _ = Support.instance?.refreshRequest(requestId:requestId)
+        let _ = Support.instance?.refreshRequest(requestId: requestId)
     }
 
     /// This handles all Zendesk push notifications. (The in-app flow goes through here as well.)
