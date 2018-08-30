@@ -31,6 +31,8 @@ class LinkSettingsViewController: UITableViewController {
     private var viewModel: ImmuTable!
     private var viewHandler: ImmuTableViewHandler!
 
+    public var blog: Blog?
+
     typealias LinkCallback = (_ action: LinkAction, _ settings: LinkSettings) -> ()
 
     private var callback: LinkCallback?
@@ -68,6 +70,15 @@ class LinkSettingsViewController: UITableViewController {
         }
     }
 
+    private func titleOfExistingContent() -> String {
+        var titleOfPost: String = ""
+        let permaLink = linkSettings.url
+        if let blog = blog, !permaLink.isEmpty {
+            titleOfPost = PostCoordinator.shared.titleOfPost(withPermaLink: linkSettings.url, in: blog) ?? ""
+        }
+        return titleOfPost
+    }
+
     private func setupViewModel() {
         ImmuTable.registerRows([EditableTextRow.self, SwitchRow.self, DestructiveButtonRow.self], tableView: tableView)
 
@@ -81,12 +92,18 @@ class LinkSettingsViewController: UITableViewController {
                                            value: linkSettings.openInNewWindow,
                                            onChange: editOpenInNewWindow)
 
+
+        let linkToExistingContentRow = EditableTextRow(title: NSLocalizedString("Link to existing content", comment: "Action. Label for navigate and display links to other posts on the site"),
+                                      value: titleOfExistingContent(),
+                                      action: selectExistingContent)
+
         let removeLinkRow = DestructiveButtonRow(title: NSLocalizedString("Remove Link", comment: "Label action for removing a link from the editor"),
                                               action: removeLink,
                                               accessibilityIdentifier: "RemoveLink")
 
         let editSection = ImmuTableSection(rows: [urlRow, textRow, openInNewWindowRow])
-        var sections = [editSection]
+        let linkSection = ImmuTableSection(rows: [linkToExistingContentRow])
+        var sections = [editSection, linkSection]
         if !linkSettings.isNewLink {
             sections.append(ImmuTableSection(rows: [removeLinkRow]))
         }
@@ -128,6 +145,25 @@ class LinkSettingsViewController: UITableViewController {
 
     private func removeLink(row: ImmuTableRow) {
         callback?(.remove, linkSettings)
+    }
+
+    private func selectExistingContent(row: ImmuTableRow) {
+        guard let blog = blog else {
+            return
+        }
+        let selectPostViewController = SelectPostViewController(blog: blog, selectedLink: linkSettings.url, callback: { [weak self] (url, title) in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf.linkSettings.url = url
+            if strongSelf.linkSettings.text.isEmpty {
+                strongSelf.linkSettings.text = title
+            }
+            strongSelf.navigationController?.popViewController(animated: true)
+            strongSelf.reloadViewModel()
+        })
+        selectPostViewController.title = NSLocalizedString("Link to existing content", comment: "Action. Label for navigate and display links to other posts on the site")
+        navigationController?.pushViewController(selectPostViewController, animated: true)
     }
 
     private func pushSettingsController(for row: EditableTextRow, hint: String? = nil, onValueChanged: @escaping SettingsTextChanged, mode: SettingsTextModes = .text) {

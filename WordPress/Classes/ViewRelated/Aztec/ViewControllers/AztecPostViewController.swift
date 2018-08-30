@@ -1995,6 +1995,7 @@ extension AztecPostViewController {
                 }
             })
         })
+        linkController.blog = self.post.blog
 
         let navigationController = UINavigationController(rootViewController: linkController)
         navigationController.modalPresentationStyle = .popover
