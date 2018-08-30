@@ -100,6 +100,8 @@ extension NSNotification.Name {
     ///
     func showHelpCenterIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
 
+        ZendeskUtils.configureViewController(controller)
+
         // Since user information is not needed to display the Help Center,
         // if a user identity has not been created, create an empty identity.
         if !ZendeskUtils.sharedInstance.haveUserIdentity {
@@ -123,6 +125,9 @@ extension NSNotification.Name {
     /// Displays the Zendesk New Request view from the given controller, for users to submit new tickets.
     ///
     func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
+
+        ZendeskUtils.configureViewController(controller)
+
         ZendeskUtils.createIdentity { success in
             guard success else {
                 return
@@ -140,6 +145,9 @@ extension NSNotification.Name {
     /// Displays the Zendesk Request List view from the given controller, allowing user to access their tickets.
     ///
     func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil) {
+
+        ZendeskUtils.configureViewController(controller)
+
         ZendeskUtils.createIdentity { success in
             guard success else {
                 return
@@ -430,8 +438,6 @@ private extension ZendeskUtils {
     // MARK: - View
 
     static func showZendeskView(_ zendeskView: UIViewController, from controller: UIViewController) {
-        ZendeskUtils.configureViewController(controller)
-
         if let controller = controller as? UINavigationController {
             controller.pushViewController(zendeskView, animated: true)
         } else {
