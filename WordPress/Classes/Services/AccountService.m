@@ -377,7 +377,10 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
             [ShareExtensionService configureShareExtensionUsername:defaultAccount.username];
 
             [NotificationSupportService insertContentExtensionToken:defaultAccount.authToken];
+            [NotificationSupportService insertContentExtensionUsername:defaultAccount.username];
+
             [NotificationSupportService insertServiceExtensionToken:defaultAccount.authToken];
+            [NotificationSupportService insertServiceExtensionUsername:defaultAccount.username];
         });
     }
     
