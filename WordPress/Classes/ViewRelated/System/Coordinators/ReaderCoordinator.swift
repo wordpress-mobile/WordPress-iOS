@@ -77,10 +77,7 @@ class ReaderCoordinator: NSObject {
         prepareToNavigate()
 
         let streamViewController = ReaderStreamViewController.controllerWithTopic(topic)
-
-        streamViewController.streamLoadFailureBlock = { [failureBlock] in
-            failureBlock?()
-        }
+        streamViewController.streamLoadFailureBlock = failureBlock
 
         readerSplitViewController.showDetailViewController(streamViewController, sender: nil)
         readerMenuViewController.deselectSelectedRow(animated: false)
@@ -92,10 +89,7 @@ class ReaderCoordinator: NSObject {
         let remote = ReaderTopicServiceRemote(wordPressComRestApi: WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress()))
         let slug = remote.slug(forTopicName: tagName) ?? tagName.lowercased()
         let controller = ReaderStreamViewController.controllerWithTagSlug(slug)
-
-        controller.streamLoadFailureBlock = { [failureBlock] in
-            failureBlock?()
-        }
+        controller.streamLoadFailureBlock = failureBlock
 
         readerSplitViewController.showDetailViewController(controller, sender: nil)
         readerMenuViewController.deselectSelectedRow(animated: false)
@@ -105,10 +99,7 @@ class ReaderCoordinator: NSObject {
         prepareToNavigate()
 
         let controller = ReaderStreamViewController.controllerWithSiteID(NSNumber(value: siteID), isFeed: isFeed)
-
-        controller.streamLoadFailureBlock = { [failureBlock] in
-            failureBlock?()
-        }
+        controller.streamLoadFailureBlock = failureBlock
 
         readerSplitViewController.showDetailViewController(controller, sender: nil)
         readerMenuViewController.deselectSelectedRow(animated: false)
