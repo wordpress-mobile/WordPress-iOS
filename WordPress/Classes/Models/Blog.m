@@ -112,7 +112,8 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
 
 - (BOOL)isAutomatedTransfer
 {
-    return [self getOptionValue:OptionsKeyIsAutomatedTransfer];
+    NSNumber *value = (NSNumber *)[self getOptionValue:OptionsKeyIsAutomatedTransfer];
+    return [value boolValue];
 }
 
 - (NSString *)icon

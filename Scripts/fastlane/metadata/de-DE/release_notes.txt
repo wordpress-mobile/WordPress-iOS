@@ -1,4 +1,3 @@
-Du kannst jetzt problemlos von WordPress.com in Safari zu den gleichen Inhalten in der WordPress for iOS-App wechseln. Achte nur auf das Banner oben auf WordPress.com-Seiten!
-Für kostenlose WordPress.com-Websites ist jetzt das Aktivitätsprotokoll verfügbar.
-Einige kleine UI-Verbesserungen.
-Viele Fehlerkorrekturen.
+Bilder können besser im Editor verwaltet werden. Egal, ob du eine Datei per Drag-and-drop verschiebst oder mit der Medienauswahl hinzufügst – es ist ganz einfach, Dateien hochzuladen und einzufügen.
+Durch kleine Verbesserungen wird die Benutzeroberfläche noch intuitiver. Wahrscheinlich wirst du diese Verbesserungen gar nicht bemerken – und das ist auch gut so!
+Fehlerbehebung.
