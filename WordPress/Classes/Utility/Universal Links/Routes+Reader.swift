@@ -56,11 +56,15 @@ extension ReaderRoute: NavigationAction {
             return
         }
 
-        coordinator.failureBlock = {
-            self.failAndBounce(values)
-        }
-
         coordinator.source = source
+
+        if source == nil {
+            // If we're not navigating internally,
+            // we want to bounce back to Safari on failure
+            coordinator.failureBlock = {
+                self.failAndBounce(values)
+            }
+        }
 
         switch self {
         case .root:
