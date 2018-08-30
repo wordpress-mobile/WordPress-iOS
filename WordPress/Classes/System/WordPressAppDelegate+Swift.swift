@@ -103,6 +103,7 @@ extension WordPressAppDelegate {
         guard AccountHelper.isLoggedIn,
             activity.activityType == NSUserActivityTypeBrowsingWeb,
             let url = activity.webpageURL else {
+                FailureNavigationAction().failAndBounce(activity.webpageURL)
                 return
         }
 

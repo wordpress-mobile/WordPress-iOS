@@ -28,6 +28,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     // MARK: - Properties & Accessors
 
+    // Callbacks
+    /// Called if the view controller's post fails to load
+    var postLoadFailureBlock: (() -> Void)? = nil
+
     // Footer views
     @IBOutlet fileprivate weak var footerView: UIView!
     @IBOutlet fileprivate weak var tagButton: UIButton!
@@ -71,6 +75,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     fileprivate let sharingController = PostSharingController()
 
     private let noResultsViewController = NoResultsViewController.controller()
+
+    private let readerLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.ReaderRoutes)
 
     @objc var currentPreferredStatusBarStyle = UIStatusBarStyle.lightContent {
         didSet {
@@ -324,6 +330,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             }, failure: {[weak self] (error: Error?) in
                 DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
                 self?.configureAndDisplayLoadingView(title: LoadingText.errorLoadingTitle)
+                self?.reportPostLoadFailure()
             }
         )
     }
@@ -933,6 +940,13 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         SearchManager.shared.indexItem(post)
     }
 
+    private func reportPostLoadFailure() {
+        postLoadFailureBlock?()
+
+        // We'll nil out the failure block so we don't perform multiple callbacks
+        postLoadFailureBlock = nil
+    }
+
     // MARK: - Analytics
 
     fileprivate func bumpStats() {
@@ -1167,12 +1181,10 @@ extension ReaderDetailViewController: ReaderCardDiscoverAttributionViewDelegate 
 // MARK: - UITextView/WPRichContentView Delegate Methods
 
 extension ReaderDetailViewController: WPRichContentViewDelegate {
-
     public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
         presentWebViewControllerWithURL(URL)
         return false
     }
-
 
     @available(iOS 10, *)
     public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
@@ -1181,12 +1193,13 @@ extension ReaderDetailViewController: WPRichContentViewDelegate {
             let frame = textView.frameForTextInRange(characterRange)
             let shareController = PostSharingController()
             shareController.shareURL(url: URL as NSURL, fromRect: frame, inView: textView, inViewController: self)
+        } else if readerLinkRouter.canHandle(url: URL) {
+            readerLinkRouter.handle(url: URL, shouldTrack: false, source: self)
         } else {
             presentWebViewControllerWithURL(URL)
         }
         return false
     }
-
 
     func richContentView(_ richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage) {
         // If we have gif data availible, present that
