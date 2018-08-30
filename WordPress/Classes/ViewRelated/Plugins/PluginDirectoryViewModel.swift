@@ -107,7 +107,7 @@ class PluginDirectoryViewModel: Observable {
     }
 
     private func installedRow(presenter: PluginPresenter & PluginListPresenter) -> ImmuTableRow? {
-        guard !isHostedAtWPCom(site: site) else {
+        guard BlogService.blog(with: site)?.isHostedAtWPcom == false else {
             // If it's a (probably) AT-eligible site, but not a Jetpack site yet, hide the "installed" row.
             return nil
         }
@@ -275,12 +275,6 @@ class PluginDirectoryViewModel: Observable {
             return nil
         }
         return Array(newest.prefix(6))
-    }
-
-    private func isHostedAtWPCom(site: JetpackSiteRef) -> Bool {
-        let service = BlogService.withMainContext()
-        let blog = service.blog(byBlogId: site.siteID as NSNumber, andUsername: site.username)
-        return blog?.isHostedAtWPcom ?? false
     }
 
     private func accessoryView(`for` directoryEntry: PluginDirectoryEntry) -> UIView {

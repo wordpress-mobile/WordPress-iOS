@@ -251,7 +251,7 @@ class AutomatedTransferHelper {
 
             ActionDispatcher.dispatch(PluginAction.receivePlugins(site: self.site, plugins: plugins))
             SVProgressHUD.dismiss()
-            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.PromptMessages.successMessage(self.plugin.name))))
+            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.PluginNameStrings.successMessage(self.plugin.name))))
         }, failure: { (error) in
             DDLogInfo("[AT] Failed to fetch plugins, error: \(error)")
 
