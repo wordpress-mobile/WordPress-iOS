@@ -46,10 +46,13 @@ extension MySitesRoute: NavigationAction {
         }
 
         guard let blog = blog(from: values) else {
-            coordinator.showMySites()
-            postFailureNotice(title: NSLocalizedString("Site not found",
-                                                       comment: "Error notice shown if the app can't find a specific site belonging to the user"))
             WPAppAnalytics.track(.deepLinkFailed, withProperties: ["route": path])
+
+            if failAndBounce(values) == false {
+                coordinator.showMySites()
+                postFailureNotice(title: NSLocalizedString("Site not found",
+                                                           comment: "Error notice shown if the app can't find a specific site belonging to the user"))
+            }
             return
         }
 
