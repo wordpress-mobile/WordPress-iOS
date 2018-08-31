@@ -84,6 +84,11 @@ struct DefaultContentCoordinator: ContentCoordinator {
     }
 
     func displayWebViewWithURL(_ url: URL) {
+        if UniversalLinkRouter(routes: UniversalLinkRouter.ReaderRoutes).canHandle(url: url) {
+            UniversalLinkRouter(routes: UniversalLinkRouter.ReaderRoutes).handle(url: url, source: controller)
+            return
+        }
+
         let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url)
         let navController = UINavigationController(rootViewController: webViewController)
         controller?.present(navController, animated: true, completion: nil)
