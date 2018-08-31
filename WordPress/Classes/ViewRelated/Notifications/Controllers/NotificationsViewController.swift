@@ -238,7 +238,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     fileprivate func decodeSelectedSegmentIndex(with coder: NSCoder) {
         restorableSelectedSegmentIndex = coder.decodeInteger(forKey: type(of: self).selectedSegmentIndexRestorationIdentifier)
 
-        if filterTabBar.selectedIndex != restorableSelectedSegmentIndex {
+        if let filterTabBar = filterTabBar, filterTabBar.selectedIndex != restorableSelectedSegmentIndex {
             filterTabBar.setSelectedIndex(restorableSelectedSegmentIndex, animated: false)
         }
     }
@@ -843,19 +843,6 @@ extension NotificationsViewController {
 
         selectFirstNotificationIfAppropriate()
     }
-
-//    @objc func segmentedControlDidChange(_ sender: UISegmentedControl) {
-//        selectedNotification = nil
-//
-//        let properties = [Stats.selectedFilter: filter.title]
-//        WPAnalytics.track(.notificationsTappedSegmentedControl, withProperties: properties)
-//
-//        updateUnreadNotificationsForSegmentedControlChange()
-//
-//        reloadResultsController()
-//
-//        selectFirstNotificationIfAppropriate()
-//    }
 
     @objc func selectFirstNotificationIfAppropriate() {
         // If we don't currently have a selected notification and there is a notification
