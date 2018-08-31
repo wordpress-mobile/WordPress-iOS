@@ -101,14 +101,14 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-post-status-sticky" translatesAutoresizingMaskIntoConstraints="NO" id="gZB-yx-pAm">
-                                        <rect key="frame" x="50.5" y="0.0" width="18" height="18"/>
+                                        <rect key="frame" x="59.5" y="0.0" width="18" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="18" id="6DJ-IO-Hwf"/>
                                             <constraint firstAttribute="width" constant="18" id="wgd-G9-rsS"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sticky" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TJC-fx-zKG">
-                                        <rect key="frame" x="71.5" y="2.5" width="35" height="14.5"/>
+                                        <rect key="frame" x="80.5" y="2.5" width="35" height="14.5"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -123,7 +123,7 @@
                                     <constraint firstAttribute="height" constant="18" id="ILf-yy-NWf">
                                         <variation key="heightClass=regular-widthClass=regular" constant="22"/>
                                     </constraint>
-                                    <constraint firstItem="gZB-yx-pAm" firstAttribute="leading" secondItem="Xhs-nZ-clP" secondAttribute="trailing" constant="3" id="NgY-da-ZWN"/>
+                                    <constraint firstItem="gZB-yx-pAm" firstAttribute="leading" secondItem="Xhs-nZ-clP" secondAttribute="trailing" constant="12" id="NgY-da-ZWN"/>
                                     <constraint firstItem="ed0-E7-1lw" firstAttribute="leading" secondItem="zle-VU-ygo" secondAttribute="leading" id="QAU-jj-6DZ"/>
                                     <constraint firstItem="TJC-fx-zKG" firstAttribute="leading" secondItem="gZB-yx-pAm" secondAttribute="trailing" constant="3" id="eUH-4i-Pd5"/>
                                     <constraint firstItem="TJC-fx-zKG" firstAttribute="centerY" secondItem="gZB-yx-pAm" secondAttribute="centerY" id="fUv-Z6-BXf"/>

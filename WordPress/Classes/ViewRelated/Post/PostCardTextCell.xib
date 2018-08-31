@@ -93,14 +93,14 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-post-status-sticky" translatesAutoresizingMaskIntoConstraints="NO" id="N66-bK-lCo">
-                                        <rect key="frame" x="50.5" y="0.0" width="18" height="18"/>
+                                        <rect key="frame" x="59.5" y="0.0" width="18" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="18" id="ZuZ-10-vI2"/>
                                             <constraint firstAttribute="height" constant="18" id="zPQ-bj-bTb"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sticky" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GWM-0Z-zAX">
-                                        <rect key="frame" x="71.5" y="1.5" width="35" height="14.5"/>
+                                        <rect key="frame" x="80.5" y="1.5" width="35" height="14.5"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -115,7 +115,7 @@
                                     <constraint firstAttribute="centerY" secondItem="q5D-nc-yvr" secondAttribute="centerY" id="ADt-mr-PBC"/>
                                     <constraint firstItem="q5D-nc-yvr" firstAttribute="leading" secondItem="38V-Vw-GfJ" secondAttribute="trailing" constant="3" id="B0Q-6z-ArY"/>
                                     <constraint firstAttribute="centerY" secondItem="38V-Vw-GfJ" secondAttribute="centerY" id="fLg-c6-hQc"/>
-                                    <constraint firstItem="N66-bK-lCo" firstAttribute="leading" secondItem="q5D-nc-yvr" secondAttribute="trailing" constant="3" id="mad-rD-A9w"/>
+                                    <constraint firstItem="N66-bK-lCo" firstAttribute="leading" secondItem="q5D-nc-yvr" secondAttribute="trailing" constant="12" id="mad-rD-A9w"/>
                                     <constraint firstItem="38V-Vw-GfJ" firstAttribute="leading" secondItem="Z3W-ou-g2J" secondAttribute="leading" id="mqd-xV-U6r"/>
                                     <constraint firstItem="N66-bK-lCo" firstAttribute="centerY" secondItem="q5D-nc-yvr" secondAttribute="centerY" id="oCf-b4-rrk"/>
                                     <constraint firstItem="GWM-0Z-zAX" firstAttribute="centerY" secondItem="N66-bK-lCo" secondAttribute="centerY" id="p8q-eK-WnV"/>
