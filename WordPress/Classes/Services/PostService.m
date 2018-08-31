@@ -538,7 +538,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     post.content = remotePost.content;
     post.status = remotePost.status;
     post.password = remotePost.password;
-    post.isStickyPost = remotePost.isStickyPost;
+    
     if (remotePost.postThumbnailID != nil) {
         post.featuredImage = [Media existingOrStubMediaWithMediaID: remotePost.postThumbnailID inBlog:post.blog];
     } else {
@@ -568,6 +568,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         postPost.postFormat = remotePost.format;
         postPost.tags = [remotePost.tags componentsJoinedByString:@","];
         postPost.postType = remotePost.type;
+        postPost.isStickyPost = remotePost.isStickyPost;
         [self updatePost:postPost withRemoteCategories:remotePost.categories];
 
         Coordinate *geolocation = nil;
@@ -635,7 +636,6 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     remotePost.authorAvatarURL = post.authorAvatarURL;
     remotePost.excerpt = post.mt_excerpt;
     remotePost.slug = post.wp_slug;
-    remotePost.isStickyPost = post.isStickyPost;
 
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;
@@ -648,6 +648,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         remotePost.tags = [postPost.tags componentsSeparatedByString:@","];
         remotePost.categories = [self remoteCategoriesForPost:postPost];
         remotePost.metadata = [self remoteMetadataForPost:postPost];
+        remotePost.isStickyPost = postPost.isStickyPost;
     }
 
     remotePost.isFeaturedImageChanged = post.isFeaturedImageChanged;

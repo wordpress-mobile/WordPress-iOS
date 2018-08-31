@@ -66,11 +66,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 @property (nonatomic, assign, readonly) BOOL hasFailedMedia;
 
 /**
- Used to store the sticky post property status
- */
-@property (nonatomic, assign) BOOL isStickyPost;
-
-/**
  *  @brief      Call this method to know whether this post has a revision or not.
  *
  *  @returns    YES if this post has a revision, NO otherwise.
