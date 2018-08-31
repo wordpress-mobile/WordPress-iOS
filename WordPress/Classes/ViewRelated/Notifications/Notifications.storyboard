@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="doV-5W-Rtg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="doV-5W-Rtg">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.9"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -11,7 +14,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="NotificationsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="doV-5W-Rtg" customClass="NotificationsViewController" customModule="WordPress" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="XCV-Uv-qac">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -21,7 +24,7 @@
                         </connections>
                     </tableView>
                     <connections>
-                        <outlet property="filtersSegmentedControl" destination="W2i-rX-Pc4" id="Ewf-g4-EIc"/>
+                        <outlet property="filterTabBar" destination="LBU-zb-iai" id="qqB-Tp-xXt"/>
                         <outlet property="inlinePromptSpaceConstraint" destination="MBK-Ez-h7B" id="NJj-XL-4AG"/>
                         <outlet property="inlinePromptView" destination="ZnY-3K-upT" id="lUG-fd-Stc"/>
                         <outlet property="tableHeaderView" destination="Uvo-9e-l6I" id="dxx-mK-msp"/>
@@ -42,26 +45,17 @@
                         <view contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pEF-oN-cih" userLabel="Filters View">
                             <rect key="frame" x="0.0" y="100" width="600" height="44"/>
                             <subviews>
-                                <segmentedControl opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="W2i-rX-Pc4">
-                                    <rect key="frame" x="20" y="8" width="560" height="29"/>
-                                    <segments>
-                                        <segment title="All"/>
-                                        <segment title="Unread"/>
-                                        <segment title="Comments"/>
-                                        <segment title="Follows"/>
-                                        <segment title="Likes"/>
-                                    </segments>
-                                    <connections>
-                                        <action selector="segmentedControlDidChange:" destination="doV-5W-Rtg" eventType="valueChanged" id="DJb-vF-ycf"/>
-                                    </connections>
-                                </segmentedControl>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LBU-zb-iai" customClass="FilterTabBar" customModule="WordPress" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
                             </subviews>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
-                                <constraint firstItem="W2i-rX-Pc4" firstAttribute="top" secondItem="pEF-oN-cih" secondAttribute="topMargin" id="5Uj-Sc-fd3"/>
-                                <constraint firstAttribute="trailingMargin" secondItem="W2i-rX-Pc4" secondAttribute="trailing" id="Hd9-33-6h0"/>
-                                <constraint firstItem="W2i-rX-Pc4" firstAttribute="leading" secondItem="pEF-oN-cih" secondAttribute="leadingMargin" id="ZuC-wG-15P"/>
-                                <constraint firstAttribute="bottomMargin" secondItem="W2i-rX-Pc4" secondAttribute="bottom" id="fLC-a5-Sxh"/>
+                                <constraint firstAttribute="bottom" secondItem="LBU-zb-iai" secondAttribute="bottom" id="6uy-tW-55g"/>
+                                <constraint firstItem="LBU-zb-iai" firstAttribute="leading" secondItem="pEF-oN-cih" secondAttribute="leading" id="9sh-kF-RQv"/>
+                                <constraint firstItem="LBU-zb-iai" firstAttribute="top" secondItem="pEF-oN-cih" secondAttribute="top" id="Ib2-7V-nPZ"/>
+                                <constraint firstAttribute="trailing" secondItem="LBU-zb-iai" secondAttribute="trailing" id="Zhl-Rn-WR6"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -91,14 +85,14 @@
                         <viewControllerLayoutGuide type="bottom" id="6LW-NS-qSh"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="lvM-1n-Dgf">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="t2r-NP-ili">
-                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <subviews>
                                     <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Dcn-Il-AtN" customClass="IntrinsicTableView" customModule="WordPress">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="580"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <gestureRecognizers/>
                                         <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>

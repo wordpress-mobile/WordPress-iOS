@@ -24,10 +24,9 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     ///
     @IBOutlet var tableHeaderView: UIView!
 
-    /// Filtering Segmented Control
+    /// Filtering Tab Bar
     ///
-    @IBOutlet var filtersSegmentedControl: UISegmentedControl!
-
+    @IBOutlet weak var filterTabBar: FilterTabBar!
     /// Inline Prompt Header View
     ///
     @IBOutlet var inlinePromptView: AppFeedbackPromptView!
@@ -116,7 +115,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         setupTableHandler()
         setupRefreshControl()
         setupNoResultsView()
-        setupFiltersSegmentedControl()
+        setupFilterBar()
 
         reloadTableViewPreservingSelection()
     }
@@ -239,8 +238,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     fileprivate func decodeSelectedSegmentIndex(with coder: NSCoder) {
         restorableSelectedSegmentIndex = coder.decodeInteger(forKey: type(of: self).selectedSegmentIndexRestorationIdentifier)
 
-        if let filtersSegmentedControl = filtersSegmentedControl {
-            filtersSegmentedControl.selectedSegmentIndex = restorableSelectedSegmentIndex
+        if let filterTabBar = filterTabBar {
+            filterTabBar.setSelectedIndex(restorableSelectedSegmentIndex)
         }
     }
 
@@ -424,16 +423,14 @@ private extension NotificationsViewController {
         noResultsViewController.delegate = self
     }
 
-    func setupFiltersSegmentedControl() {
-        precondition(filtersSegmentedControl != nil)
+    func setupFilterBar() {
+        filterTabBar.tintColor = WPStyleGuide.wordPressBlue()
+        filterTabBar.deselectedTabColor = WPStyleGuide.greyDarken10()
+        filterTabBar.dividerColor = WPStyleGuide.greyLighten20()
 
-        for filter in Filter.allFilters {
-            filtersSegmentedControl.setTitle(filter.title, forSegmentAt: filter.rawValue)
-        }
-
-        WPStyleGuide.Notifications.configureSegmentedControl(filtersSegmentedControl)
-
-        filtersSegmentedControl.selectedSegmentIndex = restorableSelectedSegmentIndex
+        filterTabBar.items = Filter.allFilters.map { $0.title }
+//        filterTabBar.setSelectedIndex(restorableSelectedSegmentIndex)
+        filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 }
 
@@ -834,7 +831,8 @@ extension NotificationsViewController: NetworkStatusDelegate {
 // MARK: - UISegmentedControl Methods
 //
 extension NotificationsViewController {
-    @objc func segmentedControlDidChange(_ sender: UISegmentedControl) {
+
+    @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         selectedNotification = nil
 
         let properties = [Stats.selectedFilter: filter.title]
@@ -846,6 +844,19 @@ extension NotificationsViewController {
 
         selectFirstNotificationIfAppropriate()
     }
+
+//    @objc func segmentedControlDidChange(_ sender: UISegmentedControl) {
+//        selectedNotification = nil
+//
+//        let properties = [Stats.selectedFilter: filter.title]
+//        WPAnalytics.track(.notificationsTappedSegmentedControl, withProperties: properties)
+//
+//        updateUnreadNotificationsForSegmentedControlChange()
+//
+//        reloadResultsController()
+//
+//        selectFirstNotificationIfAppropriate()
+//    }
 
     @objc func selectFirstNotificationIfAppropriate() {
         // If we don't currently have a selected notification and there is a notification
@@ -1512,11 +1523,11 @@ private extension NotificationsViewController {
 
     var filter: Filter {
         get {
-            let selectedIndex = filtersSegmentedControl?.selectedSegmentIndex ?? Filter.none.rawValue
+            let selectedIndex = filterTabBar?.selectedIndex ?? Filter.none.rawValue
             return Filter(rawValue: selectedIndex) ?? .none
         }
         set {
-            filtersSegmentedControl?.selectedSegmentIndex = newValue.rawValue
+            filterTabBar?.setSelectedIndex(newValue.rawValue)
             reloadResultsController()
         }
     }
