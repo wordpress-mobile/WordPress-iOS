@@ -189,6 +189,7 @@ extension NSNotification.Name {
         }
 
         ZDKPushProvider(zendesk: zendeskInstance).unregisterForPush()
+        DDLogInfo("Zendesk successfully unregistered stored device.")
     }
 
     // MARK: - Push Notifications
