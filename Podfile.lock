@@ -169,7 +169,7 @@ DEPENDENCIES:
   - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `8d412d58945d0cc25791415651a5a63fd57eb9c6`)
   - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `8d412d58945d0cc25791415651a5a63fd57eb9c6`)
   - WordPressAuthenticator (= 1.0.6)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `add/reader-post-by-url`)
+  - WordPressKit (= 1.4.0-beta.2)
   - WordPressShared (= 1.0.10)
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, commit `7a5b1a3fb44f62416fbc2e5f0de623b87b613aae`)
   - WPMediaPicker (= 1.3)
@@ -205,6 +205,7 @@ SPEC REPOS:
     - SVProgressHUD
     - UIDeviceIdentifier
     - WordPressAuthenticator
+    - WordPressKit
     - WordPressShared
     - WPMediaPicker
     - wpxmlrpc
@@ -220,9 +221,6 @@ EXTERNAL SOURCES:
   WordPress-Editor-iOS:
     :commit: 8d412d58945d0cc25791415651a5a63fd57eb9c6
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
-  WordPressKit:
-    :branch: add/reader-post-by-url
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressUI:
     :commit: 7a5b1a3fb44f62416fbc2e5f0de623b87b613aae
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
@@ -237,9 +235,6 @@ CHECKOUT OPTIONS:
   WordPress-Editor-iOS:
     :commit: 8d412d58945d0cc25791415651a5a63fd57eb9c6
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
-  WordPressKit:
-    :commit: f30580140dcd38ce49e2b2fb45fe19ac544fbdfc
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressUI:
     :commit: 7a5b1a3fb44f62416fbc2e5f0de623b87b613aae
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
@@ -282,6 +277,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: 064d247124fcb8c03d11277b454eff98c3589473
+PODFILE CHECKSUM: 48a95b64f2aa8a6e2faef8ffde4fa55fd70effd4
 
 COCOAPODS: 1.5.3
