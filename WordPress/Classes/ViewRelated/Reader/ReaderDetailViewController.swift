@@ -104,6 +104,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
     }
 
+    open var postURL: URL? = nil
+
     fileprivate var isLoaded: Bool {
         return post != nil
     }
@@ -217,6 +219,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         // Hide the featured image and its padding until we know there is one to load.
         featuredImageView.isHidden = true
         featuredImageBottomPaddingView.isHidden = true
+
+        noResultsViewController.delegate = self
 
         // Styles
         applyStyles()
@@ -344,6 +348,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
     @objc open func setupWithPostURL(_ postURL: URL) {
+        self.postURL = postURL
+
         configureAndDisplayLoadingView(title: LoadingText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
 
         textView.alpha = 0.0
@@ -358,7 +364,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
                             self?.post = post
         }, failure: {[weak self] (error: Error?) in
             DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
-            self?.configureAndDisplayLoadingView(title: LoadingText.errorLoadingTitle)
+            self?.configureAndDisplayLoadingViewWithWebAction(title: LoadingText.errorLoadingTitle)
         })
     }
 
@@ -1183,6 +1189,14 @@ private extension ReaderDetailViewController {
         showLoadingView()
     }
 
+    func configureAndDisplayLoadingViewWithWebAction(title: String, accessoryView: UIView? = nil) {
+        noResultsViewController.configure(title: title,
+                                          buttonTitle: LoadingText.errorLoadingPostURLButtonTitle,
+                                          image: "wp-illustration-empty-results",
+                                          accessoryView: accessoryView)
+        showLoadingView()
+    }
+
     func showLoadingView() {
         hideLoadingView()
         addChildViewController(noResultsViewController)
@@ -1197,6 +1211,7 @@ private extension ReaderDetailViewController {
     struct LoadingText {
         static let loadingTitle = NSLocalizedString("Loading Post...", comment: "Text displayed while loading a post.")
         static let errorLoadingTitle = NSLocalizedString("Error Loading Post", comment: "Text displayed when load post fails.")
+        static let errorLoadingPostURLButtonTitle = NSLocalizedString("Open in browser", comment: "Button title to load a post in an in-app web view")
     }
 
 }
@@ -1227,7 +1242,7 @@ extension ReaderDetailViewController: WPRichContentViewDelegate {
             shareController.shareURL(url: URL as NSURL, fromRect: frame, inView: textView, inViewController: self)
         } else if readerLinkRouter.canHandle(url: URL) {
             readerLinkRouter.handle(url: URL, shouldTrack: false, source: self)
-        } else if URL.hasWordPressDotComHostname {
+        } else if URL.isWordPressDotComPost {
             presentReaderDetailViewControllerWithURL(URL)
         } else {
             presentWebViewControllerWithURL(URL)
@@ -1381,5 +1396,16 @@ extension ReaderDetailViewController: UIViewControllerTransitioningDelegate {
         }
 
         return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+/// MARK: - NoResultsViewControllerDelegate
+///
+extension ReaderDetailViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        if let postURL = postURL {
+            presentWebViewControllerWithURL(postURL)
+            navigationController?.popViewController(animated: true)
+        }
     }
 }
