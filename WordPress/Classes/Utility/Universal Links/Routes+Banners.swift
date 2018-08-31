@@ -18,7 +18,7 @@ struct AppBannerRoute: Route {
 }
 
 extension AppBannerRoute: NavigationAction {
-    func perform(_ values: [String: String]?) {
+    func perform(_ values: [String: String]?, source: UIViewController? = nil) {
         guard let fragmentValue = values?[MatchedRouteURLComponentKey.fragment.rawValue],
         let fragment = fragmentValue.removingPercentEncoding else {
             return

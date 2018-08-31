@@ -7,7 +7,7 @@ private struct TestRoute: Route {
 }
 
 private struct TestAction: NavigationAction {
-    func perform(_ values: [String: String]?) {}
+    func perform(_ values: [String: String]?, source: UIViewController?) {}
 }
 
 class RouteMatcherTests: XCTestCase {
