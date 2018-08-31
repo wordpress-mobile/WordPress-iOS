@@ -407,10 +407,9 @@ FeaturedImageViewControllerDelegate>
                                   @(PostSettingsSectionMoreOptions)]
                                 mutableCopy];
     
-    // Self-hosted non-Jetpack blogs have no capabilities,
-    // so we'll remove the Sticky Post section.
+    // Remove the Mark as Sticky section if the blog is self-hosted non-Jetpack
     //
-    if (self.post.blog.capabilities == nil) {
+    if (![self.post.blog supports:BlogFeatureWPComRESTAPI]) {
         [sections removeObject:stickyPostSection];
     }
     self.sections = [sections copy];
