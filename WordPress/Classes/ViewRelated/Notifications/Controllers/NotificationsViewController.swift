@@ -238,8 +238,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     fileprivate func decodeSelectedSegmentIndex(with coder: NSCoder) {
         restorableSelectedSegmentIndex = coder.decodeInteger(forKey: type(of: self).selectedSegmentIndexRestorationIdentifier)
 
-        if let filterTabBar = filterTabBar {
-            filterTabBar.setSelectedIndex(restorableSelectedSegmentIndex)
+        if filterTabBar.selectedIndex != restorableSelectedSegmentIndex {
+            filterTabBar.setSelectedIndex(restorableSelectedSegmentIndex, animated: false)
         }
     }
 
@@ -429,7 +429,6 @@ private extension NotificationsViewController {
         filterTabBar.dividerColor = WPStyleGuide.greyLighten20()
 
         filterTabBar.items = Filter.allFilters.map { $0.title }
-//        filterTabBar.setSelectedIndex(restorableSelectedSegmentIndex)
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 }
