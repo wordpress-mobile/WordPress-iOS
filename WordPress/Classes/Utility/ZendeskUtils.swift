@@ -182,7 +182,7 @@ extension NSNotification.Name {
 
     /// Unregisters the device ID from Zendesk for push notifications.
     ///
-    static func unregisterDevice(_ identifier: String) {
+    static func unregisterDevice() {
         guard let zendeskInstance = Zendesk.instance else {
             DDLogInfo("No Zendesk instance. Unable to unregister device.")
             return
