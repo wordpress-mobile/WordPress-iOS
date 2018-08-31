@@ -32,7 +32,10 @@ def shared_test_pods
     pod 'OCMock', '~> 3.4'
 end
 
-
+def aztec
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '8d412d58945d0cc25791415651a5a63fd57eb9c6'
+    pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '8d412d58945d0cc25791415651a5a63fd57eb9c6'
+end
 
 ## WordPress iOS
 ## =============
@@ -69,8 +72,7 @@ target 'WordPress' do
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '1.3'
     pod 'WordPressAuthenticator', '1.0.6'
-    pod 'WordPress-Aztec-iOS', '=1.0.0-beta.25'
-	  pod 'WordPress-Editor-iOS', '=1.0.0-beta.25'
+    aztec
     pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
 
     target 'WordPressTest' do
@@ -90,8 +92,7 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
 
-        pod 'WordPress-Aztec-iOS', '=1.0.0-beta.25'
-        pod 'WordPress-Editor-iOS', '=1.0.0-beta.25'
+        aztec
         pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
         pod 'Gridicons', '0.16'
     end
@@ -106,8 +107,7 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
 
-        pod 'WordPress-Aztec-iOS', '=1.0.0-beta.25'
-        pod 'WordPress-Editor-iOS', '=1.0.0-beta.25'
+        aztec
         pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
         pod 'Gridicons', '0.16'
     end
@@ -123,7 +123,6 @@ target 'WordPress' do
         shared_with_networking_pods
     end
 end
-
 
 
 ## WordPress.com Stats

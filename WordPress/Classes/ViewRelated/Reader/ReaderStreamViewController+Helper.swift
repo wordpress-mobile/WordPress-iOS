@@ -4,7 +4,7 @@ extension ReaderStreamViewController {
     // Convenience type for Reader's headers
     typealias ReaderHeader = UIView & ReaderStreamHeader
 
-    // A simple struct defining a title and message for use with a WPNoResultsView
+    // A simple struct defining a title and message for use with a NoResultsViewController
     public struct NoResultsResponse {
         var title: String
         var message: String
