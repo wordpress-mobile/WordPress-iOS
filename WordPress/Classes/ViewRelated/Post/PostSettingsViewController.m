@@ -765,9 +765,9 @@ FeaturedImageViewControllerDelegate>
     
     SwitchTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewStickyPostCellIdentifier];
     cell.name = NSLocalizedString(@"Stick post to the front page", @"This is the cell title.");
-    cell.on = self.apost.isStickyPost;
+    cell.on = self.post.isStickyPost;
     cell.onChange = ^(BOOL newValue) {
-        weakSelf.apost.isStickyPost = newValue;
+        weakSelf.post.isStickyPost = newValue;
     };
     return cell;
 }

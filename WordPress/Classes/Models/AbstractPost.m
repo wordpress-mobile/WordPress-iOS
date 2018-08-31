@@ -14,7 +14,6 @@
 @dynamic metaPublishImmediately;
 @dynamic comments;
 @dynamic featuredImage;
-@dynamic isStickyPost;
 
 @synthesize restorableStatus;
 
@@ -599,10 +598,6 @@
     if (!([self.wp_slug length] == 0 && [original.wp_slug length] == 0)
         && (![self.wp_slug isEqual:original.wp_slug]))
     {
-        return YES;
-    }
-    
-    if (self.isStickyPost != original.isStickyPost) {
         return YES;
     }
 

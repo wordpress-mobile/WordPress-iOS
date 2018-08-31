@@ -347,9 +347,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 
 - (void)configureStickyPost
 {
-    AbstractPost *post = [self.post latest];
-    
-    self.stickyLabel.hidden = !post.isStickyPost;
+    self.stickyLabel.hidden = !self.post.isStickyPost;
     self.stickyImageView.hidden = self.stickyLabel.hidden;
 }
 
