@@ -51,6 +51,10 @@ class MediaPreviewHelper: NSObject {
             let imageController =  WPImageViewController(asset: phasset)
             imageController.shouldDismissWithGestures = false
             return imageController
+        } else if let mediaAsset = asset as? MediaExternalAsset {
+            let imageController =  WPImageViewController(externalMediaURL: mediaAsset.URL)
+            imageController.shouldDismissWithGestures = false
+            return imageController
         }
 
         return nil
