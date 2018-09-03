@@ -476,6 +476,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 - (ReaderCoordinator *)readerCoordinator
 {
     return [[ReaderCoordinator alloc] initWithReaderNavigationController:self.readerNavigationController
+                                               readerSplitViewController:self.readerSplitViewController
                                                 readerMenuViewController:self.readerMenuViewController];
 }
 

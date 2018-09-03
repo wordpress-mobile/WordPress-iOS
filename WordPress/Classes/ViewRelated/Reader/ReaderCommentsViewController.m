@@ -457,7 +457,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 {
     UIView *loadingAccessoryView = nil;
     if (self.isLoadingPost || self.syncHelper.isSyncing) {
-        loadingAccessoryView = [self.noResultsViewController loadingAccessoryView];
+        loadingAccessoryView = [NoResultsViewController loadingAccessoryView];
     }
     return loadingAccessoryView;
 }
