@@ -100,7 +100,6 @@ struct TimeZoneSelectorViewModel: Observable {
 
     func noResultsAccessoryView() -> UIView {
         let animatedBox = WPAnimatedBox()
-        animatedBox.animate(afterDelay: 0.1)
         return animatedBox
     }
 
