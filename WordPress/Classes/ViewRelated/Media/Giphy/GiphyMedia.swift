@@ -84,3 +84,11 @@ extension GiphyMedia: WPMediaAsset {
         return String(kUTTypeGIF)
     }
 }
+
+//// MARK: - MediaExternalAsset conformance
+//
+extension GiphyMedia: MediaExternalAsset {
+    var URL: URL {
+        return images.previewURL
+    }
+}
