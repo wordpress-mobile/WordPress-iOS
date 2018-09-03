@@ -1,5 +1,5 @@
 
-class SnippetsContentStyles: FormattableContentStyles {
+class SnipetsContentStyles: FormattableContentStyles {
     var attributes: [NSAttributedStringKey: Any] {
         return WPStyleGuide.Notifications.snippetRegularStyle
     }

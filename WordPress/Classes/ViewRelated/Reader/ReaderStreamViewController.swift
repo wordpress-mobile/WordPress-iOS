@@ -22,6 +22,9 @@ import WordPressFlux
 
     // MARK: - Properties
 
+    /// Called if the stream or tag fails to load
+    var streamLoadFailureBlock: (() -> Void)? = nil
+
     fileprivate var tableView: UITableView!
     fileprivate var refreshControl: UIRefreshControl!
     fileprivate var syncHelper: WPContentSyncHelper!
@@ -298,6 +301,7 @@ import WordPressFlux
                 guard let objectID = objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                     DDLogError("Reader: Error retriving an existing site topic by its objectID")
                     self?.displayLoadingStreamFailed()
+                    self?.reportStreamLoadFailure()
                     return
                 }
                 self?.readerTopic = topic
@@ -305,6 +309,7 @@ import WordPressFlux
             },
             failure: { [weak self] (error: Error?) in
                 self?.displayLoadingStreamFailed()
+                self?.reportStreamLoadFailure()
             })
     }
 
@@ -324,6 +329,7 @@ import WordPressFlux
                 guard let objectID = objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                     DDLogError("Reader: Error retriving an existing tag topic by its objectID")
                     self?.displayLoadingStreamFailed()
+                    self?.reportStreamLoadFailure()
                     return
                 }
                 self?.readerTopic = topic
@@ -331,6 +337,7 @@ import WordPressFlux
             },
             failure: { [weak self] (error: Error?) in
                 self?.displayLoadingStreamFailed()
+                self?.reportStreamLoadFailure()
             })
     }
 
@@ -1172,7 +1179,15 @@ extension ReaderStreamViewController: WPContentSyncHelperDelegate {
         if let count = content.content?.count,
             count == 0 {
             displayLoadingStreamFailed()
+            reportStreamLoadFailure()
         }
+    }
+
+    fileprivate func reportStreamLoadFailure() {
+        streamLoadFailureBlock?()
+
+        // We'll nil out the failure block so we don't perform multiple callbacks
+        streamLoadFailureBlock = nil
     }
 }
 
@@ -1428,7 +1443,7 @@ extension ReaderStreamViewController: SearchableActivityConvertable {
 private extension ReaderStreamViewController {
 
     func displayLoadingStream() {
-        configureAndDisplayResultsStatus(title: ResultsStatusText.loadingStreamTitle, accessoryView: resultsStatusView.loadingAccessoryView())
+        configureAndDisplayResultsStatus(title: ResultsStatusText.loadingStreamTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
     }
 
     func displayLoadingStreamFailed() {
@@ -1441,7 +1456,7 @@ private extension ReaderStreamViewController {
         }
 
         tableView.tableHeaderView?.isHidden = true
-        configureAndDisplayResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: resultsStatusView.loadingAccessoryView())
+        configureAndDisplayResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
     }
 
     func displayNoResultsView() {
