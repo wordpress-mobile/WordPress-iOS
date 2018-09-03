@@ -13,15 +13,11 @@ extension ReaderStreamViewController {
     func checkNewsCardAvailability(topic: ReaderAbstractTopic) {
         let containerIdentifier = Identifier(value: topic.title)
         let mustBadge = news.shouldPresentCard(containerIdentifier: containerIdentifier)
-        if mustBadge {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                NotificationCenter.default.post(name: NSNotification.NewsCardAvailable, object: nil)
-            })
-        } else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                NotificationCenter.default.post(name: NSNotification.NewsCardNotAvailable, object: nil)
-            })
-        }
+        let notificationName: NSNotification.Name = mustBadge ? .NewsCardAvailable : .NewsCardNotAvailable
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+            NotificationCenter.default.post(name: notificationName, object: nil)
+        })
     }
 
     /// Returns the ReaderStreamHeader appropriate for a particular ReaderTopic, including News Card, or nil if there is not one.
