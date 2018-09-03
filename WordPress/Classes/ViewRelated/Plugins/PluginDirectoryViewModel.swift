@@ -96,7 +96,7 @@ class PluginDirectoryViewModel: Observable {
 
         if isFetching(for: query) {
             model = NoResultsViewController.Model(title: NSLocalizedString("Loading plugins...", comment: "Messaged displayed when fetching plugins."),
-                                                  accessoryView: noResultsView.loadingAccessoryView())
+                                                  accessoryView: NoResultsViewController.loadingAccessoryView())
         } else {
             model = NoResultsViewController.Model(title: NSLocalizedString("Error loading plugins", comment: "Messaged displayed when fetching plugins failed."),
                                                   buttonText: NSLocalizedString("Try again", comment: "Button that lets users try to reload the plugin directory after loading failure"))
@@ -107,6 +107,12 @@ class PluginDirectoryViewModel: Observable {
     }
 
     private func installedRow(presenter: PluginPresenter & PluginListPresenter) -> ImmuTableRow? {
+        guard BlogService.blog(with: site)?.isHostedAtWPcom == false else {
+            // If it's a (probably) AT-eligible site, but not a Jetpack site yet, hide the "installed" row.
+            return nil
+        }
+
+
         let title = NSLocalizedString("Installed", comment: "Header of section in Plugin Directory showing installed plugins")
         let secondaryTitle = NSLocalizedString("Manage", comment: "Button leading to a screen where users can manage their installed plugins")
         let query = PluginQuery.all(site: site)
