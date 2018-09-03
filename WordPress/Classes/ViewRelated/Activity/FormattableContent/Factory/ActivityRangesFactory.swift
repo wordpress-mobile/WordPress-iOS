@@ -48,7 +48,7 @@ struct ActivityRangesFactory: FormattableRangesFactory {
     }
 
     private static func createCommentRange(with dictionary: [String: AnyObject], url: URL?, and range: NSRange) -> ActivityCommentRange? {
-        guard let postID = dictionary[RangeKeys.postId] as? Int,
+        guard let postID = dictionary[RangeKeys.rootId] as? Int,
             let commentID = dictionary[RangeKeys.id] as? Int,
             let siteId = dictionary[RangeKeys.siteId] as? Int,
             let url = url else {
@@ -76,7 +76,7 @@ private enum RangeKeys {
     static let uri = "uri"
     static let id = "id"
     static let siteId = "site_id"
-    static let postId = "post_id"
+    static let rootId = "root_id"
     static let slug = "slug"
     static let siteSlug = "site_slug"
 }
