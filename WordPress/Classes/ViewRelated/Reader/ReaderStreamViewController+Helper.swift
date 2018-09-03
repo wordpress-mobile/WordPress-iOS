@@ -14,12 +14,6 @@ extension ReaderStreamViewController {
         let containerIdentifier = Identifier(value: topic.title)
         let mustBadge = news.shouldPresentCard(containerIdentifier: containerIdentifier)
         if mustBadge {
-            print("===================")
-            print("===================")
-            print("===================")
-            print("Checking news card")
-            print("===================")
-
             DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
                 NotificationCenter.default.post(name: NSNotification.NewsCardAvailable, object: nil)
             })
