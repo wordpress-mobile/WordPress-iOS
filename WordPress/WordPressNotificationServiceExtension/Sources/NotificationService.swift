@@ -34,9 +34,18 @@ class NotificationService: UNNotificationServiceExtension {
         guard let notificationContent = self.bestAttemptContent,
             let apsAlert = notificationContent.apsAlert,
             let noteID = notificationContent.noteID,
+            let notificationType = notificationContent.type,
+            let notificationKind = NotificationKind(rawValue: notificationType),
             token != nil else {
 
             contentHandler(request.content)
+            return
+        }
+
+        guard NotificationKind.isSupportedByRichNotifications(notificationKind) else {
+            tracks.trackNotificationDiscarded(notificationType: notificationType)
+
+            contentHandler(notificationContent)
             return
         }
 
@@ -54,8 +63,7 @@ class NotificationService: UNNotificationServiceExtension {
 
             guard let remoteNotifications = notifications,
                 remoteNotifications.count == 1,
-                let notification = remoteNotifications.first,
-                notification.kind == .comment else {
+                let notification = remoteNotifications.first else {
 
                 return
             }
