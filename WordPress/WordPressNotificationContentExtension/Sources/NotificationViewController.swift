@@ -101,7 +101,7 @@ private extension NotificationViewController {
     private func readExtensionUsername() -> String? {
         guard
             let username = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationContentExtensionKeychainUsernameKey,
-                                                                         andServiceName: WPNotificationServiceExtensionKeychainServiceName,
+                                                                         andServiceName: WPNotificationContentExtensionKeychainServiceName,
                                                                          accessGroup: WPAppKeychainAccessGroup)
             else
         {
