@@ -9684,9 +9684,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = WordPressNotificationContentExtension/WordPressNotificationContentExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -9732,10 +9730,8 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = WordPressNotificationContentExtension/WordPressNotificationContentExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc. (PZYM8XX95Q)";
-				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -9777,10 +9773,8 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "WordPressNotificationContentExtension/WordPressNotificationContentExtension-Internal.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
-				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 99KV9Z6BKV;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -9822,10 +9816,8 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "WordPressNotificationContentExtension/WordPressNotificationContentExtension-Alpha.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
-				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 99KV9Z6BKV;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -9867,9 +9859,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = WordPressNotificationServiceExtension/WordPressNotificationServiceExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -9915,10 +9905,8 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = WordPressNotificationServiceExtension/WordPressNotificationServiceExtension.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc. (PZYM8XX95Q)";
-				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = PZYM8XX95Q;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -9960,10 +9948,8 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "WordPressNotificationServiceExtension/WordPressNotificationServiceExtension-Internal.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
-				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 99KV9Z6BKV;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -9979,7 +9965,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.internal.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "WordPress Internal Notification Service Extension";
+				PROVISIONING_PROFILE_SPECIFIER = "WordPress Internal Notification Service Distrib";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
@@ -10005,10 +9991,8 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = "WordPressNotificationServiceExtension/WordPressNotificationServiceExtension-Alpha.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
-				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 99KV9Z6BKV;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -10024,7 +10008,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.alpha.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "WP Alpha Notification Service Extension";
+				PROVISIONING_PROFILE_SPECIFIER = "WordPress Alpha Notification Service Distribution";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
