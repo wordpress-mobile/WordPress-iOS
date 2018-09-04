@@ -933,16 +933,6 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     }
 }
 
--(void)activateReaderBadge
-{
-    NSLog(@"activating reader badge");
-}
-
--(void)deactivateReaderBadge
-{
-    NSLog(@"deactivating reader badge");
-}
-
 #pragma mark - NSObject(NSKeyValueObserving) Helpers
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
