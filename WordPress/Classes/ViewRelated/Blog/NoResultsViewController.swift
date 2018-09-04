@@ -44,7 +44,14 @@ import UIKit
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         configureView()
+        startAnimatingIfNeeded()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        stopAnimatingIfNeeded()
     }
 
     override func didMove(toParentViewController parent: UIViewController?) {
@@ -167,17 +174,17 @@ import UIKit
     }
 
     /// Public class method to get an animated box to show while loading.
+    /// NB : the current implementation vends a WPAnimatedBox instance, which should be stopped via suspendAnimation.
     ///
     @objc class func loadingAccessoryView() -> UIView {
         let boxView = WPAnimatedBox()
-        boxView.animate(afterDelay: 0.3)
         return boxView
     }
 
-    /// Public method to always hide the image view.
+    /// Public method to hide/show the image view.
     ///
-    func hideImageView() {
-        hideImage = true
+    @objc func hideImageView(_ hide: Bool = true) {
+        hideImage = hide
     }
 
 }
@@ -317,4 +324,19 @@ private extension NoResultsViewController {
         return String(format: buttonIdFormat, string)
     }
 
+    // MARK: - `WPAnimatedBox` resource management
+
+    private func startAnimatingIfNeeded() {
+        guard let animatedBox = accessorySubview as? WPAnimatedBox else {
+            return
+        }
+        animatedBox.animate(afterDelay: 0.1)
+    }
+
+    private func stopAnimatingIfNeeded() {
+        guard let animatedBox = accessorySubview as? WPAnimatedBox else {
+            return
+        }
+        animatedBox.suspendAnimation()
+    }
 }
