@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithAsset:(PHAsset *)asset;
 - (instancetype)initWithGifData:(NSData *)data;
 - (instancetype)initWithExternalMediaURL:(NSURL *)url;
+- (instancetype)initWithExternalMediaURL:(NSURL *)url andAsset:(id<WPMediaAsset>)asset;
 
 - (instancetype)initWithImage:(nullable UIImage *)image andURL:(nullable NSURL *)url;
 - (instancetype)initWithImage:(nullable UIImage *)image andMedia:(nullable Media *)media;
