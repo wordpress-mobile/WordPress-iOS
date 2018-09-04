@@ -64,8 +64,8 @@ class ActivityDetailViewController: UIViewController {
             return
         }
 
-        textLabel.isHidden = showFormattedText
-        textView.isHidden = !showFormattedText
+        textLabel.isHidden = true
+        textView.isHidden = false
 
         textView.textContainerInset = .zero
         textView.textContainer.lineFragmentPadding = 0
