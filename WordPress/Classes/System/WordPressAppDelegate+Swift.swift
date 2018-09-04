@@ -383,12 +383,20 @@ extension WordPressAppDelegate {
         let accountService = AccountService(managedObjectContext: context)
 
         if let account = accountService.defaultWordPressComAccount() {
-            NotificationSupportService.insertExtensionToken(account.authToken)
+            NotificationSupportService.insertContentExtensionToken(account.authToken)
+            NotificationSupportService.insertContentExtensionUsername(account.username)
+
+            NotificationSupportService.insertServiceExtensionToken(account.authToken)
+            NotificationSupportService.insertServiceExtensionUsername(account.username)
         }
     }
 
     @objc
     func removeNotificationExtensionConfiguration() {
-        NotificationSupportService.deleteExtensionToken()
+        NotificationSupportService.deleteContentExtensionToken()
+        NotificationSupportService.deleteContentExtensionUsername()
+
+        NotificationSupportService.deleteServiceExtensionToken()
+        NotificationSupportService.deleteServiceExtensionUsername()
     }
 }
