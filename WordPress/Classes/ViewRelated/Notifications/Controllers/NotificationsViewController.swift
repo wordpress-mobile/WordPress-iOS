@@ -923,13 +923,8 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         let deletionRequest         = deletionRequestForNoteWithID(note.objectID)
         let isLastRow               = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
 
-        if FeatureFlag.extractNotifications.enabled {
-            cell.attributedSubject = note.renderSubject()
-            cell.attributedSnippet = note.renderSnippet()
-        } else {
-            cell.attributedSubject      = note.subjectBlock?.attributedSubjectText
-            cell.attributedSnippet      = note.snippetBlock?.attributedSnippetText
-        }
+        cell.attributedSubject = note.renderSubject()
+        cell.attributedSnippet = note.renderSnippet()
         cell.read                   = note.read
         cell.noticon                = note.noticon
         cell.unapproved             = note.isUnapprovedComment
@@ -954,20 +949,12 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         if UIView.userInterfaceLayoutDirection(for: view.semanticContentAttribute) == .leftToRight {
             cell.leftButtons = leadingButtons(note: note)
             cell.leftExpansion.buttonIndex = leadingExpansionButton
-            if FeatureFlag.extractNotifications.enabled {
-                cell.rightButtons = trailingButtons(note: note)
-            } else {
-                cell.rightButtons = old_trailingButtons(note: note)
-            }
+            cell.rightButtons = trailingButtons(note: note)
             cell.rightExpansion.buttonIndex = trailingExpansionButton
         } else {
             cell.rightButtons = leadingButtons(note: note)
             cell.rightExpansion.buttonIndex = trailingExpansionButton
-            if FeatureFlag.extractNotifications.enabled {
-                cell.leftButtons = trailingButtons(note: note)
-            } else {
-                cell.leftButtons = old_trailingButtons(note: note)
-            }
+            cell.leftButtons = trailingButtons(note: note)
             cell.leftExpansion.buttonIndex = trailingExpansionButton
         }
     }

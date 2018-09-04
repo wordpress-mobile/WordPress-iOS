@@ -292,11 +292,7 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
 
         setupSeparators(cell, indexPath: indexPath)
 
-        if FeatureFlag.extractNotifications.enabled {
-            setup(cell, withContentGroupAt: indexPath)
-        } else {
-            setup(cell, withBlockGroupAt: indexPath)
-        }
+        setup(cell, withContentGroupAt: indexPath)
 
         return cell
     }
@@ -329,14 +325,8 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-        if FeatureFlag.extractNotifications.enabled {
-            let group = contentGroup(for: indexPath)
-            displayContent(group)
-        } else {
-            let group = blockGroupForIndexPath(indexPath)
-            old_displayContent(group)
-        }
+        let group = contentGroup(for: indexPath)
+        displayContent(group)
     }
 
     func old_displayContent(_ group: NotificationBlockGroup) {
@@ -503,18 +493,10 @@ extension NotificationDetailsViewController {
     var shouldAttachReplyView: Bool {
         // Attach the Reply component only if the noficiation has a comment, and it can be replied-to
         //
-        if FeatureFlag.extractNotifications.enabled == true {
-            guard let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
-                return false
-            }
-            return block.action(id: ReplyToCommentAction.actionIdentifier())?.on ?? false
-        } else {
-            guard let block = note.blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
-                return false
-            }
-            return block.isActionOn(.Reply)
+        guard let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
+            return false
         }
-
+        return block.action(id: ReplyToCommentAction.actionIdentifier())?.on ?? false
     }
 
     func storeNotificationReplyIfNeeded() {
@@ -1117,22 +1099,7 @@ private extension NotificationDetailsViewController {
             return
         }
 
-        if FeatureFlag.extractNotifications.enabled {
-            router.routeTo(url)
-        } else {
-            old_displayURL(url)
-        }
-    }
-
-    func old_displayURL(_ url: URL) {
-        // Attempt to infer the NotificationRange associated: Recover Metadata + Push Native Views!
-        //
-        do {
-            let range = note.notificationRangeWithUrl(url)
-            try displayResourceWithRange(range)
-        } catch {
-            coordinator.displayWebViewWithURL(url)
-        }
+        router.routeTo(url)
     }
 
     func displayNotificationSource() {

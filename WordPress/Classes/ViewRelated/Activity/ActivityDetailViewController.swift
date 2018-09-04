@@ -57,11 +57,6 @@ class ActivityDetailViewController: UIViewController {
     private func setupFonts() {
         nameLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .footnote).pointSize,
                                            weight: .semibold)
-
-        if FeatureFlag.extractNotifications.enabled == false {
-            textLabel.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize,
-                                               weight: .semibold)
-        }
     }
 
     private func setupViews() {
@@ -69,14 +64,11 @@ class ActivityDetailViewController: UIViewController {
             return
         }
 
-        let showFormattedText = FeatureFlag.extractNotifications.enabled
         textLabel.isHidden = showFormattedText
         textView.isHidden = !showFormattedText
 
-        if showFormattedText {
-            textView.textContainerInset = .zero
-            textView.textContainer.lineFragmentPadding = 0
-        }
+        textView.textContainerInset = .zero
+        textView.textContainer.lineFragmentPadding = 0
 
         if activity.isRewindable {
             rewindStackView.isHidden = false
@@ -108,11 +100,7 @@ class ActivityDetailViewController: UIViewController {
         nameLabel.text = activity.actor?.displayName
         roleLabel.text = activity.actor?.role.localizedCapitalized
 
-        if FeatureFlag.extractNotifications.enabled {
-            textView.attributedText = formattableActivity?.formattedContent(using: ActivityContentStyles())
-        } else {
-            textLabel.text = activity.text
-        }
+        textView.attributedText = formattableActivity?.formattedContent(using: ActivityContentStyles())
         summaryLabel.text = activity.summary
 
         rewindButton.setTitle(NSLocalizedString("Rewind", comment: "Title for button allowing user to rewind their Jetpack site"),
