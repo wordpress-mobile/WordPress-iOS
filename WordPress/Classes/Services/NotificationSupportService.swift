@@ -53,7 +53,7 @@ open class NotificationSupportService: NSObject {
         }
     }
 
-    /// Sets the Username that should be used by the Notification Content Extension to access WPCOM.
+    /// Sets the Username that should be used by the Notification Service Extension to access WPCOM.
     ///
     /// - Parameter username: WordPress.com username
     ///
