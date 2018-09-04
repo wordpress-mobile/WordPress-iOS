@@ -85,6 +85,14 @@ extension GiphyMedia: WPMediaAsset {
     }
 }
 
+// MARK: - ExportableAsset conformance
+
+//extension GiphyMedia: ExportableAsset {
+//    var assetMediaType: MediaType {
+//        return .image
+//    }
+//}
+
 //// MARK: - MediaExternalAsset conformance
 //
 extension GiphyMedia: MediaExternalAsset {
