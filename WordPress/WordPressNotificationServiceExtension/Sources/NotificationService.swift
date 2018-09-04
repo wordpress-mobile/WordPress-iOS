@@ -25,6 +25,9 @@ class NotificationService: UNNotificationServiceExtension {
         self.contentHandler = contentHandler
         self.bestAttemptContent = request.content.mutableCopy() as? UNMutableNotificationContent
 
+        let username = readExtensionUsername()
+        tracks.wpcomUsername = username
+
         let token = readExtensionToken()
         tracks.trackExtensionLaunched(token != nil)
 
@@ -107,5 +110,23 @@ class NotificationService: UNNotificationServiceExtension {
         }
 
         return oauthToken
+    }
+
+    /// Retrieves the WPCOM username, meant for Extension usage.
+    ///
+    /// - Returns: the username if found; `nil` otherwise
+    ///
+    private func readExtensionUsername() -> String? {
+        guard
+            let username = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationServiceExtensionKeychainUsernameKey,
+                                                                         andServiceName: WPNotificationServiceExtensionKeychainServiceName,
+                                                                         accessGroup: WPAppKeychainAccessGroup)
+            else
+        {
+            debugPrint("Unable to retrieve Notification Service Extension username")
+            return nil
+        }
+
+        return username
     }
 }
