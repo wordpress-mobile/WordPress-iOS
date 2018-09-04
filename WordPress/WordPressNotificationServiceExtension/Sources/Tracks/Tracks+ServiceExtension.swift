@@ -34,7 +34,7 @@ extension Tracks {
     /// - Parameter notificationType: the value of the `note_id` from the APNS payload
     func trackNotificationDiscarded(notificationType: String) {
         let properties = [
-            "note_type": notificationType
+            "type": notificationType
         ]
         trackEvent(ServiceExtensionEvents.discarded, properties: properties as [String: AnyObject]?)
     }
