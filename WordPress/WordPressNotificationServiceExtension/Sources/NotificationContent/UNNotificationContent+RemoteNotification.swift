@@ -25,7 +25,8 @@ extension UNNotificationContent {
 // MARK: - Describes userInfo keys used to exchange data between extension types
 
 private extension CodingUserInfoKey {
-    static let noteIdentifier = CodingUserInfoKey(rawValue: "note_id")!
+    static let noteIdentifier   = CodingUserInfoKey(rawValue: "note_id")!
+    static let type             = CodingUserInfoKey(rawValue: "type")!
 }
 
 // MARK: - Supports APNS notification related to `RemoteNotification`
@@ -37,5 +38,10 @@ extension UNNotificationContent {
             return nil
         }
         return String(rawNoteId)
+    }
+
+    /// the value of the `type` from the APNS payload if it exists; `nil` otherwise
+    var type: String? {
+        return userInfo[CodingUserInfoKey.type.rawValue] as? String
     }
 }
