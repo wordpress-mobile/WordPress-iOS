@@ -86,7 +86,7 @@ import WordPressShared
                                       comment: "Title of an error message. There were no third-party service accounts found to setup sharing.")
         let message = NSLocalizedString("Sorry. The social service did not tell us which account could be used for sharing.",
                                         comment: "An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing.")
-        noResultsViewController.configure(title: title, buttonTitle: nil, subtitle: message, image: nil, accessoryView: nil)
+        noResultsViewController.configure(title: title, subtitle: message)
     }
 
 
@@ -95,7 +95,7 @@ import WordPressShared
                                        comment: "Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages.")
 
         let buttonTitle = NSLocalizedString("Learn more", comment: "A button title.")
-        noResultsViewController.configure(title: "", buttonTitle: buttonTitle, subtitle: message, image: nil, accessoryView: nil)
+        noResultsViewController.configure(title: "", buttonTitle: buttonTitle, subtitle: message)
         noResultsViewController.delegate = self
     }
 
