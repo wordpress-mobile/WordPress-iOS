@@ -8,7 +8,6 @@ extension NoResultsViewController {
     }
 
     @objc func configureForFetching() {
-        let animatedBox = WPAnimatedBox()
         configure(title: LocalizedText.fetchingTitle, buttonTitle: nil, subtitle: nil, attributedSubtitle: nil, image: nil, accessoryView: NoResultsViewController.loadingAccessoryView())
         view.layoutIfNeeded()
     }
