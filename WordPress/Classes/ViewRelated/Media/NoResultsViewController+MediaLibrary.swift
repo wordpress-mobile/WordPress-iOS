@@ -9,7 +9,6 @@ extension NoResultsViewController {
 
     @objc func configureForFetching() {
         let animatedBox = WPAnimatedBox()
-        animatedBox.animate(afterDelay: Constants.animatedBoxDelay)
         configure(title: LocalizedText.fetchingTitle, buttonTitle: nil, subtitle: nil, attributedSubtitle: nil, image: nil, accessoryView: animatedBox)
         view.layoutIfNeeded()
     }
@@ -20,7 +19,6 @@ extension NoResultsViewController {
 
     private enum Constants {
         static let imageName = "media-no-results"
-        static let animatedBoxDelay = 0.1
     }
 
     private struct LocalizedText {
