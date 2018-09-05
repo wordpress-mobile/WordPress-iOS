@@ -109,7 +109,6 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         setupNavigationBar()
         setupTableView()
-        setupInlinePrompt()
         setupTableHeaderView()
         setupTableFooterView()
         setupConstraints()
@@ -123,6 +122,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        setupInlinePrompt()
 
         // Manually deselect the selected row. 
         if splitViewControllerIsHorizontallyCompact {
