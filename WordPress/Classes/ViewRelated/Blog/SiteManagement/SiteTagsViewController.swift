@@ -445,7 +445,6 @@ private extension SiteTagsViewController {
 
     func loadingAccessoryView() -> UIView {
         let animatedBox = WPAnimatedBox()
-        animatedBox.animate(afterDelay: 0.1)
         return animatedBox
     }
 

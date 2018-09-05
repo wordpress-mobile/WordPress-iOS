@@ -23,7 +23,7 @@ def shared_with_networking_pods
     pod 'AFNetworking', '3.2.1'
     pod 'Alamofire', '4.7.2'
     pod 'wpxmlrpc', '0.8.3'
-    pod 'WordPressKit', '1.4.0-beta.3'
+    pod 'WordPressKit', '1.4.0-beta.2'
 end
 
 def shared_test_pods
