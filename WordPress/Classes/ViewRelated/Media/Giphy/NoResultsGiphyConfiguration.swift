@@ -5,9 +5,8 @@ struct NoResultsGiphyConfiguration {
     static func configureAsIntro(_ viewController: NoResultsViewController) {
         viewController.configure(title: .giphyPlaceholderTitle,
                                  buttonTitle: nil,
-                                 subtitle: nil,
-                                 attributedSubtitle: attributedSubtitle(),
                                  image: Constants.imageName,
+                                 subtitleImage: "giphy-attribution",
                                  accessoryView: nil)
 
         viewController.view.layoutIfNeeded()
