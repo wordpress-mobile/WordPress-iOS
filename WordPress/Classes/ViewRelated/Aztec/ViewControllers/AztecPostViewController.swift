@@ -459,7 +459,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// Helps choosing the correct view controller for previewing a media asset
     ///
-    private let mediaPreviewHelper = MediaPreviewHelper()
+    private var mediaPreviewHelper: MediaPreviewHelper? = nil
 
 
     // MARK: - Initializers
@@ -3755,7 +3755,8 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor assets: [WPMediaAsset], selectedIndex selected: Int) -> UIViewController? {
-        return mediaPreviewHelper.previewViewController(for: assets, selectedIndex: selected)
+        mediaPreviewHelper = MediaPreviewHelper(assets: assets)
+        return mediaPreviewHelper?.previewViewController(selectedIndex: selected)
     }
 
     private func updateFormatBarInsertAssetCount() {
