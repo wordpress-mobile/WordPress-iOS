@@ -74,6 +74,7 @@ import UIKit
     ///   - subtitle:           Secondary descriptive text. Optional.
     ///   - attributedSubtitle: Secondary descriptive attributed text. Optional.
     ///   - image:              Name of image file to use. Optional.
+    ///   - subtitleImage:      Name of image file to use in place of subtitle. Optional.
     ///   - accessoryView:      View to show instead of the image. Optional.
     ///
     @objc class func controllerWith(title: String,
@@ -81,33 +82,12 @@ import UIKit
                                     subtitle: String? = nil,
                                     attributedSubtitle: NSAttributedString? = nil,
                                     image: String? = nil,
+                                    subtitleImage: String? = nil,
                                     accessoryView: UIView? = nil) -> NoResultsViewController {
         let controller = NoResultsViewController.controller()
         controller.titleText = title
         controller.subtitleText = subtitle
         controller.attributedSubtitleText = attributedSubtitle
-        controller.buttonText = buttonTitle
-        controller.imageName = image
-        controller.accessorySubview = accessoryView
-        return controller
-    }
-
-    /// Public method to get controller instance and set view values.
-    ///
-    /// - Parameters:
-    ///   - title:              Main descriptive text. Required.
-    ///   - buttonTitle:        Title of action button. Optional.
-    ///   - image:              Name of image file to use. Optional.
-    ///   - subtitleImage:      Name of image file to use in place of subtitle. Optional.
-    ///   - accessoryView:      View to show instead of the image. Optional.
-    ///
-    @objc class func controllerWith(title: String,
-                                    buttonTitle: String? = nil,
-                                    image: String? = nil,
-                                    subtitleImage: String? = nil,
-                                    accessoryView: UIView? = nil) -> NoResultsViewController {
-        let controller = NoResultsViewController.controller()
-        controller.titleText = title
         controller.buttonText = buttonTitle
         controller.imageName = image
         controller.subtitleImageName = subtitleImage
@@ -133,6 +113,7 @@ import UIKit
     ///   - subtitle:           Secondary descriptive text. Optional.
     ///   - attributedSubtitle: Secondary descriptive attributed text. Optional.
     ///   - image:              Name of image file to use. Optional.
+    ///   - subtitleImage:      Name of image file to use in place of subtitle. Optional.
     ///   - accessoryView:      View to show instead of the image. Optional.
     ///
     @objc func configure(title: String,
@@ -140,30 +121,11 @@ import UIKit
                          subtitle: String? = nil,
                          attributedSubtitle: NSAttributedString? = nil,
                          image: String? = nil,
+                         subtitleImage: String? = nil,
                          accessoryView: UIView? = nil) {
         titleText = title
         subtitleText = subtitle
         attributedSubtitleText = attributedSubtitle
-        buttonText = buttonTitle
-        imageName = image
-        accessorySubview = accessoryView
-    }
-
-    /// Public method to provide values for text elements.
-    ///
-    /// - Parameters:
-    ///   - title:              Main descriptive text. Required.
-    ///   - buttonTitle:        Title of action button. Optional.
-    ///   - image:              Name of image file to use. Optional.
-    ///   - subtitleImage:      Name of image file to use in place of subtitle. Optional.
-    ///   - accessoryView:      View to show instead of the image. Optional.
-    ///
-    @objc func configure(title: String,
-                         buttonTitle: String? = nil,
-                         image: String? = nil,
-                         subtitleImage: String? = nil,
-                         accessoryView: UIView? = nil) {
-        titleText = title
         buttonText = buttonTitle
         imageName = image
         subtitleImageName = subtitleImage
