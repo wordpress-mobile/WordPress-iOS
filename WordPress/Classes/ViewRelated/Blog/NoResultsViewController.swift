@@ -23,6 +23,7 @@ import UIKit
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleTextView: UITextView!
+    @IBOutlet weak var subtitleImageView: UIImageView!
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var accessoryView: UIView!
 
@@ -32,6 +33,7 @@ import UIKit
     private var attributedSubtitleText: NSAttributedString?
     private var buttonText: String?
     private var imageName: String?
+    private var subtitleImageName: String?
     private var accessorySubview: UIView?
     private var hideImage = false
 
@@ -90,6 +92,29 @@ import UIKit
         return controller
     }
 
+    /// Public method to get controller instance and set view values.
+    ///
+    /// - Parameters:
+    ///   - title:              Main descriptive text. Required.
+    ///   - buttonTitle:        Title of action button. Optional.
+    ///   - image:              Name of image file to use. Optional.
+    ///   - subtitleImage:      Name of image file to use in place of subtitle. Optional.
+    ///   - accessoryView:      View to show instead of the image. Optional.
+    ///
+    @objc class func controllerWith(title: String,
+                                    buttonTitle: String? = nil,
+                                    image: String? = nil,
+                                    subtitleImage: String? = nil,
+                                    accessoryView: UIView? = nil) -> NoResultsViewController {
+        let controller = NoResultsViewController.controller()
+        controller.titleText = title
+        controller.buttonText = buttonTitle
+        controller.imageName = image
+        controller.subtitleImageName = subtitleImage
+        controller.accessorySubview = accessoryView
+        return controller
+    }
+
     /// Public method to get controller instance.
     /// As this only creates the controller, the configure method should be called
     /// to set the view values before presenting the No Results View.
@@ -121,6 +146,27 @@ import UIKit
         attributedSubtitleText = attributedSubtitle
         buttonText = buttonTitle
         imageName = image
+        accessorySubview = accessoryView
+    }
+
+    /// Public method to provide values for text elements.
+    ///
+    /// - Parameters:
+    ///   - title:              Main descriptive text. Required.
+    ///   - buttonTitle:        Title of action button. Optional.
+    ///   - image:              Name of image file to use. Optional.
+    ///   - subtitleImage:      Name of image file to use in place of subtitle. Optional.
+    ///   - accessoryView:      View to show instead of the image. Optional.
+    ///
+    @objc func configure(title: String,
+                         buttonTitle: String? = nil,
+                         image: String? = nil,
+                         subtitleImage: String? = nil,
+                         accessoryView: UIView? = nil) {
+        titleText = title
+        buttonText = buttonTitle
+        imageName = image
+        subtitleImageName = subtitleImage
         accessorySubview = accessoryView
     }
 
@@ -212,8 +258,12 @@ private extension NoResultsViewController {
             subtitleTextView.isSelectable = true
         }
 
-        let showSubtitle = subtitleText != nil || attributedSubtitleText != nil
+        let hasSubtitleText = subtitleText != nil || attributedSubtitleText != nil
+        let hasSubtitleImage = subtitleImageName != nil
+        let showSubtitle = hasSubtitleText && !hasSubtitleImage
         subtitleTextView.isHidden = !showSubtitle
+        subtitleImageView.isHidden = !hasSubtitleImage
+        subtitleImageView.tintColor = titleLabel.textColor
 
         if let buttonText = buttonText {
             configureButton()
@@ -232,6 +282,10 @@ private extension NoResultsViewController {
 
         if let imageName = imageName {
             imageView.image = UIImage(named: imageName)
+        }
+
+        if let subtitleImageName = subtitleImageName {
+            subtitleImageView.image = UIImage(named: subtitleImageName)
         }
 
         view.layoutIfNeeded()
