@@ -31,14 +31,21 @@ class NotificationService: UNNotificationServiceExtension {
         let token = readExtensionToken()
         tracks.trackExtensionLaunched(token != nil)
 
-        guard
-            let notificationContent = self.bestAttemptContent,
+        guard let notificationContent = self.bestAttemptContent,
             let apsAlert = notificationContent.apsAlert,
             let noteID = notificationContent.noteID,
-            token != nil
-        else
-        {
+            let notificationType = notificationContent.type,
+            let notificationKind = NotificationKind(rawValue: notificationType),
+            token != nil else {
+
             contentHandler(request.content)
+            return
+        }
+
+        guard NotificationKind.isSupportedByRichNotifications(notificationKind) else {
+            tracks.trackNotificationDiscarded(notificationType: notificationType)
+
+            contentHandler(notificationContent)
             return
         }
 
@@ -54,19 +61,18 @@ class NotificationService: UNNotificationServiceExtension {
                 return
             }
 
-            guard
-                let remoteNotifications = notifications,
+            guard let remoteNotifications = notifications,
                 remoteNotifications.count == 1,
-                let notification = remoteNotifications.first,
-                notification.kind == .comment
-            else
-            {
+                let notification = remoteNotifications.first else {
+
                 return
             }
 
             let contentFormatter = RichNotificationContentFormatter(notification: notification)
 
-            guard let bodyText = contentFormatter.formatBody() else { return }
+            guard let bodyText = contentFormatter.formatBody() else {
+                return
+            }
             notificationContent.body = bodyText
 
             let viewModel = RichNotificationViewModel(
@@ -99,14 +105,12 @@ class NotificationService: UNNotificationServiceExtension {
     /// - Returns: the token if found; `nil` otherwise
     ///
     private func readExtensionToken() -> String? {
-        guard
-            let oauthToken = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationServiceExtensionKeychainTokenKey,
-                                                                           andServiceName: WPNotificationServiceExtensionKeychainServiceName,
-                                                                           accessGroup: WPAppKeychainAccessGroup)
-        else
-        {
-            debugPrint("Unable to retrieve Notification Service Extension OAuth token")
-            return nil
+        guard let oauthToken = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationServiceExtensionKeychainTokenKey,
+                                                                             andServiceName: WPNotificationServiceExtensionKeychainServiceName,
+                                                                             accessGroup: WPAppKeychainAccessGroup) else {
+
+                                                                                debugPrint("Unable to retrieve Notification Service Extension OAuth token")
+                                                                                return nil
         }
 
         return oauthToken
@@ -117,14 +121,12 @@ class NotificationService: UNNotificationServiceExtension {
     /// - Returns: the username if found; `nil` otherwise
     ///
     private func readExtensionUsername() -> String? {
-        guard
-            let username = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationServiceExtensionKeychainUsernameKey,
-                                                                         andServiceName: WPNotificationServiceExtensionKeychainServiceName,
-                                                                         accessGroup: WPAppKeychainAccessGroup)
-            else
-        {
-            debugPrint("Unable to retrieve Notification Service Extension username")
-            return nil
+        guard let username = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationServiceExtensionKeychainUsernameKey,
+                                                                           andServiceName: WPNotificationServiceExtensionKeychainServiceName,
+                                                                           accessGroup: WPAppKeychainAccessGroup) else {
+
+                                                                            debugPrint("Unable to retrieve Notification Service Extension username")
+                                                                            return nil
         }
 
         return username
