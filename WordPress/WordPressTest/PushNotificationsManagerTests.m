@@ -117,20 +117,20 @@
 - (void)testInactiveNotificationIsProperlyHandled
 {
     NSDictionary *userInfo = @{ @"type" : @"note", @"note_id" : @(1234) };
-    
+
     id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
     [OCMStub([mockApplication applicationState]) andReturnValue:OCMOCK_VALUE(UIApplicationStateInactive)];
-    
+
     PushNotificationsManager *manager = [PushNotificationsManager new];
     id mockManager = OCMPartialMock(manager);
     [OCMStub([mockManager sharedApplication]) andReturn:mockApplication];
-    
+
     XCTAssert([mockManager applicationState] == UIApplicationStateInactive);
     XCTAssertTrue([mockManager handleInactiveNotification:userInfo completionHandler:nil], @"Error handling Note");
     XCTAssertFalse([mockManager handleAuthenticationNotification:userInfo completionHandler:nil], @"Error handling Note");
     XCTAssertFalse([mockManager handleSupportNotification:userInfo completionHandler:nil], @"Error handling Note");
     XCTAssertFalse([mockManager handleBackgroundNotification:userInfo completionHandler:nil], @"Error handling Note");
-    
+
     OCMExpect([manager handleInactiveNotification:userInfo completionHandler:nil]);
     [mockManager handleNotification:userInfo completionHandler:nil];
     OCMVerify(mockManager);
