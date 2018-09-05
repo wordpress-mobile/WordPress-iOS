@@ -538,6 +538,7 @@ static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
                                             subtitle:nil
                                   attributedSubtitle:nil
                                                image:nil
+                                       subtitleImage:nil
                                        accessoryView:accessoryView];
 
     [self addChildViewController:self.noResultsViewController];
