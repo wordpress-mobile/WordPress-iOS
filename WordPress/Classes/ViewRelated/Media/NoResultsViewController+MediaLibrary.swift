@@ -4,7 +4,7 @@ extension NoResultsViewController {
 
     @objc func configureForNoAssets(userCanUploadMedia: Bool) {
         let buttonTitle = userCanUploadMedia ? LocalizedText.uploadButtonTitle : nil
-        configure(title: LocalizedText.noAssetsTitle, buttonTitle: buttonTitle, subtitle: nil, attributedSubtitle: nil, image: Constants.imageName)
+        configure(title: LocalizedText.noAssetsTitle, buttonTitle: buttonTitle, image: Constants.imageName)
     }
 
     @objc func configureForFetching() {
