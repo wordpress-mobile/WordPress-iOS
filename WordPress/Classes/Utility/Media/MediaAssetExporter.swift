@@ -116,18 +116,16 @@ class MediaAssetExporter: MediaExporter {
         }
 
         // Request the image.
-        imageManager.requestImage(for: asset,
-                             targetSize: targetSize,
-                             contentMode: .aspectFit,
+        imageManager.requestImageData(for: asset,
                              options: options,
-                             resultHandler: { (image, info) in
+                             resultHandler: { (data, uti, orientation, info) in
                                 progress.completedUnitCount = MediaExportProgressUnits.halfDone
-                                guard let image = image else {
+                                guard let imageData = data else {
                                     onImageRequestError(info?[PHImageErrorKey] as? Error)
                                     return
                                 }
                                 // Hand off the image export to a shared image writer.
-                                let exporter = MediaImageExporter(image: image, filename: filename)
+                                let exporter = MediaImageExporter(data: imageData, filename: filename)
                                 exporter.mediaDirectoryType = self.mediaDirectoryType
                                 if let options = self.imageOptions {
                                     exporter.options = options
