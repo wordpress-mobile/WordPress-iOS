@@ -396,23 +396,14 @@ FeaturedImageViewControllerDelegate>
 
 - (void)configureSections
 {
-    NSNumber *stickyPostSection = @(PostSettingsSectionStickyPost);
-    NSMutableArray *sections = [@[@(PostSettingsSectionTaxonomy),
-                                  @(PostSettingsSectionMeta),
-                                  @(PostSettingsSectionFormat),
-                                  @(PostSettingsSectionFeaturedImage),
-                                  stickyPostSection,
-                                  @(PostSettingsSectionShare),
-                                  @(PostSettingsSectionGeolocation),
-                                  @(PostSettingsSectionMoreOptions)]
-                                mutableCopy];
-    
-    // Remove the Mark as Sticky section if the blog is self-hosted non-Jetpack
-    //
-    if (![self.post.blog supports:BlogFeatureWPComRESTAPI]) {
-        [sections removeObject:stickyPostSection];
-    }
-    self.sections = [sections copy];
+    self.sections = @[@(PostSettingsSectionTaxonomy),
+                      @(PostSettingsSectionMeta),
+                      @(PostSettingsSectionFormat),
+                      @(PostSettingsSectionFeaturedImage),
+                      @(PostSettingsSectionStickyPost),
+                      @(PostSettingsSectionShare),
+                      @(PostSettingsSectionGeolocation),
+                      @(PostSettingsSectionMoreOptions)];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
