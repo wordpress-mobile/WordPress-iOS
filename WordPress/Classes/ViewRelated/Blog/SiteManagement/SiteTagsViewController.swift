@@ -399,7 +399,7 @@ private extension SiteTagsViewController {
 
     func setupLoadingView() {
         noResultsViewController.configure(title: loadingMessage(),
-                                           accessoryView: loadingAccessoryView())
+                                           accessoryView: NoResultsViewController.loadingAccessoryView())
     }
 
     func setupEmptyResultsView() {
@@ -441,11 +441,6 @@ private extension SiteTagsViewController {
 
     func loadingMessage() -> String {
         return NSLocalizedString("Loading...", comment: "Loading tags.")
-    }
-
-    func loadingAccessoryView() -> UIView {
-        let animatedBox = WPAnimatedBox()
-        return animatedBox
     }
 
 }
