@@ -269,8 +269,15 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     /// Returns the CGSize instance for the given `WPTextAttachment`
     ///
     fileprivate func sizeForAttachment(_ attachment: WPTextAttachment) -> CGSize {
-        let width: CGFloat = attachment.width > 0 ? attachment.width : textContainer.size.width
+        let width: CGFloat
+        if attachment.width > 0 && attachment.width != .greatestFiniteMagnitude {
+            width = attachment.width
+        } else {
+            width = textContainer.size.width
+        }
+
         let height: CGFloat = attachment.height > 0 ? attachment.height : maxDisplaySize.height
+
         return CGSize(width: width, height: height)
     }
 
