@@ -8,12 +8,12 @@ extension NoResultsViewController {
     }
 
     @objc func configureForFetching() {
-        configure(title: LocalizedText.fetchingTitle, buttonTitle: nil, subtitle: nil, attributedSubtitle: nil, image: nil, accessoryView: NoResultsViewController.loadingAccessoryView())
+        configure(title: LocalizedText.fetchingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
         view.layoutIfNeeded()
     }
 
     @objc func configureForNoSearchResult(with searchQuery: String) {
-        configure(title: LocalizedText.noResultsTitle, buttonTitle: nil, subtitle: searchQuery, attributedSubtitle: nil, image: Constants.imageName)
+        configure(title: LocalizedText.noResultsTitle, subtitle: searchQuery, image: Constants.imageName)
     }
 
     private enum Constants {
