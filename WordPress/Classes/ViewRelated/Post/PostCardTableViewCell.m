@@ -35,7 +35,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet UILabel *snippetLabel;
 @property (nonatomic, strong) IBOutlet UIView *dateView;
 @property (nonatomic, strong) IBOutlet UIImageView *dateImageView;
-@property (nonatomic, strong) IBOutlet UIImageView *stickyImageView;
 @property (nonatomic, strong) IBOutlet UILabel *dateLabel;
 @property (nonatomic, strong) IBOutlet UILabel *stickyLabel;
 @property (nonatomic, strong) IBOutlet UIView *statusView;
@@ -214,8 +213,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [WPStyleGuide applyPostProgressViewStyle:self.progressView];
 
     self.dateImageView.tintColor = self.dateLabel.textColor;
-    self.stickyImageView.image = [self.stickyImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    self.stickyImageView.tintColor = self.stickyLabel.textColor;
     self.actionBar.backgroundColor = [WPStyleGuide lightGrey];
     self.postContentView.layer.borderColor = [[WPStyleGuide postCardBorderColor] CGColor];
     self.postContentView.layer.borderWidth = 1.0;
@@ -348,7 +345,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 - (void)configureStickyPost
 {
     self.stickyLabel.hidden = !self.post.isStickyPost;
-    self.stickyImageView.hidden = self.stickyLabel.hidden;
 }
 
 
