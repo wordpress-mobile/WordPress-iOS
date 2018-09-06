@@ -596,28 +596,24 @@ fileprivate extension ShareModularViewController {
 
     func showLoadingView() {
         updatePublishButtonStatus()
-        configureAndDisplayStatus(title: NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their sites are being fetched."),
-                                  accessoryView: NoResultsViewController.loadingAccessoryView())
+        configureAndDisplayStatus(title: StatusText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
     }
 
     func showPublishingView() {
-
         let title: String = {
             if self.originatingExtension == .share {
-                return NSLocalizedString("Publishing post...", comment: "A short message that informs the user a post is being published to the server from the share extension.")
+                return StatusText.publishingTitle
             }
-            return NSLocalizedString("Saving post…", comment: "A short message that informs the user a draft post is being saved to the server from the share extension.")
+            return StatusText.savingTitle
         }()
 
         updatePublishButtonStatus()
-        configureAndDisplayStatus(title: title,
-                                  accessoryView: NoResultsViewController.loadingAccessoryView())
+        configureAndDisplayStatus(title: title, accessoryView: NoResultsViewController.loadingAccessoryView())
     }
 
     func showCancellingView() {
         updatePublishButtonStatus()
-        configureAndDisplayStatus(title: NSLocalizedString("Cancelling...", comment: "A short message that informs the user the share extension is being cancelled."),
-                                  accessoryView: NoResultsViewController.loadingAccessoryView())
+        configureAndDisplayStatus(title: StatusText.cancellingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
     }
 
     func showEmptySitesIfNeeded() {
@@ -629,7 +625,7 @@ fileprivate extension ShareModularViewController {
             return
         }
 
-        configureAndDisplayStatus(title: NSLocalizedString("No available sites", comment: "A short message that informs the user no sites could be loaded in the share extension."))
+        configureAndDisplayStatus(title: StatusText.noSitesTitle)
     }
 
     func configureAndDisplayStatus(title: String, accessoryView: UIView? = nil) {
@@ -938,6 +934,14 @@ fileprivate extension ShareModularViewController {
         static let summaryDraftDefault  = NSLocalizedString("Save draft post on:", comment: "Text displayed in the share extension's summary view that describes the save draft post action.")
         static let summaryDraftSingular = NSLocalizedString("Save 1 photo as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post.")
         static let summaryDraftPlural   = NSLocalizedString("Save %ld photos as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post.")
+    }
+
+    struct StatusText {
+        static let loadingTitle = NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their sites are being fetched.")
+        static let publishingTitle = NSLocalizedString("Publishing post...", comment: "A short message that informs the user a post is being published to the server from the share extension.")
+        static let savingTitle = NSLocalizedString("Saving post…", comment: "A short message that informs the user a draft post is being saved to the server from the share extension.")
+        static let cancellingTitle = NSLocalizedString("Cancelling...", comment: "A short message that informs the user the share extension is being cancelled.")
+        static let noSitesTitle = NSLocalizedString("No available sites", comment: "A short message that informs the user no sites could be loaded in the share extension.")
     }
 }
 
