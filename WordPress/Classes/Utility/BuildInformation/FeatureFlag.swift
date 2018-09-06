@@ -26,7 +26,7 @@ enum FeatureFlag: Int {
         case .giphy:
             return BuildConfiguration.current == .localDeveloper
         case .automatedTransfer:
-            return BuildConfiguration.current != .appStore
+            return true
         }
     }
 }
