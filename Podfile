@@ -61,7 +61,7 @@ target 'WordPress' do
     pod 'MGSwipeTableCell', '1.6.7'
     pod 'lottie-ios', '2.5.0'
     pod 'Starscream', '3.0.4'
-    pod 'ZendeskSDK', '1.11.2.1'
+    pod 'ZendeskSDK', '2.1.0'
 
 
     ## Automattic libraries
@@ -123,6 +123,37 @@ target 'WordPress' do
         shared_with_networking_pods
     end
 end
+
+
+
+## Notification Content Extension
+## ==============================
+##
+target 'WordPressNotificationContentExtension' do
+    project 'WordPress/WordPress.xcodeproj'
+    
+    inherit! :search_paths
+    
+    pod 'WordPressShared', '1.0.10'
+    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae' 
+end
+
+
+
+## Notification Service Extension
+## ==============================
+##
+target 'WordPressNotificationServiceExtension' do
+    project 'WordPress/WordPress.xcodeproj'
+    
+    inherit! :search_paths
+
+    pod 'Gridicons', '0.16'
+    pod 'WordPressKit', '1.4.0-beta.2'
+    pod 'WordPressShared', '1.0.10'
+    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
+end
+
 
 
 ## WordPress.com Stats

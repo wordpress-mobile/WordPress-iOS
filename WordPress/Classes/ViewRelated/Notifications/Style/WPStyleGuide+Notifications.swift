@@ -1,6 +1,8 @@
 import Foundation
-import WordPressShared
+
 import Gridicons
+import WordPressShared
+import WordPressUI
 
 extension WPStyleGuide {
     public struct Notifications {
