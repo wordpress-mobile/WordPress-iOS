@@ -9,7 +9,7 @@ final class SiteTagsViewController: UITableViewController {
     }
     private let blog: Blog
 
-    fileprivate let noResultsView = WPNoResultsView()
+    private var noResultsViewController = NoResultsViewController.controller()
 
     fileprivate lazy var context: NSManagedObjectContext = {
         return ContextManager.sharedInstance().mainContext
@@ -57,6 +57,8 @@ final class SiteTagsViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        noResultsViewController.delegate = self
 
         setAccessibilityIdentifier()
         applyStyleGuide()
@@ -162,43 +164,6 @@ final class SiteTagsViewController: UITableViewController {
 
     @objc private func createTag() {
         navigate(to: nil)
-    }
-
-    private func refreshNoResultsView() {
-        if let count = resultsController.fetchedObjects?.count,
-            count > 0 || searchController.isActive {
-            noResultsView.removeFromSuperview()
-            setupSearchBar()
-            tableView.reloadData()
-            return
-        }
-
-        if isPerformingInitialSync {
-            setupLoadingView()
-        } else {
-            setupEmptyResultsView()
-        }
-
-        if noResultsView.superview == nil {
-            tableView.addSubview(withFadeAnimation: noResultsView)
-        }
-
-        removeSearchBar()
-    }
-
-    private func setupLoadingView() {
-        noResultsView.accessoryView = nil
-        noResultsView.titleText = loadingMessage()
-        noResultsView.messageText = ""
-        noResultsView.buttonTitle = ""
-    }
-
-    private func setupEmptyResultsView() {
-        noResultsView.accessoryView = noResultsAccessoryView()
-        noResultsView.titleText = noResultsTitle()
-        noResultsView.messageText = noResultsMessage()
-        noResultsView.buttonTitle = noResultsButtonTitle()
-        noResultsView.button.addTarget(self, action: #selector(createTag), for: .touchUpInside)
     }
 
     func tagsFailedLoading(error: Error) {
@@ -408,26 +373,88 @@ extension SiteTagsViewController {
     }
 }
 
-// MARK: - Empty state placeholder
-extension SiteTagsViewController {
-    fileprivate func noResultsTitle() -> String {
-        return NSLocalizedString("No Tags Yet", comment: "Empty state. Tags management (Settings > Writing > Tags)")
+// MARK: - Empty state handling
+
+private extension SiteTagsViewController {
+
+    func refreshNoResultsView() {
+        noResultsViewController.removeFromView()
+
+        if let count = resultsController.fetchedObjects?.count,
+            count > 0 || searchController.isActive {
+            setupSearchBar()
+            tableView.reloadData()
+            return
+        }
+
+        if isPerformingInitialSync {
+            setupLoadingView()
+        } else {
+            setupEmptyResultsView()
+        }
+
+        removeSearchBar()
+        showNoResults()
     }
 
-    fileprivate func noResultsMessage() -> String {
-        return NSLocalizedString("Would you like to create one?", comment: "Displayed when the user views tags in blog settings and there are no tags")
+    func setupLoadingView() {
+        noResultsViewController.configure(title: loadingMessage(),
+                                           accessoryView: loadingAccessoryView())
     }
 
-    fileprivate func noResultsAccessoryView() -> UIView {
-        return UIImageView(image: UIImage(named: "illustration-posts"))
+    func setupEmptyResultsView() {
+        noResultsViewController.configure(title: noResultsTitle(),
+                                           buttonTitle: noResultsButtonTitle(),
+                                           subtitle: noResultsMessage(),
+                                           image: noResultsImageName())
     }
 
-    fileprivate func noResultsButtonTitle() -> String {
-        return NSLocalizedString("Add New Tag", comment: "Title of the button in the placeholder for an empty list of blog tags.")
+    func showNoResults() {
+        addChildViewController(noResultsViewController)
+        noResultsViewController.view.frame = tableView.frame
+
+        // If the refreshControl is showing, move the NRV up so the contents appear centered in the view.
+        if let refreshControl = refreshControl,
+            refreshControl.isHidden == false {
+            noResultsViewController.view.frame.origin.y -= refreshControl.frame.height
+        }
+
+        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        noResultsViewController.didMove(toParentViewController: self)
     }
 
-    fileprivate func loadingMessage() -> String {
+    func noResultsTitle() -> String {
+        return NSLocalizedString("You don't have any tags", comment: "Empty state. Tags management (Settings > Writing > Tags)")
+    }
+
+    func noResultsMessage() -> String {
+        return NSLocalizedString("Tags created here can be quickly added to new posts", comment: "Displayed when the user views tags in blog settings and there are no tags")
+    }
+
+    func noResultsImageName() -> String {
+        return "wp-illustration-empty-results"
+    }
+
+    func noResultsButtonTitle() -> String {
+        return NSLocalizedString("Create a Tag", comment: "Title of the button in the placeholder for an empty list of blog tags.")
+    }
+
+    func loadingMessage() -> String {
         return NSLocalizedString("Loading...", comment: "Loading tags.")
+    }
+
+    func loadingAccessoryView() -> UIView {
+        let animatedBox = WPAnimatedBox()
+        return animatedBox
+    }
+
+}
+
+// MARK: - NoResultsViewControllerDelegate
+
+extension SiteTagsViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        createTag()
     }
 }
 

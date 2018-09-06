@@ -18,6 +18,7 @@ static NSInteger const ImageSizeLargeWidth = 640;
 static NSInteger const ImageSizeLargeHeight = 480;
 static NSInteger const JetpackProfessionalYearlyPlanId = 2004;
 static NSInteger const JetpackProfessionalMonthlyPlanId = 2001;
+static NSInteger const WPComBusinessPlanId = 1008;
 
 NSString * const BlogEntityName = @"Blog";
 NSString * const PostFormatStandard = @"standard";
@@ -25,6 +26,7 @@ NSString * const ActiveModulesKeyPublicize = @"publicize";
 NSString * const ActiveModulesKeySharingButtons = @"sharedaddy";
 NSString * const OptionsKeyActiveModules = @"active_modules";
 NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled";
+NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
 
 @interface Blog ()
 
@@ -75,6 +77,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @dynamic hasPaidPlan;
 @dynamic sharingButtons;
 @dynamic capabilities;
+@dynamic completedQuickStartTours;
 @dynamic userID;
 @dynamic quotaSpaceAllowed;
 @dynamic quotaSpaceUsed;
@@ -106,6 +109,12 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 
 #pragma mark -
 #pragma mark Custom methods
+
+- (BOOL)isAutomatedTransfer
+{
+    NSNumber *value = (NSNumber *)[self getOptionValue:OptionsKeyIsAutomatedTransfer];
+    return [value boolValue];
+}
 
 - (NSString *)icon
 {
@@ -550,7 +559,19 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 
 - (BOOL)supportsPluginManagement
 {
-    return [self hasRequiredJetpackVersion:@"5.6"];
+    BOOL hasRequiredJetpack = [self hasRequiredJetpackVersion:@"5.6"];
+
+    if ([Feature enabled:FeatureFlagAutomatedTransfer]) {
+        BOOL isTransferrable = self.isHostedAtWPcom
+            && self.planID.integerValue == WPComBusinessPlanId
+            && self.siteVisibility != SiteVisibilityPrivate
+            && self.isAdmin
+            && ![self.hostURL containsString:@".wordpress.com"];
+
+        return isTransferrable || hasRequiredJetpack;
+    } else {
+        return hasRequiredJetpack;
+    }
 }
 
 - (BOOL)accountIsDefaultAccount

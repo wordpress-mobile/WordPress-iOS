@@ -60,11 +60,14 @@ class PluginViewModel: Observable {
     let changeDispatcher = Dispatcher<Void>()
     let queryReceipt: Receipt?
 
+    private let store: PluginStore
+
     init(plugin: Plugin, capabilities: SitePluginCapabilities, site: JetpackSiteRef, store: PluginStore = StoreContainer.shared.plugin) {
         self.state = .plugin(plugin)
         self.capabilities = capabilities
         self.site = site
         self.isInstallingPlugin = false
+        self.store = store
 
         queryReceipt = nil
         storeReceipt = store.onChange { [weak self] in
@@ -98,27 +101,28 @@ class PluginViewModel: Observable {
     }
 
     private init(with slug: String, state: State, site: JetpackSiteRef, store: PluginStore) {
+        self.store = store
         self.state = state
-        self.capabilities = store.getPlugins(site: site)?.capabilities
+        self.capabilities = self.store.getPlugins(site: site)?.capabilities
         self.site = site
         self.isInstallingPlugin = false
 
-        queryReceipt = store.query(.directoryEntry(slug: slug))
+        queryReceipt = self.store.query(.directoryEntry(slug: slug))
 
-        storeReceipt = store.onChange { [weak self] in
-            guard let entry = store.getPluginDirectoryEntry(slug: slug) else {
+        storeReceipt = self.store.onChange { [weak self] in
+            guard let entry = self?.store.getPluginDirectoryEntry(slug: slug) else {
                 self?.state = .error
                 return
             }
 
-            if let plugin = store.getPlugin(slug: entry.slug, site: site) {
+            if let plugin = self?.store.getPlugin(slug: entry.slug, site: site) {
                 self?.state = .plugin(plugin)
             } else {
                 self?.state = .directoryEntry(entry)
             }
 
-            self?.capabilities = store.getPlugins(site: site)?.capabilities
-            self?.isInstallingPlugin = store.isInstallingPlugin(site: site, slug: slug)
+            self?.capabilities = self?.store.getPlugins(site: site)?.capabilities
+            self?.isInstallingPlugin = self?.store.isInstallingPlugin(site: site, slug: slug) ?? false
         }
     }
 
@@ -140,7 +144,9 @@ class PluginViewModel: Observable {
             return nil
         }
 
-        guard let capabilities = capabilities, capabilities.modify == true else {
+        let isHostedAtWPCom = BlogService.blog(with: site)?.isHostedAtWPcom ?? false
+
+        guard isHostedAtWPCom || capabilities?.modify == true else {
             // If we know about versions, but we can't update/install the plugin, just show the version number.
             return TextRow(title: NSLocalizedString("Plugin version", comment: "Version of an installed plugin"),
                            value: version)
@@ -166,7 +172,20 @@ class PluginViewModel: Observable {
                 subtitle: nil,
                 actionLabel: NSLocalizedString("Install", comment: "Button label to install a plugin"),
                 onButtonTap: { [unowned self] _ in
-                    ActionDispatcher.dispatch(PluginAction.install(plugin: directoryEntry, site: self.site))
+                    if isHostedAtWPCom {
+                        guard let atHelper = AutomatedTransferHelper(site: self.site, plugin: directoryEntry) else {
+                            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: String(format: NSLocalizedString("Error installing %@.", comment: "Notice displayed after attempt to install a plugin fails."), directoryEntry.name))))
+                            return
+                        }
+
+                        WPAnalytics.track(.automatedTransferDialogShown)
+
+                        let alertController = atHelper.automatedTransferConfirmationPrompt()
+                        self.present?(alertController)
+                    }
+                    else {
+                        ActionDispatcher.dispatch(PluginAction.install(plugin: directoryEntry, site: self.site))
+                    }
                 }
             )
         }
@@ -250,9 +269,13 @@ class PluginViewModel: Observable {
     }
 
     private func autoUpdatesRow(plugin: Plugin?, capabilities: SitePluginCapabilities?) -> ImmuTableRow? {
+        // Note: All plugins on atomic sites are autoupdated, so we do not want to show the switch
+
         guard let autoUpdatePlugin = plugin,
             let siteCapabilities = capabilities,
-            siteCapabilities.autoupdate && !autoUpdatePlugin.state.automanaged else { return nil }
+            BlogService.blog(with: site)?.isAutomatedTransfer() == false,
+            siteCapabilities.autoupdate,
+            !autoUpdatePlugin.state.automanaged else { return nil }
 
         return SwitchRow(
             title: NSLocalizedString("Autoupdates", comment: "Whether a plugin has enabled automatic updates"),
@@ -475,8 +498,7 @@ class PluginViewModel: Observable {
     }
 
     private func getSiteTitle() -> String? {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = BlogService(managedObjectContext: context)
+        let service = BlogService.withMainContext()
         let blog = service.blog(byBlogId: site.siteID as NSNumber)
         return blog?.settings?.name?.nonEmptyString()
     }
@@ -577,5 +599,24 @@ private extension String {
 
     enum Loading {
         static let title = NSLocalizedString("Loading Plugin...", comment: "Text displayed while loading an specific plugin")
+    }
+}
+
+extension PluginViewModel {
+    func networkStatusDidChange(active: Bool) {
+        guard active else {
+            return
+        }
+
+        switch state {
+        case .error:
+            store.processQueries()
+            state = .loading
+        case .directoryEntry(let entry):
+            store.processQueries()
+            state = .directoryEntry(entry)
+        default:
+            break
+        }
     }
 }

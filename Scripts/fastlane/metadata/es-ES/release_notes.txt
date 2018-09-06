@@ -1,3 +1,3 @@
-¡Registro de actividad! Ahora puedes ver todo lo que ha pasado en tu sitio.
-La compatibilidad con Gifs animados se a expandido en el Lector y en el selector de medios.
-Un montón de mejoras de la interfaz y accesibilidad, y soluciones a fallos.
+Hay una mejor gestión de imágenes en el editor. Ya arrastres un archivo o añadas uno al selector de medios, subir e insertar es fácil y rápido.
+Pequeñas mejoras de la interfaz en un montón de sitios para hacer tu experiencia más intuitiva - probablemente no te des cuenta de ellas, y ¡esa es la idea!
+Machacando fallos.
