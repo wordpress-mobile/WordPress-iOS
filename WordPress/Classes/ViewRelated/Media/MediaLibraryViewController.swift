@@ -667,6 +667,9 @@ extension MediaLibraryViewController: GiphyPickerDelegate {
             return
         }
 
-        // TODO: Add and track giphy media
+        let mediaCoordinator = MediaCoordinator.shared
+        assets.forEach { giphyMedia in
+            mediaCoordinator.addMedia(from: giphyMedia, to: blog)
+        }
     }
 }
