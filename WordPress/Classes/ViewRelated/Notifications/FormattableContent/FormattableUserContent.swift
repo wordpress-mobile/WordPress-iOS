@@ -31,7 +31,7 @@ class FormattableUserContent: NotificationTextContent {
 
 extension FormattableUserContent: ActionableObject {
     var notificationID: String? {
-        return parent.notificationId
+        return parent.notificationIdentifier
     }
 
     var metaSiteID: NSNumber? {
@@ -49,7 +49,8 @@ extension FormattableUserContent: ActionableObject {
 
 extension FormattableUserContent: Equatable {
     static func == (lhs: FormattableUserContent, rhs: FormattableUserContent) -> Bool {
-        return lhs.isEqual(to: rhs) && lhs.parent.isEqual(rhs.parent)
+        return lhs.isEqual(to: rhs) &&
+            lhs.parent.notificationIdentifier == rhs.parent.notificationIdentifier
     }
 
     private func isEqual(to other: FormattableUserContent) -> Bool {

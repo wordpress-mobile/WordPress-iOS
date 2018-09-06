@@ -83,7 +83,7 @@ class Notification: NSManagedObject {
     /// Header + Body Blocks Transient Storage.
     ///
     fileprivate var cachedHeaderAndBodyBlockGroups: [NotificationBlockGroup]?
-    fileprivate var cachedHeaderAndBodyContentGroup: [FormattableContentGroup]?
+    fileprivate var cachedHeaderAndBodyContentGroups: [FormattableContentGroup]?
 
     /// Array that contains the Cached Property Names
     ///
@@ -100,7 +100,7 @@ class Notification: NSManagedObject {
         guard let snippetContent = snippetContent else {
             return nil
         }
-        return formatter.render(content: snippetContent, with: SnipetsContentStyles())
+        return formatter.render(content: snippetContent, with: SnippetsContentStyles())
     }
 
     /// When needed, nukes cached attributes
@@ -133,7 +133,7 @@ class Notification: NSManagedObject {
             cachedBodyContentGroups = nil
             cachedHeaderContentGroup = nil
             cachedSubjectContentGroup = nil
-            cachedHeaderAndBodyContentGroup = nil
+            cachedHeaderAndBodyContentGroups = nil
         } else {
             cachedSubjectBlockGroup = nil
             cachedHeaderBlockGroup = nil
@@ -261,7 +261,7 @@ extension Notification {
     /// Verifies if the current notification is a Comment-Y note, and if it has been replied to.
     ///
     @objc var isRepliedComment: Bool {
-        return kind == .Comment && metaReplyID != nil
+        return kind == .comment && metaReplyID != nil
     }
 
     //// Check if this note is a comment and in 'Unapproved' status
@@ -280,23 +280,6 @@ extension Notification {
 
             return block.isActionEnabled(.Approve) && !block.isActionOn(.Approve)
         }
-
-    }
-
-    var kind: Kind {
-        guard let type = type, let kind = Kind(rawValue: type) else {
-            return .Unknown
-        }
-        return kind
-    }
-
-    /// Parses the Notification.type field into a Swift Native enum. Returns .Unknown on failure.
-    ///
-    var notificationKind: Kind {
-        guard let type = type, let kind = Kind(rawValue: type) else {
-            return .Unknown
-        }
-        return kind
     }
 
     /// Returns the Meta ID's collection, if any.
@@ -453,7 +436,7 @@ extension Notification {
 
 
     var headerAndBodyContentGroups: [FormattableContentGroup] {
-        if let groups = cachedHeaderAndBodyContentGroup {
+        if let groups = cachedHeaderAndBodyContentGroups {
             return groups
         }
 
@@ -463,7 +446,7 @@ extension Notification {
         }
 
         mergedGroups.append(contentsOf: bodyContentGroups)
-        cachedHeaderAndBodyContentGroup = mergedGroups
+        cachedHeaderAndBodyContentGroups = mergedGroups
 
         return mergedGroups
     }
@@ -535,24 +518,6 @@ extension Notification {
 // MARK: - Notification Types
 //
 extension Notification {
-    /// Known kinds of Notifications
-    ///
-    enum Kind: String {
-        case Comment        = "comment"
-        case CommentLike    = "comment_like"
-        case Follow         = "follow"
-        case Like           = "like"
-        case Matcher        = "automattcher"
-        case NewPost        = "new_post"
-        case Post           = "post"
-        case User           = "user"
-        case Unknown        = "unknown"
-
-        var toTypeValue: String {
-            return rawValue
-        }
-    }
-
     /// Meta Parsing Keys
     ///
     fileprivate enum MetaKeys {
@@ -564,5 +529,13 @@ extension Notification {
         static let Comment  = "comment"
         static let Reply    = "reply_comment"
         static let Home     = "home"
+    }
+}
+
+// MARK: - Notifiable
+
+extension Notification: Notifiable {
+    var notificationIdentifier: String {
+        return notificationId
     }
 }
