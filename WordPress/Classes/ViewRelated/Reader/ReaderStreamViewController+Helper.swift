@@ -1,22 +1,50 @@
 import Foundation
 
 extension ReaderStreamViewController {
+    // Convenience type for Reader's headers
+    typealias ReaderHeader = UIView & ReaderStreamHeader
 
-    // A simple struct defining a title and message for use with a WPNoResultsView
+    // A simple struct defining a title and message for use with a NoResultsViewController
     public struct NoResultsResponse {
         var title: String
         var message: String
     }
 
-
-    /// Returns the ReaderStreamHeader appropriate for a particular ReaderTopic or nil if there is not one.
-    /// The caller is expected to configure the returned header.
+    /// Returns the ReaderStreamHeader appropriate for a particular ReaderTopic, including News Card, or nil if there is not one.
+    /// The header is returned already configured
     ///
     /// - Parameter topic: A ReaderTopic
+    /// - Parameter isLoggedIn: A boolean flag indicating if the user is logged in
+    /// - Parameter delegate: The header delegate
     ///
-    /// - Returns: An unconfigured instance of a ReaderStreamHeader.
+    /// - Returns: A configured instance of UIView.
     ///
-    public class func headerForStream(_ topic: ReaderAbstractTopic) -> ReaderStreamHeader? {
+    func headerWithNewsCardForStream(_ topic: ReaderAbstractTopic, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
+
+        let header = headerForStream(topic)
+        let configuredHeader = configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: self)
+
+        // Feature flag is not active
+        if !FeatureFlag.newsCard.enabled {
+            return configuredHeader
+        }
+
+        let containerIdentifier = Identifier(value: topic.title)
+
+        let newsCard = ReaderNewsCard()
+
+        return newsCard.newsCard(containerIdentifier: containerIdentifier, header: header, container: container, delegate: self)
+    }
+
+    func configure(_ header: ReaderHeader?, topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamHeaderDelegate) -> ReaderHeader? {
+        header?.configureHeader(topic)
+        header?.enableLoggedInFeatures(isLoggedIn)
+        header?.delegate = delegate
+
+        return header
+    }
+
+    func headerForStream(_ topic: ReaderAbstractTopic) -> ReaderHeader? {
         if ReaderHelpers.topicIsFreshlyPressed(topic) || ReaderHelpers.topicIsLiked(topic) {
             // no header for these special lists
             return nil
@@ -63,7 +91,7 @@ extension ReaderStreamViewController {
         // if liked
         if ReaderHelpers.topicIsLiked(topic) {
             return NoResultsResponse(
-                title: NSLocalizedString("No likes yet", comment: "A message title"),
+                title: NSLocalizedString("Nothing liked yet", comment: "A message title"),
                 message: NSLocalizedString("Posts that you like will appear here.", comment: "A message explaining the Posts I Like feature in the reader")
             )
         }

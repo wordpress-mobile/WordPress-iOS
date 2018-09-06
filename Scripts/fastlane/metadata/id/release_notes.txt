@@ -1,3 +1,3 @@
-Log Aktivitas! Sekarang Anda bisa melihat semua yang sedang terjadi pada situs Anda.
-Dukungan GIF animasi telah diperluas di Pembaca dan Pemilih Media.
-Sejumlah perubahan UI, peningkatan aksesibilitas, dan perbaikan bug.
+Ada pemroses gambar yang lebih baik di penyunting. Saat ingin menyeret dan melepas file maupun menambahkan file dengan pemilih media, proses pengunggahan dan penyisipannya begitu lancar dan cepat.
+Peningkatan kecil pada UI di sejumlah lokasi agar pengalaman penggunaan Anda lebih intuitif. Anda mungkin tidak menyadarinya, dan memang itu tujuan kami!
+Membasmi bug.

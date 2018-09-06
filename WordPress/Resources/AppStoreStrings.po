@@ -38,11 +38,10 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v10.5-whats-new"
+msgctxt "v10.8-whats-new"
 msgid ""
-"Editor: more updates for Gutenberg compatibility.\n"
-"Several improvements to the UI.\n"
-"A bunch of small bug fixes.\n"
+"We’ve been tuning things up under the hood.\n"
+"You may not see anything obviously different in the app, but expect everything to be faster and more stable.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
@@ -72,29 +71,40 @@ msgstr ""
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one. 
 msgctxt "app_store_screenshot-1"
-msgid "Enjoy your favorite sites"
+msgid ""
+"Enjoy your\n"
+"favorite sites"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the second screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one. 
 msgctxt "app_store_screenshot-2"
-msgid "Get notified in real-time"
+msgid ""
+"Get notified\n"
+"in real-time"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the third screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one. 
 msgctxt "app_store_screenshot-3"
-msgid "Manage your site everywhere you go"
+msgid ""
+"Manage your site\n"
+"everywhere you go"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fourth screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one. 
 msgctxt "app_store_screenshot-4"
-msgid "Share your ideas with the world"
+msgid ""
+"Share your ideas\n"
+"with the world"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one. 
 msgctxt "app_store_screenshot-5"
-msgid "All the stats in your hand"
+msgid ""
+"All the stats\n"
+"in your hand"
 msgstr ""
+

@@ -28,9 +28,7 @@ fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
 }
 
 
-class AbstractPostListViewController: UIViewController, WPContentSyncHelperDelegate, WPNoResultsViewDelegate, UISearchControllerDelegate, UISearchResultsUpdating, WPTableViewHandlerDelegate {
-
-    typealias WPNoResultsView = WordPressShared.WPNoResultsView
+class AbstractPostListViewController: UIViewController, WPContentSyncHelperDelegate, UISearchControllerDelegate, UISearchResultsUpdating, WPTableViewHandlerDelegate {
 
     fileprivate static let postsControllerRefreshInterval = TimeInterval(300)
     fileprivate static let HTTPErrorCodeForbidden = Int(403)
@@ -47,7 +45,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     /// This closure will be executed whenever the noResultsView must be visually refreshed.  It's up
     /// to the subclass to define this property.
     ///
-    @objc var refreshNoResultsView: ((WPNoResultsView) -> ())!
+    @objc var refreshNoResultsViewController: ((NoResultsViewController) -> ())!
     @objc var tableViewController: UITableViewController!
     @objc var reloadTableViewBeforeAppearing = false
 
@@ -91,11 +89,11 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         return searchHelper
     }()
 
-    @objc lazy var noResultsView: WPNoResultsView = {
-        let noResultsView = WPNoResultsView()
-        noResultsView.delegate = self
+    @objc lazy var noResultsViewController: NoResultsViewController = {
+        let noResultsViewController = NoResultsViewController.controller()
+        noResultsViewController.delegate = self
 
-        return noResultsView
+        return noResultsViewController
     }()
 
     @objc lazy var filterSettings: PostListFilterSettings = {
@@ -290,8 +288,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             self?.refreshControl?.endRefreshing()
         }
 
+        hideNoResultsView()
         if tableViewHandler.resultsController.fetchedObjects?.count > 0 {
-            hideNoResultsView()
             if forcingNetworkAlerts {
                 presentNoNetworkAlert()
             }
@@ -379,26 +377,35 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     // MARK: - GUI: No results view logic
 
-    fileprivate func hideNoResultsView() {
+    private func hideNoResultsView() {
         postListFooterView.isHidden = false
-        noResultsView.removeFromSuperview()
+        noResultsViewController.removeFromView()
     }
 
-    fileprivate func showNoResultsView() {
-        precondition(refreshNoResultsView != nil)
+    private func showNoResultsView() {
 
-        postListFooterView.isHidden = true
-        refreshNoResultsView(noResultsView)
-
-        // Only add and animate no results view if it isn't already
-        // in the table view
-        if noResultsView.isDescendant(of: tableView) == false {
-            tableView.addSubview(withFadeAnimation: noResultsView)
-            noResultsView.translatesAutoresizingMaskIntoConstraints = false
-            tableView.pinSubviewAtCenter(noResultsView)
+        guard refreshNoResultsViewController != nil else {
+            return
         }
 
-        tableView.sendSubview(toBack: noResultsView)
+        postListFooterView.isHidden = true
+        refreshNoResultsViewController(noResultsViewController)
+
+        // Only add no results view if it isn't already in the table view
+        if noResultsViewController.view.isDescendant(of: tableView) == false {
+            tableViewController.addChildViewController(noResultsViewController)
+            tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+            noResultsViewController.view.frame = tableView.frame
+
+            // Adjust the NRV to accommodate for the refresh control.
+            if let refreshControl = refreshControl {
+                noResultsViewController.view.frame.origin.y += refreshControl.frame.height/2
+            }
+
+            noResultsViewController.didMove(toParentViewController: tableViewController)
+        }
+
+        tableView.sendSubview(toBack: noResultsViewController.view)
     }
 
     // MARK: - TableView Helpers
@@ -561,12 +568,6 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     @IBAction func handleAddButtonTapped(_ sender: AnyObject) {
-        createPost()
-    }
-
-    @IBAction func didTap(_ noResultsView: WPNoResultsView) {
-        WPAnalytics.track(.postListNoResultsButtonPressed, withProperties: propertiesForAnalytics())
-
         createPost()
     }
 
@@ -742,8 +743,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
         refreshControl?.endRefreshing()
         postListFooterView.showSpinner(false)
-
-        noResultsView.removeFromSuperview()
+        noResultsViewController.removeFromView()
 
         if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
             // This is a special case.  Core data can be a bit slow about notifying
@@ -1105,5 +1105,14 @@ extension AbstractPostListViewController: NetworkAwareUI {
 extension AbstractPostListViewController: NetworkStatusDelegate {
     func networkStatusDidChange(active: Bool) {
         automaticallySyncIfAppropriate()
+    }
+}
+
+// MARK: - NoResultsViewControllerDelegate
+
+extension AbstractPostListViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        WPAnalytics.track(.postListNoResultsButtonPressed, withProperties: propertiesForAnalytics())
+        createPost()
     }
 }

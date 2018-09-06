@@ -66,6 +66,8 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        refreshModel()
+
         tableView.estimatedRowHeight = Constants.estimatedRowHeight
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
@@ -76,7 +78,6 @@ class ActivityListViewController: UITableViewController, ImmuTablePresenter {
         // Magic to avoid cell separators being displayed while a plain table loads
         tableView.tableFooterView = UIView()
 
-        refreshModel()
         WPAnalytics.track(.activityLogViewed)
     }
 

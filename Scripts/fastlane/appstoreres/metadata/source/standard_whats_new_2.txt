@@ -1,0 +1,1 @@
+For this release, we polished some pixels, waved a few bugs goodbye, and worked behind the scenes to make the WordPress experience smoother for our app users.

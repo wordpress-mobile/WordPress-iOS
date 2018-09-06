@@ -1,3 +1,3 @@
-Activity Log! You can now see all that has been going on with your site.
-Animated GIF support has been expanded in Reader and Media Picker.
-A bunch of UI tweaks, accessibility improvements and bug fixes.
+There’s better image handling in the editor. Whether you drag-and-drop a file or add one with the media picker, uploading and inserting is smooth and fast.
+Small UI improvements in a bunch of spots to make your experience more intuitive — you probably won’t notice them, and that’s the point!
+Bug squashing.

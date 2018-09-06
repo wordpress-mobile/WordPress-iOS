@@ -48,7 +48,7 @@ class NotificationUtility {
         let dictionary = contextManager.object(withContentOfFile: "notifications-replied-comment.json") as! [String: AnyObject]
         let body = dictionary["body"]
         let blocks = NotificationContentFactory.content(from: body as! [[String : AnyObject]], actionsParser: NotificationActionParser(), parent: WordPress.Notification(context: contextManager.mainContext))
-        return blocks.filter{ $0.kind == .comment }.first! as! FormattableCommentContent
+        return blocks.filter { $0.kind == .comment }.first! as! FormattableCommentContent
     }
 
     func mockCommentContext() -> ActionContext<FormattableCommentContent> {
