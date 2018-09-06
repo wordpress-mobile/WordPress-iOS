@@ -62,11 +62,9 @@ import UIKit
         configureView()
     }
 
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        // Always hide the accessory/image stack view when in iPhone landscape.
-        // This trumps anything set in `setAccessoryViewsVisibility`.
-        accessoryStackView.isHidden = UIDeviceOrientationIsLandscape(UIDevice.current.orientation) && WPDeviceIdentification.isiPhone()
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        setAccessoryViewsVisibility()
     }
 
     /// Public method to get controller instance and set view values.
@@ -313,6 +311,9 @@ private extension NoResultsViewController {
     }
 
     func setAccessoryViewsVisibility() {
+        // Always hide the accessory/image stack view when in iPhone landscape.
+        accessoryStackView.isHidden = UIDeviceOrientationIsLandscape(UIDevice.current.orientation) && WPDeviceIdentification.isiPhone()
+
         // If there is an accessory view, show that.
         accessoryView.isHidden = accessorySubview == nil
         // Otherwise, show the image view, unless it's set never to show.
