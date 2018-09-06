@@ -1,5 +1,6 @@
+import WordPressShared
 
-class SnipetsContentStyles: FormattableContentStyles {
+class SnippetsContentStyles: FormattableContentStyles {
     var attributes: [NSAttributedStringKey: Any] {
         return WPStyleGuide.Notifications.snippetRegularStyle
     }

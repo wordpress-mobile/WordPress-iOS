@@ -1,4 +1,5 @@
 import Foundation
+
 import WordPressShared
 
 /// This class groups all of the styles used by all of the CommentsViewController.
