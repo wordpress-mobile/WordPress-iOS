@@ -15,7 +15,7 @@ extension ReaderStreamViewController {
         let mustBadge = news.shouldPresentCard(containerIdentifier: containerIdentifier)
         let notificationName: NSNotification.Name = mustBadge ? .NewsCardAvailable : .NewsCardNotAvailable
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: {
             NotificationCenter.default.post(name: notificationName, object: nil)
         })
     }
