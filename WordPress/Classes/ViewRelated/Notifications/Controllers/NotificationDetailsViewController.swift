@@ -292,11 +292,7 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
 
         setupSeparators(cell, indexPath: indexPath)
 
-        if FeatureFlag.extractNotifications.enabled {
-            setup(cell, withContentGroupAt: indexPath)
-        } else {
-            setup(cell, withBlockGroupAt: indexPath)
-        }
+        setup(cell, withContentGroupAt: indexPath)
 
         return cell
     }
@@ -305,12 +301,6 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
         let group = contentGroup(for: indexPath)
         setup(cell, with: group, at: indexPath)
         downloadAndResizeMedia(at: indexPath, from: group)
-    }
-
-    func setup(_ cell: NoteBlockTableViewCell, withBlockGroupAt indexPath: IndexPath) {
-        let blockGroup = blockGroupForIndexPath(indexPath)
-        setupCell(cell, blockGroup: blockGroup)
-        downloadAndResizeMedia(indexPath, blockGroup: blockGroup)
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -329,14 +319,8 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-        if FeatureFlag.extractNotifications.enabled {
-            let group = contentGroup(for: indexPath)
-            displayContent(group)
-        } else {
-            let group = blockGroupForIndexPath(indexPath)
-            old_displayContent(group)
-        }
+        let group = contentGroup(for: indexPath)
+        displayContent(group)
     }
 
     func old_displayContent(_ group: NotificationBlockGroup) {
@@ -503,18 +487,10 @@ extension NotificationDetailsViewController {
     var shouldAttachReplyView: Bool {
         // Attach the Reply component only if the noficiation has a comment, and it can be replied-to
         //
-        if FeatureFlag.extractNotifications.enabled == true {
-            guard let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
-                return false
-            }
-            return block.action(id: ReplyToCommentAction.actionIdentifier())?.on ?? false
-        } else {
-            guard let block = note.blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
-                return false
-            }
-            return block.isActionOn(.Reply)
+        guard let block: FormattableCommentContent = note.contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
+            return false
         }
-
+        return block.action(id: ReplyToCommentAction.actionIdentifier())?.on ?? false
     }
 
     func storeNotificationReplyIfNeeded() {
@@ -603,243 +579,6 @@ private extension NotificationDetailsViewController {
         case .user:
             return NoteBlockUserTableViewCell.reuseIdentifier()
         }
-    }
-}
-
-
-
-// MARK: - UITableViewCell Subclass Setup (To be removed)
-//
-private extension NotificationDetailsViewController {
-    private func rememberRemoveExtension() {
-        //Please remove this whole extension when the Notification extraction feature flag is removed
-        _ = FeatureFlag.extractNotifications.enabled
-    }
-
-    func setupCell(_ cell: NoteBlockTableViewCell, blockGroup: NotificationBlockGroup) {
-        switch cell {
-        case let cell as NoteBlockHeaderTableViewCell:
-            setupHeaderCell(cell, blockGroup: blockGroup)
-        case let cell as NoteBlockTextTableViewCell where blockGroup.kind == .footer:
-            setupFooterCell(cell, blockGroup: blockGroup)
-        case let cell as NoteBlockUserTableViewCell:
-            setupUserCell(cell, blockGroup: blockGroup)
-        case let cell as NoteBlockCommentTableViewCell:
-            setupCommentCell(cell, blockGroup: blockGroup)
-        case let cell as NoteBlockActionsTableViewCell:
-            setupActionsCell(cell, blockGroup: blockGroup)
-        case let cell as NoteBlockImageTableViewCell:
-            setupImageCell(cell, blockGroup: blockGroup)
-        case let cell as NoteBlockTextTableViewCell:
-            setupTextCell(cell, blockGroup: blockGroup)
-        default:
-            assertionFailure("NotificationDetails: Please, add support for \(cell)")
-        }
-    }
-
-    func setupHeaderCell(_ cell: NoteBlockHeaderTableViewCell, blockGroup: NotificationBlockGroup) {
-        // Note:
-        // We're using a UITableViewCell as a Header, instead of UITableViewHeaderFooterView, because:
-        // -   UITableViewCell automatically handles highlight / unhighlight for us
-        // -   UITableViewCell's taps don't require a Gestures Recognizer. No big deal, but less code!
-        //
-        let gravatarBlock = blockGroup.blockOfKind(.image)
-        let snippetBlock = blockGroup.blockOfKind(.text)
-
-        cell.attributedHeaderTitle = gravatarBlock?.attributedHeaderTitleText
-        cell.headerDetails = snippetBlock?.text
-
-        // Download the Gravatar
-        let mediaURL = gravatarBlock?.media.first?.mediaURL
-        cell.downloadAuthorAvatar(with: mediaURL)
-    }
-
-    func setupFooterCell(_ cell: NoteBlockTextTableViewCell, blockGroup: NotificationBlockGroup) {
-        guard let textBlock = blockGroup.blocks.first else {
-            assertionFailure("Missing Text Block for Notification [\(note.notificationId)")
-            return
-        }
-
-        cell.attributedText = textBlock.attributedFooterText
-        cell.isTextViewSelectable = false
-        cell.isTextViewClickable = false
-    }
-
-    func setupUserCell(_ cell: NoteBlockUserTableViewCell, blockGroup: NotificationBlockGroup) {
-        guard let userBlock = blockGroup.blocks.first else {
-            assertionFailure("Missing User Block for Notification [\(note.notificationId)]")
-            return
-        }
-
-        let hasHomeURL = userBlock.metaLinksHome != nil
-        let hasHomeTitle = userBlock.metaTitlesHome?.isEmpty == false
-
-        cell.accessoryType = hasHomeURL ? .disclosureIndicator : .none
-        cell.name = userBlock.text
-        cell.blogTitle = hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome?.host
-        cell.isFollowEnabled = userBlock.isActionEnabled(.Follow)
-        cell.isFollowOn = userBlock.isActionOn(.Follow)
-
-        cell.onFollowClick = { [weak self] in
-            self?.followSiteWithBlock(userBlock)
-        }
-
-        cell.onUnfollowClick = { [weak self] in
-            self?.unfollowSiteWithBlock(userBlock)
-        }
-
-        // Download the Gravatar
-        let mediaURL = userBlock.media.first?.mediaURL
-        cell.downloadGravatarWithURL(mediaURL)
-    }
-
-    func setupCommentCell(_ cell: NoteBlockCommentTableViewCell, blockGroup: NotificationBlockGroup) {
-        // Note:
-        // The main reason why it's a very good idea *not* to reuse NoteBlockHeaderTableViewCell, just to display the
-        // gravatar, is because we're implementing a custom behavior whenever the user approves/ unapproves the comment.
-        //
-        //  -   Font colors are updated.
-        //  -   A left separator is displayed.
-        //
-        guard let commentBlock = blockGroup.blockOfKind(.comment) else {
-            assertionFailure("Missing Comment Block for Notification [\(note.notificationId)]")
-            return
-        }
-
-        guard let userBlock = blockGroup.blockOfKind(.user) else {
-            assertionFailure("Missing User Block for Notification [\(note.notificationId)]")
-            return
-        }
-
-        // Merge the Attachments with their ranges: [NSRange: UIImage]
-        let mediaMap = mediaDownloader.imagesForUrls(commentBlock.imageUrls)
-        let mediaRanges = commentBlock.buildRangesToImagesMap(mediaMap)
-
-        let text = commentBlock.attributedRichText.stringByEmbeddingImageAttachments(mediaRanges)
-
-        // Setup: Properties
-        cell.name                   = userBlock.text
-        cell.timestamp              = (note.timestampAsDate as NSDate).mediumString()
-        cell.site                   = userBlock.metaTitlesHome ?? userBlock.metaLinksHome?.host
-        cell.attributedCommentText  = text.trimNewlines()
-        cell.isApproved             = commentBlock.isCommentApproved
-
-        // Setup: Callbacks
-        cell.onUserClick = { [weak self] in
-            guard let homeURL = userBlock.metaLinksHome else {
-                return
-            }
-
-            self?.displayURL(homeURL)
-        }
-
-        cell.onUrlClick = { [weak self] url in
-            self?.displayURL(url as URL)
-        }
-
-        cell.onAttachmentClick = { [weak self] attachment in
-            guard let image = attachment.image else {
-                return
-            }
-            self?.router.routeTo(image)
-        }
-
-        // Download the Gravatar
-        let mediaURL = userBlock.media.first?.mediaURL
-        cell.downloadGravatarWithURL(mediaURL)
-    }
-
-    func setupActionsCell(_ cell: NoteBlockActionsTableViewCell, blockGroup: NotificationBlockGroup) {
-        guard let commentBlock = blockGroup.blockOfKind(.comment) else {
-            assertionFailure("Missing Comment Block for Notification \(note.notificationId)")
-            return
-        }
-
-        // Setup: Properties
-        // Note: Approve Action is actually a synonym for 'Edit' (Based on Calypso's basecode)
-        //
-        cell.isReplyEnabled     = UIDevice.isPad() && commentBlock.isActionOn(.Reply)
-        cell.isLikeEnabled      = commentBlock.isActionEnabled(.Like)
-        cell.isApproveEnabled   = commentBlock.isActionEnabled(.Approve)
-        cell.isTrashEnabled     = commentBlock.isActionEnabled(.Trash)
-        cell.isSpamEnabled      = commentBlock.isActionEnabled(.Spam)
-        cell.isEditEnabled      = commentBlock.isActionOn(.Approve)
-        cell.isLikeOn           = commentBlock.isActionOn(.Like)
-        cell.isApproveOn        = commentBlock.isActionOn(.Approve)
-
-        // Setup: Callbacks
-        cell.onReplyClick = { [weak self] _ in
-            self?.focusOnReplyTextViewWithBlock(commentBlock)
-        }
-
-        cell.onLikeClick = { [weak self] _ in
-            self?.likeCommentWithBlock(commentBlock)
-        }
-
-        cell.onUnlikeClick = { [weak self] _ in
-            self?.unlikeCommentWithBlock(commentBlock)
-        }
-
-        cell.onApproveClick = { [weak self] _ in
-            self?.approveCommentWithBlock(commentBlock)
-        }
-
-        cell.onUnapproveClick = { [weak self] _ in
-            self?.unapproveCommentWithBlock(commentBlock)
-        }
-
-        cell.onTrashClick = { [weak self] _ in
-            self?.trashCommentWithBlock(commentBlock)
-        }
-
-        cell.onSpamClick = { [weak self] _ in
-            self?.spamCommentWithBlock(commentBlock)
-        }
-
-        cell.onEditClick = { [weak self] _ in
-            self?.displayCommentEditorWithBlock(commentBlock)
-        }
-    }
-
-    func setupImageCell(_ cell: NoteBlockImageTableViewCell, blockGroup: NotificationBlockGroup) {
-        guard let imageBlock = blockGroup.blocks.first else {
-            assertionFailure("Missing Image Block for Notification [\(note.notificationId)")
-            return
-        }
-
-        let mediaURL = imageBlock.media.first?.mediaURL
-        cell.downloadImage(mediaURL)
-    }
-
-    func setupTextCell(_ cell: NoteBlockTextTableViewCell, blockGroup: NotificationBlockGroup) {
-        guard let textBlock = blockGroup.blocks.first else {
-            assertionFailure("Missing Text Block for Notification \(note.notificationId)")
-            return
-        }
-
-        // Merge the Attachments with their ranges: [NSRange: UIImage]
-        let mediaMap = mediaDownloader.imagesForUrls(textBlock.imageUrls)
-        let mediaRanges = textBlock.buildRangesToImagesMap(mediaMap)
-
-        // Load the attributedText
-        let text = note.isBadge ? textBlock.attributedBadgeText : textBlock.attributedRichText
-
-        // Setup: Properties
-        cell.attributedText = text.stringByEmbeddingImageAttachments(mediaRanges)
-
-        // Setup: Callbacks
-        cell.onUrlClick = { [weak self] url in
-            guard let `self` = self, self.isViewOnScreen() else {
-                return
-            }
-
-            self.displayURL(url)
-        }
-    }
-
-    func setupSeparators(_ cell: NoteBlockTableViewCell, indexPath: IndexPath) {
-        cell.isBadge = note.isBadge
-        cell.isLastRow = (indexPath.row >= note.headerAndBodyBlockGroups.count - 1)
     }
 }
 
@@ -1036,6 +775,11 @@ private extension NotificationDetailsViewController {
         }
     }
 
+    func setupSeparators(_ cell: NoteBlockTableViewCell, indexPath: IndexPath) {
+        cell.isBadge = note.isBadge
+        cell.isLastRow = (indexPath.row >= note.headerAndBodyBlockGroups.count - 1)
+    }
+
     func setupImageCell(_ cell: NoteBlockImageTableViewCell, blockGroup: FormattableContentGroup) {
         guard let imageBlock = blockGroup.blocks.first as? NotificationTextContent else {
             assertionFailure("Missing Image Block for Notification [\(note.notificationId)")
@@ -1117,22 +861,7 @@ private extension NotificationDetailsViewController {
             return
         }
 
-        if FeatureFlag.extractNotifications.enabled {
-            router.routeTo(url)
-        } else {
-            old_displayURL(url)
-        }
-    }
-
-    func old_displayURL(_ url: URL) {
-        // Attempt to infer the NotificationRange associated: Recover Metadata + Push Native Views!
-        //
-        do {
-            let range = note.notificationRangeWithUrl(url)
-            try displayResourceWithRange(range)
-        } catch {
-            coordinator.displayWebViewWithURL(url)
-        }
+        router.routeTo(url)
     }
 
     func displayNotificationSource() {
