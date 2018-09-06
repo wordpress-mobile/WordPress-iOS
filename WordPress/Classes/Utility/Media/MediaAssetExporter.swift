@@ -1,5 +1,6 @@
 import Foundation
 import MobileCoreServices
+import AVFoundation
 
 /// Media export handling of PHAssets
 ///
@@ -80,7 +81,14 @@ class MediaAssetExporter: MediaExporter {
                 return exportGIF(forAsset: asset, resource: resource, onCompletion: onCompletion, onError: onError)
             }
         }
-
+        // Sergio Estevao: If the image is of the type HEIC we make sure the exportImageType uses JPG,
+        // because WordPress doesn't accept HEIC.
+        if #available(iOS 11.0, *) {
+            if let resource = resources.first,
+                UTTypeEqual(resource.uniformTypeIdentifier as CFString, AVFileType.heic.rawValue as CFString) {
+                self.imageOptions?.exportImageType = kUTTypeJPEG as String
+            }
+        }
         // Configure the options for requesting the image.
         let options = PHImageRequestOptions()
         options.version = .current
