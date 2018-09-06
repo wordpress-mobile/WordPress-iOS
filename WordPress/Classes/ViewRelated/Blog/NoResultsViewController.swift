@@ -27,7 +27,7 @@ import UIKit
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var accessoryView: UIView!
     @IBOutlet weak var accessoryStackView: UIStackView!
-    
+
     // To allow storing values until view is loaded.
     private var titleText: String?
     private var subtitleText: String?
@@ -64,7 +64,7 @@ import UIKit
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        // Always hide the accessory/image view when in iPhone landscape.
+        // Always hide the accessory/image stack view when in iPhone landscape.
         // This trumps anything set in `setAccessoryViewsVisibility`.
         accessoryStackView.isHidden = UIDeviceOrientationIsLandscape(UIDevice.current.orientation) && WPDeviceIdentification.isiPhone()
     }
