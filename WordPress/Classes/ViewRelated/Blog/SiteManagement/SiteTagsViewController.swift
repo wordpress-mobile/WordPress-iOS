@@ -413,11 +413,8 @@ private extension SiteTagsViewController {
         addChildViewController(noResultsViewController)
         noResultsViewController.view.frame = tableView.frame
 
-        // If the refreshControl is showing, move the NRV up so the contents appear centered in the view.
-        if let refreshControl = refreshControl,
-            refreshControl.isHidden == false {
-            noResultsViewController.view.frame.origin.y -= refreshControl.frame.height
-        }
+        // Since the tableView doesn't always start at the top, adjust the NRV accordingly.
+        noResultsViewController.view.frame.origin.y = 0
 
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         noResultsViewController.didMove(toParentViewController: self)
