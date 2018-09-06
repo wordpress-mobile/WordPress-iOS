@@ -106,14 +106,6 @@ class MediaAssetExporter: MediaExporter {
             }
         }
 
-        // Configure the targetSize for PHImageManager to resize to.
-        let targetSize: CGSize
-        if let options = self.imageOptions, let maximumImageSize = options.maximumImageSize {
-            targetSize = CGSize(width: maximumImageSize, height: maximumImageSize)
-        } else {
-            targetSize = PHImageManagerMaximumSize
-        }
-
         // Configure an error handler for the image request.
         let onImageRequestError: (Error?) -> Void = { (error) in
             guard let error = error else {
