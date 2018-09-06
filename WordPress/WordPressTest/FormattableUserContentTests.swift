@@ -88,7 +88,7 @@ final class FormattableUserContentTests: XCTestCase {
 
         let parent = subject?.parent
 
-        XCTAssertEqual(parent?.notificationId, injectedParent.notificationId)
+        XCTAssertEqual(parent?.notificationIdentifier, injectedParent.notificationIdentifier)
     }
 
     func testApproveCommentActionIsOn() {

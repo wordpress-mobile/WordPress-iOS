@@ -238,6 +238,7 @@
                                                                        subtitle:nil
                                                              attributedSubtitle:nil
                                                                           image:nil
+                                                                  subtitleImage:nil
                                                                   accessoryView:nil];
     self.noResultsViewController.delegate = self;
 
