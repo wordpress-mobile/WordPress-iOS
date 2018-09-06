@@ -23,8 +23,4 @@
 {
 }
 
-//- (BOOL) connectionAvailable {
-//    return true;
-//}
-
 @end

@@ -4,12 +4,14 @@ import WPMediaPicker
 /// Prepares the alert controller that will be presented when tapping the "+" button in Media Library
 final class MediaLibraryMediaPickingCoordinator {
     private let stockPhotos = StockPhotosPicker()
+    private let giphy = GiphyPicker()
     private let cameraCapture = CameraCaptureCoordinator()
     private let mediaLibrary = MediaLibraryPicker()
 
-    init(delegate: StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate) {
+    init(delegate: StockPhotosPickerDelegate & WPMediaPickerViewControllerDelegate & GiphyPickerDelegate) {
         stockPhotos.delegate = delegate
         mediaLibrary.delegate = delegate
+        giphy.delegate = delegate
     }
 
     func present(context: MediaPickingContext) {
@@ -32,6 +34,10 @@ final class MediaLibraryMediaPickingCoordinator {
 
         if blog.supports(.stockPhotos) {
             menuAlert.addAction(freePhotoAction(origin: origin, blog: blog))
+        }
+
+        if FeatureFlag.giphy.enabled {
+            menuAlert.addAction(giphyAction(origin: origin, blog: blog))
         }
 
         if #available(iOS 11.0, *) {
@@ -64,6 +70,13 @@ final class MediaLibraryMediaPickingCoordinator {
         })
     }
 
+
+    private func giphyAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
+        return UIAlertAction(title: .giphy, style: .default, handler: { [weak self] action in
+            self?.showGiphy(origin: origin, blog: blog)
+        })
+    }
+
     private func otherAppsAction(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) -> UIAlertAction {
         return UIAlertAction(title: .files, style: .default, handler: { [weak self] action in
             self?.showDocumentPicker(origin: origin, blog: blog)
@@ -80,6 +93,10 @@ final class MediaLibraryMediaPickingCoordinator {
 
     private func showStockPhotos(origin: UIViewController, blog: Blog) {
         stockPhotos.presentPicker(origin: origin, blog: blog)
+    }
+
+    private func showGiphy(origin: UIViewController, blog: Blog) {
+        giphy.presentPicker(origin: origin, blog: blog)
     }
 
     private func showDocumentPicker(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) {

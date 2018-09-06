@@ -1,0 +1,11 @@
+/* News Card title. */
+"Title" = "This is an awesome new feature!";
+
+/* News Card content. */
+"Content" = "This is long form content. Here we explain why this feature is awesome";
+
+/* News Card link. */
+"URL" = "http://wordpress.com/me";
+
+/* Build version this card applies to. */
+"version" = "10.7";

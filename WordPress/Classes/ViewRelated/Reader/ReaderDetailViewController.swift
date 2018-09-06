@@ -28,6 +28,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     // MARK: - Properties & Accessors
 
+    // Callbacks
+    /// Called if the view controller's post fails to load
+    var postLoadFailureBlock: (() -> Void)? = nil
+
     // Footer views
     @IBOutlet fileprivate weak var footerView: UIView!
     @IBOutlet fileprivate weak var tagButton: UIButton!
@@ -70,6 +74,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     fileprivate let sharingController = PostSharingController()
 
+    private let noResultsViewController = NoResultsViewController.controller()
+
+    private let readerLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.ReaderRoutes)
+
     @objc var currentPreferredStatusBarStyle = UIStatusBarStyle.lightContent {
         didSet {
             setNeedsStatusBarAppearanceUpdate()
@@ -95,6 +103,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             }
         }
     }
+
+    open var postURL: URL? = nil
 
     fileprivate var isLoaded: Bool {
         return post != nil
@@ -139,6 +149,14 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         return controller
     }
 
+    @objc open class func controllerWithPostURL(_ url: URL) -> ReaderDetailViewController {
+
+        let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
+        let controller = storyboard.instantiateViewController(withIdentifier: "ReaderDetailViewController") as! ReaderDetailViewController
+        controller.setupWithPostURL(url)
+
+        return controller
+    }
 
     // MARK: - State Restoration
 
@@ -201,6 +219,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         // Hide the featured image and its padding until we know there is one to load.
         featuredImageView.isHidden = true
         featuredImageBottomPaddingView.isHidden = true
+
+        noResultsViewController.delegate = self
 
         // Styles
         applyStyles()
@@ -300,12 +320,12 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         view.layoutIfNeeded()
     }
 
-
     // MARK: - Setup
 
     @objc open func setupWithPostID(_ postID: NSNumber, siteID: NSNumber, isFeed: Bool) {
-        let title = NSLocalizedString("Loading Post...", comment: "Text displayed while loading a post.")
-        WPNoResultsView.displayAnimatedBox(withTitle: title, message: nil, view: view)
+
+        configureAndDisplayLoadingView(title: LoadingText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+
         textView.alpha = 0.0
 
         let context = ContextManager.sharedInstance().mainContext
@@ -316,16 +336,36 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         forSite: siteID.uintValue,
         isFeed: isFeed,
         success: {[weak self] (post: ReaderPost?) in
-                WPNoResultsView.remove(from: self?.view)
+                self?.hideLoadingView()
                 self?.textView.alpha = 1.0
                 self?.post = post
             }, failure: {[weak self] (error: Error?) in
                 DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
-
-                let title = NSLocalizedString("Error Loading Post", comment: "Text displayed when load post fails.")
-                WPNoResultsView.displayAnimatedBox(withTitle: title, message: nil, view: self?.view)
+                self?.configureAndDisplayLoadingView(title: LoadingText.errorLoadingTitle)
+                self?.reportPostLoadFailure()
             }
         )
+    }
+
+    @objc open func setupWithPostURL(_ postURL: URL) {
+        self.postURL = postURL
+
+        configureAndDisplayLoadingView(title: LoadingText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+
+        textView.alpha = 0.0
+
+        let context = ContextManager.sharedInstance().mainContext
+        let service = ReaderPostService(managedObjectContext: context)
+
+        service.fetchPost(at: postURL,
+                          success: { [weak self] post in
+                            self?.hideLoadingView()
+                            self?.textView.alpha = 1.0
+                            self?.post = post
+        }, failure: {[weak self] (error: Error?) in
+            DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
+            self?.configureAndDisplayLoadingViewWithWebAction(title: LoadingText.errorLoadingTitle)
+        })
     }
 
 
@@ -801,11 +841,6 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 
     fileprivate func configureSaveForLaterButton() {
-        guard FeatureFlag.saveForLater.enabled else {
-            saveForLaterButton.isHidden = true
-            return
-        }
-
         WPStyleGuide.applyReaderSaveForLaterButtonStyle(saveForLaterButton)
         WPStyleGuide.applyReaderSaveForLaterButtonTitles(saveForLaterButton)
 
@@ -834,6 +869,11 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 
     // MARK: - Instance Methods
+
+    @objc func presentReaderDetailViewControllerWithURL(_ url: URL) {
+        let viewController = ReaderDetailViewController.controllerWithPostURL(url)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
 
     @objc func presentWebViewControllerWithURL(_ url: URL) {
         var url = url
@@ -936,6 +976,13 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
 
         SearchManager.shared.indexItem(post)
+    }
+
+    private func reportPostLoadFailure() {
+        postLoadFailureBlock?()
+
+        // We'll nil out the failure block so we don't perform multiple callbacks
+        postLoadFailureBlock = nil
     }
 
     // MARK: - Analytics
@@ -1133,6 +1180,42 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     }
 }
 
+// MARK: - Loading View Handling
+
+private extension ReaderDetailViewController {
+
+    func configureAndDisplayLoadingView(title: String, accessoryView: UIView? = nil) {
+        noResultsViewController.configure(title: title, image: "wp-illustration-empty-results", accessoryView: accessoryView)
+        showLoadingView()
+    }
+
+    func configureAndDisplayLoadingViewWithWebAction(title: String, accessoryView: UIView? = nil) {
+        noResultsViewController.configure(title: title,
+                                          buttonTitle: LoadingText.errorLoadingPostURLButtonTitle,
+                                          image: "wp-illustration-empty-results",
+                                          accessoryView: accessoryView)
+        showLoadingView()
+    }
+
+    func showLoadingView() {
+        hideLoadingView()
+        addChildViewController(noResultsViewController)
+        view.addSubview(withFadeAnimation: noResultsViewController.view)
+        noResultsViewController.didMove(toParentViewController: self)
+    }
+
+    func hideLoadingView() {
+        noResultsViewController.removeFromView()
+    }
+
+    struct LoadingText {
+        static let loadingTitle = NSLocalizedString("Loading Post...", comment: "Text displayed while loading a post.")
+        static let errorLoadingTitle = NSLocalizedString("Error Loading Post", comment: "Text displayed when load post fails.")
+        static let errorLoadingPostURLButtonTitle = NSLocalizedString("Open in browser", comment: "Button title to load a post in an in-app web view")
+    }
+
+}
+
 // MARK: - ReaderCardDiscoverAttributionView Delegate Methods
 
 extension ReaderDetailViewController: ReaderCardDiscoverAttributionViewDelegate {
@@ -1145,12 +1228,10 @@ extension ReaderDetailViewController: ReaderCardDiscoverAttributionViewDelegate 
 // MARK: - UITextView/WPRichContentView Delegate Methods
 
 extension ReaderDetailViewController: WPRichContentViewDelegate {
-
     public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
         presentWebViewControllerWithURL(URL)
         return false
     }
-
 
     @available(iOS 10, *)
     public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
@@ -1159,12 +1240,15 @@ extension ReaderDetailViewController: WPRichContentViewDelegate {
             let frame = textView.frameForTextInRange(characterRange)
             let shareController = PostSharingController()
             shareController.shareURL(url: URL as NSURL, fromRect: frame, inView: textView, inViewController: self)
+        } else if readerLinkRouter.canHandle(url: URL) {
+            readerLinkRouter.handle(url: URL, shouldTrack: false, source: self)
+        } else if URL.isWordPressDotComPost {
+            presentReaderDetailViewControllerWithURL(URL)
         } else {
             presentWebViewControllerWithURL(URL)
         }
         return false
     }
-
 
     func richContentView(_ richContentView: WPRichContentView, didReceiveImageAction image: WPRichTextImage) {
         // If we have gif data availible, present that
@@ -1312,5 +1396,16 @@ extension ReaderDetailViewController: UIViewControllerTransitioningDelegate {
         }
 
         return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+/// MARK: - NoResultsViewControllerDelegate
+///
+extension ReaderDetailViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        if let postURL = postURL {
+            presentWebViewControllerWithURL(postURL)
+            navigationController?.popViewController(animated: true)
+        }
     }
 }

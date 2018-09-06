@@ -282,6 +282,36 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatAppSettingsVideoOptimizationChanged:
             eventName = @"app_settings_video_optimization_changed";
             break;
+        case WPAnalyticsStatAutomatedTransferDialogShown:
+            eventName = @"automated_transfer_confirm_dialog_shown";
+            break;
+        case WPAnalyticsStatAutomatedTransferDialogCancelled:
+            eventName = @"automated_transfer_confirm_dialog_cancelled";
+            break;
+        case WPAnalyticsStatAutomatedTransferEligibilityCheckInitiated:
+            eventName = @"automated_transfer_check_eligibility";
+            break;
+        case WPAnalyticsStatAutomatedTransferSiteIneligible:
+            eventName = @"automated_transfer_not_eligible";
+            break;
+        case WPAnalyticsStatAutomatedTransferInitiate:
+            eventName = @"automated_transfer_initiate";
+            break;
+        case WPAnalyticsStatAutomatedTransferInitiated:
+            eventName = @"automated_transfer_initiated";
+            break;
+        case WPAnalyticsStatAutomatedTransferInitiationFailed:
+            eventName = @"automated_transfer_initiation_failed";
+            break;
+        case WPAnalyticsStatAutomatedTransferStatusComplete:
+            eventName = @"automated_transfer_status_complete";
+            break;
+        case WPAnalyticsStatAutomatedTransferStatusFailed:
+            eventName = @"automated_transfer_status_failed";
+            break;
+        case WPAnalyticsStatAutomatedTransferFlowComplete:
+            eventName = @"automated_transfer_flow_complete";
+            break;
         case WPAnalyticsStatCreateAccountInitiated:
             eventName = @"account_create_initiated";
             break;
@@ -686,6 +716,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatMySitesTabAccessed:
             eventName = @"my_site_tab_accessed";
+            break;
+        case WPAnalyticsStatNewsCardViewed:
+            eventName = @"news_card_shown";
+            break;
+        case WPAnalyticsStatNewsCardDismissed:
+            eventName = @"news_card_dismissed";
+            break;
+        case WPAnalyticsStatNewsCardRequestedExtendedInfo:
+            eventName = @"news_card_extended_info_requested";
             break;
         case WPAnalyticsStatNotificationsCommentApproved:
             eventName = @"notifications_approved";
@@ -1469,6 +1508,7 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
         case WPAnalyticsStatMaxValue:
             return nil;
+
     }
 
     TracksEventPair *eventPair = [TracksEventPair new];

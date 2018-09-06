@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/wordpress-mobile/release-toolkit
-  revision: e0474e93dc24e09230c377c9bcb88cc115493c85
-  ref: e0474e93dc24e09230c377c9bcb88cc115493c85
+  revision: 6bd7161a8c21325901191a91c76957f72891566b
+  ref: 6bd7161a8c21325901191a91c76957f72891566b
   specs:
     fastlane-plugin-wpmreleasetoolkit (0.1.0)
 

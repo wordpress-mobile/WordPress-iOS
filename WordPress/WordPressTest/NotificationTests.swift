@@ -195,21 +195,12 @@ class NotificationTests: XCTestCase {
         XCTAssertFalse(note.isUnapprovedComment)
     }
 
-    func testFindingContentRangeSearchingByReplyCommentID() {
+
+    func testFooterContentIsIdentifiedAndCreated() {
         let note = loadCommentNotification()
-        XCTAssertNotNil(note.metaReplyID)
+        let footerBlock: FooterTextContent? = note.contentGroup(ofKind: .footer)?.blockOfKind(.text)
 
-        let textBlock: FormattableTextContent? = note.contentGroup(ofKind: .footer)?.blockOfKind(.text)
-        XCTAssertNotNil(textBlock)
-
-        let replyID = note.metaReplyID
-        XCTAssertNotNil(replyID)
-
-        XCTAssertTrue(textBlock is NotificationTextContent)
-        let mediaBlock = textBlock as? NotificationTextContent
-        let replyRange = mediaBlock?.formattableContentRangeWithCommentId(replyID!)
-
-        XCTAssertNotNil(replyRange)
+        XCTAssertNotNil(footerBlock)
     }
 
     func testFindingContentRangeSearchingByURL() {

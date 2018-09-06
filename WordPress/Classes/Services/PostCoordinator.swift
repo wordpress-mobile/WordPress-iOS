@@ -77,6 +77,56 @@ class PostCoordinator: NSObject {
         return post.remoteStatus == .pushing
     }
 
+    func posts(for blog: Blog, wichTitleContains value: String) -> NSFetchedResultsController<AbstractPost> {
+        let context = self.mainContext
+        let fetchRequest = NSFetchRequest<AbstractPost>(entityName: "AbstractPost")
+
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date_created_gmt", ascending: false)]
+
+        let blogPredicate = NSPredicate(format: "blog == %@", blog)
+        let urlPredicate = NSPredicate(format: "permaLink != NULL")
+        let noVersionPredicate = NSPredicate(format: "original == NULL")
+        var compoundPredicates = [blogPredicate, urlPredicate, noVersionPredicate]
+        if !value.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty {
+            compoundPredicates.append(NSPredicate(format: "postTitle contains[c] %@", value))
+        }
+        let resultPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: compoundPredicates)
+
+        fetchRequest.predicate = resultPredicate
+
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        do {
+            try controller.performFetch()
+        } catch {
+            fatalError("Failed to fetch entities: \(error)")
+        }
+        return controller
+    }
+
+    func titleOfPost(withPermaLink value: String, in blog: Blog) -> String? {
+        let context = self.mainContext
+        let fetchRequest = NSFetchRequest<AbstractPost>(entityName: "AbstractPost")
+
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date_created_gmt", ascending: false)]
+
+        let blogPredicate = NSPredicate(format: "blog == %@", blog)
+        let urlPredicate = NSPredicate(format: "permaLink == %@", value)
+        let noVersionPredicate = NSPredicate(format: "original == NULL")
+        let compoundPredicates = [blogPredicate, urlPredicate, noVersionPredicate]
+
+        let resultPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: compoundPredicates)
+
+        fetchRequest.predicate = resultPredicate
+
+        let result = try? context.fetch(fetchRequest)
+
+        guard let post = result?.first else {
+            return nil
+        }
+
+        return post.titleForDisplay()
+    }
+
     /// Retries the upload and save of the post and any associated media with it.
     ///
     /// - Parameter post: the post to retry the upload

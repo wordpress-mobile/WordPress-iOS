@@ -1,6 +1,4 @@
 import UIKit
-import WordPressAuthenticator
-
 
 @objc protocol NoResultsViewControllerDelegate {
     @objc optional func actionButtonPressed()
@@ -10,11 +8,13 @@ import WordPressAuthenticator
 /// A view to show when there are no results for a given situation.
 /// Ex: My Sites > account has no sites; My Sites > all sites are hidden.
 /// The title will always show.
-/// The image will always show unless an accessoryView is provided.
+/// The image will always show unless:
+///     - an accessoryView is provided.
+///     - hideImage is set to true.
 /// The action button is shown by default, but will be hidden if button title is not provided.
 /// The subtitle is optional and will only show if provided.
 ///
-@objc class NoResultsViewController: NUXViewController {
+@objc class NoResultsViewController: UIViewController {
 
     // MARK: - Properties
 
@@ -22,16 +22,18 @@ import WordPressAuthenticator
     @IBOutlet weak var noResultsView: UIView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subtitleLabel: UILabel!
-    @IBOutlet weak var actionButton: NUXButton!
+    @IBOutlet weak var subtitleTextView: UITextView!
+    @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var accessoryView: UIView!
 
     // To allow storing values until view is loaded.
     private var titleText: String?
     private var subtitleText: String?
+    private var attributedSubtitleText: NSAttributedString?
     private var buttonText: String?
     private var imageName: String?
     private var accessorySubview: UIView?
+    private var hideImage = false
 
     // MARK: - View
 
@@ -42,7 +44,14 @@ import WordPressAuthenticator
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         configureView()
+        startAnimatingIfNeeded()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        stopAnimatingIfNeeded()
     }
 
     override func didMove(toParentViewController parent: UIViewController?) {
@@ -50,24 +59,31 @@ import WordPressAuthenticator
         configureView()
     }
 
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        setAccessoryViewsVisibility()
+    }
+
     /// Public method to get controller instance and set view values.
     ///
     /// - Parameters:
-    ///   - title:          Main descriptive text. Required.
-    ///   - buttonTitle:    Title of action button. Optional.
-    ///   - subtitle:       Secondary descriptive text. Optional.
-    ///   - image:          Name of image file to use. Optional.
-    ///   - accessoryView:  View to show instead of the image. Optional.
+    ///   - title:              Main descriptive text. Required.
+    ///   - buttonTitle:        Title of action button. Optional.
+    ///   - subtitle:           Secondary descriptive text. Optional.
+    ///   - attributedSubtitle: Secondary descriptive attributed text. Optional.
+    ///   - image:              Name of image file to use. Optional.
+    ///   - accessoryView:      View to show instead of the image. Optional.
     ///
     @objc class func controllerWith(title: String,
                                     buttonTitle: String? = nil,
                                     subtitle: String? = nil,
+                                    attributedSubtitle: NSAttributedString? = nil,
                                     image: String? = nil,
                                     accessoryView: UIView? = nil) -> NoResultsViewController {
-
         let controller = NoResultsViewController.controller()
         controller.titleText = title
         controller.subtitleText = subtitle
+        controller.attributedSubtitleText = attributedSubtitle
         controller.buttonText = buttonTitle
         controller.imageName = image
         controller.accessorySubview = accessoryView
@@ -87,15 +103,22 @@ import WordPressAuthenticator
     /// Public method to provide values for text elements.
     ///
     /// - Parameters:
-    ///   - title:          Main descriptive text. Required.
-    ///   - buttonTitle:    Title of action button. Optional.
-    ///   - subtitle:       Secondary descriptive text. Optional.
-    ///   - image:          Name of image file to use. Optional.
-    ///   - accessoryView:  View to show instead of the image. Optional.
+    ///   - title:              Main descriptive text. Required.
+    ///   - buttonTitle:        Title of action button. Optional.
+    ///   - subtitle:           Secondary descriptive text. Optional.
+    ///   - attributedSubtitle: Secondary descriptive attributed text. Optional.
+    ///   - image:              Name of image file to use. Optional.
+    ///   - accessoryView:      View to show instead of the image. Optional.
     ///
-    @objc func configure(title: String, buttonTitle: String? = nil, subtitle: String? = nil, image: String? = nil, accessoryView: UIView? = nil) {
+    @objc func configure(title: String,
+                         buttonTitle: String? = nil,
+                         subtitle: String? = nil,
+                         attributedSubtitle: NSAttributedString? = nil,
+                         image: String? = nil,
+                         accessoryView: UIView? = nil) {
         titleText = title
         subtitleText = subtitle
+        attributedSubtitleText = attributedSubtitle
         buttonText = buttonTitle
         imageName = image
         accessorySubview = accessoryView
@@ -128,6 +151,42 @@ import WordPressAuthenticator
         return noResultsView.frame.height
     }
 
+    /// Public method to get an attributed string styled for No Results.
+    ///
+    /// - Parameters:
+    ///   - attributedString: The attributed string to be styled.
+    ///
+    func applyMessageStyleTo(attributedString: NSAttributedString) -> NSAttributedString {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = subtitleTextView.textAlignment
+
+        let attributes: [NSAttributedStringKey: Any] = [
+            .font: subtitleTextView.font!,
+            .foregroundColor: subtitleTextView.textColor!,
+            .paragraphStyle: paragraphStyle
+        ]
+
+        let fullTextRange = attributedString.string.foundationRangeOfEntireString
+        let finalAttributedString = NSMutableAttributedString(attributedString: attributedString)
+        finalAttributedString.addAttributes(attributes, range: fullTextRange)
+
+        return finalAttributedString
+    }
+
+    /// Public class method to get an animated box to show while loading.
+    /// NB : the current implementation vends a WPAnimatedBox instance, which should be stopped via suspendAnimation.
+    ///
+    @objc class func loadingAccessoryView() -> UIView {
+        let boxView = WPAnimatedBox()
+        return boxView
+    }
+
+    /// Public method to hide/show the image view.
+    ///
+    @objc func hideImageView(_ hide: Bool = true) {
+        hideImage = hide
+    }
+
 }
 
 private extension NoResultsViewController {
@@ -143,13 +202,21 @@ private extension NoResultsViewController {
         titleLabel.text = titleText
 
         if let subtitleText = subtitleText {
-            subtitleLabel.text = subtitleText
-            subtitleLabel.isHidden = false
-        } else {
-            subtitleLabel.isHidden = true
+            subtitleTextView.attributedText = nil
+            subtitleTextView.text = subtitleText
+            subtitleTextView.isSelectable = false
         }
 
+        if let attributedSubtitleText = attributedSubtitleText {
+            subtitleTextView.attributedText = applyMessageStyleTo(attributedString: attributedSubtitleText)
+            subtitleTextView.isSelectable = true
+        }
+
+        let showSubtitle = subtitleText != nil || attributedSubtitleText != nil
+        subtitleTextView.isHidden = !showSubtitle
+
         if let buttonText = buttonText {
+            configureButton()
             actionButton?.setTitle(buttonText, for: UIControlState())
             actionButton?.setTitle(buttonText, for: .highlighted)
             actionButton?.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -167,12 +234,77 @@ private extension NoResultsViewController {
             imageView.image = UIImage(named: imageName)
         }
 
-        // If there is an accessorySubview, show that.
-        // Otherwise, show the imageView.
-        accessoryView.isHidden = accessorySubview == nil
-        imageView.isHidden = !accessoryView.isHidden
-
         view.layoutIfNeeded()
+    }
+
+    func configureButton() {
+        actionButton.contentEdgeInsets = DefaultRenderMetrics.contentInsets
+
+        let normalImage = renderBackgroundImage(fill: WPStyleGuide.mediumBlue(), border: WPStyleGuide.wordPressBlue())
+        let highlightedImage = renderBackgroundImage(fill: WPStyleGuide.wordPressBlue(), border: WPStyleGuide.wordPressBlue())
+
+        actionButton.setBackgroundImage(normalImage, for: .normal)
+        actionButton.setBackgroundImage(highlightedImage, for: .highlighted)
+    }
+
+    func renderBackgroundImage(fill: UIColor, border: UIColor) -> UIImage {
+
+        let renderer = UIGraphicsImageRenderer(size: DefaultRenderMetrics.backgroundImageSize)
+        let image = renderer.image { context in
+
+            let lineWidthInPixels = 1 / UIScreen.main.scale
+            let cgContext = context.cgContext
+
+            // Apply a 1px inset to the bounds, for our bezier (so that the border doesn't fall outside)
+            var bounds = renderer.format.bounds
+            bounds.origin.x += lineWidthInPixels
+            bounds.origin.y += lineWidthInPixels
+            bounds.size.height -= lineWidthInPixels * 2 + DefaultRenderMetrics.backgroundShadowOffset.height
+            bounds.size.width -= lineWidthInPixels * 2 + DefaultRenderMetrics.backgroundShadowOffset.width
+
+            let path = UIBezierPath(roundedRect: bounds, cornerRadius: DefaultRenderMetrics.backgroundCornerRadius)
+
+            // Draw: Background + Shadow
+            cgContext.saveGState()
+            cgContext.setShadow(offset: DefaultRenderMetrics.backgroundShadowOffset,
+                                blur: DefaultRenderMetrics.backgroundShadowBlurRadius,
+                                color: border.cgColor)
+            fill.setFill()
+
+            path.fill()
+
+            cgContext.restoreGState()
+
+            // Draw: Border
+            border.setStroke()
+            path.stroke()
+        }
+
+        return image.resizableImage(withCapInsets: DefaultRenderMetrics.backgroundCapInsets)
+    }
+
+    struct DefaultRenderMetrics {
+        public static let backgroundImageSize = CGSize(width: 44, height: 44)
+        public static let backgroundCornerRadius = CGFloat(8)
+        public static let backgroundCapInsets = UIEdgeInsets(top: 18, left: 18, bottom: 18, right: 18)
+        public static let backgroundShadowOffset = CGSize(width: 0, height: 2)
+        public static let backgroundShadowBlurRadius = CGFloat(0)
+        public static let contentInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
+    }
+
+    func setAccessoryViewsVisibility() {
+        let hideAll = UIDeviceOrientationIsLandscape(UIDevice.current.orientation) && WPDeviceIdentification.isiPhone()
+
+        if hideAll == true {
+            // Hide the accessory and image views in iPhone landscape to ensure entire view fits on screen
+            imageView.isHidden = true
+            accessoryView.isHidden = true
+        } else {
+            // If there is an accessory view, show that.
+            accessoryView.isHidden = accessorySubview == nil
+            // Otherwise, show the image view, unless it's set never to show.
+            imageView.isHidden = (hideImage == true) ? true : !accessoryView.isHidden
+        }
     }
 
     // MARK: - Button Handling
@@ -192,4 +324,19 @@ private extension NoResultsViewController {
         return String(format: buttonIdFormat, string)
     }
 
+    // MARK: - `WPAnimatedBox` resource management
+
+    private func startAnimatingIfNeeded() {
+        guard let animatedBox = accessorySubview as? WPAnimatedBox else {
+            return
+        }
+        animatedBox.animate(afterDelay: 0.1)
+    }
+
+    private func stopAnimatingIfNeeded() {
+        guard let animatedBox = accessorySubview as? WPAnimatedBox else {
+            return
+        }
+        animatedBox.suspendAnimation()
+    }
 }

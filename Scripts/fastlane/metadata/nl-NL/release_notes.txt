@@ -1,3 +1,3 @@
-Activiteitenlog! Je kunt nu precies zien wat er allemaal gebeurt op je site.
-Ondersteuning voor bewegende gifs toegevoegd aan de Reader en Mediakiezer.
-Een aantal UI-tweaks, toegankelijkheidsverbeteringen en bugfixes.
+De editor heeft verbeterde functies voor afbeeldingen. Het uploaden en invoeren van afbeeldingen verloopt nu eenvoudig en snel, of je nu een bestand versleept en plaatst of er een toevoegt met de mediakiezer.
+Kleine UI-verbeteringen op verschillende plaatsen om je ervaring intuïtiever te maken. Je zult ze waarschijnlijk niet opmerken, maar dat is nou net de bedoeling!
+Bugs geplet.

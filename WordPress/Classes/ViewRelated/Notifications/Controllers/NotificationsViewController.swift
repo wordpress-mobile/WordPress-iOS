@@ -42,7 +42,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     /// NoResults View
     ///
-    fileprivate var noResultsView: WPNoResultsView!
+    private let noResultsViewController = NoResultsViewController.controller()
 
     /// All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
     ///
@@ -183,6 +183,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
         // on the next redraw tick, which seems to be required.
         DispatchQueue.main.async {
             self.setupTableHeaderView()
+            self.showNoResultsViewIfNeeded()
         }
 
         if splitViewControllerIsHorizontallyCompact {
@@ -420,8 +421,7 @@ private extension NotificationsViewController {
     }
 
     func setupNoResultsView() {
-        noResultsView = WPNoResultsView()
-        noResultsView.delegate = self
+        noResultsViewController.delegate = self
     }
 
     func setupFiltersSegmentedControl() {
@@ -1090,24 +1090,16 @@ private extension NotificationsViewController {
 //
 private extension NotificationsViewController {
     func showNoResultsViewIfNeeded() {
+        noResultsViewController.removeFromView()
         updateSplitViewAppearanceForNoResultsView()
+
         // Hide the filter header if we're showing the Jetpack prompt
         hideFiltersSegmentedControlIfApplicable()
 
-        // Remove + Show Filters, if needed
+        // Show Filters if needed
         guard shouldDisplayNoResultsView == true else {
-            noResultsView.removeFromSuperview()
             showFiltersSegmentedControlIfApplicable()
             return
-        }
-
-        // Attach the view
-        if noResultsView.superview == nil {
-            tableView.addSubview(withFadeAnimation: noResultsView)
-
-            noResultsView.translatesAutoresizingMaskIntoConstraints = false
-            tableView.pinSubviewAtCenter(noResultsView)
-            noResultsView.layoutIfNeeded()
         }
 
         guard connectionAvailable() else {
@@ -1116,14 +1108,28 @@ private extension NotificationsViewController {
         }
 
         // Refresh its properties: The user may have signed into WordPress.com
-        noResultsView.titleText     = noResultsTitleText
-        noResultsView.messageText   = noResultsMessageText
-        noResultsView.buttonTitle   = noResultsButtonText
+        noResultsViewController.configure(title: noResultsTitleText, buttonTitle: noResultsButtonText, subtitle: noResultsMessageText, image: "wp-illustration-notifications")
+        addNoResultsToView()
     }
 
-    private func showNoConnectionView() {
-        noResultsView.titleText     = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-        noResultsView.messageText   = noConnectionMessage()
+    func showNoConnectionView() {
+        noResultsViewController.configure(title: noConnectionTitleText, subtitle: noConnectionMessage())
+        addNoResultsToView()
+    }
+
+    func addNoResultsToView() {
+        addChildViewController(noResultsViewController)
+        tableView.insertSubview(noResultsViewController.view, belowSubview: tableHeaderView)
+        noResultsViewController.view.frame = tableView.frame
+
+        // Adjust the NRV to accommodate for the segmented control/refresh control.
+        if traitCollection.verticalSizeClass == .regular {
+            noResultsViewController.view.frame.origin.y -= self.tableHeaderView.frame.height
+        } else {
+            noResultsViewController.view.frame.origin.y -= self.tableHeaderView.frame.height/2
+        }
+
+        noResultsViewController.didMove(toParentViewController: self)
     }
 
     func updateSplitViewAppearanceForNoResultsView() {
@@ -1137,6 +1143,10 @@ private extension NotificationsViewController {
                 splitViewController.dimDetailViewController(shouldDimDetailViewController)
             }
         }
+    }
+
+    var noConnectionTitleText: String {
+        return NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
     }
 
     var noResultsTitleText: String {
@@ -1168,11 +1178,10 @@ private extension NotificationsViewController {
     }
 }
 
+// MARK: - NoResultsViewControllerDelegate
 
-// MARK: - WPNoResultsViewDelegate Methods
-//
-extension NotificationsViewController: WPNoResultsViewDelegate {
-    func didTap(_ noResultsView: WPNoResultsView) {
+extension NotificationsViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
         let properties = [Stats.sourceKey: Stats.sourceValue]
         switch filter {
         case .none,
@@ -1187,7 +1196,6 @@ extension NotificationsViewController: WPNoResultsViewDelegate {
         }
     }
 }
-
 
 // MARK: - Inline Prompt Helpers
 //
@@ -1472,15 +1480,15 @@ private extension NotificationsViewController {
 
         var noResultsTitle: String {
             switch self {
-            case .none:     return NSLocalizedString("No notifications yet.",
+            case .none:     return NSLocalizedString("No notifications yet",
                                                      comment: "Displayed in the Notifications Tab as a title, when there are no notifications")
-            case .unread:   return NSLocalizedString("You're all caught up!",
+            case .unread:   return NSLocalizedString("You're all up to date!",
                                                      comment: "Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title")
-            case .comment:  return NSLocalizedString("No comments yet.",
+            case .comment:  return NSLocalizedString("No comments yet",
                                                      comment: "Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications")
-            case .follow:   return NSLocalizedString("No followers to report yet.",
+            case .follow:   return NSLocalizedString("No followers yet",
                                                      comment: "Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications")
-            case .like:     return NSLocalizedString("No likes to show yet.",
+            case .like:     return NSLocalizedString("No likes yet",
                                                      comment: "Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications")
             }
         }
@@ -1493,25 +1501,21 @@ private extension NotificationsViewController {
                                                      comment: "Displayed in the Notifications Tab as a message, when the Unread Filter shows no notifications")
             case .comment:  return NSLocalizedString("Join a conversation: comment on posts from blogs you follow.",
                                                      comment: "Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications")
-            case .follow:   return NSLocalizedString("Get noticed: comment on posts you've read.",
+            case .follow,
+                 .like:     return NSLocalizedString("Get noticed: comment on posts you've read.",
                                                      comment: "Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications")
-            case .like:     return NSLocalizedString("Get noticed: comment on posts you've read.",
-                                                     comment: "Displayed in the Notifications Tab as a message, when the Likes Filter shows no notifications")
             }
         }
 
         var noResultsButtonTitle: String {
             switch self {
-            case .none:     return NSLocalizedString("View Reader",
+            case .none,
+                 .comment,
+                 .follow,
+                 .like:     return NSLocalizedString("Go to Reader",
                                                      comment: "Displayed in the Notifications Tab as a button title, when there are no notifications")
-            case .unread:   return NSLocalizedString("New Post",
+            case .unread:   return NSLocalizedString("Create a Post",
                                                      comment: "Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications")
-            case .comment:  return NSLocalizedString("View Reader",
-                                                     comment: "Displayed in the Notifications Tab as a button title, when there are no notifications")
-            case .follow:   return NSLocalizedString("View Reader",
-                                                     comment: "Displayed in the Notifications Tab as a button title, when there are no notifications")
-            case .like:     return NSLocalizedString("View Reader",
-                                                     comment: "Displayed in the Notifications Tab as a button title, when there are no notifications")
             }
         }
 

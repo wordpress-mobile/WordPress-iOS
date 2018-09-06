@@ -15,7 +15,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     fileprivate let pickerDataSource: MediaLibraryPickerDataSource
 
     fileprivate var isLoading: Bool = false
-    fileprivate let noResultsView = MediaNoResultsView()
+    fileprivate let noResultsView = NoResultsViewController.controller()
 
     fileprivate var selectedAsset: Media? = nil
 
@@ -86,6 +86,8 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
         registerChangeObserver()
         registerUploadCoordinatorObserver()
+
+        noResultsView.configureForNoAssets(userCanUploadMedia: blog.userCanUploadMedia)
         noResultsView.delegate = self
 
         updateViewState(for: pickerDataSource.totalAssetCount)
@@ -157,14 +159,19 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     }
 
     fileprivate func updateNoResultsView(for assetCount: Int) {
+
         guard assetCount == 0 else { return }
 
         if isLoading {
-            noResultsView.updateForFetching()
-        } else if hasSearchQuery {
-            noResultsView.updateForNoSearchResult(with: pickerDataSource.searchQuery)
+            noResultsView.configureForFetching()
         } else {
-            noResultsView.updateForNoAssets(userCanUploadMedia: blog.userCanUploadMedia)
+            noResultsView.removeFromView()
+
+            if hasSearchQuery {
+                noResultsView.configureForNoSearchResult(with: pickerDataSource.searchQuery)
+            } else {
+                noResultsView.configureForNoAssets(userCanUploadMedia: blog.userCanUploadMedia)
+            }
         }
     }
 
@@ -424,10 +431,10 @@ extension MediaLibraryViewController: UIDocumentPickerDelegate {
     }
 }
 
-// MARK: - WPNoResultsViewDelegate
+// MARK: - NoResultsViewControllerDelegate
 
-extension MediaLibraryViewController: WPNoResultsViewDelegate {
-    func didTap(_ noResultsView: WPNoResultsView!) {
+extension MediaLibraryViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
         addTapped()
     }
 }
@@ -436,7 +443,7 @@ extension MediaLibraryViewController: WPNoResultsViewDelegate {
 
 extension MediaLibraryViewController: WPMediaPickerViewControllerDelegate {
 
-    func emptyView(forMediaPickerController picker: WPMediaPickerViewController) -> UIView? {
+    func emptyViewController(forMediaPickerController picker: WPMediaPickerViewController) -> UIViewController? {
         return noResultsView
     }
 
@@ -635,6 +642,8 @@ fileprivate extension Blog {
     }
 }
 
+// MARK: Stock Photos Picker Delegate
+
 extension MediaLibraryViewController: StockPhotosPickerDelegate {
     func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
         guard assets.count > 0 else {
@@ -647,5 +656,17 @@ extension MediaLibraryViewController: StockPhotosPickerDelegate {
             mediaCoordinator.addMedia(from: $0, to: blog, analyticsInfo: info)
             WPAnalytics.track(.stockMediaUploaded)
         }
+    }
+}
+
+// MARK: Giphy Picker Delegate
+
+extension MediaLibraryViewController: GiphyPickerDelegate {
+    func giphyPicker(_ picker: GiphyPicker, didFinishPicking assets: [GiphyMedia]) {
+        guard assets.count > 0 else {
+            return
+        }
+
+        // TODO: Add and track giphy media
     }
 }
