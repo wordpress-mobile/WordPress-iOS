@@ -283,7 +283,7 @@ private extension NotificationActionsService {
         guard let mediator = NotificationSyncMediator() else {
             return
         }
-        
+
         let notificationID = block.parent.notificationId
         DDLogInfo("Invalidating Cache and Force Sync'ing Notification with ID: \(notificationID)")
         mediator.invalidateCacheForNotification(with: notificationID)
