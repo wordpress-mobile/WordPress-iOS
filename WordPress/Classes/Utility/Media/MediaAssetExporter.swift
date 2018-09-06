@@ -125,7 +125,7 @@ class MediaAssetExporter: MediaExporter {
                                     return
                                 }
                                 // Hand off the image export to a shared image writer.
-                                let exporter = MediaImageExporter(data: imageData, filename: filename)
+                                let exporter = MediaImageExporter(data: imageData, filename: filename, typeHint: uti)
                                 exporter.mediaDirectoryType = self.mediaDirectoryType
                                 if let options = self.imageOptions {
                                     exporter.options = options
