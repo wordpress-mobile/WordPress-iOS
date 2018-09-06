@@ -23,13 +23,14 @@ class FormattableCommentContent: NotificationTextContent {
     }
 
     var notificationID: String? {
-        return parent.notificationId
+        return parent.notificationIdentifier
     }
 }
 
 extension FormattableCommentContent: Equatable {
     static func == (lhs: FormattableCommentContent, rhs: FormattableCommentContent) -> Bool {
-        return lhs.isEqual(to: rhs) && lhs.parent == rhs.parent
+        return lhs.isEqual(to: rhs) &&
+            lhs.parent.notificationIdentifier == rhs.parent.notificationIdentifier
     }
 
     private func isEqual(to other: FormattableTextContent) -> Bool {
