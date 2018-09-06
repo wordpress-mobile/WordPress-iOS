@@ -26,7 +26,8 @@ import UIKit
     @IBOutlet weak var subtitleImageView: UIImageView!
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var accessoryView: UIView!
-
+    @IBOutlet weak var accessoryStackView: UIStackView!
+    
     // To allow storing values until view is loaded.
     private var titleText: String?
     private var subtitleText: String?
@@ -63,7 +64,9 @@ import UIKit
 
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        setAccessoryViewsVisibility()
+        // Always hide the accessory/image view when in iPhone landscape.
+        // This trumps anything set in `setAccessoryViewsVisibility`.
+        accessoryStackView.isHidden = UIDeviceOrientationIsLandscape(UIDevice.current.orientation) && WPDeviceIdentification.isiPhone()
     }
 
     /// Public method to get controller instance and set view values.
@@ -250,6 +253,7 @@ private extension NoResultsViewController {
             subtitleImageView.image = UIImage(named: subtitleImageName)
         }
 
+        setAccessoryViewsVisibility()
         view.layoutIfNeeded()
     }
 
@@ -309,18 +313,10 @@ private extension NoResultsViewController {
     }
 
     func setAccessoryViewsVisibility() {
-        let hideAll = UIDeviceOrientationIsLandscape(UIDevice.current.orientation) && WPDeviceIdentification.isiPhone()
-
-        if hideAll == true {
-            // Hide the accessory and image views in iPhone landscape to ensure entire view fits on screen
-            imageView.isHidden = true
-            accessoryView.isHidden = true
-        } else {
-            // If there is an accessory view, show that.
-            accessoryView.isHidden = accessorySubview == nil
-            // Otherwise, show the image view, unless it's set never to show.
-            imageView.isHidden = (hideImage == true) ? true : !accessoryView.isHidden
-        }
+        // If there is an accessory view, show that.
+        accessoryView.isHidden = accessorySubview == nil
+        // Otherwise, show the image view, unless it's set never to show.
+        imageView.isHidden = (hideImage == true) ? true : !accessoryView.isHidden
     }
 
     // MARK: - Button Handling
