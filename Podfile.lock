@@ -133,11 +133,14 @@ PODS:
   - WordPressUI (1.0.6)
   - WPMediaPicker (1.3)
   - wpxmlrpc (0.8.3)
-  - ZendeskSDK (1.11.2.1):
-    - ZendeskSDK/Providers (= 1.11.2.1)
-    - ZendeskSDK/UI (= 1.11.2.1)
-  - ZendeskSDK/Providers (1.11.2.1)
-  - ZendeskSDK/UI (1.11.2.1):
+  - ZendeskSDK (2.1.0):
+    - ZendeskSDK/Providers (= 2.1.0)
+    - ZendeskSDK/UI (= 2.1.0)
+  - ZendeskSDK/Core (2.1.0)
+  - ZendeskSDK/Providers (2.1.0):
+    - ZendeskSDK/Core
+  - ZendeskSDK/UI (2.1.0):
+    - ZendeskSDK/Core
     - ZendeskSDK/Providers
 
 DEPENDENCIES:
@@ -174,7 +177,7 @@ DEPENDENCIES:
   - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, commit `7a5b1a3fb44f62416fbc2e5f0de623b87b613aae`)
   - WPMediaPicker (= 1.3)
   - wpxmlrpc (= 0.8.3)
-  - ZendeskSDK (= 1.11.2.1)
+  - ZendeskSDK (= 2.1.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -275,8 +278,8 @@ SPEC CHECKSUMS:
   WordPressUI: af141587ec444f9af753a00605bd0d3f14d8d8a3
   WPMediaPicker: c54791e04af3b41e473e9b340784be48a505bb38
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
-  ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
+  ZendeskSDK: e2d9245bc42fb4782eff959219ce4d6bdae13b64
 
-PODFILE CHECKSUM: 1eb9b60aab191c1ef7b1c08274d9f545bc6692ea
+PODFILE CHECKSUM: 4fe371a3c31e83a7f3356fb25da560d37869409b
 
 COCOAPODS: 1.5.3
