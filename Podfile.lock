@@ -169,8 +169,7 @@ DEPENDENCIES:
   - Starscream (= 3.0.4)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `14846f9550e24993d61d24df76cee84f3363ee91`)
-  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS.git`, commit `14846f9550e24993d61d24df76cee84f3363ee91`)
+  - WordPress-Editor-iOS (= 1.0.0)
   - WordPressAuthenticator (= 1.0.6)
   - WordPressKit (= 1.4.0-beta.3)
   - WordPressShared (= 1.0.10)
@@ -207,6 +206,8 @@ SPEC REPOS:
     - Starscream
     - SVProgressHUD
     - UIDeviceIdentifier
+    - WordPress-Aztec-iOS
+    - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
     - WordPressShared
@@ -218,12 +219,6 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
-  WordPress-Aztec-iOS:
-    :commit: 14846f9550e24993d61d24df76cee84f3363ee91
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
-  WordPress-Editor-iOS:
-    :commit: 14846f9550e24993d61d24df76cee84f3363ee91
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressUI:
     :commit: 7a5b1a3fb44f62416fbc2e5f0de623b87b613aae
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
@@ -232,12 +227,6 @@ CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
-  WordPress-Aztec-iOS:
-    :commit: 14846f9550e24993d61d24df76cee84f3363ee91
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
-  WordPress-Editor-iOS:
-    :commit: 14846f9550e24993d61d24df76cee84f3363ee91
-    :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressUI:
     :commit: 7a5b1a3fb44f62416fbc2e5f0de623b87b613aae
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
@@ -280,6 +269,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: e2d9245bc42fb4782eff959219ce4d6bdae13b64
 
-PODFILE CHECKSUM: b6d20679bbd98f5141a6e69744163a0e96a3ec6c
+PODFILE CHECKSUM: f28e669afcbb003e2c9b20ebfb37a5534933a2c0
 
 COCOAPODS: 1.5.3
