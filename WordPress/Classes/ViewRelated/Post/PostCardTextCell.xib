@@ -85,8 +85,15 @@
                                             <constraint firstAttribute="height" constant="18" id="oYP-3y-IxP"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q5D-nc-yvr">
-                                        <rect key="frame" x="21" y="2.5" width="175" height="14.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="31 minutes ago (last-modified)" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q5D-nc-yvr">
+                                        <rect key="frame" x="21" y="-5.5" width="89.5" height="29"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Sticky" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GWM-0Z-zAX">
+                                        <rect key="frame" x="126" y="1.5" width="35" height="14.5"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -99,10 +106,12 @@
                                         <variation key="heightClass=regular-widthClass=regular" constant="22"/>
                                     </constraint>
                                     <constraint firstAttribute="centerY" secondItem="q5D-nc-yvr" secondAttribute="centerY" id="ADt-mr-PBC"/>
-                                    <constraint firstAttribute="trailing" secondItem="q5D-nc-yvr" secondAttribute="trailing" id="Aat-jW-Rvc"/>
                                     <constraint firstItem="q5D-nc-yvr" firstAttribute="leading" secondItem="38V-Vw-GfJ" secondAttribute="trailing" constant="3" id="B0Q-6z-ArY"/>
+                                    <constraint firstItem="GWM-0Z-zAX" firstAttribute="centerY" secondItem="Z3W-ou-g2J" secondAttribute="centerY" id="c9q-Xh-Qjg"/>
+                                    <constraint firstItem="GWM-0Z-zAX" firstAttribute="leading" secondItem="q5D-nc-yvr" secondAttribute="trailing" constant="15" id="do5-oB-Z8p"/>
                                     <constraint firstAttribute="centerY" secondItem="38V-Vw-GfJ" secondAttribute="centerY" id="fLg-c6-hQc"/>
                                     <constraint firstItem="38V-Vw-GfJ" firstAttribute="leading" secondItem="Z3W-ou-g2J" secondAttribute="leading" id="mqd-xV-U6r"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="GWM-0Z-zAX" secondAttribute="trailing" id="zAf-j5-4av"/>
                                 </constraints>
                             </view>
                             <view clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="O28-fP-tpX">
@@ -293,6 +302,7 @@
                 <outlet property="statusLabel" destination="Dbu-l3-L8G" id="lyN-NY-bWT"/>
                 <outlet property="statusView" destination="O28-fP-tpX" id="KK2-3b-YCm"/>
                 <outlet property="statusViewLowerConstraint" destination="UOb-p1-7gL" id="4fz-Tl-27S"/>
+                <outlet property="stickyLabel" destination="GWM-0Z-zAX" id="XCB-vD-Cbl"/>
                 <outlet property="titleLabel" destination="xIT-FJ-g43" id="2X9-c5-Gja"/>
                 <outlet property="titleLowerConstraint" destination="wZc-29-y5d" id="3Ng-mr-ILH"/>
             </connections>
