@@ -13,16 +13,21 @@ class NotificationContentView: UIView {
     // MARK: Properties
 
     private struct Metrics {
-        static let avatarDimension  = CGFloat(46)
-        static let noticonOffset    = CGFloat(19)
-        static let noticonDimension = CGFloat(24)
-        static let noticonFontSize  = CGFloat(17)
-        static let subviewSpacing   = CGFloat(12)
+        static let avatarTopInset           = CGFloat(4)
+        static let avatarDimension          = CGFloat(32)
+        static let noticonOffset            = CGFloat(12)
+        static let noticonInnerDimension    = CGFloat(14)
+        static let noticonOuterDimension    = CGFloat(18)
+        static let noticonFontSize          = CGFloat(12)
+        static let subviewSpacing           = CGFloat(12)
     }
 
     private struct Styles {
-        // NB: Matches noticonUnreadColor in NoteTableViewCell
-        static let noticonBackgroundColor = UIColor(red: 0x25/255.0, green: 0x9C/255.0, blue: 0xCF/255.0, alpha: 0xFF/255.0)
+        // NB: Matches `noticonUnreadColor` in NoteTableViewCell
+        static let noticonInnerBackgroundColor = UIColor(red: 0x25/255.0, green: 0x9C/255.0, blue: 0xCF/255.0, alpha: 0xFF/255.0)
+
+        // NB: Matches `noteBackgroundReadColor` in `NoteTableViewCell`
+        static let noticonOuterBackgroundColor = UIColor.white
     }
 
     private let viewModel: RichNotificationViewModel
@@ -45,16 +50,34 @@ class NotificationContentView: UIView {
         let view = CircularImageView()
 
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = Styles.noticonBackgroundColor
+        view.backgroundColor = Styles.noticonOuterBackgroundColor
+
+        view.addSubview(noticonView)
+
+        NSLayoutConstraint.activate([
+            view.widthAnchor.constraint(equalToConstant: Metrics.noticonOuterDimension),
+            view.heightAnchor.constraint(equalToConstant: Metrics.noticonOuterDimension),
+            noticonView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            noticonView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            ])
+
+        return view
+    }()
+
+    private lazy var noticonView: CircularImageView = {
+        let view = CircularImageView()
+
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = Styles.noticonInnerBackgroundColor
 
         view.addSubview(noticonLabel)
 
         NSLayoutConstraint.activate([
-            view.widthAnchor.constraint(equalToConstant: Metrics.noticonDimension),
-            view.heightAnchor.constraint(equalToConstant: Metrics.noticonDimension),
+            view.widthAnchor.constraint(equalToConstant: Metrics.noticonInnerDimension),
+            view.heightAnchor.constraint(equalToConstant: Metrics.noticonInnerDimension),
             noticonLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             noticonLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-        ])
+            ])
 
         return view
     }()
@@ -129,15 +152,14 @@ class NotificationContentView: UIView {
         addSubview(bodyLabel)
 
         let constraints = [
-            avatarView.topAnchor.constraint(equalTo: topAnchor),
+            avatarView.topAnchor.constraint(equalTo: subjectLabel.topAnchor, constant: Metrics.avatarTopInset),
             avatarView.leadingAnchor.constraint(equalTo: leadingAnchor),
             noticonContainerView.centerXAnchor.constraint(equalTo: avatarView.centerXAnchor, constant: Metrics.noticonOffset),
             noticonContainerView.centerYAnchor.constraint(equalTo: avatarView.centerYAnchor, constant: Metrics.noticonOffset),
             subjectLabel.topAnchor.constraint(equalTo: topAnchor),
             subjectLabel.leadingAnchor.constraint(equalTo: avatarView.trailingAnchor, constant: Metrics.subviewSpacing),
             subjectLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-            bodyLabel.topAnchor.constraint(greaterThanOrEqualTo: avatarView.bottomAnchor, constant: Metrics.subviewSpacing),
-            bodyLabel.topAnchor.constraint(greaterThanOrEqualTo: subjectLabel.bottomAnchor, constant: Metrics.subviewSpacing),
+            bodyLabel.topAnchor.constraint(greaterThanOrEqualTo: subjectLabel.bottomAnchor),
             bodyLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
             bodyLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
             bodyLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
