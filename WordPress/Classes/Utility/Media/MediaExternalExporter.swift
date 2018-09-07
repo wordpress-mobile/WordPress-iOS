@@ -69,17 +69,16 @@ class MediaExternalExporter: MediaExporter {
     private func downloadGif(from url: URL, onCompletion: @escaping OnMediaExport, onError: @escaping OnExportError) -> Progress {
         let request = URLRequest(url: url)
         let task = AnimatedImageCache.shared.animatedImage(request, placeholderImage: nil,
-                                                           success: { [weak self] (data, _) in
-                                                            self?.gifDataDownloaded(data: data,
-                                                                                    fromURL: url,
-                                                                                    error: nil,
-                                                                                    onCompletion: onCompletion,
-                                                                                    onError: onError)
-            }, failure: { [weak self] error in
-                if let error = error,
-                    let exporterError = self?.exporterErrorWith(error: error) {
-                    onError(exporterError)
-                }
+                                                           success: { (data, _) in
+                                                            self.gifDataDownloaded(data: data,
+                                                                                   fromURL: url,
+                                                                                   error: nil,
+                                                                                   onCompletion: onCompletion,
+                                                                                   onError: onError)
+        }, failure: { error in
+            if let error = error {
+                onError(self.exporterErrorWith(error: error))
+            }
         })
 
         if #available(iOS 11.0, *) {
