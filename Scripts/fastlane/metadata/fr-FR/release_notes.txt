@@ -1,3 +1,2 @@
-Il y a une meilleure manipulation d’image dans l’éditeur. Que vous glissiez-déposez un fichier ou en ajoutez un par le sélecteur de média, le téléversement ou l’insertion sera plus douce et rapide.
-Quelques améliorations de l’interface utilisateur pour rendre votre expérience plus intuitive. Vous ne les remarquerez sûrement pas et c’est tant mieux !
-Éradication de bogues.
+Nous avons changer quelques choses sous le capot.
+Vous ne devriez voir aucun changement évident dans l’app mais attendez-vous à ce que tout soit plus rapide et plus stable.
