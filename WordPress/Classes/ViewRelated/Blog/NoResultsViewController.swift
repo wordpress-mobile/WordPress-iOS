@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 @objc protocol NoResultsViewControllerDelegate {
     @objc optional func actionButtonPressed()
