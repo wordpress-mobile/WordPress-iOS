@@ -20,10 +20,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Ae-eX-ae9" userLabel="No Results View">
-                                <rect key="frame" x="38" y="131.5" width="299" height="424"/>
+                                <rect key="frame" x="38" y="117.5" width="299" height="452.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Mkl-mm-wtH">
-                                        <rect key="frame" x="0.0" y="0.0" width="299" height="424"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="299" height="452.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3Mp-LB-oOz" userLabel="Accessory Stack View">
                                                 <rect key="frame" x="30" y="0.0" width="239" height="234"/>
@@ -45,11 +45,11 @@
                                                     </imageView>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="gjj-bC-32w" userLabel="Label Button Stack View">
-                                                <rect key="frame" x="29.5" y="254" width="240.5" height="170"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="gjj-bC-32w" userLabel="Label Button Stack View">
+                                                <rect key="frame" x="29.5" y="254" width="240.5" height="198.5"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="v7c-T9-kZq" userLabel="Label Stack View">
-                                                        <rect key="frame" x="26.5" y="0.0" width="187.5" height="62"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="v7c-T9-kZq" userLabel="Label Stack View">
+                                                        <rect key="frame" x="26.5" y="0.0" width="187.5" height="70.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is the title text." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8BN-gx-7TL">
                                                                 <rect key="frame" x="0.0" y="0.0" width="187.5" height="24"/>
@@ -58,7 +58,7 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="This is the subtitle text." textAlignment="center" adjustsFontForContentSizeCategory="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pAg-XC-9IM" userLabel="Subtitle Text View">
-                                                                <rect key="frame" x="0.0" y="24" width="187.5" height="38"/>
+                                                                <rect key="frame" x="0.0" y="34" width="187.5" height="36.5"/>
                                                                 <color key="textColor" red="0.1803921568627451" green="0.26666666666666666" blue="0.32549019607843138" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -66,13 +66,13 @@
                                                         </subviews>
                                                     </stackView>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3N8-XV-xJk" userLabel="Subtitle Image View">
-                                                        <rect key="frame" x="0.0" y="72" width="240.5" height="44"/>
+                                                        <rect key="frame" x="0.0" y="90.5" width="240.5" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" placeholder="YES" id="gKi-Hz-aNZ"/>
                                                         </constraints>
                                                     </imageView>
                                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CPl-cH-d7b">
-                                                        <rect key="frame" x="78" y="126" width="84" height="44"/>
+                                                        <rect key="frame" x="78" y="154.5" width="84" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="ALu-HJ-Bk4"/>
                                                         </constraints>
