@@ -56,7 +56,7 @@ class ActivityListViewModel: Observable {
         }
 
         if store.isFetching(site: site) {
-            return NoResultsViewController.Model(title: NSLocalizedString("Loading Activities...", comment: "Text displayed while loading the activity feed for a site"))
+            return NoResultsViewController.Model(title: NSLocalizedString("Loading Activities...", comment: "Text displayed while loading the activity feed for a site"), accessoryView: NoResultsViewController.loadingAccessoryView())
         }
 
         if let activites = store.getActivities(site: site), activites.isEmpty {
