@@ -130,7 +130,7 @@ PODS:
   - WordPressShared (1.0.10):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
-  - WordPressUI (1.0.6)
+  - WordPressUI (1.0.7)
   - WPMediaPicker (1.3)
   - wpxmlrpc (0.8.3)
   - ZendeskSDK (2.1.0):
@@ -174,7 +174,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (= 1.0.6)
   - WordPressKit (= 1.4.0-beta.3)
   - WordPressShared (= 1.0.10)
-  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, commit `7a5b1a3fb44f62416fbc2e5f0de623b87b613aae`)
+  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, commit `0456236d5b6d71ce8a93f988c27bcdc2eb0835d6`)
   - WPMediaPicker (= 1.3)
   - wpxmlrpc (= 0.8.3)
   - ZendeskSDK (= 2.1.0)
@@ -225,7 +225,7 @@ EXTERNAL SOURCES:
     :commit: 8d412d58945d0cc25791415651a5a63fd57eb9c6
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressUI:
-    :commit: 7a5b1a3fb44f62416fbc2e5f0de623b87b613aae
+    :commit: 0456236d5b6d71ce8a93f988c27bcdc2eb0835d6
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
 
 CHECKOUT OPTIONS:
@@ -239,7 +239,7 @@ CHECKOUT OPTIONS:
     :commit: 8d412d58945d0cc25791415651a5a63fd57eb9c6
     :git: https://github.com/wordpress-mobile/AztecEditor-iOS.git
   WordPressUI:
-    :commit: 7a5b1a3fb44f62416fbc2e5f0de623b87b613aae
+    :commit: 0456236d5b6d71ce8a93f988c27bcdc2eb0835d6
     :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
 
 SPEC CHECKSUMS:
@@ -275,11 +275,11 @@ SPEC CHECKSUMS:
   WordPressAuthenticator: 56538a229185640b41912c10c3f1891c2cc9bbb9
   WordPressKit: f392054a3938f794374498c4eb56baf8caa7ae9c
   WordPressShared: 5915565faa46e096016aefed0dc67783afbc323a
-  WordPressUI: af141587ec444f9af753a00605bd0d3f14d8d8a3
+  WordPressUI: cfcac4a2a033e3ed5def6504bb8e28447c54423b
   WPMediaPicker: c54791e04af3b41e473e9b340784be48a505bb38
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: e2d9245bc42fb4782eff959219ce4d6bdae13b64
 
-PODFILE CHECKSUM: b561ccb08bbf5a645bb121e0f408ea7cc855ee7c
+PODFILE CHECKSUM: b22357fea47d32d71e87c755c4b75809e21ee9f1
 
 COCOAPODS: 1.5.3
