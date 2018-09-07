@@ -1490,8 +1490,7 @@ private extension ReaderStreamViewController {
                                           imageName: String? = nil,
                                           accessoryView: UIView? = nil) {
 
-        let displayImageName = imageName ?? defaultEmptyImageName
-        resultsStatusView.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, image: displayImageName, accessoryView: accessoryView)
+        resultsStatusView.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, image: imageName, accessoryView: accessoryView)
         displayResultsStatus()
     }
 
@@ -1523,9 +1522,6 @@ private extension ReaderStreamViewController {
       return "wp-illustration-reader-empty"
     }
 
-    var defaultEmptyImageName: String {
-        return "wp-illustration-empty-results"
-    }
 }
 
 // MARK: - NoResultsViewControllerDelegate
