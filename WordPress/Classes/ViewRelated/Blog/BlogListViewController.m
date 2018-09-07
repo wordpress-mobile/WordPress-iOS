@@ -312,7 +312,7 @@ static NSInteger HideSearchMinSites = 3;
                                              buttonTitle:buttonTitle
                                                 subtitle:singularSubtitle
                                       attributedSubtitle:nil
-                                                   image:nil
+                                                   image:@"mysites-nosites"
                                            subtitleImage:nil
                                            accessoryView:nil];
     } else {
@@ -320,7 +320,7 @@ static NSInteger HideSearchMinSites = 3;
                                              buttonTitle:buttonTitle
                                                 subtitle:multipleSubtitle
                                       attributedSubtitle:nil
-                                                   image:nil
+                                                   image:@"mysites-nosites"
                                            subtitleImage:nil
                                            accessoryView:nil];
     }
