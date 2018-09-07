@@ -11,6 +11,8 @@ class MediaAssetExporter: MediaExporter {
     var imageOptions: MediaImageExporter.Options?
     var videoOptions: MediaVideoExporter.Options?
 
+    var allowableFileExtensions = Set<String>()
+
     public enum AssetExportError: MediaExportError {
         case unsupportedPHAssetMediaType
         case expectedPHAssetImageType
@@ -81,14 +83,7 @@ class MediaAssetExporter: MediaExporter {
                 return exportGIF(forAsset: asset, resource: resource, onCompletion: onCompletion, onError: onError)
             }
         }
-        // Sergio Estevao: If the image is of the type HEIC we make sure the exportImageType uses JPG,
-        // because WordPress doesn't accept HEIC.
-        if #available(iOS 11.0, *) {
-            if let resource = resources.first,
-                UTTypeEqual(resource.uniformTypeIdentifier as CFString, AVFileType.heic.rawValue as CFString) {
-                self.imageOptions?.exportImageType = kUTTypeJPEG as String
-            }
-        }
+
         // Configure the options for requesting the image.
         let options = PHImageRequestOptions()
         options.version = .current
@@ -129,6 +124,9 @@ class MediaAssetExporter: MediaExporter {
                                 exporter.mediaDirectoryType = self.mediaDirectoryType
                                 if let options = self.imageOptions {
                                     exporter.options = options
+                                    if options.exportImageType == nil, let utiToUse = uti {
+                                        exporter.options.exportImageType = self.preferedExportTypeFor(uti: utiToUse)
+                                    }
                                 }
                                 let exportProgress = exporter.export(onCompletion: { (imageExport) in
                                     onCompletion(imageExport)
@@ -136,6 +134,19 @@ class MediaAssetExporter: MediaExporter {
                                 progress.addChild(exportProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
         })
         return progress
+    }
+
+    func preferedExportTypeFor(uti: String) -> String? {
+        guard !self.allowableFileExtensions.isEmpty,
+            let extensionType = UTTypeCopyPreferredTagWithClass(uti as CFString, kUTTagClassFilenameExtension)?.takeRetainedValue() as String?
+            else {
+            return nil
+        }
+        if allowableFileExtensions.contains(extensionType) {
+            return uti
+        } else {
+            return kUTTypeJPEG as String
+        }
     }
 
     /// Exports and writes an asset's video data to a local Media URL.
