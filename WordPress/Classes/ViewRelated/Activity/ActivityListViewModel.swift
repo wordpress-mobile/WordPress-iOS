@@ -60,8 +60,8 @@ class ActivityListViewModel: Observable {
         }
 
         if let activites = store.getActivities(site: site), activites.isEmpty {
-            return NoResultsViewController.Model(title: NSLocalizedString("This is your Activity Log", comment: "Title for the view when there aren't any Activities to display in the Activity Log"),
-                                                 subtitle: NSLocalizedString("Events happening on your site will appear here.", comment: "Text display when the view when there aren't any Activities to display in the Activity Log"))
+            return NoResultsViewController.Model(title: NSLocalizedString("No activity yet", comment: "Title for the view when there aren't any Activities to display in the Activity Log"),
+                                                 subtitle: NSLocalizedString("When you make changes to your site you'll be able to see your activity history here.", comment: "Text display when the view when there aren't any Activities to display in the Activity Log"))
         }
 
         let appDelegate = WordPressAppDelegate.sharedInstance()
