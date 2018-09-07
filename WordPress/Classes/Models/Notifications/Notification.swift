@@ -67,23 +67,19 @@ class Notification: NSManagedObject {
 
     /// Subject Blocks Transient Storage.
     ///
-    fileprivate var cachedSubjectBlockGroup: NotificationBlockGroup?
     fileprivate var cachedSubjectContentGroup: FormattableContentGroup?
 
     /// Header Blocks Transient Storage.
     ///
-    fileprivate var cachedHeaderBlockGroup: NotificationBlockGroup?
     fileprivate var cachedHeaderContentGroup: FormattableContentGroup?
 
     /// Body Blocks Transient Storage.
     ///
-    fileprivate var cachedBodyBlockGroups: [NotificationBlockGroup]?
     fileprivate var cachedBodyContentGroups: [FormattableContentGroup]?
 
     /// Header + Body Blocks Transient Storage.
     ///
-    fileprivate var cachedHeaderAndBodyBlockGroups: [NotificationBlockGroup]?
-    fileprivate var cachedHeaderAndBodyContentGroup: [FormattableContentGroup]?
+    fileprivate var cachedHeaderAndBodyContentGroups: [FormattableContentGroup]?
 
     /// Array that contains the Cached Property Names
     ///
@@ -100,7 +96,7 @@ class Notification: NSManagedObject {
         guard let snippetContent = snippetContent else {
             return nil
         }
-        return formatter.render(content: snippetContent, with: SnipetsContentStyles())
+        return formatter.render(content: snippetContent, with: SnippetsContentStyles())
     }
 
     /// When needed, nukes cached attributes
@@ -128,18 +124,11 @@ class Notification: NSManagedObject {
     func resetCachedAttributes() {
         cachedTimestampAsDate = nil
 
-        if FeatureFlag.extractNotifications.enabled {
-            formatter.resetCache()
-            cachedBodyContentGroups = nil
-            cachedHeaderContentGroup = nil
-            cachedSubjectContentGroup = nil
-            cachedHeaderAndBodyContentGroup = nil
-        } else {
-            cachedSubjectBlockGroup = nil
-            cachedHeaderBlockGroup = nil
-            cachedBodyBlockGroups = nil
-            cachedHeaderAndBodyBlockGroups = nil
-        }
+        formatter.resetCache()
+        cachedBodyContentGroups = nil
+        cachedHeaderContentGroup = nil
+        cachedSubjectContentGroup = nil
+        cachedHeaderAndBodyContentGroups = nil
     }
 
     // This is a NO-OP that will force NSFetchedResultsController to reload the row for this object.
@@ -155,34 +144,6 @@ class Notification: NSManagedObject {
     func contentGroup(ofKind kind: FormattableContentGroup.Kind) -> FormattableContentGroup? {
         for contentGroup in bodyContentGroups where contentGroup.kind == kind {
             return contentGroup
-        }
-
-        return nil
-    }
-
-    /// Returns the first BlockGroup of the specified type, if any.
-    ///
-    func blockGroupOfKind(_ kind: NotificationBlockGroup.Kind) -> NotificationBlockGroup? {
-        for blockGroup in bodyBlockGroups where blockGroup.kind == kind {
-            return blockGroup
-        }
-
-        return nil
-    }
-
-    /// Attempts to find the Notification Range associated with a given URL.
-    ///
-    func notificationRangeWithUrl(_ url: URL) -> NotificationRange? {
-        var groups = bodyBlockGroups
-        if let headerBlockGroup = headerBlockGroup {
-            groups.append(headerBlockGroup)
-        }
-
-        let blocks = groups.flatMap { $0.blocks }
-        for block in blocks {
-            if let range = block.notificationRangeWithUrl(url) {
-                return range
-            }
         }
 
         return nil
@@ -214,89 +175,45 @@ extension Notification {
     /// Verifies if the current notification is a Pingback.
     ///
     var isPingback: Bool {
-        if FeatureFlag.extractNotifications.enabled {
-            guard subjectContentGroup?.blocks.count == 1 else {
-                return false
-            }
-            guard let ranges = subjectContentGroup?.blocks.first?.ranges, ranges.count == 2 else {
-                return false
-            }
-            return ranges.first?.kind == .site && ranges.last?.kind == .post
-        } else {
-            guard let subjectRanges = subjectBlock?.ranges, subjectRanges.count == 2 else {
-                return false
-            }
-
-            return subjectRanges.first?.kind == .Site && subjectRanges.last?.kind == .Post
+        guard subjectContentGroup?.blocks.count == 1 else {
+            return false
         }
+        guard let ranges = subjectContentGroup?.blocks.first?.ranges, ranges.count == 2 else {
+            return false
+        }
+        return ranges.first?.kind == .site && ranges.last?.kind == .post
     }
 
     /// Verifies if the current notification is actually a Badge one.
     /// Note: Sorry about the following snippet. I'm (and will always be) against Duck Typing.
     ///
     @objc var isBadge: Bool {
-        if FeatureFlag.extractNotifications.enabled {
-            let blocks = bodyContentGroups.flatMap { $0.blocks }
-            for block in blocks where block is FormattableMediaContent {
-                guard let mediaBlock = block as? FormattableMediaContent else {
-                    continue
-                }
-                for media in mediaBlock.media where media.kind == .badge {
-                    return true
-                }
+        let blocks = bodyContentGroups.flatMap { $0.blocks }
+        for block in blocks where block is FormattableMediaContent {
+            guard let mediaBlock = block as? FormattableMediaContent else {
+                continue
             }
-            return false
-        } else {
-            let blocks = bodyBlockGroups.flatMap { $0.blocks }
-            for block in blocks {
-                for media in block.media where media.kind == .Badge {
-                    return true
-                }
+            for media in mediaBlock.media where media.kind == .badge {
+                return true
             }
-
-            return false
         }
+        return false
     }
 
     /// Verifies if the current notification is a Comment-Y note, and if it has been replied to.
     ///
     @objc var isRepliedComment: Bool {
-        return kind == .Comment && metaReplyID != nil
+        return kind == .comment && metaReplyID != nil
     }
 
     //// Check if this note is a comment and in 'Unapproved' status
     ///
     @objc var isUnapprovedComment: Bool {
-        if FeatureFlag.extractNotifications.enabled {
-            guard let block: FormattableCommentContent = contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
-                return false
-            }
-            let commandId = ApproveCommentAction.actionIdentifier()
-            return block.isActionEnabled(id: commandId) && !block.isActionOn(id: commandId)
-        } else {
-            guard let block = blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
-                return false
-            }
-
-            return block.isActionEnabled(.Approve) && !block.isActionOn(.Approve)
+        guard let block: FormattableCommentContent = contentGroup(ofKind: .comment)?.blockOfKind(.comment) else {
+            return false
         }
-
-    }
-
-    var kind: Kind {
-        guard let type = type, let kind = Kind(rawValue: type) else {
-            return .Unknown
-        }
-        return kind
-    }
-
-    /// Parses the Notification.type field into a Swift Native enum. Returns .Unknown on failure.
-    ///
-    var notificationKind: Kind {
-        guard let type = type, let kind = Kind(rawValue: type) else {
-            return .Unknown
-        }
-        return kind
+        let commandId = ApproveCommentAction.actionIdentifier()
+        return block.isActionEnabled(id: commandId) && !block.isActionOn(id: commandId)
     }
 
     /// Returns the Meta ID's collection, if any.
@@ -380,21 +297,6 @@ extension Notification {
         return cachedSubjectContentGroup
     }
 
-    /// Returns the Subject Block Group, if any.
-    ///
-    var subjectBlockGroup: NotificationBlockGroup? {
-        if let subjectBlockGroup = cachedSubjectBlockGroup {
-            return subjectBlockGroup
-        }
-
-        guard let subject = subject as? [[String: AnyObject]], subject.isEmpty == false else {
-            return nil
-        }
-
-        cachedSubjectBlockGroup = NotificationBlockGroup.groupFromSubject(subject, parent: self)
-        return cachedSubjectBlockGroup
-    }
-
     var headerContentGroup: FormattableContentGroup? {
         if let group = cachedHeaderContentGroup {
             return group
@@ -406,21 +308,6 @@ extension Notification {
 
         cachedHeaderContentGroup = HeaderContentGroup.createGroup(from: header, parent: self)
         return cachedHeaderContentGroup
-    }
-
-    /// Returns the Header Block Group, if any.
-    ///
-    var headerBlockGroup: NotificationBlockGroup? {
-        if let headerBlockGroup = cachedHeaderBlockGroup {
-            return headerBlockGroup
-        }
-
-        guard let header = header as? [[String: AnyObject]], header.isEmpty == false else {
-            return nil
-        }
-
-        cachedHeaderBlockGroup = NotificationBlockGroup.groupFromHeader(header, parent: self)
-        return cachedHeaderBlockGroup
     }
 
     var bodyContentGroups: [FormattableContentGroup] {
@@ -436,24 +323,8 @@ extension Notification {
         return cachedBodyContentGroups ?? []
     }
 
-    /// Returns the Body Block Groups, if any.
-    ///
-    var bodyBlockGroups: [NotificationBlockGroup] {
-        if let bodyBlockGroups = cachedBodyBlockGroups {
-            return bodyBlockGroups
-        }
-
-        guard let body = body as? [[String: AnyObject]], body.isEmpty == false else {
-            return []
-        }
-
-        cachedBodyBlockGroups = NotificationBlockGroup.groupsFromBody(body, parent: self)
-        return cachedBodyBlockGroups ?? []
-    }
-
-
     var headerAndBodyContentGroups: [FormattableContentGroup] {
-        if let groups = cachedHeaderAndBodyContentGroup {
+        if let groups = cachedHeaderAndBodyContentGroups {
             return groups
         }
 
@@ -463,32 +334,9 @@ extension Notification {
         }
 
         mergedGroups.append(contentsOf: bodyContentGroups)
-        cachedHeaderAndBodyContentGroup = mergedGroups
+        cachedHeaderAndBodyContentGroups = mergedGroups
 
         return mergedGroups
-    }
-    /// Returns the Header + Body Block Groups, if any. This is done for convenience.
-    ///
-    var headerAndBodyBlockGroups: [NotificationBlockGroup] {
-        if let headerAndBodyBlockGroups = cachedHeaderAndBodyBlockGroups {
-            return headerAndBodyBlockGroups
-        }
-
-        var mergedGroups = [NotificationBlockGroup]()
-        if let header = headerBlockGroup {
-            mergedGroups.append(header)
-        }
-
-        mergedGroups.append(contentsOf: bodyBlockGroups)
-        cachedHeaderAndBodyBlockGroups = mergedGroups
-
-        return mergedGroups
-    }
-
-    /// Returns the Subject Block, if any.
-    ///
-    var subjectBlock: NotificationBlock? {
-        return subjectBlockGroup?.blocks.first
     }
 
     var snippetContent: FormattableContent? {
@@ -496,16 +344,6 @@ extension Notification {
             return nil
         }
         return content.last
-    }
-
-    /// Returns the Snippet Block, if any.
-    ///
-    var snippetBlock: NotificationBlock? {
-        guard let subjectBlocks = subjectBlockGroup?.blocks, subjectBlocks.count > 1 else {
-            return nil
-        }
-
-        return subjectBlocks.last
     }
 }
 
@@ -535,24 +373,6 @@ extension Notification {
 // MARK: - Notification Types
 //
 extension Notification {
-    /// Known kinds of Notifications
-    ///
-    enum Kind: String {
-        case Comment        = "comment"
-        case CommentLike    = "comment_like"
-        case Follow         = "follow"
-        case Like           = "like"
-        case Matcher        = "automattcher"
-        case NewPost        = "new_post"
-        case Post           = "post"
-        case User           = "user"
-        case Unknown        = "unknown"
-
-        var toTypeValue: String {
-            return rawValue
-        }
-    }
-
     /// Meta Parsing Keys
     ///
     fileprivate enum MetaKeys {
@@ -564,5 +384,13 @@ extension Notification {
         static let Comment  = "comment"
         static let Reply    = "reply_comment"
         static let Home     = "home"
+    }
+}
+
+// MARK: - Notifiable
+
+extension Notification: Notifiable {
+    var notificationIdentifier: String {
+        return notificationId
     }
 }

@@ -1,5 +1,4 @@
-import Foundation
-
+import UIKit
 
 open class Tracks {
     // MARK: - Public Properties
