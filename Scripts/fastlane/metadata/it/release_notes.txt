@@ -1,3 +1,2 @@
-C'è una migliore gestione dell'immagine nell'editor. Sia se trascini e rilasci un file sia se ne aggiungi uno con il selezionatore di contenuti multimediali, il caricamento e l'inserimento sono semplici e veloci.
-Piccoli miglioramenti alla UI in alcuni punti per rendere la tua esperienza più intuitiva: probabilmente non li noterai, ed è proprio questo il punto.
-Risoluzione di bug.
+Abbiamo messo a punto le cose sotto il cofano.
+Potrai non vedere nulla di diverso nella app, ma aspettati che tutto sia più stabile e veloce.
