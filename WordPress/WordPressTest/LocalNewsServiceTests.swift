@@ -3,16 +3,18 @@ import XCTest
 
 final class LocalNewsServiceTests: XCTestCase {
     private struct Constants {
-        static let title = "Howdy Hogwarts!"
-        static let content = "I am not trying to be mean, but Ravenclaw is the awesomest team within Hogwarts."
-        static let url = URL(string: "http://wordpress.com/me")!
+        static let title = "This is an awesome new feature!"
+        static let content = "This is long form content. Here we explain why this feature is awesome"
+        static let url = URL(string: "https://wordpress.com")!
     }
 
     private var service: NewsService?
 
     override func setUp() {
         super.setUp()
-        service = LocalNewsService(fileName: "News")
+        let testBundle = Bundle(for: type(of: self))
+        let mockFilePath = testBundle.path(forResource: "News", ofType: "strings")
+        service = LocalNewsService(filePath: mockFilePath)
     }
 
     override func tearDown() {

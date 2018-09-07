@@ -11,8 +11,9 @@ final class ReaderNewsCard {
         return TracksNewsStats(origin: tracksOrigin)
     }()
 
-    private lazy var newsManager = {
-        return DefaultNewsManager(service: LocalNewsService(fileName: fileName), database: self.database, stats: self.stats)
+    private lazy var newsManager: DefaultNewsManager = {
+        let localFilePath = Bundle.main.path(forResource: fileName, ofType: "strings")
+        return DefaultNewsManager(service: LocalNewsService(filePath: localFilePath), database: self.database, stats: self.stats)
     }()
 
     func shouldPresentCard(containerIdentifier: Identifier) -> Bool {
