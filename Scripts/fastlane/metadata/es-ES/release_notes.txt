@@ -1,3 +1,2 @@
-Hay una mejor gestión de imágenes en el editor. Ya arrastres un archivo o añadas uno al selector de medios, subir e insertar es fácil y rápido.
-Pequeñas mejoras de la interfaz en un montón de sitios para hacer tu experiencia más intuitiva - probablemente no te des cuenta de ellas, y ¡esa es la idea!
-Machacando fallos.
+Hemos estado cambiando cosas bajo el capó.
+Puede que no veas nada obvio diferente en la aplicación, pero esperamos que todo sea más rápido y más estable.

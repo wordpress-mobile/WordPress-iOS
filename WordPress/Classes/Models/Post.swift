@@ -265,6 +265,10 @@ class Post: AbstractPost {
                              .isEqual(to: originalPost.disabledPublicizeConnections ?? [:]) {
                 return true
             }
+
+            if isStickyPost != originalPost.isStickyPost {
+                return true
+            }
         }
 
         return false
