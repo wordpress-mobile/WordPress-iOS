@@ -129,16 +129,6 @@ final class FormattableUserContentTests: XCTestCase {
         XCTAssertEqual(id, Expectations.metaSiteId)
     }
 
-    func testMetaCommentIdReturnsExpectation() {
-        let id = subject?.metaCommentID
-        XCTAssertNil(id)
-    }
-
-    func testIsCommentApprovedReturnsExpectation() {
-        let value = subject?.isCommentApproved
-        XCTAssertFalse(value!)
-    }
-
     private func mockDictionary() -> [String: AnyObject] {
         return getDictionaryFromFile(named: "notifications-user-content.json")
     }
