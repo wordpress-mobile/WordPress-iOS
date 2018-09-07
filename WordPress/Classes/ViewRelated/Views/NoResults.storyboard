@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Ae-eX-ae9" userLabel="No Results View">
-                                <rect key="frame" x="10" y="172" width="355" height="344"/>
+                                <rect key="frame" x="10" y="140" width="355" height="408.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3Mp-LB-oOz" userLabel="Accessory Stack View">
                                         <rect key="frame" x="0.0" y="0.0" width="355" height="216"/>
@@ -43,7 +43,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="gjj-bC-32w" userLabel="Label Button Stack View">
-                                        <rect key="frame" x="0.0" y="226" width="355" height="118.5"/>
+                                        <rect key="frame" x="0.0" y="226" width="355" height="182.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="v7c-T9-kZq" userLabel="Label Stack View">
                                                 <rect key="frame" x="93" y="0.0" width="169.5" height="54.5"/>
@@ -62,8 +62,14 @@
                                                     </textView>
                                                 </subviews>
                                             </stackView>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3N8-XV-xJk" userLabel="Subtitle Image View">
+                                                <rect key="frame" x="57.5" y="74.5" width="240" height="44"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" placeholder="YES" id="gKi-Hz-aNZ"/>
+                                                </constraints>
+                                            </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CPl-cH-d7b">
-                                                <rect key="frame" x="133" y="74.5" width="89" height="44"/>
+                                                <rect key="frame" x="133" y="138.5" width="89" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="ALu-HJ-Bk4"/>
                                                 </constraints>
@@ -107,6 +113,7 @@
                         <outlet property="actionButton" destination="CPl-cH-d7b" id="aGa-gx-Vlh"/>
                         <outlet property="imageView" destination="Fwm-rl-dKS" id="dxy-k9-CRH"/>
                         <outlet property="noResultsView" destination="0Ae-eX-ae9" id="5Di-z7-FWM"/>
+                        <outlet property="subtitleImageView" destination="3N8-XV-xJk" id="4CS-7n-hs3"/>
                         <outlet property="subtitleTextView" destination="pAg-XC-9IM" id="LSi-5l-rYL"/>
                         <outlet property="titleLabel" destination="8BN-gx-7TL" id="1Pu-ma-D5Y"/>
                     </connections>
