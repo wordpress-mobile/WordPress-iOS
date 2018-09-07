@@ -25,6 +25,7 @@ class EpilogueUserInfoCell: UITableViewCell {
     @IBOutlet var usernameLabel: UILabel!
     open var viewControllerProvider: EpilogueUserInfoCellViewControllerProvider?
     private var gravatarStatus: GravatarUploaderStatus = .idle
+    private var email: String?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -34,6 +35,8 @@ class EpilogueUserInfoCell: UITableViewCell {
     /// Configures the cell so that the LoginEpilogueUserInfo's payload is displayed
     ///
     func configure(userInfo: LoginEpilogueUserInfo, showEmail: Bool = false, allowGravatarUploads: Bool = false) {
+        email = userInfo.email
+
         fullNameLabel.text = userInfo.fullName
         fullNameLabel.fadeInAnimation()
 
@@ -90,7 +93,7 @@ extension EpilogueUserInfoCell: GravatarUploader {
         gravatarStatus = status
         switch status {
         case .uploading(image: let newImage):
-            gravatarView.image = newImage
+            gravatarView.updateGravatar(image: newImage, email: email)
             gravatarActivityIndicator.startAnimating()
         case .idle, .finished:
             gravatarActivityIndicator.stopAnimating()
