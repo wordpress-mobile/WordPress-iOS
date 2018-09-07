@@ -625,7 +625,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                          buttonTitle:nil
                                             subtitle:nil
                                   attributedSubtitle:nil
-                                               image:@"wp-illustration-empty-results"
+                                               image:nil
                                        subtitleImage:nil
                                        accessoryView:[self noResultsAccessoryView]];
     

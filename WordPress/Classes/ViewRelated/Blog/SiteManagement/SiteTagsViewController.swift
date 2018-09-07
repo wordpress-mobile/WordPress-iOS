@@ -405,8 +405,7 @@ private extension SiteTagsViewController {
     func setupEmptyResultsView() {
         noResultsViewController.configure(title: noResultsTitle(),
                                            buttonTitle: noResultsButtonTitle(),
-                                           subtitle: noResultsMessage(),
-                                           image: noResultsImageName())
+                                           subtitle: noResultsMessage())
     }
 
     func showNoResults() {
@@ -426,10 +425,6 @@ private extension SiteTagsViewController {
 
     func noResultsMessage() -> String {
         return NSLocalizedString("Tags created here can be quickly added to new posts", comment: "Displayed when the user views tags in blog settings and there are no tags")
-    }
-
-    func noResultsImageName() -> String {
-        return "wp-illustration-empty-results"
     }
 
     func noResultsButtonTitle() -> String {

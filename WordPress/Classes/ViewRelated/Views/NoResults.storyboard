@@ -20,33 +20,33 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Ae-eX-ae9" userLabel="No Results View">
-                                <rect key="frame" x="38" y="131.5" width="299" height="424.5"/>
+                                <rect key="frame" x="38" y="122.5" width="299" height="442.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Mkl-mm-wtH">
-                                        <rect key="frame" x="0.0" y="0.0" width="299" height="424.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="299" height="442.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3Mp-LB-oOz" userLabel="Accessory Stack View">
-                                                <rect key="frame" x="36.5" y="0.0" width="226.5" height="216"/>
+                                                <rect key="frame" x="30" y="0.0" width="239" height="234"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="czl-5D-gem" userLabel="Accessory View">
-                                                        <rect key="frame" x="63" y="0.0" width="100" height="100"/>
+                                                        <rect key="frame" x="69.5" y="0.0" width="100" height="100"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="100" id="AYV-Gw-aKL"/>
                                                             <constraint firstAttribute="width" secondItem="czl-5D-gem" secondAttribute="height" multiplier="1:1" id="OOu-9J-9cx"/>
                                                         </constraints>
                                                     </view>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mysites-nosites" translatesAutoresizingMaskIntoConstraints="NO" id="Fwm-rl-dKS" userLabel="Image View">
-                                                        <rect key="frame" x="0.0" y="100" width="226.5" height="116"/>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wp-illustration-empty-results" translatesAutoresizingMaskIntoConstraints="NO" id="Fwm-rl-dKS" userLabel="Image View">
+                                                        <rect key="frame" x="0.0" y="100" width="239" height="134"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" secondItem="Fwm-rl-dKS" secondAttribute="height" multiplier="113:58" id="LtV-EW-4bR"/>
-                                                            <constraint firstAttribute="width" constant="226" id="zgJ-Vl-MiN"/>
+                                                            <constraint firstAttribute="width" constant="239" id="cae-Sc-OsM"/>
+                                                            <constraint firstAttribute="width" secondItem="Fwm-rl-dKS" secondAttribute="height" multiplier="239:134" id="rUy-LQ-2T6"/>
                                                         </constraints>
                                                     </imageView>
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="gjj-bC-32w" userLabel="Label Button Stack View">
-                                                <rect key="frame" x="29.5" y="236" width="240.5" height="188.5"/>
+                                                <rect key="frame" x="29.5" y="254" width="240.5" height="188.5"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="v7c-T9-kZq" userLabel="Label Stack View">
                                                         <rect key="frame" x="26.5" y="0.0" width="187.5" height="60.5"/>
@@ -127,6 +127,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="mysites-nosites" width="226" height="116"/>
+        <image name="wp-illustration-empty-results" width="239" height="134"/>
     </resources>
 </document>
