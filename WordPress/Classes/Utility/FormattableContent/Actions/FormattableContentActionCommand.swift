@@ -6,7 +6,7 @@ protocol FormattableContentActionCommand: CustomStringConvertible {
     var icon: UIButton? { get }
     var on: Bool { get set }
 
-    func execute(context: ActionContext)
+    func execute<ContentType: FormattableContent>(context: ActionContext<ContentType>)
 }
 
 extension FormattableContentActionCommand {

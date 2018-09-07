@@ -17,6 +17,14 @@ class FormattableCommentContent: NotificationTextContent {
     private var metaIds: [String: AnyObject]? {
         return meta?[Constants.MetaKeys.Ids] as? [String: AnyObject]
     }
+
+    var metaSiteID: NSNumber? {
+        return metaIds?[Constants.MetaKeys.Site] as? NSNumber
+    }
+
+    var notificationID: String? {
+        return parent.notificationIdentifier
+    }
 }
 
 extension FormattableCommentContent: Equatable {
@@ -28,16 +36,6 @@ extension FormattableCommentContent: Equatable {
     private func isEqual(to other: FormattableTextContent) -> Bool {
         return text == other.text &&
             ranges.count == other.ranges.count
-    }
-}
-
-extension FormattableCommentContent: ActionableObject {
-    var notificationID: String? {
-        return parent.notificationIdentifier
-    }
-
-    var metaSiteID: NSNumber? {
-        return metaIds?[Constants.MetaKeys.Site] as? NSNumber
     }
 }
 
