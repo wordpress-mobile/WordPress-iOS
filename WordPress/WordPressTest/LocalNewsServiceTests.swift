@@ -33,4 +33,19 @@ final class LocalNewsServiceTests: XCTestCase {
             }
         })
     }
+
+    func testServiceReturnsErrorIfStringsFileIsBadFormed() {
+        let testBundle = Bundle(for: type(of: self))
+        let mockFilePath = testBundle.path(forResource: "NewsBadFormed", ofType: "strings")
+        let badFormedService = LocalNewsService(filePath: mockFilePath)
+
+        badFormedService.load(then: { result in
+            switch result {
+            case .error (let error):
+                XCTAssertNotNil(error)
+            case .success:
+                XCTFail()
+            }
+        })
+    }
 }
