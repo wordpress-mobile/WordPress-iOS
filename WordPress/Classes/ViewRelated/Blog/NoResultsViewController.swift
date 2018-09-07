@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 @objc protocol NoResultsViewControllerDelegate {
     @objc optional func actionButtonPressed()
@@ -339,14 +340,14 @@ private extension NoResultsViewController {
 
     // MARK: - `WPAnimatedBox` resource management
 
-    private func startAnimatingIfNeeded() {
+    func startAnimatingIfNeeded() {
         guard let animatedBox = accessorySubview as? WPAnimatedBox else {
             return
         }
         animatedBox.animate(afterDelay: 0.1)
     }
 
-    private func stopAnimatingIfNeeded() {
+    func stopAnimatingIfNeeded() {
         guard let animatedBox = accessorySubview as? WPAnimatedBox else {
             return
         }
