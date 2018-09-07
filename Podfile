@@ -125,6 +125,37 @@ target 'WordPress' do
 end
 
 
+
+## Notification Content Extension
+## ==============================
+##
+target 'WordPressNotificationContentExtension' do
+    project 'WordPress/WordPress.xcodeproj'
+    
+    inherit! :search_paths
+    
+    pod 'WordPressShared', '1.0.10'
+    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae' 
+end
+
+
+
+## Notification Service Extension
+## ==============================
+##
+target 'WordPressNotificationServiceExtension' do
+    project 'WordPress/WordPress.xcodeproj'
+    
+    inherit! :search_paths
+
+    pod 'Gridicons', '0.16'
+    pod 'WordPressKit', '1.4.0-beta.3'
+    pod 'WordPressShared', '1.0.10'
+    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
+end
+
+
+
 ## WordPress.com Stats
 ## ===================
 ##

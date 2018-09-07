@@ -10,12 +10,13 @@ final class MarkAsSpamActionTests: XCTestCase {
     }
 
     private class MockNotificationActionsService: NotificationActionsService {
-        override func spamCommentWithBlock(_ block: ActionableObject, completion: ((Bool) -> Void)?) {
+        override func spamCommentWithBlock(_ block: FormattableCommentContent, completion: ((Bool) -> Void)?) {
             completion?(true)
         }
     }
 
     private var action: MarkAsSpam?
+    let utility = NotificationUtility()
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -23,6 +24,7 @@ final class MarkAsSpamActionTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        utility.setUp()
         action = TestableMarkAsSpam(on: Constants.initialStatus)
         makeNetworkAvailable()
     }
@@ -30,6 +32,7 @@ final class MarkAsSpamActionTests: XCTestCase {
     override func tearDown() {
         action = nil
         makeNetworkUnavailable()
+        utility.tearDown()
         super.tearDown()
     }
 
@@ -54,7 +57,7 @@ final class MarkAsSpamActionTests: XCTestCase {
 
         var executionCompleted = false
 
-        let context = ActionContext(block: MockActionableObject(), content: "content") { (request, success) in
+        let context = ActionContext(block: utility.mockCommentContent(), content: "content") { (request, success) in
             executionCompleted = true
         }
 
