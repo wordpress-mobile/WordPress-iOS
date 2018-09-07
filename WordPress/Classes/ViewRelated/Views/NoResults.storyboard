@@ -20,10 +20,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Ae-eX-ae9" userLabel="No Results View">
-                                <rect key="frame" x="10" y="136.5" width="355" height="414.5"/>
+                                <rect key="frame" x="10" y="131.5" width="355" height="424.5"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Mkl-mm-wtH">
-                                        <rect key="frame" x="0.0" y="0.0" width="355" height="414.5"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Mkl-mm-wtH">
+                                        <rect key="frame" x="0.0" y="0.0" width="355" height="424.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3Mp-LB-oOz" userLabel="Accessory Stack View">
                                                 <rect key="frame" x="64.5" y="0.0" width="226.5" height="216"/>
@@ -46,7 +46,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="gjj-bC-32w" userLabel="Label Button Stack View">
-                                                <rect key="frame" x="57.5" y="226" width="240.5" height="188.5"/>
+                                                <rect key="frame" x="57.5" y="236" width="240.5" height="188.5"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="v7c-T9-kZq" userLabel="Label Stack View">
                                                         <rect key="frame" x="26.5" y="0.0" width="187.5" height="60.5"/>
