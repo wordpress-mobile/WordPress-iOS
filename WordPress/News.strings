@@ -1,11 +1,11 @@
 /* News Card title. */
-"Title" = "Howdy Hogwarts!";
+"Title" = "Sharing made easier.";
 
 /* News Card content. */
-"Content" = "I am not trying to be mean, but Ravenclaw is the awesomest team within Hogwarts.";
+"Content" = "We rolled up our sleeves and rethought the entire sharing workflow for both iPhones and iPads.";
 
 /* News Card link. */
-"URL" = "http://wordpress.com/me";
+"URL" = "https://en.blog.wordpress.com/2018/03/28/new-and-improved-ios-sharing-extensions/";
 
 /* Build version this card applies to. */
 "version" = "10.8";
