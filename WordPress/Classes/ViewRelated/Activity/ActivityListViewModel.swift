@@ -56,23 +56,20 @@ class ActivityListViewModel: Observable {
         }
 
         if store.isFetching(site: site) {
-            return NoResultsViewController.Model(title: NSLocalizedString("Loading Activities...", comment: "Text displayed while loading the activity feed for a site"), accessoryView: NoResultsViewController.loadingAccessoryView())
+            return NoResultsViewController.Model(title: NoResultsText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
         }
 
         if let activites = store.getActivities(site: site), activites.isEmpty {
-            return NoResultsViewController.Model(title: NSLocalizedString("No activity yet", comment: "Title for the view when there aren't any Activities to display in the Activity Log"),
-                                                 subtitle: NSLocalizedString("When you make changes to your site you'll be able to see your activity history here.", comment: "Text display when the view when there aren't any Activities to display in the Activity Log"))
+            return NoResultsViewController.Model(title: NoResultsText.noActivitiesTitle, subtitle: NoResultsText.noActivitiesSubtitle)
         }
 
         let appDelegate = WordPressAppDelegate.sharedInstance()
         if (appDelegate?.connectionAvailable)! {
-            return NoResultsViewController.Model(title: NSLocalizedString("Oops", comment: "Title for the view when there's an error loading Activity Log"),
-                                                 subtitle: NSLocalizedString("There was an error loading activities", comment: "Text displayed when there is a failure loading the activity feed"),
-                                                 buttonText: NSLocalizedString("Contact support", comment: "Button label for contacting support"))
+            return NoResultsViewController.Model(title: NoResultsText.errorTitle,
+                                                 subtitle: NoResultsText.errorSubtitle,
+                                                 buttonText: NoResultsText.errorButtonText)
         } else {
-            return NoResultsViewController.Model(title: NSLocalizedString("No connection", comment: "Title for the error view when there's no connection"),
-                                                 subtitle: NSLocalizedString("An active internet connection is required to view activities", comment: "Error message shown when trying to view the Activity Log feature and there is no internet connection."))
-
+            return NoResultsViewController.Model(title: NoResultsText.noConnectionTitle, subtitle: NoResultsText.noConnectionSubtitle)
         }
     }
 
@@ -138,6 +135,16 @@ class ActivityListViewModel: Observable {
                                 footerText: nil)
     }
 
+    private struct NoResultsText {
+        static let loadingTitle = NSLocalizedString("Loading Activities...", comment: "Text displayed while loading the activity feed for a site")
+        static let noActivitiesTitle = NSLocalizedString("No activity yet", comment: "Title for the view when there aren't any Activities to display in the Activity Log")
+        static let noActivitiesSubtitle = NSLocalizedString("When you make changes to your site you'll be able to see your activity history here.", comment: "Text display when the view when there aren't any Activities to display in the Activity Log")
+        static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading Activity Log")
+        static let errorSubtitle = NSLocalizedString("There was an error loading activities", comment: "Text displayed when there is a failure loading the activity feed")
+        static let errorButtonText = NSLocalizedString("Contact support", comment: "Button label for contacting support")
+        static let noConnectionTitle = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
+        static let noConnectionSubtitle = NSLocalizedString("An active internet connection is required to view activities", comment: "Error message shown when trying to view the Activity Log feature and there is no internet connection.")
+    }
 
     // MARK: - Date/Time handling
 
