@@ -229,6 +229,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
                                                                        subtitle:subtitle
                                                              attributedSubtitle:nil
                                                                           image:nil
+                                                                  subtitleImage:nil
                                                                   accessoryView:nil];
 
     [self addChildViewController:self.noResultsViewController];

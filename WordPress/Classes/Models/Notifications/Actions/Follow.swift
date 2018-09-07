@@ -19,7 +19,7 @@ final class Follow: DefaultNotificationActionCommand {
         return followIcon
     }
 
-    override func execute(context: ActionContext) {
+    override func execute<ContentType: FormattableUserContent>(context: ActionContext<ContentType>) {
 
     }
 }

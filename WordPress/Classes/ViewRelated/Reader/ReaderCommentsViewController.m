@@ -350,8 +350,13 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                                       bottomLayoutConstraint:self.replyTextViewBottomConstraint];
 
     __weak UITableView *weakTableView = self.tableView;
+    __weak ReaderCommentsViewController *weakSelf = self;
     self.keyboardManager.onWillHide = ^{
         [weakTableView deselectSelectedRowWithAnimation:YES];
+        [weakSelf refreshNoResultsView];
+    };
+    self.keyboardManager.onWillShow = ^{
+        [weakSelf refreshNoResultsView];
     };
 }
 
@@ -607,7 +612,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     }
 }
 
-
 - (void)refreshNoResultsView
 {
     [self.noResultsViewController removeFromView];
@@ -622,8 +626,9 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                             subtitle:nil
                                   attributedSubtitle:nil
                                                image:@"wp-illustration-empty-results"
+                                       subtitleImage:nil
                                        accessoryView:[self noResultsAccessoryView]];
-
+    
     [self.noResultsViewController.view setBackgroundColor:[UIColor clearColor]];
     [self addChildViewController:self.noResultsViewController];
     [self.view addSubviewWithFadeAnimation:self.noResultsViewController.view];

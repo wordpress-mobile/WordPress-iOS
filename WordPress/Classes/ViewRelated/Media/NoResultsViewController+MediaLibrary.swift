@@ -4,23 +4,20 @@ extension NoResultsViewController {
 
     @objc func configureForNoAssets(userCanUploadMedia: Bool) {
         let buttonTitle = userCanUploadMedia ? LocalizedText.uploadButtonTitle : nil
-        configure(title: LocalizedText.noAssetsTitle, buttonTitle: buttonTitle, subtitle: nil, attributedSubtitle: nil, image: Constants.imageName, accessoryView: nil)
+        configure(title: LocalizedText.noAssetsTitle, buttonTitle: buttonTitle, image: Constants.imageName)
     }
 
     @objc func configureForFetching() {
-        let animatedBox = WPAnimatedBox()
-        animatedBox.animate(afterDelay: Constants.animatedBoxDelay)
-        configure(title: LocalizedText.fetchingTitle, buttonTitle: nil, subtitle: nil, attributedSubtitle: nil, image: nil, accessoryView: animatedBox)
+        configure(title: LocalizedText.fetchingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
         view.layoutIfNeeded()
     }
 
     @objc func configureForNoSearchResult(with searchQuery: String) {
-        configure(title: LocalizedText.noResultsTitle, buttonTitle: nil, subtitle: searchQuery, attributedSubtitle: nil, image: Constants.imageName, accessoryView: nil)
+        configure(title: LocalizedText.noResultsTitle, subtitle: searchQuery, image: Constants.imageName)
     }
 
     private enum Constants {
         static let imageName = "media-no-results"
-        static let animatedBoxDelay = 0.1
     }
 
     private struct LocalizedText {

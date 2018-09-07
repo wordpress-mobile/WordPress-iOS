@@ -21,8 +21,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - GUI
 
-    fileprivate let animatedBox = WPAnimatedBox()
-
     @IBOutlet weak var filterTabBarTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var filterTabBariOS10TopConstraint: NSLayoutConstraint!
     @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
@@ -600,19 +598,12 @@ private extension PageListViewController {
             return
         }
 
+        let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
+
         noResultsViewController.configure(title: noResultsTitle(),
                                           buttonTitle: noResultsButtonTitle(),
                                           image: noResultsImageName,
-                                          accessoryView: noResultsAccessoryView())
-    }
-
-    func noResultsAccessoryView() -> UIView? {
-        if syncHelper.isSyncing {
-            animatedBox.animate(afterDelay: 0.1)
-            return animatedBox
-        }
-
-        return nil
+                                          accessoryView: accessoryView)
     }
 
     var noResultsImageName: String {

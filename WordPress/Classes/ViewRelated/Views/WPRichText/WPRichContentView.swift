@@ -257,7 +257,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
 
     /// Creates and return a `WPRichTextImage` with the given parameters.
     ///
-    fileprivate func ritchTextImage(with size: CGSize, _ url: URL, _ attachment: WPTextAttachment) -> WPRichTextImage {
+    fileprivate func richTextImage(with size: CGSize, _ url: URL, _ attachment: WPTextAttachment) -> WPRichTextImage {
         let image = WPRichTextImage(frame: CGRect(x: 0.0, y: 0.0, width: size.width, height: size.height))
         image.addTarget(self, action: #selector(type(of: self).handleImageTapped(_:)), for: .touchUpInside)
         image.contentURL = url
@@ -269,8 +269,15 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
     /// Returns the CGSize instance for the given `WPTextAttachment`
     ///
     fileprivate func sizeForAttachment(_ attachment: WPTextAttachment) -> CGSize {
-        let width: CGFloat = attachment.width > 0 ? attachment.width : textContainer.size.width
+        let width: CGFloat
+        if attachment.width > 0 && attachment.width != .greatestFiniteMagnitude {
+            width = attachment.width
+        } else {
+            width = textContainer.size.width
+        }
+
         let height: CGFloat = attachment.height > 0 ? attachment.height : maxDisplaySize.height
+
         return CGSize(width: width, height: height)
     }
 
@@ -288,7 +295,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
 
         let proposedSize = sizeForAttachment(attachment)
         let finalSize = efficientImageSize(with: url, proposedSize: proposedSize)
-        let image = ritchTextImage(with: finalSize, url, attachment)
+        let image = richTextImage(with: finalSize, url, attachment)
 
         // show that something is loading.
         attachment.maxSize = CGSize(width: finalSize.width, height: finalSize.width / 2.0)

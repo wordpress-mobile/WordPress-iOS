@@ -11,13 +11,14 @@ final class ReplyToCommentActionTests: XCTestCase {
 
     private class MockNotificationActionsService: NotificationActionsService {
         var replyWasCalled: Bool = false
-        override func replyCommentWithBlock(_ block: ActionableObject, content: String, completion: ((Bool) -> Void)?) {
+        override func replyCommentWithBlock(_ block: FormattableCommentContent, content: String, completion: ((Bool) -> Void)?) {
             replyWasCalled = true
             completion?(true)
         }
     }
 
     private var action: ReplyToComment?
+    let utility = NotificationUtility()
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -25,6 +26,7 @@ final class ReplyToCommentActionTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        utility.setUp()
         action = TestableReplyToComment(on: Constants.initialStatus)
         makeNetworkAvailable()
     }
@@ -32,6 +34,7 @@ final class ReplyToCommentActionTests: XCTestCase {
     override func tearDown() {
         action = nil
         makeNetworkUnavailable()
+        utility.tearDown()
         super.tearDown()
     }
 
@@ -52,7 +55,7 @@ final class ReplyToCommentActionTests: XCTestCase {
     }
 
     func testExecuteCallsReply() {
-        action?.execute(context: mockActionContext())
+        action?.execute(context: utility.mockCommentContext())
 
         guard let mockService = action?.actionsService as? MockNotificationActionsService else {
             XCTFail()
