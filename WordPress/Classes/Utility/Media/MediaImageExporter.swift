@@ -30,8 +30,7 @@ class MediaImageExporter: MediaExporter {
         ///
         var exportImageType: String?
 
-        // MARK: - MediaExporting
-
+        /// If the original asset contains geo location information, enabling this option will remove it.
         var stripsGeoLocationIfNeeded = false
     }
 

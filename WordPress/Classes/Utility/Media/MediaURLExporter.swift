@@ -12,7 +12,7 @@ class MediaURLExporter: MediaExporter {
     var urlOptions: MediaURLExporter.Options?
 
     struct Options: MediaExportingOptions {
-        var allowableFileExtensions = [String]()
+        var allowableFileExtensions = Set<String>()
         var stripsGeoLocationIfNeeded = false
     }
 
