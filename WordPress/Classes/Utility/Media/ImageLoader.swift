@@ -83,6 +83,27 @@ import MobileCoreServices
         }
     }
 
+    @objc(loadImageWithURL:success:error:)
+    /// Load an image from a specific URL. As no source is provided, we can assume
+    /// that this is from an external source. Supports animated images (gifs) as well.
+    ///
+    /// - Parameters:
+    ///   - url: The URL to load the image from.
+    ///   - success: A closure to be called if the image was loaded successfully.
+    ///   - error: A closure to be called if there was an error loading the image.
+    ///
+    func loadImage(with url: URL, success: (() -> Void)?, error: ((Error?) -> Void)?) {
+        successHandler = success
+        errorHandler = error
+
+        if url.isGif {
+            loadGif(with: url, from: nil)
+        } else {
+            imageView.clean()
+            loadStaticImage(with: url, from: nil)
+        }
+    }
+
     @objc(loadImageWithURL:fromPost:preferredSize:placeholder:success:error:)
     /// Load an image from a specific post, using the given URL. Supports animated images (gifs) as well.
     ///
@@ -106,14 +127,15 @@ import MobileCoreServices
 
     /// Load an animated image from the given URL.
     ///
-    private func loadGif(with url: URL, from source: ImageSourceInformation, preferredSize size: CGSize) {
+    private func loadGif(with url: URL, from source: ImageSourceInformation?, preferredSize size: CGSize = .zero) {
         let request: URLRequest
         if url.isFileURL {
             request = URLRequest(url: url)
-        } else if source.isPrivateOnWPCom {
+        } else if let source = source, source.isPrivateOnWPCom {
             request = PrivateSiteURLProtocol.requestForPrivateSite(from: url)
         } else {
-            if let photonUrl = getPhotonUrl(for: url, size: size) {
+            if let photonUrl = getPhotonUrl(for: url, size: size),
+                source != nil {
                 request = URLRequest(url: photonUrl)
             } else {
                 request = URLRequest(url: url)
@@ -124,15 +146,19 @@ import MobileCoreServices
 
     /// Load a static image from the given URL.
     ///
-    private func loadStaticImage(with url: URL, from source: ImageSourceInformation, preferredSize size: CGSize) {
+    private func loadStaticImage(with url: URL, from source: ImageSourceInformation?, preferredSize size: CGSize = .zero) {
         if url.isFileURL {
             downloadImage(from: url)
-        } else if source.isPrivateOnWPCom {
-            loadPrivateImage(with: url, from: source, preferredSize: size)
-        } else if source.isSelfHostedWithCredentials {
-            downloadImage(from: url)
+        } else if let source = source {
+            if source.isPrivateOnWPCom {
+                loadPrivateImage(with: url, from: source, preferredSize: size)
+            } else if source.isSelfHostedWithCredentials {
+                downloadImage(from: url)
+            } else {
+                loadPhotonUrl(with: url, preferredSize: size)
+            }
         } else {
-            loadPhotonUrl(with: url, preferredSize: size)
+            downloadImage(from: url)
         }
     }
 

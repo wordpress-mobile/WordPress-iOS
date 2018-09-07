@@ -36,6 +36,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 @property (nonatomic, strong) IBOutlet UIView *dateView;
 @property (nonatomic, strong) IBOutlet UIImageView *dateImageView;
 @property (nonatomic, strong) IBOutlet UILabel *dateLabel;
+@property (nonatomic, strong) IBOutlet UILabel *stickyLabel;
 @property (nonatomic, strong) IBOutlet UIView *statusView;
 @property (nonatomic, strong) IBOutlet UIImageView *statusImageView;
 @property (nonatomic, strong) IBOutlet UILabel *statusLabel;
@@ -205,6 +206,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [WPStyleGuide applyPostTitleStyle:self.titleLabel];
     [WPStyleGuide applyPostSnippetStyle:self.snippetLabel];
     [WPStyleGuide applyPostDateStyle:self.dateLabel];
+    [WPStyleGuide applyPostDateStyle:self.stickyLabel];
     [WPStyleGuide applyPostStatusStyle:self.statusLabel];
     [WPStyleGuide applyPostMetaButtonStyle:self.metaButtonRight];
     [WPStyleGuide applyPostMetaButtonStyle:self.metaButtonLeft];
@@ -214,6 +216,8 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     self.actionBar.backgroundColor = [WPStyleGuide lightGrey];
     self.postContentView.layer.borderColor = [[WPStyleGuide postCardBorderColor] CGColor];
     self.postContentView.layer.borderWidth = 1.0;
+    
+    self.stickyLabel.text = NSLocalizedString(@"Sticky", @"Label text that defines a post marked as sticky");
 }
 
 #pragma mark - ConfigurablePostView
@@ -239,6 +243,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     [self configureMetaButtons];
     [self configureProgressView];
     [self configureActionBar];
+    [self configureStickyPost];
 
     [self setNeedsUpdateConstraints];
 }
@@ -335,6 +340,11 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     self.statusLabel.textColor = self.viewModel.statusColor;
 
     [self.statusView setNeedsUpdateConstraints];
+}
+
+- (void)configureStickyPost
+{
+    self.stickyLabel.hidden = !self.post.isStickyPost;
 }
 
 

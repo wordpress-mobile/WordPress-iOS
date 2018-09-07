@@ -13,18 +13,19 @@ final class ApproveCommentActionTests: XCTestCase {
         var unaproveWasCalled: Bool = false
         var aproveWasCalled: Bool = false
 
-        override func unapproveCommentWithBlock(_ block: ActionableObject, completion: ((Bool) -> Void)?) {
+        override func unapproveCommentWithBlock(_ block: FormattableCommentContent, completion: ((Bool) -> Void)?) {
             unaproveWasCalled = true
             completion?(true)
         }
 
-        override func approveCommentWithBlock(_ block: ActionableObject, completion: ((Bool) -> Void)?) {
+        override func approveCommentWithBlock(_ block: FormattableCommentContent, completion: ((Bool) -> Void)?) {
             aproveWasCalled = true
             completion?(true)
         }
     }
 
     private var action: ApproveComment?
+    private let utility = NotificationUtility()
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -32,6 +33,7 @@ final class ApproveCommentActionTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        utility.setUp()
         action = TestableApproveComment(on: Constants.initialStatus)
         makeNetworkAvailable()
     }
@@ -39,6 +41,7 @@ final class ApproveCommentActionTests: XCTestCase {
     override func tearDown() {
         action = nil
         makeNetworkUnavailable()
+        utility.tearDown()
         super.tearDown()
     }
 
@@ -91,7 +94,7 @@ final class ApproveCommentActionTests: XCTestCase {
     func testExecuteCallsUnapproveWhenIconIsOn() {
         action?.on = true
 
-        action?.execute(context: mockActionContext())
+        action?.execute(context: utility.mockCommentContext())
 
         guard let mockService = action?.actionsService as? MockNotificationActionsService else {
             XCTFail()
@@ -104,7 +107,7 @@ final class ApproveCommentActionTests: XCTestCase {
     func testExecuteUpdatesIconTitleWhenIconIsOn() {
         action?.on = true
 
-        action?.execute(context: mockActionContext())
+        action?.execute(context: utility.mockCommentContext())
 
         XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.approve)
     }
@@ -112,7 +115,7 @@ final class ApproveCommentActionTests: XCTestCase {
     func testExecuteUpdatesIconAccessibilityLabelWhenIconIsOn() {
         action?.on = true
 
-        action?.execute(context: mockActionContext())
+        action?.execute(context: utility.mockCommentContext())
 
         XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.approve)
     }
@@ -120,7 +123,7 @@ final class ApproveCommentActionTests: XCTestCase {
     func testExecuteUpdatesIconAccessibilityHintWhenIconIsOn() {
         action?.on = true
 
-        action?.execute(context: mockActionContext())
+        action?.execute(context: utility.mockCommentContext())
 
         XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.approve)
     }
@@ -128,7 +131,7 @@ final class ApproveCommentActionTests: XCTestCase {
     func testExecuteCallsApproveWhenIconIsOff() {
         action?.on = false
 
-        action?.execute(context: mockActionContext())
+        action?.execute(context: utility.mockCommentContext())
 
         guard let mockService = action?.actionsService as? MockNotificationActionsService else {
             XCTFail()
@@ -141,7 +144,7 @@ final class ApproveCommentActionTests: XCTestCase {
     func testExecuteUpdatesIconTitleWhenIconIsOff() {
         action?.on = false
 
-        action?.execute(context: mockActionContext())
+        action?.execute(context: utility.mockCommentContext())
 
         XCTAssertEqual(action?.icon?.titleLabel?.text, ApproveComment.TitleStrings.unapprove)
     }
@@ -149,7 +152,7 @@ final class ApproveCommentActionTests: XCTestCase {
     func testExecuteUpdatesIconAccessibilityLabelWhenIconIsOff() {
         action?.on = false
 
-        action?.execute(context: mockActionContext())
+        action?.execute(context: utility.mockCommentContext())
 
         XCTAssertEqual(action?.icon?.accessibilityLabel, ApproveComment.TitleStrings.unapprove)
     }
@@ -157,7 +160,7 @@ final class ApproveCommentActionTests: XCTestCase {
     func testExecuteUpdatesIconAccessibilityHintWhenIconIsOff() {
         action?.on = false
 
-        action?.execute(context: mockActionContext())
+        action?.execute(context: utility.mockCommentContext())
 
         XCTAssertEqual(action?.icon?.accessibilityHint, ApproveComment.TitleHints.unapprove)
     }

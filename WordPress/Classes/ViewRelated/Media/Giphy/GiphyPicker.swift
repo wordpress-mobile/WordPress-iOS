@@ -15,6 +15,10 @@ final class GiphyPicker: NSObject {
         return GiphyService()
     }()
 
+    /// Helps choosing the correct view controller for previewing a media asset
+    ///
+    private var mediaPreviewHelper: MediaPreviewHelper!
+
     weak var delegate: GiphyPickerDelegate?
     private var blog: Blog?
     private var observerToken: NSObjectProtocol?
@@ -118,6 +122,11 @@ extension GiphyPicker: WPMediaPickerViewControllerDelegate {
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didDeselect asset: WPMediaAsset) {
         hideKeyboard(from: picker.searchBar)
+    }
+
+    func mediaPickerController(_ picker: WPMediaPickerViewController, previewViewControllerFor assets: [WPMediaAsset], selectedIndex selected: Int) -> UIViewController? {
+        mediaPreviewHelper = MediaPreviewHelper(assets: assets)
+        return mediaPreviewHelper.previewViewController(selectedIndex: selected)
     }
 
     private func hideKeyboard(from view: UIView?) {

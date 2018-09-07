@@ -24,7 +24,7 @@ class ActivityLogTestData {
     }
 
     var testCommentURL: String {
-        return "https://etoledom.wordpress.com/2018/06/02/hola-lima/comment-page-1/#comment-7"
+        return "https://wordpress.com/comment/137726971/7"
     }
 
     private func getDictionaryFromFile(named fileName: String) -> [String: AnyObject] {
