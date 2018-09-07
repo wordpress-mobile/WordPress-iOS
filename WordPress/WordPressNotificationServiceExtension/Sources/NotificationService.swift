@@ -2,13 +2,21 @@ import UserNotifications
 
 import WordPressKit
 
+/// Responsible for enrich the content of designated push notifications.
 class NotificationService: UNNotificationServiceExtension {
 
     // MARK: Properties
 
+    /// Manages analytics calls via Tracks
+    private let tracks = Tracks(appGroupName: WPAppGroupName)
+
+    /// The service used to retrieve remote notifications
     private var notificationService: NotificationSyncServiceRemote?
 
+    /// The content handler received from the extension
     private var contentHandler: ((UNNotificationContent) -> Void)?
+
+    /// The pending rich notification content
     private var bestAttemptContent: UNMutableNotificationContent?
 
     // MARK: UNNotificationServiceExtension
@@ -17,15 +25,27 @@ class NotificationService: UNNotificationServiceExtension {
         self.contentHandler = contentHandler
         self.bestAttemptContent = request.content.mutableCopy() as? UNMutableNotificationContent
 
-        guard
-            let notificationContent = self.bestAttemptContent,
-            let noteID = notificationContent.userInfo["note_id"] as? Int,
-            let aps = notificationContent.userInfo["aps"] as? NSDictionary,
-            let apsAlert = aps["alert"] as? String,
-            let token = readExtensionToken()
-        else
-        {
+        let username = readExtensionUsername()
+        tracks.wpcomUsername = username
+
+        let token = readExtensionToken()
+        tracks.trackExtensionLaunched(token != nil)
+
+        guard let notificationContent = self.bestAttemptContent,
+            let apsAlert = notificationContent.apsAlert,
+            let noteID = notificationContent.noteID,
+            let notificationType = notificationContent.type,
+            let notificationKind = NotificationKind(rawValue: notificationType),
+            token != nil else {
+
             contentHandler(request.content)
+            return
+        }
+
+        guard NotificationKind.isSupportedByRichNotifications(notificationKind) else {
+            tracks.trackNotificationDiscarded(notificationType: notificationType)
+
+            contentHandler(notificationContent)
             return
         }
 
@@ -35,37 +55,36 @@ class NotificationService: UNNotificationServiceExtension {
         let service = NotificationSyncServiceRemote(wordPressComRestApi: api)
         self.notificationService = service
 
-        let identifiers = [ String(noteID) ]
-        service.loadNotes(noteIds: identifiers) { error, notifications in
-            defer {
-                contentHandler(notificationContent)
-            }
-
+        service.loadNotes(noteIds: [noteID]) { [tracks] error, notifications in
             if let error = error {
-                debugPrint("Unable to retrieve notifications for Note ID : \(noteID) | Error : \(error.localizedDescription)")
+                tracks.trackNotificationRetrievalFailed(notificationIdentifier: noteID, errorDescription: error.localizedDescription)
                 return
             }
 
-            if let remoteNotifications = notifications,
+            guard let remoteNotifications = notifications,
                 remoteNotifications.count == 1,
-                let notification = remoteNotifications.first,
-                notification.kind == .comment,
-                let body = notification.body,
-                let bodyBlocks = body as? [[String: AnyObject]] {
+                let notification = remoteNotifications.first else {
 
-                let parser = RemoteNotificationActionParser()
-                let blocks = NotificationContentFactory.content(
-                    from: bodyBlocks,
-                    actionsParser: parser,
-                    parent: notification)
-
-                if let comment: FormattableCommentContent = FormattableContentGroup.blockOfKind(.comment, from: blocks),
-                    let notificationText = comment.text,
-                    !notificationText.isEmpty {
-
-                    notificationContent.body = notificationText
-                }
+                return
             }
+
+            let contentFormatter = RichNotificationContentFormatter(notification: notification)
+
+            guard let bodyText = contentFormatter.formatBody() else {
+                return
+            }
+            notificationContent.body = bodyText
+
+            let viewModel = RichNotificationViewModel(
+                attributedBody: contentFormatter.formatAttributedBody(),
+                attributedSubject: contentFormatter.formatAttributedSubject(),
+                gravatarURLString: notification.icon,
+                noticon: notification.noticon)
+            viewModel.encodeToUserInfo(notificationContent: notificationContent)
+
+            tracks.trackNotificationAssembled()
+
+            contentHandler(notificationContent)
         }
     }
 
@@ -78,23 +97,38 @@ class NotificationService: UNNotificationServiceExtension {
             contentHandler(bestAttemptContent)
         }
     }
-}
 
-private extension NotificationService {
+    // MARK: Private behavior
+
     /// Retrieves the WPCOM OAuth Token, meant for Extension usage.
     ///
     /// - Returns: the token if found; `nil` otherwise
     ///
-    func readExtensionToken() -> String? {
-        guard
-            let oauthToken = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationServiceExtensionKeychainTokenKey,
-                                                                           andServiceName: WPNotificationServiceExtensionKeychainServiceName,
-                                                                           accessGroup: WPAppKeychainAccessGroup)
-            else {
-                debugPrint("Unable to retrieve Notification Service Extension OAuth token")
-                return nil
+    private func readExtensionToken() -> String? {
+        guard let oauthToken = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationServiceExtensionKeychainTokenKey,
+                                                                             andServiceName: WPNotificationServiceExtensionKeychainServiceName,
+                                                                             accessGroup: WPAppKeychainAccessGroup) else {
+
+                                                                                debugPrint("Unable to retrieve Notification Service Extension OAuth token")
+                                                                                return nil
         }
 
         return oauthToken
+    }
+
+    /// Retrieves the WPCOM username, meant for Extension usage.
+    ///
+    /// - Returns: the username if found; `nil` otherwise
+    ///
+    private func readExtensionUsername() -> String? {
+        guard let username = try? SFHFKeychainUtils.getPasswordForUsername(WPNotificationServiceExtensionKeychainUsernameKey,
+                                                                           andServiceName: WPNotificationServiceExtensionKeychainServiceName,
+                                                                           accessGroup: WPAppKeychainAccessGroup) else {
+
+                                                                            debugPrint("Unable to retrieve Notification Service Extension username")
+                                                                            return nil
+        }
+
+        return username
     }
 }

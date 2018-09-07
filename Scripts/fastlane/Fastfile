@@ -1,20 +1,5 @@
-# This file contains the fastlane.tools configuration
-# You can find the documentation at https://docs.fastlane.tools
-#
-# For a list of all available actions, check out
-#
-#     https://docs.fastlane.tools/actions
-#
-# For a list of all available plugins, check out
-#
-#     https://docs.fastlane.tools/plugins/available-plugins
-#
-
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
-
 default_platform(:ios)
-require 'dotenv'
+fastlane_require 'dotenv'
 
 platform :ios do
 ########################################################################
@@ -22,6 +7,11 @@ platform :ios do
 ########################################################################
 Dotenv.load('~/.wpios-env.default')
 ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
+
+########################################################################
+# Screenshots 
+########################################################################
+import "./ScreenshotFastfile"
 
 ########################################################################
 # Release Lanes
@@ -149,6 +139,7 @@ ENV[GHHELPER_REPO="wordpress-mobile/wordpress-iOS"]
   lane :finalize_release do | options |
     ios_finalize_prechecks(options)
     ios_update_metadata(options) unless ios_current_branch_is_hotfix
+    ios_bump_version_beta() unless ios_current_branch_is_hotfix
     ios_final_tag(options)
   end
 

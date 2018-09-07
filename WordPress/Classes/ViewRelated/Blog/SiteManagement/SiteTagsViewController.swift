@@ -399,7 +399,7 @@ private extension SiteTagsViewController {
 
     func setupLoadingView() {
         noResultsViewController.configure(title: loadingMessage(),
-                                           accessoryView: loadingAccessoryView())
+                                           accessoryView: NoResultsViewController.loadingAccessoryView())
     }
 
     func setupEmptyResultsView() {
@@ -413,11 +413,8 @@ private extension SiteTagsViewController {
         addChildViewController(noResultsViewController)
         noResultsViewController.view.frame = tableView.frame
 
-        // If the refreshControl is showing, move the NRV up so the contents appear centered in the view.
-        if let refreshControl = refreshControl,
-            refreshControl.isHidden == false {
-            noResultsViewController.view.frame.origin.y -= refreshControl.frame.height
-        }
+        // Since the tableView doesn't always start at the top, adjust the NRV accordingly.
+        noResultsViewController.view.frame.origin.y = 0
 
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         noResultsViewController.didMove(toParentViewController: self)
@@ -441,12 +438,6 @@ private extension SiteTagsViewController {
 
     func loadingMessage() -> String {
         return NSLocalizedString("Loading...", comment: "Loading tags.")
-    }
-
-    func loadingAccessoryView() -> UIView {
-        let animatedBox = WPAnimatedBox()
-        animatedBox.animate(afterDelay: 0.1)
-        return animatedBox
     }
 
 }
