@@ -4,7 +4,6 @@
 enum FeatureFlag: Int {
     case exampleFeature
     case jetpackDisconnect
-    case extractNotifications
     case quickStart
     case newsCard
     case giphy
@@ -17,8 +16,6 @@ enum FeatureFlag: Int {
             return true
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
-        case .extractNotifications:
-            return true
         case .quickStart:
             return BuildConfiguration.current == .localDeveloper
         case .newsCard:
@@ -26,7 +23,7 @@ enum FeatureFlag: Int {
         case .giphy:
             return BuildConfiguration.current == .localDeveloper
         case .automatedTransfer:
-            return BuildConfiguration.current != .appStore
+            return true
         }
     }
 }

@@ -23,7 +23,7 @@ class DefaultFormattableContentAction: FormattableContentAction {
         self.on = on
     }
 
-    func execute(context: ActionContext) {
+    func execute<ContentType: FormattableContent>(context: ActionContext<ContentType>) {
         command?.execute(context: context)
     }
 }

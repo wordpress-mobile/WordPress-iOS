@@ -1,3 +1,2 @@
-Editörde daha iyi görüntü işleme. Bir dosyayı sürükleyip bırakın veya ortam seçiciyle bir tane ekleyin, yükleme ve ekleme işlemi sorunsuz ve hızlıdır.
-Deneyimlerinizi daha sezgisel hale getirmek için birkaç noktadaki küçük UI geliştirmeleri - muhtemelen onları fark etmeyeceksiniz, işte mesele bu!
-Hata düzeltmeleri.
+Kaportanın altında ince ayar yaptık.
+Uygulamada açıkça farklı bir şey göremeyebilirsiniz ancak her şeyin daha hızlı ve daha kararlı olmasını bekleyebilirsiniz.

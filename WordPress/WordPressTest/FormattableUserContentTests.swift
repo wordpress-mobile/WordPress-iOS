@@ -88,7 +88,7 @@ final class FormattableUserContentTests: XCTestCase {
 
         let parent = subject?.parent
 
-        XCTAssertEqual(parent?.notificationId, injectedParent.notificationId)
+        XCTAssertEqual(parent?.notificationIdentifier, injectedParent.notificationIdentifier)
     }
 
     func testApproveCommentActionIsOn() {
@@ -127,16 +127,6 @@ final class FormattableUserContentTests: XCTestCase {
     func testMetaSiteIdReturnsExpectation() {
         let id = subject?.metaSiteID
         XCTAssertEqual(id, Expectations.metaSiteId)
-    }
-
-    func testMetaCommentIdReturnsExpectation() {
-        let id = subject?.metaCommentID
-        XCTAssertNil(id)
-    }
-
-    func testIsCommentApprovedReturnsExpectation() {
-        let value = subject?.isCommentApproved
-        XCTAssertFalse(value!)
     }
 
     private func mockDictionary() -> [String: AnyObject] {
