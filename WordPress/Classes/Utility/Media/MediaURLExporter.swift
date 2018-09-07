@@ -82,6 +82,7 @@ class MediaURLExporter: MediaExporter {
             let fileExtension = fileURL.typeIdentifierFileExtension {
             if !urlExportOptions.allowableFileExtensions.contains(fileExtension) {
                 onError(exporterErrorWith(error: URLExportError.unsupportedFileType))
+                return Progress.discreteCompletedProgress()
             }
         }
         // Initiate export
