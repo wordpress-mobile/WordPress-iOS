@@ -1,2 +1,2 @@
 #!/bin/bash
-./Scripts/allowSimulatorPhotoAccess.sh
+./Scripts/allowSimulatorPhotosAccess.sh
