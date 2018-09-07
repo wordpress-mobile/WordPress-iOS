@@ -23,6 +23,7 @@ import UIKit
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleTextView: UITextView!
+    @IBOutlet weak var subtitleImageView: UIImageView!
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var accessoryView: UIView!
 
@@ -32,6 +33,7 @@ import UIKit
     private var attributedSubtitleText: NSAttributedString?
     private var buttonText: String?
     private var imageName: String?
+    private var subtitleImageName: String?
     private var accessorySubview: UIView?
     private var hideImage = false
 
@@ -72,6 +74,7 @@ import UIKit
     ///   - subtitle:           Secondary descriptive text. Optional.
     ///   - attributedSubtitle: Secondary descriptive attributed text. Optional.
     ///   - image:              Name of image file to use. Optional.
+    ///   - subtitleImage:      Name of image file to use in place of subtitle. Optional.
     ///   - accessoryView:      View to show instead of the image. Optional.
     ///
     @objc class func controllerWith(title: String,
@@ -79,6 +82,7 @@ import UIKit
                                     subtitle: String? = nil,
                                     attributedSubtitle: NSAttributedString? = nil,
                                     image: String? = nil,
+                                    subtitleImage: String? = nil,
                                     accessoryView: UIView? = nil) -> NoResultsViewController {
         let controller = NoResultsViewController.controller()
         controller.titleText = title
@@ -86,6 +90,7 @@ import UIKit
         controller.attributedSubtitleText = attributedSubtitle
         controller.buttonText = buttonTitle
         controller.imageName = image
+        controller.subtitleImageName = subtitleImage
         controller.accessorySubview = accessoryView
         return controller
     }
@@ -108,6 +113,7 @@ import UIKit
     ///   - subtitle:           Secondary descriptive text. Optional.
     ///   - attributedSubtitle: Secondary descriptive attributed text. Optional.
     ///   - image:              Name of image file to use. Optional.
+    ///   - subtitleImage:      Name of image file to use in place of subtitle. Optional.
     ///   - accessoryView:      View to show instead of the image. Optional.
     ///
     @objc func configure(title: String,
@@ -115,12 +121,14 @@ import UIKit
                          subtitle: String? = nil,
                          attributedSubtitle: NSAttributedString? = nil,
                          image: String? = nil,
+                         subtitleImage: String? = nil,
                          accessoryView: UIView? = nil) {
         titleText = title
         subtitleText = subtitle
         attributedSubtitleText = attributedSubtitle
         buttonText = buttonTitle
         imageName = image
+        subtitleImageName = subtitleImage
         accessorySubview = accessoryView
     }
 
@@ -212,8 +220,12 @@ private extension NoResultsViewController {
             subtitleTextView.isSelectable = true
         }
 
-        let showSubtitle = subtitleText != nil || attributedSubtitleText != nil
+        let hasSubtitleText = subtitleText != nil || attributedSubtitleText != nil
+        let hasSubtitleImage = subtitleImageName != nil
+        let showSubtitle = hasSubtitleText && !hasSubtitleImage
         subtitleTextView.isHidden = !showSubtitle
+        subtitleImageView.isHidden = !hasSubtitleImage
+        subtitleImageView.tintColor = titleLabel.textColor
 
         if let buttonText = buttonText {
             configureButton()
@@ -232,6 +244,10 @@ private extension NoResultsViewController {
 
         if let imageName = imageName {
             imageView.image = UIImage(named: imageName)
+        }
+
+        if let subtitleImageName = subtitleImageName {
+            subtitleImageView.image = UIImage(named: subtitleImageName)
         }
 
         view.layoutIfNeeded()
