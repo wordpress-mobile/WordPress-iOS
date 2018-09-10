@@ -10,6 +10,7 @@ protocol NewsManager {
 
 protocol NewsManagerDelegate: class {
     func didDismissNews()
+    func didSelectReadMore(_ url: URL)
 }
 
 extension NSNotification.Name {

@@ -43,8 +43,13 @@ final class DefaultNewsManagerTests: XCTestCase {
 
     private final class MockDelegate: NewsManagerDelegate {
         var dismissed = false
+        var extendedInfoRequested = false
         func didDismissNews() {
             dismissed = true
+        }
+
+        func didSelectReadMore() {
+            extendedInfoRequested = true
         }
     }
 
@@ -139,6 +144,12 @@ final class DefaultNewsManagerTests: XCTestCase {
         manager?.dismiss()
 
         XCTAssertTrue(delegate!.dismissed)
+    }
+
+    func restManagerCallsDelegateMethodWhenReadMore() {
+        manager?.readMore()
+
+        XCTAssertTrue(delegate!.extendedInfoRequested)
     }
 
     func testDismissCallsStats() {
