@@ -827,7 +827,7 @@ extension NotificationsViewController: NetworkStatusDelegate {
     }
 }
 
-// MARK: - UISegmentedControl Methods
+// MARK: - FilterTabBar Methods
 //
 extension NotificationsViewController {
 
@@ -837,7 +837,7 @@ extension NotificationsViewController {
         let properties = [Stats.selectedFilter: filter.title]
         WPAnalytics.track(.notificationsTappedSegmentedControl, withProperties: properties)
 
-        updateUnreadNotificationsForSegmentedControlChange()
+        updateUnreadNotificationsForFilterTabChange()
 
         reloadResultsController()
 
@@ -860,7 +860,7 @@ extension NotificationsViewController {
         }
     }
 
-    @objc func updateUnreadNotificationsForSegmentedControlChange() {
+    @objc func updateUnreadNotificationsForFilterTabChange() {
         if filter == .unread {
             refreshUnreadNotifications(reloadingResultsController: false)
         } else {
