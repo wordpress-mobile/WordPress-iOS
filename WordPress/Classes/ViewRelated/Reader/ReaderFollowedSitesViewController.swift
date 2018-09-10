@@ -60,6 +60,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         setupTableView()
         setupTableViewHandler()
         configureSearchBar()
+        noResultsViewController.delegate = self
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
@@ -265,7 +266,9 @@ private extension ReaderFollowedSitesViewController {
         if isSyncing {
             noResultsViewController.configure(title: NoResultsText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
         } else {
-            noResultsViewController.configure(title: NoResultsText.noResultsTitle, subtitle: NoResultsText.noResultsMessage)
+            noResultsViewController.configure(title: NoResultsText.noResultsTitle,
+                                              buttonTitle: NoResultsText.buttonTitle,
+                                              subtitle: NoResultsText.noResultsMessage)
         }
 
         showNoResultView()
@@ -278,9 +281,15 @@ private extension ReaderFollowedSitesViewController {
         noResultsViewController.didMove(toParentViewController: tableViewController)
     }
 
+    func showDiscoverSites() {
+        let controller = ReaderStreamViewController.controllerWithSiteID(ReaderHelpers.discoverSiteID, isFeed: false)
+        navigationController?.pushViewController(controller, animated: true)
+    }
+
     struct NoResultsText {
         static let noResultsTitle = NSLocalizedString("No followed sites", comment: "Title of a message explaining that the user is not currently following any blogs in their reader.")
         static let noResultsMessage = NSLocalizedString("You are not following any sites yet. Why not follow one now?", comment: "A suggestion to the user that they try following a site in their reader.")
+        static let buttonTitle = NSLocalizedString("Discover Sites", comment: "Button title. Tapping takes the user to the Discover sites list.")
         static let loadingTitle = NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their followed sites is being fetched..")
     }
 
@@ -389,7 +398,6 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
 }
 
-
 extension ReaderFollowedSitesViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let site =  searchBar.text?.trim(), !site.isEmpty {
@@ -397,5 +405,13 @@ extension ReaderFollowedSitesViewController: UISearchBarDelegate {
         }
         searchBar.text = nil
         searchBar.resignFirstResponder()
+    }
+}
+
+// MARK: - NoResultsViewControllerDelegate
+
+extension ReaderFollowedSitesViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        showDiscoverSites()
     }
 }
