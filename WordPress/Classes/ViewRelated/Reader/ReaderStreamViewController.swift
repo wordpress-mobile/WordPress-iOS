@@ -57,6 +57,8 @@ import WordPressFlux
     /// Actions
     private var postCellActions: ReaderPostCellActions?
 
+    let news = ReaderNewsCard()
+
     /// Used for fetching content.
     fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
 
@@ -116,7 +118,7 @@ import WordPressFlux
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderStreamViewController") as! ReaderStreamViewController
         controller.readerTopic = topic
-
+        controller.checkNewsCardAvailability(topic: topic)
         return controller
     }
 
@@ -383,7 +385,6 @@ import WordPressFlux
     }
 
     // MARK: - Configuration / Topic Presentation
-
 
     @objc func configureStreamHeader() {
         guard let topic = readerTopic else {
@@ -1141,6 +1142,31 @@ extension ReaderStreamViewController: ReaderStreamHeaderDelegate {
 extension ReaderStreamViewController: NewsManagerDelegate {
     func didDismissNews() {
         refreshTableHeaderIfNeeded()
+    }
+
+    func didSelectReadMore(_ url: URL) {
+        let readerLinkRouter = UniversalLinkRouter.shared
+        if readerLinkRouter.canHandle(url: url) {
+            readerLinkRouter.handle(url: url, shouldTrack: false, source: self)
+        } else if url.isWordPressDotComPost {
+            presentReaderDetailViewControllerWithURL(url)
+        } else {
+            presentWebViewControllerWithURL(url)
+        }
+    }
+
+    private func presentWebViewControllerWithURL(_ url: URL) {
+        let configuration = WebViewControllerConfiguration(url: url)
+        configuration.authenticateWithDefaultAccount()
+        configuration.addsWPComReferrer = true
+        let controller = WebViewControllerFactory.controller(configuration: configuration)
+        let navController = UINavigationController(rootViewController: controller)
+        present(navController, animated: true, completion: nil)
+    }
+
+    private func presentReaderDetailViewControllerWithURL(_ url: URL) {
+        let viewController = ReaderDetailViewController.controllerWithPostURL(url)
+        navigationController?.pushFullscreenViewController(viewController, animated: true)
     }
 }
 
