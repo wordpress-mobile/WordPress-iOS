@@ -21,7 +21,9 @@ open class MediaImportService: LocalCoreDataService {
     @objc static let preferredImageCompressionQuality = 0.9
 
     /// Allows the caller to designate supported import file types
-    @objc var allowableFileExtensions = [String]()
+    @objc var allowableFileExtensions = Set<String>()
+
+    static let defaultAllowableFileExtensions = Set<String>(["docx", "ppt", "mp4", "ppsx", "3g2", "mpg", "ogv", "pptx", "xlsx", "jpeg", "xls", "mov", "key", "3gp", "png", "avi", "doc", "pdf", "gif", "odt", "pps", "m4v", "wmv", "jpg"])
 
     /// Completion handler for a created Media object.
     ///
@@ -72,6 +74,7 @@ open class MediaImportService: LocalCoreDataService {
             let exporter = MediaAssetExporter(asset: asset)
             exporter.imageOptions = self.exporterImageOptions
             exporter.videoOptions = self.exporterVideoOptions
+            exporter.allowableFileExtensions = allowableFileExtensions.isEmpty ? MediaImportService.defaultAllowableFileExtensions : allowableFileExtensions
             return exporter
         case let image as UIImage:
             let exporter = MediaImageExporter(image: image, filename: nil)

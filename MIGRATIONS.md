@@ -3,6 +3,10 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 80
+@danielebogo 2018-08-31
+- `Post` added `isStickyPost` property to mark posts as sticky.
+
 ## WordPress 79
 @frosty 2018-08-15
 - Re-added `PublicizeService.externalUsersOnly` property from model 77, which was omitted from model 78.
