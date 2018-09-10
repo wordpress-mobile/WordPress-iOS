@@ -17,7 +17,8 @@
                                                            delegate:self];
     [[BITHockeyManager sharedHockeyManager].authenticator setIdentificationType:BITAuthenticatorIdentificationTypeDevice];
     [[BITHockeyManager sharedHockeyManager] setDisableCrashManager: YES]; //disable crash reporting
-    [[BITHockeyManager sharedHockeyManager].updateManager setUpdateSetting: BITUpdateCheckDaily]; // Sets up daily notifications on notmandatory updates
+    [[BITHockeyManager sharedHockeyManager].updateManager setUpdateSetting: BITUpdateCheckDaily]; // Set up daily notifications on notmandatory updates
+    [[BITHockeyManager sharedHockeyManager].updateManager setShowDirectInstallOption: true]; // Show the "direct update" button in the update dialog
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
 }
