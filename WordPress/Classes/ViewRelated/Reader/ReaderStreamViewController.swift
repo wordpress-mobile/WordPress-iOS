@@ -1166,7 +1166,7 @@ extension ReaderStreamViewController: NewsManagerDelegate {
 
     private func presentReaderDetailViewControllerWithURL(_ url: URL) {
         let viewController = ReaderDetailViewController.controllerWithPostURL(url)
-        navigationController?.pushViewController(viewController, animated: true)
+        navigationController?.pushFullscreenViewController(viewController, animated: true)
     }
 }
 
