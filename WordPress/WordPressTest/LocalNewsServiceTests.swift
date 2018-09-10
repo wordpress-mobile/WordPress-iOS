@@ -44,7 +44,7 @@ final class LocalNewsServiceTests: XCTestCase {
             case .error (let error):
                 XCTAssertNotNil(error)
             case .success:
-                XCTFail()
+                XCTFail("Bad formed news file")
             }
         })
     }

@@ -118,10 +118,10 @@ final class DefaultNewsManager: NewsManager {
     private func currentBuildVersion() -> Decimal {
         guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
             DDLogError("No CFBundleShortVersionString found in Info.plist")
-            return Decimal(floatLiteral: 0.0)
+            return Decimal()
         }
 
-        return Decimal(string: version) ?? Decimal(floatLiteral: 0.0)
+        return Decimal(string: version) ?? Decimal()
     }
 
     private func currentCardVersion() -> Decimal {
