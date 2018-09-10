@@ -23,7 +23,7 @@ def shared_with_networking_pods
     pod 'AFNetworking', '3.2.1'
     pod 'Alamofire', '4.7.2'
     pod 'wpxmlrpc', '0.8.3'
-    pod 'WordPressKit', '1.4.0-beta.2'
+    pod 'WordPressKit', '1.4.0-beta.3'
 end
 
 def shared_test_pods
@@ -73,7 +73,7 @@ target 'WordPress' do
     pod 'WPMediaPicker', '1.3'
     pod 'WordPressAuthenticator', '1.0.6'
     aztec
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
+    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '0456236d5b6d71ce8a93f988c27bcdc2eb0835d6'
 
     target 'WordPressTest' do
         inherit! :search_paths
@@ -91,9 +91,8 @@ target 'WordPress' do
 
         shared_with_all_pods
         shared_with_networking_pods
-
         aztec
-        pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
+        pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '0456236d5b6d71ce8a93f988c27bcdc2eb0835d6'
         pod 'Gridicons', '0.16'
     end
 
@@ -106,9 +105,8 @@ target 'WordPress' do
 
         shared_with_all_pods
         shared_with_networking_pods
-
         aztec
-        pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
+        pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '0456236d5b6d71ce8a93f988c27bcdc2eb0835d6'
         pod 'Gridicons', '0.16'
     end
 
@@ -135,7 +133,7 @@ target 'WordPressNotificationContentExtension' do
     inherit! :search_paths
     
     pod 'WordPressShared', '1.0.10'
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae' 
+    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '0456236d5b6d71ce8a93f988c27bcdc2eb0835d6' 
 end
 
 
@@ -149,9 +147,9 @@ target 'WordPressNotificationServiceExtension' do
     inherit! :search_paths
 
     pod 'Gridicons', '0.16'
-    pod 'WordPressKit', '1.4.0-beta.2'
+    pod 'WordPressKit', '1.4.0-beta.3'
     pod 'WordPressShared', '1.0.10'
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
+    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '0456236d5b6d71ce8a93f988c27bcdc2eb0835d6'
 end
 
 
@@ -168,7 +166,7 @@ target 'WordPressComStatsiOS' do
     ## Automattic libraries
     ## ====================
     ##
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
+    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '0456236d5b6d71ce8a93f988c27bcdc2eb0835d6'
 
     target 'WordPressComStatsiOSTests' do
         inherit! :search_paths

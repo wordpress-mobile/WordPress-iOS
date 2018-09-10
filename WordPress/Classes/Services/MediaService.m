@@ -43,7 +43,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 {
     NSProgress *createProgress = [NSProgress discreteProgressWithTotalUnitCount:1];
     __block Media *media;
-    __block NSArray *allowedFileTypes = [NSArray array];
+    __block NSSet<NSString *> *allowedFileTypes = [NSSet set];
     [self.managedObjectContext performBlockAndWait:^{
         AbstractPost *post = nil;
         Blog *blog = nil;
@@ -63,7 +63,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
         }
         
         if (blog.allowedFileTypes != nil) {
-            allowedFileTypes = blog.allowedFileTypes.allObjects;
+            allowedFileTypes = blog.allowedFileTypes;
         }
 
         if (post != nil) {
