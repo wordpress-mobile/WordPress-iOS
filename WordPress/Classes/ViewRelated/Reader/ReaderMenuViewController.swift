@@ -25,6 +25,10 @@ import WordPressShared
         return viewModel.indexPathOfDefaultMenuItemWithOrder(order: .followed)
     }
 
+    var discoverIndexPath: IndexPath {
+        return viewModel.indexPathOfDefaultMenuItemWithOrder(order: .discover)
+    }
+
     fileprivate var restorableSelectedIndexPath: IndexPath?
 
     @objc lazy var viewModel: ReaderMenuViewModel = {

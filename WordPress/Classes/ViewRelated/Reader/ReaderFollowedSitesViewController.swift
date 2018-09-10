@@ -282,8 +282,18 @@ private extension ReaderFollowedSitesViewController {
     }
 
     func showDiscoverSites() {
-        let controller = ReaderStreamViewController.controllerWithSiteID(ReaderHelpers.discoverSiteID, isFeed: false)
-        navigationController?.pushViewController(controller, animated: true)
+        // If iPad, let the Reader Menu switch rows.
+        if WPDeviceIdentification.isiPad() {
+            let tabBarController = WPTabBarController.sharedInstance()
+            guard let readerMenuVC = tabBarController?.readerMenuViewController else {
+                return
+            }
+            readerMenuVC.tableView(tableView, didSelectRowAt: readerMenuVC.discoverIndexPath)
+        } else {
+            // If iPhone, add it to the navigation stack.
+            let controller = ReaderStreamViewController.controllerWithSiteID(ReaderHelpers.discoverSiteID, isFeed: false)
+            navigationController?.pushViewController(controller, animated: true)
+        }
     }
 
     struct NoResultsText {
