@@ -166,8 +166,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.4)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (= 1.0.0-beta.25)
-  - WordPress-Editor-iOS (= 1.0.0-beta.25)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS`, commit `5b52f09f5c41bdf8375f6f20721f8139418374e0`)
+  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS`, commit `5b52f09f5c41bdf8375f6f20721f8139418374e0`)
   - WordPressAuthenticator (= 1.0.6)
   - WordPressKit (= 1.2.1)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `c51f53ef91127b5225064023e7207fad66b02ea4`)
@@ -204,8 +204,6 @@ SPEC REPOS:
     - Starscream
     - SVProgressHUD
     - UIDeviceIdentifier
-    - WordPress-Aztec-iOS
-    - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
     - WPMediaPicker
@@ -216,6 +214,12 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
+  WordPress-Aztec-iOS:
+    :commit: 5b52f09f5c41bdf8375f6f20721f8139418374e0
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS
+  WordPress-Editor-iOS:
+    :commit: 5b52f09f5c41bdf8375f6f20721f8139418374e0
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS
   WordPressShared:
     :commit: c51f53ef91127b5225064023e7207fad66b02ea4
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
@@ -227,6 +231,12 @@ CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
+  WordPress-Aztec-iOS:
+    :commit: 5b52f09f5c41bdf8375f6f20721f8139418374e0
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS
+  WordPress-Editor-iOS:
+    :commit: 5b52f09f5c41bdf8375f6f20721f8139418374e0
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS
   WordPressShared:
     :commit: c51f53ef91127b5225064023e7207fad66b02ea4
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
@@ -272,6 +282,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: 8ef93d71dd6db77fc9097186dab43d7d8ab0599a
+PODFILE CHECKSUM: a84b350717a2fd48d173c095e4bdba251d094399
 
 COCOAPODS: 1.5.3
