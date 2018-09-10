@@ -3,9 +3,3 @@
 
 /* News Card content. */
 "Content" = "This is long form content. Here we explain why this feature is awesome";
-
-/* News Card link. */
-"URL" = "https://wordpress.com";
-
-/* Build version this card applies to. */
-"version" = "10.8";
