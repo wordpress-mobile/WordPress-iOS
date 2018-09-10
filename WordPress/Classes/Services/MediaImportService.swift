@@ -86,6 +86,9 @@ open class MediaImportService: LocalCoreDataService {
             exporter.videoOptions = self.exporterVideoOptions
             exporter.urlOptions = self.exporterURLOptions
             return exporter
+        case let giphyMedia as GiphyMedia:
+            let exporter = MediaExternalExporter(externalAsset: giphyMedia)
+            return exporter
         case let stockPhotosMedia as StockPhotosMedia:
             let exporter = MediaExternalExporter(externalAsset: stockPhotosMedia)
             return exporter
