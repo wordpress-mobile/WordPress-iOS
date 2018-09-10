@@ -21,7 +21,7 @@ import WordPressShared
 
     @objc var currentReaderStream: ReaderStreamViewController?
 
-    fileprivate var defaultIndexPath: IndexPath {
+    var defaultIndexPath: IndexPath {
         return viewModel.indexPathOfDefaultMenuItemWithOrder(order: .followed)
     }
 
@@ -551,7 +551,6 @@ import WordPressShared
         configureCell(cell, atIndexPath: indexPath)
         return cell
     }
-
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let menuItem = viewModel.menuItemAtIndexPath(indexPath) else {
