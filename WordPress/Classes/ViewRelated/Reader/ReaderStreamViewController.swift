@@ -598,25 +598,11 @@ import WordPressFlux
     }
 
     func showFollowing() {
-        let tabBarController = WPTabBarController.sharedInstance()
-        guard let readerMenuVC = tabBarController?.readerMenuViewController else {
+        guard let readerMenuViewController = WPTabBarController.sharedInstance().readerMenuViewController else {
             return
         }
 
-        // If iPad, let the Reader Menu switch rows.
-        if WPDeviceIdentification.isiPad() {
-            readerMenuVC.tableView(tableView, didSelectRowAt: readerMenuVC.defaultIndexPath)
-            return
-        }
-
-        // If iPhone, add it to the navigation stack.
-        guard let menuItem = readerMenuVC.viewModel.menuItemAtIndexPath(readerMenuVC.defaultIndexPath),
-            let topic = menuItem.topic else {
-                return
-        }
-
-        let controller = ReaderStreamViewController.controllerWithTopic(topic)
-        navigationController?.pushViewController(controller, animated: true)
+        readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .followed, animated: true)
     }
 
     // MARK: - Blocking
