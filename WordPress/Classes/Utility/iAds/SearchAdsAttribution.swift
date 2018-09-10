@@ -26,6 +26,7 @@ import AutomatticTracks
     private static let userDefaultsLimitedAdTrackingKey = "search_ads_limited_tracking"
 
     private let searchAdsApiVersion = "Version3.1"
+    private let searchAdsAttributionKey = "iad_attribution"
 
     /// Is ad tracking limited?
     /// If the user has limited ad tracking, and this API won't return data
@@ -87,10 +88,23 @@ import AutomatticTracks
         guard let details = details?[searchAdsApiVersion] as? [String: Any] else {
             return
         }
-        let parameters = sanitize(details)
 
-        WPAnalytics.track(.searchAdsAttribution, withProperties: parameters)
+        sendAttributionDetailsToTracksIfNeeded(sanitize(details))
         isAttributionDetailsSent = true
+    }
+
+    /// Send SearchAds data to Tracks if needed
+    ///
+    private func sendAttributionDetailsToTracksIfNeeded(_ parameters: [String: Any]) {
+        guard let didTapSearchAd = parameters[searchAdsAttributionKey] as? String else {
+            return
+        }
+
+        // Only send SearchAds attribution details to Tracks if the "iad_attribution" parameter is true (which means
+        // the user actually tapped on a SearchAd within the last 30 days).
+        if didTapSearchAd.lowercased() == "true" {
+            WPAnalytics.track(.searchAdsAttribution, withProperties: parameters)
+        }
     }
 
     /// Fix key format to send to Tracks
