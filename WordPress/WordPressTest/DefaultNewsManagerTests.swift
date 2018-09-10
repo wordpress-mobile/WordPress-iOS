@@ -48,7 +48,7 @@ final class DefaultNewsManagerTests: XCTestCase {
             dismissed = true
         }
 
-        func didSelectReadMore() {
+        func didSelectReadMore(_ url: URL) {
             extendedInfoRequested = true
         }
     }
