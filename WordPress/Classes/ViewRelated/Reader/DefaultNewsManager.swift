@@ -45,7 +45,7 @@ final class DefaultNewsManager: NewsManager {
         switch actualResult {
         case .success(let value):
             trackRequestedExtendedInfo()
-            UniversalLinkRouter.shared.handle(url: value.extendedInfoURL)
+            delegate?.didSelectReadMore(value.extendedInfoURL)
         case .error:
             return
         }

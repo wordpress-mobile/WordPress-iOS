@@ -1143,6 +1143,31 @@ extension ReaderStreamViewController: NewsManagerDelegate {
     func didDismissNews() {
         refreshTableHeaderIfNeeded()
     }
+
+    func didSelectReadMore(_ url: URL) {
+        let readerLinkRouter = UniversalLinkRouter.shared
+        if readerLinkRouter.canHandle(url: url) {
+            readerLinkRouter.handle(url: url, shouldTrack: false, source: self)
+        } else if url.isWordPressDotComPost {
+            presentReaderDetailViewControllerWithURL(url)
+        } else {
+            presentWebViewControllerWithURL(url)
+        }
+    }
+
+    private func presentWebViewControllerWithURL(_ url: URL) {
+        let configuration = WebViewControllerConfiguration(url: url)
+        configuration.authenticateWithDefaultAccount()
+        configuration.addsWPComReferrer = true
+        let controller = WebViewControllerFactory.controller(configuration: configuration)
+        let navController = UINavigationController(rootViewController: controller)
+        present(navController, animated: true, completion: nil)
+    }
+
+    private func presentReaderDetailViewControllerWithURL(_ url: URL) {
+        let viewController = ReaderDetailViewController.controllerWithPostURL(url)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 // MARK: - WPContentSyncHelperDelegate
