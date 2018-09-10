@@ -411,9 +411,12 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let trashButtonTitle = NSLocalizedString("Move to Trash", comment: "Label for a button that moves a page to the trash folder")
         let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Label for a cancel button")
         let deleteButtonTitle = NSLocalizedString("Delete Permanently", comment: "Label for a button permanently deletes a page.")
+        let setParentButtonTitle = NSLocalizedString("Set Parent", comment: "Label for a button that opens the Set Parent options view controller")
 
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addCancelActionWithTitle(cancelButtonTitle, handler: nil)
+
+        let indexPath = tableView.indexPath(for: cell)
 
         let filter = filterSettings.currentPostListFilter().filterType
 
@@ -464,6 +467,12 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                     strongSelf.viewPost(page)
                 })
 
+                alertController.addActionWithTitle(setParentButtonTitle, style: .default, handler: { [weak self] (action) in
+                    if let page = self?.pageForObjectID(objectID) {
+                        self?.setParent(for: page, at: indexPath)
+                    }
+                })
+
                 alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
                     guard let strongSelf = self,
                         let page = strongSelf.pageForObjectID(objectID) else {
@@ -502,6 +511,12 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                     strongSelf.viewPost(page)
                 })
 
+                alertController.addActionWithTitle(setParentButtonTitle, style: .default, handler: { [weak self] (action) in
+                    if let page = self?.pageForObjectID(objectID) {
+                        self?.setParent(for: page, at: indexPath)
+                    }
+                })
+
                 alertController.addActionWithTitle(publishButtonTitle, style: .default, handler: { [weak self] (action) in
                     guard let strongSelf = self,
                         let page = strongSelf.pageForObjectID(objectID) else {
@@ -532,6 +547,10 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             presentationController.sourceView = button
             presentationController.sourceRect = button.bounds
         }
+    }
+
+    private func setParent(for page: Page, at index: IndexPath?) {
+
     }
 
     fileprivate func pageForObjectID(_ objectID: NSManagedObjectID) -> Page? {
