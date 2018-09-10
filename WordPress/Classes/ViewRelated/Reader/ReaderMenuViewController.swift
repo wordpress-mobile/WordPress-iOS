@@ -21,12 +21,8 @@ import WordPressShared
 
     @objc var currentReaderStream: ReaderStreamViewController?
 
-    var defaultIndexPath: IndexPath {
+    fileprivate var defaultIndexPath: IndexPath {
         return viewModel.indexPathOfDefaultMenuItemWithOrder(order: .followed)
-    }
-
-    var discoverIndexPath: IndexPath {
-        return viewModel.indexPathOfDefaultMenuItemWithOrder(order: .discover)
     }
 
     fileprivate var restorableSelectedIndexPath: IndexPath?
