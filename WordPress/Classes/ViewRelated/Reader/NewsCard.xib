@@ -34,23 +34,23 @@
                 <stackView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Ewo-7I-oMB">
                     <rect key="frame" x="0.0" y="8" width="375" height="184"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="275" verticalHuggingPriority="275" verticalCompressionResistancePriority="760" axis="vertical" alignment="top" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="9hi-UA-p04">
-                            <rect key="frame" x="16" y="20" width="149" height="87"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="275" verticalHuggingPriority="270" verticalCompressionResistancePriority="760" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="9hi-UA-p04">
+                            <rect key="frame" x="16" y="20" width="149" height="156"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSK-uI-6js" userLabel="NewsTitle">
-                                    <rect key="frame" x="0.0" y="0.0" width="42" height="20.5"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aSK-uI-6js" userLabel="NewsTitle">
+                                    <rect key="frame" x="0.0" y="0.0" width="149" height="89.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gf2-Wv-Ozo" userLabel="NewsSubtitle">
-                                    <rect key="frame" x="0.0" y="28.5" width="42" height="20.5"/>
+                                    <rect key="frame" x="0.0" y="97.5" width="149" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WFs-AW-Uc0">
-                                    <rect key="frame" x="0.0" y="57" width="46" height="30"/>
+                                    <rect key="frame" x="0.0" y="126" width="149" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="m6f-Pp-yMs"/>
                                     </constraints>
@@ -74,6 +74,10 @@
                             <state key="normal" title="Button"/>
                         </button>
                     </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="9hi-UA-p04" secondAttribute="bottom" constant="8" id="vRM-Gi-O9J"/>
+                        <constraint firstItem="9hi-UA-p04" firstAttribute="top" secondItem="Ewo-7I-oMB" secondAttribute="top" id="yLc-D6-vge"/>
+                    </constraints>
                     <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                 </stackView>
             </subviews>
