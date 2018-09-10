@@ -599,10 +599,20 @@ import WordPressFlux
 
     func showFollowing() {
         let tabBarController = WPTabBarController.sharedInstance()
-        guard let readerMenuVC = tabBarController?.readerMenuViewController,
-            let menuItem = readerMenuVC.viewModel.menuItemAtIndexPath(readerMenuVC.defaultIndexPath),
-            let topic = menuItem.topic else {
+        guard let readerMenuVC = tabBarController?.readerMenuViewController else {
             return
+        }
+
+        // If iPad, let the Reader Menu switch rows.
+        if WPDeviceIdentification.isiPad() {
+            readerMenuVC.tableView(tableView, didSelectRowAt: readerMenuVC.defaultIndexPath)
+            return
+        }
+
+        // If iPhone, add it to the navigation stack.
+        guard let menuItem = readerMenuVC.viewModel.menuItemAtIndexPath(readerMenuVC.defaultIndexPath),
+            let topic = menuItem.topic else {
+                return
         }
 
         let controller = ReaderStreamViewController.controllerWithTopic(topic)
@@ -610,7 +620,6 @@ import WordPressFlux
     }
 
     // MARK: - Blocking
-
 
     fileprivate func blockSiteForPost(_ post: ReaderPost) {
         guard let indexPath = content.indexPath(forObject: post) else {
