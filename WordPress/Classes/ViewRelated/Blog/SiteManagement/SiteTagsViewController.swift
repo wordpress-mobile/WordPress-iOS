@@ -402,12 +402,12 @@ private extension SiteTagsViewController {
     }
 
     func showLoadingView() {
-        configureAndDisplayNoResults(title: loadingMessage(), accessoryView: NoResultsViewController.loadingAccessoryView())
+        configureAndDisplayNoResults(title: NoResultsText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
         removeSearchBar()
     }
 
     func showEmptyResultsView() {
-        configureAndDisplayNoResults(title: noResultsTitle(), subtitle: noResultsMessage(), buttonTitle: noResultsButtonTitle())
+        configureAndDisplayNoResults(title: NoResultsText.noTagsTitle, subtitle: NoResultsText.noTagsMessage, buttonTitle: NoResultsText.createButtonTitle)
         removeSearchBar()
     }
 
@@ -418,7 +418,7 @@ private extension SiteTagsViewController {
             return
         }
 
-        configureAndDisplayNoResults(title: noSearchResultsTitle(), hideImage: true)
+        configureAndDisplayNoResults(title: NoResultsText.noResultsTitle, hideImage: true)
     }
 
     func configureAndDisplayNoResults(title: String,
@@ -457,24 +457,12 @@ private extension SiteTagsViewController {
         return noResultsViewController.parent != nil
     }
 
-    func noResultsTitle() -> String {
-        return NSLocalizedString("You don't have any tags", comment: "Empty state. Tags management (Settings > Writing > Tags)")
-    }
-
-    func noResultsMessage() -> String {
-        return NSLocalizedString("Tags created here can be quickly added to new posts", comment: "Displayed when the user views tags in blog settings and there are no tags")
-    }
-
-    func noResultsButtonTitle() -> String {
-        return NSLocalizedString("Create a Tag", comment: "Title of the button in the placeholder for an empty list of blog tags.")
-    }
-
-    func loadingMessage() -> String {
-        return NSLocalizedString("Loading...", comment: "Loading tags.")
-    }
-
-    func noSearchResultsTitle() -> String {
-        return NSLocalizedString("No tags matching your search", comment: "Displayed when the user is searching site tags and there are no matches.")
+    struct NoResultsText {
+        static let noTagsTitle = NSLocalizedString("You don't have any tags", comment: "Empty state. Tags management (Settings > Writing > Tags)")
+        static let noTagsMessage = NSLocalizedString("Tags created here can be quickly added to new posts", comment: "Displayed when the user views tags in blog settings and there are no tags")
+        static let createButtonTitle = NSLocalizedString("Create a Tag", comment: "Title of the button in the placeholder for an empty list of blog tags.")
+        static let loadingTitle = NSLocalizedString("Loading...", comment: "Loading tags.")
+        static let noResultsTitle = NSLocalizedString("No tags matching your search", comment: "Displayed when the user is searching site tags and there are no matches.")
     }
 
 }
