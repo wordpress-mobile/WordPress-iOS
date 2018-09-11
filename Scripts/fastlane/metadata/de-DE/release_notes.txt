@@ -1,3 +1,2 @@
-Bilder können besser im Editor verwaltet werden. Egal, ob du eine Datei per Drag-and-drop verschiebst oder mit der Medienauswahl hinzufügst – es ist ganz einfach, Dateien hochzuladen und einzufügen.
-Durch kleine Verbesserungen wird die Benutzeroberfläche noch intuitiver. Wahrscheinlich wirst du diese Verbesserungen gar nicht bemerken – und das ist auch gut so!
-Fehlerbehebung.
+Wir haben hinter den Kulissen einiges verbessert.
+Vielleicht hat sich für dich auf den ersten Blick nichts geändert, aber stell dich ein auf eine schnellere, stabilere App.

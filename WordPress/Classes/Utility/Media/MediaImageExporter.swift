@@ -30,8 +30,7 @@ class MediaImageExporter: MediaExporter {
         ///
         var exportImageType: String?
 
-        // MARK: - MediaExporting
-
+        /// If the original asset contains geo location information, enabling this option will remove it.
         var stripsGeoLocationIfNeeded = false
     }
 
@@ -60,13 +59,15 @@ class MediaImageExporter: MediaExporter {
     private let url: URL?
     private let filename: String?
     private let caption: String?
+    private let typeHint: String?
 
-    private init(image: UIImage?, filename: String?, data: Data?, url: URL?, caption: String?) {
+    private init(image: UIImage?, filename: String?, data: Data?, url: URL?, caption: String?, typeHint: String? = nil) {
         self.image = image
         self.filename = filename
         self.data = data
         self.url = url
         self.caption = caption
+        self.typeHint = typeHint
     }
 
     convenience init(image: UIImage, filename: String?, caption: String? = nil) {
@@ -77,15 +78,15 @@ class MediaImageExporter: MediaExporter {
         self.init(image: nil, filename: nil, data: nil, url: url, caption: nil)
     }
 
-    convenience init(data: Data, filename: String?) {
-        self.init(image: nil, filename: filename, data: data, url: nil, caption: nil)
+    convenience init(data: Data, filename: String?, typeHint: String? = nil) {
+        self.init(image: nil, filename: filename, data: data, url: nil, caption: nil, typeHint: typeHint)
     }
 
     @discardableResult public func export(onCompletion: @escaping OnMediaExport, onError: @escaping (MediaExportError) -> Void) -> Progress {
         if let image = image {
             return exportImage(image, fileName: filename, onCompletion: onCompletion, onError: onError)
         } else if let data = data {
-            return exportImage(withData: data, fileName: filename, typeHint: nil, onCompletion: onCompletion, onError: onError)
+            return exportImage(withData: data, fileName: filename, typeHint: typeHint, onCompletion: onCompletion, onError: onError)
         } else if let url = url {
             return exportImage(atFile: url, onCompletion: onCompletion, onError: onError)
         }
