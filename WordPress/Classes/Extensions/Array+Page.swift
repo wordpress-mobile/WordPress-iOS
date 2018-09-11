@@ -81,7 +81,7 @@ extension Array where Element == Page {
     /// - Parameter index: The starting index
     /// - Returns: An Array of Elements
     func remove(from index: Int) -> [Element] {
-        if index < firstIndex || index > lastIndex {
+        if isEmpty || index < firstIndex || index > lastIndex {
             return self
         }
 
@@ -90,7 +90,7 @@ extension Array where Element == Page {
 
         switch index {
         case firstIndex:
-            right = self[index...]
+            right = dropFirst()
 
         case lastIndex:
             return Array<Element>(dropLast())
