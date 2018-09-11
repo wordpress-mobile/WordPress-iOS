@@ -4,6 +4,12 @@ import UIKit
 class ParentPageSettingsViewController: UIViewController {
     private struct Section {
         var rows: [Row]
+        var headerTitle: String
+
+        init(_ rows: [Row], headerTitle: String = "") {
+            self.rows = rows
+            self.headerTitle = headerTitle
+        }
     }
 
     private struct Row {
@@ -24,6 +30,12 @@ class ParentPageSettingsViewController: UIViewController {
             case .child: return page?.postTitle ?? ""
             }
         }
+        var titleFont: UIFont {
+            switch type {
+            case .topLevel: return UIFont.systemFont(ofSize: 16.0)
+            case .child: return WPFontManager.notoRegularFont(ofSize: 17)
+            }
+        }
     }
 
 
@@ -41,6 +53,12 @@ class ParentPageSettingsViewController: UIViewController {
 
     private var sections: [Section]!
     private var selectedPage: Page!
+    private var selectedParentId: NSNumber? {
+        guard let selectedIndex = selectedIndex else {
+            return nil
+        }
+        return sections[selectedIndex.section].rows[selectedIndex.row].page?.postID
+    }
 
 
     override func viewDidLoad() {
@@ -52,18 +70,20 @@ class ParentPageSettingsViewController: UIViewController {
 
     func set(pages: [Page], for page: Page) {
         selectedPage = page
-        selectedIndex = selectedPage.isTopLevelPage ? IndexPath(row: 0, section: 0) : nil
-        originalIndex = selectedIndex
+        originalIndex = originalIndexPath(with: pages)
+        selectedIndex = originalIndex
 
         let rows = pages.map { Row(page: $0, type: .child) }
-        sections = [Section(rows: [Row(page: nil, type: .topLevel)]),
-                    Section(rows: rows)]
+        sections = [Section([Row(page: nil, type: .topLevel)]),
+                    Section(rows, headerTitle: NSLocalizedString("Pages", comment: "This is the section title"))]
     }
 
 
     // MARK: - Private methods
 
     private func setupUI() {
+        WPFontManager.loadNotoFontFamily()
+
         navigationItem.title = NSLocalizedString("Set Parent", comment: "Navigation title displayed on the navigation bar")
 
         cancelButton.title = NSLocalizedString("Cancel", comment: "Text displayed by the left navigation button title")
@@ -95,10 +115,53 @@ class ParentPageSettingsViewController: UIViewController {
         tableView.reloadSections(sections, with: animation)
     }
 
+    private func updatePage(_ completion: ((_ page: AbstractPost?, _ error: Error?) -> Void)?) {
+        postService.uploadPost(selectedPage, success: { uploadedPost in
+            completion?(uploadedPost, nil)
+        }) { error in
+            completion?(nil, error)
+        }
+    }
+
+    private func originalIndexPath(with pages: [Page]) -> IndexPath? {
+        if selectedPage.isTopLevelPage {
+            return IndexPath(row: 0, section: 0)
+        }
+
+        guard let parent = (pages.first { $0.postID == selectedPage.parentID }),
+            let index = pages.index(of: parent) else {
+            return nil
+        }
+
+        return IndexPath(row: index, section: 1)
+    }
+
 
     // MARK: IBAction
 
     @IBAction func doneAction(_ sender: UIBarButtonItem) {
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.show(withStatus: NSLocalizedString("Updating...",
+                                                         comment: "Text displayed in HUD while a draft or scheduled post is being updated."))
+        let parentId: NSNumber? = selectedPage.parentID
+        selectedPage.parentID = selectedParentId
+        updatePage { [weak self] (page, error) in
+            SVProgressHUD.dismiss()
+
+            if let error = error {
+                DDLogError("Error publishing post: \(error.localizedDescription)")
+                SVProgressHUD.showDismissibleError(withStatus: NSLocalizedString("Error occurred\nduring saving",
+                                                                                 comment: "Text displayed in HUD after attempting to save a draft post and an error occurred."))
+                self?.selectedPage.parentID = parentId
+            } else {
+                self?.dismiss(animated: true, completion: nil)
+            }
+        }
+//        if let selectedParentId = selectedParentId {
+//            print("Id: \(selectedParentId.intValue)")
+//        } else {
+//            print("Id null")
+//        }
     }
 
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {
@@ -119,6 +182,7 @@ extension ParentPageSettingsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = sections[indexPath.section].rows[indexPath.row]
         let cell: CheckmarkTableViewCell = self.cell(for: tableView, at: indexPath, identifier: Row.Constants.identifier)
+        cell.textLabel?.font = row.titleFont
         cell.title = row.title
         cell.on = selectedIndex == indexPath
         return cell
@@ -134,9 +198,15 @@ extension ParentPageSettingsViewController: UITableViewDataSource {
 
 
 extension ParentPageSettingsViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let row = sections[indexPath.section].rows[indexPath.row]
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionHeader(view)
+    }
 
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sections[section].headerTitle
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath == selectedIndex {
             return
         }
