@@ -550,7 +550,27 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func setParent(for page: Page, at index: IndexPath?) {
+        /// This implementation is temporary
+        //
+        guard let index = index else {
+            return
+        }
 
+        guard let results = tableViewHandler.resultsController.fetchedObjects as? [Page] else {
+            return
+        }
+
+        let selectedPage = pageAtIndexPath(index)
+        let rows = results.map {
+            $0.hasVisibleParent = !$1.containsPage(for: $0.parentID?.intValue)
+            return $0
+            }.sort()
+        guard let newIndex = rows.index(of: selectedPage) else {
+            return
+        }
+        let parentPageNavigationController = ParentPageSettingsViewController.navigationController(with: rows.remove(from: newIndex),
+                                                                                                   selectedPage: selectedPage)
+        present(parentPageNavigationController, animated: true, completion: nil)
     }
 
     fileprivate func pageForObjectID(_ objectID: NSManagedObjectID) -> Page? {
