@@ -76,7 +76,7 @@ target 'WordPress' do
     pod 'WPMediaPicker', '1.3'
     pod 'WordPressAuthenticator', '1.0.6'
     aztec
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '0456236d5b6d71ce8a93f988c27bcdc2eb0835d6'
+    pod 'WordPressUI', '1.0.7'
 
     target 'WordPressTest' do
         inherit! :search_paths
@@ -95,7 +95,7 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
         aztec
-        pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '0456236d5b6d71ce8a93f988c27bcdc2eb0835d6'
+        pod 'WordPressUI', '1.0.7'
         pod 'Gridicons', '0.16'
     end
 
@@ -109,7 +109,7 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
         aztec
-        pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '0456236d5b6d71ce8a93f988c27bcdc2eb0835d6'
+        pod 'WordPressUI', '1.0.7'
         pod 'Gridicons', '0.16'
     end
 
@@ -132,11 +132,11 @@ end
 ##
 target 'WordPressNotificationContentExtension' do
     project 'WordPress/WordPress.xcodeproj'
-    
+
     inherit! :search_paths
-    
+
     pod 'WordPressShared', '1.0.10'
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '0456236d5b6d71ce8a93f988c27bcdc2eb0835d6' 
+    pod 'WordPressUI', '1.0.7'
 end
 
 
@@ -146,13 +146,13 @@ end
 ##
 target 'WordPressNotificationServiceExtension' do
     project 'WordPress/WordPress.xcodeproj'
-    
+
     inherit! :search_paths
 
     pod 'Gridicons', '0.16'
     pod 'WordPressKit', '1.4.0-beta.3'
     pod 'WordPressShared', '1.0.10'
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '0456236d5b6d71ce8a93f988c27bcdc2eb0835d6'
+    pod 'WordPressUI', '1.0.7'
 end
 
 
@@ -169,7 +169,7 @@ target 'WordPressComStatsiOS' do
     ## Automattic libraries
     ## ====================
     ##
-    pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '0456236d5b6d71ce8a93f988c27bcdc2eb0835d6'
+    pod 'WordPressUI', '1.0.7'
 
     target 'WordPressComStatsiOSTests' do
         inherit! :search_paths
