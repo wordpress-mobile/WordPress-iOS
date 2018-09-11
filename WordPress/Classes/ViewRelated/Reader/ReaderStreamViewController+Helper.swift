@@ -10,6 +10,16 @@ extension ReaderStreamViewController {
         var message: String
     }
 
+    func checkNewsCardAvailability(topic: ReaderAbstractTopic) {
+        let containerIdentifier = Identifier(value: topic.title)
+        let mustBadge = news.shouldPresentCard(containerIdentifier: containerIdentifier)
+        let notificationName: NSNotification.Name = mustBadge ? .NewsCardAvailable : .NewsCardNotAvailable
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: {
+            NotificationCenter.default.post(name: notificationName, object: nil)
+        })
+    }
+
     /// Returns the ReaderStreamHeader appropriate for a particular ReaderTopic, including News Card, or nil if there is not one.
     /// The header is returned already configured
     ///
@@ -31,9 +41,7 @@ extension ReaderStreamViewController {
 
         let containerIdentifier = Identifier(value: topic.title)
 
-        let newsCard = ReaderNewsCard()
-
-        return newsCard.newsCard(containerIdentifier: containerIdentifier, header: header, container: container, delegate: self)
+        return news.newsCard(containerIdentifier: containerIdentifier, header: header, container: container, delegate: self)
     }
 
     func configure(_ header: ReaderHeader?, topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamHeaderDelegate) -> ReaderHeader? {

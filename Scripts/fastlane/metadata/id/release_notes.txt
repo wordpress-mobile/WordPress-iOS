@@ -1,3 +1,2 @@
-Ada pemroses gambar yang lebih baik di penyunting. Saat ingin menyeret dan melepas file maupun menambahkan file dengan pemilih media, proses pengunggahan dan penyisipannya begitu lancar dan cepat.
-Peningkatan kecil pada UI di sejumlah lokasi agar pengalaman penggunaan Anda lebih intuitif. Anda mungkin tidak menyadarinya, dan memang itu tujuan kami!
-Membasmi bug.
+Kami telah melakukan sejumlah peningkatan sistem.
+Anda mungkin tidak melihat dengan jelas perbedaan di aplikasi, tetapi segalanya akan lebih cepat dan stabil.
