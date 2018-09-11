@@ -124,6 +124,7 @@ final class SiteTagsViewController: UITableViewController {
         do {
             try resultsController.performFetch()
             tableView.reloadData()
+            refreshNoResultsView()
         } catch {
             tagsFailedLoading(error: error)
         }
@@ -378,37 +379,60 @@ extension SiteTagsViewController {
 private extension SiteTagsViewController {
 
     func refreshNoResultsView() {
-        noResultsViewController.removeFromView()
-
-        if let count = resultsController.fetchedObjects?.count,
-            count > 0 || searchController.isActive {
-            setupSearchBar()
-            tableView.reloadData()
-            return
-        }
-
-        if isPerformingInitialSync {
-            setupLoadingView()
+        if let count = resultsController.fetchedObjects?.count, count == 0 {
+            showNoResults()
         } else {
-            setupEmptyResultsView()
+            hideNoResults()
         }
-
-        removeSearchBar()
-        showNoResults()
-    }
-
-    func setupLoadingView() {
-        noResultsViewController.configure(title: loadingMessage(),
-                                           accessoryView: NoResultsViewController.loadingAccessoryView())
-    }
-
-    func setupEmptyResultsView() {
-        noResultsViewController.configure(title: noResultsTitle(),
-                                           buttonTitle: noResultsButtonTitle(),
-                                           subtitle: noResultsMessage())
     }
 
     func showNoResults() {
+
+        if isPerformingInitialSync {
+            showLoadingView()
+            return
+        }
+
+        if isSearching {
+            showNoSearchResultsView()
+            return
+        }
+
+        showEmptyResultsView()
+    }
+
+    func showLoadingView() {
+        configureAndDisplayNoResults(title: loadingMessage(), accessoryView: NoResultsViewController.loadingAccessoryView())
+        removeSearchBar()
+    }
+
+    func showEmptyResultsView() {
+        configureAndDisplayNoResults(title: noResultsTitle(), subtitle: noResultsMessage(), buttonTitle: noResultsButtonTitle())
+        removeSearchBar()
+    }
+
+    func showNoSearchResultsView() {
+
+        // If already shown, don't show again. To prevent the view from "flashing" as the user types.
+        guard !noResultsShown else {
+            return
+        }
+
+        configureAndDisplayNoResults(title: noSearchResultsTitle(), hideImage: true)
+    }
+
+    func configureAndDisplayNoResults(title: String,
+                                      subtitle: String? = nil,
+                                      buttonTitle: String? = nil,
+                                      accessoryView: UIView? = nil,
+                                      hideImage: Bool = false) {
+
+        noResultsViewController.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, accessoryView: accessoryView)
+        noResultsViewController.hideImageView(hideImage)
+        displayNoResults()
+    }
+
+    func displayNoResults() {
         addChildViewController(noResultsViewController)
         noResultsViewController.view.frame = tableView.frame
 
@@ -417,6 +441,20 @@ private extension SiteTagsViewController {
 
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         noResultsViewController.didMove(toParentViewController: self)
+    }
+
+    func hideNoResults() {
+        noResultsViewController.removeFromView()
+        setupSearchBar()
+        tableView.reloadData()
+    }
+
+    var isSearching: Bool {
+        return searchController.isActive && (searchController.searchBar.text ?? "").count > 0
+    }
+
+    var noResultsShown: Bool {
+        return noResultsViewController.parent != nil
     }
 
     func noResultsTitle() -> String {
@@ -433,6 +471,10 @@ private extension SiteTagsViewController {
 
     func loadingMessage() -> String {
         return NSLocalizedString("Loading...", comment: "Loading tags.")
+    }
+
+    func noSearchResultsTitle() -> String {
+        return NSLocalizedString("No tags matching your search", comment: "Displayed when the user is searching site tags and there are no matches.")
     }
 
 }
