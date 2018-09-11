@@ -17,12 +17,12 @@ final class DefaultNewsManager: NewsManager {
 
     private let service: NewsService
     private let database: KeyValueDatabase
-    private weak var delegate: NewsManagerDelegate?
+    weak var delegate: NewsManagerDelegate?
     private let stats: NewsStats
 
     private var result: Result<NewsItem>?
 
-    init(service: NewsService, database: KeyValueDatabase, stats: NewsStats, delegate: NewsManagerDelegate?) {
+    init(service: NewsService, database: KeyValueDatabase, stats: NewsStats, delegate: NewsManagerDelegate? = nil) {
         self.service = service
         self.database = database
         self.stats = stats
@@ -45,7 +45,7 @@ final class DefaultNewsManager: NewsManager {
         switch actualResult {
         case .success(let value):
             trackRequestedExtendedInfo()
-            UniversalLinkRouter.shared.handle(url: value.extendedInfoURL)
+            delegate?.didSelectReadMore(value.extendedInfoURL)
         case .error:
             return
         }
@@ -65,6 +65,8 @@ final class DefaultNewsManager: NewsManager {
 
     func didPresentCard() {
         trackCardPresented()
+
+        NotificationCenter.default.post(name: NSNotification.NewsCardNotAvailable, object: nil)
     }
 
     private func load() {
@@ -107,19 +109,19 @@ final class DefaultNewsManager: NewsManager {
 
         switch actualResult {
         case .success(let value):
-            return currentBuildVersion() == value.version
+            return currentBuildVersion() >= value.version
         case .error:
             return false
         }
     }
 
-    private func currentBuildVersion() -> Decimal? {
+    private func currentBuildVersion() -> Decimal {
         guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
             DDLogError("No CFBundleShortVersionString found in Info.plist")
-            return nil
+            return Decimal()
         }
 
-        return Decimal(string: version)
+        return Decimal(string: version) ?? Decimal()
     }
 
     private func currentCardVersion() -> Decimal {
