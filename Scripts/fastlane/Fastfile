@@ -234,8 +234,8 @@ import "./ScreenshotFastfile"
           "org.wordpress.WordPressShare" => "WordPress Share App Store Distribution",
           "org.wordpress.WordPressDraftAction" => "WordPress Draft Action App Store Distribution",
           "org.wordpress.WordPressTodayWidget" => "WordPress Today Widget App Store Distribution",
-          "org.wordpress.WordPressNotificationServiceExtension" => "WordPress Notification Content Extension",
-          "org.wordpress.WordPressNotificationContentExtension" => "WordPress Notification Service Extension"
+          "org.wordpress.WordPressNotificationServiceExtension" => "WordPress Notification Service Extension",
+          "org.wordpress.WordPressNotificationContentExtension" => "WordPress Notification Content Extension"
         }
       }
     )
