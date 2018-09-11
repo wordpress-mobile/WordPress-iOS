@@ -38,7 +38,7 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v10.8-whats-new"
+msgctxt "v10.9-whats-new"
 msgid ""
 "We’ve been tuning things up under the hood.\n"
 "You may not see anything obviously different in the app, but expect everything to be faster and more stable.\n"
