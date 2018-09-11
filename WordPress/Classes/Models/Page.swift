@@ -3,6 +3,17 @@ import CoreData
 
 @objc (Page)
 class Page: AbstractPost {
+    /// Returns if the Page has a visible parent Page
+    var hasVisibleParent: Bool = true
+
+    /// The hierarchy index within a Pages list
+    var hierarchyIndex: Int = 0
+
+    /// Returns if the Page is a top level
+    var isTopLevelPage: Bool {
+        return parentID == nil
+    }
+
     /// Section identifier for the page, using the creation date.
     ///
     @objc func sectionIdentifierWithDateCreated() -> String {
