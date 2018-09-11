@@ -103,9 +103,9 @@ PODS:
   - Starscream (3.0.4)
   - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (0.5.0)
-  - WordPress-Aztec-iOS (1.0.0-beta.25)
-  - WordPress-Editor-iOS (1.0.0-beta.25):
-    - WordPress-Aztec-iOS (= 1.0.0-beta.25)
+  - WordPress-Aztec-iOS (1.0.0-beta.25.1)
+  - WordPress-Editor-iOS (1.0.0-beta.25.1):
+    - WordPress-Aztec-iOS (= 1.0.0-beta.25.1)
   - WordPressAuthenticator (1.0.6):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.2)
@@ -166,8 +166,8 @@ DEPENDENCIES:
   - Starscream (= 3.0.4)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (= 1.0.0-beta.25)
-  - WordPress-Editor-iOS (= 1.0.0-beta.25)
+  - WordPress-Aztec-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS`, commit `c8cf046fbb52cf7baa80692a33fb0a26dbd16fa4`)
+  - WordPress-Editor-iOS (from `https://github.com/wordpress-mobile/AztecEditor-iOS`, commit `c8cf046fbb52cf7baa80692a33fb0a26dbd16fa4`)
   - WordPressAuthenticator (= 1.0.6)
   - WordPressKit (= 1.2.1)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `c51f53ef91127b5225064023e7207fad66b02ea4`)
@@ -204,8 +204,6 @@ SPEC REPOS:
     - Starscream
     - SVProgressHUD
     - UIDeviceIdentifier
-    - WordPress-Aztec-iOS
-    - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
     - WPMediaPicker
@@ -216,6 +214,12 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
+  WordPress-Aztec-iOS:
+    :commit: c8cf046fbb52cf7baa80692a33fb0a26dbd16fa4
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS
+  WordPress-Editor-iOS:
+    :commit: c8cf046fbb52cf7baa80692a33fb0a26dbd16fa4
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS
   WordPressShared:
     :commit: c51f53ef91127b5225064023e7207fad66b02ea4
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
@@ -227,6 +231,12 @@ CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
+  WordPress-Aztec-iOS:
+    :commit: c8cf046fbb52cf7baa80692a33fb0a26dbd16fa4
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS
+  WordPress-Editor-iOS:
+    :commit: c8cf046fbb52cf7baa80692a33fb0a26dbd16fa4
+    :git: https://github.com/wordpress-mobile/AztecEditor-iOS
   WordPressShared:
     :commit: c51f53ef91127b5225064023e7207fad66b02ea4
     :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
@@ -262,8 +272,8 @@ SPEC CHECKSUMS:
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: 99dbfb3dbf14c2d33771f562c506e42fdd4880d6
-  WordPress-Editor-iOS: ff5815378c280ab5176a8e4af4591fed9b0dd484
+  WordPress-Aztec-iOS: 2ce121dcdf4e6cedf103220c7d1dfdb9a3db70e7
+  WordPress-Editor-iOS: 375843fedc6f029ea19d6e5dfc3acd09717541c2
   WordPressAuthenticator: 56538a229185640b41912c10c3f1891c2cc9bbb9
   WordPressKit: a4a3849684f631a3abf579f6d3f15a32677cbb30
   WordPressShared: e5ea8a1ed3329735e40bd6623830960f63dd10fd
@@ -272,6 +282,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
 
-PODFILE CHECKSUM: 8ef93d71dd6db77fc9097186dab43d7d8ab0599a
+PODFILE CHECKSUM: 42d2d0e3636a67119528f45fb6ce1d31fe1b8c7d
 
 COCOAPODS: 1.5.3

@@ -69,8 +69,8 @@ target 'WordPress' do
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '1.3'
     pod 'WordPressAuthenticator', '1.0.6'
-    pod 'WordPress-Aztec-iOS', '=1.0.0-beta.25'
-	  pod 'WordPress-Editor-iOS', '=1.0.0-beta.25'
+    pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS', :commit => 'c8cf046fbb52cf7baa80692a33fb0a26dbd16fa4'
+	pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS', :commit => 'c8cf046fbb52cf7baa80692a33fb0a26dbd16fa4'
     pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
 
     target 'WordPressTest' do
@@ -90,8 +90,8 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
 
-        pod 'WordPress-Aztec-iOS', '=1.0.0-beta.25'
-        pod 'WordPress-Editor-iOS', '=1.0.0-beta.25'
+    	pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS', :commit => 'c8cf046fbb52cf7baa80692a33fb0a26dbd16fa4'
+		pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS', :commit => 'c8cf046fbb52cf7baa80692a33fb0a26dbd16fa4'
         pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
         pod 'Gridicons', '0.16'
     end
@@ -106,8 +106,8 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
 
-        pod 'WordPress-Aztec-iOS', '=1.0.0-beta.25'
-        pod 'WordPress-Editor-iOS', '=1.0.0-beta.25'
+    	pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS', :commit => 'c8cf046fbb52cf7baa80692a33fb0a26dbd16fa4'
+		pod 'WordPress-Editor-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS', :commit => 'c8cf046fbb52cf7baa80692a33fb0a26dbd16fa4'
         pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '7a5b1a3fb44f62416fbc2e5f0de623b87b613aae'
         pod 'Gridicons', '0.16'
     end
