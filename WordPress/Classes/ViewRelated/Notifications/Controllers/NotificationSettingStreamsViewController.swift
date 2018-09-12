@@ -70,7 +70,7 @@ class NotificationSettingStreamsViewController: UITableViewController {
     // MARK: - Setup Helpers
     private func startListeningToNotifications() {
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(refreshPushAuthorizationStatus), name: .UIApplicationDidBecomeActive, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(refreshPushAuthorizationStatus), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
 
     private func stopListeningToNotifications() {

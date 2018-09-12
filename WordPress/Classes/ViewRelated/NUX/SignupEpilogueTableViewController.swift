@@ -150,7 +150,7 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
@@ -159,7 +159,7 @@ class SignupEpilogueTableViewController: NUXTableViewController, EpilogueUserInf
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section == TableSections.password {
-            return UITableViewAutomaticDimension
+            return UITableView.automaticDimension
         }
         return CGFloat.leastNormalMagnitude
     }

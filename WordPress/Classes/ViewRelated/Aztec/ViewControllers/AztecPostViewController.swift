@@ -57,14 +57,14 @@ class AztecPostViewController: UIViewController, PostEditor {
         let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
 
-        let linkAttributes: [NSAttributedStringKey: Any] = [.underlineStyle: NSUnderlineStyle.styleSingle.rawValue,
+        let linkAttributes: [NSAttributedString.Key: Any] = [.underlineStyle: NSUnderlineStyle.single.rawValue,
                                                             .foregroundColor: Colors.aztecLinkColor]
 
         textView.delegate = self
         textView.formattingDelegate = self
         textView.textAttachmentDelegate = self
         textView.backgroundColor = Colors.aztecBackground
-        textView.linkTextAttributes = NSAttributedStringKey.convertToRaw(attributes: linkAttributes)
+        textView.linkTextAttributes = convertToOptionalNSAttributedStringKeyDictionary(NSAttributedString.Key.convertToRaw(attributes: linkAttributes))
         textView.textAlignment = .natural
 
         if #available(iOS 11, *) {
@@ -134,7 +134,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         let titleParagraphStyle = NSMutableParagraphStyle()
         titleParagraphStyle.alignment = .natural
 
-        let attributes: [NSAttributedStringKey: Any] = [.foregroundColor: UIColor.darkText,
+        let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.darkText,
                                                         .font: Fonts.title,
                                                         .paragraphStyle: titleParagraphStyle]
 
@@ -145,7 +145,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.font = Fonts.title
         textView.returnKeyType = .next
         textView.textColor = UIColor.darkText
-        textView.typingAttributes = NSAttributedStringKey.convertToRaw(attributes: attributes)
+        textView.typingAttributes = convertToNSAttributedStringKeyDictionary(NSAttributedString.Key.convertToRaw(attributes: attributes))
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textAlignment = .natural
         textView.isScrollEnabled = false
@@ -162,7 +162,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         let placeholderText = NSLocalizedString("Title", comment: "Placeholder for the post title.")
         let titlePlaceholderLabel = UILabel()
 
-        let attributes: [NSAttributedStringKey: Any] = [.foregroundColor: Colors.title, .font: Fonts.title]
+        let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: Colors.title, .font: Fonts.title]
 
         titlePlaceholderLabel.attributedText = NSAttributedString(string: placeholderText, attributes: attributes)
         titlePlaceholderLabel.sizeToFit()
@@ -573,8 +573,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         dismissOptionsViewControllerIfNecessary()
     }
 
-    override func willMove(toParentViewController parent: UIViewController?) {
-        super.willMove(toParentViewController: parent)
+    override func willMove(toParent parent: UIViewController?) {
+        super.willMove(toParent: parent)
 
         guard let navigationController = parent as? UINavigationController else {
             return
@@ -789,16 +789,16 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     func startListeningToNotifications() {
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardDidHide), name: .UIKeyboardDidHide, object: nil)
-        nc.addObserver(self, selector: #selector(applicationWillResignActive(_:)), name: .UIApplicationWillResignActive, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        nc.addObserver(self, selector: #selector(keyboardDidHide), name: UIResponder.keyboardDidHideNotification, object: nil)
+        nc.addObserver(self, selector: #selector(applicationWillResignActive(_:)), name: UIApplication.willResignActiveNotification, object: nil)
     }
 
     func stopListeningToNotifications() {
         let nc = NotificationCenter.default
-        nc.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
-        nc.removeObserver(self, name: .UIKeyboardDidHide, object: nil)
-        nc.removeObserver(self, name: .UIApplicationWillResignActive, object: nil)
+        nc.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        nc.removeObserver(self, name: UIResponder.keyboardDidHideNotification, object: nil)
+        nc.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
     }
 
     func rememberFirstResponder() {
@@ -971,7 +971,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     @objc func keyboardWillShow(_ notification: Foundation.Notification) {
         guard
             let userInfo = notification.userInfo as? [String: AnyObject],
-            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
             else {
                 return
         }
@@ -983,7 +983,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     @objc func keyboardDidHide(_ notification: Foundation.Notification) {
         guard
             let userInfo = notification.userInfo as? [String: AnyObject],
-            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
             else {
                 return
         }
@@ -1374,7 +1374,7 @@ private extension AztecPostViewController {
 
         let title = NSLocalizedString("What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?", comment: "Title displayed via UIAlertController when a user inserts a document into a post.")
 
-        let style: UIAlertControllerStyle = UIDevice.isPad() ? .alert : .actionSheet
+        let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
 
         let cancelTitle = NSLocalizedString("Cancel", comment: "Cancels an alert.")
@@ -1529,7 +1529,7 @@ private extension AztecPostViewController {
         let title = action.publishingActionQuestionLabel
         let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
         let publishTitle = action.publishActionLabel
-        let style: UIAlertControllerStyle = UIDevice.isPad() ? .alert : .actionSheet
+        let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
 
         alertController.addCancelActionWithTitle(keepEditingTitle)
@@ -2210,7 +2210,7 @@ extension AztecPostViewController {
         trackFormatBarAnalytics(stat: .editorTappedHeader)
 
         let headerOptions = Constants.headers.map { headerType -> OptionsTableViewOption in
-            let attributes: [NSAttributedStringKey: Any] = [
+            let attributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: CGFloat(headerType.fontSize)),
                 .foregroundColor: WPStyleGuide.darkGrey()
             ]
@@ -2341,9 +2341,9 @@ extension AztecPostViewController {
     }
 
     private func presentToolbarViewControllerAsInputView(_ viewController: UIViewController) {
-        self.addChildViewController(viewController)
+        self.addChild(viewController)
         changeRichTextInputView(to: viewController.view)
-        viewController.didMove(toParentViewController: self)
+        viewController.didMove(toParent: self)
     }
 
     private func dismissOptionsViewController() {
@@ -2351,7 +2351,7 @@ extension AztecPostViewController {
         case .pad:
             dismiss(animated: true, completion: nil)
         default:
-            optionsViewController?.removeFromParentViewController()
+            optionsViewController?.removeFromParent()
             changeRichTextInputView(to: nil)
         }
 
@@ -2815,7 +2815,7 @@ private extension AztecPostViewController {
         var keyboardHeight: CGFloat
 
         // Let's assume a sensible default for the keyboard height based on orientation
-        let keyboardFrameRatioDefault = UIInterfaceOrientationIsPortrait(UIApplication.shared.statusBarOrientation) ? Constants.mediaPickerKeyboardHeightRatioPortrait : Constants.mediaPickerKeyboardHeightRatioLandscape
+        let keyboardFrameRatioDefault = UIApplication.shared.statusBarOrientation.isPortrait ? Constants.mediaPickerKeyboardHeightRatioPortrait : Constants.mediaPickerKeyboardHeightRatioLandscape
         let keyboardHeightDefault = (keyboardFrameRatioDefault * UIScreen.main.bounds.height)
 
         if #available(iOS 11, *) {
@@ -3791,7 +3791,7 @@ extension UIImage {
 // MARK: - State Restoration
 //
 extension AztecPostViewController: UIViewControllerRestoration {
-    class func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+    class func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
         return restoreAztec(withCoder: coder)
     }
 
@@ -3881,7 +3881,7 @@ extension AztecPostViewController {
         static let mediaOverlayBorderWidth  = CGFloat(3.0)
         static let mediaOverlayIconSize     = CGSize(width: 32, height: 32)
         static let mediaPlaceholderImageSize = CGSize(width: 128, height: 128)
-        static let mediaMessageAttributes: [NSAttributedStringKey: Any] = {
+        static let mediaMessageAttributes: [NSAttributedString.Key: Any] = {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.alignment = .center
 
@@ -3992,4 +3992,15 @@ extension AztecPostViewController: UIViewControllerTransitioningDelegate {
 
         return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToNSAttributedStringKeyDictionary(_ input: [String: Any]) -> [NSAttributedString.Key: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }

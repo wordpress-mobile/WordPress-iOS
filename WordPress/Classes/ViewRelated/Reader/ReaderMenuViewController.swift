@@ -50,7 +50,7 @@ import WordPressShared
     // MARK: - Restoration Methods
 
 
-    static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+    static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
         return WPTabBarController.sharedInstance().readerMenuViewController
     }
 
@@ -88,7 +88,7 @@ import WordPressShared
     }
 
 
-    override init(style: UITableViewStyle) {
+    override init(style: UITableView.Style) {
         super.init(style: style)
         // Need to use `super` to work around a Swift compiler bug
         // https://bugs.swift.org/browse/SR-3465
@@ -164,7 +164,7 @@ import WordPressShared
 
 
     @objc func setupApplicationWillTerminateNotificationObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(type(of: self).handleApplicationWillTerminate), name: NSNotification.Name.UIApplicationWillTerminate, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(type(of: self).handleApplicationWillTerminate), name: UIApplication.willTerminateNotification, object: nil)
     }
 
 
@@ -652,7 +652,7 @@ import WordPressShared
     }
 
 
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard let menuItem = viewModel.menuItemAtIndexPath(indexPath) else {
             return
         }
@@ -665,7 +665,7 @@ import WordPressShared
     }
 
 
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .delete
     }
 

@@ -1,13 +1,13 @@
 import WordPressShared
 
 class SnippetsContentStyles: FormattableContentStyles {
-    var attributes: [NSAttributedStringKey: Any] {
+    var attributes: [NSAttributedString.Key: Any] {
         return WPStyleGuide.Notifications.snippetRegularStyle
     }
 
-    var quoteStyles: [NSAttributedStringKey: Any]? = nil
+    var quoteStyles: [NSAttributedString.Key: Any]? = nil
 
-    var rangeStylesMap: [FormattableRangeKind: [NSAttributedStringKey: Any]]? = nil
+    var rangeStylesMap: [FormattableRangeKind: [NSAttributedString.Key: Any]]? = nil
 
     var linksColor: UIColor? = nil
 

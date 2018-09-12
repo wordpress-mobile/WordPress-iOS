@@ -53,7 +53,7 @@ import Gridicons
     // MARK: - State Restoration
 
 
-    public static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+    public static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
         guard let path = coder.decodeObject(forKey: restorableSearchTopicPathKey) as? String else {
             return ReaderSearchViewController.controller()
         }
@@ -115,8 +115,8 @@ import Gridicons
     }
 
 
-    open override func didMove(toParentViewController parent: UIViewController?) {
-        super.didMove(toParentViewController: parent)
+    open override func didMove(toParent parent: UIViewController?) {
+        super.didMove(toParent: parent)
         if let _ = parent {
             return
         }
@@ -140,8 +140,8 @@ import Gridicons
         // Dismiss the keyboard if it was visible.
         endSearch()
 
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardDidShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
 
@@ -167,7 +167,7 @@ import Gridicons
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderSearchViewController.self]).attributedPlaceholder = attributedPlaceholder
         let textAttributes = WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.greyDarken30())
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderSearchViewController.self]).defaultTextAttributes = textAttributes
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderSearchViewController.self]).defaultTextAttributes = convertToNSAttributedStringKeyDictionary(textAttributes)
 
         WPStyleGuide.configureSearchBar(searchBar)
     }
@@ -185,7 +185,7 @@ import Gridicons
     @objc func configureLabel() {
         let text = NSLocalizedString("Search WordPress\nfor a site or post", comment: "A short message that is a call to action for the Reader's Search feature.")
         let rawAttributes = WPNUXUtility.titleAttributes(with: WPStyleGuide.greyDarken20()) as! [String: Any]
-        let swiftedAttributes = NSAttributedStringKey.convertFromRaw(attributes: rawAttributes)
+        let swiftedAttributes = NSAttributedString.Key.convertFromRaw(attributes: rawAttributes)
         label.numberOfLines = 2
         label.attributedText = NSAttributedString(string: text, attributes: swiftedAttributes)
     }
@@ -212,7 +212,7 @@ import Gridicons
     private func configureSiteSearchViewController() {
         siteSearchController.view.translatesAutoresizingMaskIntoConstraints = false
 
-        addChildViewController(siteSearchController)
+        addChild(siteSearchController)
 
         view.addSubview(siteSearchController.view)
         NSLayoutConstraint.activate([
@@ -222,7 +222,7 @@ import Gridicons
             view.bottomAnchor.constraint(equalTo: siteSearchController.view.bottomAnchor),
             ])
 
-        siteSearchController.didMove(toParentViewController: self)
+        siteSearchController.didMove(toParent: self)
 
         if let topic = restoredSearchTopic {
             siteSearchController.searchQuery = topic.title
@@ -304,7 +304,7 @@ import Gridicons
     @objc func presentAutoCompleteView() {
         let controller = ReaderSearchSuggestionsViewController.controller()
         controller.delegate = self
-        addChildViewController(controller)
+        addChild(controller)
 
         guard let autoView = controller.view, let searchBar = searchBar else {
             fatalError("Unexpected")
@@ -340,7 +340,7 @@ import Gridicons
 
         view.setNeedsUpdateConstraints()
 
-        controller.didMove(toParentViewController: self)
+        controller.didMove(toParent: self)
         suggestionsController = controller
     }
 
@@ -351,9 +351,9 @@ import Gridicons
         guard let controller = suggestionsController else {
             return
         }
-        controller.willMove(toParentViewController: nil)
+        controller.willMove(toParent: nil)
         controller.view.removeFromSuperview()
-        controller.removeFromParentViewController()
+        controller.removeFromParent()
         suggestionsController = nil
     }
 
@@ -420,4 +420,9 @@ extension ReaderSearchViewController: ReaderSearchSuggestionsDelegate {
         performSearch()
     }
 
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToNSAttributedStringKeyDictionary(_ input: [String: Any]) -> [NSAttributedString.Key: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }

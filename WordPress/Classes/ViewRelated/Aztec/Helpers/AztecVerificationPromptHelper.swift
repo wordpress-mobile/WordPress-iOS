@@ -31,7 +31,7 @@ class AztecVerificationPromptHelper: NSObject {
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(updateVerificationStatus),
-                                               name: .UIApplicationDidBecomeActive,
+                                               name: UIApplication.didBecomeActiveNotification,
                                                object: nil)
     }
 

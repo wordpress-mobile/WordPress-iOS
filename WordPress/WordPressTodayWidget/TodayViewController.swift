@@ -31,8 +31,8 @@ class TodayViewController: UIViewController {
         let backgroundImage = UIImage(color: WPStyleGuide.wordPressBlue()).resizableImage(withCapInsets: UIEdgeInsets.zero)
 
         configureMeLabel.text = NSLocalizedString("Display your site stats for today here. Configure in the WordPress app under your site > Stats > Today.", comment: "Unconfigured stats today widget helper text")
-        configureMeButton.setTitle(NSLocalizedString("Open WordPress", comment: "Today widget button to launch WP app"), for: UIControlState())
-        configureMeButton.setBackgroundImage(backgroundImage, for: UIControlState())
+        configureMeButton.setTitle(NSLocalizedString("Open WordPress", comment: "Today widget button to launch WP app"), for: UIControl.State())
+        configureMeButton.setBackgroundImage(backgroundImage, for: UIControl.State())
         configureMeButton.clipsToBounds = true
         configureMeButton.layer.cornerRadius = 5.0
 

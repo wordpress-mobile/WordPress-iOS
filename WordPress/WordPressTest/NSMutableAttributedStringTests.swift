@@ -5,12 +5,12 @@ class NSMutableAttributedStringTests: XCTestCase {
     func testApplyStylesToMatchesWithPattern() {
         // Assemble an Attributed string with bold markup markers
         let message = "This is a string that **contains bold substrings**"
-        let regularStyle: [NSAttributedStringKey: Any] = [
+        let regularStyle: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 14),
             .foregroundColor: UIColor.gray
         ]
 
-        let boldStyle: [NSAttributedStringKey: Any] = [
+        let boldStyle: [NSAttributedString.Key: Any] = [
             .font: UIFont.boldSystemFont(ofSize: 14),
             .foregroundColor: UIColor.black
         ]
@@ -45,7 +45,7 @@ class NSMutableAttributedStringTests: XCTestCase {
 
     ///
     ///
-    private func isEqual(_ lhs: [NSAttributedStringKey: Any], _ rhs: [NSAttributedStringKey: Any]) -> Bool {
+    private func isEqual(_ lhs: [NSAttributedString.Key: Any], _ rhs: [NSAttributedString.Key: Any]) -> Bool {
         guard lhs.count == rhs.count else {
             return false
         }

@@ -22,7 +22,7 @@ class WPReusableTableViewCell: WPTableViewCell {
 }
 
 class WPTableViewCellDefault: WPReusableTableViewCell {
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
     }
 
@@ -32,7 +32,7 @@ class WPTableViewCellDefault: WPReusableTableViewCell {
 }
 
 class WPTableViewCellSubtitle: WPReusableTableViewCell {
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
     }
 
@@ -42,7 +42,7 @@ class WPTableViewCellSubtitle: WPReusableTableViewCell {
 }
 
 class WPTableViewCellValue1: WPReusableTableViewCell {
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)
     }
 
@@ -52,7 +52,7 @@ class WPTableViewCellValue1: WPReusableTableViewCell {
 }
 
 class WPTableViewCellValue2: WPReusableTableViewCell {
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value2, reuseIdentifier: reuseIdentifier)
     }
 
