@@ -79,12 +79,7 @@ final class SiteTagsViewController: UITableViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        // HACK: Normally, to hide the scroll bars we'd define a presentation context.
-        // This is impacting layout when navigating back from a detail. As a work
-        // around we can simply hide the search bar.
-        if searchController.isActive {
-            searchController.searchBar.isHidden = true
-        }
+        searchController.dismiss(animated: false, completion: nil)
     }
 
     private func setAccessibilityIdentifier() {
@@ -480,7 +475,6 @@ extension SiteTagsViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text, text != "" else {
             refreshResultsController(predicate: defaultPredicate)
-
             return
         }
 
