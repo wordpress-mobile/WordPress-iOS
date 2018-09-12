@@ -297,15 +297,15 @@ public protocol ThemePresenter: class {
         searchController.searchResultsUpdater = self
 
         collectionView.register(ThemeBrowserSearchHeaderView.self,
-                                     forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
+                                     forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                      withReuseIdentifier: ThemeBrowserSearchHeaderView.reuseIdentifier)
 
         collectionView.register(UINib(nibName: "ThemeBrowserSectionHeaderView", bundle: Bundle(for: ThemeBrowserSectionHeaderView.self)),
-                                    forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
+                                    forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                     withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForThemesHeader)
 
         collectionView.register(UINib(nibName: "ThemeBrowserSectionHeaderView", bundle: Bundle(for: ThemeBrowserSectionHeaderView.self)),
-                                forSupplementaryViewOfKind: UICollectionElementKindSectionHeader,
+                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                 withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForCustomThemesHeader)
 
         WPStyleGuide.configureSearchBar(searchController.searchBar)
@@ -357,13 +357,13 @@ public protocol ThemePresenter: class {
     }
 
     fileprivate func registerForKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(ThemeBrowserViewController.keyboardDidShow(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(ThemeBrowserViewController.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ThemeBrowserViewController.keyboardDidShow(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ThemeBrowserViewController.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     fileprivate func unregisterForKeyboardNotifications() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardDidShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     @objc open func keyboardDidShow(_ notification: Foundation.Notification) {
@@ -385,7 +385,7 @@ public protocol ThemePresenter: class {
     }
 
     fileprivate func localKeyboardFrameFromNotification(_ notification: Foundation.Notification) -> CGRect {
-        guard let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+        guard let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
                 return .zero
         }
 
@@ -548,7 +548,7 @@ public protocol ThemePresenter: class {
 
     open func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
-        case UICollectionElementKindSectionHeader:
+        case UICollectionView.elementKindSectionHeader:
             if sections[indexPath.section] == .search {
                 let searchHeader = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ThemeBrowserSearchHeaderView.reuseIdentifier, for: indexPath) as! ThemeBrowserSearchHeaderView
 
@@ -570,7 +570,7 @@ public protocol ThemePresenter: class {
                     return themesHeader!
                 }
             }
-        case UICollectionElementKindSectionFooter:
+        case UICollectionView.elementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "ThemeBrowserFooterView", for: indexPath)
             return footer
         default:
@@ -899,7 +899,7 @@ private extension ThemeBrowserViewController {
         let title = searchController.isActive ? NoResultsTitles.noThemes : NoResultsTitles.fetchingThemes
         noResultsViewController.configure(title: title)
 
-        addChildViewController(noResultsViewController)
+        addChild(noResultsViewController)
         collectionView.addSubview(noResultsViewController.view)
         noResultsViewController.view.frame = collectionView.frame
 
@@ -907,7 +907,7 @@ private extension ThemeBrowserViewController {
         // This makes the No Results View look vertically off-center. Until that is resolved, we'll move the NRV up by the search bar height.
         noResultsViewController.view.frame.origin.y -= searchBarHeight
 
-        noResultsViewController.didMove(toParentViewController: self)
+        noResultsViewController.didMove(toParent: self)
     }
 
     func hideNoResults() {

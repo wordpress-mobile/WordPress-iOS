@@ -27,7 +27,7 @@ enum BuildConfiguration {
         return b.contains(a)
     }
 
-    #if DEBUG
+    //#if DEBUG
     private static var testingOverride: BuildConfiguration?
 
     func test(_ closure: () -> ()) {
@@ -35,5 +35,5 @@ enum BuildConfiguration {
         closure()
         BuildConfiguration.testingOverride = nil
     }
-    #endif
+    //#endif
 }

@@ -49,7 +49,7 @@ class ConfettiView: UIView {
         let emitterLayer = CAEmitterLayer()
         emitterLayer.beginTime = CACurrentMediaTime()
 
-        emitterLayer.emitterShape = kCAEmitterLayerRectangle
+        emitterLayer.emitterShape = CAEmitterLayerEmitterShape.rectangle
         emitterLayer.emitterCells = cells
 
         layer.addSublayer(emitterLayer)

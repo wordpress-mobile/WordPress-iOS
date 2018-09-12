@@ -150,7 +150,7 @@ class MediaAssetExporterTests: XCTestCase {
     func testExportingAPortraitImageWithoutResizeKeepsTheOrientationWorks() {
         let image = MediaImageExporterTests.imageForFileNamed(testImageNameInPortrait)
         if image.imageOrientation != .leftMirrored {
-            XCTFail("Error: the test portrait image was not in the expected orientation, expected: \(UIImageOrientation.leftMirrored.rawValue) but read: \(image.imageOrientation.rawValue)")
+            XCTFail("Error: the test portrait image was not in the expected orientation, expected: \(UIImage.Orientation.leftMirrored.rawValue) but read: \(image.imageOrientation.rawValue)")
             return
         }
         guard let asset = assetForFile(named: testImageNameInPortrait) else {
@@ -174,7 +174,7 @@ class MediaAssetExporterTests: XCTestCase {
     func testExportingAPortraitImageAndCorrectingTheOrientationWhileResizingWorks() {
         let image = MediaImageExporterTests.imageForFileNamed(testImageNameInPortrait)
         if image.imageOrientation != .leftMirrored {
-            XCTFail("Error: the test portrait image was not in the expected orientation, expected: \(UIImageOrientation.leftMirrored.rawValue) but read: \(image.imageOrientation.rawValue)")
+            XCTFail("Error: the test portrait image was not in the expected orientation, expected: \(UIImage.Orientation.leftMirrored.rawValue) but read: \(image.imageOrientation.rawValue)")
             return
         }
         guard let asset = assetForFile(named: testImageNameInPortrait) else {

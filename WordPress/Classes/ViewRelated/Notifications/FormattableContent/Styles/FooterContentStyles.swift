@@ -1,12 +1,12 @@
 
 class FooterContentStyles: FormattableContentStyles {
-    var attributes: [NSAttributedStringKey: Any] {
+    var attributes: [NSAttributedString.Key: Any] {
         return WPStyleGuide.Notifications.footerRegularStyle
     }
 
-    var quoteStyles: [NSAttributedStringKey: Any]? = nil
+    var quoteStyles: [NSAttributedString.Key: Any]? = nil
 
-    var rangeStylesMap: [FormattableRangeKind: [NSAttributedStringKey: Any]]? {
+    var rangeStylesMap: [FormattableRangeKind: [NSAttributedString.Key: Any]]? {
         return [
             .noticon: WPStyleGuide.Notifications.blockNoticonStyle
         ]

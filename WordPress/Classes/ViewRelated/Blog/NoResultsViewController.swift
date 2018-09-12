@@ -58,8 +58,8 @@ import WordPressShared
         stopAnimatingIfNeeded()
     }
 
-    override func didMove(toParentViewController parent: UIViewController?) {
-        super.didMove(toParentViewController: parent)
+    override func didMove(toParent parent: UIViewController?) {
+        super.didMove(toParent: parent)
         configureView()
     }
 
@@ -137,9 +137,9 @@ import WordPressShared
     /// Public method to remove No Results View from parent view.
     ///
     @objc func removeFromView() {
-        willMove(toParentViewController: nil)
+        willMove(toParent: nil)
         view.removeFromSuperview()
-        removeFromParentViewController()
+        removeFromParent()
     }
 
     /// Public method to show a 'Dismiss' button in the navigation bar in place of the 'Back' button.
@@ -170,7 +170,7 @@ import WordPressShared
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = subtitleTextView.textAlignment
 
-        let attributes: [NSAttributedStringKey: Any] = [
+        let attributes: [NSAttributedString.Key: Any] = [
             .font: subtitleTextView.font!,
             .foregroundColor: subtitleTextView.textColor!,
             .paragraphStyle: paragraphStyle
@@ -231,7 +231,7 @@ private extension NoResultsViewController {
 
         if let buttonText = buttonText {
             configureButton()
-            actionButton?.setTitle(buttonText, for: UIControlState())
+            actionButton?.setTitle(buttonText, for: UIControl.State())
             actionButton?.setTitle(buttonText, for: .highlighted)
             actionButton?.titleLabel?.adjustsFontForContentSizeCategory = true
             actionButton?.accessibilityIdentifier = accessibilityIdentifier(for: buttonText)
@@ -313,7 +313,7 @@ private extension NoResultsViewController {
 
     func setAccessoryViewsVisibility() {
         // Always hide the accessory/image stack view when in iPhone landscape.
-        accessoryStackView.isHidden = UIDeviceOrientationIsLandscape(UIDevice.current.orientation) && WPDeviceIdentification.isiPhone()
+        accessoryStackView.isHidden = UIDevice.current.orientation.isLandscape && WPDeviceIdentification.isiPhone()
 
         // If there is an accessory view, show that.
         accessoryView.isHidden = accessorySubview == nil

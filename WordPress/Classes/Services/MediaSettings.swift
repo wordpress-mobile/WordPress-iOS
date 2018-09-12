@@ -130,7 +130,7 @@ class MediaSettings: NSObject {
             if let savedSize = database.object(forKey: maxImageSizeKey) as? Int {
                 return savedSize
             } else if let savedSize = database.object(forKey: maxImageSizeKey) as? String {
-                let newSize = CGSizeFromString(savedSize).width
+                let newSize = NSCoder.cgSize(for: savedSize).width
                 database.set(newSize, forKey: maxImageSizeKey)
                 return Int(newSize)
             } else {

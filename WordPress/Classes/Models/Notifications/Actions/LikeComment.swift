@@ -15,7 +15,7 @@ class LikeComment: DefaultNotificationActionCommand, AccessibleFormattableConten
         let title = TitleStrings.like
         let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
         button.accessibilityLabel = title
-        button.accessibilityTraits = UIAccessibilityTraitButton
+        button.accessibilityTraits = UIAccessibilityTraits.button
         button.accessibilityHint = TitleHints.like
         return button
     }()

@@ -203,7 +203,7 @@ extension SiteTagsViewController {
         return true
     }
 
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard let selectedTag = tagAtIndexPath(indexPath) else {
             return
         }
@@ -410,14 +410,14 @@ private extension SiteTagsViewController {
     }
 
     func showNoResults() {
-        addChildViewController(noResultsViewController)
+        addChild(noResultsViewController)
         noResultsViewController.view.frame = tableView.frame
 
         // Since the tableView doesn't always start at the top, adjust the NRV accordingly.
         noResultsViewController.view.frame.origin.y = 0
 
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
-        noResultsViewController.didMove(toParentViewController: self)
+        noResultsViewController.didMove(toParent: self)
     }
 
     func noResultsTitle() -> String {

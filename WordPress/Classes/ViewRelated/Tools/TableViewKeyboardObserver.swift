@@ -11,17 +11,17 @@ class TableViewKeyboardObserver: NSObject {
 
     override init() {
         super.init()
-        NotificationCenter.default.addObserver(self, selector: #selector(TableViewKeyboardObserver.keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(TableViewKeyboardObserver.keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TableViewKeyboardObserver.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TableViewKeyboardObserver.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     @objc func keyboardWillShow(_ notification: Foundation.Notification) {
-        guard let keyboardFrame = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue else {
+        guard let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue else {
             return
         }
 
         var inset = originalInset
-        if UIInterfaceOrientationIsPortrait(UIApplication.shared.statusBarOrientation) {
+        if UIApplication.shared.statusBarOrientation.isPortrait {
             inset.bottom += keyboardFrame.height
         } else {
             inset.bottom += keyboardFrame.width

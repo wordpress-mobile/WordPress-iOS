@@ -151,13 +151,13 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     fileprivate func registerForKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
     }
 
     fileprivate func unregisterForKeyboardNotifications() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardDidShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidHideNotification, object: nil)
     }
 
     @objc fileprivate func keyboardDidShow(_ notification: Foundation.Notification) {
@@ -192,7 +192,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     fileprivate func localKeyboardFrameFromNotification(_ notification: Foundation.Notification) -> CGRect {
-        guard let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+        guard let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
                 return .zero
         }
 
@@ -217,7 +217,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             searchController.isActive = false
         }
 
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
         unregisterForKeyboardNotifications()
     }
 
@@ -393,7 +393,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
         // Only add no results view if it isn't already in the table view
         if noResultsViewController.view.isDescendant(of: tableView) == false {
-            tableViewController.addChildViewController(noResultsViewController)
+            tableViewController.addChild(noResultsViewController)
             tableView.addSubview(withFadeAnimation: noResultsViewController.view)
             noResultsViewController.view.frame = tableView.frame
 
@@ -402,10 +402,10 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
                 noResultsViewController.view.frame.origin.y += refreshControl.frame.height/2
             }
 
-            noResultsViewController.didMove(toParentViewController: tableViewController)
+            noResultsViewController.didMove(toParent: tableViewController)
         }
 
-        tableView.sendSubview(toBack: noResultsViewController.view)
+        tableView.sendSubviewToBack(noResultsViewController.view)
     }
 
     // MARK: - TableView Helpers
@@ -523,7 +523,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -869,7 +869,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         let cancelTitle = NSLocalizedString("Cancel", comment: "Button shown when the author is asked for publishing confirmation.")
         let publishTitle = NSLocalizedString("Publish", comment: "Button shown when the author is asked for publishing confirmation.")
 
-        let style: UIAlertControllerStyle = UIDevice.isPad() ? .alert : .actionSheet
+        let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
 
         alertController.addCancelActionWithTitle(cancelTitle)
