@@ -1572,10 +1572,12 @@ private extension ReaderStreamViewController {
 // MARK: - NoResultsViewControllerDelegate
 
 extension ReaderStreamViewController: NoResultsViewControllerDelegate {
-    func actionButtonPressed(_ button: UIButton) {
-        guard let buttonTitle = button.titleLabel?.text else {
+    func actionButtonPressed() {
+        guard let topic = readerTopic else {
             return
         }
+
+        let buttonTitle = buttonTitleForTopic(topic)
 
         if buttonTitle == ResultsStatusText.followingButtonTitle {
             showFollowing()
