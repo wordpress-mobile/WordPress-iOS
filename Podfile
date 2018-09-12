@@ -64,7 +64,7 @@ target 'WordPress' do
     pod 'MGSwipeTableCell', '1.6.7'
     pod 'lottie-ios', '2.5.0'
     pod 'Starscream', '3.0.4'
-    pod 'ZendeskSDK', '2.1.0'
+    pod 'ZendeskSDK', :git => 'https://github.com/zendesk/zendesk_sdk_ios.git', :branch => 'xcode10-beta'
 
 
     ## Automattic libraries

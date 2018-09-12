@@ -176,7 +176,7 @@ DEPENDENCIES:
   - WordPressUI (= 1.0.7)
   - WPMediaPicker (= 1.3)
   - wpxmlrpc (= 0.8.3)
-  - ZendeskSDK (= 2.1.0)
+  - ZendeskSDK (from `https://github.com/zendesk/zendesk_sdk_ios.git`, branch `xcode10-beta`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -214,17 +214,22 @@ SPEC REPOS:
     - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
-    - ZendeskSDK
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
+  ZendeskSDK:
+    :branch: xcode10-beta
+    :git: https://github.com/zendesk/zendesk_sdk_ios.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
+  ZendeskSDK:
+    :commit: 00559895d059ec1936f8a08006b9253afdb148b1
+    :git: https://github.com/zendesk/zendesk_sdk_ios.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -262,8 +267,8 @@ SPEC CHECKSUMS:
   WordPressUI: cfcac4a2a033e3ed5def6504bb8e28447c54423b
   WPMediaPicker: c54791e04af3b41e473e9b340784be48a505bb38
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
-  ZendeskSDK: e2d9245bc42fb4782eff959219ce4d6bdae13b64
+  ZendeskSDK: 54b4f8ef7c368ba5a29b2ad6c69fa8c912355190
 
-PODFILE CHECKSUM: 90740a6add92889023a6b670dd88a778abb5c812
+PODFILE CHECKSUM: 43a3b88c4d7f3a5186980754c9782cb53476df3a
 
 COCOAPODS: 1.5.3
