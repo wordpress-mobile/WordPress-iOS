@@ -9,7 +9,8 @@ final class SiteTagsViewController: UITableViewController {
     }
     private let blog: Blog
 
-    private var noResultsViewController = NoResultsViewController.controller()
+    private lazy var noResultsViewController = NoResultsViewController.controller()
+    private lazy var noSearchResultsView = NoDataLabelView.instanceFromNib()
 
     fileprivate lazy var context: NSManagedObjectContext = {
         return ContextManager.sharedInstance().mainContext
@@ -407,13 +408,9 @@ private extension SiteTagsViewController {
     }
 
     func showNoSearchResultsView() {
-
-        // If already shown, don't show again. To prevent the view from "flashing" as the user types.
-        guard !noResultsShown else {
-            return
-        }
-
-        configureAndDisplayNoResults(title: NoResultsText.noResultsTitle, hideImage: true)
+        noSearchResultsView.noDataLabel.text = NoResultsText.noResultsTitle
+        noSearchResultsView.frame.origin.y = searchController.searchBar.frame.height
+        tableView.addSubview(noSearchResultsView)
     }
 
     func configureAndDisplayNoResults(title: String,
@@ -440,16 +437,13 @@ private extension SiteTagsViewController {
 
     func hideNoResults() {
         noResultsViewController.removeFromView()
+        noSearchResultsView.removeFromSuperview()
         setupSearchBar()
         tableView.reloadData()
     }
 
     var isSearching: Bool {
         return searchController.isActive && (searchController.searchBar.text ?? "").count > 0
-    }
-
-    var noResultsShown: Bool {
-        return noResultsViewController.parent != nil
     }
 
     struct NoResultsText {
