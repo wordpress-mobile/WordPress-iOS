@@ -40,8 +40,10 @@ msgstr ""
 
 msgctxt "v10.9-whats-new"
 msgid ""
-"We’ve been tuning things up under the hood.\n"
-"You may not see anything obviously different in the app, but expect everything to be faster and more stable.\n"
+"Does it drive you nuts when you realize you want to stick a post to the front page of your site, but you’re on the bus and only have a phone with you? Us too. Now you can set sticky posts in the app, and the other people on the bus don’t have to listen to you grumble.\n"
+"Save time and taps with comment push notifications that show the entire comment from the home screen. Everyone loves saving!\n"
+"We brought more visual consistency to different screens throughout the app, so getting around is easier. Less time trying to figure out how to navigate = more time to create.\n"
+"Broke out the fly swatter and got rid of some bugs.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
