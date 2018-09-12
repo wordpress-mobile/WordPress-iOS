@@ -3,7 +3,6 @@ import WordPressShared
 
 @objc protocol NoResultsViewControllerDelegate {
     @objc optional func actionButtonPressed()
-    @objc optional func actionButtonPressed(_ button: UIButton)
     @objc optional func dismissButtonPressed()
 }
 
@@ -333,7 +332,6 @@ private extension NoResultsViewController {
 
     @IBAction func actionButtonPressed(_ sender: UIButton) {
         delegate?.actionButtonPressed?()
-        delegate?.actionButtonPressed?(sender)
     }
 
     @objc func dismissButtonPressed() {
