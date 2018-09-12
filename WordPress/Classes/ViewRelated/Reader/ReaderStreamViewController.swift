@@ -1577,15 +1577,13 @@ extension ReaderStreamViewController: NoResultsViewControllerDelegate {
             return
         }
 
-        let buttonTitle = buttonTitleForTopic(topic)
-
-        switch buttonTitle {
-        case ResultsStatusText.followingButtonTitle:
-            showFollowing()
-        case ResultsStatusText.manageSitesButtonTitle:
+        if ReaderHelpers.topicIsFollowing(topic) {
             showManageSites()
-        default:
             return
+        }
+
+        if ReaderHelpers.topicIsLiked(topic) {
+            showFollowing()
         }
     }
 }
