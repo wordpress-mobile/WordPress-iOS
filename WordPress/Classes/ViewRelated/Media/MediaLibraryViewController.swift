@@ -642,6 +642,8 @@ fileprivate extension Blog {
     }
 }
 
+// MARK: Stock Photos Picker Delegate
+
 extension MediaLibraryViewController: StockPhotosPickerDelegate {
     func stockPhotosPicker(_ picker: StockPhotosPicker, didFinishPicking assets: [StockPhotosMedia]) {
         guard assets.count > 0 else {
@@ -654,5 +656,17 @@ extension MediaLibraryViewController: StockPhotosPickerDelegate {
             mediaCoordinator.addMedia(from: $0, to: blog, analyticsInfo: info)
             WPAnalytics.track(.stockMediaUploaded)
         }
+    }
+}
+
+// MARK: Giphy Picker Delegate
+
+extension MediaLibraryViewController: GiphyPickerDelegate {
+    func giphyPicker(_ picker: GiphyPicker, didFinishPicking assets: [GiphyMedia]) {
+        guard assets.count > 0 else {
+            return
+        }
+
+        // TODO: Add and track giphy media
     }
 }

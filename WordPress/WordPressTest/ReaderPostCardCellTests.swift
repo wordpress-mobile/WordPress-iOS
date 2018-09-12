@@ -172,7 +172,7 @@ final class ReaderPostCardCellTests: XCTestCase {
     }
 
     func testSaveForLaterButtonLabelMatchesExpectation() {
-        let validLabelText = FeatureFlag.saveForLater.enabled ? TestConstants.saveLabel : TestConstants.shareLabel
+        let validLabelText = TestConstants.saveLabel
         XCTAssertEqual(cell?.getSaveForLaterButtonForTesting().accessibilityLabel, validLabelText, "Incorrect accessibility label: Save for Later button")
     }
 

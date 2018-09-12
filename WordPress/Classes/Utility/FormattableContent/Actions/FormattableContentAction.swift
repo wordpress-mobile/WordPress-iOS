@@ -52,6 +52,11 @@ extension Identifier: CustomStringConvertible {
     }
 }
 
+extension Identifier {
+    static func empty() -> Identifier {
+        return Identifier(value: "")
+    }
+}
 
 typealias ActionContextRequest = (NotificationDeletionRequest?, Bool) -> Void
 struct ActionContext {

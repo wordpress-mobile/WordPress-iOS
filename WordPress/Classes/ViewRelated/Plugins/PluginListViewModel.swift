@@ -90,6 +90,11 @@ class PluginListViewModel: Observable {
             stateChangeDispatcher.dispatch(State.changed(from: oldValue, to: state))
         }
     }
+
+    var currentState: State {
+        return state
+    }
+
     private(set) var refreshing = false {
         didSet {
             if refreshing != oldValue {
@@ -167,53 +172,30 @@ class PluginListViewModel: Observable {
         }
     }
 
-    var noResultsViewModel: WPNoResultsView.Model? {
+    var noResultsViewModel: NoResultsViewController.Model? {
         switch state {
         case .loading:
-
-            let accessoryView: UIView?
-            if case .feed(let feedType) = query,
-                case .search = feedType {
-                let activityView = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-                activityView.startAnimating()
-
-                accessoryView = activityView
-            } else {
-                accessoryView = nil
-            }
-
-            // pull-to-refresh doesn't make sense as a interface in search, so there's no `UIRefreshcControl`
-            // for search queries, but we still want to show nice animated spinner.
-            // other feeds animate the UIRefreshControl
-
-            return WPNoResultsView.Model(
-                title: NSLocalizedString("Loading Plugins...", comment: "Text displayed while loading plugins for a site"),
-                accessoryView: accessoryView)
+            return NoResultsViewController.Model(title: NoResultsText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
 
         case .ready(let plugins):
             guard case .feed(let feedType) = query,
                 case .search = feedType,
                 case .directory(let result) = plugins,
                 result.count == 0 else {
-                return nil
+                    return nil
             }
 
-            return WPNoResultsView.Model(
-                title: NSLocalizedString("No plugins found", comment: "Text displayed when search for plugins returns no results")
-            )
+            return NoResultsViewController.Model(title: NoResultsText.noResultsTitle)
+
         case .error:
             let appDelegate = WordPressAppDelegate.sharedInstance()
             if (appDelegate?.connectionAvailable)! {
-                return WPNoResultsView.Model(
-                    title: NSLocalizedString("Oops", comment: "An informal exclaimation that means `something went wrong`."),
-                    message: NSLocalizedString("There was an error loading plugins", comment: "Text displayed when there is a failure loading plugins"),
-                    buttonTitle: NSLocalizedString("Contact support", comment: "Button label for contacting support")
-                )
+                return NoResultsViewController.Model(title: NoResultsText.errorTitle,
+                                                     subtitle: NoResultsText.errorSubtitle,
+                                                     buttonText: NoResultsText.errorButtonText)
             } else {
-                return WPNoResultsView.Model(
-                    title: NSLocalizedString("No connection", comment: "Title for the error view when there's no connection"),
-                    message: NSLocalizedString("An active internet connection is required to view plugins", comment: "Error message shown when trying to view the Plugins feature and there is no internet connection.")
-                )
+                return NoResultsViewController.Model(title: NoResultsText.noConnectionTitle,
+                                                     subtitle: NoResultsText.noConnectionSubtitle)
             }
         }
     }
@@ -327,4 +309,15 @@ class PluginListViewModel: Observable {
             return nil
         }
     }
+
+    private struct NoResultsText {
+        static let loadingTitle = NSLocalizedString("Loading Plugins...", comment: "Text displayed while loading plugins for a site")
+        static let noResultsTitle = NSLocalizedString("No plugins found", comment: "Text displayed when search for plugins returns no results")
+        static let errorTitle = NSLocalizedString("Oops", comment: "An informal exclaimation that means `something went wrong`.")
+        static let errorSubtitle = NSLocalizedString("There was an error loading plugins", comment: "Text displayed when there is a failure loading plugins")
+        static let errorButtonText = NSLocalizedString("Contact support", comment: "Button label for contacting support")
+        static let noConnectionTitle = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
+        static let noConnectionSubtitle = NSLocalizedString("An active internet connection is required to view plugins", comment: "Error message shown when trying to view the Plugins feature and there is no internet connection.")
+    }
+
 }

@@ -15,7 +15,7 @@ struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, 
     let title: String
     let secondaryTitle: String?
     let action: ImmuTableAction?
-    let noResultsView: WPNoResultsView?
+    let noResultsView: NoResultsViewController?
 
     private let helper: CollectionViewHandler
 
@@ -47,7 +47,7 @@ struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, 
     init(title: String,
          secondaryTitle: String?,
          action: ImmuTableAction?,
-         noResultsView: WPNoResultsView) {
+         noResultsView: NoResultsViewController) {
         self.title = title
         self.secondaryTitle = secondaryTitle
         self.action = action
@@ -60,7 +60,6 @@ struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, 
                                        configureCollectionCellBlock: configurationBlock,
                                        collectionCellSeletectedBlock: selectionBlock)
     }
-
 
     func configureCell(_ cell: UITableViewCell) {
         let cell = cell as! CellType
@@ -83,7 +82,6 @@ struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, 
         cell.collectionView.dataSource = helper
     }
 
-
 }
 
 /// Generic Swift classes can't be made `@objc`, so we're using this helper object to be a `UICollectionView[DataSource|Delegate]`
@@ -102,7 +100,6 @@ struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, 
         self.configureCollectionCellBlock = configureCollectionCellBlock
         self.collectionCellSeletectedBlock = collectionCellSeletectedBlock
     }
-
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -132,29 +129,30 @@ class CollectionViewContainerCell: UITableViewCell {
     private(set) var collectionView: UICollectionView!
     private(set) var titleLabel: UILabel!
     private(set) var actionButton: UIButton!
-    fileprivate var noResultsView: WPNoResultsView? {
+    fileprivate var noResultsView: NoResultsViewController? {
         didSet {
-            oldValue?.superview?.removeFromSuperview()
+            oldValue?.removeFromView()
 
-            guard let noResults = noResultsView else {
-                return
+            guard let noResultsView = noResultsView else {
+                    return
             }
 
-            let containerView = UIView(frame: .zero)
-
+            let containerView = UIView(frame: collectionView.frame)
             containerView.translatesAutoresizingMaskIntoConstraints = false
-            noResultsView?.translatesAutoresizingMaskIntoConstraints = false
 
-            containerView.addSubview(noResults)
-            containerView.pinSubviewAtCenter(noResults)
+            noResultsView.view.backgroundColor = .clear
+            noResultsView.view.frame = containerView.frame
+            noResultsView.view.frame.origin.y = 0
+
+            containerView.addSubview(noResultsView.view)
             addSubview(containerView)
 
-            containerView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.spacing).isActive = true
-            containerView.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor).isActive = true
-            containerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-            containerView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-
-            noResultsView?.centerInSuperview()
+            NSLayoutConstraint.activate([
+                containerView.topAnchor.constraint(equalTo: collectionView.topAnchor),
+                containerView.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor),
+                containerView.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
+                containerView.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor)
+                ])
         }
     }
 
@@ -229,7 +227,7 @@ class CollectionViewContainerCell: UITableViewCell {
     }
 
     override func prepareForReuse() {
-        noResultsView?.superview?.removeFromSuperview()
+        noResultsView?.removeFromView()
         noResultsView = nil
     }
 
