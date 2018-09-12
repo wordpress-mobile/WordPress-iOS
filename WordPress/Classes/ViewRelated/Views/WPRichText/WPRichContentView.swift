@@ -406,7 +406,7 @@ extension WPRichContentView: WPTextAttachmentManagerDelegate {
 
 private extension WPRichContentView {
     struct Constants {
-        static let textContainerInset = UIEdgeInsetsMake(0.0, 0.0, 16.0, 0.0)
+        static let textContainerInset = UIEdgeInsets.init(top: 0.0, left: 0.0, bottom: 16.0, right: 0.0)
         static let defaultAttachmentHeight = CGFloat(50.0)
         static let photonQuality = 65
     }

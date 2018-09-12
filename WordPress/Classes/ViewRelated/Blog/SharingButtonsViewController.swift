@@ -840,7 +840,7 @@ import WordPressShared
 
     // The table view is in editing mode, but no cells should show the delete button,
     // only the move icon.
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .none
     }
 

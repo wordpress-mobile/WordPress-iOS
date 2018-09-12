@@ -27,8 +27,8 @@ open class ReaderBlockedSiteCell: UITableViewCell {
         let rawAttributes = WPStyleGuide.subtitleAttributes() as! [String: Any]
         let rawBoldAttributes = WPStyleGuide.subtitleAttributesBold() as! [String: Any]
 
-        let swiftedAttributes = NSAttributedStringKey.convertFromRaw(attributes: rawAttributes)
-        let swiftedBoldAttributes = NSAttributedStringKey.convertFromRaw(attributes: rawBoldAttributes)
+        let swiftedAttributes = NSAttributedString.Key.convertFromRaw(attributes: rawAttributes)
+        let swiftedBoldAttributes = NSAttributedString.Key.convertFromRaw(attributes: rawBoldAttributes)
 
         let attrStr = NSMutableAttributedString(string: str as String, attributes: swiftedAttributes)
         attrStr.setAttributes(swiftedBoldAttributes, range: range)

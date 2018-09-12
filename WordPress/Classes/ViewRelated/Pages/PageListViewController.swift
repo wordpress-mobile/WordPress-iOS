@@ -41,7 +41,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - UIViewControllerRestoration
 
-    class func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+    class func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
 
         let context = ContextManager.sharedInstance().mainContext
 
@@ -105,7 +105,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.accessibilityIdentifier = "PagesTable"
         tableView.isAccessibilityElement = true
         tableView.estimatedRowHeight = type(of: self).pageCellEstimatedRowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
 
         let bundle = Bundle.main
 

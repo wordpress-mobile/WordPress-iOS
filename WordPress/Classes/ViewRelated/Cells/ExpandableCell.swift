@@ -12,7 +12,7 @@ class ExpandableCell: WPReusableTableViewCell {
         setupSubviews()
     }
 
-    public required override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    public required override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupSubviews()
     }
@@ -58,9 +58,9 @@ class ExpandableCell: WPReusableTableViewCell {
         chevronImageView?.tintColor = WPStyleGuide.cellGridiconAccessoryColor()
 
         titleTextLabel?.textColor = WPStyleGuide.darkGrey()
-        expandableTextView?.linkTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: WPStyleGuide.wordPressBlue(),
-                                                  NSAttributedStringKey.underlineStyle.rawValue: 0,
-                                                  NSAttributedStringKey.underlineColor.rawValue: UIColor.clear]
+        expandableTextView?.linkTextAttributes = convertToOptionalNSAttributedStringKeyDictionary([NSAttributedString.Key.foregroundColor.rawValue: WPStyleGuide.wordPressBlue(),
+                                                  NSAttributedString.Key.underlineStyle.rawValue: 0,
+                                                  NSAttributedString.Key.underlineColor.rawValue: UIColor.clear])
 
         expandableTextView?.delegate = self
         expandableTextView?.textContainerInset = .zero
@@ -79,4 +79,10 @@ extension ExpandableCell: UITextViewDelegate {
             return true
         }
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }

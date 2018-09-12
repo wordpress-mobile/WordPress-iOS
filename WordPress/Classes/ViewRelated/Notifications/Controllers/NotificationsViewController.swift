@@ -83,7 +83,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     /// Activity Indicator to be shown when refreshing a Jetpack site status.
     ///
     let activityIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        let indicator = UIActivityIndicatorView(style: .white)
         indicator.hidesWhenStopped = true
         return indicator
     }()
@@ -154,7 +154,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
             promptForJetpackCredentials()
         } else {
             jetpackLoginViewController?.view.removeFromSuperview()
-            jetpackLoginViewController?.removeFromParentViewController()
+            jetpackLoginViewController?.removeFromParent()
         }
 
         showNoResultsViewIfNeeded()
@@ -199,7 +199,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     // MARK: - State Restoration
 
-    static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+    static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
         return WPTabBarController.sharedInstance().notificationsViewController
     }
 
@@ -291,7 +291,7 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -365,7 +365,7 @@ private extension NotificationsViewController {
         // UITableView
         tableView.accessibilityIdentifier  = "Notifications Table"
         tableView.cellLayoutMarginsFollowReadableWidth = false
-        tableView.estimatedSectionHeaderHeight = UITableViewAutomaticDimension
+        tableView.estimatedSectionHeaderHeight = UITableView.automaticDimension
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
@@ -374,7 +374,7 @@ private extension NotificationsViewController {
         precondition(tableHeaderView != nil)
 
         // Fix: Update the Frame manually: Autolayout doesn't really help us, when it comes to Table Headers
-        let requiredSize = tableHeaderView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        let requiredSize = tableHeaderView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         var headerFrame = tableHeaderView.frame
         headerFrame.size.height = requiredSize.height
         tableHeaderView.frame = headerFrame
@@ -441,10 +441,10 @@ private extension NotificationsViewController {
 private extension NotificationsViewController {
     func startListeningToNotifications() {
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(applicationDidBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        nc.addObserver(self, selector: #selector(applicationDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
         nc.addObserver(self, selector: #selector(notificationsWereUpdated), name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
         if #available(iOS 11.0, *) {
-            nc.addObserver(self, selector: #selector(dynamicTypeDidChange), name: .UIContentSizeCategoryDidChange, object: nil)
+            nc.addObserver(self, selector: #selector(dynamicTypeDidChange), name: UIContentSizeCategory.didChangeNotification, object: nil)
         }
     }
 
@@ -455,12 +455,12 @@ private extension NotificationsViewController {
 
     func startListeningToTimeChangeNotifications() {
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(significantTimeChange), name: .UIApplicationSignificantTimeChange, object: nil)
+        nc.addObserver(self, selector: #selector(significantTimeChange), name: UIApplication.significantTimeChangeNotification, object: nil)
     }
 
     func stopListeningToNotifications() {
         let nc = NotificationCenter.default
-        nc.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        nc.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
         nc.removeObserver(self, name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
     }
 
@@ -770,7 +770,7 @@ private extension NotificationsViewController {
         }
     }
 
-    func selectRow(for notification: Notification, animated: Bool = true, scrollPosition: UITableViewScrollPosition = .none) {
+    func selectRow(for notification: Notification, animated: Bool = true, scrollPosition: UITableView.ScrollPosition = .none) {
         selectedNotification = notification
 
         if let indexPath = tableViewHandler.resultsController.indexPath(forObject: notification), indexPath != tableView.indexPathForSelectedRow {
@@ -1116,7 +1116,7 @@ private extension NotificationsViewController {
     }
 
     func addNoResultsToView() {
-        addChildViewController(noResultsViewController)
+        addChild(noResultsViewController)
         tableView.insertSubview(noResultsViewController.view, belowSubview: tableHeaderView)
         noResultsViewController.view.frame = tableView.frame
 
@@ -1127,7 +1127,7 @@ private extension NotificationsViewController {
             noResultsViewController.view.frame.origin.y -= self.tableHeaderView.frame.height/2
         }
 
-        noResultsViewController.didMove(toParentViewController: self)
+        noResultsViewController.didMove(toParent: self)
     }
 
     func updateSplitViewAppearanceForNoResultsView() {

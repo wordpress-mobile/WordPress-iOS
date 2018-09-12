@@ -350,10 +350,10 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         noResultsViewController.configure(title: noResultsTitle(),
                                           image: "wp-illustration-empty-results")
 
-        addChildViewController(noResultsViewController)
+        addChild(noResultsViewController)
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         noResultsViewController.view.frame = tableView.bounds
-        noResultsViewController.didMove(toParentViewController: self)
+        noResultsViewController.didMove(toParent: self)
     }
 
     private func noResultsTitle() -> String {
@@ -434,7 +434,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
         super.encodeRestorableState(with: coder)
     }
 
-    open class func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+    open class func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
         let context = ContextManager.sharedInstance().mainContext
 
         guard let blogID = coder.decodeObject(forKey: RestorationKeys.blog) as? String,

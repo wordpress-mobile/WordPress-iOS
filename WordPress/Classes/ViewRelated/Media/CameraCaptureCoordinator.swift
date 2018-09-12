@@ -30,20 +30,25 @@ final class CameraCaptureCoordinator {
             MediaCoordinator.shared.addMedia(from: media, to: blog, analyticsInfo: info)
         }
 
-        guard let mediaType = mediaInfo[UIImagePickerControllerMediaType] as? String else { return }
+        guard let mediaType = mediaInfo[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.mediaType)] as? String else { return }
 
         switch mediaType {
         case String(kUTTypeImage):
-            if let image = mediaInfo[UIImagePickerControllerOriginalImage] as? UIImage,
-                let metadata = mediaInfo[UIImagePickerControllerMediaMetadata] as? [AnyHashable: Any] {
+            if let image = mediaInfo[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage,
+                let metadata = mediaInfo[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.mediaMetadata)] as? [AnyHashable: Any] {
                 WPPHAssetDataSource().add(image, metadata: metadata, completionBlock: completionBlock)
             }
         case String(kUTTypeMovie):
-            if let mediaURL = mediaInfo[UIImagePickerControllerMediaURL] as? URL {
+            if let mediaURL = mediaInfo[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.mediaURL)] as? URL {
                 WPPHAssetDataSource().addVideo(from: mediaURL, completionBlock: completionBlock)
             }
         default:
             break
         }
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
+	return input.rawValue
 }

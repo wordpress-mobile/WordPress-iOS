@@ -117,7 +117,7 @@ final class PersonViewController: UITableViewController {
         if shouldHideCell(at: indexPath) {
             return CGFloat.leastNormalMagnitude
         }
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -384,7 +384,7 @@ private extension PersonViewController {
 //
 private extension PersonViewController {
 
-    func dequeueCell(withIdentifier id: String, style: UITableViewCellStyle) -> UITableViewCell {
+    func dequeueCell(withIdentifier id: String, style: UITableViewCell.CellStyle) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: id) {
             return cell
         } else {

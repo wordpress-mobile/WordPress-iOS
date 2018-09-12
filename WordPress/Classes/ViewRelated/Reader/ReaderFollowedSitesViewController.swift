@@ -34,7 +34,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     // MARK: - State Restoration
 
 
-    static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+    static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
         return controller()
     }
 
@@ -103,7 +103,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).attributedPlaceholder = attributedPlaceholder
         let textAttributes = WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.greyDarken30())
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).defaultTextAttributes = textAttributes
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).defaultTextAttributes = convertToNSAttributedStringKeyDictionary(textAttributes)
 
         searchBar.autocapitalizationType = .none
         searchBar.isTranslucent = false
@@ -111,8 +111,8 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         searchBar.barTintColor = WPStyleGuide.greyLighten30()
         searchBar.backgroundImage = UIImage()
         searchBar.returnKeyType = .done
-        searchBar.setImage(UIImage(named: "icon-clear-textfield"), for: .clear, state: UIControlState())
-        searchBar.setImage(UIImage(named: "icon-reader-search-plus"), for: .search, state: UIControlState())
+        searchBar.setImage(UIImage(named: "icon-clear-textfield"), for: .clear, state: UIControl.State())
+        searchBar.setImage(UIImage(named: "icon-reader-search-plus"), for: .search, state: UIControl.State())
     }
 
     // MARK: - Instance Methods
@@ -272,10 +272,10 @@ private extension ReaderFollowedSitesViewController {
     }
 
     func showNoResultView() {
-        tableViewController.addChildViewController(noResultsViewController)
+        tableViewController.addChild(noResultsViewController)
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         noResultsViewController.view.frame = tableView.frame
-        noResultsViewController.didMove(toParentViewController: tableViewController)
+        noResultsViewController.didMove(toParent: tableViewController)
     }
 
     struct NoResultsText {
@@ -334,7 +334,7 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -362,12 +362,12 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
     }
 
 
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         unfollowSiteAtIndexPath(indexPath)
     }
 
 
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .delete
     }
 
@@ -398,4 +398,9 @@ extension ReaderFollowedSitesViewController: UISearchBarDelegate {
         searchBar.text = nil
         searchBar.resignFirstResponder()
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToNSAttributedStringKeyDictionary(_ input: [String: Any]) -> [NSAttributedString.Key: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }
