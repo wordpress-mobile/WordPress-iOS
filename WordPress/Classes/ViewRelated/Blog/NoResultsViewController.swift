@@ -143,8 +143,8 @@ import WordPressShared
 
         noResultsView.isHidden = true
 
+        titleText = title
         titleLabel.frame = view.frame
-        titleLabel.text = title
 
         view.addSubview(titleLabel)
 
