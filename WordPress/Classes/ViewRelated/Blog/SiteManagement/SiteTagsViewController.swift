@@ -10,7 +10,6 @@ final class SiteTagsViewController: UITableViewController {
     private let blog: Blog
 
     private lazy var noResultsViewController = NoResultsViewController.controller()
-    private lazy var noSearchResultsView = NoDataLabelView.instanceFromNib()
 
     fileprivate lazy var context: NSManagedObjectContext = {
         return ContextManager.sharedInstance().mainContext
@@ -384,13 +383,13 @@ private extension SiteTagsViewController {
 
     func showNoResults() {
 
-        if isPerformingInitialSync {
-            showLoadingView()
+        if isSearching {
+            showNoSearchResultsView()
             return
         }
 
-        if isSearching {
-            showNoSearchResultsView()
+        if isPerformingInitialSync {
+            showLoadingView()
             return
         }
 
@@ -408,19 +407,27 @@ private extension SiteTagsViewController {
     }
 
     func showNoSearchResultsView() {
-        noSearchResultsView.noDataLabel.text = NoResultsText.noResultsTitle
-        noSearchResultsView.frame.origin.y = searchController.searchBar.frame.height
-        tableView.addSubview(noSearchResultsView)
+
+        // If already shown, don't show again. To prevent the view from "flashing" as the user types.
+        guard !noResultsShown else {
+            return
+        }
+
+        configureAndDisplayNoResults(title: NoResultsText.noResultsTitle, forNoSearchResults: true)
     }
 
     func configureAndDisplayNoResults(title: String,
                                       subtitle: String? = nil,
                                       buttonTitle: String? = nil,
                                       accessoryView: UIView? = nil,
-                                      hideImage: Bool = false) {
+                                      forNoSearchResults: Bool = false) {
 
+        if forNoSearchResults {
+            noResultsViewController.configureForNoSearchResults(title: NoResultsText.noResultsTitle + NoResultsText.noResultsTitle)
+        } else {
         noResultsViewController.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, accessoryView: accessoryView)
-        noResultsViewController.hideImageView(hideImage)
+        }
+
         displayNoResults()
     }
 
@@ -429,7 +436,9 @@ private extension SiteTagsViewController {
         noResultsViewController.view.frame = tableView.frame
 
         // Since the tableView doesn't always start at the top, adjust the NRV accordingly.
-        noResultsViewController.view.frame.origin.y = 0
+        if !isSearching {
+            noResultsViewController.view.frame.origin.y = 0
+        }
 
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         noResultsViewController.didMove(toParentViewController: self)
@@ -437,13 +446,16 @@ private extension SiteTagsViewController {
 
     func hideNoResults() {
         noResultsViewController.removeFromView()
-        noSearchResultsView.removeFromSuperview()
         setupSearchBar()
         tableView.reloadData()
     }
 
     var isSearching: Bool {
         return searchController.isActive && (searchController.searchBar.text ?? "").count > 0
+    }
+
+    var noResultsShown: Bool {
+        return noResultsViewController.parent != nil
     }
 
     struct NoResultsText {
