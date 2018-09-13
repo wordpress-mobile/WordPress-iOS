@@ -191,7 +191,9 @@ import "./ScreenshotFastfile"
           "org.wordpress.internal" => "WordPress Internal Distribution",
           "org.wordpress.internal.WordPressShare" => "WordPress Internal Share Distribution",
           "org.wordpress.internal.WordPressDraftAction" => "WordPress Internal Draft Action Distribution",
-          "org.wordpress.internal.WordPressTodayWidget" => "WordPress Internal Today Widget Distribution"
+          "org.wordpress.internal.WordPressTodayWidget" => "WordPress Internal Today Widget Distribution",
+          "org.wordpress.internal.WordPressNotificationServiceExtension" => "WordPress Internal Notification Service Distrib",
+          "org.wordpress.internal.WordPressNotificationContentExtension" => "WordPress Internal Notification Content Distrib"
       }})
 
     sh("mv ../../build/WordPress.ipa \"../../build/WordPress Internal.ipa\"")
@@ -231,7 +233,9 @@ import "./ScreenshotFastfile"
           "org.wordpress" => "WordPress App Store",
           "org.wordpress.WordPressShare" => "WordPress Share App Store Distribution",
           "org.wordpress.WordPressDraftAction" => "WordPress Draft Action App Store Distribution",
-          "org.wordpress.WordPressTodayWidget" => "WordPress Today Widget App Store Distribution"
+          "org.wordpress.WordPressTodayWidget" => "WordPress Today Widget App Store Distribution",
+          "org.wordpress.WordPressNotificationServiceExtension" => "WordPress Notification Service Extension",
+          "org.wordpress.WordPressNotificationContentExtension" => "WordPress Notification Content Extension"
         }
       }
     )
