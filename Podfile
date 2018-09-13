@@ -23,7 +23,7 @@ def shared_with_networking_pods
     pod 'AFNetworking', '3.2.1'
     pod 'Alamofire', '4.7.2'
     pod 'wpxmlrpc', '0.8.3'
-    pod 'WordPressKit', '1.4.0-beta.3'
+    pod 'WordPressKit', '1.4.0'
 end
 
 def shared_test_pods
@@ -37,7 +37,16 @@ def aztec
     ## When using a commit number (during development) you should provide the same commit number for both pods.
     ##
     ## pod 'WordPress-Aztec-iOS', :git => 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', :commit => '14846f9550e24993d61d24df76cee84f3363ee91'
-    pod 'WordPress-Editor-iOS', '1.0.0'
+    pod 'WordPress-Editor-iOS', '1.0.1'
+end
+
+def wordpress_ui
+    ## for production:
+    pod 'WordPressUI', '1.0.8-beta.2'
+    ## for development:
+    ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
+    ## while PR is in review:
+    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '5c3660bdd971bcdd5f232d701b6e2df6830ef880'
 end
 
 ## WordPress iOS
@@ -76,7 +85,7 @@ target 'WordPress' do
     pod 'WPMediaPicker', '1.3'
     pod 'WordPressAuthenticator', '1.0.6'
     aztec
-    pod 'WordPressUI', '1.0.7'
+    wordpress_ui
 
     target 'WordPressTest' do
         inherit! :search_paths
@@ -95,7 +104,7 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
         aztec
-        pod 'WordPressUI', '1.0.7'
+        wordpress_ui
         pod 'Gridicons', '0.16'
     end
 
@@ -109,7 +118,7 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
         aztec
-        pod 'WordPressUI', '1.0.7'
+        wordpress_ui
         pod 'Gridicons', '0.16'
     end
 
@@ -136,7 +145,7 @@ target 'WordPressNotificationContentExtension' do
     inherit! :search_paths
 
     pod 'WordPressShared', '1.0.10'
-    pod 'WordPressUI', '1.0.7'
+    wordpress_ui
 end
 
 
@@ -150,9 +159,9 @@ target 'WordPressNotificationServiceExtension' do
     inherit! :search_paths
 
     pod 'Gridicons', '0.16'
-    pod 'WordPressKit', '1.4.0-beta.3'
+    pod 'WordPressKit', '1.4.0'
     pod 'WordPressShared', '1.0.10'
-    pod 'WordPressUI', '1.0.7'
+    wordpress_ui
 end
 
 
@@ -169,7 +178,7 @@ target 'WordPressComStatsiOS' do
     ## Automattic libraries
     ## ====================
     ##
-    pod 'WordPressUI', '1.0.7'
+    wordpress_ui
 
     target 'WordPressComStatsiOSTests' do
         inherit! :search_paths
