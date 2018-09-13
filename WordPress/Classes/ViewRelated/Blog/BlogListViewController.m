@@ -286,7 +286,7 @@ static NSInteger HideSearchMinSites = 3;
                                                  buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.")
                                                     subtitle:nil
                                           attributedSubtitle:nil
-                                                       image:nil
+                                                       image:@"mysites-nosites"
                                                subtitleImage:nil
                                                accessoryView:nil];
         [self addNoResultsToView];
