@@ -38,6 +38,7 @@ import WordPressShared
     private var subtitleImageName: String?
     private var accessorySubview: UIView?
     private var hideImage = false
+    private var displayTitleViewOnly = false
 
     // MARK: - View
 
@@ -135,24 +136,13 @@ import WordPressShared
     }
 
     /// Public method to show the title specifically formatted for no search results.
-    /// This replaces the No Results View contents with just a label with specific constraints.
+    /// When the view is configured, it will display just a label with specific constraints.
     ///
     /// - Parameters:
     ///   - title:  Main descriptive text. Required.
     func configureForNoSearchResults(title: String) {
-
-        noResultsView.isHidden = true
-
-        titleText = title
-        titleLabel.frame = view.frame
-
-        view.addSubview(titleLabel)
-
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: TitleLabelConstraints.top),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: TitleLabelConstraints.leading),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: TitleLabelConstraints.trailing)
-            ])
+        configure(title: title)
+        displayTitleViewOnly = true
     }
 
     /// Public method to remove No Results View from parent view.
@@ -275,7 +265,27 @@ private extension NoResultsViewController {
         }
 
         setAccessoryViewsVisibility()
+        configureForTitleViewOnly()
+
         view.layoutIfNeeded()
+    }
+
+    func configureForTitleViewOnly() {
+
+        guard displayTitleViewOnly == true else {
+            return
+        }
+
+        noResultsView.isHidden = true
+
+        titleLabel.frame = view.frame
+        view.addSubview(titleLabel)
+
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: TitleLabelConstraints.top),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: TitleLabelConstraints.leading),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: TitleLabelConstraints.trailing)
+            ])
     }
 
     func configureSubtitleView() {
