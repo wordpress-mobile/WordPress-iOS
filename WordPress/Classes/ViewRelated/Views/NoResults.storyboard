@@ -97,6 +97,7 @@
                                     <constraint firstAttribute="bottom" secondItem="Mkl-mm-wtH" secondAttribute="bottom" id="33e-F1-6vD"/>
                                     <constraint firstItem="Mkl-mm-wtH" firstAttribute="leading" secondItem="0Ae-eX-ae9" secondAttribute="leading" id="Gn9-QB-PCu"/>
                                     <constraint firstItem="Mkl-mm-wtH" firstAttribute="top" secondItem="0Ae-eX-ae9" secondAttribute="top" id="Jts-ss-Poh"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="360" id="Pgx-Fg-qo8"/>
                                     <constraint firstAttribute="trailing" secondItem="Mkl-mm-wtH" secondAttribute="trailing" id="gZv-Ze-rOt"/>
                                 </constraints>
                             </view>
@@ -104,6 +105,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="x31-wL-G0k" firstAttribute="trailing" secondItem="0Ae-eX-ae9" secondAttribute="trailing" priority="999" constant="38" id="8y0-se-MDj"/>
+                            <constraint firstItem="0Ae-eX-ae9" firstAttribute="centerX" secondItem="x31-wL-G0k" secondAttribute="centerX" id="Qie-JB-M8x"/>
                             <constraint firstItem="0Ae-eX-ae9" firstAttribute="leading" secondItem="x31-wL-G0k" secondAttribute="leading" priority="999" constant="38" id="Yvc-NG-l0P"/>
                             <constraint firstItem="0Ae-eX-ae9" firstAttribute="centerY" secondItem="x31-wL-G0k" secondAttribute="centerY" id="bvr-5b-sAb"/>
                         </constraints>
