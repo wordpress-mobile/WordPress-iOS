@@ -425,7 +425,7 @@ private extension SiteTagsViewController {
         if forNoSearchResults {
             noResultsViewController.configureForNoSearchResults(title: title)
         } else {
-        noResultsViewController.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, accessoryView: accessoryView)
+            noResultsViewController.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, accessoryView: accessoryView)
         }
 
         displayNoResults()
@@ -436,7 +436,9 @@ private extension SiteTagsViewController {
         noResultsViewController.view.frame = tableView.frame
 
         // Since the tableView doesn't always start at the top, adjust the NRV accordingly.
-        if !isSearching {
+        if isSearching {
+            noResultsViewController.view.frame.origin.y = searchController.searchBar.frame.height
+        } else {
             noResultsViewController.view.frame.origin.y = 0
         }
 
