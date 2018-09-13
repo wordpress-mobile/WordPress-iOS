@@ -479,7 +479,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         self.restorationIdentifier = Restoration.restorationIdentifier
         self.restorationClass = type(of: self)
-        self.shouldRemovePostOnDismiss = post.shouldRemoveOnDismiss
+        self.shouldRemovePostOnDismiss = post.hasNeverAttemptedToUpload()
 
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         addObservers(toPost: post)

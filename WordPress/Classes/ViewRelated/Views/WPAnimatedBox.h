@@ -1,4 +1,4 @@
-#import <UIKit/UIKit.h>
+@import UIKit;
 
 @interface WPAnimatedBox : UIView
 
@@ -12,5 +12,10 @@
 ///                             the view.
 ///
 - (void)animateAfterDelay:(NSTimeInterval)delayInSeconds;
+
+/**
+ Advises the box to stop animating once the current loop is complete.
+ */
+- (void)suspendAnimation;
 
 @end

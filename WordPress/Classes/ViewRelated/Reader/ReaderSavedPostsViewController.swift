@@ -14,7 +14,7 @@ final class ReaderSavedPostsViewController: UITableViewController {
         static let height: CGFloat = 44
     }
 
-    fileprivate var noResultsView: WPNoResultsView!
+    private var noResultsViewController = NoResultsViewController.controller()
     fileprivate var footerView: PostListFooterView!
     fileprivate let heightForFooterView = CGFloat(34.0)
     fileprivate let estimatedHeightsCache = NSCache<AnyObject, AnyObject>()
@@ -37,18 +37,11 @@ final class ReaderSavedPostsViewController: UITableViewController {
 
         setupTableView()
         setupFooterView()
-        setupNoResultsView()
         setupContentHandler()
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
         updateAndPerformFetchRequest()
-    }
-
-    public override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        centerResultsStatusViewIfNeeded()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -59,12 +52,6 @@ final class ReaderSavedPostsViewController: UITableViewController {
 
     deinit {
         postCellActions?.clearRemovedPosts()
-    }
-
-    func centerResultsStatusViewIfNeeded() {
-        if noResultsView.isDescendant(of: tableView) {
-            noResultsView.centerInSuperview()
-        }
     }
 
     // MARK: - Setup
@@ -93,10 +80,6 @@ final class ReaderSavedPostsViewController: UITableViewController {
     ///
     fileprivate func updateAndPerformFetchRequest() {
         content.updateAndPerformFetchRequest(predicate: predicateForFetchRequest())
-    }
-
-    fileprivate func setupNoResultsView() {
-        noResultsView = WPNoResultsView()
     }
 
     fileprivate func setupFooterView() {
@@ -164,50 +147,6 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
 
     public func tableViewDidChangeContent(_ tableView: UITableView) {
         refreshNoResultsView()
-    }
-
-    private func refreshNoResultsView() {
-        if content.isEmpty {
-            displayNoResultsView()
-        } else {
-            hideNoResultsView()
-        }
-    }
-
-    private func displayNoResultsView() {
-        if !noResultsView.isDescendant(of: tableView) {
-            tableView.addSubview(withFadeAnimation: noResultsView)
-            noResultsView.translatesAutoresizingMaskIntoConstraints = false
-            tableView.pinSubviewAtCenter(noResultsView)
-        }
-
-        configureNoResultsText()
-
-        noResultsView.isUserInteractionEnabled = false
-        noResultsView.accessoryView = nil
-    }
-
-    private func configureNoResultsText() {
-        noResultsView.titleText = NSLocalizedString("No posts saved – yet!", comment: "Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts.")
-
-        var messageText = NSMutableAttributedString(string: NSLocalizedString("Tap [bookmark-outline] to save a post to your list.", comment: "A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact."))
-
-        // We're setting this once here so that the attributed text
-        // gets the correct font attributes added to it. The font
-        // is used by the attributed string `replace(_:with:)` method
-        // below to correctly position the icon.
-        noResultsView.attributedMessageText = messageText
-        messageText = NSMutableAttributedString(attributedString: noResultsView.attributedMessageText)
-
-        let icon = Gridicon.iconOfType(.bookmarkOutline, withSize: CGSize(width: 18, height: 18))
-        messageText.replace("[bookmark-outline]", with: icon)
-        noResultsView.attributedMessageText = messageText
-
-        noResultsView.accessibilityLabel = NSLocalizedString("No posts saved – yet! Tap the Save Post button to save a post to your list.", comment: "Alternative accessibility text displayed to Voiceover users on the Reader Saved Posts screen.")
-    }
-
-    @objc func hideNoResultsView() {
-        noResultsView.removeFromSuperview()
     }
 
     // MARK: - TableView Related
@@ -303,7 +242,7 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
     ///
     @objc func postInMainContext(_ post: ReaderPost) -> ReaderPost? {
         guard let post = (try? ContextManager.sharedInstance().mainContext.existingObject(with: post.objectID)) as? ReaderPost else {
-            DDLogError("Error retrieving an exsting post from the main context by its object ID.")
+            DDLogError("Error retrieving an existing post from the main context by its object ID.")
             return nil
         }
         return post
@@ -355,6 +294,52 @@ extension ReaderSavedPostsViewController: WPTableViewHandlerDelegate {
 
     public func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
         // Do nothing
+    }
+}
+
+// MARK: - No Results Handling
+
+private extension ReaderSavedPostsViewController {
+
+    func refreshNoResultsView() {
+        noResultsViewController.removeFromView()
+        if content.isEmpty {
+            displayNoResultsView()
+        }
+    }
+
+    func displayNoResultsView() {
+        configureNoResultsText()
+        addChildViewController(noResultsViewController)
+        tableView.addSubview(withFadeAnimation: noResultsViewController.view)
+        noResultsViewController.view.frame = tableView.frame
+
+        // The tableView doesn't start at y = 0, making the No Results View vertically off-center.
+        // So adjust the NRV accordingly.
+        noResultsViewController.view.frame.origin.y -= tableView.frame.origin.y
+
+        noResultsViewController.didMove(toParentViewController: self)
+    }
+
+    func configureNoResultsText() {
+        var messageText = NSMutableAttributedString(string: NoResultsText.subtitleFormat)
+
+        // Get attributed string styled for No Results so it gets the correct font attributes added to it.
+        // The font is used by the attributed string `replace(_:with:)` method below to correctly position the icon.
+        let styledText = noResultsViewController.applyMessageStyleTo(attributedString: messageText)
+        messageText = NSMutableAttributedString(attributedString: styledText)
+
+        let icon = Gridicon.iconOfType(.bookmarkOutline, withSize: CGSize(width: 18, height: 18))
+        messageText.replace("[bookmark-outline]", with: icon)
+
+        noResultsViewController.configure(title: NoResultsText.noResultsTitle, attributedSubtitle: messageText, image: "wp-illustration-empty-results")
+        noResultsViewController.view.accessibilityLabel = NoResultsText.accessibilityLabel
+    }
+
+    struct NoResultsText {
+        static let noResultsTitle = NSLocalizedString("No Saved Posts", comment: "Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts.")
+        static let subtitleFormat = NSLocalizedString("Tap [bookmark-outline] to save a post to your list.", comment: "A hint displayed in the Saved Posts section of the Reader. The '[bookmark-outline]' placeholder will be replaced by an icon at runtime – please leave that string intact.")
+        static let accessibilityLabel = NSLocalizedString("No posts saved – yet! Tap the Save Post button to save a post to your list.", comment: "Alternative accessibility text displayed to Voiceover users on the Reader Saved Posts screen.")
     }
 }
 

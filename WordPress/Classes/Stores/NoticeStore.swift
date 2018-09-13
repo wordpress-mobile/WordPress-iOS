@@ -22,7 +22,7 @@ struct Notice {
 
     /// Style used to configure visual style when displayed
     ///
-    let style: Style
+    let style: NoticeStyle
 
     /// A title for an optional action button that can be displayed as part of
     /// a notice
@@ -32,7 +32,7 @@ struct Notice {
     /// is tapped, if you've provided an action title
     let actionHandler: (() -> Void)?
 
-    init(title: String, message: String? = nil, feedbackType: UINotificationFeedbackType? = nil, notificationInfo: NoticeNotificationInfo? = nil, style: Style = .normal) {
+    init(title: String, message: String? = nil, feedbackType: UINotificationFeedbackType? = nil, notificationInfo: NoticeNotificationInfo? = nil, style: NoticeStyle = NormalNoticeStyle()) {
         self.title = title
         self.message = message
         self.feedbackType = feedbackType
@@ -42,7 +42,7 @@ struct Notice {
         self.style = style
     }
 
-    init(title: String, message: String? = nil, feedbackType: UINotificationFeedbackType? = nil, notificationInfo: NoticeNotificationInfo? = nil, style: Style = .normal, actionTitle: String, actionHandler: @escaping (() -> Void)) {
+    init(title: String, message: String? = nil, feedbackType: UINotificationFeedbackType? = nil, notificationInfo: NoticeNotificationInfo? = nil, style: NoticeStyle = NormalNoticeStyle(), actionTitle: String, actionHandler: @escaping (() -> Void)) {
         self.title = title
         self.message = message
         self.feedbackType = feedbackType
@@ -50,11 +50,6 @@ struct Notice {
         self.actionTitle = actionTitle
         self.actionHandler = actionHandler
         self.style = style
-    }
-
-    public enum Style {
-        case normal
-        case quickStart
     }
 }
 
