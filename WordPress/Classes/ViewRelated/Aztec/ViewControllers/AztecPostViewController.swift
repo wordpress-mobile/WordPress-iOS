@@ -307,7 +307,9 @@ class AztecPostViewController: UIViewController, PostEditor {
             addObservers(toPost: post)
 
             postEditorStateContext = createEditorStateContext(for: post)
-            refreshInterface()
+            if !shouldAutoSave {
+                refreshInterface()
+            }
         }
     }
 
@@ -408,7 +410,10 @@ class AztecPostViewController: UIViewController, PostEditor {
     fileprivate lazy var verificationPromptHelper: AztecVerificationPromptHelper? = {
         return AztecVerificationPromptHelper(account: self.post.blog.account)
     }()
-
+    
+    // Autosaving posts 
+    fileprivate var shouldAutoSave: Bool = false
+    fileprivate lazy var autoSaveDebouncer = Debouncer(delay: 0.5)
 
     // MARK: - Initializers
 
@@ -1018,31 +1023,37 @@ extension AztecPostViewController {
         postEditorStateContext.updated(isBeingPublished: true)
 
         // Finally, publish the post.
-        publishPost() { uploadedPost, error in
-            self.postEditorStateContext.updated(isBeingPublished: false)
-            SVProgressHUD.dismiss()
-
-            let generator = UINotificationFeedbackGenerator()
-            generator.prepare()
-
-            if let error = error {
-                DDLogError("Error publishing post: \(error.localizedDescription)")
-
-                SVProgressHUD.showDismissibleError(withStatus: self.postEditorStateContext.publishErrorText)
-                generator.notificationOccurred(.error)
-            } else if let uploadedPost = uploadedPost {
-                self.post = uploadedPost
-
-                generator.notificationOccurred(.success)
-            }
-
-            if dismissWhenDone {
-                self.dismissOrPopView(didSave: true)
-            } else {
-                self.createRevisionOfPost()
-            }
+        publishPost() { [weak self] uploadedPost, error in
+            self?.shouldAutoSave = false
+            self?.publishPostCompletion(dismissWhenDone: dismissWhenDone, post: uploadedPost, error)
         }
     }
+    
+    fileprivate func publishPostCompletion(dismissWhenDone: Bool, post: AbstractPost?, _ error: Error?) {
+        self.postEditorStateContext.updated(isBeingPublished: false)
+        SVProgressHUD.dismiss()
+        
+        let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
+        
+        if let error = error {
+            DDLogError("Error publishing post: \(error.localizedDescription)")
+            
+            SVProgressHUD.showDismissibleError(withStatus: self.postEditorStateContext.publishErrorText)
+            generator.notificationOccurred(.error)
+        } else if let uploadedPost = post {
+            self.post = uploadedPost
+            
+            generator.notificationOccurred(.success)
+        }
+        
+        if dismissWhenDone {
+            dismissOrPopView(didSave: true)
+        } else {
+            createRevisionOfPost()
+        }
+    }
+
 
     @IBAction func closeWasPressed() {
         cancelEditing()
@@ -1305,7 +1316,13 @@ extension AztecPostViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         mapUIContentToPostAndSave()
         refreshPlaceholderVisibility()
-
+        shouldAutoSave = true
+        autoSaveDebouncer.call()
+        autoSaveDebouncer.callback = { [weak self] in
+            self?.publishPost() { [weak self] uploadedPost, error in
+                self?.publishPostCompletion(dismissWhenDone: false, post: uploadedPost, error)
+            }
+        }
         switch textView {
         case titleTextField:
             updateTitleHeight()
