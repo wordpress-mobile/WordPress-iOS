@@ -6,13 +6,7 @@ class SiteCreationEpilogueViewController: NUXViewController {
 
     // MARK: - Properties
 
-    var siteToShow: Blog? {
-        didSet {
-            if let newBlog = siteToShow {
-                WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: newBlog)
-            }
-        }
-    }
+    var siteToShow: Blog? 
 
     override var prefersStatusBarHidden: Bool {
         return true
@@ -58,12 +52,20 @@ extension SiteCreationEpilogueViewController: NUXButtonViewControllerDelegate {
 
     // 'Write first post' button
     func primaryButtonPressed() {
-        WPTabBarController.sharedInstance().showPostTab()
+        WPTabBarController.sharedInstance().showPostTab() { [weak self] (savedChanges) in
+            guard let siteToShow = self?.siteToShow else {
+                return
+            }
+            WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: siteToShow)
+        }
         navigationController?.dismiss(animated: true, completion: nil)
     }
 
     // 'Configure' button
     func secondaryButtonPressed() {
+        if let siteToShow = siteToShow {
+            WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: siteToShow)
+        }
         navigationController?.dismiss(animated: true, completion: nil)
     }
 }
