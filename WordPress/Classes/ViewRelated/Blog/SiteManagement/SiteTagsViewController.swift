@@ -423,7 +423,7 @@ private extension SiteTagsViewController {
                                       forNoSearchResults: Bool = false) {
 
         if forNoSearchResults {
-            noResultsViewController.configureForNoSearchResults(title: NoResultsText.noResultsTitle + NoResultsText.noResultsTitle)
+            noResultsViewController.configureForNoSearchResults(title: title)
         } else {
         noResultsViewController.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, accessoryView: accessoryView)
         }
