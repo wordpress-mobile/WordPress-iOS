@@ -775,8 +775,6 @@
 		98B24D5F2017E5490082BA78 /* SiteCreationEpilogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B24D5E2017E5490082BA78 /* SiteCreationEpilogueViewController.swift */; };
 		98B33C88202283860071E1E2 /* NoResults.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98B33C87202283860071E1E2 /* NoResults.storyboard */; };
 		98BDFF6B20D0732900C72C58 /* SupportTableViewController+Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BDFF6A20D0732900C72C58 /* SupportTableViewController+Activity.swift */; };
-		98C690282149AEC800FF7AE3 /* NoDataLabelView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98C690272149AEC800FF7AE3 /* NoDataLabelView.xib */; };
-		98C6902A2149AF5E00FF7AE3 /* NoDataLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98C690292149AF5E00FF7AE3 /* NoDataLabelView.swift */; };
 		98D60B9B1FFEE39500145190 /* SiteCreationThemeSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D60B9A1FFEE39500145190 /* SiteCreationThemeSelectionViewController.swift */; };
 		98D60B9E1FFEE3D800145190 /* SiteCreationThemeSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D60B9C1FFEE3D800145190 /* SiteCreationThemeSelectionCell.swift */; };
 		98D60B9F1FFEE3D800145190 /* SiteCreationThemeSelectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D60B9D1FFEE3D800145190 /* SiteCreationThemeSelectionHeaderView.swift */; };
@@ -2470,8 +2468,6 @@
 		98B24D5E2017E5490082BA78 /* SiteCreationEpilogueViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationEpilogueViewController.swift; sourceTree = "<group>"; };
 		98B33C87202283860071E1E2 /* NoResults.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = NoResults.storyboard; sourceTree = "<group>"; };
 		98BDFF6A20D0732900C72C58 /* SupportTableViewController+Activity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SupportTableViewController+Activity.swift"; sourceTree = "<group>"; };
-		98C690272149AEC800FF7AE3 /* NoDataLabelView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoDataLabelView.xib; sourceTree = "<group>"; };
-		98C690292149AF5E00FF7AE3 /* NoDataLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoDataLabelView.swift; sourceTree = "<group>"; };
 		98D60B9A1FFEE39500145190 /* SiteCreationThemeSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationThemeSelectionViewController.swift; sourceTree = "<group>"; };
 		98D60B9C1FFEE3D800145190 /* SiteCreationThemeSelectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationThemeSelectionCell.swift; sourceTree = "<group>"; };
 		98D60B9D1FFEE3D800145190 /* SiteCreationThemeSelectionHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteCreationThemeSelectionHeaderView.swift; sourceTree = "<group>"; };
@@ -3516,7 +3512,6 @@
 		031662E60FFB14C60045D052 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				98C690262149AEB400FF7AE3 /* NoDataLabel */,
 				B572735C1B66CCEF000D1C4F /* AlertView */,
 				5D6C4B0D1B604190005E3C43 /* RichTextView */,
 				E62AFB641DC8E56B007484FC /* WPRichText */,
@@ -5423,15 +5418,6 @@
 				43DC0EF02040B23200896C9C /* SignupUsernameViewController.swift */,
 			);
 			name = "Social Signup";
-			sourceTree = "<group>";
-		};
-		98C690262149AEB400FF7AE3 /* NoDataLabel */ = {
-			isa = PBXGroup;
-			children = (
-				98C690272149AEC800FF7AE3 /* NoDataLabelView.xib */,
-				98C690292149AF5E00FF7AE3 /* NoDataLabelView.swift */,
-			);
-			path = NoDataLabel;
 			sourceTree = "<group>";
 		};
 		98DED29B1FC38DBE00015AE4 /* Select Site Category */ = {
@@ -7511,7 +7497,6 @@
 				FFC6ADD51B56F295002F3C84 /* AboutViewController.xib in Resources */,
 				E1D91456134A853D0089019C /* Localizable.strings in Resources */,
 				B5EEB19F1CA96D19004B6540 /* ImageCropViewController.xib in Resources */,
-				98C690282149AEC800FF7AE3 /* NoDataLabelView.xib in Resources */,
 				5D1D04751B7A50B100CDE646 /* Reader.storyboard in Resources */,
 				82FC61261FA8ADAD00A1757E /* ActivityTableViewCell.xib in Resources */,
 				B5E23BDF19AD0D00000D6879 /* NoteTableViewCell.xib in Resources */,
@@ -8182,7 +8167,6 @@
 				4395A1592106389800844E8E /* QuickStartTours.swift in Sources */,
 				E1DD4CCB1CAE41B800C3863E /* PagedViewController.swift in Sources */,
 				B549BA681CF7447E0086C608 /* InvitePersonViewController.swift in Sources */,
-				98C6902A2149AF5E00FF7AE3 /* NoDataLabelView.swift in Sources */,
 				B535209B1AF7BBB800B33BA8 /* PushAuthenticationManager.swift in Sources */,
 				319D6E8119E44C680013871C /* SuggestionsTableView.m in Sources */,
 				40E728851FF3D9070010E7C9 /* PluginDetailViewHeaderCell.swift in Sources */,
