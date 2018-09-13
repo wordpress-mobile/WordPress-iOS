@@ -2,6 +2,7 @@ import Foundation
 import CocoaLumberjack
 import WordPressShared
 
+
 class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
 
     fileprivate static let pageSectionHeaderHeight = CGFloat(24.0)
@@ -409,7 +410,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         let trashButtonTitle = NSLocalizedString("Move to Trash", comment: "Label for a button that moves a page to the trash folder")
         let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Label for a cancel button")
         let deleteButtonTitle = NSLocalizedString("Delete Permanently", comment: "Label for a button permanently deletes a page.")
-        let setParentButtonTitle = NSLocalizedString("Set Parent", comment: "Label for a button that opens the Set Parent options view controller")
 
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addCancelActionWithTitle(cancelButtonTitle, handler: nil)
@@ -465,11 +465,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                     strongSelf.viewPost(page)
                 })
 
-                alertController.addActionWithTitle(setParentButtonTitle, style: .default, handler: { [weak self] (action) in
-                    if let page = self?.pageForObjectID(objectID) {
-                        self?.setParent(for: page, at: indexPath)
-                    }
-                })
+                addSetParentAction(to: alertController, for: page, at: indexPath)
 
                 alertController.addActionWithTitle(draftButtonTitle, style: .default, handler: { [weak self] (action) in
                     guard let strongSelf = self,
@@ -509,11 +505,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
                     strongSelf.viewPost(page)
                 })
 
-                alertController.addActionWithTitle(setParentButtonTitle, style: .default, handler: { [weak self] (action) in
-                    if let page = self?.pageForObjectID(objectID) {
-                        self?.setParent(for: page, at: indexPath)
-                    }
-                })
+                addSetParentAction(to: alertController, for: page, at: indexPath)
 
                 alertController.addActionWithTitle(publishButtonTitle, style: .default, handler: { [weak self] (action) in
                     guard let strongSelf = self,
@@ -545,6 +537,22 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
             presentationController.sourceView = button
             presentationController.sourceRect = button.bounds
         }
+    }
+
+    private func addSetParentAction(to controller: UIAlertController, for page: AbstractPost, at index: IndexPath?) {
+        /// This button is disabled for self-hosted sites
+        //
+        guard blog.supports(.wpComRESTAPI) else {
+            return
+        }
+
+        let objectID = page.objectID
+        let setParentButtonTitle = NSLocalizedString("Set Parent", comment: "Label for a button that opens the Set Parent options view controller")
+        controller.addActionWithTitle(setParentButtonTitle, style: .default, handler: { [weak self] (action) in
+            if let page = self?.pageForObjectID(objectID) {
+                self?.setParent(for: page, at: index)
+            }
+        })
     }
 
     private func setParent(for page: Page, at index: IndexPath?) {
