@@ -236,7 +236,7 @@ private extension ReaderSiteSearchViewController {
                                    subtitle: String? = nil,
                                    accessoryView: UIView? = nil) {
 
-        statusViewController.configure(title: title, subtitle: subtitle, image: "wp-illustration-empty-results", accessoryView: accessoryView)
+        statusViewController.configure(title: title, subtitle: subtitle, accessoryView: accessoryView)
         showStatusView()
     }
 
