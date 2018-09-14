@@ -1043,7 +1043,6 @@ extension AztecPostViewController {
             generator.notificationOccurred(.error)
         } else if let uploadedPost = post {
             self.post = uploadedPost
-            
             generator.notificationOccurred(.success)
         }
         
@@ -1316,13 +1315,19 @@ extension AztecPostViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         mapUIContentToPostAndSave()
         refreshPlaceholderVisibility()
-        shouldAutoSave = true
-        autoSaveDebouncer.call()
-        autoSaveDebouncer.callback = { [weak self] in
-            self?.publishPost() { [weak self] uploadedPost, error in
-                self?.publishPostCompletion(dismissWhenDone: false, post: uploadedPost, error)
+        if post.hasLocalChanges() && textView.text.count > 1 {
+            if !post.hasRemote() {
+                post.status = .draft
+                shouldAutoSave = true
+                autoSaveDebouncer.call()
+                autoSaveDebouncer.callback = { [weak self] in
+                    self?.publishPost() { [weak self] uploadedPost, error in
+                        self?.publishPostCompletion(dismissWhenDone: false, post: uploadedPost, error)
+                    }
+                }
             }
         }
+
         switch textView {
         case titleTextField:
             updateTitleHeight()
