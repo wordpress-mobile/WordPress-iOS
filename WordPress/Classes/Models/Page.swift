@@ -4,13 +4,13 @@ import CoreData
 @objc (Page)
 class Page: AbstractPost {
     /// Returns if the Page has a visible parent Page
-    var hasVisibleParent: Bool = true
+    @objc var hasVisibleParent: Bool = true
 
     /// The hierarchy index within a Pages list
-    var hierarchyIndex: Int = 0
+    @objc var hierarchyIndex: Int = 0
 
     /// Returns if the Page is a top level
-    var isTopLevelPage: Bool {
+    @objc var isTopLevelPage: Bool {
         return parentID == nil
     }
 
