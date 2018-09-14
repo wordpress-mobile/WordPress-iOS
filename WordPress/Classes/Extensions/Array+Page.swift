@@ -65,9 +65,9 @@ extension Array where Element == Page {
             if $0.hasVisibleParent {
                 $0.hierarchyIndex = 0
             } else {
-                let parentIndex = index - 1
-                let parent = self[parentIndex]
-                $0.hierarchyIndex = ($0.parentID?.intValue == parent.parentID?.intValue) ? parentIndex : parent.hierarchyIndex + 1
+                let parentId = $0.parentID?.intValue
+                let parent = self.reversed().first { parentId == $0.postID?.intValue }
+                $0.hierarchyIndex = (parent != nil) ? parent!.hierarchyIndex + 1 : index
             }
 
             index += 1
