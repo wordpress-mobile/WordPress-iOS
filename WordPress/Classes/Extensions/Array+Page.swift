@@ -76,6 +76,18 @@ extension Array where Element == Page {
         return self
     }
 
+    /// Sort and set indexes for a hierarchy list
+    ///
+    /// - Returns: An Array of Elements
+    func hierarchySort() -> [Element] {
+        return map {
+            $0.hasVisibleParent = !$1.containsPage(for: $0.parentID?.intValue)
+            return $0
+            }
+            .sort()
+            .hierachyIndexes()
+    }
+
     /// Remove Elements from a specific index
     ///
     /// - Parameter index: The starting index
