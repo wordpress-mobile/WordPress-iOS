@@ -1023,7 +1023,7 @@ extension AztecPostViewController {
         postEditorStateContext.updated(isBeingPublished: true)
 
         // Finally, publish the post.
-        publishPost() { [weak self] uploadedPost, error in
+        publishPost { [weak self] uploadedPost, error in
             self?.shouldAutoSave = false
             self?.publishPostCompletion(dismissWhenDone: dismissWhenDone, post: uploadedPost, error)
         }
@@ -1321,7 +1321,7 @@ extension AztecPostViewController: UITextViewDelegate {
                 shouldAutoSave = true
                 autoSaveDebouncer.call()
                 autoSaveDebouncer.callback = { [weak self] in
-                    self?.publishPost() { [weak self] uploadedPost, error in
+                    self?.publishPost { [weak self] uploadedPost, error in
                         self?.publishPostCompletion(dismissWhenDone: false, post: uploadedPost, error)
                     }
                 }
