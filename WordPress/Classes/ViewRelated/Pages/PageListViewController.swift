@@ -20,6 +20,23 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return footer
     }()
 
+    @objc private lazy var _tableViewHandler: PageListTableViewHandler = {
+        let tableViewHandler = PageListTableViewHandler(tableView: self.tableView)
+        tableViewHandler.cacheRowHeights = false
+        tableViewHandler.delegate = self
+        tableViewHandler.listensForContentChanges = false
+        tableViewHandler.updateRowAnimation = .none
+        return tableViewHandler
+    }()
+
+    override var tableViewHandler: WPTableViewHandler {
+        get {
+            return _tableViewHandler
+        } set {
+            super.tableViewHandler = newValue
+        }
+    }
+
     // MARK: - GUI
 
     @IBOutlet weak var filterTabBarTopConstraint: NSLayoutConstraint!
@@ -83,7 +100,15 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         title = NSLocalizedString("Site Pages", comment: "Title of the screen showing the list of pages for a blog.")
 
         configureFilterBarTopConstraint()
+        updateAndPerformFetchRequest()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        _tableViewHandler.refreshTableView()
+    }
+
 
     // MARK: - Configuration
 
@@ -142,6 +167,21 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return blog?.lastPagesSync
     }
 
+    override func selectedFilterDidChange(_ filterBar: FilterTabBar) {
+        filterSettings.setCurrentFilterIndex(filterBar.selectedIndex)
+        _tableViewHandler.status = filterSettings.currentPostListFilter().filterType
+        _tableViewHandler.refreshTableView()
+
+        super.selectedFilterDidChange(filterBar)
+    }
+
+    override func updateAndPerformFetchRequest() {
+        super.updateAndPerformFetchRequest()
+
+        _tableViewHandler.refreshTableView()
+    }
+
+
     // MARK: - Model Interaction
 
     /// Retrieves the page object at the specified index path.
@@ -151,17 +191,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     /// - Returns: the requested page.
     ///
     fileprivate func pageAtIndexPath(_ indexPath: IndexPath) -> Page {
-        guard let page = tableViewHandler.resultsController.object(at: indexPath) as? Page else {
-            // Retrieveing anything other than a post object means we have an app with an invalid
-            // state.  Ignoring this error would be counter productive as we have no idea how this
-            // can affect the App.  This controlled interruption is intentional.
-            //
-            // - Diego Rey Mendez, May 18 2016
-            //
-            fatalError("Expected a Page object.")
-        }
-
-        return page
+        return _tableViewHandler.page(at: indexPath)
     }
 
     // MARK: - TableView Handler Delegate Methods
@@ -169,7 +199,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     override func entityName() -> String {
         return String(describing: Page.self)
     }
-
 
     override func predicateForFetchRequest() -> NSPredicate {
         var predicates = [NSPredicate]()
@@ -210,18 +239,23 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard _tableViewHandler.groupResults else {
+            return 0.0
+        }
         return type(of: self).pageSectionHeaderHeight
     }
-
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section == tableView.numberOfSections - 1 {
             return WPDeviceIdentification.isRetina() ? 0.5 : 1.0
         }
         return 0.0
     }
-
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
-        let sectionInfo = tableViewHandler.resultsController.sections?[section]
+        guard _tableViewHandler.groupResults else {
+            return UIView(frame: .zero)
+        }
+
+        let sectionInfo = _tableViewHandler.resultsController.sections?[section]
         let nibName = String(describing: PageListSectionHeaderView.self)
         let headerView = Bundle.main.loadNibNamed(nibName, owner: nil, options: nil)![0] as! PageListSectionHeaderView
 
@@ -556,25 +590,15 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     private func setParent(for page: Page, at index: IndexPath?) {
-        /// This implementation is temporary
-        //
         guard let index = index else {
             return
         }
 
-        guard let results = tableViewHandler.resultsController.fetchedObjects as? [Page] else {
-            return
-        }
-
         let selectedPage = pageAtIndexPath(index)
-        let rows = results.map {
-            $0.hasVisibleParent = !$1.containsPage(for: $0.parentID?.intValue)
-            return $0
-            }.sort()
-        guard let newIndex = rows.index(of: selectedPage) else {
+        guard let newIndex = _tableViewHandler.index(for: selectedPage) else {
             return
         }
-        let parentPageNavigationController = ParentPageSettingsViewController.navigationController(with: rows.remove(from: newIndex),
+        let parentPageNavigationController = ParentPageSettingsViewController.navigationController(with: _tableViewHandler.removePage(from: newIndex),
                                                                                                    selectedPage: selectedPage)
         present(parentPageNavigationController, animated: true, completion: nil)
     }
