@@ -4,9 +4,7 @@ import Foundation
 class PageListTableViewHandler: WPTableViewHandler {
     var isSearching: Bool = false
     var status: PostListFilter.Status = .published
-
-    private var pages: [Page] = []
-    private var groupResults: Bool {
+    var groupResults: Bool {
         if isSearching {
             return true
         }
@@ -17,6 +15,28 @@ class PageListTableViewHandler: WPTableViewHandler {
         }
     }
 
+    private var pages: [Page] = []
+
+    private lazy var publishedResultController: NSFetchedResultsController<NSFetchRequestResult> = {
+        guard let moc = self.managedObjectContext() else {
+            fatalError("A request and a context must exist")
+        }
+
+        let publishedFilter = PostListFilter.publishedFilter()
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Page.entityName())
+        fetchRequest.predicate = publishedFilter.predicateForFetchRequest
+        fetchRequest.sortDescriptors = publishedFilter.sortDescriptors
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+
+        do {
+            try controller.performFetch()
+        } catch {
+            DDLogError("Error fetching pages after refreshing the table: \(error)")
+        }
+
+        return controller
+    }()
+
     private lazy var groupedResultsController: NSFetchedResultsController<NSFetchRequestResult> = {
         let keyPath = self.sectionNameKeyPath()
         guard let fetchRequest = self.fetchRequest(), let moc = self.managedObjectContext() else {
@@ -25,7 +45,12 @@ class PageListTableViewHandler: WPTableViewHandler {
 
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: keyPath, cacheName: nil)
 
-        try! controller.performFetch()
+        do {
+            try controller.performFetch()
+        } catch {
+            DDLogError("Error fetching pages after refreshing the table: \(error)")
+        }
+
         return controller
     }()
 
@@ -36,17 +61,20 @@ class PageListTableViewHandler: WPTableViewHandler {
 
         let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
 
-        try! controller.performFetch()
+        do {
+            try controller.performFetch()
+        } catch {
+            DDLogError("Error fetching pages after refreshing the table: \(error)")
+        }
+
         return controller
     }()
 
     override var resultsController: NSFetchedResultsController<NSFetchRequestResult> {
         switch status {
-        case .scheduled:
-            return groupedResultsController
-
-        default:
-            return flatResultsController
+        case .scheduled: return groupedResultsController
+        case .published: return publishedResultController
+        default: return flatResultsController
         }
     }
 
@@ -55,7 +83,7 @@ class PageListTableViewHandler: WPTableViewHandler {
 
         do {
             try resultsController.performFetch()
-            setupPages()
+            pages = setupPages()
         } catch {
             DDLogError("Error fetching pages after refreshing the table: \(error)")
         }
@@ -89,6 +117,17 @@ class PageListTableViewHandler: WPTableViewHandler {
     }
 
     func removePage(from index: Int) -> [Page] {
+        if status != .published {
+            do {
+                try publishedResultController.performFetch()
+                if let pages = publishedResultController.fetchedObjects as? [Page] {
+                    return pages.hierarchySort()
+                }
+            } catch {
+                DDLogError("Error fetching pages after refreshing the table: \(error)")
+            }
+        }
+
         return pages.remove(from: index)
     }
 
@@ -118,20 +157,11 @@ class PageListTableViewHandler: WPTableViewHandler {
         return delegate?.sectionNameKeyPath!()
     }
 
-    private func setupPages() {
+    private func setupPages() -> [Page] {
         guard !groupResults, let pages = resultsController.fetchedObjects as? [Page] else {
-            return
+            return []
         }
 
-        if status == .published {
-            self.pages = pages.map {
-                $0.hasVisibleParent = !$1.containsPage(for: $0.parentID?.intValue)
-                return $0
-                }
-                .sort()
-                .hierachyIndexes()
-        } else {
-            self.pages = pages
-        }
+        return status == .published ? pages.hierarchySort() : pages
     }
 }
