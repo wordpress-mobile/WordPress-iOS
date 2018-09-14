@@ -228,6 +228,7 @@ private extension NoResultsViewController {
         subtitleTextView.isHidden = !showSubtitle
         subtitleImageView.isHidden = !hasSubtitleImage
         subtitleImageView.tintColor = titleLabel.textColor
+        configureSubtitleView()
 
         if let buttonText = buttonText {
             configureButton()
@@ -254,6 +255,12 @@ private extension NoResultsViewController {
 
         setAccessoryViewsVisibility()
         view.layoutIfNeeded()
+    }
+
+    func configureSubtitleView() {
+        // remove the extra space iOS puts on a UITextView
+        subtitleTextView.textContainerInset = UIEdgeInsets.zero
+        subtitleTextView.textContainer.lineFragmentPadding = 0
     }
 
     func configureButton() {
