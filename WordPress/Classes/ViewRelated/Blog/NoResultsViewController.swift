@@ -330,7 +330,7 @@ private extension NoResultsViewController {
 
     // MARK: - Button Handling
 
-    @IBAction func actionButtonPressed(_ sender: Any) {
+    @IBAction func actionButtonPressed(_ sender: UIButton) {
         delegate?.actionButtonPressed?()
     }
 
