@@ -265,7 +265,7 @@ private extension ReaderFollowedSitesViewController {
         if isSyncing {
             noResultsViewController.configure(title: NoResultsText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
         } else {
-            noResultsViewController.configure(title: NoResultsText.noResultsTitle, subtitle: NoResultsText.noResultsMessage, image: "wp-illustration-empty-results")
+            noResultsViewController.configure(title: NoResultsText.noResultsTitle, subtitle: NoResultsText.noResultsMessage)
         }
 
         showNoResultView()
