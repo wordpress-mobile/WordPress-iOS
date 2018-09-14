@@ -4,7 +4,7 @@ import WordPressShared
 struct PlanDetailViewModel {
     let plan: Plan
     let siteID: Int
-    let activePlan: Plan
+    var activePlan: Plan?
 
     /// Plan price. Empty string for a free plan
     let price: String
@@ -82,6 +82,9 @@ struct PlanDetailViewModel {
     }
 
     fileprivate var purchaseAvailability: PurchaseAvailability {
+        guard let activePlan = activePlan else {
+            return PurchaseAvailability.unavailable
+        }
         return StoreKitCoordinator.instance.purchaseAvailability(forPlan: plan, siteID: siteID, activePlan: activePlan)
     }
 

@@ -22,7 +22,7 @@ class PlanComparisonViewController: PagedViewController {
 
     @objc let siteID: Int
     let pricedPlans: [PricedPlan]
-    let activePlan: Plan
+    var activePlan: Plan?
     let initialPlan: Plan
     let service: PlanService<StoreKitStore>
 
