@@ -38,7 +38,13 @@ import WordPressShared
     private var subtitleImageName: String?
     private var accessorySubview: UIView?
     private var hideImage = false
+
     private var displayTitleViewOnly = false
+    // To adjust title view on rotation.
+    private var titleLabelLeadingConstraint: NSLayoutConstraint?
+    private var titleLabelTrailingConstraint: NSLayoutConstraint?
+    private var titleLabelCenterXConstraint: NSLayoutConstraint?
+    private var titleLabelMaxWidthConstraint: NSLayoutConstraint?
 
     // MARK: - View
 
@@ -67,6 +73,12 @@ import WordPressShared
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         setAccessoryViewsVisibility()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        DispatchQueue.main.async {
+            self.configureTitleViewConstraints()
+        }
     }
 
     /// Public method to get controller instance and set view values.
@@ -277,15 +289,54 @@ private extension NoResultsViewController {
         }
 
         noResultsView.isHidden = true
-
         titleLabel.frame = view.frame
         view.addSubview(titleLabel)
+        configureTitleViewConstraints()
+    }
 
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: TitleLabelConstraints.top),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: TitleLabelConstraints.leading),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: TitleLabelConstraints.trailing)
-            ])
+    func configureTitleViewConstraints() {
+
+        guard displayTitleViewOnly == true else {
+            return
+        }
+
+        resetTitleViewConstraints()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        let availableWidth = view.frame.width - TitleLabelConstraints.leading + TitleLabelConstraints.trailing
+
+        if availableWidth < TitleLabelConstraints.maxWidth {
+            guard let titleLabelLeadingConstraint = titleLabelLeadingConstraint,
+                let titleLabelTrailingConstraint = titleLabelTrailingConstraint else {
+                    return
+            }
+
+            activateTitleViewConstraints([titleLabelLeadingConstraint, titleLabelTrailingConstraint])
+        } else {
+            guard let titleLabelMaxWidthConstraint = titleLabelMaxWidthConstraint,
+                let titleLabelCenterXConstraint = titleLabelCenterXConstraint else {
+                    return
+            }
+
+            activateTitleViewConstraints([titleLabelMaxWidthConstraint, titleLabelCenterXConstraint])
+        }
+    }
+
+    func resetTitleViewConstraints() {
+        titleLabelTrailingConstraint?.isActive = false
+        titleLabelLeadingConstraint?.isActive = false
+        titleLabelMaxWidthConstraint?.isActive = false
+        titleLabelCenterXConstraint?.isActive = false
+
+        titleLabelLeadingConstraint = titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: TitleLabelConstraints.leading)
+        titleLabelTrailingConstraint = titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: TitleLabelConstraints.trailing)
+        titleLabelCenterXConstraint = titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        titleLabelMaxWidthConstraint = titleLabel.widthAnchor.constraint(lessThanOrEqualToConstant: TitleLabelConstraints.maxWidth)
+    }
+
+    func activateTitleViewConstraints(_ activeConstraints: [NSLayoutConstraint]) {
+        let constraints = activeConstraints + [titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: TitleLabelConstraints.top)]
+        NSLayoutConstraint.activate(constraints)
     }
 
     func configureSubtitleView() {
@@ -363,6 +414,7 @@ private extension NoResultsViewController {
         static let top = CGFloat(64)
         static let leading = CGFloat(38)
         static let trailing = CGFloat(-38)
+        static let maxWidth = CGFloat(360)
     }
 
     // MARK: - Button Handling
