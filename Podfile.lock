@@ -36,16 +36,16 @@ PODS:
   - Gifu (3.1.0)
   - GiphyCoreSDK (1.2.0)
   - GoogleSignInRepacked (4.1.2):
-    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
-    - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
+    - GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)
+    - GoogleToolboxForMac/NSString+URLArguments (~> 2.1)
   - GoogleToolboxForMac/DebugUtils (2.1.4):
     - GoogleToolboxForMac/Defines (= 2.1.4)
   - GoogleToolboxForMac/Defines (2.1.4)
-  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.1.4)":
+  - GoogleToolboxForMac/NSDictionary+URLArguments (2.1.4):
     - GoogleToolboxForMac/DebugUtils (= 2.1.4)
     - GoogleToolboxForMac/Defines (= 2.1.4)
-    - "GoogleToolboxForMac/NSString+URLArguments (= 2.1.4)"
-  - "GoogleToolboxForMac/NSString+URLArguments (2.1.4)"
+    - GoogleToolboxForMac/NSString+URLArguments (= 2.1.4)
+  - GoogleToolboxForMac/NSString+URLArguments (2.1.4)
   - Gridicons (0.16)
   - HockeySDK (5.1.2):
     - HockeySDK/DefaultLib (= 5.1.2)
@@ -82,7 +82,7 @@ PODS:
     - MRProgress/Helper
   - Nimble (7.1.3)
   - NSObject-SafeExpectations (0.0.3)
-  - "NSURL+IDN (0.3)"
+  - NSURL+IDN (0.3)
   - OCMock (3.4.2)
   - OHHTTPStubs (6.1.0):
     - OHHTTPStubs/Default (= 6.1.0)
@@ -113,7 +113,7 @@ PODS:
     - GoogleSignInRepacked (= 4.1.2)
     - Gridicons (~> 0.15)
     - lottie-ios (= 2.5.0)
-    - "NSURL+IDN (= 0.3)"
+    - NSURL+IDN (= 0.3)
     - SVProgressHUD (= 2.2.5)
     - UIDeviceIdentifier (~> 0.4)
     - WordPressKit (~> 1.0)
@@ -161,7 +161,7 @@ DEPENDENCIES:
   - MRProgress (= 0.8.3)
   - Nimble (~> 7.1.1)
   - NSObject-SafeExpectations (= 0.0.3)
-  - "NSURL+IDN (= 0.3)"
+  - NSURL+IDN (= 0.3)
   - OCMock (~> 3.4)
   - OHHTTPStubs (= 6.1.0)
   - OHHTTPStubs/Swift (= 6.1.0)
@@ -177,44 +177,6 @@ DEPENDENCIES:
   - WPMediaPicker (= 1.3)
   - wpxmlrpc (= 0.8.3)
   - ZendeskSDK (= 2.1.0)
-
-SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
-    - 1PasswordExtension
-    - AFNetworking
-    - Alamofire
-    - BuddyBuildSDK
-    - CocoaLumberjack
-    - Crashlytics
-    - Fabric
-    - FormatterKit
-    - Gifu
-    - GiphyCoreSDK
-    - GoogleSignInRepacked
-    - GoogleToolboxForMac
-    - Gridicons
-    - HockeySDK
-    - lottie-ios
-    - MGSwipeTableCell
-    - MRProgress
-    - Nimble
-    - NSObject-SafeExpectations
-    - "NSURL+IDN"
-    - OCMock
-    - OHHTTPStubs
-    - Reachability
-    - Starscream
-    - SVProgressHUD
-    - UIDeviceIdentifier
-    - WordPress-Aztec-iOS
-    - WordPress-Editor-iOS
-    - WordPressAuthenticator
-    - WordPressKit
-    - WordPressShared
-    - WordPressUI
-    - WPMediaPicker
-    - wpxmlrpc
-    - ZendeskSDK
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
@@ -247,7 +209,7 @@ SPEC CHECKSUMS:
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
   Nimble: 2839b01d1b31f6a6a7777a221f0d91cf52e8e27b
   NSObject-SafeExpectations: b989b68a8a9b7b9f2b264a8b52ba9d7aab8f3129
-  "NSURL+IDN": 82355a0afd532fe1de08f6417c134b49b1a1c4b3
+  NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: ebe9ee1dca7fbed0ff9193ac0b3e2d8862ea56f6
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
@@ -266,4 +228,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: d08615d60b668dfbf99e70a4e11e3869879ca70d
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.3.1
