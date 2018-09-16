@@ -487,11 +487,11 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         // The debouncer will perform this callback every 500ms in order to save the post locally with a delay.
         debouncer.callback = { [weak self] in
-            guard let StrongSelf = self else {
+            guard let strongSelf = self else {
                 assertionFailure("self was nil while trying to save a post using Debouncer")
                 return
             }
-            ContextManager.sharedInstance().save(StrongSelf.post.managedObjectContext!)
+            ContextManager.sharedInstance().save(strongSelf.post.managedObjectContext!)
         }
     }
 
