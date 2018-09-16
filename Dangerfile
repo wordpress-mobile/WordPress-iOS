@@ -17,3 +17,5 @@ target_release_branch = github.branch_for_base.start_with? "release"
 has_modified_model = git.modified_files.include? "WordPress/Classes/WordPress.xcdatamodeld/*/contents"
 
 warn("Core Data: Do not edit an existing model in a release branch unless it hasn't been released to testers yet. Instead create a new model version and merge back to develop soon.") if has_modified_model
+
+swiftlint.lint_files inline_mode: true, fail_on_error: true
