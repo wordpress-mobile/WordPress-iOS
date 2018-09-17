@@ -86,3 +86,28 @@ public struct IncrementalDelay<Element> {
         current = iterator.next()!
     }
 }
+
+/// A helper struct that encapsulates an IncrementalDelay and DispatchDelayedAction, keeping track of current retryAttempt.
+///
+struct DelayStateWrapper {
+    let actionBlock: () -> Void
+
+    var delayCounter: IncrementalDelay<Int>
+    var retryAttempt: Int
+    var delayedRetryAction: DispatchDelayedAction
+
+    init(delaySequence: [Int], actionBlock: @escaping () -> Void) {
+        self.delayCounter = IncrementalDelay(delaySequence)
+        self.actionBlock = actionBlock
+        self.retryAttempt = 0
+        self.delayedRetryAction = DispatchDelayedAction(delay: .seconds(delayCounter.current), action: actionBlock)
+    }
+
+    mutating func increment() {
+        delayCounter.increment()
+        delayedRetryAction.cancel()
+
+        retryAttempt += 1
+        delayedRetryAction = DispatchDelayedAction(delay: .seconds(delayCounter.current), action: actionBlock)
+    }
+}

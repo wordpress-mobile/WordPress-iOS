@@ -27,23 +27,13 @@ class FormattableUserContent: NotificationTextContent {
     private var metaIds: [String: AnyObject]? {
         return meta?[Constants.MetaKeys.Ids] as? [String: AnyObject]
     }
-}
 
-extension FormattableUserContent: ActionableObject {
     var notificationID: String? {
         return parent.notificationIdentifier
     }
 
     var metaSiteID: NSNumber? {
         return metaIds?[Constants.MetaKeys.Site] as? NSNumber
-    }
-
-    var metaCommentID: NSNumber? {
-        return nil
-    }
-
-    var isCommentApproved: Bool {
-        return false
     }
 }
 

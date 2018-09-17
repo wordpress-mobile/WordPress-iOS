@@ -286,7 +286,8 @@ static NSInteger HideSearchMinSites = 3;
                                                  buttonTitle:NSLocalizedString(@"Add new site","Title of button to add a new site.")
                                                     subtitle:nil
                                           attributedSubtitle:nil
-                                                       image:nil
+                                                       image:@"mysites-nosites"
+                                               subtitleImage:nil
                                                accessoryView:nil];
         [self addNoResultsToView];
     }
@@ -305,20 +306,23 @@ static NSInteger HideSearchMinSites = 3;
     NSString *multipleSubtitle = NSLocalizedString(@"To manage them here, set them to visible.", @"Prompt asking user to make sites visible in order to use them in the app (plural)");
     
     NSString *buttonTitle = NSLocalizedString(@"Change Visibility", @"Button title to edit visibility of sites.");
-    
+    NSString *imageName = @"mysites-nosites";
+
     if (count == 1) {
         [self.noResultsViewController configureWithTitle:singularTitle
                                              buttonTitle:buttonTitle
                                                 subtitle:singularSubtitle
                                       attributedSubtitle:nil
-                                                   image:nil
+                                                   image:imageName
+                                           subtitleImage:nil
                                            accessoryView:nil];
     } else {
         [self.noResultsViewController configureWithTitle:multipleTitle
                                              buttonTitle:buttonTitle
                                                 subtitle:multipleSubtitle
                                       attributedSubtitle:nil
-                                                   image:nil
+                                                   image:imageName
+                                           subtitleImage:nil
                                            accessoryView:nil];
     }
 

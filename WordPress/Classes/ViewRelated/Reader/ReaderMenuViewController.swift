@@ -421,6 +421,11 @@ import WordPressShared
         dismiss(animated: true, completion: nil)
     }
 
+    func deselectSelectedRow(animated: Bool) {
+        tableView.deselectSelectedRowWithAnimation(animated)
+        restorableSelectedIndexPath = defaultIndexPath
+    }
+
     // MARK: - Tag Wrangling
 
 
@@ -546,7 +551,6 @@ import WordPressShared
         configureCell(cell, atIndexPath: indexPath)
         return cell
     }
-
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let menuItem = viewModel.menuItemAtIndexPath(indexPath) else {

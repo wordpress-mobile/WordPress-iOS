@@ -13,18 +13,19 @@ final class LikeCommentActionTests: XCTestCase {
         var likeWasCalled: Bool = false
         var unlikeWasCalled: Bool = false
 
-        override func likeCommentWithBlock(_ block: ActionableObject, completion: ((Bool) -> Void)?) {
+        override func likeCommentWithBlock(_ block: FormattableCommentContent, completion: ((Bool) -> Void)?) {
             likeWasCalled = true
             completion?(true)
         }
 
-        override func unlikeCommentWithBlock(_ block: ActionableObject, completion: ((Bool) -> Void)?) {
+        override func unlikeCommentWithBlock(_ block: FormattableCommentContent, completion: ((Bool) -> Void)?) {
             unlikeWasCalled = true
             completion?(true)
         }
     }
 
     private var action: LikeComment?
+    private let utility = NotificationUtility()
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -32,6 +33,7 @@ final class LikeCommentActionTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        utility.setUp()
         action = TestableLikeComment(on: Constants.initialStatus)
         makeNetworkAvailable()
     }
@@ -39,6 +41,7 @@ final class LikeCommentActionTests: XCTestCase {
     override func tearDown() {
         action = nil
         makeNetworkUnavailable()
+        utility.tearDown()
         super.tearDown()
     }
 
@@ -91,7 +94,7 @@ final class LikeCommentActionTests: XCTestCase {
     func testExecuteCallsUnlikeWhenIconIsOn() {
         action?.on = true
 
-        action?.execute(context: mockActionContext())
+        action?.execute(context: utility.mockCommentContext())
 
         guard let mockService = action?.actionsService as? MockNotificationActionsService else {
             XCTFail()
@@ -104,7 +107,7 @@ final class LikeCommentActionTests: XCTestCase {
     func testExecuteUpdatesIconTitleWhenIconIsOn() {
         action?.on = true
 
-        action?.execute(context: mockActionContext())
+        action?.execute(context: utility.mockCommentContext())
 
         XCTAssertEqual(action?.icon?.titleLabel?.text, LikeComment.TitleStrings.like)
     }
@@ -112,7 +115,7 @@ final class LikeCommentActionTests: XCTestCase {
     func testExecuteUpdatesIconAccessibilityLabelWhenIconIsOn() {
         action?.on = true
 
-        action?.execute(context: mockActionContext())
+        action?.execute(context: utility.mockCommentContext())
 
         XCTAssertEqual(action?.icon?.accessibilityLabel, LikeComment.TitleStrings.like)
     }
@@ -120,7 +123,7 @@ final class LikeCommentActionTests: XCTestCase {
     func testExecuteUpdatesIconAccessibilityHintWhenIconIsOn() {
         action?.on = true
 
-        action?.execute(context: mockActionContext())
+        action?.execute(context: utility.mockCommentContext())
 
         XCTAssertEqual(action?.icon?.accessibilityHint, LikeComment.TitleHints.like)
     }
@@ -128,7 +131,7 @@ final class LikeCommentActionTests: XCTestCase {
     func testExecuteCallsLikeWhenIconIsOff() {
         action?.on = false
 
-        action?.execute(context: mockActionContext())
+        action?.execute(context: utility.mockCommentContext())
 
         guard let mockService = action?.actionsService as? MockNotificationActionsService else {
             XCTFail()
@@ -141,7 +144,7 @@ final class LikeCommentActionTests: XCTestCase {
     func testExecuteUpdatesIconTitleWhenIconIsOff() {
         action?.on = false
 
-        action?.execute(context: mockActionContext())
+        action?.execute(context: utility.mockCommentContext())
 
         XCTAssertEqual(action?.icon?.titleLabel?.text, LikeComment.TitleStrings.unlike)
     }
@@ -149,7 +152,7 @@ final class LikeCommentActionTests: XCTestCase {
     func testExecuteUpdatesIconAccessibilityLabelWhenIconIsOff() {
         action?.on = false
 
-        action?.execute(context: mockActionContext())
+        action?.execute(context: utility.mockCommentContext())
 
         XCTAssertEqual(action?.icon?.accessibilityLabel, LikeComment.TitleStrings.unlike)
     }
@@ -157,7 +160,7 @@ final class LikeCommentActionTests: XCTestCase {
     func testExecuteUpdatesIconAccessibilityHintWhenIconIsOff() {
         action?.on = false
 
-        action?.execute(context: mockActionContext())
+        action?.execute(context: utility.mockCommentContext())
 
         XCTAssertEqual(action?.icon?.accessibilityHint, LikeComment.TitleHints.unlike)
     }

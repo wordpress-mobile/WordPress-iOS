@@ -1,0 +1,5 @@
+/* News Card title. */
+"Title" = "This is an awesome new feature!";
+
+/* News Card content. */
+"Content" = "This is long form content. Here we explain why this feature is awesome";

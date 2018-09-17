@@ -29,7 +29,7 @@
 #import "ContextManager.h"
 #import "TodayExtensionService.h"
 #import "WPAuthTokenIssueSolver.h"
-#import <ZendeskSDK/ZendeskSDK.h>
+#import <ZendeskCoreSDK/ZendeskCoreSDK.h>
 
 // Networking
 #import "WPUserAgent.h"
@@ -379,7 +379,8 @@ DDLogLevel ddLogLevel = DDLogLevelInfo;
     [self toggleExtraDebuggingIfNeeded];
 #if DEBUG
     [KeychainTools processKeychainDebugArguments];
-    [ZDKLogger enable:YES];
+    [ZDKCoreLogger setEnabled:YES];
+    [ZDKCoreLogger setLogLevel:ZDKLogLevelDebug];
 #endif
 
     [ZendeskUtils setup];

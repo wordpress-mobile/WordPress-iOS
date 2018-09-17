@@ -1,4 +1,2 @@
-Vous pouvez à présent passer facilement de WordPress.com dans Safari au même contenu dans l’application WordPress. Regardez simplement la bannière e haut de la page WordPress.com !
-Le journal d’activités est maintenant disponible pour les sites gratuit WordPress.com.
-Quelques petites améliorations de l’interface utilisateur (UI).
-Un lot de corrections de bogues.
+Nous avons changer quelques choses sous le capot.
+Vous ne devriez voir aucun changement évident dans l’app mais attendez-vous à ce que tout soit plus rapide et plus stable.

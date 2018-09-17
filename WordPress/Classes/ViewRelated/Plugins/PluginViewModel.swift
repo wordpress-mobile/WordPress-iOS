@@ -144,7 +144,9 @@ class PluginViewModel: Observable {
             return nil
         }
 
-        guard let capabilities = capabilities, capabilities.modify == true else {
+        let isHostedAtWPCom = BlogService.blog(with: site)?.isHostedAtWPcom ?? false
+
+        guard isHostedAtWPCom || capabilities?.modify == true else {
             // If we know about versions, but we can't update/install the plugin, just show the version number.
             return TextRow(title: NSLocalizedString("Plugin version", comment: "Version of an installed plugin"),
                            value: version)
@@ -170,7 +172,20 @@ class PluginViewModel: Observable {
                 subtitle: nil,
                 actionLabel: NSLocalizedString("Install", comment: "Button label to install a plugin"),
                 onButtonTap: { [unowned self] _ in
-                    ActionDispatcher.dispatch(PluginAction.install(plugin: directoryEntry, site: self.site))
+                    if isHostedAtWPCom {
+                        guard let atHelper = AutomatedTransferHelper(site: self.site, plugin: directoryEntry) else {
+                            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: String(format: NSLocalizedString("Error installing %@.", comment: "Notice displayed after attempt to install a plugin fails."), directoryEntry.name))))
+                            return
+                        }
+
+                        WPAnalytics.track(.automatedTransferDialogShown)
+
+                        let alertController = atHelper.automatedTransferConfirmationPrompt()
+                        self.present?(alertController)
+                    }
+                    else {
+                        ActionDispatcher.dispatch(PluginAction.install(plugin: directoryEntry, site: self.site))
+                    }
                 }
             )
         }
@@ -255,9 +270,10 @@ class PluginViewModel: Observable {
 
     private func autoUpdatesRow(plugin: Plugin?, capabilities: SitePluginCapabilities?) -> ImmuTableRow? {
         // Note: All plugins on atomic sites are autoupdated, so we do not want to show the switch
+
         guard let autoUpdatePlugin = plugin,
             let siteCapabilities = capabilities,
-            !isAutomatedTransfer(site: site),
+            BlogService.blog(with: site)?.isAutomatedTransfer() == false,
             siteCapabilities.autoupdate,
             !autoUpdatePlugin.state.automanaged else { return nil }
 
@@ -479,12 +495,6 @@ class PluginViewModel: Observable {
         } else {
             ActionDispatcher.dispatch(PluginAction.disableAutoupdates(id: plugin.id, site: site))
         }
-    }
-
-    private func isAutomatedTransfer(site: JetpackSiteRef) -> Bool {
-        let service = BlogService.withMainContext()
-        let blog = service.blog(byBlogId: site.siteID as NSNumber, andUsername: site.username)
-        return blog?.isAutomatedTransfer() ?? false
     }
 
     private func getSiteTitle() -> String? {

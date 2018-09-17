@@ -1,2 +1,1 @@
-social,network,notities,jetpack,foto's,schrijven,media,blog,wordpress,website,blogging,ontwerp
-
+sociaal,netwerk,notities,jetpack,foto's,schrijven,media,blog,wordpress,website,blogging,ontwerp

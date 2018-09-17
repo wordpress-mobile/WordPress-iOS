@@ -1,5 +1,6 @@
 import Foundation
 import MobileCoreServices
+import AVFoundation
 
 /// Media export handling of PHAssets
 ///
@@ -9,6 +10,8 @@ class MediaAssetExporter: MediaExporter {
 
     var imageOptions: MediaImageExporter.Options?
     var videoOptions: MediaVideoExporter.Options?
+
+    var allowableFileExtensions = Set<String>()
 
     public enum AssetExportError: MediaExportError {
         case unsupportedPHAssetMediaType
@@ -98,14 +101,6 @@ class MediaAssetExporter: MediaExporter {
             }
         }
 
-        // Configure the targetSize for PHImageManager to resize to.
-        let targetSize: CGSize
-        if let options = self.imageOptions, let maximumImageSize = options.maximumImageSize {
-            targetSize = CGSize(width: maximumImageSize, height: maximumImageSize)
-        } else {
-            targetSize = PHImageManagerMaximumSize
-        }
-
         // Configure an error handler for the image request.
         let onImageRequestError: (Error?) -> Void = { (error) in
             guard let error = error else {
@@ -116,21 +111,22 @@ class MediaAssetExporter: MediaExporter {
         }
 
         // Request the image.
-        imageManager.requestImage(for: asset,
-                             targetSize: targetSize,
-                             contentMode: .aspectFit,
+        imageManager.requestImageData(for: asset,
                              options: options,
-                             resultHandler: { (image, info) in
+                             resultHandler: { (data, uti, orientation, info) in
                                 progress.completedUnitCount = MediaExportProgressUnits.halfDone
-                                guard let image = image else {
+                                guard let imageData = data else {
                                     onImageRequestError(info?[PHImageErrorKey] as? Error)
                                     return
                                 }
                                 // Hand off the image export to a shared image writer.
-                                let exporter = MediaImageExporter(image: image, filename: filename)
+                                let exporter = MediaImageExporter(data: imageData, filename: filename, typeHint: uti)
                                 exporter.mediaDirectoryType = self.mediaDirectoryType
                                 if let options = self.imageOptions {
                                     exporter.options = options
+                                    if options.exportImageType == nil, let utiToUse = uti {
+                                        exporter.options.exportImageType = self.preferedExportTypeFor(uti: utiToUse)
+                                    }
                                 }
                                 let exportProgress = exporter.export(onCompletion: { (imageExport) in
                                     onCompletion(imageExport)
@@ -138,6 +134,19 @@ class MediaAssetExporter: MediaExporter {
                                 progress.addChild(exportProgress, withPendingUnitCount: MediaExportProgressUnits.halfDone)
         })
         return progress
+    }
+
+    func preferedExportTypeFor(uti: String) -> String? {
+        guard !self.allowableFileExtensions.isEmpty,
+            let extensionType = UTTypeCopyPreferredTagWithClass(uti as CFString, kUTTagClassFilenameExtension)?.takeRetainedValue() as String?
+            else {
+            return nil
+        }
+        if allowableFileExtensions.contains(extensionType) {
+            return uti
+        } else {
+            return kUTTypeJPEG as String
+        }
     }
 
     /// Exports and writes an asset's video data to a local Media URL.

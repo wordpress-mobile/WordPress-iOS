@@ -38,7 +38,7 @@ class ApproveComment: DefaultNotificationActionCommand, AccessibleFormattableCon
         return approveIcon
     }
 
-    override func execute(context: ActionContext) {
+    override func execute<ObjectType: FormattableCommentContent>(context: ActionContext<ObjectType>) {
         let block = context.block
         if on {
             unApprove(block: block)
@@ -47,7 +47,7 @@ class ApproveComment: DefaultNotificationActionCommand, AccessibleFormattableCon
         }
     }
 
-    private func unApprove(block: ActionableObject) {
+    private func unApprove(block: FormattableCommentContent) {
         setIconStrings(title: TitleStrings.unapprove,
                        label: TitleStrings.unapprove,
                        hint: TitleHints.unapprove)
@@ -61,7 +61,7 @@ class ApproveComment: DefaultNotificationActionCommand, AccessibleFormattableCon
         }
     }
 
-    private func approve(block: ActionableObject) {
+    private func approve(block: FormattableCommentContent) {
         setIconStrings(title: TitleStrings.approve,
                        label: TitleStrings.approve,
                        hint: TitleHints.approve)

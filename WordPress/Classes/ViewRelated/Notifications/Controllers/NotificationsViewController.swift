@@ -24,10 +24,9 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     ///
     @IBOutlet var tableHeaderView: UIView!
 
-    /// Filtering Segmented Control
+    /// Filtering Tab Bar
     ///
-    @IBOutlet var filtersSegmentedControl: UISegmentedControl!
-
+    @IBOutlet weak var filterTabBar: FilterTabBar!
     /// Inline Prompt Header View
     ///
     @IBOutlet var inlinePromptView: AppFeedbackPromptView!
@@ -109,20 +108,21 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
         setupNavigationBar()
         setupTableView()
-        setupInlinePrompt()
         setupTableHeaderView()
         setupTableFooterView()
         setupConstraints()
         setupTableHandler()
         setupRefreshControl()
         setupNoResultsView()
-        setupFiltersSegmentedControl()
+        setupFilterBar()
 
         reloadTableViewPreservingSelection()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        setupInlinePrompt()
 
         // Manually deselect the selected row. 
         if splitViewControllerIsHorizontallyCompact {
@@ -239,8 +239,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
     fileprivate func decodeSelectedSegmentIndex(with coder: NSCoder) {
         restorableSelectedSegmentIndex = coder.decodeInteger(forKey: type(of: self).selectedSegmentIndexRestorationIdentifier)
 
-        if let filtersSegmentedControl = filtersSegmentedControl {
-            filtersSegmentedControl.selectedSegmentIndex = restorableSelectedSegmentIndex
+        if let filterTabBar = filterTabBar, filterTabBar.selectedIndex != restorableSelectedSegmentIndex {
+            filterTabBar.setSelectedIndex(restorableSelectedSegmentIndex, animated: false)
         }
     }
 
@@ -424,16 +424,13 @@ private extension NotificationsViewController {
         noResultsViewController.delegate = self
     }
 
-    func setupFiltersSegmentedControl() {
-        precondition(filtersSegmentedControl != nil)
+    func setupFilterBar() {
+        filterTabBar.tintColor = WPStyleGuide.wordPressBlue()
+        filterTabBar.deselectedTabColor = WPStyleGuide.greyDarken10()
+        filterTabBar.dividerColor = WPStyleGuide.greyLighten20()
 
-        for filter in Filter.allFilters {
-            filtersSegmentedControl.setTitle(filter.title, forSegmentAt: filter.rawValue)
-        }
-
-        WPStyleGuide.Notifications.configureSegmentedControl(filtersSegmentedControl)
-
-        filtersSegmentedControl.selectedSegmentIndex = restorableSelectedSegmentIndex
+        filterTabBar.items = Filter.allFilters.map { $0.title }
+        filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 }
 
@@ -831,16 +828,17 @@ extension NotificationsViewController: NetworkStatusDelegate {
     }
 }
 
-// MARK: - UISegmentedControl Methods
+// MARK: - FilterTabBar Methods
 //
 extension NotificationsViewController {
-    @objc func segmentedControlDidChange(_ sender: UISegmentedControl) {
+
+    @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         selectedNotification = nil
 
         let properties = [Stats.selectedFilter: filter.title]
         WPAnalytics.track(.notificationsTappedSegmentedControl, withProperties: properties)
 
-        updateUnreadNotificationsForSegmentedControlChange()
+        updateUnreadNotificationsForFilterTabChange()
 
         reloadResultsController()
 
@@ -863,7 +861,7 @@ extension NotificationsViewController {
         }
     }
 
-    @objc func updateUnreadNotificationsForSegmentedControlChange() {
+    @objc func updateUnreadNotificationsForFilterTabChange() {
         if filter == .unread {
             refreshUnreadNotifications(reloadingResultsController: false)
         } else {
@@ -923,13 +921,9 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         let deletionRequest         = deletionRequestForNoteWithID(note.objectID)
         let isLastRow               = tableViewHandler.resultsController.isLastIndexPathInSection(indexPath)
 
-        if FeatureFlag.extractNotifications.enabled {
-            cell.attributedSubject = note.renderSubject()
-            cell.attributedSnippet = note.renderSnippet()
-        } else {
-            cell.attributedSubject      = note.subjectBlock?.attributedSubjectText
-            cell.attributedSnippet      = note.snippetBlock?.attributedSnippetText
-        }
+        cell.attributedSubject      = note.renderSubject()
+        cell.attributedSnippet      = note.renderSnippet()
+
         cell.read                   = note.read
         cell.noticon                = note.noticon
         cell.unapproved             = note.isUnapprovedComment
@@ -954,20 +948,12 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         if UIView.userInterfaceLayoutDirection(for: view.semanticContentAttribute) == .leftToRight {
             cell.leftButtons = leadingButtons(note: note)
             cell.leftExpansion.buttonIndex = leadingExpansionButton
-            if FeatureFlag.extractNotifications.enabled {
-                cell.rightButtons = trailingButtons(note: note)
-            } else {
-                cell.rightButtons = old_trailingButtons(note: note)
-            }
+            cell.rightButtons = trailingButtons(note: note)
             cell.rightExpansion.buttonIndex = trailingExpansionButton
         } else {
             cell.rightButtons = leadingButtons(note: note)
             cell.rightExpansion.buttonIndex = trailingExpansionButton
-            if FeatureFlag.extractNotifications.enabled {
-                cell.leftButtons = trailingButtons(note: note)
-            } else {
-                cell.leftButtons = old_trailingButtons(note: note)
-            }
+            cell.leftButtons = trailingButtons(note: note)
             cell.leftExpansion.buttonIndex = trailingExpansionButton
         }
     }
@@ -1024,64 +1010,6 @@ private extension NotificationsViewController {
                             return true
             })
         ]
-    }
-
-    func old_trailingButtons(note: Notification) -> [MGSwipeButton] {
-        var rightButtons = [MGSwipeButton]()
-
-        guard let block = note.blockGroupOfKind(.comment)?.blockOfKind(.comment) else {
-            return []
-        }
-
-        // Comments: Trash
-        if block.isActionEnabled(.Trash) {
-            let trashButton = MGSwipeButton(title: NSLocalizedString("Trash", comment: "Trashes a comment"), backgroundColor: WPStyleGuide.errorRed(), callback: { [weak self] _ in
-                ReachabilityUtils.onAvailableInternetConnectionDo {
-                    let request = NotificationDeletionRequest(kind: .deletion, action: { [weak self] onCompletion in
-                        self?.actionsService.deleteCommentWithBlock(block) { success in
-                            onCompletion(success)
-                        }
-                    })
-
-                    self?.showUndeleteForNoteWithID(note.objectID, request: request)
-                }
-                return true
-            })
-            rightButtons.append(trashButton)
-        }
-
-        guard block.isActionEnabled(.Approve) else {
-            return rightButtons
-        }
-
-        // Comments: Unapprove
-        if block.isActionOn(.Approve) {
-            let title = NSLocalizedString("Unapprove", comment: "Unapproves a Comment")
-
-            let unapproveButton = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.grey(), callback: { [weak self] _ in
-                ReachabilityUtils.onAvailableInternetConnectionDo {
-                    self?.actionsService.unapproveCommentWithBlock(block)
-                }
-                return true
-            })
-
-            rightButtons.append(unapproveButton)
-
-            // Comments: Approve
-        } else {
-            let title = NSLocalizedString("Approve", comment: "Approves a Comment")
-
-            let approveButton = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue(), callback: { [weak self] _ in
-                ReachabilityUtils.onAvailableInternetConnectionDo {
-                    self?.actionsService.approveCommentWithBlock(block)
-                }
-                return true
-            })
-
-            rightButtons.append(approveButton)
-        }
-
-        return rightButtons
     }
 
     func trailingButtons(note: Notification) -> [MGSwipeButton] {
@@ -1510,11 +1438,11 @@ private extension NotificationsViewController {
 
     var filter: Filter {
         get {
-            let selectedIndex = filtersSegmentedControl?.selectedSegmentIndex ?? Filter.none.rawValue
+            let selectedIndex = filterTabBar?.selectedIndex ?? Filter.none.rawValue
             return Filter(rawValue: selectedIndex) ?? .none
         }
         set {
-            filtersSegmentedControl?.selectedSegmentIndex = newValue.rawValue
+            filterTabBar?.setSelectedIndex(newValue.rawValue)
             reloadResultsController()
         }
     }

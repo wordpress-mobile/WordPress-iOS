@@ -12,13 +12,14 @@ final class EditCommentActionTests: XCTestCase {
     private class MockNotificationActionsService: NotificationActionsService {
         var updateWasCalled: Bool = false
 
-        override func updateCommentWithBlock(_ block: ActionableObject, content: String, completion: ((Bool) -> Void)?) {
+        override func updateCommentWithBlock(_ block: FormattableCommentContent, content: String, completion: ((Bool) -> Void)?) {
             updateWasCalled = true
             completion?(true)
         }
     }
 
     private var action: EditComment?
+    private let utility = NotificationUtility()
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -26,11 +27,13 @@ final class EditCommentActionTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        utility.setUp()
         action = TestableEditComment(on: Constants.initialStatus)
     }
 
     override func tearDown() {
         action = nil
+        utility.tearDown()
         super.tearDown()
     }
 
@@ -47,7 +50,7 @@ final class EditCommentActionTests: XCTestCase {
     }
 
     func testExecuteCallsEdit() {
-        action?.execute(context: mockActionContext())
+        action?.execute(context: utility.mockCommentContext())
 
         guard let mockService = action?.actionsService as? MockNotificationActionsService else {
             XCTFail()

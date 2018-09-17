@@ -168,6 +168,35 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }];
 }
 
+- (void)fetchPostAtURL:(NSURL *)postURL
+               success:(void (^)(ReaderPost *post))success
+               failure:(void (^)(NSError *error))failure
+{
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
+    [remoteService fetchPostAtURL:postURL
+                          success:^(RemoteReaderPost *remotePost) {
+        if (!success) {
+            return;
+        }
+
+        ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil];
+
+        NSError *error;
+        BOOL obtainedID = [self.managedObjectContext obtainPermanentIDsForObjects:@[post] error:&error];
+        if (!obtainedID) {
+            DDLogError(@"Error obtaining a permanent ID for post. %@, %@", post, error);
+        }
+
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        success(post);
+
+    } failure:^(NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 - (void)refreshPostsForFollowedTopic
 {
     // Do all of this work on a background thread.

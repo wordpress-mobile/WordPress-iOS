@@ -14,12 +14,16 @@ extension FormattableRangesFactory {
     }
 
     static func kindString(from dictionary: [String: AnyObject]) -> String? {
+        if let section = dictionary[RangeKeys.section] as? String {
+            return section
+        }
         return dictionary[RangeKeys.rawType] as? String
     }
 }
 
 private enum RangeKeys {
     static let rawType = "type"
+    static let section = "section"
     static let url = "url"
     static let indices = "indices"
     static let id = "id"
