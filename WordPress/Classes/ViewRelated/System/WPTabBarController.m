@@ -976,4 +976,16 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
 }
 
+#pragma mark - UIViewControllerTransitioningDelegate
+
+- (UIPresentationController *)presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source
+{
+    if ([presented isKindOfClass:[FancyAlertViewController class]]) {
+        return [[FancyAlertPresentationController alloc] initWithPresentedViewController:presented
+                                                                presentingViewController:presenting];
+    }
+
+    return nil;
+}
+
 @end
