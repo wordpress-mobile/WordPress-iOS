@@ -25,7 +25,8 @@
     self.backgroundColor = [WPStyleGuide lightGrey];
     [WPStyleGuide applySectionHeaderTitleStyle:self.titleLabel];
 
-    self.topBorderView.backgroundColor = [WPStyleGuide greyLighten20];
+    self.titleLabel.textColor = [WPStyleGuide greyDarken20];
+    self.topBorderView.backgroundColor = [WPStyleGuide lightGrey];
     self.bottomBorderView.backgroundColor = self.topBorderView.backgroundColor;
 
     if ([WPDeviceIdentification isRetina]) {
