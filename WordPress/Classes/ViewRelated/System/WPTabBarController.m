@@ -491,7 +491,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [self showPostTabWithCompletion:nil];
 }
 
-- (void)showPostTabWithCompletion:(void (^)(BOOL))onClose
+- (void)showPostTabWithCompletion:(void (^)(void))afterDismiss
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -499,7 +499,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     if ([blogService blogCountForAllAccounts] == 0) {
         [self switchMySitesTabToAddNewSite];
     } else {
-        [self showPostTabAnimated:true toMedia:false blog:nil onClose:onClose];
+        [self showPostTabAnimated:true toMedia:false blog:nil afterDismiss:afterDismiss];
     }
 }
 
@@ -534,7 +534,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     [self showPostTabAnimated:animated toMedia:openToMedia blog:blog onClose:nil];
 }
 
-- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog onClose:(void (^)(BOOL))onClose
+- (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog afterDismiss:(void (^)(void))afterDismiss
 {
     if (self.presentedViewController) {
         [self dismissViewControllerAnimated:NO completion:nil];
@@ -554,7 +554,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
     editor.modalPresentationStyle = UIModalPresentationFullScreen;
     editor.showImmediately = !animated;
     editor.openWithMediaPicker = openToMedia;
-    editor.onClose = onClose;
+    editor.afterDismiss = afterDismiss;
     [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlog:blog];
     [self presentViewController:editor animated:NO completion:nil];
     return;

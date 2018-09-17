@@ -4,7 +4,7 @@ extension BlogDetailsViewController {
 
     @objc func startAlertTimer() {
         let newWorkItem = DispatchWorkItem { [weak self] in
-            self?.showAlert()
+            self?.showNotificationPrimerAlert()
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: newWorkItem)
         alertWorkItem = newWorkItem
@@ -15,10 +15,20 @@ extension BlogDetailsViewController {
         alertWorkItem = nil
     }
 
-    private func showAlert() {
-        showNotificationPrimerAlert()
+    fileprivate var noPresentedViewControllers: Bool {
+        guard let window = WordPressAppDelegate.sharedInstance().window,
+            let rootViewController = window.rootViewController,
+            let _ = rootViewController.presentedViewController else {
+            return true
+        }
+        return false
     }
+
     func showNotificationPrimerAlert() {
+        guard noPresentedViewControllers else {
+            return
+        }
+
         guard !UserDefaults.standard.notificationPrimerAlertWasDisplayed else {
             return
         }
