@@ -1,4 +1,2 @@
-Ora puoi passare con semplicità da WordPress.com in Safari al medesimo contenuto in WordPress per l’app iOS. Basta cercare il banner nella parte superiore delle pagine WordPress.com!.
-Il log attività è ora disponibile per i siti WordPress.com gratuiti.
-Alcuni piccoli miglioramenti alla UI.
-Alcune correzioni di bug.
+Abbiamo messo a punto le cose sotto il cofano.
+Potrai non vedere nulla di diverso nella app, ma aspettati che tutto sia più stabile e veloce.

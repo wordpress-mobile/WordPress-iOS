@@ -51,7 +51,7 @@ Launch the workspace by running the following from the command line:
 
 This will ensure any dependencies are ready before launching Xcode. 
 
-You can also open the project by double clicking on WordPress.xcworkspace file, or launching Xcode and choose File > Open and browse to WordPress.xcworkspace.
+You can also open the project by double clicking on WordPress.xcworkspace file, or launching Xcode and choose `File` > `Open` and browse to `WordPress.xcworkspace`.
 
 ### Setup Credentials
 
@@ -67,7 +67,7 @@ In order to use these details, you'll need to create a credential file in your b
 
 ` cp ./WordPress/Credentials/wpcom_app_credentials.txt ~/.wpcom_app_credentials `
 
-Then edit the ~/.wpcom_app_credentials file and change the WPCOM_APP_ID and WPCOM_APP_SECRET fields to the values you got for your app.
+Then edit the `~/.wpcom_app_credentials` file and change the `WPCOM_APP_ID` and `WPCOM_APP_SECRET` fields to the values you got for your app.
 
 Then you can compile and run the app on a device or an emulator and log in with a WordPress.com account.  Note that authenticating to WordPress.com via Google is not supported in development builds of the app, only in the official release.
 

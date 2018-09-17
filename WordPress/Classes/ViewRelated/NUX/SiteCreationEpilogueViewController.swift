@@ -6,7 +6,7 @@ class SiteCreationEpilogueViewController: NUXViewController {
 
     // MARK: - Properties
 
-    var siteToShow: Blog? 
+    var siteToShow: Blog?
 
     override var prefersStatusBarHidden: Bool {
         return true

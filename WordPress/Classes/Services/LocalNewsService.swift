@@ -2,12 +2,12 @@ final class LocalNewsService: NewsService {
     private var content: [String: String]?
 
     /// This initialiser is here temporarily. Instead of the content, we should only pass the url to the file that we want to load
-    init(fileName: String) {
-        loadFile(name: fileName)
+    init(filePath: String?) {
+        loadFile(path: filePath)
     }
 
-    private func loadFile(name: String) {
-        guard let path = Bundle.main.path(forResource: name, ofType: "strings") else {
+    private func loadFile(path: String?) {
+        guard let path = path else {
             return
         }
 

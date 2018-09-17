@@ -6,3 +6,6 @@
 
 /* News Card link. */
 "URL" = "https://wordpress.com";
+
+/* Build version this card applies to. */
+"version" = "10.8";

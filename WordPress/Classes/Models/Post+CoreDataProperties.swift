@@ -16,6 +16,7 @@ extension Post {
     @NSManaged var publicizeMessageID: String?
     @NSManaged var tags: String?
     @NSManaged var categories: Set<PostCategory>?
+    @NSManaged var isStickyPost: Bool
 
     // These were added manually, since the code generator for Swift is not generating them.
     //

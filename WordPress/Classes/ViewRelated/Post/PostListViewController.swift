@@ -51,10 +51,6 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     @IBOutlet weak var filterTabBarBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewTopConstraint: NSLayoutConstraint!
 
-    // MARK: - GUI
-
-    fileprivate let animatedBox = WPAnimatedBox()
-
     // MARK: - Convenience constructors
 
     @objc class func controllerWithBlog(_ blog: Blog) -> PostListViewController {
@@ -599,19 +595,12 @@ private extension PostListViewController {
             return
         }
 
+        let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
+
         noResultsViewController.configure(title: noResultsTitle(),
                                           buttonTitle: noResultsButtonTitle(),
                                           image: noResultsImageName,
-                                          accessoryView: noResultsAccessoryView())
-    }
-
-    func noResultsAccessoryView() -> UIView? {
-        if syncHelper.isSyncing {
-            animatedBox.animate(afterDelay: 0.1)
-            return animatedBox
-        }
-
-        return nil
+                                          accessoryView: accessoryView)
     }
 
     var noResultsImageName: String {

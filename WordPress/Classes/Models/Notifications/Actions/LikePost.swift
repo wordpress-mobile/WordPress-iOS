@@ -15,7 +15,7 @@ final class LikePost: DefaultNotificationActionCommand {
         return likeIcon
     }
 
-    override func execute(context: ActionContext) {
+    override func execute<ContentType: FormattableCommentContent>(context: ActionContext<ContentType>) {
 
     }
 }

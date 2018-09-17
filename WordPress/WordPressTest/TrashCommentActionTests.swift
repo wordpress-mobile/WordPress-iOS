@@ -10,12 +10,14 @@ final class TrashCommentActionTests: XCTestCase {
     }
 
     private class MockNotificationActionsService: NotificationActionsService {
-        override func deleteCommentWithBlock(_ block: ActionableObject, completion: ((Bool) -> Void)?) {
+        override func deleteCommentWithBlock(_ block: FormattableCommentContent, completion: ((Bool) -> Void)?) {
             completion?(true)
         }
     }
 
     private var action: TrashComment?
+
+    let utils = NotificationUtility()
 
     private struct Constants {
         static let initialStatus: Bool = false
@@ -23,6 +25,7 @@ final class TrashCommentActionTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        utils.setUp()
         action = TestableTrashComment(on: Constants.initialStatus)
         makeNetworkAvailable()
     }
@@ -30,6 +33,7 @@ final class TrashCommentActionTests: XCTestCase {
     override func tearDown() {
         action = nil
         makeNetworkUnavailable()
+        utils.tearDown()
         super.tearDown()
     }
 
@@ -53,8 +57,7 @@ final class TrashCommentActionTests: XCTestCase {
         action?.on = false
 
         var executionCompleted = false
-
-        let context = ActionContext(block: MockActionableObject(), content: "content") { (request, success) in
+        let context = ActionContext(block: utils.mockCommentContent(), content: "content") { (request, success) in
             executionCompleted = true
         }
 

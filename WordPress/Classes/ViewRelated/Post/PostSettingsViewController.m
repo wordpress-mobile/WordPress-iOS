@@ -60,6 +60,8 @@ static CGFloat LocationCellHeightToWidthAspectRatio = 0.5f;
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
 static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCellIdentifier";
 static NSString *const TableViewFeaturedImageCellIdentifier = @"TableViewFeaturedImageCellIdentifier";
+static NSString *const TableViewStickyPostCellIdentifier = @"TableViewStickyPostCellIdentifier";
+
 
 static void *PostGeoLocationObserverContext = &PostGeoLocationObserverContext;
 
@@ -148,6 +150,7 @@ FeaturedImageViewControllerDelegate>
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
     [self.tableView registerClass:[WPProgressTableViewCell class] forCellReuseIdentifier:TableViewProgressCellIdentifier];
     [self.tableView registerClass:[PostFeaturedImageCell class] forCellReuseIdentifier:TableViewFeaturedImageCellIdentifier];
+    [self.tableView registerClass:[SwitchTableViewCell class] forCellReuseIdentifier:TableViewStickyPostCellIdentifier];
 
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 44.0)]; // add some vertical padding
 
@@ -393,15 +396,14 @@ FeaturedImageViewControllerDelegate>
 
 - (void)configureSections
 {
-    self.sections = @[
-                      @(PostSettingsSectionTaxonomy),
+    self.sections = @[@(PostSettingsSectionTaxonomy),
                       @(PostSettingsSectionMeta),
                       @(PostSettingsSectionFormat),
                       @(PostSettingsSectionFeaturedImage),
+                      @(PostSettingsSectionStickyPost),
                       @(PostSettingsSectionShare),
                       @(PostSettingsSectionGeolocation),
-                      @(PostSettingsSectionMoreOptions)
-                      ];
+                      @(PostSettingsSectionMoreOptions)];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -430,6 +432,9 @@ FeaturedImageViewControllerDelegate>
     } else if (sec == PostSettingsSectionFeaturedImage) {
         return 1;
 
+    } else if (sec == PostSettingsSectionStickyPost) {
+        return 1;
+        
     } else if (sec == PostSettingsSectionShare) {
         return [self numberOfRowsForShareSection];
 
@@ -459,6 +464,9 @@ FeaturedImageViewControllerDelegate>
     } else if (sec == PostSettingsSectionFeaturedImage) {
         return NSLocalizedString(@"Featured Image", @"Label for the Featured Image area in post settings.");
 
+    } else if (sec == PostSettingsSectionStickyPost) {
+        return NSLocalizedString(@"Mark as Sticky", @"Label for the Mark as Sticky option in post settings.");
+        
     } else if (sec == PostSettingsSectionShare && [self numberOfRowsForShareSection] > 0) {
         return NSLocalizedString(@"Sharing", @"Label for the Sharing section in post Settings. Should be the same as WP core.");
 
@@ -539,6 +547,8 @@ FeaturedImageViewControllerDelegate>
         cell = [self configurePostFormatCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionFeaturedImage) {
         cell = [self configureFeaturedImageCellForIndexPath:indexPath];
+    } else if (sec == PostSettingsSectionStickyPost) {
+        cell = [self configureStickyPostCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionShare) {
         cell = [self configureShareCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionGeolocation) {
@@ -745,6 +755,19 @@ FeaturedImageViewControllerDelegate>
 
         return [self cellForFeaturedImageWithURL:featuredURL atIndexPath:indexPath];
     }
+}
+
+- (UITableViewCell *)configureStickyPostCellForIndexPath:(NSIndexPath *)indexPath
+{
+    __weak __typeof(self) weakSelf = self;
+    
+    SwitchTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewStickyPostCellIdentifier];
+    cell.name = NSLocalizedString(@"Stick post to the front page", @"This is the cell title.");
+    cell.on = self.post.isStickyPost;
+    cell.onChange = ^(BOOL newValue) {
+        weakSelf.post.isStickyPost = newValue;
+    };
+    return cell;
 }
 
 - (UITableViewCell *)cellForSetFeaturedImage
