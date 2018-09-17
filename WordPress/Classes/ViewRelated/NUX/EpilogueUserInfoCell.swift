@@ -93,7 +93,7 @@ extension EpilogueUserInfoCell: GravatarUploader {
         gravatarStatus = status
         switch status {
         case .uploading(image: let newImage):
-            gravatarView.image = newImage
+            gravatarView.updateGravatar(image: newImage, email: email)
             gravatarActivityIndicator.startAnimating()
         case .idle, .finished:
             gravatarActivityIndicator.stopAnimating()
