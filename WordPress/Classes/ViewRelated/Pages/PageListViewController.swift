@@ -5,7 +5,7 @@ import WordPressShared
 
 class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
 
-    fileprivate static let pageSectionHeaderHeight = CGFloat(24.0)
+    fileprivate static let pageSectionHeaderHeight = CGFloat(40.0)
     fileprivate static let pageCellEstimatedRowHeight = CGFloat(47.0)
     fileprivate static let pagesViewControllerRestorationKey = "PagesViewControllerRestorationKey"
     fileprivate static let pageCellIdentifier = "PageCellIdentifier"
@@ -74,6 +74,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return controllerWithBlog(restoredBlog)
     }
 
+
     // MARK: - UIStateRestoring
 
     override func encodeRestorableState(with coder: NSCoder) {
@@ -84,6 +85,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         super.encodeRestorableState(with: coder)
     }
+
 
     // MARK: - UIViewController
 
@@ -96,16 +98,17 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        super.updateAndPerformFetchRequest()
 
         title = NSLocalizedString("Site Pages", comment: "Title of the screen showing the list of pages for a blog.")
 
         configureFilterBarTopConstraint()
-        updateAndPerformFetchRequest()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        _tableViewHandler.status = filterSettings.currentPostListFilter().filterType
         _tableViewHandler.refreshTableView()
     }
 
@@ -156,6 +159,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     override func configureAuthorFilter() {
         // Noop
     }
+
 
     // MARK: - Sync Methods
 
@@ -231,6 +235,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return predicate
     }
 
+
     // MARK: - Table View Handling
 
     func sectionNameKeyPath() -> String {
@@ -244,12 +249,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
         return type(of: self).pageSectionHeaderHeight
     }
+
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section == tableView.numberOfSections - 1 {
-            return WPDeviceIdentification.isRetina() ? 0.5 : 1.0
-        }
         return 0.0
     }
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
         guard _tableViewHandler.groupResults else {
             return UIView(frame: .zero)
@@ -267,9 +271,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView! {
-        if section == tableView.numberOfSections - 1 {
-            return sectionFooterSeparatorView
-        }
         return UIView(frame: CGRect.zero)
     }
 
@@ -299,7 +300,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     override func configureCell(_ cell: UITableViewCell, at indexPath: IndexPath) {
-
         guard let cell = cell as? BasePageListCell else {
             preconditionFailure("The cell should be of class \(String(describing: BasePageListCell.self))")
         }
@@ -595,11 +595,9 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         }
 
         let selectedPage = pageAtIndexPath(index)
-        guard let newIndex = _tableViewHandler.index(for: selectedPage) else {
-            return
-        }
-        let parentPageNavigationController = ParentPageSettingsViewController.navigationController(with: _tableViewHandler.removePage(from: newIndex),
-                                                                                                   selectedPage: selectedPage)
+        let newIndex = _tableViewHandler.index(for: selectedPage)
+        let pages = _tableViewHandler.removePage(from: newIndex)
+        let parentPageNavigationController = ParentPageSettingsViewController.navigationController(with: pages, selectedPage: selectedPage)
         present(parentPageNavigationController, animated: true, completion: nil)
     }
 
@@ -634,6 +632,18 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         filterTabBar.alpha = WPAlphaZero
         filterTabBarBottomConstraint.isActive = false
         tableViewTopConstraint.isActive = true
+    }
+
+    override func updateSearchResults(for searchController: UISearchController) {
+        _tableViewHandler.isSearching = isSearching()
+
+        super.updateSearchResults(for: searchController)
+    }
+
+    override func willDismissSearchController(_ searchController: UISearchController) {
+        _tableViewHandler.isSearching = false
+
+        super.willDismissSearchController(searchController)
     }
 
     func didPresentSearchController(_ searchController: UISearchController) {
