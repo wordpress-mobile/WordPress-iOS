@@ -1,18 +1,11 @@
 import Foundation
 
 
-class PageListTableViewHandler: WPTableViewHandler {
+final class PageListTableViewHandler: WPTableViewHandler {
     var isSearching: Bool = false
     var status: PostListFilter.Status = .published
     var groupResults: Bool {
-        if isSearching {
-            return true
-        }
-
-        switch status {
-        case .scheduled: return true
-        default: return false
-        }
+        return status == .scheduled
     }
 
     private var pages: [Page] = []
@@ -26,15 +19,7 @@ class PageListTableViewHandler: WPTableViewHandler {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Page.entityName())
         fetchRequest.predicate = publishedFilter.predicateForFetchRequest
         fetchRequest.sortDescriptors = publishedFilter.sortDescriptors
-        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-
-        do {
-            try controller.performFetch()
-        } catch {
-            DDLogError("Error fetching pages after refreshing the table: \(error)")
-        }
-
-        return controller
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
     }()
 
     private lazy var groupedResultsController: NSFetchedResultsController<NSFetchRequestResult> = {
@@ -73,7 +58,6 @@ class PageListTableViewHandler: WPTableViewHandler {
     override var resultsController: NSFetchedResultsController<NSFetchRequestResult> {
         switch status {
         case .scheduled: return groupedResultsController
-        case .published: return publishedResultController
         default: return flatResultsController
         }
     }
@@ -116,8 +100,8 @@ class PageListTableViewHandler: WPTableViewHandler {
         return pages.index(of: page)
     }
 
-    func removePage(from index: Int) -> [Page] {
-        if status != .published {
+    func removePage(from index: Int?) -> [Page] {
+        guard let index = index, status == .published else {
             do {
                 try publishedResultController.performFetch()
                 if let pages = publishedResultController.fetchedObjects as? [Page] {
@@ -126,6 +110,8 @@ class PageListTableViewHandler: WPTableViewHandler {
             } catch {
                 DDLogError("Error fetching pages after refreshing the table: \(error)")
             }
+
+            return []
         }
 
         return pages.remove(from: index)
