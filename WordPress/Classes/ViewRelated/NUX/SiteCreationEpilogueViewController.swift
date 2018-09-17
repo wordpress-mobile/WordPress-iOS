@@ -52,11 +52,8 @@ extension SiteCreationEpilogueViewController: NUXButtonViewControllerDelegate {
 
     // 'Write first post' button
     func primaryButtonPressed() {
-        WPTabBarController.sharedInstance().showPostTab() { [weak self] (savedChanges) in
-            guard let siteToShow = self?.siteToShow else {
-                return
-            }
-            WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: siteToShow)
+        WPTabBarController.sharedInstance().showPostTab() { [weak self] in
+            self?.showQuickStartAlert()
         }
         navigationController?.dismiss(animated: true, completion: nil)
     }
@@ -66,7 +63,21 @@ extension SiteCreationEpilogueViewController: NUXButtonViewControllerDelegate {
         if let siteToShow = siteToShow {
             WPTabBarController.sharedInstance().switchMySitesTabToBlogDetails(for: siteToShow)
         }
-        navigationController?.dismiss(animated: true, completion: nil)
+        navigationController?.dismiss(animated: true) { [weak self] in
+            self?.showQuickStartAlert()
+        }
+    }
+
+    private func showQuickStartAlert() {
+        guard let siteToShow = siteToShow, let tabBar = WPTabBarController.sharedInstance() else {
+            return
+        }
+        tabBar.switchMySitesTabToBlogDetails(for: siteToShow)
+        let fancyAlert = FancyAlertViewController.makeQuickStartAlertController()
+        fancyAlert.modalPresentationStyle = .custom
+        // transition delegate will be re-written in the next commit
+        // fancyAlert.transitioningDelegate = self
+        tabBar.present(fancyAlert, animated: true, completion: nil)
     }
 }
 
