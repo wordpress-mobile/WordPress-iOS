@@ -22,7 +22,7 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 @class WPSplitViewController;
 @class QuickStartTourGuide;
 
-@interface WPTabBarController : UITabBarController
+@interface WPTabBarController : UITabBarController <UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, strong, readonly) WPSplitViewController *blogListSplitViewController;
 @property (nonatomic, strong, readonly) BlogListViewController *blogListViewController;
