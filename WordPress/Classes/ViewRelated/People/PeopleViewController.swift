@@ -347,8 +347,7 @@ open class PeopleViewController: UITableViewController, NSFetchedResultsControll
             return
         }
 
-        noResultsViewController.configure(title: noResultsTitle(),
-                                          image: "wp-illustration-empty-results")
+        noResultsViewController.configure(title: noResultsTitle())
 
         addChildViewController(noResultsViewController)
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
