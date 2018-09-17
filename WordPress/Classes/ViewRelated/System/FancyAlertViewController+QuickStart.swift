@@ -40,21 +40,3 @@ extension FancyAlertViewController {
         return controller
     }
 }
-
-// MARK: - User Defaults
-
-@objc
-extension UserDefaults {
-    private enum Keys: String {
-        case quickStartChecklistWasDismissedPermanently = "QuickStartChecklistWasDismissedPermanently"
-    }
-
-    var quickStartChecklistWasDismissedPermanently: Bool {
-        get {
-            return bool(forKey: Keys.quickStartChecklistWasDismissedPermanently.rawValue)
-        }
-        set {
-            set(newValue, forKey: Keys.quickStartChecklistWasDismissedPermanently.rawValue)
-        }
-    }
-}
