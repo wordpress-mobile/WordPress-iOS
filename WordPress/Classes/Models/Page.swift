@@ -18,14 +18,14 @@ class Page: AbstractPost {
     ///
     @objc func sectionIdentifierWithDateCreated() -> String {
         let date = date_created_gmt ?? Date()
-        return date.toStringForPageSections()
+        return date.longUTCStringWithoutTime()
     }
 
     /// Section identifier for the page, using the last modification date.
     ///
     @objc func sectionIdentifierWithDateModified() -> String {
         let date = dateModified ?? Date()
-        return date.toStringForPageSections()
+        return date.longUTCStringWithoutTime()
     }
 
     /// Returns the selector string to use as a sectionNameKeyPath, depending on the given keyPath.
