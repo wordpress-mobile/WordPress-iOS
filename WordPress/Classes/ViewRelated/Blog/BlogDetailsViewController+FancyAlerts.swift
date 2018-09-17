@@ -1,4 +1,4 @@
-fileprivate var alertWorkItem: DispatchWorkItem?
+private var alertWorkItem: DispatchWorkItem?
 
 extension BlogDetailsViewController {
 
@@ -18,7 +18,7 @@ extension BlogDetailsViewController {
     fileprivate var noPresentedViewControllers: Bool {
         guard let window = WordPressAppDelegate.sharedInstance().window,
             let rootViewController = window.rootViewController,
-            let _ = rootViewController.presentedViewController else {
+            rootViewController.presentedViewController != nil else {
             return true
         }
         return false
