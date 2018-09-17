@@ -52,7 +52,7 @@ extension SiteCreationEpilogueViewController: NUXButtonViewControllerDelegate {
 
     // 'Write first post' button
     func primaryButtonPressed() {
-        WPTabBarController.sharedInstance().showPostTab() { [weak self] in
+        WPTabBarController.sharedInstance().showPostTab { [weak self] in
             self?.showQuickStartAlert()
         }
         navigationController?.dismiss(animated: true, completion: nil)
