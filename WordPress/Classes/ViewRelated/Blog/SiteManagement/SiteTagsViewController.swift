@@ -399,25 +399,21 @@ private extension SiteTagsViewController {
 
     func setupLoadingView() {
         noResultsViewController.configure(title: loadingMessage(),
-                                           accessoryView: loadingAccessoryView())
+                                           accessoryView: NoResultsViewController.loadingAccessoryView())
     }
 
     func setupEmptyResultsView() {
         noResultsViewController.configure(title: noResultsTitle(),
                                            buttonTitle: noResultsButtonTitle(),
-                                           subtitle: noResultsMessage(),
-                                           image: noResultsImageName())
+                                           subtitle: noResultsMessage())
     }
 
     func showNoResults() {
         addChildViewController(noResultsViewController)
         noResultsViewController.view.frame = tableView.frame
 
-        // If the refreshControl is showing, move the NRV up so the contents appear centered in the view.
-        if let refreshControl = refreshControl,
-            refreshControl.isHidden == false {
-            noResultsViewController.view.frame.origin.y -= refreshControl.frame.height
-        }
+        // Since the tableView doesn't always start at the top, adjust the NRV accordingly.
+        noResultsViewController.view.frame.origin.y = 0
 
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         noResultsViewController.didMove(toParentViewController: self)
@@ -431,22 +427,12 @@ private extension SiteTagsViewController {
         return NSLocalizedString("Tags created here can be quickly added to new posts", comment: "Displayed when the user views tags in blog settings and there are no tags")
     }
 
-    func noResultsImageName() -> String {
-        return "wp-illustration-empty-results"
-    }
-
     func noResultsButtonTitle() -> String {
         return NSLocalizedString("Create a Tag", comment: "Title of the button in the placeholder for an empty list of blog tags.")
     }
 
     func loadingMessage() -> String {
         return NSLocalizedString("Loading...", comment: "Loading tags.")
-    }
-
-    func loadingAccessoryView() -> UIView {
-        let animatedBox = WPAnimatedBox()
-        animatedBox.animate(afterDelay: 0.1)
-        return animatedBox
     }
 
 }

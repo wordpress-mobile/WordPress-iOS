@@ -1,4 +1,2 @@
-Je kunt nu eenvoudig vanuit WordPress.com in Safari doorgaan met dezelfde content in de WordPress voor iOS-app. Let op de banner bovenaan de WordPress.com-pagina's!
-Activiteitenlogboeken zijn nu beschikbaar voor gratis WordPress.com-sites.
-Een aantal kleine UI-verbeteringen.
-Een paar bugfixes.
+We hebben dingen verbeterd onder de motorkap.
+Je ziet waarschijnlijk niks anders in de app, maar verwacht dat alles sneller en stabieler is.

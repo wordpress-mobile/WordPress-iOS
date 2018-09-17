@@ -1,3 +1,4 @@
-There’s better image handling in the editor. Whether you drag-and-drop a file or add one with the media picker, uploading and inserting is smooth and fast.
-Small UI improvements in a bunch of spots to make your experience more intuitive — you probably won’t notice them, and that’s the point!
-Bug squashing.
+Does it drive you nuts when you realize you want to stick a post to the front page of your site, but you’re on the bus and only have a phone with you? Us too. Now you can set sticky posts in the app, and the other people on the bus don’t have to listen to you grumble.
+Save time and taps with comment push notifications that show the entire comment from the home screen. Everyone loves saving!
+We brought more visual consistency to different screens throughout the app, so getting around is easier. Less time trying to figure out how to navigate = more time to create.
+Broke out the fly swatter and got rid of some bugs.

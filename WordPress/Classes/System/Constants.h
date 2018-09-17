@@ -31,10 +31,17 @@ extern NSString *const WPPushNotificationAppId;
 extern NSString *const WPAppGroupName;
 extern NSString *const WPAppKeychainAccessGroup;
 
+/// Notification Content Extension Constants
+///
+extern NSString *const WPNotificationContentExtensionKeychainServiceName;
+extern NSString *const WPNotificationContentExtensionKeychainTokenKey;
+extern NSString *const WPNotificationContentExtensionKeychainUsernameKey;
+
 /// Notification Service Extension Constants
 ///
-extern NSString *const WPNotificationServiceExtensionKeychainTokenKey;
 extern NSString *const WPNotificationServiceExtensionKeychainServiceName;
+extern NSString *const WPNotificationServiceExtensionKeychainTokenKey;
+extern NSString *const WPNotificationServiceExtensionKeychainUsernameKey;
 
 /// Share Extension Constants
 ///

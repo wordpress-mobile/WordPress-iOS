@@ -32,7 +32,7 @@ class LikeComment: DefaultNotificationActionCommand, AccessibleFormattableConten
         return likeIcon
     }
 
-    override func execute(context: ActionContext) {
+    override func execute<ContentType: FormattableCommentContent>(context: ActionContext<ContentType>) {
         let block = context.block
         if on {
             removeLike(block: block)
@@ -41,7 +41,7 @@ class LikeComment: DefaultNotificationActionCommand, AccessibleFormattableConten
         }
     }
 
-    private func like(block: ActionableObject) {
+    private func like(block: FormattableCommentContent) {
         actionsService?.likeCommentWithBlock(block)
 
         setIconStrings(title: TitleStrings.unlike,
@@ -49,7 +49,7 @@ class LikeComment: DefaultNotificationActionCommand, AccessibleFormattableConten
                        hint: TitleHints.unlike)
     }
 
-    private func removeLike(block: ActionableObject) {
+    private func removeLike(block: FormattableCommentContent) {
         actionsService?.unlikeCommentWithBlock(block)
 
         setIconStrings(title: TitleStrings.like,

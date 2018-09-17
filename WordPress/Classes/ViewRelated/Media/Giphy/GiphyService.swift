@@ -41,20 +41,45 @@ struct GiphyService {
     }
 }
 
+// MARK: GPHMedia Parsing
+
+extension GiphyImageCollection {
+    init?(gphMedia: GPHMedia) {
+        guard let images = gphMedia.images,
+            let thumbnail = images.fixedHeightStill?.gifUrl,
+            let thumbnailURL = URL(string: thumbnail),
+            let downsizedURLString = images.downsized?.gifUrl,
+            let downsizedURL = URL(string: downsizedURLString),
+            let large = images.downsizedLarge,
+            let largeURLString = large.gifUrl,
+            let largeURL = URL(string: largeURLString) else {
+                return nil
+        }
+
+        let size = CGSize(width: large.width, height: large.height)
+
+        self.init(largeURL: largeURL,
+                  previewURL: downsizedURL,
+                  staticThumbnailURL: thumbnailURL,
+                  largeSize: size)
+    }
+}
+
 extension GiphyMedia {
     convenience init?(gphMedia: GPHMedia) {
-        guard let image = gphMedia.images?.fixedHeightStill,
-            let imageURL = image.gifUrl  else {
+        guard let images = GiphyImageCollection(gphMedia: gphMedia) else {
             return nil
         }
 
         self.init(id: gphMedia.id,
-                  url: imageURL,
-                  size: CGSize(width: image.width, height: image.height),
+                  name: gphMedia.title ?? "",
+                  caption: gphMedia.caption ?? "",
+                  images: images,
                   date: gphMedia.updateDate)
     }
 }
 
+// Allows us to mock out the pagination in tests
 protocol GPHPaginationType {
     /// Total Result Count.
     var totalCount: Int { get }

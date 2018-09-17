@@ -7,7 +7,7 @@ private struct TestRoute: Route {
 }
 
 private struct TestAction: NavigationAction {
-    func perform(_ values: [String: String]?) {}
+    func perform(_ values: [String: String]?, source: UIViewController?) {}
 }
 
 class RouteMatcherTests: XCTestCase {
@@ -60,22 +60,24 @@ class RouteMatcherTests: XCTestCase {
 
     // MARK: - Placeholders
 
+    func testMatchedRoutesHaveTheOriginalURLAsAValue() {
+        routes = [ TestRoute(path: "/me") ]
+        matcher = RouteMatcher(routes: routes)
+
+        let matches = matcher.routesMatching(URL(string: "https://wordpress.com/me")!)
+        let values = matches.first!.values
+        XCTAssert(values.count == 1)
+        XCTAssertEqual(values[MatchedRouteURLComponentKey.url.rawValue], "https://wordpress.com/me")
+    }
+
     func testMatchedRouteWithSinglePlaceholdersHasPopulatedValue() {
         routes = [ TestRoute(path: "/me/:account") ]
         matcher = RouteMatcher(routes: routes)
 
         let matches = matcher.routesMatching(URL(string: "/me/bobsmith")!)
         let values = matches.first!.values
-        XCTAssert(values.count == 1)
+        XCTAssert(values.count == 2)
         XCTAssertEqual(values["account"], "bobsmith")
-    }
-
-    func testMatchedRouteWithNoPlaceholdersHasNoValues() {
-        routes = [ TestRoute(path: "/me") ]
-        matcher = RouteMatcher(routes: routes)
-
-        let matches = matcher.routesMatching(URL(string: "/me")!)
-        XCTAssert(matches.first!.values.count == 0)
     }
 
     func testLongerRouteDoesntMatchPartial() {
@@ -92,7 +94,7 @@ class RouteMatcherTests: XCTestCase {
 
         let matches = matcher.routesMatching(URL(string: "/me/bobsmith/share/group")!)
         let values = matches.first!.values
-        XCTAssert(values.count == 2)
+        XCTAssert(values.count == 3)
         XCTAssertEqual(values["account"], "bobsmith")
         XCTAssertEqual(values["type"], "group")
     }
@@ -107,10 +109,10 @@ class RouteMatcherTests: XCTestCase {
         XCTAssert(matches.count == 2)
 
         let values1 = matches.first!.values
-        XCTAssert(values1.count == 2)
+        XCTAssert(values1.count == 3)
 
         let values2 = matches.last!.values
-        XCTAssert(values2.count == 2)
+        XCTAssert(values2.count == 3)
 
         XCTAssertEqual(values1["account"], "bobsmith")
         XCTAssertEqual(values1["type"], "group")
