@@ -268,6 +268,7 @@ private extension NoResultsViewController {
         }
 
         if let accessorySubview = accessorySubview {
+            accessoryView.subviews.forEach { $0.removeFromSuperview() }
             accessoryView.addSubview(accessorySubview)
         }
 
@@ -444,7 +445,7 @@ private extension NoResultsViewController {
 
     // MARK: - Button Handling
 
-    @IBAction func actionButtonPressed(_ sender: Any) {
+    @IBAction func actionButtonPressed(_ sender: UIButton) {
         delegate?.actionButtonPressed?()
     }
 
