@@ -10,6 +10,7 @@ final class SiteTagsViewController: UITableViewController {
     private let blog: Blog
 
     private lazy var noResultsViewController = NoResultsViewController.controller()
+    private var isSearching = false
 
     fileprivate lazy var context: NSManagedObjectContext = {
         return ContextManager.sharedInstance().mainContext
@@ -79,7 +80,13 @@ final class SiteTagsViewController: UITableViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        searchController.dismiss(animated: false, completion: nil)
+
+        // HACK: Normally, to hide the scroll bars we'd define a presentation context.
+        // This is impacting layout when navigating back from a detail. As a work
+        // around we can simply hide the search bar.
+        if searchController.isActive {
+            searchController.searchBar.isHidden = true
+        }
     }
 
     private func setAccessibilityIdentifier() {
@@ -452,10 +459,6 @@ private extension SiteTagsViewController {
         tableView.reloadData()
     }
 
-    var isSearching: Bool {
-        return searchController.isActive && (searchController.searchBar.text ?? "").count > 0
-    }
-
     var noResultsShown: Bool {
         return noResultsViewController.parent != nil
     }
@@ -494,10 +497,12 @@ extension SiteTagsViewController: UISearchResultsUpdating {
 // MARK: - UISearchControllerDelegate Conformance
 extension SiteTagsViewController: UISearchControllerDelegate {
     func willPresentSearchController(_ searchController: UISearchController) {
+        isSearching = true
         deactivateRefreshControl()
     }
 
     func willDismissSearchController(_ searchController: UISearchController) {
+        isSearching = false
         setupRefreshControl()
     }
 }
