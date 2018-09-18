@@ -324,10 +324,10 @@ private extension NoResultsViewController {
         configureTitleViewConstraints()
     }
 
-    func copyTitleLabel() -> UILabel {
+    func copyTitleLabel() -> UILabel? {
         // Copy the `titleLabel` to get the style for Title View Only label
         let data = NSKeyedArchiver.archivedData(withRootObject: titleLabel)
-        return NSKeyedUnarchiver.unarchiveObject(with: data) as! UILabel
+        return NSKeyedUnarchiver.unarchiveObject(with: data) as? UILabel ?? nil
     }
 
     func configureTitleViewConstraints() {
