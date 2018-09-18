@@ -12,7 +12,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def shared_with_all_pods
-    pod 'WordPressShared', '1.0.10'
+    pod 'WordPressShared', '1.1.1-beta.2'
     pod 'CocoaLumberjack', '3.4.2'
     pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
     pod 'NSObject-SafeExpectations', '0.0.3'
@@ -23,7 +23,7 @@ def shared_with_networking_pods
     pod 'AFNetworking', '3.2.1'
     pod 'Alamofire', '4.7.3'
     pod 'wpxmlrpc', '0.8.3'
-    pod 'WordPressKit', '1.4.0'
+    pod 'WordPressKit', '1.4.1-beta.2'
 end
 
 def shared_test_pods
@@ -74,7 +74,7 @@ target 'WordPress' do
     pod 'Gridicons', '0.16'
     pod 'NSURL+IDN', '0.3'
     pod 'WPMediaPicker', '1.3'
-    pod 'WordPressAuthenticator', '1.0.6'
+    pod 'WordPressAuthenticator', :git => 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', :commit => 'b89c153f8376d5d0fa03de2508d8fdfac2c82ed5'
     aztec
     pod 'WordPressUI', '1.0.7'
 
@@ -135,7 +135,7 @@ target 'WordPressNotificationContentExtension' do
 
     inherit! :search_paths
 
-    pod 'WordPressShared', '1.0.10'
+    pod 'WordPressShared', '1.1.1-beta.2'
     pod 'WordPressUI', '1.0.7'
 end
 
@@ -150,8 +150,8 @@ target 'WordPressNotificationServiceExtension' do
     inherit! :search_paths
 
     pod 'Gridicons', '0.16'
-    pod 'WordPressKit', '1.4.0'
-    pod 'WordPressShared', '1.0.10'
+    pod 'WordPressKit', '1.4.1-beta.2'
+    pod 'WordPressShared', '1.1.1-beta.2'
     pod 'WordPressUI', '1.0.7'
 end
 
