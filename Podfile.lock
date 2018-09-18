@@ -1,0 +1,274 @@
+PODS:
+  - 1PasswordExtension (1.8.5)
+  - AFNetworking (3.2.1):
+    - AFNetworking/NSURLSession (= 3.2.1)
+    - AFNetworking/Reachability (= 3.2.1)
+    - AFNetworking/Security (= 3.2.1)
+    - AFNetworking/Serialization (= 3.2.1)
+    - AFNetworking/UIKit (= 3.2.1)
+  - AFNetworking/NSURLSession (3.2.1):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.2.1)
+  - AFNetworking/Security (3.2.1)
+  - AFNetworking/Serialization (3.2.1)
+  - AFNetworking/UIKit (3.2.1):
+    - AFNetworking/NSURLSession
+  - Alamofire (4.7.3)
+  - Automattic-Tracks-iOS (0.2.3):
+    - CocoaLumberjack (~> 3.4.1)
+    - Reachability (~> 3.1)
+    - UIDeviceIdentifier (~> 0.4)
+  - BuddyBuildSDK (1.0.17)
+  - CocoaLumberjack (3.4.2):
+    - CocoaLumberjack/Default (= 3.4.2)
+    - CocoaLumberjack/Extensions (= 3.4.2)
+  - CocoaLumberjack/Default (3.4.2)
+  - CocoaLumberjack/Extensions (3.4.2):
+    - CocoaLumberjack/Default
+  - Crashlytics (3.10.1):
+    - Fabric (~> 1.7.5)
+  - Fabric (1.7.11)
+  - FormatterKit/Resources (1.8.2)
+  - FormatterKit/TimeIntervalFormatter (1.8.2):
+    - FormatterKit/Resources
+  - Gifu (3.1.0)
+  - GiphyCoreSDK (1.2.0)
+  - GoogleSignInRepacked (4.1.2):
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
+    - "GoogleToolboxForMac/NSString+URLArguments (~> 2.1)"
+  - GoogleToolboxForMac/DebugUtils (2.1.4):
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - GoogleToolboxForMac/Defines (2.1.4)
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.1.4)":
+    - GoogleToolboxForMac/DebugUtils (= 2.1.4)
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.1.4)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.1.4)"
+  - Gridicons (0.16)
+  - HockeySDK (5.1.2):
+    - HockeySDK/DefaultLib (= 5.1.2)
+  - HockeySDK/DefaultLib (5.1.2)
+  - lottie-ios (2.5.0)
+  - MGSwipeTableCell (1.6.7)
+  - MRProgress (0.8.3):
+    - MRProgress/ActivityIndicator (= 0.8.3)
+    - MRProgress/Blur (= 0.8.3)
+    - MRProgress/Circular (= 0.8.3)
+    - MRProgress/Icons (= 0.8.3)
+    - MRProgress/NavigationBarProgress (= 0.8.3)
+    - MRProgress/Overlay (= 0.8.3)
+  - MRProgress/ActivityIndicator (0.8.3):
+    - MRProgress/Stopable
+  - MRProgress/Blur (0.8.3):
+    - MRProgress/Helper
+  - MRProgress/Circular (0.8.3):
+    - MRProgress/Helper
+    - MRProgress/ProgressBaseClass
+    - MRProgress/Stopable
+  - MRProgress/Helper (0.8.3)
+  - MRProgress/Icons (0.8.3)
+  - MRProgress/NavigationBarProgress (0.8.3):
+    - MRProgress/ProgressBaseClass
+  - MRProgress/Overlay (0.8.3):
+    - MRProgress/ActivityIndicator
+    - MRProgress/Blur
+    - MRProgress/Circular
+    - MRProgress/Helper
+    - MRProgress/Icons
+  - MRProgress/ProgressBaseClass (0.8.3)
+  - MRProgress/Stopable (0.8.3):
+    - MRProgress/Helper
+  - Nimble (7.1.3)
+  - NSObject-SafeExpectations (0.0.3)
+  - "NSURL+IDN (0.3)"
+  - OCMock (3.4.2)
+  - OHHTTPStubs (6.1.0):
+    - OHHTTPStubs/Default (= 6.1.0)
+  - OHHTTPStubs/Core (6.1.0)
+  - OHHTTPStubs/Default (6.1.0):
+    - OHHTTPStubs/Core
+    - OHHTTPStubs/JSON
+    - OHHTTPStubs/NSURLSession
+    - OHHTTPStubs/OHPathHelpers
+  - OHHTTPStubs/JSON (6.1.0):
+    - OHHTTPStubs/Core
+  - OHHTTPStubs/NSURLSession (6.1.0):
+    - OHHTTPStubs/Core
+  - OHHTTPStubs/OHPathHelpers (6.1.0)
+  - OHHTTPStubs/Swift (6.1.0):
+    - OHHTTPStubs/Default
+  - Reachability (3.2)
+  - Starscream (3.0.4)
+  - SVProgressHUD (2.2.5)
+  - UIDeviceIdentifier (0.5.0)
+  - WordPress-Aztec-iOS (1.0.1)
+  - WordPress-Editor-iOS (1.0.1):
+    - WordPress-Aztec-iOS (= 1.0.1)
+  - WordPressAuthenticator (1.1.0-beta.1):
+    - 1PasswordExtension (= 1.8.5)
+    - Alamofire (= 4.7.3)
+    - CocoaLumberjack (= 3.4.2)
+    - GoogleSignInRepacked (= 4.1.2)
+    - Gridicons (~> 0.15)
+    - lottie-ios (= 2.5.0)
+    - "NSURL+IDN (= 0.3)"
+    - SVProgressHUD (= 2.2.5)
+    - UIDeviceIdentifier (~> 0.4)
+    - WordPressKit (= 1.4.1-beta.2)
+    - WordPressShared (= 1.1.1-beta.2)
+    - WordPressUI (~> 1.0)
+    - wpxmlrpc (~> 0.8)
+  - WordPressKit (1.4.1-beta.2):
+    - Alamofire (~> 4.7.3)
+    - CocoaLumberjack (= 3.4.2)
+    - NSObject-SafeExpectations (= 0.0.3)
+    - UIDeviceIdentifier (~> 0.4)
+    - WordPressShared (= 1.1.1-beta.2)
+    - wpxmlrpc (= 0.8.3)
+  - WordPressShared (1.1.1-beta.2):
+    - CocoaLumberjack (~> 3.4)
+    - FormatterKit/TimeIntervalFormatter (= 1.8.2)
+  - WordPressUI (1.0.7)
+  - WPMediaPicker (1.3)
+  - wpxmlrpc (0.8.3)
+  - ZendeskSDK (2.1.0):
+    - ZendeskSDK/Providers (= 2.1.0)
+    - ZendeskSDK/UI (= 2.1.0)
+  - ZendeskSDK/Core (2.1.0)
+  - ZendeskSDK/Providers (2.1.0):
+    - ZendeskSDK/Core
+  - ZendeskSDK/UI (2.1.0):
+    - ZendeskSDK/Core
+    - ZendeskSDK/Providers
+
+DEPENDENCIES:
+  - 1PasswordExtension (= 1.8.5)
+  - AFNetworking (= 3.2.1)
+  - Alamofire (= 4.7.3)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.2.3`)
+  - BuddyBuildSDK (= 1.0.17)
+  - CocoaLumberjack (= 3.4.2)
+  - Crashlytics (= 3.10.1)
+  - FormatterKit/TimeIntervalFormatter (= 1.8.2)
+  - Gifu (= 3.1.0)
+  - GiphyCoreSDK (~> 1.2.0)
+  - Gridicons (= 0.16)
+  - HockeySDK (= 5.1.2)
+  - lottie-ios (= 2.5.0)
+  - MGSwipeTableCell (= 1.6.7)
+  - MRProgress (= 0.8.3)
+  - Nimble (~> 7.1.1)
+  - NSObject-SafeExpectations (= 0.0.3)
+  - "NSURL+IDN (= 0.3)"
+  - OCMock (~> 3.4)
+  - OHHTTPStubs (= 6.1.0)
+  - OHHTTPStubs/Swift (= 6.1.0)
+  - Reachability (= 3.2)
+  - Starscream (= 3.0.4)
+  - SVProgressHUD (= 2.2.5)
+  - UIDeviceIdentifier (~> 0.4)
+  - WordPress-Editor-iOS (= 1.0.1)
+  - WordPressAuthenticator (= 1.1.0-beta.1)
+  - WordPressKit (= 1.4.1-beta.2)
+  - WordPressShared (= 1.1.1-beta.2)
+  - WordPressUI (= 1.0.7)
+  - WPMediaPicker (= 1.3)
+  - wpxmlrpc (= 0.8.3)
+  - ZendeskSDK (from `https://github.com/zendesk/zendesk_sdk_ios.git`, branch `xcode10-beta`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - 1PasswordExtension
+    - AFNetworking
+    - Alamofire
+    - BuddyBuildSDK
+    - CocoaLumberjack
+    - Crashlytics
+    - Fabric
+    - FormatterKit
+    - Gifu
+    - GiphyCoreSDK
+    - GoogleSignInRepacked
+    - GoogleToolboxForMac
+    - Gridicons
+    - HockeySDK
+    - lottie-ios
+    - MGSwipeTableCell
+    - MRProgress
+    - Nimble
+    - NSObject-SafeExpectations
+    - "NSURL+IDN"
+    - OCMock
+    - OHHTTPStubs
+    - Reachability
+    - Starscream
+    - SVProgressHUD
+    - UIDeviceIdentifier
+    - WordPress-Aztec-iOS
+    - WordPress-Editor-iOS
+    - WordPressAuthenticator
+    - WordPressKit
+    - WordPressShared
+    - WordPressUI
+    - WPMediaPicker
+    - wpxmlrpc
+
+EXTERNAL SOURCES:
+  Automattic-Tracks-iOS:
+    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
+    :tag: 0.2.3
+  ZendeskSDK:
+    :branch: xcode10-beta
+    :git: https://github.com/zendesk/zendesk_sdk_ios.git
+
+CHECKOUT OPTIONS:
+  Automattic-Tracks-iOS:
+    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
+    :tag: 0.2.3
+  ZendeskSDK:
+    :commit: 00559895d059ec1936f8a08006b9253afdb148b1
+    :git: https://github.com/zendesk/zendesk_sdk_ios.git
+
+SPEC CHECKSUMS:
+  1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
+  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  Automattic-Tracks-iOS: d8c6c6c1351b1905a73e45f431b15598d71963b5
+  BuddyBuildSDK: 8ae12ee721098b356a961ea7dce70ae55f93a7d2
+  CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
+  Crashlytics: aee1a064cbbf99b32efa3f056a5f458d846bc8ff
+  Fabric: f233c9492b3bbc1f04e3882986740f7988a58edb
+  FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
+  Gifu: fd1e9e3a15ac5d90bae0a510e4ed9f94b485ab03
+  GiphyCoreSDK: 1278bfc2dbdc9f1b2b1703ee70224f515b9530a6
+  GoogleSignInRepacked: d357702618c555f38923576924661325eb1ef22b
+  GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
+  Gridicons: 8cc5cb666d5ad8b8f1771d3c7a93d27ae25b7c2e
+  HockeySDK: 38b7e2726af1ea86ae97ce4b5de33ab0817e3500
+  lottie-ios: d699fdee68d7b63e721d949388b015fef1aaa4ac
+  MGSwipeTableCell: fb20e983988bde2b8d0df29c2d9e1d8ffd10b74a
+  MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
+  Nimble: 2839b01d1b31f6a6a7777a221f0d91cf52e8e27b
+  NSObject-SafeExpectations: b989b68a8a9b7b9f2b264a8b52ba9d7aab8f3129
+  "NSURL+IDN": 82355a0afd532fe1de08f6417c134b49b1a1c4b3
+  OCMock: ebe9ee1dca7fbed0ff9193ac0b3e2d8862ea56f6
+  OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
+  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
+  WordPress-Aztec-iOS: 17508c8438fbd9f5733f518500a2f8f2fc3dbadc
+  WordPress-Editor-iOS: 4b3495b53e5392f93b5c8c7435296a6f13142586
+  WordPressAuthenticator: 904e24e2bcaff4b9d91b34514e87ac55bee470fa
+  WordPressKit: a4ccc4bbbc6f8e194becf18b47af212f367fe3ab
+  WordPressShared: c4d4356a06fc73bde9b782f26768d42e62a330ef
+  WordPressUI: cfcac4a2a033e3ed5def6504bb8e28447c54423b
+  WPMediaPicker: c54791e04af3b41e473e9b340784be48a505bb38
+  wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
+  ZendeskSDK: 54b4f8ef7c368ba5a29b2ad6c69fa8c912355190
+
+PODFILE CHECKSUM: d2ed1babb3aa2e0e1d7d600f0da495fda674c834
+
+COCOAPODS: 1.6.0.beta.1
