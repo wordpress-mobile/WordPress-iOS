@@ -597,9 +597,15 @@ import WordPressFlux
         navigationController?.pushViewController(controller, animated: animated)
     }
 
+    func showFollowing() {
+        guard let readerMenuViewController = WPTabBarController.sharedInstance().readerMenuViewController else {
+            return
+        }
+
+        readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .followed, animated: true)
+    }
 
     // MARK: - Blocking
-
 
     fileprivate func blockSiteForPost(_ post: ReaderPost) {
         guard let indexPath = content.indexPath(forObject: post) else {
@@ -1500,7 +1506,7 @@ private extension ReaderStreamViewController {
 
         let response: NoResultsResponse = ReaderStreamViewController.responseForNoResults(topic)
 
-        let buttonTitle = ReaderHelpers.topicIsFollowing(topic) ? ResultsStatusText.buttonTitle : nil
+        let buttonTitle = buttonTitleForTopic(topic)
         let imageName = ReaderHelpers.topicIsFollowing(topic) ? readerEmptyImageName : nil
 
         configureAndDisplayResultsStatus(title: response.title, subtitle: response.message, buttonTitle: buttonTitle, imageName: imageName)
@@ -1535,12 +1541,25 @@ private extension ReaderStreamViewController {
         tableView.tableHeaderView?.isHidden = false
     }
 
+    func buttonTitleForTopic(_ topic: ReaderAbstractTopic) -> String? {
+        if ReaderHelpers.topicIsFollowing(topic) {
+            return ResultsStatusText.manageSitesButtonTitle
+        }
+
+        if ReaderHelpers.topicIsLiked(topic) {
+            return ResultsStatusText.followingButtonTitle
+        }
+
+        return nil
+    }
+
     struct ResultsStatusText {
         static let fetchingPostsTitle = NSLocalizedString("Fetching posts...", comment: "A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         static let loadingStreamTitle = NSLocalizedString("Loading stream...", comment: "A short message to inform the user the requested stream is being loaded.")
         static let loadingErrorTitle = NSLocalizedString("Problem loading stream", comment: "Error message title informing the user that a stream could not be loaded.")
         static let loadingErrorMessage = NSLocalizedString("Sorry. The stream could not be loaded.", comment: "A short error message letting the user know the requested stream could not be loaded.")
-        static let buttonTitle = NSLocalizedString("Manage Sites", comment: "Button title. Tapping lets the user manage the sites they follow.")
+        static let manageSitesButtonTitle = NSLocalizedString("Manage Sites", comment: "Button title. Tapping lets the user manage the sites they follow.")
+        static let followingButtonTitle = NSLocalizedString("Go to Following", comment: "Button title. Tapping lets the user view the sites they follow.")
         static let noConnectionTitle = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
     }
 
@@ -1554,7 +1573,18 @@ private extension ReaderStreamViewController {
 
 extension ReaderStreamViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
-        showManageSites()
+        guard let topic = readerTopic else {
+            return
+        }
+
+        if ReaderHelpers.topicIsFollowing(topic) {
+            showManageSites()
+            return
+        }
+
+        if ReaderHelpers.topicIsLiked(topic) {
+            showFollowing()
+        }
     }
 }
 
