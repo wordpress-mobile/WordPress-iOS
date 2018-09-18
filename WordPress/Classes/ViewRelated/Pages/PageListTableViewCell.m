@@ -67,7 +67,7 @@
 - (void)configurePageLevel
 {
     Page *page = (Page *)self.post;
-    self.leftPadding.constant = 10 * page.hierarchyIndex;
+    self.leftPadding.constant = 16.0 * page.hierarchyIndex;
 }
 
 @end
