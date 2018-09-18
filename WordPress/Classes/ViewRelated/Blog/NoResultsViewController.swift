@@ -40,11 +40,13 @@ import WordPressShared
     private var hideImage = false
 
     private var displayTitleViewOnly = false
+    private var titleOnlyLabel: UILabel?
     // To adjust title view on rotation.
     private var titleLabelLeadingConstraint: NSLayoutConstraint?
     private var titleLabelTrailingConstraint: NSLayoutConstraint?
     private var titleLabelCenterXConstraint: NSLayoutConstraint?
     private var titleLabelMaxWidthConstraint: NSLayoutConstraint?
+    private var titleLabelTopConstraint: NSLayoutConstraint?
 
     // MARK: - View
 
@@ -145,6 +147,7 @@ import WordPressShared
         imageName = image
         subtitleImageName = subtitleImage
         accessorySubview = accessoryView
+        displayTitleViewOnly = false
     }
 
     /// Public method to show the title specifically formatted for no search results.
@@ -282,16 +285,49 @@ private extension NoResultsViewController {
         view.layoutIfNeeded()
     }
 
+    func configureSubtitleView() {
+        // remove the extra space iOS puts on a UITextView
+        subtitleTextView.textContainerInset = UIEdgeInsets.zero
+        subtitleTextView.textContainer.lineFragmentPadding = 0
+    }
+
+    func setAccessoryViewsVisibility() {
+        // Always hide the accessory/image stack view when in iPhone landscape.
+        accessoryStackView.isHidden = UIDeviceOrientationIsLandscape(UIDevice.current.orientation) && WPDeviceIdentification.isiPhone()
+
+        // If there is an accessory view, show that.
+        accessoryView.isHidden = accessorySubview == nil
+        // Otherwise, show the image view, unless it's set never to show.
+        imageView.isHidden = (hideImage == true) ? true : !accessoryView.isHidden
+    }
+
+    // MARK: - Configure for Title View Only
+
     func configureForTitleViewOnly() {
 
+        titleOnlyLabel?.removeFromSuperview()
+
         guard displayTitleViewOnly == true else {
+            noResultsView.isHidden = false
+            return
+        }
+
+        titleOnlyLabel = copyTitleLabel()
+
+        guard let titleOnlyLabel = titleOnlyLabel else {
             return
         }
 
         noResultsView.isHidden = true
-        titleLabel.frame = view.frame
-        view.addSubview(titleLabel)
+        titleOnlyLabel.frame = view.frame
+        view.addSubview(titleOnlyLabel)
         configureTitleViewConstraints()
+    }
+
+    func copyTitleLabel() -> UILabel? {
+        // Copy the `titleLabel` to get the style for Title View Only label
+        let data = NSKeyedArchiver.archivedData(withRootObject: titleLabel)
+        return NSKeyedUnarchiver.unarchiveObject(with: data) as? UILabel ?? nil
     }
 
     func configureTitleViewConstraints() {
@@ -301,24 +337,27 @@ private extension NoResultsViewController {
         }
 
         resetTitleViewConstraints()
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleOnlyLabel?.translatesAutoresizingMaskIntoConstraints = false
+
 
         let availableWidth = view.frame.width - TitleLabelConstraints.leading + TitleLabelConstraints.trailing
 
         if availableWidth < TitleLabelConstraints.maxWidth {
             guard let titleLabelLeadingConstraint = titleLabelLeadingConstraint,
-                let titleLabelTrailingConstraint = titleLabelTrailingConstraint else {
+                let titleLabelTrailingConstraint = titleLabelTrailingConstraint,
+                let titleLabelTopConstraint = titleLabelTopConstraint else {
                     return
             }
 
-            activateTitleViewConstraints([titleLabelLeadingConstraint, titleLabelTrailingConstraint])
+            NSLayoutConstraint.activate([titleLabelTopConstraint, titleLabelLeadingConstraint, titleLabelTrailingConstraint])
         } else {
             guard let titleLabelMaxWidthConstraint = titleLabelMaxWidthConstraint,
-                let titleLabelCenterXConstraint = titleLabelCenterXConstraint else {
+                let titleLabelCenterXConstraint = titleLabelCenterXConstraint,
+                let titleLabelTopConstraint = titleLabelTopConstraint else {
                     return
             }
 
-            activateTitleViewConstraints([titleLabelMaxWidthConstraint, titleLabelCenterXConstraint])
+            NSLayoutConstraint.activate([titleLabelTopConstraint, titleLabelMaxWidthConstraint, titleLabelCenterXConstraint])
         }
     }
 
@@ -328,22 +367,25 @@ private extension NoResultsViewController {
         titleLabelMaxWidthConstraint?.isActive = false
         titleLabelCenterXConstraint?.isActive = false
 
-        titleLabelLeadingConstraint = titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: TitleLabelConstraints.leading)
-        titleLabelTrailingConstraint = titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: TitleLabelConstraints.trailing)
-        titleLabelCenterXConstraint = titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        titleLabelMaxWidthConstraint = titleLabel.widthAnchor.constraint(lessThanOrEqualToConstant: TitleLabelConstraints.maxWidth)
+        guard let titleOnlyLabel = titleOnlyLabel else {
+            return
+        }
+
+        titleLabelTopConstraint = titleOnlyLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: TitleLabelConstraints.top)
+        titleLabelLeadingConstraint = titleOnlyLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: TitleLabelConstraints.leading)
+        titleLabelTrailingConstraint = titleOnlyLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: TitleLabelConstraints.trailing)
+        titleLabelCenterXConstraint = titleOnlyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        titleLabelMaxWidthConstraint = titleOnlyLabel.widthAnchor.constraint(lessThanOrEqualToConstant: TitleLabelConstraints.maxWidth)
     }
 
-    func activateTitleViewConstraints(_ activeConstraints: [NSLayoutConstraint]) {
-        let constraints = activeConstraints + [titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: TitleLabelConstraints.top)]
-        NSLayoutConstraint.activate(constraints)
+    struct TitleLabelConstraints {
+        static let top = CGFloat(64)
+        static let leading = CGFloat(38)
+        static let trailing = CGFloat(-38)
+        static let maxWidth = CGFloat(360)
     }
 
-    func configureSubtitleView() {
-        // remove the extra space iOS puts on a UITextView
-        subtitleTextView.textContainerInset = UIEdgeInsets.zero
-        subtitleTextView.textContainer.lineFragmentPadding = 0
-    }
+    // MARK: - Button Configuration
 
     func configureButton() {
         actionButton.contentEdgeInsets = DefaultRenderMetrics.contentInsets
@@ -391,16 +433,6 @@ private extension NoResultsViewController {
         return image.resizableImage(withCapInsets: DefaultRenderMetrics.backgroundCapInsets)
     }
 
-    func setAccessoryViewsVisibility() {
-        // Always hide the accessory/image stack view when in iPhone landscape.
-        accessoryStackView.isHidden = UIDeviceOrientationIsLandscape(UIDevice.current.orientation) && WPDeviceIdentification.isiPhone()
-
-        // If there is an accessory view, show that.
-        accessoryView.isHidden = accessorySubview == nil
-        // Otherwise, show the image view, unless it's set never to show.
-        imageView.isHidden = (hideImage == true) ? true : !accessoryView.isHidden
-    }
-
     struct DefaultRenderMetrics {
         public static let backgroundImageSize = CGSize(width: 44, height: 44)
         public static let backgroundCornerRadius = CGFloat(8)
@@ -408,13 +440,6 @@ private extension NoResultsViewController {
         public static let backgroundShadowOffset = CGSize(width: 0, height: 2)
         public static let backgroundShadowBlurRadius = CGFloat(0)
         public static let contentInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
-    }
-
-    struct TitleLabelConstraints {
-        static let top = CGFloat(64)
-        static let leading = CGFloat(38)
-        static let trailing = CGFloat(-38)
-        static let maxWidth = CGFloat(360)
     }
 
     // MARK: - Button Handling
