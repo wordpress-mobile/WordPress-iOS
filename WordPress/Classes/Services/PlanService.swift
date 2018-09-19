@@ -26,7 +26,7 @@ struct PlanService<S: InAppPurchaseStore> {
         remote.getPlansForSite(siteID,
             success: {
                 activePlan, availablePlans in
-                PlanStorage.activatePlan(activePlan.id, forSite: siteID)
+                PlanStorage.activatePlan(activePlan!.id, forSite: siteID)
 
                 // Purchasing is currently disabled in the app, so return empty prices for all the plans.
                 let pricedPlans: [PricedPlan] = availablePlans.map { ($0, "") }

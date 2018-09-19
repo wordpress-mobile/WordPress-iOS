@@ -20,6 +20,7 @@ class EditPostViewController: UIViewController {
     }()
 
     @objc var onClose: ((_ changesSaved: Bool) -> ())?
+    @objc var afterDismiss: (() -> Void)?
 
     override var modalPresentationStyle: UIModalPresentationStyle {
         didSet(newValue) {
@@ -223,7 +224,9 @@ class EditPostViewController: UIViewController {
 
     @objc func closePostPost(animated: Bool) {
         // will dismiss self
-        dismiss(animated: animated) {}
+        dismiss(animated: animated) { [weak self] in
+            self?.afterDismiss?()
+        }
     }
 }
 
