@@ -168,7 +168,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             noResultsView.removeFromView()
 
             if hasSearchQuery {
-                noResultsView.configureForNoSearchResult(with: pickerDataSource.searchQuery)
+                noResultsView.configureForNoSearchResult()
             } else {
                 noResultsView.configureForNoAssets(userCanUploadMedia: blog.userCanUploadMedia)
             }
