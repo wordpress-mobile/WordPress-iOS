@@ -69,9 +69,14 @@ extension SiteCreationEpilogueViewController: NUXButtonViewControllerDelegate {
     }
 
     private func showQuickStartAlert() {
+        guard !UserDefaults.standard.quickStartWasDismissedPermanently else {
+            return
+        }
+
         guard let siteToShow = siteToShow, let tabBar = WPTabBarController.sharedInstance() else {
             return
         }
+
         tabBar.switchMySitesTabToBlogDetails(for: siteToShow)
         let fancyAlert = FancyAlertViewController.makeQuickStartAlertController()
         fancyAlert.modalPresentationStyle = .custom
