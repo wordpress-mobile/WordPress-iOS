@@ -21,7 +21,7 @@ class NotificationSyncMediatorTests: XCTestCase {
 
     /// Expectation's Timeout
     ///
-    fileprivate let timeout = TimeInterval(4)
+    fileprivate let timeout = TimeInterval(10)
 
 
     // MARK: - Overriden Methods
