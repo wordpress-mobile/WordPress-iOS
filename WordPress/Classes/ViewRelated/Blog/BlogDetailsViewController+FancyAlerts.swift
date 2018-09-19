@@ -57,5 +57,5 @@ extension BlogDetailsViewController {
             self?.tabBarController?.present(alert, animated: true, completion: nil)
         }
     }
-    
+
 }
