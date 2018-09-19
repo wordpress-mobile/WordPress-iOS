@@ -36,6 +36,12 @@ public struct Identifier: Equatable, Hashable {
     }
 }
 
+extension Identifier: Comparable {
+    public static func < (lhs: Identifier, rhs: Identifier) -> Bool {
+        return lhs.rawValue < rhs.rawValue
+    }
+}
+
 extension Identifier: CustomStringConvertible {
     public var description: String {
         return rawValue
