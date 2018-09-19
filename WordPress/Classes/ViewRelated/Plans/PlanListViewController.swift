@@ -131,7 +131,7 @@ extension PlanListViewController: UIViewControllerRestoration {
     }
 
     static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
-        guard let identifier = identifierComponents.last as? String, identifier == PlanListViewController.restorationIdentifier else {
+        guard let identifier = identifierComponents.last, identifier == PlanListViewController.restorationIdentifier else {
             return nil
         }
 
