@@ -554,6 +554,11 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         super.willPresentSearchController(searchController)
 
         self.filterTabBar.alpha = WPAlphaZero
+
+        if #available(iOS 11.0, *) {
+            return
+        }
+
         filterTabBarBottomConstraint.isActive = false
         tableViewTopConstraint.isActive = true
     }
@@ -570,12 +575,17 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
     func didDismissSearchController(_ searchController: UISearchController) {
         updateTableHeaderSize()
 
-        tableViewTopConstraint.isActive = false
-        filterTabBarBottomConstraint.isActive = true
-
         UIView.animate(withDuration: Animations.searchDismissDuration) {
             self.filterTabBar.alpha = WPAlphaFull
         }
+
+        if #available(iOS 11.0, *) {
+            return
+        }
+
+        tableViewTopConstraint.isActive = false
+        filterTabBarBottomConstraint.isActive = true
+
     }
 
     enum Animations {
