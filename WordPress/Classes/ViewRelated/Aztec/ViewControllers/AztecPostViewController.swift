@@ -491,7 +491,12 @@ class AztecPostViewController: UIViewController, PostEditor {
                 assertionFailure("self was nil while trying to save a post using Debouncer")
                 return
             }
-            ContextManager.sharedInstance().save(strongSelf.post.managedObjectContext!)
+            if strongSelf.post.hasLocalChanges() {
+                guard let context = strongSelf.post.managedObjectContext else {
+                    return
+                }
+                ContextManager.sharedInstance().save(context)
+            }
         }
     }
 
@@ -1635,7 +1640,7 @@ extension AztecPostViewController: UITextViewDelegate {
     }
 
     func textViewDidChange(_ textView: UITextView) {
-        post.status == .draft ? mapUIContentToDraftPostAndAutoSaveWithDelay() : mapUIContentToPostAndSave()
+        mapUIContentToPostAndSave()
         refreshPlaceholderVisibility()
 
         switch textView {
@@ -1737,7 +1742,7 @@ extension AztecPostViewController: UITextViewDelegate {
 //
 extension AztecPostViewController {
     func titleTextFieldDidChange(_ textField: UITextField) {
-        post.status == .draft ? mapUIContentToDraftPostAndAutoSaveWithDelay() : mapUIContentToPostAndSave()
+        mapUIContentToPostAndSave()
         editorContentWasUpdated()
     }
 }
@@ -2727,12 +2732,6 @@ private extension AztecPostViewController {
     }
 
     func mapUIContentToPostAndSave() {
-        post.postTitle = titleTextField.text
-        post.content = getHTML()
-        ContextManager.sharedInstance().save(post.managedObjectContext!)
-    }
-    
-    func mapUIContentToDraftPostAndAutoSaveWithDelay() {
         post.postTitle = titleTextField.text
         post.content = getHTML()
         debouncer.call()
