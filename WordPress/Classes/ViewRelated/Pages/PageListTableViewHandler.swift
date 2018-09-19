@@ -11,55 +11,23 @@ final class PageListTableViewHandler: WPTableViewHandler {
     private var pages: [Page] = []
 
     private lazy var publishedResultController: NSFetchedResultsController<NSFetchRequestResult> = {
-        guard let moc = self.managedObjectContext() else {
-            fatalError("A request and a context must exist")
-        }
-
         let publishedFilter = PostListFilter.publishedFilter()
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Page.entityName())
         fetchRequest.predicate = publishedFilter.predicateForFetchRequest
         fetchRequest.sortDescriptors = publishedFilter.sortDescriptors
-        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+        return resultsController(with: fetchRequest, context: managedObjectContext())
     }()
 
     private lazy var groupedResultsController: NSFetchedResultsController<NSFetchRequestResult> = {
-        let keyPath = self.sectionNameKeyPath()
-        guard let fetchRequest = self.fetchRequest(), let moc = self.managedObjectContext() else {
-            fatalError("A request and a context must exist")
-        }
-
-        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: keyPath, cacheName: nil)
-
-        do {
-            try controller.performFetch()
-        } catch {
-            DDLogError("Error fetching pages after refreshing the table: \(error)")
-        }
-
-        return controller
+        return resultsController(with: fetchRequest(), context: managedObjectContext(), keyPath: sectionNameKeyPath(), performFetch: true)
     }()
 
     private lazy var flatResultsController: NSFetchedResultsController<NSFetchRequestResult> = {
-        guard let fetchRequest = self.fetchRequest(), let moc = self.managedObjectContext() else {
-            fatalError("A request and a context must exist")
-        }
-
-        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-
-        do {
-            try controller.performFetch()
-        } catch {
-            DDLogError("Error fetching pages after refreshing the table: \(error)")
-        }
-
-        return controller
+        return resultsController(with: fetchRequest(), context: managedObjectContext(), performFetch: true)
     }()
 
     override var resultsController: NSFetchedResultsController<NSFetchRequestResult> {
-        switch status {
-        case .scheduled: return groupedResultsController
-        default: return flatResultsController
-        }
+        return groupResults ? groupedResultsController : flatResultsController
     }
 
     override func refreshTableView() {
@@ -130,6 +98,26 @@ final class PageListTableViewHandler: WPTableViewHandler {
 
 
     // MARK: - Private methods
+
+    private func resultsController(with request: NSFetchRequest<NSFetchRequestResult>?,
+                                   context: NSManagedObjectContext?,
+                                   keyPath: String? = nil,
+                                   performFetch: Bool = false) -> NSFetchedResultsController<NSFetchRequestResult> {
+        guard let request = request, let context = context else {
+            fatalError("A request and a context must exist")
+        }
+
+        let controller = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: keyPath, cacheName: nil)
+        if performFetch {
+            do {
+                try controller.performFetch()
+            } catch {
+                DDLogError("Error fetching pages after refreshing the table: \(error)")
+            }
+        }
+
+        return controller
+    }
 
     private func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
         return delegate?.fetchRequest()
