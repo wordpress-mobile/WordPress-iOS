@@ -4,6 +4,7 @@ extension FancyAlertViewController {
         static let bodyText = NSLocalizedString("Our Quick Start checklist walks you through the basics of setting up a new website.", comment: "Body text of alert asking if users want to try out the quick start checklist.")
         static let allowButtonText = NSLocalizedString("Yes", comment: "Allow button title shown in alert asking if users want to try out the quick start checklist.")
         static let notNowText = NSLocalizedString("Not This Time", comment: "Not this time button title shown in alert asking if users want to try out the quick start checklist.")
+        static let neverText = NSLocalizedString("Never", comment: "Never button title shown in alert asking if users want to try out the quick start checklist.")
     }
 
     private struct Analytics {
@@ -22,6 +23,11 @@ extension FancyAlertViewController {
         }
 
         let notNowButton = ButtonConfig(Strings.notNowText) { controller, _ in
+            controller.dismiss(animated: true, completion: nil)
+        }
+
+        let neverButton = ButtonConfig(Strings.neverText) { controller, _ in
+            UserDefaults.standard.quickStartWasDismissedPermanently = true
             controller.dismiss(animated: true, completion: nil)
         }
 
