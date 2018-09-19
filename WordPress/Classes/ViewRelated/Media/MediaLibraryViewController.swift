@@ -610,7 +610,7 @@ extension MediaLibraryViewController: UIViewControllerRestoration {
     }
 
     static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
-        guard let identifier = identifierComponents.last as? String,
+        guard let identifier = identifierComponents.last,
             identifier == MediaLibraryViewController.restorationIdentifier else {
                 return nil
         }

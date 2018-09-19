@@ -8,7 +8,7 @@ extension NSExtensionContext {
     ///
     func itemProviders(ofType type: String) -> [NSItemProvider] {
         guard let item = inputItems.first as? NSExtensionItem,
-            let providers = item.attachments as? [NSItemProvider] else {
+            let providers = item.attachments else {
             return []
         }
         return providers.filter { provider in

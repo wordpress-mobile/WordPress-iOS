@@ -1507,8 +1507,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
         case WPAnalyticsStatMaxValue:
+        case WPAnalyticsStatEditorAddedPhotoViaGiphy:
+        case WPAnalyticsStatGiphyAccessed:
+        case WPAnalyticsStatGiphySearched:
+        case WPAnalyticsStatGiphyUploaded:
+        case WPAnalyticsStatMediaLibraryAddedPhotoViaGiphy:
             return nil;
-
     }
 
     TracksEventPair *eventPair = [TracksEventPair new];
