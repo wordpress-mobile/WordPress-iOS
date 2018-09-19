@@ -64,7 +64,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.formattingDelegate = self
         textView.textAttachmentDelegate = self
         textView.backgroundColor = Colors.aztecBackground
-        textView.linkTextAttributes = convertToOptionalNSAttributedStringKeyDictionary(NSAttributedString.Key.convertToRaw(attributes: linkAttributes))
+        textView.linkTextAttributes = linkAttributes
         textView.textAlignment = .natural
 
         if #available(iOS 11, *) {
@@ -145,7 +145,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         textView.font = Fonts.title
         textView.returnKeyType = .next
         textView.textColor = UIColor.darkText
-        textView.typingAttributes = convertToNSAttributedStringKeyDictionary(NSAttributedString.Key.convertToRaw(attributes: attributes))
+        textView.typingAttributes = attributes
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textAlignment = .natural
         textView.isScrollEnabled = false
@@ -3992,15 +3992,4 @@ extension AztecPostViewController: UIViewControllerTransitioningDelegate {
 
         return FancyAlertPresentationController(presentedViewController: presented, presenting: presenting)
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
-	guard let input = input else { return nil }
-	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToNSAttributedStringKeyDictionary(_ input: [String: Any]) -> [NSAttributedString.Key: Any] {
-	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }

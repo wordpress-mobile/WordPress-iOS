@@ -102,8 +102,8 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).attributedPlaceholder = attributedPlaceholder
-        let textAttributes = WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.greyDarken30())
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).defaultTextAttributes = convertToNSAttributedStringKeyDictionary(textAttributes)
+        let textAttributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.greyDarken30())
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).defaultTextAttributes = textAttributes
 
         searchBar.autocapitalizationType = .none
         searchBar.isTranslucent = false
@@ -398,9 +398,4 @@ extension ReaderFollowedSitesViewController: UISearchBarDelegate {
         searchBar.text = nil
         searchBar.resignFirstResponder()
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToNSAttributedStringKeyDictionary(_ input: [String: Any]) -> [NSAttributedString.Key: Any] {
-	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }

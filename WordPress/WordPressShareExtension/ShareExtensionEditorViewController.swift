@@ -57,7 +57,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         textView.textAttachmentDelegate = self
         textView.backgroundColor = ShareColors.aztecBackground
         textView.tintColor = ShareColors.aztecCursorColor
-        textView.linkTextAttributes = convertToOptionalNSAttributedStringKeyDictionary(NSAttributedString.Key.convertToRaw(attributes: linkAttributes))
+        textView.linkTextAttributes = linkAttributes
         textView.textAlignment = .natural
 
         if #available(iOS 11, *) {
@@ -99,7 +99,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         textView.font = ShareFonts.title
         textView.returnKeyType = .next
         textView.textColor = UIColor.darkText
-        textView.typingAttributes = convertToNSAttributedStringKeyDictionary(NSAttributedString.Key.convertToRaw(attributes: attributes))
+        textView.typingAttributes = attributes
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textAlignment = .natural
         textView.isScrollEnabled = false
@@ -1299,15 +1299,4 @@ fileprivate extension ShareExtensionEditorViewController {
         static let title        = WPFontManager.notoBoldFont(ofSize: 24.0)
         static let mediaOverlay = WPFontManager.systemSemiBoldFont(ofSize: 15.0)
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
-	guard let input = input else { return nil }
-	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToNSAttributedStringKeyDictionary(_ input: [String: Any]) -> [NSAttributedString.Key: Any] {
-	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
 }
