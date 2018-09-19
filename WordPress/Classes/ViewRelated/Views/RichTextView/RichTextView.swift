@@ -94,12 +94,12 @@ import Foundation
         }
     }
 
-    @objc open var linkTextAttributes: [String: Any]! {
+    @objc open var linkTextAttributes: [NSAttributedString.Key: Any]! {
         set {
-            textView.linkTextAttributes = convertToOptionalNSAttributedStringKeyDictionary(newValue)
+            textView.linkTextAttributes = newValue
         }
         get {
-            return convertFromOptionalNSAttributedStringKeyDictionary(textView.linkTextAttributes)
+            return textView.linkTextAttributes
         }
     }
 
@@ -273,16 +273,4 @@ import Foundation
     fileprivate var textView: UITextView!
     fileprivate var gesturesRecognizer: UITapGestureRecognizer!
     fileprivate var attachmentViews: [UIView] = []
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
-	guard let input = input else { return nil }
-	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromOptionalNSAttributedStringKeyDictionary(_ input: [NSAttributedString.Key: Any]?) -> [String: Any]? {
-	guard let input = input else { return nil }
-	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
 }
