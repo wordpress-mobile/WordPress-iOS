@@ -2002,7 +2002,7 @@ extension AztecPostViewController {
         navigationController.popoverPresentationController?.permittedArrowDirections = [.any]
         navigationController.popoverPresentationController?.sourceView = richTextView
         navigationController.popoverPresentationController?.backgroundColor = WPStyleGuide.aztecFormatPickerBackgroundColor
-        if richTextView.selectedRange.length > 0, let textRange = richTextView.selectedTextRange, let selectionRect = richTextView.selectionRects(for: textRange).first as? UITextSelectionRect {
+        if richTextView.selectedRange.length > 0, let textRange = richTextView.selectedTextRange, let selectionRect = richTextView.selectionRects(for: textRange).first {
             navigationController.popoverPresentationController?.sourceRect = selectionRect.rect
         } else if let textRange = richTextView.selectedTextRange {
             let caretRect = richTextView.caretRect(for: textRange.start)

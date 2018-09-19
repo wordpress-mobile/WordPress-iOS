@@ -236,7 +236,7 @@ extension EditPostViewController: UIViewControllerRestoration {
     }
 
     class func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
-        guard let identifier = identifierComponents.last as? String, identifier == RestorationKey.viewController.rawValue else {
+        guard let identifier = identifierComponents.last, identifier == RestorationKey.viewController.rawValue else {
             return nil
         }
 
