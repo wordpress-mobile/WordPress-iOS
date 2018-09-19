@@ -39,6 +39,7 @@ extension FancyAlertViewController {
                                                      dividerPosition: .bottom,
                                                      defaultButton: allowButton,
                                                      cancelButton: notNowButton,
+                                                     neverButton: neverButton,
                                                      appearAction: {},
                                                      dismissAction: {})
 
