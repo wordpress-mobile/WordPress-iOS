@@ -595,12 +595,16 @@ private extension PostListViewController {
             return
         }
 
-        let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
+        if isSearching() {
+            noResultsViewController.configureForNoSearchResults(title: noResultsTitle())
+        } else {
+            let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
 
-        noResultsViewController.configure(title: noResultsTitle(),
-                                          buttonTitle: noResultsButtonTitle(),
-                                          image: noResultsImageName,
-                                          accessoryView: accessoryView)
+            noResultsViewController.configure(title: noResultsTitle(),
+                                              buttonTitle: noResultsButtonTitle(),
+                                              image: noResultsImageName,
+                                              accessoryView: accessoryView)
+        }
     }
 
     var noResultsImageName: String {
