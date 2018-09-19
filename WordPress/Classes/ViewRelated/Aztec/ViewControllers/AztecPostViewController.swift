@@ -1212,6 +1212,8 @@ extension AztecPostViewController {
             return
         }
 
+        let isPage = post is Page
+
         let publishBlock = { [unowned self] in
             if action == .save || action == .saveAsDraft {
                 self.post.status = .draft
@@ -1246,7 +1248,7 @@ extension AztecPostViewController {
         let promoBlock = { [unowned self] in
             UserDefaults.standard.asyncPromoWasDisplayed = true
 
-            let controller = FancyAlertViewController.makeAsyncPostingAlertController(publishAction: publishBlock)
+            let controller = FancyAlertViewController.makeAsyncPostingAlertController(action: action, isPage: isPage, onConfirm: publishBlock)
             controller.modalPresentationStyle = .custom
             controller.transitioningDelegate = self
             self.present(controller, animated: true, completion: nil)

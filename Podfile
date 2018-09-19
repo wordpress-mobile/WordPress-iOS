@@ -50,6 +50,15 @@ def aztec
     pod 'WordPress-Editor-iOS', '1.0.1'
 end
 
+def wordpress_ui
+    ## for production:
+    pod 'WordPressUI', '1.0.8-beta.2'
+    ## for development:
+    ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
+    ## while PR is in review:
+    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '5c3660bdd971bcdd5f232d701b6e2df6830ef880'
+end
+
 ## WordPress iOS
 ## =============
 ##
@@ -86,7 +95,7 @@ target 'WordPress' do
     pod 'WPMediaPicker', '1.3'
     pod 'WordPressAuthenticator', '1.1.0-beta.1'
     aztec
-    pod 'WordPressUI', '1.0.7'
+    wordpress_ui
 
     target 'WordPressTest' do
         inherit! :search_paths
@@ -105,7 +114,7 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
         aztec
-        pod 'WordPressUI', '1.0.7'
+        wordpress_ui
         pod 'Gridicons', '0.16'
     end
 
@@ -119,7 +128,7 @@ target 'WordPress' do
         shared_with_all_pods
         shared_with_networking_pods
         aztec
-        pod 'WordPressUI', '1.0.7'
+        wordpress_ui
         pod 'Gridicons', '0.16'
     end
 
@@ -146,7 +155,8 @@ target 'WordPressNotificationContentExtension' do
     inherit! :search_paths
 
     pod 'WordPressShared', '1.1.1-beta.2'
-    pod 'WordPressUI', '1.0.7'
+
+    wordpress_ui
 end
 
 
@@ -160,9 +170,11 @@ target 'WordPressNotificationServiceExtension' do
     inherit! :search_paths
 
     pod 'Gridicons', '0.16'
+
     pod 'WordPressKit', '1.4.1-beta.2'
     pod 'WordPressShared', '1.1.1-beta.2'
-    pod 'WordPressUI', '1.0.7'
+
+    wordpress_ui
 end
 
 
@@ -179,7 +191,7 @@ target 'WordPressComStatsiOS' do
     ## Automattic libraries
     ## ====================
     ##
-    pod 'WordPressUI', '1.0.7'
+    wordpress_ui
 
     target 'WordPressComStatsiOSTests' do
         inherit! :search_paths

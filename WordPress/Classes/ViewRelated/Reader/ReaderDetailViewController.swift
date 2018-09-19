@@ -1185,14 +1185,13 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 private extension ReaderDetailViewController {
 
     func configureAndDisplayLoadingView(title: String, accessoryView: UIView? = nil) {
-        noResultsViewController.configure(title: title, image: "wp-illustration-empty-results", accessoryView: accessoryView)
+        noResultsViewController.configure(title: title, accessoryView: accessoryView)
         showLoadingView()
     }
 
     func configureAndDisplayLoadingViewWithWebAction(title: String, accessoryView: UIView? = nil) {
         noResultsViewController.configure(title: title,
                                           buttonTitle: LoadingText.errorLoadingPostURLButtonTitle,
-                                          image: "wp-illustration-empty-results",
                                           accessoryView: accessoryView)
         showLoadingView()
     }

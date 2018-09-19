@@ -332,7 +332,7 @@ private extension ReaderSavedPostsViewController {
         let icon = Gridicon.iconOfType(.bookmarkOutline, withSize: CGSize(width: 18, height: 18))
         messageText.replace("[bookmark-outline]", with: icon)
 
-        noResultsViewController.configure(title: NoResultsText.noResultsTitle, attributedSubtitle: messageText, image: "wp-illustration-empty-results")
+        noResultsViewController.configure(title: NoResultsText.noResultsTitle, attributedSubtitle: messageText)
         noResultsViewController.view.accessibilityLabel = NoResultsText.accessibilityLabel
     }
 
