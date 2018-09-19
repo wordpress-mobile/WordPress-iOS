@@ -134,7 +134,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 #pragma mark -
 
-@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, BlogDetailHeaderViewDelegate, UIViewControllerTransitioningDelegate>
+@interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate, WPSplitViewControllerDetailProvider, BlogDetailHeaderViewDelegate>
 
 @property (nonatomic, strong) BlogDetailHeaderView *headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
@@ -295,7 +295,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewDidAppear:animated];
     [self createUserActivity];
-    [self showNotificationPrimerAlert];
+    [self startAlertTimer];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self stopAlertTimer];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
