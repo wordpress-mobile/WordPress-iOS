@@ -49,7 +49,7 @@
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WFs-AW-Uc0">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WFs-AW-Uc0">
                                     <rect key="frame" x="0.0" y="126" width="149" height="30"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="m6f-Pp-yMs"/>
@@ -76,7 +76,6 @@
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="9hi-UA-p04" secondAttribute="bottom" constant="8" id="vRM-Gi-O9J"/>
-                        <constraint firstItem="9hi-UA-p04" firstAttribute="top" secondItem="Ewo-7I-oMB" secondAttribute="top" id="yLc-D6-vge"/>
                     </constraints>
                     <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                 </stackView>
