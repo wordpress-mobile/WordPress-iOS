@@ -65,7 +65,6 @@ final class SiteTagsViewController: UITableViewController {
         applyStyleGuide()
         applyTitle()
         setupTable()
-        setupNavigationBar()
 
         refreshTags()
         refreshResultsController(predicate: defaultPredicate)
@@ -144,14 +143,14 @@ final class SiteTagsViewController: UITableViewController {
         }
     }
 
-    private func setupNavigationBar() {
-        configureRightButton()
-    }
-
     private func configureRightButton() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
-                                                            target: self,
-                                                            action: #selector(createTag))
+        if let count = resultsController.fetchedObjects?.count, count > 0 {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
+                                                                target: self,
+                                                                action: #selector(createTag))
+        } else {
+            navigationItem.rightBarButtonItem = nil
+        }
     }
 
     private func setupSearchBar() {
@@ -381,6 +380,9 @@ extension SiteTagsViewController {
 private extension SiteTagsViewController {
 
     func refreshNoResultsView() {
+
+        configureRightButton()
+
         if let count = resultsController.fetchedObjects?.count, count == 0 {
             showNoResults()
         } else {
