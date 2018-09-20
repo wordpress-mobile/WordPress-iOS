@@ -145,7 +145,7 @@ class ParentPageSettingsViewController: UIViewController {
                                                          comment: "Text displayed in HUD while a draft or scheduled post is being updated."))
         let parentId: NSNumber? = selectedPage.parentID
         selectedPage.parentID = selectedParentId
-        updatePage { [weak self] (page, error) in
+        updatePage { [weak self] (_, error) in
             SVProgressHUD.dismiss()
 
             if let error = error {
@@ -157,11 +157,6 @@ class ParentPageSettingsViewController: UIViewController {
                 self?.dismiss(animated: true, completion: nil)
             }
         }
-//        if let selectedParentId = selectedParentId {
-//            print("Id: \(selectedParentId.intValue)")
-//        } else {
-//            print("Id null")
-//        }
     }
 
     @IBAction func cancelAction(_ sender: UIBarButtonItem) {
