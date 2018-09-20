@@ -254,13 +254,12 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
     private func showOptionsMenu() {
 
-        let pickingContext: MediaPickingContext = {
-            if pickerDataSource.totalAssetCount > 0 {
-                return MediaPickingContext(origin: self, view: view, barButtonItem: navigationItem.rightBarButtonItem, blog: blog)
-            } else {
-                return MediaPickingContext(origin: self, view: noResultsView.actionButton, blog: blog)
-            }
-        }()
+        let pickingContext: MediaPickingContext
+        if pickerDataSource.totalAssetCount > 0 {
+            pickingContext = MediaPickingContext(origin: self, view: view, barButtonItem: navigationItem.rightBarButtonItem, blog: blog)
+        } else {
+            pickingContext = MediaPickingContext(origin: self, view: noResultsView.actionButton, blog: blog)
+        }
 
         mediaPickingCoordinator.present(context: pickingContext)
     }
