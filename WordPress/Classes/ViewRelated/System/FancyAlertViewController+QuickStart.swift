@@ -19,16 +19,16 @@ extension FancyAlertViewController {
     @objc static func makeQuickStartAlertController() -> FancyAlertViewController {
 
         let allowButton = ButtonConfig(Strings.allowButtonText) { controller, _ in
-            controller.dismiss(animated: true, completion: nil)
+            controller.dismiss(animated: true)
         }
 
         let notNowButton = ButtonConfig(Strings.notNowText) { controller, _ in
-            controller.dismiss(animated: true, completion: nil)
+            controller.dismiss(animated: true)
         }
 
         let neverButton = ButtonConfig(Strings.neverText) { controller, _ in
             UserDefaults.standard.quickStartWasDismissedPermanently = true
-            controller.dismiss(animated: true, completion: nil)
+            controller.dismiss(animated: true)
         }
 
         let image = UIImage(named: "wp-illustration-checklist")
