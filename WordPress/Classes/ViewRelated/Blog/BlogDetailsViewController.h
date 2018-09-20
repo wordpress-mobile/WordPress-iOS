@@ -16,7 +16,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
     BlogDetailsSubsectionPlugins
 };
 
-@interface BlogDetailsViewController : UITableViewController <UIViewControllerRestoration> {
+@interface BlogDetailsViewController : UITableViewController <UIViewControllerRestoration, UIViewControllerTransitioningDelegate> {
     
 }
 
