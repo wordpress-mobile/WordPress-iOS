@@ -272,7 +272,6 @@ private extension SignupEpilogueViewController {
 
 // MARK: - User Defaults
 
-@objc
 extension UserDefaults {
     var quickStartWasDismissedPermanently: Bool {
         get {
