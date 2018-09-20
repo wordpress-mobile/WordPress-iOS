@@ -582,7 +582,7 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
         let objectID = page.objectID
         let setParentButtonTitle = NSLocalizedString("Set Parent", comment: "Label for a button that opens the Set Parent options view controller")
-        controller.addActionWithTitle(setParentButtonTitle, style: .default, handler: { [weak self] (action) in
+        controller.addActionWithTitle(setParentButtonTitle, style: .default, handler: { [weak self] _ in
             if let page = self?.pageForObjectID(objectID) {
                 self?.setParent(for: page, at: index)
             }
