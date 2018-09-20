@@ -1215,7 +1215,7 @@ extension AztecPostViewController {
         let isPage = post is Page
 
         let publishBlock = { [unowned self] in
-            if action == .save || action == .saveAsDraft {
+            if action == .saveAsDraft {
                 self.post.status = .draft
             } else if action == .publish {
                 if self.post.date_created_gmt == nil {
