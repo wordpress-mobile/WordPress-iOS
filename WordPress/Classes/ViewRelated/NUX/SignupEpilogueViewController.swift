@@ -274,16 +274,12 @@ private extension SignupEpilogueViewController {
 
 @objc
 extension UserDefaults {
-    private enum Keys: String {
-        case quickStartWasDismissedPermanently = "QuickStartWasDismissedPermanently"
-    }
-
     var quickStartWasDismissedPermanently: Bool {
         get {
-            return bool(forKey: Keys.quickStartWasDismissedPermanently.rawValue)
+            return bool(forKey: #function)
         }
         set {
-            set(newValue, forKey: Keys.quickStartWasDismissedPermanently.rawValue)
+            set(newValue, forKey: #function)
         }
     }
 }
