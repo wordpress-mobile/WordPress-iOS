@@ -143,8 +143,8 @@ final class SiteTagsViewController: UITableViewController {
         }
     }
 
-    private func configureRightButton() {
-        if let count = resultsController.fetchedObjects?.count, count > 0 {
+    private func showRightBarButton(_ show: Bool) {
+        if show {
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                                 target: self,
                                                                 action: #selector(createTag))
@@ -380,10 +380,10 @@ extension SiteTagsViewController {
 private extension SiteTagsViewController {
 
     func refreshNoResultsView() {
+        let noResults = resultsController.fetchedObjects?.count == 0
+        showRightBarButton(!noResults)
 
-        configureRightButton()
-
-        if let count = resultsController.fetchedObjects?.count, count == 0 {
+        if noResults {
             showNoResults()
         } else {
             hideNoResults()
