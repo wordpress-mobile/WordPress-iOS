@@ -5,11 +5,11 @@ class SnippetsContentStyles: FormattableContentStyles {
         return WPStyleGuide.Notifications.snippetRegularStyle
     }
 
-    var quoteStyles: [NSAttributedString.Key: Any]? = nil
+    var quoteStyles: [NSAttributedString.Key: Any]?
 
-    var rangeStylesMap: [FormattableRangeKind: [NSAttributedString.Key: Any]]? = nil
+    var rangeStylesMap: [FormattableRangeKind: [NSAttributedString.Key: Any]]?
 
-    var linksColor: UIColor? = nil
+    var linksColor: UIColor?
 
     var key: String = "SnipetsContentStyles"
 }
