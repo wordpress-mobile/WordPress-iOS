@@ -379,6 +379,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     private func hideNoResultsView() {
         postListFooterView.isHidden = false
+        rightBarButtonView.isHidden = false
         noResultsViewController.removeFromView()
     }
 
@@ -389,6 +390,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         }
 
         postListFooterView.isHidden = true
+        rightBarButtonView.isHidden = true
         refreshNoResultsViewController(noResultsViewController)
 
         // Only add no results view if it isn't already in the table view
