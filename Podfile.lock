@@ -131,7 +131,7 @@ PODS:
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - WordPressUI (1.0.8-beta.2)
-  - WPMediaPicker (1.3)
+  - WPMediaPicker (1.3.1-beta.1)
   - wpxmlrpc (0.8.3)
   - ZendeskSDK (2.1.0):
     - ZendeskSDK/Providers (= 2.1.0)
@@ -174,7 +174,7 @@ DEPENDENCIES:
   - WordPressKit (= 1.4.0)
   - WordPressShared (= 1.0.10)
   - WordPressUI (= 1.0.8-beta.2)
-  - WPMediaPicker (= 1.3)
+  - WPMediaPicker (= 1.3.1-beta.1)
   - wpxmlrpc (= 0.8.3)
   - ZendeskSDK (= 2.1.0)
 
@@ -260,10 +260,10 @@ SPEC CHECKSUMS:
   WordPressKit: 5d4b9840aed4329d61b3efbe40714c9dce719309
   WordPressShared: 5915565faa46e096016aefed0dc67783afbc323a
   WordPressUI: 68c3cede2f50fa81d22d7c5e88863a5c4fc00a4d
-  WPMediaPicker: c54791e04af3b41e473e9b340784be48a505bb38
+  WPMediaPicker: 53f40b5af4a4e29880f1a3475ffcea928559c477
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: e2d9245bc42fb4782eff959219ce4d6bdae13b64
 
-PODFILE CHECKSUM: d08615d60b668dfbf99e70a4e11e3869879ca70d
+PODFILE CHECKSUM: a48db6045e9bd6cf30b7c9da9f32099ff87a774b
 
 COCOAPODS: 1.5.3
