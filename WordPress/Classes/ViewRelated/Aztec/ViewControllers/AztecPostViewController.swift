@@ -1215,7 +1215,7 @@ extension AztecPostViewController {
         let isPage = post is Page
 
         let publishBlock = { [unowned self] in
-            if action == .save || action == .saveAsDraft {
+            if action == .saveAsDraft {
                 self.post.status = .draft
             } else if action == .publish {
                 if self.post.date_created_gmt == nil {
@@ -3690,10 +3690,8 @@ extension AztecPostViewController: WPMediaPickerViewControllerDelegate {
     }
 
     func mediaPickerController(_ picker: WPMediaPickerViewController, didUpdateSearchWithAssetCount assetCount: Int) {
-        if let searchQuery = mediaLibraryDataSource.searchQuery {
-            noResultsView.removeFromView()
-            noResultsView.configureForNoSearchResult(with: searchQuery)
-        }
+        noResultsView.removeFromView()
+        noResultsView.configureForNoSearchResult()
     }
 
     func mediaPickerControllerWillBeginLoadingData(_ picker: WPMediaPickerViewController) {
