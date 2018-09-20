@@ -384,11 +384,11 @@ private extension PersonViewController {
 //
 private extension PersonViewController {
 
-    func dequeueCell(withIdentifier id: String, style: UITableViewCell.CellStyle) -> UITableViewCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: id) {
+    func dequeueCell(withIdentifier identifier: String, style: UITableViewCell.CellStyle) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: identifier) {
             return cell
         } else {
-            return WPTableViewCell(style: style, reuseIdentifier: id)
+            return WPTableViewCell(style: style, reuseIdentifier: identifier)
         }
     }
 

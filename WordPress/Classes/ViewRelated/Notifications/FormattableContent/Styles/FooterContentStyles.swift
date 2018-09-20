@@ -4,7 +4,7 @@ class FooterContentStyles: FormattableContentStyles {
         return WPStyleGuide.Notifications.footerRegularStyle
     }
 
-    var quoteStyles: [NSAttributedString.Key: Any]? = nil
+    var quoteStyles: [NSAttributedString.Key: Any]?
 
     var rangeStylesMap: [FormattableRangeKind: [NSAttributedString.Key: Any]]? {
         return [
@@ -12,7 +12,7 @@ class FooterContentStyles: FormattableContentStyles {
         ]
     }
 
-    var linksColor: UIColor? = nil
+    var linksColor: UIColor?
 
     var key: String = "FooterContentStyles"
 }

@@ -4,7 +4,7 @@ class HeaderContentStyles: FormattableContentStyles {
         return WPStyleGuide.Notifications.headerTitleRegularStyle
     }
 
-    var quoteStyles: [NSAttributedString.Key: Any]? = nil
+    var quoteStyles: [NSAttributedString.Key: Any]?
 
     var rangeStylesMap: [FormattableRangeKind: [NSAttributedString.Key: Any]]? {
         return [
@@ -14,7 +14,7 @@ class HeaderContentStyles: FormattableContentStyles {
         ]
     }
 
-    var linksColor: UIColor? = nil
+    var linksColor: UIColor?
 
     var key: String = "HeaderContentStyles"
 }
