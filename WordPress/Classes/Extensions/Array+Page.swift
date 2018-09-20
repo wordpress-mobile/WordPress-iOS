@@ -38,7 +38,7 @@ extension Array where Element == Page {
         return result
     }
 
-    /// DFS sort where the pagies are hierarchly ordered in a flat list
+    /// DFS sort where the pages are hierarchly ordered in a flat list
     ///
     /// - Parameters:
     ///   - parent: A parent Element
