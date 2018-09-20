@@ -142,7 +142,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
             var barButtonItems = [UIBarButtonItem]()
 
-            if blog.userCanUploadMedia {
+            if blog.userCanUploadMedia && assetCount > 0 {
                 let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
                 barButtonItems.append(addButton)
             }
@@ -253,7 +253,14 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     }
 
     private func showOptionsMenu() {
-        let pickingContext = MediaPickingContext(origin: self, view: view, barButtonItem: navigationItem.rightBarButtonItem, blog: blog)
+
+        let pickingContext: MediaPickingContext
+        if pickerDataSource.totalAssetCount > 0 {
+            pickingContext = MediaPickingContext(origin: self, view: view, barButtonItem: navigationItem.rightBarButtonItem, blog: blog)
+        } else {
+            pickingContext = MediaPickingContext(origin: self, view: noResultsView.actionButton, blog: blog)
+        }
+
         mediaPickingCoordinator.present(context: pickingContext)
     }
 
