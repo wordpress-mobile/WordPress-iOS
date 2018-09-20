@@ -15,14 +15,14 @@ extension Array where Element == Page {
 
     /// Check if the Array contains a specific Page for a specific `id`
     ///
-    /// - Parameter id: Page id
+    /// - Parameter pageId: Page id
     /// - Returns: If the Page exists or not
-    func containsPage(for id: Int?) -> Bool {
-        guard let id = id else {
+    func containsPage(for pageId: Int?) -> Bool {
+        guard let pageId = pageId else {
             return false
         }
 
-        return contains { $0.postID?.intValue == id }
+        return contains { $0.postID?.intValue == pageId }
     }
 
     /// A map function where transform closure receives the Element and Array
