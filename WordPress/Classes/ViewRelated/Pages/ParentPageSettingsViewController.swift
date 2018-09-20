@@ -1,44 +1,45 @@
 import UIKit
 
 
+private struct Section {
+    var rows: [Row]
+    var headerTitle: String
+
+    init(_ rows: [Row], headerTitle: String = "") {
+        self.rows = rows
+        self.headerTitle = headerTitle
+    }
+}
+
+
+private struct Row {
+    struct Constants {
+        static let identifier = "CheckmarkCellIdentifier"
+    }
+
+    enum RowType {
+        case topLevel
+        case child
+    }
+
+    var page: Page?
+    var type: RowType
+    var title: String {
+        switch type {
+        case .topLevel: return NSLocalizedString("Top level", comment: "Cell title for the Top Level option case")
+        case .child: return page?.postTitle ?? ""
+        }
+    }
+    var titleFont: UIFont {
+        switch type {
+        case .topLevel: return UIFont.systemFont(ofSize: 16.0)
+        case .child: return WPFontManager.notoRegularFont(ofSize: 17)
+        }
+    }
+}
+
+
 class ParentPageSettingsViewController: UIViewController {
-    private struct Section {
-        var rows: [Row]
-        var headerTitle: String
-
-        init(_ rows: [Row], headerTitle: String = "") {
-            self.rows = rows
-            self.headerTitle = headerTitle
-        }
-    }
-
-    private struct Row {
-        struct Constants {
-            static let identifier = "CheckmarkCellIdentifier"
-        }
-
-        enum RowType {
-            case topLevel
-            case child
-        }
-
-        var page: Page?
-        var type: RowType
-        var title: String {
-            switch type {
-            case .topLevel: return NSLocalizedString("Top level", comment: "Cell title for the Top Level option case")
-            case .child: return page?.postTitle ?? ""
-            }
-        }
-        var titleFont: UIFont {
-            switch type {
-            case .topLevel: return UIFont.systemFont(ofSize: 16.0)
-            case .child: return WPFontManager.notoRegularFont(ofSize: 17)
-            }
-        }
-    }
-
-
     @IBOutlet private var cancelButton: UIBarButtonItem!
     @IBOutlet private var doneButton: UIBarButtonItem!
     @IBOutlet private var tableView: UITableView!
