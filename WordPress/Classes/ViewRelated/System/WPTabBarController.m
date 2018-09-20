@@ -542,7 +542,7 @@ static CGFloat const WPTabBarIconSize = 32.0f;
 
 - (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog
 {
-    [self showPostTabAnimated:animated toMedia:openToMedia blog:blog onClose:nil];
+    [self showPostTabAnimated:animated toMedia:openToMedia blog:blog afterDismiss:nil];
 }
 
 - (void)showPostTabAnimated:(BOOL)animated toMedia:(BOOL)openToMedia blog:(Blog *)blog afterDismiss:(void (^)(void))afterDismiss
