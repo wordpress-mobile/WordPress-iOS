@@ -75,7 +75,7 @@ final class GiphyPicker: NSObject {
     private func updateHintView() {
         searchHint.removeFromView()
         if shouldShowNoResults() {
-            NoResultsGiphyConfiguration.configure(searchHint, asNoSearchResultsFor: dataSource.searchQuery)
+            NoResultsGiphyConfiguration.configure(searchHint)
         } else {
             NoResultsGiphyConfiguration.configureAsIntro(searchHint)
         }
