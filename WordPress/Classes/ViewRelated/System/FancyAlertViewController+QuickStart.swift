@@ -4,6 +4,7 @@ extension FancyAlertViewController {
         static let bodyText = NSLocalizedString("Our Quick Start checklist walks you through the basics of setting up a new website.", comment: "Body text of alert asking if users want to try out the quick start checklist.")
         static let allowButtonText = NSLocalizedString("Yes", comment: "Allow button title shown in alert asking if users want to try out the quick start checklist.")
         static let notNowText = NSLocalizedString("Not This Time", comment: "Not this time button title shown in alert asking if users want to try out the quick start checklist.")
+        static let neverText = NSLocalizedString("Never", comment: "Never button title shown in alert asking if users want to try out the quick start checklist.")
     }
 
     private struct Analytics {
@@ -18,11 +19,16 @@ extension FancyAlertViewController {
     @objc static func makeQuickStartAlertController() -> FancyAlertViewController {
 
         let allowButton = ButtonConfig(Strings.allowButtonText) { controller, _ in
-            controller.dismiss(animated: true, completion: nil)
+            controller.dismiss(animated: true)
         }
 
         let notNowButton = ButtonConfig(Strings.notNowText) { controller, _ in
-            controller.dismiss(animated: true, completion: nil)
+            controller.dismiss(animated: true)
+        }
+
+        let neverButton = ButtonConfig(Strings.neverText) { controller, _ in
+            UserDefaults.standard.quickStartWasDismissedPermanently = true
+            controller.dismiss(animated: true)
         }
 
         let image = UIImage(named: "wp-illustration-checklist")
@@ -33,6 +39,7 @@ extension FancyAlertViewController {
                                                      dividerPosition: .bottom,
                                                      defaultButton: allowButton,
                                                      cancelButton: notNowButton,
+                                                     neverButton: neverButton,
                                                      appearAction: {},
                                                      dismissAction: {})
 

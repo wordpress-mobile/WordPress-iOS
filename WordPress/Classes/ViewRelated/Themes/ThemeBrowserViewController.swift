@@ -216,7 +216,7 @@ public protocol ThemePresenter: class {
     private var noResultsViewController: NoResultsViewController?
 
     private struct NoResultsTitles {
-        static let noThemes = NSLocalizedString("No Themes Found", comment: "Text displayed when theme name search has no matches")
+        static let noThemes = NSLocalizedString("No themes matching your search", comment: "Text displayed when theme name search has no matches")
         static let fetchingThemes = NSLocalizedString("Fetching Themes...", comment: "Text displayed while fetching themes")
     }
 
@@ -896,16 +896,23 @@ private extension ThemeBrowserViewController {
             return
         }
 
-        let title = searchController.isActive ? NoResultsTitles.noThemes : NoResultsTitles.fetchingThemes
-        noResultsViewController.configure(title: title)
+        if searchController.isActive {
+            noResultsViewController.configureForNoSearchResults(title: NoResultsTitles.noThemes)
+        } else {
+            noResultsViewController.configure(title: NoResultsTitles.fetchingThemes, accessoryView: NoResultsViewController.loadingAccessoryView())
+        }
 
         addChildViewController(noResultsViewController)
         collectionView.addSubview(noResultsViewController.view)
         noResultsViewController.view.frame = collectionView.frame
 
         // There is a gap between the search bar and the collection view - https://github.com/wordpress-mobile/WordPress-iOS/issues/9730
-        // This makes the No Results View look vertically off-center. Until that is resolved, we'll move the NRV up by the search bar height.
-        noResultsViewController.view.frame.origin.y -= searchBarHeight
+        // This makes the No Results View look vertically off-center. Until that is resolved, we'll adjust the NRV according to the search bar.
+        if searchController.isActive {
+            noResultsViewController.view.frame.origin.y = searchController.searchBar.bounds.height
+        } else {
+            noResultsViewController.view.frame.origin.y -= searchBarHeight
+        }
 
         noResultsViewController.didMove(toParentViewController: self)
     }
