@@ -78,7 +78,7 @@ final class StockPhotosPicker: NSObject {
     private func updateHintView() {
         searchHint.removeFromView()
         if shouldShowNoResults() {
-            NoResultsStockPhotosConfiguration.configure(searchHint, asNoSearchResultsFor: dataSource.searchQuery)
+            NoResultsStockPhotosConfiguration.configure(searchHint)
         } else {
             NoResultsStockPhotosConfiguration.configureAsIntro(searchHint)
         }
