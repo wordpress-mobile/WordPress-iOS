@@ -44,7 +44,10 @@ class PluginViewController: UITableViewController {
             navigationController.popViewController(animated: true)
         }
 
-        NotificationCenter.default.addObserver(self, selector: #selector(didChangeDynamicType), name: UIContentSizeCategory.didChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didChangeDynamicType),
+                                               name: UIContentSizeCategory.didChangeNotification,
+                                               object: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
