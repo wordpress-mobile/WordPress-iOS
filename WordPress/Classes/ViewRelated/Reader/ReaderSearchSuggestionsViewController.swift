@@ -208,12 +208,15 @@ extension ReaderSearchSuggestionsViewController: WPTableViewHandlerDelegate {
     }
 
 
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    func tableView(_ tableView: UITableView,
+                   editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return UITableViewCell.EditingStyle.delete
     }
 
 
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView,
+                   commit editingStyle: UITableViewCell.EditingStyle,
+                   forRowAt indexPath: IndexPath) {
         guard let suggestion = tableViewHandler.resultsController.object(at: indexPath) as? ReaderSearchSuggestion else {
             return
         }

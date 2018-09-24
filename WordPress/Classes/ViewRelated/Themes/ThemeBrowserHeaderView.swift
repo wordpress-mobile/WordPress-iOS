@@ -99,11 +99,14 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
         currentThemeLabel.text = NSLocalizedString("Current Theme",
                                                    comment: "Current Theme text that appears in the Theme Browser Header")
         customizeButton.setTitle(NSLocalizedString("Customize",
-                                                   comment: "Customize button that appears in the Theme Browser Header"), for: .normal)
+                                                   comment: "Customize button that appears in the Theme Browser Header"),
+                                 for: .normal)
         detailsButton.setTitle(NSLocalizedString("Details",
-                                                 comment: "Details button that appears in the Theme Browser Header"), for: .normal)
+                                                 comment: "Details button that appears in the Theme Browser Header"),
+                               for: .normal)
         supportButton.setTitle(NSLocalizedString("Support",
-                                                 comment: "Support button that appears in the Theme Browser Header"), for: .normal)
+                                                 comment: "Support button that appears in the Theme Browser Header"),
+                               for: .normal)
     }
 
     override open func prepareForReuse() {

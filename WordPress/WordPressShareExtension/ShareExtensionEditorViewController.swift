@@ -421,8 +421,14 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
 
     func startListeningToNotifications() {
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardDidHide), name: UIResponder.keyboardDidHideNotification, object: nil)
+        nc.addObserver(self,
+                       selector: #selector(keyboardWillShow),
+                       name: UIResponder.keyboardWillShowNotification,
+                       object: nil)
+        nc.addObserver(self,
+                       selector: #selector(keyboardDidHide),
+                       name: UIResponder.keyboardDidHideNotification,
+                       object: nil)
     }
 
     func stopListeningToNotifications() {

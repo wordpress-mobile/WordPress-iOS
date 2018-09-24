@@ -11,12 +11,19 @@ class TableViewKeyboardObserver: NSObject {
 
     override init() {
         super.init()
-        NotificationCenter.default.addObserver(self, selector: #selector(TableViewKeyboardObserver.keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(TableViewKeyboardObserver.keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(TableViewKeyboardObserver.keyboardWillShow(_:)),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(TableViewKeyboardObserver.keyboardWillHide(_:)),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
     }
 
     @objc func keyboardWillShow(_ notification: Foundation.Notification) {
-        guard let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue else {
+        let key = UIResponder.keyboardFrameBeginUserInfoKey
+        guard let keyboardFrame = (notification.userInfo?[key] as? NSValue)?.cgRectValue else {
             return
         }
 
