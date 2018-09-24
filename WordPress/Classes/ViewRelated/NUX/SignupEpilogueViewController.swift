@@ -269,3 +269,16 @@ private extension SignupEpilogueViewController {
         static let primary = NSLocalizedString("Continue", comment: "Button text on site creation epilogue page to proceed to My Sites.")
     }
 }
+
+// MARK: - User Defaults
+
+extension UserDefaults {
+    var quickStartWasDismissedPermanently: Bool {
+        get {
+            return bool(forKey: #function)
+        }
+        set {
+            set(newValue, forKey: #function)
+        }
+    }
+}

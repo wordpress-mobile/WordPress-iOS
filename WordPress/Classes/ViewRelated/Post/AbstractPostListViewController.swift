@@ -379,6 +379,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
 
     private func hideNoResultsView() {
         postListFooterView.isHidden = false
+        rightBarButtonView.isHidden = false
         noResultsViewController.removeFromView()
     }
 
@@ -389,6 +390,7 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
         }
 
         postListFooterView.isHidden = true
+        rightBarButtonView.isHidden = true
         refreshNoResultsViewController(noResultsViewController)
 
         // Only add no results view if it isn't already in the table view
@@ -397,9 +399,9 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
             tableView.addSubview(withFadeAnimation: noResultsViewController.view)
             noResultsViewController.view.frame = tableView.frame
 
-            // Adjust the NRV to accommodate for the refresh control.
-            if let refreshControl = refreshControl {
-                noResultsViewController.view.frame.origin.y += refreshControl.frame.height/2
+            // Adjust the NRV to accommodate for the search bar.
+            if let tableHeaderView = tableView.tableHeaderView {
+                noResultsViewController.view.frame.origin.y = tableHeaderView.frame.origin.y
             }
 
             noResultsViewController.didMove(toParent: tableViewController)
