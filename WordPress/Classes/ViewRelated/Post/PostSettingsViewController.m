@@ -1494,10 +1494,8 @@ FeaturedImageViewControllerDelegate>
 
 - (void)mediaPickerController:(WPMediaPickerViewController *)picker didUpdateSearchWithAssetCount:(NSInteger)assetCount
 {
-    if (self.mediaDataSource.searchQuery) {
-        [self.noResultsView removeFromView];
-        [self.noResultsView configureForNoSearchResultWith:self.mediaDataSource.searchQuery];
-    }
+    [self.noResultsView removeFromView];
+    [self.noResultsView configureForNoSearchResult];
 }
 
 - (void)mediaPickerController:(WPMediaPickerViewController *)picker didFinishPickingAssets:(NSArray *)assets
