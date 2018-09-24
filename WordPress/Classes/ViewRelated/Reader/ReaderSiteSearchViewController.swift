@@ -46,7 +46,8 @@ class ReaderSiteSearchViewController: UITableViewController, UIViewControllerRes
 
     private static let restorationClassIdentifier = "ReaderSiteSearchRestorationIdentifier"
 
-    static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
+    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                               coder: NSCoder) -> UIViewController? {
         return ReaderSiteSearchViewController()
     }
 

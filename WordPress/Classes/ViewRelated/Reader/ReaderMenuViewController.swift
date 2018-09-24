@@ -50,7 +50,8 @@ import WordPressShared
     // MARK: - Restoration Methods
 
 
-    static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
+    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                               coder: NSCoder) -> UIViewController? {
         return WPTabBarController.sharedInstance().readerMenuViewController
     }
 
@@ -164,12 +165,17 @@ import WordPressShared
 
 
     @objc func setupApplicationWillTerminateNotificationObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(type(of: self).handleApplicationWillTerminate), name: UIApplication.willTerminateNotification, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleApplicationWillTerminate),
+                                               name: UIApplication.willTerminateNotification,
+                                               object: nil)
     }
 
 
     @objc func setupAccountChangeNotificationObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(type(of: self).handleAccountChanged), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleAccountChanged),
+                                               name: .WPAccountDefaultWordPressComAccountChanged,
+                                               object: nil)
     }
 
 
@@ -651,7 +657,9 @@ import WordPressShared
     }
 
 
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView,
+                            commit editingStyle: UITableViewCell.EditingStyle,
+                            forRowAt indexPath: IndexPath) {
         guard let menuItem = viewModel.menuItemAtIndexPath(indexPath) else {
             return
         }
@@ -664,7 +672,8 @@ import WordPressShared
     }
 
 
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    override func tableView(_ tableView: UITableView,
+                            editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .delete
     }
 

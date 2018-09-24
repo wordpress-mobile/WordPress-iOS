@@ -381,6 +381,6 @@ private class TabBarButton: UIButton {
 extension FilterTabBar: Accessible {
     func prepareForVoiceOver() {
         isAccessibilityElement = false
-        accessibilityTraits = UIAccessibilityTraits(rawValue: super.accessibilityTraits.rawValue | UIAccessibilityTraits.tabBar.rawValue)
+        accessibilityTraits = [super.accessibilityTraits, .tabBar]
     }
 }
