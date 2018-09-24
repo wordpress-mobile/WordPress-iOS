@@ -826,12 +826,22 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     ReaderCommentCell *cell = (ReaderCommentCell *)aCell;
 
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-
+    
     cell.indentationWidth = CommentIndentationWidth;
     cell.indentationLevel = MIN([comment.depth integerValue], MaxCommentDepth);
     cell.delegate = self;
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.enableLoggedInFeatures = [self isLoggedIn];
+    cell.onTimeStampLongPress = ^(void) {
+        UIAlertController *copyAlertController = [UIAlertController alertControllerWithTitle:nil                                          message:nil
+                                                                                                                       preferredStyle:UIAlertControllerStyleActionSheet];
+        [copyAlertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button title") handler:nil];
+        [copyAlertController addActionWithTitle:NSLocalizedString(@"Copy", @"Copy button title") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [UIPasteboard generalPasteboard].string = comment.link;
+            
+        }];
+        [copyAlertController presentFromRootViewController];
+    };
 
     // When backgrounding, the app takes a snapshot, which triggers a layout pass,
     // which refreshes the cells, and for some reason triggers an assertion failure

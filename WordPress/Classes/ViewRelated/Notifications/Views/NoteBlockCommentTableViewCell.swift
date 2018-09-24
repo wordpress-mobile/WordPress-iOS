@@ -20,7 +20,7 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
 
     /// Source's Details
     ///
-    @IBOutlet private weak var detailsLabel: UILabel!
+    @IBOutlet private weak var detailsLabel: LongPressGestureLabel!
 
     /// Returns the Placeholder image, tinted for the current approval state
     ///
@@ -31,6 +31,10 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
     /// onUserClick: Executed whenever any of the User's fields gets clicked
     ///
     @objc var onUserClick: (() -> Void)?
+    
+    /// onTimeStampLongPress: Executed whenever the user long press on the details label
+    ///
+    var onTimeStampLongPress: (() -> Void)?
 
     /// Comment's AttributedText Payload
     ///
@@ -119,7 +123,8 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
 
         detailsLabel.font = Style.blockRegularFont
         detailsLabel.isUserInteractionEnabled = true
-        detailsLabel.gestureRecognizers = [ UITapGestureRecognizer(target: self, action: #selector(detailsWasPressed)) ]
+        detailsLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(detailsWasPressed)))
+        detailsLabel.longPressAction = { [weak self] in self?.onTimeStampLongPress?() }
     }
 
 
