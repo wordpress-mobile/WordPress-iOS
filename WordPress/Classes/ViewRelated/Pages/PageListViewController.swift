@@ -561,6 +561,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         super.willPresentSearchController(searchController)
 
         filterTabBar.alpha = WPAlphaZero
+
+        if #available(iOS 11.0, *) {
+            return
+        }
+
         filterTabBarBottomConstraint.isActive = false
         tableViewTopConstraint.isActive = true
     }
@@ -573,12 +578,16 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {
-        tableViewTopConstraint.isActive = false
-        filterTabBarBottomConstraint.isActive = true
-
         UIView.animate(withDuration: Animations.searchDismissDuration) {
             self.filterTabBar.alpha = WPAlphaFull
         }
+
+        if #available(iOS 11.0, *) {
+            return
+        }
+
+        tableViewTopConstraint.isActive = false
+        filterTabBarBottomConstraint.isActive = true
     }
 
     enum Animations {
@@ -598,12 +607,16 @@ private extension PageListViewController {
             return
         }
 
-        let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
+        if isSearching() {
+            noResultsViewController.configureForNoSearchResults(title: noResultsTitle())
+        } else {
+            let accessoryView = syncHelper.isSyncing ? NoResultsViewController.loadingAccessoryView() : nil
 
-        noResultsViewController.configure(title: noResultsTitle(),
-                                          buttonTitle: noResultsButtonTitle(),
-                                          image: noResultsImageName,
-                                          accessoryView: accessoryView)
+            noResultsViewController.configure(title: noResultsTitle(),
+                                              buttonTitle: noResultsButtonTitle(),
+                                              image: noResultsImageName,
+                                              accessoryView: accessoryView)
+        }
     }
 
     var noResultsImageName: String {
@@ -651,7 +664,7 @@ private extension PageListViewController {
         static let noMatchesTitle = NSLocalizedString("No pages matching your search", comment: "Displayed when the user is searching the pages list and there are no matching pages")
         static let noDraftsTitle = NSLocalizedString("You don't have any draft pages", comment: "Displayed when the user views drafts in the pages list and there are no pages")
         static let noScheduledTitle = NSLocalizedString("You don't have any scheduled pages", comment: "Displayed when the user views scheduled pages in the pages list and there are no pages")
-        static let noTrashedTitle = NSLocalizedString("You don't have any binned pages", comment: "Displayed when the user views trashed in the pages list and there are no pages")
+        static let noTrashedTitle = NSLocalizedString("You don't have any trashed pages", comment: "Displayed when the user views trashed in the pages list and there are no pages")
         static let noPublishedTitle = NSLocalizedString("You haven't published any pages yet", comment: "Displayed when the user views published pages in the pages list and there are no pages")
     }
 

@@ -47,6 +47,7 @@ final class MediaLibraryMediaPickingCoordinator {
         menuAlert.addAction(cancelAction())
 
         menuAlert.popoverPresentationController?.sourceView = fromView
+        menuAlert.popoverPresentationController?.sourceRect = fromView.bounds
         menuAlert.popoverPresentationController?.barButtonItem = buttonItem
 
         origin.present(menuAlert, animated: true, completion: nil)

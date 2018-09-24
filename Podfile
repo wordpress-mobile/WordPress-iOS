@@ -52,11 +52,11 @@ end
 
 def wordpress_ui
     ## for production:
-    pod 'WordPressUI', '1.0.8-beta.2'
+    pod 'WordPressUI', '1.0.8-beta.3'
     ## for development:
     ## pod 'WordPressUI', :path => '../WordPressUI-iOS'
     ## while PR is in review:
-    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '5c3660bdd971bcdd5f232d701b6e2df6830ef880'
+    ## pod 'WordPressUI', :git => 'https://github.com/wordpress-mobile/WordPressUI-iOS.git', :commit => '5ec2be1533a86335710221ec20df5b4ba78b06e4'
 end
 
 ## WordPress iOS
@@ -92,8 +92,11 @@ target 'WordPress' do
     pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.2.3'
     pod 'Gridicons', '0.16'
     pod 'NSURL+IDN', '0.3'
-    pod 'WPMediaPicker', '1.3'
+    pod 'WPMediaPicker', '1.3.1-beta.1'
+    ## while PR is in review:
+    ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '82f798c0dc18b17a11dfafa37f1fd39eb508b29b'
     pod 'WordPressAuthenticator', '1.1.0-beta.1'
+
     aztec
     wordpress_ui
 

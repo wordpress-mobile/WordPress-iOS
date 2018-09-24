@@ -15,7 +15,7 @@ extension String {
     }
 
     static var giphySearchNoResult: String {
-        return NSLocalizedString("No GIFs match your search for:", comment: "Phrase to show when the user searches for GIFs but there are no result to show. This will be followed by the phrase the user used to search. (i.e. No GIFs match your search for cute kitten). This search phrase will be always appended at the end.")
+        return NSLocalizedString("No media matching your search", comment: "Phrase to show when the user searches for GIFs but there are no result to show.")
     }
 
     static var giphySearchLoading: String {
