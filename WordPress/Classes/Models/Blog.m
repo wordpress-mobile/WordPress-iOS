@@ -78,6 +78,7 @@ NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
 @dynamic sharingButtons;
 @dynamic capabilities;
 @dynamic completedQuickStartTours;
+@dynamic skippedQuickStartTours;
 @dynamic userID;
 @dynamic quotaSpaceAllowed;
 @dynamic quotaSpaceUsed;
