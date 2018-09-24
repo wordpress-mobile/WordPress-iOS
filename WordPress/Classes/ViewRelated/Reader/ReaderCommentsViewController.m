@@ -16,7 +16,6 @@
 #import <WordPressUI/WordPressUI.h>
 
 
-
 // NOTE: We want the cells to have a rather large estimated height.  This avoids a peculiar
 // crash in certain circumstances when the tableView lays out its visible cells,
 // and those cells contain WPRichTextEmbeds. -- Aerych, 2016.11.30
@@ -838,7 +837,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
         [copyAlertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button title") handler:nil];
         [copyAlertController addActionWithTitle:NSLocalizedString(@"Copy", @"Copy button title") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [UIPasteboard generalPasteboard].string = comment.link;
-            
         }];
         [copyAlertController presentFromRootViewController];
     };
