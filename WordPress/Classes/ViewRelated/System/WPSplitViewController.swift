@@ -169,7 +169,8 @@ class WPSplitViewController: UISplitViewController {
                     viewController.extendedLayoutIncludesOpaqueBars = true
 
                     // Override traits to pass a compact size class if necessary
-                    setOverrideTraitCollection(overriddenTraitCollectionForDetailViewController, forChild: viewController)
+                    setOverrideTraitCollection(overriddenTraitCollectionForDetailViewController,
+                                               forChild: viewController)
                 }
             }
         }
@@ -505,7 +506,9 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
 // MARK: - UINavigationControllerDelegate
 
 extension WPSplitViewController: UINavigationControllerDelegate {
-    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+    func navigationController(_ navigationController: UINavigationController,
+                              willShow viewController: UIViewController,
+                              animated: Bool) {
         if navigationController == viewControllers.first {
             primaryNavigationController(navigationController, willShowViewController: viewController, animated: animated)
         } else if navigationController == viewControllers.last {
