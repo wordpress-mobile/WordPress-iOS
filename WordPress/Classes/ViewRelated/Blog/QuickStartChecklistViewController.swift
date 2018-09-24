@@ -40,7 +40,7 @@ class QuickStartChecklistViewController: UITableViewController {
         // make the tour as complete
         let context = ContextManager.sharedInstance().mainContext
         let newCompletion = NSEntityDescription.insertNewObject(forEntityName: QuickStartCompletedTour.entityName(), into: context) as! QuickStartCompletedTour
-        newCompletion.blog = blog
+        newCompletion.completedBlog = blog
         newCompletion.tourID = tour.key
 
         ContextManager.sharedInstance().saveContextAndWait(ContextManager.sharedInstance().mainContext)
