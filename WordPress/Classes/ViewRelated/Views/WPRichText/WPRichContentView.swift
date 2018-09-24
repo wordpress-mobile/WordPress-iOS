@@ -109,7 +109,7 @@ class WPRichContentView: UITextView {
             // https://github.com/wordpress-mobile/WordPress-iOS/issues/6564
             _ = WPFontManager.notoItalicFont(ofSize: 16)
             do {
-                if let attrTxt = try NSAttributedString.attributedStringFromHTMLString(content, defaultDocumentAttributes: nil) {
+                if let attrTxt = try NSAttributedString.attributedStringFromHTMLString(content, defaultAttributes: nil) {
                     let mattrTxt = NSMutableAttributedString(attributedString: attrTxt)
 
                     // Ensure the starting paragraph style is applied to the topMarginAttachment else the
