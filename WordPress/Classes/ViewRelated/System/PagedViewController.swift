@@ -150,7 +150,7 @@ extension PagedViewController: UIScrollViewDelegate {
     }
 
     fileprivate func accessibilityAnnounceCurrentPage() {
-        UIAccessibility.post(notification: UIAccessibility.Notification.layoutChanged, argument: currentViewController.view)
+        UIAccessibility.post(notification: .layoutChanged, argument: currentViewController.view)
     }
 
     fileprivate func currentScrollViewPage() -> Int {
