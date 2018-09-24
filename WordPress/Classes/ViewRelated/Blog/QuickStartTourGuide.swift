@@ -25,7 +25,7 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
     func showTestQuickStartNotice() {
         let exampleMessage = "Tap %@ to see your checklist".highlighting(phrase: "Quick Start", icon: Gridicon.iconOfType(.listCheckmark))
         let noticeStyle = QuickStartNoticeStyle(attributedMessage: exampleMessage)
-        let notice = Notice(title: "Test Quick Start Notice", style: noticeStyle, actionTitle: "asdf", cancelTitle: "sdfg")
+        let notice = Notice(title: "Test Quick Start Notice", style: noticeStyle)
 
             //title: "Test Quick Start Notice", style: QuickStartNoticeStyle(attributedMessage: exampleMessage), actionTitle="Action", cancelTitle="Cancel")
         ActionDispatcher.dispatch(NoticeAction.post(notice))
@@ -33,7 +33,7 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
 
     func suggest(_ tour: QuickStartTour) {
         let noticeStyle = QuickStartNoticeStyle(attributedMessage: nil)
-        let notice = Notice(title: tour.title, message: tour.description, style: noticeStyle, actionTitle: "Not now", cancelTitle: "Yes, show me") { [weak self] in
+        let notice = Notice(title: tour.title, message: tour.description, style: noticeStyle, actionTitle: tour.suggestionYesText, cancelTitle: tour.suggestionNoText) { [weak self] in
             self?.showTestQuickStartNotice()
         }
 
