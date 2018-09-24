@@ -17,7 +17,8 @@ public extension NSAttributedString {
     ///
     /// - Returns: NSAttributedString Optional
     ///
-    public class func attributedStringFromHTMLString(_ string: String, defaultDocumentAttributes: [NSAttributedString.Key: Any]?) throws -> NSAttributedString? {
+    public class func attributedStringFromHTMLString(_ string: String,
+                                                     defaultDocumentAttributes: [NSAttributedString.Key: Any]?) throws -> NSAttributedString? {
         return try WPRichTextFormatter().attributedStringFromHTMLString(string, defaultDocumentAttributes: defaultDocumentAttributes)
     }
 
