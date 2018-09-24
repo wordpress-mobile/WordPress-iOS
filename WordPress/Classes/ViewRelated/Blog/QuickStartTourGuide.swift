@@ -3,6 +3,13 @@ import Gridicons
 
 @objc
 open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
+    static func find() -> QuickStartTourGuide? {
+        guard let tabBarController = WPTabBarController.sharedInstance(),
+            let tourGuide = tabBarController.tourGuide else {
+            return nil
+        }
+        return tourGuide
+    }
 
     public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         switch viewController {
@@ -17,7 +24,19 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
     @objc
     func showTestQuickStartNotice() {
         let exampleMessage = "Tap %@ to see your checklist".highlighting(phrase: "Quick Start", icon: Gridicon.iconOfType(.listCheckmark))
-        let notice = Notice(title: "Test Quick Start Notice", style: QuickStartNoticeStyle(attributedMessage: exampleMessage))
+        let noticeStyle = QuickStartNoticeStyle(attributedMessage: exampleMessage)
+        let notice = Notice(title: "Test Quick Start Notice", style: noticeStyle, actionTitle: "asdf", cancelTitle: "sdfg")
+
+            //title: "Test Quick Start Notice", style: QuickStartNoticeStyle(attributedMessage: exampleMessage), actionTitle="Action", cancelTitle="Cancel")
+        ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    func suggest(_ tour: QuickStartTour) {
+        let noticeStyle = QuickStartNoticeStyle(attributedMessage: nil)
+        let notice = Notice(title: tour.title, message: tour.description, style: noticeStyle, actionTitle: "Not now", cancelTitle: "Yes, show me") { [weak self] in
+            self?.showTestQuickStartNotice()
+        }
+
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
