@@ -176,7 +176,7 @@ class NoticeView: UIView {
         contentStackView.axis = .vertical
 
         let cancelBackgroundView = UIView()
-        let buttonStackView = UIStackView(arrangedSubviews: [actionBackgroundView, cancelBackgroundView])
+        let buttonStackView = UIStackView(arrangedSubviews: [cancelBackgroundView, actionBackgroundView])
         buttonStackView.translatesAutoresizingMaskIntoConstraints = false
         buttonStackView.axis = .horizontal
         buttonStackView.distribution = .fillEqually
@@ -199,12 +199,12 @@ class NoticeView: UIView {
         cancelBackgroundView.addTrailingBorder()
 
         actionButton.titleLabel?.font = notice.style.actionButtonFont
-        actionButton.setTitleColor(WPStyleGuide.mediumBlue(), for: .normal)
+        actionButton.setTitleColor(.white, for: .normal)
         actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
         actionButton.setContentCompressionResistancePriority(.required, for: .vertical)
 
-        cancelButton.titleLabel?.font = notice.style.actionButtonFont
-        cancelButton.setTitleColor(WPStyleGuide.mediumBlue(), for: .normal)
+        cancelButton.titleLabel?.font = notice.style.cancelButtonFont
+        cancelButton.setTitleColor(notice.style.messageColor, for: .normal)
         cancelButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
         cancelButton.setContentCompressionResistancePriority(.required, for: .vertical)
     }
@@ -277,7 +277,7 @@ fileprivate extension UIView {
 
         NSLayoutConstraint.activate([
             borderView.heightAnchor.constraint(equalTo: heightAnchor),
-            borderView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            borderView.trailingAnchor.constraint(equalTo: trailingAnchor),
             borderView.centerYAnchor.constraint(equalTo: centerYAnchor),
             borderView.widthAnchor.constraint(equalToConstant: 1.0 / UIScreen.main.scale)
             ])
