@@ -23,7 +23,7 @@ class ReaderCommentCell: UITableViewCell {
 
     @IBOutlet var avatarImageView: UIImageView!
     @IBOutlet var authorButton: UIButton!
-    @IBOutlet var timeLabel: UILabel!
+    @IBOutlet var timeLabel: LongPressGestureLabel!
     @IBOutlet var textView: WPRichContentView!
     @IBOutlet var replyButton: UIButton!
     @IBOutlet var likeButton: UIButton!
@@ -59,8 +59,12 @@ class ReaderCommentCell: UITableViewCell {
         }
     }
 
-    // MARK: - Lifecycle Methods
+    /// onTimeStampLongPress: Executed whenever the user long press on the time label
+    ///
+    @objc var onTimeStampLongPress: (() -> Void)?
 
+    
+    // MARK: - Lifecycle Methods
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -166,6 +170,8 @@ class ReaderCommentCell: UITableViewCell {
         }
 
         timeLabel.text = (comment.dateForDisplay() as NSDate).mediumString()
+        timeLabel.isUserInteractionEnabled = true
+        timeLabel.longPressAction = { [weak self] in self?.onTimeStampLongPress?() }
     }
 
 
