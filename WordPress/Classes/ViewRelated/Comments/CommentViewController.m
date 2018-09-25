@@ -341,14 +341,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     cell.isApproved = [self.comment.status isEqualToString:CommentStatusApproved];
      __typeof(self) __weak weakSelf = self;
     cell.onTimeStampLongPress = ^(void) {
-        UIAlertController *copyAlertController = [UIAlertController alertControllerWithTitle:nil                                          message:nil
-                                                                              preferredStyle:UIAlertControllerStyleActionSheet];
-        [copyAlertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button title") handler:nil];
-        [copyAlertController addActionWithTitle:NSLocalizedString(@"Copy", @"Copy button title") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            [UIPasteboard generalPasteboard].string = weakSelf.comment.link;
-            
-        }];
-        [copyAlertController presentFromRootViewController];
+        [weakSelf presentAlertAndCopyTextToClipboardWithText: weakSelf.comment.link];
     };
 
     if ([self.comment avatarURLForDisplay]) {
