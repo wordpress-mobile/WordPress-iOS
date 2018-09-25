@@ -32,6 +32,14 @@ extension BlogDetailsViewController {
         }
     }
 
+    @objc func shouldShowQuickStartChecklist() -> Bool {
+        guard Feature.enabled(.quickStart) else {
+            return false
+        }
+        let count = blog.completedQuickStartTours?.count ?? 0
+        return count > 0
+    }
+
     private func shouldSuggestQuickStartTour() -> Bool {
         // there must be at least one completed tour for quick start to be enabled
         guard let completedCount = blog.completedQuickStartTours?.count, completedCount > 0 else {

@@ -497,7 +497,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
 
-    if ([Feature enabled:FeatureFlagQuickStart]) {
+    if ([self shouldShowQuickStartChecklist]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Quick Start", @"Name of the Quick Start feature that guides users through a few tasks to setup their new website.")
                                                         image:[Gridicon iconOfType:GridiconTypeListCheckmark]
                                                      callback:^{
@@ -1303,6 +1303,9 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
     if ([updatedObjects containsObject:self.blog] || [updatedObjects containsObject:self.blog.settings]) {
         self.navigationItem.title = self.blog.settings.name;
+        if ([self shouldShowQuickStartChecklist]) {
+            [self configureTableViewData];
+        }
         [self reloadTableViewPreservingSelection];
     }
 }
