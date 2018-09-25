@@ -6,7 +6,7 @@ import WordPressFlux
 /// Once you've created a Notice, you can dispatch a `NoticeAction` to display it.
 ///
 struct Notice {
-    typealias actionHandlerFunction = ((_ accepted: Bool) -> Void)
+    typealias ActionHandlerFunction = ((_ accepted: Bool) -> Void)
 
     /// The title of the notice
     let title: String
@@ -36,7 +36,7 @@ struct Notice {
 
     /// An optional handler closure that will be called when the action button
     /// is tapped, if you've provided an action title
-    let actionHandler: actionHandlerFunction?
+    let actionHandler: ActionHandlerFunction?
 
     init(title: String,
          message: String? = nil,
@@ -45,7 +45,7 @@ struct Notice {
          style: NoticeStyle = NormalNoticeStyle(),
          actionTitle: String? = nil,
          cancelTitle: String? = nil,
-         actionHandler: actionHandlerFunction? = nil) {
+         actionHandler: ActionHandlerFunction? = nil) {
         self.title = title
         self.message = message
         self.feedbackType = feedbackType
