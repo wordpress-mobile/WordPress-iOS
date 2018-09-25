@@ -31,7 +31,7 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
     /// onUserClick: Executed whenever any of the User's fields gets clicked
     ///
     @objc var onUserClick: (() -> Void)?
-    
+
     /// onTimeStampLongPress: Executed whenever the user long press on the details label (that includes time stamp)
     ///
     @objc var onTimeStampLongPress: (() -> Void)?

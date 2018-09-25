@@ -63,7 +63,6 @@ class ReaderCommentCell: UITableViewCell {
     ///
     @objc var onTimeStampLongPress: (() -> Void)?
 
-    
     // MARK: - Lifecycle Methods
 
     override func awakeFromNib() {
