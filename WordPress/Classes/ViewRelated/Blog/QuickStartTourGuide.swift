@@ -3,6 +3,8 @@ import Gridicons
 
 @objc
 open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
+    private var currentSuggestion: QuickStartTour?
+
     static func find() -> QuickStartTourGuide? {
         guard let tabBarController = WPTabBarController.sharedInstance(),
             let tourGuide = tabBarController.tourGuide else {
@@ -15,6 +17,8 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
         switch viewController {
         case is QuickStartChecklistViewController:
             dismissTestQuickStartNotice()
+        case is BlogListViewController:
+            dismissSuggestion()
         default:
             break
         }
@@ -32,8 +36,16 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
     }
 
     func suggest(_ tour: QuickStartTour, for blog: Blog) {
+        // swallow subsequent suggestions
+        guard currentSuggestion == nil else {
+            return
+        }
+        currentSuggestion = tour
+
         let noticeStyle = QuickStartNoticeStyle(attributedMessage: nil)
         let notice = Notice(title: tour.title, message: tour.description, style: noticeStyle, actionTitle: tour.suggestionYesText, cancelTitle: tour.suggestionNoText) { [weak self] accepted in
+            self?.currentSuggestion = nil
+
             if accepted {
                 self?.showTestQuickStartNotice()
             } else {
@@ -42,6 +54,14 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
         }
 
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    private func dismissSuggestion() {
+        guard currentSuggestion != nil, let presenter = findNoticePresenter() else {
+            return
+        }
+
+        presenter.dismissCurrentNotice()
     }
 
     public func setup(for blog: Blog) {
