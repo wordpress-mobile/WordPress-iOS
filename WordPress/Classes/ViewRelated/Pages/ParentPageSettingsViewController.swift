@@ -1,27 +1,15 @@
 import UIKit
 
 
-private struct Section {
-    var rows: [Row]
-    var headerTitle: String
-
-    init(_ rows: [Row], headerTitle: String = "") {
-        self.rows = rows
-        self.headerTitle = headerTitle
-    }
-}
-
-
-private struct Row {
-    struct Constants {
-        static let identifier = "CheckmarkCellIdentifier"
-    }
+private struct Row: ImmuTableRow {
+    static let cell = ImmuTableCell.class(CheckmarkTableViewCell.self)
 
     enum RowType {
         case topLevel
         case child
     }
 
+    var action: ImmuTableAction?
     var page: Page?
     var type: RowType
     var title: String {
@@ -35,6 +23,18 @@ private struct Row {
         case .topLevel: return UIFont.systemFont(ofSize: 16.0)
         case .child: return WPFontManager.notoRegularFont(ofSize: 17)
         }
+    }
+
+
+    init(page: Page? = nil, type: RowType = .topLevel) {
+        self.page = page
+        self.type = type
+    }
+
+    func configureCell(_ cell: UITableViewCell) {
+        let cell = cell as! CheckmarkTableViewCell
+        cell.textLabel?.font = titleFont
+        cell.title = title
     }
 }
 
@@ -52,13 +52,14 @@ class ParentPageSettingsViewController: UIViewController {
         }
     }
 
-    private var sections: [Section]!
+    private var sections: [ImmuTableSection]!
     private var selectedPage: Page!
     private var selectedParentId: NSNumber? {
-        guard let selectedIndex = selectedIndex else {
+        guard let selectedIndex = selectedIndex,
+            let row = sections[selectedIndex.section].rows[selectedIndex.row] as? Row else {
             return nil
         }
-        return sections[selectedIndex.section].rows[selectedIndex.row].page?.postID
+        return row.page?.postID
     }
 
 
@@ -75,8 +76,8 @@ class ParentPageSettingsViewController: UIViewController {
         selectedIndex = originalIndex
 
         let rows = pages.map { Row(page: $0, type: .child) }
-        sections = [Section([Row(page: nil, type: .topLevel)]),
-                    Section(rows, headerTitle: NSLocalizedString("Pages", comment: "This is the section title"))]
+        sections = [ImmuTableSection(rows: [Row()]),
+                    ImmuTableSection(headerText: NSLocalizedString("Pages", comment: "This is the section title"), rows: rows)]
     }
 
 
@@ -98,7 +99,7 @@ class ParentPageSettingsViewController: UIViewController {
 
     private func setupTableView() {
         // Register the cells
-        tableView.register(CheckmarkTableViewCell.self, forCellReuseIdentifier: Row.Constants.identifier)
+        tableView.register(Row.cell, cellReuseIdentifier: Row.cell.reusableIdentifier)
 
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
@@ -177,10 +178,9 @@ extension ParentPageSettingsViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = sections[indexPath.section].rows[indexPath.row]
-        let cell: CheckmarkTableViewCell = self.cell(for: tableView, at: indexPath, identifier: Row.Constants.identifier)
-        cell.textLabel?.font = row.titleFont
-        cell.title = row.title
+        let cell: CheckmarkTableViewCell = self.cell(for: tableView, at: indexPath, identifier: row.reusableIdentifier)
         cell.on = selectedIndex == indexPath
+        row.configureCell(cell)
         return cell
     }
 
@@ -199,7 +199,7 @@ extension ParentPageSettingsViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section].headerTitle
+        return sections[section].headerText
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
