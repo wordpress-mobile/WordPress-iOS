@@ -9,8 +9,7 @@ protocol QuickStartTour {
     var suggestionYesText: String { get }
 }
 
-
-fileprivate struct Strings {
+private struct Strings {
     static let notNow = NSLocalizedString("Not now", comment: "Phrase displayed to dismiss a quick start tour suggestion.")
     static let yesShowMe = NSLocalizedString("Yes, show me", comment: "Phrase displayed to begin a quick start tour that's been suggested.")
 }
