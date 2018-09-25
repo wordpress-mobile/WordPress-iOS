@@ -58,7 +58,7 @@ extension BlogDetailsViewController {
             return
         }
         let tour = QuickStartViewTour()
-        tourGuide.suggest(tour)
+        tourGuide.suggest(tour, for: blog)
     }
 
     private func showNotificationPrimerAlert() {

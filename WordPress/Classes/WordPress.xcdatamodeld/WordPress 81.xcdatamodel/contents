@@ -158,7 +158,7 @@
         <relationship name="roles" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Role" inverseName="blog" inverseEntity="Role" syncable="YES"/>
         <relationship name="settings" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="BlogSettings" inverseName="blog" inverseEntity="BlogSettings" syncable="YES"/>
         <relationship name="sharingButtons" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SharingButton" inverseName="blog" inverseEntity="SharingButton" syncable="YES"/>
-        <relationship name="skippedQuickStartTours" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="QuickStartCompletedTour" inverseName="skippedBlog" inverseEntity="QuickStartCompletedTour" syncable="YES"/>
+        <relationship name="skippedQuickStartTours" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="QuickStartCompletedTour" inverseName="skippedBlog" inverseEntity="QuickStartCompletedTour" syncable="YES"/>
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PostTag" inverseName="blog" inverseEntity="PostTag">
             <userInfo/>
         </relationship>
