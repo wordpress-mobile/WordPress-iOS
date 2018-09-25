@@ -1,5 +1,8 @@
 import UIKit
 
+/// Sublclass of UILabel that includes a long press gesture recognizer.
+/// The action attached to the recognizer will be set by the creator of the label.
+
 class LongPressGestureLabel: UILabel {
     var longPressAction: (() -> Void)? {
         didSet {

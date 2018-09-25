@@ -1,7 +1,7 @@
 import Foundation
 
 
-extension UIAlertController {
+@objc extension UIAlertController {
     @objc func presentFromRootViewController() {
         // Note:
         // This method is required because the presenter ViewController must be visible, and we've got several
@@ -16,35 +16,23 @@ extension UIAlertController {
         while leafViewController.presentedViewController != nil && !leafViewController.presentedViewController!.isBeingDismissed {
             leafViewController = leafViewController.presentedViewController!
         }
-        
         leafViewController.present(self, animated: true, completion: nil)
     }
     
-    func presentAlertForCopy(_ text: String?, completion: ((Notice) -> Void)? = nil) {
+    /// This method is used for presenting the Action sheet for copying text to clipboard. The action sheet has 2 options:
+    /// copy: will copy the text to the clipboard
+    /// cancel: dismiss the action sheet
+    @objc static func copyTextAlertController(_ text: String?, completion: ((Bool) -> Void)? = nil) -> UIAlertController? {
         guard let text = text else {
-            completion?(failureNotice)
-            return
+            completion?(false)
+            return nil
         }
-        self.addDefaultActionWithTitle(NSLocalizedString("Copy", comment: "Copy button")) { [weak self] alertAction in
-            guard let strongSelf = self else {
-                assertionFailure("UIAlertController was nil when trying to set action in presentAlertForCopy")
-                return
-            }
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addDefaultActionWithTitle(NSLocalizedString("Copy", comment: "Copy button")) { action in
             UIPasteboard.general.string = text
-            completion?(strongSelf.successNotice)
+            completion?(true)
         }
-        
-        self.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel button"))
-        presentFromRootViewController()
-    }
-    
-    private var successNotice: Notice {
-        let title = NSLocalizedString("Link Copied to Clipboard", comment: "")
-        return Notice(title: title)
-    }
-    
-    private var failureNotice: Notice {
-        let title = NSLocalizedString("Copy to Clipboard failed", comment: "")
-        return Notice(title: title)
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel button"))
+        return alertController
     }
 }
