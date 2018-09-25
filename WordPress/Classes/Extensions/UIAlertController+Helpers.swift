@@ -18,17 +18,19 @@ import Foundation
         }
         leafViewController.present(self, animated: true, completion: nil)
     }
-    
-    /// This method is used for presenting the Action sheet for copying text to clipboard. The action sheet has 2 options:
+
+    /// This method is used for presenting the Action sheet
+    /// for copying text to clipboard. The action sheet has 2 options:
     /// copy: will copy the text to the clipboard
     /// cancel: dismiss the action sheet
-    @objc static func copyTextAlertController(_ text: String?, completion: ((Bool) -> Void)? = nil) -> UIAlertController? {
+    @objc static func copyTextAlertController(_ text: String?,
+                                              completion: ((Bool) -> Void)? = nil) -> UIAlertController? {
         guard let text = text else {
             completion?(false)
             return nil
         }
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addDefaultActionWithTitle(NSLocalizedString("Copy", comment: "Copy button")) { action in
+        alertController.addDefaultActionWithTitle(NSLocalizedString("Copy", comment: "Copy button")) { _ in
             UIPasteboard.general.string = text
             completion?(true)
         }

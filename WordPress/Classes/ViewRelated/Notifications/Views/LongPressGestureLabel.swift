@@ -12,16 +12,16 @@ class LongPressGestureLabel: UILabel {
     private lazy var gesture: UILongPressGestureRecognizer = {
         return UILongPressGestureRecognizer(target: self, action: #selector(longPressAction(_:)))
     }()
-    
+
     @objc private func longPressAction(_ gesture: UILongPressGestureRecognizer) {
-        switch(gesture.state){
+        switch(gesture.state) {
         case .began:
             longPressAction?()
         default:
             break
         }
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }

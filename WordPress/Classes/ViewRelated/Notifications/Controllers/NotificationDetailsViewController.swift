@@ -713,7 +713,7 @@ private extension NotificationDetailsViewController {
             }
             self?.router.routeTo(image)
         }
-        
+
         cell.onTimeStampLongPress = { [weak self] in
             self?.presentAlertAndCopyTextToClipboard(text: self?.note.url)
         }
