@@ -200,12 +200,16 @@ class NoticeView: UIView {
 
         actionButton.titleLabel?.font = notice.style.actionButtonFont
         actionButton.setTitleColor(.white, for: .normal)
-        actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
+        actionButton.on(.touchUpInside) { [weak self] _ in
+            self?.actionButtonTapped()
+        }
         actionButton.setContentCompressionResistancePriority(.required, for: .vertical)
 
         cancelButton.titleLabel?.font = notice.style.cancelButtonFont
         cancelButton.setTitleColor(notice.style.messageColor, for: .normal)
-        cancelButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
+        cancelButton.on(.touchUpInside) { [weak self] _ in
+            self?.cancelButtonTapped()
+        }
         cancelButton.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
@@ -240,7 +244,12 @@ class NoticeView: UIView {
     }
 
     @objc private func actionButtonTapped() {
-        notice.actionHandler?()
+        notice.actionHandler?(true)
+        dismissHandler?()
+    }
+
+    private func cancelButtonTapped() {
+        notice.actionHandler?(false)
         dismissHandler?()
     }
 

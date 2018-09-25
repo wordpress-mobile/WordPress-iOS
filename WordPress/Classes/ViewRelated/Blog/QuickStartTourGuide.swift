@@ -31,13 +31,25 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
-    func suggest(_ tour: QuickStartTour) {
+    func suggest(_ tour: QuickStartTour, for blog: Blog) {
         let noticeStyle = QuickStartNoticeStyle(attributedMessage: nil)
-        let notice = Notice(title: tour.title, message: tour.description, style: noticeStyle, actionTitle: tour.suggestionYesText, cancelTitle: tour.suggestionNoText) { [weak self] in
-            self?.showTestQuickStartNotice()
+        let notice = Notice(title: tour.title, message: tour.description, style: noticeStyle, actionTitle: tour.suggestionYesText, cancelTitle: tour.suggestionNoText) { [weak self] accepted in
+            if accepted {
+                self?.showTestQuickStartNotice()
+            } else {
+                self?.skipped(tour, for: blog)
+            }
         }
 
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+    }
+
+    private func skipped(_ tour: QuickStartTour, for blog: Blog) {
+        // make the tour as complete
+        let context = ContextManager.sharedInstance().mainContext
+        let newCompletion = NSEntityDescription.insertNewObject(forEntityName: QuickStartCompletedTour.entityName(), into: context) as! QuickStartCompletedTour
+        newCompletion.skippedBlog = blog
+        newCompletion.tourID = tour.key
     }
 
     private func findNoticePresenter() -> NoticePresenter? {
