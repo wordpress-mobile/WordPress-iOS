@@ -50,6 +50,17 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
         let newCompletion = NSEntityDescription.insertNewObject(forEntityName: QuickStartCompletedTour.entityName(), into: context) as! QuickStartCompletedTour
         newCompletion.skippedBlog = blog
         newCompletion.tourID = tour.key
+
+        ContextManager.sharedInstance().saveContextAndWait(ContextManager.sharedInstance().mainContext)
+    }
+
+    public func completed(tourID: String, for blog: Blog) {
+        let context = ContextManager.sharedInstance().mainContext
+        let newCompletion = NSEntityDescription.insertNewObject(forEntityName: QuickStartCompletedTour.entityName(), into: context) as! QuickStartCompletedTour
+        newCompletion.completedBlog = blog
+        newCompletion.tourID = tourID
+
+        ContextManager.sharedInstance().saveContextAndWait(ContextManager.sharedInstance().mainContext)
     }
 
     private func findNoticePresenter() -> NoticePresenter? {
