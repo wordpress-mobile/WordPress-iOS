@@ -42,6 +42,7 @@ class QuickStartChecklistViewController: UITableViewController {
         }
 
         tourGuide.completed(tourID: tour.key, for: blog)
+        tourGuide.showTestQuickStartNotice()
 
         self.navigationController?.popViewController(animated: true)
     }
