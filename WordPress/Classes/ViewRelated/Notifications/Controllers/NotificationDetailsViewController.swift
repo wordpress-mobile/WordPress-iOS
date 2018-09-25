@@ -714,7 +714,9 @@ private extension NotificationDetailsViewController {
             self?.router.routeTo(image)
         }
         
-        cell.onTimeStampLongPress = { [weak self] in self?.copyAction() }
+        cell.onTimeStampLongPress = { [weak self] in
+            self?.presentAlertAndCopyTextToClipboard(text: self?.note.url)
+        }
 
         // Download the Gravatar
         let mediaURL = userBlock.media.first?.mediaURL
@@ -1239,13 +1241,5 @@ private extension NotificationDetailsViewController {
         static let numberOfSections         = 1
         static let estimatedRowHeight       = CGFloat(44)
         static let expirationFiveMinutes    = TimeInterval(60 * 5)
-    }
-}
-
-// MARK: - Copy text
-//
-extension NotificationDetailsViewController: TextCopyable {
-    var text: String? {
-        return self.note.url
     }
 }
