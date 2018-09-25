@@ -44,6 +44,11 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
+    public func setup(for blog: Blog) {
+        let createTour = QuickStartCreateTour()
+        completed(tourID: createTour.key, for: blog)
+    }
+
     private func skipped(_ tour: QuickStartTour, for blog: Blog) {
         // make the tour as complete
         let context = ContextManager.sharedInstance().mainContext
