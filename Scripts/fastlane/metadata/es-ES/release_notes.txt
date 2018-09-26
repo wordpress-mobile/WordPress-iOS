@@ -1,2 +1,4 @@
-Hemos estado cambiando cosas bajo el capó.
-Puede que no veas nada obvio diferente en la aplicación, pero esperamos que todo sea más rápido y más estable.
+¿Te pone de los nervios cuando te das cuenta de que quieres pegar una entrada en la página de inicio de tu sitio pero estás en el autobús y solo tienes contigo tu teléfono? A nosotros también. Ahora puedes configurar entradas fijas en la aplicación, y el resto de personas del autobús no tendrán porque oír tus quejas.
+Ahorra tiempo y toques con avisos instantáneos de comentarios que muestran todo el comentario en la pantalla de inicio. ¡A todo el mundo le gusta ahorrar!
+Traemos más consistencia visual a las distintas pantallas de la aplicación, para que desenvolverte por ella sea más fácil. Menos tiempo para adivinar cómo navegar = más tiempo para crear.
+Hemos roto el matamoscas y nos hemos desecho de algunos bichos (fallos).
