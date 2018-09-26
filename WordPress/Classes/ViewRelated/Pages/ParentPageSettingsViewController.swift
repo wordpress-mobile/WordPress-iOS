@@ -84,8 +84,6 @@ class ParentPageSettingsViewController: UIViewController {
     // MARK: - Private methods
 
     private func setupUI() {
-        WPFontManager.loadNotoFontFamily()
-
         navigationItem.title = NSLocalizedString("Set Parent", comment: "Navigation title displayed on the navigation bar")
 
         cancelButton.title = NSLocalizedString("Cancel", comment: "Text displayed by the left navigation button title")
@@ -217,6 +215,8 @@ extension ParentPageSettingsViewController: UITableViewDelegate {
 //
 extension ParentPageSettingsViewController {
     class func navigationController(with pages: [Page], selectedPage: Page) -> UINavigationController {
+        WPFontManager.loadNotoFontFamily()
+
         let storyBoard = UIStoryboard(name: "Pages", bundle: Bundle.main)
         guard let controller = storyBoard.instantiateViewController(withIdentifier: "ParentPageSettings") as? UINavigationController else {
             fatalError("A navigation view controller is required for Parent Page Settings")
