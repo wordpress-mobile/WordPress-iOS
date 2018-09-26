@@ -61,6 +61,7 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
             return
         }
 
+        currentSuggestion = nil
         presenter.dismissCurrentNotice()
     }
 
