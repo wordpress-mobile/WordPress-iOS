@@ -253,6 +253,11 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         return 0.0
     }
 
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let page = pageAtIndexPath(indexPath)
+        return page.canDisplayBadges ? 60.0 : 44.0
+    }
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView! {
         guard _tableViewHandler.groupResults else {
             return UIView(frame: .zero)
