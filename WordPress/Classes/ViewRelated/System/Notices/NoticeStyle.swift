@@ -13,6 +13,9 @@ public protocol NoticeStyle {
     var messageColor: UIColor { get }
     var backgroundColor: UIColor { get }
 
+    // Margins
+    var layoutMargins: UIEdgeInsets { get }
+
     // Misc
     var isDismissable: Bool { get }
 }
@@ -30,6 +33,8 @@ public struct NormalNoticeStyle: NoticeStyle {
     public let messageColor: UIColor = WPStyleGuide.darkGrey()
     public let backgroundColor: UIColor = .clear
 
+    public let layoutMargins = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
+
     public let isDismissable = true
 }
 
@@ -44,6 +49,8 @@ public struct QuickStartNoticeStyle: NoticeStyle {
     public let titleColor: UIColor = .white
     public let messageColor: UIColor = WPStyleGuide.greyLighten20()
     public let backgroundColor: UIColor = WPStyleGuide.darkGrey().withAlphaComponent(0.88)
+
+    public let layoutMargins = UIEdgeInsets(top: 12.0, left: 16.0, bottom: 12.0, right: 16.0)
 
     public let isDismissable = false
 }
