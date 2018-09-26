@@ -3,7 +3,7 @@ import WordPressFlux
 import WordPressShared
 
 
-@objc extension UIViewController {
+extension UIViewController {
     /// Dispatch a Notice for subscribing notification action
     ///
     /// - Parameters:
@@ -31,18 +31,5 @@ import WordPressShared
                                 })
         }
         ActionDispatcher.dispatch(NoticeAction.post(notice))
-    }
-    /// This method is will allow viewControllers to present an alert controller (action sheet style) that
-    /// provides a copy action to allow copying the text parameter to the clip board.
-    /// Once copied, or on failure to copy, a notice will be posted using the dispacher so the user will know
-    /// if copying to clipboard was successful
-    func presentAlertAndCopyTextToClipboard(text: String?) {
-        let successNoticeTitle = NSLocalizedString("Link Copied to Clipboard", comment: "")
-        let failureNoticeTitle = NSLocalizedString("Copy to Clipboard failed", comment: "")
-        let copyAlertController = UIAlertController.copyTextAlertController(text) { success in
-            let title = success ? successNoticeTitle : failureNoticeTitle
-            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title)))
-        }
-        copyAlertController?.presentFromRootViewController()
     }
 }
