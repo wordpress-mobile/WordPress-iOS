@@ -93,8 +93,8 @@ class NoticeView: UIView {
         // the shadow only appears _outside_ of the notice roundrect, and doesn't appear underneath
         // and obscure the blur visual effect view. 
         let maskPath = CGMutablePath()
-        let leftInset = Metrics.layoutMargins.left * 2
-        let topInset = Metrics.layoutMargins.top * 2
+        let leftInset = notice.style.layoutMargins.left * 2
+        let topInset = notice.style.layoutMargins.top * 2
         maskPath.addRect(bounds.insetBy(dx: -leftInset, dy: -topInset))
         maskPath.addPath(shadowPath)
         shadowMaskLayer.path = maskPath
@@ -115,7 +115,7 @@ class NoticeView: UIView {
         labelStackView.spacing = Metrics.labelLineSpacing
         labelStackView.isBaselineRelativeArrangement = true
         labelStackView.isLayoutMarginsRelativeArrangement = true
-        labelStackView.layoutMargins = Metrics.layoutMargins
+        labelStackView.layoutMargins = notice.style.layoutMargins
 
         labelStackView.addArrangedSubview(titleLabel)
         labelStackView.addArrangedSubview(messageLabel)
@@ -131,6 +131,9 @@ class NoticeView: UIView {
 
         titleLabel.textColor = notice.style.titleColor
         messageLabel.textColor = notice.style.messageColor
+
+        messageLabel.numberOfLines = 0
+        messageLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 18.0).isActive = true
     }
 
     private func configureActionButton() {
@@ -144,7 +147,7 @@ class NoticeView: UIView {
         contentStackView.addArrangedSubview(actionBackgroundView)
         actionBackgroundView.translatesAutoresizingMaskIntoConstraints = false
 
-        actionBackgroundView.layoutMargins = Metrics.layoutMargins
+        actionBackgroundView.layoutMargins = notice.style.layoutMargins
         actionBackgroundView.backgroundColor = Appearance.actionBackgroundColor
 
         actionBackgroundView.addSubview(actionButton)
@@ -255,7 +258,6 @@ class NoticeView: UIView {
 
     private enum Metrics {
         static let cornerRadius: CGFloat = 13.0
-        static let layoutMargins = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
         static let dualLayoutMargins = UIEdgeInsets(top: 6.0, left: 6.0, bottom: 6.0, right: 6.0)
         static let labelLineSpacing: CGFloat = 18.0
     }
