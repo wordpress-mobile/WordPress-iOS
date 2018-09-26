@@ -115,7 +115,8 @@ class MediaAssetExporterTests: XCTestCase {
             MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
             expect.fulfill()
         }) { (error) in
-            XCTFail("Error: an error occurred testing an image export with resizing and stripping GPS: \(error.toNSError())")
+            XCTFail("Error: an error occurred testing an image export with resizing and stripping GPS: " +
+                "\(error.toNSError())")
             expect.fulfill()
         }
         waitForExpectations(timeout: 2.0, handler: nil)

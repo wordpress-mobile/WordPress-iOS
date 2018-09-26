@@ -53,9 +53,6 @@
             </BuildableReference>
             <SkippedTests>
                <Test
-                  Identifier = "NotificationSyncMediatorTests/testMultipleSyncCallsWontInsertDuplicateNotes()">
-               </Test>
-               <Test
                   Identifier = "RemoteTestCase">
                </Test>
             </SkippedTests>
