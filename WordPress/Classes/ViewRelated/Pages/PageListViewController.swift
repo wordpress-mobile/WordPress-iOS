@@ -134,7 +134,6 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.accessibilityIdentifier = "PagesTable"
         tableView.isAccessibilityElement = true
         tableView.estimatedRowHeight = type(of: self).pageCellEstimatedRowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
 
         let bundle = Bundle.main
 
