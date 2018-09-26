@@ -1087,7 +1087,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
 
         let service = ReaderPostService(managedObjectContext: post.managedObjectContext!)
-        service.toggleLiked(for: post, success: nil, failure: { (error: Error?) in
+        service.toggleLiked(for: post, success: nil, failure: { [weak self] (error: Error?) in
+            self?.trackArticleDetailsLikedOrUnliked()
             if let anError = error {
                 DDLogError("Error (un)liking post: \(anError.localizedDescription)")
             }
@@ -1410,5 +1411,24 @@ extension ReaderDetailViewController: NoResultsViewControllerDelegate {
             presentWebViewControllerWithURL(postURL)
             navigationController?.popViewController(animated: true)
         }
+    }
+}
+
+// MARK: - Tracking events
+
+private extension ReaderDetailViewController {
+    func trackArticleDetailsLikedOrUnliked() {
+        guard let post = post else {
+            return
+        }
+
+        let stat: WPAnalyticsStat  = post.isLiked
+            ? .readerArticleDetailLiked
+            : .readerArticleDetailUnliked
+        
+        var properties = [AnyHashable: Any]()
+        properties[WPAppAnalyticsKeyBlogID] = post.siteID
+        properties[WPAppAnalyticsKeyPostID] = post.postID
+        WPAnalytics.track(stat, withProperties: properties)
     }
 }
