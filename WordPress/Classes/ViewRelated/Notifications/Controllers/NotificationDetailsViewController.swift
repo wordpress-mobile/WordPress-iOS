@@ -740,6 +740,7 @@ private extension NotificationDetailsViewController {
         // Setup: Callbacks
         cell.onReplyClick = { [weak self] _ in
             self?.focusOnReplyTextViewWithBlock(commentBlock)
+            WPAppAnalytics.track(.notificationsCommentRepliedTo)
         }
 
         cell.onLikeClick = { [weak self] _ in
