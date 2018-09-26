@@ -1,2 +1,4 @@
-Wir haben hinter den Kulissen einiges verbessert.
-Vielleicht hat sich für dich auf den ersten Blick nichts geändert, aber stell dich ein auf eine schnellere, stabilere App.
+Macht es dich wahnsinnig, wenn du feststellst, dass du einen Beitrag auf der Startseite deiner Website oben halten möchtest, du aber im Bus sitzt und nur ein Smartphone dabei hast? Uns auch. Jetzt kannst du oben gehaltene Beiträge in der App festlegen, sodass die anderen Fahrgäste dich nicht motzen hören müssen.
+Spare Zeit und Tipparbeit mit Push-Benachrichtigungen zu Kommentaren, mit denen der gesamte Kommentar auf dem Startbildschirm angezeigt wird. Wir alle sparen gerne!
+Wir haben das Erscheinungsbild verschiedener Bildschirmseiten in der App vereinheitlicht, um die Navigation zu erleichtern. Weniger Zeit, um sich in der Navigation zurechtzufinden, bedeutet mehr Zeit, um Inhalte zu erstellen.
+Wir haben uns auf Fehlersuche begeben und einige Fehler beseitigt.

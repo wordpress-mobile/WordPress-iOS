@@ -461,7 +461,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     private var mediaPreviewHelper: MediaPreviewHelper? = nil
 
-
+    // For autosaving
+    var debouncer = Debouncer(delay: Constants.autoSavingDelay)
     // MARK: - Initializers
 
     /// Initializer
@@ -483,6 +484,20 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         addObservers(toPost: post)
+
+        // The debouncer will perform this callback every 500ms in order to save the post locally with a delay.
+        debouncer.callback = { [weak self] in
+            guard let strongSelf = self else {
+                assertionFailure("self was nil while trying to save a post using Debouncer")
+                return
+            }
+            if strongSelf.post.hasLocalChanges() {
+                guard let context = strongSelf.post.managedObjectContext else {
+                    return
+                }
+                ContextManager.sharedInstance().save(context)
+            }
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -2719,8 +2734,7 @@ private extension AztecPostViewController {
     func mapUIContentToPostAndSave() {
         post.postTitle = titleTextField.text
         post.content = getHTML()
-
-        ContextManager.sharedInstance().save(post.managedObjectContext!)
+        debouncer.call()
     }
 }
 
@@ -3896,6 +3910,8 @@ extension AztecPostViewController {
             static let formatBarMediaButtonRotationDuration: TimeInterval = 0.3
             static let formatBarMediaButtonRotationAngle: CGFloat = .pi / 4.0
         }
+        
+        static let autoSavingDelay = Double(0.5)
     }
 
     struct MoreSheetAlert {
@@ -3982,6 +3998,7 @@ extension AztecPostViewController {
         static let title = NSLocalizedString("Unable to play video", comment: "Dialog box title for when the user is cancelling an upload.")
         static let message = NSLocalizedString("Something went wrong. Please check your connectivity and try again.", comment: "This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server.")
     }
+    
 }
 
 extension AztecPostViewController: UIViewControllerTransitioningDelegate {
