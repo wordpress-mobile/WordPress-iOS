@@ -831,9 +831,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     cell.delegate = self;
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.enableLoggedInFeatures = [self isLoggedIn];
-    __typeof(self) __weak weakSelf = self;
     cell.onTimeStampLongPress = ^(void) {
-        [weakSelf presentAlertAndCopyTextToClipboardWithText:comment.link];
+        [UIAlertController presentAlertAndCopyTextToClipboardWithText:comment.link];
     };
 
     // When backgrounding, the app takes a snapshot, which triggers a layout pass,

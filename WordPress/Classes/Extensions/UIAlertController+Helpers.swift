@@ -1,5 +1,5 @@
 import Foundation
-
+import WordPressFlux
 
 @objc extension UIAlertController {
     @objc func presentFromRootViewController() {
@@ -18,7 +18,10 @@ import Foundation
         }
         leafViewController.present(self, animated: true, completion: nil)
     }
+}
 
+//MARK: copy text to Clipboard alert
+extension UIAlertController {
     /// This method is used for presenting the Action sheet
     /// for copying text to clipboard. The action sheet has 2 options:
     /// copy: will copy the text to the clipboard
@@ -36,5 +39,19 @@ import Foundation
         }
         alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel button"))
         return alertController
+    }
+
+    /// This method is will present an alert controller (action sheet style) that
+    /// provides a copy action to allow copying the text parameter to the clip board.
+    /// Once copied, or on failure to copy, a notice will be posted using the dispacher so the user will know
+    /// if copying to clipboard was successful
+    @objc static func presentAlertAndCopyTextToClipboard(text: String?) {
+        let successNoticeTitle = NSLocalizedString("Link Copied to Clipboard", comment: "")
+        let failureNoticeTitle = NSLocalizedString("Copy to Clipboard failed", comment: "")
+        let copyAlertController = UIAlertController.copyTextAlertController(text) { success in
+            let title = success ? successNoticeTitle : failureNoticeTitle
+            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title)))
+        }
+        copyAlertController?.presentFromRootViewController()
     }
 }
