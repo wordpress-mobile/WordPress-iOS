@@ -1425,7 +1425,7 @@ private extension ReaderDetailViewController {
         let stat: WPAnalyticsStat  = post.isLiked
             ? .readerArticleDetailLiked
             : .readerArticleDetailUnliked
-        
+
         var properties = [AnyHashable: Any]()
         properties[WPAppAnalyticsKeyBlogID] = post.siteID
         properties[WPAppAnalyticsKeyPostID] = post.postID
