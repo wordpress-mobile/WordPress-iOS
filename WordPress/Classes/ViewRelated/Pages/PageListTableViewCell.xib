@@ -89,11 +89,11 @@
                             <constraint firstAttribute="bottom" secondItem="WU8-ke-OqW" secondAttribute="bottom" constant="10" id="Fdu-Vk-RXt"/>
                             <constraint firstAttribute="trailing" secondItem="VPZ-yr-cJj" secondAttribute="trailing" id="UBU-ep-8EU"/>
                             <constraint firstItem="VPZ-yr-cJj" firstAttribute="leading" secondItem="rQF-5A-jGg" secondAttribute="trailing" id="YHS-tv-hNv"/>
+                            <constraint firstItem="VPZ-yr-cJj" firstAttribute="centerY" secondItem="6Um-2J-DCT" secondAttribute="centerY" id="ZcN-mh-atJ"/>
                             <constraint firstItem="VPZ-yr-cJj" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Tdc-xF-sEY" secondAttribute="trailing" id="ZkS-vz-Fri"/>
                             <constraint firstAttribute="bottom" secondItem="rQF-5A-jGg" secondAttribute="bottom" constant="8" id="bK0-9Y-2OP"/>
                             <constraint firstItem="rQF-5A-jGg" firstAttribute="top" secondItem="6Um-2J-DCT" secondAttribute="top" constant="8" id="dlN-7X-cdr"/>
                             <constraint firstItem="WU8-ke-OqW" firstAttribute="leading" secondItem="6Um-2J-DCT" secondAttribute="leading" constant="16" id="gRK-OD-Fgi"/>
-                            <constraint firstItem="VPZ-yr-cJj" firstAttribute="centerY" secondItem="rQF-5A-jGg" secondAttribute="centerY" id="hdu-jK-wN6"/>
                             <constraint firstItem="rQF-5A-jGg" firstAttribute="leading" secondItem="6Um-2J-DCT" secondAttribute="leading" constant="15" id="mzM-Ra-7Ms"/>
                             <constraint firstItem="Tdc-xF-sEY" firstAttribute="leading" secondItem="6Um-2J-DCT" secondAttribute="leading" priority="749" constant="16" id="nFQ-Ef-UAK"/>
                             <constraint firstAttribute="bottom" secondItem="Tdc-xF-sEY" secondAttribute="bottom" constant="10" id="s3d-7J-Bzm"/>

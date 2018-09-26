@@ -55,6 +55,9 @@
     self.privateBadgeLabel.text = NSLocalizedString(@"Private", @"Title of the Private Badge");
     self.localChangesLabel.text = NSLocalizedString(@"Local changes", @"Title of the Local Changes Badge");
 
+    self.privateBadge.layer.cornerRadius = 2.0;
+    self.localChangesBadge.layer.cornerRadius = 2.0;
+
     self.backgroundColor = [WPStyleGuide greyLighten30];
     self.contentView.backgroundColor = [WPStyleGuide greyLighten30];
 }
