@@ -20,7 +20,7 @@ import WordPressFlux
     }
 }
 
-//MARK: copy text to Clipboard alert
+//MARK: - copy text to Clipboard
 extension UIAlertController {
     /// This method is used for presenting the Action sheet
     /// for copying text to clipboard. The action sheet has 2 options:
