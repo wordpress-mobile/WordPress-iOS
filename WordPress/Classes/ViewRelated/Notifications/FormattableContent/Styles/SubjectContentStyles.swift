@@ -1,3 +1,4 @@
+import WordPressShared
 
 class SubjectContentStyles: FormattableContentStyles {
     var attributes: [NSAttributedStringKey: Any] {

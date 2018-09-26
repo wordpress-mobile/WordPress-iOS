@@ -64,7 +64,7 @@ extension NotificationBlockGroup {
         let blocks = NotificationBlock.blocksFromArray(body, parent: parent)
 
         switch parent.kind {
-        case .Comment:
+        case .comment:
             return groupsForCommentBodyBlocks(blocks, parent: parent)
         default:
             return groupsForNonCommentBodyBlocks(blocks, parent: parent)
@@ -84,8 +84,8 @@ private extension NotificationBlockGroup {
     ///     -   Footers are visually represented as `View All Followers` / `View All Likers`
     ///
     class func groupsForNonCommentBodyBlocks(_ blocks: [NotificationBlock], parent: Notification) -> [NotificationBlockGroup] {
-        let parentKindsWithFooters: [Notification.Kind] = [.Follow, .Like, .CommentLike]
-        let parentMayContainFooter = parentKindsWithFooters.contains(parent.notificationKind)
+        let parentKindsWithFooters: [NotificationKind] = [.follow, .like, .commentLike]
+        let parentMayContainFooter = parentKindsWithFooters.contains(parent.kind)
 
         return blocks.map { block in
             let isFooter = parentMayContainFooter && block.kind == .text && blocks.last == block
@@ -169,17 +169,6 @@ private extension NotificationBlockGroup {
         let block = NotificationBlock(text: text, ranges: ranges)
         return NotificationBlockGroup(blocks: [block], kind: .footer)
     }
-}
-
-extension FormattableContentGroup.Kind {
-    static let text = FormattableContentGroup.Kind("text")
-    static let image = FormattableContentGroup.Kind("image")
-    static let user = FormattableContentGroup.Kind("user")
-    static let comment = FormattableContentGroup.Kind("comment")
-    static let actions = FormattableContentGroup.Kind("actions")
-    static let subject = FormattableContentGroup.Kind("subject")
-    static let header = FormattableContentGroup.Kind("header")
-    static let footer = FormattableContentGroup.Kind("footer")
 }
 
 // MARK: - NotificationBlockGroup Types

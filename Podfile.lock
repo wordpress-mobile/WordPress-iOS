@@ -103,9 +103,9 @@ PODS:
   - Starscream (3.0.4)
   - SVProgressHUD (2.2.5)
   - UIDeviceIdentifier (0.5.0)
-  - WordPress-Aztec-iOS (1.0.0-beta.25.2)
-  - WordPress-Editor-iOS (1.0.0-beta.25.2):
-    - WordPress-Aztec-iOS (= 1.0.0-beta.25.2)
+  - WordPress-Aztec-iOS (1.0.2)
+  - WordPress-Editor-iOS (1.0.2):
+    - WordPress-Aztec-iOS (= 1.0.2)
   - WordPressAuthenticator (1.0.6):
     - 1PasswordExtension (= 1.8.5)
     - Alamofire (= 4.7.2)
@@ -120,24 +120,27 @@ PODS:
     - WordPressShared (~> 1.0)
     - WordPressUI (~> 1.0)
     - wpxmlrpc (~> 0.8)
-  - WordPressKit (1.2.1):
+  - WordPressKit (1.4.0):
     - Alamofire (~> 4.7)
     - CocoaLumberjack (= 3.4.2)
     - NSObject-SafeExpectations (= 0.0.3)
     - UIDeviceIdentifier (~> 0.4)
     - WordPressShared (~> 1.0.3)
     - wpxmlrpc (= 0.8.3)
-  - WordPressShared (1.0.9):
+  - WordPressShared (1.0.10):
     - CocoaLumberjack (~> 3.4)
     - FormatterKit/TimeIntervalFormatter (= 1.8.2)
-  - WordPressUI (1.0.6)
+  - WordPressUI (1.0.7)
   - WPMediaPicker (1.3)
   - wpxmlrpc (0.8.3)
-  - ZendeskSDK (1.11.2.1):
-    - ZendeskSDK/Providers (= 1.11.2.1)
-    - ZendeskSDK/UI (= 1.11.2.1)
-  - ZendeskSDK/Providers (1.11.2.1)
-  - ZendeskSDK/UI (1.11.2.1):
+  - ZendeskSDK (2.1.0):
+    - ZendeskSDK/Providers (= 2.1.0)
+    - ZendeskSDK/UI (= 2.1.0)
+  - ZendeskSDK/Core (2.1.0)
+  - ZendeskSDK/Providers (2.1.0):
+    - ZendeskSDK/Core
+  - ZendeskSDK/UI (2.1.0):
+    - ZendeskSDK/Core
     - ZendeskSDK/Providers
 
 DEPENDENCIES:
@@ -166,15 +169,14 @@ DEPENDENCIES:
   - Starscream (= 3.0.4)
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
-  - WordPress-Aztec-iOS (= 1.0.0-beta.25.2)
-  - WordPress-Editor-iOS (= 1.0.0-beta.25.2)
+  - WordPress-Editor-iOS (= 1.0.2)
   - WordPressAuthenticator (= 1.0.6)
-  - WordPressKit (= 1.2.1)
-  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `c51f53ef91127b5225064023e7207fad66b02ea4`)
-  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS.git`, commit `7a5b1a3fb44f62416fbc2e5f0de623b87b613aae`)
+  - WordPressKit (= 1.4.0)
+  - WordPressShared (= 1.0.10)
+  - WordPressUI (= 1.0.7)
   - WPMediaPicker (= 1.3)
   - wpxmlrpc (= 0.8.3)
-  - ZendeskSDK (= 1.11.2.1)
+  - ZendeskSDK (= 2.1.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -208,6 +210,8 @@ SPEC REPOS:
     - WordPress-Editor-iOS
     - WordPressAuthenticator
     - WordPressKit
+    - WordPressShared
+    - WordPressUI
     - WPMediaPicker
     - wpxmlrpc
     - ZendeskSDK
@@ -216,23 +220,11 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
-  WordPressShared:
-    :commit: c51f53ef91127b5225064023e7207fad66b02ea4
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
-  WordPressUI:
-    :commit: 7a5b1a3fb44f62416fbc2e5f0de623b87b613aae
-    :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
-  WordPressShared:
-    :commit: c51f53ef91127b5225064023e7207fad66b02ea4
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
-  WordPressUI:
-    :commit: 7a5b1a3fb44f62416fbc2e5f0de623b87b613aae
-    :git: https://github.com/wordpress-mobile/WordPressUI-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -262,16 +254,16 @@ SPEC CHECKSUMS:
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
-  WordPress-Aztec-iOS: 3b44c658c8855779c97488fea4c51699773c66ce
-  WordPress-Editor-iOS: c56427bd21f5dafcf26fe984a3aed5d5a5411be6
+  WordPress-Aztec-iOS: a736985cc6de6ffceb30a03e380d849b4956ae51
+  WordPress-Editor-iOS: 571e9a168881af4cbe6cc909af603c278a5f0fe3
   WordPressAuthenticator: 56538a229185640b41912c10c3f1891c2cc9bbb9
-  WordPressKit: a4a3849684f631a3abf579f6d3f15a32677cbb30
-  WordPressShared: e5ea8a1ed3329735e40bd6623830960f63dd10fd
-  WordPressUI: af141587ec444f9af753a00605bd0d3f14d8d8a3
+  WordPressKit: 5d4b9840aed4329d61b3efbe40714c9dce719309
+  WordPressShared: 5915565faa46e096016aefed0dc67783afbc323a
+  WordPressUI: cfcac4a2a033e3ed5def6504bb8e28447c54423b
   WPMediaPicker: c54791e04af3b41e473e9b340784be48a505bb38
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
-  ZendeskSDK: 2cda4db2ba6b10ba89aeb8dddaa94e97c85946a0
+  ZendeskSDK: e2d9245bc42fb4782eff959219ce4d6bdae13b64
 
-PODFILE CHECKSUM: 2b19bc63f8ab044429460f75f68ef934d2633126
+PODFILE CHECKSUM: 7e8061099579e739f0dc9c05baccf3e184a163bb
 
 COCOAPODS: 1.5.3

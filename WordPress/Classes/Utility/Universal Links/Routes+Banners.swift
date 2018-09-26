@@ -18,7 +18,7 @@ struct AppBannerRoute: Route {
 }
 
 extension AppBannerRoute: NavigationAction {
-    func perform(_ values: [String: String]?) {
+    func perform(_ values: [String: String]?, source: UIViewController? = nil) {
         guard let fragmentValue = values?[MatchedRouteURLComponentKey.fragment.rawValue],
         let fragment = fragmentValue.removingPercentEncoding else {
             return
@@ -27,6 +27,8 @@ extension AppBannerRoute: NavigationAction {
         // Convert the fragment into a URL and ask the link router to handle
         // it like a normal route.
         var components = URLComponents()
+        components.scheme = "https"
+        components.host = "wordpress.com"
         components.path = fragment
 
         if let url = components.url {

@@ -20,7 +20,7 @@ enum MeNavigationAction: NavigationAction {
     case accountSettings
     case notificationSettings
 
-    func perform(_ values: [String: String]? = nil) {
+    func perform(_ values: [String: String]? = nil, source: UIViewController? = nil) {
         switch self {
         case .root:
             WPTabBarController.sharedInstance().showMeTab()

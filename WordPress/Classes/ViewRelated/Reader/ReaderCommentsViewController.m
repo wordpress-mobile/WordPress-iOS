@@ -626,9 +626,8 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
                                             subtitle:nil
                                   attributedSubtitle:nil
                                                image:@"wp-illustration-empty-results"
+                                       subtitleImage:nil
                                        accessoryView:[self noResultsAccessoryView]];
-
-    [self.noResultsViewController hideImageView:WPDeviceIdentification.isiPhone];
     
     [self.noResultsViewController.view setBackgroundColor:[UIColor clearColor]];
     [self addChildViewController:self.noResultsViewController];

@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 // Makes a UIImageView circular. Handy for gravatars
 class CircularImageView: UIImageView {

@@ -287,6 +287,7 @@ static NSInteger HideSearchMinSites = 3;
                                                     subtitle:nil
                                           attributedSubtitle:nil
                                                        image:nil
+                                               subtitleImage:nil
                                                accessoryView:nil];
         [self addNoResultsToView];
     }
@@ -312,6 +313,7 @@ static NSInteger HideSearchMinSites = 3;
                                                 subtitle:singularSubtitle
                                       attributedSubtitle:nil
                                                    image:nil
+                                           subtitleImage:nil
                                            accessoryView:nil];
     } else {
         [self.noResultsViewController configureWithTitle:multipleTitle
@@ -319,6 +321,7 @@ static NSInteger HideSearchMinSites = 3;
                                                 subtitle:multipleSubtitle
                                       attributedSubtitle:nil
                                                    image:nil
+                                           subtitleImage:nil
                                            accessoryView:nil];
     }
 

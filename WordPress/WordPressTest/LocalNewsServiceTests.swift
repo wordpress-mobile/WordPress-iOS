@@ -12,7 +12,9 @@ final class LocalNewsServiceTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        service = LocalNewsService(fileName: "News")
+        let testBundle = Bundle(for: type(of: self))
+        let mockFilePath = testBundle.path(forResource: "News", ofType: "strings")
+        service = LocalNewsService(filePath: mockFilePath)
     }
 
     override func tearDown() {
@@ -28,6 +30,21 @@ final class LocalNewsServiceTests: XCTestCase {
                 XCTFail()
             case .success(let newsItem):
                 XCTAssertEqual(newsItem.title, Constants.title)
+            }
+        })
+    }
+
+    func testServiceReturnsErrorIfStringsFileIsBadFormed() {
+        let testBundle = Bundle(for: type(of: self))
+        let mockFilePath = testBundle.path(forResource: "NewsBadFormed", ofType: "strings")
+        let badFormedService = LocalNewsService(filePath: mockFilePath)
+
+        badFormedService.load(then: { result in
+            switch result {
+            case .error (let error):
+                XCTAssertNotNil(error)
+            case .success:
+                XCTFail("Bad formed news file")
             }
         })
     }

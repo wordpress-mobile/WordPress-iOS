@@ -22,6 +22,9 @@ import WordPressFlux
 
     // MARK: - Properties
 
+    /// Called if the stream or tag fails to load
+    var streamLoadFailureBlock: (() -> Void)? = nil
+
     fileprivate var tableView: UITableView!
     fileprivate var refreshControl: UIRefreshControl!
     fileprivate var syncHelper: WPContentSyncHelper!
@@ -53,6 +56,8 @@ import WordPressFlux
     private let cellConfiguration = ReaderCellConfiguration()
     /// Actions
     private var postCellActions: ReaderPostCellActions?
+
+    let news = ReaderNewsCard()
 
     /// Used for fetching content.
     fileprivate lazy var displayContext: NSManagedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
@@ -113,7 +118,7 @@ import WordPressFlux
         let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
         let controller = storyboard.instantiateViewController(withIdentifier: "ReaderStreamViewController") as! ReaderStreamViewController
         controller.readerTopic = topic
-
+        controller.checkNewsCardAvailability(topic: topic)
         return controller
     }
 
@@ -296,6 +301,7 @@ import WordPressFlux
                 guard let objectID = objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                     DDLogError("Reader: Error retriving an existing site topic by its objectID")
                     self?.displayLoadingStreamFailed()
+                    self?.reportStreamLoadFailure()
                     return
                 }
                 self?.readerTopic = topic
@@ -303,6 +309,7 @@ import WordPressFlux
             },
             failure: { [weak self] (error: Error?) in
                 self?.displayLoadingStreamFailed()
+                self?.reportStreamLoadFailure()
             })
     }
 
@@ -322,6 +329,7 @@ import WordPressFlux
                 guard let objectID = objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
                     DDLogError("Reader: Error retriving an existing tag topic by its objectID")
                     self?.displayLoadingStreamFailed()
+                    self?.reportStreamLoadFailure()
                     return
                 }
                 self?.readerTopic = topic
@@ -329,6 +337,7 @@ import WordPressFlux
             },
             failure: { [weak self] (error: Error?) in
                 self?.displayLoadingStreamFailed()
+                self?.reportStreamLoadFailure()
             })
     }
 
@@ -376,7 +385,6 @@ import WordPressFlux
     }
 
     // MARK: - Configuration / Topic Presentation
-
 
     @objc func configureStreamHeader() {
         guard let topic = readerTopic else {
@@ -1135,6 +1143,31 @@ extension ReaderStreamViewController: NewsManagerDelegate {
     func didDismissNews() {
         refreshTableHeaderIfNeeded()
     }
+
+    func didSelectReadMore(_ url: URL) {
+        let readerLinkRouter = UniversalLinkRouter.shared
+        if readerLinkRouter.canHandle(url: url) {
+            readerLinkRouter.handle(url: url, shouldTrack: false, source: self)
+        } else if url.isWordPressDotComPost {
+            presentReaderDetailViewControllerWithURL(url)
+        } else {
+            presentWebViewControllerWithURL(url)
+        }
+    }
+
+    private func presentWebViewControllerWithURL(_ url: URL) {
+        let configuration = WebViewControllerConfiguration(url: url)
+        configuration.authenticateWithDefaultAccount()
+        configuration.addsWPComReferrer = true
+        let controller = WebViewControllerFactory.controller(configuration: configuration)
+        let navController = UINavigationController(rootViewController: controller)
+        present(navController, animated: true, completion: nil)
+    }
+
+    private func presentReaderDetailViewControllerWithURL(_ url: URL) {
+        let viewController = ReaderDetailViewController.controllerWithPostURL(url)
+        navigationController?.pushFullscreenViewController(viewController, animated: true)
+    }
 }
 
 // MARK: - WPContentSyncHelperDelegate
@@ -1171,7 +1204,15 @@ extension ReaderStreamViewController: WPContentSyncHelperDelegate {
         if let count = content.content?.count,
             count == 0 {
             displayLoadingStreamFailed()
+            reportStreamLoadFailure()
         }
+    }
+
+    fileprivate func reportStreamLoadFailure() {
+        streamLoadFailureBlock?()
+
+        // We'll nil out the failure block so we don't perform multiple callbacks
+        streamLoadFailureBlock = nil
     }
 }
 

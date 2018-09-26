@@ -7,14 +7,19 @@ import WPMediaPicker
 ///
 class MediaPreviewHelper: NSObject {
 
+    let assets: [WPMediaAsset]
+
+    init(assets: [WPMediaAsset]) {
+        self.assets = assets
+        super.init()
+    }
 
     /// Return a controller to show the given assets.
     ///
     /// - Parameters:
-    ///   - assets: The media assets to be displayed in the controller.
     ///   - selected: The selected index to be displayed by default.
     /// - Returns: The controller to be displayed or nil if the asset is not an image.
-    func previewViewController(for assets: [WPMediaAsset], selectedIndex selected: Int) -> UIViewController? {
+    func previewViewController(selectedIndex selected: Int) -> UIViewController? {
         guard assets.count > 0, selected < assets.endIndex else {
             return nil
         }
@@ -51,6 +56,11 @@ class MediaPreviewHelper: NSObject {
             let imageController =  WPImageViewController(asset: phasset)
             imageController.shouldDismissWithGestures = false
             return imageController
+        } else if let mediaAsset = asset as? MediaExternalAsset {
+            let imageController =  WPImageViewController(externalMediaURL: mediaAsset.URL,
+                                                         andAsset: asset)
+            imageController.shouldDismissWithGestures = false
+            return imageController
         }
 
         return nil
@@ -66,7 +76,6 @@ extension MediaPreviewHelper: WPCarouselAssetsViewControllerDelegate {
         guard
             let imageViewController = viewController as? WPImageViewController,
             let asset = imageViewController.mediaAsset else {
-
                 fatalError()
         }
         return asset

@@ -671,7 +671,7 @@ private extension PluginStore {
                 return plugin
             })
         }
-        if isAutomatedTransfer(site: site) {
+        if BlogService.blog(with: site)?.isAutomatedTransfer() == true {
             plugins.plugins = plugins.plugins.map({ (plugin) in
                 var plugin = plugin
                 if ["akismet", "jetpack", "vaultpress"].contains(plugin.slug) {
@@ -794,13 +794,6 @@ private extension PluginStore {
         logError(message)
         logError(error.localizedDescription)
         ActionDispatcher.dispatch(NoticeAction.post(Notice(title: message)))
-    }
-
-    func isAutomatedTransfer(site: JetpackSiteRef) -> Bool {
-        let context = ContextManager.sharedInstance().mainContext
-        let predicate = NSPredicate(format: "blogID = %i AND account.username = %@", site.siteID, site.username)
-        let blog = context.firstObject(ofType: Blog.self, matching: predicate)
-        return blog?.jetpack?.automatedTransfer ?? false
     }
 
     func remote(site: JetpackSiteRef) -> PluginServiceRemote? {

@@ -14,7 +14,9 @@ static CGFloat const MinimumZoomScale = 0.1;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) Media *media;
 @property (nonatomic, strong) PHAsset *asset;
+@property (nonatomic, strong) id<WPMediaAsset> mediaAsset;
 @property (nonatomic, strong) NSData *data;
+@property (nonatomic) BOOL isExternal;
 
 @property (nonatomic, assign) BOOL isLoadingImage;
 @property (nonatomic, assign) BOOL isFirstLayout;
@@ -86,6 +88,31 @@ static CGFloat const MinimumZoomScale = 0.1;
     if (self) {
         _image = [image copy];
         _media = media;
+        [self commonInit];
+    }
+    return self;
+}
+
+- (instancetype)initWithExternalMediaURL:(NSURL *)url
+{
+    self = [super init];
+    if (self) {
+        _image = nil;
+        _url = url;
+        _isExternal = YES;
+        [self commonInit];
+    }
+    return self;
+}
+
+- (instancetype)initWithExternalMediaURL:(NSURL *)url andAsset:(id<WPMediaAsset>)asset
+{
+    self = [super init];
+    if (self) {
+        _image = nil;
+        _url = url;
+        _mediaAsset = asset;
+        _isExternal = YES;
         [self commonInit];
     }
     return self;
@@ -182,6 +209,7 @@ static CGFloat const MinimumZoomScale = 0.1;
 {
     self.imageView = [[CachedAnimatedImageView alloc] initWithFrame:frame];
     self.imageView.gifStrategy = GIFStrategyLargeGIFs;
+    self.imageView.contentMode = UIViewContentModeScaleAspectFit;
     self.imageView.shouldShowLoadingIndicator = NO;
     self.imageView.userInteractionEnabled = YES;
     [self.scrollView addSubview:self.imageView];
@@ -200,6 +228,8 @@ static CGFloat const MinimumZoomScale = 0.1;
 
     if (self.image != nil) {
         [self updateImageView];
+    } else if (self.url && self.isExternal) {
+        [self loadImageFromExternalURL];
     } else if (self.url) {
         [self loadImageFromURL];
     } else if (self.media) {
@@ -261,7 +291,6 @@ static CGFloat const MinimumZoomScale = 0.1;
         [weakSelf updateImageView];
     } error:^(NSError * _Nullable error) {
         [weakSelf.activityIndicatorView showError];
-        [weakSelf.activityIndicatorView showError];
         DDLogError(@"Error loading image: %@", error);
     }];
 }
@@ -280,6 +309,22 @@ static CGFloat const MinimumZoomScale = 0.1;
             weakSelf.isLoadingImage = NO;
         });
     }];
+}
+
+- (void)loadImageFromExternalURL
+{
+    self.isLoadingImage = YES;
+
+    __weak __typeof__(self) weakSelf = self;
+    [self.imageLoader loadImageWithURL:self.url
+                               success:^{
+                                   weakSelf.isLoadingImage = NO;
+                                   weakSelf.image = weakSelf.imageView.image;
+                                   [weakSelf updateImageView];
+                               } error:^(NSError * _Nullable error) {
+                                   [weakSelf.activityIndicatorView showError];
+                                   DDLogError(@"Error loading image: %@", error);
+                               }];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -319,12 +364,17 @@ static CGFloat const MinimumZoomScale = 0.1;
 
 - (id<WPMediaAsset>)mediaAsset
 {
+    if (_mediaAsset) {
+        return _mediaAsset;
+    }
+
     if (self.asset) {
         return self.asset;
     }
     if (self.media) {
         return self.media;
     }
+
     return nil;
 }
 

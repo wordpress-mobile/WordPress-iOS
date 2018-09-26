@@ -27,29 +27,20 @@ class FormattableUserContent: NotificationTextContent {
     private var metaIds: [String: AnyObject]? {
         return meta?[Constants.MetaKeys.Ids] as? [String: AnyObject]
     }
-}
 
-extension FormattableUserContent: ActionableObject {
     var notificationID: String? {
-        return parent.notificationId
+        return parent.notificationIdentifier
     }
 
     var metaSiteID: NSNumber? {
         return metaIds?[Constants.MetaKeys.Site] as? NSNumber
     }
-
-    var metaCommentID: NSNumber? {
-        return nil
-    }
-
-    var isCommentApproved: Bool {
-        return false
-    }
 }
 
 extension FormattableUserContent: Equatable {
     static func == (lhs: FormattableUserContent, rhs: FormattableUserContent) -> Bool {
-        return lhs.isEqual(to: rhs) && lhs.parent.isEqual(rhs.parent)
+        return lhs.isEqual(to: rhs) &&
+            lhs.parent.notificationIdentifier == rhs.parent.notificationIdentifier
     }
 
     private func isEqual(to other: FormattableUserContent) -> Bool {

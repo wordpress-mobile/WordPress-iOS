@@ -354,6 +354,9 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
             [service removeTodayWidgetConfiguration];
 
             [ShareExtensionService removeShareExtensionConfiguration];
+
+            [NotificationSupportService deleteContentExtensionToken];
+            [NotificationSupportService deleteServiceExtensionToken];
         });
     } else {
         // Required Attributes
@@ -372,6 +375,12 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
             [ShareExtensionService configureShareExtensionDefaultSiteID:siteId.integerValue defaultSiteName:blogName];
             [ShareExtensionService configureShareExtensionToken:defaultAccount.authToken];
             [ShareExtensionService configureShareExtensionUsername:defaultAccount.username];
+
+            [NotificationSupportService insertContentExtensionToken:defaultAccount.authToken];
+            [NotificationSupportService insertContentExtensionUsername:defaultAccount.username];
+
+            [NotificationSupportService insertServiceExtensionToken:defaultAccount.authToken];
+            [NotificationSupportService insertServiceExtensionUsername:defaultAccount.username];
         });
     }
     

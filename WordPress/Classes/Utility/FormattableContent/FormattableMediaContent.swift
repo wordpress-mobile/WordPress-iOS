@@ -1,7 +1,5 @@
 import Foundation
 
-
-
 // MARK: - FormattableMediaContent Entity
 //
 public class FormattableMediaItem {

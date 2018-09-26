@@ -46,27 +46,6 @@ struct ActivityStoreState {
     fileprivate var rewindStatusRetries = [JetpackSiteRef: DelayStateWrapper]()
 }
 
-private struct DelayStateWrapper {
-    let actionBlock: () -> Void
-
-    var delayCounter = IncrementalDelay(Constants.delaySequence)
-    var retryAttempt: Int
-    var delayedRetryAction: DispatchDelayedAction
-
-    init(actionBlock: @escaping () -> Void) {
-        self.actionBlock = actionBlock
-        self.retryAttempt = 0
-        self.delayedRetryAction = DispatchDelayedAction(delay: .seconds(delayCounter.current), action: actionBlock)
-    }
-
-    mutating func increment() {
-        delayCounter.increment()
-        delayedRetryAction.cancel()
-
-        retryAttempt += 1
-        delayedRetryAction = DispatchDelayedAction(delay: .seconds(delayCounter.current), action: actionBlock)
-    }
-}
 
 private enum Constants {
     /// Sequence of increasing delays to apply to the fetch restore status mechanism (in seconds)
@@ -355,7 +334,7 @@ private extension ActivityStore {
         // scheduling the rewind, *but*: initiating/`increment`ing the `DelayStateWrapper` has a side-effect
         // of automagically calling the closure after an appropriate amount of time elapses.
         guard var existingWrapper = state.rewindStatusRetries[site] else {
-            let newDelayWrapper = DelayStateWrapper { [weak self] in
+            let newDelayWrapper = DelayStateWrapper(delaySequence: Constants.delaySequence) { [weak self] in
                 self?.fetchRewindStatus(site: site)
             }
 

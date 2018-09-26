@@ -1,6 +1,5 @@
 import UIKit
-import WordPressAuthenticator
-
+import WordPressShared
 
 @objc protocol NoResultsViewControllerDelegate {
     @objc optional func actionButtonPressed()
@@ -16,7 +15,7 @@ import WordPressAuthenticator
 /// The action button is shown by default, but will be hidden if button title is not provided.
 /// The subtitle is optional and will only show if provided.
 ///
-@objc class NoResultsViewController: NUXViewController {
+@objc class NoResultsViewController: UIViewController {
 
     // MARK: - Properties
 
@@ -25,8 +24,10 @@ import WordPressAuthenticator
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleTextView: UITextView!
-    @IBOutlet weak var actionButton: NUXButton!
+    @IBOutlet weak var subtitleImageView: UIImageView!
+    @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var accessoryView: UIView!
+    @IBOutlet weak var accessoryStackView: UIStackView!
 
     // To allow storing values until view is loaded.
     private var titleText: String?
@@ -34,6 +35,7 @@ import WordPressAuthenticator
     private var attributedSubtitleText: NSAttributedString?
     private var buttonText: String?
     private var imageName: String?
+    private var subtitleImageName: String?
     private var accessorySubview: UIView?
     private var hideImage = false
 
@@ -61,8 +63,8 @@ import WordPressAuthenticator
         configureView()
     }
 
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         setAccessoryViewsVisibility()
     }
 
@@ -74,6 +76,7 @@ import WordPressAuthenticator
     ///   - subtitle:           Secondary descriptive text. Optional.
     ///   - attributedSubtitle: Secondary descriptive attributed text. Optional.
     ///   - image:              Name of image file to use. Optional.
+    ///   - subtitleImage:      Name of image file to use in place of subtitle. Optional.
     ///   - accessoryView:      View to show instead of the image. Optional.
     ///
     @objc class func controllerWith(title: String,
@@ -81,6 +84,7 @@ import WordPressAuthenticator
                                     subtitle: String? = nil,
                                     attributedSubtitle: NSAttributedString? = nil,
                                     image: String? = nil,
+                                    subtitleImage: String? = nil,
                                     accessoryView: UIView? = nil) -> NoResultsViewController {
         let controller = NoResultsViewController.controller()
         controller.titleText = title
@@ -88,6 +92,7 @@ import WordPressAuthenticator
         controller.attributedSubtitleText = attributedSubtitle
         controller.buttonText = buttonTitle
         controller.imageName = image
+        controller.subtitleImageName = subtitleImage
         controller.accessorySubview = accessoryView
         return controller
     }
@@ -110,6 +115,7 @@ import WordPressAuthenticator
     ///   - subtitle:           Secondary descriptive text. Optional.
     ///   - attributedSubtitle: Secondary descriptive attributed text. Optional.
     ///   - image:              Name of image file to use. Optional.
+    ///   - subtitleImage:      Name of image file to use in place of subtitle. Optional.
     ///   - accessoryView:      View to show instead of the image. Optional.
     ///
     @objc func configure(title: String,
@@ -117,12 +123,14 @@ import WordPressAuthenticator
                          subtitle: String? = nil,
                          attributedSubtitle: NSAttributedString? = nil,
                          image: String? = nil,
+                         subtitleImage: String? = nil,
                          accessoryView: UIView? = nil) {
         titleText = title
         subtitleText = subtitle
         attributedSubtitleText = attributedSubtitle
         buttonText = buttonTitle
         imageName = image
+        subtitleImageName = subtitleImage
         accessorySubview = accessoryView
     }
 
@@ -214,10 +222,15 @@ private extension NoResultsViewController {
             subtitleTextView.isSelectable = true
         }
 
-        let showSubtitle = subtitleText != nil || attributedSubtitleText != nil
+        let hasSubtitleText = subtitleText != nil || attributedSubtitleText != nil
+        let hasSubtitleImage = subtitleImageName != nil
+        let showSubtitle = hasSubtitleText && !hasSubtitleImage
         subtitleTextView.isHidden = !showSubtitle
+        subtitleImageView.isHidden = !hasSubtitleImage
+        subtitleImageView.tintColor = titleLabel.textColor
 
         if let buttonText = buttonText {
+            configureButton()
             actionButton?.setTitle(buttonText, for: UIControlState())
             actionButton?.setTitle(buttonText, for: .highlighted)
             actionButton?.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -235,22 +248,77 @@ private extension NoResultsViewController {
             imageView.image = UIImage(named: imageName)
         }
 
+        if let subtitleImageName = subtitleImageName {
+            subtitleImageView.image = UIImage(named: subtitleImageName)
+        }
+
+        setAccessoryViewsVisibility()
         view.layoutIfNeeded()
     }
 
-    func setAccessoryViewsVisibility() {
-        let hideAll = UIDeviceOrientationIsLandscape(UIDevice.current.orientation) && WPDeviceIdentification.isiPhone()
+    func configureButton() {
+        actionButton.contentEdgeInsets = DefaultRenderMetrics.contentInsets
 
-        if hideAll == true {
-            // Hide the accessory and image views in iPhone landscape to ensure entire view fits on screen
-            imageView.isHidden = true
-            accessoryView.isHidden = true
-        } else {
-            // If there is an accessory view, show that.
-            accessoryView.isHidden = accessorySubview == nil
-            // Otherwise, show the image view, unless it's set never to show.
-            imageView.isHidden = (hideImage == true) ? true : !accessoryView.isHidden
+        let normalImage = renderBackgroundImage(fill: WPStyleGuide.mediumBlue(), border: WPStyleGuide.wordPressBlue())
+        let highlightedImage = renderBackgroundImage(fill: WPStyleGuide.wordPressBlue(), border: WPStyleGuide.wordPressBlue())
+
+        actionButton.setBackgroundImage(normalImage, for: .normal)
+        actionButton.setBackgroundImage(highlightedImage, for: .highlighted)
+    }
+
+    func renderBackgroundImage(fill: UIColor, border: UIColor) -> UIImage {
+
+        let renderer = UIGraphicsImageRenderer(size: DefaultRenderMetrics.backgroundImageSize)
+        let image = renderer.image { context in
+
+            let lineWidthInPixels = 1 / UIScreen.main.scale
+            let cgContext = context.cgContext
+
+            // Apply a 1px inset to the bounds, for our bezier (so that the border doesn't fall outside)
+            var bounds = renderer.format.bounds
+            bounds.origin.x += lineWidthInPixels
+            bounds.origin.y += lineWidthInPixels
+            bounds.size.height -= lineWidthInPixels * 2 + DefaultRenderMetrics.backgroundShadowOffset.height
+            bounds.size.width -= lineWidthInPixels * 2 + DefaultRenderMetrics.backgroundShadowOffset.width
+
+            let path = UIBezierPath(roundedRect: bounds, cornerRadius: DefaultRenderMetrics.backgroundCornerRadius)
+
+            // Draw: Background + Shadow
+            cgContext.saveGState()
+            cgContext.setShadow(offset: DefaultRenderMetrics.backgroundShadowOffset,
+                                blur: DefaultRenderMetrics.backgroundShadowBlurRadius,
+                                color: border.cgColor)
+            fill.setFill()
+
+            path.fill()
+
+            cgContext.restoreGState()
+
+            // Draw: Border
+            border.setStroke()
+            path.stroke()
         }
+
+        return image.resizableImage(withCapInsets: DefaultRenderMetrics.backgroundCapInsets)
+    }
+
+    struct DefaultRenderMetrics {
+        public static let backgroundImageSize = CGSize(width: 44, height: 44)
+        public static let backgroundCornerRadius = CGFloat(8)
+        public static let backgroundCapInsets = UIEdgeInsets(top: 18, left: 18, bottom: 18, right: 18)
+        public static let backgroundShadowOffset = CGSize(width: 0, height: 2)
+        public static let backgroundShadowBlurRadius = CGFloat(0)
+        public static let contentInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
+    }
+
+    func setAccessoryViewsVisibility() {
+        // Always hide the accessory/image stack view when in iPhone landscape.
+        accessoryStackView.isHidden = UIDeviceOrientationIsLandscape(UIDevice.current.orientation) && WPDeviceIdentification.isiPhone()
+
+        // If there is an accessory view, show that.
+        accessoryView.isHidden = accessorySubview == nil
+        // Otherwise, show the image view, unless it's set never to show.
+        imageView.isHidden = (hideImage == true) ? true : !accessoryView.isHidden
     }
 
     // MARK: - Button Handling
@@ -272,14 +340,14 @@ private extension NoResultsViewController {
 
     // MARK: - `WPAnimatedBox` resource management
 
-    private func startAnimatingIfNeeded() {
+    func startAnimatingIfNeeded() {
         guard let animatedBox = accessorySubview as? WPAnimatedBox else {
             return
         }
         animatedBox.animate(afterDelay: 0.1)
     }
 
-    private func stopAnimatingIfNeeded() {
+    func stopAnimatingIfNeeded() {
         guard let animatedBox = accessorySubview as? WPAnimatedBox else {
             return
         }

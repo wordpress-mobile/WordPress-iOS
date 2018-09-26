@@ -12,7 +12,7 @@ class MediaURLExporter: MediaExporter {
     var urlOptions: MediaURLExporter.Options?
 
     struct Options: MediaExportingOptions {
-        var allowableFileExtensions = [String]()
+        var allowableFileExtensions = Set<String>()
         var stripsGeoLocationIfNeeded = false
     }
 
@@ -82,6 +82,7 @@ class MediaURLExporter: MediaExporter {
             let fileExtension = fileURL.typeIdentifierFileExtension {
             if !urlExportOptions.allowableFileExtensions.contains(fileExtension) {
                 onError(exporterErrorWith(error: URLExportError.unsupportedFileType))
+                return Progress.discreteCompletedProgress()
             }
         }
         // Initiate export
