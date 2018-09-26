@@ -27,16 +27,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Page Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rQF-5A-jGg">
-                                <rect key="frame" x="15" y="10" width="251" height="23.5"/>
+                                <rect key="frame" x="15" y="10" width="249" height="23.5"/>
                                 <fontDescription key="fontDescription" name="NotoSerif" family="Noto Serif" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VPZ-yr-cJj">
-                                <rect key="frame" x="266" y="-2" width="54" height="47"/>
+                                <rect key="frame" x="264" y="-2" width="56" height="47"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="47" id="3OU-Uq-a1V"/>
-                                    <constraint firstAttribute="width" constant="54" id="Smb-26-LSz"/>
+                                    <constraint firstAttribute="width" constant="56" id="Smb-26-LSz"/>
                                 </constraints>
                                 <state key="normal" image="icon-post-actionbar-more">
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
