@@ -2,15 +2,11 @@
 @nonobjc
 extension Blog {
     public var completedQuickStartTours: [QuickStartTourState]? {
-        get {
-            return quickStartTours?.filter { $0.completed }
-        }
+        return quickStartTours?.filter { $0.completed }
     }
 
     public var skippedQuickStartTours: [QuickStartTourState]? {
-        get {
-            return quickStartTours?.filter { $0.skipped }
-        }
+        return quickStartTours?.filter { $0.skipped }
     }
 
     public func skipTour(_ tourID: String) {
