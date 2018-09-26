@@ -102,12 +102,30 @@ import UIKit
     ///
     @objc func startListeningToKeyboardNotifications() {
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardDidShow), name: UIResponder.keyboardDidShowNotification, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardDidHide), name: UIResponder.keyboardDidHideNotification, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardDidChangeFrame), name: UIResponder.keyboardDidChangeFrameNotification, object: nil)
+        nc.addObserver(self,
+                       selector: #selector(keyboardWillShow),
+                       name: UIResponder.keyboardWillShowNotification,
+                       object: nil)
+        nc.addObserver(self,
+                       selector: #selector(keyboardDidShow),
+                       name: UIResponder.keyboardDidShowNotification,
+                       object: nil)
+        nc.addObserver(self,
+                       selector: #selector(keyboardWillHide),
+                       name: UIResponder.keyboardWillHideNotification,
+                       object: nil)
+        nc.addObserver(self,
+                       selector: #selector(keyboardDidHide),
+                       name: UIResponder.keyboardDidHideNotification,
+                       object: nil)
+        nc.addObserver(self,
+                       selector: #selector(keyboardWillChangeFrame),
+                       name: UIResponder.keyboardWillChangeFrameNotification,
+                       object: nil)
+        nc.addObserver(self,
+                       selector: #selector(keyboardDidChangeFrame),
+                       name: UIResponder.keyboardDidChangeFrameNotification,
+                       object: nil)
 
     }
 
