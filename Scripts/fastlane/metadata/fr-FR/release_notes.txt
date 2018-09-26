@@ -1,2 +1,4 @@
-Nous avons changer quelques choses sous le capot.
-Vous ne devriez voir aucun changement évident dans l’app mais attendez-vous à ce que tout soit plus rapide et plus stable.
+Est-ce que ça ne vous rend pas dingue quand vous réalisez que vous voulez épingler un article sur la page d’accueil de votre site mais que vous êtes dans le bus et que vous n’avez que votre téléphone sur vous ? Nous aussi. Maintenant, vous pouvez épingler des articles depuis l’app et les autres personnes dans le bus n’aurons pas à vous entendre râler.
+Économisez du temps avec les notifications push de commentaires qui vous afficheront le commentaire complet depuis l’écran d’accueil. Tout le monde aime économiser !
+Nous avons apporter plus de cohérence visuelle à différents écrans à travers l’app. C'est donc plus facile de se déplacer. Moins de temps pour comprendre comment naviguer = plus de temps à créer.
+Nous avons sorti la tapette à mouche et nous nous sommes débarrassés de quelques bogues.
