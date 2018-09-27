@@ -3910,7 +3910,7 @@ extension AztecPostViewController {
             static let formatBarMediaButtonRotationDuration: TimeInterval = 0.3
             static let formatBarMediaButtonRotationAngle: CGFloat = .pi / 4.0
         }
-        
+
         static let autoSavingDelay = Double(0.5)
     }
 
@@ -3998,7 +3998,7 @@ extension AztecPostViewController {
         static let title = NSLocalizedString("Unable to play video", comment: "Dialog box title for when the user is cancelling an upload.")
         static let message = NSLocalizedString("Something went wrong. Please check your connectivity and try again.", comment: "This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server.")
     }
-    
+
 }
 
 extension AztecPostViewController: UIViewControllerTransitioningDelegate {
