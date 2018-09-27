@@ -1,6 +1,6 @@
 fail_on_violations: true
 
-ruby:
+rubocop:
   enabled: false
   
 swiftlint:
