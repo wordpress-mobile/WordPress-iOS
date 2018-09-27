@@ -242,7 +242,8 @@ class NotificationDetailsViewController: UIViewController {
 // MARK: - State Restoration
 //
 extension NotificationDetailsViewController: UIViewControllerRestoration {
-    class func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
+    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                              coder: NSCoder) -> UIViewController? {
         let context = Environment.current.mainContext
         guard let noteURI = coder.decodeObject(forKey: Restoration.noteIdKey) as? URL,
             let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: noteURI) else {

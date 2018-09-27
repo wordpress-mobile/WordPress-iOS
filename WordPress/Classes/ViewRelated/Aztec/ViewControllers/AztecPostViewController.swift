@@ -3805,7 +3805,8 @@ extension UIImage {
 // MARK: - State Restoration
 //
 extension AztecPostViewController: UIViewControllerRestoration {
-    class func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
+    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                              coder: NSCoder) -> UIViewController? {
         return restoreAztec(withCoder: coder)
     }
 

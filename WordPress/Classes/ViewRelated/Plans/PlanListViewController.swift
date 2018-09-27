@@ -130,8 +130,10 @@ extension PlanListViewController: UIViewControllerRestoration {
         static let blogURL = "blogURL"
     }
 
-    static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
-        guard let identifier = identifierComponents.last, identifier == PlanListViewController.restorationIdentifier else {
+    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                               coder: NSCoder) -> UIViewController? {
+        guard let identifier = identifierComponents.last,
+            identifier == PlanListViewController.restorationIdentifier else {
             return nil
         }
 

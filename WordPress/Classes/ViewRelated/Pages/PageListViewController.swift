@@ -41,7 +41,8 @@ class PageListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - UIViewControllerRestoration
 
-    class func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
+    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                              coder: NSCoder) -> UIViewController? {
 
         let context = ContextManager.sharedInstance().mainContext
 
