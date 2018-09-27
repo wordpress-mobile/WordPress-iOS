@@ -215,8 +215,6 @@ extension ParentPageSettingsViewController: UITableViewDelegate {
 //
 extension ParentPageSettingsViewController {
     class func navigationController(with pages: [Page], selectedPage: Page) -> UINavigationController {
-        WPFontManager.loadNotoFontFamily()
-
         let storyBoard = UIStoryboard(name: "Pages", bundle: Bundle.main)
         guard let controller = storyBoard.instantiateViewController(withIdentifier: "ParentPageSettings") as? UINavigationController else {
             fatalError("A navigation view controller is required for Parent Page Settings")
