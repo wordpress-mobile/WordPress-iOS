@@ -202,7 +202,7 @@
 + (NSDictionary *)pageCellTitleAttributes
 {
     NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-    paragraphStyle.lineSpacing = 4.0;
+    paragraphStyle.lineBreakMode = NSLineBreakByTruncatingTail;
     return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPStyleGuide notoFontForTextStyle:UIFontTextStyleSubheadline]};
 }
 
