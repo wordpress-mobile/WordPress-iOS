@@ -161,7 +161,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     // MARK: - State Restoration
 
 
-    public static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
+    public static func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                                      coder: NSCoder) -> UIViewController? {
         guard let path = coder.decodeObject(forKey: restorablePostObjectURLhKey) as? String else {
             return nil
         }
@@ -240,7 +241,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         // The UIApplicationDidBecomeActiveNotification notification is broadcast
         // when the app is resumed as a part of split screen multitasking on the iPad.
-        NotificationCenter.default.addObserver(self, selector: #selector(ReaderDetailViewController.handleApplicationDidBecomeActive(_:)), name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleApplicationDidBecomeActive),
+                                               name: UIApplication.didBecomeActiveNotification,
+                                               object: nil)
 
         bumpStats()
         bumpPageViewsForPost()

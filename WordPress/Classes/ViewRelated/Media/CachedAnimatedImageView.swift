@@ -88,7 +88,10 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
     }
 
     private func commonInit() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleLowMemoryWarningNotification(_:)), name: UIApplication.didReceiveMemoryWarningNotification, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleLowMemoryWarningNotification),
+                                               name: UIApplication.didReceiveMemoryWarningNotification,
+                                               object: nil)
     }
 
     deinit {

@@ -199,7 +199,8 @@ class NotificationsViewController: UITableViewController, UIViewControllerRestor
 
     // MARK: - State Restoration
 
-    static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
+    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                               coder: NSCoder) -> UIViewController? {
         return WPTabBarController.sharedInstance().notificationsViewController
     }
 
@@ -455,13 +456,20 @@ private extension NotificationsViewController {
 
     func startListeningToTimeChangeNotifications() {
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(significantTimeChange), name: UIApplication.significantTimeChangeNotification, object: nil)
+        nc.addObserver(self,
+                       selector: #selector(significantTimeChange),
+                       name: UIApplication.significantTimeChangeNotification,
+                       object: nil)
     }
 
     func stopListeningToNotifications() {
         let nc = NotificationCenter.default
-        nc.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
-        nc.removeObserver(self, name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
+        nc.removeObserver(self,
+                          name: UIApplication.didBecomeActiveNotification,
+                          object: nil)
+        nc.removeObserver(self,
+                          name: NSNotification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications),
+                          object: nil)
     }
 
     @objc func applicationDidBecomeActive(_ note: Foundation.Notification) {
@@ -770,7 +778,8 @@ private extension NotificationsViewController {
         }
     }
 
-    func selectRow(for notification: Notification, animated: Bool = true, scrollPosition: UITableView.ScrollPosition = .none) {
+    func selectRow(for notification: Notification, animated: Bool = true,
+                   scrollPosition: UITableView.ScrollPosition = .none) {
         selectedNotification = notification
 
         if let indexPath = tableViewHandler.resultsController.indexPath(forObject: notification), indexPath != tableView.indexPathForSelectedRow {
