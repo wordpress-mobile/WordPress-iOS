@@ -151,13 +151,23 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     fileprivate func registerForKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardDidShow(_:)),
+                                               name: UIResponder.keyboardDidShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardDidHide(_:)),
+                                               name: UIResponder.keyboardDidHideNotification,
+                                               object: nil)
     }
 
     fileprivate func unregisterForKeyboardNotifications() {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: UIResponder.keyboardDidShowNotification,
+                                                  object: nil)
+        NotificationCenter.default.removeObserver(self,
+                                                  name: UIResponder.keyboardDidHideNotification,
+                                                  object: nil)
     }
 
     @objc fileprivate func keyboardDidShow(_ notification: Foundation.Notification) {
@@ -192,7 +202,8 @@ class AbstractPostListViewController: UIViewController, WPContentSyncHelperDeleg
     }
 
     fileprivate func localKeyboardFrameFromNotification(_ notification: Foundation.Notification) -> CGRect {
-        guard let keyboardFrame = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+        let key = UIResponder.keyboardFrameEndUserInfoKey
+        guard let keyboardFrame = (notification.userInfo?[key] as? NSValue)?.cgRectValue else {
                 return .zero
         }
 
