@@ -186,7 +186,7 @@ GEM
     retriable (2.1.0)
     rouge (1.11.1)
     ruby-macho (1.2.0)
-    rubyzip (1.2.1)
+    rubyzip (1.2.2)
     sawyer (0.8.1)
       addressable (>= 2.3.5, < 2.6)
       faraday (~> 0.8, < 1.0)
@@ -234,6 +234,7 @@ DEPENDENCIES
   fastlane-plugin-wpmreleasetoolkit!
   octokit (~> 4.0)!
   rake!
+  rubyzip (~> 1.2.2)!
   xcpretty-travis-formatter!
 
 BUNDLED WITH
