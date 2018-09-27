@@ -238,7 +238,8 @@ extension EditPostViewController: UIViewControllerRestoration {
         case post = "EditPostViewControllerPostRestorationID"
     }
 
-    class func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
+    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                              coder: NSCoder) -> UIViewController? {
         guard let identifier = identifierComponents.last, identifier == RestorationKey.viewController.rawValue else {
             return nil
         }
