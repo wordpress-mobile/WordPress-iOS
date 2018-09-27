@@ -11,7 +11,7 @@ extension WordPressAppDelegate {
     @objc func configureAnalytics() {
         let context = ContextManager.sharedInstance().mainContext
         let accountService = AccountService(managedObjectContext: context)
-    
+
         analytics = WPAppAnalytics(accountService: accountService,
                                    lastVisibleScreenBlock: { [weak self] in
             return self?.currentlySelectedScreen
@@ -52,7 +52,7 @@ extension WordPressAppDelegate {
         internetReachability = Reachability.forInternetConnection()
 
         let reachabilityBlock: NetworkReachable = { [weak self] reachability in
-            guard let reachability = reachability else{
+            guard let reachability = reachability else {
                 return
             }
 
@@ -195,10 +195,6 @@ extension WordPressAppDelegate {
         let crashCount = UserDefaults.standard.integer(forKey: "crashCount")
 
         let extraDebug = UserDefaults.standard.bool(forKey: "extra_debug")
-		
-		if (extraDebug == true) {
-			print("Test")
-		}
 
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
