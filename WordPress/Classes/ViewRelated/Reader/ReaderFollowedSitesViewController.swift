@@ -34,7 +34,8 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     // MARK: - State Restoration
 
 
-    static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
+    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                               coder: NSCoder) -> UIViewController? {
         return controller()
     }
 
@@ -361,7 +362,8 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
         return nil
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView,
+                   didSelectRowAt indexPath: IndexPath) {
         guard let site = tableViewHandler.resultsController.object(at: indexPath) as? ReaderSiteTopic else {
             return
         }
@@ -369,22 +371,27 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
     }
 
 
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView,
+                   canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
 
 
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView,
+                   commit editingStyle: UITableViewCell.EditingStyle,
+                   forRowAt indexPath: IndexPath) {
         unfollowSiteAtIndexPath(indexPath)
     }
 
 
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    func tableView(_ tableView: UITableView,
+                   editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .delete
     }
 
 
-    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+    func tableView(_ tableView: UITableView,
+                   titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
         return NSLocalizedString("Unfollow", comment: "Label of the table view cell's delete button, when unfollowing a site.")
     }
 

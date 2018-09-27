@@ -281,25 +281,35 @@ class PlanPostPurchasePageViewController: UIViewController {
                 imageView.setImageWith(plan.activeIconUrl)
             }
             headingLabel.text = NSLocalizedString("It’s all yours! Way to go!", comment: "Heading displayed after successful purchase of a plan")
-            setDescriptionText(NSLocalizedString("Your site is doing somersaults in excitement! Now explore your site’s new features and choose where you’d like to begin.", comment: "Subtitle displayed after successful purchase of a plan"))
+            setDescriptionText(NSLocalizedString("Your site is doing somersaults in excitement! Now explore your site’s new features and choose where you’d like to begin.",
+                                                 comment: "Subtitle displayed after successful purchase of a plan"))
             imageView.widthAnchor.constraint(equalToConstant: purchaseCompleteImageViewSize).isActive = true
             imageView.heightAnchor.constraint(equalToConstant: purchaseCompleteImageViewSize).isActive = true
             actionButton.isHidden = true
         case .Customize:
             imageView.image = UIImage(named: "plans-post-purchase-customize")
-            headingLabel.text = NSLocalizedString("Customize Fonts & Colors", comment: "Heading for customization feature, displayed after plan purchase")
-            setDescriptionText(NSLocalizedString("You now have access to custom fonts, custom colors, and custom CSS editing capabilities.", comment: "Descriptive text for customization feature, displayed after plan purchase"))
-            actionButton.setTitle(NSLocalizedString("Customize My Site", comment: "Title of button displayed after plan purchase, prompting user to start customizing their site"), for: UIControl.State())
+            headingLabel.text = NSLocalizedString("Customize Fonts & Colors",
+                                                  comment: "Heading for customization feature, displayed after plan purchase")
+            setDescriptionText(NSLocalizedString("You now have access to custom fonts, custom colors, and custom CSS editing capabilities.",
+                                                 comment: "Descriptive text for customization feature, displayed after plan purchase"))
+            actionButton.setTitle(NSLocalizedString("Customize My Site",
+                                                    comment: "Title of button displayed after plan purchase, prompting user to start customizing their site"), for: UIControl.State())
         case .VideoPress:
             imageView.image = UIImage(named: "plans-post-purchase-video")
-            headingLabel.text = NSLocalizedString("Bring posts to life with video", comment: "Heading for video upload feature, displayed after plan purchase")
-            setDescriptionText(NSLocalizedString("You can upload and host videos on your site with VideoPress and your expanded media storage.", comment: "Descriptive text for video upload feature, displayed after plan purchase"))
-            actionButton.setTitle(NSLocalizedString("Start New Post", comment: "Title of button displayed after plan purchase, prompting user to start a new post"), for: UIControl.State())
+            headingLabel.text = NSLocalizedString("Bring posts to life with video",
+                                                  comment: "Heading for video upload feature, displayed after plan purchase")
+            setDescriptionText(NSLocalizedString("You can upload and host videos on your site with VideoPress and your expanded media storage.",
+                                                 comment: "Descriptive text for video upload feature, displayed after plan purchase"))
+            actionButton.setTitle(NSLocalizedString("Start New Post",
+                                                    comment: "Title of button displayed after plan purchase, prompting user to start a new post"), for: UIControl.State())
         case .Themes:
             imageView.image = UIImage(named: "plans-post-purchase-themes")
-            headingLabel.text = NSLocalizedString("Find a perfect, Premium theme", comment: "Title promoting premium themes, displayed after business plan purchase")
-            setDescriptionText(NSLocalizedString("You now have unlimited access to Premium themes. Preview any theme on your site to get started.", comment: "Descriptive text promoting premium themes, displayed after business plan purchase"))
-            actionButton.setTitle(NSLocalizedString("Browse Themes", comment: "Title of button displayed after business plan purchase"), for: UIControl.State())
+            headingLabel.text = NSLocalizedString("Find a perfect, Premium theme",
+                                                  comment: "Title promoting premium themes, displayed after business plan purchase")
+            setDescriptionText(NSLocalizedString("You now have unlimited access to Premium themes. Preview any theme on your site to get started.",
+                                                 comment: "Descriptive text promoting premium themes, displayed after business plan purchase"))
+            actionButton.setTitle(NSLocalizedString("Browse Themes",
+                                                    comment: "Title of button displayed after business plan purchase"), for: UIControl.State())
         }
     }
 
