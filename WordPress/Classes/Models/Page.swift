@@ -14,8 +14,8 @@ class Page: AbstractPost {
         return parentID == nil
     }
 
-    /// Returns if the Page can display some badge
-    @objc var canDisplayBadges: Bool {
+    /// Returns if the Page can display some tag
+    @objc var canDisplayTags: Bool {
         return hasPrivateState || hasPendingReviewState || hasLocalChanges()
     }
 

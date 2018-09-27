@@ -91,7 +91,7 @@
        self.privateBadgeLabel.text = NSLocalizedString(@"Pending review", @"Title of the Pending Review Badge");
     }
 
-    self.bottomPadding.active = !page.canDisplayBadges;
+    self.bottomPadding.active = !page.canDisplayTags;
     self.privateBadge.hidden = !(page.hasPrivateState || page.hasPendingReviewState);
     self.localChangesBadge.hidden = !page.hasLocalChanges;
     self.localChangesLeading.active = !self.privateBadge.isHidden;
