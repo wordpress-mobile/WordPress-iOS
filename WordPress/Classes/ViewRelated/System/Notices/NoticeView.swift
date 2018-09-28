@@ -128,6 +128,7 @@ class NoticeView: UIView {
 
         titleLabel.font = notice.style.titleLabelFont
         messageLabel.font = notice.style.messageLabelFont
+        messageLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
         titleLabel.textColor = notice.style.titleColor
         messageLabel.textColor = notice.style.messageColor

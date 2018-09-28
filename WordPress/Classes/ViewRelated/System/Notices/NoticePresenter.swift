@@ -228,14 +228,25 @@ private class NoticeContainerView: UIView {
                                      bottom: containerMargin,
                                      right: containerMargin)
 
-        let stackView = UIStackView(arrangedSubviews: [noticeView])
+        // Padding views on either side, of equal width to ensure centering
+        let leftPaddingView = UIView()
+        let rightPaddingView = UIView()
+        rightPaddingView.translatesAutoresizingMaskIntoConstraints = false
+        leftPaddingView.translatesAutoresizingMaskIntoConstraints = false
+
+        let stackView = UIStackView(arrangedSubviews: [leftPaddingView, noticeView, rightPaddingView])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.spacing = 0
 
+        let paddingWidthConstraint = leftPaddingView.widthAnchor.constraint(equalToConstant: 0)
+        paddingWidthConstraint.priority = .lowButABigHigher
+
         addSubview(stackView)
 
         NSLayoutConstraint.activate([
+            paddingWidthConstraint,
+            leftPaddingView.widthAnchor.constraint(equalTo: rightPaddingView.widthAnchor),
             stackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             stackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
@@ -284,4 +295,8 @@ private extension UNMutableNotificationContent {
 
         sound = .default()
     }
+}
+
+private extension UILayoutPriority {
+    static let lowButABigHigher = UILayoutPriority.defaultLow + 10
 }
