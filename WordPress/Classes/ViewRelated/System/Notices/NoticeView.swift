@@ -133,7 +133,7 @@ class NoticeView: UIView {
         messageLabel.textColor = notice.style.messageColor
 
         messageLabel.numberOfLines = 0
-        messageLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 18.0).isActive = true
+        messageLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: Appearance.minMessageHeight).isActive = true
     }
 
     private func configureActionButton() {
@@ -268,6 +268,7 @@ class NoticeView: UIView {
         static let shadowOpacity: Float = 0.25
         static let shadowRadius: CGFloat = 8.0
         static let shadowOffset = CGSize(width: 0.0, height: 2.0)
+        static let minMessageHeight: CGFloat = 18.0
     }
 }
 
