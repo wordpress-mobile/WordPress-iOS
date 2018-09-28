@@ -31,7 +31,6 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
         let noticeStyle = QuickStartNoticeStyle(attributedMessage: exampleMessage)
         let notice = Notice(title: "Test Quick Start Notice", style: noticeStyle)
 
-            //title: "Test Quick Start Notice", style: QuickStartNoticeStyle(attributedMessage: exampleMessage), actionTitle="Action", cancelTitle="Cancel")
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
@@ -43,14 +42,18 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
         currentSuggestion = tour
 
         let noticeStyle = QuickStartNoticeStyle(attributedMessage: nil)
-        let notice = Notice(title: tour.title, message: tour.description, style: noticeStyle, actionTitle: tour.suggestionYesText, cancelTitle: tour.suggestionNoText) { [weak self] accepted in
-            self?.currentSuggestion = nil
+        let notice = Notice(title: tour.title,
+                            message: tour.description,
+                            style: noticeStyle,
+                            actionTitle: tour.suggestionYesText,
+                            cancelTitle: tour.suggestionNoText) { [weak self] accepted in
+                                self?.currentSuggestion = nil
 
-            if accepted {
-                self?.showTestQuickStartNotice()
-            } else {
-                self?.skipped(tour, for: blog)
-            }
+                                if accepted {
+                                    self?.showTestQuickStartNotice()
+                                } else {
+                                    self?.skipped(tour, for: blog)
+                                }
         }
 
         ActionDispatcher.dispatch(NoticeAction.post(notice))
