@@ -46,8 +46,8 @@ extension UIAlertController {
     /// Once copied, or on failure to copy, a notice will be posted using the dispacher so the user will know
     /// if copying to clipboard was successful
     @objc static func presentAlertAndCopyTextToClipboard(text: String?) {
-        let successNoticeTitle = NSLocalizedString("Link Copied to Clipboard", comment: "")
-        let failureNoticeTitle = NSLocalizedString("Copy to Clipboard failed", comment: "")
+        let successNoticeTitle = NSLocalizedString("Link Copied to Clipboard", comment: "Successful copy notice title")
+        let failureNoticeTitle = NSLocalizedString("Copy to Clipboard failed", comment: "Failed to copy notice title")
         let copyAlertController = UIAlertController.copyTextAlertController(text) { success in
             let title = success ? successNoticeTitle : failureNoticeTitle
             ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title)))
