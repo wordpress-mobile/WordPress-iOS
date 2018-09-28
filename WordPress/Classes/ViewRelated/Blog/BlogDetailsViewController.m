@@ -54,6 +54,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic) BOOL showsSelectionState;
 @property (nonatomic) BOOL forDestructiveAction;
 @property (nonatomic, copy) void (^callback)(void);
+@property (nonatomic) int quickStartIdentifier;
 
 @end
 
@@ -648,6 +649,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                                callback:^{
                                                                    [weakSelf showViewSite];
                                                                }];
+    viewSiteRow.quickStartIdentifier = QuickStartTourElementViewSite;
     viewSiteRow.showsSelectionState = NO;
     [rows addObject:viewSiteRow];
 
@@ -1212,6 +1214,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     UIViewController *webViewController = [WebViewControllerFactory controllerWithUrl:targetURL blog:self.blog];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
+
+    [[QuickStartTourGuide find] visited:QuickStartTourElementViewSite];
 }
 
 - (void)showViewAdmin
