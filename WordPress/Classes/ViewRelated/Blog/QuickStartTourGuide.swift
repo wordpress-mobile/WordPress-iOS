@@ -94,6 +94,13 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
         return currentWaypoint()?.element
     }
 
+    @objc func isCurrentElement(_ testElement: QuickStartTourElement) -> Bool {
+        guard let currentElement = currentElement() else {
+            return false
+        }
+        return testElement == currentElement
+    }
+
     private func dismissSuggestion() {
         guard currentSuggestion != nil, let presenter = findNoticePresenter() else {
             return
