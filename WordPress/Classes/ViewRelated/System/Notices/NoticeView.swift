@@ -123,7 +123,7 @@ class NoticeView: UIView {
         contentStackView.addArrangedSubview(labelStackView)
 
         NSLayoutConstraint.activate([
-            labelStackView.topAnchor.constraint(equalTo: backgroundView.contentView.topAnchor),
+            labelStackView.topAnchor.constraint(equalTo: backgroundView.contentView.topAnchor)
             ])
 
         titleLabel.font = notice.style.titleLabelFont
