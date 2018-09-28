@@ -16,6 +16,7 @@
 
     self.backgroundColor = [WPStyleGuide greyLighten30];
     self.bannerView.backgroundColor = [WPStyleGuide greyLighten30];
+    self.bannerView.hidden = YES;
 }
 
 - (void)showSpinner:(BOOL)show
@@ -25,7 +26,6 @@
     } else {
         [self.activityView stopAnimating];
     }
-    self.bannerView.hidden = show;
 }
 
 @end
