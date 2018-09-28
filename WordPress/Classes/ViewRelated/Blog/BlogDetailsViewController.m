@@ -49,7 +49,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic, strong) NSString *identifier;
 @property (nonatomic, strong) NSString *accessibilityIdentifier;
 @property (nonatomic, strong) UIImage *image;
-@property (nonatomic, strong) UIImageView *accessoryView;
+@property (nonatomic, strong) UIView *accessoryView;
 @property (nonatomic, strong) NSString *detail;
 @property (nonatomic) BOOL showsSelectionState;
 @property (nonatomic) BOOL forDestructiveAction;
@@ -946,6 +946,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         cell.accessoryType = [self splitViewControllerIsHorizontallyCompact] ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
         [WPStyleGuide configureTableViewCell:cell];
     }
+    if ([[QuickStartTourGuide find] isCurrentElement:row.quickStartIdentifier]) {
+        row.accessoryView = [QuickStartSpotlightView new];
+    }
+
     [self configureCell:cell atIndexPath:indexPath];
 
     return cell;
