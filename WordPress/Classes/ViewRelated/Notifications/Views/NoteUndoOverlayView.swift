@@ -27,10 +27,10 @@ class NoteUndoOverlayView: UIView {
     ///
     @objc var buttonText: String? {
         get {
-            return undoButton.title(for: UIControlState())
+            return undoButton.title(for: UIControl.State())
         }
         set {
-            undoButton.setTitle(newValue, for: UIControlState())
+            undoButton.setTitle(newValue, for: UIControl.State())
         }
     }
 
@@ -46,8 +46,8 @@ class NoteUndoOverlayView: UIView {
 
         // Button
         undoButton.titleLabel?.font = Style.noteUndoTextFont
-        undoButton.setTitle(NSLocalizedString("Undo", comment: "Revert an operation"), for: UIControlState())
-        undoButton.setTitleColor(Style.noteUndoTextColor, for: UIControlState())
+        undoButton.setTitle(NSLocalizedString("Undo", comment: "Revert an operation"), for: UIControl.State())
+        undoButton.setTitleColor(Style.noteUndoTextColor, for: UIControl.State())
     }
 
 

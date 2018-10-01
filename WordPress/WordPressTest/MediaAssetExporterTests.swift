@@ -115,7 +115,8 @@ class MediaAssetExporterTests: XCTestCase {
             MediaExporterTests.cleanUpExportedMedia(atURL: imageExport.url)
             expect.fulfill()
         }) { (error) in
-            XCTFail("Error: an error occurred testing an image export with resizing and stripping GPS: \(error.toNSError())")
+            XCTFail("Error: an error occurred testing an image export with resizing and stripping GPS: " +
+                "\(error.toNSError())")
             expect.fulfill()
         }
         waitForExpectations(timeout: 2.0, handler: nil)
@@ -150,7 +151,9 @@ class MediaAssetExporterTests: XCTestCase {
     func testExportingAPortraitImageWithoutResizeKeepsTheOrientationWorks() {
         let image = MediaImageExporterTests.imageForFileNamed(testImageNameInPortrait)
         if image.imageOrientation != .leftMirrored {
-            XCTFail("Error: the test portrait image was not in the expected orientation, expected: \(UIImageOrientation.leftMirrored.rawValue) but read: \(image.imageOrientation.rawValue)")
+            XCTFail("Error: the test portrait image was not in the expected orientation, expected: "
+                + " \(UIImage.Orientation.leftMirrored.rawValue) " +
+                " but read: \(image.imageOrientation.rawValue)")
             return
         }
         guard let asset = assetForFile(named: testImageNameInPortrait) else {
@@ -174,7 +177,7 @@ class MediaAssetExporterTests: XCTestCase {
     func testExportingAPortraitImageAndCorrectingTheOrientationWhileResizingWorks() {
         let image = MediaImageExporterTests.imageForFileNamed(testImageNameInPortrait)
         if image.imageOrientation != .leftMirrored {
-            XCTFail("Error: the test portrait image was not in the expected orientation, expected: \(UIImageOrientation.leftMirrored.rawValue) but read: \(image.imageOrientation.rawValue)")
+            XCTFail("Error: the test portrait image was not in the expected orientation, expected: \(UIImage.Orientation.leftMirrored.rawValue) but read: \(image.imageOrientation.rawValue)")
             return
         }
         guard let asset = assetForFile(named: testImageNameInPortrait) else {

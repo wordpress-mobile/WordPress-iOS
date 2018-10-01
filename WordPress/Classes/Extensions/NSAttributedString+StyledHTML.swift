@@ -68,7 +68,7 @@ extension NSAttributedString {
 
     /// Converts a limited set of `NSAttributedString` attribute types from their
     /// raw objects (e.g. `UIColor`) into CSS text.
-    fileprivate class func cssStyleForAttributeName(_ attributeKey: NSAttributedStringKey, attribute: Any) -> String? {
+    fileprivate class func cssStyleForAttributeName(_ attributeKey: NSAttributedString.Key, attribute: Any) -> String? {
         switch attributeKey {
         case .font:
             if let font = attribute as? UIFont {
@@ -84,7 +84,7 @@ extension NSAttributedString {
             }
         case .underlineStyle:
             if let style = attribute as? Int {
-                if style == NSUnderlineStyle.styleNone.rawValue {
+                if style == NSUnderlineStyle([]).rawValue {
                     return "text-decoration: none;"
                 } else {
                     return "text-decoration: underline;"
@@ -97,7 +97,7 @@ extension NSAttributedString {
     }
 }
 
-public typealias StyledHTMLAttributes = [HTMLAttributeType: [NSAttributedStringKey: Any]]
+public typealias StyledHTMLAttributes = [HTMLAttributeType: [NSAttributedString.Key: Any]]
 
 public enum HTMLAttributeType: String {
     case BodyAttribute

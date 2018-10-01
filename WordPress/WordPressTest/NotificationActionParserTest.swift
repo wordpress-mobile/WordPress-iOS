@@ -40,76 +40,76 @@ final class NotificationActionParserTest: XCTestCase {
         XCTAssertTrue(firstAction.on)
     }
 
-    func testSecondParsedActionIsSpamComment() {
+    func testSecondParsedActionIsEditComment() {
         guard let secondAction = secondAction() else {
             XCTFail()
             return
         }
 
-        XCTAssertEqual(secondAction.identifier, MarkAsSpam.commandIdentifier())
+        XCTAssertEqual(secondAction.identifier, EditComment.commandIdentifier())
     }
 
-    func testSecondParsedActionIsOff() {
+    func testSecondParsedActionIsOn() {
         guard let secondAction = secondAction() else {
             XCTFail()
             return
         }
 
-        XCTAssertFalse(secondAction.on)
+        XCTAssertTrue(secondAction.on)
     }
 
-    func testThirdParsedActionIsEditComment() {
+    func testThirdParsedActionIsSpamComment() {
         guard let thirdAction = thirdAction() else {
             XCTFail()
             return
         }
 
-        XCTAssertEqual(thirdAction.identifier, EditComment.commandIdentifier())
+        XCTAssertEqual(thirdAction.identifier, MarkAsSpam.commandIdentifier())
     }
 
-    func testThirdParsedActionIsOn() {
+    func testThirdParsedActionIsOff() {
         guard let thirdAction = thirdAction() else {
             XCTFail()
             return
         }
 
-        XCTAssertTrue(thirdAction.on)
+        XCTAssertFalse(thirdAction.on)
     }
 
-    func testFourthParsedActionIsTrashComment() {
+    func testFourthParsedActionIsReplyComment() {
         guard let fourthAction = fourthAction() else {
             XCTFail()
             return
         }
 
-        XCTAssertEqual(fourthAction.identifier, TrashComment.commandIdentifier())
+        XCTAssertEqual(fourthAction.identifier, ReplyToComment.commandIdentifier())
     }
 
-    func testFourthParsedActionIsOff() {
+    func testFourthParsedActionIsOn() {
         guard let fourthAction = fourthAction() else {
             XCTFail()
             return
         }
 
-        XCTAssertFalse(fourthAction.on)
+        XCTAssertTrue(fourthAction.on)
     }
 
-    func testFifthParsedActionIsReplyToComment() {
+    func testFifthParsedActionIsTrashComment() {
         guard let fifthAction = fifthAction() else {
             XCTFail()
             return
         }
 
-        XCTAssertEqual(fifthAction.identifier, ReplyToComment.commandIdentifier())
+        XCTAssertEqual(fifthAction.identifier, TrashComment.commandIdentifier())
     }
 
-    func testFifthParsedActionIsOn() {
+    func testFifthParsedActionIsOff() {
         guard let fifthAction = fifthAction() else {
             XCTFail()
             return
         }
 
-        XCTAssertTrue(fifthAction.on)
+        XCTAssertFalse(fifthAction.on)
     }
 
     private func firstAction() -> FormattableContentActionCommand? {
@@ -137,6 +137,8 @@ final class NotificationActionParserTest: XCTestCase {
             return nil
         }
 
-        return actions[at].command
+        return actions.sorted(by: { lhs, rhs -> Bool in
+            return lhs.identifier < rhs.identifier
+        })[at].command
     }
 }

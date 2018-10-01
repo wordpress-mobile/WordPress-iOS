@@ -87,8 +87,8 @@ class PlayIconView: UIView {
         // Set a rounded line style
         playLayer.path = path.cgPath
         playLayer.lineWidth = lineWidth
-        playLayer.lineCap = kCALineCapRound
-        playLayer.lineJoin = kCALineJoinRound
+        playLayer.lineCap = CAShapeLayerLineCap.round
+        playLayer.lineJoin = CAShapeLayerLineJoin.round
 
         let centerX = halfBoundsWidth - halfSizeWidth + halfLineWidth
         let centerY = halfBoundsHeight - halfSizeWidth - lineWidth

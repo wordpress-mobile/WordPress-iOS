@@ -33,12 +33,15 @@ class PlanComparisonViewController: PagedViewController {
     init(sitePricedPlans: SitePricedPlans, initialPlan: Plan, service: PlanService<StoreKitStore>) {
         self.siteID = sitePricedPlans.siteID
         self.pricedPlans = sitePricedPlans.availablePlans
-        self.activePlan = sitePricedPlans.activePlan
+        self.activePlan = sitePricedPlans.activePlan!
         self.initialPlan = initialPlan
         self.service = service
 
         let viewControllers: [PlanDetailViewController] = pricedPlans.map({ (plan, price) in
-            let controller = PlanDetailViewController.controllerWithPlan(plan, siteID: sitePricedPlans.siteID, activePlan: sitePricedPlans.activePlan, price: price)
+            let controller = PlanDetailViewController.controllerWithPlan(plan,
+                                                                         siteID: sitePricedPlans.siteID,
+                                                                         activePlan: sitePricedPlans.activePlan!,
+                                                                         price: price)
 
             return controller
         })
