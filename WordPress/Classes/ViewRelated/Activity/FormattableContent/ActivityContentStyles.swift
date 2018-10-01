@@ -1,10 +1,10 @@
 
 class ActivityContentStyles: FormattableContentStyles {
-    var attributes: [NSAttributedStringKey: Any] {
+    var attributes: [NSAttributedString.Key: Any] {
         return WPStyleGuide.ActivityStyleGuide.contentRegularStyle
     }
 
-    var rangeStylesMap: [FormattableRangeKind: [NSAttributedStringKey: Any]]? {
+    var rangeStylesMap: [FormattableRangeKind: [NSAttributedString.Key: Any]]? {
         return [
             .post: WPStyleGuide.ActivityStyleGuide.contentItalicStyle,
             .comment: WPStyleGuide.ActivityStyleGuide.contentRegularStyle,
@@ -13,6 +13,6 @@ class ActivityContentStyles: FormattableContentStyles {
     }
 
     let linksColor: UIColor? = WPStyleGuide.ActivityStyleGuide.linkColor
-    let quoteStyles: [NSAttributedStringKey: Any]? = nil
+    let quoteStyles: [NSAttributedString.Key: Any]? = nil
     let key: String = "ActivityContentStyles"
 }

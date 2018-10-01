@@ -188,7 +188,7 @@ extension WordPressAppDelegate {
 // MARK: - Debugging
 
 extension WordPressAppDelegate {
-    @objc func printDebugLaunchInfoWithLaunchOptions(_ launchOptions: [UIApplicationLaunchOptionsKey: Any]? = nil) {
+    @objc func printDebugLaunchInfoWithLaunchOptions(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) {
         let unknown = "Unknown"
 
         let device = UIDevice.current
@@ -293,12 +293,12 @@ extension WordPressAppDelegate {
 
         nc.addObserver(self,
                        selector: #selector(handleLowMemoryWarningNotification(_:)),
-                       name: NSNotification.Name.UIApplicationDidReceiveMemoryWarning,
+                       name: UIApplication.didReceiveMemoryWarningNotification,
                        object: nil)
 
         nc.addObserver(self,
                        selector: #selector(handleUIContentSizeCategoryDidChangeNotification(_:)),
-                       name: NSNotification.Name.UIContentSizeCategoryDidChange,
+                       name: UIContentSizeCategory.didChangeNotification,
                        object: nil)
 
         nc.addObserver(self,

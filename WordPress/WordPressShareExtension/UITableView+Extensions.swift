@@ -15,7 +15,10 @@ extension UITableView {
     ///     - flashLength:      The length of time (in seconds) to wait between selecting and deselecting the row.
     ///     - completion:       A block to call after the row has been deselected.
     ///
-    @objc func flashRowAtIndexPath(_ indexPath: IndexPath, scrollPosition: UITableViewScrollPosition = .middle, flashLength: TimeInterval, completion: (() -> Void)?) {
+    @objc func flashRowAtIndexPath(_ indexPath: IndexPath,
+                                   scrollPosition: UITableView.ScrollPosition = .middle,
+                                   flashLength: TimeInterval,
+                                   completion: (() -> Void)?) {
         selectRow(at: indexPath, animated: true, scrollPosition: scrollPosition)
 
         let time = DispatchTime.now() + Double(Int64(flashLength * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)

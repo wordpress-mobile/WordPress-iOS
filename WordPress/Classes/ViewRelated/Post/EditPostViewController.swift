@@ -69,9 +69,9 @@ class EditPostViewController: UIViewController {
         restorationIdentifier = RestorationKey.viewController.rawValue
         restorationClass = EditPostViewController.self
 
-        addChildViewController(postPost)
+        addChild(postPost)
         view.addSubview(postPost.view)
-        postPost.didMove(toParentViewController: self)
+        postPost.didMove(toParent: self)
     }
 
     required init?(coder: NSCoder) {
@@ -238,8 +238,9 @@ extension EditPostViewController: UIViewControllerRestoration {
         case post = "EditPostViewControllerPostRestorationID"
     }
 
-    class func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
-        guard let identifier = identifierComponents.last as? String, identifier == RestorationKey.viewController.rawValue else {
+    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                              coder: NSCoder) -> UIViewController? {
+        guard let identifier = identifierComponents.last, identifier == RestorationKey.viewController.rawValue else {
             return nil
         }
 

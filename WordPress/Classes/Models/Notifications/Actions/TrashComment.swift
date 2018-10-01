@@ -8,7 +8,7 @@ class TrashComment: DefaultNotificationActionCommand {
     let trashIcon: UIButton = {
         let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.errorRed())
         button.accessibilityLabel =  title
-        button.accessibilityTraits = UIAccessibilityTraitButton
+        button.accessibilityTraits = UIAccessibilityTraits.button
         button.accessibilityHint = hint
         return button
     }()
