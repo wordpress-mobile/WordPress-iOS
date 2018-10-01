@@ -227,23 +227,23 @@ EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
-  ZendeskSDK:
-    :branch: xcode10-beta
-    :git: https://github.com/zendesk/zendesk_sdk_ios.git
   WordPressShared:
     :commit: 4d1f6e0864a894487a676ebcbb28f3bd03c20381
     :git: https://github.com/yaelirub/WordPress-iOS-Shared.git
+  ZendeskSDK:
+    :branch: xcode10-beta
+    :git: https://github.com/zendesk/zendesk_sdk_ios.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.2.3
-  ZendeskSDK:
-    :commit: 00559895d059ec1936f8a08006b9253afdb148b1
-    :git: https://github.com/zendesk/zendesk_sdk_ios.git
   WordPressShared:
     :commit: 4d1f6e0864a894487a676ebcbb28f3bd03c20381
     :git: https://github.com/yaelirub/WordPress-iOS-Shared.git
+  ZendeskSDK:
+    :commit: 00559895d059ec1936f8a08006b9253afdb148b1
+    :git: https://github.com/zendesk/zendesk_sdk_ios.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -283,6 +283,11 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
+<<<<<<< HEAD
 PODFILE CHECKSUM: 3c23827ae53a7547d7736ba7bc90671a040224fc
+=======
+
+PODFILE CHECKSUM: 75e27d2c7da75fc7301380a43c93948a97209f8a
+>>>>>>> Rebase with Develop now won Swift 4.2
 
 COCOAPODS: 1.5.3
