@@ -414,7 +414,7 @@ extension MediaItemViewController {
         if let customHeight = type(of: row).customHeight {
             return CGFloat(customHeight)
         } else if row is MediaImageRow {
-            return UITableViewAutomaticDimension
+            return UITableView.automaticDimension
         }
 
         return tableView.rowHeight

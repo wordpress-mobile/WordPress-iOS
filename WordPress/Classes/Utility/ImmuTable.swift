@@ -320,7 +320,7 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
             return target.tableView(tableView, heightForFooterInSection: section)
         }
 
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
 
     open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -328,7 +328,7 @@ open class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDel
             return target.tableView(tableView, heightForHeaderInSection: section)
         }
 
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
 
     open func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

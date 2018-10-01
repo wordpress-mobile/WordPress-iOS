@@ -132,11 +132,14 @@ open class SettingsListEditorViewController: UITableViewController {
         return isEmpty() == false
     }
 
-    open override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    open override func tableView(_ tableView: UITableView,
+                                 editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .delete
     }
 
-    open override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    open override func tableView(_ tableView: UITableView,
+                                 commit editingStyle: UITableViewCell.EditingStyle,
+                                 forRowAt indexPath: IndexPath) {
         // Nuke it from the collection
         removeAtIndexPath(indexPath)
         notifyDidChange()

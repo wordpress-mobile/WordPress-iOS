@@ -75,9 +75,9 @@ class ReaderSearchSuggestionsViewController: UIViewController {
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
 
         let buttonTitle = NSLocalizedString("Clear search history", comment: "Title of a button.")
-        clearButton.setTitle(buttonTitle, for: UIControlState())
+        clearButton.setTitle(buttonTitle, for: UIControl.State())
         let buttonBackgroundImage = UIImage(color: WPStyleGuide.lightGrey())
-        clearButton.setBackgroundImage(buttonBackgroundImage, for: UIControlState())
+        clearButton.setBackgroundImage(buttonBackgroundImage, for: UIControl.State())
 
         borderImageView.image = UIImage(color: WPStyleGuide.greyLighten10(), havingSize: CGSize(width: stackView.frame.width, height: 1))
 
@@ -208,12 +208,15 @@ extension ReaderSearchSuggestionsViewController: WPTableViewHandlerDelegate {
     }
 
 
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
-        return UITableViewCellEditingStyle.delete
+    func tableView(_ tableView: UITableView,
+                   editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return UITableViewCell.EditingStyle.delete
     }
 
 
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView,
+                   commit editingStyle: UITableViewCell.EditingStyle,
+                   forRowAt indexPath: IndexPath) {
         guard let suggestion = tableViewHandler.resultsController.object(at: indexPath) as? ReaderSearchSuggestion else {
             return
         }

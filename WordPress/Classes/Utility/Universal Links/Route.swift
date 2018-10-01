@@ -26,7 +26,8 @@ extension NavigationAction {
                 return false
         }
 
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        let noOptions: [UIApplication.OpenExternalURLOptionsKey: Any] = [:]
+        UIApplication.shared.open(url, options: noOptions, completionHandler: nil)
         return true
     }
 }
