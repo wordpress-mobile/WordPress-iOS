@@ -328,25 +328,25 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             eventName = @"account_created";
             break;
         case WPAnalyticsStatCreatedSite:
-            eventName = @"site_created";
+            eventName = @"site_creation_success_viewed";
             break;
         case WPAnalyticsStatCreateSiteProcessBegun:
-            eventName = @"create_site_process_begun";
+            eventName = @"site_creation_accessed";
             break;
         case WPAnalyticsStatCreateSiteCategoryViewed:
-            eventName = @"create_site_category_viewed";
+            eventName = @"site_creation_category_viewed";
             break;
         case WPAnalyticsStatCreateSiteDetailsViewed:
-            eventName = @"create_site_details_viewed";
+            eventName = @"site_creation_details_viewed";
             break;
         case WPAnalyticsStatCreateSiteDomainViewed:
-            eventName = @"create_site_domain_viewed";
+            eventName = @"site_creation_domain_viewed";
             break;
         case WPAnalyticsStatCreateSiteThemeViewed:
-            eventName = @"create_site_theme_viewed";
+            eventName = @"site_creation_theme_viewed";
             break;
         case WPAnalyticsStatCreateSiteRequestInitiated:
-            eventName = @"create_site_request_initiated";
+            eventName = @"site_creation_creating_viewed";
             break;
         case WPAnalyticsStatCreateSiteCreationFailed:
             eventName = @"create_site_creation_failed";
