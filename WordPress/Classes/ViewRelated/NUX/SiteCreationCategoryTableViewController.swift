@@ -21,6 +21,7 @@ class SiteCreationCategoryTableViewController: NUXTableViewController {
         super.viewWillAppear(animated)
         setupTable()
         setupNavBar()
+        WPAppAnalytics.track(.createSiteProcessBegun)
     }
 
     override func viewDidAppear(_ animated: Bool) {
