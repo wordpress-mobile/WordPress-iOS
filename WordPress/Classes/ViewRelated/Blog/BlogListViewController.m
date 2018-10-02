@@ -896,8 +896,6 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)showAddNewWordPressController
 {
-    [WPAppAnalytics track:WPAnalyticsStatCreateSiteProcessBegun];
-
     [self setEditing:NO animated:NO];
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteCreation" bundle:nil];
