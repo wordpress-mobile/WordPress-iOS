@@ -22,7 +22,7 @@ end
 ## ===================================
 ##
 def shared_with_all_pods
-    pod 'WordPressShared', '1.1.1-beta.2'
+    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '6e807ed'
     pod 'CocoaLumberjack', '3.4.2'
     pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
     pod 'NSObject-SafeExpectations', '0.0.3'
@@ -157,7 +157,7 @@ target 'WordPressNotificationContentExtension' do
 
     inherit! :search_paths
 
-    pod 'WordPressShared', '1.1.1-beta.2'
+    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '6e807ed'
 
     wordpress_ui
 end
@@ -175,7 +175,7 @@ target 'WordPressNotificationServiceExtension' do
     pod 'Gridicons', '0.16'
 
     pod 'WordPressKit', '1.4.1-beta.2'
-    pod 'WordPressShared', '1.1.1-beta.2'
+    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '6e807ed'
 
     wordpress_ui
 end
