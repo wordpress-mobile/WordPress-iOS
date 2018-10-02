@@ -1,20 +1,6 @@
 #import "BlogListViewController.h"
-#import "WordPressAppDelegate.h"
-#import "BlogDetailsViewController.h"
-#import "WPBlogTableViewCell.h"
-#import "ContextManager.h"
-#import "Blog.h"
-#import "WPAccount.h"
-#import "AccountService.h"
-#import "BlogService.h"
-#import "TodayExtensionService.h"
-#import "WPTabBarController.h"
-#import "WordPress-Swift.h"
-#import "WPGUIConstants.h"
-#import <WordPressShared/WPFontManager.h>
-#import <WordPressShared/WPTableViewCell.h>
-#import <WordPressUI/WordPressUI.h>
 
+#import "WordPress-Swift.h"
 
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 
@@ -910,6 +896,8 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)showAddNewWordPressController
 {
+    [WPAppAnalytics track:WPAnalyticsStatCreateSiteProcessBegun];
+
     [self setEditing:NO animated:NO];
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SiteCreation" bundle:nil];
