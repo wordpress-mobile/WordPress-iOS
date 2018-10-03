@@ -10,7 +10,7 @@ extension UITextView {
 
         return textFrame
     }
-    
+
     func wordsCount() -> Int {
         let words = text.components(separatedBy: .whitespacesAndNewlines)
         let filteredWords = words.filter({ (word) -> Bool in

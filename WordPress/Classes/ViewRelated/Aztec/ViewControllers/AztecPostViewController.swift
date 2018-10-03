@@ -77,7 +77,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         return textView
     }()
-    
+
     fileprivate(set) lazy var wordCountLabel: UILabel = {
         let label = UILabel()
         label.textColor = Colors.wordCount
@@ -85,10 +85,11 @@ class AztecPostViewController: UIViewController, PostEditor {
         label.isUserInteractionEnabled = false
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 1
+        // swiftlint:disable:next inverse_text_alignment
         label.textAlignment = .right
         label.isHidden = true
         return label
-        
+
     }()
 
 
@@ -731,7 +732,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             richTextView.topAnchor.constraint(equalTo: view.topAnchor),
             richTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
-        
+
         NSLayoutConstraint.activate([
             wordCountLabel.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
             wordCountLabel.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
@@ -1759,7 +1760,7 @@ extension AztecPostViewController: UITextViewDelegate {
 
         return true
     }
-    
+
     private func updateWordCountText(isHTML: Bool) {
         let textView = isHTML ? htmlTextView : richTextView
         let wordCount =  textView.wordsCount()
