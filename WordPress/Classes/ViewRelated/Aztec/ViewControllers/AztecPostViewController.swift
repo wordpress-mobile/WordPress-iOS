@@ -77,6 +77,19 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         return textView
     }()
+    
+    fileprivate(set) lazy var wordCountLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Colors.wordCount
+        label.font = Fonts.regular
+        label.isUserInteractionEnabled = false
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 1
+        label.textAlignment = .right
+        label.isHidden = true
+        return label
+        
+    }()
 
 
     /// Aztec's Text Placeholder
@@ -718,6 +731,12 @@ class AztecPostViewController: UIViewController, PostEditor {
             richTextView.topAnchor.constraint(equalTo: view.topAnchor),
             richTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ])
+        
+        NSLayoutConstraint.activate([
+            wordCountLabel.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
+            wordCountLabel.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
+            wordCountLabel.heightAnchor.constraint(equalToConstant: wordCountLabel.font!.lineHeight),
+            ])
 
         NSLayoutConstraint.activate([
             htmlTextView.leftAnchor.constraint(equalTo: richTextView.leftAnchor),
@@ -769,6 +788,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     func configureSubviews() {
         view.addSubview(richTextView)
         view.addSubview(htmlTextView)
+        view.addSubview(wordCountLabel)
         view.addSubview(titleTextField)
         view.addSubview(titlePlaceholderLabel)
         view.addSubview(separatorView)
@@ -992,6 +1012,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
         // Convert the keyboard frame from window base coordinate
         currentKeyboardFrame = view.convert(keyboardFrame, from: nil)
+        wordCountLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -keyboardFrame.height).isActive = true
         refreshInsets(forKeyboardFrame: keyboardFrame)
     }
 
@@ -1647,7 +1668,10 @@ extension AztecPostViewController: UITextViewDelegate {
         case titleTextField:
             updateTitleHeight()
         case richTextView:
+            updateWordCountText(isHTML: false)
             updateFormatBar()
+        case htmlTextView:
+            updateWordCountText(isHTML: true)
         default:
             break
         }
@@ -1734,6 +1758,17 @@ extension AztecPostViewController: UITextViewDelegate {
         }
 
         return true
+    }
+    
+    private func updateWordCountText(isHTML: Bool) {
+        let textView = isHTML ? htmlTextView : richTextView
+        let wordCount =  textView.wordsCount()
+        if wordCount > 0 {
+            wordCountLabel.isHidden = false
+            wordCountLabel.text = String(format: NSLocalizedString("%i WORDS", comment: "text for word count label"), wordCount).uppercased()
+        } else {
+            wordCountLabel.isHidden = true
+        }
     }
 }
 
@@ -3949,6 +3984,7 @@ extension AztecPostViewController {
         static let mediaProgressBarTrack    = WPStyleGuide.wordPressBlue()
         static let aztecLinkColor           = WPStyleGuide.mediumBlue()
         static let mediaOverlayBorderColor  = WPStyleGuide.wordPressBlue()
+        static let wordCount                = WPStyleGuide.grey()
     }
 
     struct Fonts {
