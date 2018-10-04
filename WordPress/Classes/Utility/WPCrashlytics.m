@@ -56,9 +56,9 @@ NSString * const WPCrashlyticsKeyNumberOfBlogs = @"number_of_blogs";
         [CrashlyticsKit setDelegate:self];
 
         // See also : https://docs.fabric.io/apple/fabric/advanced-settings/debugging.html
-        #if DEBUG
+//        #if DEBUG
             [[Fabric sharedSDK] setDebug:YES];
-        #endif
+//        #endif
 
         // FYI: This method may get called mutiple times (e.g. user toggles the privacy settings on-off-on).
         // Per the docs, only the first call is honored and subsequent calls are no-ops.
