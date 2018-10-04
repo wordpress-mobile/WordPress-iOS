@@ -34,7 +34,8 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     // MARK: - State Restoration
 
 
-    static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                               coder: NSCoder) -> UIViewController? {
         return controller()
     }
 
@@ -60,6 +61,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         setupTableView()
         setupTableViewHandler()
         configureSearchBar()
+        noResultsViewController.delegate = self
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }
@@ -102,7 +104,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         let attributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey())
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).attributedPlaceholder = attributedPlaceholder
-        let textAttributes = WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.greyDarken30())
+        let textAttributes = WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.greyDarken30())
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).defaultTextAttributes = textAttributes
 
         searchBar.autocapitalizationType = .none
@@ -111,8 +113,8 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         searchBar.barTintColor = WPStyleGuide.greyLighten30()
         searchBar.backgroundImage = UIImage()
         searchBar.returnKeyType = .done
-        searchBar.setImage(UIImage(named: "icon-clear-textfield"), for: .clear, state: UIControlState())
-        searchBar.setImage(UIImage(named: "icon-reader-search-plus"), for: .search, state: UIControlState())
+        searchBar.setImage(UIImage(named: "icon-clear-textfield"), for: .clear, state: UIControl.State())
+        searchBar.setImage(UIImage(named: "icon-reader-search-plus"), for: .search, state: UIControl.State())
     }
 
     // MARK: - Instance Methods
@@ -265,22 +267,33 @@ private extension ReaderFollowedSitesViewController {
         if isSyncing {
             noResultsViewController.configure(title: NoResultsText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
         } else {
-            noResultsViewController.configure(title: NoResultsText.noResultsTitle, subtitle: NoResultsText.noResultsMessage, image: "wp-illustration-empty-results")
+            noResultsViewController.configure(title: NoResultsText.noResultsTitle,
+                                              buttonTitle: NoResultsText.buttonTitle,
+                                              subtitle: NoResultsText.noResultsMessage)
         }
 
         showNoResultView()
     }
 
     func showNoResultView() {
-        tableViewController.addChildViewController(noResultsViewController)
+        tableViewController.addChild(noResultsViewController)
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         noResultsViewController.view.frame = tableView.frame
-        noResultsViewController.didMove(toParentViewController: tableViewController)
+        noResultsViewController.didMove(toParent: tableViewController)
+    }
+
+    func showDiscoverSites() {
+        guard let readerMenuViewController = WPTabBarController.sharedInstance().readerMenuViewController else {
+            return
+        }
+
+        readerMenuViewController.showSectionForDefaultMenuItem(withOrder: .discover, animated: true)
     }
 
     struct NoResultsText {
         static let noResultsTitle = NSLocalizedString("No followed sites", comment: "Title of a message explaining that the user is not currently following any blogs in their reader.")
         static let noResultsMessage = NSLocalizedString("You are not following any sites yet. Why not follow one now?", comment: "A suggestion to the user that they try following a site in their reader.")
+        static let buttonTitle = NSLocalizedString("Discover Sites", comment: "Button title. Tapping takes the user to the Discover sites list.")
         static let loadingTitle = NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their followed sites is being fetched..")
     }
 
@@ -334,7 +347,7 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -349,7 +362,8 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
         return nil
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView,
+                   didSelectRowAt indexPath: IndexPath) {
         guard let site = tableViewHandler.resultsController.object(at: indexPath) as? ReaderSiteTopic else {
             return
         }
@@ -357,22 +371,27 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
     }
 
 
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    func tableView(_ tableView: UITableView,
+                   canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
 
 
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView,
+                   commit editingStyle: UITableViewCell.EditingStyle,
+                   forRowAt indexPath: IndexPath) {
         unfollowSiteAtIndexPath(indexPath)
     }
 
 
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    func tableView(_ tableView: UITableView,
+                   editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .delete
     }
 
 
-    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+    func tableView(_ tableView: UITableView,
+                   titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
         return NSLocalizedString("Unfollow", comment: "Label of the table view cell's delete button, when unfollowing a site.")
     }
 
@@ -389,7 +408,6 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
 }
 
-
 extension ReaderFollowedSitesViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let site =  searchBar.text?.trim(), !site.isEmpty {
@@ -397,5 +415,13 @@ extension ReaderFollowedSitesViewController: UISearchBarDelegate {
         }
         searchBar.text = nil
         searchBar.resignFirstResponder()
+    }
+}
+
+// MARK: - NoResultsViewControllerDelegate
+
+extension ReaderFollowedSitesViewController: NoResultsViewControllerDelegate {
+    func actionButtonPressed() {
+        showDiscoverSites()
     }
 }

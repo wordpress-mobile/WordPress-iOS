@@ -15,6 +15,6 @@ extension UIImage {
     }
 
     func JPEGEncoded(_ quality: CGFloat = 0.8) -> Data? {
-        return UIImageJPEGRepresentation(self, quality)
+        return self.jpegData(compressionQuality: quality)
     }
 }

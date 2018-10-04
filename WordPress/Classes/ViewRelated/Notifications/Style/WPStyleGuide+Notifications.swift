@@ -12,7 +12,7 @@ extension WPStyleGuide {
         // NoteTableViewHeader
         public static let sectionHeaderBackgroundColor  = UIColor(red: 0xFF/255.0, green: 0xFF/255.0, blue: 0xFF/255.0, alpha: 0xEA/255.0)
 
-        public static var sectionHeaderRegularStyle: [NSAttributedStringKey: Any] {
+        public static var sectionHeaderRegularStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: sectionHeaderParagraph,
                      .font: sectionHeaderFont,
                      .foregroundColor: sectionHeaderTextColor]
@@ -36,23 +36,23 @@ extension WPStyleGuide {
         public static let noteUndoTextFont          = subjectRegularFont
 
         // Subject Text
-        public static var subjectRegularStyle: [NSAttributedStringKey: Any] {
+        public static var subjectRegularStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: subjectParagraph,
                      .font: subjectRegularFont,
                      .foregroundColor: subjectTextColor ]
         }
 
-        public static var subjectBoldStyle: [NSAttributedStringKey: Any] {
+        public static var subjectBoldStyle: [NSAttributedString.Key: Any] {
             return [.paragraphStyle: subjectParagraph,
                     .font: subjectBoldFont ]
         }
 
-        public static var subjectItalicsStyle: [NSAttributedStringKey: Any] {
+        public static var subjectItalicsStyle: [NSAttributedString.Key: Any] {
             return [.paragraphStyle: subjectParagraph,
                     .font: subjectItalicsFont ]
         }
 
-        public static var subjectNoticonStyle: [NSAttributedStringKey: Any] {
+        public static var subjectNoticonStyle: [NSAttributedString.Key: Any] {
             return [.paragraphStyle: subjectParagraph,
                     .font: subjectNoticonFont,
                     .foregroundColor: subjectNoticonColor ]
@@ -61,7 +61,7 @@ extension WPStyleGuide {
         public static let subjectQuotedStyle = blockQuotedStyle
 
         // Subject Snippet
-        public static var snippetRegularStyle: [NSAttributedStringKey: Any] {
+        public static var snippetRegularStyle: [NSAttributedString.Key: Any] {
             return [.paragraphStyle: snippetParagraph,
                     .font: subjectRegularFont,
                     .foregroundColor: snippetColor ]
@@ -77,23 +77,23 @@ extension WPStyleGuide {
         public static let headerDetailsColor        = UIColor(red: 0x00/255.0, green: 0xAA/255.0, blue: 0xDC/255.0, alpha: 0xFF/255.0)
         public static let headerDetailsRegularFont  = blockRegularFont
 
-        public static var headerTitleRegularStyle: [NSAttributedStringKey: Any] {
+        public static var headerTitleRegularStyle: [NSAttributedString.Key: Any] {
             return [.font: headerTitleRegularFont,
                     .foregroundColor: headerTitleColor]
         }
 
-        public static var headerTitleBoldStyle: [NSAttributedStringKey: Any] {
+        public static var headerTitleBoldStyle: [NSAttributedString.Key: Any] {
             return  [.font: headerTitleBoldFont,
                      .foregroundColor: headerTitleColor]
         }
 
-        public static var headerTitleContextStyle: [NSAttributedStringKey: Any] {
+        public static var headerTitleContextStyle: [NSAttributedString.Key: Any] {
             return  [.font: headerTitleItalicsFont,
                      .foregroundColor: headerTitleContextColor]
         }
 
         // Footer
-        public static var footerRegularStyle: [NSAttributedStringKey: Any] {
+        public static var footerRegularStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: blockParagraph,
                      .font: blockRegularFont,
                      .foregroundColor: footerTextColor]
@@ -103,7 +103,7 @@ extension WPStyleGuide {
         public static let badgeBackgroundColor      = UIColor.clear
         public static let badgeLinkColor            = blockLinkColor
 
-        public static let badgeRegularStyle: [NSAttributedStringKey: Any] = [.paragraphStyle: badgeParagraph,
+        public static let badgeRegularStyle: [NSAttributedString.Key: Any] = [.paragraphStyle: badgeParagraph,
                                                                              .font: blockRegularFont,
                                                                              .foregroundColor: blockTextColor]
 
@@ -131,67 +131,67 @@ extension WPStyleGuide {
         public static let blockUnapprovedTextColor  = WPStyleGuide.alertRedDarker()
         public static let blockUnapprovedLinkColor  = WPStyleGuide.mediumBlue()
 
-        public static var contentBlockRegularStyle: [NSAttributedStringKey: Any] {
+        public static var contentBlockRegularStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: contentBlockParagraph,
                      .font: contentBlockRegularFont,
                      .foregroundColor: blockTextColor ]
         }
 
-        public static var contentBlockBoldStyle: [NSAttributedStringKey: Any] {
+        public static var contentBlockBoldStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: contentBlockParagraph,
                      .font: contentBlockBoldFont,
                      .foregroundColor: blockTextColor ]
         }
 
-        public static var contentBlockItalicStyle: [NSAttributedStringKey: Any] {
+        public static var contentBlockItalicStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: contentBlockParagraph,
                      .font: contentBlockItalicFont,
                      .foregroundColor: blockTextColor ]
         }
 
-        public static var contentBlockQuotedStyle: [NSAttributedStringKey: Any] {
+        public static var contentBlockQuotedStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: contentBlockParagraph,
                      .font: contentBlockItalicFont,
                      .foregroundColor: blockQuotedColor ]
         }
 
-        public static var contentBlockMatchStyle: [NSAttributedStringKey: Any] {
+        public static var contentBlockMatchStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: contentBlockParagraph,
                      .font: contentBlockRegularFont,
                      .foregroundColor: blockLinkColor ]
         }
 
-        public static var blockRegularStyle: [NSAttributedStringKey: Any] {
+        public static var blockRegularStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: blockParagraph,
                      .font: blockRegularFont,
                      .foregroundColor: blockTextColor ]
         }
 
-        public static var blockBoldStyle: [NSAttributedStringKey: Any] {
+        public static var blockBoldStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: blockParagraph,
                      .font: blockBoldFont,
                      .foregroundColor: blockTextColor ]
         }
 
-        public static var blockItalicsStyle: [NSAttributedStringKey: Any] {
+        public static var blockItalicsStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: blockParagraph,
                      .font: blockItalicsFont,
                      .foregroundColor: blockTextColor ]
         }
 
-        public static var blockQuotedStyle: [NSAttributedStringKey: Any] {
+        public static var blockQuotedStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: blockParagraph,
                      .font: blockItalicsFont,
                      .foregroundColor: blockQuotedColor ]
         }
 
-        public static var blockMatchStyle: [NSAttributedStringKey: Any] {
+        public static var blockMatchStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: blockParagraph,
                      .font: blockRegularFont,
                      .foregroundColor: blockLinkColor ]
         }
 
-        public static var blockNoticonStyle: [NSAttributedStringKey: Any] {
+        public static var blockNoticonStyle: [NSAttributedString.Key: Any] {
             return  [.paragraphStyle: blockParagraph,
                      .font: blockNoticonFont,
                      .foregroundColor: blockNoticonColor ]
@@ -233,8 +233,8 @@ extension WPStyleGuide {
 
         // Filters Helpers
         public static func configureSegmentedControl(_ segmentedControl: UISegmentedControl) {
-            let style = [ NSAttributedStringKey.font: WPFontManager.systemRegularFont(ofSize: 12) ]
-            segmentedControl.setTitleTextAttributes(style, for: UIControlState())
+            let style = [ NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 12) ]
+            segmentedControl.setTitleTextAttributes(style, for: UIControl.State())
         }
 
         // User Cell Helpers

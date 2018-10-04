@@ -63,7 +63,7 @@ class PagedViewController: UIViewController {
 
     fileprivate func addViewControllers() {
         for controller in viewControllers {
-            addChildViewController(controller)
+            addChild(controller)
 
             controller.view.translatesAutoresizingMaskIntoConstraints = false
             pagedStackView.addArrangedSubview(controller.view)
@@ -73,7 +73,7 @@ class PagedViewController: UIViewController {
             controller.view.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
             controller.view.bottomAnchor.constraint(equalTo: divider.topAnchor).isActive = true
 
-            controller.didMove(toParentViewController: self)
+            controller.didMove(toParent: self)
         }
 
         pageControl.numberOfPages = viewControllers.count
@@ -150,7 +150,7 @@ extension PagedViewController: UIScrollViewDelegate {
     }
 
     fileprivate func accessibilityAnnounceCurrentPage() {
-        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, currentViewController.view)
+        UIAccessibility.post(notification: .layoutChanged, argument: currentViewController.view)
     }
 
     fileprivate func currentScrollViewPage() -> Int {

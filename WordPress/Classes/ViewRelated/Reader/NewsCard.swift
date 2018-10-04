@@ -63,9 +63,9 @@ final class NewsCard: UIViewController {
 
     @objc private func dismissAction() {
         manager.dismiss()
-        willMove(toParentViewController: nil)
+        willMove(toParent: nil)
         view.removeFromSuperview()
-        removeFromParentViewController()
+        removeFromParent()
     }
 
     @objc private func readMoreAction() {
@@ -98,6 +98,7 @@ final class NewsCard: UIViewController {
     }
 
     private func styleReadMoreButton() {
+        readMore.naturalContentHorizontalAlignment = .leading
         let title = NSLocalizedString("Read More", comment: "Button providing More information in the News Card")
         readMore.setTitle(title, for: .normal)
     }
@@ -133,23 +134,23 @@ extension NewsCard: Accessible {
 
     private func prepareDismissButtonForVoiceOver() {
         dismiss.accessibilityLabel = NSLocalizedString("Dismiss", comment: "Accessibility label for the Dismiss button on Reader's News Card")
-        dismiss.accessibilityTraits = UIAccessibilityTraitButton
+        dismiss.accessibilityTraits = UIAccessibilityTraits.button
         dismiss.accessibilityHint = NSLocalizedString("Dismisses the News Card.", comment: "Accessibility hint for the dismiss button on Reader's News Card")
     }
 
     fileprivate func prepareTitleForVoiceOver(label: String) {
         newsTitle.accessibilityLabel = label
-        newsTitle.accessibilityTraits = UIAccessibilityTraitStaticText
+        newsTitle.accessibilityTraits = UIAccessibilityTraits.staticText
     }
 
     fileprivate func prepareSubtitleForVoiceOver(label: String) {
         newsSubtitle.accessibilityLabel = label
-        newsSubtitle.accessibilityTraits = UIAccessibilityTraitStaticText
+        newsSubtitle.accessibilityTraits = UIAccessibilityTraits.staticText
     }
 
     private func prepareReadMoreButtonForVoiceOver() {
         readMore.accessibilityLabel = NSLocalizedString("Read More", comment: "Accessibility label for the Read More button on Reader's News Card")
-        dismiss.accessibilityTraits = UIAccessibilityTraitButton
+        dismiss.accessibilityTraits = UIAccessibilityTraits.button
         dismiss.accessibilityHint = NSLocalizedString("Provides more information.", comment: "Accessibility hint for the Read More button on Reader's News Card")
     }
 }

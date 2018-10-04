@@ -53,7 +53,7 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
     private var customLoadingIndicator: ActivityIndicatorType?
 
     private lazy var defaultLoadingIndicator: UIActivityIndicatorView = {
-        let loadingIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        let loadingIndicator = UIActivityIndicatorView(style: .gray)
         layoutViewCentered(loadingIndicator, size: nil)
         return loadingIndicator
     }()
@@ -88,7 +88,10 @@ public class CachedAnimatedImageView: UIImageView, GIFAnimatable {
     }
 
     private func commonInit() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleLowMemoryWarningNotification(_:)), name: .UIApplicationDidReceiveMemoryWarning, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleLowMemoryWarningNotification),
+                                               name: UIApplication.didReceiveMemoryWarningNotification,
+                                               object: nil)
     }
 
     deinit {

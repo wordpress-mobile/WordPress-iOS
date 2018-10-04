@@ -24,7 +24,7 @@ extension URLCache {
     ///
     @objc func cacheImage(_ image: UIImage, forRequest request: URLRequest) {
         guard let URL = request.url,
-            let responseData = UIImagePNGRepresentation(image) else {
+            let responseData = image.pngData() else {
             return
         }
 

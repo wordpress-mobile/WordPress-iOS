@@ -26,7 +26,7 @@ class MediaItemImageTableViewCell: WPTableViewCell {
         commonInit()
     }
 
-    public required override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    public required override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commonInit()
     }
@@ -122,7 +122,7 @@ class MediaItemDocumentTableViewCell: WPTableViewCell {
         commonInit()
     }
 
-    public required override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    public required override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commonInit()
     }

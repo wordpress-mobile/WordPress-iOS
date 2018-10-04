@@ -167,7 +167,9 @@ class MediaImageExporterTests: XCTestCase {
     func testExportingAPortraitImageWithoutResizeKeepsTheOrientationWorks() {
         let image = MediaImageExporterTests.imageForFileNamed(testImageNameInPortrait)
         if image.imageOrientation != .leftMirrored {
-            XCTFail("Error: the test portrait image was not in the expected orientation, expected: \(UIImageOrientation.leftMirrored.rawValue) but read: \(image.imageOrientation.rawValue)")
+            XCTFail("Error: the test portrait image was not in the expected orientation, expected: " +
+                "\(UIImage.Orientation.leftMirrored.rawValue)" +
+                " but read: \(image.imageOrientation.rawValue)")
             return
         }
         let expect = self.expectation(description: "image export by UIImage and keeping the orientation")
@@ -188,7 +190,9 @@ class MediaImageExporterTests: XCTestCase {
     func testExportingAPortraitImageAndCorrectingTheOrientationWhileResizingWorks() {
         let image = MediaImageExporterTests.imageForFileNamed(testImageNameInPortrait)
         if image.imageOrientation != .leftMirrored {
-            XCTFail("Error: the test portrait image was not in the expected orientation, expected: \(UIImageOrientation.leftMirrored.rawValue) but read: \(image.imageOrientation.rawValue)")
+            XCTFail("Error: the test portrait image was not in the expected orientation, expected: "
+                + "\(UIImage.Orientation.leftMirrored.rawValue)" +
+                " but read: \(image.imageOrientation.rawValue)")
             return
         }
         let expect = self.expectation(description: "image export by UIImage and correcting the orientation with resizing")
@@ -320,7 +324,7 @@ class MediaImageExporterTests: XCTestCase {
         }
     }
 
-    class func validateImageExportedWithExpectedOrientation(export: MediaExport, expected: UIImageOrientation) {
+    class func validateImageExportedWithExpectedOrientation(export: MediaExport, expected: UIImage.Orientation) {
         guard let image = UIImage(contentsOfFile: export.url.path) else {
             XCTFail("Error: an error occurred initializing the exported image for validation")
             return

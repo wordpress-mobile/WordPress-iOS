@@ -17,11 +17,8 @@ struct NoResultsGiphyConfiguration {
         viewController.view.layoutIfNeeded()
     }
 
-    static func configure(_ viewController: NoResultsViewController, asNoSearchResultsFor string: String) {
-        viewController.configure(title: .giphySearchNoResult,
-                                 subtitle: string,
-                                 image: Constants.imageName)
-
+    static func configure(_ viewController: NoResultsViewController) {
+        viewController.configureForNoSearchResults(title: .giphySearchNoResult)
         viewController.view.layoutIfNeeded()
     }
 

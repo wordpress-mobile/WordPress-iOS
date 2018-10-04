@@ -509,7 +509,9 @@ class PluginViewModel: Observable {
         let nonOptions = [NSTextTab.OptionKey: Any]()
         let fixedTabStops = [NSTextTab(textAlignment: .left, location: 0, options: nonOptions)]
 
-        copy.enumerateAttribute(NSAttributedStringKey.font, in: NSMakeRange(0, copy.length), options: NSAttributedString.EnumerationOptions(rawValue: 0)) { (value, range, stop) in
+        copy.enumerateAttribute(NSAttributedString.Key.font,
+                                in: NSRange(location: 0, length: copy.length),
+                                options: NSAttributedString.EnumerationOptions(rawValue: 0)) { (value, range, _) in
             guard let font = value as? UIFont, font.familyName == "Times New Roman" else { return }
 
             copy.addAttribute(.font, value: WPStyleGuide.subtitleFont(), range: range)
@@ -519,7 +521,9 @@ class PluginViewModel: Observable {
 
         var paragraphAttributes: [(paragraph: NSParagraphStyle, range: NSRange)] = []
 
-        copy.enumerateAttribute(NSAttributedStringKey.paragraphStyle, in: NSMakeRange(0, copy.length), options: [.longestEffectiveRangeNotRequired]) { (value, range, stop) in
+        copy.enumerateAttribute(NSAttributedString.Key.paragraphStyle,
+                                in: NSRange(location: 0, length: copy.length),
+                                options: [.longestEffectiveRangeNotRequired]) { (value, range, _) in
             guard let paragraphStyle = value as? NSParagraphStyle else { return }
 
             paragraphAttributes.append((paragraphStyle, range))
