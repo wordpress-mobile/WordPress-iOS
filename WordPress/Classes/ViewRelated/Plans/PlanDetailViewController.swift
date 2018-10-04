@@ -102,7 +102,7 @@ class PlanDetailViewController: UIViewController {
     }
 
     fileprivate func configureTableView() {
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 80.0
     }
 
@@ -150,7 +150,7 @@ class PlanDetailViewController: UIViewController {
         // Table header views don't automatically resize using Auto Layout,
         // so we need to calculate the correct size to fit the content, update the frame,
         // and then reset the tableHeaderView property so that the new size takes effect.
-        let size = headerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        let size = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         if size.height != headerView.frame.size.height {
             headerView.frame.size.height = size.height
             tableView.tableHeaderView = headerView
@@ -332,8 +332,8 @@ private extension PlanDetailViewController {
         noResultsViewController.view.backgroundColor =  .white
         noResultsViewController.view.frame = cell.frame
         cell.contentView.addSubview(noResultsViewController.view)
-        addChildViewController(noResultsViewController)
-        noResultsViewController.didMove(toParentViewController: self)
+        addChild(noResultsViewController)
+        noResultsViewController.didMove(toParent: self)
     }
 
 }

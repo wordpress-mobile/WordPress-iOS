@@ -10,9 +10,9 @@ struct NavigationItemRow: ImmuTableRow {
     let detail: String?
     let icon: UIImage?
     let action: ImmuTableAction?
-    let accessoryType: UITableViewCellAccessoryType
+    let accessoryType: UITableViewCell.AccessoryType
 
-    init(title: String, detail: String? = nil, icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCellAccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction) {
+    init(title: String, detail: String? = nil, icon: UIImage? = nil, badgeCount: Int = 0, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction) {
         self.title = title
         self.detail = detail
         self.icon = icon
@@ -36,11 +36,11 @@ struct IndicatorNavigationItemRow: ImmuTableRow {
     let title: String
     let icon: UIImage?
     let showIndicator: Bool
-    let accessoryType: UITableViewCellAccessoryType
+    let accessoryType: UITableViewCell.AccessoryType
     let action: ImmuTableAction?
 
 
-    init(title: String, icon: UIImage? = nil, showIndicator: Bool = false, accessoryType: UITableViewCellAccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction) {
+    init(title: String, icon: UIImage? = nil, showIndicator: Bool = false, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction) {
         self.title = title
         self.icon = icon
         self.showIndicator = showIndicator

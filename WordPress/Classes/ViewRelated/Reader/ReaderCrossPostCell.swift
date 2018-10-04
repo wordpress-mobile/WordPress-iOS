@@ -13,15 +13,15 @@ open class ReaderCrossPostCell: UITableViewCell {
 
     // MARK: - Accessors
 
-    fileprivate lazy var readerCrossPostTitleAttributes: [NSAttributedStringKey: Any] = {
+    fileprivate lazy var readerCrossPostTitleAttributes: [NSAttributedString.Key: Any] = {
         return WPStyleGuide.readerCrossPostTitleAttributes()
     }()
 
-    fileprivate lazy var readerCrossPostSubtitleAttributes: [NSAttributedStringKey: Any] = {
+    fileprivate lazy var readerCrossPostSubtitleAttributes: [NSAttributedString.Key: Any] = {
         return WPStyleGuide.readerCrossPostSubtitleAttributes()
     }()
 
-    fileprivate lazy var readerCrossPostBoldSubtitleAttributes: [NSAttributedStringKey: Any] = {
+    fileprivate lazy var readerCrossPostBoldSubtitleAttributes: [NSAttributedString.Key: Any] = {
         return WPStyleGuide.readerCrossPostBoldSubtitleAttributes()
     }()
 
@@ -68,7 +68,7 @@ open class ReaderCrossPostCell: UITableViewCell {
         }
         UIView.animate(withDuration: 0.25,
             delay: 0,
-            options: UIViewAnimationOptions(),
+            options: UIView.AnimationOptions(),
             animations: updateBorder,
             completion: nil)
     }

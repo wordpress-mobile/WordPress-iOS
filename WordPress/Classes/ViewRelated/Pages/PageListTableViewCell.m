@@ -6,6 +6,7 @@
 
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UIButton *menuButton;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *leftPadding;
 
 @end
 
@@ -32,14 +33,20 @@
     [super setPost:post];
     [self configureTitle];
     [self configureForStatus];
+    [self configurePageLevel];
 }
 
 #pragma mark - Configuration
 
 - (void)applyStyles
 {
-    [WPStyleGuide applyPageTitleStyle:self.titleLabel];
-    self.menuButton.tintColor = [WPStyleGuide wordPressBlue];
+    [WPStyleGuide configureTableViewCell:self];
+    
+    self.titleLabel.textColor = [WPStyleGuide darkGrey];
+    self.menuButton.tintColor = [WPStyleGuide greyLighten10];
+    
+    self.backgroundColor = [WPStyleGuide greyLighten30];
+    self.contentView.backgroundColor = [WPStyleGuide greyLighten30];
 }
 
 - (void)configureTitle
@@ -55,6 +62,12 @@
         self.titleLabel.textColor = [WPStyleGuide errorRed];
         self.menuButton.tintColor = [WPStyleGuide errorRed];
     }
+}
+
+- (void)configurePageLevel
+{
+    Page *page = (Page *)self.post;
+    self.leftPadding.constant = 16.0 * page.hierarchyIndex;
 }
 
 @end

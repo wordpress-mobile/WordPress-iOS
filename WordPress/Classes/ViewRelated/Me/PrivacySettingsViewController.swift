@@ -4,7 +4,7 @@ import UIKit
 class PrivacySettingsViewController: UITableViewController {
     fileprivate var handler: ImmuTableViewHandler!
 
-    override init(style: UITableViewStyle) {
+    override init(style: UITableView.Style) {
         super.init(style: style)
         navigationItem.title = NSLocalizedString("Privacy Settings", comment: "Privacy Settings Title")
     }
@@ -156,13 +156,13 @@ private class InfoCell: WPTableViewCellDefault {
         // First a single line of text, so we can center against the first line of text
         let singleLineRect = "Text".boundingRect(with: size,
                                                  options: [ .usesLineFragmentOrigin, .usesFontLeading],
-                                                 attributes: [NSAttributedStringKey.font: textLabel.font],
+                                                 attributes: [NSAttributedString.Key.font: textLabel.font],
                                                  context: nil)
 
         // And then the whole text, so we can calculate padding in the label above and below the text
         let textRect = text.boundingRect(with: size,
                                          options: [ .usesLineFragmentOrigin, .usesFontLeading],
-                                         attributes: [NSAttributedStringKey.font: textLabel.font],
+                                         attributes: [NSAttributedString.Key.font: textLabel.font],
                                          context: nil)
 
         // Calculate the vertical padding in the label.

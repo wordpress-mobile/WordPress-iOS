@@ -44,7 +44,10 @@ class PluginViewController: UITableViewController {
             navigationController.popViewController(animated: true)
         }
 
-        NotificationCenter.default.addObserver(self, selector: #selector(didChangeDynamicType), name: .UIContentSizeCategoryDidChange, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didChangeDynamicType),
+                                               name: UIContentSizeCategory.didChangeNotification,
+                                               object: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -52,7 +55,7 @@ class PluginViewController: UITableViewController {
     }
 
     deinit {
-        NotificationCenter.default.removeObserver(self, name: .UIContentSizeCategoryDidChange, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIContentSizeCategory.didChangeNotification, object: nil)
     }
 
     @objc private func didChangeDynamicType() {
@@ -72,7 +75,7 @@ class PluginViewController: UITableViewController {
             self?.bindViewModel()
         }
 
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
 
         bindViewModel()
@@ -152,8 +155,8 @@ private extension PluginViewController {
     }
 
     private func addChildController(_ controller: UIViewController) {
-        addChildViewController(controller)
-        controller.didMove(toParentViewController: self)
+        addChild(controller)
+        controller.didMove(toParent: self)
     }
 
     private func getNoResultsViewController() -> NoResultsViewController {

@@ -104,7 +104,7 @@ class SiteCreationSiteDetailsViewController: NUXViewController, NUXKeyboardRespo
 
     private func setupNextButton() {
         let nextButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
-        nextButton?.setTitle(nextButtonTitle, for: UIControlState())
+        nextButton?.setTitle(nextButtonTitle, for: UIControl.State())
         nextButton?.setTitle(nextButtonTitle, for: .highlighted)
         nextButton?.accessibilityIdentifier = "Next Button"
     }
@@ -176,7 +176,7 @@ extension SiteCreationSiteDetailsViewController: UITextFieldDelegate {
         toggleNextButton(textField)
     }
 
-    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
         toggleNextButton(textField)
     }
 

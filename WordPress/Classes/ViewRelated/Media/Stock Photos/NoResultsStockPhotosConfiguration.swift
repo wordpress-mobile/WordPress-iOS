@@ -24,14 +24,8 @@ struct NoResultsStockPhotosConfiguration {
         viewController.view.layoutIfNeeded()
     }
 
-    static func configure(_ viewController: NoResultsViewController, asNoSearchResultsFor string: String) {
-        viewController.configure(title: .freePhotosSearchNoResult,
-                                 buttonTitle: nil,
-                                 subtitle: string,
-                                 attributedSubtitle: nil,
-                                 image: Constants.imageName,
-                                 accessoryView: nil)
-
+    static func configure(_ viewController: NoResultsViewController) {
+        viewController.configureForNoSearchResults(title: .freePhotosSearchNoResult)
         viewController.view.layoutIfNeeded()
     }
 

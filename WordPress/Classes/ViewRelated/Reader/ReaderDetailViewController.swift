@@ -161,7 +161,8 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
     // MARK: - State Restoration
 
 
-    public static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+    public static func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                                      coder: NSCoder) -> UIViewController? {
         guard let path = coder.decodeObject(forKey: restorablePostObjectURLhKey) as? String else {
             return nil
         }
@@ -240,7 +241,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         // The UIApplicationDidBecomeActiveNotification notification is broadcast
         // when the app is resumed as a part of split screen multitasking on the iPad.
-        NotificationCenter.default.addObserver(self, selector: #selector(ReaderDetailViewController.handleApplicationDidBecomeActive(_:)), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleApplicationDidBecomeActive),
+                                               name: UIApplication.didBecomeActiveNotification,
+                                               object: nil)
 
         bumpStats()
         bumpPageViewsForPost()
@@ -253,7 +257,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
         setBarsHidden(false, animated: animated)
 
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
     }
 
 
@@ -492,9 +496,9 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
     fileprivate func configureShareButton() {
         // Share button.
-        let image = UIImage(named: "icon-posts-share")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        let image = UIImage(named: "icon-posts-share")!.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
-        button.setImage(image, for: UIControlState())
+        button.setImage(image, for: UIControl.State())
         button.addTarget(self, action: #selector(ReaderDetailViewController.didTapShareButton(_:)), for: .touchUpInside)
 
         let shareButton = UIBarButtonItem(customView: button)
@@ -514,7 +518,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
         }
         // Site name
         let blogName = post?.blogNameForDisplay()
-        blogNameButton.setTitle(blogName, for: UIControlState())
+        blogNameButton.setTitle(blogName, for: UIControl.State())
         blogNameButton.setTitle(blogName, for: .highlighted)
         blogNameButton.setTitle(blogName, for: .disabled)
         blogNameButton.isAccessibilityElement = false
@@ -695,7 +699,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             }
         }
         tagButton.isHidden = tag.count == 0
-        tagButton.setTitle(tag, for: UIControlState())
+        tagButton.setTitle(tag, for: UIControl.State())
         tagButton.setTitle(tag, for: .highlighted)
     }
 
@@ -730,10 +734,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 
     fileprivate func resetActionButton(_ button: UIButton) {
-        button.setTitle(nil, for: UIControlState())
+        button.setTitle(nil, for: UIControl.State())
         button.setTitle(nil, for: .highlighted)
         button.setTitle(nil, for: .disabled)
-        button.setImage(nil, for: UIControlState())
+        button.setImage(nil, for: UIControl.State())
         button.setImage(nil, for: .highlighted)
         button.setImage(nil, for: .disabled)
         button.isSelected = false
@@ -743,10 +747,10 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 
 
     fileprivate func configureActionButton(_ button: UIButton, title: String?, image: UIImage?, highlightedImage: UIImage?, selected: Bool) {
-        button.setTitle(title, for: UIControlState())
+        button.setTitle(title, for: UIControl.State())
         button.setTitle(title, for: .highlighted)
         button.setTitle(title, for: .disabled)
-        button.setImage(image, for: UIControlState())
+        button.setImage(image, for: UIControl.State())
         button.setImage(highlightedImage, for: .highlighted)
         button.setImage(image, for: .disabled)
         button.isSelected = selected
@@ -785,7 +789,7 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
             let mask = UIView(frame: frame)
             mask.backgroundColor = view.backgroundColor
             likeButton.addSubview(mask)
-            likeButton.bringSubview(toFront: imageView)
+            likeButton.bringSubviewToFront(imageView)
 
             // Configure starting state
             imageView.alpha = 0.0
@@ -1185,23 +1189,22 @@ open class ReaderDetailViewController: UIViewController, UIViewControllerRestora
 private extension ReaderDetailViewController {
 
     func configureAndDisplayLoadingView(title: String, accessoryView: UIView? = nil) {
-        noResultsViewController.configure(title: title, image: "wp-illustration-empty-results", accessoryView: accessoryView)
+        noResultsViewController.configure(title: title, accessoryView: accessoryView)
         showLoadingView()
     }
 
     func configureAndDisplayLoadingViewWithWebAction(title: String, accessoryView: UIView? = nil) {
         noResultsViewController.configure(title: title,
                                           buttonTitle: LoadingText.errorLoadingPostURLButtonTitle,
-                                          image: "wp-illustration-empty-results",
                                           accessoryView: accessoryView)
         showLoadingView()
     }
 
     func showLoadingView() {
         hideLoadingView()
-        addChildViewController(noResultsViewController)
+        addChild(noResultsViewController)
         view.addSubview(withFadeAnimation: noResultsViewController.view)
-        noResultsViewController.didMove(toParentViewController: self)
+        noResultsViewController.didMove(toParent: self)
     }
 
     func hideLoadingView() {
@@ -1330,7 +1333,7 @@ extension ReaderDetailViewController: Accessible {
 
     private func prepareMenuForVoiceOver() {
         menuButton.accessibilityLabel = NSLocalizedString("More", comment: "Accessibility label for the More button on Reader's post details")
-        menuButton.accessibilityTraits = UIAccessibilityTraitButton
+        menuButton.accessibilityTraits = UIAccessibilityTraits.button
         menuButton.accessibilityHint = NSLocalizedString("Shows more options.", comment: "Accessibility hint for the More button on Reader's post details")
     }
 
@@ -1340,7 +1343,7 @@ extension ReaderDetailViewController: Accessible {
             return
         }
         blogNameButton.isAccessibilityElement = true
-        blogNameButton.accessibilityTraits = UIAccessibilityTraitStaticText
+        blogNameButton.accessibilityTraits = UIAccessibilityTraits.staticText
         if let label = blogNameLabel(post) {
             blogNameButton.accessibilityLabel = label
         }
@@ -1376,7 +1379,7 @@ extension ReaderDetailViewController: Accessible {
         textHeaderStackView.isAccessibilityElement = false
 
         titleLabel.accessibilityLabel = title
-        titleLabel.accessibilityTraits = UIAccessibilityTraitStaticText
+        titleLabel.accessibilityTraits = UIAccessibilityTraits.staticText
     }
 
     private func prepareActionButtonsForVoiceOver() {

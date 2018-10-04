@@ -96,10 +96,20 @@ open class ThemeBrowserHeaderView: UICollectionReusableView {
     }
 
     fileprivate func setTextForLabels() {
-        currentThemeLabel.text = NSLocalizedString("Current Theme", comment: "Current Theme text that appears in the Theme Browser Header")
-        customizeButton.setTitle(NSLocalizedString("Customize", comment: "Customize button that appears in the Theme Browser Header"), for: UIControlState())
-        detailsButton.setTitle(NSLocalizedString("Details", comment: "Details button that appears in the Theme Browser Header"), for: UIControlState())
-        supportButton.setTitle(NSLocalizedString("Support", comment: "Support button that appears in the Theme Browser Header"), for: UIControlState())
+        currentThemeLabel.text = NSLocalizedString("Current Theme",
+                                                   comment: "Current Theme text that appears in Theme Browser Header")
+
+        let customizeButtonText = NSLocalizedString("Customize",
+                                                    comment: "Customize button that appears in Theme Browser Header")
+        customizeButton.setTitle(customizeButtonText, for: .normal)
+
+        let detailsButtonText = NSLocalizedString("Details",
+                                                  comment: "Details button that appears in the Theme Browser Header")
+        detailsButton.setTitle(detailsButtonText, for: .normal)
+
+        let supportButtonText = NSLocalizedString("Support",
+                                                  comment: "Support button that appears in the Theme Browser Header")
+        supportButton.setTitle(supportButtonText, for: .normal)
     }
 
     override open func prepareForReuse() {

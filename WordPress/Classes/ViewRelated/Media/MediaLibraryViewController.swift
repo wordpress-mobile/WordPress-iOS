@@ -142,7 +142,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
 
             var barButtonItems = [UIBarButtonItem]()
 
-            if blog.userCanUploadMedia {
+            if blog.userCanUploadMedia && assetCount > 0 {
                 let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
                 barButtonItems.append(addButton)
             }
@@ -168,7 +168,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
             noResultsView.removeFromView()
 
             if hasSearchQuery {
-                noResultsView.configureForNoSearchResult(with: pickerDataSource.searchQuery)
+                noResultsView.configureForNoSearchResult()
             } else {
                 noResultsView.configureForNoAssets(userCanUploadMedia: blog.userCanUploadMedia)
             }
@@ -253,7 +253,14 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     }
 
     private func showOptionsMenu() {
-        let pickingContext = MediaPickingContext(origin: self, view: view, barButtonItem: navigationItem.rightBarButtonItem, blog: blog)
+
+        let pickingContext: MediaPickingContext
+        if pickerDataSource.totalAssetCount > 0 {
+            pickingContext = MediaPickingContext(origin: self, view: view, barButtonItem: navigationItem.rightBarButtonItem, blog: blog)
+        } else {
+            pickingContext = MediaPickingContext(origin: self, view: noResultsView.actionButton, blog: blog)
+        }
+
         mediaPickingCoordinator.present(context: pickingContext)
     }
 
@@ -310,7 +317,7 @@ class MediaLibraryViewController: WPMediaPickerViewController {
     }
 
     fileprivate func presentRetryOptions(for media: Media) {
-        let style: UIAlertControllerStyle = UIDevice.isPad() ? .alert : .actionSheet
+        let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: style)
         alertController.addDestructiveActionWithTitle(NSLocalizedString("Cancel Upload", comment: "Media Library option to cancel an in-progress or failed upload.")) { _ in
             MediaCoordinator.shared.delete(media: [media])
@@ -609,8 +616,9 @@ extension MediaLibraryViewController: UIViewControllerRestoration {
         static let blogURL = "blogURL"
     }
 
-    static func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
-        guard let identifier = identifierComponents.last as? String,
+    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                               coder: NSCoder) -> UIViewController? {
+        guard let identifier = identifierComponents.last,
             identifier == MediaLibraryViewController.restorationIdentifier else {
                 return nil
         }
