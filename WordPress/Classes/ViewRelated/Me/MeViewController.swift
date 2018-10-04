@@ -3,6 +3,7 @@ import CocoaLumberjack
 import WordPressShared
 import Gridicons
 import WordPressAuthenticator
+import Crashlytics
 
 
 class MeViewController: UITableViewController, UIViewControllerRestoration {
@@ -70,6 +71,23 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         if splitViewControllerIsHorizontallyCompact {
             animateDeselectionInteractively()
         }
+
+        #if DEBUG
+        navigationItem.rightBarButtonItem = {
+            let crashTest = UIBarButtonItem(
+                title: "Crash",
+                style: .plain,
+                target: self,
+                action: #selector(manualCrashTapped))
+
+            return crashTest
+        }()
+        #endif
+    }
+
+    @objc
+    private func manualCrashTapped() {
+        Crashlytics.sharedInstance().crash()
     }
 
     override func viewDidAppear(_ animated: Bool) {

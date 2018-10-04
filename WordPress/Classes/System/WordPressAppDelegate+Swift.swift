@@ -34,13 +34,13 @@ extension WordPressAppDelegate {
     }
 
     @objc func configureCrashlytics() {
-        #if DEBUG
-            return
-        #else
+//        #if DEBUG
+//            return
+//        #else
             if let apiKey = ApiCredentials.crashlyticsApiKey() {
                 crashlytics = WPCrashlytics(apiKey: apiKey)
             }
-        #endif
+//        #endif
     }
 
     @objc func configureHockeySDK() {
