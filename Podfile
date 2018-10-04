@@ -72,7 +72,7 @@ target 'WordPress' do
     ## =====================
     ##
     pod '1PasswordExtension', '1.8.5'
-    pod 'HockeySDK', '5.1.2', :configurations => ['Release-Internal', 'Release-Alpha']
+    pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '0.8.3'
     pod 'Reachability',    '3.2'
     pod 'SVProgressHUD', '2.2.5'
