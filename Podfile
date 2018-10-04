@@ -76,7 +76,7 @@ target 'WordPress' do
     pod 'MRProgress', '0.8.3'
     pod 'Reachability',    '3.2'
     pod 'SVProgressHUD', '2.2.5'
-    pod 'Crashlytics', '3.10.1'
+    pod 'Crashlytics', '3.10.8'
     pod 'BuddyBuildSDK', '1.0.17', :configurations => ['Release-Alpha']
     pod 'Gifu', '3.1.0'
     pod 'GiphyCoreSDK', '~> 1.4.0'
