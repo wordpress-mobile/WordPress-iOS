@@ -52,7 +52,7 @@ class RoundedButton: UIButton {
         layer.borderWidth = borderWidth
         layer.borderColor = tintColor.cgColor
 
-        setTitleColor(tintColor, for: UIControlState())
+        setTitleColor(tintColor, for: UIControl.State())
         setBackgroundImage(UIImage(color: tintColor), for: .highlighted)
 
         if reversesTitleShadowWhenHighlighted {

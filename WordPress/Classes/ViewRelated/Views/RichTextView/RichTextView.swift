@@ -94,7 +94,7 @@ import Foundation
         }
     }
 
-    @objc open var linkTextAttributes: [String: Any]! {
+    @objc open var linkTextAttributes: [NSAttributedString.Key: Any]! {
         set {
             textView.linkTextAttributes = newValue
         }

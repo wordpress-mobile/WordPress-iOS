@@ -53,7 +53,7 @@ extension UIImage {
      - url: file url to where the asset should be exported, this must be writable location
      */
     @objc func writeJPEGToURL(_ url: URL) throws {
-        let data = UIImageJPEGRepresentation(self, 0.9)
+        let data = self.jpegData(compressionQuality: 0.9)
         try data?.write(to: url, options: NSData.WritingOptions())
     }
 

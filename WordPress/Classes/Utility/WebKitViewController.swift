@@ -265,7 +265,7 @@ class WebKitViewController: UIViewController {
     // MARK: Helpers
 
     private func fixBarButtonsColorForBoldText(on bar: UIView) {
-        if UIAccessibilityIsBoldTextEnabled() {
+        if UIAccessibility.isBoldTextEnabled {
             bar.tintColor = WPStyleGuide.greyLighten10()
         }
     }

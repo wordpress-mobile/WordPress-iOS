@@ -59,7 +59,7 @@ extension SignupEpilogueCell: UITextFieldDelegate {
         return true
     }
 
-    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
         if let cellType = cellType,
             let updatedText = textField.text {
             delegate?.updated(value: updatedText, forType: cellType)

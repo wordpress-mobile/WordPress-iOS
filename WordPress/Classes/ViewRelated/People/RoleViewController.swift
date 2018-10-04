@@ -20,7 +20,7 @@ class RoleViewController: UITableViewController {
 
     /// Activity Spinner, to be animated during Backend Interaction
     ///
-    fileprivate let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    fileprivate let activityIndicator = UIActivityIndicatorView(style: .gray)
 
     // MARK: - View Lifecyle Methods
     override func viewDidLoad() {

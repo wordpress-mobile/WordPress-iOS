@@ -30,7 +30,7 @@ class AztecAttachmentViewController: UITableViewController {
 
     // MARK: - Initialization
 
-    override init(style: UITableViewStyle) {
+    override init(style: UITableView.Style) {
         super.init(style: style)
         navigationItem.title = NSLocalizedString("Media Settings", comment: "Media Settings Title")
     }
@@ -254,7 +254,7 @@ class AztecAttachmentViewController: UITableViewController {
                                         onValueChanged: @escaping SettingsAttributedTextChanged) {
 
         // TODO: This shouldn't duplicate the styling from the Figcaption formatter.  Try to unify.
-        let defaultAttributes: [NSAttributedStringKey: Any] = [
+        let defaultAttributes: [NSAttributedString.Key: Any] = [
             .font: WPFontManager.notoRegularFont(ofSize: 14),
             .foregroundColor: UIColor.gray,
         ]

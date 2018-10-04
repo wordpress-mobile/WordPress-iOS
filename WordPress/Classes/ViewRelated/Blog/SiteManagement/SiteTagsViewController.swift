@@ -9,7 +9,8 @@ final class SiteTagsViewController: UITableViewController {
     }
     private let blog: Blog
 
-    private var noResultsViewController = NoResultsViewController.controller()
+    private lazy var noResultsViewController = NoResultsViewController.controller()
+    private var isSearching = false
 
     fileprivate lazy var context: NSManagedObjectContext = {
         return ContextManager.sharedInstance().mainContext
@@ -64,7 +65,6 @@ final class SiteTagsViewController: UITableViewController {
         applyStyleGuide()
         applyTitle()
         setupTable()
-        setupNavigationBar()
 
         refreshTags()
         refreshResultsController(predicate: defaultPredicate)
@@ -79,6 +79,7 @@ final class SiteTagsViewController: UITableViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
         // HACK: Normally, to hide the scroll bars we'd define a presentation context.
         // This is impacting layout when navigating back from a detail. As a work
         // around we can simply hide the search bar.
@@ -124,6 +125,7 @@ final class SiteTagsViewController: UITableViewController {
         do {
             try resultsController.performFetch()
             tableView.reloadData()
+            refreshNoResultsView()
         } catch {
             tagsFailedLoading(error: error)
         }
@@ -141,14 +143,14 @@ final class SiteTagsViewController: UITableViewController {
         }
     }
 
-    private func setupNavigationBar() {
-        configureRightButton()
-    }
-
-    private func configureRightButton() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
-                                                            target: self,
-                                                            action: #selector(createTag))
+    private func showRightBarButton(_ show: Bool) {
+        if show {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
+                                                                target: self,
+                                                                action: #selector(createTag))
+        } else {
+            navigationItem.rightBarButtonItem = nil
+        }
     }
 
     private func setupSearchBar() {
@@ -203,7 +205,7 @@ extension SiteTagsViewController {
         return true
     }
 
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard let selectedTag = tagAtIndexPath(indexPath) else {
             return
         }
@@ -378,66 +380,97 @@ extension SiteTagsViewController {
 private extension SiteTagsViewController {
 
     func refreshNoResultsView() {
-        noResultsViewController.removeFromView()
+        let noResults = resultsController.fetchedObjects?.count == 0
+        showRightBarButton(!noResults)
 
-        if let count = resultsController.fetchedObjects?.count,
-            count > 0 || searchController.isActive {
-            setupSearchBar()
-            tableView.reloadData()
+        if noResults {
+            showNoResults()
+        } else {
+            hideNoResults()
+        }
+    }
+
+    func showNoResults() {
+
+        if isSearching {
+            showNoSearchResultsView()
             return
         }
 
         if isPerformingInitialSync {
-            setupLoadingView()
-        } else {
-            setupEmptyResultsView()
+            showLoadingView()
+            return
         }
 
+        showEmptyResultsView()
+    }
+
+    func showLoadingView() {
+        configureAndDisplayNoResults(title: NoResultsText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
         removeSearchBar()
-        showNoResults()
     }
 
-    func setupLoadingView() {
-        noResultsViewController.configure(title: loadingMessage(),
-                                           accessoryView: NoResultsViewController.loadingAccessoryView())
+    func showEmptyResultsView() {
+        configureAndDisplayNoResults(title: NoResultsText.noTagsTitle, subtitle: NoResultsText.noTagsMessage, buttonTitle: NoResultsText.createButtonTitle)
+        removeSearchBar()
     }
 
-    func setupEmptyResultsView() {
-        noResultsViewController.configure(title: noResultsTitle(),
-                                           buttonTitle: noResultsButtonTitle(),
-                                           subtitle: noResultsMessage(),
-                                           image: noResultsImageName())
+    func showNoSearchResultsView() {
+
+        // If already shown, don't show again. To prevent the view from "flashing" as the user types.
+        guard !noResultsShown else {
+            return
+        }
+
+        configureAndDisplayNoResults(title: NoResultsText.noResultsTitle, forNoSearchResults: true)
     }
 
-    func showNoResults() {
-        addChildViewController(noResultsViewController)
+    func configureAndDisplayNoResults(title: String,
+                                      subtitle: String? = nil,
+                                      buttonTitle: String? = nil,
+                                      accessoryView: UIView? = nil,
+                                      forNoSearchResults: Bool = false) {
+
+        if forNoSearchResults {
+            noResultsViewController.configureForNoSearchResults(title: title)
+        } else {
+            noResultsViewController.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, accessoryView: accessoryView)
+        }
+
+        displayNoResults()
+    }
+
+    func displayNoResults() {
+        addChild(noResultsViewController)
         noResultsViewController.view.frame = tableView.frame
 
         // Since the tableView doesn't always start at the top, adjust the NRV accordingly.
-        noResultsViewController.view.frame.origin.y = 0
+        if isSearching {
+            noResultsViewController.view.frame.origin.y = searchController.searchBar.frame.height
+        } else {
+            noResultsViewController.view.frame.origin.y = 0
+        }
 
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
-        noResultsViewController.didMove(toParentViewController: self)
+        noResultsViewController.didMove(toParent: self)
     }
 
-    func noResultsTitle() -> String {
-        return NSLocalizedString("You don't have any tags", comment: "Empty state. Tags management (Settings > Writing > Tags)")
+    func hideNoResults() {
+        noResultsViewController.removeFromView()
+        setupSearchBar()
+        tableView.reloadData()
     }
 
-    func noResultsMessage() -> String {
-        return NSLocalizedString("Tags created here can be quickly added to new posts", comment: "Displayed when the user views tags in blog settings and there are no tags")
+    var noResultsShown: Bool {
+        return noResultsViewController.parent != nil
     }
 
-    func noResultsImageName() -> String {
-        return "wp-illustration-empty-results"
-    }
-
-    func noResultsButtonTitle() -> String {
-        return NSLocalizedString("Create a Tag", comment: "Title of the button in the placeholder for an empty list of blog tags.")
-    }
-
-    func loadingMessage() -> String {
-        return NSLocalizedString("Loading...", comment: "Loading tags.")
+    struct NoResultsText {
+        static let noTagsTitle = NSLocalizedString("You don't have any tags", comment: "Empty state. Tags management (Settings > Writing > Tags)")
+        static let noTagsMessage = NSLocalizedString("Tags created here can be quickly added to new posts", comment: "Displayed when the user views tags in blog settings and there are no tags")
+        static let createButtonTitle = NSLocalizedString("Create a Tag", comment: "Title of the button in the placeholder for an empty list of blog tags.")
+        static let loadingTitle = NSLocalizedString("Loading...", comment: "Loading tags.")
+        static let noResultsTitle = NSLocalizedString("No tags matching your search", comment: "Displayed when the user is searching site tags and there are no matches.")
     }
 
 }
@@ -455,7 +488,6 @@ extension SiteTagsViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text, text != "" else {
             refreshResultsController(predicate: defaultPredicate)
-
             return
         }
 
@@ -467,10 +499,12 @@ extension SiteTagsViewController: UISearchResultsUpdating {
 // MARK: - UISearchControllerDelegate Conformance
 extension SiteTagsViewController: UISearchControllerDelegate {
     func willPresentSearchController(_ searchController: UISearchController) {
+        isSearching = true
         deactivateRefreshControl()
     }
 
     func willDismissSearchController(_ searchController: UISearchController) {
+        isSearching = false
         setupRefreshControl()
     }
 }

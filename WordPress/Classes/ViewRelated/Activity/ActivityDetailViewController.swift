@@ -125,7 +125,7 @@ class ActivityDetailViewController: UIViewController {
         }
 
         contentStackView.isAccessibilityElement = true
-        contentStackView.accessibilityTraits = UIAccessibilityTraitStaticText
+        contentStackView.accessibilityTraits = UIAccessibilityTraits.staticText
         contentStackView.accessibilityLabel = "\(activity.text), \(activity.summary)"
         textLabel.isAccessibilityElement = false
         summaryLabel.isAccessibilityElement = false

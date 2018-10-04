@@ -339,8 +339,8 @@ class FilterTabBar: UIControl {
         selectionIndicatorLeadingConstraint?.isActive = false
         selectionIndicatorTrailingConstraint?.isActive = false
 
-        let leadingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : tab.contentEdgeInsets.left
-        let trailingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : -tab.contentEdgeInsets.right
+        let leadingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : (tab.contentEdgeInsets.left - AppearanceMetrics.buttonInsets.left)
+        let trailingConstant = (tabSizingStyle == .equalWidths) ? 0.0 : (-tab.contentEdgeInsets.right + AppearanceMetrics.buttonInsets.right)
 
         selectionIndicatorLeadingConstraint = selectionIndicator.leadingAnchor.constraint(equalTo: tab.leadingAnchor, constant: leadingConstant)
         selectionIndicatorTrailingConstraint = selectionIndicator.trailingAnchor.constraint(equalTo: tab.trailingAnchor, constant: trailingConstant)
@@ -351,9 +351,9 @@ class FilterTabBar: UIControl {
 
     private enum AppearanceMetrics {
         static let height: CGFloat = 46.0
-        static let bottomDividerHeight: CGFloat = 1.0
+        static let bottomDividerHeight: CGFloat = 0.5
         static let selectionIndicatorHeight: CGFloat = 2.0
-        static let horizontalPadding: CGFloat = 4.0
+        static let horizontalPadding: CGFloat = 0.0
         static let buttonInsets = UIEdgeInsets(top: 14.0, left: 12.0, bottom: 14.0, right: 12.0)
     }
 
@@ -373,7 +373,7 @@ private class TabBarButton: UIButton {
         super.traitCollectionDidChange(previousTraitCollection)
 
         if previousTraitCollection?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-            titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote, maximumPointSize: TabFont.maxSize)
+            titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote, symbolicTraits: .traitBold, maximumPointSize: TabFont.maxSize)
         }
     }
 }
@@ -381,6 +381,6 @@ private class TabBarButton: UIButton {
 extension FilterTabBar: Accessible {
     func prepareForVoiceOver() {
         isAccessibilityElement = false
-        accessibilityTraits = super.accessibilityTraits | UIAccessibilityTraitTabBar
+        accessibilityTraits = [super.accessibilityTraits, .tabBar]
     }
 }

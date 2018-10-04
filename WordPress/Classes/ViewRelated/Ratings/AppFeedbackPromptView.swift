@@ -92,7 +92,7 @@ class AppFeedbackPromptView: UIView {
         // measure the width of the view with the new font sizes to see if the buttons are too wide.
         leftButton.updateFontSizeToMatchSystem()
         rightButton.updateFontSizeToMatchSystem()
-        let newLayoutSize = systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        let newLayoutSize = systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
 
         // if the new width is too wide, change the axis of the stack view
         guard let superviewSize = superview?.bounds.size else {
