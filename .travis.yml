@@ -1,0 +1,3 @@
+language: swift
+script:
+- xcodebuild test -workspace WordPress.xcworkspace -scheme WordPress -sdk iphonesimulator
