@@ -27,9 +27,9 @@ PODS:
   - CocoaLumberjack/Default (3.4.2)
   - CocoaLumberjack/Extensions (3.4.2):
     - CocoaLumberjack/Default
-  - Crashlytics (3.10.1):
-    - Fabric (~> 1.7.5)
-  - Fabric (1.7.11)
+  - Crashlytics (3.10.8):
+    - Fabric (~> 1.7.12)
+  - Fabric (1.7.12)
   - FormatterKit/Resources (1.8.2)
   - FormatterKit/TimeIntervalFormatter (1.8.2):
     - FormatterKit/Resources
@@ -47,9 +47,9 @@ PODS:
     - "GoogleToolboxForMac/NSString+URLArguments (= 2.1.4)"
   - "GoogleToolboxForMac/NSString+URLArguments (2.1.4)"
   - Gridicons (0.16)
-  - HockeySDK (5.1.2):
-    - HockeySDK/DefaultLib (= 5.1.2)
-  - HockeySDK/DefaultLib (5.1.2)
+  - HockeySDK (5.1.4):
+    - HockeySDK/DefaultLib (= 5.1.4)
+  - HockeySDK/DefaultLib (5.1.4)
   - lottie-ios (2.5.0)
   - MGSwipeTableCell (1.6.7)
   - MRProgress (0.8.3):
@@ -150,12 +150,12 @@ DEPENDENCIES:
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.2.3`)
   - BuddyBuildSDK (= 1.0.17)
   - CocoaLumberjack (= 3.4.2)
-  - Crashlytics (= 3.10.1)
+  - Crashlytics (= 3.10.8)
   - FormatterKit/TimeIntervalFormatter (= 1.8.2)
   - Gifu (= 3.1.0)
   - GiphyCoreSDK (~> 1.4.0)
   - Gridicons (= 0.16)
-  - HockeySDK (= 5.1.2)
+  - HockeySDK (= 5.1.4)
   - lottie-ios (= 2.5.0)
   - MGSwipeTableCell (= 1.6.7)
   - MRProgress (= 0.8.3)
@@ -233,15 +233,15 @@ SPEC CHECKSUMS:
   Automattic-Tracks-iOS: d8c6c6c1351b1905a73e45f431b15598d71963b5
   BuddyBuildSDK: 8ae12ee721098b356a961ea7dce70ae55f93a7d2
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
-  Crashlytics: aee1a064cbbf99b32efa3f056a5f458d846bc8ff
-  Fabric: f233c9492b3bbc1f04e3882986740f7988a58edb
+  Crashlytics: 058dc1ba579f6c100bc60a6878703779bff383c4
+  Fabric: d7387db9a31aadff63b147a4b91d982c53afaa4f
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   Gifu: fd1e9e3a15ac5d90bae0a510e4ed9f94b485ab03
   GiphyCoreSDK: 1fe401c5fc65f182e7aa8b7fb2c9005f2a523374
   GoogleSignInRepacked: d357702618c555f38923576924661325eb1ef22b
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
   Gridicons: 8cc5cb666d5ad8b8f1771d3c7a93d27ae25b7c2e
-  HockeySDK: 38b7e2726af1ea86ae97ce4b5de33ab0817e3500
+  HockeySDK: 15afe6bc0a5bfe3a531fd73dbf082095f37dac3b
   lottie-ios: d699fdee68d7b63e721d949388b015fef1aaa4ac
   MGSwipeTableCell: fb20e983988bde2b8d0df29c2d9e1d8ffd10b74a
   MRProgress: 16de7cc9f347e8846797a770db102a323fe7ef09
@@ -264,6 +264,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-PODFILE CHECKSUM: 29fd8cf02a527f68c3ac899817ac2f229fc28855
+PODFILE CHECKSUM: ade11a64474ec6c346adf91ca6c1e86e55f0434a
 
 COCOAPODS: 1.5.3
