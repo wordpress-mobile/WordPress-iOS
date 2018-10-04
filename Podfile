@@ -173,7 +173,6 @@ target 'WordPressNotificationServiceExtension' do
     inherit! :search_paths
 
     pod 'Gridicons', '0.16'
-
     pod 'WordPressKit', '1.4.1-beta.2'
     pod 'WordPressShared', '1.1.1-beta.2'
 
