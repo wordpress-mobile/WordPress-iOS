@@ -78,7 +78,9 @@ class AztecPostViewController: UIViewController, PostEditor {
         return textView
     }()
 
-    fileprivate(set) lazy var wordCountLabel: UILabel = {
+    /// Count word or characters by set language
+    ///
+    fileprivate(set) lazy var wordOrCharacterCountLabel: UILabel = {
         let label = UILabel()
         label.textColor = Colors.wordCount
         label.font = Fonts.regular
@@ -90,6 +92,24 @@ class AztecPostViewController: UIViewController, PostEditor {
         label.isHidden = true
         return label
 
+    }()
+    
+    /// If the language the user chose in settings is character based
+    /// The lable will show the number of characters.
+    /// If the language is not supported the label will stay hidden
+    /// otherwise, show word count.
+    ///
+
+    fileprivate(set) lazy var isCharacterBasedLanguge: Bool? = {
+        let locale = WordPressComLanguageDatabase().deviceLanguage.slug
+        switch locale {
+        case "ja", "th", "zh-cn", "zh-hk", "zh-sg", "zh-tw", "he":
+            return true
+        case "ko":
+            return nil
+        default:
+            return false
+        }
     }()
 
 
@@ -734,9 +754,9 @@ class AztecPostViewController: UIViewController, PostEditor {
             ])
 
         NSLayoutConstraint.activate([
-            wordCountLabel.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
-            wordCountLabel.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
-            wordCountLabel.heightAnchor.constraint(equalToConstant: wordCountLabel.font!.lineHeight),
+            wordOrCharacterCountLabel.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
+            wordOrCharacterCountLabel.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
+            wordOrCharacterCountLabel.heightAnchor.constraint(equalToConstant: wordOrCharacterCountLabel.font!.lineHeight),
             ])
 
         NSLayoutConstraint.activate([
@@ -789,7 +809,7 @@ class AztecPostViewController: UIViewController, PostEditor {
     func configureSubviews() {
         view.addSubview(richTextView)
         view.addSubview(htmlTextView)
-        view.addSubview(wordCountLabel)
+        view.addSubview(wordOrCharacterCountLabel)
         view.addSubview(titleTextField)
         view.addSubview(titlePlaceholderLabel)
         view.addSubview(separatorView)
@@ -1013,7 +1033,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
         // Convert the keyboard frame from window base coordinate
         currentKeyboardFrame = view.convert(keyboardFrame, from: nil)
-        wordCountLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -keyboardFrame.height).isActive = true
+        wordOrCharacterCountLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -keyboardFrame.height).isActive = true
         refreshInsets(forKeyboardFrame: keyboardFrame)
     }
 
@@ -1669,10 +1689,10 @@ extension AztecPostViewController: UITextViewDelegate {
         case titleTextField:
             updateTitleHeight()
         case richTextView:
-            updateWordCountText(isHTML: false)
+            updateWordOrCharCountText(isHTML: false)
             updateFormatBar()
         case htmlTextView:
-            updateWordCountText(isHTML: true)
+            updateWordOrCharCountText(isHTML: true)
         default:
             break
         }
@@ -1761,14 +1781,15 @@ extension AztecPostViewController: UITextViewDelegate {
         return true
     }
 
-    private func updateWordCountText(isHTML: Bool) {
+    private func  updateWordOrCharCountText(isHTML: Bool) {
         let textView = isHTML ? htmlTextView : richTextView
-        let wordCount =  textView.wordsCount()
-        if wordCount > 0 {
-            wordCountLabel.isHidden = false
-            wordCountLabel.text = String(format: NSLocalizedString("%i WORDS", comment: "text for word count label"), wordCount).uppercased()
+        if let isCharacterBasedLanguge = isCharacterBasedLanguge {
+            let count = isCharacterBasedLanguge ? textView.text.count : textView.wordsCount()
+            let describingString = isCharacterBasedLanguge ? "characters" : "words"
+            wordOrCharacterCountLabel.text = String(format: NSLocalizedString("%i %@", comment: "text for word count label"), count, describingString).uppercased()
         } else {
-            wordCountLabel.isHidden = true
+            wordOrCharacterCountLabel.isHidden = true
+            return
         }
     }
 }
