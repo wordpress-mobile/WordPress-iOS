@@ -802,6 +802,8 @@ public protocol ThemePresenter: class {
 
     @objc open func presentCustomizeForTheme(_ theme: Theme?) {
         WPAppAnalytics.track(.themesCustomizeAccessed, with: self.blog)
+        QuickStartTourGuide.find()?.visited(.customize)
+
         presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: false, modalStyle: .fullScreen)
     }
 
