@@ -22,7 +22,7 @@ end
 ## ===================================
 ##
 def shared_with_all_pods
-    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '6e807ed'
+    pod 'WordPressShared', '1.1.1-beta.4'
     pod 'CocoaLumberjack', '3.4.2'
     pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
     pod 'NSObject-SafeExpectations', '0.0.3'
@@ -33,7 +33,7 @@ def shared_with_networking_pods
     pod 'AFNetworking', '3.2.1'
     pod 'Alamofire', '4.7.3'
     pod 'wpxmlrpc', '0.8.3'
-    pod 'WordPressKit', '1.4.1-beta.2'
+    pod 'WordPressKit', '1.4.1-beta.3'
 end
 
 def shared_test_pods
@@ -95,7 +95,7 @@ target 'WordPress' do
     pod 'WPMediaPicker', '1.3.1-beta.1'
     ## while PR is in review:
     ## pod 'WPMediaPicker', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git', :commit => '82f798c0dc18b17a11dfafa37f1fd39eb508b29b'
-    pod 'WordPressAuthenticator', '1.1.0-beta.1'
+    pod 'WordPressAuthenticator', '1.1.0-beta.2'
 
     aztec
     wordpress_ui
@@ -157,7 +157,7 @@ target 'WordPressNotificationContentExtension' do
 
     inherit! :search_paths
 
-    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '6e807ed'
+    pod 'WordPressShared', '1.1.1-beta.4'
 
     wordpress_ui
 end
@@ -173,8 +173,8 @@ target 'WordPressNotificationServiceExtension' do
     inherit! :search_paths
 
     pod 'Gridicons', '0.16'
-    pod 'WordPressKit', '1.4.1-beta.2'
-    pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '6e807ed'
+    pod 'WordPressKit', '1.4.1-beta.3'
+    pod 'WordPressShared', '1.1.1-beta.4'
 
     wordpress_ui
 end
