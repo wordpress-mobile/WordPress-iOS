@@ -3,6 +3,7 @@ import Gridicons
 
 @objc
 open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
+    @objc var navigationWatcher = QuickStartNavigationWatcher()
     private var currentSuggestion: QuickStartTour?
     private var currentTourState: TourState?
 
@@ -12,21 +13,6 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
             return nil
         }
         return tourGuide
-    }
-
-    public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        switch viewController {
-        case is QuickStartChecklistViewController:
-            visited(.checklist)
-        case is BlogListViewController:
-            visited(.noSuchElement)
-        case is WPWebViewController:
-            fallthrough
-        case is WebKitViewController:
-            visited(.viewSite)
-        default:
-            break
-        }
     }
 
     // MARK: Quick Start methods
@@ -63,7 +49,7 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
 
     func start(tour: QuickStartTour, for blog: Blog) {
         switch tour {
-        case is QuickStartViewTour:
+        case is QuickStartViewTour, is QuickStartThemeTour:
             currentTourState = TourState(tour: tour, blog: blog, step: 0)
             showCurrentStep()
         default:
@@ -182,6 +168,7 @@ public enum QuickStartTourElement: Int {
     case noSuchElement
     case viewSite
     case checklist
+    case themes
 }
 
 private struct TourState {

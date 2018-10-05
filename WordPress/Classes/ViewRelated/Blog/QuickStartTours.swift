@@ -68,7 +68,11 @@ struct QuickStartThemeTour: QuickStartTour {
     let suggestionNoText = Strings.notNow
     let suggestionYesText = Strings.yesShowMe
 
-    let waypoints = WIPwaypoints
+    var waypoints: [WayPoint] = {
+        let descriptionBase = NSLocalizedString("Tap %@ to discover new themes", comment: "A step in a guided tour for quick start. %@ will be the name of the item to tap.")
+        let descriptionTarget = NSLocalizedString("Themes", comment: "The menu item to tap during a guided tour.")
+        return [(element: .themes, description: descriptionBase.highlighting(phrase: descriptionTarget, icon: Gridicon.iconOfType(.themes)))]
+    }()
 }
 
 struct QuickStartCustomizeTour: QuickStartTour {
