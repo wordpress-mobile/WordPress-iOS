@@ -49,7 +49,7 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
 
     func start(tour: QuickStartTour, for blog: Blog) {
         switch tour {
-        case is QuickStartViewTour, is QuickStartThemeTour:
+        case is QuickStartViewTour, is QuickStartThemeTour, is QuickStartCustomizeTour:
             currentTourState = TourState(tour: tour, blog: blog, step: 0)
             showCurrentStep()
         default:
@@ -169,6 +169,7 @@ public enum QuickStartTourElement: Int {
     case viewSite
     case checklist
     case themes
+    case customize
 }
 
 private struct TourState {
