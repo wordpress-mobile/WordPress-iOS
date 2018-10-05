@@ -72,11 +72,11 @@ target 'WordPress' do
     ## =====================
     ##
     pod '1PasswordExtension', '1.8.5'
-    pod 'HockeySDK', '5.1.2', :configurations => ['Release-Internal', 'Release-Alpha']
+    pod 'HockeySDK', '5.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
     pod 'MRProgress', '0.8.3'
     pod 'Reachability',    '3.2'
     pod 'SVProgressHUD', '2.2.5'
-    pod 'Crashlytics', '3.10.1'
+    pod 'Crashlytics', '3.10.8'
     pod 'BuddyBuildSDK', '1.0.17', :configurations => ['Release-Alpha']
     pod 'Gifu', '3.1.0'
     pod 'GiphyCoreSDK', '~> 1.4.0'
@@ -173,7 +173,6 @@ target 'WordPressNotificationServiceExtension' do
     inherit! :search_paths
 
     pod 'Gridicons', '0.16'
-
     pod 'WordPressKit', '1.4.1-beta.2'
     pod 'WordPressShared', :git => 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', :commit => '6e807ed'
 
