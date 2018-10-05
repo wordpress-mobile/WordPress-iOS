@@ -92,7 +92,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         label.isHidden = true
         return label
     }()
-    
+
     /// If the language the user chose in settings is character based
     /// The lable will show the number of characters.
     /// If the language is not supported the label will stay hidden
