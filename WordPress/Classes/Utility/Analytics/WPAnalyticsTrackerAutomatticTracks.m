@@ -348,6 +348,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatCreateSiteRequestInitiated:
             eventName = @"site_creation_creating_viewed";
             break;
+        case WPAnalyticsStatCreateSiteSuccessViewed:
+            eventName = @"site_creation_success_viewed";
+            break;
         case WPAnalyticsStatCreateSiteCreationFailed:
             eventName = @"create_site_creation_failed";
             break;
