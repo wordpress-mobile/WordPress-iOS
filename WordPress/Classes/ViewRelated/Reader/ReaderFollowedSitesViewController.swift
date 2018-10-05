@@ -201,7 +201,13 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             let notice = Notice(title: title,
                                 message: url.host,
                                 feedbackType: .error)
-            self?.post(notice)
+
+            // The underlying services for `followSite` don't consistently run the callback
+            // on the main thread, so we'll ensure that we post the notice on the main
+            // thread to prevent crashes.
+            DispatchQueue.main.async {
+                self?.post(notice)
+            }
         })
     }
 
