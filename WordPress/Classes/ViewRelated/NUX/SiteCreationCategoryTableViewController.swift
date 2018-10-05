@@ -16,12 +16,15 @@ class SiteCreationCategoryTableViewController: NUXTableViewController {
     }
 
     // MARK: - View
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        WPAppAnalytics.track(.createSiteProcessBegun)
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupTable()
         setupNavBar()
-        WPAppAnalytics.track(.createSiteProcessBegun)
     }
 
     override func viewDidAppear(_ animated: Bool) {
