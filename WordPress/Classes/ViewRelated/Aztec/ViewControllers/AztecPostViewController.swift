@@ -91,9 +91,8 @@ class AztecPostViewController: UIViewController, PostEditor {
         label.textAlignment = .right
         label.isHidden = true
         return label
-
     }()
-
+    
     /// If the language the user chose in settings is character based
     /// The lable will show the number of characters.
     /// If the language is not supported the label will stay hidden
@@ -101,9 +100,12 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
 
     fileprivate(set) lazy var isCharacterBasedLanguge: Bool? = {
-        let locale = WordPressComLanguageDatabase().deviceLanguage.slug
+        let primaryLanguage = richTextView.textInputMode?.primaryLanguage
+        let locale =  primaryLanguage != nil
+        ? primaryLanguage
+        : WordPressComLanguageDatabase().deviceLanguage.slug
         switch locale {
-        case "ja", "th", "zh-cn", "zh-hk", "zh-sg", "zh-tw", "he":
+        case "ja", "th", "zh-cn", "zh-hk", "zh-sg", "zh-tw":
             return true
         case "ko":
             return nil
@@ -1689,7 +1691,9 @@ extension AztecPostViewController: UITextViewDelegate {
         case titleTextField:
             updateTitleHeight()
         case richTextView:
-            updateWordOrCharCountText(isHTML: false)
+            if textView.text.count > 0 {
+                updateWordOrCharCountText(isHTML: false)
+            }
             updateFormatBar()
         case htmlTextView:
             updateWordOrCharCountText(isHTML: true)
@@ -1783,6 +1787,7 @@ extension AztecPostViewController: UITextViewDelegate {
 
     private func  updateWordOrCharCountText(isHTML: Bool) {
         let textView = isHTML ? htmlTextView : richTextView
+        wordOrCharacterCountLabel.isHidden = false
         if let isCharacterBasedLanguge = isCharacterBasedLanguge {
             let count = isCharacterBasedLanguge ? textView.text.count : textView.wordsCount()
             let describingString = isCharacterBasedLanguge ? "characters" : "words"
