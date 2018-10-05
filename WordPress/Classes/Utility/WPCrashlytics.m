@@ -1,6 +1,7 @@
 #import "WPCrashlytics.h"
 
-#import <Crashlytics/Crashlytics.h>
+@import Crashlytics;
+
 #import "AccountService.h"
 #import "BlogService.h"
 #import "ContextManager.h"
@@ -33,7 +34,6 @@ NSString * const WPCrashlyticsKeyNumberOfBlogs = @"number_of_blogs";
     self = [super init];
     
     if (self) {
-        [[Crashlytics sharedInstance] setDelegate:self];
         [self startupCrashlyticsIfNeeded];
         [self startObservingNotifications];
     }
@@ -52,9 +52,17 @@ NSString * const WPCrashlyticsKeyNumberOfBlogs = @"number_of_blogs";
 
     BOOL userHasOptedOut = [WPCrashlytics userHasOptedOut];
     if (!userHasOptedOut) {
+        // See also : https://docs.fabric.io/apple/crashlytics/advanced-setup.html
+        [CrashlyticsKit setDelegate:self];
+
+        // See also : https://docs.fabric.io/apple/fabric/advanced-settings/debugging.html
+        #if DEBUG
+            [[Fabric sharedSDK] setDebug:YES];
+        #endif
+
         // FYI: This method may get called mutiple times (e.g. user toggles the privacy settings on-off-on).
         // Per the docs, only the first call is honored and subsequent calls are no-ops.
-        [Fabric with:@[CrashlyticsKit]];        
+        [Fabric with:@[CrashlyticsKit]];
 
         [self setCommonCrashlyticsParameters];
     }
@@ -146,18 +154,18 @@ NSString * const WPCrashlyticsKeyNumberOfBlogs = @"number_of_blogs";
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
     
     BOOL loggedIn = defaultAccount != nil;
-    [[Crashlytics sharedInstance] setUserName:defaultAccount.username];
-    [[Crashlytics sharedInstance] setObjectValue:@(loggedIn) forKey:WPCrashlyticsKeyLoggedIn];
-    [[Crashlytics sharedInstance] setObjectValue:@(loggedIn) forKey:WPCrashlyticsKeyConnectedToDotcom];
-    [[Crashlytics sharedInstance] setObjectValue:@([blogService blogCountForAllAccounts]) forKey:WPCrashlyticsKeyNumberOfBlogs];
+    [CrashlyticsKit setUserName:defaultAccount.username];
+    [CrashlyticsKit setObjectValue:@(loggedIn) forKey:WPCrashlyticsKeyLoggedIn];
+    [CrashlyticsKit setObjectValue:@(loggedIn) forKey:WPCrashlyticsKeyConnectedToDotcom];
+    [CrashlyticsKit setObjectValue:@([blogService blogCountForAllAccounts]) forKey:WPCrashlyticsKeyNumberOfBlogs];
 }
 
  - (void)clearCommonCrashlyticsParameters
 {
-    [[Crashlytics sharedInstance] setUserName:nil];
-    [[Crashlytics sharedInstance] setObjectValue:nil forKey:WPCrashlyticsKeyLoggedIn];
-    [[Crashlytics sharedInstance] setObjectValue:nil forKey:WPCrashlyticsKeyConnectedToDotcom];
-    [[Crashlytics sharedInstance] setObjectValue:nil forKey:WPCrashlyticsKeyNumberOfBlogs];
+    [CrashlyticsKit setUserName:nil];
+    [CrashlyticsKit setObjectValue:nil forKey:WPCrashlyticsKeyLoggedIn];
+    [CrashlyticsKit setObjectValue:nil forKey:WPCrashlyticsKeyConnectedToDotcom];
+    [CrashlyticsKit setObjectValue:nil forKey:WPCrashlyticsKeyNumberOfBlogs];
 }
 
 #pragma mark - CrashlyticsDelegate
@@ -165,17 +173,19 @@ NSString * const WPCrashlyticsKeyNumberOfBlogs = @"number_of_blogs";
 - (void)crashlyticsDidDetectReportForLastExecution:(CLSReport *)report completionHandler:(void (^)(BOOL submit))completionHandler
 {
     DDLogMethod();
+
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSInteger crashCount = [defaults integerForKey:@"crashCount"];
     crashCount += 1;
     [defaults setInteger:crashCount forKey:@"crashCount"];
-    [defaults synchronize];
+
     if (completionHandler) {
         //  Invoking the completionHandler with NO will cause the detected report to be deleted and not submitted to Crashlytics.
         BOOL shouldSubmitReportToCrashlytics = ![WPCrashlytics userHasOptedOut];
-        completionHandler(shouldSubmitReportToCrashlytics);
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            completionHandler(shouldSubmitReportToCrashlytics);
+        }];
     }
 }
-
 
 @end
