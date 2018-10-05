@@ -581,11 +581,13 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
     if ([self.blog supports:BlogFeatureThemeBrowsing]) {
-        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Themes", @"Themes option in the blog details")
-                                                        image:[Gridicon iconOfType:GridiconTypeThemes]
-                                                     callback:^{
-                                                         [weakSelf showThemes];
-                                                     }]];
+        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Themes", @"Themes option in the blog details")
+                                                              image:[Gridicon iconOfType:GridiconTypeThemes]
+                                                           callback:^{
+                                                               [weakSelf showThemes];
+                                                           }];
+        row.quickStartIdentifier = QuickStartTourElementThemes;
+        [rows addObject:row];
     }
     if ([self.blog supports:BlogFeatureMenus]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Menus", @"Menus option in the blog details")
