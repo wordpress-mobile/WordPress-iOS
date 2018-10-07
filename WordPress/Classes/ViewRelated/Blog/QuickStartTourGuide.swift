@@ -58,6 +58,11 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
         }
     }
 
+    func endCurrentTour() {
+        dismissCurrentNotice()
+        currentTourState = nil
+    }
+
     func showStepNotice(_ description: NSAttributedString) {
         let noticeStyle = QuickStartNoticeStyle(attributedMessage: description)
         let notice = Notice(title: "Test Quick Start Notice", style: noticeStyle)

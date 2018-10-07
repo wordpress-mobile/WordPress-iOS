@@ -10,6 +10,7 @@ class QuickStartNavigationWatcher: NSObject, UINavigationControllerDelegate {
             tourGuide.visited(.checklist)
         case is BlogListViewController:
             tourGuide.visited(.noSuchElement)
+            tourGuide.endCurrentTour()
         case is WPWebViewController:
             fallthrough
         case is WebKitViewController:
