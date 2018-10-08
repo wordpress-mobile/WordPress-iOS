@@ -170,19 +170,11 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - UIDeviceIdentifier (~> 0.4)
   - WordPress-Editor-iOS (= 1.0.2)
-<<<<<<< HEAD
   - WordPressAuthenticator (= 1.1.1)
   - WordPressKit (= 1.4.1)
   - WordPressShared (= 1.1.1-beta.4)
   - WordPressUI (= 1.0.8)
   - WPMediaPicker (= 1.3.1)
-=======
-  - WordPressAuthenticator (= 1.1.0-beta.1)
-  - WordPressKit (= 1.4.1-beta.2)
-  - WordPressShared (from `https://github.com/yaelirub/WordPress-iOS-Shared.git`, commit `4d1f6e0864a894487a676ebcbb28f3bd03c20381`)
-  - WordPressUI (= 1.0.8-beta.3)
-  - WPMediaPicker (= 1.3.1-beta.1)
->>>>>>> Updating pods
   - wpxmlrpc (= 0.8.3)
   - ZendeskSDK (= 2.2.0)
 
@@ -230,9 +222,6 @@ EXTERNAL SOURCES:
   WordPressShared:
     :commit: 4d1f6e0864a894487a676ebcbb28f3bd03c20381
     :git: https://github.com/yaelirub/WordPress-iOS-Shared.git
-  ZendeskSDK:
-    :branch: xcode10-beta
-    :git: https://github.com/zendesk/zendesk_sdk_ios.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -241,9 +230,6 @@ CHECKOUT OPTIONS:
   WordPressShared:
     :commit: 4d1f6e0864a894487a676ebcbb28f3bd03c20381
     :git: https://github.com/yaelirub/WordPress-iOS-Shared.git
-  ZendeskSDK:
-    :commit: 00559895d059ec1936f8a08006b9253afdb148b1
-    :git: https://github.com/zendesk/zendesk_sdk_ios.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 0e95bdea64ec8ff2f4f693be5467a09fac42a83d
@@ -283,11 +269,6 @@ SPEC CHECKSUMS:
   wpxmlrpc: bfc572f62ce7ee897f6f38b098d2ba08732ecef4
   ZendeskSDK: 44ee00338dd718495f0364369420ae11b389c878
 
-<<<<<<< HEAD
 PODFILE CHECKSUM: 3c23827ae53a7547d7736ba7bc90671a040224fc
-=======
-
-PODFILE CHECKSUM: 75e27d2c7da75fc7301380a43c93948a97209f8a
->>>>>>> Rebase with Develop now won Swift 4.2
 
 COCOAPODS: 1.5.3
