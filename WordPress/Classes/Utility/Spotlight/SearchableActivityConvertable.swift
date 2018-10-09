@@ -19,21 +19,21 @@ extension WPActivityType {
     var suggestedInvocationPhrase: String {
         switch self {
         case .siteList:
-            return NSLocalizedString("Open My Sites in WordPress", comment: "Siri Suggestion to open My Sites")
+            return NSLocalizedString("Go to My Sites in WordPress", comment: "Siri Suggestion to open My Sites")
         case .siteDetails:
-            return NSLocalizedString("Open WordPress Site Details", comment: "Siri Suggestion to open My Sites")
+            return NSLocalizedString("Go to WordPress Site Details", comment: "Siri Suggestion to open My Sites")
         case .reader:
-            return NSLocalizedString("Open the WordPress Reader", comment: "Siri Suggestion to open My Sites")
+            return NSLocalizedString("Go to the WordPress Reader", comment: "Siri Suggestion to open My Sites")
         case .me:
-            return NSLocalizedString("Open Me in WordPress", comment: "Siri Suggestion to open Me tab")
+            return NSLocalizedString("Go to my profile in WordPress", comment: "Siri Suggestion to open Me tab")
         case .appSettings:
-            return NSLocalizedString("Open WordPress App Settings", comment: "Siri Suggestion to open App Settings")
+            return NSLocalizedString("Go to WordPress App Settings", comment: "Siri Suggestion to open App Settings")
         case .notificationSettings:
-            return NSLocalizedString("Open WordPress Notification Settings", comment: "Siri Suggestion to open Notification Settings")
+            return NSLocalizedString("Go to WordPress Notification Settings", comment: "Siri Suggestion to open Notification Settings")
         case .support:
-            return NSLocalizedString("Open WordPress Help & Support", comment: "Siri Suggestion to open Support")
+            return NSLocalizedString("Go to WordPress Help", comment: "Siri Suggestion to open Support")
         case .notifications:
-            return NSLocalizedString("Open WordPress Notifications", comment: "Siri Suggestion to open Notifications")
+            return NSLocalizedString("Go to WordPress Notifications", comment: "Siri Suggestion to open Notifications")
         }
     }
 }
