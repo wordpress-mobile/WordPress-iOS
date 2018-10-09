@@ -54,7 +54,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 @property (nonatomic) BOOL showsSelectionState;
 @property (nonatomic) BOOL forDestructiveAction;
 @property (nonatomic, copy) void (^callback)(void);
-@property (nonatomic) int quickStartIdentifier;
+@property (nonatomic) QuickStartTourElement quickStartIdentifier;
 
 @end
 
@@ -139,7 +139,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 @property (nonatomic, strong) BlogDetailHeaderView *headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
-@property (nonatomic, strong) NSArray *tableSections;
+@property (nonatomic, strong) NSArray<BlogDetailsSection *> *tableSections;
 @property (nonatomic, strong) WPStatsService *statsService;
 @property (nonatomic, strong) BlogService *blogService;
 @property (nonatomic, strong) SiteIconPickerPresenter *siteIconPickerPresenter;
@@ -290,6 +290,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     [self reloadTableViewPreservingSelection];
     [self preloadBlogData];
+
+    [self scrollToElement:[[QuickStartTourGuide find] currentElementInt]];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -1088,6 +1090,23 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
     if ([CommentService shouldRefreshCacheFor:self.blog]) {
         [commentService syncCommentsForBlog:self.blog success:nil failure:nil];
+    }
+}
+
+- (void)scrollToElement:(QuickStartTourElement) element
+{
+    int sectionCount = 0;
+    int rowCount = 0;
+    for (BlogDetailsSection *section in self.tableSections) {
+        rowCount = 0;
+        for (BlogDetailsRow *row in section.rows) {
+            if (row.quickStartIdentifier == element) {
+                NSIndexPath *path = [NSIndexPath indexPathForRow:rowCount inSection:sectionCount];
+                [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionMiddle animated:false];
+            }
+            rowCount++;
+        }
+        sectionCount++;
     }
 }
 
