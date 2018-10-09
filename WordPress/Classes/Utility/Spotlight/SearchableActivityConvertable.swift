@@ -1,4 +1,5 @@
 import CoreSpotlight
+import Intents
 import MobileCoreServices
 
 /// Custom NSUSerActivity types for the WPiOS. Primarily used for navigation points.
@@ -12,6 +13,29 @@ enum WPActivityType: String {
     case notificationSettings   = "org.wordpress.me.notificationsettings"
     case support                = "org.wordpress.me.support"
     case notifications          = "org.wordpress.notifications"
+}
+
+extension WPActivityType {
+    var suggestedInvocationPhrase: String {
+        switch self {
+        case .siteList:
+            return NSLocalizedString("Open My Sites in WordPress", comment: "Siri Suggestion to open My Sites")
+        case .siteDetails:
+            return NSLocalizedString("Open WordPress Site Details", comment: "Siri Suggestion to open My Sites")
+        case .reader:
+            return NSLocalizedString("Open the WordPress Reader", comment: "Siri Suggestion to open My Sites")
+        case .me:
+            return NSLocalizedString("Open Me in WordPress", comment: "Siri Suggestion to open Me tab")
+        case .appSettings:
+            return NSLocalizedString("Open WordPress App Settings", comment: "Siri Suggestion to open App Settings")
+        case .notificationSettings:
+            return NSLocalizedString("Open WordPress Notification Settings", comment: "Siri Suggestion to open Notification Settings")
+        case .support:
+            return NSLocalizedString("Open WordPress Help & Support", comment: "Siri Suggestion to open Support")
+        case .notifications:
+            return NSLocalizedString("Open WordPress Notifications", comment: "Siri Suggestion to open Notifications")
+        }
+    }
 }
 
 /// NSUserActivity userInfo keys
@@ -79,6 +103,14 @@ extension SearchableActivityConvertable where Self: UIViewController {
 
         activity.isEligibleForSearch = true
         activity.isEligibleForHandoff = false
+
+        if #available(iOS 12.0, *) {
+            activity.isEligibleForPrediction = true
+
+            if let wpActivityType = WPActivityType(rawValue: activityType) {
+                activity.suggestedInvocationPhrase = wpActivityType.suggestedInvocationPhrase
+            }
+        }
 
         // Set the UIViewController's userActivity property, which is defined in UIResponder. Doing this allows
         // UIKit to automagically manage this user activity (e.g. making it current when needed)
