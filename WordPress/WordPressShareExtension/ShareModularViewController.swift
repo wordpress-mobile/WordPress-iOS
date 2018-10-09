@@ -73,7 +73,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
     /// Activity indicator used when loading categories
     ///
-    fileprivate lazy var categoryActivityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    fileprivate lazy var categoryActivityIndicator = UIActivityIndicatorView(style: .gray)
 
     /// No results view
     ///
@@ -330,7 +330,7 @@ extension ShareModularViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -631,9 +631,9 @@ fileprivate extension ShareModularViewController {
     func configureAndDisplayStatus(title: String, accessoryView: UIView? = nil) {
         noResultsViewController.removeFromView()
         noResultsViewController.configure(title: title, accessoryView: accessoryView)
-        addChildViewController(noResultsViewController)
+        addChild(noResultsViewController)
         view.addSubview(noResultsViewController.view)
-        noResultsViewController.didMove(toParentViewController: self)
+        noResultsViewController.didMove(toParent: self)
     }
 
     func updatePublishButtonStatus() {
@@ -954,7 +954,7 @@ class ShareSitesTableViewCell: WPTableViewCell {
         super.init(coder: aDecoder)
     }
 
-    public required override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    public required override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
     }
 

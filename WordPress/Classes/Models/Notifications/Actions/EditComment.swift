@@ -7,7 +7,7 @@ class EditComment: DefaultNotificationActionCommand {
     let editIcon: UIButton = {
         let button = MGSwipeButton(title: title, backgroundColor: WPStyleGuide.wordPressBlue())
         button.accessibilityLabel = title
-        button.accessibilityTraits = UIAccessibilityTraitButton
+        button.accessibilityTraits = UIAccessibilityTraits.button
         button.accessibilityHint = hint
         return button
     }()

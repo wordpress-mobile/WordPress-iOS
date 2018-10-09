@@ -15,9 +15,9 @@ import WordPressShared
     fileprivate lazy var noResultsViewController: NoResultsViewController = {
         let controller = NoResultsViewController.controller()
         controller.view.frame = view.frame
-        addChildViewController(controller)
+        addChild(controller)
         view.addSubview(controller.view)
-        controller.didMove(toParentViewController: self)
+        controller.didMove(toParent: self)
         return controller
     }()
 

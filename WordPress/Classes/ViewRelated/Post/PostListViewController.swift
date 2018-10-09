@@ -65,7 +65,8 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
 
     // MARK: - UIViewControllerRestoration
 
-    class func viewController(withRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
+    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
+                              coder: NSCoder) -> UIViewController? {
 
         let context = ContextManager.sharedInstance().mainContext
 
@@ -139,7 +140,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         tableView.isAccessibilityElement = true
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = type(of: self).postCardEstimatedRowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
 
         let bundle = Bundle.main
 
@@ -223,7 +224,7 @@ class PostListViewController: AbstractPostListViewController, UIViewControllerRe
         let filterController = AuthorFilterViewController(initialSelection: filterSettings.currentPostAuthorFilter(),
                                                           gravatarEmail: blog.account?.email) { [weak self] filter in
                                                             if filter != self?.filterSettings.currentPostAuthorFilter() {
-                                                                UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, sender)
+                                                                UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged, argument: sender)
                                                             }
 
                                                             self?.filterSettings.setCurrentPostAuthorFilter(filter)

@@ -20,7 +20,7 @@ final class MediaLibraryMediaPickingCoordinator {
         let fromView = context.view
         let buttonItem = context.barButtonItem
 
-        let menuAlert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
+        let menuAlert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.actionSheet)
 
         if let quotaUsageDescription = blog.quotaUsageDescription {
             menuAlert.title = quotaUsageDescription

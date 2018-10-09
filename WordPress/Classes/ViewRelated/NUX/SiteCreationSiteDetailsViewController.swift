@@ -1,5 +1,6 @@
 import UIKit
 import WordPressAuthenticator
+import WordPressShared
 
 
 class SiteCreationSiteDetailsViewController: NUXViewController, NUXKeyboardResponder {
@@ -42,8 +43,10 @@ class SiteCreationSiteDetailsViewController: NUXViewController, NUXKeyboardRespo
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
         registerForKeyboardEvents(keyboardWillShowAction: #selector(handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(handleKeyboardWillHide(_:)))
+        WPAppAnalytics.track(.createSiteDetailsViewed)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -104,7 +107,7 @@ class SiteCreationSiteDetailsViewController: NUXViewController, NUXKeyboardRespo
 
     private func setupNextButton() {
         let nextButtonTitle = NSLocalizedString("Next", comment: "Title of a button. The text should be capitalized.").localizedCapitalized
-        nextButton?.setTitle(nextButtonTitle, for: UIControlState())
+        nextButton?.setTitle(nextButtonTitle, for: UIControl.State())
         nextButton?.setTitle(nextButtonTitle, for: .highlighted)
         nextButton?.accessibilityIdentifier = "Next Button"
     }
@@ -176,7 +179,7 @@ extension SiteCreationSiteDetailsViewController: UITextFieldDelegate {
         toggleNextButton(textField)
     }
 
-    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextFieldDidEndEditingReason) {
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
         toggleNextButton(textField)
     }
 

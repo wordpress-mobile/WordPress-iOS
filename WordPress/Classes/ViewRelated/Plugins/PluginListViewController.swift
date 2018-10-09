@@ -46,7 +46,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
             self?.updateRefreshControl()
         }
 
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 72
 
         updateRefreshControl()
@@ -72,7 +72,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
     private func showNoResults(_ viewModel: NoResultsViewController.Model) {
         noResultsViewController.bindViewModel(viewModel)
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
-        addChildViewController(noResultsViewController)
+        addChild(noResultsViewController)
 
         // Adjust view to center it vertically
         if case .feed(let feedType) = query, case .search = feedType {
@@ -85,7 +85,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
             noResultsViewController.view.frame.origin.y = 0
         }
 
-        noResultsViewController.didMove(toParentViewController: self)
+        noResultsViewController.didMove(toParent: self)
     }
 
     func refreshModel(change: PluginListViewModel.StateChange) {

@@ -5,7 +5,7 @@ class WPStyleGuide_BlogTests: XCTestCase {
     var testCell: UITableViewCell!
 
     override func setUp() {
-        testCell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: nil)
+        testCell = UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: nil)
         super.setUp()
     }
 

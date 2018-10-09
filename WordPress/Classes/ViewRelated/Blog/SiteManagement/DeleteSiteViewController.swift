@@ -46,7 +46,7 @@ open class DeleteSiteViewController: UITableViewController {
         assert(blog != nil)
         title = NSLocalizedString("Delete Site", comment: "Title of settings page for deleting a site")
         tableView.cellLayoutMarginsFollowReadableWidth = true
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 500.0
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
         setupHeaderSection()
@@ -123,7 +123,7 @@ open class DeleteSiteViewController: UITableViewController {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .natural
 
-        let attributes: [NSAttributedStringKey: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
+        let attributes: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
                                                         .foregroundColor: WPStyleGuide.darkGrey(),
                                                         .paragraphStyle: paragraphStyle ]
         let htmlAttributes: StyledHTMLAttributes = [.BodyAttribute: attributes]
@@ -138,8 +138,8 @@ open class DeleteSiteViewController: UITableViewController {
         sectionThreeBody.attributedText = combinedAttributedString
         sectionThreeBody.textColor = WPStyleGuide.darkGrey()
 
-        let contactButtonAttributes: [NSAttributedStringKey: Any] = [.foregroundColor: WPStyleGuide.wordPressBlue(),
-                                                                     .underlineStyle: NSUnderlineStyle.styleSingle.rawValue]
+        let contactButtonAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: WPStyleGuide.wordPressBlue(),
+                                                                     .underlineStyle: NSUnderlineStyle.single.rawValue]
         supportButton.setAttributedTitle(NSAttributedString(string: NSLocalizedString("Contact Support",
                                                             comment: "Button label for contacting support"),
                                                             attributes: contactButtonAttributes),

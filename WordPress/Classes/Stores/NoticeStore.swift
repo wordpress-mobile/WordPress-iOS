@@ -14,7 +14,7 @@ struct Notice {
 
     /// An optional taptic feedback type. If provided, taptic feedback will be
     /// triggered when the notice is displayed.
-    let feedbackType: UINotificationFeedbackType?
+    let feedbackType: UINotificationFeedbackGenerator.FeedbackType?
 
     /// If provided, the notice will be presented as a system notification when
     /// the app isn't in the foreground.
@@ -32,7 +32,7 @@ struct Notice {
     /// is tapped, if you've provided an action title
     let actionHandler: (() -> Void)?
 
-    init(title: String, message: String? = nil, feedbackType: UINotificationFeedbackType? = nil, notificationInfo: NoticeNotificationInfo? = nil, style: NoticeStyle = NormalNoticeStyle()) {
+    init(title: String, message: String? = nil, feedbackType: UINotificationFeedbackGenerator.FeedbackType? = nil, notificationInfo: NoticeNotificationInfo? = nil, style: NoticeStyle = NormalNoticeStyle()) {
         self.title = title
         self.message = message
         self.feedbackType = feedbackType
@@ -42,7 +42,7 @@ struct Notice {
         self.style = style
     }
 
-    init(title: String, message: String? = nil, feedbackType: UINotificationFeedbackType? = nil, notificationInfo: NoticeNotificationInfo? = nil, style: NoticeStyle = NormalNoticeStyle(), actionTitle: String, actionHandler: @escaping (() -> Void)) {
+    init(title: String, message: String? = nil, feedbackType: UINotificationFeedbackGenerator.FeedbackType? = nil, notificationInfo: NoticeNotificationInfo? = nil, style: NoticeStyle = NormalNoticeStyle(), actionTitle: String, actionHandler: @escaping (() -> Void)) {
         self.title = title
         self.message = message
         self.feedbackType = feedbackType
