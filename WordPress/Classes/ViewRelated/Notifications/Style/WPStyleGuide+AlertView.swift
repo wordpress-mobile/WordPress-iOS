@@ -13,10 +13,10 @@ extension WPStyleGuide {
         public static let detailsBoldFont           = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
         public static let detailsColor              = WPStyleGuide.darkGrey()
 
-        public static let detailsRegularAttributes: [NSAttributedStringKey: Any] = [.font: detailsRegularFont,
+        public static let detailsRegularAttributes: [NSAttributedString.Key: Any] = [.font: detailsRegularFont,
                                                                                     .foregroundColor: detailsColor]
 
-        public static let detailsBoldAttributes: [NSAttributedStringKey: Any] = [.font: detailsBoldFont,
+        public static let detailsBoldAttributes: [NSAttributedString.Key: Any] = [.font: detailsBoldFont,
                                                                                  .foregroundColor: detailsColor]
 
         // MARK: - Button Styles

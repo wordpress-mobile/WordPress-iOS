@@ -16,7 +16,7 @@ class AppSettingsViewController: UITableViewController {
 
     // MARK: - Initialization
 
-    override init(style: UITableViewStyle) {
+    override init(style: UITableView.Style) {
         super.init(style: style)
         navigationItem.title = NSLocalizedString("App Settings", comment: "App Settings Title")
     }
@@ -219,7 +219,7 @@ class AppSettingsViewController: UITableViewController {
 
     func openApplicationSettings() -> ImmuTableAction {
         return { [weak self] row in
-            if let targetURL = URL(string: UIApplicationOpenSettingsURLString) {
+            if let targetURL = URL(string: UIApplication.openSettingsURLString) {
                 UIApplication.shared.open(targetURL)
 
             } else {

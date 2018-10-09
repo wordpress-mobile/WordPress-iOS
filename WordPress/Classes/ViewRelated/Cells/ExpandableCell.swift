@@ -12,7 +12,7 @@ class ExpandableCell: WPReusableTableViewCell {
         setupSubviews()
     }
 
-    public required override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    public required override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupSubviews()
     }
@@ -58,9 +58,11 @@ class ExpandableCell: WPReusableTableViewCell {
         chevronImageView?.tintColor = WPStyleGuide.cellGridiconAccessoryColor()
 
         titleTextLabel?.textColor = WPStyleGuide.darkGrey()
-        expandableTextView?.linkTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue: WPStyleGuide.wordPressBlue(),
-                                                  NSAttributedStringKey.underlineStyle.rawValue: 0,
-                                                  NSAttributedStringKey.underlineColor.rawValue: UIColor.clear]
+
+        let linkAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: WPStyleGuide.wordPressBlue(),
+                                                             .underlineStyle: 0,
+                                                             .underlineColor: UIColor.clear]
+        expandableTextView?.linkTextAttributes = linkAttributes
 
         expandableTextView?.delegate = self
         expandableTextView?.textContainerInset = .zero

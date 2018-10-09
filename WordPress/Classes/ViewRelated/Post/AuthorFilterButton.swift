@@ -119,7 +119,7 @@ class AuthorFilterButton: UIControl {
 extension AuthorFilterButton: Accessible {
     func prepareForVoiceOver() {
         isAccessibilityElement = true
-        accessibilityTraits = UIAccessibilityTraitButton
+        accessibilityTraits = UIAccessibilityTraits.button
         accessibilityLabel = NSLocalizedString("Author Filter", comment: "Voiceover description of a button that allows the user to filter posts by author.")
         accessibilityHint = NSLocalizedString("Select to change the current author filter.", comment: "Voiceover hint for a button that allows the user to filter posts by author.")
         accessibilityValue = filterType.accessibilityValue

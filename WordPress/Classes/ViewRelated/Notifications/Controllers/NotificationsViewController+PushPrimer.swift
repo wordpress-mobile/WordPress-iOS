@@ -85,7 +85,7 @@ extension NotificationsViewController {
                 WPAnalytics.track(.pushNotificationWinbackSettingsTapped, withProperties: [Analytics.locationKey: Analytics.inlineKey])
             }
             self?.hideInlinePrompt(delay: 0.0)
-            let targetURL = URL(string: UIApplicationOpenSettingsURLString)
+            let targetURL = URL(string: UIApplication.openSettingsURLString)
             UIApplication.shared.open(targetURL!)
             UserDefaults.standard.notificationPrimerInlineWasAcknowledged = true
         }

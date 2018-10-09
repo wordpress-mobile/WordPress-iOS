@@ -12,7 +12,7 @@ extension WPStyleGuide {
     /// - note: iOS won't return UIFontWeightMedium for dynamic system font :(
     /// So instead get the dynamic font size, then ask for the non-dynamic font at that size
     ///
-    class func mediumWeightFont(forStyle style: UIFontTextStyle, maximumPointSize: CGFloat = WPStyleGuide.maxFontSize) -> UIFont {
+    class func mediumWeightFont(forStyle style: UIFont.TextStyle, maximumPointSize: CGFloat = WPStyleGuide.maxFontSize) -> UIFont {
         let fontToGetSize = WPStyleGuide.fontForTextStyle(style)
         let maxAllowedFontSize = CGFloat.minimum(fontToGetSize.pointSize, maximumPointSize)
         return UIFont.systemFont(ofSize: maxAllowedFontSize, weight: .medium)

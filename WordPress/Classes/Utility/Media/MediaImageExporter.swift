@@ -110,12 +110,12 @@ class MediaImageExporter: MediaExporter {
         var hint: String?
         // If the exportImageType is targeting a PNG, try to init PNG data.
         if let exportType = options.exportImageType, UTTypeEqual(exportType as CFString, kUTTypePNG) {
-            data = UIImagePNGRepresentation(image)
+            data = image.pngData()
             hint = kUTTypePNG as String
         }
         // If the data failed to init as PNG, or is another type, try and init as JPEG data.
         if data == nil {
-            data = UIImageJPEGRepresentation(image, 1.0)
+            data = image.jpegData(compressionQuality: 1.0)
             hint = kUTTypeJPEG as String
         }
         // Ensure that we do indeed have image data.

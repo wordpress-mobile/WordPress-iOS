@@ -51,7 +51,7 @@ open class StartOverViewController: UITableViewController, MFMailComposeViewCont
 
         tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.estimatedSectionHeaderHeight = 100.0
-        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
 
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
     }

@@ -34,7 +34,7 @@ extension UINavigationController {
             self.pushViewController(viewController, animated: animated)
         }
 
-        if UIAccessibilityIsReduceMotionEnabled() && !self.splitViewControllerIsHorizontallyCompact {
+        if UIAccessibility.isReduceMotionEnabled && !self.splitViewControllerIsHorizontallyCompact {
             splitViewController.view.hideWithBlankingSnapshot(afterScreenUpdates: true)
             performTransition(false)
         } else {
@@ -107,7 +107,7 @@ extension UINavigationBar {
             // didn't seem to animate using a standard UIView animation block.
             let fadeAnimation = CATransition()
             fadeAnimation.duration = fadeAnimationDuration
-            fadeAnimation.type = kCATransitionFade
+            fadeAnimation.type = CATransitionType.fade
 
             layer.add(fadeAnimation, forKey: "fadeNavigationBar")
         }
@@ -125,13 +125,13 @@ extension UINavigationBar {
 class WPFullscreenNavigationTransition: NSObject, UIViewControllerAnimatedTransitioning {
     @objc static let transitionDuration: TimeInterval = 0.3
 
-    @objc let operation: UINavigationControllerOperation
+    @objc let operation: UINavigationController.Operation
 
     @objc var pushing: Bool {
         return operation == .push
     }
 
-    @objc init(operation: UINavigationControllerOperation) {
+    @objc init(operation: UINavigationController.Operation) {
         self.operation = operation
         super.init()
     }
@@ -268,7 +268,7 @@ private struct WPFullscreenNavigationTransitionViewModel {
     let dimmingViewInitialAlpha: CGFloat
     let dimmingViewFinalAlpha: CGFloat
 
-    init?(transitionContext: UIViewControllerContextTransitioning, operation: UINavigationControllerOperation) {
+    init?(transitionContext: UIViewControllerContextTransitioning, operation: UINavigationController.Operation) {
         guard let fromVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from),
             let toVC = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) else {
                 return nil
