@@ -220,10 +220,13 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
 -(void)trackCommentLikedOrUnliked:(Comment *) comment {
     ReaderPost *post = self.post;
-    WPAnalyticsStat stat = comment.isLiked
-    ? WPAnalyticsStatReaderArticleCommentLiked
-    : WPAnalyticsStatReaderArticleCommentUnliked;
-    
+    WPAnalyticsStat stat;
+    if (comment.isLiked) {
+        stat = WPAnalyticsStatReaderArticleCommentLiked;
+    } else {
+        stat = WPAnalyticsStatReaderArticleCommentUnliked;
+    }
+
     NSMutableDictionary *properties = [NSMutableDictionary dictionary];
     properties[WPAppAnalyticsKeyPostID] = post.postID;
     properties[WPAppAnalyticsKeyBlogID] = post.siteID;
