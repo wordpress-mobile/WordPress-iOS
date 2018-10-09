@@ -27,8 +27,8 @@ open class QuickStartTourGuide: NSObject, UINavigationControllerDelegate {
     }
 
     func suggest(_ tour: QuickStartTour, for blog: Blog) {
-        // swallow subsequent suggestions
-        guard currentSuggestion == nil else {
+        // swallow suggestions if already suggesting or a tour is in progress
+        guard currentSuggestion == nil, currentTourState == nil else {
             return
         }
         currentSuggestion = tour
