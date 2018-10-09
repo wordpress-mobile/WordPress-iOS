@@ -102,8 +102,8 @@ class PingHubManager: NSObject {
 
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(PingHubManager.accountChanged), name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(PingHubManager.applicationDidEnterBackground), name: .UIApplicationDidEnterBackground, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(PingHubManager.applicationWillEnterForeground), name: .UIApplicationWillEnterForeground, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(PingHubManager.applicationDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(PingHubManager.applicationWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
 
         if let token = authToken {
             client = client(token: token)

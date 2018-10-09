@@ -30,16 +30,16 @@ final class CameraCaptureCoordinator {
             MediaCoordinator.shared.addMedia(from: media, to: blog, analyticsInfo: info)
         }
 
-        guard let mediaType = mediaInfo[UIImagePickerControllerMediaType] as? String else { return }
+        guard let mediaType = mediaInfo[UIImagePickerController.InfoKey.mediaType.rawValue] as? String else { return }
 
         switch mediaType {
         case String(kUTTypeImage):
-            if let image = mediaInfo[UIImagePickerControllerOriginalImage] as? UIImage,
-                let metadata = mediaInfo[UIImagePickerControllerMediaMetadata] as? [AnyHashable: Any] {
+            if let image = mediaInfo[UIImagePickerController.InfoKey.originalImage.rawValue] as? UIImage,
+                let metadata = mediaInfo[UIImagePickerController.InfoKey.mediaMetadata.rawValue] as? [AnyHashable: Any] {
                 WPPHAssetDataSource().add(image, metadata: metadata, completionBlock: completionBlock)
             }
         case String(kUTTypeMovie):
-            if let mediaURL = mediaInfo[UIImagePickerControllerMediaURL] as? URL {
+            if let mediaURL = mediaInfo[UIImagePickerController.InfoKey.mediaURL.rawValue] as? URL {
                 WPPHAssetDataSource().addVideo(from: mediaURL, completionBlock: completionBlock)
             }
         default:

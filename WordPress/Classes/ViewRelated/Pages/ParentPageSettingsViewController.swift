@@ -110,7 +110,7 @@ class ParentPageSettingsViewController: UIViewController {
         tableView.delegate = self
     }
 
-    private func reloadData(at section: Int, animation: UITableViewRowAnimation = .none) {
+    private func reloadData(at section: Int, animation: UITableView.RowAnimation = .none) {
         let sections = IndexSet(integer: section)
         tableView.reloadSections(sections, with: animation)
     }

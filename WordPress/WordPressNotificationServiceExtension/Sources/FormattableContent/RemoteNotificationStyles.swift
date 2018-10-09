@@ -58,7 +58,7 @@ class RemoteNotificationStyles: FormattableContentStyles {
 
     // MARK: FormattableContentStyles
 
-    var attributes: [NSAttributedStringKey: Any] {
+    var attributes: [NSAttributedString.Key: Any] {
         return [
             .paragraphStyle: paragraphStyle,
             .font: prevailingFont,
@@ -66,7 +66,7 @@ class RemoteNotificationStyles: FormattableContentStyles {
         ]
     }
 
-    var quoteStyles: [NSAttributedStringKey: Any]? {
+    var quoteStyles: [NSAttributedString.Key: Any]? {
         return [
             .paragraphStyle: paragraphStyle,
             .font: prevailingItalicizedFont,
@@ -74,7 +74,7 @@ class RemoteNotificationStyles: FormattableContentStyles {
         ]
     }
 
-    var rangeStylesMap: [FormattableRangeKind: [NSAttributedStringKey: Any]]? {
+    var rangeStylesMap: [FormattableRangeKind: [NSAttributedString.Key: Any]]? {
         return [
             .blockquote: [ .font: prevailingItalicizedFont ],
             .comment: [ .font: prevailingItalicizedFont ],

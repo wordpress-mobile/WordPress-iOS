@@ -216,8 +216,8 @@ private extension TimeZoneSelectorViewController {
         noResultsViewController.bindViewModel(viewModel)
 
         tableView.addSubview(withFadeAnimation: noResultsViewController.view)
-        addChildViewController(noResultsViewController)
-        noResultsViewController.didMove(toParentViewController: self)
+        addChild(noResultsViewController)
+        noResultsViewController.didMove(toParent: self)
     }
 
 }

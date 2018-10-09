@@ -139,7 +139,7 @@ extension ActivityListViewController {
             return 0.0
         }
 
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -274,8 +274,8 @@ private extension ActivityListViewController {
             tableView.addSubview(withFadeAnimation: noResultsViewController.view)
         }
 
-        addChildViewController(noResultsViewController)
-        noResultsViewController.didMove(toParentViewController: self)
+        addChild(noResultsViewController)
+        noResultsViewController.didMove(toParent: self)
 
     }
 
