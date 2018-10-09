@@ -715,7 +715,11 @@ private extension NotificationDetailsViewController {
         }
 
         cell.onTimeStampLongPress = { [weak self] in
-            UIAlertController.presentAlertAndCopyTextToClipboard(text: self?.note.url)
+            guard let urlString = self?.note.url,
+            let url = URL(string: urlString) else {
+                return
+            }
+            UIAlertController.presentAlertAndCopyCommentURLToClipboard(url: url)
         }
 
         // Download the Gravatar

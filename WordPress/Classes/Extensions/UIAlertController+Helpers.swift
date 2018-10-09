@@ -26,18 +26,14 @@ extension UIAlertController {
     /// for copying text to clipboard. The action sheet has 2 options:
     /// copy: will copy the text to the clipboard
     /// cancel: dismiss the action sheet
-    @objc static func copyTextAlertController(_ text: String?,
-                                              completion: ((Bool) -> Void)? = nil) -> UIAlertController? {
-        guard let text = text else {
-            completion?(false)
-            return nil
-        }
+    @objc static func copyCommentURLAlertController(_ url: URL,
+                                              completion: (() -> Void)? = nil) -> UIAlertController? {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addDefaultActionWithTitle(NSLocalizedString("Copy", comment: "Copy button")) { _ in
-            UIPasteboard.general.string = text
-            completion?(true)
+        alertController.addDefaultActionWithTitle(NSLocalizedString("Copy Link to Comment", comment: "Copy link to oomment button title")) { _ in
+            UIPasteboard.general.url = url
+            completion?()
         }
-        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel button"))
+        alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Cancel copying link to comment button title"))
         return alertController
     }
 
@@ -45,12 +41,11 @@ extension UIAlertController {
     /// provides a copy action to allow copying the text parameter to the clip board.
     /// Once copied, or on failure to copy, a notice will be posted using the dispacher so the user will know
     /// if copying to clipboard was successful
-    @objc static func presentAlertAndCopyTextToClipboard(text: String?) {
-        let successNoticeTitle = NSLocalizedString("Link Copied to Clipboard", comment: "Successful copy notice title")
-        let failureNoticeTitle = NSLocalizedString("Copy to Clipboard failed", comment: "Failed to copy notice title")
-        let copyAlertController = UIAlertController.copyTextAlertController(text) { success in
-            let title = success ? successNoticeTitle : failureNoticeTitle
-            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: title)))
+    @objc static func presentAlertAndCopyCommentURLToClipboard(url: URL) {
+        let noticeTitle = NSLocalizedString("Link Copied to Clipboard", comment: "Link copied to clipboard notice title")
+
+        let copyAlertController = UIAlertController.copyCommentURLAlertController(url) {
+            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: noticeTitle)))
         }
         copyAlertController?.presentFromRootViewController()
     }

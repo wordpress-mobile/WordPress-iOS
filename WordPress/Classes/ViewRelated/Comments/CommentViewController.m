@@ -341,7 +341,8 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     cell.isApproved = [self.comment.status isEqualToString:CommentStatusApproved];
      __typeof(self) __weak weakSelf = self;
     cell.onTimeStampLongPress = ^(void) {
-        [UIAlertController presentAlertAndCopyTextToClipboardWithText: weakSelf.comment.link];
+        NSURL *url = [NSURL URLWithString:weakSelf.comment.link];
+        [UIAlertController presentAlertAndCopyCommentURLToClipboardWithUrl:url];
     };
 
     if ([self.comment avatarURLForDisplay]) {
