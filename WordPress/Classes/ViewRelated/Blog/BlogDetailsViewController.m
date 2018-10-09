@@ -30,7 +30,7 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 NSString * const WPBlogDetailsSelectedIndexPathKey = @"WPBlogDetailsSelectedIndexPathKey";
 
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
-CGFloat const BLogDetailGridiconAccessorySize = 17.0;
+CGFloat const BlogDetailGridiconAccessorySize = 17.0;
 NSTimeInterval const PreloadingCacheTimeout = 60.0 * 5; // 5 minutes
 NSString * const HideWPAdminDate = @"2015-09-07T00:00:00Z";
 
@@ -664,7 +664,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                                                [weakSelf showViewAdmin];
                                                                [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
                                                            }];
-        UIImage *image = [[Gridicon iconOfType:GridiconTypeExternal withSize:CGSizeMake(BLogDetailGridiconAccessorySize, BLogDetailGridiconAccessorySize)] imageFlippedForRightToLeftLayoutDirection];
+        UIImage *image = [[Gridicon iconOfType:GridiconTypeExternal withSize:CGSizeMake(BlogDetailGridiconAccessorySize, BlogDetailGridiconAccessorySize)] imageFlippedForRightToLeftLayoutDirection];
         UIImageView *accessoryView = [[UIImageView alloc] initWithImage:image];
         accessoryView.tintColor = [WPStyleGuide cellGridiconAccessoryColor]; // Match disclosure icon color.
         row.accessoryView = accessoryView;
