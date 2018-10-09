@@ -31,6 +31,7 @@ NSString * const WPBlogDetailsSelectedIndexPathKey = @"WPBlogDetailsSelectedInde
 
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 CGFloat const BlogDetailGridiconAccessorySize = 17.0;
+CGFloat const BlogDetailBottomPaddingForQuickStartNotices = 80.0;
 NSTimeInterval const PreloadingCacheTimeout = 60.0 * 5; // 5 minutes
 NSString * const HideWPAdminDate = @"2015-09-07T00:00:00Z";
 
@@ -278,6 +279,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 {
     [super viewWillAppear:animated];
 
+    if (@available(iOS 11, *)) {
+        self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, BlogDetailBottomPaddingForQuickStartNotices, 0);
+    }
+
     if (self.splitViewControllerIsHorizontallyCompact) {
         [self animateDeselectionInteractively];
         self.restorableSelectedIndexPath = nil;
@@ -447,6 +452,31 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         _siteIconPickerPresenter = [[SiteIconPickerPresenter alloc]initWithBlog:self.blog];
     }
     return _siteIconPickerPresenter;
+}
+
+#pragma mark - iOS 10 bottom padding
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    // only make this adjustment on iOS 10 or earlier
+    if (![self respondsToSelector:@selector(setAdditionalSafeAreaInsets:)]) {
+        if (section == self.tableSections.count - 1) {
+            return 60.0;
+        }
+    }
+    return 0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    // only make this adjustment on iOS 10 or earlier
+    if (![self respondsToSelector:@selector(setAdditionalSafeAreaInsets:)]) {
+        if (section != self.tableSections.count - 1) {
+            return nil;
+        }
+        UIView *view = [UIView new];
+        view.frame = CGRectMake(0, 0, 100.0, 100.0);
+        return view;
+    }
+    return nil;
 }
 
 #pragma mark - Data Model setup
@@ -1101,8 +1131,12 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         rowCount = 0;
         for (BlogDetailsRow *row in section.rows) {
             if (row.quickStartIdentifier == element) {
+                if (@available(iOS 11, *)) {
+                    self.additionalSafeAreaInsets = UIEdgeInsetsMake(0, 0, 80.0, 0);
+                }
+
                 NSIndexPath *path = [NSIndexPath indexPathForRow:rowCount inSection:sectionCount];
-                [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionMiddle animated:false];
+                [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:false];
             }
             rowCount++;
         }
