@@ -22,8 +22,7 @@ end
 ## ===================================
 ##
 def shared_with_all_pods
-    ## while PR is in review:
-    pod 'WordPressShared', :git => 'https://github.com/yaelirub/WordPress-iOS-Shared.git', :commit => '4d1f6e0864a894487a676ebcbb28f3bd03c20381'
+    pod 'WordPressShared', '1.1.1-beta.5'
     pod 'CocoaLumberjack', '3.4.2'
     pod 'FormatterKit/TimeIntervalFormatter', '1.8.2'
     pod 'NSObject-SafeExpectations', '0.0.3'
@@ -158,8 +157,7 @@ target 'WordPressNotificationContentExtension' do
 
     inherit! :search_paths
 
-    ## while PR is in review:
-    pod 'WordPressShared', :git => 'https://github.com/yaelirub/WordPress-iOS-Shared.git', :commit => '4d1f6e0864a894487a676ebcbb28f3bd03c20381'
+    pod 'WordPressShared', '1.1.1-beta.5'
     wordpress_ui
 end
 
@@ -175,7 +173,7 @@ target 'WordPressNotificationServiceExtension' do
 
     pod 'Gridicons', '0.16'
     pod 'WordPressKit', '1.4.1'
-    pod 'WordPressShared', '1.1.1-beta.4'
+    pod 'WordPressShared', '1.1.1-beta.5'
 
     wordpress_ui
 end
