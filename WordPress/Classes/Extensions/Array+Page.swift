@@ -117,7 +117,8 @@ extension Array where Element == Page {
                 break
             }
 
-            if let index = right.index(of: element) {
+            if let index = right.index(of: element),
+                !(left.contains { $0.postID == element.parentID }) {
                 right.remove(at: index)
             }
         }
