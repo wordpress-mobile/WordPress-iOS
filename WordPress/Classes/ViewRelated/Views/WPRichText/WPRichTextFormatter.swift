@@ -47,7 +47,10 @@ class WPRichTextFormatter {
     ///
     /// - Returns: An NSAttributedString optional.
     ///
-    func attributedStringFromHTMLString(_ string: String, defaultDocumentAttributes: [NSAttributedStringKey: Any]?) throws -> NSAttributedString? {
+    func attributedStringFromHTMLString(
+        _ string: String,
+        defaultDocumentAttributes: [NSAttributedString.Key: Any]?) throws -> NSAttributedString? {
+
         // Process the html in the string. Replace attachment tags with placeholders, etc.
         let parsed = processAndExtractTags(string)
         let parsedString = parsed.parsedString
@@ -110,7 +113,7 @@ class WPRichTextFormatter {
 
                  mParagraphStyle.paragraphSpacing = round(pStyle.minimumLineHeight - font.xHeight) / 2.0
             }
-            let attributes: [NSAttributedStringKey: Any] = [
+            let attributes: [NSAttributedString.Key: Any] = [
                 .paragraphStyle: mParagraphStyle,
                 .backgroundColor: horizontalRuleColor
             ]

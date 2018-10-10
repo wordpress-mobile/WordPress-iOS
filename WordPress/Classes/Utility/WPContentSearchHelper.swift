@@ -47,7 +47,7 @@ class WPContentSearchHelper: NSObject {
                                      selector: #selector(WPContentSearchObserver.timerFired),
                                      userInfo: nil,
                                      repeats: false)
-            RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
+            RunLoop.main.add(timer, forMode: RunLoop.Mode.common)
         }
     }
 

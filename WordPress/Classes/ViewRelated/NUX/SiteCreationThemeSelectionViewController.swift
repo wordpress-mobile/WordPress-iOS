@@ -1,6 +1,7 @@
 import UIKit
 import SVProgressHUD
 import WordPressAuthenticator
+import WordPressShared
 
 
 class SiteCreationThemeSelectionViewController: NUXCollectionViewController, UICollectionViewDelegateFlowLayout, WPContentSyncHelperDelegate {
@@ -32,6 +33,11 @@ class SiteCreationThemeSelectionViewController: NUXCollectionViewController, UIC
         syncContent()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        WPAppAnalytics.track(.createSiteThemeViewed)
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         SVProgressHUD.dismiss()
@@ -53,7 +59,7 @@ class SiteCreationThemeSelectionViewController: NUXCollectionViewController, UIC
     // MARK: - UICollectionViewDataSource
 
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionElementKindSectionHeader {
+        if kind == UICollectionView.elementKindSectionHeader {
             return collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SiteCreationThemeSelectionHeaderView.reuseIdentifier, for: indexPath) as! SiteCreationThemeSelectionHeaderView
         }
         return super.collectionView(collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath)

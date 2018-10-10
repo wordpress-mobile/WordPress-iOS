@@ -45,10 +45,10 @@ private class PromptContainerViewController: UIViewController {
 
     fileprivate func attachChildViewController(_ viewController: UIViewController) {
         // Attach!
-        viewController.willMove(toParentViewController: self)
+        viewController.willMove(toParent: self)
         view.addSubview(viewController.view)
-        addChildViewController(viewController)
-        viewController.didMove(toParentViewController: self)
+        addChild(viewController)
+        viewController.didMove(toParent: self)
     }
 
     fileprivate func setupChildViewConstraints(_ childrenView: UIView) {

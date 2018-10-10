@@ -50,7 +50,7 @@ enum TimeZoneStoreState {
 class TimeZoneStore: QueryStore<TimeZoneStoreState, TimeZoneQuery> {
     init(dispatcher: ActionDispatcher = .global) {
         super.init(initialState: .empty, dispatcher: dispatcher)
-        NotificationCenter.default.addObserver(self, selector: #selector(TimeZoneStore.handleMemoryWarning), name: .UIApplicationDidReceiveMemoryWarning, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TimeZoneStore.handleMemoryWarning), name: UIApplication.didReceiveMemoryWarningNotification, object: nil)
     }
 
     override func queriesChanged() {

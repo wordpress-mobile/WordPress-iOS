@@ -88,11 +88,11 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
     fileprivate func setupChildrenViewControllers() {
         let pickerViewController = newMediaPickerViewController()
 
-        pickerViewController.willMove(toParentViewController: self)
+        pickerViewController.willMove(toParent: self)
         pickerViewController.view.bounds = view.bounds
         view.addSubview(pickerViewController.view)
-        addChildViewController(pickerViewController)
-        pickerViewController.didMove(toParentViewController: self)
+        addChild(pickerViewController)
+        pickerViewController.didMove(toParent: self)
 
         mediaPickerViewController = pickerViewController
     }
@@ -130,7 +130,7 @@ class GravatarPickerViewController: UIViewController, WPMediaPickerViewControlle
         return .lightContent
     }
 
-    override var childViewControllerForStatusBarStyle: UIViewController? {
+    override var childForStatusBarStyle: UIViewController? {
         return nil
     }
 

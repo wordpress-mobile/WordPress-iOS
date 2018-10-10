@@ -330,8 +330,26 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatCreatedSite:
             eventName = @"site_created";
             break;
-        case WPAnalyticsStatCreateSiteValidationFailed:
-            eventName = @"create_site_validation_failed";
+        case WPAnalyticsStatCreateSiteProcessBegun:
+            eventName = @"site_creation_accessed";
+            break;
+        case WPAnalyticsStatCreateSiteCategoryViewed:
+            eventName = @"site_creation_category_viewed";
+            break;
+        case WPAnalyticsStatCreateSiteDetailsViewed:
+            eventName = @"site_creation_details_viewed";
+            break;
+        case WPAnalyticsStatCreateSiteDomainViewed:
+            eventName = @"site_creation_domain_viewed";
+            break;
+        case WPAnalyticsStatCreateSiteThemeViewed:
+            eventName = @"site_creation_theme_viewed";
+            break;
+        case WPAnalyticsStatCreateSiteRequestInitiated:
+            eventName = @"site_creation_creating_viewed";
+            break;
+        case WPAnalyticsStatCreateSiteSuccessViewed:
+            eventName = @"site_creation_success_viewed";
             break;
         case WPAnalyticsStatCreateSiteCreationFailed:
             eventName = @"create_site_creation_failed";
@@ -341,6 +359,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatCreateSiteSetThemeFailed:
             eventName = @"create_site_set_theme_failed";
+            break;
+        case WPAnalyticsStatCreateSiteValidationFailed:
+            eventName = @"create_site_validation_failed";
             break;
         case WPAnalyticsStatDeepLinked:
             eventName = @"deep_linked";
@@ -1027,6 +1048,15 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatReaderArticleCommentedOn:
             eventName = @"reader_article_commented_on";
             break;
+        case WPAnalyticsStatReaderArticleCommentLiked:
+            eventName = @"reader_article_comment_liked";
+            break;
+        case WPAnalyticsStatReaderArticleCommentUnliked:
+            eventName = @"reader_article_comment_unliked";
+            break;
+        case WPAnalyticsStatReaderArticleCommentsOpened:
+            eventName = @"reader_article_comments_opened";
+            break;
         case WPAnalyticsStatReaderArticleLiked:
             eventName = @"reader_article_liked";
             break;
@@ -1038,6 +1068,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
             break;
         case WPAnalyticsStatReaderArticleUnliked:
             eventName = @"reader_article_unliked";
+            break;
+        case WPAnalyticsStatReaderArticleDetailLiked:
+            eventName = @"reader_article_detail_liked";
+            break;
+        case WPAnalyticsStatReaderArticleDetailUnliked:
+            eventName = @"reader_article_detail_unliked";
             break;
         case WPAnalyticsStatReaderDiscoverViewed:
             eventName = @"reader_discover_viewed";
@@ -1507,8 +1543,12 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
         case WPAnalyticsStatMaxValue:
+        case WPAnalyticsStatEditorAddedPhotoViaGiphy:
+        case WPAnalyticsStatGiphyAccessed:
+        case WPAnalyticsStatGiphySearched:
+        case WPAnalyticsStatGiphyUploaded:
+        case WPAnalyticsStatMediaLibraryAddedPhotoViaGiphy:
             return nil;
-
     }
 
     TracksEventPair *eventPair = [TracksEventPair new];

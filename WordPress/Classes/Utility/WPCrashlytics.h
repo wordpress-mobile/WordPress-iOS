@@ -1,6 +1,7 @@
-#import <Foundation/Foundation.h>
-#import <Fabric/Fabric.h>
-#import <Crashlytics/Crashlytics.h>
+@import Foundation;
+
+@import Crashlytics;
+@import Fabric;
 
 /**
  *  @class      WPCrashlytics

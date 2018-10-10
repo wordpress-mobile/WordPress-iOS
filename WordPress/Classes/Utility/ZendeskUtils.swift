@@ -729,7 +729,7 @@ private extension ZendeskUtils {
 
             textField.addTarget(self,
                                 action: #selector(emailTextFieldDidChange),
-                                for: UIControlEvents.editingChanged)
+                                for: UIControl.Event.editingChanged)
         })
 
         // Name Text Field

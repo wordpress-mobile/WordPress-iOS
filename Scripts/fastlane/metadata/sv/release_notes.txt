@@ -1,2 +1,4 @@
-Vi har trimmat olika saker under huven.
-Det är möjligt att du inte kommer att märka någon direkt skillnad inne i appen, men du kan förvänta dig att den överlag ska vara snabbare och mer stabil.
+Blir du också irriterad när du behöver klistra ett inlägg på webbplatsens startsida men du råkar sitta på bussen och bara har telefonen med dig? Nu kan du klistra inlägg direkt i appen så nu slipper de andra på bussen höra ditt irriterade mummel.
+Spara tid och klick tack vare kommentarsnotiser som visar hela kommentaren direkt på huvudskärmen. Smidigt och bekvämt!
+Vi har gjort de olika skärmsidorna i hela appen mer visuellt samordnade för att underlätta navigeringen. Snabbare navigering ger dig mer tid att skapa.
+Vi tog fram rödpennan och rättade några fel också.
