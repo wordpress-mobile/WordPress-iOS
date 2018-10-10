@@ -461,8 +461,11 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     private var mediaPreviewHelper: MediaPreviewHelper? = nil
 
-    // For autosaving
+    /// For autosaving - The debouncer will execute local saving every defined number of seconds.
+    /// In this case every 0.5 second
+    ///
     var debouncer = Debouncer(delay: Constants.autoSavingDelay)
+
     // MARK: - Initializers
 
     /// Initializer
