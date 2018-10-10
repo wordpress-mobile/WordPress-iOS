@@ -3,6 +3,7 @@
 @class Blog;
 
 typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
+    BlogDetailsSubsectionQuickStart,
     BlogDetailsSubsectionStats,
     BlogDetailsSubsectionPosts,
     BlogDetailsSubsectionCustomize,
