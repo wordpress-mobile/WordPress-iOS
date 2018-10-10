@@ -46,7 +46,7 @@ class WPSplitViewController: UISplitViewController {
                 }
             }
 
-            if UIInterfaceOrientationIsPortrait(orientation) || WPDeviceIdentification.isUnzoomediPhonePlus() {
+            if orientation.isPortrait || WPDeviceIdentification.isUnzoomediPhonePlus() {
                 return self.portrait.rawValue
             } else {
                 return self.landscape.rawValue
@@ -57,9 +57,9 @@ class WPSplitViewController: UISplitViewController {
     fileprivate func updateSplitViewForPrimaryColumnWidth() {
         switch wpPrimaryColumnWidth {
         case .default:
-            minimumPrimaryColumnWidth = UISplitViewControllerAutomaticDimension
-            maximumPrimaryColumnWidth = UISplitViewControllerAutomaticDimension
-            preferredPrimaryColumnWidthFraction = UISplitViewControllerAutomaticDimension
+            minimumPrimaryColumnWidth = UISplitViewController.automaticDimension
+            maximumPrimaryColumnWidth = UISplitViewController.automaticDimension
+            preferredPrimaryColumnWidthFraction = UISplitViewController.automaticDimension
         case .narrow:
             let orientation = UIApplication.shared.statusBarOrientation
             let columnWidth = WPSplitViewControllerNarrowPrimaryColumnWidth.widthForInterfaceOrientation(orientation)
@@ -83,7 +83,7 @@ class WPSplitViewController: UISplitViewController {
 
     override func decodeRestorableState(with coder: NSCoder) {
         if let displayModeRawValue = coder.decodeObject(forKey: type(of: self).preferredDisplayModeModifiedRestorationKey) as? Int,
-            let displayMode = UISplitViewControllerDisplayMode(rawValue: displayModeRawValue) {
+            let displayMode = UISplitViewController.DisplayMode(rawValue: displayModeRawValue) {
             preferredDisplayMode = displayMode
         }
 
@@ -105,7 +105,7 @@ class WPSplitViewController: UISplitViewController {
         return .lightContent
     }
 
-    override var childViewControllerForStatusBarStyle: UIViewController? {
+    override var childForStatusBarStyle: UIViewController? {
         if let _ = topDetailViewController as? DefinesVariableStatusBarStyle {
             return topDetailViewController
         }
@@ -124,8 +124,8 @@ class WPSplitViewController: UISplitViewController {
         }
     }
 
-    override func overrideTraitCollection(forChildViewController childViewController: UIViewController) -> UITraitCollection? {
-        guard let collection = super.overrideTraitCollection(forChildViewController: childViewController) else { return nil }
+    override func overrideTraitCollection(forChild childViewController: UIViewController) -> UITraitCollection? {
+        guard let collection = super.overrideTraitCollection(forChild: childViewController) else { return nil }
 
         // By default, the detail view controller of a split view is passed the same size class as the split view itself.
         // However, if the splitview is smaller than full screen (i.e. multitasking is active), a number of our
@@ -155,7 +155,7 @@ class WPSplitViewController: UISplitViewController {
         // Calling `setOverrideTraitCollection` prompts `overrideTraitCollectionForChildViewController` to be called.
         if let _ = overriddenTraitCollectionForDetailViewController,
             let detailViewController = viewControllers.last {
-            setOverrideTraitCollection(detailViewController.traitCollection, forChildViewController: detailViewController)
+            setOverrideTraitCollection(detailViewController.traitCollection, forChild: detailViewController)
         }
     }
 
@@ -169,7 +169,8 @@ class WPSplitViewController: UISplitViewController {
                     viewController.extendedLayoutIncludesOpaqueBars = true
 
                     // Override traits to pass a compact size class if necessary
-                    setOverrideTraitCollection(overriddenTraitCollectionForDetailViewController, forChildViewController: viewController)
+                    setOverrideTraitCollection(overriddenTraitCollectionForDetailViewController,
+                                               forChild: viewController)
                 }
             }
         }
@@ -505,7 +506,9 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
 // MARK: - UINavigationControllerDelegate
 
 extension WPSplitViewController: UINavigationControllerDelegate {
-    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+    func navigationController(_ navigationController: UINavigationController,
+                              willShow viewController: UIViewController,
+                              animated: Bool) {
         if navigationController == viewControllers.first {
             primaryNavigationController(navigationController, willShowViewController: viewController, animated: animated)
         } else if navigationController == viewControllers.last {
@@ -552,7 +555,7 @@ extension WPSplitViewController: UINavigationControllerDelegate {
                 }
             }
 
-            if UIAccessibilityIsReduceMotionEnabled() {
+            if UIAccessibility.isReduceMotionEnabled {
                 view.hideWithBlankingSnapshot(afterScreenUpdates: false)
                 performTransition(false)
             } else {
@@ -571,13 +574,13 @@ extension WPSplitViewController: UINavigationControllerDelegate {
             // Restore navigation items after a push or pop if they were previously hidden
             navigationController.navigationBar.fadeInNavigationItemsIfNecessary()
 
-            if UIAccessibilityIsReduceMotionEnabled() {
+            if UIAccessibility.isReduceMotionEnabled {
                 view.fadeOutAndRemoveBlankingSnapshot()
             }
         }
     }
 
-    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationControllerOperation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard fullscreenDisplayEnabled else { return nil }
 
         var stack = navigationController.viewControllers

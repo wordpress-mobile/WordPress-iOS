@@ -11,7 +11,7 @@ import MobileCoreServices
 ///
 @objc class SharePost: NSObject, NSSecureCoding {
     @objc static let typeIdentifier = "org.wordpress.share-post"
-    @objc static let activityType = UIActivityType(rawValue: "org.wordpress.WordPressShare")
+    @objc static let activityType = UIActivity.ActivityType(rawValue: "org.wordpress.WordPressShare")
 
     @objc let title: String?
     @objc let summary: String?

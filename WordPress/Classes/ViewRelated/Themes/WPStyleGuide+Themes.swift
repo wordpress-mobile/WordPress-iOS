@@ -21,7 +21,7 @@ extension WPStyleGuide {
 
         public static func styleCurrentThemeButton(_ button: UIButton) {
             button.titleLabel?.font = currentThemeButtonFont
-            button.setTitleColor(currentThemeButtonColor, for: UIControlState())
+            button.setTitleColor(currentThemeButtonColor, for: UIControl.State())
         }
 
         // MARK: - Search Styles
@@ -33,8 +33,8 @@ extension WPStyleGuide {
         public static let searchTypeTitleColor = WPStyleGuide.darkGrey()
 
         public static func styleSearchTypeButton(_ button: UIButton, title: String) {
-            button.setTitleColor(searchTypeTitleColor, for: UIControlState())
-            button.setTitle(title, for: UIControlState())
+            button.setTitleColor(searchTypeTitleColor, for: UIControl.State())
+            button.setTitle(title, for: UIControl.State())
             button.titleLabel?.font = searchTypeTitleFont
             let imageWidth = button.imageView?.frame.size.width ?? 0
             button.titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
