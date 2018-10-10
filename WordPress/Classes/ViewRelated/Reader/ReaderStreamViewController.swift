@@ -241,8 +241,6 @@ import WordPressFlux
 
         if readerTopic != nil {
             configureControllerForTopic()
-        } else if (siteID != nil || tagSlug != nil) && resultsStatusView.view.superview == nil {
-            displayLoadingStream()
         }
     }
 
@@ -251,7 +249,6 @@ import WordPressFlux
 
         syncIfAppropriate()
     }
-
 
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -281,6 +278,9 @@ import WordPressFlux
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
+        if (siteID != nil || tagSlug != nil) {//}&& resultsStatusView.view.superview == nil {
+            displayLoadingStream()
+        }
         // There appears to be a scenario where this method can be called prior to
         // the view being fully setup in viewDidLoad.
         // See: https://github.com/wordpress-mobile/WordPress-iOS/issues/4419
@@ -366,6 +366,7 @@ import WordPressFlux
 
         refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), for: .valueChanged)
         tableConfiguration.setup(tableView)
+        tableView.layoutSubviews()
     }
 
     fileprivate func setupContentHandler() {
@@ -1538,16 +1539,27 @@ private extension ReaderStreamViewController {
                                           imageName: String? = nil,
                                           accessoryView: UIView? = nil) {
 
+        (accessoryView as? WPAnimatedBox)?.animate()
+
         resultsStatusView.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, image: imageName, accessoryView: accessoryView)
         displayResultsStatus()
     }
 
     func displayResultsStatus() {
+
         resultsStatusView.removeFromView()
         tableViewController.addChild(resultsStatusView)
+
         tableView.insertSubview(resultsStatusView.view, belowSubview: refreshControl)
-        resultsStatusView.view.frame = tableView.frame
+
         resultsStatusView.didMove(toParent: tableViewController)
+
+        resultsStatusView.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            resultsStatusView.view.centerXAnchor.constraint(equalTo: tableView.centerXAnchor),
+            resultsStatusView.view.centerYAnchor.constraint(equalTo: tableView.centerYAnchor)
+            ])
+
         footerView.isHidden = true
     }
 
