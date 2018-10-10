@@ -15,25 +15,31 @@ extension RegisterDomainDetailsViewModel {
     }
 
     class ValidationRule {
+        enum Context: String {
+
+            //Tag for rules to decide if we should enable submit button
+            case clientSide
+
+            //Tag for rules to decide if we should proceed submitting after tapping submit button
+            case serverSide
+        }
 
         typealias ValidationStateChangedHandler = ((ValidationRule) -> Void)
 
-        var isValid: Bool = false {
+        var isValid: Bool = true {
             didSet {
-                if isValid != oldValue {
-                    validationStateChanged?(self)
-                }
+                validationStateChanged?(self)
             }
         }
         var validationBlock: RowValidationBlock?
         var errorMessage: String?
-        var tag: String?
+        var context: Context
         var validationStateChanged: ValidationStateChangedHandler?
 
-        init(tag: String? = nil,
+        init(context: Context,
              validationBlock: RowValidationBlock?,
              errorMessage: String?) {
-            self.tag = tag
+            self.context = context
             self.validationBlock = validationBlock
             self.errorMessage = errorMessage
         }
@@ -78,7 +84,7 @@ extension RegisterDomainDetailsViewModel {
                 }
             }
             var placeholder: String?
-            var validationRules: [ValidationRule]?
+            var validationRules: [ValidationRule]
             var editingStyle: EditingStyle = .inline
             var validationStateChangedHandler: ValidationStateChangedHandler? {
                 didSet {
@@ -92,7 +98,7 @@ extension RegisterDomainDetailsViewModel {
                  value: String?,
                  placeholder: String?,
                  editingStyle: EditingStyle,
-                 validationRules: [ValidationRule]? = nil) {
+                 validationRules: [ValidationRule] = []) {
 
                 self.key = key
                 self.jsonKey = jsonKey
@@ -103,68 +109,36 @@ extension RegisterDomainDetailsViewModel {
             }
 
             private func registerForValidationStateChangedEvent() {
-                if let rules = validationRules {
-                    for rule in rules {
-                        rule.validationStateChanged = { [weak self] (rule) in
-                            guard let strongSelf = self else { return }
-                            strongSelf.validationStateChangedHandler?(strongSelf, rule)
-                        }
+                for rule in validationRules {
+                    rule.validationStateChanged = { [weak self] (rule) in
+                        guard let strongSelf = self else { return }
+                        strongSelf.validationStateChangedHandler?(strongSelf, rule)
                     }
                 }
             }
 
             func validate() {
-                if let rules = validationRules {
-                    for rule in rules {
-                        rule.validate(text: value)
-                    }
-                }
+                validationRules.forEach { $0.validate(text: value) }
             }
 
-            func validate(forTag tag: String) {
-                if let rules = validationRules {
-                    for (index, rule) in rules.enumerated() {
-                        if rule.tag == tag {
-                            validationRules?[index].validate(text: value)
-                        }
-                    }
-                }
+            func validate(forContext context: ValidationRule.Context) {
+                validationRules
+                    .filter { $0.context == context }
+                    .forEach { $0.validate(text: value) }
             }
 
-            func firstRule(forTag tag: String) -> ValidationRule? {
-                if let rules = validationRules {
-                    for (index, rule) in rules.enumerated() {
-                        if rule.tag == tag {
-                            return rules[index]
-                        }
-                    }
-                }
-                return nil
+            func firstRule(forContext context: ValidationRule.Context) -> ValidationRule? {
+                return validationRules.first { $0.context == context }
             }
 
-            func validationErrors(forTag tag: String) -> [String] {
-                var result: [String] = []
-                if let validationRules = validationRules {
-                    validationRules
-                        .filter {
-                            return $0.tag == tag && !$0.isValid
-                        }
-                        .forEach {
-                            if let message = $0.errorMessage {
-                                result.append(message)
-                            }
-                        }
-                }
-                return result
+            func validationErrors(forContext context: ValidationRule.Context) -> [String] {
+                return validationRules
+                    .filter { return $0.context == context && !$0.isValid }
+                    .compactMap { $0.errorMessage }
             }
 
-            func isValid(forTag tag: String) -> Bool {
-                if let validationRules = validationRules {
-                    return validationRules.filter {
-                        return $0.tag == tag && !$0.isValid
-                        }.count == 0
-                }
-                return true
+            func isValid(inContext context: ValidationRule.Context) -> Bool {
+                return validationErrors(forContext: context).isEmpty
             }
 
             static func == (lhs: EditableKeyValueRow, rhs: EditableKeyValueRow) -> Bool {
@@ -179,7 +153,7 @@ extension RegisterDomainDetailsViewModel {
 
 extension RegisterDomainDetailsViewModel.Row.EditableKeyValueRow {
 
-    func accessoryType() -> UITableViewCellAccessoryType {
+    func accessoryType() -> UITableViewCell.AccessoryType {
         switch editingStyle {
         case .inline:
             return .none

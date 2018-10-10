@@ -18,6 +18,8 @@ enum FeatureFlag: Int {
             return true
         case .jetpackDisconnect:
             return BuildConfiguration.current == .localDeveloper
+        case .automatedTransfersCustomDomain:
+            return BuildConfiguration.current == .localDeveloper
         case .quickStart:
             return true
         case .newsCard:

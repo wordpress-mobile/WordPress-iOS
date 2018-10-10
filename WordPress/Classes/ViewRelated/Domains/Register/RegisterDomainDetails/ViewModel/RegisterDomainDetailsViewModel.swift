@@ -9,30 +9,31 @@ class RegisterDomainDetailsViewModel {
     enum Constant {
         static let phoneNumberCountryCodePrefix = "+"
         static let phoneNumberConnectingChar: Character = "."
-    }
-    enum ValidationRuleTag: String {
-
-        //Tag for rules to decide if we should enable submit button
-        case enableSubmit
-
-        //Tag for rules to decide if we should proceed submitting after tapping submit button
-        case proceedSubmit
+        static let maxExtraAddressLine = 5
     }
 
     enum Change: Equatable {
-        case rowValidation(tag: ValidationRuleTag, indexPath: IndexPath, isValid: Bool, errorMessage: String?)
-        case wholeValidation(tag: ValidationRuleTag, isValid: Bool)
-        case sectionValidation(tag: ValidationRuleTag, sectionIndex: Int, isValid: Bool)
+        case rowValidated(context: ValidationRule.Context, indexPath: IndexPath, isValid: Bool, errorMessage: String?)
+        case sectionValidated(context: ValidationRule.Context, sectionIndex: Int, isValid: Bool)
+        case formValidated(context: ValidationRule.Context, isValid: Bool)
+
         case multipleChoiceRowValueChanged(indexPath: IndexPath)
-        case unexpectedError(message: String)
+
         case addNewAddressLineEnabled(indexPath: IndexPath)
         case addNewAddressLineReplaced(indexPath: IndexPath)
+
         case checkMarkRowsUpdated(sectionIndex: Int)
-        case registerSucceeded(items: [String:String])
+
+        case registerSucceeded(items: [String: String])
+
         case loading(Bool)
-        case proceedSubmitValidation
+
+        case remoteValidationFinished
+
         case prefillSuccess
         case prefillError(message: String)
+
+        case unexpectedError(message: String)
     }
 
     enum SectionIndex: Int {
@@ -42,16 +43,15 @@ class RegisterDomainDetailsViewModel {
         case address
     }
 
-    enum Const {
-        static let maxExtraAddressLine = 5
-    }
-
     var onChange: ((Change) -> Void)?
+
     var registerDomainDetailsService: RegisterDomainDetailsServiceProxyProtocol = RegisterDomainDetailsServiceProxy()
+
     private(set) var addressSectionIndexHelper = CellIndex.AddressSectionIndexHelper()
-    private(set) var domain: String
+    private(set) var domain: DomainSuggestion
     private(set) var states: [CodeNameTuple]?
     private(set) var countries: [CodeNameTuple]?
+
     var countryNames: [String] {
         return countries?.map { $0.name } ?? []
     }
@@ -65,7 +65,7 @@ class RegisterDomainDetailsViewModel {
         }
     }
 
-    init(domain: String) {
+    init(domain: DomainSuggestion) {
         self.domain = domain
     }
 
@@ -73,14 +73,14 @@ class RegisterDomainDetailsViewModel {
         guard let strongSelf = self else { return }
 
         switch change {
-        case let .rowValidation(tag, indexPath, isValid, errorMessage):
-            strongSelf.onChange?(.rowValidation(tag: tag,
+        case let .rowValidation(context, indexPath, isValid, errorMessage):
+            strongSelf.onChange?(.rowValidated(context: context,
                                                 indexPath: indexPath,
                                                 isValid: isValid,
                                                 errorMessage: errorMessage))
-        case let .sectionValidation(tag, sectionIndex, isSectionValid):
-            strongSelf.onChange?(.sectionValidation(tag: tag, sectionIndex: sectionIndex.rawValue, isValid: isSectionValid))
-            strongSelf.onChange?(.wholeValidation(tag: tag, isValid: strongSelf.isValid(forTag: tag)))
+        case let .sectionValidation(context, sectionIndex, isSectionValid):
+            strongSelf.onChange?(.sectionValidated(context: context, sectionIndex: sectionIndex.rawValue, isValid: isSectionValid))
+            strongSelf.onChange?(.formValidated(context: context, isValid: strongSelf.isValid(inContext: context)))
         case let .checkMarkRowsUpdated(sectionIndex):
             strongSelf.onChange?(.checkMarkRowsUpdated(sectionIndex: sectionIndex.rawValue))
         case let .multipleChoiceRowValueChanged(indexPath, row):
@@ -115,7 +115,7 @@ class RegisterDomainDetailsViewModel {
 
     func enableAddAddressRow() {
         if !addressSectionIndexHelper.isAddNewAddressVisible
-            && Const.maxExtraAddressLine > addressSectionIndexHelper.addNewAddressIndex {
+            && Constant.maxExtraAddressLine > addressSectionIndexHelper.addNewAddressIndex {
             addressSectionIndexHelper.isAddNewAddressVisible = true
             sections[SectionIndex.address.rawValue].insert(
                 .addAddressLine(
@@ -158,9 +158,9 @@ class RegisterDomainDetailsViewModel {
         sections[indexPath.section].updateValue(value, at: indexPath.row)
     }
 
-    func isValid(forTag tag: ValidationRuleTag) -> Bool {
+    func isValid(inContext context: ValidationRule.Context) -> Bool {
         for section in sections {
-            if !section.isValid(forTag: tag) {
+            if !section.isValid(inContext: context) {
                 return false
             }
         }
@@ -172,8 +172,20 @@ class RegisterDomainDetailsViewModel {
             guard let strongSelf = self else {
                 return
             }
-            //TODO: Call the registeration service here
-            strongSelf.onChange?(.registerSucceeded(items: strongSelf.jsonRepresentation()))
+
+
+            self!.registerDomainDetailsService.createShoppingCart(siteID: 149564365,
+                                                                  domainSuggestion: self!.domain,
+                                                            success: { result in
+                                                                //TODO: purchase flow
+
+                strongSelf.onChange?(.registerSucceeded(items: strongSelf.jsonRepresentation()))
+                return
+            }) { (error) in
+                strongSelf.onChange?(.prefillError(message: Localized.cartError))
+                return
+            }
+
         })
     }
 
@@ -217,10 +229,15 @@ class RegisterDomainDetailsViewModel {
                 guard let strongSelf = self else {
                     return
                 }
-                strongSelf.isLoading = false
+
+                defer {
+                    strongSelf.isLoading = false
+                }
+
                 let prefillSuccessBlock = {
                     strongSelf.update(with: domainContactInformation)
                     strongSelf.onChange?(.prefillSuccess)
+
                 }
                 if let countryCode = domainContactInformation.countryCode {
                     strongSelf.fetchStates(countryCode: countryCode) {
@@ -244,7 +261,11 @@ class RegisterDomainDetailsViewModel {
             guard let strongSelf = self else {
                 return
             }
-            strongSelf.isLoading = false
+
+            defer {
+                strongSelf.isLoading = false
+            }
+
             var result: [CodeNameTuple] = []
             //Filter empty records
             for country in countriesResponse {
@@ -403,7 +424,7 @@ extension RegisterDomainDetailsViewModel {
         isLoading = true
         registerDomainDetailsService.validateDomainContactInformation(
             contactInformation: jsonRepresentation(),
-            domainNames: [domain],
+            domainNames: [domain.domainName],
             success: { [weak self] (response) in
                 guard let strongSelf = self else {
                     return
@@ -415,7 +436,7 @@ extension RegisterDomainDetailsViewModel {
                 } else {
                     strongSelf.updateValidationErrors(with: response.messages)
                 }
-                strongSelf.onChange?(.proceedSubmitValidation)
+                strongSelf.onChange?(.remoteValidationFinished)
         }) { [weak self] (error) in
             guard let strongSelf = self else {
                 return
@@ -430,7 +451,7 @@ extension RegisterDomainDetailsViewModel {
             for row in section.rows {
                 if let editableRow = row.editableRow {
                     editableRow.firstRule(
-                        forTag: ValidationRuleTag.proceedSubmit.rawValue
+                        forContext: ValidationRule.Context.serverSide
                         )?.isValid = true
                 }
             }
@@ -451,7 +472,7 @@ extension RegisterDomainDetailsViewModel {
         let isValid = messages.isValidPhoneNumber()
         for row in rows {
             row.editableRow?.firstRule(
-                forTag: ValidationRuleTag.proceedSubmit.rawValue
+                forContext: .serverSide
                 )?.isValid = isValid
         }
     }
@@ -462,7 +483,7 @@ extension RegisterDomainDetailsViewModel {
             if let editableRow = row.editableRow,
                 let cellIndex = CellIndex.ContactInformation(rawValue: index) {
                 editableRow.firstRule(
-                    forTag: ValidationRuleTag.proceedSubmit.rawValue
+                    forContext: .serverSide
                     )?.isValid = messages.isValid(for: cellIndex)
             }
         }
@@ -474,7 +495,7 @@ extension RegisterDomainDetailsViewModel {
             if let editableRow = row.editableRow {
                 let addressField = addressSectionIndexHelper.addressField(for: index)
                 editableRow.firstRule(
-                    forTag: ValidationRuleTag.proceedSubmit.rawValue
+                    forContext: .serverSide
                     )?.isValid = messages.isValid(addressField: addressField)
             }
         }

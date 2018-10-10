@@ -89,6 +89,7 @@
         </attribute>
         <attribute name="capabilities" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="currentThemeId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hasDomainCredit" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="hasOlderPages" transient="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO">
             <userInfo/>
         </attribute>
@@ -682,7 +683,7 @@
         <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="225"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="285"/>
-        <element name="Blog" positionX="0" positionY="0" width="128" height="720"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="735"/>
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="855"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>

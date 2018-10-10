@@ -56,11 +56,9 @@ extension RegisterDomainDetailsViewController {
     }
 
     func errorShowingSectionFooter(section: Int) -> RegisterDomainDetailsErrorSectionFooter? {
-        let errors = viewModel.sections[section].validationErrors(forTag: .proceedSubmit)
-        guard registerButtonTapped,
-            let view = tableView.dequeueReusableHeaderFooterView(
-                withIdentifier: RegisterDomainDetailsErrorSectionFooter.defaultReuseID
-                ) as? RegisterDomainDetailsErrorSectionFooter else {
+        let errors = viewModel.sections[section].validationErrors(forContext: .serverSide)
+        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: RegisterDomainDetailsErrorSectionFooter.defaultReuseID)
+            as? RegisterDomainDetailsErrorSectionFooter else {
                     return nil
         }
         view.setErrorMessages(errors)
@@ -75,7 +73,7 @@ extension RegisterDomainDetailsViewController {
         let attributes: StyledHTMLAttributes = [
             .BodyAttribute: [.font: font,
                              .foregroundColor: bodyColor],
-            .ATagAttribute: [.underlineStyle: NSUnderlineStyle.styleSingle.rawValue,
+            .ATagAttribute: [.underlineStyle: NSUnderlineStyle.single.rawValue,
                              .foregroundColor: linkColor]
         ]
         let attributedTerms = NSAttributedString.attributedStringWithHTML(

@@ -33,15 +33,15 @@ extension RegisterDomainDetailsViewModel {
     }
 
     static var nonEmptyRule: ValidationRule {
-        return ValidationRule(tag: ValidationRuleTag.enableSubmit.rawValue,
+        return ValidationRule(context: .clientSide,
                               validationBlock: ValidationBlock.nonEmpty,
                               errorMessage: nil)
     }
 
-    static func proceedRule(with key: String, hasErrorMessage: Bool = true) -> ValidationRule {
-        return ValidationRule(tag: ValidationRuleTag.proceedSubmit.rawValue,
+    static func serverSideRule(with key: String, hasErrorMessage: Bool = true) -> ValidationRule {
+        return ValidationRule(context: .serverSide,
                               validationBlock: nil, //validation is handled on serverside
-            errorMessage: hasErrorMessage ? String(format: Localized.validationError, key) : nil)
+            errorMessage: hasErrorMessage ? String(format: Localized.validationError, key.lowercased()) : nil)
     }
 
     static var contactInformationRows: [RowType] {
@@ -53,7 +53,7 @@ extension RegisterDomainDetailsViewModel {
                 placeholder: Localized.ContactInformation.firstName,
                 editingStyle: .inline,
                 validationRules: [nonEmptyRule,
-                                  proceedRule(with: Localized.ContactInformation.firstName)]
+                                  serverSideRule(with: Localized.ContactInformation.firstName)]
                 )),
             .inlineEditable(.init(
                 key: Localized.ContactInformation.lastName,
@@ -62,7 +62,7 @@ extension RegisterDomainDetailsViewModel {
                 placeholder: Localized.ContactInformation.lastName,
                 editingStyle: .inline,
                 validationRules: [nonEmptyRule,
-                                  proceedRule(with: Localized.ContactInformation.lastName)]
+                                  serverSideRule(with: Localized.ContactInformation.lastName)]
                 )),
             .inlineEditable(.init(
                 key: Localized.ContactInformation.organization,
@@ -78,7 +78,7 @@ extension RegisterDomainDetailsViewModel {
                 placeholder: Localized.ContactInformation.email,
                 editingStyle: .inline,
                 validationRules: [nonEmptyRule,
-                                  proceedRule(with: Localized.ContactInformation.email)]
+                                  serverSideRule(with: Localized.ContactInformation.email)]
                 )),
             .inlineEditable(.init(
                 key: Localized.ContactInformation.country,
@@ -87,7 +87,7 @@ extension RegisterDomainDetailsViewModel {
                 placeholder: Localized.ContactInformation.countryPlaceholder,
                 editingStyle: .multipleChoice,
                 validationRules: [nonEmptyRule,
-                                  proceedRule(with: Localized.ContactInformation.country)]
+                                  serverSideRule(with: Localized.ContactInformation.country)]
                 ))]
     }
 
@@ -100,7 +100,7 @@ extension RegisterDomainDetailsViewModel {
                 placeholder: Localized.PhoneNumber.countryCodePlaceholder,
                 editingStyle: .inline,
                 validationRules: [nonEmptyRule,
-                                  proceedRule(with: Localized.ContactInformation.phone, hasErrorMessage: false)]
+                                  serverSideRule(with: Localized.ContactInformation.phone, hasErrorMessage: false)]
                 )),
             .inlineEditable(.init(
                 key: Localized.PhoneNumber.number,
@@ -109,7 +109,7 @@ extension RegisterDomainDetailsViewModel {
                 placeholder: Localized.PhoneNumber.numberPlaceholder,
                 editingStyle: .inline,
                 validationRules: [nonEmptyRule,
-                                  proceedRule(with: Localized.ContactInformation.phone)]
+                                  serverSideRule(with: Localized.ContactInformation.phone)]
                 ))
         ]
     }
@@ -122,7 +122,7 @@ extension RegisterDomainDetailsViewModel {
             value: nil,
             placeholder: Localized.Address.addressPlaceholder,
             editingStyle: .inline,
-            validationRules: optional ? nil : [nonEmptyRule, proceedRule(with: key)]
+            validationRules: optional ? [] : [nonEmptyRule, serverSideRule(with: key)]
             ))
     }
 
@@ -135,7 +135,7 @@ extension RegisterDomainDetailsViewModel {
                 value: nil,
                 placeholder: Localized.Address.city,
                 editingStyle: .inline,
-                validationRules: [nonEmptyRule, proceedRule(with: Localized.Address.city)]
+                validationRules: [nonEmptyRule, serverSideRule(with: Localized.Address.city)]
                 )),
             .inlineEditable(.init(
                 key: Localized.Address.state,
@@ -143,7 +143,7 @@ extension RegisterDomainDetailsViewModel {
                 value: nil,
                 placeholder: Localized.Address.statePlaceHolder,
                 editingStyle: .multipleChoice,
-                validationRules: [proceedRule(with: Localized.Address.state)]
+                validationRules: [serverSideRule(with: Localized.Address.state)]
                 )),
             .inlineEditable(.init(
                 key: Localized.Address.postalCode,
@@ -151,7 +151,7 @@ extension RegisterDomainDetailsViewModel {
                 value: nil,
                 placeholder: Localized.Address.postalCode,
                 editingStyle: .inline,
-                validationRules: [nonEmptyRule, proceedRule(with: Localized.Address.postalCode)]
+                validationRules: [nonEmptyRule, serverSideRule(with: Localized.Address.postalCode)]
                 ))
         ]
     }

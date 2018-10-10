@@ -9,16 +9,16 @@ extension RegisterDomainDetailsViewModel {
     class Section {
 
         enum Change: Equatable {
-            case rowValidation(tag: ValidationRuleTag, indexPath: IndexPath, isValid: Bool, errorMessage: String?)
+            case rowValidation(context: ValidationRule.Context, indexPath: IndexPath, isValid: Bool, errorMessage: String?)
             case multipleChoiceRowValueChanged(indexPath: IndexPath, row: EditableKeyValueRow)
-            case sectionValidation(tag: ValidationRuleTag, sectionIndex: SectionIndex, isValid: Bool)
+            case sectionValidation(context: ValidationRule.Context, sectionIndex: SectionIndex, isValid: Bool)
             case checkMarkRowsUpdated(sectionIndex: SectionIndex)
         }
 
         private(set) var shouldEnableSubmit: Bool = false {
             didSet {
                 if shouldEnableSubmit != oldValue {
-                    onChange?(.sectionValidation(tag: .enableSubmit, sectionIndex: sectionIndex, isValid: shouldEnableSubmit))
+                    onChange?(.sectionValidation(context: .clientSide, sectionIndex: sectionIndex, isValid: shouldEnableSubmit))
                 }
             }
         }
@@ -30,23 +30,21 @@ extension RegisterDomainDetailsViewModel {
 
         lazy var editableRowValidationStateChangeHandler: EditableKeyValueRow.ValidationStateChangedHandler = { [weak self] (editableRow, rule) in
             guard let strongSelf = self,
-                let rowIndex = strongSelf.rowIndex(of: editableRow),
-                let tag = rule.tag,
-                let ruleTag = ValidationRuleTag(rawValue: tag) else {
+                let rowIndex = strongSelf.rowIndex(of: editableRow) else {
                     return
             }
-            strongSelf.onChange?(.rowValidation(tag: ruleTag,
+            strongSelf.onChange?(.rowValidation(context: rule.context,
                                                 indexPath: IndexPath(row: rowIndex,
                                                                      section: strongSelf.sectionIndex.rawValue),
-                                                isValid: editableRow.isValid(forTag: ruleTag.rawValue),
+                                                isValid: editableRow.isValid(inContext: rule.context),
                                                 errorMessage: nil))
-            switch ruleTag {
-            case .enableSubmit:
-                strongSelf.shouldEnableSubmit = strongSelf.isValid(forTag: ruleTag)
-            case .proceedSubmit:
-                strongSelf.onChange?(.sectionValidation(tag: .proceedSubmit,
+            switch rule.context {
+            case .clientSide:
+                strongSelf.shouldEnableSubmit = strongSelf.isValid(inContext: rule.context)
+            case .serverSide:
+                strongSelf.onChange?(.sectionValidation(context: .serverSide,
                                                         sectionIndex: strongSelf.sectionIndex,
-                                                        isValid: strongSelf.isValid(forTag: ruleTag)))
+                                                        isValid: strongSelf.isValid(inContext: rule.context)))
             }
         }
 
@@ -123,11 +121,11 @@ extension RegisterDomainDetailsViewModel {
             }
         }
 
-        func isValid(forTag tag: ValidationRuleTag) -> Bool {
+        func isValid(inContext context: ValidationRule.Context) -> Bool {
             for row in rows {
                 switch row {
                 case .inlineEditable(let editableRow):
-                    if !editableRow.isValid(forTag: tag.rawValue) {
+                    if !editableRow.isValid(inContext: context) {
                         return false
                     }
                 default:
@@ -137,12 +135,12 @@ extension RegisterDomainDetailsViewModel {
             return true
         }
 
-        func validationErrors(forTag tag: ValidationRuleTag) -> [String] {
+        func validationErrors(forContext context: ValidationRule.Context) -> [String] {
             var result: [String] = []
             for row in rows {
                 switch row {
                 case .inlineEditable(let editableRow):
-                    result.append(contentsOf: editableRow.validationErrors(forTag: tag.rawValue))
+                    result.append(contentsOf: editableRow.validationErrors(forContext: context))
                 default:
                     break
                 }

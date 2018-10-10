@@ -13,7 +13,6 @@ struct PlanService<S: InAppPurchaseStore> {
 //    typealias S = StoreKitStore
     let store: S
     let remote: PlanServiceRemote
-
     fileprivate let featuresRemote: PlanFeatureServiceRemote
 
     init(store: S, remote: PlanServiceRemote, featuresRemote: PlanFeatureServiceRemote) {
@@ -34,6 +33,23 @@ struct PlanService<S: InAppPurchaseStore> {
                 let result = (siteID: siteID, activePlan: activePlan, availablePlans: pricedPlans)
                 success(result)
             }, failure: failure)
+
+        if FeatureFlag.automatedTransfersCustomDomain.enabled {
+            let remote_v1_3 = PlanServiceRemote_ApiVersion1_3(wordPressComRestApi: remote.wordPressComRestApi)
+
+            remote_v1_3.getPlansForSite(
+                siteID,
+                success: { (plans) in
+                    guard let planId = plans.activePlan.planID,
+                        let planIdInt = Int(planId) else {
+                            return
+                    }
+                    PlanStorage.updateHasDomainCredit(planIdInt,
+                                                      forSite: siteID,
+                                                      hasDomainCredit: plans.activePlan.hasDomainCredit ?? false)
+            },
+            failure: failure)
+        }
     }
 
     func verifyPurchase(_ siteID: Int, productID: String, receipt: Data, completion: (Bool) -> Void) {
@@ -84,6 +100,24 @@ struct PlanStorage {
             }
             if blog.planID?.intValue != planID {
                 blog.planID = NSNumber(value: planID)
+                manager.saveContextAndWait(context)
+            }
+        }
+    }
+
+    static func updateHasDomainCredit(_ planID: PlanID, forSite siteID: Int, hasDomainCredit: Bool) {
+        let manager = ContextManager.sharedInstance()
+        let context = manager.newDerivedContext()
+        let service = BlogService(managedObjectContext: context)
+        context.performAndWait {
+            guard let blog = service.blog(byBlogId: NSNumber(value: siteID)) else {
+                let error = "Tried to update a plan for a non-existing site (ID: \(siteID))"
+                assertionFailure(error)
+                DDLogError(error)
+                return
+            }
+            if blog.hasDomainCredit != hasDomainCredit {
+                blog.hasDomainCredit = hasDomainCredit
                 manager.saveContextAndWait(context)
             }
         }

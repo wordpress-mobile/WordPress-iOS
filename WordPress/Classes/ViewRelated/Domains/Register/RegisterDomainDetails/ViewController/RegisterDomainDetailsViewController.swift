@@ -7,7 +7,7 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
     typealias SectionIndex = RegisterDomainDetailsViewModel.SectionIndex
     typealias EditableKeyValueRow = RegisterDomainDetailsViewModel.Row.EditableKeyValueRow
     typealias CheckMarkRow = RegisterDomainDetailsViewModel.Row.CheckMarkRow
-    typealias Tag = RegisterDomainDetailsViewModel.ValidationRuleTag
+    typealias Context = RegisterDomainDetailsViewModel.ValidationRule.Context
     typealias CellIndex = RegisterDomainDetailsViewModel.CellIndex
 
     enum Constants {
@@ -16,17 +16,21 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
     }
 
     var viewModel: RegisterDomainDetailsViewModel!
+
     private var selectedItemIndex: [IndexPath: Int] = [:]
-    private(set) var registerButtonTapped = false
+
     private(set) lazy var footerView: RegisterDomainDetailsFooterView = {
         let buttonView = RegisterDomainDetailsFooterView.loadFromNib()
+
         buttonView.submitButton.isEnabled = false
         buttonView.submitButton.addTarget(
             self,
             action: #selector(registerDomainButtonTapped(sender:)),
             for: .touchUpInside
         )
+
         buttonView.submitButton.setTitle(Localized.buttonTitle, for: .normal)
+
         return buttonView
     }()
 
@@ -41,24 +45,27 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configure()
+        configureView()
     }
 
-    private func configure() {
+    private func configureView() {
+        title = NSLocalizedString("Register domain",
+                                  comment: "Title for the Register domain screen")
+
         configureTableView()
-        configureNavigationBar()
         WPStyleGuide.configureColors(for: view, andTableView: tableView)
+
         viewModel.onChange = { [unowned self] (change) in
             self.handle(change: change)
         }
+
         viewModel.prefill()
         setupEditingEndingTapGestureRecognizer()
     }
 
     private func configureTableView() {
-        tableView.estimatedRowHeight = Constants.estimatedRowHeight
         configureTableFooterView()
-        WPStyleGuide.configureColors(for: view, andTableView: tableView)
+
         tableView.register(
             UINib(nibName: RegisterDomainSectionHeaderView.identifier, bundle: nil),
             forHeaderFooterViewReuseIdentifier: RegisterDomainSectionHeaderView.identifier
@@ -80,20 +87,48 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
             forCellReuseIdentifier: WPTableViewCellDefault.defaultReuseID
         )
 
+        tableView.estimatedRowHeight = Constants.estimatedRowHeight
+
         tableView.estimatedSectionHeaderHeight = Constants.estimatedRowHeight
-        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+        tableView.sectionHeaderHeight = UITableView.automaticDimension
 
         tableView.estimatedSectionFooterHeight = Constants.estimatedRowHeight
-        tableView.sectionFooterHeight = UITableViewAutomaticDimension
+        tableView.sectionFooterHeight = UITableView.automaticDimension
 
-        reloadViewModel()
+        tableView.reloadData()
+    }
+
+    private func showAlert(title: String? = nil, message: String) {
+        let alertCancel = NSLocalizedString(
+            "OK",
+            comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt."
+        )
+        let alertController = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        alertController.addCancelActionWithTitle(alertCancel, handler: nil)
+        present(alertController, animated: true, completion: nil)
+    }
+
+    /// Sets up a gesture recognizer to make tap gesture close the keyboard
+    private func setupEditingEndingTapGestureRecognizer() {
+        let gestureRecognizer = UITapGestureRecognizer()
+        gestureRecognizer.cancelsTouchesInView = false
+
+        gestureRecognizer.on { [weak self] (gesture) in
+            self?.view.endEditing(true)
+        }
+
+        view.addGestureRecognizer(gestureRecognizer)
     }
 
     private func handle(change: RegisterDomainDetailsViewModel.Change) {
         switch change {
-        case let .wholeValidation(tag, isValid):
-            switch tag {
-            case .enableSubmit:
+        case let .formValidated(context, isValid):
+            switch context {
+            case .clientSide:
                 footerView.submitButton.isEnabled = isValid
             default:
                 break
@@ -122,35 +157,13 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
             showAlert(message: message)
         case .multipleChoiceRowValueChanged(let indexPath):
             tableView.reloadRows(at: [indexPath], with: .none)
-        case .proceedSubmitValidation:
+        case .remoteValidationFinished:
             tableView.reloadData()
         default:
             break
         }
     }
 
-    private func reloadViewModel() {
-        tableView.reloadData()
-    }
-
-    private func configureNavigationBar() {
-        title = NSLocalizedString("Register domain",
-                                  comment: "Title for the Register domain screen")
-    }
-
-    private func showAlert(title: String? = nil, message: String) {
-        let alertCancel = NSLocalizedString(
-            "OK",
-            comment: "Title of an OK button. Pressing the button acknowledges and dismisses a prompt."
-        )
-        let alertController = UIAlertController(
-            title: title,
-            message: message,
-            preferredStyle: .alert
-        )
-        alertController.addCancelActionWithTitle(alertCancel, handler: nil)
-        present(alertController, animated: true, completion: nil)
-    }
 }
 
 // MARK: - Actions
@@ -158,12 +171,11 @@ class RegisterDomainDetailsViewController: NUXTableViewController {
 extension RegisterDomainDetailsViewController {
 
     @objc private func registerDomainButtonTapped(sender: UIButton) {
-        registerButtonTapped = true
         viewModel.register()
     }
 
     @objc func handleTermsAndConditionsTap(_ sender: UITapGestureRecognizer) {
-        //TODO
+        UIApplication.shared.open(URL(string: WPAutomatticTermsOfServiceURL)!, options: [:], completionHandler: nil)
     }
 
 }

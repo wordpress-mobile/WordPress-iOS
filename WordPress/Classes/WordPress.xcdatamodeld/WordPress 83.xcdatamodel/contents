@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17F77" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14315.18" systemVersion="18B75" minimumToolsVersion="Xcode 7.3" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="dateModified" optional="YES" attributeType="Date" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="metaPublishImmediately" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="revisions" optional="YES" attributeType="Transformable" syncable="YES"/>
         <relationship name="blog" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="posts" inverseEntity="Blog" indexed="YES" syncable="YES"/>
         <relationship name="featuredImage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Media" inverseName="featuredOnPosts" inverseEntity="Media" syncable="YES"/>
         <relationship name="media" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Media" inverseName="posts" inverseEntity="Media" indexed="YES" syncable="YES"/>
@@ -89,6 +90,7 @@
         </attribute>
         <attribute name="capabilities" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="currentThemeId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hasDomainCredit" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="hasOlderPages" transient="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO">
             <userInfo/>
         </attribute>
@@ -154,6 +156,7 @@
             <userInfo/>
         </relationship>
         <relationship name="postTypes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PostType" inverseName="blog" inverseEntity="PostType" syncable="YES"/>
+        <relationship name="quickStartTours" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="QuickStartTourState" inverseName="blog" inverseEntity="QuickStartTourState" syncable="YES"/>
         <relationship name="roles" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Role" inverseName="blog" inverseEntity="Role" syncable="YES"/>
         <relationship name="settings" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="BlogSettings" inverseName="blog" inverseEntity="BlogSettings" syncable="YES"/>
         <relationship name="sharingButtons" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SharingButton" inverseName="blog" inverseEntity="SharingButton" syncable="YES"/>
@@ -426,6 +429,7 @@
         <attribute name="geolocation" optional="YES" attributeType="Transformable">
             <userInfo/>
         </attribute>
+        <attribute name="isStickyPost" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="latitudeID" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
@@ -495,7 +499,7 @@
     <entity name="PublicizeService" representedClassName="WordPress.PublicizeService" syncable="YES">
         <attribute name="connectURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="externalUsersOnly" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="externalUsersOnly" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="jetpackModuleRequired" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="jetpackSupport" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
@@ -504,6 +508,12 @@
         <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="serviceID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="QuickStartTourState" representedClassName="QuickStartTourState" syncable="YES">
+        <attribute name="completed" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="skipped" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="tourID" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="quickStartTours" inverseEntity="Blog" syncable="YES"/>
     </entity>
     <entity name="ReaderAbstractTopic" representedClassName="WordPress.ReaderAbstractTopic" isAbstract="YES" syncable="YES">
         <attribute name="algorithm" optional="YES" attributeType="String" syncable="YES"/>
@@ -616,6 +626,38 @@
     <entity name="ReaderTeamTopic" representedClassName="WordPress.ReaderTeamTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Revision" syncable="YES">
+        <attribute name="postAuthorId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="postContent" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postDateGmt" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postExcerpt" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="postModifiedGmt" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postTitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="revisionId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="siteId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="diff" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RevisionDiff" inverseName="revision" inverseEntity="RevisionDiff" syncable="YES"/>
+    </entity>
+    <entity name="RevisionDiff" syncable="YES">
+        <attribute name="fromRevisionId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="toRevisionId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="totalAdditions" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="totalDeletions" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="contentDiffs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RevisionDiffContentValue" inverseName="relationship" inverseEntity="RevisionDiffContentValue" syncable="YES"/>
+        <relationship name="revision" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Revision" inverseName="diff" inverseEntity="Revision" syncable="YES"/>
+        <relationship name="titleDiffs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RevisionDiffTitleValue" inverseName="relationship" inverseEntity="RevisionDiffTitleValue" syncable="YES"/>
+    </entity>
+    <entity name="RevisionDiffAbstractValue" syncable="YES">
+        <attribute name="operation" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="RevisionDiffContentValue" syncable="YES">
+        <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RevisionDiff" inverseName="contentDiffs" inverseEntity="RevisionDiff" syncable="YES"/>
+    </entity>
+    <entity name="RevisionDiffTitleValue" parentEntity="RevisionDiffAbstractValue" syncable="YES">
+        <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RevisionDiff" inverseName="titleDiffs" inverseEntity="RevisionDiff" syncable="YES"/>
+    </entity>
     <entity name="Role" representedClassName=".Role" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="order" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
@@ -670,11 +712,11 @@
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="themes" inverseEntity="Blog" syncable="YES"/>
     </entity>
     <elements>
-        <element name="AbstractPost" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="AbstractPost" positionX="0" positionY="0" width="128" height="180"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="225"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="285"/>
-        <element name="Blog" positionX="0" positionY="0" width="128" height="705"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="735"/>
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="855"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
@@ -686,11 +728,12 @@
         <element name="Notification" positionX="18" positionY="162" width="128" height="240"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Person" positionX="18" positionY="153" width="128" height="225"/>
-        <element name="Post" positionX="0" positionY="0" width="128" height="240"/>
+        <element name="Post" positionX="0" positionY="0" width="128" height="255"/>
         <element name="PostTag" positionX="27" positionY="153" width="128" height="135"/>
         <element name="PostType" positionX="27" positionY="153" width="128" height="105"/>
         <element name="PublicizeConnection" positionX="27" positionY="162" width="128" height="330"/>
         <element name="PublicizeService" positionX="18" positionY="153" width="128" height="210"/>
+        <element name="QuickStartTourState" positionX="36" positionY="162" width="128" height="105"/>
         <element name="ReaderAbstractTopic" positionX="9" positionY="153" width="128" height="180"/>
         <element name="ReaderCrossPostMeta" positionX="18" positionY="153" width="128" height="135"/>
         <element name="ReaderDefaultTopic" positionX="18" positionY="162" width="128" height="45"/>
@@ -704,6 +747,11 @@
         <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="240"/>
         <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>
         <element name="ReaderTeamTopic" positionX="27" positionY="153" width="128" height="60"/>
+        <element name="Revision" positionX="27" positionY="153" width="128" height="195"/>
+        <element name="RevisionDiff" positionX="36" positionY="162" width="128" height="150"/>
+        <element name="RevisionDiffAbstractValue" positionX="45" positionY="171" width="128" height="30"/>
+        <element name="RevisionDiffContentValue" positionX="63" positionY="189" width="128" height="30"/>
+        <element name="RevisionDiffTitleValue" positionX="54" positionY="180" width="128" height="30"/>
         <element name="Role" positionX="36" positionY="162" width="128" height="105"/>
         <element name="SharingButton" positionX="27" positionY="153" width="128" height="165"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>

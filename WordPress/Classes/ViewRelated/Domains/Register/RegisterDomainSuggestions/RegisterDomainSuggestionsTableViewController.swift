@@ -3,7 +3,7 @@ import Foundation
 class RegisterDomainSuggestionsTableViewController: DomainSuggestionsTableViewController {
 
     override open var domainSuggestionType: DomainsServiceRemote.DomainSuggestionType {
-        return .includeWordPressDotCom
+        return .noWordpressDotCom
     }
     override open var useFadedColorForParentDomains: Bool {
         return false

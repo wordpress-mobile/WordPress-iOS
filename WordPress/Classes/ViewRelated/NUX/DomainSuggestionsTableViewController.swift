@@ -4,7 +4,7 @@ import WordPressAuthenticator
 
 
 protocol DomainSuggestionsTableViewControllerDelegate {
-    func domainSelected(_ domain: String)
+    func domainSelected(_ domain: DomainSuggestion)
     func newSearchStarted()
 }
 
@@ -35,8 +35,8 @@ class DomainSuggestionsTableViewController: NUXTableViewController {
 
     private var noResultsViewController: NoResultsViewController?
     private var service: DomainsService?
-    private var siteTitleSuggestions: [String] = []
-    private var searchSuggestions: [String] = []
+    private var siteTitleSuggestions: [DomainSuggestion] = []
+    private var searchSuggestions: [DomainSuggestion] = []
     private var isSearching: Bool = false
     private var selectedCell: UITableViewCell?
 
@@ -102,7 +102,7 @@ class DomainSuggestionsTableViewController: NUXTableViewController {
     /// - Parameters:
     ///   - searchTerm: string to base suggestions on
     ///   - addSuggestions: function to call when results arrive
-    private func suggestDomains(for searchTerm: String, addSuggestions: @escaping (_: [String]) ->()) {
+    private func suggestDomains(for searchTerm: String, addSuggestions: @escaping (_: [DomainSuggestion]) ->()) {
         guard !isSearching else {
             return
         }
@@ -199,9 +199,9 @@ extension DomainSuggestionsTableViewController {
             } else {
                 let suggestion: String
                 if searchSuggestions.count > 0 {
-                    suggestion = searchSuggestions[indexPath.row]
+                    suggestion = searchSuggestions[indexPath.row].domainName
                 } else {
-                    suggestion = siteTitleSuggestions[indexPath.row]
+                    suggestion = siteTitleSuggestions[indexPath.row].domainName
                 }
                 cell = suggestionCell(domain: suggestion)
             }
@@ -328,7 +328,8 @@ private extension DomainSuggestionsTableViewController {
 
 extension DomainSuggestionsTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var selectedDomain: String
+        let selectedDomain: DomainSuggestion
+
         switch indexPath.section {
         case Sections.suggestions.rawValue:
             if searchSuggestions.count > 0 {
@@ -340,10 +341,6 @@ extension DomainSuggestionsTableViewController {
             return
         }
 
-        // Remove ".wordpress.com" before sending it to the delegate
-        if domainSuggestionType == .onlyWordPressDotCom {
-            selectedDomain = selectedDomain.components(separatedBy: ".")[0]
-        }
         delegate?.domainSelected(selectedDomain)
 
         tableView.deselectSelectedRowWithAnimation(true)

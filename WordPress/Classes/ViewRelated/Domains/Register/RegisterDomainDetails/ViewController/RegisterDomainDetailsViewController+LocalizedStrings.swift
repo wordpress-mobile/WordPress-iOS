@@ -10,6 +10,10 @@ enum RegisterDomainDetails {
             "Error occurred fetching domain contact information",
             comment: "Register Domain - Domain contact information error message shown to indicate an error during fetching domain contact information"
         )
+        static let cartError = NSLocalizedString("Problem purchasing your domain. Please try again.",
+             comment: "Register Domain - error displayed when there's a problem when purchasing the domain."
+        )
+
         static let statesFetchingError = NSLocalizedString(
             "Error occurred fetching states",
             comment: "Register Domain - Domain contact information error message shown to indicate an error during fetching list of states"
@@ -59,7 +63,7 @@ enum RegisterDomainDetails {
             static let organization = NSLocalizedString("Organization", comment: "Register Domain - Domain contact information field Organization")
             static let organizationPlaceholder = NSLocalizedString("Organization (Optional)", comment: "Register Domain - Domain contact information field placeholder for Organization")
             static let email = NSLocalizedString("Email", comment: "Register Domain - Domain contact information field Email")
-            static let phone = NSLocalizedString("Phone", comment: "Register Domain - Domain contact information field Phone")
+            static let phone = NSLocalizedString("phone number", comment: "Register Domain - Domain contact information field Phone")
             static let country = NSLocalizedString("Country", comment: "Register Domain - Domain contact information field Country")
             static let countryPlaceholder = NSLocalizedString("Select Country", comment: "Register Domain - Domain contact information field placeholder for Country")
         }

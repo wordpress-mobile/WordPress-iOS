@@ -23,7 +23,8 @@ struct DomainsService {
 
     func getDomainSuggestions(base: String,
                               domainSuggestionType: DomainsServiceRemote.DomainSuggestionType = .onlyWordPressDotCom,
-                              success: @escaping ([String]) -> Void, failure: @escaping (Error) -> Void) {
+                              success: @escaping ([DomainSuggestion]) -> Void,
+                              failure: @escaping (Error) -> Void) {
         remote.getDomainSuggestions(base: base,
                                     domainSuggestionType: domainSuggestionType,
                                     success: { suggestions in

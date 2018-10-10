@@ -5,7 +5,7 @@ class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggesti
 
     @IBOutlet weak var buttonContainerViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var buttonContainerViewHeightConstraint: NSLayoutConstraint!
-    private var domain: String?
+    private var domain: DomainSuggestion?
     private var siteName: String?
     private var domainsTableViewController: RegisterDomainSuggestionsTableViewController?
 
@@ -67,7 +67,7 @@ class RegisterDomainSuggestionsViewController: NUXViewController, DomainSuggesti
 // MARK: - DomainSuggestionsTableViewControllerDelegate
 
 extension RegisterDomainSuggestionsViewController: DomainSuggestionsTableViewControllerDelegate {
-    func domainSelected(_ domain: String) {
+    func domainSelected(_ domain: DomainSuggestion) {
         self.domain = domain
         showButtonView(show: true, withAnimation: true)
     }

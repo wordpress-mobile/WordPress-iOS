@@ -27,7 +27,7 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
     @IBOutlet weak var valueTextField: LoginTextField!
     weak var delegate: InlineEditableNameValueCellDelegate?
 
-    override var accessoryType: UITableViewCellAccessoryType {
+    override var accessoryType: UITableViewCell.AccessoryType {
         didSet {
             switch accessoryType {
             case .disclosureIndicator:
@@ -50,9 +50,9 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
         valueTextField.font = WPStyleGuide.tableviewTextFont()
         valueTextField.borderStyle = .none
         valueTextField.addTarget(self, action: #selector(textFieldDidChange(textField:)),
-                                 for: UIControlEvents.editingChanged)
+                                 for: UIControl.Event.editingChanged)
         valueTextField.addTarget(self, action: #selector(textEditingDidEnd(textField:)),
-                                 for: UIControlEvents.editingDidEnd)
+                                 for: UIControl.Event.editingDidEnd)
 
         accessoryType = .none
         if effectiveUserInterfaceLayoutDirection == .leftToRight {
@@ -79,7 +79,7 @@ extension InlineEditableNameValueCell {
         var value: String?
         var placeholder: String?
         var valueColor: UIColor?
-        var accessoryType: UITableViewCellAccessoryType?
+        var accessoryType: UITableViewCell.AccessoryType?
     }
 
     func update(with model: Model) {

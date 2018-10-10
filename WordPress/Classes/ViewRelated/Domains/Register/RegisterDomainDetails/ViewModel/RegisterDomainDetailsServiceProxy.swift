@@ -19,6 +19,12 @@ protocol RegisterDomainDetailsServiceProxyProtocol {
                    success: @escaping ([State]) -> Void,
                    failure: @escaping (Error) -> Void)
 
+    func createShoppingCart(siteID: Int,
+                            domainSuggestion: DomainSuggestion,
+                            success: @escaping (String) -> Void,
+                            failure: @escaping (Error) -> Void)
+
+
 }
 
 class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtocol {
@@ -66,5 +72,15 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
         domainsServiceRemote.getStates(for: countryCode,
                                        success: success,
                                        failure: failure)
+    }
+
+    func createShoppingCart(siteID: Int,
+                            domainSuggestion: DomainSuggestion,
+                            success: @escaping (String) -> Void,
+                            failure: @escaping (Error) -> Void) {
+        transactionsServiceRemote.createShoppingCart(siteID: siteID,
+                                                     domainSuggestion: domainSuggestion,
+                                                     success: success,
+                                                     failure: failure)
     }
 }
