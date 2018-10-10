@@ -786,6 +786,9 @@
 		98EDB5FB2016627C00E2D25A /* SiteCreationCreateSiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98EDB5FA2016627C00E2D25A /* SiteCreationCreateSiteViewController.swift */; };
 		98F1B12A2111017A00139493 /* NoResultsStockPhotosConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F1B1292111017900139493 /* NoResultsStockPhotosConfiguration.swift */; };
 		98F24AE820190506001A80F9 /* SiteCreationSitePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98F24AE720190506001A80F9 /* SiteCreationSitePreviewViewController.swift */; };
+		9A22D9C0214A6BCA00BAEAF2 /* PageListTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A22D9BF214A6BCA00BAEAF2 /* PageListTableViewHandler.swift */; };
+		9A2CD5372146B8C700AE5055 /* Array+Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2CD5362146B8C700AE5055 /* Array+Page.swift */; };
+		9AF724EF2146813C00F63A61 /* ParentPageSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF724EE2146813C00F63A61 /* ParentPageSettingsViewController.swift */; };
 		9F3EFC9E208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3EFC9D208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift */; };
 		9F3EFCA1208E305E00268758 /* ReaderTopicService+Subscriptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3EFCA0208E305D00268758 /* ReaderTopicService+Subscriptions.swift */; };
 		9F3EFCA3208E308A00268758 /* UIViewController+Notice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3EFCA2208E308900268758 /* UIViewController+Notice.swift */; };
@@ -2486,6 +2489,9 @@
 		98F24AE720190506001A80F9 /* SiteCreationSitePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationSitePreviewViewController.swift; sourceTree = "<group>"; };
 		99D675225C3282AC88B89F04 /* Pods-WordPressTodayWidget.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTodayWidget.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget.release-internal.xcconfig"; sourceTree = "<group>"; };
 		9A1DA2FB21370DD00082569B /* WordPress 80.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 80.xcdatamodel"; sourceTree = "<group>"; };
+		9A22D9BF214A6BCA00BAEAF2 /* PageListTableViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageListTableViewHandler.swift; sourceTree = "<group>"; };
+		9A2CD5362146B8C700AE5055 /* Array+Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Page.swift"; sourceTree = "<group>"; };
+		9AF724EE2146813C00F63A61 /* ParentPageSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPageSettingsViewController.swift; sourceTree = "<group>"; };
 		9F3EFC9D208E2E8A00268758 /* ReaderSiteInfoSubscriptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderSiteInfoSubscriptions.swift; sourceTree = "<group>"; };
 		9F3EFCA0208E305D00268758 /* ReaderTopicService+Subscriptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReaderTopicService+Subscriptions.swift"; sourceTree = "<group>"; };
 		9F3EFCA2208E308900268758 /* UIViewController+Notice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Notice.swift"; sourceTree = "<group>"; };
@@ -4440,6 +4446,7 @@
 			isa = PBXGroup;
 			children = (
 				59DCA5201CC68AF3000F245F /* PageListViewController.swift */,
+				9AF724EE2146813C00F63A61 /* ParentPageSettingsViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -5441,6 +5448,14 @@
 			name = "Select Site Category";
 			sourceTree = "<group>";
 		};
+		9A22D9BE214A6B9800BAEAF2 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				9A22D9BF214A6BCA00BAEAF2 /* PageListTableViewHandler.swift */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
 		AC3439790E11434600E5D79B /* Post */ = {
 			isa = PBXGroup;
 			children = (
@@ -5858,6 +5873,7 @@
 				9F3EFCA2208E308900268758 /* UIViewController+Notice.swift */,
 				B5969E2120A49E86005E9DF1 /* UIAlertController+Helpers.swift */,
 				E14DF70520C922F200959BA9 /* NotificationCenter+ObserveOnce.swift */,
+				9A2CD5362146B8C700AE5055 /* Array+Page.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -6991,6 +7007,7 @@
 			isa = PBXGroup;
 			children = (
 				5DFA7EC21AF7CB910072023B /* Pages.storyboard */,
+				9A22D9BE214A6B9800BAEAF2 /* Utils */,
 				5DFA7EBD1AF7CB2E0072023B /* Controllers */,
 				5DFA7EBE1AF7CB3A0072023B /* Views */,
 				5D62BAD518AA88210044E5F7 /* PageSettingsViewController.h */,
@@ -7092,10 +7109,10 @@
 			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "WordPress" */;
 			buildPhases = (
 				E00F6488DE2D86BDC84FBB0B /* [CP] Check Pods Manifest.lock */,
+				E1756E61169493AD00D9EC00 /* Generate API credentials */,
 				825F0EBF1F7EBF7C00321528 /* App Icons: Add Version For Internal Releases */,
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				832D4F01120A6F7C001708D4 /* CopyFiles */,
-				E1756E61169493AD00D9EC00 /* Generate API credentials */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
 				E1CCFB31175D62320016BD8A /* Run Fabric/Crashlytics */,
@@ -7280,7 +7297,7 @@
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
 						DevelopmentTeam = PZYM8XX95Q;
-						LastSwiftMigration = 0910;
+						LastSwiftMigration = 1000;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -7301,6 +7318,7 @@
 					};
 					733F36022126197800988727 = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -7313,7 +7331,7 @@
 					};
 					7358E6B7210BD318002323EB = {
 						CreatedOnToolsVersion = 9.4.1;
-						LastSwiftMigration = 0940;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -7326,6 +7344,7 @@
 					};
 					74576671202B558C00F42E40 = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 1000;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -7345,7 +7364,7 @@
 					932225A61C7CE50300443B02 = {
 						CreatedOnToolsVersion = 7.2.1;
 						DevelopmentTeam = PZYM8XX95Q;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 1000;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -7358,7 +7377,7 @@
 					93E5283919A7741A003A1A9C = {
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = PZYM8XX95Q;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 1000;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -7373,7 +7392,7 @@
 					};
 					E16AB92914D978240047A2E5 = {
 						DevelopmentTeam = PZYM8XX95Q;
-						LastSwiftMigration = 0820;
+						LastSwiftMigration = 1000;
 						TestTargetID = 1D6058900D05DD3D006BFB54;
 					};
 					FF27168E1CAAC87A0006E2D4 = {
@@ -7758,9 +7777,9 @@
 				"${BUILT_PRODUCTS_DIR}/WordPressKit/WordPressKit.framework",
 				"${BUILT_PRODUCTS_DIR}/WordPressShared/WordPressShared.framework",
 				"${BUILT_PRODUCTS_DIR}/WordPressUI/WordPressUI.framework",
-				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/4.1/ZendeskCoreSDK.framework",
-				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/4.1/ZendeskProviderSDK.framework",
-				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/4.1/ZendeskSDK.framework",
+				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/4.2/ZendeskCoreSDK.framework",
+				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/4.2/ZendeskProviderSDK.framework",
+				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/4.2/ZendeskSDK.framework",
 				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 				"${BUILT_PRODUCTS_DIR}/wpxmlrpc/wpxmlrpc.framework",
 			);
@@ -7879,7 +7898,7 @@
 			inputPaths = (
 				"${SRCROOT}/../Pods/Target Support Files/Pods-WordPress/Pods-WordPress-resources.sh",
 				"${PODS_ROOT}/GoogleSignInRepacked/Resources/GoogleSignIn.bundle",
-				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/4.1/ZendeskSDKStrings.bundle",
+				"${PODS_ROOT}/ZendeskSDK/ZendeskSDK/4.2/ZendeskSDKStrings.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/HockeySDK/HockeySDKResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -8050,13 +8069,14 @@
 			files = (
 			);
 			inputPaths = (
+				"\"$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)\"",
 			);
 			name = "Run Fabric/Crashlytics";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "[ -f ~/.wpcom_app_credentials ] && source ~/.wpcom_app_credentials\n \nif [[ \"Debug\" == \"${CONFIGURATION}\" ]]; then\n  echo \"Skipping Fabric\";\n  exit 0;\nfi\n \nif [ \"x$FABRIC_SCRIPT_KEY\" != \"x\" ]; then\n  \"${PODS_ROOT}/Fabric/run\" $FABRIC_SCRIPT_KEY\nelse\n  echo \"warning: Fabric API Key not found\"\nfi";
+			shellScript = "[ -f ~/.wpcom_app_credentials ] && source ~/.wpcom_app_credentials\n \nif [[ \"Debug\" == \"${CONFIGURATION}\" ]]; then\n  echo \"Skipping Fabric\";\n  exit 0;\nfi\n \nif [ \"x$FABRIC_SCRIPT_KEY\" != \"x\" ]; then\n  \"${PODS_ROOT}/Fabric/run\" $FABRIC_SCRIPT_KEY\nelse\n  echo \"warning: Fabric API Key not found\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		FFA8E2301F94E3EF0002170F /* ShellScript */ = {
@@ -8362,6 +8382,7 @@
 				43290D04215C28D800F6B398 /* Blog+QuickStart.swift in Sources */,
 				FF1FD0242091268900186384 /* URL+LinkNormalization.swift in Sources */,
 				B5326E6F203F554D007392C3 /* WordPressSupportSourceTag+Helpers.swift in Sources */,
+				9AF724EF2146813C00F63A61 /* ParentPageSettingsViewController.swift in Sources */,
 				1759F1701FE017BF0003EC81 /* Queue.swift in Sources */,
 				B56A70181B5040B9001D5815 /* SwitchTableViewCell.swift in Sources */,
 				E66969E21B9E67A000EC9C00 /* ReaderTopicToReaderSiteTopic37to38.swift in Sources */,
@@ -8396,11 +8417,13 @@
 				B5AC00681BE3C4E100F8E7C3 /* DiscussionSettingsViewController.swift in Sources */,
 				D816C1F620E0896F00C4D82F /* TrashComment.swift in Sources */,
 				08AAD69F1CBEA47D002B2418 /* MenusService.m in Sources */,
+				9A22D9C0214A6BCA00BAEAF2 /* PageListTableViewHandler.swift in Sources */,
 				74729CA62056FE6000D1394D /* SearchableItemConvertable.swift in Sources */,
 				5D000DDE1AC076C000A7BAF9 /* PostCardActionBar.m in Sources */,
 				FFE3B2C71B2E651400E9F1E0 /* WPAndDeviceMediaLibraryDataSource.m in Sources */,
 				B59D994F1C0790CC0003D795 /* SettingsListEditorViewController.swift in Sources */,
 				1724DDC81C60F1200099D273 /* PlanDetailViewController.swift in Sources */,
+				9A2CD5372146B8C700AE5055 /* Array+Page.swift in Sources */,
 				E6A09BA61C4492DC008626FB /* SharingAuthorizationWebViewController.m in Sources */,
 				5D6C4B091B603E03005E3C43 /* WPTableViewHandler.m in Sources */,
 				1702BBE01CF3034E00766A33 /* DomainsService.swift in Sources */,
@@ -9646,7 +9669,7 @@
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpdebug;
 			};
@@ -9708,7 +9731,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress App Store";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wordpress;
 			};
@@ -9754,7 +9777,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationContentExtension/Sources/WordPressNotificationContentExtension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpdebug;
 			};
@@ -9797,7 +9820,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Notification Content Extension";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationContentExtension/Sources/WordPressNotificationContentExtension-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wordpress;
 			};
@@ -9840,7 +9863,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Internal Notification Content Distrib";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationContentExtension/Sources/WordPressNotificationContentExtension-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpinternal;
 			};
@@ -9883,7 +9906,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Alpha Notification Content Distribution";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationContentExtension/Sources/WordPressNotificationContentExtension-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpalpha;
 			};
@@ -9929,7 +9952,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpdebug;
 			};
@@ -9972,7 +9995,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Notification Service Extension";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wordpress;
 			};
@@ -10015,7 +10038,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Internal Notification Service Distrib";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpinternal;
 			};
@@ -10058,7 +10081,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Alpha Notification Service Distribution";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressNotificationServiceExtension/Sources/WordPressNotificationServiceExtension-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpalpha;
 			};
@@ -10111,7 +10134,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpdebug;
 			};
@@ -10161,7 +10184,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Draft Action App Store Distribution";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wordpress;
 			};
@@ -10212,7 +10235,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Internal Draft Action Distribution";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpinternal;
 			};
@@ -10263,7 +10286,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Alpha Draft Action Distribution";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressDraftActionExtension/WordPressDraftActionExtension-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpalpha;
 			};
@@ -10556,7 +10579,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Alpha Enterprise";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpalpha;
 			};
@@ -10590,7 +10613,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = "Release-Alpha";
@@ -10655,7 +10678,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Alpha Today Widget Enterprise";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				WPCOM_SCHEME = wpalpha;
 			};
 			name = "Release-Alpha";
@@ -10730,7 +10753,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				WPCOM_SCHEME = wpdebug;
 			};
 			name = Debug;
@@ -10793,7 +10816,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Share App Store Distribution";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				WPCOM_SCHEME = wordpress;
 			};
 			name = Release;
@@ -10857,7 +10880,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Internal Share Distribution";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				WPCOM_SCHEME = wpinternal;
 			};
 			name = "Release-Internal";
@@ -10921,7 +10944,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Alpha Share Distribution";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressShareExtension/WordPressShare-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				WPCOM_SCHEME = wpalpha;
 			};
 			name = "Release-Alpha";
@@ -11037,7 +11060,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Internal Distribution";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WPCOM_SCHEME = wpinternal;
 			};
@@ -11071,7 +11094,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = "Release-Internal";
@@ -11128,7 +11151,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				WPCOM_SCHEME = wpdebug;
 			};
 			name = Debug;
@@ -11182,7 +11205,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Today Widget App Store Distribution";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				WPCOM_SCHEME = wordpress;
 			};
 			name = Release;
@@ -11237,7 +11260,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "WordPress Internal Today Widget Distribution";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				WPCOM_SCHEME = wpinternal;
 			};
 			name = "Release-Internal";
@@ -11417,7 +11440,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Debug;
@@ -11450,7 +11473,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;

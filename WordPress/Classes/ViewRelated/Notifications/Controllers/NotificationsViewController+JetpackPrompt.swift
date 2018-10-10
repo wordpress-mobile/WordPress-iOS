@@ -12,7 +12,7 @@ extension NotificationsViewController {
         } else {
             let controller = JetpackLoginViewController(blog: blog)
             controller.promptType = .notifications
-            addChildViewController(controller)
+            addChild(controller)
             tableView.addSubview(withFadeAnimation: controller.view)
             controller.view.frame = CGRect(origin: .zero, size: view.frame.size)
             configureControllerCompletion(controller, withBlog: blog)
@@ -27,7 +27,7 @@ extension NotificationsViewController {
                 self?.activityIndicator.stopAnimating()
                 WPAppAnalytics.track(.signedInToJetpack, withProperties: ["source": "notifications"], with: blog)
                 controller?.view.removeFromSuperview()
-                controller?.removeFromParentViewController()
+                controller?.removeFromParent()
                 self?.jetpackLoginViewController = nil
                 self?.tableView.reloadData()
             } else {

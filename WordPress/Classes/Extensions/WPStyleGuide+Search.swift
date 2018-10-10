@@ -24,20 +24,20 @@ extension WPStyleGuide {
         // a different color from the search bar's cursor (which uses `tintColor`)
         let cancelImage = UIImage(named: "icon-clear-searchfield")?.imageWithTintColor(WPStyleGuide.grey())
         let searchImage = UIImage(named: "icon-post-list-search")?.imageWithTintColor(WPStyleGuide.grey())
-        UISearchBar.appearance().setImage(cancelImage, for: .clear, state: UIControlState())
-        UISearchBar.appearance().setImage(searchImage, for: .search, state: UIControlState())
+        UISearchBar.appearance().setImage(cancelImage, for: .clear, state: UIControl.State())
+        UISearchBar.appearance().setImage(searchImage, for: .search, state: UIControl.State())
     }
 
     @objc public class func configureSearchBarTextAppearance() {
         // Cancel button
-        let barButtonTitleAttributes: [NSAttributedStringKey: Any] = [.font: WPStyleGuide.fixedFont(for: .headline),
+        let barButtonTitleAttributes: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fixedFont(for: .headline),
                                                                       .foregroundColor: WPStyleGuide.darkGrey()]
         let barButtonItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UISearchBar.self])
-        barButtonItemAppearance.setTitleTextAttributes(barButtonTitleAttributes, for: UIControlState())
+        barButtonItemAppearance.setTitleTextAttributes(barButtonTitleAttributes, for: UIControl.State())
 
         // Text field
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).defaultTextAttributes =
-            (WPStyleGuide.defaultSearchBarTextAttributes(WPStyleGuide.darkGrey()))
+            (WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.darkGrey()))
         let placeholderText = NSLocalizedString("Search", comment: "Placeholder text for the search bar")
         let attributedPlaceholderText = NSAttributedString(string: placeholderText,
                                                            attributes: WPStyleGuide.defaultSearchBarTextAttributesSwifted(WPStyleGuide.grey()))

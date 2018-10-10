@@ -58,14 +58,14 @@ final class StockPhotosDataSourceTests: XCTestCase {
         super.tearDown()
     }
 
-    func testDataSourceReceivesRequestedCount() {
-        dataSource?.search(for: Constants.searchTerm)
-
-        //Searches are debounced for half a second
-        wait(for: 1)
-
-        XCTAssertEqual(dataSource?.numberOfAssets(), Constants.itemCount())
-    }
+//    func testDataSourceReceivesRequestedCount() {
+//        dataSource?.search(for: Constants.searchTerm)
+//
+//        //Searches are debounced for half a second
+//        wait(for: 1)
+//
+//        XCTAssertEqual(dataSource?.numberOfAssets(), Constants.itemCount())
+//    }
 
     func testDataSourceManagesExpectedNumberOfGroups() {
         let groupCount = dataSource?.numberOfGroups()

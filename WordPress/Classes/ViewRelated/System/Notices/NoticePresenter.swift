@@ -293,7 +293,7 @@ private extension UNMutableNotificationContent {
             self.userInfo = userInfo
         }
 
-        sound = .default()
+        sound = .default
     }
 }
 

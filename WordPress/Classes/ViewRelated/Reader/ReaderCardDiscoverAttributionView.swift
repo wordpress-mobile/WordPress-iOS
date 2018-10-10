@@ -18,7 +18,7 @@ private enum ReaderCardDiscoverAttribution: Int {
     @IBOutlet fileprivate weak var imageView: CircularImageView!
     @IBOutlet fileprivate weak var textLabel: UILabel!
 
-    fileprivate lazy var originalAttributionParagraphAttributes: [NSAttributedStringKey: Any] = {
+    fileprivate lazy var originalAttributionParagraphAttributes: [NSAttributedString.Key: Any] = {
         return WPStyleGuide.originalAttributionParagraphAttributes()
     }()
 

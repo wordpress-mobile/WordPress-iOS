@@ -24,7 +24,16 @@ def extract_variables()
   variables = {}
   get_file().each_line do |l|
     k, v = l.split("=")
-    variables[k] = v.chomp
+
+    if k == nil or k.strip.empty?
+        next
+    end
+
+    if v != nil
+        variables[k] = v.chomp
+    else
+        variables[k] = ""
+    end
   end
   variables
 end
