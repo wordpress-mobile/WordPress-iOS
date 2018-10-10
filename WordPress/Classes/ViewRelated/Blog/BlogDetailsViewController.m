@@ -138,7 +138,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 @property (nonatomic, strong) BlogDetailHeaderView *headerView;
 @property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
-@property (nonatomic, strong) NSArray *tableSections;
+@property (nonatomic, strong) NSArray<BlogDetailsSection *> *tableSections;
 @property (nonatomic, strong) WPStatsService *statsService;
 @property (nonatomic, strong) BlogService *blogService;
 @property (nonatomic, strong) SiteIconPickerPresenter *siteIconPickerPresenter;
@@ -410,12 +410,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (NSIndexPath *)indexPathForSubsection:(BlogDetailsSubsection)section
 {
     switch (section) {
-        case BlogDetailsSubsectionStats:
+        case BlogDetailsSubsectionQuickStart:
             return [NSIndexPath indexPathForRow:0 inSection:0];
+        case BlogDetailsSubsectionStats:
+            return [self shouldShowQuickStartChecklist] ? [NSIndexPath indexPathForRow:1 inSection:0] : [NSIndexPath indexPathForRow:0 inSection:0];
         case BlogDetailsSubsectionActivity:
             return [NSIndexPath indexPathForRow:1 inSection:0];
         case BlogDetailsSubsectionPosts:
-            return [self shouldShowQuickStartChecklist] ? [NSIndexPath indexPathForRow:1 inSection:1] : [NSIndexPath indexPathForRow:0 inSection:1];
+            return [NSIndexPath indexPathForRow:0 inSection:1];
         case BlogDetailsSubsectionThemes:
         case BlogDetailsSubsectionCustomize:
             return [NSIndexPath indexPathForRow:0 inSection:2];
@@ -1307,11 +1309,18 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         [self.navigationController popToRootViewControllerAnimated:NO];
     }
 
+    NSUInteger generalSectionCountBefore = self.tableSections[0].rows.count;
+
     NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
     if ([updatedObjects containsObject:self.blog] || [updatedObjects containsObject:self.blog.settings]) {
         self.navigationItem.title = self.blog.settings.name;
         if ([self shouldShowQuickStartChecklist]) {
             [self configureTableViewData];
+            NSUInteger generalSectionCountAfter = self.tableSections[0].rows.count;
+            if (generalSectionCountBefore != generalSectionCountAfter) {
+                // quick start was just enabled
+                [self showQuickStart];
+            }
         }
         [self reloadTableViewPreservingSelection];
     }
@@ -1321,6 +1330,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 - (UIViewController *)initialDetailViewControllerForSplitView:(WPSplitViewController *)splitView
 {
+    if ([self shouldShowQuickStartChecklist]) {
+        QuickStartChecklistViewController *checklist = [[QuickStartChecklistViewController alloc] initWithBlog:self.blog];
+        return checklist;
+    }
     StatsViewController *statsView = [StatsViewController new];
     statsView.blog = self.blog;
     statsView.statsService = self.statsService;
