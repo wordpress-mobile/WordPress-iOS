@@ -55,10 +55,10 @@ import WordPressShared.WPStyleGuide
     }
     @objc open var replyText: String! {
         set {
-            replyButton.setTitle(newValue, for: UIControlState())
+            replyButton.setTitle(newValue, for: UIControl.State())
         }
         get {
-            return replyButton.title(for: UIControlState())
+            return replyButton.title(for: UIControl.State())
         }
     }
 
@@ -247,7 +247,7 @@ import WordPressShared.WPStyleGuide
         replyButton.isEnabled = false
         replyButton.titleLabel?.font = WPStyleGuide.Reply.buttonFont
         replyButton.setTitleColor(WPStyleGuide.Reply.disabledColor, for: .disabled)
-        replyButton.setTitleColor(WPStyleGuide.Reply.enabledColor, for: UIControlState())
+        replyButton.setTitleColor(WPStyleGuide.Reply.enabledColor, for: UIControl.State())
         replyButton.accessibilityLabel = NSLocalizedString("Reply", comment: "Accessibility label for the reply button")
 
         // Background

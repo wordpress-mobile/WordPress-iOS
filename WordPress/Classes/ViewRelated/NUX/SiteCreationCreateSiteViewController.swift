@@ -181,6 +181,8 @@ private extension SiteCreationCreateSiteViewController {
             self.performSegue(withIdentifier: Constants.errorSegueIdentifier, sender: self)
         }
 
+        WPAppAnalytics.track(.createSiteRequestInitiated)
+
         // Start the site creation process
         let service = SiteCreationService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.createSite(siteURL: siteCreationFields.domain,

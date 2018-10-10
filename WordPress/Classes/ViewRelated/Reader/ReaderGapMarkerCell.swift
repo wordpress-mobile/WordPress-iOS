@@ -31,7 +31,7 @@ open class ReaderGapMarkerCell: UITableViewCell {
         // Button style
         WPStyleGuide.applyGapMarkerButtonStyle(button)
         let text = NSLocalizedString("Load more posts", comment: "A short label.  A call to action to load more posts.")
-        button.setTitle(text, for: UIControlState())
+        button.setTitle(text, for: UIControl.State())
         button.layer.cornerRadius = 4.0
         button.layer.masksToBounds = true
 

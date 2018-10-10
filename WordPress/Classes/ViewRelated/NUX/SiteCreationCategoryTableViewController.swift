@@ -1,5 +1,6 @@
 import UIKit
 import WordPressAuthenticator
+import WordPressShared
 
 
 class SiteCreationCategoryTableViewController: NUXTableViewController {
@@ -15,11 +16,20 @@ class SiteCreationCategoryTableViewController: NUXTableViewController {
     }
 
     // MARK: - View
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        WPAppAnalytics.track(.createSiteProcessBegun)
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupTable()
         setupNavBar()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        WPAppAnalytics.track(.createSiteCategoryViewed)
     }
 
     func setupTable() {

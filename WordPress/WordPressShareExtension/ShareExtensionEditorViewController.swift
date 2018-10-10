@@ -49,7 +49,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         let accessibilityLabel = NSLocalizedString("Rich Content", comment: "Post Rich content")
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
 
-        let linkAttributes: [NSAttributedStringKey: Any] = [.underlineStyle: NSUnderlineStyle.styleSingle.rawValue,
+        let linkAttributes: [NSAttributedString.Key: Any] = [.underlineStyle: NSUnderlineStyle.single.rawValue,
                                                             .foregroundColor: ShareColors.aztecLinkColor]
 
         textView.delegate = self
@@ -57,7 +57,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         textView.textAttachmentDelegate = self
         textView.backgroundColor = ShareColors.aztecBackground
         textView.tintColor = ShareColors.aztecCursorColor
-        textView.linkTextAttributes = NSAttributedStringKey.convertToRaw(attributes: linkAttributes)
+        textView.linkTextAttributes = linkAttributes
         textView.textAlignment = .natural
 
         if #available(iOS 11, *) {
@@ -88,7 +88,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         let titleParagraphStyle = NSMutableParagraphStyle()
         titleParagraphStyle.alignment = .natural
 
-        let attributes: [NSAttributedStringKey: Any] = [.foregroundColor: UIColor.darkText,
+        let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.darkText,
                                                         .font: ShareFonts.title,
                                                         .paragraphStyle: titleParagraphStyle]
 
@@ -99,7 +99,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         textView.font = ShareFonts.title
         textView.returnKeyType = .next
         textView.textColor = UIColor.darkText
-        textView.typingAttributes = NSAttributedStringKey.convertToRaw(attributes: attributes)
+        textView.typingAttributes = attributes
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.textAlignment = .natural
         textView.isScrollEnabled = false
@@ -116,7 +116,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         let placeholderText = NSLocalizedString("Title", comment: "Placeholder for the post title.")
         let titlePlaceholderLabel = UILabel()
 
-        let attributes: [NSAttributedStringKey: Any] = [.foregroundColor: ShareColors.title, .font: ShareFonts.title]
+        let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: ShareColors.title, .font: ShareFonts.title]
 
         titlePlaceholderLabel.attributedText = NSAttributedString(string: placeholderText, attributes: attributes)
         titlePlaceholderLabel.sizeToFit()
@@ -161,7 +161,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
     ///
     fileprivate var currentSelectedAttachment: MediaAttachment?
 
-    fileprivate var mediaMessageAttributes: [NSAttributedStringKey: Any] {
+    fileprivate var mediaMessageAttributes: [NSAttributedString.Key: Any] {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
 
@@ -421,14 +421,20 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
 
     func startListeningToNotifications() {
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
-        nc.addObserver(self, selector: #selector(keyboardDidHide), name: .UIKeyboardDidHide, object: nil)
+        nc.addObserver(self,
+                       selector: #selector(keyboardWillShow),
+                       name: UIResponder.keyboardWillShowNotification,
+                       object: nil)
+        nc.addObserver(self,
+                       selector: #selector(keyboardDidHide),
+                       name: UIResponder.keyboardDidHideNotification,
+                       object: nil)
     }
 
     func stopListeningToNotifications() {
         let nc = NotificationCenter.default
-        nc.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
-        nc.removeObserver(self, name: .UIKeyboardDidHide, object: nil)
+        nc.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        nc.removeObserver(self, name: UIResponder.keyboardDidHideNotification, object: nil)
     }
 
     // MARK: - Toolbar creation
@@ -698,7 +704,7 @@ extension ShareExtensionEditorViewController {
 
             textField.addTarget(self,
                                 action: #selector(ShareExtensionEditorViewController.alertTextFieldDidChange),
-                                for: UIControlEvents.editingChanged)
+                                for: UIControl.Event.editingChanged)
         })
 
         // TextField: Link Name
@@ -763,7 +769,7 @@ extension ShareExtensionEditorViewController {
 
     func toggleHeader(fromItem item: FormatBarItem) {
         let headerOptions = Constants.headers.map { headerType -> OptionsTableViewOption in
-            let attributes: [NSAttributedStringKey: Any] = [
+            let attributes: [NSAttributedString.Key: Any] = [
                 .font: UIFont.systemFont(ofSize: CGFloat(headerType.fontSize)),
                 .foregroundColor: WPStyleGuide.darkGrey()
             ]
@@ -882,9 +888,9 @@ extension ShareExtensionEditorViewController {
         if currentKeyboardFrame.height > originalKeyboardFrame.height {
             originalKeyboardFrame = currentKeyboardFrame
         }
-        self.addChildViewController(viewController)
+        self.addChild(viewController)
         changeRichTextInputView(to: viewController.view)
-        viewController.didMove(toParentViewController: self)
+        viewController.didMove(toParent: self)
     }
 
     private func dismissOptionsViewController() {
@@ -892,7 +898,7 @@ extension ShareExtensionEditorViewController {
         case .pad:
             dismiss(animated: true, completion: nil)
         default:
-            optionsViewController?.removeFromParentViewController()
+            optionsViewController?.removeFromParent()
             changeRichTextInputView(to: nil)
             resetPresentationViewUsingKeyboardFrame(originalKeyboardFrame)
         }
@@ -1161,7 +1167,7 @@ private extension ShareExtensionEditorViewController {
     @objc func keyboardWillShow(_ notification: Foundation.Notification) {
         guard
             let userInfo = notification.userInfo as? [String: AnyObject],
-            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
             else {
                 return
         }
@@ -1173,7 +1179,7 @@ private extension ShareExtensionEditorViewController {
     @objc func keyboardDidHide(_ notification: Foundation.Notification) {
         guard
             let userInfo = notification.userInfo as? [String: AnyObject],
-            let keyboardFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+            let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
             else {
                 return
         }
