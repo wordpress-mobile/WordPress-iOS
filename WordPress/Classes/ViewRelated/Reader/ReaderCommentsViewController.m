@@ -208,7 +208,46 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     [self.view layoutIfNeeded];
 }
 
+#pragma mark - Tracking methods
 
+-(void)trackCommentsOpened {
+    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+    properties[WPAppAnalyticsKeyPostID] = self.post.postID;
+    properties[WPAppAnalyticsKeyBlogID] = self.post.siteID;
+    [WPAppAnalytics track:WPAnalyticsStatReaderArticleCommentsOpened withProperties:properties];
+}
+
+-(void)trackCommentLikedOrUnliked:(Comment *) comment {
+    ReaderPost *post = self.post;
+    WPAnalyticsStat stat;
+    if (comment.isLiked) {
+        stat = WPAnalyticsStatReaderArticleCommentLiked;
+    } else {
+        stat = WPAnalyticsStatReaderArticleCommentUnliked;
+    }
+
+    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+    properties[WPAppAnalyticsKeyPostID] = post.postID;
+    properties[WPAppAnalyticsKeyBlogID] = post.siteID;
+    [WPAppAnalytics track: stat withProperties:properties];
+}
+
+-(void)trackReplyToComment {
+    ReaderPost *post = self.post;
+    NSDictionary *railcar = post.railcarDictionary;
+    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+    properties[WPAppAnalyticsKeyBlogID] = post.siteID;
+    properties[WPAppAnalyticsKeyPostID] = post.postID;
+    properties[WPAppAnalyticsKeyIsJetpack] = @(post.isJetpack);
+    if (post.feedID && post.feedItemID) {
+        properties[WPAppAnalyticsKeyFeedID] = post.feedID;
+        properties[WPAppAnalyticsKeyFeedItemID] = post.feedItemID;
+    }
+    [WPAppAnalytics track:WPAnalyticsStatReaderArticleCommentedOn withProperties:properties];
+    if (railcar) {
+        [WPAppAnalytics trackTrainTracksInteraction:WPAnalyticsStatTrainTracksInteract withProperties:railcar];
+    }
+}
 #pragma mark - Configuration
 
 - (void)configureNavbar
@@ -480,7 +519,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     }
 
     _post = post;
-
+    [self trackCommentsOpened];
     if (_post.isWPCom || _post.isJetpack) {
         self.syncHelper = [[WPContentSyncHelper alloc] init];
         self.syncHelper.delegate = self;
@@ -666,8 +705,6 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 - (void)sendReplyWithNewContent:(NSString *)content
 {
     __typeof(self) __weak weakSelf = self;
-    ReaderPost *post = self.post;
-    NSDictionary *railcar = post.railcarDictionary;
 
     UINotificationFeedbackGenerator *generator = [UINotificationFeedbackGenerator new];
     [generator prepare];
@@ -675,18 +712,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     void (^successBlock)(void) = ^void() {
         [generator notificationOccurred:UINotificationFeedbackTypeSuccess];
 
-        NSMutableDictionary *properties = [NSMutableDictionary dictionary];
-        properties[WPAppAnalyticsKeyBlogID] = post.siteID;
-        properties[WPAppAnalyticsKeyPostID] = post.postID;
-        properties[WPAppAnalyticsKeyIsJetpack] = @(post.isJetpack);
-        if (post.feedID && post.feedItemID) {
-            properties[WPAppAnalyticsKeyFeedID] = post.feedID;
-            properties[WPAppAnalyticsKeyFeedItemID] = post.feedItemID;
-        }
-        [WPAppAnalytics track:WPAnalyticsStatReaderArticleCommentedOn withProperties:properties];
-        if (railcar) {
-            [WPAppAnalytics trackTrainTracksInteraction:WPAnalyticsStatTrainTracksInteract withProperties:railcar];
-        }
+        [weakSelf trackReplyToComment];
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
         [weakSelf refreshReplyTextViewPlaceholder];
 
@@ -1021,6 +1047,7 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
 
     __typeof(self) __weak weakSelf = self;
     [commentService toggleLikeStatusForComment:comment siteID:self.post.siteID success:^{
+        [weakSelf trackCommentLikedOrUnliked:comment];
 
         [weakSelf.tableView reloadData];
     } failure:^(NSError *error) {
