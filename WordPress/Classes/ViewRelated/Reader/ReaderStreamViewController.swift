@@ -25,12 +25,24 @@ import WordPressFlux
     /// Called if the stream or tag fails to load
     var streamLoadFailureBlock: (() -> Void)? = nil
 
-    fileprivate var tableView: UITableView!
-    fileprivate var refreshControl: UIRefreshControl!
+    fileprivate var tableView: UITableView! {
+        return tableViewController.tableView
+    }
+
     fileprivate var syncHelper: WPContentSyncHelper!
-    fileprivate var tableViewController: UITableViewController!
     fileprivate var resultsStatusView = NoResultsViewController.controller()
-    fileprivate var footerView: PostListFooterView!
+
+    fileprivate lazy var footerView: PostListFooterView = {
+        return tableConfiguration.footer()
+    }()
+
+    fileprivate let tableViewController = UITableViewController(style: .plain)
+
+    fileprivate lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        tableViewController.refreshControl = refreshControl
+        return refreshControl
+    }()
 
     fileprivate let loadMoreThreashold = 4
 
@@ -205,12 +217,6 @@ import WordPressFlux
         return super.awakeAfter(using: aDecoder)
     }
 
-
-    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        tableViewController = segue.destination as? UITableViewController
-    }
-
-
     open override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -235,7 +241,7 @@ import WordPressFlux
 
         if readerTopic != nil {
             configureControllerForTopic()
-        } else if siteID != nil || tagSlug != nil {
+        } else if (siteID != nil || tagSlug != nil) && resultsStatusView.view.superview == nil {
             displayLoadingStream()
         }
     }
@@ -346,12 +352,19 @@ import WordPressFlux
     // MARK: - Setup
 
     fileprivate func setupTableView() {
-        assert(tableViewController != nil, "The tableViewController must be assigned before configuring the tableView")
+        addChild(tableViewController)
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableViewController.didMove(toParent: self)
+        tableViewController.refreshControl = UIRefreshControl(frame: .zero)
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            ])
 
-        tableView = tableViewController.tableView
-        refreshControl = tableViewController.refreshControl!
         refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), for: .valueChanged)
-
         tableConfiguration.setup(tableView)
     }
 
@@ -371,12 +384,6 @@ import WordPressFlux
     }
 
     fileprivate func setupFooterView() {
-        guard let footer = tableConfiguration.footer() as? PostListFooterView else {
-            assertionFailure()
-            return
-        }
-
-        footerView = footer
         footerView.showSpinner(false)
         var frame = footerView.frame
         frame.size.height = heightForFooterView
@@ -1316,6 +1323,14 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
     public func tableView(_ aTableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0.0
+    }
+
+    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0.0
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
