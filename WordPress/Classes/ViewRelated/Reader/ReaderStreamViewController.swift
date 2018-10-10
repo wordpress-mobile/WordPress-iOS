@@ -241,6 +241,8 @@ import WordPressFlux
 
         if readerTopic != nil {
             configureControllerForTopic()
+        } else if (siteID != nil || tagSlug != nil) {//}&& resultsStatusView.view.superview == nil {
+            displayLoadingStream()
         }
     }
 
@@ -278,9 +280,6 @@ import WordPressFlux
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        if (siteID != nil || tagSlug != nil) {//}&& resultsStatusView.view.superview == nil {
-            displayLoadingStream()
-        }
         // There appears to be a scenario where this method can be called prior to
         // the view being fully setup in viewDidLoad.
         // See: https://github.com/wordpress-mobile/WordPress-iOS/issues/4419
@@ -352,21 +351,39 @@ import WordPressFlux
     // MARK: - Setup
 
     fileprivate func setupTableView() {
+        configureRefreshControl()
+        add(tableViewController, asChildOf: self)
+        layoutTableView()
+        tableConfiguration.setup(tableView)
+    }
+
+    fileprivate func configureRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), for: .valueChanged)
+        tableViewController.refreshControl = UIRefreshControl(frame: .zero)
+    }
+
+    fileprivate func addTableViewControllerAsChild() {
         addChild(tableViewController)
         view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+
         tableViewController.didMove(toParent: self)
-        tableViewController.refreshControl = UIRefreshControl(frame: .zero)
+    }
+
+    fileprivate func add(_ childController: UIViewController, asChildOf controller: UIViewController) {
+        childController.removeFromParent()
+        controller.addChild(childController)
+        controller.view.addSubview(childController.view)
+        childController.didMove(toParent: controller)
+    }
+
+    fileprivate func layoutTableView() {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             ])
-
-        refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), for: .valueChanged)
-        tableConfiguration.setup(tableView)
-        tableView.layoutSubviews()
     }
 
     fileprivate func setupContentHandler() {
@@ -1491,11 +1508,13 @@ extension ReaderStreamViewController: SearchableActivityConvertable {
 private extension ReaderStreamViewController {
 
     func displayLoadingStream() {
-        configureAndDisplayResultsStatus(title: ResultsStatusText.loadingStreamTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+        configureResultsStatus(title: ResultsStatusText.loadingStreamTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+        displayResultsStatus()
     }
 
     func displayLoadingStreamFailed() {
-        configureAndDisplayResultsStatus(title: ResultsStatusText.loadingErrorTitle, subtitle: ResultsStatusText.loadingErrorMessage)
+        configureResultsStatus(title: ResultsStatusText.loadingErrorTitle, subtitle: ResultsStatusText.loadingErrorMessage)
+        displayResultsStatus()
     }
 
     func displayLoadingViewIfNeeded() {
@@ -1504,7 +1523,8 @@ private extension ReaderStreamViewController {
         }
 
         tableView.tableHeaderView?.isHidden = true
-        configureAndDisplayResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+        configureResultsStatus(title: ResultsStatusText.fetchingPostsTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+        displayResultsStatus()
     }
 
     func displayNoResultsView() {
@@ -1526,41 +1546,38 @@ private extension ReaderStreamViewController {
         let buttonTitle = buttonTitleForTopic(topic)
         let imageName = ReaderHelpers.topicIsFollowing(topic) ? readerEmptyImageName : nil
 
-        configureAndDisplayResultsStatus(title: response.title, subtitle: response.message, buttonTitle: buttonTitle, imageName: imageName)
-    }
-
-    func displayNoConnectionView() {
-        configureAndDisplayResultsStatus(title: ResultsStatusText.noConnectionTitle, subtitle: noConnectionMessage())
-    }
-
-    func configureAndDisplayResultsStatus(title: String,
-                                          subtitle: String? = nil,
-                                          buttonTitle: String? = nil,
-                                          imageName: String? = nil,
-                                          accessoryView: UIView? = nil) {
-
-        (accessoryView as? WPAnimatedBox)?.animate()
-
-        resultsStatusView.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, image: imageName, accessoryView: accessoryView)
+        configureResultsStatus(title: response.title, subtitle: response.message, buttonTitle: buttonTitle, imageName: imageName)
         displayResultsStatus()
     }
 
+    func displayNoConnectionView() {
+        configureResultsStatus(title: ResultsStatusText.noConnectionTitle, subtitle: noConnectionMessage())
+        displayResultsStatus()
+    }
+
+    func configureResultsStatus(title: String,
+                                subtitle: String? = nil,
+                                buttonTitle: String? = nil,
+                                imageName: String? = nil,
+                                accessoryView: UIView? = nil) {
+
+        (accessoryView as? WPAnimatedBox)?.animate()
+        resultsStatusView.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, image: imageName, accessoryView: accessoryView)
+    }
+
     func displayResultsStatus() {
+        add(resultsStatusView, asChildOf: tableViewController)
+        layoutNoResultsStatus()
 
-        resultsStatusView.removeFromView()
-        tableViewController.addChild(resultsStatusView)
+        footerView.isHidden = true
+    }
 
-        tableView.insertSubview(resultsStatusView.view, belowSubview: refreshControl)
-
-        resultsStatusView.didMove(toParent: tableViewController)
-
+    func layoutNoResultsStatus() {
         resultsStatusView.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             resultsStatusView.view.centerXAnchor.constraint(equalTo: tableView.centerXAnchor),
             resultsStatusView.view.centerYAnchor.constraint(equalTo: tableView.centerYAnchor)
             ])
-
-        footerView.isHidden = true
     }
 
     func hideResultsStatus() {
