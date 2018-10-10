@@ -96,6 +96,11 @@ import WordPressFlux
     }
 
 
+    var isShowingResultStatusView: Bool {
+        return resultsStatusView.view.superview != nil
+    }
+
+
     /// The topic can be nil while a site or tag topic is being fetched, hence, optional.
     @objc open var readerTopic: ReaderAbstractTopic? {
         didSet {
@@ -241,7 +246,7 @@ import WordPressFlux
 
         if readerTopic != nil {
             configureControllerForTopic()
-        } else if (siteID != nil || tagSlug != nil) {//}&& resultsStatusView.view.superview == nil {
+        } else if (siteID != nil || tagSlug != nil) && isShowingResultStatusView == false {
             displayLoadingStream()
         }
     }
