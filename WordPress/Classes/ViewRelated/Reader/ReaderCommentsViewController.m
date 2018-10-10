@@ -16,7 +16,6 @@
 #import <WordPressUI/WordPressUI.h>
 
 
-
 // NOTE: We want the cells to have a rather large estimated height.  This avoids a peculiar
 // crash in certain circumstances when the tableView lays out its visible cells,
 // and those cells contain WPRichTextEmbeds. -- Aerych, 2016.11.30
@@ -832,6 +831,10 @@ static NSString *RestorablePostObjectIDURLKey = @"RestorablePostObjectIDURLKey";
     cell.delegate = self;
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.enableLoggedInFeatures = [self isLoggedIn];
+    cell.onTimeStampLongPress = ^(void) {
+        NSURL *url = [NSURL URLWithString:comment.link];
+        [UIAlertController presentAlertAndCopyCommentURLToClipboardWithUrl:url];
+    };
 
     // When backgrounding, the app takes a snapshot, which triggers a layout pass,
     // which refreshes the cells, and for some reason triggers an assertion failure

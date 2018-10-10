@@ -714,6 +714,14 @@ private extension NotificationDetailsViewController {
             self?.router.routeTo(image)
         }
 
+        cell.onTimeStampLongPress = { [weak self] in
+            guard let urlString = self?.note.url,
+            let url = URL(string: urlString) else {
+                return
+            }
+            UIAlertController.presentAlertAndCopyCommentURLToClipboard(url: url)
+        }
+
         // Download the Gravatar
         let mediaURL = userBlock.media.first?.mediaURL
         cell.downloadGravatarWithURL(mediaURL)
