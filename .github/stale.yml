@@ -5,7 +5,7 @@ daysUntilStale: 365 # 1 year
 
 # Number of days of inactivity before an Issue or Pull Request with the stale label is closed.
 # Set to false to disable. If disabled, issues still need to be closed manually, but will remain marked as stale.
-daysUntilClose: -1
+daysUntilClose: -1 # Close the issue almost immediately. See: https://github.com/probot/stale/issues/131
 
 # Issues or Pull Requests with these labels will never be considered stale. Set to `[]` to disable
 exemptLabels:
