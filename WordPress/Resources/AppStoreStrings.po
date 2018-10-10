@@ -38,7 +38,7 @@ msgctxt "app_store_keywords"
 msgid "social,network,notes,jetpack,photos,writing,geotagging,media,blog,wordpress,website,blogging,design\n"
 msgstr ""
 
-msgctxt "v10.9-whats-new"
+msgctxt "v11.0-whats-new"
 msgid ""
 "Does it drive you nuts when you realize you want to stick a post to the front page of your site, but you’re on the bus and only have a phone with you? Us too. Now you can set sticky posts in the app, and the other people on the bus don’t have to listen to you grumble.\n"
 "Save time and taps with comment push notifications that show the entire comment from the home screen. Everyone loves saving!\n"
