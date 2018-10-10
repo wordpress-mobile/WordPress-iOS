@@ -49,8 +49,12 @@ final class ReaderTableConfiguration {
         tableView.register(nib, forCellReuseIdentifier: readerCrossPostCellReuseIdentifier)
     }
 
-    func footer() -> Any? {
-        return Bundle.main.loadNibNamed(footerViewNibName, owner: nil, options: nil)?.first
+    func footer() -> PostListFooterView {
+        guard let footer = Bundle.main.loadNibNamed(footerViewNibName, owner: nil, options: nil)?.first as? PostListFooterView else {
+            assertionFailure("Failed to load view from nib named \(footerViewNibName)")
+            return PostListFooterView()
+        }
+        return footer
     }
 
     func estimatedRowHeight() -> CGFloat {
